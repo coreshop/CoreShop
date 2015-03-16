@@ -1,0 +1,2 @@
+
+CoreShop Plugin works!

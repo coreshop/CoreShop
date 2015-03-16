@@ -1,0 +1,6 @@
+"coreshop_name","CoreShop Plugin"
+
+"coreshop_installed_successfully","CoreShop plugin installed successfully. Please don't forget to reload pimcore!"
+"coreshop_install_failed","Could not install CoreShop plugin. See log for more details."
+"coreshop_uninstalled_successfully","Successfully uninstalled CoreShop plugin. Please don't forget to reload pimcore!"
+"coreshop_uninstall_failed","Could not uninstall CoreShop plugin. See log for more details."
