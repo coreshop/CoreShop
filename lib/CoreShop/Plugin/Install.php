@@ -11,7 +11,7 @@ class CoreShop_Plugin_Install
     {
         $class = Object_Class::getByName($className);
         
-        if (!$class) 
+        if (!$class)
         {
             $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
             
@@ -21,12 +21,25 @@ class CoreShop_Plugin_Install
             
             $json = file_get_contents($jsonFile);
             
+            $result = CoreShop::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function($v) {
+                return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
+            });
+    
+            if ($result->stopped()) {
+                $resultJson = $result->last();
+                
+                if($resultJson)
+                {
+                    $json = $resultJson;
+                }
+            }
+            
             Object_Class_Service::importClassDefinitionFromJson($class, $json, true);
             
             return $class;
         }
         
-        return false;
+        return $class;
     }
     
     public function removeClass($name)
@@ -36,44 +49,145 @@ class CoreShop_Plugin_Install
             $class->delete();
         }
     }
+    
+    public function createObjectBrick($name, $jsonPath = null)
+    {
+        try {
+            $objectBrick = Object_Objectbrick_Definition::getByKey($name);
+        } 
+        catch (Exception $e) {
+            if($jsonPath == null)
+                $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
+            
+            $objectBrick = new Object_Objectbrick_Definition();
+            $objectBrick->setKey($name);
+            
+            $json = file_get_contents($jsonPath);
+            
+            $result = CoreShop::getEventManager()->trigger('install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function($v) {
+                return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
+            });
+    
+            if ($result->stopped()) {
+                $resultJson = $result->last();
+                
+                if($resultJson)
+                {
+                    $json = $resultJson;
+                }
+            }
+            
+            Object_Class_Service::importObjectBrickFromJson($objectBrick, $json, true);
+        }
+        
+        return $fieldCollection;
+    }
+    
+    public function removeObjectBrick($name)
+    {
+        try
+        {
+            $brick = Object_Objectbrick_Definition::getByKey($name);
+
+            if ($brick) {
+                $brick->delete();
+            }
+        } 
+        catch(Exception $e)
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function createFieldCollection($name, $jsonPath = null)
+    {
+        try {
+            $fieldCollection = Object_Fieldcollection_Definition::getByKey($name);
+        } 
+        catch (Exception $e) {
+            if($jsonPath == null)
+                $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
+            
+            $fieldCollection = new Object_Fieldcollection_Definition();
+            $fieldCollection->setKey($name);
+            
+            $json = file_get_contents($jsonPath);
+            
+            $result = CoreShop::getEventManager()->trigger('install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function($v) {
+                return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
+            });
+    
+            if ($result->stopped()) {
+                $resultJson = $result->last();
+                
+                if($resultJson)
+                {
+                    $json = $resultJson;
+                }
+            }
+            
+            Object_Class_Service::importFieldCollectionFromJson($fieldCollection, $json, true);
+        }
+        
+        return $fieldCollection;
+    }
 
     public function createFolders()
     {
-        $root = Object_Folder::create(array(
-            'o_parentId' => 1,
-            'o_creationDate' => time(),
-            'o_userOwner' => $this->_getUser()->getId(),
-            'o_userModification' => $this->_getUser()->getId(),
-            'o_key' => 'coreshop',
-            'o_published' => true,
-        ));
+        $root = Object_Folder::getByPath("/coreshop");
+        $products = Object_Folder::getByPath("/coreshop/products");
+        $cart = Object_Folder::getByPath("/coreshop/categories");
+        $categories = Object_Folder::getByPath("/coreshop/carts");
         
-        Object_Folder::create(array(
-            'o_parentId' => $root->getId(),
-            'o_creationDate' => time(),
-            'o_userOwner' => $this->_getUser()->getId(),
-            'o_userModification' => $this->_getUser()->getId(),
-            'o_key' => 'products',
-            'o_published' => true,
-        ));
+        if(!$root instanceof Object_Folder)
+        {
+            $root = Object_Folder::create(array(
+                'o_parentId' => 1,
+                'o_creationDate' => time(),
+                'o_userOwner' => $this->_getUser()->getId(),
+                'o_userModification' => $this->_getUser()->getId(),
+                'o_key' => 'coreshop',
+                'o_published' => true,
+            ));
+        }
         
-        Object_Folder::create(array(
-            'o_parentId' => $root->getId(),
-            'o_creationDate' => time(),
-            'o_userOwner' => $this->_getUser()->getId(),
-            'o_userModification' => $this->_getUser()->getId(),
-            'o_key' => 'categories',
-            'o_published' => true,
-        ));
+        if(!$products instanceof Object_Folder)
+        {
+            $products = Object_Folder::create(array(
+                'o_parentId' => $root->getId(),
+                'o_creationDate' => time(),
+                'o_userOwner' => $this->_getUser()->getId(),
+                'o_userModification' => $this->_getUser()->getId(),
+                'o_key' => 'products',
+                'o_published' => true,
+            ));
+        }
         
-        Object_Folder::create(array(
-            'o_parentId' => $root->getId(),
-            'o_creationDate' => time(),
-            'o_userOwner' => $this->_getUser()->getId(),
-            'o_userModification' => $this->_getUser()->getId(),
-            'o_key' => 'carts',
-            'o_published' => true,
-        ));
+        if(!$categories instanceof Object_Folder)
+        {
+            Object_Folder::create(array(
+                'o_parentId' => $root->getId(),
+                'o_creationDate' => time(),
+                'o_userOwner' => $this->_getUser()->getId(),
+                'o_userModification' => $this->_getUser()->getId(),
+                'o_key' => 'categories',
+                'o_published' => true,
+            ));
+        }
+        
+        if(!$cart instanceof Object_Folder)
+        {
+            Object_Folder::create(array(
+                'o_parentId' => $root->getId(),
+                'o_creationDate' => time(),
+                'o_userOwner' => $this->_getUser()->getId(),
+                'o_userModification' => $this->_getUser()->getId(),
+                'o_key' => 'carts',
+                'o_published' => true,
+            ));
+        }
         
         return $root;
     }

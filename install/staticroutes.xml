@@ -12,13 +12,23 @@
             <priority>2</priority>
         </route>
         <route>
+            <name>coreshop_index</name>
+            <pattern>/(.*?)\/shop/</pattern>
+            <reverse>/%lang/shop</reverse>
+            <module>CoreShop</module>
+            <controller>product</controller>
+            <action>index</action>
+            <variables>lang</variables>
+            <priority>3</priority>
+        </route>
+        <route>
             <name>coreshop_detail</name>
             <pattern>/(.*?)\/shop\/(.*?)\~p([0-9]+)/</pattern>
             <reverse>/%lang/shop/%name~p%product</reverse>
             <module>CoreShop</module>
             <controller>product</controller>
             <action>detail</action>
-            <variables>lang,name,detail</variables>
+            <variables>lang,name,product</variables>
             <priority>3</priority>
         </route>
         <route>

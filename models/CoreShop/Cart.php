@@ -22,51 +22,49 @@ class CoreShop_Cart extends CoreShop_Base {
         return $cart;
     }
     
-    public function addProduct(CoreShop_Product $product)
+    public function addItem(CoreShop_Product $product, $amount = 1)
     {
-        $products = $this->getProducts();
+        $items = $this->getItems();
         
-        if(!is_array($products))
-            $products = array();
+        if(!is_array($items))
+            $items = array();
         
-        $products[] = $product;
+        $item = new Object_CoreShopCartItem();
+        $item->setKey(uniqid());
+        $item->setParent($this);
+        $item->setAmount($amount);
+        $item->setProduct($product);
+        $item->setPublished(true);
+        $item->save();
+        
+        $items[] = $item;
 
-        $this->setProducts($products);
+        $this->setItems($items);
         $this->save(true);
+        
+        return $item;
     }
     
-    public function removeProduct(CoreShop_Product $product)
+    public function removeItem(CoreShop_CartItem $item)
     {
-        $products = $this->getProducts();
-
-        for($i = 0; $i < count($products); $i++)
-        {
-            if($products[$i]->getId() == $product->getId())
-            {
-                unset($products[$i]);
-                break;
-            }
-        }
-        
-        $this->setProducts($products);
-        $this->save();
+        $item->delete();
     }
     
     public function toArray()
     {
-        $products = array();
+        $items = array();
         $total = 0;
         
-        foreach($this->getProducts() as $product)
+        foreach($this->getItems() as $item)
         {
-            $products[] = $product->toArray();
+            $items[] = $item->toArray();
             
-            $total += $product->getPrice();
+            $total += $item->getAmount() * $item->getProduct()->getPrice();
         }
         
         return array(
             "user" => $this->user ? $this->user->toArray() : null,
-            "products" => $products,
+            "items" => $items,
             "total" => $total,
             "totalFormatted" => CoreShop_Tool::formatPrice($total)
         );

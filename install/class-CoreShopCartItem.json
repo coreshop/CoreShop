@@ -1,6 +1,6 @@
 {
 	"description":null,
-	"parentClass":"CoreShop_Cart",
+	"parentClass":"CoreShop_CartItem",
 	"allowInherit":false,
 	"allowVariants":false,
 	"showVariants":false,
@@ -30,12 +30,39 @@
 				"title":null,
 				"width":null,
 				"height":null,
-				"collapsible":false,
+				"collapsible":null,
 				"collapsed":null,
 				"bodyStyle":null,
 				"datatype":"layout",
 				"permissions":null,
 				"childs":[
+					{
+						"fieldtype":"numeric",
+						"width":"",
+						"defaultValue":null,
+						"queryColumnType":"double",
+						"columnType":"double",
+						"phpdocType":"float",
+						"integer":false,
+						"unsigned":false,
+						"minValue":"",
+						"maxValue":"",
+						"decimalPrecision":"",
+						"name":"amount",
+						"title":"amount",
+						"tooltip":"",
+						"mandatory":false,
+						"noteditable":false,
+						"index":false,
+						"locked":null,
+						"style":"",
+						"permissions":null,
+						"datatype":"data",
+						"relationType":false,
+						"invisible":false,
+						"visibleGridView":false,
+						"visibleSearch":false
+					},
 					{
 						"fieldtype":"href",
 						"width":"",
@@ -46,46 +73,19 @@
 							"type":"enum('document','asset','object')"
 						},
 						"phpdocType":"Document_Page | Document_Snippet | Document | Asset | Object_Abstract",
-						"objectsAllowed":false,
+						"objectsAllowed":true,
 						"assetsAllowed":false,
 						"assetTypes":"",
 						"documentsAllowed":false,
 						"documentTypes":"",
 						"lazyLoading":false,
 						"classes":[
-
-						],
-						"name":"user",
-						"title":"user",
-						"tooltip":"",
-						"mandatory":false,
-						"noteditable":false,
-						"index":false,
-						"locked":false,
-						"style":"",
-						"permissions":null,
-						"datatype":"data",
-						"columnType":null,
-						"invisible":false,
-						"visibleGridView":false,
-						"visibleSearch":false
-					},
-					{
-						"fieldtype":"objects",
-						"width":"",
-						"height":"",
-						"maxItems":"",
-						"queryColumnType":"text",
-						"phpdocType":"array",
-						"relationType":true,
-						"lazyLoading":false,
-						"classes":[
 							{
-								"classes":"CoreShopCartItem"
+								"classes":"CoreShopProduct"
 							}
 						],
-						"name":"items",
-						"title":"Items",
+						"name":"product",
+						"title":"Produkt",
 						"tooltip":"",
 						"mandatory":false,
 						"noteditable":false,
@@ -100,7 +100,7 @@
 						"visibleSearch":false
 					}
 				],
-				"locked":false
+				"locked":null
 			}
 		],
 		"locked":null

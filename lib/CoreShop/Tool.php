@@ -2,11 +2,16 @@
 
 class CoreShop_Tool {
     
-    public static function formatPrice($price, $locale, $currency = "EUR")
+    public static function formatPrice($price, $currency = "EUR")
     {
         $zCurrency = new Zend_Currency(Zend_Locale::getLocaleToTerritory(Zend_Registry::get("Zend_Locale")));
 
         return $zCurrency->toCurrency($price, array('currency' => $zCurrency));
+    }
+    
+    public static function formatTax($tax)
+    {
+        return ($tax * 100) . "%";
     }
     
     public static function prepareCart()

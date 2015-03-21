@@ -9,35 +9,77 @@ class CoreShop_CartController extends CoreShop_Controller_Action {
         $this->prepareCart();
     }
     
-    public function addAction () {
+    public function addAction () 
+    {
         $product_id = $this->getParam("product", null);
+        $amount = $this->getParam("amount", 1);
         $product = CoreShop_Product::getById($product_id);
+        
+        $isAllowed = true;
+        $result = CoreShop::getEventManager()->trigger('cart.preAdd', $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
+            return is_bool($v);
+        });
 
-        if($product instanceof CoreShop_Product)
+        if ($result->stopped()) {
+            $isAllowed = $result->last();
+        }
+        
+        if($isAllowed)
         {
-            $this->cart->addProduct($product);
-
-            $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray()));
+            if($product instanceof CoreShop_Product)
+            {
+                $item = $this->cart->addItem($product, $amount);
+                
+                CoreShop::getEventManager()->trigger('cart.postAdd', $this, array("request" => $this->getRequest(), "product" => $product, "cart" => $this->cart, "cartItem" => $item));
+                
+                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray()));
+            }
+        }
+        else
+        {
+            $this->_helper->json(array("success" => false, "message" => 'not allowed'));
         }
         
         $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray()));
     }
     
     public function removeAction() {
-        $product_id = $this->getParam("product", null);
-        $product = CoreShop_Product::getById($product_id);
+        $cartItem = $this->getParam("cartItem", null);
+        $item = CoreShop_CartItem::getById($cartItem);
         
-        if($product instanceof CoreShop_Product)
-        {
-            $this->cart->removeProduct($product);
+        $isAllowed = true;
+        $result = CoreShop::getEventManager()->trigger('cart.preRemove', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
+            return is_bool($v);
+        });
 
-            $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray()));
+        if ($result->stopped()) {
+            $isAllowed = $result->last();
+        }
+        
+        if($isAllowed)
+        {
+            if($product instanceof CoreShop_Product)
+            {
+                $this->cart->removeItem($item);
+                
+                CoreShop::getEventManager()->trigger('cart.preAdd', $this, array("item" => $item, "cart" => $this->cart));
+                
+                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray()));
+            }
+        }
+        else
+        {
+            $this->_helper->json(array("success" => false, "message" => 'not allowed'));
         }
         
         $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray()));
     }
     
     public function modifyAction() {
+        
+    }
+    
+    public function listAction() {
         
     }
 }
