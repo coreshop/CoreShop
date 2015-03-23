@@ -41,5 +41,25 @@
             <variables>lang,action</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>coreshop_checkout</name>
+            <pattern>#(\w+)/checkout/(\w+)#</pattern>
+            <reverse>/%lang/checkout/%action</reverse>
+            <module>CoreShop</module>
+            <controller>checkout</controller>
+            <action>%action</action>
+            <variables>lang,action</variables>
+            <priority>1</priority>
+        </route>
+        <route>
+            <name>coreshop_user</name>
+            <pattern>#(\w+)/user/(\w+)#</pattern>
+            <reverse>/%lang/user/%action</reverse>
+            <module>CoreShop</module>
+            <controller>user</controller>
+            <action>%action</action>
+            <variables>lang,action</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>

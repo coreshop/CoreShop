@@ -13,6 +13,14 @@ class CoreShop_Plugin_Install
         
         if (!$class)
         {
+            $result = CoreShop::getEventManager()->trigger("install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function($v) {
+                return ($v instanceof Object_Class);
+            });
+
+            if ($result->stopped()) {
+                return $result->last();
+            }
+            
             $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
             
             $class = Object_Class::create();
@@ -132,6 +140,24 @@ class CoreShop_Plugin_Install
         }
         
         return $fieldCollection;
+    }
+    
+    public function removeFieldcollection($name)
+    {
+        try
+        {
+            $fc = Object_Fieldcollection_Definition::getByKey($name);
+
+            if ($fc) {
+                $fc->delete();
+            }
+        } 
+        catch(Exception $e)
+        {
+            return false;
+        }
+        
+        return true;
     }
 
     public function createFolders()
@@ -261,6 +287,7 @@ class CoreShop_Plugin_Install
             $route->save();
         }
     }
+    
     public function removeStaticRoutes()
     {
         $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
@@ -270,6 +297,22 @@ class CoreShop_Plugin_Install
             if ($route) {
                 $route->delete();
             }
+        }
+    }
+    
+    public function createClassmap()
+    {
+        if(!is_file(CoreShop_Plugin::getClassmapFile()))
+        {
+            copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop_classmap.xml', CoreShop_Plugin::getClassmapFile());
+        }
+    }
+    
+    public function removeClassmap()
+    {
+        if(is_file(CoreShop_Plugin::getClassmapFile()))
+        {
+            unlink(CoreShop_Plugin::getClassmapFile());
         }
     }
 

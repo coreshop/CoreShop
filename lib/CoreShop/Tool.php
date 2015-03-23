@@ -114,4 +114,67 @@ class CoreShop_Tool {
         $collection['key'] = $object->o_key;
         return $collection;
     }
+    
+    /*
+     * Class Mapping Tools
+     * They are used to map some instances of CoreShop_base to an defined class (type)
+     */
+
+    /**
+     * @static
+     * @param  $sourceClassName
+     * @return string
+     */
+    public static function getModelClassMapping($sourceClassName, $interfaceToImplement = null) {
+
+        $targetClassName = $sourceClassName;
+        
+        if(!$interfaceToImplement)
+            $interfaceToImplement = $targetClassName;
+
+        if($map = CoreShop_Config::getModelClassMappingConfig()) {
+            $tmpClassName = $map->{$sourceClassName};
+            
+            if($tmpClassName)  {
+                if(Pimcore_Tool::classExists($tmpClassName)) {
+                    if(is_subclass_of($tmpClassName, $interfaceToImplement)) {
+                        $targetClassName = $tmpClassName;
+                    } else {
+                        Logger::error("Classmapping for " . $sourceClassName . " failed. '" . $tmpClassName . " is not a subclass of '" . $interfaceToImplement . "'. " . $tmpClassName . " has to extend " . $interfaceToImplement);
+                    }
+                } else {
+                    Logger::error("Classmapping for " . $sourceClassName . " failed. Cannot find class '" . $tmpClassName . "'");
+                }
+            }
+        }
+
+        return $targetClassName;
+    }
+    
+    public static function findOrCreateObjectFolder($path)
+    {
+        $pathParts = explode("/", $path);
+        $currentPath = "/";
+
+        foreach ($pathParts as $part) {
+            if (empty($part)) {
+                continue;
+            }
+
+            $myPath = $currentPath."/".$part;
+
+            $folder = Object_Abstract::getByPath($myPath);
+
+            if (!$folder instanceof Object_Abstract) {
+                $folder = new Object_Folder();
+                $folder->setParentId(Object_Abstract::getByPath($currentPath)->getId());
+                $folder->setKey($part);
+                $folder->save();
+            }
+
+            $currentPath .= $part."/";
+        }
+
+        return $folder;
+    }
 }

@@ -26,4 +26,25 @@ class CoreShop
     public static function setLayout($layout) {
         self::$layout = $layout;
     }
+    
+    public static function getDeliveryProvider(Object_CoreShop_Cart $cart)
+    {
+        $results = self::getEventManager()->trigger("delivery.getProvider", null, array("cart" => $cart), function($v) {
+            return ($v instanceof CoreShop_Interface_Delivery);
+        });
+        
+        if($results->stopped())
+        {
+            $provider = array();
+            
+            foreach($results as $result)
+            {
+                $provider[] = $result;
+            }
+    
+            return $provider;
+        }
+        
+        return array();
+    }
 }

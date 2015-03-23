@@ -24,6 +24,8 @@ class CoreShop_Controller_Action extends Website_Controller_Action {
             )
         );
         
+        $this->session = $this->view->session = Pimcore_Tool_Session::get('CoreShop');
+        
         $this->setLayout(CoreShop::getLayout());
     }
     

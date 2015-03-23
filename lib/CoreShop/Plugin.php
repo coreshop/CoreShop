@@ -25,6 +25,9 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             $productClass = $install->createClass('CoreShopProduct');
             $cartClass = $install->createClass('CoreShopCart');
             $cartItemClass = $install->createClass('CoreShopCartItem');
+            $userClass = $install->createClass("CoreShopUser");
+            
+            $fcUserAddress = $install->createFieldcollection('CoreShopUserAddress');
             
             // create root object folder with subfolders
             $coreShopFolder = $install->createFolders();
@@ -33,12 +36,15 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
                 $productClass->getId(),
                 $categoryClass->getId(),
                 $cartClass->getId(),
-                $cartItemClass->getId()
+                $cartItemClass->getId(),
+                $userClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();
             // create predefined document types
             //$install->createDocTypes();
+            
+            $install->createClassmap();
             
             CoreShop::getEventManager()->trigger('install.post', $this, array("installer" => $install));
         } 
@@ -72,10 +78,15 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             $install->removeFolders();
             // remove classes
             
+            $install->removeClassmap();
+            
             $install->removeClass('CoreShopProduct');
             $install->removeClass('CoreShopCategory');
             $install->removeClass('CoreShopCart');
             $install->removeClass('CoreShopCartItem');
+            $install->removeClass("CoreShopUser");
+            
+            $install->removeFieldcollection('CoreShopUserAddress');
             
             CoreShop::getEventManager()->trigger('uninstall.post', $this, array("installer" => $install));
             
@@ -144,5 +155,11 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             array('delimiter' => ',')
         );
         return self::$_translate;
+    }
+    
+    
+    public static function getClassmapFile()
+    {
+        return PIMCORE_CONFIGURATION_DIRECTORY . "/coreshop_classmap.xml";
     }
 }
