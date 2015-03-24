@@ -22,6 +22,17 @@ class CoreShop_Cart extends CoreShop_Base {
         return $cart;
     }
     
+    public function hasPhysicalItems()
+    {
+        foreach($this->getItems() as $item)
+        {
+            if(!$item->getProduct()->getIsDownloadProduct())
+                return true;
+        }
+        
+        return false;
+    }
+    
     public function getSubtotal()
     {
         $subtotal = 0;

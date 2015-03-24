@@ -27,6 +27,10 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             $cartItemClass = $install->createClass('CoreShopCartItem');
             $userClass = $install->createClass("CoreShopUser");
             
+            $orderItemClass = $install->createClass("CoreShopOrderItem");
+            $paymentClass = $install->createClass("CoreShopPayment");
+            $orderClass = $install->createClass("CoreShopOrder");
+            
             $fcUserAddress = $install->createFieldcollection('CoreShopUserAddress');
             
             // create root object folder with subfolders
@@ -37,7 +41,10 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
                 $categoryClass->getId(),
                 $cartClass->getId(),
                 $cartItemClass->getId(),
-                $userClass->getId()
+                $userClass->getId(),
+                $orderItemClass->getId(),
+                $orderClass->getId(),
+                $paymentClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();
@@ -85,6 +92,9 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             $install->removeClass('CoreShopCart');
             $install->removeClass('CoreShopCartItem');
             $install->removeClass("CoreShopUser");
+            $install->removeClass("CoreShopOrder");
+            $install->removeClass("CoreShopPayment");
+            $install->removeClass("CoreShopOrderItem");
             
             $install->removeFieldcollection('CoreShopUserAddress');
             
