@@ -56,6 +56,8 @@ class CoreShop_CartController extends CoreShop_Controller_Action {
             $isAllowed = $result->last();
         }
         
+        unset($this->session->order);
+        
         if($isAllowed)
         {
             if($item instanceof CoreShop_CartItem)
@@ -88,6 +90,8 @@ class CoreShop_CartController extends CoreShop_Controller_Action {
         if ($result->stopped()) {
             $isAllowed = $result->last();
         }
+        
+        unset($this->session->order);
         
         if($isAllowed)
         {

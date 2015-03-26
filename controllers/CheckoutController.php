@@ -165,6 +165,8 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
                 $order->save();
                 
                 $order->importCart($this->cart);
+                
+                $this->session->orderId = $order->getId();
 
                 $this->_helper->viewRenderer($provider->processPayment($order, $this->view->url(array("action" => "paymentreturn"), "coreshop_checkout")), null, true);
             }

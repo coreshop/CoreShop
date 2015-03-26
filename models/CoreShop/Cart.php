@@ -26,8 +26,10 @@ class CoreShop_Cart extends CoreShop_Base {
     {
         foreach($this->getItems() as $item)
         {
-            if(!$item->getProduct()->getIsDownloadProduct())
+            if($item->getProduct()->getIsDownloadProduct() !== "yes")
+            {
                 return true;
+            }
         }
         
         return false;
