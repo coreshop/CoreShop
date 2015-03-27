@@ -113,6 +113,6 @@ class CoreShop_CartController extends CoreShop_Controller_Action {
     }
     
     public function listAction() {
-        
+        $this->view->headTitle($this->view->translate("Cart"));
     }
 }

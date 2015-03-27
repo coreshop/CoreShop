@@ -9,7 +9,7 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
     protected static $_translate;
     
     public function init() {
-
+        require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/helper.php");
     }
 
     public static function install()
@@ -52,6 +52,7 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             //$install->createDocTypes();
             
             $install->createClassmap();
+            $install->createImageThumbnails();
             
             CoreShop::getEventManager()->trigger('install.post', $this, array("installer" => $install));
         } 
@@ -97,6 +98,7 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             $install->removeClass("CoreShopOrderItem");
             
             $install->removeFieldcollection('CoreShopUserAddress');
+            $install->removeImageThumbnails();
             
             CoreShop::getEventManager()->trigger('uninstall.post', $this, array("installer" => $install));
             

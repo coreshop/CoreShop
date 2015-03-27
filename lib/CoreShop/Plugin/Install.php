@@ -315,6 +315,19 @@ class CoreShop_Plugin_Install
             unlink(CoreShop_Plugin::getClassmapFile());
         }
     }
+    
+    public function createImageThumbnails()
+    {
+        recurse_copy(PIMCORE_PLUGINS_PATH . "/CoreShop/install/thumbnails/image", PIMCORE_WEBSITE_PATH . "/var/config/imagepipelines", true);
+    }
+    
+    public function removeImageThumbnails()
+    {
+        foreach (glob(PIMCORE_WEBSITE_PATH . "/var/config/imagepipelines/coreshop_*.xml") as $filename) 
+        {
+            unlink($filename);
+        }
+    }
 
 /*
     public function createDocTypes()

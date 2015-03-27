@@ -25,6 +25,8 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
         }
         
         $this->view->message = $this->getParam("message");
+        
+        $this->view->headTitle($this->view->translate("Checkout"));
     }
     
     public function loginAction() {
@@ -51,6 +53,8 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
         }
         
         $this->_helper->viewRenderer("coreshop/checkout/index", null, true);
+        
+        $this->view->headTitle($this->view->translate("Login"));
     }
     
     public function registerAction() {
@@ -77,6 +81,8 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
             
             $this->_redirect($this->view->url(array("action" => "delivery"), "coreshop_checkout"));
         }
+        
+        $this->view->headTitle($this->view->translate("Address"));
     }
     
     public function deliveryAction() {
@@ -114,6 +120,8 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
                 $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
             }
         }
+        
+        $this->view->headTitle($this->view->translate("Shipping"));
     }
     
     public function paymentAction() {
@@ -171,6 +179,8 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
                 $this->_helper->viewRenderer($provider->processPayment($order, $this->view->url(array("action" => "paymentreturn"), "coreshop_checkout")), null, true);
             }
         }
+        
+        $this->view->headTitle($this->view->translate("Payment"));
     }
 
     public function thankyouAction()
@@ -190,6 +200,8 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
         
         unset($this->session->order);
         unset($this->session->cart);
+        
+        $this->view->headTitle($this->view->translate("Thank you"));
     }
     
     protected function checkIsAllowed()

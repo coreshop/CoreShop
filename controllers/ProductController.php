@@ -9,6 +9,13 @@ class CoreShop_ProductController extends CoreShop_Controller_Action {
         if($product instanceof CoreShop_Product)
         {
             $this->view->product = $product;
+            
+            $this->view->seo = array(
+                "image" => $product->getImage(),
+                "description" => $product->getMetaDescription() ? $product->getMetaDescription() : $product->getShortDescription()
+            );
+            
+            $this->view->headTitle($product->getMetaTitle() ? $product->getMetaTitle() : $product->getName());
         }
         else
         {
@@ -23,5 +30,5 @@ class CoreShop_ProductController extends CoreShop_Controller_Action {
     
     public function listAction() {
         
-    }
+    }   
 }
