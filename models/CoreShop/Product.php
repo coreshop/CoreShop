@@ -59,6 +59,6 @@ class Product extends Base {
         if($parent)
             $master = $parent;
         
-        return CoreShop\Tool\Service::getDimensions($master);
+        return \CoreShop\Tool\Service::getDimensions($master);
     }
 }

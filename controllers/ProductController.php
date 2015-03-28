@@ -2,15 +2,15 @@
 
 use CoreShop\Controller\Action;
 
-use Object\CoreShopProduct as Product;
+use Pimcore\Model\Object\CoreShopProduct;
 
 class CoreShop_ProductController extends Action {
     
     public function detailAction () {
         $id = $this->getParam("product");
-        $product = CoreShop_Product::getById($id);
+        $product = CoreShopProduct::getById($id);
         
-        if($product instanceof Product)
+        if($product instanceof CoreShopProduct)
         {
             $this->view->product = $product;
             
@@ -23,7 +23,7 @@ class CoreShop_ProductController extends Action {
         }
         else
         {
-            throw new CoreShop_Exception(sprintf('Product with id "%s" not found', $id));
+            throw new CoreShop\Exception(sprintf('Product with id "%s" not found', $id));
         }
     }
     

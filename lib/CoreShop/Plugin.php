@@ -214,10 +214,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         self::$layout = $layout;
     }
     
-    public static function getDeliveryProviders(Object_CoreShopCart $cart)
+    public static function getDeliveryProviders(CoreShopCart $cart)
     {
         $results = self::getEventManager()->trigger("delivery.getProvider", null, array("cart" => $cart), function($v) {
-            return ($v instanceof CoreShop_Interface_Delivery);
+            return ($v instanceof \CoreShop\Plugin\Delivery);
         });
         
         if($results->stopped())
@@ -238,7 +238,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     public static function getDeliveryProvider($identifier)
     {
         $results = self::getEventManager()->trigger("delivery.getProvider", null, array("cart" => $cart), function($v) {
-            return ($v instanceof CoreShop_Interface_Delivery && $v->getIdentifier() == $identifier);
+            return ($v instanceof \CoreShop\Plugin\Delivery && $v->getIdentifier() == $identifier);
         });
         
         if($results->stopped())
@@ -249,10 +249,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return false;
     }
     
-    public static function getPaymentProviders(Object_CoreShopCart $cart)
+    public static function getPaymentProviders(CoreShopCart $cart)
     {
         $results = self::getEventManager()->trigger("payment.getProvider", null, array("cart" => $cart), function($v) {
-            return ($v instanceof CoreShop_Interface_Payment);
+            return ($v instanceof \CoreShop\Plugin\Payment);
         });
         
         if($results->stopped())
@@ -281,5 +281,27 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         }
         
         return false;
+    }
+    
+    public static function hook($name, $params)
+    {
+        $results = self::getEventManager()->trigger("hook." . $name, null, array(), function($v) {
+            return ($v instanceof \CoreShop\Plugin\Hook);
+        });
+        
+
+        if($results->stopped())
+        {
+            $return = array();
+            
+            foreach($results as $result)
+            {
+                $return[] = $result->render($params);
+            }
+    
+            return implode($return, "\n");
+        }
+        
+        return "";
     }
 }

@@ -3,7 +3,7 @@
 namespace CoreShop\Tool;
 
 use Object\CoreShopProduct as Product;
-use Object\Abstract as ObjectAbstract;
+use Object\AbstractObject;
 
 class Service
 {
@@ -12,13 +12,13 @@ class Service
 
     public static function getDimensions(Product $product)
     {
-        $variants = $product->getChilds(array(ObjectAbstract::OBJECT_TYPE_VARIANT));
+        $variants = $product->getChilds(array(AbstractObject::OBJECT_TYPE_VARIANT));
         $fieldDefinition = $product->getClass()->getFieldDefinition("dimensions");
         
         $variantsAndMaster = array_merge(array($product), $variants);
         
-        $currentInheritedValue = ObjectAbstract::getGetInheritedValues();
-        ObjectAbstract::setGetInheritedValues(false);
+        $currentInheritedValue = AbstractObject::getGetInheritedValues();
+        AbstractObject::setGetInheritedValues(false);
         
         $overwrittenKeyValues = array();
         $overwrittenKeys = array();
@@ -92,7 +92,7 @@ class Service
             }
         }
 
-        ObjectAbstract::setGetInheritedValues($currentInheritedValue);
+        AbstractObject::setGetInheritedValues($currentInheritedValue);
         
         return $overwrittenKeyValues;
     }
