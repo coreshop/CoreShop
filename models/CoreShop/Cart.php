@@ -1,24 +1,31 @@
 <?php
     
-class CoreShop_Cart extends CoreShop_Base {
+namespace CoreShop;
+
+use CoreShop\Base;
+use CoreShop\Tool;
+use Pimcore\Model\Object\CoreShopCart;
+use Pimcore\Model\Object\CoreShopCartItem;
+
+class Cart extends Base {
     
     public static function getAll()
     {
-        $list = new Object_CoreShopCart_List();
+        $list = new Object\CoreShopCart\Listing();
         
         return $list->getObjects();
     }
     
-    public static function create()
+    public static function prepare()
     {
-        $cartsFolder = Object_Folder::getByPath("/coreshop/carts");
+        $cartsFolder = Tool::findOrCreateObjectFolder("/coreshop/carts");
         
-        $cart = new Object_CoreShopCart();
+        $cart = CoreShopCart::create();
         $cart->setKey(uniqid());
         $cart->setParent($cartsFolder);
         $cart->setPublished(true);
         $cart->save();
-        
+
         return $cart;
     }
     
@@ -54,14 +61,14 @@ class CoreShop_Cart extends CoreShop_Base {
         return $subtotal;
     }
     
-    public function addItem(CoreShop_Product $product, $amount = 1)
+    public function addItem(Product $product, $amount = 1)
     {
         $items = $this->getItems();
         
         if(!is_array($items))
             $items = array();
         
-        $item = new Object_CoreShopCartItem();
+        $item = new CoreShopCartItem();
         $item->setKey(uniqid());
         $item->setParent($this);
         $item->setAmount($amount);
@@ -77,12 +84,12 @@ class CoreShop_Cart extends CoreShop_Base {
         return $item;
     }
     
-    public function removeItem(CoreShop_CartItem $item)
+    public function removeItem(CoreShopCartItem $item)
     {
         $item->delete();
     }
     
-    public function modifyItem(CoreShop_CartItem $item, $amount)
+    public function modifyItem(CoreShopCartItem $item, $amount)
     {
         $item->setAmount($amount);
         $item->save();
@@ -100,8 +107,8 @@ class CoreShop_Cart extends CoreShop_Base {
         return array(
             "user" => $this->user ? $this->user->toArray() : null,
             "items" => $items,
-            "subtotal" => CoreShop_Tool::formatPrice($this->getSubtotal()),
-            "total" => CoreShop_Tool::formatPrice($this->getTotal())
+            "subtotal" => Tool::formatPrice($this->getSubtotal()),
+            "total" => Tool::formatPrice($this->getTotal())
         );
     }
 }

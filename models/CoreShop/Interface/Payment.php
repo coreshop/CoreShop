@@ -1,8 +1,10 @@
 <?php
-    
-interface CoreShop_Interface_Payment extends CoreShop_Interface_Plugin
+
+namespace CoreShop\Interface;
+
+interface Payment extends Plugin
 {
-    public function getPaymentFee(Object_CoreShopCart $cart);
+    public function getPaymentFee(Object\CoreShopCart $cart);
     
-    public function processPayment(Object_CoreShopOrder $order);
+    public function processPayment(Object\CoreShopOrder $order);
 }

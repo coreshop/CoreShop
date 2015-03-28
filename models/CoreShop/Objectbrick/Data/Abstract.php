@@ -1,6 +1,10 @@
 <?
-    
-class CoreShop_Objectbrick_Data_Abstract extends Object_Objectbrick_Data_Abstract
+
+namespace CoreShop\Objectbrick\Data;
+
+use Object\Objectbrick\Data\Abstract;
+
+class Abstract extends Abstract
 {
     /**
     *  Zend_View

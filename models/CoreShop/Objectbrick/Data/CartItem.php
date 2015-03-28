@@ -1,6 +1,8 @@
 <?
     
-class CoreShop_Objectbrick_Data_CartItem extends CoreShop_Objectbrick_Data_Abstract
+namespace CoreShop\Objectbrick\Data;
+
+class CartItem extends Abstract
 {
 
 }

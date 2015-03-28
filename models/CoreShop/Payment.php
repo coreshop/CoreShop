@@ -1,9 +1,13 @@
 <?php
-    
-class CoreShop_Payment extends CoreShop_Base {
+
+namespace CoreShop;
+
+use CoreShop\Base;
+
+class Payment extends Base {
     
     public static function findByTransactionIdentifier($transactionIdentification) {
-        $list = Object_CoreShopPayment::getByTransactionIdentifier($transactionIdentification);
+        $list = Object\CoreShopPayment::getByTransactionIdentifier($transactionIdentification);
 
         $users = $list->getObjects();
 
@@ -18,7 +22,7 @@ class CoreShop_Payment extends CoreShop_Base {
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof Object_CoreShopOrder) {
+            if ($parent instanceof Object\CoreShopOrder) {
                 return $parent;
             }
 

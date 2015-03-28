@@ -1,7 +1,14 @@
 <?php
 
+namespace CoreShop;
 
-class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plugin_Interface {
+use Pimcore\API\Plugin\AbstractPlugin;
+use Pimcore\API\Plugin\PluginInterface;
+use Pimcore\Model\Object;
+
+use CoreShop\Plugin\Install;
+
+class Plugin extends AbstractPlugin implements PluginInterface {
 
     /**
      * @var Zend_Translate
@@ -16,9 +23,9 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
     {
         try 
         {
-            $install = new CoreShop_Plugin_Install();
+            $install = new Install();
             
-            CoreShop::getEventManager()->trigger('install.pre', $this, array("installer" => $install));
+            self::getEventManager()->trigger('install.pre', $this, array("installer" => $install));
             
             // create object classes
             $categoryClass = $install->createClass('CoreShopCategory');
@@ -54,10 +61,11 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             $install->createClassmap();
             $install->createImageThumbnails();
             
-            CoreShop::getEventManager()->trigger('install.post', $this, array("installer" => $install));
+            self::getEventManager()->trigger('install.post', $this, array("installer" => $install));
         } 
         catch(Exception $e) 
-        {print_r($e);exit;
+        {
+            throw $e;
             logger::crit($e);
             return self::getTranslate()->_('coreshop_install_failed');
         }
@@ -70,9 +78,9 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
     public static function uninstall()
     {
         try {
-            $install = new CoreShop_Plugin_Install();
+            $install = new Install();
             
-            CoreShop::getEventManager()->trigger('uninstall.pre', $this, array("installer" => $install));
+            self::getEventManager()->trigger('uninstall.pre', $this, array("installer" => $install));
             
             // remove predefined document types
             //$install->removeDocTypes();
@@ -100,7 +108,7 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
             $install->removeFieldcollection('CoreShopUserAddress');
             $install->removeImageThumbnails();
             
-            CoreShop::getEventManager()->trigger('uninstall.post', $this, array("installer" => $install));
+            self::getEventManager()->trigger('uninstall.post', $this, array("installer" => $install));
             
             return self::getTranslate()->_('coreshop_uninstalled_successfully');
         } catch (Exception $e) {
@@ -113,10 +121,13 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
      */
     public static function isInstalled()
     {
-        $entry = Object_Class::getByName('CoreShopProduct');
-        $category = Object_Class::getByName('CoreShopProduct');
-        $cart = Object_Class::getByName('CoreShopCart');
-        $cart = Object_Class::getByName('CoreShopCartItem');
+        $entry = Object\ClassDefinition::getByName('CoreShopProduct');
+        $category = Object\ClassDefinition::getByName('CoreShopProduct');
+        $cart = Object\ClassDefinition::getByName('CoreShopCart');
+        $cart = Object\ClassDefinition::getByName('CoreShopCartItem');
+        $order = Object\ClassDefinition::getByName('CoreShopOrder');
+        $orderItem = Object\ClassDefinition::getByName('CoreShopOrderItem');
+        $orderPayment = Object\ClassDefinition::getByName('CoreShopPayment');
         
         if ($entry && $category && $cart) {
             return true;
@@ -152,15 +163,15 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
      */
     public static function getTranslate()
     {
-        if(self::$_translate instanceof Zend_Translate) {
+        if(self::$_translate instanceof \Zend_Translate) {
             return self::$_translate;
         }
         try {
-            $lang = Zend_Registry::get('Zend_Locale')->getLanguage();
+            $lang = \Zend_Registry::get('Zend_Locale')->getLanguage();
         } catch (Exception $e) {
             $lang = 'en';
         }
-        self::$_translate = new Zend_Translate(
+        self::$_translate = new \Zend_Translate(
             'csv',
             PIMCORE_PLUGINS_PATH . self::getTranslationFile($lang),
             $lang,
@@ -173,5 +184,102 @@ class CoreShop_Plugin  extends Pimcore_API_Plugin_Abstract implements Pimcore_AP
     public static function getClassmapFile()
     {
         return PIMCORE_CONFIGURATION_DIRECTORY . "/coreshop_classmap.xml";
+    }
+    
+    //*************
+    
+    
+    /**
+     * @var Zend_EventManager_EventManager
+     */
+    private static $eventManager;
+    
+    private static $layout = "shop";
+
+    /**
+     * @return Zend_EventManager_EventManager
+     */
+    public static function getEventManager() {
+        if(!self::$eventManager) {
+            self::$eventManager = new \Zend_EventManager_EventManager();
+        }
+        return self::$eventManager;
+    }
+    
+    public static function getLayout() {
+        return self::$layout;
+    }
+    
+    public static function setLayout($layout) {
+        self::$layout = $layout;
+    }
+    
+    public static function getDeliveryProviders(Object_CoreShopCart $cart)
+    {
+        $results = self::getEventManager()->trigger("delivery.getProvider", null, array("cart" => $cart), function($v) {
+            return ($v instanceof CoreShop_Interface_Delivery);
+        });
+        
+        if($results->stopped())
+        {
+            $provider = array();
+            
+            foreach($results as $result)
+            {
+                $provider[] = $result;
+            }
+    
+            return $provider;
+        }
+        
+        return array();
+    }
+    
+    public static function getDeliveryProvider($identifier)
+    {
+        $results = self::getEventManager()->trigger("delivery.getProvider", null, array("cart" => $cart), function($v) {
+            return ($v instanceof CoreShop_Interface_Delivery && $v->getIdentifier() == $identifier);
+        });
+        
+        if($results->stopped())
+        {
+            return $results->last();
+        }
+        
+        return false;
+    }
+    
+    public static function getPaymentProviders(Object_CoreShopCart $cart)
+    {
+        $results = self::getEventManager()->trigger("payment.getProvider", null, array("cart" => $cart), function($v) {
+            return ($v instanceof CoreShop_Interface_Payment);
+        });
+        
+        if($results->stopped())
+        {
+            $provider = array();
+            
+            foreach($results as $result)
+            {
+                $provider[] = $result;
+            }
+    
+            return $provider;
+        }
+        
+        return array();
+    }
+    
+    public static function getPaymentProvider($identifier)
+    {
+        $providers = self::getPaymentProviders(null);
+        
+        foreach($providers as $provider)
+        {
+            if($provider->getIdentifier() == $identifier)
+                return $provider;
+        }
+        
+        return false;
     }
 }

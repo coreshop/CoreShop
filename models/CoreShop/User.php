@@ -1,6 +1,10 @@
 <?php
-    
-class CoreShop_User extends CoreShop_Base
+
+namespace CoreShop;
+
+use CoreShop\Base;
+
+class User extends Base
 {
     public static function create()
     {
@@ -11,7 +15,7 @@ class CoreShop_User extends CoreShop_Base
     
     public static function getUserClass()
     {
-        return CoreShop_Tool::getModelClassMapping("CoreShop_User", "CoreShop_Interface_User");
+        return CoreShop\Tool::getModelClassMapping("CoreShop_User", "CoreShop_Interface_User");
     }
 
     public static function __callStatic($name, $arguments)

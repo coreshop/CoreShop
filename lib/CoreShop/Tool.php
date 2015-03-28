@@ -1,12 +1,23 @@
 <?php
+    
+namespace CoreShop;
 
-class CoreShop_Tool {
+use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\Object\CoreShopCart;
+
+class Tool {
     
     public static function formatPrice($price, $currency = "EUR")
     {
-        $zCurrency = new Zend_Currency(Zend_Locale::getLocaleToTerritory(Zend_Registry::get("Zend_Locale")));
-
-        return $zCurrency->toCurrency($price, array('currency' => $zCurrency));
+        try
+        {
+            $zCurrency = new \Zend_Currency(\Zend_Locale::getLocaleToTerritory(\Zend_Registry::get("Zend_Locale")));
+            return $zCurrency->toCurrency($price, array('currency' => $zCurrency));
+        }
+        catch(\Exception $ex)
+        {}
+        
+        return $price;
     }
     
     public static function formatTax($tax)
@@ -16,19 +27,19 @@ class CoreShop_Tool {
     
     public static function prepareCart()
     {
-        $cartSession = Pimcore_Tool_Session::get('CoreShop');
+        $cartSession = \Pimcore\Tool\Session::get('CoreShop');
 
         if($cartSession->cartId)
         {
-            $cart = Object_CoreShopCart::getById($cartSession->cartId);
+            $cart = CoreShopCart::getById($cartSession->cartId);
 
-            if($cart instanceof CoreShop_Cart)
+            if($cart instanceof CoreShopCart)
                 return $cart;
         }
-        
-        $cart = CoreShop_Cart::create();
+
+        $cart = CoreShopCart::prepare();
         $cartSession->cartId = $cart->getId();
-        
+
         return $cart;
     }
     
@@ -37,7 +48,7 @@ class CoreShop_Tool {
      *
      * @return array
      */
-    public static function objectToArray(Object_Concrete $object)
+    public static function objectToArray(Object\Concrete $object)
     {
         return self::_objectToArray($object);
     }
@@ -47,9 +58,9 @@ class CoreShop_Tool {
      *
      * @return string
      */
-    public static function objectToJson(Object_Concrete $object)
+    public static function objectToJson(Object\Concrete $object)
     {
-        return Zend_Json::encode(self::_objectToArray($object));
+        return \Zend_Json::encode(self::_objectToArray($object));
     }
 
     /**
@@ -91,7 +102,7 @@ class CoreShop_Tool {
             switch($fd->getFieldtype())
             {
                 case 'fieldcollections':
-                    if(($value instanceof Object_Fieldcollection) && is_array($value->getItems()))
+                    if(($value instanceof Object\Fieldcollection) && is_array($value->getItems()))
                     {
                         /** @var $value Object_Fieldcollection */
                         $def = $value->getItemDefinitions();
@@ -101,7 +112,7 @@ class CoreShop_Tool {
 
                 case 'date':
                     /** @var $value Pimcore_Date */
-                    $collection[$fieldName] = ($value instanceof Pimcore_Date) ? $value->getTimestamp() : 0;
+                    $collection[$fieldName] = ($value instanceof \Pimcore\Date) ? $value->getTimestamp() : 0;
                     break;
                 default:
                     /** @var $value string */
@@ -132,11 +143,11 @@ class CoreShop_Tool {
         if(!$interfaceToImplement)
             $interfaceToImplement = $targetClassName;
 
-        if($map = CoreShop_Config::getModelClassMappingConfig()) {
+        if($map = CoreShop\Config::getModelClassMappingConfig()) {
             $tmpClassName = $map->{$sourceClassName};
             
             if($tmpClassName)  {
-                if(Pimcore_Tool::classExists($tmpClassName)) {
+                if(\Pimcore\Tool::classExists($tmpClassName)) {
                     if(is_subclass_of($tmpClassName, $interfaceToImplement)) {
                         $targetClassName = $tmpClassName;
                     } else {
@@ -163,11 +174,11 @@ class CoreShop_Tool {
 
             $myPath = $currentPath."/".$part;
 
-            $folder = Object_Abstract::getByPath($myPath);
+            $folder = AbstractObject::getByPath($myPath);
 
-            if (!$folder instanceof Object_Abstract) {
+            if (!$folder instanceof AbstractObject) {
                 $folder = new Object_Folder();
-                $folder->setParentId(Object_Abstract::getByPath($currentPath)->getId());
+                $folder->setParentId(AbstractObject::getByPath($currentPath)->getId());
                 $folder->setKey($part);
                 $folder->save();
             }

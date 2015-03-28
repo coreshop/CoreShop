@@ -1,6 +1,11 @@
 <?php
+    
+namespace CoreShop\Controller;
 
-class CoreShop_Controller_Action extends Website_Controller_Action {
+use CoreShop\Plugin;
+use CoreShop\Tool;
+
+class Action extends \Website\Controller\Action {
     
     /*
         Zend_Session_Namespace
@@ -11,7 +16,7 @@ class CoreShop_Controller_Action extends Website_Controller_Action {
     {
         parent::init();
         
-        CoreShop::getEventManager()->trigger('controller.init', $this);
+        Plugin::getEventManager()->trigger('controller.init', $this);
         
         $this->view->setScriptPath(
             array_merge(
@@ -24,9 +29,10 @@ class CoreShop_Controller_Action extends Website_Controller_Action {
             )
         );
         
-        $this->session = $this->view->session = Pimcore_Tool_Session::get('CoreShop');
+        $this->session = $this->view->session = \Pimcore\Tool\Session::get('CoreShop');
         
-        $this->setLayout(CoreShop::getLayout());
+        $this->enableLayout();
+        $this->setLayout(Plugin::getLayout());
         
         $this->view->isShop = true;
     }
@@ -35,19 +41,19 @@ class CoreShop_Controller_Action extends Website_Controller_Action {
     {
         parent::preDispatch();
         
-        $result = CoreShop::getEventManager()->trigger('product.' . $this->getRequest()->getActionName(), $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
+        $result = Plugin::getEventManager()->trigger('product.' . $this->getRequest()->getActionName(), $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
             return is_array($v) && array_key_exists("action", $v) && array_key_exists("controller", $v) && array_key_exists("module", $v);
         });
 
         if ($result->stopped()) {
             $forward = $result->last();
-            
+
             $this->_forward($forward['action'], $forward['controller'], $forward['module'], $forward['params']);
         }
     }
     
     protected function prepareCart()
     {
-        $this->cart = CoreShop_Tool::prepareCart();
+        $this->cart = Tool::prepareCart();
     }
 }

@@ -1,6 +1,13 @@
 <?php
 
-class CoreShop_Plugin_Install
+namespace CoreShop\Plugin;
+
+use CoreShop\Plugin;
+
+use Pimcore\Model\Object;
+use Pimcore\Model\Object\Folder;
+
+class Install
 {
     /**
      * @var User
@@ -9,12 +16,12 @@ class CoreShop_Plugin_Install
 
     public function createClass($className)
     {
-        $class = Object_Class::getByName($className);
+        $class = Object\ClassDefinition::getByName($className);
         
         if (!$class)
         {
-            $result = CoreShop::getEventManager()->trigger("install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function($v) {
-                return ($v instanceof Object_Class);
+            $result = Plugin::getEventManager()->trigger("install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function($v) {
+                return ($v instanceof Object\ClassDefinition);
             });
 
             if ($result->stopped()) {
@@ -23,13 +30,13 @@ class CoreShop_Plugin_Install
             
             $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
             
-            $class = Object_Class::create();
+            $class = Object\ClassDefinition::create();
             $class->setName($className);
             $class->setUserOwner($this->_getUser()->getId());
             
             $json = file_get_contents($jsonFile);
             
-            $result = CoreShop::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function($v) {
+            $result = Plugin::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
     
@@ -42,7 +49,7 @@ class CoreShop_Plugin_Install
                 }
             }
             
-            Object_Class_Service::importClassDefinitionFromJson($class, $json, true);
+            Object\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
             
             return $class;
         }
@@ -52,7 +59,7 @@ class CoreShop_Plugin_Install
     
     public function removeClass($name)
     {
-        $class = Object_Class::getByName($name);
+        $class = Object\ClassDefinition::getByName($name);
         if ($class) {
             $class->delete();
         }
@@ -61,18 +68,18 @@ class CoreShop_Plugin_Install
     public function createObjectBrick($name, $jsonPath = null)
     {
         try {
-            $objectBrick = Object_Objectbrick_Definition::getByKey($name);
+            $objectBrick = Object\Objectbrick\Definition::getByKey($name);
         } 
         catch (Exception $e) {
             if($jsonPath == null)
                 $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
             
-            $objectBrick = new Object_Objectbrick_Definition();
+            $objectBrick = new Object\Objectbrick\Definition();
             $objectBrick->setKey($name);
             
             $json = file_get_contents($jsonPath);
             
-            $result = CoreShop::getEventManager()->trigger('install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function($v) {
+            $result = Plugin::getEventManager()->trigger('install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
     
@@ -85,7 +92,7 @@ class CoreShop_Plugin_Install
                 }
             }
             
-            Object_Class_Service::importObjectBrickFromJson($objectBrick, $json, true);
+            Object\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
         }
         
         return $fieldCollection;
@@ -95,7 +102,7 @@ class CoreShop_Plugin_Install
     {
         try
         {
-            $brick = Object_Objectbrick_Definition::getByKey($name);
+            $brick = Object\Objectbrick\Definition::getByKey($name);
 
             if ($brick) {
                 $brick->delete();
@@ -112,18 +119,18 @@ class CoreShop_Plugin_Install
     public function createFieldCollection($name, $jsonPath = null)
     {
         try {
-            $fieldCollection = Object_Fieldcollection_Definition::getByKey($name);
+            $fieldCollection = Object\Fieldcollection\Definition::getByKey($name);
         } 
-        catch (Exception $e) {
+        catch (\Exception $e) {
             if($jsonPath == null)
                 $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
-            
-            $fieldCollection = new Object_Fieldcollection_Definition();
+                
+            $fieldCollection = new Object\Fieldcollection\Definition();
             $fieldCollection->setKey($name);
             
             $json = file_get_contents($jsonPath);
-            
-            $result = CoreShop::getEventManager()->trigger('install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function($v) {
+
+            $result = Plugin::getEventManager()->trigger('install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
     
@@ -136,7 +143,7 @@ class CoreShop_Plugin_Install
                 }
             }
             
-            Object_Class_Service::importFieldCollectionFromJson($fieldCollection, $json, true);
+            Object\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
         }
         
         return $fieldCollection;
@@ -146,7 +153,7 @@ class CoreShop_Plugin_Install
     {
         try
         {
-            $fc = Object_Fieldcollection_Definition::getByKey($name);
+            $fc = Object\Fieldcollection\Definition::getByKey($name);
 
             if ($fc) {
                 $fc->delete();
@@ -162,14 +169,14 @@ class CoreShop_Plugin_Install
 
     public function createFolders()
     {
-        $root = Object_Folder::getByPath("/coreshop");
-        $products = Object_Folder::getByPath("/coreshop/products");
-        $cart = Object_Folder::getByPath("/coreshop/categories");
-        $categories = Object_Folder::getByPath("/coreshop/carts");
+        $root = Folder::getByPath("/coreshop");
+        $products = Folder::getByPath("/coreshop/products");
+        $cart = Folder::getByPath("/coreshop/categories");
+        $categories = Folder::getByPath("/coreshop/carts");
         
-        if(!$root instanceof Object_Folder)
+        if(!$root instanceof Folder)
         {
-            $root = Object_Folder::create(array(
+            $root = Folder::create(array(
                 'o_parentId' => 1,
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUser()->getId(),
@@ -179,9 +186,9 @@ class CoreShop_Plugin_Install
             ));
         }
         
-        if(!$products instanceof Object_Folder)
+        if(!$products instanceof Folder)
         {
-            $products = Object_Folder::create(array(
+            $products = Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUser()->getId(),
@@ -191,9 +198,9 @@ class CoreShop_Plugin_Install
             ));
         }
         
-        if(!$categories instanceof Object_Folder)
+        if(!$categories instanceof Folder)
         {
-            Object_Folder::create(array(
+            Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUser()->getId(),
@@ -203,9 +210,9 @@ class CoreShop_Plugin_Install
             ));
         }
         
-        if(!$cart instanceof Object_Folder)
+        if(!$cart instanceof Folder)
         {
-            Object_Folder::create(array(
+            Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUser()->getId(),
@@ -220,7 +227,7 @@ class CoreShop_Plugin_Install
     
     public function removeFolders()
     {
-        $blogFolder = Object_Folder::getByPath('/coreshop');
+        $blogFolder = Folder::getByPath('/coreshop');
         if ($blogFolder) {
             $blogFolder->delete();
         }
@@ -228,7 +235,7 @@ class CoreShop_Plugin_Install
     
     public function createCustomView($rootFolder, array $classIds)
     {
-        $customViews = Pimcore_Tool::getCustomViewConfig();
+        $customViews = \Pimcore\Tool::getCustomViewConfig();
         
         if (!$customViews) {
             $customViews = array();
@@ -246,15 +253,15 @@ class CoreShop_Plugin_Install
             'showroot' => false,
             'classes' => implode(',', $classIds),
         );
-        $writer = new Zend_Config_Writer_Xml(array(
-            'config' => new Zend_Config(array('views'=> array('view' => $customViews))),
+        $writer = new \Zend_Config_Writer_Xml(array(
+            'config' => new \Zend_Config(array('views'=> array('view' => $customViews))),
             'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
         ));
         $writer->write();
     }
     public function removeCustomView()
     {
-        $customViews = Pimcore_Tool::getCustomViewConfig();
+        $customViews = \Pimcore\Tool::getCustomViewConfig();
         if ($customViews) {
             foreach ($customViews as $key => $view) {
                 if ($view['name'] == 'CoreShop') {
@@ -262,8 +269,8 @@ class CoreShop_Plugin_Install
                     break;
                 }
             }
-            $writer = new Zend_Config_Writer_Xml(array(
-                'config' => new Zend_Config(array('views'=> array('view' => $customViews))),
+            $writer = new \Zend_Config_Writer_Xml(array(
+                'config' => new \Zend_Config(array('views'=> array('view' => $customViews))),
                 'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
             ));
             $writer->write();
@@ -272,10 +279,10 @@ class CoreShop_Plugin_Install
 
     public function createStaticRoutes()
     {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
+        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
         
         foreach ($conf->routes->route as $def) {
-            $route = Staticroute::create();
+            $route = \Staticroute::create();
             $route->setName($def->name);
             $route->setPattern($def->pattern);
             $route->setReverse($def->reverse);
@@ -290,10 +297,10 @@ class CoreShop_Plugin_Install
     
     public function removeStaticRoutes()
     {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
+        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
         
         foreach ($conf->routes->route as $def) {
-            $route = Staticroute::getByName($def->name);
+            $route = \Staticroute::getByName($def->name);
             if ($route) {
                 $route->delete();
             }
@@ -302,17 +309,17 @@ class CoreShop_Plugin_Install
     
     public function createClassmap()
     {
-        if(!is_file(CoreShop_Plugin::getClassmapFile()))
+        if(!is_file(Plugin::getClassmapFile()))
         {
-            copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop_classmap.xml', CoreShop_Plugin::getClassmapFile());
+            copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop_classmap.xml', Plugin::getClassmapFile());
         }
     }
     
     public function removeClassmap()
     {
-        if(is_file(CoreShop_Plugin::getClassmapFile()))
+        if(is_file(Plugin::getClassmapFile()))
         {
-            unlink(CoreShop_Plugin::getClassmapFile());
+            unlink(Plugin::getClassmapFile());
         }
     }
     
@@ -365,7 +372,7 @@ class CoreShop_Plugin_Install
     protected function _getUser()
     {
         if (!$this->_user) {
-            $this->_user = Zend_Registry::get('pimcore_admin_user');
+            $this->_user = \Zend_Registry::get('pimcore_admin_user');
         }
         return $this->_user;
     }

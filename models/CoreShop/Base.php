@@ -1,9 +1,13 @@
 <?php
+    
+namespace CoreShop;
 
-class CoreShop_Base extends Object_Concrete
+use Pimcore\Model\Object;
+
+class Base extends Object\Concrete
 {
     public function toArray()
     {
-        return CoreShop_Tool::objectToArray($this);
+        return CoreShop\Tool::objectToArray($this);
     }
 }

@@ -1,6 +1,15 @@
 <?php
+    
+use CoreShop;
+use CoreShop\Controller\Action;
 
-class CoreShop_CheckoutController extends CoreShop_Controller_Action 
+use CoreShop\Interface\Delivery;
+use CoreShop\Interface\Payment;
+use CoreShop\Tool;
+
+use Object\CoreShopOrder;
+
+class CoreShop_CheckoutController extends Action 
 {
     public function preDispatch() {
         parent::preDispatch();
@@ -19,7 +28,7 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
     }
     
     public function indexAction() {
-        if($this->session->user instanceof Object_Concrete)
+        if($this->session->user instanceof Object\Concrete)
         {
             $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
         }
@@ -32,9 +41,9 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
     public function loginAction() {
         if($this->getRequest()->isPost())
         {
-            $user = CoreShop_User::getUniqueByEmail($this->getParam("email"));
+            $user = User::getUniqueByEmail($this->getParam("email"));
 
-            if ($user instanceof Object_Concrete) {
+            if ($user instanceof Object\Concrete) {
                 try {
                     $isAuthenticated = $user->authenticate($this->getParam("password"));
                     
@@ -94,7 +103,7 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
             $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
         }
         
-        $this->view->provider = CoreShop::getDeliveryProviders($this->cart);
+        $this->view->provider = Plugin::getDeliveryProviders($this->cart);
         
         if($this->getRequest()->isPost())
         {
@@ -109,7 +118,7 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
                 }
             }
             
-            if(!$provider instanceof CoreShop_Interface_Delivery)
+            if(!$provider instanceof Delivery)
             {
                 $this->view->error = "oh shit, not found";
             }
@@ -127,7 +136,7 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
     public function paymentAction() {
         $this->checkIsAllowed();
 
-        $this->view->provider = CoreShop::getPaymentProviders($this->cart);
+        $this->view->provider = Plugin::getPaymentProviders($this->cart);
 
         if($this->getRequest()->isPost())
         {
@@ -142,7 +151,7 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
                 }
             }
             
-            if(!$provider instanceof CoreShop_Interface_Payment)
+            if(!$provider instanceof Payment)
             {
                 $this->view->error = "oh shit, not found";
             }
@@ -150,9 +159,9 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
             {
                 $this->session->order['paymentProvider'] = $provider;
 
-                $order = new Object_CoreShopOrder();
+                $order = new CoreShopOrder();
                 $order->setKey(uniqid());
-                $order->setParent(CoreShop_Tool::findOrCreateObjectFolder("/coreshop/orders/".date('Y-m-d')));
+                $order->setParent(Tool::findOrCreateObjectFolder("/coreshop/orders/".date('Y-m-d')));
                 $order->setPublished(true);
                 $order->setLang($this->view->language);
                 $order->setCustomer($this->session->user);
@@ -160,7 +169,7 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
                 $order->setBillingAddress($this->session->order['address']['billing']);
                 $order->setPaymentProvider($provider->getIdentifier());
                 
-                if($this->session->order['deliveryProvider'] instanceof CoreShop_Interface_Delivery)
+                if($this->session->order['deliveryProvider'] instanceof Delivery)
                 {
                     $order->setDeliveryProvider($this->session->order['deliveryProvider']->getIdentifier());
                     $order->setDeliveryFee($this->session->order['deliveryProvider']->getDeliveryFee($this->cart));
@@ -185,14 +194,14 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
 
     public function thankyouAction()
     {
-        if(!$this->session->user instanceof Object_Concrete) {
+        if(!$this->session->user instanceof Object\Concrete) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }
 
-        $this->view->order = Object_CoreShopOrder::getById($this->session->orderId);
+        $this->view->order = CoreShopOrder::getById($this->session->orderId);
         
-        if(!$this->view->order instanceof Object_CoreShopOrder)
+        if(!$this->view->order instanceof CoreShopOrder)
             $this->_redirect("/" . $this->language . "/shop");
         
         $this->cart->delete();
@@ -206,7 +215,7 @@ class CoreShop_CheckoutController extends CoreShop_Controller_Action
     
     protected function checkIsAllowed()
     {
-        if(!$this->session->user instanceof Object_Concrete) {
+        if(!$this->session->user instanceof Object\Concrete) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }

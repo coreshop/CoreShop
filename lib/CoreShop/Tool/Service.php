@@ -1,19 +1,24 @@
 <?php
     
-class CoreShop_Tool_Service
+namespace CoreShop\Tool;
+
+use Object\CoreShopProduct as Product;
+use Object\Abstract as ObjectAbstract;
+
+class Service
 {
     private $objectData;
     private $metaData;
 
-    public static function getDimensions(Object_CoreShopProduct $product)
+    public static function getDimensions(Product $product)
     {
-        $variants = $product->getChilds(array(Object_Abstract::OBJECT_TYPE_VARIANT));
+        $variants = $product->getChilds(array(ObjectAbstract::OBJECT_TYPE_VARIANT));
         $fieldDefinition = $product->getClass()->getFieldDefinition("dimensions");
         
         $variantsAndMaster = array_merge(array($product), $variants);
         
-        $currentInheritedValue = Object_Abstract::getGetInheritedValues();
-        Object_Abstract::setGetInheritedValues(false);
+        $currentInheritedValue = ObjectAbstract::getGetInheritedValues();
+        ObjectAbstract::setGetInheritedValues(false);
         
         $overwrittenKeyValues = array();
         $overwrittenKeys = array();
@@ -87,7 +92,7 @@ class CoreShop_Tool_Service
             }
         }
 
-        Object_Abstract::setGetInheritedValues($currentInheritedValue);
+        ObjectAbstract::setGetInheritedValues($currentInheritedValue);
         
         return $overwrittenKeyValues;
     }

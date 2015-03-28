@@ -1,6 +1,6 @@
 {
 	"description":null,
-	"parentClass":"CoreShop_Payment",
+	"parentClass":"CoreShop\\Payment",
 	"allowInherit":false,
 	"allowVariants":false,
 	"showVariants":false,

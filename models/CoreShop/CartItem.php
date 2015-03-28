@@ -1,6 +1,10 @@
 <?php
     
-class CoreShop_CartItem extends CoreShop_Base {
+namespace CoreShop;
+
+use CoreShop\Base;
+    
+class CartItem extends Base {
     
     public function getTotal()
     {
@@ -13,8 +17,8 @@ class CoreShop_CartItem extends CoreShop_Base {
             "id" => $this->getId(),
             "product" => $this->getProduct()->toArray(),
             "amount" => $this->getAmount(),
-            "price" => CoreShop_Tool::formatPrice($this->product->getPrice()),
-            "total" => CoreShop_Tool::formatPrice($this->getTotal()),
+            "price" => Tool::formatPrice($this->product->getPrice()),
+            "total" => Tool::formatPrice($this->getTotal()),
         );
     }
 }

@@ -1,6 +1,13 @@
 <?php
 
-class CoreShop_UserController extends CoreShop_Controller_Action 
+use CoreShop\Controller\Action;
+use CoreShop\User;
+use CoreShop\Tool;
+use CoreShop;
+
+use Object\Fieldcollection\Data\CoreShopUserAddress;
+
+class CoreShop_UserController extends Action 
 {
     public function preDispatch() {
         parent::preDispatch();
@@ -40,22 +47,22 @@ class CoreShop_UserController extends CoreShop_Controller_Action
             
             $folder = "/users/" . strtolower(substr($userParams['lastname'], 0, 1));
             
-            $adresses = new Object_Fieldcollection();
+            $adresses = new Object\Fieldcollection();
             
-            $address = new Object_Fieldcollection_Data_CoreShopUserAddress();
+            $address = new CoreShopUserAddress();
             $address->setValues($addressParams);
             
             $adresses->add($address);
             
-            $user = CoreShop_User::create();
-            $user->setKey(Pimcore_File::getValidFilename($userParams['email']));
+            $user = User::create();
+            $user->setKey(Pimcore\File::getValidFilename($userParams['email']));
             $user->setPublished(true);
-            $user->setParent(CoreShop_Tool::findOrCreateObjectFolder($folder));
+            $user->setParent(Tool::findOrCreateObjectFolder($folder));
             $user->setValues($userParams);
             $user->setAddresses($adresses);
             $user->save();
             
-            CoreShop::getEventManager()->trigger('user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
+            Plugin::getEventManager()->trigger('user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
             
             $this->session->user = $user;
             
@@ -87,9 +94,9 @@ class CoreShop_UserController extends CoreShop_Controller_Action
             $adresses = $this->session->user->getAddresses();
             
             if(!$adresses instanceof Object_Fieldcollection)
-                $adresses = new Object_Fieldcollection();
+                $adresses = new Object\Fieldcollection();
             
-            $address = new Object_Fieldcollection_Data_CoreShopUserAddress();
+            $address = new CoreShopUserAddress();
             $address->setValues($addressParams);
             
             $adresses->add($address);

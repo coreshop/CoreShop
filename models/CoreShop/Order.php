@@ -1,17 +1,21 @@
 <?php
+
+namespace CoreShop;
+
+use CoreShop\Base;
+
+class Order extends Base {
     
-class CoreShop_Order extends CoreShop_Base {
-    
-    public function importCart(Object_CoreShopCart $cart)
+    public function importCart(Object\CoreShopCart $cart)
     {
         $items = array();
         $i = 1;
         
         foreach($cart->getItems() as $cartItem)
         {
-            $item = new Object_CoreShopOrderItem();
+            $item = new Object\CoreShopOrderItem();
             $item->setKey($i);
-            $item->setParent(CoreShop_Tool::findOrCreateObjectFolder($this->getFullPath() . "/items/"));
+            $item->setParent(CoreShop\Tool::findOrCreateObjectFolder($this->getFullPath() . "/items/"));
             $item->setPublished(true);
             
             $item->setProduct($cartItem->getProduct());
@@ -34,12 +38,12 @@ class CoreShop_Order extends CoreShop_Base {
         return true;
     }
     
-    public function createPayment(CoreShop_Interface_Payment $provider, $amount)
+    public function createPayment(CoreShop\Interface\Payment $provider, $amount)
     {
-        $payment = new Object_CoreShopPayment();
+        $payment = new Object\CoreShopPayment();
         $payment->setKey(uniqid());
         $payment->setPublished(true);
-        $payment->setParent(CoreShop_Tool::findOrCreateObjectFolder($this->getFullPath() . "/payments/"));
+        $payment->setParent(CoreShop\Tool::findOrCreateObjectFolder($this->getFullPath() . "/payments/"));
         $payment->setAmount($amount);
         $payment->setTransactionIdentifier(uniqid());
         $payment->setProvider($provider->getIdentifier());
@@ -50,7 +54,7 @@ class CoreShop_Order extends CoreShop_Base {
         return $payment;
     }
     
-    public function addPayment(Object_CoreShopPayment $payment)
+    public function addPayment(Object\CoreShopPayment $payment)
     {
         $payments = $this->getPayments();
         

@@ -1,11 +1,24 @@
 <?php
     
-class CoreShop_Product extends CoreShop_Base {
+namespace CoreShop;
+
+use CoreShop\Base;
+use Pimcore\Model\Object;
+use CoreShop\Tool;
+
+class Product extends Base {
     
     public static function getAll()
     {
-        $list = new Object_CoreShopProduct_List();
+        $list = new Object\CoreShopProduct\Listing();
         
+        return $list->getObjects();
+    }
+    
+    public static function getLatest($limit = 8)
+    {
+        $list = new Object\CoreShopProduct\Listing();
+
         return $list->getObjects();
     }
     
@@ -33,7 +46,7 @@ class CoreShop_Product extends CoreShop_Base {
         return array(
             "image" => $this->getImage(),
             "price" => $this->getPrice(),
-            "priceFormatted" => CoreShop_Tool::formatPrice($this->getPrice()),
+            "priceFormatted" => Tool::formatPrice($this->getPrice()),
             "name" => $this->getName()
         );
     }
@@ -41,11 +54,11 @@ class CoreShop_Product extends CoreShop_Base {
     public function getVariantDifferences()
     {
         $master = $this;
-        $parent = Object_Service::hasInheritableParentObject($this);
+        $parent = Object\Service::hasInheritableParentObject($this);
         
         if($parent)
             $master = $parent;
         
-        return CoreShop_Tool_Service::getDimensions($master);
+        return CoreShop\Tool\Service::getDimensions($master);
     }
 }

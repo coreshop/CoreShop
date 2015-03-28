@@ -1,6 +1,10 @@
 <?php
-    
-class CoreShop_OrderItem extends CoreShop_Base {
+
+namespace CoreShop;
+
+use CoreShop\Base;
+
+class OrderItem extends Base {
     
     public function getTotal()
     {

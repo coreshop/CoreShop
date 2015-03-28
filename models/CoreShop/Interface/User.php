@@ -1,6 +1,8 @@
 <?php
-    
-interface CoreShop_Interface_User
+
+namespace CoreShop\Interface;
+
+interface User
 {
     public static function getUniqueByEmail($email);
     

@@ -1,6 +1,6 @@
 {
 	"description":null,
-	"parentClass":"CoreShop_Order",
+	"parentClass":"CoreShop\\Order",
 	"allowInherit":false,
 	"allowVariants":false,
 	"showVariants":false,

@@ -1,7 +1,8 @@
 <?php
+    
+namespace CoreShop\Controller\Action;
 
-
-class CoreShop_Controller_Action_Payment extends CoreShop_Controller_Action {
+class Payment extends CoreShop\Controller\Action {
     
     protected function paymentReturnAction () {
         $this->prepareCart();

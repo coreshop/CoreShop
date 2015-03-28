@@ -1,6 +1,8 @@
 <?php
     
-interface CoreShop_Interface_Plugin
+namespace CoreShop\Interface;
+    
+interface Plugin
 {
     public function getName();
     public function getImage();

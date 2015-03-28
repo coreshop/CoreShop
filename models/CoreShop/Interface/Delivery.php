@@ -1,6 +1,8 @@
 <?php
     
-interface CoreShop_Interface_Delivery extends CoreShop_Interface_Plugin
+namespace CoreShop\Interface;
+
+interface Delivery extends Plugin
 {
     public function getDeliveryFee(Object_CoreShopCart $cart);
 }
