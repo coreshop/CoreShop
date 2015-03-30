@@ -34,9 +34,14 @@ class Product extends Base {
     
     public function save()
     {
+        $currentGetInheritedValues = \Pimcore\Model\Object\AbstractObject::getGetInheritedValues();
+        \Pimcore\Model\Object\AbstractObject::setGetInheritedValues(true);
+        
         //Calculate Retail Price with Tax
         $retailPriceWithTax = $this->getRetailPrice() * (1 + $this->getTax());
         $this->setPrice($retailPriceWithTax);
+        
+        \Pimcore\Model\Object\AbstractObject::setGetInheritedValues($currentGetInheritedValues);
         
         parent::save();
     }
