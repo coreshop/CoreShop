@@ -127,6 +127,8 @@ class CoreShop_CartController extends Action {
     }
     
     public function listAction() {
+        $this->enableLayout();
+        
         $this->view->headTitle($this->view->translate("Cart"));
     }
 }

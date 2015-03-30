@@ -214,7 +214,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         self::$layout = $layout;
     }
     
-    public static function getDeliveryProviders(CoreShopCart $cart)
+    public static function getDeliveryProviders(Object\CoreShopCart $cart)
     {
         $results = self::getEventManager()->trigger("delivery.getProvider", null, array("cart" => $cart), function($v) {
             return ($v instanceof \CoreShop\Plugin\Delivery);
@@ -249,7 +249,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return false;
     }
     
-    public static function getPaymentProviders(CoreShopCart $cart)
+    public static function getPaymentProviders(Object\CoreShopCart $cart)
     {
         $results = self::getEventManager()->trigger("payment.getProvider", null, array("cart" => $cart), function($v) {
             return ($v instanceof \CoreShop\Plugin\Payment);

@@ -143,7 +143,7 @@ class Tool {
         if(!$interfaceToImplement)
             $interfaceToImplement = $targetClassName;
 
-        if($map = CoreShop\Config::getModelClassMappingConfig()) {
+        if($map = \CoreShop\Config::getModelClassMappingConfig()) {
             $tmpClassName = $map->{$sourceClassName};
             
             if($tmpClassName)  {
@@ -177,7 +177,7 @@ class Tool {
             $folder = AbstractObject::getByPath($myPath);
 
             if (!$folder instanceof AbstractObject) {
-                $folder = new Object_Folder();
+                $folder = new \Pimcore\Model\Object\Folder();
                 $folder->setParentId(AbstractObject::getByPath($currentPath)->getId());
                 $folder->setKey($part);
                 $folder->save();

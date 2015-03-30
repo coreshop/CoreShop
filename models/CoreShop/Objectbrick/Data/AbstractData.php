@@ -2,9 +2,7 @@
 
 namespace CoreShop\Objectbrick\Data;
 
-use Object\Objectbrick\Data\Abstract;
-
-class Abstract extends Abstract
+class AbstractData extends \Pimcore\Model\Object\Objectbrick\Data\AbstractData
 {
     /**
     *  Zend_View
@@ -15,7 +13,7 @@ class Abstract extends Abstract
     {
         if(!$this->view)
         {
-            $this->view = new Zend_View();
+            $this->view = new \Zend_View();
             $this->view->brick = $this;
             
             $this->view->setScriptPath(
