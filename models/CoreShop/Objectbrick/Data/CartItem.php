@@ -2,7 +2,7 @@
     
 namespace CoreShop\Objectbrick\Data;
 
-class CartItem extends Abstract
+class CartItem extends AbstractData
 {
 
 }

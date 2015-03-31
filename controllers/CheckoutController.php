@@ -3,11 +3,13 @@
 use CoreShop;
 use CoreShop\Controller\Action;
 
-use CoreShop\Interface\Delivery;
-use CoreShop\Interface\Payment;
+use CoreShop\Plugin;
+use CoreShop\Plugin\Delivery;
+use CoreShop\Plugin\Payment;
 use CoreShop\Tool;
 
-use Object\CoreShopOrder;
+use Pimcore\Model\Object\CoreShopOrder;
+use CoreShop\User;
 
 class CoreShop_CheckoutController extends Action 
 {
@@ -28,7 +30,7 @@ class CoreShop_CheckoutController extends Action
     }
     
     public function indexAction() {
-        if($this->session->user instanceof Object\Concrete)
+        if($this->session->user instanceof \CoreShop\Plugin\User)
         {
             $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
         }
@@ -39,11 +41,14 @@ class CoreShop_CheckoutController extends Action
     }
     
     public function loginAction() {
+        
+        
+        
         if($this->getRequest()->isPost())
         {
             $user = User::getUniqueByEmail($this->getParam("email"));
 
-            if ($user instanceof Object\Concrete) {
+            if ($user instanceof \CoreShop\Plugin\User) {
                 try {
                     $isAuthenticated = $user->authenticate($this->getParam("password"));
                     
@@ -194,7 +199,7 @@ class CoreShop_CheckoutController extends Action
 
     public function thankyouAction()
     {
-        if(!$this->session->user instanceof Object\Concrete) {
+        if(!$this->session->user instanceof \CoreShop\Plugin\User) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }
@@ -215,7 +220,7 @@ class CoreShop_CheckoutController extends Action
     
     protected function checkIsAllowed()
     {
-        if(!$this->session->user instanceof Object\Concrete) {
+        if(!$this->session->user instanceof \CoreShop\Plugin\User   ) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }

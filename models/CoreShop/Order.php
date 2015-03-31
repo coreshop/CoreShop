@@ -4,6 +4,8 @@ namespace CoreShop;
 
 use CoreShop\Base;
 
+use Pimcore\Model\Object;
+
 class Order extends Base {
     
     public function importCart(Object\CoreShopCart $cart)
@@ -15,7 +17,7 @@ class Order extends Base {
         {
             $item = new Object\CoreShopOrderItem();
             $item->setKey($i);
-            $item->setParent(CoreShop\Tool::findOrCreateObjectFolder($this->getFullPath() . "/items/"));
+            $item->setParent(\CoreShop\Tool::findOrCreateObjectFolder($this->getFullPath() . "/items/"));
             $item->setPublished(true);
             
             $item->setProduct($cartItem->getProduct());
@@ -38,12 +40,12 @@ class Order extends Base {
         return true;
     }
     
-    public function createPayment(CoreShop\Interface\Payment $provider, $amount)
+    public function createPayment(\CoreShop\Plugin\Payment $provider, $amount)
     {
         $payment = new Object\CoreShopPayment();
         $payment->setKey(uniqid());
         $payment->setPublished(true);
-        $payment->setParent(CoreShop\Tool::findOrCreateObjectFolder($this->getFullPath() . "/payments/"));
+        $payment->setParent(\CoreShop\Tool::findOrCreateObjectFolder($this->getFullPath() . "/payments/"));
         $payment->setAmount($amount);
         $payment->setTransactionIdentifier(uniqid());
         $payment->setProvider($provider->getIdentifier());
@@ -54,7 +56,7 @@ class Order extends Base {
         return $payment;
     }
     
-    public function addPayment(Object\CoreShopPayment $payment)
+    public function addPayment(\Object\CoreShopPayment $payment)
     {
         $payments = $this->getPayments();
         

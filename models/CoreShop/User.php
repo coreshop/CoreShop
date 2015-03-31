@@ -15,13 +15,13 @@ class User extends Base
     
     public static function getUserClass()
     {
-        return CoreShop\Tool::getModelClassMapping("CoreShop_User", "CoreShop_Interface_User");
+        return \CoreShop\Tool::getModelClassMapping("CoreShop_User", "CoreShop\Plugin\User");
     }
 
     public static function __callStatic($name, $arguments)
     {
         $class = self::getUserClass();
-        
-        return call_user_func(array($class, $name), $arguments);
+
+        return call_user_func_array(array($class, $name), $arguments);
     }
 }

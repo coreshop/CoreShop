@@ -2,7 +2,7 @@
     
 namespace CoreShop\Tool;
 
-use Object\CoreShopProduct as Product;
+use Object\CoreShopProduct;
 use Object\AbstractObject;
 
 class Service
@@ -10,7 +10,7 @@ class Service
     private $objectData;
     private $metaData;
 
-    public static function getDimensions(Product $product)
+    public static function getDimensions(CoreShopProduct $product)
     {
         $variants = $product->getChilds(array(AbstractObject::OBJECT_TYPE_VARIANT));
         $fieldDefinition = $product->getClass()->getFieldDefinition("dimensions");
@@ -22,14 +22,14 @@ class Service
         
         $overwrittenKeyValues = array();
         $overwrittenKeys = array();
-        
+
         if(count($variants) > 0)
         {
             foreach($variants as $variant)
             {
                 $fieldData = $variant->getDimensions();
                 $value = $fieldDefinition->getDataForEditmode($fieldData, $variant);
-                
+
                 //Search for not inherited fields
                 foreach($value as $singleBrickData) 
                 {
@@ -38,7 +38,7 @@ class Service
                     
                     if(!array_key_exists($singleBrickData['type'], $overwrittenKeys))
                         $overwrittenKeys[$singleBrickData['type']] = array();
-                    
+
                     foreach($singleBrickData['metaData'] as $key=>$meta)
                     {
                         if(!$meta['inherited'])
