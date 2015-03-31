@@ -41,20 +41,17 @@ class CoreShop_CheckoutController extends Action
     }
     
     public function loginAction() {
-        
-        
-        
         if($this->getRequest()->isPost())
         {
             $user = User::getUniqueByEmail($this->getParam("email"));
 
-            if ($user instanceof \CoreShop\Plugin\User) {
+            if ($user instanceof Plugin\User) {
                 try {
                     $isAuthenticated = $user->authenticate($this->getParam("password"));
-                    
+
                     if($isAuthenticated) {
                         $this->session->user = $user;
-                        
+
                         $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
                     }
                 }
