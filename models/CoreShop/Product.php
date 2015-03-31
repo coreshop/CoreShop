@@ -4,6 +4,7 @@ namespace CoreShop;
 
 use CoreShop\Base;
 use Pimcore\Model\Object;
+use Pimcore\Model\Asset\Image;
 use CoreShop\Tool;
 
 class Product extends Base {
@@ -43,11 +44,17 @@ class Product extends Base {
     
     public function toArray()
     {
+        $urlHelper = new \Pimcore\View\Helper\Url();
+
         return array(
-            "image" => $this->getImage(),
+            "image" => $this->getImage()->getFullPath(),
             "price" => $this->getPrice(),
             "priceFormatted" => Tool::formatPrice($this->getPrice()),
-            "name" => $this->getName()
+            "name" => $this->getName(),
+            "thumbnail" => array(
+                "cart" => $this->getImage() instanceof Image ? $this->getImage()->getThumbnail("coreshop_productCartPreview")->getPath(true) : ""
+            ),
+            "href" => $urlHelper->url(array("lang" => \Zend_Registry::get("Zend_Locale"), "name" => $this->getName(), "product" => $this->getId()), 'coreshop_detail')
         );
     }
     

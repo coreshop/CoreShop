@@ -11,11 +11,13 @@ class Tool {
     {
         try
         {
-            $zCurrency = new \Zend_Currency(\Zend_Locale::getLocaleToTerritory(\Zend_Registry::get("Zend_Locale")));
+            $zCurrency = new \Zend_Currency("de_DE");
             return $zCurrency->toCurrency($price, array('currency' => $zCurrency));
         }
         catch(\Exception $ex)
-        {}
+        {
+            echo $ex;
+        }
         
         return $price;
     }

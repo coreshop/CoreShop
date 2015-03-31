@@ -67,6 +67,17 @@ class Cart extends Base {
         
         if(!is_array($items))
             $items = array();
+
+        foreach($items as $item)
+        {
+            if($item->getProduct()->getId() == $product->getId())
+            {
+                $item->setAmount($item->getAmount()+1);
+                $item->save();
+
+                return $item;
+            }
+        }
         
         $item = new CoreShopCartItem();
         $item->setKey(uniqid());
