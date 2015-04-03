@@ -41,9 +41,6 @@ class CoreShop_CheckoutController extends Action
     }
     
     public function loginAction() {
-        
-        
-        
         if($this->getRequest()->isPost())
         {
             $user = User::getUniqueByEmail($this->getParam("email"));

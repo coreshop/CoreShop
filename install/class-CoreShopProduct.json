@@ -732,7 +732,40 @@
 								"invisible":false,
 								"visibleGridView":false,
 								"visibleSearch":false
-							}
+							},
+                            {
+                                "fieldtype":"multihref",
+                                "width":"",
+                                "height":"",
+                                "maxItems":"",
+                                "assetUploadPath":"",
+                                "queryColumnType":"text",
+                                "phpdocType":"array",
+                                "relationType":true,
+                                "objectsAllowed":false,
+                                "assetsAllowed":true,
+                                "assetTypes":"",
+                                "documentsAllowed":false,
+                                "documentTypes":"",
+                                "lazyLoading":false,
+                                "classes":[
+
+                                ],
+                                "name":"downloads",
+                                "title":"Downloads",
+                                "tooltip":"",
+                                "mandatory":false,
+                                "noteditable":false,
+                                "index":false,
+                                "locked":null,
+                                "style":"",
+                                "permissions":null,
+                                "datatype":"data",
+                                "columnType":null,
+                                "invisible":false,
+                                "visibleGridView":false,
+                                "visibleSearch":false
+                            }
 						],
 						"locked":false
 					},
