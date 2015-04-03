@@ -45,13 +45,13 @@ class CoreShop_CheckoutController extends Action
         {
             $user = User::getUniqueByEmail($this->getParam("email"));
 
-            if ($user instanceof \CoreShop\Plugin\User) {
+            if ($user instanceof Plugin\User) {
                 try {
                     $isAuthenticated = $user->authenticate($this->getParam("password"));
-                    
+
                     if($isAuthenticated) {
                         $this->session->user = $user;
-                        
+
                         $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
                     }
                 }
@@ -77,12 +77,12 @@ class CoreShop_CheckoutController extends Action
         
         if($this->getRequest()->isPost())
         {
-            $deliveryAddress = $this->getParam("deliveryAddress");
-            $billingAddress = $this->getParam("billingAddress");
+            $deliveryAddress = $this->getParam("delivery-address");
+            $billingAddress = $this->getParam("billing-address");
             
             if($this->getParam("useDeliveryAsBilling", "off") == "on")
             {
-                $billingAddress = $this->getParam("deliveryAddress");
+                $billingAddress = $this->getParam("delivery-address");
             }
 
             $this->session->order['address'] = array(

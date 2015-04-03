@@ -3,6 +3,7 @@
 use CoreShop\Controller\Action;
 use CoreShop\User;
 use CoreShop\Tool;
+use CoreShop\Plugin;
 use CoreShop;
 
 use Object\Fieldcollection\Data\CoreShopUserAddress;

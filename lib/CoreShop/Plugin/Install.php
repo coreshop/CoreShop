@@ -70,7 +70,7 @@ class Install
         try {
             $objectBrick = Object\Objectbrick\Definition::getByKey($name);
         } 
-        catch (Exception $e) {
+        catch (\Exception $e) {
             if($jsonPath == null)
                 $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
             
@@ -159,7 +159,7 @@ class Install
                 $fc->delete();
             }
         } 
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             return false;
         }
@@ -320,6 +320,22 @@ class Install
         if(is_file(Plugin::getClassmapFile()))
         {
             unlink(Plugin::getClassmapFile());
+        }
+    }
+
+    public function createConfig()
+    {
+        if(!is_file(CORESHOP_CONFIGURATION))
+        {
+            copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop-config.xml', CORESHOP_CONFIGURATION);
+        }
+    }
+
+    public function removeConfig()
+    {
+        if(is_file(CORESHOP_CONFIGURATION))
+        {
+            unlink(CORESHOP_CONFIGURATION);
         }
     }
     

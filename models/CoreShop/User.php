@@ -3,19 +3,22 @@
 namespace CoreShop;
 
 use CoreShop\Base;
+use CoreShop\Tool;
 
 class User extends Base
 {
     public static function create()
     {
         $class = self::getUserClass();
-        
+
         return new $class();
     }
-    
+
     public static function getUserClass()
     {
-        return \CoreShop\Tool::getModelClassMapping("CoreShop_User", "CoreShop\Plugin\User");
+        $class = Tool::getModelClassMapping("Pimcore\Model\Object\CoreShopUser", "CoreShop\Plugin\User");
+
+        return $class;
     }
 
     public static function __callStatic($name, $arguments)

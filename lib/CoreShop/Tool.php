@@ -11,11 +11,13 @@ class Tool {
     {
         try
         {
-            $zCurrency = new \Zend_Currency(\Zend_Locale::getLocaleToTerritory(\Zend_Registry::get("Zend_Locale")));
+            $zCurrency = new \Zend_Currency("de_DE");
             return $zCurrency->toCurrency($price, array('currency' => $zCurrency));
         }
         catch(\Exception $ex)
-        {}
+        {
+            echo $ex;
+        }
         
         return $price;
     }
@@ -151,10 +153,10 @@ class Tool {
                     if(is_subclass_of($tmpClassName, $interfaceToImplement)) {
                         $targetClassName = $tmpClassName;
                     } else {
-                        Logger::error("Classmapping for " . $sourceClassName . " failed. '" . $tmpClassName . " is not a subclass of '" . $interfaceToImplement . "'. " . $tmpClassName . " has to extend " . $interfaceToImplement);
+                        \Logger::error("Classmapping for " . $sourceClassName . " failed. '" . $tmpClassName . " is not a subclass of '" . $interfaceToImplement . "'. " . $tmpClassName . " has to extend " . $interfaceToImplement);
                     }
                 } else {
-                    Logger::error("Classmapping for " . $sourceClassName . " failed. Cannot find class '" . $tmpClassName . "'");
+                    \Logger::error("Classmapping for " . $sourceClassName . " failed. Cannot find class '" . $tmpClassName . "'");
                 }
             }
         }

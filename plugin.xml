@@ -1,33 +1,42 @@
 <?xml version="1.0"?>
 <zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
-		<plugin>
+    <plugin>
 
-            <!-- the plugin name [A-Za-z_] -->
-            <pluginName>CoreShop</pluginName>
+        <!-- the plugin name [A-Za-z_] -->
+        <pluginName>CoreShop</pluginName>
 
-            <!-- a short description -->
-			<pluginDescription><![CDATA[]]></pluginDescription>
+        <!-- a short description -->
+        <pluginDescription><![CDATA[]]></pluginDescription>
 
-            <!-- meta data -->
-            <pluginVersion>0.0.1</pluginVersion>
-            <pluginRevision>1</pluginRevision>
-            <pluginBuildTimestamp>0</pluginBuildTimestamp>
+        <!-- meta data -->
+        <pluginVersion>0.0.1</pluginVersion>
+        <pluginRevision>1</pluginRevision>
+        <pluginBuildTimestamp>0</pluginBuildTimestamp>
 
-            <!-- put in the URL for the plugin configuration eg. /plugin/CoreShop/admin/index -->
-            <pluginIframeSrc></pluginIframeSrc>
+        <!-- put in the URL for the plugin configuration eg. /plugin/CoreShop/admin/index -->
+        <pluginIframeSrc></pluginIframeSrc>
 
-            <!-- className of the plugin which extends Pimcore_API_Plugin_Abstract-->
-			<pluginClassName>\CoreShop\Plugin</pluginClassName>
+        <!-- className of the plugin which extends Pimcore_API_Plugin_Abstract-->
+        <pluginClassName>\CoreShop\Plugin</pluginClassName>
 
-            <!-- include paths relative to plugin-directory -->
-			<pluginIncludePaths>
-				<path>/CoreShop/lib</path>
-				<path>/CoreShop/models</path>
-			</pluginIncludePaths>
+        <!-- include paths relative to plugin-directory -->
+        <pluginIncludePaths>
+            <path>/CoreShop/lib</path>
+            <path>/CoreShop/models</path>
+        </pluginIncludePaths>
 
-			<!-- namespaces to register with autoloader-->
-			<pluginNamespaces>
-				<namespace>CoreShop</namespace>
-			</pluginNamespaces>
-		</plugin>
+        <!-- namespaces to register with autoloader-->
+        <pluginNamespaces>
+            <namespace>CoreShop</namespace>
+        </pluginNamespaces>
+
+        <pluginJsPaths>
+            <path>/plugins/CoreShop/static/js/startup.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/settings.js</path>
+        </pluginJsPaths>
+
+        <pluginCssPaths>
+            <path>/plugins/CoreShop/static/css/coreshop.css</path>
+        </pluginCssPaths>
+    </plugin>
 </zend-config>

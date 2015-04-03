@@ -33,7 +33,9 @@ class Action extends \Website\Controller\Action {
         
         $this->enableLayout();
         $this->setLayout(Plugin::getLayout());
-        
+
+        $this->prepareCart();
+
         $this->view->isShop = true;
     }
     
@@ -54,6 +56,6 @@ class Action extends \Website\Controller\Action {
     
     protected function prepareCart()
     {
-        $this->cart = Tool::prepareCart();
+        $this->cart = $this->view->cart = \CoreShop\Tool::prepareCart();
     }
 }

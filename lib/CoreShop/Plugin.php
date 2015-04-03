@@ -16,8 +16,23 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     protected static $_translate;
     
     public function init() {
+        require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/startup.php");
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/helper.php");
     }
+
+    public static function installPlugin(\CoreShop\Plugin\InstallPlugin $installPlugin)
+    {
+        $install = new Install();
+        $installPlugin->install($install);
+    }
+
+    public static function uninstallPlugin(\CoreShop\Plugin\InstallPlugin $installPlugin)
+    {
+        $install = new Install();
+        $installPlugin->uninstall($install);
+    }
+
+
 
     public static function install()
     {
@@ -59,6 +74,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             //$install->createDocTypes();
             
             $install->createClassmap();
+            $install->createConfig();
             $install->createImageThumbnails();
             
             self::getEventManager()->trigger('install.post', $this, array("installer" => $install));
@@ -107,6 +123,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             
             $install->removeFieldcollection('CoreShopUserAddress');
             $install->removeImageThumbnails();
+            $install->removeConfig();
             
             self::getEventManager()->trigger('uninstall.post', $this, array("installer" => $install));
             
