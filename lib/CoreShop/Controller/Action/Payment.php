@@ -2,7 +2,9 @@
     
 namespace CoreShop\Controller\Action;
 
-class Payment extends \CoreShop\Controller\Action {
+use CoreShop\Controller\Action;
+
+class Payment extends Action {
     
     protected function paymentReturnAction () {
         $this->prepareCart();

@@ -18,12 +18,21 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     public function init() {
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/startup.php");
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/helper.php");
-
-        \Pimcore::getEventManager()->attach("system.startup", function ($e) {
-            $frontController = $e->getTarget();
-            $frontController->addControllerDirectory(PIMCORE_PLUGINS_PATH . "/CoresShop/controllers/admin", 'CoreShopAdmin');
-        }, 87);
     }
+
+    public static function installPlugin(\CoreShop\Plugin\InstallPlugin $installPlugin)
+    {
+        $install = new Install();
+        $installPlugin->install($install);
+    }
+
+    public static function uninstallPlugin(\CoreShop\Plugin\InstallPlugin $installPlugin)
+    {
+        $install = new Install();
+        $installPlugin->uninstall($install);
+    }
+
+
 
     public static function install()
     {

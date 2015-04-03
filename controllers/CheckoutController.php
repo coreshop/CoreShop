@@ -77,12 +77,12 @@ class CoreShop_CheckoutController extends Action
         
         if($this->getRequest()->isPost())
         {
-            $deliveryAddress = $this->getParam("deliveryAddress");
-            $billingAddress = $this->getParam("billingAddress");
+            $deliveryAddress = $this->getParam("delivery-address");
+            $billingAddress = $this->getParam("billing-address");
             
             if($this->getParam("useDeliveryAsBilling", "off") == "on")
             {
-                $billingAddress = $this->getParam("deliveryAddress");
+                $billingAddress = $this->getParam("delivery-address");
             }
 
             $this->session->order['address'] = array(
