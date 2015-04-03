@@ -37,4 +37,39 @@ class Config {
     public static function setModelClassMappingConfig (Zend_Config $config) {
         \Zend_Registry::set("coreshop_config_model_classmapping", $config);
     }
+
+    /**
+     * @static
+     * @return \Zend_Config
+     */
+    public static function getConfig () {
+
+        $config = null;
+
+        if(\Zend_Registry::isRegistered("coreshop_config")) {
+            $config = \Zend_Registry::get("coreshop_config");
+        } else  {
+            try {
+                $config = new \Zend_Config_Xml(CORESHOP_CONFIGURATION);
+                self::setConfig($config);
+            } catch (\Exception $e) {
+                \Logger::emergency("Cannot find system configuration, should be located at: " . PIMCORE_CONFIGURATION_SYSTEM);
+                if(is_file(CORESHOP_CONFIGURATION)) {
+                    $m = "Your coreshop-config.xml located at " . CORESHOP_CONFIGURATION . " is invalid, please check and correct it manually!";
+                    \Pimcore\Tool::exitWithError($m);
+                }
+            }
+        }
+
+        return $config;
+    }
+
+    /**
+     * @static
+     * @param \Zend_Config $config
+     * @return void
+     */
+    public static function setConfig (\Zend_Config $config) {
+        \Zend_Registry::set("coreshop_config", $config);
+    }
 }

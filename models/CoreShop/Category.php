@@ -5,6 +5,7 @@ namespace CoreShop;
 use CoreShop\Base;
 
 use Pimcore\Model\Object;
+use Pimcore\Model\Asset\Image;
 
 class Category extends Base {
     
@@ -44,6 +45,28 @@ class Category extends Base {
         $paginator->setItemCountPerPage($itemsPerPage);
 
         return $paginator;
+    }
+
+    public function getDefaultImage()
+    {
+        $config = Config::getConfig();
+        $config = $config->toArray();
+        $image = Image::getByPath($config['category']['default-image']);
+
+        if($image instanceof Image)
+            return $image;
+
+        return false;
+    }
+
+    public function getImage()
+    {
+        if($this->getCategoryImage() instanceof Image)
+        {
+            return $this->getCategoryImage();
+        }
+
+        return $this->getDefaultImage();
     }
 
     public function getHierarchy()

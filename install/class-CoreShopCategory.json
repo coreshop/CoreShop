@@ -168,7 +168,7 @@
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
                 "phpdocType":"\\Pimcore\\Model\\Asset\\Image",
-                "name":"image",
+                "name":"categoryImage",
                 "title":"Image",
                 "tooltip":"",
                 "mandatory":false,

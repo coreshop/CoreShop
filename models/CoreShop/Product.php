@@ -6,6 +6,7 @@ use CoreShop\Base;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 use CoreShop\Tool;
+use CoreShop\Config;
 
 class Product extends Base {
     
@@ -25,14 +26,27 @@ class Product extends Base {
     
     public function getImage()
     {
-        if(count($this->getImages() > 0))
+        if(count($this->getImages()) > 0)
         {
+
             return $this->getImages()[0];
         }
-        
+
+        return $this->getDefaultImage();
+    }
+
+    public function getDefaultImage()
+    {
+        $config = Config::getConfig();
+        $config = $config->toArray();
+        $image = Image::getByPath($config['product']['default-image']);
+
+        if($image instanceof Image)
+            return $image;
+
         return false;
     }
-    
+
     public function save()
     {
         //Calculate Retail Price with Tax

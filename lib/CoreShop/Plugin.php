@@ -16,7 +16,13 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     protected static $_translate;
     
     public function init() {
+        require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/startup.php");
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/helper.php");
+
+        \Pimcore::getEventManager()->attach("system.startup", function ($e) {
+            $frontController = $e->getTarget();
+            $frontController->addControllerDirectory(PIMCORE_PLUGINS_PATH . "/CoresShop/controllers/admin", 'CoreShopAdmin');
+        }, 87);
     }
 
     public static function install()
@@ -59,6 +65,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             //$install->createDocTypes();
             
             $install->createClassmap();
+            $install->createConfig();
             $install->createImageThumbnails();
             
             self::getEventManager()->trigger('install.post', $this, array("installer" => $install));
@@ -107,6 +114,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             
             $install->removeFieldcollection('CoreShopUserAddress');
             $install->removeImageThumbnails();
+            $install->removeConfig();
             
             self::getEventManager()->trigger('uninstall.post', $this, array("installer" => $install));
             

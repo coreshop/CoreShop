@@ -4,3 +4,11 @@
 "coreshop_install_failed","Could not install CoreShop plugin. See log for more details."
 "coreshop_uninstalled_successfully","Successfully uninstalled CoreShop plugin. Please don't forget to reload pimcore!"
 "coreshop_uninstall_failed","Could not uninstall CoreShop plugin. See log for more details."
+
+"coreshop_settings","Settings"
+"coreshop_product","Product"
+"coreshop_category","Category"
+"coreshop_default_image","Default Image"
+
+"coreshop_settings_save_success","Successfully saved"
+"coreshop_settings_save_error","Error saving settings"

@@ -322,6 +322,22 @@ class Install
             unlink(Plugin::getClassmapFile());
         }
     }
+
+    public function createConfig()
+    {
+        if(!is_file(CORESHOP_CONFIGURATION))
+        {
+            copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop-config.xml', CORESHOP_CONFIGURATION);
+        }
+    }
+
+    public function removeClassmap()
+    {
+        if(is_file(CORESHOP_CONFIGURATION))
+        {
+            unlink(CORESHOP_CONFIGURATION);
+        }
+    }
     
     public function createImageThumbnails()
     {
