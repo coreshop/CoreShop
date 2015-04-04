@@ -7,7 +7,7 @@ use CoreShop\Base;
 use Pimcore\Model\Object;
 
 class Payment extends Base {
-    
+
     public static function findByTransactionIdentifier($transactionIdentification) {
         $list = Object\CoreShopPayment::getByTransactionIdentifier($transactionIdentification);
 

@@ -12,10 +12,31 @@ class CoreShop_UserController extends Action
 {
     public function preDispatch() {
         parent::preDispatch();
+
+        if(!$this->session->user instanceof \CoreShop\Plugin\User) {
+            $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));
+            exit;
+        }
     }
     
     public function indexAction() {
         
+    }
+
+    public function profileAction() {
+
+    }
+
+    public function ordersAction() {
+
+    }
+
+    public function addressesAction() {
+
+    }
+
+    public function settingsAction() {
+
     }
     
     public function logoutAction() {

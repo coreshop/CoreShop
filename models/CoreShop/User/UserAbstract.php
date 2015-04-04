@@ -5,6 +5,8 @@ namespace CoreShop\User;
 use CoreShop\Base;
 use CoreShop\Tool;
 
+use Pimcore\Model\Object;
+
 class UserAbstract extends Base implements \CoreShop\Plugin\User
 {
     public static function getUniqueByEmail($email)
@@ -30,5 +32,13 @@ class UserAbstract extends Base implements \CoreShop\Plugin\User
         }
 
         return false;
+    }
+
+    public function getOrders()
+    {
+        $list = new Object\CoreShopOrder\Listing();
+        $list->setCondition("customer__id = ?", array($this->getId()));
+
+        return $list->getObjects();
     }
 }

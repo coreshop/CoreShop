@@ -3,11 +3,12 @@
 namespace CoreShop;
 
 use CoreShop\Base;
+use CoreShop\Plugin\User;
 
 use Pimcore\Model\Object;
 
-class Order extends Base {
-    
+class Order extends Base
+{
     public function importCart(Object\CoreShopCart $cart)
     {
         $items = array();
