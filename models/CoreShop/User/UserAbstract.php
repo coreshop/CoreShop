@@ -28,7 +28,7 @@ class UserAbstract extends Base implements \CoreShop\Plugin\User
             return true;
         }
         else {
-            throw new Exception("User and Password doesn't match", 0);
+            throw new \Exception("User and Password doesn't match", 0);
         }
 
         return false;

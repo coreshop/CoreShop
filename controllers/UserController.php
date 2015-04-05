@@ -6,16 +6,18 @@ use CoreShop\Tool;
 use CoreShop\Plugin;
 use CoreShop;
 
-use Object\Fieldcollection\Data\CoreShopUserAddress;
+use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class CoreShop_UserController extends Action 
 {
     public function preDispatch() {
         parent::preDispatch();
 
-        if(!$this->session->user instanceof \CoreShop\Plugin\User) {
-            $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));
-            exit;
+        if($this->getParam("action") != "login" && $this->getParam("action") != "register") {
+            if (!$this->session->user instanceof \CoreShop\Plugin\User) {
+                $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));
+                exit;
+            }
         }
     }
     
@@ -44,7 +46,39 @@ class CoreShop_UserController extends Action
 
         $this->_redirect("/" . $this->language . "/shop");
     }
-    
+
+    public function loginAction() {
+        $redirect = $this->getParam("_redirect", $this->view->url(array("action" => "address"), "coreshop_checkout"));
+        $base = $this->getParam("_base");
+
+        if($this->getRequest()->isPost())
+        {
+            $user = User::getUniqueByEmail($this->getParam("email"));
+
+            if ($user instanceof Plugin\User) {
+                try {
+                    $isAuthenticated = $user->authenticate($this->getParam("password"));
+
+                    if($isAuthenticated) {
+                        $this->session->user = $user;
+
+                        $this->_redirect($redirect);
+                    }
+                }
+                catch (\Exception $ex) {
+                    $this->view->message = $this->view->translate($ex->getMessage());
+                }
+            }
+            else
+                $this->view->message = $this->view->translate("User not found");
+        }
+
+        if($base)
+        {
+            $this->_redirect($base);
+        }
+    }
+
     public function registerAction() {
         if($this->getRequest()->isPost())
         {
@@ -95,8 +129,21 @@ class CoreShop_UserController extends Action
     
     public function addressAction()
     {
-        $this->view->redirect = $this->getParam("redirect");
-        
+        $this->view->redirect = $this->getParam("redirect", $this->view->url(array("lang" => $this->language, "action" => "addresses"), "coreshop_user", true));
+        $update = $this->getParam("address");
+        $this->view->isNew = false;
+
+        foreach($this->session->user->getAddresses() as $address)
+        {
+            if($address->getName() === $update)
+                $this->view->address = $address;;
+        }
+
+        if(!$this->view->address instanceof CoreShopUserAddress) {
+            $this->view->address = new CoreShopUserAddress();
+            $this->view->isNew = true;
+        }
+
         if($this->getRequest()->isPost())
         {
             $params = $this->getAllParams();
@@ -117,11 +164,23 @@ class CoreShop_UserController extends Action
             
             if(!$adresses instanceof Object_Fieldcollection)
                 $adresses = new Object\Fieldcollection();
+
+            if($update)
+            {
+                for($i = 0; $i < count($this->session->user->getAddresses()); $i++)
+                {
+                    if($this->session->user->getAddresses()->get($i)->getName() == $update)
+                    {
+                        $this->session->user->getAddresses()->remove($i);
+                        break;
+                    }
+                }
+            }
+
+            $this->view->address->setValues($addressParams);
             
-            $address = new CoreShopUserAddress();
-            $address->setValues($addressParams);
-            
-            $adresses->add($address);
+            if($this->view->isNew)
+                $adresses->add($this->view->address);
             
             $this->session->user->save();
             
@@ -130,5 +189,24 @@ class CoreShop_UserController extends Action
             else
                 $this->_redirect("/de/shop");
         }
+    }
+
+    public function deleteaddressAction()
+    {
+        $address = $this->getParam("address");
+        $i = -1;
+
+        foreach($this->session->user->getAddresses() as $a)
+        {
+            $i++;
+
+            if($a->getName() === $address)
+                break;
+        }
+
+        if($i >= 0)
+            $this->session->user->getAddresses()->remove($i);
+
+        $this->_redirect($this->view->url(array("lang" => $this->language, "action" => "addresses"), "coreshop_user", true));
     }
 }

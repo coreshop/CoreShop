@@ -40,34 +40,6 @@ class CoreShop_CheckoutController extends Action
         $this->view->headTitle($this->view->translate("Checkout"));
     }
     
-    public function loginAction() {
-        if($this->getRequest()->isPost())
-        {
-            $user = User::getUniqueByEmail($this->getParam("email"));
-
-            if ($user instanceof Plugin\User) {
-                try {
-                    $isAuthenticated = $user->authenticate($this->getParam("password"));
-
-                    if($isAuthenticated) {
-                        $this->session->user = $user;
-
-                        $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
-                    }
-                }
-                catch (Exception $ex) {
-                    $this->view->message = $this->view->translate($ex->getMessage());
-                }
-            }
-            else
-                $this->view->message = $this->view->translate("User not found");
-        }
-        
-        $this->_helper->viewRenderer("coreshop/checkout/index", null, true);
-        
-        $this->view->headTitle($this->view->translate("Login"));
-    }
-    
     public function registerAction() {
         
     }
@@ -170,7 +142,8 @@ class CoreShop_CheckoutController extends Action
                 $order->setDeliveryAddress($this->session->order['address']['delivery']);
                 $order->setBillingAddress($this->session->order['address']['billing']);
                 $order->setPaymentProvider($provider->getIdentifier());
-                
+                $order->setOrderDate(new \Zend_Date());
+
                 if($this->session->order['deliveryProvider'] instanceof Delivery)
                 {
                     $order->setDeliveryProvider($this->session->order['deliveryProvider']->getIdentifier());
