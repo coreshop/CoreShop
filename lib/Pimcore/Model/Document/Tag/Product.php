@@ -21,10 +21,25 @@ class Product extends Model\Document\Tag {
     /**
      * Contains the object
      *
-     * @var CoreShopProduct
+     * @var Document | Asset | Object\AbstractObject
      */
     public $o;
 
+
+    /**
+     * Contains the type
+     *
+     * @var string
+     */
+    public $type;
+
+
+    /**
+     * Contains the subtype
+     *
+     * @var string
+     */
+    public $subtype;
 
     /**
      * @see Document\Tag\TagInterface::getType
@@ -40,7 +55,9 @@ class Product extends Model\Document\Tag {
      */
     public function getData() {
         return array(
-            "id" => $this->id
+            "id" => $this->id,
+            "type" => $this->getObjectType(),
+            "subtype" => $this->subtype
         );
     }
 
@@ -52,7 +69,9 @@ class Product extends Model\Document\Tag {
     public function getDataEditmode() {
         if ($this->o instanceof Element\ElementInterface) {
             return array(
-                "id" => $this->id
+                "id" => $this->id,
+                "type" => $this->getObjectType(),
+                "subtype" => $this->subtype
             );
         }
         return null;
@@ -65,7 +84,8 @@ class Product extends Model\Document\Tag {
     public function frontend() {
 
         if ($this->o instanceof \Pimcore\Model\Object\CoreShopProduct) {
-            return $this->getView()->template("coreshop/product/preview.php", array("product" => $this->o));
+            if($this->getView())
+                return $this->getView()->template("coreshop/product/preview.php", array("product" => $this->o));
         }
     }
 
@@ -79,6 +99,8 @@ class Product extends Model\Document\Tag {
         $data = \Pimcore\Tool\Serialize::unserialize($data);
 
         $this->id = $data["id"];
+        $this->type = $data["type"];
+        $this->subtype = $data["subtype"];
 
         $this->setElement();
         return $this;
@@ -92,6 +114,8 @@ class Product extends Model\Document\Tag {
     public function setDataFromEditmode($data) {
 
         $this->id = $data["id"];
+        $this->type = $data["type"];
+        $this->subtype = $data["subtype"];
 
         $this->setElement();
         return $this;
@@ -122,7 +146,8 @@ class Product extends Model\Document\Tag {
             $key = $elementType . "_" . $this->o->getId();
 
             $dependencies[$key] = array(
-                "id" => $this->o->getId()
+                "id" => $this->o->getId(),
+                "type" => $elementType
             );
         }
 
@@ -221,10 +246,10 @@ class Product extends Model\Document\Tag {
     public function checkValidity() {
         $sane = true;
         if($this->id){
-            $el = Element\Service::getElementById("Object", $this->id);
+            $el = Element\Service::getElementById($this->type, $this->id);
             if(!$el instanceof Element\ElementInterface){
                 $sane = false;
-                \Logger::notice("Detected insane relation, removing reference to non existent object with id [".$this->id."]");
+                \Logger::notice("Detected insane relation, removing reference to non existent ".$this->type." with id [".$this->id."]");
                 $this->id = null;
                 $this->type = null;
                 $this->o=null;
@@ -299,6 +324,24 @@ class Product extends Model\Document\Tag {
     }
 
     /**
+     * @param string $subtype
+     * @return Document\Tag\Renderlet
+     */
+    public function setSubtype($subtype)
+    {
+        $this->subtype = $subtype;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubtype()
+    {
+        return $this->subtype;
+    }
+
+    /**
      * Rewrites id from source to target, $idMapping contains
      * array(
      *  "document" => array(
@@ -312,9 +355,9 @@ class Product extends Model\Document\Tag {
      * @return void
      */
     public function rewriteIds($idMapping) {
-        $type = "object";
-        if($type && array_key_exists($type, $idMapping) and array_key_exists($this->getId(), $idMapping[$type])) {
-            $this->setId($idMapping[$type][$this->getId()]);
+        $type = (string) $this->type;
+        if($type && array_key_exists($this->type, $idMapping) and array_key_exists($this->getId(), $idMapping[$this->type])) {
+            $this->setId($idMapping[$this->type][$this->getId()]);
             $this->setO(null);
         }
     }
