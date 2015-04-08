@@ -10,6 +10,21 @@ class CartItem extends Base {
     {
         return $this->getAmount() * $this->product->getPrice();
     }
+
+    public function getCart()
+    {
+        $parent = $this->getParent();
+
+        do {
+            if ($parent instanceof \Pimcore\Model\Object\CoreShopCart) {
+                return $parent;
+            }
+
+            $parent = $parent->getParent();
+        } while ($parent != null);
+
+        return;
+    }
     
     public function toArray()
     {

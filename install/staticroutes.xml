@@ -16,7 +16,7 @@
             <pattern>/(.*?)\/shop/</pattern>
             <reverse>/%lang/shop</reverse>
             <module>CoreShop</module>
-            <controller>product</controller>
+            <controller>index</controller>
             <action>index</action>
             <variables>lang</variables>
             <priority>3</priority>

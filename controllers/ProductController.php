@@ -32,6 +32,23 @@ class CoreShop_ProductController extends Action {
     {
         $this->view->headTitle("Home");
     }
+
+    public function previewAction()
+    {
+        $id = $this->getParam("id");
+        $product = CoreShopProduct::getById($id);
+
+        $this->disableLayout();
+
+        if($product instanceof $product)
+        {
+            $this->view->product = $product;
+        }
+        else
+        {
+            throw new \Exception(sprintf("Product with id %s not found", $id));
+        }
+    }
     
     public function listAction() {
         $id = $this->getParam("category");

@@ -38,7 +38,31 @@ class CoreShop_UserController extends Action
     }
 
     public function settingsAction() {
+        $this->view->success = false;
 
+        if($this->getRequest()->isPost())
+        {
+            try {
+                $params = $this->getAllParams();
+
+                if ($params['password']) {
+                    if ($params['password'] != $params['repassword'])
+                        throw new \Exception("Passwords do not match!");
+                }
+
+                $this->session->user->setValues($userParams);
+                $this->session->user->save();
+
+                $this->view->success = true;
+
+                if(array_key_exists("_redirect", $params))
+                    $this->_redirect($params['_redirect']);
+            }
+            catch(\Exception $ex)
+            {
+                $this->view->message = $ex->getMessage();
+            }
+        }
     }
     
     public function logoutAction() {
@@ -178,7 +202,7 @@ class CoreShop_UserController extends Action
             }
 
             $this->view->address->setValues($addressParams);
-            
+
             if($this->view->isNew)
                 $adresses->add($this->view->address);
             

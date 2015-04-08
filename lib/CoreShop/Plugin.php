@@ -300,12 +300,13 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return false;
     }
     
-    public static function hook($name, $params)
+    public static function hook($name, $params = array())
     {
         $results = self::getEventManager()->trigger("hook." . $name, null, array(), function($v) {
             return ($v instanceof \CoreShop\Plugin\Hook);
         });
-        
+
+        $params['language'] = \Zend_Registry::get("Zend_Locale");
 
         if($results->stopped())
         {

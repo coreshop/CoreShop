@@ -10,4 +10,20 @@ class OrderItem extends Base {
     {
         return $this->getAmount() * $this->getPrice();
     }
+
+
+    public function getOrder()
+    {
+        $parent = $this->getParent();
+
+        do {
+            if ($parent instanceof \Pimcore\Model\Object\CoreShopOrder) {
+                return $parent;
+            }
+
+            $parent = $parent->getParent();
+        } while ($parent != null);
+
+        return;
+    }
 }

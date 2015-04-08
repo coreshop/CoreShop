@@ -22,6 +22,7 @@
         <!-- include paths relative to plugin-directory -->
         <pluginIncludePaths>
             <path>/CoreShop/lib</path>
+            <path>/CoreShop/lib/Pimcore/Model</path>
             <path>/CoreShop/models</path>
         </pluginIncludePaths>
 
@@ -34,6 +35,10 @@
             <path>/plugins/CoreShop/static/js/startup.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/settings.js</path>
         </pluginJsPaths>
+
+        <pluginDocumentEditmodeJsPaths>
+            <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>
+        </pluginDocumentEditmodeJsPaths>
 
         <pluginCssPaths>
             <path>/plugins/CoreShop/static/css/coreshop.css</path>
