@@ -34,6 +34,18 @@ class UserAbstract extends Base implements \CoreShop\Plugin\User
         return false;
     }
 
+    public function findAddressByName($name)
+    {
+        foreach($this->getAddresses() as $address)
+        {
+            if($address->getName() == $name) {
+                return $address;
+            }
+        }
+
+        return false;
+    }
+
     public function getOrders()
     {
         $list = new Object\CoreShopOrder\Listing();
