@@ -41,7 +41,13 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $install = new Install();
             
             self::getEventManager()->trigger('install.pre', $this, array("installer" => $install));
-            
+
+            $currencyClass = $install->createClass("CoreShopCurrency");
+            $countryClass = $install->createClass("CoreShopCountry");
+            $countryTaxClass = $install->createClass("CoreShopCountryTax");
+
+            $fcSpecificAddress = $install->createFieldCollection("CoreShopProductSpecificPrice");
+
             // create object classes
             $categoryClass = $install->createClass('CoreShopCategory');
             $productClass = $install->createClass('CoreShopProduct');
@@ -66,7 +72,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
                 $userClass->getId(),
                 $orderItemClass->getId(),
                 $orderClass->getId(),
-                $paymentClass->getId()
+                $paymentClass->getId(),
+                $currencyClass->getId(),
+                $countryClass->getId(),
+                $countryTaxClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();

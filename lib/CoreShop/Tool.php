@@ -44,6 +44,17 @@ class Tool {
 
         return $cart;
     }
+
+    public static function getCountry()
+    {
+        $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
+
+        $country = geoip_country_code_by_addr($gi, \Pimcore\Tool::getClientIp());
+
+        geoip_close($gi);
+
+        return $country;
+    }
     
     /**
      * Retreive the values in an array

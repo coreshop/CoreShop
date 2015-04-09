@@ -30,7 +30,16 @@ class Action extends \Website\Controller\Action {
         );
         
         $this->session = $this->view->session = \Pimcore\Tool\Session::get('CoreShop');
-        
+
+        if(!$this->session->country) {
+            if($this->session->user instanceof \CoreShop\Plugin\User && count($this->session->user->getAddresses()) > 0)
+            {
+                $this->session->country = $this->session->user->getAddresses()->get(0)->getCountry();
+            }
+            else
+                $this->session->country = Tool::getCountry();
+        }
+
         $this->enableLayout();
         $this->setLayout(Plugin::getLayout());
 
