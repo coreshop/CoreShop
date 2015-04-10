@@ -8,7 +8,7 @@ class OrderItem extends Base {
     
     public function getTotal()
     {
-        return $this->getAmount() * $this->getProductPrice();
+        return $this->getAmount() * $this->getPrice();
     }
 
 
