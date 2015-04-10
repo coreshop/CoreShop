@@ -5,6 +5,9 @@ namespace CoreShop\Controller;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 
+use Pimcore\Model\Object\CoreShopCountry;
+use Pimcore\Model\Object\CoreShopCurrency;
+
 class Action extends \Website\Controller\Action {
     
     /*
@@ -28,10 +31,13 @@ class Action extends \Website\Controller\Action {
                 )
             )
         );
-        
+
+        $this->view->addHelperPath(CORESHOP_PATH . '/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
+
         $this->session = $this->view->session = \Pimcore\Tool\Session::get('CoreShop');
 
-        if(!$this->session->country) {
+        /*
+        if(!$this->session->country instanceof CoreShopCountry) {
             if($this->session->user instanceof \CoreShop\Plugin\User && count($this->session->user->getAddresses()) > 0)
             {
                 $this->session->country = $this->session->user->getAddresses()->get(0)->getCountry();
@@ -39,6 +45,15 @@ class Action extends \Website\Controller\Action {
             else
                 $this->session->country = Tool::getCountry();
         }
+        */
+
+        if($this->getParam("currency"))
+        {
+            if(CoreShopCurrency::getById($this->getParam("currency")) instanceof CoreShopCurrency)
+                $this->session->currencyId = $this->getParam("currency");
+        }
+
+        $this->view->country = Tool::getCountry();
 
         $this->enableLayout();
         $this->setLayout(Plugin::getLayout());
@@ -51,7 +66,7 @@ class Action extends \Website\Controller\Action {
     public function preDispatch()
     {
         parent::preDispatch();
-        
+
         $result = Plugin::getEventManager()->trigger('product.' . $this->getRequest()->getActionName(), $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
             return is_array($v) && array_key_exists("action", $v) && array_key_exists("controller", $v) && array_key_exists("module", $v);
         });

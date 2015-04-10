@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":null,
+  "parentClass":"CoreShop\\Country",
   "allowInherit":false,
   "allowVariants":false,
   "showVariants":false,
@@ -30,7 +30,7 @@
         "title":null,
         "width":null,
         "height":null,
-        "collapsible":null,
+        "collapsible":false,
         "collapsed":null,
         "bodyStyle":null,
         "datatype":"layout",
@@ -1081,7 +1081,7 @@
                 "value":"AX"
               }
             ],
-            "width":null,
+            "width":"",
             "queryColumnType":"varchar(255)",
             "columnType":"varchar(255)",
             "phpdocType":"string",
@@ -1091,7 +1091,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",
@@ -1112,7 +1112,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",
@@ -1148,7 +1148,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",
@@ -1158,7 +1158,7 @@
             "visibleSearch":false
           }
         ],
-        "locked":null
+        "locked":false
       }
     ],
     "locked":null

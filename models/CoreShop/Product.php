@@ -5,6 +5,8 @@ namespace CoreShop;
 use CoreShop\Base;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopUser;
+use Pimcore\Model\Object\CoreShopCountry;
+use Pimcore\Model\Object\CoreShopCurrency;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopProductSpecificPrice;
 use Pimcore\Model\Asset\Image;
 use CoreShop\Tool;
@@ -92,9 +94,11 @@ class Product extends Base {
 
     public function getProductPrice()
     {
+        $price = $this->getPrice();
+
         if(count($this->getSpecificPrice()) > 0)
         {
-            $session = \Pimcore\Tool\Session::get('CoreShop');
+            $session = Tool::getSession();
             //Process Specific Prices
             foreach($this->getSpecificPrice() as $sPrice)
             {
@@ -104,16 +108,17 @@ class Product extends Base {
                 $hasCountry = false;
 
                 if($sPrice->getFrom() instanceof \Zend_Date) {
-                    if (!$date->get(\Zend_Date::TIMESTAMP) > $sPrice->getFrom()->get(\Zend_Date::TIMESTAMP)) {
+                    if ($date->get(\Zend_Date::TIMESTAMP) < $sPrice->getFrom()->get(\Zend_Date::TIMESTAMP)) {
                         continue;
                     }
                 }
 
                 if($sPrice->getTo() instanceof \Zend_Date) {
-                    if (!$sPrice->getTo()->get(\Zend_Date::TIMESTAMP) < $date->get(\Zend_Date::TIMESTAMP)) {
+                    if ($date->get(\Zend_Date::TIMESTAMP) > $sPrice->getTo()->get(\Zend_Date::TIMESTAMP)) {
                         continue;
                     }
                 }
+
 
                 if(count($sPrice->getCustomers()) > 0 && $session->user instanceof CoreShopUser)
                 {
@@ -127,30 +132,45 @@ class Product extends Base {
                     $hasCustomer = true;
                 }
 
-                if(count($sPrice->getCountries()) > 0 && in_array($session->country, $sPrice->getCountries())) {
+                if(count($sPrice->getCountries()) > 0 && $this->countryInList(Tool::getCountry(), $sPrice->getCountries())) {
                     $hasCountry = true;
                 }
                 else if(count($sPrice->getCountries()) == 0) { //Non selected means all
                     $hasCountry = true;
                 }
 
-                if($hasCountry && $hasCustomer)
-                    return $this->applySpecificPrice($sPrice);
+                if($hasCountry && $hasCustomer) {
+                    $price = $this->applySpecificPrice($sPrice);
+                    break;
+                }
             }
         }
 
-        return $this->getPrice();
+        return Tool::convertToCurrency($price);
+    }
+
+    protected function countryInList($country, array $countryList)
+    {
+        foreach($countryList as $c)
+        {
+            if($c->getId() == $country->getId())
+                return true;
+        }
+
+        return false;
     }
 
     protected function applySpecificPrice(CoreShopProductSpecificPrice $sPrice)
     {
         $basePrice = $sPrice->getPrice() > 0 ? $sPrice->getPrice() : $this->getPrice();
 
-        if($sPrice->getReductionType() == "percentage")
+        if($sPrice->getReductionType() == "percentage") {
             return $basePrice * (100 - $sPrice->getReduction()) / 100;
+        }
 
-        if($sPrice->getReductionType() == "amount")
+        if($sPrice->getReductionType() == "amount") {
             return $basePrice - $sPrice->getReduction();
+        }
 
         return $basePrice;
     }

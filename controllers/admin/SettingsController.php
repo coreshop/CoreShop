@@ -3,6 +3,7 @@
 use CoreShop\Plugin;
 use CoreShop\Config;
 use CoreShop\Tool;
+use CoreShop\Helper\Country;
 
 use Pimcore\Model\Object\CoreShopCurrency;
 use Pimcore\Model\Object\CoreShopCountry;
@@ -37,6 +38,9 @@ class CoreShop_Admin_SettingsController extends Admin
         $oldValues = $oldConfig->toArray();
 
         $settings = array(
+            "base" => array(
+                "base-currency" => $values["base.base-currency"]
+            ),
             "product" => array(
                 "default-image" => $values["product.default-image"]
             ),
@@ -60,20 +64,34 @@ class CoreShop_Admin_SettingsController extends Admin
         $language = $this->_getParam("language");
 
         $locale = new Zend_Locale($language);
-        $currency = new Zend_Currency($locale);
-        $countries = $locale->getTranslationList('Territory', $language, 2);
+        $regions = Zend_Locale::getTranslationList('RegionToTerritory');
+
+        $countryGroup = array();
+
+        foreach ($regions as $region => $countriesString) {
+            $countries = explode(' ', $countriesString);
+
+            foreach($countries as $country) {
+                $countryGroup[$country] = $locale->getTranslation($region, 'territory', $locale);
+            }
+
+        }
+
+        $countries = Country::getCountries();
 
         foreach($countries as $iso=>$name)
         {
-            $countryLocale = Zend_Locale::getLocaleToTerritory($iso);
-            $countryLocale = $countryLocale instanceof Zend_Locale ? $countryLocale : $locale;
+            $currencyCode = Country::getCurrencyCodeForCountry($iso);
+            $currencyDetail = Country::getCurrencyDetail($currencyCode);
 
-            $currency->setLocale($countryLocale);
+            if(!$currencyCode || !$currencyDetail) {
 
-            $currenciesForCountry = $currency->getCurrencyList($iso);
+                continue;
+            }
 
-            $currencyName = $currency->getName($currenciesForCountry[0], $countryLocale);
-            $currencySymbol = $currency->getSymbol($currenciesForCountry[0], $countryLocale);
+            $currencyName = $currencyDetail['name'];
+            $currencySymbol = $currencyDetail['symbol'];
+            $currencyIsoNumber = $currencyDetail['isocode'];
 
             //Check if currency Object already exists
             $list = CoreShopCurrency::getByName($currencyName);
@@ -88,6 +106,8 @@ class CoreShop_Admin_SettingsController extends Admin
                 $currencyObject = new CoreShopCurrency();
                 $currencyObject->setKey(\Pimcore\File::getValidFilename($currencyName));
                 $currencyObject->setSymbol($currencySymbol);
+                $currencyObject->setIsoNumber($currencyIsoNumber);
+                $currencyObject->setIsoCode($currencyCode);
                 $currencyObject->setExchangeRate(1);
                 $currencyObject->setParent(Tool::findOrCreateObjectFolder("/coreshop/currencies"));
                 $currencyObject->setPublished(true);
@@ -107,11 +127,16 @@ class CoreShop_Admin_SettingsController extends Admin
 
             if(!$countryObject instanceof CoreShopCountry)
             {
+                $folderPath = "/coreshop/countries";
+
+                if(array_key_exists($iso, $countryGroup))
+                    $folderPath .= "/" . \Pimcore\File::getValidFilename($countryGroup[$iso]);
+
                 $countryObject = new CoreShopCountry();
-                $countryObject->setKey(\Pimcore\File::getValidFilename($iso));
+                $countryObject->setKey(\Pimcore\File::getValidFilename($name));
                 $countryObject->setCountry($iso);
                 $countryObject->setActive(false);
-                $countryObject->setParent(Tool::findOrCreateObjectFolder("/coreshop/countries"));
+                $countryObject->setParent(Tool::findOrCreateObjectFolder($folderPath));
                 $countryObject->setCurrency($currencyObject);
                 $countryObject->setPublished(true);
                 $countryObject->save();

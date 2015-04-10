@@ -6,6 +6,7 @@ use CoreShop\Tool;
 use CoreShop\Plugin;
 use CoreShop;
 
+use Pimcore\Model\Object\CoreShopCountry;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class CoreShop_UserController extends Action 
@@ -126,12 +127,13 @@ class CoreShop_UserController extends Action
             }
             
             $folder = "/users/" . strtolower(substr($userParams['lastname'], 0, 1));
-            
+
             $adresses = new Object\Fieldcollection();
-            
+
             $address = new CoreShopUserAddress();
             $address->setValues($addressParams);
-            
+            $address->setCountry(CoreShopCountry::getById($addressParams['country']));
+
             $adresses->add($address);
             
             $user = User::create();
@@ -185,7 +187,7 @@ class CoreShop_UserController extends Action
             }
             
             $adresses = $this->session->user->getAddresses();
-            
+
             if(!$adresses instanceof Object_Fieldcollection)
                 $adresses = new Object\Fieldcollection();
 
@@ -201,7 +203,9 @@ class CoreShop_UserController extends Action
                 }
             }
 
+
             $this->view->address->setValues($addressParams);
+            $this->view->address->setCountry(CoreShopCountry::getById($addressParams['country']));
 
             if($this->view->isNew)
                 $adresses->add($this->view->address);

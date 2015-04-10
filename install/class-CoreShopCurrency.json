@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":null,
+  "parentClass":"CoreShop\\Currency",
   "allowInherit":false,
   "allowVariants":false,
   "showVariants":false,

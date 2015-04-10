@@ -1,10 +1,10 @@
 <?php
-    
+
 namespace CoreShop;
 
-use Pimcore\Model\Object;
+use Pimcore\Model\Object\Concrete;
 
-class Base extends Object\Concrete
+class Base extends Concrete
 {
     public function toArray()
     {

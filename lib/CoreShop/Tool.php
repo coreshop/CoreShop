@@ -4,6 +4,8 @@ namespace CoreShop;
 
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
+use Pimcore\Model\Object\CoreShopCountry;
+use Pimcore\Model\Object\CoreShopCurrency;
 
 class Tool {
     
@@ -11,8 +13,8 @@ class Tool {
     {
         try
         {
-            $zCurrency = new \Zend_Currency("de_DE");
-            return $zCurrency->toCurrency($price, array('currency' => $zCurrency));
+            $zCurrency = new \Zend_Currency("de_DE"); //TODO: fix to use Zend_Locale
+            return $zCurrency->toCurrency($price, array('symbol' => Tool::getCurrency()->getSymbol()));
         }
         catch(\Exception $ex)
         {
@@ -21,7 +23,32 @@ class Tool {
         
         return $price;
     }
-    
+
+    public static function convertToCurrency($value, CoreShopCurrency $toCurrency = null)
+    {
+        $config = Config::getConfig();
+        $configArray = $config->toArray();
+
+        $baseCurrency = CoreShopCurrency::getByPath($configArray['base']['base-currency']);
+
+        if(!$toCurrency instanceof CoreShopCurrency) {
+            $toCurrency = Tool::getCurrency();
+        }
+
+        if($baseCurrency instanceof CoreShopCurrency) {
+            if($toCurrency instanceof CoreShopCurrency && $toCurrency->getId() != $baseCurrency->getId()) {
+                return $value * $toCurrency->getExchangeRate();
+            }
+        }
+
+        return $value;
+    }
+
+    public static function getSession()
+    {
+        return \Pimcore\Tool\Session::get('CoreShop');
+    }
+
     public static function formatTax($tax)
     {
         return ($tax * 100) . "%";
@@ -47,13 +74,59 @@ class Tool {
 
     public static function getCountry()
     {
-        $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
+        $session = self::getSession();
 
-        $country = geoip_country_code_by_addr($gi, \Pimcore\Tool::getClientIp());
+        if($session->countryId) {
+            $country = CoreShopCountry::getById($session->countryId);
 
-        geoip_close($gi);
+            if ($country instanceof CoreShopCountry)
+                return $country;
+        }
+
+
+        if (self::getSession()->user instanceof CoreShopUser) {
+            $user = self::getSession()->user;
+
+            if (count($user->getAddresses()) > 0)
+                $country = $user->getAddresses()->get(0);
+        }
+
+        if (!$country instanceof CoreShopCountry) {
+            $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
+
+            $country = geoip_country_code_by_addr($gi, \Pimcore\Tool::getClientIp());
+
+            geoip_close($gi);
+
+            $countryList = CoreShopCountry::getByCountry($country);
+
+            if (count($countryList->getObjects()) > 0)
+                $country = $countryList->current();
+        }
+
+
+        if(!$country instanceof CoreShopCountry)
+            throw new \Exception("Country with code $country not found");
+
+        $session->countryId = $country->getId();
 
         return $country;
+    }
+
+    public static function getCurrency()
+    {
+        $session = self::getSession();
+
+        if($session->currencyId)
+        {
+            $currency = CoreShopCurrency::getById($session->currencyId);
+
+            if($currency instanceof CoreShopCurrency)
+                return $currency;
+        }
+
+
+        return self::getCountry()->getCurrency();
     }
     
     /**
