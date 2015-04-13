@@ -40,7 +40,7 @@ class CoreShop_CartController extends Action {
 
         if($isAllowed)
         {
-            if($product instanceof Product)
+            if($product instanceof Product && $product->getEnabled() && $product->getAvailableForOrder())
             {
                 $item = $this->cart->addItem($product, $amount);
                 

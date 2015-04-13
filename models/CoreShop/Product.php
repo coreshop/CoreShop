@@ -17,13 +17,15 @@ class Product extends Base {
     public static function getAll()
     {
         $list = new Object\CoreShopProduct\Listing();
-        
+        $list->setCondition("enabled=1");
+
         return $list->getObjects();
     }
     
     public static function getLatest($limit = 8)
     {
         $list = new Object\CoreShopProduct\Listing();
+        $list->setCondition("enabled=1");
 
         return $list->getObjects();
     }
@@ -47,6 +49,26 @@ class Product extends Base {
 
         if($image instanceof Image)
             return $image;
+
+        return false;
+    }
+
+    public function getIsNew()
+    {
+        $config = Config::getConfig();
+        $configArray = $config->toArray();
+
+        if($configArray['product']['days-as-new'] > 0)
+        {
+            $creationDate = new \Zend_Date($this->getCreationDate());
+            $nowDate = new \Zend_Date();
+
+            $diff = $nowDate->sub($creationDate)->toValue();
+            $days = ceil($diff/60/60/24) +1;
+
+            if($days <= $configArray['product']['days-as-new'])
+                return true;
+        }
 
         return false;
     }

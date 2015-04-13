@@ -42,7 +42,8 @@ class CoreShop_Admin_SettingsController extends Admin
                 "base-currency" => $values["base.base-currency"]
             ),
             "product" => array(
-                "default-image" => $values["product.default-image"]
+                "default-image" => $values["product.default-image"],
+                "days-as-new" => $values["product.days-as-new"]
             ),
             "category" => array(
                 "default-image" => $values["category.default-image"]

@@ -163,7 +163,14 @@ pimcore.plugin.coreshop.settings= Class.create({
                                         });
                                     }
                                 }
-                            }
+                            },
+                            {
+                                fieldLabel: t('coreshop_product_daysasnew'),
+                                name: 'product.days-as-new',
+                                value: this.getValue("product.days-as-new"),
+                                xtype: "spinnerfield",
+                                enableKeyEvents: true
+                            },
                         ]
                     },
                     {

@@ -27,7 +27,7 @@ class Category extends Base {
     public function getProducts()
     {
         $list = new Object\CoreShopProduct\Listing();
-        $list->setCondition("categories LIKE '%,".$this->getId().",%'");
+        $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
 
         return $list->getObjects();
     }
@@ -35,7 +35,7 @@ class Category extends Base {
     public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array("name" => "name", "direction" => "asc"))
     {
         $list = new Object\CoreShopProduct\Listing();
-        $list->setCondition("categories LIKE '%,".$this->getId().",%'");
+        $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
 
         $list->setOrderKey($sort['name']);
         $list->setOrder($sort['direction']);

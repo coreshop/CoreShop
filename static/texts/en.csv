@@ -7,8 +7,12 @@
 
 "coreshop_settings","Settings"
 "coreshop_product","Product"
+"coreshop_product_daysasnew","Number of days as 'new'"
+
 "coreshop_category","Category"
 "coreshop_default_image","Default Image"
+"coreshop_base","Base"
+"coreshop_base_currency","Base Currency"
 
 "coreshop_settings_save_success","Successfully saved"
 "coreshop_settings_save_error","Error saving settings"

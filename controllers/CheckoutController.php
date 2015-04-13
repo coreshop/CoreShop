@@ -187,6 +187,11 @@ class CoreShop_CheckoutController extends Action
         
         $this->view->headTitle($this->view->translate("Thank you"));
     }
+
+    public function errorAction()
+    {
+
+    }
     
     protected function checkIsAllowed()
     {
