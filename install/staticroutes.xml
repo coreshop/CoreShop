@@ -61,5 +61,15 @@
             <variables>lang,action</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>coreshop_search</name>
+            <pattern>/(.*?)\/shop\/search/</pattern>
+            <reverse>/%lang/shop/search</reverse>
+            <module>CoreShop</module>
+            <controller>search</controller>
+            <action>search</action>
+            <variables>lang</variables>
+            <priority>5</priority>
+        </route>
     </routes>
 </zend-config>

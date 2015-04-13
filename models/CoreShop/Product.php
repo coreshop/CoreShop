@@ -26,6 +26,8 @@ class Product extends Base {
     {
         $list = new Object\CoreShopProduct\Listing();
         $list->setCondition("enabled=1");
+        $list->setOrderKey("o_creationDate");
+        $list->setOrder("DESC");
 
         return $list->getObjects();
     }
