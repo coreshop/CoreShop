@@ -40,13 +40,15 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         {
             $install = new Install();
             
-            self::getEventManager()->trigger('install.pre', $this, array("installer" => $install));
+            self::getEventManager()->trigger('install.pre', null, array("installer" => $install));
 
             $currencyClass = $install->createClass("CoreShopCurrency");
             $countryClass = $install->createClass("CoreShopCountry");
             $countryTaxClass = $install->createClass("CoreShopCountryTax");
 
             $fcSpecificAddress = $install->createFieldCollection("CoreShopProductSpecificPrice");
+
+            $cartRule = $install->createClass("CoreShopCartRule");
 
             // create object classes
             $categoryClass = $install->createClass('CoreShopCategory');
@@ -58,7 +60,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $orderItemClass = $install->createClass("CoreShopOrderItem");
             $paymentClass = $install->createClass("CoreShopPayment");
             $orderClass = $install->createClass("CoreShopOrder");
-            
+
             $fcUserAddress = $install->createFieldcollection('CoreShopUserAddress');
             
             // create root object folder with subfolders
@@ -75,7 +77,8 @@ class Plugin extends AbstractPlugin implements PluginInterface {
                 $paymentClass->getId(),
                 $currencyClass->getId(),
                 $countryClass->getId(),
-                $countryTaxClass->getId()
+                $countryTaxClass->getId(),
+                $cartRule->getId()
             ));
             // create static routes
             $install->createStaticRoutes();
@@ -86,11 +89,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $install->createConfig();
             $install->createImageThumbnails();
             
-            self::getEventManager()->trigger('install.post', $this, array("installer" => $install));
+            self::getEventManager()->trigger('install.post', null, array("installer" => $install));
         } 
         catch(Exception $e) 
         {
-            throw $e;
             logger::crit($e);
             return self::getTranslate()->_('coreshop_install_failed');
         }
@@ -105,7 +107,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         try {
             $install = new Install();
             
-            self::getEventManager()->trigger('uninstall.pre', $this, array("installer" => $install));
+            self::getEventManager()->trigger('uninstall.pre', null, array("installer" => $install));
             
             // remove predefined document types
             //$install->removeDocTypes();
@@ -120,7 +122,8 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             // remove classes
             
             $install->removeClassmap();
-            
+
+            $install->removeClass("CoreShopCartRule");
             $install->removeClass('CoreShopProduct');
             $install->removeClass('CoreShopCategory');
             $install->removeClass('CoreShopCart');
@@ -134,7 +137,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $install->removeImageThumbnails();
             $install->removeConfig();
             
-            self::getEventManager()->trigger('uninstall.post', $this, array("installer" => $install));
+            self::getEventManager()->trigger('uninstall.post', null, array("installer" => $install));
             
             return self::getTranslate()->_('coreshop_uninstalled_successfully');
         } catch (Exception $e) {
@@ -240,10 +243,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         self::$layout = $layout;
     }
     
-    public static function getDeliveryProviders(Object\CoreShopCart $cart)
+    public static function getShippingProviders(Object\CoreShopCart $cart)
     {
-        $results = self::getEventManager()->trigger("delivery.getProvider", null, array("cart" => $cart), function($v) {
-            return ($v instanceof \CoreShop\Plugin\Delivery);
+        $results = self::getEventManager()->trigger("shipping.getProvider", null, array("cart" => $cart), function($v) {
+            return ($v instanceof \CoreShop\Plugin\Shipping);
         });
         
         if($results->stopped())
@@ -261,10 +264,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return array();
     }
     
-    public static function getDeliveryProvider($identifier)
+    public static function getShippingProvider($identifier)
     {
-        $results = self::getEventManager()->trigger("delivery.getProvider", null, array("cart" => $cart), function($v) {
-            return ($v instanceof \CoreShop\Plugin\Delivery && $v->getIdentifier() == $identifier);
+        $results = self::getEventManager()->trigger("shipping.getProvider", null, array(), function($v) {
+            return ($v instanceof \CoreShop\Plugin\Shipping && $v->getIdentifier() == $identifier);
         });
         
         if($results->stopped())

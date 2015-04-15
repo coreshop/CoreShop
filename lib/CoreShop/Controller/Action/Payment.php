@@ -57,7 +57,7 @@ class Payment extends Action {
 
                     if($mailDocument instanceof \Pimcore\Model\Document\Email) {
                         $orderDetailsString = $view->render("coreshop/email/helper/order-details.php");
-                        $deliveryAddressString = $view->partial("coreshop/email/helper/address.php", array("address" => $user->findAddressByName($order->getDeliveryAddress())));
+                        $shippingAddressString = $view->partial("coreshop/email/helper/address.php", array("address" => $user->findAddressByName($order->getShippingAddress())));
                         $billingAddressString =  $view->partial("coreshop/email/helper/address.php", array("address" => $user->findAddressByName($order->getBillingAddress())));
 
                         $params = array(
@@ -69,7 +69,7 @@ class Payment extends Action {
                             'token' => $user->getProperty("token"),
                             'language' => $this->language,
                             'orderDetails' => $orderDetailsString,
-                            'deliveryAddress' => $deliveryAddressString,
+                            'shippingAddress' => $shippingAddressString,
                             'billingAddress' => $billingAddressString
                         );
 

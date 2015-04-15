@@ -2,6 +2,7 @@
     
 namespace CoreShop;
 
+use Pimcore\Model\Document\Tag\Area\AbstractArea;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCountry;
@@ -127,6 +128,17 @@ class Tool {
 
 
         return self::getCountry()->getCurrency();
+    }
+
+    public static function objectInList(AbstractObject $object, array $objectList)
+    {
+        foreach($objectList as $o)
+        {
+            if($o->getId() == $object->getId())
+                return true;
+        }
+
+        return false;
     }
     
     /**

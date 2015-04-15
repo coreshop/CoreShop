@@ -34,7 +34,9 @@ class Order extends Base
             
             $i++;
         }
-        
+
+        $this->setDiscount($cart->getDiscount());
+        $this->setCartRule($cart->getCartRule());
         $this->setItems($items);
         $this->save();
         
@@ -69,16 +71,25 @@ class Order extends Base
         $this->setPayments($payments);
         $this->save();
     }
-    
-    public function getTotal()
+
+    public function getSubtotal()
     {
         $total = 0;
-        
+
         foreach($this->getItems() as $item)
         {
             $total += $item->getTotal();
         }
-        
-        return $total + $this->getDeliveryFee();
+
+        return $total;
+    }
+    
+    public function getTotal()
+    {
+        $subtotal = $this->getSubtotal();
+        $shipping = $this->getShipping();
+        $discount = $this->getDiscount();
+
+        return ($subtotal  + $shipping) - $discount;
     }
 }

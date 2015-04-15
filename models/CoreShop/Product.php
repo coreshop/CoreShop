@@ -156,7 +156,7 @@ class Product extends Base {
                     $hasCustomer = true;
                 }
 
-                if(count($sPrice->getCountries()) > 0 && $this->countryInList(Tool::getCountry(), $sPrice->getCountries())) {
+                if(count($sPrice->getCountries()) > 0 && Tool::objectInList(Tool::getCountry(), $sPrice->getCountries())) {
                     $hasCountry = true;
                 }
                 else if(count($sPrice->getCountries()) == 0) { //Non selected means all
@@ -171,17 +171,6 @@ class Product extends Base {
         }
 
         return Tool::convertToCurrency($price);
-    }
-
-    protected function countryInList($country, array $countryList)
-    {
-        foreach($countryList as $c)
-        {
-            if($c->getId() == $country->getId())
-                return true;
-        }
-
-        return false;
     }
 
     protected function applySpecificPrice(CoreShopProductSpecificPrice $sPrice)

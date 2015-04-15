@@ -4,7 +4,7 @@ use CoreShop;
 use CoreShop\Controller\Action;
 
 use CoreShop\Plugin;
-use CoreShop\Plugin\Delivery;
+use CoreShop\Plugin\Shipping;
 use CoreShop\Plugin\Payment;
 use CoreShop\Tool;
 
@@ -49,56 +49,56 @@ class CoreShop_CheckoutController extends Action
         
         if($this->getRequest()->isPost())
         {
-            $deliveryAddress = $this->getParam("delivery-address");
+            $shippingAddress = $this->getParam("shipping-address");
             $billingAddress = $this->getParam("billing-address");
             
-            if($this->getParam("useDeliveryAsBilling", "off") == "on")
+            if($this->getParam("useShippingAsBilling", "off") == "on")
             {
-                $billingAddress = $this->getParam("delivery-address");
+                $billingAddress = $this->getParam("shipping-address");
             }
 
             $this->session->order['address'] = array(
                 "billing" => $billingAddress,
-                "delivery" => $deliveryAddress
+                "shipping" => $shippingAddress
             );
             
-            $this->_redirect($this->view->url(array("action" => "delivery"), "coreshop_checkout"));
+            $this->_redirect($this->view->url(array("action" => "shipping"), "coreshop_checkout"));
         }
         
         $this->view->headTitle($this->view->translate("Address"));
     }
     
-    public function deliveryAction() {
+    public function shippingAction() {
         $this->checkIsAllowed();
         
         
-        //Download Article - no need for Delivery
+        //Download Article - no need for Shipping
         if(!$this->cart->hasPhysicalItems()) {
             $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
         }
         
-        $this->view->provider = Plugin::getDeliveryProviders($this->cart);
+        $this->view->provider = Plugin::getShippingProviders($this->cart);
         
         if($this->getRequest()->isPost())
         {
-            $deliveryProvider = reset($this->getParam("delivery_provider", array()));
+            $shippingProvider = reset($this->getParam("shipping_provider", array()));
             
             foreach($this->view->provider as $provider)
             {
-                if($provider->getIdentifier() == $deliveryProvider)
+                if($provider->getIdentifier() == $shippingProvider)
                 {
-                    $deliveryProvider = $provider;
+                    $shippingProvider = $provider;
                     break;
                 }
             }
             
-            if(!$provider instanceof Delivery)
+            if(!$provider instanceof Shipping)
             {
                 $this->view->error = "oh shit, not found";
             }
             else
             {
-                $this->session->order['deliveryProvider'] = $provider;
+                $this->session->order['shippingProvider'] = $provider;
                 
                 $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
             }
@@ -139,19 +139,19 @@ class CoreShop_CheckoutController extends Action
                 $order->setPublished(true);
                 $order->setLang($this->view->language);
                 $order->setCustomer($this->session->user);
-                $order->setDeliveryAddress($this->session->order['address']['delivery']);
+                $order->setShippingAddress($this->session->order['address']['delivery']);
                 $order->setBillingAddress($this->session->order['address']['billing']);
                 $order->setPaymentProvider($provider->getIdentifier());
                 $order->setOrderDate(new \Zend_Date());
 
-                if($this->session->order['deliveryProvider'] instanceof Delivery)
+                if($this->session->order['shippingProvider'] instanceof Shipping)
                 {
-                    $order->setDeliveryProvider($this->session->order['deliveryProvider']->getIdentifier());
-                    $order->setDeliveryFee($this->session->order['deliveryProvider']->getDeliveryFee($this->cart));
+                    $order->setShippingProvider($this->session->order['deliveryProvider']->getIdentifier());
+                    $order->setShipping($this->session->order['deliveryProvider']->getShipping($this->cart));
                 }
                 else
                 {
-                    $order->setDeliveryFee(0);
+                    $order->setShipping(0);
                 }
                 
                 $order->save();

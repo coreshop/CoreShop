@@ -3,9 +3,11 @@
 namespace CoreShop;
 
 use CoreShop\Base;
+use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
+use Pimcore\Model\Object\CoreShopCartRule;
 
 class Cart extends Base {
     
@@ -41,6 +43,16 @@ class Cart extends Base {
         
         return false;
     }
+
+    public function getDiscount()
+    {
+        $cartRule = $this->getCartRule();
+
+        if($cartRule instanceof CoreShopCartRule)
+            return $cartRule->getDiscount();
+
+        return 0;
+    }
     
     public function getSubtotal()
     {
@@ -53,12 +65,41 @@ class Cart extends Base {
         
         return $subtotal;
     }
+
+    public function getShipping()
+    {
+        $session = Tool::getSession();
+
+        //check for existing shipping
+        if(array_key_exists("shippingProvider", $session->order) && $session->order['deliveryProvider'] instanceof \CoreShop\Plugin\Shipping) {
+            return $session->order['shippingProvider']->getShipping($this);
+        }
+
+        //get all provider and choose cheapest
+        $providers = Plugin::getShippingProviders($this);
+        $cheapestProvider = null;
+
+        foreach($providers as $p)
+        {
+            if($cheapestProvider === null)
+                $cheapestProvider = $p;
+            else if($cheapestProvider->getShipping($this) > $p->getShipping($this))
+                $cheapestProvider = $p;
+        }
+
+        if($cheapestProvider instanceof \CoreShop\Plugin\Shipping)
+            return $cheapestProvider->getShipping($this);
+
+        return 0;
+    }
     
     public function getTotal()
     {
-        $subtotal = $this->getSubtotal();;
-        
-        return $subtotal;
+        $subtotal = $this->getSubtotal();
+        $discount = $this->getDiscount();
+        $shipping = $this->getShipping();
+
+        return ($subtotal  + $shipping) - $discount;
     }
     
     public function addItem(Product $product, $amount = 1)
@@ -104,6 +145,25 @@ class Cart extends Base {
     {
         $item->setAmount($amount);
         $item->save();
+    }
+
+    public function removeCartRule()
+    {
+        if($this->getCartRule() instanceof CoreShopCartRule)
+        {
+            $this->setCartRule(null);
+            $this->save();
+        }
+
+        return true;
+    }
+
+    public function addCartRule(CoreShopCartRule $cartRule)
+    {
+        $this->removeCartRule();
+
+        $this->setCartRule($cartRule);
+        $this->save();
     }
     
     public function toArray()

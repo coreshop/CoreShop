@@ -2,10 +2,11 @@
 
 use CoreShop;
 use CoreShop\Plugin;
-use CoreShop\Cart;
-use CoreShop\CartItem;
-use CoreShop\Product;
 use CoreShop\Controller\Action;
+
+use Pimcore\Model\Object\CoreShopCart;
+use Pimcore\Model\Object\CoreShopCartRule;
+use Pimcore\Model\Object\CoreShopProduct;
 
 class CoreShop_CartController extends Action {
     
@@ -14,6 +15,9 @@ class CoreShop_CartController extends Action {
         parent::init();
         
         $this->disableLayout();
+
+        CoreShopCartRule::autoRemoveFromCart();
+        CoreShopCartRule::autoAddToCart();
     }
     
     public function preDispatch()
@@ -27,7 +31,7 @@ class CoreShop_CartController extends Action {
     {
         $product_id = $this->getParam("product", null);
         $amount = $this->getParam("amount", 1);
-        $product = Product::getById($product_id);
+        $product = CoreShopProduct::getById($product_id);
 
         $isAllowed = true;
         $result = Plugin::getEventManager()->trigger('cart.preAdd', $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
@@ -40,7 +44,7 @@ class CoreShop_CartController extends Action {
 
         if($isAllowed)
         {
-            if($product instanceof Product && $product->getEnabled() && $product->getAvailableForOrder())
+            if($product instanceof CoreShopProduct && $product->getEnabled() && $product->getAvailableForOrder())
             {
                 $item = $this->cart->addItem($product, $amount);
                 
@@ -59,7 +63,7 @@ class CoreShop_CartController extends Action {
     
     public function removeAction() {
         $cartItem = $this->getParam("cartItem", null);
-        $item = CartItem::getById($cartItem);
+        $item = CoreShopCartItem::getById($cartItem);
         
         $isAllowed = true;
         $result = Plugin::getEventManager()->trigger('cart.preRemove', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
@@ -74,7 +78,7 @@ class CoreShop_CartController extends Action {
         
         if($isAllowed)
         {
-            if($item instanceof CartItem)
+            if($item instanceof CoreShopCartItem)
             {
                 $this->cart->removeItem($item);
                 
@@ -94,7 +98,7 @@ class CoreShop_CartController extends Action {
     public function modifyAction() {
         $cartItem = $this->getParam("cartItem", null);
         $amount = $this->getParam("amount");
-        $item = CartItem::getById($cartItem);
+        $item = CoreShopCartItem::getById($cartItem);
         
         $isAllowed = true;
         $result = Plugin::getEventManager()->trigger('cart.preModify', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
@@ -109,7 +113,7 @@ class CoreShop_CartController extends Action {
         
         if($isAllowed)
         {
-            if($item instanceof CartItem)
+            if($item instanceof CoreShopCartItem)
             {
                 $this->cart->modifyItem($item, $amount);
                 
