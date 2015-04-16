@@ -7,10 +7,11 @@ use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCountry;
 use Pimcore\Model\Object\CoreShopCurrency;
+use Pimcore\Model\Object;
 
 class Tool {
     
-    public static function formatPrice($price, $currency = "EUR")
+    public static function formatPrice($price)
     {
         try
         {
@@ -132,8 +133,7 @@ class Tool {
 
     public static function objectInList(AbstractObject $object, array $objectList)
     {
-        foreach($objectList as $o)
-        {
+        foreach($objectList as $o) {
             if($o->getId() == $object->getId())
                 return true;
         }

@@ -5,6 +5,7 @@ use CoreShop\Plugin;
 use CoreShop\Controller\Action;
 
 use Pimcore\Model\Object\CoreShopCart;
+use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\CoreShopCartRule;
 use Pimcore\Model\Object\CoreShopProduct;
 
@@ -14,10 +15,7 @@ class CoreShop_CartController extends Action {
     {
         parent::init();
         
-        $this->disableLayout();
-
-        CoreShopCartRule::autoRemoveFromCart();
-        CoreShopCartRule::autoAddToCart();
+        $this->disableLayout();;
     }
     
     public function preDispatch()
@@ -134,5 +132,33 @@ class CoreShop_CartController extends Action {
         $this->enableLayout();
 
         $this->view->headTitle($this->view->translate("Cart"));
+    }
+
+    public function cartruleAction()
+    {
+        $this->enableLayout();
+
+        $cartRule = CoreShopCartRule::getByCode($this->getParam("cartRule"));
+        $cartRule = $cartRule->getObjects();
+
+        if(count($cartRule) > 0)
+            $cartRule = $cartRule[0];
+
+        if($cartRule instanceof CoreShopCartRule)
+        {
+            if($cartRule->checkValidity())
+                $this->cart->addCartRule($cartRule);
+        }
+
+        $this->_redirect($this->getParam("redirect") ? $this->getParam("redirect") : $this->view->url(array("action" => "list"), "coreshop_cart"));
+    }
+
+    public function removecartruleAction()
+    {
+        $this->enableLayout();
+
+        $this->cart->removeCartRule();
+
+        $this->_redirect($this->view->url(array("action" => "list"), "coreshop_cart"));
     }
 }

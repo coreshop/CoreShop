@@ -2,21 +2,47 @@
 
 namespace CoreShop;
 
-use CoreShop\Base;
 use CoreShop\Tool;
-use Pimcore\API\Plugin\Exception;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\CoreShopCartRule;
+use Pimcore\Model\Object\CoreShopProduct;
 
 class CartRule extends Base
 {
+    public static function getHighlightItems()
+    {
+        $cartRules = new CoreShopCartRule\Listing();
+        $cartRules->setCondition("(code IS NOT NULL AND code <> '') AND highlight = 1");
+        $cartRules->setOrderKey("priority");
+        $cartRules->setOrder("DESC");
+
+        $cartRules = $cartRules->getObjects();
+
+        $availableCartRules = array();
+
+        foreach($cartRules as $cartRule)
+        {
+            if($cartRule->checkValidity(false, true))
+            {
+                $availableCartRules[] = $cartRule;
+            }
+        }
+
+        return $availableCartRules;
+    }
+
     public static function autoRemoveFromCart($cart = null)
     {
         if($cart == null)
             $cart = Tool::prepareCart();
 
-        $cart->removeCartRule();
+        if($cart->getCartRule() instanceof CoreShopCartRule) {
+            if ($cart->getCartRule()->checkValidity(false, true)) {
+                die($cart->getCartRule());
+                $cart->removeCartRule();
+            }
+        }
     }
 
     public static function autoAddToCart($cart = null)
@@ -44,24 +70,30 @@ class CartRule extends Base
     public function getDiscount()
     {
         $cart = Tool::prepareCart();
+        $discount = 0;
 
         if($this->getFreeShipping())
-            return $cart->getShipping();
+            $discount += $cart->getShipping();
 
         //Discount Type Percent applies on whole cart
         if($this->getDiscountType() == "percent")
         {
-            return $cart->getSubtotal() * $this->getDiscountPercent();
+            $discount += $cart->getSubtotal() * $this->getDiscountPercent();
         }
         else if($this->getDiscountType() == "amount")
         {
-            return Tool::convertToCurrency($this->getDiscountAmount(), $this->getDiscountAmountCurrency(), Tool::getCurrency());
+            $discount += Tool::convertToCurrency($this->getDiscountAmount(), $this->getDiscountAmountCurrency(), Tool::getCurrency());
         }
 
-        return 0;
+        if($this->getFreeGift() instanceof CoreShopProduct)
+        {
+            $discount += $this->getFreeGift()->getProductPrice();
+        }
+
+        return $discount;
     }
 
-    public function checkValidity($throwException = false) {
+    public function checkValidity($throwException = false, $alreadyInCart = false) {
         $session = Tool::getSession();
         $cart = Tool::prepareCart();
 
@@ -167,6 +199,14 @@ class CartRule extends Base
         else
         {
             if($throwException) throw new \Exception("Cart is empty"); else return false;
+        }
+
+        $otherCartRule = $cart->getCartRule();
+
+        if($otherCartRule instanceof CoreShopCartRule) {
+            if ($otherCartRule->getId() == $this->getId() && $alreadyInCart) {
+                return false;
+            }
         }
 
         return true;

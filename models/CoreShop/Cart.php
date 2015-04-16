@@ -2,9 +2,9 @@
     
 namespace CoreShop;
 
-use CoreShop\Base;
 use CoreShop\Plugin;
 use CoreShop\Tool;
+use Pimcore\Model\Object\CoreShopProduct;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\CoreShopCartRule;
@@ -13,7 +13,7 @@ class Cart extends Base {
     
     public static function getAll()
     {
-        $list = new Object\CoreShopCart\Listing();
+        $list = new CoreShopCart\Listing();
         
         return $list->getObjects();
     }
@@ -71,7 +71,7 @@ class Cart extends Base {
         $session = Tool::getSession();
 
         //check for existing shipping
-        if(array_key_exists("shippingProvider", $session->order) && $session->order['deliveryProvider'] instanceof \CoreShop\Plugin\Shipping) {
+        if(array_key_exists("shippingProvider", $session->order) && $session->order['deliveryProvider'] instanceof Plugin\Shipping) {
             return $session->order['shippingProvider']->getShipping($this);
         }
 
@@ -87,7 +87,7 @@ class Cart extends Base {
                 $cheapestProvider = $p;
         }
 
-        if($cheapestProvider instanceof \CoreShop\Plugin\Shipping)
+        if($cheapestProvider instanceof Plugin\Shipping)
             return $cheapestProvider->getShipping($this);
 
         return 0;
@@ -101,39 +101,68 @@ class Cart extends Base {
 
         return ($subtotal  + $shipping) - $discount;
     }
-    
-    public function addItem(Product $product, $amount = 1)
+
+    public function findItemForProduct(CoreShopProduct $product)
     {
-        $items = $this->getItems();
-        
-        if(!is_array($items))
-            $items = array();
+        if (!$product instanceof CoreShopProduct)
+            throw new \Exception("\$product must be instance of CoreShopProduct");
 
-        foreach($items as $item)
-        {
+        foreach ($this->getItems() as $item){
             if($item->getProduct()->getId() == $product->getId())
-            {
-                $item->setAmount($item->getAmount()+1);
-                $item->save();
-
                 return $item;
+        }
+
+        return false;
+    }
+
+    public function updateQuantity(CoreShopProduct $product, $amount = 0, $autoAddCartRule = true)
+    {
+        if(!$product instanceof CoreShopProduct)
+            throw new \Exception("\$product must be instance of CoreShopProduct");
+
+        $item = $this->findItemForProduct($product);
+
+        if($item instanceof CoreShopCartItem)
+        {
+            if($amount <= 0) {
+                $this->removeItem($item);
+
+                return false;
+            }
+            else {
+                $item->setAmount($amount);
             }
         }
-        
-        $item = new CoreShopCartItem();
-        $item->setKey(uniqid());
-        $item->setParent($this);
-        $item->setAmount($amount);
-        $item->setProduct($product);
-        $item->setPublished(true);
-        $item->save();
-        
-        $items[] = $item;
+        else
+        {
+            $items = $this->getItems();
 
-        $this->setItems($items);
-        $this->save(true);
-        
+            if(!is_array($items))
+                $items = array();
+
+            $item = new CoreShopCartItem();
+            $item->setKey(uniqid());
+            $item->setParent($this);
+            $item->setAmount($amount);
+            $item->setProduct($product);
+            $item->setPublished(true);
+            $item->save();
+
+            $items[] = $item;
+
+            $this->setItems($items);
+            $this->save(true);
+        }
+
+        if($autoAddCartRule)
+            CoreShopCartRule::autoAddToCart();
+
         return $item;
+    }
+
+    public function addItem(CoreShopProduct $product, $amount = 1)
+    {
+        return $this->updateQuantity($product, $amount);
     }
     
     public function removeItem(CoreShopCartItem $item)
@@ -143,14 +172,18 @@ class Cart extends Base {
     
     public function modifyItem(CoreShopCartItem $item, $amount)
     {
-        $item->setAmount($amount);
-        $item->save();
+        return $this->updateQuantity($item->getProduct(), $amount);
     }
 
     public function removeCartRule()
     {
         if($this->getCartRule() instanceof CoreShopCartRule)
         {
+            if($this->getCartRule()->getFreeGift() instanceof CoreShopProduct)
+            {
+                $this->updateQuantity($this->getCartRule()->getFreeGift(), 0, false);
+            }
+
             $this->setCartRule(null);
             $this->save();
         }
@@ -161,8 +194,15 @@ class Cart extends Base {
     public function addCartRule(CoreShopCartRule $cartRule)
     {
         $this->removeCartRule();
-
         $this->setCartRule($cartRule);
+
+        if ($cartRule->getFreeGift() instanceof CoreShopProduct) {
+            $item = $this->updateQuantity($cartRule->getFreeGift(), 1, false);
+
+            $item->setIsGiftItem(true);
+            $item->save();
+        }
+
         $this->save();
     }
     
@@ -176,7 +216,7 @@ class Cart extends Base {
         }
         
         return array(
-            "user" => $this->user ? $this->user->toArray() : null,
+            "user" => $this->getUser() ? $this->getUser()->toArray() : null,
             "items" => $items,
             "subtotal" => Tool::formatPrice($this->getSubtotal()),
             "total" => Tool::formatPrice($this->getTotal())

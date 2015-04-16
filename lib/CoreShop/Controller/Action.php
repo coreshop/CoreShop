@@ -7,6 +7,7 @@ use CoreShop\Tool;
 
 use Pimcore\Model\Object\CoreShopCountry;
 use Pimcore\Model\Object\CoreShopCurrency;
+use Pimcore\Model\Object\CoreShopCartRule;
 
 class Action extends \Website\Controller\Action {
     
@@ -81,5 +82,8 @@ class Action extends \Website\Controller\Action {
     protected function prepareCart()
     {
         $this->cart = $this->view->cart = \CoreShop\Tool::prepareCart();
+
+        CoreShopCartRule::autoRemoveFromCart($this->cart);
+        CoreShopCartRule::autoAddToCart($this->cart);
     }
 }
