@@ -68,7 +68,7 @@ class Action extends \Website\Controller\Action {
     {
         parent::preDispatch();
 
-        $result = Plugin::getEventManager()->trigger('product.' . $this->getRequest()->getActionName(), $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function($v) {
+        $result = Plugin::getEventManager()->trigger('action.' . $this->getRequest()->getActionName(), $this, array("controller" => $this, "request" => $this->getRequest()), function($v) {
             return is_array($v) && array_key_exists("action", $v) && array_key_exists("controller", $v) && array_key_exists("module", $v);
         });
 
@@ -81,7 +81,13 @@ class Action extends \Website\Controller\Action {
     
     protected function prepareCart()
     {
-        $this->cart = $this->view->cart = \CoreShop\Tool::prepareCart();
+        $this->cart = $this->view->cart = Tool::prepareCart();
+
+        if($this->session->user instanceof Plugin\User && !$this->cart->getUser() instanceof Plugin\User)
+        {
+            $this->cart->setUser($this->session->user);
+            $this->cart->save();
+        }
 
         CoreShopCartRule::autoRemoveFromCart($this->cart);
         CoreShopCartRule::autoAddToCart($this->cart);

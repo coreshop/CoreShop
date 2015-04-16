@@ -46,14 +46,16 @@
               "type":"enum('document','asset','object')"
             },
             "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
-            "objectsAllowed":false,
+            "objectsAllowed":true,
             "assetsAllowed":false,
             "assetTypes":"",
             "documentsAllowed":false,
             "documentTypes":"",
             "lazyLoading":false,
             "classes":[
-
+              {
+                "classes":"CoreShopUser"
+              }
             ],
             "name":"user",
             "title":"user",
@@ -97,7 +99,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",

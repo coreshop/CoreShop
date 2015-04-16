@@ -4,9 +4,9 @@ use CoreShop\Controller\Action;
 use CoreShop\User;
 use CoreShop\Tool;
 use CoreShop\Plugin;
-use CoreShop;
 
 use Pimcore\Model\Object\CoreShopCountry;
+use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class CoreShop_UserController extends Action 
@@ -68,6 +68,7 @@ class CoreShop_UserController extends Action
     
     public function logoutAction() {
         $this->session->user = null;
+        $this->session->cartId = null;
 
         $this->_redirect("/" . $this->language . "/shop");
     }
@@ -86,6 +87,14 @@ class CoreShop_UserController extends Action
 
                     if($isAuthenticated) {
                         $this->session->user = $user;
+
+                        if(count($this->cart->getItems()) <= 0)
+                        {
+                            $cart = $user->getLatestCart();
+
+                            if($cart instanceof CoreShopCart)
+                                $this->session->cartId = $cart->getId();
+                        }
 
                         $this->_redirect($redirect);
                     }

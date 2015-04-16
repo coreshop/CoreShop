@@ -6,6 +6,7 @@ use CoreShop\Base;
 use CoreShop\Tool;
 
 use Pimcore\Model\Object;
+use Pimcore\Model\Object\CoreShopCart;
 
 class UserAbstract extends Base implements \CoreShop\Plugin\User
 {
@@ -52,5 +53,20 @@ class UserAbstract extends Base implements \CoreShop\Plugin\User
         $list->setCondition("customer__id = ?", array($this->getId()));
 
         return $list->getObjects();
+    }
+
+    public function getLatestCart()
+    {
+        $list = new CoreShopCart\Listing();
+        $list->setCondition("user__id = ?", array($this->getId()));
+        $list->setOrderKey("o_creationDate");
+        $list->setOrder("DESC");
+
+        $carts = $list->getObjects();
+
+        if(count($carts) > 0)
+            return $carts[0];
+
+        return false;
     }
 }
