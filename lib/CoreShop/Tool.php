@@ -94,16 +94,29 @@ class Tool {
         }
 
         if (!$country instanceof CoreShopCountry) {
-            $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
+            if(file_exists(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat")) {
+                $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
 
-            $country = geoip_country_code_by_addr($gi, \Pimcore\Tool::getClientIp());
+                $country = geoip_country_code_by_addr($gi, \Pimcore\Tool::getClientIp());
 
-            geoip_close($gi);
+                geoip_close($gi);
 
-            $countryList = CoreShopCountry::getByCountry($country);
+                $countryList = CoreShopCountry::getByCountry($country);
 
-            if (count($countryList->getObjects()) > 0)
-                $country = $countryList->current();
+                if (count($countryList->getObjects()) > 0)
+                    $country = $countryList->current();
+            }
+            else
+            {
+                $enabled = CoreShopCountry::getActiveCountries();
+
+                if(count($enabled) > 0)
+                    return $enabled[0];
+                else
+                {
+                    throw new \Exception("no enabled countries found");
+                }
+            }
         }
 
 
