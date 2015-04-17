@@ -24,12 +24,19 @@ class Product extends Base {
     
     public static function getLatest($limit = 8)
     {
-        $list = new Object\CoreShopProduct\Listing();
-        $list->setCondition("enabled=1");
-        $list->setOrderKey("o_creationDate");
-        $list->setOrder("DESC");
+        $cacheKey = "coreshop_latest";
 
-        return $list->getObjects();
+        if(!$objects = \Pimcore\Model\Cache::load($cacheKey)) {
+
+            $list = new Object\CoreShopProduct\Listing();
+            $list->setCondition("enabled=1");
+            $list->setOrderKey("o_creationDate");
+            $list->setOrder("DESC");
+
+            $objects = $list->getObjects();
+        }
+
+        return $objects;
     }
     
     public function getImage()
@@ -118,6 +125,12 @@ class Product extends Base {
 
     public function getProductPrice()
     {
+        $cacheKey = "coreshop_product_price_" . $this->getId();
+
+        if($price = \Pimcore\Model\Cache::load($cacheKey)) {
+            return $price;
+        }
+
         $price = $this->getPrice();
 
         if(count($this->getSpecificPrice()) > 0)
