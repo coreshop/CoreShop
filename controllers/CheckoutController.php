@@ -148,7 +148,7 @@ class CoreShop_CheckoutController extends Action
 
                 $order = new CoreShopOrder();
                 $order->setKey(uniqid());
-                $order->setParent(Tool::findOrCreateObjectFolder("/coreshop/orders/".date('Y-m-d')));
+                $order->setParent(Tool::findOrCreateObjectFolder("/coreshop/orders/".date('Y/m/d')));
                 $order->setPublished(true);
                 $order->setLang($this->view->language);
                 $order->setCustomer($this->session->user);

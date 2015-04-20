@@ -33,7 +33,7 @@ class Cart extends Base {
     
     public static function prepare()
     {
-        $cartsFolder = Tool::findOrCreateObjectFolder("/coreshop/carts");
+        $cartsFolder = Tool::findOrCreateObjectFolder("/coreshop/carts/" . date("Y/m/d"));
         
         $cart = CoreShopCart::create();
         $cart->setKey(uniqid());

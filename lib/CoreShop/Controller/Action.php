@@ -32,7 +32,7 @@ class Action extends \Website\Controller\Action {
     public function init()
     {
         parent::init();
-        
+
         Plugin::getEventManager()->trigger('controller.init', $this);
         
         $this->view->setScriptPath(
