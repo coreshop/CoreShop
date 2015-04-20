@@ -17,6 +17,16 @@ namespace CoreShop\Controller\Action;
 
 use CoreShop\Controller\Action;
 
+use CoreShop\Plugin;
+use CoreShop\Model\Plugin\User;
+
+use Pimcore\Model\Object\CoreShopPayment;
+use Pimcore\Model\Object\CoreShopOrder;
+use Pimcore\View;
+use Pimcore\View\Helper\Url;
+use Pimcore\Model\Document;
+use Pimcore\Mail;
+
 class Payment extends Action {
     
     protected function paymentReturnAction () {
@@ -30,10 +40,10 @@ class Payment extends Action {
 
     protected function paymentFail()
     {
-        \CoreShop\Plugin::getEventManager()->trigger('payment.fail', $this);
+        Plugin::getEventManager()->trigger('payment.fail', $this);
     }
 
-    protected function paymentSuccess(\Pimcore\Model\Object\CoreShopPayment $payment)
+    protected function paymentSuccess(CoreShopPayment $payment)
     {
         $paymentSuccessHandled = false;
         $result = \CoreShop\Plugin::getEventManager()->trigger('payment.success', $this, array("payment" => $payment, "language" => $this->language), function($v) {
@@ -47,28 +57,28 @@ class Payment extends Action {
         if(!$paymentSuccessHandled) {
             $order = $payment->getOrder();
 
-            if($order instanceof \Pimcore\Model\Object\CoreShopOrder)
+            if($order instanceof CoreShopOrder)
             {
                 $user = $order->getCustomer();
 
-                if($user instanceof \CoreShop\Plugin\User)
+                if($user instanceof User)
                 {
-                    $view = new \Pimcore\View();
+                    $view = new View();
 
                     $view->setScriptPath(
                         $this->view->getScriptPaths()
                     );
 
-                    $view->registerHelper(new \Pimcore\View\Helper\Url(), "url");
+                    $view->registerHelper(new Url(), "url");
                     $view->language = $this->language;
                     $view->order = $order;
                     $view->user = $user;
                     $view->payment = $payment;
 
                     $mailDocumentPath = "/".$this->language."/shop/email/new-order";
-                    $mailDocument = \Pimcore\Model\Document::getByPath($mailDocumentPath);
+                    $mailDocument = Document::getByPath($mailDocumentPath);
 
-                    if($mailDocument instanceof \Pimcore\Model\Document\Email) {
+                    if($mailDocument instanceof Document\Email) {
                         $orderDetailsString = $view->render("coreshop/email/helper/order-details.php");
                         $shippingAddressString = $view->partial("coreshop/email/helper/address.php", array("address" => $user->findAddressByName($order->getShippingAddress())));
                         $billingAddressString =  $view->partial("coreshop/email/helper/address.php", array("address" => $user->findAddressByName($order->getBillingAddress())));
@@ -86,7 +96,7 @@ class Payment extends Action {
                             'billingAddress' => $billingAddressString
                         );
 
-                        $mail = new Pimcore_Mail();
+                        $mail = new Mail();
                         $mail->addTo($user->getEmail());
                         $mail->setDocument($mailDocument);
                         $mail->setParams($params);

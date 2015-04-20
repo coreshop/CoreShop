@@ -48,7 +48,7 @@ class Action extends \Website\Controller\Action {
 
         $this->view->addHelperPath(CORESHOP_PATH . '/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
 
-        $this->session = $this->view->session = \Pimcore\Tool\Session::get('CoreShop');
+        $this->session = $this->view->session = Tool::getSession();
 
         /*
         if(!$this->session->country instanceof CoreShopCountry) {
@@ -81,7 +81,6 @@ class Action extends \Website\Controller\Action {
     {
         parent::preDispatch();
 
-        /*
         $result = Plugin::getEventManager()->trigger('action.' . $this->getRequest()->getActionName(), $this, array("controller" => $this, "request" => $this->getRequest()), function($v) {
             return is_array($v) && array_key_exists("action", $v) && array_key_exists("controller", $v) && array_key_exists("module", $v);
         });
@@ -91,7 +90,6 @@ class Action extends \Website\Controller\Action {
 
             $this->_forward($forward['action'], $forward['controller'], $forward['module'], $forward['params']);
         }
-        */
     }
     
     protected function prepareCart()

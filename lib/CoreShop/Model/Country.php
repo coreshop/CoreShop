@@ -13,18 +13,18 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop;
+namespace CoreShop\Model;
 
-use CoreShop\Base;
 use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
+use Pimcore\Model\Object\CoreShopCountry;
 
 class Country extends Base {
 
     public static function getActiveCountries()
     {
-        $list = new \Pimcore\Model\Object\CoreShopCountry\Listing();
+        $list = new CoreShopCountry\Listing();
         $list->setCondition("active = 1");
 
         return $list->getObjects();

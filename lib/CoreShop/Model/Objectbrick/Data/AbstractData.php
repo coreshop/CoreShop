@@ -13,7 +13,9 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Objectbrick\Data;
+namespace CoreShop\Model\Objectbrick\Data;
+
+use CoreShop\Exception;
 
 class AbstractData extends \Pimcore\Model\Object\Objectbrick\Data\AbstractData
 {

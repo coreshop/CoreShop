@@ -16,11 +16,12 @@
 namespace Pimcore\Model\Document\Tag;
 
 use Pimcore\Model;
-use Pimcore\Config;
 use Pimcore\Model\Document;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Element;
+
+use Pimcore\Model\Object\CoreShopProduct;
 
 class Product extends Model\Document\Tag {
 
@@ -96,7 +97,7 @@ class Product extends Model\Document\Tag {
      */
     public function frontend() {
 
-        if ($this->o instanceof \Pimcore\Model\Object\CoreShopProduct) {
+        if ($this->o instanceof CoreShopProduct) {
             if($this->getView())
                 return $this->getView()->template("coreshop/product/preview.php", array("product" => $this->o));
         }

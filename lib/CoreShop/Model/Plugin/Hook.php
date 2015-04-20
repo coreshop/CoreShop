@@ -13,7 +13,7 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Plugin;
+namespace CoreShop\Model\Plugin;
 
 interface Hook extends AbstractPlugin
 {

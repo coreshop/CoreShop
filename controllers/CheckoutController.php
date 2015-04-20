@@ -13,16 +13,15 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-use CoreShop;
 use CoreShop\Controller\Action;
 
 use CoreShop\Plugin;
-use CoreShop\Plugin\Shipping;
-use CoreShop\Plugin\Payment;
+use CoreShop\Model\Plugin\Shipping;
+use CoreShop\Model\Plugin\Payment;
+use CoreShop\Model\Plugin\User;
 use CoreShop\Tool;
 
 use Pimcore\Model\Object\CoreShopOrder;
-use CoreShop\User;
 
 class CoreShop_CheckoutController extends Action 
 {
@@ -43,7 +42,7 @@ class CoreShop_CheckoutController extends Action
     }
     
     public function indexAction() {
-        if($this->session->user instanceof \CoreShop\Plugin\User)
+        if($this->session->user instanceof User)
         {
             $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
         }
@@ -159,8 +158,8 @@ class CoreShop_CheckoutController extends Action
 
                 if($this->session->order['shippingProvider'] instanceof Shipping)
                 {
-                    $order->setShippingProvider($this->session->order['deliveryProvider']->getIdentifier());
-                    $order->setShipping($this->session->order['deliveryProvider']->getShipping($this->cart));
+                    $order->setShippingProvider($this->session->order['shippingProvider']->getIdentifier());
+                    $order->setShipping($this->session->order['shippingProvider']->getShipping($this->cart));
                 }
                 else
                 {
@@ -182,7 +181,7 @@ class CoreShop_CheckoutController extends Action
 
     public function thankyouAction()
     {
-        if(!$this->session->user instanceof \CoreShop\Plugin\User) {
+        if(!$this->session->user instanceof User) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }
@@ -208,7 +207,7 @@ class CoreShop_CheckoutController extends Action
     
     protected function checkIsAllowed()
     {
-        if(!$this->session->user instanceof \CoreShop\Plugin\User   ) {
+        if(!$this->session->user instanceof User) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }

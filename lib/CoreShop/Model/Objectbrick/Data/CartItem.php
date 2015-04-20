@@ -1,4 +1,4 @@
-<?php
+<?
 /**
  * CoreShop
  *
@@ -13,10 +13,9 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Plugin;
+namespace CoreShop\Model\Objectbrick\Data;
 
-interface InstallPlugin
+class CartItem extends AbstractData
 {
-    public function install(\CoreShop\Plugin\Install $installer);
-    public function uninstall(\CoreShop\Plugin\Install $installer);
+
 }

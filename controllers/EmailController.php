@@ -13,10 +13,6 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-use CoreShop\Plugin;
-use CoreShop\Cart;
-use CoreShop\CartItem;
-use CoreShop\Product;
 use CoreShop\Controller\Action;
 
 class CoreShop_EmailController extends Action

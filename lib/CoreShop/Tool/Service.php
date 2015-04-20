@@ -15,8 +15,9 @@
 
 namespace CoreShop\Tool;
 
-use Object\CoreShopProduct;
-use Object\AbstractObject;
+
+use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\Object\CoreShopProduct;
 
 class Service
 {

@@ -14,13 +14,15 @@
  */
 
 use CoreShop\Controller\Action;
-use CoreShop\User;
+use CoreShop\Model\User;
 use CoreShop\Tool;
-use CoreShop\Plugin;
+use CoreShop\Model\Plugin;
+use CoreShop\Exception;
 
 use Pimcore\Model\Object\CoreShopCountry;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
+use Pimcore\Model\Object;
 
 class CoreShop_UserController extends Action 
 {
@@ -28,7 +30,7 @@ class CoreShop_UserController extends Action
         parent::preDispatch();
 
         if($this->getParam("action") != "login" && $this->getParam("action") != "register") {
-            if (!$this->session->user instanceof \CoreShop\Plugin\User) {
+            if (!$this->session->user instanceof User) {
                 $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));
                 exit;
             }
@@ -61,7 +63,7 @@ class CoreShop_UserController extends Action
 
                 if ($params['password']) {
                     if ($params['password'] != $params['repassword'])
-                        throw new \Exception("Passwords do not match!");
+                        throw new Exception("Passwords do not match!");
                 }
 
                 $this->session->user->setValues($userParams);
@@ -72,7 +74,7 @@ class CoreShop_UserController extends Action
                 if(array_key_exists("_redirect", $params))
                     $this->_redirect($params['_redirect']);
             }
-            catch(\Exception $ex)
+            catch(Exception $ex)
             {
                 $this->view->message = $ex->getMessage();
             }
@@ -112,7 +114,7 @@ class CoreShop_UserController extends Action
                         $this->_redirect($redirect);
                     }
                 }
-                catch (\Exception $ex) {
+                catch (Exception $ex) {
                     $this->view->message = $this->view->translate($ex->getMessage());
                 }
             }
@@ -210,7 +212,7 @@ class CoreShop_UserController extends Action
             
             $adresses = $this->session->user->getAddresses();
 
-            if(!$adresses instanceof Object_Fieldcollection)
+            if(!$adresses instanceof Object\Fieldcollection)
                 $adresses = new Object\Fieldcollection();
 
             if($update)

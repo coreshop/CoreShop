@@ -13,15 +13,16 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\User;
+namespace CoreShop\Model\User;
 
-use CoreShop\Base;
+use CoreShop\Model\Base;
 use CoreShop\Tool;
+use CoreShop\Exception;
 
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopCart;
 
-class UserAbstract extends Base implements \CoreShop\Plugin\User
+class UserAbstract extends Base implements \CoreShop\Model\Plugin\User
 {
     public static function getUniqueByEmail($email)
     {
@@ -42,7 +43,7 @@ class UserAbstract extends Base implements \CoreShop\Plugin\User
             return true;
         }
         else {
-            throw new \Exception("User and Password doesn't match", 0);
+            throw new Exception("User and Password doesn't match", 0);
         }
 
         return false;

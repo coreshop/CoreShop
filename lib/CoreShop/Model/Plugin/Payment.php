@@ -13,12 +13,10 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Plugin;
+namespace CoreShop\Model\Plugin;
 
-interface User
+interface Payment extends AbstractPlugin
 {
-    public static function getUniqueByEmail($email);
-    
-    public function authenticate($password);
-    public function findAddressByName($name);
+    public function getPaymentFee(\Pimcore\Model\Object\CoreShopCart $cart);
+    public function processPayment(\Pimcore\Model\Object\CoreShopOrder $order);
 }

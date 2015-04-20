@@ -13,10 +13,12 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop;
+namespace CoreShop\Model\Plugin;
 
-use Pimcore\Model\Object\CoreShopCountryTax;
-
-class CountryTax extends Base
+interface User
 {
+    public static function getUniqueByEmail($email);
+    
+    public function authenticate($password);
+    public function findAddressByName($name);
 }

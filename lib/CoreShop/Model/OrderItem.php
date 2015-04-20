@@ -13,23 +13,24 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop;
+namespace CoreShop\Model;
 
-use CoreShop\Base;
-    
-class CartItem extends Base {
+use \Pimcore\Model\Object\CoreShopOrder;;
+
+class OrderItem extends Base {
     
     public function getTotal()
     {
-        return $this->getAmount() * $this->product->getProductPrice();
+        return $this->getAmount() * $this->getPrice();
     }
 
-    public function getCart()
+
+    public function getOrder()
     {
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof \Pimcore\Model\Object\CoreShopCart) {
+            if ($parent instanceof CoreShopOrder) {
                 return $parent;
             }
 
@@ -37,16 +38,5 @@ class CartItem extends Base {
         } while ($parent != null);
 
         return;
-    }
-    
-    public function toArray()
-    {
-        return array(
-            "id" => $this->getId(),
-            "product" => $this->getProduct()->toArray(),
-            "amount" => $this->getAmount(),
-            "price" => Tool::formatPrice($this->product->getProductPrice()),
-            "total" => Tool::formatPrice($this->getTotal()),
-        );
     }
 }

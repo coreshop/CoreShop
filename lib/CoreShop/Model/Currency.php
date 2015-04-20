@@ -13,7 +13,7 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop;
+namespace CoreShop\Model;
 
 use Pimcore\Model\Object\CoreShopCurrency;
 use Pimcore\Model\Object\CoreShopCountry;

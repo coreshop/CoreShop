@@ -13,14 +13,10 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop;
+namespace CoreShop\Model;
 
-use Pimcore\Model\Object\Concrete;
+use Pimcore\Model\Object\CoreShopCountryTax;
 
-class Base extends Concrete
+class CountryTax extends Base
 {
-    public function toArray()
-    {
-        return Tool::objectToArray($this);
-    }
 }

@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":"CoreShop\\Product",
+  "parentClass":"CoreShop\\Model\\Product",
   "allowInherit":true,
   "allowVariants":true,
   "showVariants":true,
@@ -453,7 +453,7 @@
                 "mandatory":false,
                 "noteditable":false,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",

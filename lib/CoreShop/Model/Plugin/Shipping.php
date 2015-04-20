@@ -13,10 +13,9 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Plugin;
+namespace CoreShop\Model\Plugin;
 
-interface Payment extends AbstractPlugin
+interface Shipping extends AbstractPlugin
 {
-    public function getPaymentFee(\Pimcore\Model\Object\CoreShopCart $cart);
-    public function processPayment(\Pimcore\Model\Object\CoreShopOrder $order);
+    public function getShipping(\Pimcore\Model\Object\CoreShopCart $cart);
 }

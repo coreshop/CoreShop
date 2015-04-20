@@ -15,12 +15,13 @@
 
 namespace CoreShop;
 
-use Pimcore\Model\Document\Tag\Area\AbstractArea;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCountry;
 use Pimcore\Model\Object\CoreShopCurrency;
 use Pimcore\Model\Object;
+
+use Pimcore\Tool\Session;
 
 class Tool {
     
@@ -61,7 +62,7 @@ class Tool {
 
     public static function getSession()
     {
-        return \Pimcore\Tool\Session::get('CoreShop');
+        return Session::get('CoreShop');
     }
 
     public static function formatTax($tax)
@@ -71,7 +72,7 @@ class Tool {
     
     public static function prepareCart()
     {
-        $cartSession = \Pimcore\Tool\Session::get('CoreShop');
+        $cartSession = self::getSession();
 
         if($cartSession->cartId)
         {
@@ -230,7 +231,8 @@ class Tool {
                     {
                         /** @var $value Object_Fieldcollection */
                         $def = $value->getItemDefinitions();
-                        $collection[$fieldName] = self::_objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
+                        if(method_exists($def['children'], 'getFieldDefinitions'))
+                            $collection[$fieldName] = self::_objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
                     }
                     break;
 

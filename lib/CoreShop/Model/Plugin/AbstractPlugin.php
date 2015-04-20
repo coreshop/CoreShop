@@ -13,9 +13,12 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Plugin;
+namespace CoreShop\Model\Plugin;
 
-interface Shipping extends AbstractPlugin
+interface AbstractPlugin
 {
-    public function getShipping(\Pimcore\Model\Object\CoreShopCart $cart);
+    public function getName();
+    public function getImage();
+    public function getDescription();
+    public function getIdentifier();
 }

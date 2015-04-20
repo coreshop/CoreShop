@@ -13,10 +13,9 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop;
+namespace CoreShop\Model;
 
-use CoreShop\Base;
-use CoreShop\Plugin\User;
+use CoreShop\Model\Plugin\User;
 
 use Pimcore\Model\Object;
 

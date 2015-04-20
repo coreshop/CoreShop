@@ -13,9 +13,8 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop;
+namespace CoreShop\Model;
 
-use CoreShop\Base;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Model\Object\CoreShopCountry;

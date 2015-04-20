@@ -108,7 +108,7 @@ class Install
             Object\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
         }
         
-        return $fieldCollection;
+        return $objectBrick;
     }
     
     public function removeObjectBrick($name)

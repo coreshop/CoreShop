@@ -28,7 +28,7 @@ class Countries
 
     public function countries()
     {
-        $countries = \CoreShop\Country::getActiveCountries();
+        $countries = CoreShopCountry::getActiveCountries();
 
         return $countries;
     }

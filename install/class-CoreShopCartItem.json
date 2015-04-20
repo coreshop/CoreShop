@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":"CoreShop\\CartItem",
+  "parentClass":"CoreShop\\Model\\CartItem",
   "allowInherit":false,
   "allowVariants":false,
   "showVariants":false,
@@ -134,7 +134,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",

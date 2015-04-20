@@ -13,12 +13,16 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Plugin;
-    
-interface AbstractPlugin
+namespace CoreShop\Model;
+
+use CoreShop\Tool;
+
+use Pimcore\Model\Object\Concrete;
+
+class Base extends Concrete
 {
-    public function getName();
-    public function getImage();
-    public function getDescription();
-    public function getIdentifier();
+    public function toArray()
+    {
+        return Tool::objectToArray($this);
+    }
 }

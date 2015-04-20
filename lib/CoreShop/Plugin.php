@@ -19,7 +19,10 @@ use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
 use Pimcore\Model\Object;
 
-use CoreShop\Plugin\Install;
+use CoreShop\Model\Plugin\Shipping;
+use CoreShop\Model\Plugin\Payment;
+use CoreShop\Model\Plugin\Hook;
+use CoreShop\Model\Plugin\InstallPlugin;
 
 class Plugin extends AbstractPlugin implements PluginInterface {
 
@@ -33,13 +36,13 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/helper.php");
     }
 
-    public static function installPlugin(\CoreShop\Plugin\InstallPlugin $installPlugin)
+    public static function installPlugin(InstallPlugin $installPlugin)
     {
         $install = new Install();
         $installPlugin->install($install);
     }
 
-    public static function uninstallPlugin(\CoreShop\Plugin\InstallPlugin $installPlugin)
+    public static function uninstallPlugin(InstallPlugin $installPlugin)
     {
         $install = new Install();
         $installPlugin->uninstall($install);
@@ -165,13 +168,14 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     {
         $entry = Object\ClassDefinition::getByName('CoreShopProduct');
         $category = Object\ClassDefinition::getByName('CoreShopProduct');
-        $cart = Object\ClassDefinition::getByName('CoreShopCart');
+        $cartItem = Object\ClassDefinition::getByName('CoreShopCart');
         $cart = Object\ClassDefinition::getByName('CoreShopCartItem');
         $order = Object\ClassDefinition::getByName('CoreShopOrder');
         $orderItem = Object\ClassDefinition::getByName('CoreShopOrderItem');
         $orderPayment = Object\ClassDefinition::getByName('CoreShopPayment');
+        $cartRule = Object\ClassDefinition::getByName('CoreShopCartRule');
         
-        if ($entry && $category && $cart) {
+        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment && $cartRule) {
             return true;
         }
         
@@ -259,7 +263,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     public static function getShippingProviders(Object\CoreShopCart $cart)
     {
         $results = self::getEventManager()->trigger("shipping.getProvider", null, array("cart" => $cart), function($v) {
-            return ($v instanceof \CoreShop\Plugin\Shipping);
+            return ($v instanceof Shipping);
         });
         
         if($results->stopped())
@@ -280,7 +284,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     public static function getShippingProvider($identifier)
     {
         $results = self::getEventManager()->trigger("shipping.getProvider", null, array(), function($v) {
-            return ($v instanceof \CoreShop\Plugin\Shipping && $v->getIdentifier() == $identifier);
+            return ($v instanceof Shipping && $v->getIdentifier() == $identifier);
         });
         
         if($results->stopped())
@@ -294,7 +298,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     public static function getPaymentProviders(Object\CoreShopCart $cart)
     {
         $results = self::getEventManager()->trigger("payment.getProvider", null, array("cart" => $cart), function($v) {
-            return ($v instanceof \CoreShop\Plugin\Payment);
+            return ($v instanceof Payment);
         });
         
         if($results->stopped())
@@ -328,7 +332,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     public static function hook($name, $params = array())
     {
         $results = self::getEventManager()->trigger("hook." . $name, null, array(), function($v) {
-            return ($v instanceof \CoreShop\Plugin\Hook);
+            return ($v instanceof Hook);
         });
 
         $params['language'] = \Zend_Registry::get("Zend_Locale");
