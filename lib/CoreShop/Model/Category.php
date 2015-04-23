@@ -18,6 +18,8 @@ namespace CoreShop\Model;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 
+use CoreShop\Config;
+
 class Category extends Base {
     
     public static function getAll()
