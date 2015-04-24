@@ -31,14 +31,35 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
     },
 
     pimcoreReady: function (params, broker){
+        var coreShopMenuItems = [];
+
+        coreShopMenuItems.push({
+            text: t("coreshop_settings"),
+            iconCls: "coreshop_icon_settings",
+            handler: this.openSettings
+        });
+
+        var localizationMenu = [{
+            text : t("coreshop_currency"),
+            iconCls: "coreshop_icon_currency",
+            handler: this.openCurrencyList
+        }];
+
+        coreShopMenuItems.push({
+            text: t("coreshop_localization"),
+            iconCls: "coreshop_icon_localization",
+            hideOnClick: false,
+            menu: {
+                cls: "pimcore_navigation_flyout",
+                items: [localizationMenu]
+            }
+        });
+
         var menu = new Ext.menu.Menu({
-            items: [{
-                text: t("coreshop_settings"),
-                iconCls: "coreshop_icon_settings",
-                handler: this.openSettings
-            }],
+            items: coreShopMenuItems,
             cls: "pimcore_navigation_flyout"
         });
+
         var toolbar = pimcore.globalmanager.get("layout_toolbar");
         this.navEl.on("mousedown", toolbar.showSubMenu.bind(menu));
     },
@@ -51,6 +72,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         catch (e) {
             //console.log(e);
             pimcore.globalmanager.add("coreshop_settings", new pimcore.plugin.coreshop.settings());
+        }
+    },
+
+    openCurrencyList : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_currency_list").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_currency_list", new pimcore.plugin.coreshop.currency.list());
         }
     }
 });

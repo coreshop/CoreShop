@@ -134,8 +134,12 @@ class Tool {
         }
 
 
-        if(!$country instanceof CoreShopCountry)
-            throw new \Exception("Country with code $country not found");
+        if(!$country instanceof CoreShopCountry) {
+
+            //Using Default Country: AT
+            $country = CoreShopCountry::getById(939);
+            //throw new \Exception("Country with code $country not found");
+        }
 
         $session->countryId = $country->getId();
 

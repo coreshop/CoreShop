@@ -16,3 +16,11 @@
 
 "coreshop_settings_save_success","Successfully saved"
 "coreshop_settings_save_error","Error saving settings"
+
+"coreshop_localization","Localization"
+"coreshop_currency","Currency"
+"coreshop_name","Name"
+"coreshop_isoCode","ISO Code"
+"coreshop_numericIsoCode", "Numeric ISO Code"
+"coreshop_symbol","Symbol"
+"coreshop_exchangeRate","Exchange Rate"

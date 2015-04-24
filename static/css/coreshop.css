@@ -55,3 +55,9 @@
 .coreshop_icon_settings {
     background: url(/pimcore/static/img/icon/cog.png) left center no-repeat !important;
 }
+.coreshop_icon_localization {
+    background: url(/pimcore/static/img/icon/translation.png) left center no-repeat!important;
+}
+.coreshop_icon_currency {
+    background: url(/pimcore/static/img/icon/money.png) left center no-repeat!important;
+}
