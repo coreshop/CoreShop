@@ -40,7 +40,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         });
 
         var localizationMenu = [{
-            text : t("coreshop_currency"),
+            text : t("coreshop_currencies"),
             iconCls: "coreshop_icon_currency",
             handler: this.openCurrencyList
         }];
@@ -77,10 +77,10 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
     openCurrencyList : function() {
         try {
-            pimcore.globalmanager.get("coreshop_currency_list").activate();
+            pimcore.globalmanager.get("coreshop_currency").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_currency_list", new pimcore.plugin.coreshop.currency.list());
+            pimcore.globalmanager.add("coreshop_currency", new pimcore.plugin.coreshop.currencies.panel());
         }
     }
 });

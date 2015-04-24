@@ -35,18 +35,64 @@ class CoreShop_Admin_CurrencyController extends Admin
         }
     }
 
-    public function listAction ()
+    public function getCurrenciesAction()
     {
         $list = new Currency\Listing();
-        $list->setLimit($this->getParam("limit"));
-        $list->setOffset($this->getParam("start"));
+        $list->setOrder("ASC");
+        $list->load();
 
-        if($this->getParam("sort")) {
-            $list->setOrderKey($this->getParam("sort"));
-            $list->setOrder($this->getParam("dir"));
+        $currencies = array();
+        if(is_array($list->getCurrencies())){
+            foreach ($list->getCurrencies() as $currency) {
+                $currencies[] = $this->getTreeNodeConfig($currency);
+            }
         }
+        $this->_helper->json($currencies);
+    }
 
-        $items = $list->load();
-        $this->_helper->json(array("data" => $items, "success" => true, "total" => $list->getTotalCount()));
+    protected function getTreeNodeConfig($currency) {
+        $tmpCurrency= array(
+            "id" => $currency->getId(),
+            "text" => $currency->getName(),
+            "elementType" => "currency",
+            "qtipCfg" => array(
+                "title" => "ID: " . $currency->getId()
+            ),
+            "name" => $currency->getName()
+        );
+
+        $tmpCurrency["leaf"] = true;
+        $tmpCurrency["iconCls"] = "coreshop_icon_currency";
+        $tmpCurrency["allowChildren"] = false;
+
+        return $tmpCurrency;
+    }
+
+    public function getCurrencyAction() {
+        $id = $this->getParam("id");
+        $currency = Currency::getById($id);
+
+        if($currency instanceof Currency)
+            $this->_helper->json(array("success" => true, "currency" => $currency));
+        else
+            $this->_helper->json(array("success" => false));
+    }
+
+    public function saveAction() {
+        $id = $this->getParam("id");
+        $data = $this->getParam("data");
+        $currency = Currency::getById($id);
+
+
+        if($data && $currency instanceof Currency) {
+            $data = \Zend_Json::decode($this->getParam("data"));
+
+            $currency->setValues($data);
+            $currency->save();
+
+            $this->_helper->json(array("success" => true, "currency" => $currency));
+        }
+        else
+            $this->_helper->json(array("success" => false));
     }
 }

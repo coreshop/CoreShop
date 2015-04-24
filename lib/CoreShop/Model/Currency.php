@@ -13,7 +13,7 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoresShop\Model;
+namespace CoreShop\Model;
 
 class Currency extends AbstractModel {
 
