@@ -33,6 +33,8 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
     pimcoreReady: function (params, broker){
         var coreShopMenuItems = [];
 
+        pimcore.plugin.coreshop.global.initialize();
+
         coreShopMenuItems.push({
             text: t("coreshop_settings"),
             iconCls: "coreshop_icon_settings",
@@ -40,6 +42,10 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         });
 
         var localizationMenu = [{
+            text : t("coreshop_countries"),
+            iconCls: "coreshop_icon_country",
+            handler: this.openCountryList
+        },{
             text : t("coreshop_currencies"),
             iconCls: "coreshop_icon_currency",
             handler: this.openCurrencyList
@@ -81,6 +87,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_currency", new pimcore.plugin.coreshop.currencies.panel());
+        }
+    },
+
+    openCountryList : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_country").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_country", new pimcore.plugin.coreshop.countries.panel());
         }
     }
 });

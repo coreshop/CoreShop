@@ -61,3 +61,18 @@
 .coreshop_icon_currency {
     background: url(/pimcore/static/img/icon/money.png) left center no-repeat!important;
 }
+.coreshop_icon_currency_add {
+    background: url(/pimcore/static/img/icon/money_add.png) left center no-repeat!important;
+}
+.coreshop_icon_currency_remove {
+    background: url(/pimcore/static/img/icon/money_delete.png) left center no-repeat!important;
+}
+.coreshop_icon_country {
+    background: url(/pimcore/static/img/icon/car.png) left center no-repeat!important;
+}
+.coreshop_icon_country_add {
+    background: url(/pimcore/static/img/icon/car_add.png) left center no-repeat!important;
+}
+.coreshop_icon_country_remove {
+    background: url(/pimcore/static/img/icon/car_delete.png) left center no-repeat!important;
+}

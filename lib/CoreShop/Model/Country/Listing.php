@@ -13,18 +13,18 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Currency;
+namespace CoreShop\Model\Country;
 
 use Pimcore\Model;
 
 class Listing extends Model\Listing\AbstractListing implements \Zend_Paginator_Adapter_Interface, \Zend_Paginator_AdapterAggregate, \Iterator {
 
     /**
-     * List of currencies
+     * List of countries
      *
      * @var array
      */
-    public $currencies = null;
+    public $countries = null;
 
     /**
      * List of valid order keys
@@ -33,11 +33,9 @@ class Listing extends Model\Listing\AbstractListing implements \Zend_Paginator_A
      */
     public $validOrderKeys = array(
         "id",
-        "name",
-        "isoCode",
-        "numericIsoCode",
-        "exchangeRate",
-        "symbol"
+        "country",
+        "active",
+        "currency__id"
     );
 
     /**
@@ -53,19 +51,19 @@ class Listing extends Model\Listing\AbstractListing implements \Zend_Paginator_A
     /**
      * @return array
      */
-    public function getCurrencies() {
-        if ($this->currencies === null) {
+    public function getCountries() {
+        if ($this->countries === null) {
             $this->load();
         }
-        return $this->currencies;
+        return $this->countries;
     }
 
     /**
-     * @param string $currencies
+     * @param array $countries
      * @return void
      */
-    public function setCurrencies($currencies) {
-        $this->currencies = $currencies;
+    public function setCountries($countries) {
+        $this->countries = $countries;
         return $this;
     }
 
@@ -95,30 +93,30 @@ class Listing extends Model\Listing\AbstractListing implements \Zend_Paginator_A
      */
 
     public function rewind() {
-        $this->getCurrencies();
-        reset($this->currencies);
+        $this->getCountries();
+        reset($this->countries);
     }
 
     public function current() {
-        $this->getCurrencies();
-        $var = current($this->currencies);
+        $this->getCountries();
+        $var = current($this->countries);
         return $var;
     }
 
     public function key() {
-        $this->getCurrencies();
-        $var = key($this->currencies);
+        $this->getCountries();
+        $var = key($this->countries);
         return $var;
     }
 
     public function next() {
-        $this->getCurrencies();
-        $var = next($this->currencies);
+        $this->getCountries();
+        $var = next($this->countries);
         return $var;
     }
 
     public function valid() {
-        $this->getCurrencies();
+        $this->getCountries();
         $var = $this->current() !== false;
         return $var;
     }

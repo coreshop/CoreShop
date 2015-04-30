@@ -28,6 +28,10 @@ class Currency extends AbstractModel {
         return $this->getResource()->save();
     }
 
+    public function delete() {
+        return $this->getResource()->delete();
+    }
+
     public static function getById($id) {
         $obj = new self;
         $obj->getResource()->getById($id);

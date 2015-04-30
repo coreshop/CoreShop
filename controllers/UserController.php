@@ -16,10 +16,11 @@
 use CoreShop\Controller\Action;
 use CoreShop\Model\User;
 use CoreShop\Tool;
-use CoreShop\Model\Plugin;
+use CoreShop\Plugin;
 use CoreShop\Exception;
 
 use Pimcore\Model\Object\CoreShopCountry;
+use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 use Pimcore\Model\Object;
@@ -30,7 +31,7 @@ class CoreShop_UserController extends Action
         parent::preDispatch();
 
         if($this->getParam("action") != "login" && $this->getParam("action") != "register") {
-            if (!$this->session->user instanceof User) {
+            if (!$this->session->user instanceof CoreShopUser) {
                 $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));
                 exit;
             }
@@ -149,31 +150,41 @@ class CoreShop_UserController extends Action
                     $userParams[$key] = $value;
                 }
             }
-            
-            $folder = "/users/" . strtolower(substr($userParams['lastname'], 0, 1));
 
-            $adresses = new Object\Fieldcollection();
+            try {
+                //Check User exists
+                if (User::getUniqueByEmail($userParams['email']) instanceof CoreShopUser) {
+                    throw new \Exception("E-Mail already exists");
+                }
 
-            $address = new CoreShopUserAddress();
-            $address->setValues($addressParams);
-            $address->setCountry(CoreShopCountry::getById($addressParams['country']));
+                $folder = "/users/" . strtolower(substr($userParams['lastname'], 0, 1));
 
-            $adresses->add($address);
-            
-            $user = User::create();
-            $user->setKey(Pimcore\File::getValidFilename($userParams['email']));
-            $user->setPublished(true);
-            $user->setParent(Tool::findOrCreateObjectFolder($folder));
-            $user->setValues($userParams);
-            $user->setAddresses($adresses);
-            $user->save();
-            
-            Plugin::getEventManager()->trigger('user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
-            
-            $this->session->user = $user;
-            
-            if(array_key_exists("_redirect", $params))
-                $this->_redirect($params['_redirect']);
+                $adresses = new Object\Fieldcollection();
+
+                $address = new CoreShopUserAddress();
+                $address->setValues($addressParams);
+                $address->setCountry(CoreShopCountry::getById($addressParams['country']));
+
+                $adresses->add($address);
+
+                $user = User::create();
+                $user->setKey(Pimcore\File::getValidFilename($userParams['email']));
+                $user->setPublished(true);
+                $user->setParent(Tool::findOrCreateObjectFolder($folder));
+                $user->setValues($userParams);
+                $user->setAddresses($adresses);
+                $user->save();
+
+                Plugin::getEventManager()->trigger('user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
+
+                $this->session->user = $user;
+
+                if (array_key_exists("_redirect", $params))
+                    $this->_redirect($params['_redirect']);
+            }
+            catch (\Exception $ex) {
+                $this->view->error = $ex->getMessage();
+            }
         }
     }
     

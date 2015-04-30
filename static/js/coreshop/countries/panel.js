@@ -12,8 +12,8 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.currencies.panel");
-pimcore.plugin.coreshop.currencies.panel = Class.create({
+pimcore.registerNS("pimcore.plugin.coreshop.countries.panel");
+pimcore.plugin.coreshop.countries.panel = Class.create({
 
     initialize: function () {
         this.getTabPanel();
@@ -23,16 +23,16 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
 
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.activate("coreshop_currency");
+        tabPanel.activate("coreshop_country");
     },
 
     getTabPanel: function () {
 
         if (!this.panel) {
             this.panel = new Ext.Panel({
-                id: "coreshop_currency",
-                iconCls: "coreshop_icon_currency",
-                title: t("coreshop_currencies"),
+                id: "coreshop_country",
+                iconCls: "coreshop_icon_country",
+                title: t("coreshop_countries"),
                 border: false,
                 layout: "border",
                 closable:true,
@@ -41,11 +41,11 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
 
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add(this.panel);
-            tabPanel.activate("coreshop_currency");
+            tabPanel.activate("coreshop_country");
 
 
             this.panel.on("destroy", function () {
-                pimcore.globalmanager.remove("coreshop_currency");
+                pimcore.globalmanager.remove("coreshop_country");
             }.bind(this));
 
             pimcore.layout.refresh();
@@ -68,7 +68,7 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
         this.tree = new Ext.tree.TreePanel({
             xtype: "treepanel",
             region: "west",
-            title: t("coreshop_currencies"),
+            title: t("coreshop_countries"),
             width: 200,
             enableDD: false,
             autoScroll: true,
@@ -79,12 +79,12 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
                 root: true
             },
             tbar : [{
-                text: t('coreshop_currency_add'),
-                iconCls: 'coreshop_icon_currency_add',
-                handler : this.addCurrency.bind(this)
+                text: t('coreshop_country_add'),
+                iconCls: 'coreshop_icon_country_add',
+                handler : this.addCountry.bind(this)
             }],
             loader: new Ext.tree.TreeLoader({
-                dataUrl: '/plugin/CoreShop/admin_currency/get-currencies',
+                dataUrl: '/plugin/CoreShop/admin_country/get-countries',
                 requestMethod: "GET",
                 baseAttrs: {
                     reference: this,
@@ -114,7 +114,7 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
     onTreeNodeClick: function (node) {
 
         if(!node.attributes.allowChildren && node.id > 0) {
-            this.openCurrency(node.id);
+            this.openCountry(node.id);
         }
     },
 
@@ -125,9 +125,9 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
 
         menu.add(new Ext.menu.Item({
             text: t('delete'),
-            iconCls: "coreshop_icon_currency_remove",
+            iconCls: "coreshop_icon_country_remove",
             listeners: {
-                "click": this.attributes.reference.removeCurrency.bind(this)
+                "click": this.attributes.reference.removeCountry.bind(this)
             }
         }));
 
@@ -137,37 +137,37 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
         }
     },
 
-    addCurrency : function() {
+    addCountry : function() {
         Ext.MessageBox.prompt(t('add'), t('please_enter_the_name'), function (button, value, object) {
             if(button=='ok' && value != ''){
                 Ext.Ajax.request({
-                    url: "/plugin/CoreShop/admin_currency/add",
+                    url: "/plugin/CoreShop/admin_country/add",
                     params: {
                         name: value
                     },
-                    success: this.addCurrencyComplete.bind(this)
+                    success: this.addCountryComplete.bind(this)
                 });
             }
         }.bind(this));
     },
 
-    addCurrencyComplete : function(transport) {
+    addCountryComplete : function(transport) {
         try{
             var data = Ext.decode(transport.responseText);
 
             if(data && data.success){
                 this.tree.root.reload();
-                this.openCurrency(data.currency.id);
+                this.openCountry(data.country.id);
             } else {
-                pimcore.helpers.showNotification(t("error"), t("coreshop_currency_creation_error"), "error", t(data.message));
+                pimcore.helpers.showNotification(t("error"), t("coreshop_country_creation_error"), "error", t(data.message));
             }
 
         } catch(e){
-            pimcore.helpers.showNotification(t("error"), t("coreshop_currency_creation_error"), "error");
+            pimcore.helpers.showNotification(t("error"), t("coreshop_country_creation_error"), "error");
         }
     },
 
-    removeCurrency : function() {
+    removeCountry : function() {
         Ext.MessageBox.show({
             title: t('delete'),
             msg: t("are_you_sure"),
@@ -176,7 +176,7 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
             fn: function (button) {
                 if (button == "ok") {
                     Ext.Ajax.request({
-                        url: "/plugin/CoreShop/admin_currency/remove",
+                        url: "/plugin/CoreShop/admin_country/remove",
                         params: {
                             id: this.id
                         },
@@ -189,13 +189,13 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
         });
     },
 
-    openCurrency: function(currencyId) {
-        var currencyPanelKey = "coreshop_currency_" + currencyId;
-        if(this.panels[currencyPanelKey]) {
-            this.panels[currencyPanelKey].activate();
+    openCountry: function(countryId) {
+        var countryPanelKey = "coreshop_country_" + countryId;
+        if(this.panels[countryPanelKey]) {
+            this.panels[countryPanelKey].activate();
         } else {
-            var currencyPanel = new pimcore.plugin.coreshop.currencies.currency(this, currencyId);
-            this.panels[currencyPanelKey] = currencyPanel;
+            var countryPanel = new pimcore.plugin.coreshop.countries.country(this, countryId);
+            this.panels[countryPanelKey] = countryPanel;
         }
 
     },

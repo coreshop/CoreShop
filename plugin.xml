@@ -33,9 +33,12 @@
 
         <pluginJsPaths>
             <path>/plugins/CoreShop/static/js/startup.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/global.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/settings.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/currencies/panel.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/currencies/currency.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/countries/panel.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/countries/country.js</path>
         </pluginJsPaths>
 
         <pluginDocumentEditmodeJsPaths>

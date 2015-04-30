@@ -17,8 +17,6 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
 
-use Pimcore\Model\Object\CoreShopCurrency;
-use Pimcore\Model\Object\CoreShopCountry;
 
 use Pimcore\Controller\Action\Admin;
 
@@ -33,6 +31,15 @@ class CoreShop_Admin_CurrencyController extends Admin
         if (!in_array($this->getParam("action"), $notRestrictedActions)) {
             $this->checkPermission("coreshop_currency");
         }
+    }
+
+    public function getAction()
+    {
+        $list = new Currency\Listing();
+        $list->setOrder("ASC");
+        $list->load();
+
+        $this->_helper->json($list->getCurrencies());
     }
 
     public function getCurrenciesAction()
@@ -94,5 +101,33 @@ class CoreShop_Admin_CurrencyController extends Admin
         }
         else
             $this->_helper->json(array("success" => false));
+    }
+
+    public function addAction() {
+        $name = $this->getParam("name");
+
+        if(strlen($name) <= 0) {
+            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+        }
+        else {
+            $currency = new Currency();
+            $currency->setName($name);
+            $currency->save();
+
+            $this->_helper->json(array("success" => true, "currency" => $currency));
+        }
+    }
+
+    public function removeAction() {
+        $id = $this->getParam("id");
+        $currency = Currency::getById($id);
+
+        if($currency instanceof Currency) {
+            $currency->delete();
+
+            $this->_helper->json(array("success" => true));
+        }
+
+        $this->_helper->json(array("success" => false));
     }
 }
