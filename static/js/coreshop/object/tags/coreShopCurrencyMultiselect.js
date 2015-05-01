@@ -1,4 +1,3 @@
-<?php
 /**
  * CoreShop
  *
@@ -13,23 +12,10 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\View\Helper;
 
-use CoreShop\Model\Country;
+pimcore.registerNS("pimcore.object.tags.coreShopCurrencyMultiselect");
+pimcore.object.tags.coreShopCurrencyMultiselect = Class.create(pimcore.object.tags.multiselect, {
 
-class Countries
-{
-    public $view;
+    type: "coreShopCurrencyMultiselect"
 
-    public function setView(\Zend_View_Interface $view)
-    {
-        $this->view = $view;
-    }
-
-    public function countries()
-    {
-        $countries = Country::getActiveCountries();
-
-        return $countries;
-    }
-}
+});

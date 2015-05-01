@@ -15,28 +15,72 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Model\Base;
 use CoreShop\Tool;
+use CoreShop\Exception;
+
+use Pimcore\Model\Object;
+use Pimcore\Model\Object\CoreShopCart;
 
 class User extends Base
 {
-    public static function create()
+    public static function getUniqueByEmail($email)
     {
-        $class = self::getUserClass();
+        $list = self::getByEmail($email);
 
-        return new $class();
+        $users = $list->getObjects();
+
+        if (count($users) > 0) {
+            return $users[0];
+        }
+
+        return false;
     }
 
-    public static function getUserClass()
+    public function authenticate($password)
     {
-        $class = Tool::getModelClassMapping("Pimcore\Model\Object\CoreShopUser", "CoreShop\Plugin\User");
+        if ($this->getPassword() == hash("md5", $password)) {
+            return true;
+        }
+        else {
+            throw new Exception("User and Password doesn't match", 0);
+        }
 
-        return $class;
+        return false;
     }
 
-    public static function __callStatic($name, $arguments)
+    public function findAddressByName($name)
     {
-        $class = self::getUserClass();
+        foreach($this->getAddresses() as $address)
+        {
+            if($address->getName() == $name) {
+                return $address;
+            }
+        }
 
-        return call_user_func_array(array($class, $name), $arguments);
+        return false;
+    }
+
+    public function getOrders()
+    {
+        $list = new Object\CoreShopOrder\Listing();
+        $list->setCondition("customer__id = ?", array($this->getId()));
+
+        return $list->getObjects();
+    }
+
+    public function getLatestCart()
+    {
+        $list = new CoreShopCart\Listing();
+        $list->setCondition("user__id = ?", array($this->getId()));
+        $list->setOrderKey("o_creationDate");
+        $list->setOrder("DESC");
+
+        $carts = $list->getObjects();
+
+        if(count($carts) > 0)
+            return $carts[0];
+
+        return false;
     }
 }

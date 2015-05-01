@@ -18,10 +18,10 @@ namespace CoreShop\Controller\Action;
 use CoreShop\Controller\Action;
 
 use CoreShop\Plugin;
-use CoreShop\Model\Plugin\User;
 
 use Pimcore\Model\Object\CoreShopPayment;
 use Pimcore\Model\Object\CoreShopOrder;
+use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\View;
 use Pimcore\View\Helper\Url;
 use Pimcore\Model\Document;
@@ -61,7 +61,7 @@ class Payment extends Action {
             {
                 $user = $order->getCustomer();
 
-                if($user instanceof User)
+                if($user instanceof CoreShopUser)
                 {
                     $view = new View();
 

@@ -17,7 +17,6 @@ namespace CoreShop\Model;
 
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopUser;
-use Pimcore\Model\Object\CoreShopCountry;
 use Pimcore\Model\Object\CoreShopCurrency;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopProductSpecificPrice;
 use Pimcore\Model\Asset\Image;
@@ -155,6 +154,7 @@ class Product extends Base {
 
                 $hasCustomer = false;
                 $hasCountry = false;
+                $hasCurrency = false;
 
                 if($sPrice->getFrom() instanceof \Zend_Date) {
                     if ($date->get(\Zend_Date::TIMESTAMP) < $sPrice->getFrom()->get(\Zend_Date::TIMESTAMP)) {
@@ -188,7 +188,14 @@ class Product extends Base {
                     $hasCountry = true;
                 }
 
-                if($hasCountry && $hasCustomer) {
+                if(count($sPrice->getCurrencies()) > 0 && Tool::objectInList(Tool::getCurrency(), $sPrice->getCurrencies())) {
+                    $hasCurrency = true;
+                }
+                else if(count($sPrice->getCountries()) == 0) { //Non selected means all
+                    $hasCurrency = true;
+                }
+
+                if($hasCountry && $hasCustomer && $hasCurrency) {
                     $price = $this->applySpecificPrice($sPrice);
                     break;
                 }

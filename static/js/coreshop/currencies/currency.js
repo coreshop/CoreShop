@@ -58,6 +58,10 @@ pimcore.plugin.coreshop.currencies.currency = Class.create({
         this.parentPanel.getEditPanel().activate(this.panel);
     },
 
+    activate : function() {
+        this.parentPanel.getEditPanel().activate(this.panel);
+    },
+
     getFormPanel : function() {
         this.formPanel = new Ext.FormPanel({
             bodyStyle:'padding:20px 5px 20px 5px;',

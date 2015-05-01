@@ -32,10 +32,45 @@ class Currency extends AbstractModel {
         return $this->getResource()->delete();
     }
 
+    public static function getByName($name) {
+        try {
+            $obj = new self;
+            $obj->getResource()->getByName($name);
+            return $obj;
+        }
+        catch(\Exception $ex) {
+
+        }
+
+        return null;
+    }
+
     public static function getById($id) {
-        $obj = new self;
-        $obj->getResource()->getById($id);
-        return $obj;
+        try {
+            $obj = new self;
+            $obj->getResource()->getById($id);
+            return $obj;
+        }
+        catch(\Exception $ex) {
+
+        }
+
+        return null;
+    }
+
+    public static function getAvailable()
+    {
+        $countries = Country::getActiveCountries();
+
+        $currencies = array();
+
+        foreach($countries as $c)
+        {
+            if(!array_key_exists($c->getCurrency()->getId(), $currencies))
+                $currencies[$c->getCurrency()->getId()] = $c->getCurrency();
+        }
+
+        return array_values($currencies);
     }
 
     /**

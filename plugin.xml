@@ -39,6 +39,16 @@
             <path>/plugins/CoreShop/static/js/coreshop/currencies/currency.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/countries/panel.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/countries/country.js</path>
+
+            <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCountryMultiselect.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCountryMultiselect.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCountry.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCountry.js</path>
+
+            <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCurrencyMultiselect.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrencyMultiselect.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCurrency.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrency.js</path>
         </pluginJsPaths>
 
         <pluginDocumentEditmodeJsPaths>

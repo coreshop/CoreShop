@@ -27,6 +27,15 @@ class Install
      */
     protected $_user;
 
+    public function executeSQL($fileName) {
+        $db = \Pimcore\Resource::get();
+
+        $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/sql/$fileName.sql";;
+        $sql = file_get_contents($file);
+
+        return $db->query($sql);
+    }
+
     public function createClass($className)
     {
         $class = Object\ClassDefinition::getByName($className);

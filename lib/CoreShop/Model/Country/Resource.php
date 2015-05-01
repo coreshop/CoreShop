@@ -29,8 +29,18 @@ class Resource extends AbstractResource {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE id = ?', $this->model->getId());
 
         if(!$data["id"])
-            throw new Exception("Object with the ID " . $this->model->getId() . " doesn't exists");
+            throw new \Exception("Object with the ID " . $this->model->getId() . " doesn't exists");
 
+
+        $this->assignVariablesToModel($data);
+    }
+
+    public function getByIsoCode($isoCode = null)
+    {
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE isoCode = ?', $isoCode);
+
+        if(!$data["id"])
+            throw new \Exception("Object with the isoCode " . $isoCode . " doesn't exists");
 
         $this->assignVariablesToModel($data);
     }

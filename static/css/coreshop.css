@@ -58,7 +58,7 @@
 .coreshop_icon_localization {
     background: url(/pimcore/static/img/icon/translation.png) left center no-repeat!important;
 }
-.coreshop_icon_currency {
+.coreshop_icon_currency, .pimcore_icon_coreShopCurrencyMultiselect, .pimcore_icon_coreShopCurrency {
     background: url(/pimcore/static/img/icon/money.png) left center no-repeat!important;
 }
 .coreshop_icon_currency_add {
@@ -67,7 +67,7 @@
 .coreshop_icon_currency_remove {
     background: url(/pimcore/static/img/icon/money_delete.png) left center no-repeat!important;
 }
-.coreshop_icon_country {
+.coreshop_icon_country, .pimcore_icon_coreShopCountryMultiselect, .pimcore_icon_coreShopCountry{
     background: url(/pimcore/static/img/icon/car.png) left center no-repeat!important;
 }
 .coreshop_icon_country_add {
@@ -75,4 +75,8 @@
 }
 .coreshop_icon_country_remove {
     background: url(/pimcore/static/img/icon/car_delete.png) left center no-repeat!important;
+}
+
+.pimcore_icon_data_group_coreshop {
+    background: url(/pimcore/static/img/icon/basket.png) left center no-repeat!important;
 }

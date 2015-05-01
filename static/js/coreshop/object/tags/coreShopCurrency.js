@@ -1,4 +1,3 @@
-<?php
 /**
  * CoreShop
  *
@@ -13,12 +12,14 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Plugin;
+pimcore.registerNS("pimcore.object.tags.coreShopCurrency");
+pimcore.object.tags.coreShopCurrency = Class.create(pimcore.object.tags.select, {
 
-interface User
-{
-    public static function getUniqueByEmail($email);
-    
-    public function authenticate($password);
-    public function findAddressByName($name);
-}
+    type: "coreShopCurrency",
+
+    initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.fieldConfig = fieldConfig;
+        this.fieldConfig.width = 350;
+    }
+});

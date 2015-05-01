@@ -58,8 +58,9 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             
             self::getEventManager()->trigger('install.pre', null, array("installer" => $install));
 
-            $currencyClass = $install->createClass("CoreShopCurrency");
-            $countryClass = $install->createClass("CoreShopCountry");
+            $install->executeSQL("Country");
+            $install->executeSQL("Currency");
+
             $countryTaxClass = $install->createClass("CoreShopCountryTax");
 
             $fcSpecificAddress = $install->createFieldCollection("CoreShopProductSpecificPrice");

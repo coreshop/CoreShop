@@ -58,6 +58,10 @@ pimcore.plugin.coreshop.countries.country= Class.create({
         this.parentPanel.getEditPanel().activate(this.panel);
     },
 
+    activate : function() {
+        this.parentPanel.getEditPanel().activate(this.panel);
+    },
+
     getFormPanel : function() {
 
         /*
@@ -92,6 +96,11 @@ pimcore.plugin.coreshop.countries.country= Class.create({
                             fieldLabel: t("coreshop_country_name"),
                             name: "name",
                             value: this.data.country.name
+                        },
+                        {
+                            fieldLabel: t("coreshop_country_isoCode"),
+                            name: "isoCode",
+                            value: this.data.country.isoCode
                         },
                         {
                             xtype : 'checkbox',

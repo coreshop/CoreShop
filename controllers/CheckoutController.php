@@ -18,10 +18,10 @@ use CoreShop\Controller\Action;
 use CoreShop\Plugin;
 use CoreShop\Model\Plugin\Shipping;
 use CoreShop\Model\Plugin\Payment;
-use CoreShop\Model\Plugin\User;
 use CoreShop\Tool;
 
 use Pimcore\Model\Object\CoreShopOrder;
+use Pimcore\Model\Object\CoreShopUser;
 
 class CoreShop_CheckoutController extends Action 
 {
@@ -181,7 +181,7 @@ class CoreShop_CheckoutController extends Action
 
     public function thankyouAction()
     {
-        if(!$this->session->user instanceof User) {
+        if(!$this->session->user instanceof CoreShopUser) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }
@@ -207,7 +207,7 @@ class CoreShop_CheckoutController extends Action
     
     protected function checkIsAllowed()
     {
-        if(!$this->session->user instanceof User) {
+        if(!$this->session->user instanceof CoreShopUser) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }

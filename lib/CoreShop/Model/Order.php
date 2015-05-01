@@ -15,8 +15,6 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Model\Plugin\User;
-
 use Pimcore\Model\Object;
 
 class Order extends Base

@@ -15,11 +15,10 @@
 
 namespace CoreShop\Model;
 
-use Pimcore\API\Plugin\Exception;
-
 class Country extends AbstractModel {
 
     public $id;
+    public $isoCode;
     public $name;
     public $active;
     public $currency;
@@ -30,14 +29,42 @@ class Country extends AbstractModel {
     }
 
     public static function getById($id) {
-        $obj = new self;
-        $obj->getResource()->getById($id);
-        return $obj;
+        try {
+            $obj = new self;
+            $obj->getResource()->getById($id);
+            return $obj;
+        }
+        catch(\Exception $ex) {
+
+        }
+
+        return null;
+    }
+
+    public static function getByIsoCode($isoCode) {
+        try {
+            $obj = new self;
+            $obj->getResource()->getByIsoCode($isoCode);
+            return $obj;
+        }
+        catch(\Exception $ex) {
+
+        }
+
+        return null;
+    }
+
+    public static function getActiveCountries()
+    {
+        $list = new Country\Listing();
+        $list->setCondition("active = 1");
+
+        return $list->getCountries();
     }
 
     /**
-     * @return mixed
-     */
+ * @return mixed
+ */
     public function getId()
     {
         return $this->id;
@@ -49,6 +76,22 @@ class Country extends AbstractModel {
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsoCode()
+    {
+        return $this->isoCode;
+    }
+
+    /**
+     * @param mixed $isoCode
+     */
+    public function setIsoCode($isoCode)
+    {
+        $this->isoCode = $isoCode;
     }
 
     /**
@@ -109,6 +152,7 @@ class Country extends AbstractModel {
             throw new \Exception("\$currency must be instance of Currency");
 
         $this->currency = $currency;
+        $this->currency__id = $currency->getId();
     }
 
     /**
@@ -124,6 +168,8 @@ class Country extends AbstractModel {
      */
     public function setCurrency__Id($currency__id)
     {
+        $currency = null;
+
         if(is_int($currency__id)) {
             $currency = Currency::getById($currency__id);
 
@@ -132,7 +178,10 @@ class Country extends AbstractModel {
         }
 
         $this->currency__id = $currency__id;
+        $this->currency = $currency;
     }
 
-
+    public function __toString() {
+        return strval($this->getName());
+    }
 }

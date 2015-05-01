@@ -18,8 +18,7 @@ use CoreShop\Config;
 use CoreShop\Tool;
 use CoreShop\Helper\Country;
 
-use Pimcore\Model\Object\CoreShopCurrency;
-use Pimcore\Model\Object\CoreShopCountry;
+use CoreShop\Model;
 
 use Pimcore\Controller\Action\Admin;
 
@@ -108,53 +107,34 @@ class CoreShop_Admin_SettingsController extends Admin
             $currencyIsoNumber = $currencyDetail['isocode'];
 
             //Check if currency Object already exists
-            $list = CoreShopCurrency::getByName($currencyName);
-            $currencyObject = null;
+            $currencyObject = Model\Currency::getByName($currencyName);
 
-            if(count($list->getObjects()) > 0) {
-                $currencyObject = $list->current();
-            }
-
-            if(!$currencyObject instanceof CoreShopCurrency)
+            if(!$currencyObject instanceof Model\Currency)
             {
-                $currencyObject = new CoreShopCurrency();
-                $currencyObject->setKey(\Pimcore\File::getValidFilename($currencyName));
+                $currencyObject = new Model\Currency();
                 $currencyObject->setSymbol($currencySymbol);
-                $currencyObject->setIsoNumber($currencyIsoNumber);
+                $currencyObject->setNumericIsoCode($currencyIsoNumber);
                 $currencyObject->setIsoCode($currencyCode);
                 $currencyObject->setExchangeRate(1);
-                $currencyObject->setParent(Tool::findOrCreateObjectFolder("/coreshop/currencies"));
-                $currencyObject->setPublished(true);
 
             }
 
-            $currencyObject->setName($currencyName, $language);
+            $currencyObject->setName($currencyName);
             $currencyObject->save();
 
             //Check if country Object already exists
-            $countryList = CoreShopCountry::getByCountry($iso);
-            $countryObject = null;
+            $countryObject = Model\Country::getByIsoCode($iso);
 
-            if(count($countryList->getObjects()) > 0) {
-                $countryObject = $countryList->current();
-            }
-
-            if(!$countryObject instanceof CoreShopCountry)
+            if(!$countryObject instanceof Model\Country)
             {
-                $folderPath = "/coreshop/countries";
-
-                if(array_key_exists($iso, $countryGroup))
-                    $folderPath .= "/" . \Pimcore\File::getValidFilename($countryGroup[$iso]);
-
-                $countryObject = new CoreShopCountry();
-                $countryObject->setKey(\Pimcore\File::getValidFilename($name));
-                $countryObject->setCountry($iso);
-                $countryObject->setActive(false);
-                $countryObject->setParent(Tool::findOrCreateObjectFolder($folderPath));
-                $countryObject->setCurrency($currencyObject);
-                $countryObject->setPublished(true);
-                $countryObject->save();
+                $countryObject = new Model\Country();
             }
+
+            $countryObject->setName($name);
+            $countryObject->setIsoCode($iso);
+            $countryObject->setActive(false);
+            $countryObject->setCurrency($currencyObject);
+            $countryObject->save();
         }
 
         $this->_helper->json(array("success" => true));

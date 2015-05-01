@@ -1,4 +1,3 @@
-<?php
 /**
  * CoreShop
  *
@@ -13,23 +12,14 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\View\Helper;
+pimcore.registerNS("pimcore.object.tags.coreShopCountry");
+pimcore.object.tags.coreShopCountry = Class.create(pimcore.object.tags.select, {
 
-use CoreShop\Model\Country;
+    type: "coreShopCountry",
 
-class Countries
-{
-    public $view;
-
-    public function setView(\Zend_View_Interface $view)
-    {
-        $this->view = $view;
+    initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.fieldConfig = fieldConfig;
+        this.fieldConfig.width = 350;
     }
-
-    public function countries()
-    {
-        $countries = Country::getActiveCountries();
-
-        return $countries;
-    }
-}
+});

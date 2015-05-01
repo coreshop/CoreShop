@@ -17,9 +17,10 @@ namespace CoreShop;
 
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
-use Pimcore\Model\Object\CoreShopCountry;
-use Pimcore\Model\Object\CoreShopCurrency;
 use Pimcore\Model\Object;
+
+use CoreShop\Model\Currency;
+use CoreShop\Model\Country;
 
 use Pimcore\Tool\Session;
 
@@ -40,19 +41,19 @@ class Tool {
         return $price;
     }
 
-    public static function convertToCurrency($value, CoreShopCurrency $toCurrency = null)
+    public static function convertToCurrency($value, Currency $toCurrency = null)
     {
         $config = Config::getConfig();
         $configArray = $config->toArray();
 
-        $baseCurrency = CoreShopCurrency::getByPath($configArray['base']['base-currency']);
+        $baseCurrency = Currency::getById($configArray['base']['base-currency']);
 
-        if(!$toCurrency instanceof CoreShopCurrency) {
+        if(!$toCurrency instanceof Currency) {
             $toCurrency = Tool::getCurrency();
         }
 
-        if($baseCurrency instanceof CoreShopCurrency) {
-            if($toCurrency instanceof CoreShopCurrency && $toCurrency->getId() != $baseCurrency->getId()) {
+        if($baseCurrency instanceof Currency) {
+            if($toCurrency instanceof Currency && $toCurrency->getId() != $baseCurrency->getId()) {
                 return $value * $toCurrency->getExchangeRate();
             }
         }
@@ -93,9 +94,9 @@ class Tool {
         $session = self::getSession();
 
         if($session->countryId) {
-            $country = CoreShopCountry::getById($session->countryId);
+            $country = Country::getById($session->countryId);
 
-            if ($country instanceof CoreShopCountry)
+            if ($country instanceof Country)
                 return $country;
         }
 
@@ -107,7 +108,7 @@ class Tool {
                 $country = $user->getAddresses()->get(0);
         }
 
-        if (!$country instanceof CoreShopCountry) {
+        if (!$country instanceof Country) {
             if(file_exists(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat")) {
                 $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
 
@@ -115,14 +116,11 @@ class Tool {
 
                 geoip_close($gi);
 
-                $countryList = CoreShopCountry::getByCountry($country);
-
-                if (count($countryList->getObjects()) > 0)
-                    $country = $countryList->current();
+                $country = Country::getByIsoCode($country);
             }
             else
             {
-                $enabled = CoreShopCountry::getActiveCountries();
+                $enabled = Country::getActiveCountries();
 
                 if(count($enabled) > 0)
                     return $enabled[0];
@@ -134,10 +132,11 @@ class Tool {
         }
 
 
-        if(!$country instanceof CoreShopCountry) {
+        if(!$country instanceof Country) {
 
             //Using Default Country: AT
-            $country = CoreShopCountry::getById(939);
+            //TODO: Default Country configurable thru settings
+            $country = Country::getById(7);
             //throw new \Exception("Country with code $country not found");
         }
 
@@ -152,9 +151,9 @@ class Tool {
 
         if($session->currencyId)
         {
-            $currency = CoreShopCurrency::getById($session->currencyId);
+            $currency = Currency::getById($session->currencyId);
 
-            if($currency instanceof CoreShopCurrency)
+            if($currency instanceof Currency)
                 return $currency;
         }
 

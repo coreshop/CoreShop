@@ -1,3 +1,4 @@
+"coreshop", "CoreShop"
 "coreshop_name","CoreShop Plugin"
 
 "coreshop_installed_successfully","CoreShop plugin installed successfully. Please don't forget to reload pimcore!"
@@ -33,9 +34,13 @@
 "coreshop_countries","Countries"
 "coreshop_country","Country"
 "coreshop_country_name","Name"
+"coreshop_country_isoCode","ISO Code"
 "coreshop_country_active","Active"
 "coreshop_country_currency", "Currency"
 "coreshop_country_save_success","Successfully saved"
 "coreshop_country_save_error","Error saving Country"
 "coreshop_country_add","Add Country"
 "coreshop_country_creation_error","Error creating Country"
+
+"coreshop_country_multiselect", "Country Multiselect"
+"coreshop_currency_multiselect", "Currency Multiselect"

@@ -17,10 +17,10 @@ namespace CoreShop\Controller;
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
+use CoreShop\Model\Currency;
 
-use Pimcore\Model\Object\CoreShopCountry;
-use Pimcore\Model\Object\CoreShopCurrency;
 use Pimcore\Model\Object\CoreShopCartRule;
+use Pimcore\Model\Object\CoreShopUser;
 
 class Action extends \Website\Controller\Action {
     
@@ -63,7 +63,7 @@ class Action extends \Website\Controller\Action {
 
         if($this->getParam("currency"))
         {
-            if(CoreShopCurrency::getById($this->getParam("currency")) instanceof CoreShopCurrency)
+            if(Currency::getById($this->getParam("currency")) instanceof Currency)
                 $this->session->currencyId = $this->getParam("currency");
         }
 
@@ -96,7 +96,7 @@ class Action extends \Website\Controller\Action {
     {
         $this->cart = $this->view->cart = Tool::prepareCart();
 
-        if($this->session->user instanceof Plugin\User && !$this->cart->getUser() instanceof Plugin\User)
+        if($this->session->user instanceof CoreShopUser && !$this->cart->getUser() instanceof CoreShopUser)
         {
             $this->cart->setUser($this->session->user);
             $this->cart->save();
