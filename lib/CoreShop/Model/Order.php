@@ -16,6 +16,7 @@
 namespace CoreShop\Model;
 
 use Pimcore\Model\Object;
+use Pimcore\Model\Object\OrderStep;
 
 class Order extends Base
 {
@@ -101,5 +102,28 @@ class Order extends Base
         $discount = $this->getDiscount();
 
         return ($subtotal  + $shipping) - $discount;
+    }
+
+    public function save() {
+
+        if (isset($_REQUEST['data']) && false) {
+            try {
+                $data = \Zend_Json::decode($_REQUEST['data']);
+
+                if (isset($data['orderStep']))
+                {
+                    $orderStep = OrderStep::getById($data['orderStep']);
+
+                    if ($orderStep instanceof OrderStep)
+                    {
+                        $orderStep->processStep();
+                    }
+                }
+            } catch (Exception $ex) {
+                \Logger::error($ex);
+            }
+        }
+
+        parent::save();
     }
 }

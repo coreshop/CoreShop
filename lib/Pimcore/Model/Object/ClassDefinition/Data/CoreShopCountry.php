@@ -60,6 +60,10 @@ class CoreShopCountry extends Model\Object\ClassDefinition\Data\Select {
         $this->buildOptions();
     }
 
+    public function __wakeup() {
+        $this->buildOptions();
+    }
+
     private function buildOptions() {
         $countries = Country::getActiveCountries();
 

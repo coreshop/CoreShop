@@ -68,6 +68,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $cartRule = $install->createClass("CoreShopCartRule");
 
             // create object classes
+            $orerStateClass = $install->createClass("CoreShopOrderState");
             $categoryClass = $install->createClass('CoreShopCategory');
             $productClass = $install->createClass('CoreShopProduct');
             $cartClass = $install->createClass('CoreShopCart');
@@ -92,10 +93,9 @@ class Plugin extends AbstractPlugin implements PluginInterface {
                 $orderItemClass->getId(),
                 $orderClass->getId(),
                 $paymentClass->getId(),
-                $currencyClass->getId(),
-                $countryClass->getId(),
                 $countryTaxClass->getId(),
-                $cartRule->getId()
+                $cartRule->getId(),
+                $orerStateClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();
@@ -147,6 +147,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $install->removeClass('CoreShopCartItem');
             $install->removeClass("CoreShopUser");
             $install->removeClass("CoreShopOrder");
+            $install->removeClass("CoreShopOrderState");
             $install->removeClass("CoreShopPayment");
             $install->removeClass("CoreShopOrderItem");
             
@@ -175,8 +176,9 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         $orderItem = Object\ClassDefinition::getByName('CoreShopOrderItem');
         $orderPayment = Object\ClassDefinition::getByName('CoreShopPayment');
         $cartRule = Object\ClassDefinition::getByName('CoreShopCartRule');
+        $orderState = Object\ClassDefinition::getByName('CoreShopOrderState');
         
-        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment && $cartRule) {
+        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment && $cartRule && $orderState) {
             return true;
         }
         

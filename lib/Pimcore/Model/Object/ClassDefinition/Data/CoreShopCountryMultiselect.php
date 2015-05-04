@@ -35,6 +35,14 @@ class CoreShopCountryMultiselect extends Model\Object\ClassDefinition\Data\Multi
 
 
     public function __construct() {
+        $this->buildOptions();
+    }
+
+    public function __wakeup() {
+        $this->buildOptions();
+    }
+
+    protected function buildOptions() {
         $countries = Country::getActiveCountries();
 
         $options = array();

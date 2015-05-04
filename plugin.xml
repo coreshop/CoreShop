@@ -49,6 +49,9 @@
             <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrencyMultiselect.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCurrency.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrency.js</path>
+
+            <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/objectSelect.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/tags/objectSelect.js</path>
         </pluginJsPaths>
 
         <pluginDocumentEditmodeJsPaths>
