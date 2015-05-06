@@ -87,6 +87,64 @@ class ObjectSelect extends Model\Object\ClassDefinition\Data\Select {
         $this->classes = $this->correctClasses($classes);
         return $this;
     }
+    /**
+     * @see Object\ClassDefinition\Data::getDataForResource
+     * @param Asset $data
+     * @param null|Model\Object\AbstractObject $object
+     * @return integer|null
+     */
+    public function getDataForResource($data, $object = null) {
+        if ($data instanceof Object\CoreShopOrderState) {
+            return $data->getId();
+        }
+        return null;
+    }
+
+    /**
+     * @see Object\ClassDefinition\Data::getDataFromResource
+     * @param integer $data
+     * @return Country
+     */
+    public function getDataFromResource($data) {
+        if (intval($data) > 0) {
+            return Object\CoreShopOrderState::getById($data);
+        }
+        return null;
+    }
+
+    /**
+     * @see Object\ClassDefinition\Data::getDataForQueryResource
+     * @param Country $data
+     * @param null|Model\Object\AbstractObject $object
+     * @return integer|null
+     */
+    public function getDataForQueryResource($data, $object = null) {
+
+        if ($data instanceof Object\CoreShopOrderState) {
+            return $data->getId();
+        }
+        return null;
+    }
+
+    /**
+     * @see Object\ClassDefinition\Data::getDataForEditmode
+     * @param Country $data
+     * @param null|Model\Object\AbstractObject $object
+     * @return integer
+     */
+    public function getDataForEditmode($data, $object = null) {
+        return $this->getDataForResource($data, $object);
+    }
+
+    /**
+     * @see Model\Object\ClassDefinition\Data::getDataFromEditmode
+     * @param integer $data
+     * @param null|Model\Object\AbstractObject $object
+     * @return Country
+     */
+    public function getDataFromEditmode($data, $object = null) {
+        return $this->getDataFromResource($data);
+    }
 
     /**
      * this is a hack for import see: http://www.pimcore.org/issues/browse/PIMCORE-790

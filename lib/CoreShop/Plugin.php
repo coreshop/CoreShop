@@ -354,4 +354,27 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         
         return "";
     }
+
+    public static function actionHook($name, $params = array())
+    {
+        $results = self::getEventManager()->trigger("actionHook." . $name, null, array(), function($v) {
+            return ($v instanceof Hook);
+        });
+
+        $params['language'] = \Zend_Registry::get("Zend_Locale");
+
+        if($results->stopped())
+        {
+            $return = array();
+
+            foreach($results as $result)
+            {
+                $return[] = $result->render($params);
+            }
+
+            return implode($return, "\n");
+        }
+
+        return "";
+    }
 }

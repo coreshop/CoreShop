@@ -28,4 +28,12 @@ class CoreShop_EmailController extends Action
     {
 
     }
+
+    public function orderAcceptedAction() {
+        $this->view->params = $this->getAllParams();
+    }
+
+    public function orderPaidAction() {
+        $this->view->params = $this->getAllParams();
+    }
 }

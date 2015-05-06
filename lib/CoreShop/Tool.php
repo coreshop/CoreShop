@@ -18,6 +18,7 @@ namespace CoreShop;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object;
+use Pimcore\Mail;
 
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
@@ -339,5 +340,9 @@ class Tool {
         }
             
         return $pageURL;
+    }
+
+    public static function addAdminToMail(Mail $mail) {
+        $mail->addBcc("dominik@pfaffenbauer.at");
     }
 }

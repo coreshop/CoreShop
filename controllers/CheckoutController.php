@@ -21,6 +21,7 @@ use CoreShop\Model\Plugin\Payment;
 use CoreShop\Tool;
 
 use Pimcore\Model\Object\CoreShopOrder;
+use Pimcore\Model\Object\CoreShopOrderState;
 use Pimcore\Model\Object\CoreShopUser;
 
 class CoreShop_CheckoutController extends Action 
@@ -42,7 +43,7 @@ class CoreShop_CheckoutController extends Action
     }
     
     public function indexAction() {
-        if($this->session->user instanceof User)
+        if($this->session->user instanceof CoreShopUser)
         {
             $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
         }
@@ -167,9 +168,11 @@ class CoreShop_CheckoutController extends Action
                 }
                 
                 $order->save();
-                
                 $order->importCart($this->cart);
-                
+
+                $stateAccepted = CoreShopOrderState::getByPath("/coreshop/order-states/01-order-accepted");//TODO: Make Order State per Type Configurable
+                $stateAccepted->processStep($order);
+
                 $this->session->orderId = $order->getId();
 
                 $this->_helper->viewRenderer($provider->processPayment($order, $this->view->url(array("action" => "paymentreturn"), "coreshop_checkout")), null, true);

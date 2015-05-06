@@ -17,6 +17,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
+use CoreShop\Model\Plugin\Shipping;
 
 use Pimcore\Model\Object\CoreShopProduct;
 use Pimcore\Model\Object\CoreShopCart;
@@ -85,7 +86,7 @@ class Cart extends Base {
         $session = Tool::getSession();
 
         //check for existing shipping
-        if(array_key_exists("shippingProvider", $session->order) && $session->order['deliveryProvider'] instanceof Plugin\Shipping) {
+        if(array_key_exists("shippingProvider", $session->order) && $session->order['deliveryProvider'] instanceof Shipping) {
             return $session->order['shippingProvider']->getShipping($this);
         }
 
@@ -101,7 +102,7 @@ class Cart extends Base {
                 $cheapestProvider = $p;
         }
 
-        if($cheapestProvider instanceof Plugin\Shipping)
+        if($cheapestProvider instanceof Shipping)
             return $cheapestProvider->getShipping($this);
 
         return 0;

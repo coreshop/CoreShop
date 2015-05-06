@@ -22,10 +22,7 @@ use CoreShop\Plugin;
 use Pimcore\Model\Object\CoreShopPayment;
 use Pimcore\Model\Object\CoreShopOrder;
 use Pimcore\Model\Object\CoreShopUser;
-use Pimcore\View;
-use Pimcore\View\Helper\Url;
-use Pimcore\Model\Document;
-use Pimcore\Mail;
+use Pimcore\Model\Object\CoreShopOrderState;
 
 class Payment extends Action {
     
@@ -59,52 +56,8 @@ class Payment extends Action {
 
             if($order instanceof CoreShopOrder)
             {
-                $user = $order->getCustomer();
-
-                if($user instanceof CoreShopUser)
-                {
-                    $view = new View();
-
-                    $view->setScriptPath(
-                        $this->view->getScriptPaths()
-                    );
-
-                    $view->registerHelper(new Url(), "url");
-                    $view->language = $this->language;
-                    $view->order = $order;
-                    $view->user = $user;
-                    $view->payment = $payment;
-
-                    $mailDocumentPath = "/".$this->language."/shop/email/new-order";
-                    $mailDocument = Document::getByPath($mailDocumentPath);
-
-                    if($mailDocument instanceof Document\Email) {
-                        $orderDetailsString = $view->render("coreshop/email/helper/order-details.php");
-                        $shippingAddressString = $view->partial("coreshop/email/helper/address.php", array("address" => $user->findAddressByName($order->getShippingAddress())));
-                        $billingAddressString =  $view->partial("coreshop/email/helper/address.php", array("address" => $user->findAddressByName($order->getBillingAddress())));
-
-                        $params = array(
-                            'gender' => $user->getGender(),
-                            'firstname' => $user->getFirstname(),
-                            'lastname' => $user->getLastname(),
-                            'email' => $user->getEmail(),
-                            'object' => $user,
-                            'token' => $user->getProperty("token"),
-                            'language' => $this->language,
-                            'orderDetails' => $orderDetailsString,
-                            'shippingAddress' => $shippingAddressString,
-                            'billingAddress' => $billingAddressString
-                        );
-
-                        $mail = new Mail();
-                        $mail->addTo($user->getEmail());
-                        $mail->setDocument($mailDocument);
-                        $mail->setParams($params);
-                        $mail->send();
-                    } else {
-                        \Logger::error("Mail Document for new Order in $mailDocumentPath not found");
-                    }
-                }
+                $statePaied = CoreShopOrderState::getByPath("/coreshop/order-states/02-payment-received");//TODO: Make Order State per Type Configurable
+                $statePaied->processStep($order);
             }
         }
     }
