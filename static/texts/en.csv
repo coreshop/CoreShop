@@ -44,3 +44,5 @@
 
 "coreshop_country_multiselect", "Country Multiselect"
 "coreshop_currency_multiselect", "Currency Multiselect"
+
+"coreshop_cart_create_order","Create Order"

@@ -56,6 +56,9 @@ class Payment extends Action {
 
             if($order instanceof CoreShopOrder)
             {
+                $stateAccepted = CoreShopOrderState::getByPath("/coreshop/order-states/01-order-accepted");//TODO: Make Order State per Type Configurable
+                $stateAccepted->processStep($order);
+
                 $statePaied = CoreShopOrderState::getByPath("/coreshop/order-states/02-payment-received");//TODO: Make Order State per Type Configurable
                 $statePaied->processStep($order);
             }

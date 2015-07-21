@@ -23,6 +23,7 @@ use Pimcore\Model\Object\CoreShopProduct;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\CoreShopCartRule;
+use Pimcore\Model\Object\CoreShopUser;
 
 class Cart extends Base {
 
@@ -41,6 +42,11 @@ class Cart extends Base {
         $cart->setKey(uniqid());
         $cart->setParent($cartsFolder);
         $cart->setPublished(true);
+
+        if(Tool::getUser() instanceof CoreShopUser) {
+            $cart->setUser(Tool::getUser());
+        }
+
         $cart->save();
 
         return $cart;

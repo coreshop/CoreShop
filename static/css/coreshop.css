@@ -84,3 +84,7 @@
 .pimcore_icon_objectSelect {
     background: url(/pimcore/static/img/icon/select.png) no-repeat!important;
 }
+
+.coreshop_icon_create_order {
+    background: url(/pimcore/static/img/icon/page_white_add.png) no-repeat!important;
+}

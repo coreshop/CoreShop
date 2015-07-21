@@ -70,6 +70,26 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         this.navEl.on("mousedown", toolbar.showSubMenu.bind(menu));
     },
 
+    postOpenObject : function(tab, type)
+    {
+        if(tab.data.general.o_className == "CoreShopCart")
+        {
+            tab.toolbar.insert(tab.toolbar.items.length,
+                '-'
+            );
+            tab.toolbar.insert(tab.toolbar.items.length,
+                {
+                    text: t("coreshop_cart_create_order"),
+                    scale: "medium",
+                    iconCls: "coreshop_icon_create_order",
+                    handler: function() {
+                        alert("Create Order from Cart");
+                    }
+                }
+            );
+        }
+    },
+
     openSettings : function()
     {
         try {

@@ -67,6 +67,12 @@ class Tool {
         return Session::get('CoreShop');
     }
 
+    public static function getUser() {
+        $session = self::getSession();
+
+        return $session->user instanceof Object\CoreShopUser ? $session->user : null;
+    }
+
     public static function formatTax($tax)
     {
         return ($tax * 100) . "%";
