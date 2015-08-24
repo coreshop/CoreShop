@@ -88,3 +88,52 @@
 .coreshop_icon_create_order {
     background: url(/pimcore/static/img/icon/page_white_add.png) no-repeat!important;
 }
+
+.coreshop_icon_price_rule {
+    background: url(/pimcore/static/img/icon/calculator_edit.png) no-repeat!important;
+}
+
+.coreshop_price_rule_settings {
+    background: url(/pimcore/static/img/icon/cog.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_conditions {
+    background: url(/pimcore/static/img/icon/magnifier.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_actions {
+    background: url(/pimcore/static/img/icon/lightning.png) no-repeat scroll left center transparent !important;
+}
+
+
+.coreshop_price_rule_icon_condition_amount {
+    background: url(/pimcore/static/img/icon/basket.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_category {
+    background: url(/pimcore/static/img/icon/report.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_customer {
+    background: url(/pimcore/static/img/icon/group.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_country {
+    background: url(/pimcore/static/img/icon/car.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_product {
+    background: url(/pimcore/static/img/icon/coins.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_timeSpan {
+    background: url(/pimcore/static/img/icon/date.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_totalAvailable {
+    background: url(/pimcore/static/img/icon/cart.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_totalPerCustomer {
+    background: url(/pimcore/static/img/icon/group_go.png) no-repeat scroll left center transparent !important;
+}

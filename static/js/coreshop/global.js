@@ -39,5 +39,29 @@ pimcore.plugin.coreshop.global = {
         currencyStore.load();
 
         pimcore.globalmanager.add("coreshop_currencies", currencyStore);
+
+        var countryProxy = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_country/get-countries'
+        });
+        var countryReader = new Ext.data.JsonReader({
+            totalProperty:'total',
+            successProperty:'success'
+        }, [
+            {name:'id'},
+            {name:'name'},
+            {name:'symbol'},
+            {name:'isoCode'},
+            {name:'numericIsoCode'},
+            {name:'exchangeRate'}
+        ]);
+
+        var countryStore = new Ext.data.Store({
+            restful:false,
+            proxy:countryProxy,
+            reader:countryReader
+        });
+        countryStore.load();
+
+        pimcore.globalmanager.add("coreshop_countries", countryStore);
     }
 };

@@ -65,7 +65,7 @@ class Config {
             try {
                 $config = new \Zend_Config_Xml(CORESHOP_CONFIGURATION);
                 self::setConfig($config);
-            } catch (\Exception $e) {
+            } catch (\Exception $e) {die();
                 \Logger::emergency("Cannot find system configuration, should be located at: " . PIMCORE_CONFIGURATION_SYSTEM);
                 if(is_file(CORESHOP_CONFIGURATION)) {
                     $m = "Your coreshop-config.xml located at " . CORESHOP_CONFIGURATION . " is invalid, please check and correct it manually!";

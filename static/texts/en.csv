@@ -46,3 +46,30 @@
 "coreshop_currency_multiselect", "Currency Multiselect"
 
 "coreshop_cart_create_order","Create Order"
+
+"coreshop_price_rules","Price Rules"
+"coreshop_price_rule_add", "Add"
+"coreshop_price_rule_save_order","Save"
+"coreshop_price_rule_config_add","New Price Rule"
+"coreshop_price_rule_enter_the_name_of_the_new_rule","Name of the new Price Rule"
+"coreshop_price_rule_saved_successfully", "Price Rule saved successfully"
+
+"coreshop_condition_amount","Amount"
+"coreshop_condition_amount_minAmount","Min Amount"
+"coreshop_condition_amount_currency","Currency"
+"coreshop_condition_category","Category"
+"coreshop_condition_category_category","Category"
+"coreshop_condition_customer","Customer"
+"coreshop_condition_customer_customer","Customer"
+"coreshop_condition_country","Country"
+"coreshop_condition_country_country","Country"
+"coreshop_condition_product","Product"
+"coreshop_condition_product_product","Product"
+"coreshop_condition_timeSpan", "Time Span"
+"coreshop_condition_timeSpan_dateFrom", "Date From"
+"coreshop_condition_timeSpan_dateTo", "Date To"
+"coreshop_condition_totalAvailable", "Total Available",
+"coreshop_condition_totalAvailable_totalAvailable", "Total",
+"coreshop_condition_totalAvailable_totalUsed","Used"
+"coreshop_condition_totalPerCustomer","Total Per Customer",
+"coreshop_condition_totalPerCustomer_total", "Total"

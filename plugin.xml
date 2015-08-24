@@ -52,6 +52,24 @@
 
             <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/objectSelect.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/object/tags/objectSelect.js</path>
+
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/panel.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/item.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/actions/abstract.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/abstract.js</path>
+
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/amount.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/category.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/country.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/customer.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/product.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/timeSpan.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/totalAvailable.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/totalPerCustomer.js</path>
+
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/actions/freeShipping.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/actions/discountAmount.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/actions/discountPercent.js</path>
         </pluginJsPaths>
 
         <pluginDocumentEditmodeJsPaths>

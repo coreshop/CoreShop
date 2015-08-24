@@ -41,6 +41,12 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
             handler: this.openSettings
         });
 
+        coreShopMenuItems.push({
+            text: t("coreshop_price_rules"),
+            iconCls: "coreshop_icon_price_rule",
+            handler: this.openPriceRules
+        });
+
         var localizationMenu = [{
             text : t("coreshop_countries"),
             iconCls: "coreshop_icon_country",
@@ -98,6 +104,17 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         catch (e) {
             //console.log(e);
             pimcore.globalmanager.add("coreshop_settings", new pimcore.plugin.coreshop.settings());
+        }
+    },
+
+    openPriceRules : function()
+    {
+        try {
+            pimcore.globalmanager.get("coreshop_price_rules").activate();
+        }
+        catch (e) {
+            //console.log(e);
+            pimcore.globalmanager.add("coreshop_price_rules", new pimcore.plugin.coreshop.pricerule.panel());
         }
     },
 
