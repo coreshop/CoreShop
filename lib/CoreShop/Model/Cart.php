@@ -17,12 +17,12 @@ namespace CoreShop\Model;
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
+use CoreShop\Model\PriceRule;
 use CoreShop\Model\Plugin\Shipping;
 
 use Pimcore\Model\Object\CoreShopProduct;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
-use Pimcore\Model\Object\CoreShopCartRule;
 use Pimcore\Model\Object\CoreShopUser;
 
 class Cart extends Base {
@@ -67,9 +67,9 @@ class Cart extends Base {
 
     public function getDiscount()
     {
-        $cartRule = $this->getCartRule();
+        $cartRule = $this->getPriceRule();
 
-        if($cartRule instanceof CoreShopCartRule)
+        if($cartRule instanceof PriceRule)
             return $cartRule->getDiscount();
 
         return 0;
@@ -152,6 +152,7 @@ class Cart extends Base {
             }
             else {
                 $item->setAmount($amount);
+                $item->save();
             }
         }
         else
@@ -176,7 +177,7 @@ class Cart extends Base {
         }
 
         if($autoAddCartRule)
-            CoreShopCartRule::autoAddToCart();
+            PriceRule::autoAddToCart();
 
         return $item;
     }
@@ -198,31 +199,25 @@ class Cart extends Base {
 
     public function removeCartRule()
     {
-        if($this->getCartRule() instanceof CoreShopCartRule)
+        if($this->getPriceRule() instanceof PriceRule)
         {
-            if($this->getCartRule()->getFreeGift() instanceof CoreShopProduct)
+            /*if($this->getCartRule()->getFreeGift() instanceof CoreShopProduct)
             {
                 $this->updateQuantity($this->getCartRule()->getFreeGift(), 0, false);
-            }
+            }*/
 
-            $this->setCartRule(null);
+            $this->setPriceRule(null);
             $this->save();
         }
 
         return true;
     }
 
-    public function addCartRule(CoreShopCartRule $cartRule)
+    public function addCartRule(PriceRule $cartRule)
     {
         $this->removeCartRule();
-        $this->setCartRule($cartRule);
-
-        if ($cartRule->getFreeGift() instanceof CoreShopProduct) {
-            $item = $this->updateQuantity($cartRule->getFreeGift(), 1, false);
-
-            $item->setIsGiftItem(true);
-            $item->save();
-        }
+        $this->setPriceRule($cartRule);
+        $this->getPriceRule()->applyRules();
 
         $this->save();
     }

@@ -53,16 +53,12 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
 
 
         // add saved conditions
-        /*if(this.data.condition)
+        if(this.data.conditions)
         {
             var list = this;
-            var level = 0;
-            var open = 0;
-            var handleCondition = function(condition) {
-                list.addCondition("condition" + ucfirst(condition.type), condition);
-            };
-
-            handleCondition(this.data.condition);
+            Ext.each(this.data.conditions, function(condition) {
+                list.addCondition(condition.type, condition);
+            });
         }
 
         // add saved actions
@@ -70,9 +66,9 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
         {
             var list = this;
             Ext.each(this.data.actions, function(action){
-                list.addAction("action" + ucfirst(action.type), action);
+                list.addAction(action.type, action);
             });
-        }*/
+        }
 
         // ...
         var panel = this.parent.getTabPanel();
@@ -107,6 +103,12 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
                 width: 250,
                 value: data.label
             }, {
+                xtype: "textfield",
+                name: "code",
+                fieldLabel: t("code"),
+                width: 250,
+                value: data.code
+            }, {
                 xtype: "textarea",
                 name: "description",
                 fieldLabel: t("description"),
@@ -121,6 +123,11 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
                 name: "active",
                 fieldLabel: t("active"),
                 checked: this.data.active == "1"
+            }, {
+                xtype: "checkbox",
+                name: "highlight",
+                fieldLabel: t("highlight"),
+                checked: this.data.highlight == "1"
             }]
         });
 
@@ -248,7 +255,6 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
 
         // get defined conditions
         var conditionsData = [];
-        var tb, operator;
         var conditions = this.conditionsContainer.items.getRange();
         for (var i=0; i<conditions.length; i++) {
             var condition = {};
@@ -275,15 +281,33 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
             conditionsData.push(condition);
         }
         saveData["conditions"] = conditionsData;
-console.log(saveData);return;
+
         // get defined actions
         var actionData = [];
         var actions = this.actionsContainer.items.getRange();
-        for (var i=0; i<actions.length; i++) {
+        for (var i=0; i < actions.length; i++)
+        {
             var action = {};
-            action = actions[i].getForm().getFieldValues();
-            action['type'] = actions[i].parent.type;
 
+            var actionItem = actions[i];
+            var actionClass = actionItem.parent;
+            var form = actionClass.form;
+
+            for(var c=0; c < form.items.length; c++)
+            {
+                var item = form.items.item(c);
+
+                try {
+                    action[item.getName()] = item.getValue();
+                }
+                catch (e)
+                {
+
+                }
+
+            }
+
+            action['type'] = actions[i].parent.type;
             actionData.push(action);
         }
         saveData["actions"] = actionData;

@@ -23,7 +23,7 @@ pimcore.plugin.coreshop.pricerule.conditions.totalAvailable = Class.create(pimco
         var totalAvailableValue = 0;
         var totalUsedValue = 0;
 
-        if(!isNaN(this.data)) {
+        if(this.data) {
             totalAvailableValue = this.data.totalAvailable;
             totalUsedValue = this.data.totalUsed;
         }

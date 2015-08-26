@@ -19,8 +19,13 @@ pimcore.plugin.coreshop.pricerule.actions.freeShipping = Class.create(pimcore.pl
     type : 'freeShipping',
 
     getForm : function() {
-        return new Ext.Panel({
-            html: t("FreeShipping")
-        });;
+
+        this.form = new Ext.form.FormPanel({
+            layout: "pimcoreform",
+            type: 'FreeShipping',
+            forceLayout: true
+        });
+
+        return this.form;
     }
 });

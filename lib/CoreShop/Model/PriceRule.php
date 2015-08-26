@@ -15,6 +15,9 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Tool;
+use Pimcore\Model\Object\CoreShopCart;
+
 class PriceRule extends AbstractModel {
 
     /**
@@ -65,12 +68,22 @@ class PriceRule extends AbstractModel {
     /**
      * @var string
      */
+    public $code;
+
+    /**
+     * @var string
+     */
     public $description;
 
     /**
      * @var boolean
      */
     public $active;
+
+    /**
+     * @var boolean
+     */
+    public $highlight;
 
     /**
      * @var array
@@ -99,6 +112,19 @@ class PriceRule extends AbstractModel {
         return null;
     }
 
+    public static function getByCode($code) {
+        try {
+            $obj = new self;
+            $obj->getResource()->getByCode($code);
+            return $obj;
+        }
+        catch(\Exception $ex) {
+
+        }
+
+        return null;
+    }
+
     public static function getPricingRules()
     {
         $list = new PriceRule\Listing();
@@ -106,7 +132,105 @@ class PriceRule extends AbstractModel {
         return $list->getPriceRules();
     }
 
-    /**
+    public static function getHighlightItems()
+    {
+        $cart = Tool::prepareCart();
+
+        $cartRules = new PriceRule\Listing();
+        $cartRules->setCondition("(code IS NOT NULL AND code <> '') AND highlight = 1");
+
+        $cartRules = $cartRules->getPriceRules();
+
+        $availableCartRules = array();
+
+        foreach($cartRules as $cartRule)
+        {
+            if($cartRule->checkValidity(false, true))
+            {
+                if($cart->getPriceRule() instanceof PriceRule && $cartRule->getId() == $cart->getPriceRule()->getId()) {
+                    continue;
+                }
+
+                $availableCartRules[] = $cartRule;
+            }
+        }
+
+        return $availableCartRules;
+    }
+
+
+    public static function autoRemoveFromCart(CoreShopCart $cart = null)
+    {
+        if($cart == null)
+            $cart = Tool::prepareCart();
+
+        if($cart->getPriceRule() instanceof PriceRule) {
+            if (!$cart->getPriceRule()->checkValidity(false, true)) {
+                die("invalid");
+                $cart->removeCartRule();
+            }
+        }
+    }
+
+    public static function autoAddToCart(CoreShopCart $cart = null)
+    {
+        if($cart == null)
+            $cart = Tool::prepareCart();
+
+        $cartRules = new PriceRule\Listing();
+        $cartRules->setCondition("code IS NULL OR code = ''");
+        //$cartRules->setOrderKey("priority");
+        //$cartRules->setOrder("DESC");
+
+        $cartRules = $cartRules->getPriceRules();
+
+        foreach($cartRules as $cartRule)
+        {
+            if($cartRule->checkValidity(true)) {
+                $cart->addCartRule($cartRule);
+            }
+        }
+
+        return true;
+    }
+
+    public function checkValidity($throwException = false, $alreadyInCart = false)
+    {
+        $cart = Tool::prepareCart();
+
+        foreach($this->getConditions() as $condition) {
+            if(!$condition->checkCondition($cart, $this, $throwException)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function applyRules() {
+        $cart = Tool::prepareCart();
+        $discount = 0;
+
+        foreach($this->getActions() as $action) {
+            $discount += $action->applyRule($cart);
+        }
+
+        return $discount;
+    }
+
+    public function getDiscount()
+    {
+        $cart = Tool::prepareCart();
+        $discount = 0;
+
+        foreach($this->getActions() as $action) {
+            $discount += $action->getDiscount($cart);
+        }
+
+        return $discount;
+    }
+
+        /**
      * @return mixed
      */
     public function getId()
@@ -173,7 +297,7 @@ class PriceRule extends AbstractModel {
     /**
      * @return boolean
      */
-    public function Active()
+    public function getActive()
     {
         return $this->active;
     }
@@ -218,6 +342,37 @@ class PriceRule extends AbstractModel {
         $this->actions = $actions;
     }
 
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHighlight()
+    {
+        return $this->highlight;
+    }
+
+    /**
+     * @param boolean $highlight
+     */
+    public function setHighlight($highlight)
+    {
+        $this->highlight = $highlight;
+    }
 
     public function __toString() {
         return strval($this->getName());

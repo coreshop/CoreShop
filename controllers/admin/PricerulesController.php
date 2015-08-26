@@ -17,8 +17,9 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
 
-
 use Pimcore\Controller\Action\Admin;
+
+use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_PricerulesController extends Admin
 {
@@ -70,6 +71,7 @@ class CoreShop_Admin_PricerulesController extends Admin
             $priceRule = new PriceRule();
             $priceRule->setName($name);
             $priceRule->setActive(0);
+            $priceRule->setHighlight(0);
             $priceRule->save();
 
             $this->_helper->json(array("success" => true, "priceRule" => $priceRule));
@@ -96,7 +98,47 @@ class CoreShop_Admin_PricerulesController extends Admin
         if ($data && $priceRule instanceof PriceRule) {
             $data = \Zend_Json::decode($this->getParam("data"));
 
-            $priceRule->setValues($data);
+            $conditions = $data['conditions'];
+            $actions = $data['actions'];
+            $actionInstances = array();
+            $conditionInstances = array();
+
+            $actionNamespace = "CoreShop\\Model\\PriceRule\\Action\\";
+            $conditionNamespace = "CoreShop\\Model\\PriceRule\\Condition\\";
+
+            foreach($conditions as $condition) {
+                $class = $conditionNamespace . ucfirst($condition['type']);
+
+                if(PimTool::classExists($class)) {
+                    $instance = new $class();
+                    $instance->setValues($condition);
+
+                    $conditionInstances[] = $instance;
+                }
+                else {
+                    throw new \Exception(sprintf("Condition with type %s not found"), $condition['type']);
+                }
+            }
+
+            foreach($actions as $action) {
+                $class = $actionNamespace . ucfirst($action['type']);
+
+                if(PimTool::classExists($class)) {
+                    $instance = new $class();
+                    $instance->setValues($action);
+
+                    print_r($action);
+
+                    $actionInstances[] = $instance;
+                }
+                else {
+                    throw new \Exception(sprintf("Action with type %s not found"), $action['type']);
+                }
+            }
+
+            $priceRule->setValues($data['settings']);
+            $priceRule->setActions($actionInstances);
+            $priceRule->setConditions($conditionInstances);
             $priceRule->save();
 
             $this->_helper->json(array("success" => true, "priceRule" => $priceRule));

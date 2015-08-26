@@ -19,8 +19,53 @@ pimcore.plugin.coreshop.pricerule.actions.discountPercent = Class.create(pimcore
     type : 'discountPercent',
 
     getForm : function() {
-        return new Ext.Panel({
-            html: t("DiscountPercent")
-        });;
+        var percentValue = 0;
+        var currencyValue = null;
+        var me = this;
+
+        if(this.data) {
+            percentValue = this.data.percent;
+            currencyValue = this.data.currency;
+        }
+
+        var percent = new Ext.ux.form.SpinnerField({
+            fieldLabel:t("coreshop_action_discountPercent_percent"),
+            name:'percent',
+            value : percentValue,
+            minValue : 0,
+            maxValue : 100,
+            decimalPrecision : 0
+        });
+
+        var currency = {
+            xtype: 'combo',
+            fieldLabel: t('coreshop_action_discountPercent_currency'),
+            typeAhead: true,
+            value: currencyValue,
+            mode: 'local',
+            listWidth: 100,
+            width : 200,
+            store: pimcore.globalmanager.get("coreshop_currencies"),
+            displayField: 'name',
+            valueField: 'id',
+            forceSelection: true,
+            triggerAction: 'all',
+            hiddenName:'currency',
+            listeners: {
+                listeners: {
+                    beforerender: function () {
+                        this.setValue(me.data.currency);
+                    }
+                }
+            }
+        };
+
+        this.form = new Ext.form.FieldSet({
+            items : [
+                percent, currency
+            ]
+        });
+
+        return this.form;
     }
 });

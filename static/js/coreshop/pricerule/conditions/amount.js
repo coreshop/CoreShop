@@ -21,9 +21,12 @@ pimcore.plugin.coreshop.pricerule.conditions.amount = Class.create(pimcore.plugi
     getForm : function() {
 
         var minAmountValue = 0;
+        var currencyValue = null;
+        var me = this;
 
-        if(!isNaN(this.data.minAmount)) {
+        if(this.data.minAmount) {
             minAmountValue = this.data.minAmount;
+            currencyValue = this.data.currency;
         }
 
         var minAmount = new Ext.ux.form.SpinnerField({
@@ -41,6 +44,7 @@ pimcore.plugin.coreshop.pricerule.conditions.amount = Class.create(pimcore.plugi
             value: this.data.currency,
             mode: 'local',
             listWidth: 100,
+            width : 200,
             store: pimcore.globalmanager.get("coreshop_currencies"),
             displayField: 'name',
             valueField: 'id',
@@ -48,12 +52,11 @@ pimcore.plugin.coreshop.pricerule.conditions.amount = Class.create(pimcore.plugi
             triggerAction: 'all',
             hiddenName:'currency',
             listeners: {
-                change: function () {
-                    this.forceReloadOnSave = true;
-                }.bind(this),
-                select: function () {
-                    this.forceReloadOnSave = true;
-                }.bind(this)
+                listeners: {
+                    beforerender: function () {
+                        this.setValue(me.data.currency);
+                    }
+                }
             }
         };
 

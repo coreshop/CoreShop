@@ -23,7 +23,7 @@ pimcore.plugin.coreshop.pricerule.conditions.category = Class.create(pimcore.plu
             fieldLabel: t("coreshop_condition_category_category"),
             name: "category",
             cls: "input_drop_target",
-            value: this.data.country,
+            value: this.data.category,
             width: 300,
             xtype: "textfield",
             listeners: {

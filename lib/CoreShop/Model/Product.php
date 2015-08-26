@@ -106,6 +106,15 @@ class Product extends Base {
         
         parent::save();
     }
+
+    public function inCategory(Object\CoreShopCategory $category) {
+        foreach($this->getCategories() as $c) {
+            if($c->getId() == $category->getId())
+                return true;
+        }
+
+        return false;
+    }
     
     public function toArray()
     {

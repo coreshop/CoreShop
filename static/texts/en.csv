@@ -73,3 +73,15 @@
 "coreshop_condition_totalAvailable_totalUsed","Used"
 "coreshop_condition_totalPerCustomer","Total Per Customer",
 "coreshop_condition_totalPerCustomer_total", "Total"
+
+"coreshop_action_freeShipping", "Free Shipping"
+"coreshop_action_discountAmount", "Discount Amount"
+"coreshop_action_discountAmount_amount", "Amount"
+"coreshop_action_discountAmount_currency", "Currency"
+"coreshop_action_discountPercent", "Discount Percent"
+"coreshop_action_discountPercent_percent", "Percent"
+"coreshop_action_discountPercent_currency", "Currency"
+
+"highlight","Highlight"
+
+"coreshop_priceRule","Price Rule"

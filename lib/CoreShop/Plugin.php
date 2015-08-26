@@ -67,7 +67,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
 
             $fcSpecificAddress = $install->createFieldCollection("CoreShopProductSpecificPrice");
 
-            $cartRule = $install->createClass("CoreShopCartRule");
+            //$cartRule = $install->createClass("CoreShopCartRule");
 
             // create object classes
             $orerStateClass = $install->createClass("CoreShopOrderState");
@@ -96,7 +96,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
                 $orderClass->getId(),
                 $paymentClass->getId(),
                 $countryTaxClass->getId(),
-                $cartRule->getId(),
+                //$cartRule->getId(),
                 $orerStateClass->getId()
             ));
             // create static routes
@@ -142,7 +142,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             
             $install->removeClassmap();
 
-            $install->removeClass("CoreShopCartRule");
+            //$install->removeClass("CoreShopCartRule");
             $install->removeClass('CoreShopProduct');
             $install->removeClass('CoreShopCategory');
             $install->removeClass('CoreShopCart');
@@ -177,10 +177,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         $order = Object\ClassDefinition::getByName('CoreShopOrder');
         $orderItem = Object\ClassDefinition::getByName('CoreShopOrderItem');
         $orderPayment = Object\ClassDefinition::getByName('CoreShopPayment');
-        $cartRule = Object\ClassDefinition::getByName('CoreShopCartRule');
+        //$cartRule = Object\ClassDefinition::getByName('CoreShopCartRule');
         $orderState = Object\ClassDefinition::getByName('CoreShopOrderState');
         
-        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment && $cartRule && $orderState) {
+        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment && /*$cartRule &&*/ $orderState) {
             return true;
         }
         
@@ -288,7 +288,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     
     public static function getShippingProvider($identifier)
     {
-        $results = self::getEventManager()->trigger("shipping.getProvider", null, array(), function($v) {
+        $results = self::getEventManager()->trigger("shipping.getProvider", null, array(), function($v) use ($identifier) {
             return ($v instanceof Shipping && $v->getIdentifier() == $identifier);
         });
         

@@ -12,9 +12,14 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
+pimcore.registerNS("pimcore.object.tags.coreShopPriceRule");
+pimcore.object.tags.coreShopPriceRule = Class.create(pimcore.object.tags.select, {
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerule.conditions");
-pimcore.registerNS("pimcore.plugin.coreshop.pricerule.conditions.abstract");
-pimcore.plugin.coreshop.pricerule.conditions.abstract = Class.create(pimcore.plugin.coreshop.pricerule.abstract, {
-    elementType : 'condition'
+    type: "coreShopPriceRule",
+
+    initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.fieldConfig = fieldConfig;
+        this.fieldConfig.width = 350;
+    }
 });

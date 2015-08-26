@@ -43,11 +43,11 @@ pimcore.plugin.coreshop.pricerule.conditions.timeSpan = Class.create(pimcore.plu
         };
 
         if (this.data) {
-            var tmpDate = new Date(intval(this.data.dateFrom) * 1000);
+            var tmpDate = new Date(intval(this.data.dateFrom));
             dateFrom.value = tmpDate;
             timeFrom.value = tmpDate.format("H:i");
 
-            var tmpDate = new Date(intval(this.data.dateTo) * 1000);
+            var tmpDate = new Date(intval(this.data.dateTo));
             dateTo.value = tmpDate;
             timeTo.value = tmpDate.format("H:i");
         }

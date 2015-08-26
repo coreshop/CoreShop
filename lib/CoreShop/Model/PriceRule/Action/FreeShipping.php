@@ -13,17 +13,25 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\PriceRule\Condition;
+namespace CoreShop\Model\PriceRule\Action;
 
-use CoreShop\Model\PriceRule\AbstractPriceRule;
-use CoreShop\Model;
-use CoreShop\Model\PriceRule;
+use Pimcore\Model;
 
-abstract class AbstractCondition extends AbstractPriceRule {
+class FreeShipping extends AbstractAction {
     /**
      * @var string
      */
-    public $elementType = "condition";
+    public $type = "freeShipping";
 
-    public abstract function checkCondition(Model\Cart $cart, PriceRule $priceRule, $throwException = false);
+    public function getDiscount(Model\Object\CoreShopCart $cart)
+    {
+        $discount = $cart->getShipping();
+
+        return $discount;
+    }
+
+    public function applyRule(Model\Object\CoreShopCart $cart)
+    {
+        return true;
+    }
 }

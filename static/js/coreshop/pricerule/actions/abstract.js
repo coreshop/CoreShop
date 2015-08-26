@@ -15,32 +15,6 @@
 
 pimcore.registerNS("pimcore.plugin.coreshop.pricerule.actions");
 pimcore.registerNS("pimcore.plugin.coreshop.pricerule.actions.abstract");
-pimcore.plugin.coreshop.pricerule.actions.abstract = Class.create({
-
-    /**
-     * pimcore.plugin.coreshop.pricerule.item
-     */
-    parent: {},
-
-    data : {},
-
-    type : 'abstract',
-
-    initialize : function(parent, data) {
-        this.parent = parent;
-        this.data = data;
-    },
-
-    getLayout : function() {
-        this.layout = new Ext.Panel({
-            title: t(this.type),
-            parent : this,
-            style: "margin: 10px 0 0 0",
-            items : [
-                this.getForm()
-            ]
-        });
-
-        return this.layout;
-    }
+pimcore.plugin.coreshop.pricerule.actions.abstract = Class.create(pimcore.plugin.coreshop.pricerule.abstract, {
+    elementType : 'action'
 });

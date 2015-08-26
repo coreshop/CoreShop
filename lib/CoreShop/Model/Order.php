@@ -47,7 +47,7 @@ class Order extends Base
         }
 
         $this->setDiscount($cart->getDiscount());
-        $this->setCartRule($cart->getCartRule());
+        $this->setPriceRule($cart->getPriceRule());
         $this->setItems($items);
         $this->save();
         

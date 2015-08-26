@@ -35,6 +35,15 @@ class Resource extends AbstractResource {
         $this->assignVariablesToModel($data);
     }
 
+    public function getByCode($code = null) {
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE code = ?', $code);
+
+        if(!$data["id"])
+            throw new \Exception("PriceRule with the Code " . $this->model->getCode() . " doesn't exists");
+
+        $this->assignVariablesToModel($data);
+    }
+
     public function save() {
 
         $vars = get_object_vars($this->model);
@@ -77,4 +86,16 @@ class Resource extends AbstractResource {
         $this->db->delete($this->tableName, $this->db->quoteInto("id = ?", $this->model->getId()));
     }
 
+    protected function assignVariablesToModel($data) {
+        parent::assignVariablesToModel($data);
+
+        foreach($data as $key=>$value) {
+            if($key == "actions") {
+                $this->model->setActions(unserialize($value));
+            }
+            else if($key == "conditions") {
+                $this->model->setConditions(unserialize($value));
+            }
+        }
+    }
 }

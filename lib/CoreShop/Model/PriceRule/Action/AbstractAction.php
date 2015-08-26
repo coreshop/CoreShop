@@ -16,7 +16,14 @@
 namespace CoreShop\Model\PriceRule\Action;
 
 use Pimcore\Model;
+use CoreShop\Model\PriceRule\AbstractPriceRule;
 
-class AbstractAction {
+abstract class AbstractAction extends AbstractPriceRule {
+    /**
+     * @var string
+     */
+    public $elementType = "action";
 
+    public abstract function applyRule(Model\Object\CoreShopCart $cart);
+    public abstract function getDiscount(Model\Object\CoreShopCart $cart);
 }

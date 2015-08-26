@@ -19,6 +19,8 @@ pimcore.plugin.coreshop.pricerule.conditions.country = Class.create(pimcore.plug
     type : 'country',
 
     getForm : function() {
+        var me = this;
+
         var country = {
             xtype: 'combo',
             fieldLabel: t('coreshop_condition_country_country'),
@@ -26,6 +28,7 @@ pimcore.plugin.coreshop.pricerule.conditions.country = Class.create(pimcore.plug
             value: this.data.currency,
             mode: 'local',
             listWidth: 100,
+            width : 200,
             store: pimcore.globalmanager.get("coreshop_countries"),
             displayField: 'name',
             valueField: 'id',
@@ -33,12 +36,9 @@ pimcore.plugin.coreshop.pricerule.conditions.country = Class.create(pimcore.plug
             triggerAction: 'all',
             hiddenName:'country',
             listeners: {
-                change: function () {
-                    this.forceReloadOnSave = true;
-                }.bind(this),
-                select: function () {
-                    this.forceReloadOnSave = true;
-                }.bind(this)
+                beforerender: function () {
+                    this.setValue(me.data.country);
+                }
             }
         };
 

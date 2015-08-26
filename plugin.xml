@@ -45,6 +45,9 @@
             <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCountry.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCountry.js</path>
 
+            <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopPriceRule.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopPriceRule.js</path>
+
             <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCurrencyMultiselect.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrencyMultiselect.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCurrency.js</path>
@@ -55,6 +58,7 @@
 
             <path>/plugins/CoreShop/static/js/coreshop/pricerule/panel.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/pricerule/item.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/pricerule/abstract.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/pricerule/actions/abstract.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/abstract.js</path>
 

@@ -20,23 +20,23 @@ pimcore.plugin.coreshop.pricerule.conditions.totalPerCustomer = Class.create(pim
 
     getForm : function() {
 
-        var totalAvailableValue = 0;
+        var totalValue  = 0;
 
-        if(!isNaN(this.data)) {
-            totalAvailableValue = this.data.totalAvailable;
+        if(this.data) {
+            totalValue = this.data.total;
         }
 
-        var totalAvailable = new Ext.ux.form.SpinnerField({
+        var total = new Ext.ux.form.SpinnerField({
             fieldLabel:t("coreshop_condition_totalPerCustomer_total"),
             name:'total',
-            value : totalAvailableValue,
+            value : totalValue ,
             minValue : 0,
             decimalPrecision : 0
         });
 
         this.form = new Ext.form.FieldSet({
             items : [
-                totalAvailable
+                total
             ]
         });
 

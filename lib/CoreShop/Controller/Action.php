@@ -18,8 +18,8 @@ namespace CoreShop\Controller;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
+use CoreShop\Model\PriceRule;
 
-use Pimcore\Model\Object\CoreShopCartRule;
 use Pimcore\Model\Object\CoreShopUser;
 
 class Action extends \Website\Controller\Action {
@@ -102,7 +102,7 @@ class Action extends \Website\Controller\Action {
             $this->cart->save();
         }
 
-        CoreShopCartRule::autoRemoveFromCart($this->cart);
-        CoreShopCartRule::autoAddToCart($this->cart);
+        PriceRule::autoRemoveFromCart($this->cart);
+        PriceRule::autoAddToCart($this->cart);
     }
 }

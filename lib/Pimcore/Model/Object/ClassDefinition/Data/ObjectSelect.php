@@ -186,20 +186,22 @@ class ObjectSelect extends Model\Object\ClassDefinition\Data\Select {
         $classes = $this->classes;
         $options = array();
 
-        foreach($classes as $class) {
-            $class = ClassDefinition::getByName($class);
+        if(is_array($classes)) {
+            foreach ($classes as $class) {
+                $class = ClassDefinition::getByName($class);
 
-            if($class instanceof ClassDefinition) {
-                $listClassName = "Pimcore\\Model\\Object\\".$class->getName()."\\Listing";
-                $listObject = new $listClassName();
-                $listObject->getObjects();
+                if ($class instanceof ClassDefinition) {
+                    $listClassName = "Pimcore\\Model\\Object\\" . $class->getName() . "\\Listing";
+                    $listObject = new $listClassName();
+                    $listObject->getObjects();
 
-                foreach($listObject as $listItem) {
-                    $options[] = array(
-                        "key" => $listItem->getKey(),
-                        "value" => $listItem->getId(),
-                        "path" => $listItem->getFullPath()
-                    );
+                    foreach ($listObject as $listItem) {
+                        $options[] = array(
+                            "key" => $listItem->getKey(),
+                            "value" => $listItem->getId(),
+                            "path" => $listItem->getFullPath()
+                        );
+                    }
                 }
             }
         }
