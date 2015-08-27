@@ -206,6 +206,8 @@ class Cart extends Base {
                 $this->updateQuantity($this->getCartRule()->getFreeGift(), 0, false);
             }*/
 
+            $this->getPriceRule()->unApplyRules();
+
             $this->setPriceRule(null);
             $this->save();
         }

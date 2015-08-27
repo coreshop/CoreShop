@@ -71,6 +71,10 @@ class DiscountAmount extends AbstractAction {
         return true;
     }
 
+    public function unApplyRule(Model\Object\CoreShopCart $cart) {
+        return true;
+    }
+
     public function getDiscount(Model\Object\CoreShopCart $cart) {
         return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
     }

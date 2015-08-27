@@ -81,6 +81,8 @@
 "coreshop_action_discountPercent", "Discount Percent"
 "coreshop_action_discountPercent_percent", "Percent"
 "coreshop_action_discountPercent_currency", "Currency"
+"coreshop_action_gift", "Gift"
+"coreshop_action_gift_product", "Product"
 
 "highlight","Highlight"
 

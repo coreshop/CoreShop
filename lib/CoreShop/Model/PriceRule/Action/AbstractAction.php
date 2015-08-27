@@ -25,5 +25,6 @@ abstract class AbstractAction extends AbstractPriceRule {
     public $elementType = "action";
 
     public abstract function applyRule(Model\Object\CoreShopCart $cart);
+    public abstract function unApplyRule(Model\Object\CoreShopCart $cart);
     public abstract function getDiscount(Model\Object\CoreShopCart $cart);
 }

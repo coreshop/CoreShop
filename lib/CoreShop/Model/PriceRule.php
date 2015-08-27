@@ -30,7 +30,7 @@ class PriceRule extends AbstractModel {
      * possible types of a action
      * @var array
      */
-    static $availableActions = array("freeShipping", "discountAmount", "discountPercent");
+    static $availableActions = array("freeShipping", "discountAmount", "discountPercent", "gift");
 
     /**
      * @param $condition
@@ -177,21 +177,24 @@ class PriceRule extends AbstractModel {
         if($cart == null)
             $cart = Tool::prepareCart();
 
-        $cartRules = new PriceRule\Listing();
-        $cartRules->setCondition("code IS NULL OR code = ''");
-        //$cartRules->setOrderKey("priority");
-        //$cartRules->setOrder("DESC");
+        if($cart->getPriceRule() == null) {
+            $cartRules = new PriceRule\Listing();
+            $cartRules->setCondition("code IS NULL OR code = ''");
+            //$cartRules->setOrderKey("priority");
+            //$cartRules->setOrder("DESC");
 
-        $cartRules = $cartRules->getPriceRules();
+            $cartRules = $cartRules->getPriceRules();
 
-        foreach($cartRules as $cartRule)
-        {
-            if($cartRule->checkValidity(true)) {
-                $cart->addCartRule($cartRule);
+            foreach ($cartRules as $cartRule) {
+                if ($cartRule->checkValidity(false)) {
+                    $cart->addCartRule($cartRule);
+                }
             }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public function checkValidity($throwException = false, $alreadyInCart = false)
@@ -209,13 +212,18 @@ class PriceRule extends AbstractModel {
 
     public function applyRules() {
         $cart = Tool::prepareCart();
-        $discount = 0;
 
         foreach($this->getActions() as $action) {
-            $discount += $action->applyRule($cart);
+            $action->applyRule($cart);
         }
+    }
 
-        return $discount;
+    public function unApplyRules() {
+        $cart = Tool::prepareCart();
+
+        foreach($this->getActions() as $action) {
+            $action->unApplyRule($cart);
+        }
     }
 
     public function getDiscount()

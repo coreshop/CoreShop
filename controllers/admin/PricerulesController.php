@@ -74,7 +74,10 @@ class CoreShop_Admin_PricerulesController extends Admin
             $priceRule->setHighlight(0);
             $priceRule->save();
 
-            $this->_helper->json(array("success" => true, "priceRule" => $priceRule));
+            $config = $this->getTreeNodeConfig($priceRule);
+            $config['success'] = true;
+
+            $this->_helper->json($config);
         }
     }
 
@@ -146,7 +149,7 @@ class CoreShop_Admin_PricerulesController extends Admin
             $this->_helper->json(array("success" => false));
     }
 
-    public function removeAction() {
+    public function deleteAction() {
         $id = $this->getParam("id");
         $priceRule = PriceRule::getById($id);
 

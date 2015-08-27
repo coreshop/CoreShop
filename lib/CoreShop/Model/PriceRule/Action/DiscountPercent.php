@@ -73,4 +73,8 @@ class DiscountPercent extends AbstractAction {
     public function applyRule(Model\Object\CoreShopCart $cart) {
         return true;
     }
+
+    public function unApplyRule(Model\Object\CoreShopCart $cart) {
+        return true;
+    }
 }
