@@ -61,6 +61,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $install->executeSQL("Country");
             $install->executeSQL("Currency");
             $install->executeSQL("PriceRules");
+            $install->executeSQL("Carrier");
             $install->executeSQL("misc");
 
             $countryTaxClass = $install->createClass("CoreShopCountryTax");

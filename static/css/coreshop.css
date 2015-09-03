@@ -157,3 +157,23 @@
 .pimcore_icon_coreShopPriceRule, .coreshop_icon_priceRule {
     background: url(/pimcore/static/img/icon/money.png) left center no-repeat!important;
 }
+
+.coreshop_icon_carriers, .coreshop_icon_carrier {
+    background: url(/pimcore/static/img/icon/lorry.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_carrier_settings_icon {
+    background: url(/pimcore/static/img/icon/cog.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_icon_shipping {
+    background: url(/pimcore/static/img/icon/lorry_flatbed.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_carrier_dimensions_icon {
+    background: url(/pimcore/static/img/icon/box.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_carrier_costs_icon {
+    background: url(/pimcore/static/img/icon/coins.png) no-repeat scroll left center transparent !important;
+}

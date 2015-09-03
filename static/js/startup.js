@@ -67,6 +67,23 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
             }
         });
 
+        var shippingMenu = [{
+            text : t("coreshop_carriers"),
+            iconCls: "coreshop_icon_carriers",
+            handler: this.openCarriersList
+        }];
+
+        coreShopMenuItems.push({
+            text: t("coreshop_shipping"),
+            iconCls: "coreshop_icon_shipping",
+            hideOnClick: false,
+            menu: {
+                cls: "pimcore_navigation_flyout",
+                items: [shippingMenu]
+            }
+        });
+
+
         var menu = new Ext.menu.Menu({
             items: coreShopMenuItems,
             cls: "pimcore_navigation_flyout"
@@ -133,6 +150,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_country", new pimcore.plugin.coreshop.countries.panel());
+        }
+    },
+
+    openCarriersList : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_carriers").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_carriers", new pimcore.plugin.coreshop.carriers.panel());
         }
     }
 });

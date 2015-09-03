@@ -75,6 +75,9 @@
             <path>/plugins/CoreShop/static/js/coreshop/pricerule/actions/discountAmount.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/pricerule/actions/discountPercent.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/pricerule/actions/gift.js</path>
+
+            <path>/plugins/CoreShop/static/js/coreshop/carriers/panel.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/carriers/item.js</path>
         </pluginJsPaths>
 
         <pluginDocumentEditmodeJsPaths>

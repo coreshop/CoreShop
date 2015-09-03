@@ -27,8 +27,8 @@ class CoreShop_Admin_PricerulesController extends Admin
         $list = new PriceRule\Listing();
 
         $data = array();
-        if(is_array($list->getPriceRules())){
-            foreach ($list->getPriceRules() as $pricerule) {
+        if(is_array($list->getData())){
+            foreach ($list->getData() as $pricerule) {
                 $data[] = $this->getTreeNodeConfig($pricerule);
             }
         }

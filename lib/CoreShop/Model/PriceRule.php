@@ -129,7 +129,7 @@ class PriceRule extends AbstractModel {
     {
         $list = new PriceRule\Listing();
 
-        return $list->getPriceRules();
+        return $list->getData();
     }
 
     public static function getHighlightItems()
@@ -139,7 +139,7 @@ class PriceRule extends AbstractModel {
         $cartRules = new PriceRule\Listing();
         $cartRules->setCondition("(code IS NOT NULL AND code <> '') AND highlight = 1");
 
-        $cartRules = $cartRules->getPriceRules();
+        $cartRules = $cartRules->getData();
 
         $availableCartRules = array();
 
@@ -183,7 +183,7 @@ class PriceRule extends AbstractModel {
             //$cartRules->setOrderKey("priority");
             //$cartRules->setOrder("DESC");
 
-            $cartRules = $cartRules->getPriceRules();
+            $cartRules = $cartRules->getData();
 
             foreach ($cartRules as $cartRule) {
                 if ($cartRule->checkValidity(false)) {

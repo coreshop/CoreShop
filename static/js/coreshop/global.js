@@ -16,6 +16,12 @@ pimcore.registerNS("pimcore.plugin.coreshop.global");
 pimcore.plugin.coreshop.global = {
 
     initialize : function(){
+        this._initCountries();
+        this._initCurrencies();
+        this._initCarriers();
+    },
+
+    _initCurrencies : function() {
         var currencyProxy = new Ext.data.HttpProxy({
             url:'/plugin/CoreShop/admin_currency/get'
         });
@@ -39,7 +45,9 @@ pimcore.plugin.coreshop.global = {
         currencyStore.load();
 
         pimcore.globalmanager.add("coreshop_currencies", currencyStore);
+    },
 
+    _initCountries : function() {
         var countryProxy = new Ext.data.HttpProxy({
             url:'/plugin/CoreShop/admin_country/get-countries'
         });
@@ -63,5 +71,27 @@ pimcore.plugin.coreshop.global = {
         countryStore.load();
 
         pimcore.globalmanager.add("coreshop_countries", countryStore);
+    },
+
+    _initCarriers : function() {
+        var carrierProxy  = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_country/get-countries'
+        });
+        var carrierReader = new Ext.data.JsonReader({
+            totalProperty:'total',
+            successProperty:'success'
+        }, [
+            {name:'id'},
+            {name:'name'}
+        ]);
+
+        var carrierStore = new Ext.data.Store({
+            restful:false,
+            proxy:carrierProxy,
+            reader:carrierReader
+        });
+        carrierStore.load();
+
+        pimcore.globalmanager.add("coreshop_carriers", carrierStore);
     }
 };

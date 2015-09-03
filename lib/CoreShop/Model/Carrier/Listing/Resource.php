@@ -13,12 +13,13 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\PriceRule\Listing;
+namespace CoreShop\Model\Carrier\Listing;
 
 use CoreShop\Model\Listing;
+use CoreShop\Model;
 
 class Resource extends Listing\Resource\AbstractResource {
 
-    protected $tableName = 'coreshop_pricerules';
-    protected $modelClass = '\\CoreShop\\Model\\PriceRule';
+    protected $tableName = 'coreshop_carriers';
+    protected $modelClass = '\\CoreShop\\Model\\Carrier';
 }
