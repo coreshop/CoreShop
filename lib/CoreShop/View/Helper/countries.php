@@ -15,7 +15,7 @@
 
 namespace CoreShop\View\Helper;
 
-use Pimcore\Model\Object\CoreShopCountry;
+use CoreShop\Model\Country;
 
 class Countries
 {
@@ -28,7 +28,7 @@ class Countries
 
     public function countries()
     {
-        $countries = CoreShopCountry::getActiveCountries();
+        $countries = Country::getActiveCountries();
 
         return $countries;
     }

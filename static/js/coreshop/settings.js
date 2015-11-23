@@ -104,34 +104,25 @@ pimcore.plugin.coreshop.settings= Class.create({
                         defaults: {width: 150},
                         items :[
                             {
-                                fieldLabel: t("coreshop_base_currency"),
-                                name: "base.base-currency",
-                                cls: "input_drop_target",
-                                value: this.getValue("base.base-currency"),
-                                width: 300,
-                                xtype: "textfield",
+                                xtype:'combo',
+                                fieldLabel:t('coreshop_base_currency'),
+                                typeAhead:true,
+                                value:this.getValue("base.base-currency"),
+                                mode:'local',
+                                listWidth:100,
+                                store:pimcore.globalmanager.get("coreshop_currencies"),
+                                displayField:'name',
+                                valueField:'id',
+                                forceSelection:true,
+                                triggerAction:'all',
+                                hiddenName:'base.base-currency',
                                 listeners: {
-                                    "render": function (el) {
-                                        new Ext.dd.DropZone(el.getEl(), {
-                                            reference: this,
-                                            ddGroup: "element",
-                                            getTargetFromEvent: function(e) {
-                                                return this.getEl();
-                                            }.bind(el),
-
-                                            onNodeOver : function(target, dd, e, data) {
-                                                return Ext.dd.DropZone.prototype.dropAllowed;
-                                            },
-
-                                            onNodeDrop : function (target, dd, e, data) {
-                                                if (data.node.attributes.className == "CoreShopCurrency") {
-                                                    this.setValue(data.node.attributes.path);
-                                                    return true;
-                                                }
-                                                return false;
-                                            }.bind(el)
-                                        });
-                                    }
+                                    change: function () {
+                                        this.forceReloadOnSave = true;
+                                    }.bind(this),
+                                    select: function () {
+                                        this.forceReloadOnSave = true;
+                                    }.bind(this)
                                 }
                             }
                         ]

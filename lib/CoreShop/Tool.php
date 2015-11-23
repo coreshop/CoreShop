@@ -17,14 +17,22 @@ namespace CoreShop;
 
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
-use Pimcore\Model\Object\CoreShopCountry;
-use Pimcore\Model\Object\CoreShopCurrency;
 use Pimcore\Model\Object;
+use Pimcore\Mail;
+
+use CoreShop\Model\Currency;
+use CoreShop\Model\Country;
 
 use Pimcore\Tool\Session;
 
 class Tool {
-    
+
+    /**
+     * Format Price to locale
+     *
+     * @param $price
+     * @return string
+     */
     public static function formatPrice($price)
     {
         try
@@ -40,19 +48,28 @@ class Tool {
         return $price;
     }
 
-    public static function convertToCurrency($value, CoreShopCurrency $toCurrency = null)
+    /**
+     * Converts value from currency to currency
+     *
+     * @param $value
+     * @param Currency|null $toCurrency
+     * @param Currency|null $fromCurrency
+     * @return mixed
+     */
+    public static function convertToCurrency($value, Currency $toCurrency = null, Currency $fromCurrency = null)
     {
         $config = Config::getConfig();
         $configArray = $config->toArray();
 
-        $baseCurrency = CoreShopCurrency::getByPath($configArray['base']['base-currency']);
+        if(!$fromCurrency instanceof Currency)
+            $fromCurrency= Currency::getById($configArray['base']['base-currency']);
 
-        if(!$toCurrency instanceof CoreShopCurrency) {
+        if(!$toCurrency instanceof Currency) {
             $toCurrency = Tool::getCurrency();
         }
 
-        if($baseCurrency instanceof CoreShopCurrency) {
-            if($toCurrency instanceof CoreShopCurrency && $toCurrency->getId() != $baseCurrency->getId()) {
+        if($fromCurrency instanceof Currency) {
+            if($toCurrency instanceof Currency && $toCurrency->getId() != $fromCurrency->getId()) {
                 return $value * $toCurrency->getExchangeRate();
             }
         }
@@ -60,16 +77,45 @@ class Tool {
         return $value;
     }
 
+    /**
+     * Get CoreShop Session
+     *
+     * @return \stdClass
+     */
     public static function getSession()
     {
         return Session::get('CoreShop');
     }
 
+    /**
+     * Get current User
+     *
+     * @return null|Object\CoreShopUser
+     */
+    public static function getUser() {
+        $session = self::getSession();
+
+        return $session->user instanceof Object\CoreShopUser ? $session->user : null;
+    }
+
+    /**
+     * Format Tax
+     *
+     * TODO: Localization
+     *
+     * @param $tax
+     * @return string
+     */
     public static function formatTax($tax)
     {
         return ($tax * 100) . "%";
     }
-    
+
+    /**
+     * Prepare Cart
+     *
+     * @return CoreShopCart|static
+     */
     public static function prepareCart()
     {
         $cartSession = self::getSession();
@@ -88,14 +134,20 @@ class Tool {
         return $cart;
     }
 
+    /**
+     * Get current Users Country
+     *
+     * @return Country|null
+     * @throws \Exception
+     */
     public static function getCountry()
     {
         $session = self::getSession();
 
         if($session->countryId) {
-            $country = CoreShopCountry::getById($session->countryId);
+            $country = Country::getById($session->countryId);
 
-            if ($country instanceof CoreShopCountry)
+            if ($country instanceof Country)
                 return $country;
         }
 
@@ -107,7 +159,7 @@ class Tool {
                 $country = $user->getAddresses()->get(0);
         }
 
-        if (!$country instanceof CoreShopCountry) {
+        if (!$country instanceof Country) {
             if(file_exists(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat")) {
                 $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
 
@@ -115,14 +167,11 @@ class Tool {
 
                 geoip_close($gi);
 
-                $countryList = CoreShopCountry::getByCountry($country);
-
-                if (count($countryList->getObjects()) > 0)
-                    $country = $countryList->current();
+                $country = Country::getByIsoCode($country);
             }
             else
             {
-                $enabled = CoreShopCountry::getActiveCountries();
+                $enabled = Country::getActiveCountries();
 
                 if(count($enabled) > 0)
                     return $enabled[0];
@@ -134,23 +183,34 @@ class Tool {
         }
 
 
-        if(!$country instanceof CoreShopCountry)
-            throw new \Exception("Country with code $country not found");
+        if(!$country instanceof Country) {
+
+            //Using Default Country: AT
+            //TODO: Default Country configurable thru settings
+            $country = Country::getById(7);
+            //throw new \Exception("Country with code $country not found");
+        }
 
         $session->countryId = $country->getId();
 
         return $country;
     }
 
+    /**
+     * Get current Currency by Country
+     *
+     * @return Currency|null
+     * @throws \Exception
+     */
     public static function getCurrency()
     {
         $session = self::getSession();
 
         if($session->currencyId)
         {
-            $currency = CoreShopCurrency::getById($session->currencyId);
+            $currency = Currency::getById($session->currencyId);
 
-            if($currency instanceof CoreShopCurrency)
+            if($currency instanceof Currency)
                 return $currency;
         }
 
@@ -158,6 +218,13 @@ class Tool {
         return self::getCountry()->getCurrency();
     }
 
+    /**
+     * Check if Object $object in array $objectList
+     *
+     * @param AbstractObject $object
+     * @param array $objectList
+     * @return bool
+     */
     public static function objectInList(AbstractObject $object, array $objectList)
     {
         foreach($objectList as $o) {
@@ -287,54 +354,15 @@ class Tool {
 
         return $targetClassName;
     }
-    
-    public static function findOrCreateObjectFolder($path)
-    {
-        $pathParts = explode("/", $path);
-        $currentPath = "/";
 
-        foreach ($pathParts as $part) {
-            if (empty($part)) {
-                continue;
-            }
-
-            $myPath = $currentPath."/".$part;
-
-            $folder = AbstractObject::getByPath($myPath);
-
-            if (!$folder instanceof AbstractObject) {
-                $folder = new \Pimcore\Model\Object\Folder();
-                $folder->setParentId(AbstractObject::getByPath($currentPath)->getId());
-                $folder->setKey($part);
-                $folder->save();
-            }
-
-            $currentPath .= $part."/";
-        }
-
-        return $folder;
-    }
-    
-    public static function getWebsiteUrl()
-    {
-        $pageURL = "http";
-         
-        if ($_SERVER["HTTPS"] == "on") 
-        {
-            $pageURL .= "s";
-        }
-        
-        $pageURL .= "://";
-        
-        if ($_SERVER["SERVER_PORT"] != "80") 
-        {
-            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"];
-        } 
-        else 
-        {
-            $pageURL .= $_SERVER["SERVER_NAME"];
-        }
-            
-        return $pageURL;
+    /**
+     * Add all Users to mail
+     *
+     * TODO: Use Users from Pimcore
+     *
+     * @param Mail $mail
+     */
+    public static function addAdminToMail(Mail $mail) {
+        $mail->addBcc("dominik@pfaffenbauer.at");
     }
 }

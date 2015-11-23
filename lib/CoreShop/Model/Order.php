@@ -15,12 +15,18 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Model\Plugin\User;
-
 use Pimcore\Model\Object;
+use Pimcore\Model\Object\CoreShopPayment;
 
 class Order extends Base
 {
+    /**
+     * Import a Cart to the Order
+     *
+     * @param Object\CoreShopCart $cart
+     * @return bool
+     * @throws \Exception
+     */
     public function importCart(Object\CoreShopCart $cart)
     {
         $items = array();
@@ -30,7 +36,7 @@ class Order extends Base
         {
             $item = new Object\CoreShopOrderItem();
             $item->setKey($i);
-            $item->setParent(\CoreShop\Tool::findOrCreateObjectFolder($this->getFullPath() . "/items/"));
+            $item->setParent(Object\Service::createFolderByPath($this->getFullPath() . "/items/"));
             $item->setPublished(true);
             
             $item->setProduct($cartItem->getProduct());
@@ -48,19 +54,27 @@ class Order extends Base
         }
 
         $this->setDiscount($cart->getDiscount());
-        $this->setCartRule($cart->getCartRule());
+        $this->setPriceRule($cart->getPriceRule());
         $this->setItems($items);
         $this->save();
         
         return true;
     }
-    
-    public function createPayment(\CoreShop\Plugin\Payment $provider, $amount)
+
+    /**
+     * Create a new Payment
+     *
+     * @param Payment $provider
+     * @param $amount
+     * @return Object\CoreShopPayment
+     * @throws \Exception
+     */
+    public function createPayment(Payment $provider, $amount)
     {
         $payment = new Object\CoreShopPayment();
         $payment->setKey(uniqid());
         $payment->setPublished(true);
-        $payment->setParent(\CoreShop\Tool::findOrCreateObjectFolder($this->getFullPath() . "/payments/"));
+        $payment->setParent(Object\Service::createFolderByPath($this->getFullPath() . "/payments/"));
         $payment->setAmount($amount);
         $payment->setTransactionIdentifier(uniqid());
         $payment->setProvider($provider->getIdentifier());
@@ -70,8 +84,13 @@ class Order extends Base
         
         return $payment;
     }
-    
-    public function addPayment(\Object\CoreShopPayment $payment)
+
+    /**
+     * Add a new Payment
+     *
+     * @param CoreShopPayment $payment
+     */
+    public function addPayment(CoreShopPayment $payment)
     {
         $payments = $this->getPayments();
         
@@ -84,6 +103,11 @@ class Order extends Base
         $this->save();
     }
 
+    /**
+     * Calculates the subtotal of the Order
+     *
+     * @return int
+     */
     public function getSubtotal()
     {
         $total = 0;
@@ -95,7 +119,12 @@ class Order extends Base
 
         return $total;
     }
-    
+
+    /**
+     * Calculates the total of the Order
+     *
+     * @return int
+     */
     public function getTotal()
     {
         $subtotal = $this->getSubtotal();
@@ -103,5 +132,33 @@ class Order extends Base
         $discount = $this->getDiscount();
 
         return ($subtotal  + $shipping) - $discount;
+    }
+
+    /**
+     * Pimcore: When save is called from Pimcore, check for changes of the OrderState
+     *
+     * @return int
+     */
+    public function save() {
+
+        if (isset($_REQUEST['data']) && false) {
+            try {
+                $data = \Zend_Json::decode($_REQUEST['data']);
+
+                if (isset($data['orderState']))
+                {
+                    $orderStep = OrderState::getById($data['orderState']);
+
+                    if ($orderStep instanceof OrderState)
+                    {
+                        $orderStep->processStep($this);
+                    }
+                }
+            } catch (\Exception $ex) {
+                \Logger::error($ex);
+            }
+        }
+
+        parent::save();
     }
 }

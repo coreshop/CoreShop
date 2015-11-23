@@ -18,13 +18,22 @@ namespace CoreShop\Model;
 use \Pimcore\Model\Object\CoreShopOrder;;
 
 class OrderItem extends Base {
-    
+
+    /**
+     * Calculate Total of OrderItem
+     *
+     * @return mixed
+     */
     public function getTotal()
     {
         return $this->getAmount() * $this->getPrice();
     }
 
-
+    /**
+     * Get Order for OrderItem
+     *
+     * @return null|\Pimcore\Model\Object\AbstractObject
+     */
     public function getOrder()
     {
         $parent = $this->getParent();
@@ -37,6 +46,6 @@ class OrderItem extends Base {
             $parent = $parent->getParent();
         } while ($parent != null);
 
-        return;
+        return null;
     }
 }

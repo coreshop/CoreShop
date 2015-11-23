@@ -18,8 +18,9 @@ use CoreShop\Controller\Action;
 
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
-use Pimcore\Model\Object\CoreShopCartRule;
 use Pimcore\Model\Object\CoreShopProduct;
+
+use CoreShop\Model\PriceRule;
 
 class CoreShop_CartController extends Action {
     
@@ -150,16 +151,21 @@ class CoreShop_CartController extends Action {
     {
         $this->enableLayout();
 
-        $cartRule = CoreShopCartRule::getByCode($this->getParam("cartRule"));
-        $cartRule = $cartRule->getObjects();
+        if($this->getRequest()->isPost()) {
+            $cartRule = PriceRule::getByCode($this->getParam("cartRule"));
 
-        if(count($cartRule) > 0)
-            $cartRule = $cartRule[0];
+            if ($cartRule instanceof PriceRule) {
 
-        if($cartRule instanceof CoreShopCartRule)
-        {
-            if($cartRule->checkValidity())
-                $this->cart->addCartRule($cartRule);
+                if ($cartRule->checkValidity()) {
+                    $this->cart->addCartRule($cartRule);
+                }
+                else {
+                    die("not valid");
+                }
+            }
+            else {
+                die("not found");
+            }
         }
 
         $this->_redirect($this->getParam("redirect") ? $this->getParam("redirect") : $this->view->url(array("action" => "list"), "coreshop_cart"));

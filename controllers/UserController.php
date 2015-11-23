@@ -14,12 +14,12 @@
  */
 
 use CoreShop\Controller\Action;
-use CoreShop\Model\User;
 use CoreShop\Tool;
-use CoreShop\Model\Plugin;
+use CoreShop\Plugin;
 use CoreShop\Exception;
+use CoreShop\Model\Country;
 
-use Pimcore\Model\Object\CoreShopCountry;
+use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 use Pimcore\Model\Object;
@@ -30,7 +30,7 @@ class CoreShop_UserController extends Action
         parent::preDispatch();
 
         if($this->getParam("action") != "login" && $this->getParam("action") != "register") {
-            if (!$this->session->user instanceof User) {
+            if (!$this->session->user instanceof CoreShopUser) {
                 $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));
                 exit;
             }
@@ -49,10 +49,6 @@ class CoreShop_UserController extends Action
 
     }
 
-    public function addressesAction() {
-
-    }
-
     public function settingsAction() {
         $this->view->success = false;
 
@@ -66,7 +62,7 @@ class CoreShop_UserController extends Action
                         throw new Exception("Passwords do not match!");
                 }
 
-                $this->session->user->setValues($userParams);
+                $this->session->user->setValues($params);
                 $this->session->user->save();
 
                 $this->view->success = true;
@@ -94,9 +90,9 @@ class CoreShop_UserController extends Action
 
         if($this->getRequest()->isPost())
         {
-            $user = User::getUniqueByEmail($this->getParam("email"));
+            $user = CoreShopUser::getUniqueByEmail($this->getParam("email"));
 
-            if ($user instanceof Plugin\User) {
+            if ($user instanceof CoreShopUser) {
                 try {
                     $isAuthenticated = $user->authenticate($this->getParam("password"));
 
@@ -149,34 +145,49 @@ class CoreShop_UserController extends Action
                     $userParams[$key] = $value;
                 }
             }
-            
-            $folder = "/users/" . strtolower(substr($userParams['lastname'], 0, 1));
 
-            $adresses = new Object\Fieldcollection();
+            try {
+                //Check User exists
+                if (CoreShopUser::getUniqueByEmail($userParams['email']) instanceof CoreShopUser) {
+                    throw new \Exception("E-Mail already exists");
+                }
 
-            $address = new CoreShopUserAddress();
-            $address->setValues($addressParams);
-            $address->setCountry(CoreShopCountry::getById($addressParams['country']));
+                $folder = "/users/" . strtolower(substr($userParams['lastname'], 0, 1));
 
-            $adresses->add($address);
-            
-            $user = User::create();
-            $user->setKey(Pimcore\File::getValidFilename($userParams['email']));
-            $user->setPublished(true);
-            $user->setParent(Tool::findOrCreateObjectFolder($folder));
-            $user->setValues($userParams);
-            $user->setAddresses($adresses);
-            $user->save();
-            
-            Plugin::getEventManager()->trigger('user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
-            
-            $this->session->user = $user;
-            
-            if(array_key_exists("_redirect", $params))
-                $this->_redirect($params['_redirect']);
+                $adresses = new Object\Fieldcollection();
+
+                $address = new CoreShopUserAddress();
+                $address->setValues($addressParams);
+                $address->setCountry(Country::getById($addressParams['country']));
+
+                $adresses->add($address);
+
+                $user = new CoreShopUser();
+                $user->setKey(Pimcore\File::getValidFilename($userParams['email']));
+                $user->setPublished(true);
+                $user->setParent(Pimcore\Model\Object\Service::createFolderByPath($folder));
+                $user->setValues($userParams);
+                $user->setAddresses($adresses);
+                $user->save();
+
+                Plugin::getEventManager()->trigger('user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
+
+                $this->session->user = $user;
+
+                if (array_key_exists("_redirect", $params))
+                    $this->_redirect($params['_redirect']);
+            }
+            catch (\Exception $ex) {
+                $this->view->error = $ex->getMessage();
+            }
         }
     }
-    
+
+
+    public function addressesAction() {
+
+    }
+
     public function addressAction()
     {
         $this->view->redirect = $this->getParam("redirect", $this->view->url(array("lang" => $this->language, "action" => "addresses"), "coreshop_user", true));
@@ -186,7 +197,7 @@ class CoreShop_UserController extends Action
         foreach($this->session->user->getAddresses() as $address)
         {
             if($address->getName() === $update)
-                $this->view->address = $address;;
+                $this->view->address = $address;
         }
 
         if(!$this->view->address instanceof CoreShopUserAddress) {
@@ -221,7 +232,7 @@ class CoreShop_UserController extends Action
                 {
                     if($this->session->user->getAddresses()->get($i)->getName() == $update)
                     {
-                        $this->session->user->getAddresses()->remove($i);
+                        //$this->session->user->getAddresses()->remove($i);
                         break;
                     }
                 }
@@ -229,7 +240,8 @@ class CoreShop_UserController extends Action
 
 
             $this->view->address->setValues($addressParams);
-            $this->view->address->setCountry(CoreShopCountry::getById($addressParams['country']));
+            //TODO: Check if country exists and is valid
+            $this->view->address->setCountry(Country::getById($addressParams['country']));
 
             if($this->view->isNew)
                 $adresses->add($this->view->address);

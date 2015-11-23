@@ -18,10 +18,12 @@ use CoreShop\Controller\Action;
 use CoreShop\Plugin;
 use CoreShop\Model\Plugin\Shipping;
 use CoreShop\Model\Plugin\Payment;
-use CoreShop\Model\Plugin\User;
 use CoreShop\Tool;
 
 use Pimcore\Model\Object\CoreShopOrder;
+use Pimcore\Model\Object\CoreShopOrderState;
+use Pimcore\Model\Object\CoreShopUser;
+use Pimcore\Model\Object\Service;
 
 class CoreShop_CheckoutController extends Action 
 {
@@ -42,7 +44,7 @@ class CoreShop_CheckoutController extends Action
     }
     
     public function indexAction() {
-        if($this->session->user instanceof User)
+        if($this->session->user instanceof CoreShopUser)
         {
             $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
         }
@@ -144,10 +146,9 @@ class CoreShop_CheckoutController extends Action
             else
             {
                 $this->session->order['paymentProvider'] = $provider;
-
                 $order = new CoreShopOrder();
                 $order->setKey(uniqid());
-                $order->setParent(Tool::findOrCreateObjectFolder("/coreshop/orders/".date('Y/m/d')));
+                $order->setParent(Service::createFolderByPath('/coreshop/orders/' . date('Y/m/d')));
                 $order->setPublished(true);
                 $order->setLang($this->view->language);
                 $order->setCustomer($this->session->user);
@@ -167,9 +168,8 @@ class CoreShop_CheckoutController extends Action
                 }
                 
                 $order->save();
-                
                 $order->importCart($this->cart);
-                
+
                 $this->session->orderId = $order->getId();
 
                 $this->_helper->viewRenderer($provider->processPayment($order, $this->view->url(array("action" => "paymentreturn"), "coreshop_checkout")), null, true);
@@ -181,16 +181,17 @@ class CoreShop_CheckoutController extends Action
 
     public function thankyouAction()
     {
-        if(!$this->session->user instanceof User) {
+        if(!$this->session->user instanceof CoreShopUser) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }
 
         $this->view->order = CoreShopOrder::getById($this->session->orderId);
-        
+
+
         if(!$this->view->order instanceof CoreShopOrder)
             $this->_redirect("/" . $this->language . "/shop");
-        
+
         $this->cart->delete();
         $this->prepareCart();
         
@@ -207,7 +208,7 @@ class CoreShop_CheckoutController extends Action
     
     protected function checkIsAllowed()
     {
-        if(!$this->session->user instanceof User) {
+        if(!$this->session->user instanceof CoreShopUser) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }

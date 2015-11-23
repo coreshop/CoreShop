@@ -58,15 +58,20 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             
             self::getEventManager()->trigger('install.pre', null, array("installer" => $install));
 
-            $currencyClass = $install->createClass("CoreShopCurrency");
-            $countryClass = $install->createClass("CoreShopCountry");
+            $install->executeSQL("Country");
+            $install->executeSQL("Currency");
+            $install->executeSQL("PriceRules");
+            $install->executeSQL("Carrier");
+            $install->executeSQL("misc");
+
             $countryTaxClass = $install->createClass("CoreShopCountryTax");
 
             $fcSpecificAddress = $install->createFieldCollection("CoreShopProductSpecificPrice");
 
-            $cartRule = $install->createClass("CoreShopCartRule");
+            //$cartRule = $install->createClass("CoreShopCartRule");
 
             // create object classes
+            $orerStateClass = $install->createClass("CoreShopOrderState");
             $categoryClass = $install->createClass('CoreShopCategory');
             $productClass = $install->createClass('CoreShopProduct');
             $cartClass = $install->createClass('CoreShopCart');
@@ -91,10 +96,9 @@ class Plugin extends AbstractPlugin implements PluginInterface {
                 $orderItemClass->getId(),
                 $orderClass->getId(),
                 $paymentClass->getId(),
-                $currencyClass->getId(),
-                $countryClass->getId(),
                 $countryTaxClass->getId(),
-                $cartRule->getId()
+                //$cartRule->getId(),
+                $orerStateClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();
@@ -139,13 +143,14 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             
             $install->removeClassmap();
 
-            $install->removeClass("CoreShopCartRule");
+            //$install->removeClass("CoreShopCartRule");
             $install->removeClass('CoreShopProduct');
             $install->removeClass('CoreShopCategory');
             $install->removeClass('CoreShopCart');
             $install->removeClass('CoreShopCartItem');
             $install->removeClass("CoreShopUser");
             $install->removeClass("CoreShopOrder");
+            $install->removeClass("CoreShopOrderState");
             $install->removeClass("CoreShopPayment");
             $install->removeClass("CoreShopOrderItem");
             
@@ -173,9 +178,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         $order = Object\ClassDefinition::getByName('CoreShopOrder');
         $orderItem = Object\ClassDefinition::getByName('CoreShopOrderItem');
         $orderPayment = Object\ClassDefinition::getByName('CoreShopPayment');
-        $cartRule = Object\ClassDefinition::getByName('CoreShopCartRule');
+        //$cartRule = Object\ClassDefinition::getByName('CoreShopCartRule');
+        $orderState = Object\ClassDefinition::getByName('CoreShopOrderState');
         
-        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment && $cartRule) {
+        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment && /*$cartRule &&*/ $orderState) {
             return true;
         }
         
@@ -283,7 +289,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     
     public static function getShippingProvider($identifier)
     {
-        $results = self::getEventManager()->trigger("shipping.getProvider", null, array(), function($v) {
+        $results = self::getEventManager()->trigger("shipping.getProvider", null, array(), function($v) use ($identifier) {
             return ($v instanceof Shipping && $v->getIdentifier() == $identifier);
         });
         
@@ -349,6 +355,29 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             return implode($return, "\n");
         }
         
+        return "";
+    }
+
+    public static function actionHook($name, $params = array())
+    {
+        $results = self::getEventManager()->trigger("actionHook." . $name, null, array(), function($v) {
+            return ($v instanceof Hook);
+        });
+
+        $params['language'] = \Zend_Registry::get("Zend_Locale");
+
+        if($results->stopped())
+        {
+            $return = array();
+
+            foreach($results as $result)
+            {
+                $return[] = $result->render($params);
+            }
+
+            return implode($return, "\n");
+        }
+
         return "";
     }
 }

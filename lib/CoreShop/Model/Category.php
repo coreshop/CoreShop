@@ -21,7 +21,12 @@ use Pimcore\Model\Asset\Image;
 use CoreShop\Config;
 
 class Category extends Base {
-    
+
+    /**
+     * Get all Categories
+     *
+     * @return array
+     */
     public static function getAll()
     {
         $list = new Object\CoreShopCategory\Listing();
@@ -29,6 +34,11 @@ class Category extends Base {
         return $list->getObjects();
     }
 
+    /**
+     * Get first level of categories
+     *
+     * @return array
+     */
     public static function getFirstLevel()
     {
         $list = new Object\CoreShopCategory\Listing();
@@ -36,7 +46,12 @@ class Category extends Base {
 
         return $list->getObjects();
     }
-    
+
+    /**
+     * Get Products from the Category
+     *
+     * @return array
+     */
     public function getProducts()
     {
         $list = new Object\CoreShopProduct\Listing();
@@ -45,6 +60,15 @@ class Category extends Base {
         return $list->getObjects();
     }
 
+    /**
+     * Get Products from the Category with Paging
+     *
+     * @param int $page
+     * @param int $itemsPerPage
+     * @param array $sort
+     * @return \Zend_Paginator
+     * @throws \Zend_Paginator_Exception
+     */
     public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array("name" => "name", "direction" => "asc"))
     {
         $list = new Object\CoreShopProduct\Listing();
@@ -60,6 +84,11 @@ class Category extends Base {
         return $paginator;
     }
 
+    /**
+     * Get default image
+     *
+     * @return bool|\Pimcore\Model\Asset
+     */
     public function getDefaultImage()
     {
         $config = Config::getConfig();
@@ -72,6 +101,11 @@ class Category extends Base {
         return false;
     }
 
+    /**
+     * Get image
+     *
+     * @return bool|\Pimcore\Model\Asset
+     */
     public function getImage()
     {
         if($this->getCategoryImage() instanceof Image)
@@ -82,6 +116,11 @@ class Category extends Base {
         return $this->getDefaultImage();
     }
 
+    /**
+     * Get Category hierarchy
+     *
+     * @return array
+     */
     public function getHierarchy()
     {
         $hierarchy = array();
@@ -98,6 +137,11 @@ class Category extends Base {
         return array_reverse($hierarchy);
     }
 
+    /**
+     * Get all child Categories
+     *
+     * @return array
+     */
     public function getChildCategories()
     {
         $list = new Object\CoreShopCategory\Listing();

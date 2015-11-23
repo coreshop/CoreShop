@@ -19,12 +19,22 @@ use Pimcore\Model\Object\CoreShopCart;
 use CoreShop\Tool;
 
 class CartItem extends Base {
-    
+
+    /**
+     * Calculates the total for the CartItem
+     *
+     * @return mixed
+     */
     public function getTotal()
     {
         return $this->getAmount() * $this->product->getProductPrice();
     }
 
+    /**
+     * Get the Cart for this CartItem
+     *
+     * @return \Pimcore\Model\Object\AbstractObject|void|null
+     */
     public function getCart()
     {
         $parent = $this->getParent();
@@ -37,9 +47,14 @@ class CartItem extends Base {
             $parent = $parent->getParent();
         } while ($parent != null);
 
-        return;
+        return null;
     }
-    
+
+    /**
+     * Returns the CartItem as array
+     *
+     * @return array+
+     */
     public function toArray()
     {
         return array(

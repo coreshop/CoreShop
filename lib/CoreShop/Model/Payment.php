@@ -19,6 +19,12 @@ use Pimcore\Model\Object;
 
 class Payment extends Base {
 
+    /**
+     * Return Payment by transaction identifier
+     *
+     * @param $transactionIdentification
+     * @return bool
+     */
     public static function findByTransactionIdentifier($transactionIdentification) {
         $list = Object\CoreShopPayment::getByTransactionIdentifier($transactionIdentification);
 
@@ -31,6 +37,11 @@ class Payment extends Base {
         return false;
     }
 
+    /**
+     * Get Order for Payment
+     *
+     * @return bool|Object\AbstractObject
+     */
     public function getOrder() {
         $parent = $this->getParent();
 

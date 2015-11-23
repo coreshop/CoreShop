@@ -15,7 +15,7 @@
 
 namespace CoreShop\View\Helper;
 
-use Pimcore\Model\Object\CoreShopCountry;
+use CoreShop\Model\Country;
 
 class TranslateCountry
 {
@@ -28,8 +28,8 @@ class TranslateCountry
 
     public function translateCountry($countryCode)
     {
-        if($countryCode instanceof CoreShopCountry)
-            $countryCode = $countryCode->getCountry();
+        if($countryCode instanceof Country)
+            $countryCode = $countryCode->getIsoCode();
 
         $locale = \Zend_Registry::get("Zend_Locale");
         $countries = $locale->getTranslationList('Territory', $locale, 2);
