@@ -98,3 +98,6 @@
 "coreshop_carrier_maxHeight","Max. Height"
 "coreshop_carrier_maxWeight","Max. Weight"
 "coreshop_carrier_maxDepth","Max. Depth"
+"coreshop_carrier_delimeter1","From Span"
+"coreshop_carrier_delimeter2","To Span"
+"coreshop_carrier_price","Price"
