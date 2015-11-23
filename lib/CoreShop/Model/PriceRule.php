@@ -95,10 +95,21 @@ class PriceRule extends AbstractModel {
      */
     public $actions;
 
+    /**
+     * Save PriceRule
+     *
+     * @return mixed
+     */
     public function save() {
         return $this->getResource()->save();
     }
 
+    /**
+     * Get PriceRule by ID
+     *
+     * @param $id
+     * @return PriceRule|null
+     */
     public static function getById($id) {
         try {
             $obj = new self;
@@ -112,6 +123,12 @@ class PriceRule extends AbstractModel {
         return null;
     }
 
+    /**
+     * Get PriceRule by Code
+     *
+     * @param $code
+     * @return PriceRule|null
+     */
     public static function getByCode($code) {
         try {
             $obj = new self;
@@ -125,6 +142,11 @@ class PriceRule extends AbstractModel {
         return null;
     }
 
+    /**
+     * Get al PriceRules
+     *
+     * @return array
+     */
     public static function getPricingRules()
     {
         $list = new PriceRule\Listing();
@@ -132,6 +154,11 @@ class PriceRule extends AbstractModel {
         return $list->getData();
     }
 
+    /**
+     * Get public PriceRules
+     *
+     * @return array
+     */
     public static function getHighlightItems()
     {
         $cart = Tool::prepareCart();
@@ -158,7 +185,11 @@ class PriceRule extends AbstractModel {
         return $availableCartRules;
     }
 
-
+    /**
+     * Remove default PriceRule from Cart
+     *
+     * @param CoreShopCart|null $cart
+     */
     public static function autoRemoveFromCart(CoreShopCart $cart = null)
     {
         if($cart == null)
@@ -166,12 +197,17 @@ class PriceRule extends AbstractModel {
 
         if($cart->getPriceRule() instanceof PriceRule) {
             if (!$cart->getPriceRule()->checkValidity(false, true)) {
-                die("invalid");
-                $cart->removeCartRule();
+                $cart->removePriceRule();
             }
         }
     }
 
+    /**
+     * Add default PriceRule to Cart
+     *
+     * @param CoreShopCart|null $cart
+     * @return bool
+     */
     public static function autoAddToCart(CoreShopCart $cart = null)
     {
         if($cart == null)
@@ -187,7 +223,7 @@ class PriceRule extends AbstractModel {
 
             foreach ($cartRules as $cartRule) {
                 if ($cartRule->checkValidity(false)) {
-                    $cart->addCartRule($cartRule);
+                    $cart->addPriceRule($cartRule);
                 }
             }
 
@@ -197,6 +233,13 @@ class PriceRule extends AbstractModel {
         return false;
     }
 
+    /**
+     * Check if PriceRule is Valid for Cart
+     *
+     * @param bool|false $throwException
+     * @param bool|false $alreadyInCart
+     * @return bool
+     */
     public function checkValidity($throwException = false, $alreadyInCart = false)
     {
         $cart = Tool::prepareCart();
@@ -210,6 +253,9 @@ class PriceRule extends AbstractModel {
         return true;
     }
 
+    /**
+     * Applies Rules to Cart
+     */
     public function applyRules() {
         $cart = Tool::prepareCart();
 
@@ -218,6 +264,9 @@ class PriceRule extends AbstractModel {
         }
     }
 
+    /**
+     * Removes Rules from Cart
+     */
     public function unApplyRules() {
         $cart = Tool::prepareCart();
 
@@ -226,6 +275,11 @@ class PriceRule extends AbstractModel {
         }
     }
 
+    /**
+     * Get Discount for PriceRule
+     *
+     * @return int
+     */
     public function getDiscount()
     {
         $cart = Tool::prepareCart();
@@ -382,6 +436,9 @@ class PriceRule extends AbstractModel {
         $this->highlight = $highlight;
     }
 
+    /**
+     * @return string
+     */
     public function __toString() {
         return strval($this->getName());
     }

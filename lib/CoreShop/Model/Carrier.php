@@ -97,10 +97,21 @@ class Carrier extends AbstractModel {
      */
     public $maxWeight;
 
+    /**
+     * Save carrier
+     *
+     * @return mixed
+     */
     public function save() {
         return $this->getResource()->save();
     }
 
+    /**
+     * get Carriere by ID
+     *
+     * @param $id
+     * @return Carrier|null
+     */
     public static function getById($id) {
         try {
             $obj = new self;
@@ -114,6 +125,11 @@ class Carrier extends AbstractModel {
         return null;
     }
 
+    /**
+     * Get the Ranges for this carrier
+     *
+     * @return array
+     */
     public function getRange() {
         if($this->getRangeBehaviour() == "weight")
             $list = new Carrier\RangeWeight\Listing();

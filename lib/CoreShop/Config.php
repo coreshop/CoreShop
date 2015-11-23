@@ -19,7 +19,7 @@ class Config {
 
     /**
      * @static
-     * @return Zend_Config_Xml
+     * @return \Zend_Config_Xml
      */
     public static function getModelClassMappingConfig () {
 
@@ -35,7 +35,7 @@ class Config {
                     $config = new \Zend_Config_Xml($mappingFile);
                     self::setModelClassMappingConfig($config);
                 } catch (Exception $e) {
-                    Logger::error("coreshop_classmap.xml exists but it is not a valid Zend_Config_Xml configuration. Maybe there is a syntaxerror in the XML.");
+                    \Logger::error("coreshop_classmap.xml exists but it is not a valid Zend_Config_Xml configuration. Maybe there is a syntaxerror in the XML.");
                 }
             }
         }
@@ -44,10 +44,10 @@ class Config {
 
     /**
      * @static
-     * @param Zend_Config $config
+     * @param \Zend_Config $config
      * @return void
      */
-    public static function setModelClassMappingConfig (Zend_Config $config) {
+    public static function setModelClassMappingConfig (\Zend_Config $config) {
         \Zend_Registry::set("coreshop_config_model_classmapping", $config);
     }
 
@@ -65,7 +65,7 @@ class Config {
             try {
                 $config = new \Zend_Config_Xml(CORESHOP_CONFIGURATION);
                 self::setConfig($config);
-            } catch (\Exception $e) {die();
+            } catch (\Exception $e) {
                 \Logger::emergency("Cannot find system configuration, should be located at: " . PIMCORE_CONFIGURATION_SYSTEM);
                 if(is_file(CORESHOP_CONFIGURATION)) {
                     $m = "Your coreshop-config.xml located at " . CORESHOP_CONFIGURATION . " is invalid, please check and correct it manually!";

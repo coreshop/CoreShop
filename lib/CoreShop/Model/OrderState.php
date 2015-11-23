@@ -25,7 +25,16 @@ use Pimcore\Mail;
 use Pimcore\View;
 use Pimcore\View\Helper\Url;
 
-class OrderState extends Base {
+class OrderState extends Base
+{
+    /**
+     * Process OrderState for Order
+     *
+     * @param CoreShopOrder $order
+     * @param null $locale
+     * @return bool
+     * @throws \Exception
+     */
     public function processStep(CoreShopOrder $order, $locale = null)
     {
         $emailDocument = $this->getEmailDocument($locale);

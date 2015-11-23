@@ -21,9 +21,12 @@ use Pimcore\Model\Object\CoreShopProduct;
 
 class Service
 {
-    private $objectData;
-    private $metaData;
-
+    /**
+     * Gets all Differences in the variants
+     *
+     * @param CoreShopProduct $product
+     * @return array
+     */
     public static function getDimensions(CoreShopProduct $product)
     {
         $variants = $product->getChilds(array(AbstractObject::OBJECT_TYPE_VARIANT));

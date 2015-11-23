@@ -18,6 +18,10 @@ namespace CoreShop\Model\PriceRule\Action;
 use Pimcore\Model;
 use CoreShop\Tool;
 
+/**
+ * Class DiscountAmount
+ * @package CoreShop\Model\PriceRule\Action
+ */
 class DiscountAmount extends AbstractAction {
 
     /**
@@ -67,14 +71,32 @@ class DiscountAmount extends AbstractAction {
         $this->amount = $amount;
     }
 
+    /**
+     * Apply Rule to Cart
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return bool
+     */
     public function applyRule(Model\Object\CoreShopCart $cart) {
         return true;
     }
 
+    /**
+     * Remove Rule from Cart
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return bool
+     */
     public function unApplyRule(Model\Object\CoreShopCart $cart) {
         return true;
     }
 
+    /**
+     * Calculate discount
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return int
+     */
     public function getDiscount(Model\Object\CoreShopCart $cart) {
         return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
     }

@@ -66,14 +66,32 @@ class DiscountPercent extends AbstractAction {
         $this->percent = $percent;
     }
 
+    /**
+     * Calculate discount
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return int
+     */
     public function getDiscount(Model\Object\CoreShopCart $cart) {
         return $cart->getSubtotal() * ($this->getPercent() / 100);
     }
 
+    /**
+     * Apply Rule to Cart
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return bool
+     */
     public function applyRule(Model\Object\CoreShopCart $cart) {
         return true;
     }
 
+    /**
+     * Remove Rule from Cart
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return bool
+     */
     public function unApplyRule(Model\Object\CoreShopCart $cart) {
         return true;
     }

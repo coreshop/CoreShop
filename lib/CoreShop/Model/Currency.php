@@ -17,21 +17,60 @@ namespace CoreShop\Model;
 
 class Currency extends AbstractModel {
 
+    /**
+     * @var int
+     */
     public $id;
+
+    /**
+     * @var string
+     */
     public $name;
+
+    /**
+     * @var string
+     */
     public $isoCode;
+
+    /**
+     * @var int
+     */
     public $numericIsoCode;
+
+    /**
+     * @var string
+     */
     public $symbol;
+
+    /**
+     * @var double
+     */
     public $exchangeRate;
 
+    /**
+     * Save Currency
+     *
+     * @return mixed
+     */
     public function save() {
         return $this->getResource()->save();
     }
 
+    /**
+     * Delete Currency
+     *
+     * @return mixed
+     */
     public function delete() {
         return $this->getResource()->delete();
     }
 
+    /**
+     * Get Currency by name
+     *
+     * @param $name
+     * @return Currency|null
+     */
     public static function getByName($name) {
         try {
             $obj = new self;
@@ -45,6 +84,12 @@ class Currency extends AbstractModel {
         return null;
     }
 
+    /**
+     * Get Currency by ID
+     *
+     * @param $id
+     * @return Currency|null
+     */
     public static function getById($id) {
         try {
             $obj = new self;
@@ -58,6 +103,11 @@ class Currency extends AbstractModel {
         return null;
     }
 
+    /**
+     * Checks if currency is available
+     *
+     * @return array
+     */
     public static function getAvailable()
     {
         $countries = Country::getActiveCountries();
@@ -74,7 +124,7 @@ class Currency extends AbstractModel {
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -82,7 +132,7 @@ class Currency extends AbstractModel {
     }
 
     /**
-     * @param mixed $id
+     * @param $id
      */
     public function setId($id)
     {
@@ -90,7 +140,7 @@ class Currency extends AbstractModel {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -98,7 +148,7 @@ class Currency extends AbstractModel {
     }
 
     /**
-     * @param mixed $name
+     * @param $name
      */
     public function setName($name)
     {
@@ -106,7 +156,7 @@ class Currency extends AbstractModel {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIsoCode()
     {

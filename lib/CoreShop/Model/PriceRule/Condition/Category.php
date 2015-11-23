@@ -50,6 +50,15 @@ class Category extends AbstractCondition {
         $this->category = $category;
     }
 
+    /**
+     * Check if Cart is Valid for Condition
+     *
+     * @param Cart $cart
+     * @param PriceRule $priceRule
+     * @param bool|false $throwException
+     * @return bool
+     * @throws \Exception
+     */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
         $found = false;

@@ -23,6 +23,7 @@ use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopOrder;
 use Pimcore\Model\Object\CoreShopOrderState;
 use Pimcore\Model\Object\CoreShopUser;
+use Pimcore\Model\Object\Service;
 
 class CoreShop_CheckoutController extends Action 
 {
@@ -145,10 +146,9 @@ class CoreShop_CheckoutController extends Action
             else
             {
                 $this->session->order['paymentProvider'] = $provider;
-
                 $order = new CoreShopOrder();
                 $order->setKey(uniqid());
-                $order->setParent(Tool::findOrCreateObjectFolder("/coreshop/orders/".date('Y/m/d')));
+                $order->setParent(Service::createFolderByPath('/coreshop/orders/' . date('Y/m/d')));
                 $order->setPublished(true);
                 $order->setLang($this->view->language);
                 $order->setCustomer($this->session->user);

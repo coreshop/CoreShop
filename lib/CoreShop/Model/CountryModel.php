@@ -22,6 +22,11 @@ use Pimcore\Model\Object\CoreShopCountry;
 
 class CountryModel extends Base {
 
+    /**
+     * Get all Active Countries
+     *
+     * @return array
+     */
     public static function getActiveCountries()
     {
         $list = new CoreShopCountry\Listing();

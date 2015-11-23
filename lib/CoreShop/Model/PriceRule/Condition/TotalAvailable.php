@@ -68,6 +68,15 @@ class TotalAvailable extends AbstractCondition {
         $this->totalUsed = $totalUsed;
     }
 
+    /**
+     * Check if Cart is Valid for Condition
+     *
+     * @param Cart $cart
+     * @param PriceRule $priceRule
+     * @param bool|false $throwException
+     * @return bool
+     * @throws \Exception
+     */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
         //Check Total Available

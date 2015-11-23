@@ -23,16 +23,34 @@ class FreeShipping extends AbstractAction {
      */
     public $type = "freeShipping";
 
+    /**
+     * Calculate discount
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return int
+     */
     public function getDiscount(Model\Object\CoreShopCart $cart) {
         $discount = $cart->getShipping();
 
         return $discount;
     }
 
+    /**
+     * Apply Rule to Cart
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return bool
+     */
     public function applyRule(Model\Object\CoreShopCart $cart) {
         return true;
     }
 
+    /**
+     * Remove Rule from Cart
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return bool
+     */
     public function unApplyRule(Model\Object\CoreShopCart $cart) {
         return true;
     }

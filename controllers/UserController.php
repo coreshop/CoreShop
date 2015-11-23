@@ -165,7 +165,7 @@ class CoreShop_UserController extends Action
                 $user = new CoreShopUser();
                 $user->setKey(Pimcore\File::getValidFilename($userParams['email']));
                 $user->setPublished(true);
-                $user->setParent(Tool::findOrCreateObjectFolder($folder));
+                $user->setParent(Pimcore\Model\Object\Service::createFolderByPath($folder));
                 $user->setValues($userParams);
                 $user->setAddresses($adresses);
                 $user->save();

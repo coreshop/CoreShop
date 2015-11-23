@@ -17,17 +17,51 @@ namespace CoreShop\Model;
 
 class Country extends AbstractModel {
 
+    /**
+     * @var int
+     */
     public $id;
+
+    /**
+     * @var string
+     */
     public $isoCode;
+
+    /**
+     * @var string
+     */
     public $name;
+
+    /**
+     * @var int
+     */
     public $active;
+
+    /**
+     * @var Currency
+     */
     public $currency;
+
+    /**
+     * @var int
+     */
     public $currency__id;
 
+    /**
+     * save currency
+     *
+     * @return mixed
+     */
     public function save() {
         return $this->getResource()->save();
     }
 
+    /**
+     * Get Currency by ID
+     *
+     * @param $id
+     * @return Country|null
+     */
     public static function getById($id) {
         try {
             $obj = new self;
@@ -41,6 +75,12 @@ class Country extends AbstractModel {
         return null;
     }
 
+    /**
+     * Get Currency by ISO-Code
+     *
+     * @param $isoCode
+     * @return Country|null
+     */
     public static function getByIsoCode($isoCode) {
         try {
             $obj = new self;
@@ -54,6 +94,11 @@ class Country extends AbstractModel {
         return null;
     }
 
+    /**
+     * Gets all active Countries
+     *
+     * @return array
+     */
     public static function getActiveCountries()
     {
         $list = new Country\Listing();
@@ -63,15 +108,15 @@ class Country extends AbstractModel {
     }
 
     /**
- * @return mixed
- */
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -79,7 +124,7 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIsoCode()
     {
@@ -87,7 +132,7 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @param mixed $isoCode
+     * @param $isoCode
      */
     public function setIsoCode($isoCode)
     {
@@ -95,7 +140,7 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -103,7 +148,7 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @param mixed $name
+     * @param $name
      */
     public function setName($name)
     {
@@ -111,7 +156,7 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getActive()
     {
@@ -119,7 +164,7 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @param mixed $active
+     * @param $active
      */
     public function setActive($active)
     {
@@ -133,7 +178,7 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @return mixed
+     * @return Currency
      */
     public function getCurrency()
     {
@@ -141,7 +186,8 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @param mixed $currency
+     * @param $currency
+     * @throws \Exception
      */
     public function setCurrency($currency)
     {
@@ -156,7 +202,7 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getCurrency__Id()
     {
@@ -164,7 +210,8 @@ class Country extends AbstractModel {
     }
 
     /**
-     * @param mixed $currency__id
+     * @param $currency__id
+     * @throws \Exception
      */
     public function setCurrency__Id($currency__id)
     {
@@ -181,6 +228,9 @@ class Country extends AbstractModel {
         $this->currency = $currency;
     }
 
+    /**
+     * @return string
+     */
     public function __toString() {
         return strval($this->getName());
     }

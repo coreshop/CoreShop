@@ -24,7 +24,27 @@ abstract class AbstractAction extends AbstractPriceRule {
      */
     public $elementType = "action";
 
+    /**
+     * Apply Rule to Cart
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return bool
+     */
     public abstract function applyRule(Model\Object\CoreShopCart $cart);
+
+    /**
+     * Remove Rule from Cart
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return bool
+     */
     public abstract function unApplyRule(Model\Object\CoreShopCart $cart);
+
+    /**
+     * Calculate discount
+     *
+     * @param Model\Object\CoreShopCart $cart
+     * @return int
+     */
     public abstract function getDiscount(Model\Object\CoreShopCart $cart);
 }

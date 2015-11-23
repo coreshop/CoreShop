@@ -25,5 +25,13 @@ abstract class AbstractCondition extends AbstractPriceRule {
      */
     public $elementType = "condition";
 
+    /**
+     * Check if Cart is Valid for Condition
+     *
+     * @param Model\Cart $cart
+     * @param PriceRule $priceRule
+     * @param bool|false $throwException
+     * @return mixed
+     */
     public abstract function checkCondition(Model\Cart $cart, PriceRule $priceRule, $throwException = false);
 }

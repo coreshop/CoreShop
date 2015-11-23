@@ -24,6 +24,12 @@ use Pimcore\Model\Object\CoreShopCart;
 
 class User extends Base
 {
+    /**
+     * Get User by E-Mail
+     *
+     * @param $email
+     * @return bool
+     */
     public static function getUniqueByEmail($email)
     {
         $list = self::getByEmail($email);
@@ -37,6 +43,13 @@ class User extends Base
         return false;
     }
 
+    /**
+     * Auth User
+     *
+     * @param $password
+     * @return bool
+     * @throws Exception
+     */
     public function authenticate($password)
     {
         if ($this->getPassword() == hash("md5", $password)) {
@@ -45,10 +58,14 @@ class User extends Base
         else {
             throw new Exception("User and Password doesn't match", 0);
         }
-
-        return false;
     }
 
+    /**
+     * Get User address by Name
+     *
+     * @param $name
+     * @return bool
+     */
     public function findAddressByName($name)
     {
         foreach($this->getAddresses() as $address)
@@ -61,6 +78,11 @@ class User extends Base
         return false;
     }
 
+    /**
+     * Get User Orders
+     *
+     * @return array
+     */
     public function getOrders()
     {
         $list = new Object\CoreShopOrder\Listing();
@@ -69,6 +91,11 @@ class User extends Base
         return $list->getObjects();
     }
 
+    /**
+     * Get Users latest Cart
+     *
+     * @return bool
+     */
     public function getLatestCart()
     {
         $list = new CoreShopCart\Listing();

@@ -52,6 +52,12 @@ class Gift extends AbstractAction {
         $this->gift = $gift;
     }
 
+    /**
+     * Calculate discount
+     *
+     * @param CoreShopCart $cart
+     * @return int
+     */
     public function getDiscount(CoreShopCart $cart)
     {
         $discount = Tool::convertToCurrency($this->getGift()->getProductPrice(), Tool::getCurrency());
@@ -59,6 +65,12 @@ class Gift extends AbstractAction {
         return $discount;
     }
 
+    /**
+     * Apply Rule to Cart
+     *
+     * @param CoreShopCart $cart
+     * @return bool
+     */
     public function applyRule(CoreShopCart $cart)
     {
         if($this->getGift() instanceof CoreShopProduct) {
@@ -70,6 +82,12 @@ class Gift extends AbstractAction {
         return true;
     }
 
+    /**
+     * Remove Rule from Cart
+     *
+     * @param CoreShopCart $cart
+     * @return bool
+     */
     public function unApplyRule(CoreShopCart $cart)
     {
         if($this->getGift() instanceof CoreShopProduct) {
