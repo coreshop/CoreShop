@@ -32,4 +32,12 @@ class CoreShop_Admin_TestController extends Admin
 
         exit;
     }
+
+    public function testSetupAction() {
+        $install = new CoreShop\Plugin\Install();
+
+        $install->executeSQL("CountriesAndCurrencies");
+
+        exit;
+    }
 }

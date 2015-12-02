@@ -6,4 +6,4 @@ CREATE TABLE `coreshop_currency` (
   `symbol` varchar(255) DEFAULT NULL,
   `exchangeRate` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

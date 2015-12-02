@@ -19,6 +19,8 @@ use CoreShop\Plugin;
 
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\Folder;
+use Pimcore\Model\User;
+use Pimcore\Model\Staticroute;
 
 class Install
 {
@@ -33,7 +35,8 @@ class Install
         $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/sql/$fileName.sql";;
         $sql = file_get_contents($file);
 
-        return $db->query($sql);
+        $mysqli = $db->getConnection();
+        return $mysqli->multi_query($sql);
     }
 
     public function createClass($className)
@@ -130,7 +133,7 @@ class Install
                 $brick->delete();
             }
         } 
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             return false;
         }
@@ -213,7 +216,7 @@ class Install
         
         if(!$products instanceof Folder)
         {
-            $products = Folder::create(array(
+            Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUser()->getId(),
@@ -225,7 +228,7 @@ class Install
 
         if(!$countries instanceof Folder)
         {
-            $products = Folder::create(array(
+            Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUser()->getId(),
@@ -237,7 +240,7 @@ class Install
 
         if(!$currencies instanceof Folder)
         {
-            $products = Folder::create(array(
+            Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUser()->getId(),
@@ -343,7 +346,7 @@ class Install
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
         
         foreach ($conf->routes->route as $def) {
-            $route = \Staticroute::create();
+            $route = Staticroute::create();
             $route->setName($def->name);
             $route->setPattern($def->pattern);
             $route->setReverse($def->reverse);
@@ -361,7 +364,7 @@ class Install
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
         
         foreach ($conf->routes->route as $def) {
-            $route = \Staticroute::getByName($def->name);
+            $route = Staticroute::getByName($def->name);
             if ($route) {
                 $route->delete();
             }

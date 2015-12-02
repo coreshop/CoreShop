@@ -24,6 +24,8 @@ use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\Plugin\Hook;
 use CoreShop\Model\Plugin\InstallPlugin;
 
+use CoreShop\Plugin\Install;
+
 class Plugin extends AbstractPlugin implements PluginInterface {
 
     /**
@@ -63,6 +65,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $install->executeSQL("PriceRules");
             $install->executeSQL("Carrier");
             $install->executeSQL("misc");
+            $install->executeSQL("CountriesAndCurrencies");
 
             $countryTaxClass = $install->createClass("CoreShopCountryTax");
 
@@ -113,7 +116,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         } 
         catch(Exception $e) 
         {
-            logger::crit($e);
+            \Logger::crit($e);
             return self::getTranslate()->_('coreshop_install_failed');
         }
         
@@ -162,7 +165,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             
             return self::getTranslate()->_('coreshop_uninstalled_successfully');
         } catch (Exception $e) {
-            Logger::crit($e);
+            \Logger::crit($e);
             return self::getTranslate()->_('coreshop_uninstall_failed');
         }
     }
