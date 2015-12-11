@@ -22,6 +22,7 @@ use Pimcore\Mail;
 
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
+use CoreShop\Model\User;
 
 use Pimcore\Tool\Session;
 
@@ -90,12 +91,12 @@ class Tool {
     /**
      * Get current User
      *
-     * @return null|Object\CoreShopUser
+     * @return null|Object\User
      */
     public static function getUser() {
         $session = self::getSession();
 
-        return $session->user instanceof Object\CoreShopUser ? $session->user : null;
+        return $session->user instanceof User ? $session->user : null;
     }
 
     /**
@@ -143,6 +144,7 @@ class Tool {
     public static function getCountry()
     {
         $session = self::getSession();
+        $country = null;
 
         if($session->countryId) {
             $country = Country::getById($session->countryId);
@@ -152,7 +154,7 @@ class Tool {
         }
 
 
-        if (self::getSession()->user instanceof CoreShopUser) {
+        if (self::getSession()->user instanceof User) {
             $user = self::getSession()->user;
 
             if (count($user->getAddresses()) > 0)
