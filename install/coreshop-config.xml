@@ -9,4 +9,6 @@
     <category>
         <default-image></default-image>
     </category>
+
+    <isInstalled>0</isInstalled>
 </zend-config>

@@ -57,7 +57,7 @@ pimcore.plugin.coreshop.settings= Class.create({
     getTabPanel: function () {
 
         if (!this.panel) {
-            this.panel = new Ext.Panel({
+            this.panel = Ext.create('Ext.panel.Panel', {
                 id: "coreshop_settings",
                 title: t("coreshop_settings"),
                 iconCls: "coreshop_icon_settings",
@@ -68,7 +68,7 @@ pimcore.plugin.coreshop.settings= Class.create({
 
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add(this.panel);
-            tabPanel.activate("coreshop_settings");
+            tabPanel.setActiveItem("coreshop_settings");
 
 
             this.panel.on("destroy", function () {
@@ -76,7 +76,7 @@ pimcore.plugin.coreshop.settings= Class.create({
             }.bind(this));
 
 
-            this.layout = new Ext.FormPanel({
+            this.layout = Ext.create('Ext.form.Panel', {
                 bodyStyle:'padding:20px 5px 20px 5px;',
                 border: false,
                 autoScroll: true,
@@ -84,7 +84,9 @@ pimcore.plugin.coreshop.settings= Class.create({
                 defaults: {
                     forceLayout: true
                 },
-                layout: "pimcoreform",
+                fieldDefaults: {
+                    labelWidth: 250
+                },
                 buttons: [
                     {
                         text: "Save",
@@ -101,7 +103,7 @@ pimcore.plugin.coreshop.settings= Class.create({
                         autoHeight:true,
                         labelWidth: 250,
                         defaultType: 'textfield',
-                        defaults: {width: 150},
+                        defaults: {width: 600},
                         items :[
                             {
                                 xtype:'combo',
@@ -135,14 +137,13 @@ pimcore.plugin.coreshop.settings= Class.create({
                         autoHeight:true,
                         labelWidth: 250,
                         defaultType: 'textfield',
-                        defaults: {width: 150},
+                        defaults: {width: 600},
                         items :[
                             {
                                 fieldLabel: t("coreshop_default_image"),
                                 name: "product.default-image",
                                 cls: "input_drop_target",
                                 value: this.getValue("product.default-image"),
-                                width: 300,
                                 xtype: "textfield",
                                 listeners: {
                                     "render": function (el) {
@@ -185,14 +186,13 @@ pimcore.plugin.coreshop.settings= Class.create({
                         autoHeight:true,
                         labelWidth: 250,
                         defaultType: 'textfield',
-                        defaults: {width: 150},
+                        defaults: {width: 600},
                         items :[
                             {
                                 fieldLabel: t("coreshop_default_image"),
                                 name: "category.default-image",
                                 cls: "input_drop_target",
                                 value: this.getValue("category.default-image"),
-                                width: 300,
                                 xtype: "textfield",
                                 listeners: {
                                     "render": function (el) {

@@ -54,8 +54,8 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
         // ...
         var panel = this.parent.getTabPanel();
         panel.add(this.tabPanel);
-        panel.activate(this.tabPanel);
-        panel.doLayout();
+        panel.setActiveItem(this.tabPanel);
+        panel.updateLayout();
     },
 
     /**
@@ -63,8 +63,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
      * @returns Ext.form.FormPanel
      */
     getSettings: function () {
-        this.settingsForm = new Ext.form.FormPanel({
-            layout: "pimcoreform",
+        this.settingsForm = new Ext.form.Panel({
             iconCls: "coreshop_carrier_settings_icon",
             title: t("settings"),
             bodyStyle: "padding:10px;",
@@ -135,8 +134,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
 
     getShippingLocationsAndCosts : function() {
         //Shipping locations and costs
-        this.shippingLocationAndCosts = new Ext.form.FormPanel({
-            layout: "pimcoreform",
+        this.shippingLocationAndCosts = new Ext.form.Panel({
             iconCls: "coreshop_carrier_costs_icon",
             title: t("coreshop_carrier_shipping_locations_and_costs"),
             bodyStyle: "padding:10px;",
@@ -185,25 +183,17 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
     },
 
     getRangeGrid : function() {
-        this.fields = ['id', 'delimiter1', 'delimiter2', 'price'];
+        var listeners = {};
 
-        var readerFields = [];
-        for (var i = 0; i < this.fields.length; i++) {
-            readerFields.push({name: this.fields[i], allowBlank: true});
+        var modelName = 'coreshop.model.carrier.ranges';
+        if (!Ext.ClassManager.get(modelName)) {
+            Ext.define(modelName, {
+                    extend: 'Ext.data.Model',
+                    fields: ['id', 'delimiter1', 'delimiter2', 'price']
+                }
+            );
         }
 
-        var proxy = new Ext.data.HttpProxy({
-            url: '/plugin/CoreShop/admin_Carrier/get-range',
-            method: 'post'
-        });
-        var reader = new Ext.data.JsonReader({
-            totalProperty: 'total',
-            successProperty: 'success',
-            root: 'data'
-        },readerFields);
-
-        var writer = null;
-        var listeners = {};
         if(this.enableEditor) {
             writer = new Ext.data.JsonWriter();
             listeners.write = function(store, action, result, response, rs) {};
@@ -220,20 +210,47 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
             restful: false,
             idProperty: 'id',
             remoteSort: true,
-            proxy: proxy,
-            reader: reader,
-            writer: writer,
+            model : modelName,
             listeners: listeners,
-            baseParams: {
-                "carrier" : this.data.id
+            proxy: {
+                type: 'ajax',
+                url: '/plugin/CoreShop/admin_Carrier/get-range',
+                reader: {
+                    type: 'json',
+                    rootProperty : 'data'
+                },
+                extraParams : {
+                    carrier : this.data.id
+                }
             }
         });
 
-        var gridColumns = [];
+        var gridColumns = [
+            {
+                header: t("coreshop_carrier_delimeter1"),
+                width: 200,
+                dataIndex: 'delimiter1',
+                editor: new Ext.form.TextField({})
+            },
+            {
+                header: t("coreshop_carrier_delimeter2"),
+                width: 200,
+                dataIndex: 'delimiter2',
+                editor: new Ext.form.TextField({})
+            },
+            {
+                header: t("coreshop_carrier_price"),
+                width: 200,
+                dataIndex: 'price',
+                editor: new Ext.form.TextField({})
+            }
+        ];
 
-        gridColumns.push({header: t("coreshop_carrier_delimeter1"), width: 200, dataIndex: 'delimiter1',editor: new Ext.form.TextField({})});
-        gridColumns.push({header: t("coreshop_carrier_delimeter2"), width: 200, dataIndex: 'delimiter2', editor: new Ext.form.TextField({})});
-        gridColumns.push({header: t("coreshop_carrier_price"), width: 200, dataIndex: 'price', editor: new Ext.form.TextField({})});
+        this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1,
+            listeners: {}
+        });
+
 
         var gridConfig = {
             frame: false,
@@ -247,7 +264,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
             viewConfig: {
                 forceFit: false
             },
-            sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+            selModel: Ext.create('Ext.selection.RowModel', {}),
             tbar: [
 
                 {
@@ -255,10 +272,13 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                     handler: this.addRangeRow.bind(this),
                     iconCls: "pimcore_icon_add"
                 }
+            ],
+            plugins: [
+                this.cellEditing
             ]
         };
 
-        this.grid = new Ext.grid.EditorGridPanel(gridConfig);
+        this.grid = Ext.create('Ext.grid.Panel', gridConfig);
 
         this.store.load();
 
@@ -266,16 +286,19 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
     },
 
     addRangeRow : function() {
-        var newRecord = new this.store.recordType({
-
+        var model = this.store.getModel();
+        var newRecord = new model({
+            'delimiter1' : 0,
+            'delimiter2' : 0,
+            'price' : 0
         });
 
         this.store.add(newRecord);
+        this.grid.getView().refresh();
     },
 
     getDimensions : function() {
-        this.dimensionsForm = new Ext.form.FormPanel({
-            layout: "pimcoreform",
+        this.dimensionsForm = new Ext.form.Panel({
             iconCls: "coreshop_carrier_dimensions_icon",
             title: t("coreshop_carrier_dimensions"),
             bodyStyle: "padding:10px;",
@@ -325,7 +348,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
         Ext.apply(data.settings, this.shippingLocationAndCosts.getForm().getFieldValues());
         Ext.apply(data.settings, this.dimensionsForm.getForm().getFieldValues());
 
-        data["range"] = Ext.pluck(this.store.data.items, 'data');
+        data["range"] = Ext.pluck(this.store.getRange(), 'data');
 
         // send data
         Ext.Ajax.request({
@@ -343,7 +366,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
      * saved
      */
     saveOnComplete: function () {
-        this.parent.getTree().getRootNode().reload();
+        this.parent.getTree().getStore().reload();
         pimcore.helpers.showNotification(t("success"), t("coreshop_carrier_saved_successfully"), "success");
     }
 });

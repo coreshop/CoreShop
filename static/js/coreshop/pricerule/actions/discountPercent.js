@@ -28,7 +28,7 @@ pimcore.plugin.coreshop.pricerule.actions.discountPercent = Class.create(pimcore
             currencyValue = this.data.currency;
         }
 
-        var percent = new Ext.ux.form.SpinnerField({
+        var percent = new Ext.form.NumberField({
             fieldLabel:t("coreshop_action_discountPercent_percent"),
             name:'percent',
             value : percentValue,

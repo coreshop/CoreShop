@@ -16,11 +16,14 @@
 namespace CoreShop\Plugin;
 
 use CoreShop\Plugin;
+use CoreShop\Config;
 
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\Folder;
 use Pimcore\Model\User;
 use Pimcore\Model\Staticroute;
+
+use Pimcore\Model\Tool\Setup;
 
 class Install
 {
@@ -30,19 +33,16 @@ class Install
     protected $_user;
 
     public function executeSQL($fileName) {
-        $db = \Pimcore\Resource::get();
-
         $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/sql/$fileName.sql";;
-        $sql = file_get_contents($file);
 
-        $mysqli = $db->getConnection();
-        return $mysqli->multi_query($sql);
+        $setup = new Setup();
+        $setup->insertDump($file);
     }
 
     public function createClass($className)
     {
         $class = Object\ClassDefinition::getByName($className);
-        
+
         if (!$class)
         {
             $result = Plugin::getEventManager()->trigger("install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function($v) {
@@ -52,33 +52,33 @@ class Install
             if ($result->stopped()) {
                 return $result->last();
             }
-            
+
             $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
-            
+
             $class = Object\ClassDefinition::create();
             $class->setName($className);
             $class->setUserOwner($this->_getUser()->getId());
-            
+
             $json = file_get_contents($jsonFile);
-            
+
             $result = Plugin::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
-    
+
             if ($result->stopped()) {
                 $resultJson = $result->last();
-                
+
                 if($resultJson)
                 {
                     $json = $resultJson;
                 }
             }
-            
+
             Object\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
-            
+
             return $class;
         }
-        
+
         return $class;
     }
     
@@ -339,6 +339,20 @@ class Install
             ));
             $writer->write();
         }
+    }
+
+    public function setConfigInstalled() {
+        $oldConfig = Config::getConfig();
+        $oldValues = $oldConfig->toArray();
+
+        $oldValues['isInstalled'] = true;
+
+        $config = new \Zend_Config($oldValues, true);
+        $writer = new \Zend_Config_Writer_Xml(array(
+            "config" => $config,
+            "filename" => CORESHOP_CONFIGURATION
+        ));
+        $writer->write();
     }
 
     public function createStaticRoutes()

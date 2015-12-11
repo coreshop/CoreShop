@@ -23,7 +23,7 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
 
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.activate("coreshop_currency");
+        tabPanel.setActiveItem("coreshop_currency");
     },
 
     getTabPanel: function () {
@@ -36,12 +36,12 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
                 border: false,
                 layout: "border",
                 closable:true,
-                items: [this.getLayout()]
+                items: [this.getTree(), this.getEditPanel()]
             });
 
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add(this.panel);
-            tabPanel.activate("coreshop_currency");
+            tabPanel.setActiveItem("coreshop_currency");
 
 
             this.panel.on("destroy", function () {
@@ -55,48 +55,81 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
     },
 
     getTreeNodeListeners: function () {
-        var treeNodeListeners = {
-            'click' : this.onTreeNodeClick.bind(this),
-            "contextmenu": this.onTreeNodeContextmenu
-        };
 
-        return treeNodeListeners;
+        return {
+            "itemclick" : this.onTreeNodeClick.bind(this),
+            "itemcontextmenu": this.onTreeNodeContextmenu.bind(this)
+        };
     },
 
-    getLayout: function ()
-    {
-        this.tree = new Ext.tree.TreePanel({
-            xtype: "treepanel",
-            region: "west",
-            title: t("coreshop_currencies"),
-            width: 200,
-            enableDD: false,
-            autoScroll: true,
-            collapsible: true,
-            rootVisible: false,
-            root: {
-                id: "0",
-                root: true
-            },
-            tbar : [{
-                text: t('coreshop_currency_add'),
-                iconCls: 'coreshop_icon_currency_add',
-                handler : this.addCurrency.bind(this)
-            }],
-            loader: new Ext.tree.TreeLoader({
-                dataUrl: '/plugin/CoreShop/admin_currency/get-currencies',
-                requestMethod: "GET",
-                baseAttrs: {
-                    reference: this,
-                    allowChildren: true,
-                    isTarget: true,
-                    listeners : this.getTreeNodeListeners()
-                }
-            }),
-            bodyStyle: "padding: 5px;"
-        });
+    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts ) {
+        e.stopEvent();
+        tree.select();
 
-        return [this.tree, this.getEditPanel()];
+        var menu = new Ext.menu.Menu();
+
+        menu.add(new Ext.menu.Item({
+            text: t('delete'),
+            iconCls: "coreshop_icon_currency_remove",
+            listeners: {
+                "click": this.removeCurrency.bind(this, record)
+            }
+        }));
+
+        menu.showAt(e.pageX, e.pageY);
+    },
+
+    onTreeNodeClick: function (tree, record, item, index, e, eOpts ) {
+        this.openCurrency(record.id);
+    },
+
+    getTree: function () {
+        if (!this.tree) {
+            this.store = Ext.create('Ext.data.TreeStore', {
+                autoLoad: false,
+                autoSync: true,
+                proxy: {
+                    type: 'ajax',
+                    url: '/plugin/CoreShop/admin_currency/get-currencies',
+                    reader: {
+                        type: 'json'
+
+                    },
+                    extraParams: {
+                        grouped: 1
+                    }
+                }
+            });
+
+
+            this.tree = Ext.create('pimcore.tree.Panel', {
+                region: "west",
+                useArrows: true,
+                autoScroll: true,
+                animate: true,
+                containerScroll: true,
+                width: 200,
+                split: true,
+                root: {
+                    id: "0",
+                    root: true
+                },
+                rootVisible: false,
+                store: this.store,
+                listeners : this.getTreeNodeListeners(),
+                tbar : [{
+                    text: t('coreshop_currency_add'),
+                    iconCls: 'coreshop_icon_currency_add',
+                    handler : this.addCurrency.bind(this)
+                }]
+            });
+
+            this.tree.on("render", function () {
+                this.getRootNode().expand();
+            });
+        }
+
+        return this.tree;
     },
 
     getEditPanel: function () {
@@ -109,32 +142,6 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
         }
 
         return this.editPanel;
-    },
-
-    onTreeNodeClick: function (node) {
-
-        if(!node.attributes.allowChildren && node.id > 0) {
-            this.openCurrency(node.id);
-        }
-    },
-
-    onTreeNodeContextmenu: function () {
-
-        this.select();
-        var menu = new Ext.menu.Menu();
-
-        menu.add(new Ext.menu.Item({
-            text: t('delete'),
-            iconCls: "coreshop_icon_currency_remove",
-            listeners: {
-                "click": this.attributes.reference.removeCurrency.bind(this)
-            }
-        }));
-
-        if(typeof menu.items != "undefined" && typeof menu.items.items != "undefined"
-            && menu.items.items.length > 0) {
-            menu.show(this.ui.getAnchor());
-        }
     },
 
     addCurrency : function() {
@@ -156,7 +163,7 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
             var data = Ext.decode(transport.responseText);
 
             if(data && data.success){
-                this.tree.root.reload();
+                this.tree.getStore().reload();
                 this.openCurrency(data.currency.id);
             } else {
                 pimcore.helpers.showNotification(t("error"), t("coreshop_currency_creation_error"), "error", t(data.message));
@@ -167,21 +174,23 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
         }
     },
 
-    removeCurrency : function() {
+    removeCurrency : function(record) {
         Ext.MessageBox.show({
             title: t('delete'),
             msg: t("are_you_sure"),
             buttons: Ext.Msg.OKCANCEL ,
             icon: Ext.MessageBox.QUESTION,
-            fn: function (button) {
-                if (button == "ok") {
+            fn: function (button)
+            {
+                if (button == "ok")
+                {
                     Ext.Ajax.request({
                         url: "/plugin/CoreShop/admin_currency/remove",
                         params: {
-                            id: this.id
+                            id: record.id
                         },
                         success: function() {
-                            this.remove();
+                            this.tree.getStore().reload()
                         }.bind(this)
                     });
                 }
@@ -198,5 +207,5 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
             this.panels[currencyPanelKey] = currencyPanel;
         }
 
-    },
+    }
 });

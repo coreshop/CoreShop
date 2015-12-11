@@ -23,7 +23,6 @@ pimcore.plugin.coreshop.pricerule.conditions.category = Class.create(pimcore.plu
             fieldLabel: t("coreshop_condition_category_category"),
             name: "category",
             cls: "input_drop_target",
-            value: this.data.category,
             width: 300,
             xtype: "textfield",
             listeners: {
@@ -36,15 +35,19 @@ pimcore.plugin.coreshop.pricerule.conditions.category = Class.create(pimcore.plu
                         }.bind(el),
 
                         onNodeOver : function(target, dd, e, data) {
-                            if (data.node.attributes.elementType == "object" && data.node.attributes.className == "CoreShopCategory") {
+                            data = data.records[0].data;
+
+                            if (data.elementType == "object" && data.className == "CoreShopCategory") {
                                 return Ext.dd.DropZone.prototype.dropAllowed;
                             }
                             return Ext.dd.DropZone.prototype.dropNotAllowed;
                         },
 
                         onNodeDrop : function (target, dd, e, data) {
-                            if (data.node.attributes.elementType == "object" && data.node.attributes.className == "CoreShopCategory") {
-                                this.setValue(data.node.attributes.path);
+                            data = data.records[0].data;
+
+                            if (data.elementType == "object" && data.className == "CoreShopCategory") {
+                                this.setValue(data.path);
                                 return true;
                             }
                             return false;
@@ -53,6 +56,10 @@ pimcore.plugin.coreshop.pricerule.conditions.category = Class.create(pimcore.plu
                 }
             }
         };
+
+        if(this.data && this.data.category) {
+            category.value = this.data.category;
+        }
 
         this.form = new Ext.form.FieldSet({
             items : [

@@ -28,12 +28,13 @@ pimcore.plugin.coreshop.pricerule.actions.discountAmount = Class.create(pimcore.
             currencyValue = this.data.currency;
         }
 
-        var amount = new Ext.ux.form.SpinnerField({
+        var amount = new Ext.form.NumberField({
             fieldLabel:t("coreshop_action_discountAmount_amount"),
             name:'amount',
             value : amountValue,
             minValue : 0,
-            decimalPrecision : 0
+            decimalPrecision : 0,
+            step : 1
         });
 
         var currency = {

@@ -23,7 +23,6 @@ pimcore.plugin.coreshop.pricerule.actions.gift = Class.create(pimcore.plugin.cor
             fieldLabel: t("coreshop_action_gift_product"),
             name: "gift",
             cls: "input_drop_target",
-            value: this.data.gift,
             width: 300,
             xtype: "textfield",
             listeners: {
@@ -36,15 +35,19 @@ pimcore.plugin.coreshop.pricerule.actions.gift = Class.create(pimcore.plugin.cor
                         }.bind(el),
 
                         onNodeOver : function(target, dd, e, data) {
-                            if (data.node.attributes.elementType == "object" && data.node.attributes.className == "CoreShopProduct") {
+                            data = data.records[0].data;
+
+                            if (data.elementType == "object" && data.className == "CoreShopProduct") {
                                 return Ext.dd.DropZone.prototype.dropAllowed;
                             }
                             return Ext.dd.DropZone.prototype.dropNotAllowed;
                         },
 
                         onNodeDrop : function (target, dd, e, data) {
-                            if (data.node.attributes.elementType == "object" && data.node.attributes.className == "CoreShopProduct") {
-                                this.setValue(data.node.attributes.path);
+                            data = data.records[0].data;
+
+                            if (data.elementType == "object" && data.className == "CoreShopProduct") {
+                                this.setValue(data.path);
                                 return true;
                             }
                             return false;
@@ -53,6 +56,10 @@ pimcore.plugin.coreshop.pricerule.actions.gift = Class.create(pimcore.plugin.cor
                 }
             }
         };
+
+        if(this.data && this.data.gift) {
+            gift.value = this.data.gift;
+        }
 
         this.form = new Ext.form.FieldSet({
             items : [

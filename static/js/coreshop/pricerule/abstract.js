@@ -36,8 +36,8 @@ pimcore.plugin.coreshop.pricerule.abstract = Class.create({
     getLayout : function() {
         var myId = Ext.id();
 
-        this.layout = new Ext.Panel({
-            parent : this,
+        this.layout = new Ext.panel.Panel({
+            xparent : this,
             id : myId,
             style: "margin: 10px 0 0 0",
             tbar : this.getTopBar(t("coreshop_" + this.elementType +  "_" + this.type), myId, this.parent, this.data, "coreshop_price_rule_icon_" + this.elementType + "_" + this.type),
@@ -85,7 +85,8 @@ pimcore.plugin.coreshop.pricerule.abstract = Class.create({
 
         return [{
             iconCls: iconCls,
-            disabled: true
+            disabled: true,
+            xtype : 'button'
         }, {
             xtype: "tbtext",
             text: "<b>" + name + "</b>"
@@ -93,7 +94,6 @@ pimcore.plugin.coreshop.pricerule.abstract = Class.create({
             iconCls: "pimcore_icon_up",
             handler: function (blockId, parent, container, namespace) {
 
-                var container = container;
                 var blockElement = Ext.getCmp(blockId);
                 var index = pimcore.plugin.coreshop.pricerule[namespace].abstract.prototype.getIndex(blockElement, container);
                 var tmpContainer = pimcore.viewport;
@@ -106,17 +106,18 @@ pimcore.plugin.coreshop.pricerule.abstract = Class.create({
                 // move this node temorary to an other so ext recognizes a change
                 container.remove(blockElement, false);
                 tmpContainer.add(blockElement);
-                container.doLayout();
-                tmpContainer.doLayout();
+                container.updateLayout();
+                tmpContainer.updateLayout();
 
                 // move the element to the right position
                 tmpContainer.remove(blockElement,false);
                 container.insert(newIndex, blockElement);
-                container.doLayout();
-                tmpContainer.doLayout();
+                container.updateLayout();
+                tmpContainer.updateLayout();
 
                 pimcore.layout.refresh();
-            }.bind(window, index, parent, container, namespace)
+            }.bind(window, index, parent, container, namespace),
+            xtype : 'button'
         },{
             iconCls: "pimcore_icon_down",
             handler: function (blockId, parent, container, namespace) {
@@ -129,23 +130,25 @@ pimcore.plugin.coreshop.pricerule.abstract = Class.create({
                 // move this node temorary to an other so ext recognizes a change
                 container.remove(blockElement, false);
                 tmpContainer.add(blockElement);
-                container.doLayout();
-                tmpContainer.doLayout();
+                container.updateLayout();
+                tmpContainer.updateLayout();
 
                 // move the element to the right position
                 tmpContainer.remove(blockElement,false);
                 container.insert(index+1, blockElement);
-                container.doLayout();
-                tmpContainer.doLayout();
+                container.updateLayout();
+                tmpContainer.updateLayout();
 
                 pimcore.layout.refresh();
 
-            }.bind(window, index, parent, container, namespace)
+            }.bind(window, index, parent, container, namespace),
+            xtype : 'button'
         },"->",{
             iconCls: "pimcore_icon_delete",
             handler: function (index, parent, container, namespace) {
                 container.remove(Ext.getCmp(index));
-            }.bind(window, index, parent, container, namespace)
+            }.bind(window, index, parent, container, namespace),
+            xtype : 'button'
         }];
     },
 });

@@ -26,12 +26,13 @@ pimcore.plugin.coreshop.pricerule.conditions.totalPerCustomer = Class.create(pim
             totalValue = this.data.total;
         }
 
-        var total = new Ext.ux.form.SpinnerField({
+        var total = new Ext.form.NumberField({
             fieldLabel:t("coreshop_condition_totalPerCustomer_total"),
             name:'total',
             value : totalValue ,
             minValue : 0,
-            decimalPrecision : 0
+            decimalPrecision : 0,
+            step : 1
         });
 
         this.form = new Ext.form.FieldSet({

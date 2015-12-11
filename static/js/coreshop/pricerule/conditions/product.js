@@ -23,7 +23,6 @@ pimcore.plugin.coreshop.pricerule.conditions.product = Class.create(pimcore.plug
             fieldLabel: t("coreshop_condition_product_product"),
             name: "product",
             cls: "input_drop_target",
-            value: this.data.product,
             width: 300,
             xtype: "textfield",
             listeners: {
@@ -36,15 +35,19 @@ pimcore.plugin.coreshop.pricerule.conditions.product = Class.create(pimcore.plug
                         }.bind(el),
 
                         onNodeOver : function(target, dd, e, data) {
-                            if (data.node.attributes.elementType == "object" && data.node.attributes.className == "CoreShopProduct") {
+                            data = data.records[0].data;
+
+                            if (data.elementType == "object" && data.className == "CoreShopProduct") {
                                 return Ext.dd.DropZone.prototype.dropAllowed;
                             }
                             return Ext.dd.DropZone.prototype.dropNotAllowed;
                         },
 
                         onNodeDrop : function (target, dd, e, data) {
-                            if (data.node.attributes.elementType == "object" && data.node.attributes.className == "CoreShopProduct") {
-                                this.setValue(data.node.attributes.path);
+                            data = data.records[0].data;
+
+                            if (data.elementType == "object" && data.className == "CoreShopProduct") {
+                                this.setValue(data.path);
                                 return true;
                             }
                             return false;
@@ -54,11 +57,14 @@ pimcore.plugin.coreshop.pricerule.conditions.product = Class.create(pimcore.plug
             }
         };
 
+        if(this.data && this.data.product) {
+            product.value = this.data.product;
+        }
+
         this.form = new Ext.form.FieldSet({
             items : [
                 product
-            ],
-            border : 0
+            ]
         });
 
         return this.form;

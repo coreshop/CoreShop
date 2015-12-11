@@ -82,15 +82,15 @@
 }
 
 .pimcore_icon_objectSelect {
-    background: url(/pimcore/static/img/icon/select.png) no-repeat!important;
+    background: url(/pimcore/static/img/icon/select.png) center center no-repeat!important;
 }
 
 .coreshop_icon_create_order {
-    background: url(/pimcore/static/img/icon/page_white_add.png) no-repeat!important;
+    background: url(/pimcore/static/img/icon/page_white_add.png) center center no-repeat!important;
 }
 
 .coreshop_icon_price_rule {
-    background: url(/pimcore/static/img/icon/calculator_edit.png) no-repeat!important;
+    background: url(/pimcore/static/img/icon/calculator_edit.png) center center no-repeat!important;
 }
 
 .coreshop_price_rule_settings {

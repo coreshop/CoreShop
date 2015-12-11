@@ -1,5 +1,59 @@
-TRUNCATE TABLE coreshop_currency;
-TRUNCATE TABLE coreshop_country;
+DROP TABLE IF EXISTS `coreshop_carriers`;
+CREATE TABLE `coreshop_carriers` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(255) NOT NULL,
+  `label` varchar(255) NOT NULL,
+  `delay` int NULL,
+  `grade` int NOT NULL DEFAULT '1',
+  `image` int NULL,
+  `trackingUrl` varchar(512) NULL,
+  `isFree` tinyint NOT NULL DEFAULT '0',
+  `shippingMethod` enum('price','weight') NOT NULL,
+  `tax` int NULL,
+  `rangeBehaviour` enum('largest','deactivate') NOT NULL,
+  `maxHeight` double NOT NULL DEFAULT '0',
+  `maxWidth` double NOT NULL DEFAULT '0',
+  `maxDepth` double NOT NULL DEFAULT '0',
+  `maxWeidht` double NOT NULL DEFAULT '0'
+) COMMENT='';
+
+DROP TABLE IF EXISTS `coreshop_carriers_range_weight`;
+CREATE TABLE `coreshop_carriers_range_weight` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `carrier` int NOT NULL,
+  `delimiter1` double NOT NULL,
+  `delimiter2` double NOT NULL
+) COMMENT='';
+
+DROP TABLE IF EXISTS `coreshop_carriers_delivery_price`;
+CREATE TABLE `coreshop_carriers_delivery_price` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `carrier` int NOT NULL,
+  `range` int NOT NULL,
+  `rangeType` enum('price','weight') NOT NULL,
+  `price` double NOT NULL
+) COMMENT='';
+
+DROP TABLE IF EXISTS `coreshop_country`;
+CREATE TABLE `coreshop_country` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `isoCode` varchar(2) NULL,
+  `active` int(1) DEFAULT 0,
+  `currency__id` int(1),
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_currency`;
+CREATE TABLE `coreshop_currency` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `isoCode` varchar(255) DEFAULT NULL,
+  `numericIsoCode` varchar(255) DEFAULT NULL,
+  `symbol` varchar(255) DEFAULT NULL,
+  `exchangeRate` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 INSERT INTO `coreshop_currency` (`id`, `name`, `isoCode`, `numericIsoCode`, `symbol`, `exchangeRate`) VALUES
 (1,	'Euro',	'EUR',	'978',	'€',	1.2),
@@ -206,3 +260,20 @@ INSERT INTO `coreshop_country` (`id`, `name`, `isoCode`, `active`, `currency__id
 (126,	'Virgin Islands, U.S.',	'VI',	0,	9),
 (127,	'Mayotte',	'YT',	0,	1),
 (128,	'Netherland',	'NL',	1,	1);
+
+INSERT INTO `users_permission_definitions` (`key`)
+VALUES ('plugin_coreshop');
+
+DROP TABLE IF EXISTS `coreshop_pricerules`;
+CREATE TABLE `coreshop_pricerules` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(50) NULL,
+  `code` varchar(50) NULL,
+  `label` text NULL,
+  `description` text NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `highlight` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `conditions` text NULL,
+  `actions` text NULL
+) COMMENT='';

@@ -60,7 +60,7 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
      */
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.activate( this.layoutId );
+        tabPanel.setActiveItem( this.layoutId );
     },
 
 
@@ -90,22 +90,56 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
 
             // add event listener
             var layoutId = this.layoutId;
-            this.layout.on("destroy", function () {
+            this.layout.on("destroy", function () {debugger;
                 pimcore.globalmanager.remove( layoutId );
             }.bind(this));
 
             // add panel to pimcore panel tabs
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add( this.layout );
-            tabPanel.activate( this.layoutId );
+            tabPanel.setActiveItem( this.layoutId );
 
             // update layout
+            this.layout.updateLayout();
             pimcore.layout.refresh();
         }
 
         return this.layout;
     },
 
+    getTreeNodeListeners: function () {
+
+        return {
+            "itemclick" : this.onTreeNodeClick.bind(this),
+            "itemcontextmenu": this.onTreeNodeContextmenu.bind(this),
+            "itemmove": this.onTreeNodeMove.bind(this)
+        };
+    },
+
+    onTreeNodeMove: function (node, oldParent, newParent, index, eOpts ) {
+        var tree = node.getOwnerTree();
+
+        tree.getDockedItems()[0].items.get("btnSave").show();
+    },
+
+    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts ) {
+        e.stopEvent();
+        tree.select();
+
+        var menu = new Ext.menu.Menu();
+
+        menu.add(new Ext.menu.Item({
+            text: t('delete'),
+            iconCls: "pimcore_icon_delete",
+            handler: this.attributes.reference.deleteRule.bind(this)
+        }));
+
+        menu.showAt(e.pageX, e.pageY);
+    },
+
+    onTreeNodeClick: function (tree, record, item, index, e, eOpts ) {
+        this.openRule(record);
+    },
 
     /**
      * return treelist
@@ -113,7 +147,26 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
      */
     getTree: function () {
         if (!this.tree) {
-            this.tree = new Ext.tree.TreePanel({
+            var itemsPerPage = 30;
+
+            this.store = Ext.create('Ext.data.TreeStore', {
+                autoLoad: false,
+                autoSync: true,
+                proxy: {
+                    type: 'ajax',
+                    url: '/plugin/CoreShop/admin_PriceRules/list',
+                    reader: {
+                        type: 'json'
+
+                    },
+                    extraParams: {
+                        grouped: 1
+                    }
+                }
+            });
+
+
+            this.tree = Ext.create('pimcore.tree.Panel', {
                 region: "west",
                 useArrows:true,
                 autoScroll:true,
@@ -125,31 +178,17 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
                     nodeType: 'async',
                     id: '0'
                 },
-                loader: new Ext.tree.TreeLoader({
-                    dataUrl: "/plugin/CoreShop/admin_PriceRules/list",
-                    requestMethod: "GET",
-                    baseAttrs: {
-                        listeners: {
-                            click: this.openRule.bind(this),
-                            contextmenu: function () {
-                                this.select();
-
-                                var menu = new Ext.menu.Menu();
-                                menu.add(new Ext.menu.Item({
-                                    text: t('delete'),
-                                    iconCls: "pimcore_icon_delete",
-                                    handler: this.attributes.reference.deleteRule.bind(this)
-                                }));
-
-                                menu.show(this.ui.getAnchor());
-                            }
-                        },
-                        reference: this,
-                        iconCls: "coreshop_price_rule_icon",
-                        leaf: true
-                    }
-                }),
                 rootVisible: false,
+                store : this.store,
+                viewConfig: {
+                    plugins: {
+                        ptype: 'treeviewdragdrop',
+                        appendOnly: false,
+                        ddGroup: "element"
+                    },
+                    xtype: 'pimcoretreeview'
+                },
+                listeners: this.getTreeNodeListeners(),
                 tbar: {
                     items: [
                         {
@@ -194,13 +233,6 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
                             }
                         }
                     ]
-                },
-                // DD sorting with save button
-                enableDD: true,
-                listeners: {
-                    enddrag: function(tree, node, e){
-                        tree.getTopToolbar().items.get('btnSave').show();
-                    }
                 }
             });
 
@@ -241,7 +273,7 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
 
-                    this.tree.getRootNode().reload();
+                    this.tree.getStore().load();
 
                     if(!data || !data.success) {
                         Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));

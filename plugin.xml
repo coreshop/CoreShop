@@ -31,7 +31,7 @@
             <namespace>CoreShop</namespace>
         </pluginNamespaces>
 
-        <pluginJsPaths>
+        <pluginJsPaths-extjs6>
             <path>/plugins/CoreShop/static/js/startup.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/global.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/settings.js</path>
@@ -78,14 +78,16 @@
 
             <path>/plugins/CoreShop/static/js/coreshop/carriers/panel.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/carriers/item.js</path>
-        </pluginJsPaths>
 
-        <pluginDocumentEditmodeJsPaths>
+            <path>/plugins/CoreShop/static/js/coreshop/install/install.js</path>
+        </pluginJsPaths-extjs6>
+
+        <pluginDocumentEditmodeJsPaths-extjs6>
             <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>
-        </pluginDocumentEditmodeJsPaths>
+        </pluginDocumentEditmodeJsPaths-extjs6>
 
-        <pluginCssPaths>
+        <pluginCssPaths-extjs6>
             <path>/plugins/CoreShop/static/css/coreshop.css</path>
-        </pluginCssPaths>
+        </pluginCssPaths-extjs6>
     </plugin>
 </zend-config>

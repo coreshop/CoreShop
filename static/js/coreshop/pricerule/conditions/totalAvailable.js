@@ -28,12 +28,13 @@ pimcore.plugin.coreshop.pricerule.conditions.totalAvailable = Class.create(pimco
             totalUsedValue = this.data.totalUsed;
         }
 
-        var totalAvailable = new Ext.ux.form.SpinnerField({
+        var totalAvailable = new Ext.form.NumberField({
             fieldLabel:t("coreshop_condition_totalAvailable_totalAvailable"),
             name:'totalAvailable',
             value : totalAvailableValue,
             minValue : 0,
-            decimalPrecision : 0
+            decimalPrecision : 0,
+            step : 1
         });
 
         var totalUsed = new Ext.form.TextField({

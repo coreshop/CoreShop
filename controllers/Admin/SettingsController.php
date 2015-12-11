@@ -24,6 +24,15 @@ use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_SettingsController extends Admin
 {
+    public function installedAction()
+    {
+        $values = Config::getConfig();
+
+        $valueArray = $values->toArray();
+
+        $this->_helper->json(array("isInstalled" => $valueArray['isInstalled'] == "1" ? true : false));
+    }
+
     public function getAction()
     {
         $values = Config::getConfig();

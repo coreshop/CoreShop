@@ -24,24 +24,24 @@ pimcore.plugin.coreshop.pricerule.conditions.amount = Class.create(pimcore.plugi
         var currencyValue = null;
         var me = this;
 
-        if(this.data.minAmount) {
+        if(this.data && this.data.minAmount) {
             minAmountValue = this.data.minAmount;
             currencyValue = this.data.currency;
         }
 
-        var minAmount = new Ext.ux.form.SpinnerField({
+        var minAmount = new Ext.form.NumberField({
             fieldLabel:t("coreshop_condition_amount_minAmount"),
             name:'minAmount',
             value : minAmountValue,
             minValue : 0,
-            decimalPrecision : 0
+            decimalPrecision : 0,
+            step : 1
         });
 
         var currency = {
             xtype: 'combo',
             fieldLabel: t('coreshop_condition_amount_currency'),
             typeAhead: true,
-            value: this.data.currency,
             mode: 'local',
             listWidth: 100,
             width : 200,
@@ -60,8 +60,12 @@ pimcore.plugin.coreshop.pricerule.conditions.amount = Class.create(pimcore.plugi
             }
         };
 
+        if(this.data && this.data.currency) {
+            currency.value = this.data.currency;
+        }
 
-        this.form = new Ext.form.FieldSet({
+
+        this.form = Ext.create("Ext.form.FieldSet", {
             items : [
                 minAmount, currency
             ]

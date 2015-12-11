@@ -42,7 +42,7 @@ pimcore.plugin.coreshop.countries.country= Class.create({
 
     initPanel: function () {
 
-        this.panel = new Ext.Panel({
+        this.panel = new Ext.panel.Panel({
             title: this.data.country.name,
             closable: true,
             iconCls: "coreshop_icon_country",
@@ -55,11 +55,11 @@ pimcore.plugin.coreshop.countries.country= Class.create({
         }.bind(this));
 
         this.parentPanel.getEditPanel().add(this.panel);
-        this.parentPanel.getEditPanel().activate(this.panel);
+        this.parentPanel.getEditPanel().setActiveItem(this.panel);
     },
 
     activate : function() {
-        this.parentPanel.getEditPanel().activate(this.panel);
+        this.parentPanel.getEditPanel().setActiveItem(this.panel);
     },
 
     getFormPanel : function() {
@@ -67,7 +67,7 @@ pimcore.plugin.coreshop.countries.country= Class.create({
         /*
         }*/
 
-        this.formPanel = new Ext.FormPanel({
+        this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
             region : "center",
@@ -76,7 +76,6 @@ pimcore.plugin.coreshop.countries.country= Class.create({
             defaults: {
                 forceLayout: true
             },
-            layout: "pimcoreform",
             buttons: [
                 {
                     text: t("save"),

@@ -25,7 +25,6 @@ pimcore.plugin.coreshop.pricerule.conditions.country = Class.create(pimcore.plug
             xtype: 'combo',
             fieldLabel: t('coreshop_condition_country_country'),
             typeAhead: true,
-            value: this.data.currency,
             mode: 'local',
             listWidth: 100,
             width : 200,
@@ -37,11 +36,15 @@ pimcore.plugin.coreshop.pricerule.conditions.country = Class.create(pimcore.plug
             hiddenName:'country',
             listeners: {
                 beforerender: function () {
-                    this.setValue(me.data.country);
+                    if(me.data && me.data.country)
+                        this.setValue(me.data.country);
                 }
             }
         };
 
+        if(this.data && this.data.country) {
+            country.value = this.data.country;
+        }
 
         this.form = new Ext.form.FieldSet({
             items : [

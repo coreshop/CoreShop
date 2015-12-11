@@ -23,7 +23,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
     initialize: function() {
         pimcore.plugin.broker.registerPlugin(this);
-        this.navEl = Ext.get('pimcore_menu_logout').insertSibling('<li id="pimcore_menu_coreshop" class="icon-coreshop-shop">CoreShop</li>');
     },
 
     uninstall: function(){
@@ -33,64 +32,83 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
     pimcoreReady: function (params, broker){
         var coreShopMenuItems = [];
 
-        pimcore.plugin.coreshop.global.initialize();
+        Ext.Ajax.request({
+            url: "/plugin/CoreShop/admin_settings/installed",
+            success: function (response)
+            {
+                var resp = Ext.decode(response.responseText);
 
-        coreShopMenuItems.push({
-            text: t("coreshop_settings"),
-            iconCls: "coreshop_icon_settings",
-            handler: this.openSettings
+                if(resp.isInstalled) {
+                    pimcore.plugin.coreshop.global.initialize();
+
+                    coreShopMenuItems.push({
+                        text: t("coreshop_settings"),
+                        iconCls: "coreshop_icon_settings",
+                        handler: this.openSettings
+                    });
+
+                    coreShopMenuItems.push({
+                        text: t("coreshop_price_rules"),
+                        iconCls: "coreshop_icon_price_rule",
+                        handler: this.openPriceRules
+                    });
+
+                    coreShopMenuItems.push({
+                        text: t("coreshop_localization"),
+                        iconCls: "coreshop_icon_localization",
+                        hideOnClick: false,
+                        menu: {
+                            cls: "pimcore_navigation_flyout",
+                            shadow: false,
+                            items: [{
+                                text: t("coreshop_countries"),
+                                iconCls: "coreshop_icon_country",
+                                handler: this.openCountryList
+                            }, {
+                                text: t("coreshop_currencies"),
+                                iconCls: "coreshop_icon_currency",
+                                handler: this.openCurrencyList
+                            }]
+                        }
+                    });
+
+                    coreShopMenuItems.push({
+                        text: t("coreshop_shipping"),
+                        iconCls: "coreshop_icon_shipping",
+                        hideOnClick: false,
+                        menu: {
+                            shadow: false,
+                            cls: "pimcore_navigation_flyout",
+                            items: [{
+                                text: t("coreshop_carriers"),
+                                iconCls: "coreshop_icon_carriers",
+                                handler: this.openCarriersList
+                            }]
+                        }
+                    });
+                }
+                else {
+                    coreShopMenuItems.push({
+                        text: t("coreshop_install"),
+                        iconCls: "coreshop_icon_setup",
+                        handler: this.openSetup
+                    });
+                }
+
+
+                var menu = new Ext.menu.Menu({
+                    items: coreShopMenuItems,
+                    shadow: false,
+                    cls: "pimcore_navigation_flyout"
+                });
+
+                Ext.get('pimcore_menu_logout').insertSibling('<li id="pimcore_menu_coreshop" class="pimcore_menu_item icon-coreshop-shop">CoreShop</li>');
+
+                var toolbar = pimcore.globalmanager.get("layout_toolbar");
+                Ext.get("pimcore_menu_coreshop").on("mousedown", toolbar.showSubMenu.bind(menu));
+
+            }.bind(this)
         });
-
-        coreShopMenuItems.push({
-            text: t("coreshop_price_rules"),
-            iconCls: "coreshop_icon_price_rule",
-            handler: this.openPriceRules
-        });
-
-        var localizationMenu = [{
-            text : t("coreshop_countries"),
-            iconCls: "coreshop_icon_country",
-            handler: this.openCountryList
-        },{
-            text : t("coreshop_currencies"),
-            iconCls: "coreshop_icon_currency",
-            handler: this.openCurrencyList
-        }];
-
-        coreShopMenuItems.push({
-            text: t("coreshop_localization"),
-            iconCls: "coreshop_icon_localization",
-            hideOnClick: false,
-            menu: {
-                cls: "pimcore_navigation_flyout",
-                items: [localizationMenu]
-            }
-        });
-
-        var shippingMenu = [{
-            text : t("coreshop_carriers"),
-            iconCls: "coreshop_icon_carriers",
-            handler: this.openCarriersList
-        }];
-
-        coreShopMenuItems.push({
-            text: t("coreshop_shipping"),
-            iconCls: "coreshop_icon_shipping",
-            hideOnClick: false,
-            menu: {
-                cls: "pimcore_navigation_flyout",
-                items: [shippingMenu]
-            }
-        });
-
-
-        var menu = new Ext.menu.Menu({
-            items: coreShopMenuItems,
-            cls: "pimcore_navigation_flyout"
-        });
-
-        var toolbar = pimcore.globalmanager.get("layout_toolbar");
-        this.navEl.on("mousedown", toolbar.showSubMenu.bind(menu));
     },
 
     postOpenObject : function(tab, type)
@@ -159,6 +177,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_carriers", new pimcore.plugin.coreshop.carriers.panel());
+        }
+    },
+
+    openSetup : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_install").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_install", new pimcore.plugin.coreshop.install());
         }
     }
 });
