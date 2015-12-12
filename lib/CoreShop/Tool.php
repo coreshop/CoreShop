@@ -57,7 +57,7 @@ class Tool {
      * @param Currency|null $fromCurrency
      * @return mixed
      */
-    public static function convertToCurrency($value, Currency $toCurrency = null, Currency $fromCurrency = null)
+    public static function convertToCurrency($value, $toCurrency = null, $fromCurrency = null)
     {
         $config = Config::getConfig();
         $configArray = $config->toArray();
