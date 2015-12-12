@@ -36,6 +36,13 @@ ___
 
 ____
 
+# Themes
+Themes are installed within plugins/CoreShop/views/template/[Name]
+
+A Theme is basically a Zend Module with the Namespace CoreShopTheme. All views and controllers specific for this theme are placed inside the theme-folder.
+
+____
+
 # Plugins
 Coreshop was designed to make use of other Pimcore-Plugins. 
 
