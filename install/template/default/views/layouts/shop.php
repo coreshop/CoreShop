@@ -199,7 +199,7 @@
 <!-- Footer Section Starts -->
     <footer id="footer-area">
     <!-- Footer Links Starts -->
-        <?=$this->inc("/" . $this->language . "/snippet/footer")?>
+        <?=$this->inc("/" . $this->language . "/shop/snippet/footer")?>
     <!-- Copyright Area Ends -->
     </footer>
 <!-- Footer Section Ends -->
