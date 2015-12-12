@@ -16,6 +16,10 @@
                 <src>controllers</src>
                 <dest>website/controllers</dest>
             </folder>
+            <folder>
+                <src>static</src>
+                <dest>static</dest>
+            </folder>
         </folders>
 
         <documents>
