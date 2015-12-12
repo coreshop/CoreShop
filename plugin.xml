@@ -6,10 +6,12 @@
         <pluginName>CoreShop</pluginName>
 
         <!-- a short description -->
-        <pluginDescription><![CDATA[]]></pluginDescription>
+        <pluginDescription><![CDATA[
+            CoreShop is the first OpenSource Onlineshop plugin for Pimcore.
+        ]]></pluginDescription>
 
         <!-- meta data -->
-        <pluginVersion>0.0.1</pluginVersion>
+        <pluginVersion>0.1</pluginVersion>
         <pluginRevision>1</pluginRevision>
         <pluginBuildTimestamp>0</pluginBuildTimestamp>
 
