@@ -4,12 +4,19 @@
 Onlineshop Plugin for Pimcore
 
 # Demo
-Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at)
+Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at) (Currently out of date)
 
 (Still under Development - Pimcore Login will follow)
 
 You can setup your own example:
-[https://github.com/dpfaffenbauer/pimcore-coreshop-demo](https://github.com/dpfaffenbauer/pimcore-coreshop-demo)
+
+* Download Plugin and place it in your plugins directory
+* Open Extension Manager in Pimcore and enable/install Plugin
+* After Installation within Pimcore Extension Manager, you have to reload Pimcore
+* Now the CoreShop Icon will appear in the Menu
+* You now have to let CoreShop install itself
+* finised
+* Go To http://yourdomain/en/shop
 
 ___
 
@@ -19,17 +26,20 @@ ___
 * Countries with Currencies
 * Currency conversion
 * Country Taxes (not yet implemented)
-* Categorymanagement
+* Category Management
 * Abstract Payment
-* Cart Rules for Vouchers/Discounts
+* Price Rules for Vouchers/Discounts
 * Different Delivery Providers
+* Shipping Management
+* Different Payment Providers
+* Multiple Themes supported
 
 ____
 
 # Plugins
 Coreshop was designed to make use of other Pimcore-Plugins. 
 
-Every Payment Provider or Delivery Providier is a Pimcore-Plugin that integrates with Coreshop.
+Every Payment Provider or Delivery Provider is a Pimcore-Plugin that integrates with CoreShop.
 
 ## Hooks
 CoreShop uses Hooks to call Pimcore-Plugins from template files.
