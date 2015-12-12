@@ -1,6 +1,7 @@
 {
   "description":null,
   "parentClass":"CoreShop\\Model\\Product",
+  "useTraits":null,
   "allowInherit":true,
   "allowVariants":true,
   "showVariants":true,
@@ -437,7 +438,7 @@
               },
               {
                 "fieldtype":"fieldcollections",
-                "phpdocType":"\\Object\\Fieldcollection",
+                "phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
                 "allowedTypes":[
                   "CoreShopProductSpecificPrice"
                 ],
@@ -742,7 +743,9 @@
                   }
                 ],
                 "documentsAllowed":false,
-                "documentTypes":"",
+                "documentTypes":[
+
+                ],
                 "lazyLoading":false,
                 "classes":[
 

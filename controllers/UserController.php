@@ -176,9 +176,13 @@ class CoreShop_UserController extends Action
 
                 if (array_key_exists("_redirect", $params))
                     $this->_redirect($params['_redirect']);
+                else {
+                    print_r($params);exit;
+                }
             }
             catch (\Exception $ex) {
                 $this->view->error = $ex->getMessage();
+                throw $ex;
             }
         }
     }

@@ -18,6 +18,7 @@ namespace CoreShop\Plugin;
 use CoreShop\Plugin;
 use CoreShop\Config;
 
+use Pimcore\Model\Document;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\Folder;
 use Pimcore\Model\User;
@@ -372,7 +373,96 @@ class Install
             $route->save();
         }
     }
-    
+
+    public function installTemplate($template = "default") {
+        /*
+         * /install/template/$template/scripts -> website/views/scripts
+         * /install/template/$template/layouts -> website/views/layouts
+         * /install/template/$template/areas -> website/views/areas
+         * */
+
+        $templatePath = CORESHOP_PATH . "/install/template/$template";
+
+        //Get Template Xml
+        if(!file_exists("$templatePath/template.xml")) {
+            throw new \Exception("Template $template not found");
+        }
+
+        $config = new \Zend_Config_Xml("$templatePath/template.xml");
+        $config = $config->toArray();
+
+        if(array_key_exists("installation", $config))
+        {
+            //Install CoreShop Template
+            if(array_key_exists("folders", $config["installation"]))
+            {
+                foreach($config["installation"]["folders"] as $value)
+                {
+                    foreach($value as $folder)
+                    {
+                        $src = $folder['src'];
+                        $dest = $folder['dest'];
+
+                        if (file_exists("$templatePath/" . $src) && file_exists(PIMCORE_DOCUMENT_ROOT . "/" . $dest)) {
+                            recurse_copy("$templatePath/" . $src, PIMCORE_DOCUMENT_ROOT . "/" . $dest);
+                        }
+                    }
+                }
+            }
+
+            //Install CoreShop Documents
+            if(array_key_exists("documents", $config["installation"]))
+            {
+                $validLanguages = explode(",", \Pimcore\Config::getSystemConfig()->general->validLanguages);
+
+                foreach($validLanguages as $language)
+                {
+                    foreach($config["installation"]["documents"] as $value)
+                    {
+                        foreach($value as $doc)
+                        {
+                            $document = Document::getByPath("/" . $language . "/" . $doc['path'] . "/" . $doc['key']);
+
+                            if(!$document)
+                            {
+                                $class = "Pimcore\\Model\\Document\\" . ucfirst($doc['type']);
+
+                                if(\Pimcore\Tool::classExists($class))
+                                {
+                                    $document = new $class();
+                                    $document->setParent(Document::getByPath("/" . $language . "/" . $doc['path']));
+                                    $document->setKey($doc['key']);
+
+                                    if($document instanceof Document\PageSnippet) {
+                                        if(array_key_exists("action", $doc))
+                                            $document->setAction($doc['action']);
+
+                                        if(array_key_exists("controller", $doc))
+                                            $document->setController($doc['controller']);
+
+                                        if(array_key_exists("module", $doc))
+                                            $document->setModule($doc['module']);
+                                    }
+
+                                    $document->save();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Install CoreShop Documents
+            if(array_key_exists("controllers", $config["installation"]))
+            {
+                foreach($config["installation"]["controllers"] as $value)
+                {
+
+                }
+            }
+        }
+    }
+
     public function removeStaticRoutes()
     {
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');

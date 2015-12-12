@@ -22,6 +22,14 @@ use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_InstallController extends Admin
 {
+    public function installTemplateAction() {
+        $install = new Plugin\Install();
+
+        $install->installTemplate();
+
+        $this->_helper->json(array("success" => true));
+    }
+
     public function installAction()
     {
         try

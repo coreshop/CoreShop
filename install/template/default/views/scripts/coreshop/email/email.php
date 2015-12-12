@@ -1,0 +1,1 @@
+<?php echo $this->template("coreshop/email/helper/area.php")?>

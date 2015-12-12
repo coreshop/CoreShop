@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
+    <id>Default-Template</id>
+    <name>Default CoreShop Template</name>
+    <description>Default CoreShopTemplate</description>
+    <version>1.0</version>
+
+    <installation>
+
+        <folders>
+            <folder>
+                <src>views</src>
+                <dest>website/views</dest>
+            </folder>
+            <folder>
+                <src>controllers</src>
+                <dest>website/controllers</dest>
+            </folder>
+        </folders>
+
+        <documents>
+            <document>
+                <type>page</type>
+                <module>CoreShop</module>
+                <action>index</action>
+                <controller>index</controller>
+                <path></path>
+                <key>shop</key>
+            </document>
+            <document>
+                <type>folder</type>
+                <path>shop</path>
+                <key>snippet</key>
+            </document>
+            <document>
+                <type>snippet</type>
+                <action>footer</action>
+                <controller>snippet</controller>
+                <path>shop/snippet</path>
+                <key>footer</key>
+            </document>
+        </documents>
+
+    </installation>
+</zend-config>

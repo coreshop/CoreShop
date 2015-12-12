@@ -194,28 +194,35 @@
             "visibleSearch":false
           },
           {
-            "fieldtype":"href",
-            "width":"",
-            "assetUploadPath":"",
-            "relationType":true,
-            "queryColumnType":{
-              "id":"int(11)",
-              "type":"enum('document','asset','object')"
-            },
-            "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
-            "objectsAllowed":true,
-            "assetsAllowed":false,
-            "assetTypes":"",
-            "documentsAllowed":false,
-            "documentTypes":"",
-            "lazyLoading":false,
-            "classes":[
+            "fieldtype":"coreShopCountry",
+            "queryColumnType":"int(11)",
+            "columnType":"int(11)",
+            "phpdocType":"CoreShop\\Model\\Country",
+            "restrictTo":[
+
+            ],
+            "options":[
               {
-                "classes":"CoreShopCountry"
+                "key":"Austria",
+                "value":7
+              },
+              {
+                "key":"Germany",
+                "value":27
+              },
+              {
+                "key":"United States",
+                "value":121
+              },
+              {
+                "key":"Netherland",
+                "value":128
               }
             ],
+            "width":null,
+            "defaultValue":null,
             "name":"country",
-            "title":"Land",
+            "title":"Country",
             "tooltip":"",
             "mandatory":false,
             "noteditable":false,
@@ -224,7 +231,7 @@
             "style":"",
             "permissions":null,
             "datatype":"data",
-            "columnType":null,
+            "relationType":false,
             "invisible":false,
             "visibleGridView":false,
             "visibleSearch":false

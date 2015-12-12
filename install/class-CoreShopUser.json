@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":"CoreShop\\Model\\User\\UserAbstract",
+  "parentClass":"CoreShop\\Model\\User",
   "allowInherit":false,
   "allowVariants":false,
   "showVariants":false,

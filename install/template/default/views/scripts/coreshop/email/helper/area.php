@@ -1,0 +1,1 @@
+<?= $this->areablock("e", array("allowed" => array("emailRow"))) ?>

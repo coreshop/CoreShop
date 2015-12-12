@@ -15,8 +15,10 @@
 
 namespace CoreShop\Model\Plugin;
 
+use CoreShop\Plugin\Install;
+
 interface InstallPlugin
 {
-    public function install(\CoreShop\Plugin\Install $installer);
-    public function uninstall(\CoreShop\Plugin\Install $installer);
+    public function install(Install $installer);
+    public function uninstall(Install $installer);
 }
