@@ -244,9 +244,11 @@ class PriceRule extends AbstractModel {
     {
         $cart = Tool::prepareCart();
 
-        foreach($this->getConditions() as $condition) {
-            if(!$condition->checkCondition($cart, $this, $throwException)) {
-                return false;
+        if($this->getConditions()) {
+            foreach ($this->getConditions() as $condition) {
+                if (!$condition->checkCondition($cart, $this, $throwException)) {
+                    return false;
+                }
             }
         }
 
@@ -285,8 +287,10 @@ class PriceRule extends AbstractModel {
         $cart = Tool::prepareCart();
         $discount = 0;
 
-        foreach($this->getActions() as $action) {
-            $discount += $action->getDiscount($cart);
+        if($this->getActions()) {
+            foreach($this->getActions() as $action) {
+                $discount += $action->getDiscount($cart);
+            }
         }
 
         return $discount;

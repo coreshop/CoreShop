@@ -15,8 +15,11 @@
 
 namespace CoreShop\Model\Plugin;
 
+use CoreShop\Model\Cart;
+use CoreShop\Model\Order;
+
 interface Payment extends AbstractPlugin
 {
-    public function getPaymentFee(\Pimcore\Model\Object\CoreShopCart $cart);
-    public function processPayment(\Pimcore\Model\Object\CoreShopOrder $order);
+    public function getPaymentFee(Cart $cart);
+    public function processPayment(Order $order);
 }

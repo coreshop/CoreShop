@@ -40,6 +40,7 @@ class Action extends \Website\Controller\Action {
                 $this->view->getScriptPaths(),
                 array(
                     CORESHOP_TEMPLATE_PATH . '/views/scripts/',
+                    CORESHOP_TEMPLATE_PATH . '/views/scripts/',
                     CORESHOP_TEMPLATE_PATH . '/views/layouts/',
                     CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/'
                 )
