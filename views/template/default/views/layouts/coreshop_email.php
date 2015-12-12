@@ -19,7 +19,7 @@
                                                 <table class="twelve columns">
                                                     <tr>
                                                         <td class="six sub-columns">
-                                                            <img src="/static/images/logo.png" title="Spice Shoppe" alt="Spice Shoppe" class="img-responsive">
+                                                            <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/logo.png" title="Spice Shoppe" alt="Spice Shoppe" class="img-responsive">
                                                         </td>
                                                         <td class="six sub-columns last" style="text-align:right; vertical-align:middle;">
                                                             <span class="template-label">NEW ORDER</span>

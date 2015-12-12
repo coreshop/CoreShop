@@ -175,7 +175,7 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 value: this.getValue("product.days-as-new"),
                                 xtype: "spinnerfield",
                                 enableKeyEvents: true
-                            },
+                            }
                         ]
                     },
                     {
@@ -218,6 +218,24 @@ pimcore.plugin.coreshop.settings= Class.create({
                                     }
                                 }
                             }
+                        ]
+                    },
+                    {
+                        xtype:'fieldset',
+                        title: t('coreshop_template'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight:true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: {width: 600},
+                        items :[
+                            {
+                                fieldLabel: t('coreshop_template_name'),
+                                name: 'template.name',
+                                value: this.getValue("template.name"),
+                                enableKeyEvents: true
+                            },
                         ]
                     }
                 ]

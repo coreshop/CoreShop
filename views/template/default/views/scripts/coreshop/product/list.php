@@ -41,7 +41,7 @@
                                     <img src="<?=$cat->getImage()->getThumbnail("coreshop_categoryThumbnail")?>" alt="<?=$cat->getName()?>" title="<?=$cat->getName()?>" class="img-responsive img-thumbnail" />
                                 </a>
                             <?php } else { ?>
-                                <img src="/static/images/category/placeholder.png" class="img-responsive img-thumbnail" />
+                                <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/category/placeholder.png" class="img-responsive img-thumbnail" />
                             <?php } ?>
                         </div>
                         <div class="caption">

@@ -10,10 +10,10 @@
                     <!-- Wrapper For Slides Starts -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <img src="/static/images/slider-imgs/slide1-img.jpg" alt="Slider" class="img-responsive" />
+                            <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/slider-imgs/slide1-img.jpg" alt="Slider" class="img-responsive" />
                         </div>
                         <div class="item">
-                            <img src="/static/images/slider-imgs/slide2-img.jpg" alt="Slider" class="img-responsive" />
+                            <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/slider-imgs/slide2-img.jpg" alt="Slider" class="img-responsive" />
                         </div>
                     </div>
                     <!-- Wrapper For Slides Ends -->
@@ -32,10 +32,10 @@
             <div class="col2-banners">
                 <ul class="row list-unstyled">
                     <li class="col-sm-8">
-                        <img src="/static/images/banners/2col-banner1.jpg" alt="banners" class="img-responsive" />
+                        <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/banners/2col-banner1.jpg" alt="banners" class="img-responsive" />
                     </li>
                     <li class="col-sm-4">
-                        <img src="/static/images/banners/2col-banner2.jpg" alt="banners" class="img-responsive" />
+                        <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/banners/2col-banner2.jpg" alt="banners" class="img-responsive" />
                     </li>
                 </ul>
             </div>

@@ -13,7 +13,7 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-use CoreShop\Controller\Action;
+use CoreShopTemplate\Controller\Action;
 
 use CoreShop\Plugin;
 use CoreShop\Model\Plugin\Shipping;

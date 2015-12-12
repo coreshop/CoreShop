@@ -18,11 +18,11 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400" rel="stylesheet" type="text/css">
 
     <!-- CSS Files -->
-    <link href="/static/css/owl.carousel.css" rel="stylesheet">
-    <link href="/static/css/shop.css" rel="stylesheet">
+    <link href="<?=CORESHOP_TEMPLATE_RESOURCES?>css/owl.carousel.css" rel="stylesheet">
+    <link href="<?=CORESHOP_TEMPLATE_RESOURCES?>css/shop.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
-        <script src="js/ie8-responsive-file-warning.js"></script>
+        <script src="<?=CORESHOP_TEMPLATE_RESOURCES?>js/ie8-responsive-file-warning.js"></script>
     <![endif]-->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -33,11 +33,11 @@
     <![endif]-->
 
     <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/images/fav-144.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/images/fav-114.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/images/fav-72.png">
-    <link rel="apple-touch-icon-precomposed" href="/static/images/fav-57.png">
-    <link rel="shortcut icon" href="/static/images/fav.png">
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=CORESHOP_TEMPLATE_RESOURCES?>images/fav-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?=CORESHOP_TEMPLATE_RESOURCES?>images/fav-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?=CORESHOP_TEMPLATE_RESOURCES?>images/fav-72.png">
+    <link rel="apple-touch-icon-precomposed" href="<?=CORESHOP_TEMPLATE_RESOURCES?>images/fav-57.png">
+    <link rel="shortcut icon" href="<?=CORESHOP_TEMPLATE_RESOURCES?>images/fav.png">-->
 
 </head>
 <body class="lang-<?=$this->language?>">
@@ -177,7 +177,7 @@
                 <!-- Logo Starts -->
                     <div class="col-md-6">
                         <div id="logo">
-                            <a href="<?=$this->url(array("lang" => $this->language), "coreshop_index", true)?>"><img src="/static/images/logo.png" title="Spice Shoppe" alt="Spice Shoppe" class="img-responsive" /></a>
+                            <a href="<?=$this->url(array("lang" => $this->language), "coreshop_index", true)?>"><img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/logo.png" title="Spice Shoppe" alt="Spice Shoppe" class="img-responsive" /></a>
                         </div>
                     </div>
                 <!-- Logo Starts -->
@@ -205,16 +205,16 @@
 <!-- Footer Section Ends -->
 <!-- JavaScript Files -->
 <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
-<script src="/static/vendor/jquery-1.11.1.min.js"></script>
-<script src="/static/vendor/jquery-migrate-1.2.1.min.js"></script>
-<script src="/static/vendor/bootstrap.min.js"></script>
-<script src="/static/vendor/bootstrap-hover-dropdown.min.js"></script>
-<script src="/static/vendor/bootstrapvalidator/bootstrapValidator.min.js"></script>
-<script src="/static/vendor/jquery.magnific-popup.min.js"></script>
-<script src="/static/vendor/owl.carousel.min.js"></script>
-<script src="/static/vendor/purl.js"></script>
-<script src="/static/js/shop.js"></script>
-<script src="/static/js/map.js"></script>
-<script src="/static/js/custom.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>vendor/jquery-1.11.1.min.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>vendor/jquery-migrate-1.2.1.min.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>vendor/bootstrap.min.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>vendor/bootstrap-hover-dropdown.min.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>vendor/bootstrapvalidator/bootstrapValidator.min.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>vendor/jquery.magnific-popup.min.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>vendor/owl.carousel.min.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>vendor/purl.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>js/shop.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>js/map.js"></script>
+<script src="<?=CORESHOP_TEMPLATE_RESOURCES?>js/custom.js"></script>
 </body>
 </html>

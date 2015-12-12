@@ -14,7 +14,7 @@
  */
 
 use CoreShop\Plugin;
-use CoreShop\Controller\Action;
+use CoreShopTemplate\Controller\Action;
 
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;

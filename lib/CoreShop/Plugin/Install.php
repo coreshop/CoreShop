@@ -374,14 +374,9 @@ class Install
         }
     }
 
-    public function installTemplate($template = "default") {
-        /*
-         * /install/template/$template/scripts -> website/views/scripts
-         * /install/template/$template/layouts -> website/views/layouts
-         * /install/template/$template/areas -> website/views/areas
-         * */
-
-        $templatePath = CORESHOP_PATH . "/install/template/$template";
+    public function installTemplate($template = "default")
+    {
+        $templatePath = CORESHOP_TEMPLATE_BASE_PATH . "/$template";
 
         //Get Template Xml
         if(!file_exists("$templatePath/template.xml")) {
@@ -393,23 +388,6 @@ class Install
 
         if(array_key_exists("installation", $config))
         {
-            //Install CoreShop Template
-            if(array_key_exists("folders", $config["installation"]))
-            {
-                foreach($config["installation"]["folders"] as $value)
-                {
-                    foreach($value as $folder)
-                    {
-                        $src = $folder['src'];
-                        $dest = $folder['dest'];
-
-                        if (file_exists("$templatePath/" . $src) && file_exists(PIMCORE_DOCUMENT_ROOT . "/" . $dest)) {
-                            recurse_copy("$templatePath/" . $src, PIMCORE_DOCUMENT_ROOT . "/" . $dest);
-                        }
-                    }
-                }
-            }
-
             //Install CoreShop Documents
             if(array_key_exists("documents", $config["installation"]))
             {
@@ -417,6 +395,15 @@ class Install
 
                 foreach($validLanguages as $language)
                 {
+                    $languageDocument = Document::getByPath("/" . $language);
+
+                    if(!$languageDocument instanceof Document) {
+                        $languageDocument = new Document\Page();
+                        $languageDocument->setParent(Document::getById(1));
+                        $languageDocument->setKey($language);
+                        $languageDocument->save();
+                    }
+
                     foreach($config["installation"]["documents"] as $value)
                     {
                         foreach($value as $doc)
@@ -449,15 +436,6 @@ class Install
                             }
                         }
                     }
-                }
-            }
-
-            //Install CoreShop Documents
-            if(array_key_exists("controllers", $config["installation"]))
-            {
-                foreach($config["installation"]["controllers"] as $value)
-                {
-
                 }
             }
         }

@@ -68,8 +68,13 @@ class CoreShop_Admin_SettingsController extends Admin
             ),
             "category" => array(
                 "default-image" => $values["category.default-image"]
+            ),
+            "template" => array(
+                "name" => $values['template.name']
             )
         );
+
+        $settings = array_merge_recursive($oldValues, $settings);
 
         $config = new \Zend_Config($settings, true);
         $writer = new \Zend_Config_Writer_Xml(array(

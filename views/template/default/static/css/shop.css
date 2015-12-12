@@ -308,8 +308,11 @@ th {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url("/static/fonts/glyphicons-halflings-regular.eot");
-  src: url("/static/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/static/fonts/glyphicons-halflings-regular.woff") format("woff"), url("/static/fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("/static/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+  src: url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.eot");
+  src: url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"),
+       url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.woff") format("woff"),
+       url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.ttf") format("truetype"),
+       url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 
 .glyphicon {
@@ -10030,11 +10033,11 @@ hr {
   left: 15px;
   width: 65px;
   height: 65px;
-  background-image: url("/static/images/product/new-badge-en.png");
+  background-image: url("/plugins/CoreShop/views/template/default/static/images/product/new-badge-en.png");
 }
 
 .lang-de .image-new-badge {
-  background-image: url("/static/images/product/new-badge-de.png");
+  background-image: url("/plugins/CoreShop/views/template/default/static/images/product/new-badge-de.png");
 }
 
 .owl-item .image-new-badge {

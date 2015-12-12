@@ -78,19 +78,19 @@
         <!-- Payment Gateway Links Starts -->
         <ul class="pull-right list-inline">
             <li>
-                <img src="/static/images/payment-icon/cirrus.png" alt="PaymentGateway" />
+                <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/payment-icon/cirrus.png" alt="PaymentGateway" />
             </li>
             <li>
-                <img src="/static/images/payment-icon/paypal.png" alt="PaymentGateway" />
+                <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/payment-icon/paypal.png" alt="PaymentGateway" />
             </li>
             <li>
-                <img src="/static/images/payment-icon/visa.png" alt="PaymentGateway" />
+                <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/payment-icon/visa.png" alt="PaymentGateway" />
             </li>
             <li>
-                <img src="/static/images/payment-icon/mastercard.png" alt="PaymentGateway" />
+                <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/payment-icon/mastercard.png" alt="PaymentGateway" />
             </li>
             <li>
-                <img src="/static/images/payment-icon/americanexpress.png" alt="PaymentGateway" />
+                <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/payment-icon/americanexpress.png" alt="PaymentGateway" />
             </li>
         </ul>
         <!-- Payment Gateway Links Ends -->

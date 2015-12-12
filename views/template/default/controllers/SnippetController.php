@@ -2,7 +2,7 @@
     
 use Website\Controller\Action;
 
-class SnippetController extends Action
+class CoreShopTemplate_SnippetController extends Action
 {
     public function init()
     {

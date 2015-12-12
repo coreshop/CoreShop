@@ -39,9 +39,9 @@ class Action extends \Website\Controller\Action {
             array_merge(
                 $this->view->getScriptPaths(),
                 array(
-                    PIMCORE_WEBSITE_PATH . '/views/scripts/',
-                    PIMCORE_WEBSITE_PATH . '/views/layouts/',
-                    PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/'
+                    CORESHOP_TEMPLATE_PATH . '/views/scripts/',
+                    CORESHOP_TEMPLATE_PATH . '/views/layouts/',
+                    CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/'
                 )
             )
         );

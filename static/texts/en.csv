@@ -101,3 +101,7 @@
 "coreshop_carrier_delimeter1","From Span"
 "coreshop_carrier_delimeter2","To Span"
 "coreshop_carrier_price","Price"
+"coreshop_install","Install CoreShop"
+"coreshop_install_confirm","Do you really want to install CoreShop?"
+"coreshop_template","Template"
+"coreshop_template_name","Template Name"

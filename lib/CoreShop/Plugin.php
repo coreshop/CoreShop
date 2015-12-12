@@ -41,6 +41,29 @@ class Plugin extends AbstractPlugin implements PluginInterface {
 
     }
 
+    public function init()
+    {
+        \Pimcore::getEventManager()->attach("system.startup", function (\Zend_EventManager_Event $e) {
+            $autoloader = \Zend_Loader_Autoloader::getInstance();
+            $frontController = $e->getTarget();
+
+            if($frontController instanceof \Zend_Controller_Front) {
+                $namespace = "CoreShopTemplate";
+
+                $frontController->addControllerDirectory(CORESHOP_TEMPLATE_PATH . "/controllers", $namespace);
+
+                $autoloader->registerNamespace($namespace);
+
+                $includePaths = array(
+                    get_include_path(),
+                    CORESHOP_TEMPLATE_PATH . "/controllers",
+                    CORESHOP_TEMPLATE_PATH . "/lib"
+                );
+                set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
+            }
+        });
+    }
+
     public static function installPlugin(InstallPlugin $installPlugin)
     {
         $install = new Install();

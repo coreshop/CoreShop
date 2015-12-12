@@ -6,22 +6,6 @@
     <version>1.0</version>
 
     <installation>
-
-        <folders>
-            <folder>
-                <src>views</src>
-                <dest>website/views</dest>
-            </folder>
-            <folder>
-                <src>controllers</src>
-                <dest>website/controllers</dest>
-            </folder>
-            <folder>
-                <src>static</src>
-                <dest>static</dest>
-            </folder>
-        </folders>
-
         <documents>
             <document>
                 <type>page</type>

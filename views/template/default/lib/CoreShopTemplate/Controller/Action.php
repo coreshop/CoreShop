@@ -13,11 +13,10 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-use CoreShopTemplate\Controller\Action;
+namespace CoreShopTemplate\Controller;
 
-class CoreShop_IndexController extends Action
-{
-    public function indexAction() {
+use CoreShop\Controller\Action as CoreShopAction;
 
-    }
+class Action extends CoreShopAction {
+
 }
