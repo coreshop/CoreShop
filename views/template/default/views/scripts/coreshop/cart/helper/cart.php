@@ -86,7 +86,7 @@
                 </td>
                 <?php if($this->edit) { ?>
                     <td colspan="1" class="text-left cart-sub-total">
-                        <a title="<?=$this->translate("Remove")?>" class="btn btn-default tool-tip removeFromCart" href="<?=$this->url(array("action" => "removecartrule"), "coreshop_cart")?>">
+                        <a title="<?=$this->translate("Remove")?>" class="btn btn-default tool-tip removeFromCart" href="<?=$this->url(array("action" => "remove-price-rule"), "coreshop_cart")?>">
                             <i class="fa fa-times-circle"></i>
                         </a>
                     </td>
@@ -109,7 +109,7 @@
         ?>
         <tr>
             <td colspan="3" rowspan="<?=$rowspan?>">
-                <form class="form-inline" role="form" method="post" action="<?=$this->url(array("lang" => $this->language, "action" => "cartrule"), "coreshop_cart")?>">
+                <form class="form-inline" role="form" method="post" action="<?=$this->url(array("lang" => $this->language, "action" => "price-rule"), "coreshop_cart")?>">
                     <?php if(!$this->edit) { ?>
                         <input type="hidden" name="redirect" value="<?=$this->url(array("action" => "payment"), "coreshop_checkout")?>" />
                     <?php } ?>
@@ -117,14 +117,14 @@
                         <h4><?=$this->translate("Voucher")?></h4>
                     </div><br/>
                     <div class="form-group">
-                        <input type="text" class="cartRule form-control" id="cartRule" name="cartRule" value="">
+                        <input type="text" class="pruceRule form-control" id="priceRule" name="priceRule" value="">
                     </div>
                     <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>OK</span></button>
                 </form>
                 <?php
-                $highlightCartRules = \CoreShop\Model\PriceRule::getHighlightItems();
+                $highlightPriceRules = \CoreShop\Model\PriceRule::getHighlightItems();
 
-                if(count($highlightCartRules) > 0)
+                if(count($highlightPriceRules) > 0)
                 {
                 ?>
                 <h4><?= $this->translate("Take advantage of our exclusive offers:") ?></h4>
@@ -132,11 +132,11 @@
                     <?php
                     }
 
-                    foreach($highlightCartRules as $cartRule) {
-                        echo '<li class="cart-rule"><strong class="cart-rule-code">'.$cartRule->getCode().'</strong> ' . $cartRule->getName() . '</li>';
+                    foreach($highlightPriceRules as $priceRule) {
+                        echo '<li class="cart-rule"><strong class="cart-rule-code">'.$priceRule->getCode().'</strong> ' . $priceRule->getName() . '</li>';
                     }
 
-                    if(count($highlightCartRules) > 0)
+                    if(count($highlightPriceRules) > 0)
                     ?></ul><?
                 ?>
             </td>

@@ -36,8 +36,8 @@ $(document).ready(function(){
             shop.initRegisterForm();
         }
 
-        $('.cart-rule').click(function() {
-            $('#cartRule').val($(this).find(".cart-rule-code").html())
+        $('.price-rule').click(function() {
+            $('#priceRule').val($(this).find(".price-rule-code").html())
         })
         
         shop.initChangeAddress();
