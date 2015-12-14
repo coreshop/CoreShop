@@ -22,12 +22,12 @@ $config = \CoreShop\Config::getConfig();
 $template = $config->template->name;
 
 if(!$template) {
-    throw new \Exception("No template configured");
+    die("No template configured");
 }
 
 $templateBasePath = '';
 
-if( is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template' ) ) {
+if( is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $template ) ) {
 
     $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/coreshop/template";
     $templateResources =  "/website/views/coreshop/template/". $template . "/static/";
@@ -43,3 +43,7 @@ if (!defined("CORESHOP_TEMPLATE_BASE_PATH"))  define("CORESHOP_TEMPLATE_BASE_PAT
 if (!defined("CORESHOP_TEMPLATE_NAME"))  define("CORESHOP_TEMPLATE_NAME", $template);
 if (!defined("CORESHOP_TEMPLATE_PATH"))  define("CORESHOP_TEMPLATE_PATH", CORESHOP_TEMPLATE_BASE_PATH . "/" . $template);
 if (!defined("CORESHOP_TEMPLATE_RESOURCES"))  define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
+
+if(!is_dir(CORESHOP_TEMPLATE_PATH)) {
+    die(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
+}
