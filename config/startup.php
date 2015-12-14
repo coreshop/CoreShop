@@ -25,8 +25,21 @@ if(!$template) {
     throw new \Exception("No template configured");
 }
 
-if (!defined("CORESHOP_TEMPLATE_BASE_PATH"))  define("CORESHOP_TEMPLATE_BASE_PATH", CORESHOP_PATH. "/views/template");
+$templateBasePath = '';
+
+if( is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template' ) ) {
+
+    $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/coreshop/template";
+    $templateResources =  "/website/views/coreshop/template/". $template . "/static/";
+
+} else {
+
+    $templateBasePath = CORESHOP_PATH . "/views/template";
+    $templateResources = "/plugins/CoreShop/views/template/" . $template . "/static/";
+
+}
+
+if (!defined("CORESHOP_TEMPLATE_BASE_PATH"))  define("CORESHOP_TEMPLATE_BASE_PATH", $templateBasePath);
 if (!defined("CORESHOP_TEMPLATE_NAME"))  define("CORESHOP_TEMPLATE_NAME", $template);
 if (!defined("CORESHOP_TEMPLATE_PATH"))  define("CORESHOP_TEMPLATE_PATH", CORESHOP_TEMPLATE_BASE_PATH . "/" . $template);
-
-if (!defined("CORESHOP_TEMPLATE_RESOURCES"))  define("CORESHOP_TEMPLATE_RESOURCES", "/plugins/CoreShop/views/template/" . CORESHOP_TEMPLATE_NAME . "/static/");
+if (!defined("CORESHOP_TEMPLATE_RESOURCES"))  define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
