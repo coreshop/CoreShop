@@ -60,6 +60,8 @@ class Plugin extends AbstractPlugin implements PluginInterface {
                     CORESHOP_TEMPLATE_PATH . "/lib"
                 );
                 set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
+
+                $frontController->registerPlugin(new Controller\Plugin\TemplateRouter(), 3);
             }
         });
     }
