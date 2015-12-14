@@ -70,7 +70,6 @@ class CoreShop_Admin_InstallController extends Admin
                 $orderClass->getId(),
                 $paymentClass->getId(),
                 $countryTaxClass->getId(),
-                //$cartRule->getId(),
                 $orerStateClass->getId()
             ));
             // create static routes

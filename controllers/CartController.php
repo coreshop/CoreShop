@@ -147,17 +147,17 @@ class CoreShop_CartController extends Action {
         $this->view->headTitle($this->view->translate("Cart"));
     }
 
-    public function cartruleAction()
+    public function priceRuleAction()
     {
         $this->enableLayout();
 
         if($this->getRequest()->isPost()) {
-            $cartRule = PriceRule::getByCode($this->getParam("cartRule"));
+            $priceRule = PriceRule::getByCode($this->getParam("priceRule"));
 
-            if ($cartRule instanceof PriceRule) {
+            if ($priceRule instanceof PriceRule) {
 
-                if ($cartRule->checkValidity()) {
-                    $this->cart->addCartRule($cartRule);
+                if ($priceRule->checkValidity()) {
+                    $this->cart->addPriceRule($priceRule);
                 }
                 else {
                     die("not valid");
@@ -171,11 +171,11 @@ class CoreShop_CartController extends Action {
         $this->_redirect($this->getParam("redirect") ? $this->getParam("redirect") : $this->view->url(array("action" => "list"), "coreshop_cart"));
     }
 
-    public function removecartruleAction()
+    public function removePriceRuleAction()
     {
         $this->enableLayout();
 
-        $this->cart->removeCartRule();
+        $this->cart->removePriceRule();
 
         $this->_redirect($this->view->url(array("action" => "list"), "coreshop_cart"));
     }
