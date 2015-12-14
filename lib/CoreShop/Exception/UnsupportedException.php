@@ -13,11 +13,9 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Plugin;
+namespace CoreShop\Exception;
 
-use CoreShop\Model\Cart;
+class UnsupportedException extends \Exception {
 
-interface Shipping extends AbstractPlugin
-{
-    public function getShipping(Cart $cart);
+
 }

@@ -15,6 +15,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopPayment;
 
@@ -23,11 +24,11 @@ class Order extends Base
     /**
      * Import a Cart to the Order
      *
-     * @param Object\CoreShopCart $cart
+     * @param Cart $cart
      * @return bool
      * @throws \Exception
      */
-    public function importCart(Object\CoreShopCart $cart)
+    public function importCart(Cart $cart)
     {
         $items = array();
         $i = 1;
@@ -160,5 +161,115 @@ class Order extends Base
         }
 
         parent::save();
+    }
+
+    /**
+     * set discount for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @param OrderState $state
+     * @throws UnsupportedException
+     */
+    public function setOrderState($state) {
+        throw new UnsupportedException("setOrderState is not supported for " . get_class($this));
+    }
+
+    /**
+     * set discount for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @param float $discount
+     * @throws UnsupportedException
+     */
+    public function setDiscount($discount) {
+        throw new UnsupportedException("setDiscount is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns discount for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getDiscount() {
+        throw new UnsupportedException("getDiscount is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns customer for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return User
+     */
+    public function getCustomer() {
+        throw new UnsupportedException("getCustomer is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns shipping for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getShipping() {
+        throw new UnsupportedException("getShipping is not supported for " . get_class($this));
+    }
+
+    /**
+     * set PriceRule for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @param PriceRule $priceRule
+     * @throws UnsupportedException
+     */
+    public function setPriceRule($priceRule) {
+        throw new UnsupportedException("setPriceRule is not supported for " . get_class($this));
+    }
+
+    /**
+     * set items for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @param OrderItem[] $items
+     * @throws UnsupportedException
+     */
+    public function setItems($items) {
+        throw new UnsupportedException("setItems is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns payments
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return CoreShopPayment[]
+     */
+    public function getPayments() {
+        throw new UnsupportedException("getPayments is not supported for " . get_class($this));
+    }
+
+    /**
+     * sets payments
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @param CoreShopPayment[] $payments
+     * @throws UnsupportedException
+     */
+    public function setPayments($payments) {
+        throw new UnsupportedException("setPayments is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns orderitems
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return OrderItem[]
+     */
+    public function getItems() {
+        throw new UnsupportedException("getItems is not supported for " . get_class($this));
     }
 }

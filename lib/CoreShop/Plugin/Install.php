@@ -199,7 +199,6 @@ class Install
         $products = Folder::getByPath("/coreshop/products");
         $categories = Folder::getByPath("/coreshop/categories");
         $cart = Folder::getByPath("/coreshop/carts");
-        $cartRules = Folder::getByPath("/coreshop/cart-rules");
         $countries = Folder::getByPath("/coreshop/countries");
         $currencies = Folder::getByPath("/coreshop/currencies");
         
@@ -271,18 +270,6 @@ class Install
                 'o_userOwner' => $this->_getUser()->getId(),
                 'o_userModification' => $this->_getUser()->getId(),
                 'o_key' => 'carts',
-                'o_published' => true,
-            ));
-        }
-
-        if(!$cartRules instanceof Folder)
-        {
-            Folder::create(array(
-                'o_parentId' => $root->getId(),
-                'o_creationDate' => time(),
-                'o_userOwner' => $this->_getUser()->getId(),
-                'o_userModification' => $this->_getUser()->getId(),
-                'o_key' => 'cart-rules',
                 'o_published' => true,
             ));
         }

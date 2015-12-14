@@ -15,6 +15,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 
@@ -132,7 +133,7 @@ class Category extends Base {
 
             $category = $category->getParentCategory();
         }
-        while($category instanceof Object\CoreShopCategory);
+        while($category instanceof Category);
 
         return array_reverse($hierarchy);
     }
@@ -149,4 +150,27 @@ class Category extends Base {
 
         return $list->getObjects();
     }
+
+    /**
+     * returns category image
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return Image
+     */
+    public function getCategoryImage() {
+        throw new UnsupportedException("getCategoryImage is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns parent category
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return Category
+     */
+    public function getParentCategory() {
+        throw new UnsupportedException("getParentCategory is not supported for " . get_class($this));
+    }
+
 }

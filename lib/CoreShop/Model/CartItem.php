@@ -15,11 +15,12 @@
 
 namespace CoreShop\Model;
 
-use Pimcore\Model\Object\CoreShopCart;
+use CoreShop\Exception\UnsupportedException;
 use CoreShop\Tool;
 
-class CartItem extends Base {
+use Pimcore\Model\Object\CoreShopCart;
 
+class CartItem extends Base {
     /**
      * Calculates the total for the CartItem
      *
@@ -27,7 +28,7 @@ class CartItem extends Base {
      */
     public function getTotal()
     {
-        return $this->getAmount() * $this->product->getProductPrice();
+        return $this->getAmount() * $this->getProduct()->getProductPrice();
     }
 
     /**
@@ -40,7 +41,7 @@ class CartItem extends Base {
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof CoreShopCart) {
+            if ($parent instanceof Cart) {
                 return $parent;
             }
 
@@ -61,8 +62,40 @@ class CartItem extends Base {
             "id" => $this->getId(),
             "product" => $this->getProduct()->toArray(),
             "amount" => $this->getAmount(),
-            "price" => Tool::formatPrice($this->product->getProductPrice()),
+            "price" => Tool::formatPrice($this->getProduct()->getProductPrice()),
             "total" => Tool::formatPrice($this->getTotal()),
         );
+    }
+
+    /**
+     * returns amount for item
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return int
+     */
+    public function getAmount() {
+        throw new UnsupportedException("getAmount is not supported for " . get_class($this));
+    }
+
+    /**
+     * sets amount for item
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     */
+    public function setAmount($amount) {
+        throw new UnsupportedException("setAmount is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns product for item
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return Product
+     */
+    public function getProduct() {
+        throw new UnsupportedException("getProduct is not supported for " . get_class($this));
     }
 }

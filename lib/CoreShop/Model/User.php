@@ -15,9 +15,8 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Model\Base;
+use CoreShop\Exception\UnsupportedException;
 use CoreShop\Tool;
-use CoreShop\Exception;
 
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopCart;
@@ -109,5 +108,38 @@ class User extends Base
             return $carts[0];
 
         return false;
+    }
+
+    /**
+     * returns email
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return string
+     */
+    public function getEmail() {
+        throw new UnsupportedException("getEmail is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns firstname
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return string
+     */
+    public function getFirstname() {
+        throw new UnsupportedException("getFirstname is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns lastname
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return string
+     */
+    public function getLastname() {
+        throw new UnsupportedException("getLastname is not supported for " . get_class($this));
     }
 }

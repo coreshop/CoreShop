@@ -15,27 +15,24 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception\UnsupportedException;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 
 use Pimcore\Model\Document;
-use Pimcore\Model\Object\CoreShopOrder;
 use Pimcore\Mail;
-
-use Pimcore\View;
-use Pimcore\View\Helper\Url;
 
 class OrderState extends Base
 {
     /**
      * Process OrderState for Order
      *
-     * @param CoreShopOrder $order
+     * @param Order $order
      * @param null $locale
      * @return bool
      * @throws \Exception
      */
-    public function processStep(CoreShopOrder $order, $locale = null)
+    public function processStep(Order $order, $locale = null)
     {
         $emailDocument = $this->getEmailDocument($locale);
         $emailParameters = array(
@@ -75,4 +72,60 @@ class OrderState extends Base
         return true;
         //TODO: Stock Management
     }
+
+    /**
+     * returns discount for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return Document\Email
+     */
+    public function getEmailDocument($locale = null) {
+        throw new UnsupportedException("getEmailDocument is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns accepted
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return boolean
+     */
+    public function getAccepted() {
+        throw new UnsupportedException("getAccepted is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns shipped
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return boolean
+     */
+    public function getShipped() {
+        throw new UnsupportedException("getShipped is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns paid
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return boolean
+     */
+    public function getPaid() {
+        throw new UnsupportedException("getPaid is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns email
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return boolean
+     */
+    public function getEmail() {
+        throw new UnsupportedException("getEmail is not supported for " . get_class($this));
+    }
+
 }

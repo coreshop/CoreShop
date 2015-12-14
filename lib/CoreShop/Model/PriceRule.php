@@ -163,26 +163,26 @@ class PriceRule extends AbstractModel {
     {
         $cart = Tool::prepareCart();
 
-        $cartRules = new PriceRule\Listing();
-        $cartRules->setCondition("(code IS NOT NULL AND code <> '') AND highlight = 1");
+        $priceRules = new PriceRule\Listing();
+        $priceRules->setCondition("(code IS NOT NULL AND code <> '') AND highlight = 1");
 
-        $cartRules = $cartRules->getData();
+        $priceRules = $priceRules->getData();
 
-        $availableCartRules = array();
+        $availablePriceRules = array();
 
-        foreach($cartRules as $cartRule)
+        foreach($priceRules as $priceRule)
         {
-            if($cartRule->checkValidity(false, true))
+            if($priceRule->checkValidity(false, true))
             {
-                if($cart->getPriceRule() instanceof PriceRule && $cartRule->getId() == $cart->getPriceRule()->getId()) {
+                if($cart->getPriceRule() instanceof PriceRule && $priceRule->getId() == $cart->getPriceRule()->getId()) {
                     continue;
                 }
 
-                $availableCartRules[] = $cartRule;
+                $availablePriceRules[] = $priceRule;
             }
         }
 
-        return $availableCartRules;
+        return $availablePriceRules;
     }
 
     /**
@@ -205,25 +205,25 @@ class PriceRule extends AbstractModel {
     /**
      * Add default PriceRule to Cart
      *
-     * @param CoreShopCart|null $cart
+     * @param Cart|null $cart
      * @return bool
      */
-    public static function autoAddToCart(CoreShopCart $cart = null)
+    public static function autoAddToCart(Cart $cart = null)
     {
         if($cart == null)
             $cart = Tool::prepareCart();
 
         if($cart->getPriceRule() == null) {
-            $cartRules = new PriceRule\Listing();
-            $cartRules->setCondition("code IS NULL OR code = ''");
-            //$cartRules->setOrderKey("priority");
-            //$cartRules->setOrder("DESC");
+            $priceRules = new PriceRule\Listing();
+            $priceRules->setCondition("code IS NULL OR code = ''");
 
-            $cartRules = $cartRules->getData();
+            $priceRules = $priceRules->getData();
 
-            foreach ($cartRules as $cartRule) {
-                if ($cartRule->checkValidity(false)) {
-                    $cart->addPriceRule($cartRule);
+            foreach ($priceRules as $priceRule) {
+                if($priceRule instanceof PriceRule) {
+                    if ($priceRule->checkValidity(false)) {
+                        $cart->addPriceRule($priceRule);
+                    }
                 }
             }
 
@@ -246,8 +246,10 @@ class PriceRule extends AbstractModel {
 
         if($this->getConditions()) {
             foreach ($this->getConditions() as $condition) {
-                if (!$condition->checkCondition($cart, $this, $throwException)) {
-                    return false;
+                if($condition instanceof PriceRule\Condition\AbstractCondition) {
+                    if (!$condition->checkCondition($cart, $this, $throwException)) {
+                        return false;
+                    }
                 }
             }
         }
@@ -262,7 +264,8 @@ class PriceRule extends AbstractModel {
         $cart = Tool::prepareCart();
 
         foreach($this->getActions() as $action) {
-            $action->applyRule($cart);
+            if($action instanceof PriceRule\Action\AbstractAction)
+                $action->applyRule($cart);
         }
     }
 
@@ -273,7 +276,8 @@ class PriceRule extends AbstractModel {
         $cart = Tool::prepareCart();
 
         foreach($this->getActions() as $action) {
-            $action->unApplyRule($cart);
+            if($action instanceof PriceRule\Action\AbstractAction)
+                $action->unApplyRule($cart);
         }
     }
 
@@ -289,7 +293,8 @@ class PriceRule extends AbstractModel {
 
         if($this->getActions()) {
             foreach($this->getActions() as $action) {
-                $discount += $action->getDiscount($cart);
+                if($action instanceof PriceRule\Action\AbstractAction)
+                    $discount += $action->getDiscount($cart);
             }
         }
 

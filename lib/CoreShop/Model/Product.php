@@ -15,15 +15,34 @@
 
 namespace CoreShop\Model;
 
+use Pimcore\Model\Cache;
 use Pimcore\Model\Object;
-use Pimcore\Model\Object\CoreShopUser;
-use Pimcore\Model\Object\CoreShopCurrency;
+use Pimcore\View\Helper\Url;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopProductSpecificPrice;
 use Pimcore\Model\Asset\Image;
+
 use CoreShop\Tool;
 use CoreShop\Config;
+use CoreShop\Exception\UnsupportedException;
+use CoreShop\Tool\Service;
 
 class Product extends Base {
+
+
+    /**
+     * @static
+     * @param int $id
+     * @return null|Product
+     */
+    public static function getById($id) {
+        $object = Object\AbstractObject::getById($id);
+
+        if ($object instanceof Product) {
+            return $object;
+        }
+
+        return null;
+    }
 
     /**
      * Get all Products
@@ -54,6 +73,10 @@ class Product extends Base {
             $list->setCondition("enabled=1");
             $list->setOrderKey("o_creationDate");
             $list->setOrder("DESC");
+
+            if($limit) {
+                $list->setLimit($limit);
+            }
 
             $objects = $list->getObjects();
         }
@@ -126,14 +149,14 @@ class Product extends Base {
      */
     public function save()
     {
-        $currentGetInheritedValues = \Pimcore\Model\Object\AbstractObject::getGetInheritedValues();
-        \Pimcore\Model\Object\AbstractObject::setGetInheritedValues(true);
+        $currentGetInheritedValues = Object\AbstractObject::getGetInheritedValues();
+        Object\AbstractObject::setGetInheritedValues(true);
         
         //Calculate Retail Price with Tax
         $retailPriceWithTax = $this->getRetailPrice() * (1 + $this->getTax());
         $this->setPrice($retailPriceWithTax);
         
-        \Pimcore\Model\Object\AbstractObject::setGetInheritedValues($currentGetInheritedValues);
+        Object\AbstractObject::setGetInheritedValues($currentGetInheritedValues);
         
         parent::save();
     }
@@ -141,10 +164,10 @@ class Product extends Base {
     /**
      * Check if Product is in Categry
      *
-     * @param Object\CoreShopCategory $category
+     * @param Category $category
      * @return bool
      */
-    public function inCategory(Object\CoreShopCategory $category) {
+    public function inCategory(Category $category) {
         foreach($this->getCategories() as $c) {
             if($c->getId() == $category->getId())
                 return true;
@@ -162,7 +185,7 @@ class Product extends Base {
      */
     public function toArray()
     {
-        $urlHelper = new \Pimcore\View\Helper\Url();
+        $urlHelper = new Url();
 
         return array(
             "image" => $this->getImage()->getFullPath(),
@@ -188,8 +211,11 @@ class Product extends Base {
         
         if($parent)
             $master = $parent;
-        
-        return \CoreShop\Tool\Service::getDimensions($master);
+
+        if($master instanceof Product)
+            return Service::getDimensions($master);
+
+        return false;
     }
 
     protected function applySpecificPrice(CoreShopProductSpecificPrice $sPrice)
@@ -219,70 +245,180 @@ class Product extends Base {
     {
         $cacheKey = "coreshop_product_price_" . $this->getId();
 
-        if($price = \Pimcore\Model\Cache::load($cacheKey)) {
+        if($price = Cache::load($cacheKey)) {
             return $price;
         }
 
         $price = $this->getPrice();
 
-        if(count($this->getSpecificPrice()) > 0)
-        {
-            $session = Tool::getSession();
-            //Process Specific Prices
-            foreach($this->getSpecificPrice() as $sPrice)
-            {
-                $date = \Zend_Date::now();
+        try {
+            if (count($this->getSpecificPrice()) > 0) {
+                $session = Tool::getSession();
+                //Process Specific Prices
+                foreach ($this->getSpecificPrice() as $sPrice) {
+                    $date = \Zend_Date::now();
 
-                $hasCustomer = false;
-                $hasCountry = false;
-                $hasCurrency = false;
+                    $hasCustomer = false;
+                    $hasCountry = false;
+                    $hasCurrency = false;
 
-                if($sPrice->getFrom() instanceof \Zend_Date) {
-                    if ($date->get(\Zend_Date::TIMESTAMP) < $sPrice->getFrom()->get(\Zend_Date::TIMESTAMP)) {
-                        continue;
+                    if ($sPrice->getFrom() instanceof \Zend_Date) {
+                        if ($date->get(\Zend_Date::TIMESTAMP) < $sPrice->getFrom()->get(\Zend_Date::TIMESTAMP)) {
+                            continue;
+                        }
                     }
-                }
 
-                if($sPrice->getTo() instanceof \Zend_Date) {
-                    if ($date->get(\Zend_Date::TIMESTAMP) > $sPrice->getTo()->get(\Zend_Date::TIMESTAMP)) {
-                        continue;
+                    if ($sPrice->getTo() instanceof \Zend_Date) {
+                        if ($date->get(\Zend_Date::TIMESTAMP) > $sPrice->getTo()->get(\Zend_Date::TIMESTAMP)) {
+                            continue;
+                        }
                     }
-                }
 
 
-                if(count($sPrice->getCustomers()) > 0 && $session->user instanceof CoreShopUser)
-                {
-                    foreach($sPrice->getCustomers() as $cust)
-                    {
-                        if($cust->getId() == $session->user->getId())
-                            $hasCustomer = true;
+                    if (count($sPrice->getCustomers()) > 0 && $session->user instanceof User) {
+                        foreach ($sPrice->getCustomers() as $cust) {
+                            if($cust instanceof User) {
+                                if ($cust->getId() == $session->user->getId())
+                                    $hasCustomer = true;
+                            }
+                        }
+                    } else if (count($sPrice->getCustomers()) == 0) { //Non is selected means all Users
+                        $hasCustomer = true;
                     }
-                }
-                else if (count($sPrice->getCustomers()) == 0) { //Non is selected means all Users
-                    $hasCustomer = true;
-                }
 
-                if(count($sPrice->getCountries()) > 0 && Tool::objectInList(Tool::getCountry(), $sPrice->getCountries())) {
-                    $hasCountry = true;
-                }
-                else if(count($sPrice->getCountries()) == 0) { //Non selected means all
-                    $hasCountry = true;
-                }
+                    if (count($sPrice->getCountries()) > 0 && Tool::objectInList(Tool::getCountry(), $sPrice->getCountries())) {
+                        $hasCountry = true;
+                    } else if (count($sPrice->getCountries()) == 0) { //Non selected means all
+                        $hasCountry = true;
+                    }
 
-                if(count($sPrice->getCurrencies()) > 0 && Tool::objectInList(Tool::getCurrency(), $sPrice->getCurrencies())) {
-                    $hasCurrency = true;
-                }
-                else if(count($sPrice->getCountries()) == 0) { //Non selected means all
-                    $hasCurrency = true;
-                }
+                    if (count($sPrice->getCurrencies()) > 0 && Tool::objectInList(Tool::getCurrency(), $sPrice->getCurrencies())) {
+                        $hasCurrency = true;
+                    } else if (count($sPrice->getCountries()) == 0) { //Non selected means all
+                        $hasCurrency = true;
+                    }
 
-                if($hasCountry && $hasCustomer && $hasCurrency) {
-                    $price = $this->applySpecificPrice($sPrice);
-                    break;
+                    if ($hasCountry && $hasCustomer && $hasCurrency) {
+                        $price = $this->applySpecificPrice($sPrice);
+                        break;
+                    }
                 }
             }
         }
+        catch(\Exception $ex) {
+            \Logger::err(sprintf("No SpecificPrice inside Product Model (%s)", $ex->getMessage()));
+        }
 
         return Tool::convertToCurrency($price);
+    }
+
+    /**
+     * returns array of images.
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return Image[]
+     */
+    public function getImages() {
+        throw new UnsupportedException("getImages is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns array of categories.
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return Category[]
+     */
+    public function getCategories() {
+        throw new UnsupportedException("getCategories is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns retail price
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getRetailPrice() {
+        throw new UnsupportedException("getRetailPrice is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns tax
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getTax() {
+        throw new UnsupportedException("getTax is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns name
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return string
+     */
+    public function getName() {
+        throw new UnsupportedException("getName is not supported for " . get_class($this));
+    }
+
+
+    /**
+     * returns price
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return CoreShopProductSpecificPrice[]
+     */
+    public function getSpecificPrice() {
+        throw new UnsupportedException("getPrice is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns wholesale price
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getWholesalePrice() {
+        throw new UnsupportedException("getWholesalePrice is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns price
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getPrice() {
+        throw new UnsupportedException("getPrice is not supported for " . get_class($this));
+    }
+
+    /**
+     * sets price
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     */
+    public function setPrice($price) {
+        throw new UnsupportedException("setPrice is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns is download product
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return string
+     */
+    public function getIsDownloadProduct() {
+        throw new UnsupportedException("getIsDownloadProduct is not supported for " . get_class($this));
     }
 }

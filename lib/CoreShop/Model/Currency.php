@@ -116,8 +116,10 @@ class Currency extends AbstractModel {
 
         foreach($countries as $c)
         {
-            if(!array_key_exists($c->getCurrency()->getId(), $currencies))
-                $currencies[$c->getCurrency()->getId()] = $c->getCurrency();
+            if($c instanceof Country) {
+                if (!array_key_exists($c->getCurrency()->getId(), $currencies))
+                    $currencies[$c->getCurrency()->getId()] = $c->getCurrency();
+            }
         }
 
         return array_values($currencies);

@@ -65,15 +65,15 @@ class TotalPerCustomer extends AbstractCondition {
         if($session->user instanceof CoreShopUser)
         {
             $orders = $session->user->getOrders();
-            $cartRulesUsed = 0;
+            $priceRulesUsed = 0;
 
             foreach($orders as $order)
             {
                 if($order->getPriceRule() instanceof PriceRule && $order->getPriceRule()->getId() == $priceRule->getId())
-                    $cartRulesUsed++;
+                    $priceRulesUsed++;
             }
 
-            if($cartRulesUsed >= $this->getTotal())
+            if($priceRulesUsed >= $this->getTotal())
                 if($throwException) throw new \Exception("You cannot use this voucher anymore (usage limit reached)"); else return false;
         }
 
