@@ -56,25 +56,13 @@ class CoreShop_Admin_SettingsController extends Admin
 
         // email settings
         $oldConfig = Config::getConfig();
-        $oldValues = $oldConfig->toArray();
+        $settings = $oldConfig->toArray();
 
-        $settings = array(
-            "base" => array(
-                "base-currency" => $values["base.base-currency"]
-            ),
-            "product" => array(
-                "default-image" => $values["product.default-image"],
-                "days-as-new" => $values["product.days-as-new"]
-            ),
-            "category" => array(
-                "default-image" => $values["category.default-image"]
-            ),
-            "template" => array(
-                "name" => $values['template.name']
-            )
-        );
-
-        $settings = array_merge_recursive($oldValues, $settings);
+        $settings['base']['base-currency'] = $values["base.base-currency"];
+        $settings['product']['default-image'] = $values["product.default-image"];
+        $settings['product']['days-as-new'] = $values["product.days-as-new"];
+        $settings['category']['default-image'] = $values["category.default-image"];
+        $settings['template']['name'] = $values['template.name'];
 
         $config = new \Zend_Config($settings, true);
         $writer = new \Zend_Config_Writer_Xml(array(
