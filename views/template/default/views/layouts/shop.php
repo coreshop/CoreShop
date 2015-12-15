@@ -59,7 +59,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <?php if($this->session->user instanceof \CoreShop\Model\Plugin\User) { ?>
+                                <?php if($this->session->user instanceof \CoreShop\Model\User) { ?>
                                     <li>
                                         <a href="<?=$this->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user")?>">
                                             <i class="fa fa-user hidden-lg hidden-md" title="<?=$this->translate("My Account")?>"></i>

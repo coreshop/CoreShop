@@ -19,6 +19,7 @@ pimcore.plugin.coreshop.global = {
         this._initCountries();
         this._initCurrencies();
         this._initCarriers();
+        this._initZones();
     },
 
     _initCurrencies : function() {
@@ -45,6 +46,29 @@ pimcore.plugin.coreshop.global = {
         currencyStore.load();
 
         pimcore.globalmanager.add("coreshop_currencies", currencyStore);
+    },
+
+    _initZones : function() {
+        var zoneProxy = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_zone/get'
+        });
+        var zoneReader = new Ext.data.JsonReader({
+            totalProperty:'total',
+            successProperty:'success'
+        }, [
+            {name:'id'},
+            {name:'name'},
+            {name:'active'}
+        ]);
+
+        var zoneStore = new Ext.data.Store({
+            restful:false,
+            proxy:zoneProxy,
+            reader:zoneReader
+        });
+        zoneStore.load();
+
+        pimcore.globalmanager.add("coreshop_zones", zoneStore);
     },
 
     _initCountries : function() {

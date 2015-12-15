@@ -2,6 +2,7 @@
 
 namespace CoreShop\Model\Resource;
 
+use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Resource;
 
 abstract class AbstractResource extends Resource\AbstractResource {
@@ -47,6 +48,8 @@ abstract class AbstractResource extends Resource\AbstractResource {
                     $value = (int)$value;
                 if(is_array($value))
                     $value = serialize($value);
+                if($value instanceof AbstractObject)
+                    $value = $value->getId();
 
                 $buffer[$k] = $value;
             }

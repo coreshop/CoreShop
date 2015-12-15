@@ -16,6 +16,7 @@
 namespace CoreShop;
 
 use CoreShop\Model\Cart;
+use CoreShop\Model\Zone;
 use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
 use Pimcore\Model\Object;
@@ -200,7 +201,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
 
 
     /**
-     * @return Zend_Translate
+     * @return \Zend_Translate
      */
     public static function getTranslate()
     {
@@ -231,14 +232,14 @@ class Plugin extends AbstractPlugin implements PluginInterface {
 
 
     /**
-     * @var Zend_EventManager_EventManager
+     * @var \Zend_EventManager_EventManager
      */
     private static $eventManager;
 
     private static $layout = "shop";
 
     /**
-     * @return Zend_EventManager_EventManager
+     * @return \Zend_EventManager_EventManager
      */
     public static function getEventManager() {
         if(!self::$eventManager) {
@@ -255,9 +256,9 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         self::$layout = $layout;
     }
 
-    public static function getShippingProviders(Cart $cart)
+    public static function getShippingProviders(Zone $zone, Cart $cart)
     {
-        $results = self::getEventManager()->trigger("shipping.getProvider", null, array("cart" => $cart), function($v) {
+        $results = self::getEventManager()->trigger("shipping.getProvider", null, array("zone" => $zone, "cart" => $cart), function($v) {
             return ($v instanceof Shipping);
         });
 

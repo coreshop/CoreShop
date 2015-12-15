@@ -151,7 +151,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                 store: [["price",t("coreshop_carrier_shippingMethod_price")],["weight",t("coreshop_carrier_shippingMethod_weight")]],
                 name: "shippingMethod",
                 fieldLabel: t("coreshop_carrier_shippingMethod"),
-                width: 250,
+                width: 500,
                 value: this.data.shippingMethod,
                 triggerAction: "all",
                 typeAhead: false,
@@ -162,13 +162,13 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                 xtype: "textfield",
                 name: "tax",
                 fieldLabel: t("coreshop_carrier_tax"),
-                width: 250,
+                width: 500,
                 value: this.data.tax
             }, {
                 fieldLabel: t("coreshop_carrier_rangeBehaviour"),
                 name: "rangeBehaviour",
                 value: this.data.rangeBehaviour,
-                width: 250,
+                width: 500,
                 xtype: "combo",
                 store: [["largest",t("coreshop_carrier_rangeBehaviour_largest")],["deactivate",t("coreshop_carrier_rangeBehaviour_deactivate")]],
                 triggerAction: "all",
@@ -176,7 +176,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                 editable: false,
                 forceSelection: true,
                 mode: "local"
-            }, this.getRangeGrid()]
+            }, this.getRangeGrid(), {height:40}, this.getZonesGrid()]
         });
 
         return this.shippingLocationAndCosts;
@@ -192,18 +192,6 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                     fields: ['id', 'delimiter1', 'delimiter2', 'price']
                 }
             );
-        }
-
-        if(this.enableEditor) {
-            writer = new Ext.data.JsonWriter();
-            listeners.write = function(store, action, result, response, rs) {};
-            listeners.exception = function (conn, mode, action, request, response, store) {
-                if(action == "update") {
-                    Ext.MessageBox.alert(t('error'),
-                        t('cannot_save_object_please_try_to_edit_the_object_in_detail_view'));
-                    this.store.rejectChanges();
-                }
-            }.bind(this);
         }
 
         this.store = new Ext.data.Store({
@@ -239,11 +227,20 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                 editor: new Ext.form.TextField({})
             },
             {
+                xtype:'actioncolumn',
+                width:40,
+                tooltip:t('delete'),
+                icon:"/pimcore/static6/img/icon/cross.png",
+                handler:function (grid, rowIndex) {
+                    grid.getStore().removeAt(rowIndex);
+                }.bind(this)
+            }
+            /*{
                 header: t("coreshop_carrier_price"),
                 width: 200,
                 dataIndex: 'price',
                 editor: new Ext.form.TextField({})
-            }
+            }*/
         ];
 
         this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
@@ -285,6 +282,90 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
         return this.grid;
     },
 
+    getZonesGrid : function() {
+        var listeners = {};
+        var modelFields = [
+            'range', 'rangeId'
+        ];
+
+        var gridColumns = [{
+            header : t('coreshop_carrier_range'),
+            width : 200,
+            dataIndex : 'range'
+        }];
+
+        pimcore.globalmanager.get("coreshop_zones").getRange().forEach(function(item) {
+            var fieldName = 'zone_' + item.get("id");
+
+            modelFields.push(fieldName);
+            gridColumns.push({
+                header: item.get("name"),
+                width: 200,
+                dataIndex: fieldName,
+                editor: item.get("active") ? new Ext.form.TextField({}) : false,
+                disabled: !item.get("active")
+            });
+        });
+
+        var modelName = 'coreshop.model.carrier.zones';
+        if (!Ext.ClassManager.get(modelName)) {
+            Ext.define(modelName, {
+                    extend: 'Ext.data.Model',
+                    fields: modelFields
+                }
+            );
+        }
+
+        this.zonesStore = new Ext.data.Store({
+            restful: false,
+            idProperty: 'id',
+            remoteSort: true,
+            model : modelName,
+            listeners: listeners,
+            proxy: {
+                type: 'ajax',
+                url: '/plugin/CoreShop/admin_Carrier/get-prices',
+                reader: {
+                    type: 'json',
+                    rootProperty : 'data'
+                },
+                extraParams : {
+                    carrier : this.data.id
+                }
+            }
+        });
+
+
+        this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1,
+            listeners: {}
+        });
+
+        var gridConfig = {
+            frame: false,
+            store: this.zonesStore,
+            border: true,
+            columns: gridColumns,
+            loadMask: true,
+            columnLines: true,
+            stripeRows: true,
+            trackMouseOver: true,
+            viewConfig: {
+                forceFit: false
+            },
+            selModel: Ext.create('Ext.selection.RowModel', {}),
+            plugins: [
+                this.cellEditing
+            ]
+        };
+
+        this.zonesGrid = Ext.create('Ext.grid.Panel', gridConfig);
+
+        this.zonesStore.load();
+
+        return this.zonesGrid;
+    },
+
     addRangeRow : function() {
         var model = this.store.getModel();
         var newRecord = new model({
@@ -295,6 +376,8 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
 
         this.store.add(newRecord);
         this.grid.getView().refresh();
+
+        this.zonesGrid.setDisabled(true);
     },
 
     getDimensions : function() {
@@ -349,6 +432,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
         Ext.apply(data.settings, this.dimensionsForm.getForm().getFieldValues());
 
         data["range"] = Ext.pluck(this.store.getRange(), 'data');
+        data["deliveryPrices"] = Ext.pluck(this.zonesStore.getRange(), 'data');
 
         // send data
         Ext.Ajax.request({
@@ -368,5 +452,10 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
     saveOnComplete: function () {
         this.parent.getTree().getStore().reload();
         pimcore.helpers.showNotification(t("success"), t("coreshop_carrier_saved_successfully"), "success");
+
+        this.zonesGrid.setDisabled(false);
+        this.zonesStore.load();
+
+        this.store.load();
     }
 });

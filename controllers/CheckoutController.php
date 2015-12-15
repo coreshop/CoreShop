@@ -91,28 +91,28 @@ class CoreShop_CheckoutController extends Action
             $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
         }
         
-        $this->view->provider = Plugin::getShippingProviders($this->cart);
+        $this->view->carriers = \CoreShop\Model\Carrier::getCarriersForCart($this->cart);
         
         if($this->getRequest()->isPost())
         {
-            $shippingProvider = reset($this->getParam("shipping_provider", array()));
+            $shippingProvider = $this->getParam("carrier", false);
             
-            foreach($this->view->provider as $provider)
+            foreach($this->view->carriers as $carrier)
             {
-                if($provider->getIdentifier() == $shippingProvider)
+                if($carrier->getId() == $shippingProvider)
                 {
-                    $shippingProvider = $provider;
+                    $shippingProvider = $carrier;
                     break;
                 }
             }
             
-            if(!$provider instanceof Shipping)
+            if(!$carrier instanceof \CoreShop\Model\Carrier)
             {
                 $this->view->error = "oh shit, not found";
             }
             else
             {
-                $this->session->order['shippingProvider'] = $provider;
+                $this->session->order['carrier'] = $carrier;
                 
                 $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
             }
@@ -159,8 +159,8 @@ class CoreShop_CheckoutController extends Action
 
                 if($this->session->order['shippingProvider'] instanceof Shipping)
                 {
-                    $order->setShippingProvider($this->session->order['shippingProvider']->getIdentifier());
-                    $order->setShipping($this->session->order['shippingProvider']->getShipping($this->cart));
+                    $order->setShippingProvider($this->session->order['carrier']->getName());
+                    $order->setShipping($this->session->order['carrier']->getShipping($this->cart));
                 }
                 else
                 {

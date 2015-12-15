@@ -47,7 +47,7 @@ class User extends Base
      *
      * @param $password
      * @return bool
-     * @throws Exception
+     * @throws \Exception
      */
     public function authenticate($password)
     {
@@ -55,7 +55,7 @@ class User extends Base
             return true;
         }
         else {
-            throw new Exception("User and Password doesn't match", 0);
+            throw new \Exception("User and Password doesn't match", 0);
         }
     }
 

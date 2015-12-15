@@ -92,7 +92,7 @@ class CoreShop_Admin_SettingsController extends Admin
 
         }
 
-        $countries = Country::getCountries();
+        $countries = Country::getData();
 
         foreach($countries as $iso=>$name)
         {

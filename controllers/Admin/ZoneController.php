@@ -15,12 +15,11 @@
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
-use CoreShop\Model\Currency;
-
+use CoreShop\Model\Zone;
 
 use Pimcore\Controller\Action\Admin;
 
-class CoreShop_Admin_CurrencyController extends Admin
+class CoreShop_Admin_ZoneController extends Admin
 {
     public function init() {
 
@@ -29,58 +28,58 @@ class CoreShop_Admin_CurrencyController extends Admin
         // check permissions
         $notRestrictedActions = array();
         if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_currency");
+            $this->checkPermission("coreshop_zone");
         }
     }
 
     public function getAction()
     {
-        $list = new Currency\Listing();
+        $list = new Zone\Listing();
         $list->setOrder("ASC");
         $list->load();
 
         $this->_helper->json($list->getData());
     }
 
-    public function getCurrenciesAction()
+    public function getZonesAction()
     {
-        $list = new Currency\Listing();
+        $list = new Zone\Listing();
         $list->setOrder("ASC");
         $list->load();
 
-        $currencies = array();
+        $zones = array();
         if(is_array($list->getData())){
-            foreach ($list->getData() as $currency) {
-                $currencies[] = $this->getTreeNodeConfig($currency);
+            foreach ($list->getData() as $zone) {
+                $zones[] = $this->getTreeNodeConfig($zone);
             }
         }
-        $this->_helper->json($currencies);
+        $this->_helper->json($zones);
     }
 
-    protected function getTreeNodeConfig($currency) {
-        $tmpCurrency= array(
-            "id" => $currency->getId(),
-            "text" => $currency->getName(),
-            "elementType" => "currency",
+    protected function getTreeNodeConfig($zone) {
+        $tmpZone= array(
+            "id" => $zone->getId(),
+            "text" => $zone->getName(),
+            "elementType" => "zone",
             "qtipCfg" => array(
-                "title" => "ID: " . $currency->getId()
+                "title" => "ID: " . $zone->getId()
             ),
-            "name" => $currency->getName()
+            "name" => $zone->getName()
         );
 
-        $tmpCurrency["leaf"] = true;
-        $tmpCurrency["iconCls"] = "coreshop_icon_currency";
-        $tmpCurrency["allowChildren"] = false;
+        $tmpZone["leaf"] = true;
+        $tmpZone["iconCls"] = "coreshop_icon_zone";
+        $tmpZone["allowChildren"] = false;
 
-        return $tmpCurrency;
+        return $tmpZone;
     }
 
-    public function getCurrencyAction() {
+    public function getZoneAction() {
         $id = $this->getParam("id");
-        $currency = Currency::getById($id);
+        $zone = Zone::getById($id);
 
-        if($currency instanceof Currency)
-            $this->_helper->json(array("success" => true, "currency" => $currency));
+        if($zone instanceof Zone)
+            $this->_helper->json(array("success" => true, "zone" => $zone));
         else
             $this->_helper->json(array("success" => false));
     }
@@ -88,16 +87,16 @@ class CoreShop_Admin_CurrencyController extends Admin
     public function saveAction() {
         $id = $this->getParam("id");
         $data = $this->getParam("data");
-        $currency = Currency::getById($id);
+        $zone = Zone::getById($id);
 
 
-        if($data && $currency instanceof Currency) {
+        if($data && $zone instanceof Zone) {
             $data = \Zend_Json::decode($this->getParam("data"));
 
-            $currency->setValues($data);
-            $currency->save();
+            $zone->setValues($data);
+            $zone->save();
 
-            $this->_helper->json(array("success" => true, "currency" => $currency));
+            $this->_helper->json(array("success" => true, "zone" => $zone));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -110,20 +109,21 @@ class CoreShop_Admin_CurrencyController extends Admin
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
         }
         else {
-            $currency = new Currency();
-            $currency->setName($name);
-            $currency->save();
+            $zone = new Zone();
+            $zone->setName($name);
+            $zone->setActive(1);
+            $zone->save();
 
-            $this->_helper->json(array("success" => true, "currency" => $currency));
+            $this->_helper->json(array("success" => true, "zone" => $zone));
         }
     }
 
     public function removeAction() {
         $id = $this->getParam("id");
-        $currency = Currency::getById($id);
+        $zone = Zone::getById($id);
 
-        if($currency instanceof Currency) {
-            $currency->delete();
+        if($zone instanceof Zone) {
+            $zone->delete();
 
             $this->_helper->json(array("success" => true));
         }

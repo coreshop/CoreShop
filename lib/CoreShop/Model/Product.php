@@ -421,4 +421,48 @@ class Product extends Base {
     public function getIsDownloadProduct() {
         throw new UnsupportedException("getIsDownloadProduct is not supported for " . get_class($this));
     }
+
+    /**
+     * returns is weight of the product
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getWeight() {
+        throw new UnsupportedException("getWeight is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns is width of the product
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getWidth() {
+        throw new UnsupportedException("getWidth is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns is height of the product
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getHeight() {
+        throw new UnsupportedException("getHeight is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns is depth of the product
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getDepth() {
+        throw new UnsupportedException("getDepth is not supported for " . get_class($this));
+    }
 }

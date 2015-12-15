@@ -52,6 +52,8 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
 
         // create layout
         this.getLayout();
+
+        this.panels = [];
     },
 
 
@@ -90,7 +92,7 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
 
             // add event listener
             var layoutId = this.layoutId;
-            this.layout.on("destroy", function () {debugger;
+            this.layout.on("destroy", function () {
                 pimcore.globalmanager.remove( layoutId );
             }.bind(this));
 
@@ -131,9 +133,8 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
         menu.add(new Ext.menu.Item({
             text: t('delete'),
             iconCls: "pimcore_icon_delete",
-            handler: this.attributes.reference.deleteRule.bind(this)
+            handler: this.deleteRule.bind(this, record)
         }));
-
         menu.showAt(e.pageX, e.pageY);
     },
 
@@ -294,14 +295,14 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
     /**
      * delete existing rule
      */
-    deleteRule: function () {
+    deleteRule: function (record) {
         Ext.Ajax.request({
             url: "/plugin/CoreShop/admin_PriceRules/delete",
             params: {
-                id: this.id
+                id: record.get("id")
             },
             success: function () {
-                this.attributes.reference.tree.getRootNode().reload();
+                this.store.load();
             }.bind(this)
         });
     },
@@ -317,18 +318,26 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
             node = node.id;
         }
 
-        // load defined rules
-        Ext.Ajax.request({
-            url: "/plugin/CoreShop/admin_PriceRules/get",
-            params: {
-                id: node
-            },
-            success: function (response) {
-                var res = Ext.decode(response.responseText);
-                var item = new pimcore.plugin.coreshop.pricerule.item(this, res);
-            }.bind(this)
-        });
+        var priceRulePanelKey = "coreshop_price_rule" + node;
 
+        if(this.panels[priceRulePanelKey]) {
+            this.panels[priceRulePanelKey].activate();
+        } else {
+
+            // load defined rules
+            Ext.Ajax.request({
+                url: "/plugin/CoreShop/admin_PriceRules/get",
+                params: {
+                    id: node
+                },
+                success: function (response) {
+                    var res = Ext.decode(response.responseText);
+                    var item = new pimcore.plugin.coreshop.pricerule.item(this, res);
+
+                    this.panels[priceRulePanelKey] = item;
+                }.bind(this)
+            });
+        }
     },
 
 

@@ -17,7 +17,9 @@
     <section class="login-area">
         <div class="row">
             <div class="col-xs-12">
-                <?=$this->message?>
+                <div class="alert alert-danger">
+                    <?=$this->message?>
+                </div>
             </div>
         </div>
         <div class="row">

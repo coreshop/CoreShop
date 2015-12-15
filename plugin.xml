@@ -41,6 +41,8 @@
             <path>/plugins/CoreShop/static/js/coreshop/currencies/currency.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/countries/panel.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/countries/country.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/zones/panel.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/zones/zone.js</path>
 
             <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCountryMultiselect.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCountryMultiselect.js</path>

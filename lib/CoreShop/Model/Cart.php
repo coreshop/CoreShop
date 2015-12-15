@@ -124,25 +124,25 @@ class Cart extends Base {
 
         //check for existing shipping
         if($session->order) {
-            if (array_key_exists("shippingProvider", $session->order) && $session->order['deliveryProvider'] instanceof Shipping) {
-                return $session->order['shippingProvider']->getShipping($this);
+            if (array_key_exists("carrier", $session->order) && $session->order['carrier'] instanceof Carrier) {
+                return $session->order['carrier']->getDeliveryPrice($this);
             }
         }
 
         //get all provider and choose cheapest
-        $providers = Plugin::getShippingProviders($this);
+        $providers = Carrier::getCarriersForCart($this);
         $cheapestProvider = null;
 
         foreach($providers as $p)
         {
             if($cheapestProvider === null)
                 $cheapestProvider = $p;
-            else if($cheapestProvider->getShipping($this) > $p->getShipping($this))
+            else if($cheapestProvider->getDeliveryPrice($this) > $p->getDeliveryPrice($this))
                 $cheapestProvider = $p;
         }
 
-        if($cheapestProvider instanceof Shipping)
-            return $cheapestProvider->getShipping($this);
+        if($cheapestProvider instanceof Carrier)
+            return $cheapestProvider->getDeliveryPrice($this);
 
         return 0;
     }
@@ -159,6 +159,23 @@ class Cart extends Base {
         $shipping = $this->getShipping();
 
         return ($subtotal  + $shipping) - $discount;
+    }
+
+    /**
+     * calculates the total weight of the cart
+     *
+     * @return int
+     */
+    public function getTotalWeight()
+    {
+        $weight = 0;
+
+        foreach($this->getItems() as $item)
+        {
+            $weight += ($item->getAmount() * $item->getProduct()->getWeight());
+        }
+
+        return $weight;
     }
 
     /**

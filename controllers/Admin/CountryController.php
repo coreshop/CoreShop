@@ -36,11 +36,12 @@ class CoreShop_Admin_CountryController extends Admin
     {
         $list = new Country\Listing();
         $list->setOrder("ASC");
+        $list->setOrderKey("name");
         $list->load();
 
         $countries = array();
-        if(is_array($list->getCountries())){
-            foreach ($list->getCountries() as $country) {
+        if(is_array($list->getData())){
+            foreach ($list->getData() as $country) {
                 $countries[] = $this->getTreeNodeConfig($country);
             }
         }

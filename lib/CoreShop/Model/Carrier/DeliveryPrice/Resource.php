@@ -30,4 +30,13 @@ class Resource extends AbstractResource {
 
         $this->assignVariablesToModel($data);
     }
+
+    public function getForCarrierInZone($carrier, $range, $zone) {
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE `carrierId` = ? AND `rangeId` = ? AND zoneId = ?', [$carrier, $range, $zone]);
+
+        if(!$data["id"])
+            throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
+
+        $this->assignVariablesToModel($data);
+    }
 }

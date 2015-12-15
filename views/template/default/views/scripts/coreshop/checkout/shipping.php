@@ -8,31 +8,28 @@
                 <h3 class="panel-title"><?=$this->translate("Shipping")?></h3>
             </div>
             <div class="panel-body delivery-options">
-                <?php foreach($this->provider as $provider) { ?>
-
-                    <table class="table table-unstyled delivery-option">
-
+                <table class="table table-unstyled delivery-option">
+                <?php foreach($this->carriers as $carrier) { ?>
                         <tr>
 
                             <td class="delivery-option-radio">
-                                <input class="delivery_option_radio" type="radio" name="delivery_provider[<?=$provider->getIdentifier()?>]" checked="checked">
+                                <input class="delivery_option_radio" type="radio" name="carrier" value="<?=$carrier->getId()?>">
                             </td>
                             <td class="delivery-option-image col-xs-3">
-                                <?php if($provider->getImage()) { ?>
-                                    <img src="<?=$provider->getImage()?>" class="img-responsive" alt="<?=$provider->getName()?>">
+                                <?php if($carrier->getImage()) { ?>
+                                    <img src="<?=$carrier->getImage()?>" class="img-responsive" alt="<?=$carrier->getName()?>">
                                 <?php } ?>
                             </td>
                             <td class="delivery-option-text">
-                                <strong><?=$provider->getName()?></strong> <?=$provider->getDescription()?>
+                                <strong><?=$carrier->getName()?></strong> <?=$carrier->getLabel()?>
                             </td>
                             <td class="delivery-option-price">
-                                <?=\CoreShop\Tool::formatPrice($provider->getShipping($this->cart))?>
+                                <?=\CoreShop\Tool::formatPrice($carrier->getDeliveryPrice($this->cart))?>
                             </td>
                         </tr>
 
-                    </table>
-
                 <?php } ?>
+                </table>
 
                 <div class="row">
                     <div class="col-xs-12">

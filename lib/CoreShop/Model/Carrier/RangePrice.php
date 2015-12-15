@@ -13,13 +13,24 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Currency\Listing;
+namespace CoreShop\Model\Carrier;
 
-use CoreShop\Model\Listing;
-use CoreShop\Model;
+use Pimcore\Model\AbstractModel;
+use CoreShop\Tool;
 
-class Resource extends Listing\Resource\AbstractResource {
+class RangePrice extends AbstractRange
+{
+    public static function getById($id) {
+        try {
+            $obj = new static();
+            $obj->getResource()->getById($id);
 
-    protected $tableName = 'coreshop_currencies';
-    protected $modelClass = '\\CoreShop\\Model\\Currency';
+            return $obj;
+        }
+        catch(\Exception $ex) {
+
+        }
+
+        return null;
+    }
 }

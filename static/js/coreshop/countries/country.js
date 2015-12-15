@@ -105,13 +105,13 @@ pimcore.plugin.coreshop.countries.country= Class.create({
                             xtype : 'checkbox',
                             fieldLabel: t("coreshop_country_active"),
                             name: "active",
-                            checked: this.data.country.active == 1 ? true : false
+                            checked: this.data.country.active === 1
                         },
                         {
                             xtype:'combo',
                             fieldLabel:t('coreshop_country_currency'),
                             typeAhead:true,
-                            value:this.data.country.currency__id,
+                            value:this.data.country.currencyId,
                             mode:'local',
                             listWidth:100,
                             store:pimcore.globalmanager.get("coreshop_currencies"),
@@ -119,7 +119,29 @@ pimcore.plugin.coreshop.countries.country= Class.create({
                             valueField:'id',
                             forceSelection:true,
                             triggerAction:'all',
-                            hiddenName:'currency__id',
+                            name:'currencyId',
+                            listeners: {
+                                change: function () {
+                                    this.forceReloadOnSave = true;
+                                }.bind(this),
+                                select: function () {
+                                    this.forceReloadOnSave = true;
+                                }.bind(this)
+                            }
+                        },
+                        {
+                            xtype:'combo',
+                            fieldLabel:t('coreshop_country_zone'),
+                            typeAhead:true,
+                            value:this.data.country.zoneId,
+                            mode:'local',
+                            listWidth:100,
+                            store:pimcore.globalmanager.get("coreshop_zones"),
+                            displayField:'name',
+                            valueField:'id',
+                            forceSelection:true,
+                            triggerAction:'all',
+                            name:'zoneId',
                             listeners: {
                                 change: function () {
                                     this.forceReloadOnSave = true;

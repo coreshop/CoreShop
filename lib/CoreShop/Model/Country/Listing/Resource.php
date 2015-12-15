@@ -15,49 +15,11 @@
 
 namespace CoreShop\Model\Country\Listing;
 
-use Pimcore\Model\Listing;
+use CoreShop\Model\Listing;
 use CoreShop\Model;
 
 class Resource extends Listing\Resource\AbstractResource {
 
-
-    /**
-     * Get the assets from database
-     *
-     * @return array
-     */
-    public function load() {
-
-        $currencies = array();
-        $currenciesData = $this->db->fetchAll("SELECT id FROM coreshop_country" . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
-
-        foreach ($currenciesData as $currencyData) {
-            if($currency = Model\Country::getById($currencyData["id"])) {
-                $currencies[] = $currency;
-            }
-        }
-
-        $this->model->setCountries($currencies);
-        return $currencies;
-    }
-
-    /**
-     * Loads a list of document ids for the specicifies parameters, returns an array of ids
-     *
-     * @return array
-     */
-    public function loadIdList() {
-        $currencyIds = $this->db->fetchCol("SELECT id FROM coreshop_country" . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
-        return $currencyIds;
-    }
-
-    public function getCount() {
-        $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM coreshop_country" . $this->getCondition() . $this->getOffsetLimit(), $this->model->getConditionVariables());
-        return $amount;
-    }
-
-    public function getTotalCount() {
-        $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM coreshop_country" . $this->getCondition(), $this->model->getConditionVariables());
-        return $amount;
-    }
+    protected $tableName = 'coreshop_countries';
+    protected $modelClass = '\\CoreShop\\Model\\Country';
 }

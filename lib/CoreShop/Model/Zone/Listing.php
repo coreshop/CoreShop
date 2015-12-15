@@ -13,13 +13,11 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Currency\Listing;
+namespace CoreShop\Model\Zone;
 
-use CoreShop\Model\Listing;
 use CoreShop\Model;
 
-class Resource extends Listing\Resource\AbstractResource {
+class Listing extends Model\Listing\AbstractListing
+{
 
-    protected $tableName = 'coreshop_currencies';
-    protected $modelClass = '\\CoreShop\\Model\\Currency';
 }

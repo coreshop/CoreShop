@@ -111,7 +111,7 @@ class CoreShop_UserController extends Action
                         $this->_redirect($redirect);
                     }
                 }
-                catch (Exception $ex) {
+                catch (\Exception $ex) {
                     $this->view->message = $this->view->translate($ex->getMessage());
                 }
             }
@@ -121,7 +121,7 @@ class CoreShop_UserController extends Action
 
         if($base)
         {
-            $this->_redirect($base);
+            $this->_redirect($base . "?message=" . $this->view->message);
         }
     }
 

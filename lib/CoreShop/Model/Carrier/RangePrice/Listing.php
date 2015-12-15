@@ -13,13 +13,9 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Currency\Listing;
+namespace CoreShop\Model\Carrier\RangeWeight;
 
-use CoreShop\Model\Listing;
-use CoreShop\Model;
+class Listing extends \CoreShop\Model\Listing\AbstractListing
+{
 
-class Resource extends Listing\Resource\AbstractResource {
-
-    protected $tableName = 'coreshop_currencies';
-    protected $modelClass = '\\CoreShop\\Model\\Currency';
 }

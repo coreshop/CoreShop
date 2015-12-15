@@ -15,9 +15,9 @@
 
 namespace CoreShop\Model\Plugin;
 
-use CoreShop\Model\Cart;
+use CoreShop\Model\CarrierInterface;
 
-interface Shipping extends AbstractPlugin
+interface Shipping extends CarrierInterface
 {
-    public function getShipping(Cart $cart);
+
 }

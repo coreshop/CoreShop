@@ -68,6 +68,10 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                                 text: t("coreshop_currencies"),
                                 iconCls: "coreshop_icon_currency",
                                 handler: this.openCurrencyList
+                            }, {
+                                text: t("coreshop_zones"),
+                                iconCls: "coreshop_icon_zone",
+                                handler: this.openZoneList
                             }]
                         }
                     });
@@ -159,6 +163,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_currency", new pimcore.plugin.coreshop.currencies.panel());
+        }
+    },
+
+    openZoneList : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_zones").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_zones", new pimcore.plugin.coreshop.zones.panel());
         }
     },
 

@@ -60,9 +60,43 @@ class CoreShop_Admin_CarrierController extends Admin
         $carrier = Carrier::getById($id);
 
         if($carrier instanceof Carrier)
-            $this->_helper->json(array("success" => true, "total" => count($carrier->getRange()), "data" => $carrier->getRange()));
+            $this->_helper->json(array("success" => true, "total" => count($carrier->getRanges()), "data" => $carrier->getRanges()));
         else
             $this->_helper->json(array("success" => false));
+    }
+
+    public function getPricesAction() {
+        $id = $this->getParam("carrier");
+        $carrier = Carrier::getById($id);
+
+        if($carrier instanceof Carrier)
+        {
+            $zones = \CoreShop\Model\Zone::getAll();
+            $ranges = $carrier->getRanges();
+            $prices = array();
+
+            foreach($ranges as $range)
+            {
+                $price = array(
+                    "range" => $range->getDelimiter1() . " - " . $range->getDelimiter2(),
+                    "rangeId" => $range->getId()
+                );
+
+                foreach($zones as $zone)
+                {
+                    $deliveryPrice = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $range, $zone);
+
+                    $price['zone_' . $zone->getId()] = $deliveryPrice instanceof Carrier\DeliveryPrice ? $deliveryPrice->getPrice() : "";
+                }
+
+                $prices[] = $price;
+            }
+
+            $this->_helper->json(array("success" => true, "count" => count($prices), "data" => $prices));
+        }
+        else {
+            $this->_helper->json(array("success" => false));
+        }
     }
 
     public function addAction() {
@@ -95,6 +129,9 @@ class CoreShop_Admin_CarrierController extends Admin
         $id = $this->getParam("id");
         $carrier = Carrier::getById($id);
 
+        //load ranges
+        $ranges = $carrier->getRanges();
+
         if($carrier instanceof Carrier)
             $this->_helper->json($carrier);
         else
@@ -111,40 +148,84 @@ class CoreShop_Admin_CarrierController extends Admin
             $data = \Zend_Json::decode($this->getParam("data"));
 
             $carrier->setValues($data['settings']);
-            $carrier->save();
 
             $ranges = $data['range'];
-
+            $rangesToKeep = array();
             if(is_array($ranges)) {
                 foreach($ranges as $range) {
-
                     $rangeObject = null;
                     $deliveryPriceObject = null;
 
                     if($range['id']) {
-                        $rangeObject = Carrier\RangeWeight::getById($range['id']);
+                        $rangeObject = Carrier\AbstractRange::getById($range['id'], $carrier->getShippingMethod());
                     }
 
                     if(is_null($rangeObject)) {
-                        $rangeObject = new Carrier\RangeWeight();
+                        $rangeObject = Carrier\AbstractRange::create($carrier->getShippingMethod());
                     }
 
-                    $rangeObject->setCarrier($id);
+                    $rangeObject->setCarrier($carrier);
                     $rangeObject->setDelimiter1($range['delimiter1']);
                     $rangeObject->setDelimiter2($range['delimiter2']);
                     $rangeObject->save();
 
-                    $deliveryPriceObject = Carrier\DeliveryPrice::getByCarrierAndRange($id, $rangeObject->getId());
+                    $rangesToKeep[] = $rangeObject->getId();
+                }
+            }
 
-                    if(is_null($deliveryPriceObject)) {
-                        $deliveryPriceObject = new Carrier\DeliveryPrice();
+            if(count($rangesToKeep) > 0)
+            {
+                $carrier->setNeedsRange(true);
+            }
+            else {
+                $carrier->setNeedsRange(false);
+            }
+
+            $carrier->save();
+
+            $deliveryPrices = $data['deliveryPrices'];
+
+            if(is_array($deliveryPrices)) {
+                $zones = \CoreShop\Model\Zone::getAll();
+
+                foreach($deliveryPrices as $deliveryPrice)
+                {
+                    $range = Carrier\AbstractRange::getById($deliveryPrice['rangeId'], $carrier->getShippingMethod());
+
+                    foreach($zones as $zone)
+                    {
+                        if(array_key_exists('zone_' . $zone->getId(), $deliveryPrice)) {
+                            $price = $deliveryPrice['zone_' . $zone->getId()];
+
+                            $deliveryPriceObject = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $range, $zone);
+
+                            if (is_null($deliveryPriceObject)) {
+                                $deliveryPriceObject = new Carrier\DeliveryPrice();
+
+                                $deliveryPriceObject->setZone($zone);
+                                $deliveryPriceObject->setCarrier($carrier);
+                                $deliveryPriceObject->setRange($range);
+                                $deliveryPriceObject->setRangeType($carrier->getShippingMethod());
+                            }
+
+                            $deliveryPriceObject->setPrice($price);
+
+                            if(is_numeric($price)) {
+                                $deliveryPriceObject->save();
+                            }
+                            else {
+                                $deliveryPriceObject->delete();
+                            }
+                        }
                     }
+                }
+            }
 
-                    $deliveryPriceObject->setRange($rangeObject->getId());
-                    $deliveryPriceObject->setPrice($range['price']);
-                    $deliveryPriceObject->setCarrier($id);
-                    $deliveryPriceObject->setRangeType($carrier->getShippingMethod());
-                    $deliveryPriceObject->save();
+            $ranges = $carrier->getRanges();
+
+            foreach($ranges as $range) {
+                if(!in_array($range->getId(), $rangesToKeep)) {
+                    $range->delete();
                 }
             }
 
@@ -155,7 +236,7 @@ class CoreShop_Admin_CarrierController extends Admin
 
     public function deleteAction() {
         $id = $this->getParam("id");
-        $priceRule = Carrier::getById($id);
+        $carrier = Carrier::getById($id);
 
         if($carrier instanceof Carrier) {
             $carrier->delete();

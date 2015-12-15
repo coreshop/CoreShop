@@ -189,7 +189,7 @@ class Tool {
 
             //Using Default Country: AT
             //TODO: Default Country configurable thru settings
-            $country = Country::getById(7);
+            $country = Country::getById(2);
             //throw new \Exception("Country with code $country not found");
         }
 

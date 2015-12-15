@@ -76,7 +76,7 @@
                     <?=$this->cart->getPriceRule()->getName()?>
                 </td>
                 <td class="text-center">
-                    1
+                    1 a
                 </td>
                 <td class="text-right">
                     -<?=\CoreShop\Tool::formatPrice($this->cart->getPriceRule()->getDiscount())?>

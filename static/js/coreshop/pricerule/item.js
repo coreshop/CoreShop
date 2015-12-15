@@ -77,6 +77,10 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
         panel.updateLayout();
     },
 
+    activate : function() {
+        this.parent.getTabPanel().setActiveItem(this.tabPanel);
+    },
+
     /**
      * Basic rule Settings
      * @returns Ext.form.FormPanel
