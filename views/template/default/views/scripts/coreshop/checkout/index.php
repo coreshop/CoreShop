@@ -17,9 +17,11 @@
     <section class="login-area">
         <div class="row">
             <div class="col-xs-12">
-                <div class="alert alert-danger">
-                    <?=$this->message?>
-                </div>
+                <?php if($this->message) { ?>
+                    <div class="alert alert-danger">
+                        <?=$this->message?>
+                    </div>
+                <?php } ?>
             </div>
         </div>
         <div class="row">

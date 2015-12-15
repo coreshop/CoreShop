@@ -120,6 +120,10 @@ class Cart extends Base {
      */
     public function getShipping()
     {
+        if(count($this->getItems()) === 0) {
+            return 0;
+        }
+
         $session = Tool::getSession();
 
         //check for existing shipping

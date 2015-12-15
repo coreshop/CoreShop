@@ -299,6 +299,10 @@ class Carrier extends AbstractModel
             }
         }
 
+        if($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
+            return $this->getMaxDeliveryPrice($zone) * (1 + ($this->getTax() / 100));
+        }
+
         return false;
     }
 

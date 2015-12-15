@@ -116,6 +116,7 @@ class CoreShop_Admin_CarrierController extends Admin
             $carrier->setMaxHeight(0);
             $carrier->setMaxWeight(0);
             $carrier->setMaxWidth(0);
+            $carrier->setNeedsRange(0);
             $carrier->save();
 
             $config = $this->getTreeNodeConfig($carrier);
