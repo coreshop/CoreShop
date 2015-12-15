@@ -41,7 +41,8 @@ class Action extends \Website\Controller\Action {
                 array(
                     CORESHOP_TEMPLATE_PATH . '/views/scripts/',
                     CORESHOP_TEMPLATE_PATH . '/views/layouts/',
-                    CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/'
+                    CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/',
+                    PIMCORE_WEBSITE_PATH . '/views/scripts'
                 )
             )
         );
