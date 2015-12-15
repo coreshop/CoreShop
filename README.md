@@ -29,7 +29,7 @@ ___
 * Category Management
 * Abstract Payment
 * Price Rules for Vouchers/Discounts
-* Different Delivery Providers
+* ~~Different Delivery Providers~~
 * Shipping Management
 * Different Payment Providers
 * Multiple Themes supported
@@ -67,6 +67,8 @@ To implement a new Payment Plugin you need to extend the class CoreShop\Plugin\P
 For example take a look at the pimcore-payunity Plugin: [https://github.com/dpfaffenbauer/pimcore-payunity](https://github.com/dpfaffenbauer/pimcore-payunity)
 
 # Delivery Provider
+**Currently not supported**: Use Carriers instead.
+
 A Delivery Provider is implemented using a Pimcore-Plugin.
 
 To implement a new Delivery Prodiver you need to extend the class CoreShop\Plugin\Delivery.
