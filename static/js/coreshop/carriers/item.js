@@ -58,6 +58,10 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
         panel.updateLayout();
     },
 
+    activate : function() {
+        this.parent.getTabPanel().setActiveItem(this.tabPanel);
+    },
+
     /**
      * Basic carrier Settings
      * @returns Ext.form.FormPanel

@@ -17,6 +17,9 @@ pimcore.registerNS("pimcore.plugin.coreshop");
 pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
 
+    isInitialized : false,
+    settings : {},
+
     getClassName: function (){
         return "pimcore.plugin.coreshop";
     },
@@ -29,16 +32,31 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         //TODO remove from menu
     },
 
-    pimcoreReady: function (params, broker){
+    pimcoreReady: function (params, broker) {
+        var self = this;
         var coreShopMenuItems = [];
+        var statusbar = pimcore.globalmanager.get("statusbar");
+        var toolbar = pimcore.globalmanager.get("layout_toolbar");
+        var coreShopStatusItem = statusbar.insert(0, '<em class="fa fa-spinner"></em> ' + t("coreshop_loading"));
+        statusbar.insert(1, "-");
+
+        pimcore.globalmanager.add("coreshop_statusbar_item", coreShopStatusItem);
+
+        pimcore.plugin.coreshop.broker.addListener("storesLoaded", function() {
+            this.isInitialized = true;
+
+            coreShopStatusItem.setHtml('<em class="fa fa-shopping-cart"></em> ' + t("coreshop_loaded").format(this.settings.plugin.pluginVersion))
+        }, this);
 
         Ext.Ajax.request({
-            url: "/plugin/CoreShop/admin_settings/installed",
+            url: "/plugin/CoreShop/admin_settings/get-settings",
             success: function (response)
             {
                 var resp = Ext.decode(response.responseText);
 
-                if(resp.isInstalled) {
+                this.settings = resp;
+
+                if(this.settings.coreshop.isInstalled) {
                     pimcore.plugin.coreshop.global.initialize();
 
                     coreShopMenuItems.push({
@@ -106,10 +124,17 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                     cls: "pimcore_navigation_flyout"
                 });
 
-                Ext.get('pimcore_menu_logout').insertSibling('<li id="pimcore_menu_coreshop" class="pimcore_menu_item icon-coreshop-shop">CoreShop</li>');
+                Ext.get('pimcore_menu_logout').insertSibling('<li id="pimcore_menu_coreshop" class="pimcore_menu_item icon-coreshop-shop">'+t("coreshop")+'</li>');
+                Ext.get("pimcore_menu_coreshop").on("mousedown", function(e, el) {
+                    if(!self.isInitialized) {
+                        Ext.Msg.alert(t('coreshop'), t('coreshop_not_initialized'));
+                    }
+                    else {
+                        toolbar.showSubMenu.call(menu, e, el);
+                    }
+                });
 
-                var toolbar = pimcore.globalmanager.get("layout_toolbar");
-                Ext.get("pimcore_menu_coreshop").on("mousedown", toolbar.showSubMenu.bind(menu));
+                pimcore.plugin.coreshop.global.initialize();
 
             }.bind(this)
         });

@@ -29,6 +29,8 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
     initialize: function() {
         // create layout
         this.getLayout();
+
+        this.panels = [];
     },
 
 
@@ -232,21 +234,29 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
 
     /**
      * open carrier
-     * @param node
+     * @param record
      */
     openCarrier: function (record) {
-        // load defined carrier
-        Ext.Ajax.request({
-            url: "/plugin/CoreShop/admin_Carrier/get",
-            params: {
-                id: record.id
-            },
-            success: function (response) {
-                var res = Ext.decode(response.responseText);
-                var item = new pimcore.plugin.coreshop.carrier.item(this, res);
-            }.bind(this)
-        });
+        var carrierPanelKey = "coreshop_carrier_" + record.id;
 
+        if(this.panels[carrierPanelKey]) {
+            this.panels[carrierPanelKey].activate();
+        } else {
+
+            // load defined carrier
+            Ext.Ajax.request({
+                url: "/plugin/CoreShop/admin_Carrier/get",
+                params: {
+                    id: record.id
+                },
+                success: function (response) {
+                    var res = Ext.decode(response.responseText);
+                    var item = new pimcore.plugin.coreshop.carrier.item(this, res);
+
+                    this.panels[carrierPanelKey] = item;
+                }.bind(this)
+            });
+        }
     },
 
 

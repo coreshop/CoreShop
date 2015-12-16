@@ -83,6 +83,8 @@
             <path>/plugins/CoreShop/static/js/coreshop/carriers/panel.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/carriers/item.js</path>
 
+            <path>/plugins/CoreShop/static/js/coreshop/broker.js</path>
+
             <path>/plugins/CoreShop/static/js/coreshop/install/install.js</path>
         </pluginJsPaths-extjs6>
 

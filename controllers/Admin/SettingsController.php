@@ -24,13 +24,14 @@ use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_SettingsController extends Admin
 {
-    public function installedAction()
+    public function getSettingsAction()
     {
         $values = Config::getConfig();
 
         $valueArray = $values->toArray();
+        $pluginConfig = \Pimcore\ExtensionManager::getPluginConfig("CoreShop");
 
-        $this->_helper->json(array("isInstalled" => $valueArray['isInstalled'] == "1" ? true : false));
+        $this->_helper->json(array("coreshop" => $valueArray, "plugin" => $pluginConfig['plugin']));
     }
 
     public function getAction()
