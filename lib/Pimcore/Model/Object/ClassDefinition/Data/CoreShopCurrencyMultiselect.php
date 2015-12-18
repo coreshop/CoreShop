@@ -44,7 +44,7 @@ class CoreShopCurrencyMultiselect extends Model\Object\ClassDefinition\Data\Mult
 
     public function buildOptions() {
         $currencies = new Currency\Listing();
-        $currencies = $currencies->getCurrencies();
+        $currencies = $currencies->getData();
 
         $options = array();
 

@@ -43,7 +43,7 @@ class CoreShopCurrency extends Model\Object\ClassDefinition\Data\Select {
 
     private function buildOptions() {
         $currencies = new Currency\Listing();
-        $currencies = $currencies->getCurrencies();
+        $currencies = $currencies->getData();
 
         $options = array();
 
