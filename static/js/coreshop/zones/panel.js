@@ -23,14 +23,14 @@ pimcore.plugin.coreshop.zones.panel = Class.create({
 
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.setActiveItem("coreshop_zones");
+        tabPanel.setActiveItem("coreshop_zones_panel");
     },
 
     getTabPanel: function () {
 
         if (!this.panel) {
             this.panel = new Ext.Panel({
-                id: "coreshop_zones",
+                id: "coreshop_zones_panel",
                 iconCls: "coreshop_icon_zone",
                 title: t("coreshop_zones"),
                 border: false,
@@ -41,11 +41,11 @@ pimcore.plugin.coreshop.zones.panel = Class.create({
 
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add(this.panel);
-            tabPanel.setActiveItem("coreshop_zones");
+            tabPanel.setActiveItem("coreshop_zones_panel");
 
 
             this.panel.on("destroy", function () {
-                pimcore.globalmanager.remove("coreshop_zones");
+                pimcore.globalmanager.remove("coreshop_zones_panel");
             }.bind(this));
 
             pimcore.layout.refresh();

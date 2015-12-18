@@ -100,7 +100,7 @@ pimcore.plugin.coreshop.zones.zone = Class.create({
                             xtype : 'checkbox',
                             fieldLabel: t("coreshop_zone_active"),
                             name: "active",
-                            checked: this.data.zone.active === 1
+                            checked: intval(this.data.zone.active) === 1
                         }
                     ]
                 }
