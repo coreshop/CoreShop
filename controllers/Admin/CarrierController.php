@@ -130,11 +130,9 @@ class CoreShop_Admin_CarrierController extends Admin
         $id = $this->getParam("id");
         $carrier = Carrier::getById($id);
 
-        //load ranges
-        $ranges = $carrier->getRanges();
-
-        if($carrier instanceof Carrier)
+        if($carrier instanceof Carrier) {
             $this->_helper->json($carrier);
+        }
         else
             $this->_helper->json(array("success" => false));
     }

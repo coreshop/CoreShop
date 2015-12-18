@@ -203,7 +203,7 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
                     if(!data || !data.success) {
                         Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
                     } else {
-                        this.openCarrier(intval(data.id));
+                        this.openCarrier(data);
                     }
                 }.bind(this)
             });
