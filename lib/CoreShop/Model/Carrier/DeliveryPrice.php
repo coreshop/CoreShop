@@ -70,13 +70,13 @@ class DeliveryPrice extends AbstractModel
     public $price;
 
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
     public static function getById($id) {
         try {
             $obj = new self;
-            $obj->getResource()->getById($id);
+            $obj->getDao()->getById($id);
             return $obj;
         }
         catch(\Exception $ex) {
@@ -96,7 +96,7 @@ class DeliveryPrice extends AbstractModel
     public static function getByCarrierAndRange(Carrier $carrier, AbstractRange $range) {
         try {
             $obj = new self;
-            $obj->getResource()->getByCarrierAndRange($carrier->getId(), $range->getId());
+            $obj->getDao()->getByCarrierAndRange($carrier->getId(), $range->getId());
 
             return $obj;
         }
@@ -119,7 +119,7 @@ class DeliveryPrice extends AbstractModel
     public static function getForCarrierInZone(Carrier $carrier, AbstractRange $range, Zone $zone) {
         try {
             $obj = new self;
-            $obj->getResource()->getForCarrierInZone($carrier->getId(), $range->getId(), $zone->getId());
+            $obj->getDao()->getForCarrierInZone($carrier->getId(), $range->getId(), $zone->getId());
 
             return $obj;
         }

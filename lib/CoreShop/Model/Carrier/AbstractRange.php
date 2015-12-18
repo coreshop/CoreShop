@@ -49,7 +49,7 @@ class AbstractRange extends AbstractModel
     public $delimiter2;
 
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
     public function delete() {
@@ -59,7 +59,7 @@ class AbstractRange extends AbstractModel
             $price->delete();
         }
 
-        return $this->getResource()->delete();
+        return $this->getDao()->delete();
     }
 
     /**
@@ -77,7 +77,7 @@ class AbstractRange extends AbstractModel
             $className = "CoreShop\\Model\\Carrier\\" . ($rangeType == "weight" ? "RangeWeight" : "RangePrice");
 
             $obj = new $className();
-            $obj->getResource()->getById($id);
+            $obj->getDao()->getById($id);
 
             return $obj;
         }

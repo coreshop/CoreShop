@@ -13,7 +13,7 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Carrier\RangeWeight;
+namespace CoreShop\Model\Carrier\RangePrice;
 
 class Listing extends \CoreShop\Model\Listing\AbstractListing
 {

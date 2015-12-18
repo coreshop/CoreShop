@@ -13,12 +13,11 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\PriceRule\Listing;
+namespace CoreShop\Model\Zone;
 
-use CoreShop\Model\Listing;
+use CoreShop\Model\Dao\AbstractDao;
 
-class Resource extends Listing\Resource\AbstractResource {
+class Dao extends AbstractDao {
 
-    protected $tableName = 'coreshop_pricerules';
-    protected $modelClass = '\\CoreShop\\Model\\PriceRule';
+    protected $tableName = 'coreshop_zones';
 }

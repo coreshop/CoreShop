@@ -13,11 +13,13 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Zone;
+namespace CoreShop\Model\Country\Listing;
 
-use CoreShop\Model\Resource\AbstractResource;
+use CoreShop\Model\Listing;
+use CoreShop\Model;
 
-class Resource extends AbstractResource {
+class Dao extends Listing\Dao\AbstractDao {
 
-    protected $tableName = 'coreshop_zones';
+    protected $tableName = 'coreshop_countries';
+    protected $modelClass = '\\CoreShop\\Model\\Country';
 }

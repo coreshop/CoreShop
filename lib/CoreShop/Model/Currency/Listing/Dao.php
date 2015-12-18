@@ -13,21 +13,13 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Currency;
+namespace CoreShop\Model\Currency\Listing;
 
-use CoreShop\Model\Resource\AbstractResource;
+use CoreShop\Model\Listing;
+use CoreShop\Model;
 
-class Resource extends AbstractResource {
+class Dao extends Listing\Dao\AbstractDao {
 
     protected $tableName = 'coreshop_currencies';
-
-    public function getByName($name = null) {
-
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE name = ?', $name);
-
-        if(!$data["id"])
-            throw new \Exception("Object with the name " . $name . " doesn't exists");
-
-        $this->assignVariablesToModel($data);
-    }
+    protected $modelClass = '\\CoreShop\\Model\\Currency';
 }

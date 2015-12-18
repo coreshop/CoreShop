@@ -53,7 +53,7 @@ class Currency extends AbstractModel {
      * @return mixed
      */
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
     /**
@@ -62,7 +62,7 @@ class Currency extends AbstractModel {
      * @return mixed
      */
     public function delete() {
-        return $this->getResource()->delete();
+        return $this->getDao()->delete();
     }
 
     /**
@@ -74,7 +74,7 @@ class Currency extends AbstractModel {
     public static function getByName($name) {
         try {
             $obj = new self;
-            $obj->getResource()->getByName($name);
+            $obj->getDao()->getByName($name);
             return $obj;
         }
         catch(\Exception $ex) {
@@ -93,7 +93,7 @@ class Currency extends AbstractModel {
     public static function getById($id) {
         try {
             $obj = new self;
-            $obj->getResource()->getById($id);
+            $obj->getDao()->getById($id);
             return $obj;
         }
         catch(\Exception $ex) {

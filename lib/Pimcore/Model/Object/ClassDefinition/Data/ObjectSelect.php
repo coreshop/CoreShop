@@ -132,7 +132,7 @@ class ObjectSelect extends Model\Object\ClassDefinition\Data\Select {
      * @param null|Model\Object\AbstractObject $object
      * @return integer
      */
-    public function getDataForEditmode($data, $object = null, $objectFromVersion = NULL) {
+    public function getDataForEditmode($data, $object = null) {
         return $this->getDataForResource($data, $object);
     }
 

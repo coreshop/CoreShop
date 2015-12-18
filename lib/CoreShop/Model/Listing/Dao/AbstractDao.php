@@ -13,12 +13,12 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Listing\Resource;
+namespace CoreShop\Model\Listing\Dao;
 
 use Pimcore\Model\Listing;
 use CoreShop\Model;
 
-class AbstractResource extends Listing\Resource\AbstractResource {
+class AbstractDao extends Listing\Dao\AbstractDao {
 
     protected $tableName = '';
 

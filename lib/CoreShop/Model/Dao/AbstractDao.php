@@ -1,25 +1,13 @@
 <?php
-/**
- * CoreShop
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
- *
- * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
- */
 
-namespace CoreShop\Model\PriceRule;
+namespace CoreShop\Model\Dao;
 
-use CoreShop\Model\Resource\AbstractResource;
+use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\Dao;
 
-class Resource extends AbstractResource {
+abstract class AbstractDao extends Dao\AbstractDao {
 
-    protected $tableName = 'coreshop_pricerules';
+    protected $tableName = '';
 
     public function getById($id = null) {
 
@@ -29,17 +17,8 @@ class Resource extends AbstractResource {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE id = ?', $this->model->getId());
 
         if(!$data["id"])
-            throw new \Exception("PriceRule with the ID " . $this->model->getId() . " doesn't exists");
+            throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
 
-
-        $this->assignVariablesToModel($data);
-    }
-
-    public function getByCode($code = null) {
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE code = ?', $code);
-
-        if(!$data["id"])
-            throw new \Exception("PriceRule with the Code " . $this->model->getCode() . " doesn't exists");
 
         $this->assignVariablesToModel($data);
     }
@@ -69,6 +48,8 @@ class Resource extends AbstractResource {
                     $value = (int)$value;
                 if(is_array($value))
                     $value = serialize($value);
+                if($value instanceof AbstractObject)
+                    $value = $value->getId();
 
                 $buffer[$k] = $value;
             }
@@ -84,18 +65,5 @@ class Resource extends AbstractResource {
 
     public function delete() {
         $this->db->delete($this->tableName, $this->db->quoteInto("id = ?", $this->model->getId()));
-    }
-
-    protected function assignVariablesToModel($data) {
-        parent::assignVariablesToModel($data);
-
-        foreach($data as $key=>$value) {
-            if($key == "actions") {
-                $this->model->setActions(unserialize($value));
-            }
-            else if($key == "conditions") {
-                $this->model->setConditions(unserialize($value));
-            }
-        }
     }
 }

@@ -13,13 +13,13 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Zone\Listing;
+namespace CoreShop\Model\Carrier\DeliveryPrice\Listing;
 
 use CoreShop\Model\Listing;
 use CoreShop\Model;
 
-class Resource extends Listing\Resource\AbstractResource {
+class Dao extends Listing\Dao\AbstractDao {
 
-    protected $tableName = 'coreshop_zones';
-    protected $modelClass = '\\CoreShop\\Model\\Zone';
+    protected $tableName = 'coreshop_carriers_delivery_price';
+    protected $modelClass = '\\CoreShop\\Model\\Carrier\\DeliveryPrice';
 }

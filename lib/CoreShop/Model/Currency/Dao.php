@@ -13,20 +13,20 @@
  * @license    http://www.coreshop.org/license     New BSD License
  */
 
-namespace CoreShop\Model\Country;
+namespace CoreShop\Model\Currency;
 
-use CoreShop\Model\Resource\AbstractResource;
+use CoreShop\Model\Dao\AbstractDao;
 
-class Resource extends AbstractResource {
+class Dao extends AbstractDao {
 
-    protected $tableName = 'coreshop_countries';
+    protected $tableName = 'coreshop_currencies';
 
-    public function getByIsoCode($isoCode = null)
-    {
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE isoCode = ?', $isoCode);
+    public function getByName($name = null) {
+
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE name = ?', $name);
 
         if(!$data["id"])
-            throw new \Exception("Object with the isoCode " . $isoCode . " doesn't exists");
+            throw new \Exception("Object with the name " . $name . " doesn't exists");
 
         $this->assignVariablesToModel($data);
     }

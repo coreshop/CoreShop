@@ -15,9 +15,9 @@
 
 namespace CoreShop\Model\Carrier;
 
-use CoreShop\Model\Resource\AbstractResource;
+use CoreShop\Model\Dao\AbstractDao;
 
-class Resource extends AbstractResource {
+class Dao extends AbstractDao {
 
     protected $tableName = 'coreshop_carriers';
 }

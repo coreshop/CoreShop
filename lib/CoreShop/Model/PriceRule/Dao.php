@@ -1,13 +1,25 @@
 <?php
+/**
+ * CoreShop
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.coreshop.org/license
+ *
+ * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
+ * @license    http://www.coreshop.org/license     New BSD License
+ */
 
-namespace CoreShop\Model\Resource;
+namespace CoreShop\Model\PriceRule;
 
-use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Model\Resource;
+use CoreShop\Model\Dao\AbstractDao;
 
-abstract class AbstractResource extends Resource\AbstractResource {
+class Dao extends AbstractDao {
 
-    protected $tableName = '';
+    protected $tableName = 'coreshop_pricerules';
 
     public function getById($id = null) {
 
@@ -17,8 +29,17 @@ abstract class AbstractResource extends Resource\AbstractResource {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE id = ?', $this->model->getId());
 
         if(!$data["id"])
-            throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
+            throw new \Exception("PriceRule with the ID " . $this->model->getId() . " doesn't exists");
 
+
+        $this->assignVariablesToModel($data);
+    }
+
+    public function getByCode($code = null) {
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE code = ?', $code);
+
+        if(!$data["id"])
+            throw new \Exception("PriceRule with the Code " . $this->model->getCode() . " doesn't exists");
 
         $this->assignVariablesToModel($data);
     }
@@ -48,8 +69,6 @@ abstract class AbstractResource extends Resource\AbstractResource {
                     $value = (int)$value;
                 if(is_array($value))
                     $value = serialize($value);
-                if($value instanceof AbstractObject)
-                    $value = $value->getId();
 
                 $buffer[$k] = $value;
             }
@@ -65,5 +84,18 @@ abstract class AbstractResource extends Resource\AbstractResource {
 
     public function delete() {
         $this->db->delete($this->tableName, $this->db->quoteInto("id = ?", $this->model->getId()));
+    }
+
+    protected function assignVariablesToModel($data) {
+        parent::assignVariablesToModel($data);
+
+        foreach($data as $key=>$value) {
+            if($key == "actions") {
+                $this->model->setActions(unserialize($value));
+            }
+            else if($key == "conditions") {
+                $this->model->setConditions(unserialize($value));
+            }
+        }
     }
 }

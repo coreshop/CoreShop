@@ -23,7 +23,7 @@ class RangeWeight extends AbstractRange
     public static function getById($id) {
         try {
             $obj = new static();
-            $obj->getResource()->getById($id);
+            $obj->getDao()->getById($id);
 
             return $obj;
         }

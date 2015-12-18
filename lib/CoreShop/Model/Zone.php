@@ -38,7 +38,7 @@ class Zone extends AbstractModel {
      * @return mixed
      */
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
     /**
@@ -50,7 +50,7 @@ class Zone extends AbstractModel {
     public static function getById($id) {
         try {
             $obj = new self;
-            $obj->getResource()->getById($id);
+            $obj->getDao()->getById($id);
             return $obj;
         }
         catch(\Exception $ex) {

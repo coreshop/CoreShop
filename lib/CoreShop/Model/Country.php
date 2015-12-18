@@ -63,7 +63,7 @@ class Country extends AbstractModel {
      * @return mixed
      */
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
     /**
@@ -75,7 +75,7 @@ class Country extends AbstractModel {
     public static function getById($id) {
         try {
             $obj = new self;
-            $obj->getResource()->getById($id);
+            $obj->getDao()->getById($id);
             return $obj;
         }
         catch(\Exception $ex) {
@@ -94,7 +94,7 @@ class Country extends AbstractModel {
     public static function getByIsoCode($isoCode) {
         try {
             $obj = new self;
-            $obj->getResource()->getByIsoCode($isoCode);
+            $obj->getDao()->getByIsoCode($isoCode);
             return $obj;
         }
         catch(\Exception $ex) {
