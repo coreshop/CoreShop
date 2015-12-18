@@ -15,14 +15,27 @@
 pimcore.registerNS("pimcore.plugin.coreshop.global");
 pimcore.plugin.coreshop.global = {
 
-    initialize : function() {
-        this._initCountries();
-        this._initCurrencies();
-        this._initZones();
+    settings : {},
 
+    initialize : function(settings) {
         this._countriesLoaded = false;
         this._currenciesLoaded = false;
         this._zonesLoaded = false;
+
+        this.settings = settings;
+
+        if(intval(this.settings.coreshop.isInstalled)) {
+            this._initStores();
+        }
+        else {
+            pimcore.plugin.coreshop.broker.fireEvent("storesLoaded");
+        }
+    },
+
+    _initStores : function() {
+        this._initCountries();
+        this._initCurrencies();
+        this._initZones();
     },
 
     _initCurrencies : function() {

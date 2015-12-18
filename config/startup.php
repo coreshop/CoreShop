@@ -12,38 +12,44 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     New BSD License
  */
+if (!defined("CORESHOP_PATH")) define("CORESHOP_PATH", PIMCORE_PLUGINS_PATH . "/CoreShop");
+if (!defined("CORESHOP_CONFIGURATION_PATH")) define("CORESHOP_CONFIGURATION_PATH", PIMCORE_CONFIGURATION_DIRECTORY);
+if (!defined("CORESHOP_CONFIGURATION")) define("CORESHOP_CONFIGURATION", CORESHOP_CONFIGURATION_PATH . "/coreshop-config.xml");
 
-if (!defined("CORESHOP_PATH"))  define("CORESHOP_PATH", PIMCORE_PLUGINS_PATH. "/CoreShop");
-if (!defined("CORESHOP_CONFIGURATION_PATH"))  define("CORESHOP_CONFIGURATION_PATH", PIMCORE_CONFIGURATION_DIRECTORY);
-if (!defined("CORESHOP_CONFIGURATION"))  define("CORESHOP_CONFIGURATION", CORESHOP_CONFIGURATION_PATH . "/coreshop-config.xml");
+if(Pimcore\Tool::classExists("CoreShop\\Plugin")) {
 
-$config = \CoreShop\Config::getConfig();
+    $plugin = new CoreShop\Plugin();
 
-$template = $config->template->name;
+    if($plugin->isInstalled()) {
+        $config = \CoreShop\Config::getConfig();
 
-if(!$template) {
-    die("No template configured");
-}
+        $template = $config->template->name;
 
-$templateBasePath = '';
+        if (!$template) {
+            die("No template configured");
+        }
 
-if( is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $template ) ) {
+        $templateBasePath = '';
 
-    $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/coreshop/template";
-    $templateResources =  "/website/views/coreshop/template/". $template . "/static/";
+        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $template)) {
 
-} else {
+            $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/coreshop/template";
+            $templateResources = "/website/views/coreshop/template/" . $template . "/static/";
 
-    $templateBasePath = CORESHOP_PATH . "/views/template";
-    $templateResources = "/plugins/CoreShop/views/template/" . $template . "/static/";
+        } else {
 
-}
+            $templateBasePath = CORESHOP_PATH . "/views/template";
+            $templateResources = "/plugins/CoreShop/views/template/" . $template . "/static/";
 
-if (!defined("CORESHOP_TEMPLATE_BASE_PATH"))  define("CORESHOP_TEMPLATE_BASE_PATH", $templateBasePath);
-if (!defined("CORESHOP_TEMPLATE_NAME"))  define("CORESHOP_TEMPLATE_NAME", $template);
-if (!defined("CORESHOP_TEMPLATE_PATH"))  define("CORESHOP_TEMPLATE_PATH", CORESHOP_TEMPLATE_BASE_PATH . "/" . $template);
-if (!defined("CORESHOP_TEMPLATE_RESOURCES"))  define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
+        }
 
-if(!is_dir(CORESHOP_TEMPLATE_PATH)) {
-    die(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
+        if (!defined("CORESHOP_TEMPLATE_BASE_PATH")) define("CORESHOP_TEMPLATE_BASE_PATH", $templateBasePath);
+        if (!defined("CORESHOP_TEMPLATE_NAME")) define("CORESHOP_TEMPLATE_NAME", $template);
+        if (!defined("CORESHOP_TEMPLATE_PATH")) define("CORESHOP_TEMPLATE_PATH", CORESHOP_TEMPLATE_BASE_PATH . "/" . $template);
+        if (!defined("CORESHOP_TEMPLATE_RESOURCES")) define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
+
+        if (!is_dir(CORESHOP_TEMPLATE_PATH)) {
+            die(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
+        }
+    }
 }

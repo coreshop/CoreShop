@@ -24,6 +24,7 @@
                 <type>snippet</type>
                 <action>footer</action>
                 <controller>snippet</controller>
+                <module>CoreShopTemplate</module>
                 <path>shop/snippet</path>
                 <key>footer</key>
             </document>

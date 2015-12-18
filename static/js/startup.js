@@ -56,9 +56,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                 this.settings = resp;
 
-                if(this.settings.coreshop.isInstalled) {
-                    pimcore.plugin.coreshop.global.initialize();
-
+                if(intval(this.settings.coreshop.isInstalled)) {
                     coreShopMenuItems.push({
                         text: t("coreshop_settings"),
                         iconCls: "coreshop_icon_settings",
@@ -134,7 +132,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                     }
                 });
 
-                pimcore.plugin.coreshop.global.initialize();
+                pimcore.plugin.coreshop.global.initialize(this.settings);
 
             }.bind(this)
         });
