@@ -52,7 +52,7 @@ CREATE TABLE `coreshop_countries` (
   `isoCode` varchar(2) NULL,
   `active` tinyint(1) DEFAULT 0,
   `currencyId` int,
-  `zoneId`,
+  `zoneId` int,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
