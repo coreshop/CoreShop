@@ -14,30 +14,23 @@
  */
 
 use CoreShop\Plugin;
+use CoreShop\Config;
 use CoreShop\Tool;
-use CoreShop\Model;
+use CoreShop\Helper\Country;
 
-use Pimcore\Model\Object\CoreShopOrder;
+use CoreShop\Model;
 
 use Pimcore\Controller\Action\Admin;
 
-class CoreShop_Admin_TestController extends Admin
+class CoreShop_Admin_ThemeController extends Admin
 {
-    public function testSelectObjectAction(){
-        $orderId = 2082;
+    public function enableAction() {
+        try {
+            \CoreShop\Theme::enableTheme($this->getParam("theme"));
 
-        $order = CoreShopOrder::getById($orderId);
-
-        var_dump($order->getOrderState());
-
-        exit;
-    }
-
-    public function testSetupAction() {
-        $install = new CoreShop\Plugin\Install();
-
-        $install->executeSQL("CountriesAndCurrencies");
-
-        exit;
+            $this->_helper->json(array("success" => true));
+        } catch(\Exception $ex) {
+            $this->_helper->json(array("success" => false, "message" => $ex->getMessage()));
+        }
     }
 }

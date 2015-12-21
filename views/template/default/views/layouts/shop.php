@@ -189,7 +189,7 @@
                 </div>
             </div>
         </div>
-        <?=$this->template("coreshop/helper/menu.php");?>
+        <?=$this->inc("/" . $this->language . "/shop/snippet/menu")?>
     <!-- Main Header Ends -->
     </header>
 <!-- Header Section Ends -->

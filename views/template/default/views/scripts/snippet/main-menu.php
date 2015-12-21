@@ -1,3 +1,12 @@
+<?
+$categoriesHref = $this->multihref("categories");
+
+if($this->editmode) {
+    echo $categoriesHref;
+}
+
+?>
+
 <!-- Main Menu Starts -->
 <nav id="main-menu" class="navbar" role="navigation">
     <div class="container">
@@ -13,24 +22,24 @@
         <div class="collapse navbar-collapse navbar-cat-collapse">
             <ul class="nav navbar-nav">
                 <?php
-                    $categories = \CoreShop\Model\Category::getFirstLevel();
+                $categories = $categoriesHref->getElements();
 
-                    foreach($categories as $cat) {
-                        $dropdown = count($cat->getChildCategories()) > 0;
-                ?>
-                   <li class="<?=$dropdown ? "dropdown" : ""?>">
-                       <a href="<?=$this->url(array("lang" => $this->language, "name" => $cat->getName(), "category" => $cat->getId()), "coreshop_list", true)?>" <?=$dropdown ? 'class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10"' : '' ?>>
-                           <?=$cat->getName()?>
-                       </a>
+                foreach($categories as $cat) {
+                    $dropdown = count($cat->getChildCategories()) > 0;
+                    ?>
+                    <li class="<?=$dropdown ? "dropdown" : ""?>">
+                        <a href="<?=$this->url(array("lang" => $this->language, "name" => $cat->getName(), "category" => $cat->getId()), "coreshop_list", true)?>" <?=$dropdown ? 'class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10"' : '' ?>>
+                            <?=$cat->getName()?>
+                        </a>
 
-                       <?php if(count($cat->getChildCategories()) > 0) { ?>
-                       <ul class="dropdown-menu" role="menu">
-                           <?php foreach($cat->getChildCategories() as $child) { ?>
-                               <li><a tabindex="-1" href="<?=$this->url(array("lang" => $this->language, "name" => $child->getName(), "category" => $child->getId()), "coreshop_list", true)?>"><?=$child->getName()?></a></li>
-                           <?php }?>
-                           </ul>
-                       <?php } ?>
-                   </li>
+                        <?php if(count($cat->getChildCategories()) > 0) { ?>
+                            <ul class="dropdown-menu" role="menu">
+                                <?php foreach($cat->getChildCategories() as $child) { ?>
+                                    <li><a tabindex="-1" href="<?=$this->url(array("lang" => $this->language, "name" => $child->getName(), "category" => $child->getId()), "coreshop_list", true)?>"><?=$child->getName()?></a></li>
+                                <?php }?>
+                            </ul>
+                        <?php } ?>
+                    </li>
                 <?php } ?>
                 <?php /*
                 <li class="dropdown">

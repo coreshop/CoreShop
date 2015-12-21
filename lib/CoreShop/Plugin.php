@@ -15,6 +15,7 @@
 
 namespace CoreShop;
 
+use CoreShop\Exception\ThemeNotFoundException;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Zone;
 use Pimcore\API\Plugin\AbstractPlugin;
@@ -34,6 +35,11 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      * @var \Zend_Translate
      */
     protected static $_translate;
+
+    /**
+     * @var \CoreShop\Theme
+     */
+    protected static $_theme;
 
     public function __construct($jsPaths = null, $cssPaths = null) {
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/startup.php");
@@ -228,8 +234,72 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return PIMCORE_CONFIGURATION_DIRECTORY . "/coreshop_classmap.xml";
     }
 
-    //*************
+    /**
+     * Enables a theme
+     *
+     * @param $name
+     * @throws ThemeNotFoundException
+     */
+    public static function enableTheme($name)
+    {
+        $config = Config::getConfig();
+        $config = $config->toArray();
 
+        if($themeDir = self::getThemeDirectory($name))
+        {
+            //disable current template
+            $currentTemplate = $config['template']['name'];
+            if($oldThemeDir = self::getThemeDirectory($currentTemplate)) {
+                $disableScript = $themeDir . "/disable.php";
+
+                if(is_file($disableScript)) {
+                    include($disableScript);
+                }
+            }
+
+            //enable new template
+            $enableScript = $themeDir . "/enable.php";
+
+            if(is_file($enableScript)) {
+                include($enableScript);
+            }
+
+            self::getTheme()->installTheme();
+        }
+        else {
+            throw new ThemeNotFoundException();
+        }
+    }
+
+    /**
+     * Returns theme directory
+     *
+     * @param $name
+     * @return bool|string
+     */
+    public static function getThemeDirectory($name) {
+        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $name)) {
+            return PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $name;
+
+        }
+        else if(is_dir(CORESHOP_PATH . "/views/template/" . $name))
+        {
+            return CORESHOP_PATH . "/views/template/" . $name;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Theme|\CoreShopTemplate\Theme
+     */
+    public static function getTheme() {
+        if(!self::$_theme instanceof \CoreShop\Theme) {
+            self::$_theme = new \CoreShopTemplate\Theme();
+        }
+
+        return self::$_theme;
+    }
 
     /**
      * @var \Zend_EventManager_EventManager

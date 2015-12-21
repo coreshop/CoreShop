@@ -15,9 +15,11 @@
 
 namespace CoreShop\Plugin;
 
+use CoreShop\Model\Category;
 use CoreShop\Plugin;
 use CoreShop\Config;
 
+use Pimcore\File;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\Folder;
@@ -335,71 +337,14 @@ class Install
         }
     }
 
-    public function installTemplate($template = "default")
+    public function installTheme($template = "default", $installDemoData = true)
     {
-        $templatePath = CORESHOP_TEMPLATE_BASE_PATH . "/$template";
+        Plugin::enableTheme($template, $installDemoData);
+    }
 
-        //Get Template Xml
-        if(!file_exists("$templatePath/template.xml")) {
-            throw new \Exception("Template $template not found");
-        }
-
-        $config = new \Zend_Config_Xml("$templatePath/template.xml");
-        $config = $config->toArray();
-
-        if(array_key_exists("installation", $config))
-        {
-            //Install CoreShop Documents
-            if(array_key_exists("documents", $config["installation"]))
-            {
-                $validLanguages = explode(",", \Pimcore\Config::getSystemConfig()->general->validLanguages);
-
-                foreach($validLanguages as $language)
-                {
-                    $languageDocument = Document::getByPath("/" . $language);
-
-                    if(!$languageDocument instanceof Document) {
-                        $languageDocument = new Document\Page();
-                        $languageDocument->setParent(Document::getById(1));
-                        $languageDocument->setKey($language);
-                        $languageDocument->save();
-                    }
-
-                    foreach($config["installation"]["documents"] as $value)
-                    {
-                        foreach($value as $doc)
-                        {
-                            $document = Document::getByPath("/" . $language . "/" . $doc['path'] . "/" . $doc['key']);
-
-                            if(!$document)
-                            {
-                                $class = "Pimcore\\Model\\Document\\" . ucfirst($doc['type']);
-
-                                if(\Pimcore\Tool::classExists($class))
-                                {
-                                    $document = new $class();
-                                    $document->setParent(Document::getByPath("/" . $language . "/" . $doc['path']));
-                                    $document->setKey($doc['key']);
-
-                                    if($document instanceof Document\PageSnippet) {
-                                        if(array_key_exists("action", $doc))
-                                            $document->setAction($doc['action']);
-
-                                        if(array_key_exists("controller", $doc))
-                                            $document->setController($doc['controller']);
-
-                                        if(array_key_exists("module", $doc))
-                                            $document->setModule($doc['module']);
-                                    }
-
-                                    $document->save();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    public function installThemeDemo()
+    {
+        Plugin::getTheme()->installDemoData();
     }
 
     public function removeStaticRoutes()

@@ -9,7 +9,7 @@
                     <div class="image-new-badge"></div>
                 <?php } ?>
 
-                <img src="<?=$this->product->getImage()->getThumbnail("coreshop_productList")?>" alt="<?=$this->product->getName()?>" id="<?=$uniqid?>" class="img-responsive" />
+                <?php echo $this->product->getImage()->getThumbnail("coreshop_productList")->getHtml(array("class" => "img-responsive"))?>
             <?php } ?>
         </div>
         <div class="caption">

@@ -44,3 +44,5 @@ Vagrantfile
 .vagrant
 php-cgi.core
 .sass-cache
+views/template/default/data/categories.csv
+views/template/default/data/products.csv

@@ -74,7 +74,7 @@ class CoreShop_ProductController extends Action {
 
         if($category instanceof CoreShopCategory) {
             $this->view->category = $category;
-            $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort));
+            $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort), true);
 
             $this->view->page = $page;
             $this->view->sort = $sort;

@@ -38,10 +38,12 @@
                         <div class="image">
                             <?php if($cat->getImage() instanceof \Pimcore\Model\Asset\Image) { ?>
                                 <a href="<?=$this->url(array("lang" => $this->language, "name" => $cat->getName(), "category" => $cat->getId()), "coreshop_list")?>">
-                                    <img src="<?=$cat->getImage()->getThumbnail("coreshop_categoryThumbnail")?>" alt="<?=$cat->getName()?>" title="<?=$cat->getName()?>" class="img-responsive img-thumbnail" />
+                                    <?php echo $cat->getImage()->getThumbnail("coreshop_categoryThumbnail")->getHtml(array("class" => "img-responsive"))?>
                                 </a>
                             <?php } else { ?>
-                                <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/category/placeholder.png" class="img-responsive img-thumbnail" />
+                                <a href="<?=$this->url(array("lang" => $this->language, "name" => $cat->getName(), "category" => $cat->getId()), "coreshop_list")?>">
+                                    <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/category/placeholder.png" class="img-responsive img-thumbnail" />
+                                </a>
                             <?php } ?>
                         </div>
                         <div class="caption">

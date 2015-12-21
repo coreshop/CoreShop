@@ -21,4 +21,6 @@ class CoreShopTemplate_SnippetController extends Action
     public function textAction()
     {
     }
+
+    public function mainMenuAction() {}
 }

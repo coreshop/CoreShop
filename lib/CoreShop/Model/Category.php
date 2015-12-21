@@ -51,12 +51,26 @@ class Category extends Base {
     /**
      * Get Products from the Category
      *
+     * @param bool $includeChildCategories
      * @return array
      */
-    public function getProducts()
+    public function getProducts($includeChildCategories = false)
     {
         $list = new Object\CoreShopProduct\Listing();
-        $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+
+        if(!$includeChildCategories)
+            $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+        else {
+            $categories = $this->getAllChildCategories();
+            $categoriesWhere = array();
+
+            foreach($categories as $cat)
+            {
+                $categoriesWhere[] = "categories LIKE '%," . $cat . ",%'";
+            }
+
+            $list->setCondition("enabled = 1 AND (".implode(" OR ", $categoriesWhere).")");
+        }
 
         return $list->getObjects();
     }
@@ -67,13 +81,27 @@ class Category extends Base {
      * @param int $page
      * @param int $itemsPerPage
      * @param array $sort
+     * @param bool $includeChildCategories
      * @return \Zend_Paginator
      * @throws \Zend_Paginator_Exception
      */
-    public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array("name" => "name", "direction" => "asc"))
+    public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array("name" => "name", "direction" => "asc"), $includeChildCategories = false)
     {
         $list = new Object\CoreShopProduct\Listing();
-        $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+
+        if(!$includeChildCategories)
+            $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+        else {
+            $categories = $this->getAllChildCategories();
+            $categoriesWhere = array();
+
+            foreach($categories as $cat)
+            {
+                $categoriesWhere[] = "categories LIKE '%," . $cat . ",%'";
+            }
+
+            $list->setCondition("enabled = 1 AND (".implode(" OR ", $categoriesWhere).")");
+        }
 
         $list->setOrderKey($sort['name']);
         $list->setOrder($sort['direction']);
@@ -83,6 +111,24 @@ class Category extends Base {
         $paginator->setItemCountPerPage($itemsPerPage);
 
         return $paginator;
+    }
+
+    public function getAllChildCategories() {
+        $allChildren = array($this->getId());
+
+        $loopChilds = function(Category $child) use(&$loopChilds, &$allChildren) {
+            $childs = $child->getChildCategories();
+
+            foreach($childs as $child) {
+                $allChildren[] = $child->getId();
+
+                $loopChilds($child);
+            }
+        };
+
+        $loopChilds($this);
+
+        return $allChildren;
     }
 
     /**
