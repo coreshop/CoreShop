@@ -15,7 +15,7 @@
 pimcore.registerNS("pimcore.document.tags.product");
 pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
 
-    defaultHeight: 100,
+    defaultHeight: 300,
 
     initialize: function(id, name, options, data, inherited) {
         this.id = id;
@@ -55,7 +55,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
             });
 
             this.getBody().insertHtml("beforeEnd",'<div class="pimcore_tag_droptarget"></div>');
-            this.getBody().addClass("pimcore_tag_snippet_empty");
+            this.getBody().addCls("pimcore_tag_snippet_empty");
 
             el.getEl().on("contextmenu", this.onContextMenu.bind(this));
 
@@ -72,12 +72,14 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
         }
     },
 
-    onNodeDrop: function (target, dd, e, data) {
+    onNodeDrop: function (target, dd, e, data)
+    {
+        var record = data.records[0];
 
         // get path from nodes data
-        this.data.id = data.node.attributes.id;
-        this.data.type = data.node.attributes.elementType;
-        this.data.subtype = data.node.attributes.type;
+        this.data.id = record.get("id");
+        this.data.type = record.get("elementType");
+        this.data.subtype = record.get("type");
 
         if (this.options.reload) {
             this.reloadDocument();
@@ -90,10 +92,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
 
 
     dndAllowed: function(data) {
-        if(data.node.attributes.className == "CoreShopProduct")
-            return true;
-
-        return false;
+        return data.records[0].get("className") === "CoreShopProduct";
     },
 
     onNodeOver: function(target, dd, e, data)
@@ -115,7 +114,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
 
     updateContent: function (path) {
 
-        this.getBody().removeClass("pimcore_tag_snippet_empty");
+        this.getBody().removeCls("pimcore_tag_snippet_empty");
         this.getBody().dom.innerHTML = '<br />&nbsp;&nbsp;Loading ...';
 
         var params = this.data;
@@ -163,7 +162,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
                     this.data = {};
                     this.getBody().update('');
                     this.getBody().insertHtml("beforeEnd",'<div class="pimcore_tag_droptarget"></div>');
-                    this.getBody().addClass("pimcore_tag_snippet_empty");
+                    this.getBody().addCls("pimcore_tag_snippet_empty");
                     this.getBody().setHeight(height + "px");
 
                     if (this.options.reload) {
