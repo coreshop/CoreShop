@@ -67,7 +67,7 @@ class CoreShop_ProductController extends Action {
         $id = $this->getParam("category");
         $page = $this->getParam("page", 0);
         $sort = $this->getParam("sort", "NAMEA");
-        $perPage = $this->getParam("perPage", 10);
+        $perPage = $this->getParam("perPage", 12);
         $type = $this->getParam("type", "list");
 
         $category = CoreShopCategory::getById($id);

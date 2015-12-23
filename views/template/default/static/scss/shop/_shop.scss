@@ -683,7 +683,7 @@ hr {
         }
     }
     .cart-button.button-group .btn-cart {
-        padding: 5px 12px;
+        padding: 5px 10px;
         font-size: 17px;
         .fa {
             margin-left: 0;
@@ -1608,6 +1608,20 @@ hr {
 
 .product-col .description, .footer-links li {
     font-family: 'Open Sans', sans-serif;
+}
+
+.product-col h4 {
+    height:40px;
+    max-height:40px;
+    overflow: hidden;
+}
+
+.product-col .description {
+    height:60px;
+    max-height:60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
 }
 
 #main-menu.navbar {

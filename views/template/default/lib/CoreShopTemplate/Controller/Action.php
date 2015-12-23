@@ -17,6 +17,12 @@ namespace CoreShopTemplate\Controller;
 
 use CoreShop\Controller\Action as CoreShopAction;
 
-class Action extends CoreShopAction {
+class Action extends CoreShopAction
+{
+    public function init()
+    {
+        parent::init();
 
+        $this->view->headTitle()->setSeparator(" " . ("|") . " ");
+    }
 }

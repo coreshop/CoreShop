@@ -16,6 +16,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Plugin\Payment as CorePayment;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopPayment;
 
@@ -70,7 +71,7 @@ class Order extends Base
      * @return Object\CoreShopPayment
      * @throws \Exception
      */
-    public function createPayment(Payment $provider, $amount)
+    public function createPayment(CorePayment $provider, $amount)
     {
         $payment = new Object\CoreShopPayment();
         $payment->setKey(uniqid());

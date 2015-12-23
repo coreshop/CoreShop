@@ -1,11 +1,10 @@
-<!-- Main Container Starts -->
 <div id="main-container" class="container">
     <div class="row">
 
     <?=$this->template("coreshop/helper/left.php")?>
-    <!-- Primary Content Starts -->
+
         <div class="col-md-9">
-        <!-- Breadcrumb Starts -->
+
             <ol class="breadcrumb">
                 <li><a href="<?=$this->url(array("lang" => $this->language), "coreshop_index", true)?>"><?=$this->translate("Home")?></a></li>
                 <?php if(count($this->product->getCategories()) > 0) { ?>
@@ -15,11 +14,10 @@
                 <?php } ?>
                 <li class="active"><a href="<?=$this->url(array("lang" => $this->language, "name" => $this->product->getName(), "product" => $this->product->getId()), "coreshop_detail", true)?>"><?=$this->product->getName()?></a></li>
             </ol>
-        <!-- Breadcrumb Ends -->
-        <!-- Product Info Starts -->
+
+
             <div class="row product-info">
-            <!-- Left Starts -->
-                
+
                 <div class="col-sm-5 images-block">
                     <?php if($this->product->getImage() instanceof \Pimcore\Model\Asset\Image) { ?>
                         <?php if($this->product->getIsNew()) { ?>
@@ -38,80 +36,61 @@
                     </ul>
                     <?php } ?>
                 </div>
-            <!-- Left Ends -->
-            <!-- Right Starts -->
-                <div class="col-sm-7 product-details">
-                <!-- Product Name Starts -->
-                    <h2><?=$this->product->getName()?></h2>
-                <!-- Product Name Ends -->
-                    <hr />
-                <!-- Manufacturer Starts -->
-                    <!--<ul class="list-unstyled manufacturer">
-                        <li>
-                            <span>Brand:</span> Indian spices
-                        </li>
-                        <li><span>Reward Points:</span> 300</li>
-                        <li>
-                            <span>Availability:</span> <strong class="label label-success">In Stock</strong>
-                        </li>
-                    </ul>-->
-                    <div class="description">
-                        <?=$this->product->getShortDescription()?>
-                    </div>
-                <!-- Manufacturer Ends -->
 
-                <!-- Price Starts -->
-                    <?php if($this->product->getAvailableForOrder()) { ?>
+                <div class="col-sm-7 product-details">
+
+                    <h2><?=$this->product->getName()?></h2>
+                    <hr />
+
+                    <?php if(strlen($this->product->getShortDescription()) > 0) { ?>
+                        <div class="description">
+                            <?=$this->product->getShortDescription()?>
+                        </div>
                         <hr />
+                    <?php } ?>
+
+                    <?php if($this->product->getAvailableForOrder()) { ?>
                         <div class="price">
                             <span class="price-head"><?=$this->translate("Price")?> :</span>
                             <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getProductPrice());?></span>
                         </div>
+                        <hr />
 
-                <!-- Price Ends -->
-                    <hr />
-                <!-- Available Options Starts -->
-                    <div class="options">
-                        <div class="form-group">
-                            <label class="control-label text-uppercase" for="input-quantity"><?=$this->translate("Qty")?>:</label>
-                            <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
+                        <div class="options">
+                            <div class="form-group">
+                                <label class="control-label text-uppercase" for="input-quantity"><?=$this->translate("Qty")?>:</label>
+                                <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
+                            </div>
+                            <div class="cart-button button-group">
+                                <button type="button" title="Wishlist" class="btn btn-wishlist">
+                                    <i class="fa fa-heart"></i>
+                                </button>
+                                <button type="button" title="Compare" class="btn btn-compare">
+                                    <i class="fa fa-bar-chart-o"></i>
+                                </button>
+                                <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#product-image-<?=$this->product->getId()?>">
+                                    <?=$this->translate("Add to cart")?>
+                                    <i class="fa fa-shopping-cart"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="cart-button button-group">
-                            <button type="button" title="Wishlist" class="btn btn-wishlist">
-                                <i class="fa fa-heart"></i>
-                            </button>
-                            <button type="button" title="Compare" class="btn btn-compare">
-                                <i class="fa fa-bar-chart-o"></i>
-                            </button>
-                            <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#product-image-<?=$this->product->getId()?>">
-                                <?=$this->translate("Add to cart")?>
-                                <i class="fa fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
                     <?php } ?>
-                <!-- Available Options Ends -->
                     <hr />
                 </div>
-            <!-- Right Ends -->
             </div>
-        <!-- product Info Ends -->
+
             <?php if(strlen($this->product->getDescription()) > 0) {?>
-        <!-- Product Description Starts -->
-            <div class="product-info-box">
-                <h4 class="heading"><?=$this->translate("Description")?></h4>
-                <div class="content panel-smart">
-                    <?=$this->product->getDescription()?>
+                <div class="product-info-box">
+                    <h4 class="heading"><?=$this->translate("Description")?></h4>
+                    <div class="content panel-smart">
+                        <?=$this->product->getDescription()?>
+                    </div>
                 </div>
-            </div>
-        <!-- Product Description Ends -->
             <?php } ?>
 
             <?=\CoreShop\Plugin::hook("product-detail-bottom", array("product" => $this->product))?>
         
         
         </div>
-    <!-- Primary Content Ends -->
     </div>
 </div>
-<!-- Main Container Ends -->

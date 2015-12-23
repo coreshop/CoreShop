@@ -92,8 +92,8 @@
                     </div>
                     <div class="col-md-2 text-right">
                         <select class="form-control site-reload" name="perPage">
-                            <option value="10" <?=$this->perPage == 10 ? "selected" : ""?>>10</option>
-                            <option value="25" <?=$this->perPage == 25 ? "selected" : ""?>>25</option>
+                            <option value="10" <?=$this->perPage == 12 ? "selected" : ""?>>12</option>
+                            <option value="24" <?=$this->perPage == 24 ? "selected" : ""?>>24</option>
                         </select>
                     </div>
                 </div>
