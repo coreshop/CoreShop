@@ -1,15 +1,10 @@
 <?php
 
     $categories = \CoreShop\Model\Category::getFirstLevel();
+
+    $currentActiveCategory = $this->category instanceof \CoreShop\Model\Category ? $this->category : false;
 ?>
 
 <h3 class="side-heading"><?=$this->translate("Categories")?></h3>
-<div class="list-group categories">
-    <?php foreach($categories as $cat) { ?>
-        <a href="<?=$this->url(array("lang" => $this->language, "category" => $cat->getId(), "name" => $cat->getName()), "coreshop_list")?>" class="list-group-item">
-            <i class="fa fa-chevron-right"></i>
-            <?=$cat->getName()?>
-        </a>
-    <?php } ?>
-</div>
+<?php $this->template("coreshop/helper/left/sub-category.php", array()); ?>
 <!-- Categories Links Ends -->

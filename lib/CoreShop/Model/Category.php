@@ -49,6 +49,30 @@ class Category extends Base {
     }
 
     /**
+     * Returns all Child Categories from $category
+     *
+     * @param Category $category
+     * @return array
+     */
+    public static function getAllChildCategories(Category $category) {
+        $allChildren = array($category->getId());
+
+        $loopChilds = function(Category $child) use(&$loopChilds, &$allChildren) {
+            $childs = $child->getChildCategories();
+
+            foreach($childs as $child) {
+                $allChildren[] = $child->getId();
+
+                $loopChilds($child);
+            }
+        };
+
+        $loopChilds($category);
+
+        return $allChildren;
+    }
+
+    /**
      * Get Products from the Category
      *
      * @param bool $includeChildCategories
@@ -61,7 +85,7 @@ class Category extends Base {
         if(!$includeChildCategories)
             $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
         else {
-            $categories = $this->getAllChildCategories();
+            $categories = $this->getChilds();
             $categoriesWhere = array();
 
             foreach($categories as $cat)
@@ -92,7 +116,7 @@ class Category extends Base {
         if(!$includeChildCategories)
             $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
         else {
-            $categories = $this->getAllChildCategories();
+            $categories = $this->getChilds();
             $categoriesWhere = array();
 
             foreach($categories as $cat)
@@ -113,22 +137,38 @@ class Category extends Base {
         return $paginator;
     }
 
-    public function getAllChildCategories() {
-        $allChildren = array($this->getId());
+    /**
+     * Checks if category is child of hierachy
+     *
+     * @param Category $category
+     * @level int $level to check hierachy (0 = topMost)
+     * @return bool
+     */
+    public function inCategory(Category $category, $level = 0) {
+        $mostTop = $this->getHierarchy();
+        $mostTop = $mostTop[$level];
 
-        $loopChilds = function(Category $child) use(&$loopChilds, &$allChildren) {
-            $childs = $child->getChildCategories();
+        $childs = self::getAllChildCategories($mostTop);
 
-            foreach($childs as $child) {
-                $allChildren[] = $child->getId();
+        return in_array($category->getId(), $childs);
+    }
 
-                $loopChilds($child);
-            }
-        };
+    /**
+     * Get Level of Category
+     *
+     * @return int
+     */
+    public function getLevel() {
+        return count($this->getHierarchy());
+    }
 
-        $loopChilds($this);
-
-        return $allChildren;
+    /**
+     * Returns all Children from this Category
+     *
+     * @return array
+     */
+    public function getChilds() {
+        return self::getAllChildCategories($this);
     }
 
     /**

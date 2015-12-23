@@ -309,10 +309,7 @@ th {
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.eot");
-  src: url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"),
-       url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.woff") format("woff"),
-       url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.ttf") format("truetype"),
-       url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+  src: url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.woff") format("woff"), url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("/plugins/CoreShop/views/template/default/static/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 
 .glyphicon {
@@ -10388,11 +10385,25 @@ hr {
   border-radius: 0;
 }
 
-.list-group.categories a.list-group-item:hover, .list-group.categories a.list-group-item:focus {
+.list-group.categories a.list-group-item:hover, .list-group.categories a.list-group-item:focus, .list-group.categories a.list-group-item.active {
   background-color: #4bac52;
+  border-color: white;
 }
-.list-group.categories a.list-group-item:hover, .list-group.categories a.list-group-item:focus, .list-group.categories a.list-group-item:hover .fa, .list-group.categories a.list-group-item:focus .fa {
+.list-group.categories a.list-group-item:hover, .list-group.categories a.list-group-item:focus, .list-group.categories a.list-group-item:hover .fa, .list-group.categories a.list-group-item:focus .fa, .list-group.categories a.list-group-item.active .fa {
   color: #fff;
+}
+
+.list-group.categories {
+  margin-bottom: -1px;
+}
+.list-group.categories:last-child {
+  margin-bottom: 20px;
+}
+.list-group.categories .list-group .list-group-item {
+  padding-left: 25px;
+}
+.list-group.categories .list-group .list-group .list-group-item {
+  padding-left: 45px;
 }
 
 .list-group-item .fa {

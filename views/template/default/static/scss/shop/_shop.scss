@@ -1426,13 +1426,35 @@ hr {
 }
 
 .list-group.categories a.list-group-item {
-    &:hover, &:focus {
+    &:hover, &:focus, &.active {
         background-color: #4bac52;
+        border-color:white;
     }
-    &:hover, &:focus, &:hover .fa, &:focus .fa {
+    &:hover, &:focus, &:hover .fa, &:focus .fa, &.active .fa {
         color: #fff;
     }
 }
+
+.list-group.categories {
+    margin-bottom:-1px;
+
+    &:last-child {
+        margin-bottom:20px;
+    }
+
+    .list-group {
+        .list-group-item {
+            padding-left: 25px;
+        }
+
+        .list-group {
+            .list-group-item {
+                padding-left: 45px;
+            }
+        }
+    }
+}
+
 
 .list-group-item .fa {
     font-size: 12px;
