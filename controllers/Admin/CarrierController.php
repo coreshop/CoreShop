@@ -36,6 +36,23 @@ class CoreShop_Admin_CarrierController extends Admin
         $this->_helper->json($data);
     }
 
+    public function getCarriersAction()
+    {
+        $list = new Carrier\Listing();
+        $list->setOrder("ASC");
+        $list->setOrderKey("name");
+        $list->load();
+
+        $carriers = array();
+        if(is_array($list->getData())){
+            foreach ($list->getData() as $carrier) {
+                $carriers[] = $this->getTreeNodeConfig($carrier);
+            }
+        }
+
+        $this->_helper->json($carriers);
+    }
+
     protected function getTreeNodeConfig($carrier)
     {
         $tmpCarrier = array(

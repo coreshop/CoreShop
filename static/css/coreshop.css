@@ -168,7 +168,7 @@
     background: url(/pimcore/static/img/icon/money.png) left center no-repeat!important;
 }
 
-.coreshop_icon_carriers, .coreshop_icon_carrier {
+.coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier {
     background: url(/pimcore/static/img/icon/lorry.png) no-repeat scroll left center transparent !important;
 }
 

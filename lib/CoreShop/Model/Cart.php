@@ -162,7 +162,7 @@ class Cart extends Base {
         $discount = $this->getDiscount();
         $shipping = $this->getShipping();
 
-        return ($subtotal  + $shipping) - $discount;
+        return ($subtotal + $shipping) - $discount;
     }
 
     /**

@@ -145,6 +145,12 @@ class CoreShop_CheckoutController extends Action
             }
             else
             {
+                $fieldCollectionShipping = new \Pimcore\Model\Object\Fieldcollection();
+                $fieldCollectionShipping->add($this->session->user->findAddressByName($this->session->order['address']['shipping']));
+
+                $fieldCollectionBilling = new \Pimcore\Model\Object\Fieldcollection();
+                $fieldCollectionBilling->add($this->session->user->findAddressByName($this->session->order['address']['billing']));
+
                 $this->session->order['paymentProvider'] = $provider;
                 $order = new CoreShopOrder();
                 $order->setKey(uniqid());
@@ -152,21 +158,23 @@ class CoreShop_CheckoutController extends Action
                 $order->setPublished(true);
                 $order->setLang($this->view->language);
                 $order->setCustomer($this->session->user);
-                $order->setShippingAddress($this->session->order['address']['delivery']);
-                $order->setBillingAddress($this->session->order['address']['billing']);
+                $order->setShippingAddress($fieldCollectionShipping);
+                $order->setBillingAddress($fieldCollectionBilling);
                 $order->setPaymentProvider($provider->getIdentifier());
                 $order->setOrderDate(new \Zend_Date());
 
-                if($this->session->order['shippingProvider'] instanceof Shipping)
+                if($this->session->order['carrier'] instanceof \CoreShop\Model\Carrier)
                 {
-                    $order->setShippingProvider($this->session->order['carrier']->getName());
-                    $order->setShipping($this->session->order['carrier']->getShipping($this->cart));
+                    $order->setCarrier($this->session->order['carrier']);
+                    $order->setShipping($this->session->order['carrier']->getDeliveryPrice($this->cart));
                 }
                 else
                 {
                     $order->setShipping(0);
                 }
-                
+
+                $order->setTotal($this->cart->getTotal());
+                $order->setSubtotal($this->cart->getSubtotal());
                 $order->save();
                 $order->importCart($this->cart);
 

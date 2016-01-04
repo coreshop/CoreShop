@@ -88,6 +88,7 @@
 "coreshop_priceRule","Price Rule"
 "coreshop_shipping","Shipping"
 "coreshop_carriers","Carriers"
+"coreshop_carrier","Carrier"
 "coreshop_carrier_add","Add Carrier"
 "coreshop_carrier_enter_the_name_of_the_carrier","Name of the new Carrier"
 "coreshop_carrier_label","Label"

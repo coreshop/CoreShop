@@ -244,6 +244,11 @@ class PriceRule extends AbstractModel {
     {
         $cart = Tool::prepareCart();
 
+        //Price Rule without actions doesnt make any sense
+        if(count($this->getActions()) <= 0) {
+            return false;
+        }
+
         if($this->getConditions()) {
             foreach ($this->getConditions() as $condition) {
                 if($condition instanceof PriceRule\Condition\AbstractCondition) {
@@ -386,6 +391,10 @@ class PriceRule extends AbstractModel {
      */
     public function getConditions()
     {
+        if(!is_array($this->conditions)) {
+            $this->conditions = array();
+        }
+
         return $this->conditions;
     }
 
@@ -402,6 +411,10 @@ class PriceRule extends AbstractModel {
      */
     public function getActions()
     {
+        if(!is_array($this->actions)) {
+            $this->actions = array();
+        }
+
         return $this->actions;
     }
 
