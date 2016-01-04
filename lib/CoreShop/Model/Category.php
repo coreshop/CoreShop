@@ -85,7 +85,7 @@ class Category extends Base {
         if(!$includeChildCategories)
             $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
         else {
-            $categories = $this->getChilds();
+            $categories = $this->getCatChilds();
             $categoriesWhere = array();
 
             foreach($categories as $cat)
@@ -116,7 +116,7 @@ class Category extends Base {
         if(!$includeChildCategories)
             $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
         else {
-            $categories = $this->getChilds();
+            $categories = $this->getCatChilds();
             $categoriesWhere = array();
 
             foreach($categories as $cat)
@@ -167,7 +167,7 @@ class Category extends Base {
      *
      * @return array
      */
-    public function getChilds() {
+    public function getCatChilds() {
         return self::getAllChildCategories($this);
     }
 
