@@ -30,7 +30,9 @@
                     <ul class="list-unstyled list-inline">
                         <?php foreach($this->product->getImages() as $image) { ?>
                         <li>
-                            <img src="<?=$image->getThumbnail("coreshop_productDetailThumbnail")?>?>" alt="<?=$this->product->getName()?>" class="img-responsive thumbnail" />
+                            <?php
+                                echo $image->getThumbnail("coreshop_productDetailThumbnail")->getHtml(array("class" => "img-responsive thumbnail", "alt" => $this->product->getName()));
+                            ?>
                         </li>
                         <?php } ?>
                     </ul>

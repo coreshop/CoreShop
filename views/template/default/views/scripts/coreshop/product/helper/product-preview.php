@@ -4,12 +4,17 @@
 ?>
 <div class="product-col">
     <div class="image">
-        <?php if($this->product->getImage() instanceof Asset_Image) { ?>
+        <?php if($this->product->getImage() instanceof \Pimcore\Model\Asset\Image) { ?>
             <?php if($this->product->getIsNew()) { ?>
                 <div class="image-new-badge"></div>
             <?php } ?>
 
-            <a href="<?=$href?>"><img id="<?=$uniqid ?>" src="<?=$this->product->getImage()->getThumbnail("coreshop_productList")?>" class="img-responsive" /></a>
+            <a href="<?=$href?>">
+                <?php
+                    echo $this->product->getImage()->getThumbnail("coreshop_productList")->getHtml(array("class" => "img-responsive", "alt" => $this->product->getName(), "id" => $uniqid));
+                ?>
+            </a>
+
             <hr/>
         <?php } ?>
     </div>

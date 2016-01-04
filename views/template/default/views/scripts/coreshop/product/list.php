@@ -20,7 +20,9 @@
             <div class="row cat-intro">
                 <div class="col-sm-3">
                     <?php if($this->category->getImage() instanceof \Pimcore\Model\Asset\Image) { ?>
-                        <img src="<?=$this->category->getImage()->getThumbnail("coreshop_categoryThumbnail")?>" alt="Image" class="img-responsive img-thumbnail" />
+                        <?php
+                        $this->category->getImage()->getThumbnail("coreshop_categoryThumbnail")->getHtml(array("class" => "img-responsive img-thumbnail", "alt" => $this->category->getName()));
+                        ?>
                     <?php } ?>
                 </div>
                 <div class="col-sm-9 cat-body">

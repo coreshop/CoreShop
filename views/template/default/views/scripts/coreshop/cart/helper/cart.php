@@ -32,9 +32,11 @@
             ?>
             <tr class="shopping-cart-item shopping-cart-item-<?=$item->getId()?>">
                 <td class="text-center">
-                    <?php if($item->getProduct()->getImage() instanceof Asset_Image) { ?>
+                    <?php if($item->getProduct()->getImage() instanceof Pimcore\Model\Asset\Image) { ?>
                         <a class="" href="<?=$href?>">
-                            <img class="img-thumbnail" src="<?=$item->getProduct()->getImage()->getThumbnail("coreshop_productCart")?>" alt="<?=$item->getProduct()->getName()?>" title="<?=$item->getProduct()->getName()?>" />
+                            <?php
+                                echo $item->getProduct()->getImage()->getThumbnail("coreshop_productCart")->getHtml(array("class" => "img-responsive", "alt" => $item->getProduct()->getName(), "title" => $item->getProduct()->getName()));
+                            ?>
                         </a>
                     <?php } ?>
                 </td>

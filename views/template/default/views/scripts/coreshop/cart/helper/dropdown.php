@@ -15,9 +15,9 @@
                     <tr>
                         <td class="text-center">
                             <a href="<?=$this->url(array("lang" => $this->language, "name" => $product->getName(), "product" => $product->getId()), "coreshop_detail")?>">
-                                <?php if($product->getImage() instanceof \Pimcore\Model\Asset\Image) { ?>
-                                    <img src="<?=$product->getImage()->getThumbnail("coreshop_productCartPreview")?>" alt="<?=$product->getName()?>" title="<?=$product->getName()?>" class="img-thumbnail img-responsive" />
-                                <?php } ?>
+                                <?php if($product->getImage() instanceof \Pimcore\Model\Asset\Image) {
+                                    echo $product->getImage()->getThumbnail("coreshop_productCartPreview")->getHtml(array("class" => "img-thumbnail img-responsive", "title" => $product->getName(), "alt" => $product->getName()));
+                                } ?>
                             </a>
                         </td>
                         <td class="text-left">
