@@ -1,5 +1,6 @@
 <?php
     $uniqid = uniqid() . "-product-image-" . $this->product->getId();
+    $href = $this->url(array("lang" => $this->language, "name" => $this->product->getName(), "product" => $this->product->getId()), "coreshop_detail");
 ?>
 <div class="col-xs-12">
     <div class="product-col list clearfix">
@@ -8,12 +9,13 @@
                 <?php if($this->product->getIsNew()) { ?>
                     <div class="image-new-badge"></div>
                 <?php } ?>
-
-                <?php echo $this->product->getImage()->getThumbnail("coreshop_productList")->getHtml(array("class" => "img-responsive"))?>
+                <a href="<?=$href?>">
+                    <?php echo $this->product->getImage()->getThumbnail("coreshop_productList")->getHtml(array("class" => "img-responsive"))?>
+                </a>
             <?php } ?>
         </div>
         <div class="caption">
-            <h4><a href="<?=$this->url(array("lang" => $this->language, "name" => $this->product->getName(), "product" => $this->product->getId()), "coreshop_detail")?>"><?=$this->product->getName()?></a></h4>
+            <h4><a href="<?=$href?>"><?=$this->product->getName()?></a></h4>
             <div class="description">
                 <?=$this->product->getShortDescription()?>
             </div>
