@@ -105,7 +105,7 @@ pimcore.plugin.coreshop.countries.country= Class.create({
                             xtype : 'checkbox',
                             fieldLabel: t("coreshop_country_active"),
                             name: "active",
-                            checked: this.data.country.active === 1
+                            checked: this.data.country.active === "1"
                         },
                         {
                             xtype:'combo',
