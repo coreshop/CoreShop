@@ -26,6 +26,9 @@ use CoreShop\Model\User;
 
 use Pimcore\Tool\Session;
 
+use GeoIp2\Database\Reader;
+
+
 class Tool {
 
     /**
@@ -162,24 +165,29 @@ class Tool {
         }
 
         if (!$country instanceof Country) {
-            if(file_exists(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat")) {
-                $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
 
-                $country = geoip_country_code_by_addr($gi, \Pimcore\Tool::getClientIp());
+            $geoDbFile = realpath(PIMCORE_WEBSITE_VAR . "/config/GeoLite2-City.mmdb");
+            $record = null;
 
-                geoip_close($gi);
+            if(file_exists($geoDbFile)) {
+                try {
+                    $reader = new Reader($geoDbFile);
 
-                $country = Country::getByIsoCode($country);
-            }
-            else
-            {
-                $enabled = Country::getActiveCountries();
+                    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+                        $ip = $_SERVER['HTTP_CLIENT_IP'];
+                    } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                    } else {
+                        $ip = $_SERVER['REMOTE_ADDR'];
+                    }
 
-                if(count($enabled) > 0)
-                    return $enabled[0];
-                else
-                {
-                    throw new \Exception("no enabled countries found");
+                    if(!self::checkIfIpIsPrivate($ip)) {
+                        $record = $reader->city($ip);
+
+                        $country = Country::getByIsoCode($record->country->isoCode);
+                    }
+                } catch (\Exception $e) {
+                    
                 }
             }
         }
@@ -197,6 +205,38 @@ class Tool {
 
         return $country;
     }
+
+    /**
+     * Check if ip is private
+     *
+     * @param $ip
+     * @return bool
+     */
+    private static function checkIfIpIsPrivate ($ip) {
+        $pri_addrs = array (
+            '10.0.0.0|10.255.255.255', // single class A network
+            '172.16.0.0|172.31.255.255', // 16 contiguous class B network
+            '192.168.0.0|192.168.255.255', // 256 contiguous class C network
+            '169.254.0.0|169.254.255.255', // Link-local address also refered to as Automatic Private IP Addressing
+            '127.0.0.0|127.255.255.255' // localhost
+        );
+
+        $long_ip = ip2long ($ip);
+        if ($long_ip != -1) {
+
+            foreach ($pri_addrs AS $pri_addr) {
+                list ($start, $end) = explode('|', $pri_addr);
+
+                // IF IS PRIVATE
+                if ($long_ip >= ip2long ($start) && $long_ip <= ip2long ($end)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * Get current Currency by Country
