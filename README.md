@@ -4,7 +4,7 @@
 Onlineshop Plugin for Pimcore
 
 # Demo
-Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at) (Currently out of date)
+Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at) (Currently offline)
 
 (Still under Development - Pimcore Login will follow)
 
@@ -75,10 +75,10 @@ To implement a new Delivery Prodiver you need to extend the class CoreShop\Plugi
 
 For example take a look the the coreshop-demo Plugin "CoreShopDeliveryPost";
 
-# GeoIP
+# GeoIP v2
 CoreShop can use GeoIP to locate visitors countries using IP-Addresses.
 
-To enable GeoIP download [GeoIP.dat](http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz) into the directory 
+CoreShop uses the already existing Pimcore GeoIP Database located in website/var/GeoLite2-City.mmdb
 
 ```
 /website/var/config/GeoIP/GeoIP.dat
