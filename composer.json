@@ -12,7 +12,6 @@
         "role": "Developer"
     }],
     "require": {
-        "pimcore/installer-plugin": ">=1",
-        "geoip/geoip": "~1.14"
+        "pimcore/installer-plugin": ">=1"
     }
 }
