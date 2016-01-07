@@ -52,6 +52,34 @@
             "permissions":null,
             "childs":[
               {
+                "fieldtype":"coreShopOrderState",
+                "queryColumnType":"int(11)",
+                "columnType":"int(11)",
+                "phpdocType":"CoreShop\\Model\\OrderState",
+                "options":[
+                  {
+                    "key":"Payment accepted",
+                    "value":"1"
+                  }
+                ],
+                "width":"",
+                "defaultValue":null,
+                "name":"orderState",
+                "title":"Order State",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
                 "fieldtype":"date",
                 "queryColumnType":"bigint(20)",
                 "columnType":"bigint(20)",
@@ -87,7 +115,7 @@
                 "mandatory":false,
                 "noteditable":true,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",

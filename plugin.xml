@@ -89,6 +89,9 @@
             <path>/plugins/CoreShop/static/js/coreshop/orderstate/panel.js</path>
             <path>/plugins/CoreShop/static/js/coreshop/orderstate/item.js</path>
 
+            <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopOrderState.js</path>
+            <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopOrderState.js</path>
+
             <path>/plugins/CoreShop/static/js/coreshop/broker.js</path>
 
             <path>/plugins/CoreShop/static/js/coreshop/install/install.js</path>

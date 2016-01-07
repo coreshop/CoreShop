@@ -126,6 +126,7 @@
 
 "coreshop_order","Order"
 "coreshop_order_states","Order States"
+"coreshop_order_state","Order State"
 "coreshop_order_state_add", "Add"
 "coreshop_order_state_save","Save"
 "coreshop_order_state_add","New Order State"

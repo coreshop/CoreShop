@@ -91,6 +91,18 @@ class OrderState extends AbstractModel
     }
 
     /**
+     * Get all OrderState
+     *
+     * @return OrderState[]
+     */
+    public static function getOrderStates()
+    {
+        $list = new OrderState\Listing();
+
+        return $list->getData();
+    }
+
+    /**
      * Process OrderState for Order
      *
      * @param Order $order
