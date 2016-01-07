@@ -29,7 +29,7 @@
                     <?=$this->billingAddress->getCountry()->getName(); ?>
                 </div>
                 <div class="col-xs-6 text-right">
-                    <?=$this->translate("Invoice")?> #<?=$this->order->getId()?>
+                    <?=$this->translate("Invoice")?> #<?=$this->order->getOrderNumber()?>
                 </div>
             </div>
         <?php } else { ?>
