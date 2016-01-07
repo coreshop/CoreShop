@@ -361,23 +361,17 @@ class Plugin extends AbstractPlugin implements PluginInterface {
 
     public static function getPaymentProviders(Cart $cart)
     {
-        $results = self::getEventManager()->trigger("payment.getProvider", null, array("cart" => $cart), function($v) {
-            return ($v instanceof Payment);
-        });
+        $results = self::getEventManager()->trigger("payment.getProvider", null, array("cart" => $cart));
+        $provider = array();
 
-        if($results->stopped())
+        foreach($results as $result)
         {
-            $provider = array();
-
-            foreach($results as $result)
-            {
+            if($result instanceof Payment) {
                 $provider[] = $result;
             }
-
-            return $provider;
         }
 
-        return array();
+        return $provider;
     }
 
     public static function getPaymentProvider($identifier)

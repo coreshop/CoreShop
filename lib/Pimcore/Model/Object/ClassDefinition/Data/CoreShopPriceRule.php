@@ -18,7 +18,7 @@ namespace Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model;
 use CoreShop\Model\PriceRule;
 
-class CoreShopPriceRule extends Model\Object\ClassDefinition\Data\Select {
+class CoreShopPriceRule extends CoreShopSelect {
 
     /**
      * Static type of this element

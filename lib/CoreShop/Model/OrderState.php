@@ -17,6 +17,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Config;
 use CoreShop\Plugin;
+use CoreShop\Tool;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 
@@ -75,7 +76,7 @@ class OrderState extends AbstractModel
      * get OrderState by ID
      *
      * @param $id
-     * @return Carrier|null
+     * @return OrderState|null
      */
     public static function getById($id) {
         try {
@@ -112,43 +113,49 @@ class OrderState extends AbstractModel
      */
     public function processStep(Order $order, $locale = null)
     {
-        $config = Config::getConfig()->toArray();
-        $emailDocument = $this->getEmailDocument();
-        $emailParameters = array(
-            "order" => $order,
-            "newOrderStatus" => $this,
-            "user" => $order->getCustomer()
-        );
-
-        if($this->getAccepted()) {
+        if($this->getAccepted())
+        {
 
         }
 
-        if($this->getShipped()) {
+        if($this->getShipped())
+        {
 
         }
 
-        if($this->getInvoice()) {
-            if((bool)$config['invoice']['create']) {
+        if($this->getInvoice())
+        {
+            if((bool)Config::getValue("INVOICE.CREATE")) {
                 Invoice::generateInvoice($order);
             }
         }
 
-        if($this->getPaid()) {
+        if($this->getPaid())
+        {
             Plugin::actionHook("paymentConfirmation", array("order" => $order));
         }
 
         Plugin::actionHook("orderStatusUpdate", array("newOrderStatus" => $this, "order" => $order));
 
-        if($this->getEmail() && $emailDocument instanceof Document\Email) {
-            $mail = new Mail();
-            $mail->setDocument($emailDocument);
-            $mail->setParams($emailParameters);
-            $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . " " . $order->getCustomer()->getLastname());
+        if($this->getEmail())
+        {
+            $emailDocument = $this->getEmailDocument();
+            if($emailDocument instanceof Document\Email) {
+                $emailParameters = array(
+                    "order" => $order,
+                    "newOrderStatus" => $this,
+                    "user" => $order->getCustomer()
+                );
 
-            Tool::addAdminToMail($mail);
+                $mail = new Mail();
+                $mail->setDocument($emailDocument);
+                $mail->setParams($emailParameters);
+                $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . " " . $order->getCustomer()->getLastname());
 
-            $mail->send();
+                Tool::addAdminToMail($mail);
+
+                $mail->send();
+            }
         }
 
         $order->setOrderState($this);

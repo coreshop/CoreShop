@@ -442,3 +442,17 @@ CREATE TABLE `coreshop_orderStates` (
   `email` tinyint(1) NOT NULL DEFAULT '0',
   `emailDocument` varchar(255) NULL
 );
+
+INSERT INTO `coreshop_orderstates` (`id`, `name`, `accepted`, `shipped`, `paid`, `invoice`, `email`, `emailDocument`) VALUES
+(1,	'Awaiting check payment',	0,	0,	0,	0,	1,	NULL),
+(2,	'Payment accepted',	1,	0,	1,	1,	1,	''),
+(3,	'Processing in progress',	1,	0,	1,	1,	1,	''),
+(4,	'Shipped',	1,	1,	1,	1,	1,	''),
+(5,	'Delivered',	1,	1,	1,	0,	0,	''),
+(6,	'Canceled',	0,	0,	0,	0,	1,	''),
+(7,	'Refunded',	0,	0,	0,	1,	1,	''),
+(8,	'Payment error',	0,	0,	0,	0,	1,	''),
+(9,	'On backorder (paid)',	0,	0,	1,	1,	1,	''),
+(10,	'Awaiting bank wire payment',	0,	0,	0,	0,	1,	''),
+(11,	'On backorder (not paid)',	0,	0,	0,	0,	1,	''),
+(12,	'Awaiting Cash On Delivery validation',	0,	0,	0,	0,	0,	NULL);

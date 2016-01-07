@@ -21,6 +21,7 @@ pimcore.plugin.coreshop.global = {
         this._countriesLoaded = false;
         this._currenciesLoaded = false;
         this._zonesLoaded = false;
+        this._orderStatesLoaded = false;
 
         this.settings = settings;
 
@@ -36,6 +37,7 @@ pimcore.plugin.coreshop.global = {
         this._initCountries();
         this._initCurrencies();
         this._initZones();
+        this._initOrderStates();
     },
 
     _initCurrencies : function() {
@@ -144,8 +146,40 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.add("coreshop_countries", countryStore);
     },
 
+    _initOrderStates : function() {
+        var self = this;
+        var orderStateProxy = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_orderstates/list'
+        });
+        var orderStateReader = new Ext.data.JsonReader({
+            totalProperty:'total',
+            successProperty:'success'
+        }, [
+            {name:'id'},
+            {name:'name'}
+        ]);
+
+        var orderStateStore = new Ext.data.Store({
+            restful:false,
+            proxy:orderStateProxy,
+            reader:orderStateReader
+        });
+        orderStateStore.load();
+
+        orderStateStore.on("beforeload", function() {
+            self._orderStatesLoaded = false;
+        });
+
+        orderStateStore.on("load", function() {
+            self._orderStatesLoaded = true;
+            self._checkStoresLoaded();
+        });
+
+        pimcore.globalmanager.add("coreshop_order_states", orderStateStore);
+    },
+
     _checkStoresLoaded : function() {
-        if(this._countriesLoaded && this._zonesLoaded && this._currenciesLoaded) {
+        if(this._countriesLoaded && this._zonesLoaded && this._currenciesLoaded && this._orderStatesLoaded) {
             pimcore.plugin.coreshop.broker.fireEvent("storesLoaded");
             return true;
         }

@@ -20,7 +20,7 @@
                         <tr>
 
                             <td class="col-xs-1 payment-option-radio">
-                                <input class="delivery_option_radio" type="radio" name="payment_provider[<?=$provider->getIdentifier()?>]" checked="checked">
+                                <input class="delivery_option_radio" type="radio" name="payment_provider" value="<?=$provider->getIdentifier()?>" checked="checked">
                             </td>
                             <td class="col-xs-3 payment-option-image">
                                 <?php if($provider->getImage()) { ?>

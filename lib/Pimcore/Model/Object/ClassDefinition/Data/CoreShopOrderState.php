@@ -18,7 +18,7 @@ namespace Pimcore\Model\Object\ClassDefinition\Data;
 use CoreShop\Model\OrderState;
 use Pimcore\Model;
 
-class CoreShopOrderState extends Model\Object\ClassDefinition\Data\Select {
+class CoreShopOrderState extends CoreShopSelect {
 
     /**
      * Static type of this element

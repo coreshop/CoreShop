@@ -128,11 +128,11 @@ class CoreShop_CheckoutController extends Action
 
         if($this->getRequest()->isPost())
         {
-            $paymentProvider = reset($this->getParam("payment_provider", array()));
+            $paymentProvider = $this->getParam("payment_provider", array());
 
             foreach($this->view->provider as $provider)
             {
-                if($provider->getIdentifier() == $$paymentProvider)
+                if($provider->getIdentifier() == $paymentProvider)
                 {
                     $paymentProvider = $provider;
                     break;
@@ -151,10 +151,12 @@ class CoreShop_CheckoutController extends Action
                 $fieldCollectionBilling = new \Pimcore\Model\Object\Fieldcollection();
                 $fieldCollectionBilling->add($this->session->user->findAddressByName($this->session->order['address']['billing']));
 
+                $orderNumber = CoreShopOrder::getNextOrderNumber();
+
                 $this->session->order['paymentProvider'] = $provider;
                 $order = new CoreShopOrder();
-                $order->setKey(uniqid());
-                $order->setOrderNumber(CoreShopOrder::getNextOrderNumber());
+                $order->setKey(\Pimcore\File::getValidFilename($orderNumber));
+                $order->setOrderNumber($orderNumber);
                 $order->setParent(Service::createFolderByPath('/coreshop/orders/' . date('Y/m/d')));
                 $order->setPublished(true);
                 $order->setLang($this->view->language);

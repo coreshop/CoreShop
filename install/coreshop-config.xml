@@ -17,5 +17,19 @@
         <prefix>RE</prefix>
         <suffix></suffix>
     </invoice>
+    <orderstate>
+        <queue>1</queue>
+        <payment>2</payment>
+        <preperation>3</preperation>
+        <shipping>4</shipping>
+        <delivered>5</delivered>
+        <canceled>6</canceled>
+        <refund>7</refund>
+        <error>8</error>
+        <outofstock>9</outofstock>
+        <bankwire>10</bankwire>
+        <outofstock_unpaid>11</outofstock_unpaid>
+        <cod>12</cod>
+    </orderstate>
     <isInstalled>0</isInstalled>
 </zend-config>

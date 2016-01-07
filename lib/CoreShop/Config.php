@@ -78,6 +78,52 @@ class Config {
     }
 
     /**
+     * Gets a value in config by a key-path eg currency.default
+     *
+     * @param $key
+     * @return mixed
+     */
+    public static function getValue($key) {
+        $config = self::getConfig()->toArray();
+        $pathParts = explode('.', strtolower($key));
+
+        $current = &$config;
+        foreach($pathParts as $key) {
+            $current = &$current[$key];
+        }
+
+        return $current;
+    }
+
+    /**
+     * Sets a value in config by a key-path eg. currency.default
+     *
+     * @param $key
+     * @param $value
+     * @return mixed
+     */
+    public static function setValue($key, $value) {
+        $config = self::getConfig()->toArray();
+        $pathParts = explode('.', strtolower($key));
+
+        $current = &$config;
+        foreach($pathParts as $key) {
+            $current = &$current[$key];
+        }
+
+        $current = $value;
+
+        $config = new \Zend_Config($config, true);
+        $writer = new \Zend_Config_Writer_Xml(array(
+            "config" => $config,
+            "filename" => CORESHOP_CONFIGURATION
+        ));
+        $writer->write();
+
+        return $current;
+    }
+
+    /**
      * @static
      * @param \Zend_Config $config
      * @return void

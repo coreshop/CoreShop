@@ -23,7 +23,7 @@ class Payment extends Base {
      * Return Payment by transaction identifier
      *
      * @param $transactionIdentification
-     * @return bool
+     * @return bool|Payment
      */
     public static function findByTransactionIdentifier($transactionIdentification) {
         $list = Object\CoreShopPayment::getByTransactionIdentifier($transactionIdentification);
