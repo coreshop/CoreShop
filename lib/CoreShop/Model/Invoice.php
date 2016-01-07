@@ -33,6 +33,10 @@ class Invoice
      */
     public static function generateInvoice(Order $order)
     {
+        $locale = new \Zend_Locale($order->getLang());
+        \Zend_Locale::setDefault($locale);
+        \Zend_Registry::set("Zend_Locale", $locale);
+
         $view = new View();
         $view->setScriptPath(CORESHOP_TEMPLATE_PATH . "/views/scripts/coreshop/invoice/");
         $view->assign("order", $order);
