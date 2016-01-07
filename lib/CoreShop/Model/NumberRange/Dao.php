@@ -4,13 +4,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model\NumberRange;
