@@ -422,3 +422,11 @@ INSERT INTO `coreshop_zones` (`id`, `name`, `active`) VALUES
 (6,	'South America',	0),
 (7,	'Central America/Antilla',	0);
 
+DROP TABLE IF EXISTS `coreshop_numberRanges`;
+CREATE TABLE `coreshop_numberRanges` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `type` varchar(255) NOT NULL,
+  `number` int(11) NOT NULL DEFAULT '0'
+);
+
+ALTER TABLE coreshop_numberRanges ADD UNIQUE (`type`);

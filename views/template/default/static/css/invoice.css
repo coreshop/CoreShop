@@ -10738,7 +10738,6 @@ ul.myaccount-link-list li a span {
 .invoice-table {
   margin-top: 30px;
   background: #fff;
-  text-transform: uppercase;
 }
 .invoice-table thead > tr > td {
   font-weight: 600;
@@ -10746,4 +10745,15 @@ ul.myaccount-link-list li a span {
 }
 .invoice-table tbody > tr > td a:hover {
   color: #252a2f;
+}
+.invoice-table .invoice-item:nth-child(2n) {
+  background: #ccc;
+}
+.invoice-table .invoice-header {
+  background: #4d4d4d;
+  color: white;
+  font-weight: bold;
+}
+.invoice-table .invoice-header, .invoice-table .invoice-item, .invoice-table .invoice-summary {
+  padding: 1px 5px;
 }

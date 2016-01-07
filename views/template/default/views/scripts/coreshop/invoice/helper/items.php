@@ -1,68 +1,58 @@
 <div class="row">
     <div class="col-xs-12">
-        <div class="table-responsive invoice-table">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <td class="text-center">
-                        <?=$this->translate("Image")?>
-                    </td>
-                    <td class="text-center">
-                        <?=$this->translate("Product Details")?>
-                    </td>
-                    <td class="text-center">
-                        <?=$this->translate("Quantity")?>
-                    </td>
-                    <td class="text-center">
-                        <?=$this->translate("Price")?>
-                    </td>
-                    <td class="text-center">
-                        <?=$this->translate("Total")?>
-                    </td>
-                </tr>
-                </thead>
-                <tbody>
+        <div class="invoice-table">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row invoice-header">
+                        <div class="col-xs-6">
+                            <?=$this->translate("Product Details")?>
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            <?=$this->translate("Quantity")?>
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            <?=$this->translate("Price")?>
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            <?=$this->translate("Total")?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
                     <?php foreach($this->order->getItems() as $item) { ?>
-                        <tr class="invoice-item invoice-item-<?=$item->getId()?>">
-                            <td class="text-center">
-                                <?php if($item->getProduct()->getImage() instanceof Pimcore\Model\Asset\Image) { ?>
-                                    <?php
-                                    echo $item->getProduct()->getImage()->getThumbnail("coreshop_productInvoice")->getHtml(array("class" => "img-responsive", "alt" => $item->getProduct()->getName(), "title" => $item->getProduct()->getName()));
-                                    ?>
-                                <?php } ?>
-                            </td>
-                            <td class="text-center">
+                        <div class="row invoice-item invoice-item-<?=$item->getId()?>">
+                            <div class="col-xs-6">
                                 <?=$item->getProduct()->getName()?> <?php if($item->getIsGiftItem()) { ?> <br/><span><?=$this->translate("Gift Item")?></span> <?php } ?>
-                            </td>
-                            <td class="text-center">
+                            </div>
+                            <div class="text-right col-xs-2">
                                 <span><?=$item->getAmount()?></span>
-                            </td>
-                            <td class="text-right invoice-item-price">
+                            </div>
+                            <div class="text-right invoice-item-price col-xs-2">
                                 <?=\CoreShop\Tool::formatPrice($item->getPrice())?>
-                            </td>
-                            <td class="text-right invoice-item-total-price">
+                            </div>
+                            <div class="text-right invoice-item-total-price col-xs-2">
                                 <?=\CoreShop\Tool::formatPrice($item->getAmount() * $item->getPrice())?>
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
                     <?php } ?>
 
                     <?php if($this->order->getPriceRule() instanceof \CoreShop\Model\PriceRule) { ?>
-                        <tr>
-                            <td colspan="2" class="text-center">
+                        <div class="row">
+                            <div class="col-xs-6">
                                 <?=$this->order->getPriceRule()->getName()?>
-                            </td>
-                            <td class="text-center">
-                            </td>
-                            <td class="text-right">
+                            </div>
+                            <div class="col-xs-2">
+                            </div>
+                            <div class="text-right col-xs-2">
                                 -<?=\CoreShop\Tool::formatPrice($this->order->getPriceRule()->getDiscount())?>
-                            </td>
-                            <td class="text-right">
+                            </div>
+                            <div class="text-right col-xs-2">
                                 -<?=\CoreShop\Tool::formatPrice($this->order->getPriceRule()->getDiscount())?>
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
                     <?php } ?>
-                </tbody>
-                <tfoot>
+                </div>
+                <div class="col-xs-12">
                     <?php
                     $shipping = $this->order->getShipping();
                     $discount = $this->order->getDiscount();
@@ -75,74 +65,74 @@
                     if($discount == 0)
                         $rowspan--;
                     ?>
-                    <tr>
-                        <td colspan="3"></td>
-                        <td class="text-right">
+                    <div class="row invoice-summary">
+                        <div class="col-xs-8">&nbsp;</div>
+                        <div class="col-xs-2 text-right">
                             <strong><?=$this->translate("Subtotal")?>:</strong>
-                        </td>
-                        <td colspan="1" class="text-right invoice-subtotal">
+                        </div>
+                        <div class="col-xs-2 text-right invoice-subtotal">
                             <?=\CoreShop\Tool::formatPrice($this->order->getSubtotal())?>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     <?php if($shipping > 0) { ?>
-                        <tr>
-                            <td colspan="3"></td>
-                            <td class="text-right">
+                        <div class="row invoice-summary">
+                            <div class="col-xs-8">&nbsp;</div>
+                            <div class="col-xs-2 text-right">
                                 <strong><?=$this->translate("Shipping")?>:</strong>
-                            </td>
-                            <td colspan="1" class="text-right invoice-shipping">
+                            </div>
+                            <div class="col-xs-2 text-right invoice-shipping">
                                 <?=\CoreShop\Tool::formatPrice($shipping)?>
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
                     <?php } ?>
                     <?php if($discount > 0) { ?>
-                        <tr>
-                            <td colspan="3"></td>
-                            <td class="text-right">
+                        <div class="row invoice-summary">
+                            <div class="col-xs-8"></div>
+                            <div class="col-xs-2 text-right">
                                 <strong><?=$this->translate("Discount")?>:</strong>
-                            </td>
-                            <td colspan="1" class="text-right invoice-discount">
+                            </div>
+                            <div class="col-xs-2 text-right invoice-discount">
                                 -<?=\CoreShop\Tool::formatPrice($discount)?>
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
                     <?php } ?>
-                    <tr>
-                        <td colspan="3"></td>
-                        <td class="text-right invoice-sub-total">
+                    <div class="row invoice-summary">
+                        <div class="col-xs-8">&nbsp;</div>
+                        <div class="col-xs-2 text-right invoice-sub-total">
                             <strong><?=$this->translate("Total")?>:</strong>
-                        </td>
-                        <td colspan="1" class="text-right invoice-total">
+                        </div>
+                        <div class="col-xs-2 text-right invoice-total">
                             <?=\CoreShop\Tool::formatPrice($this->order->getTotal())?>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     <?php if($this->order->getPayedTotal() > 0) { ?>
-                    <tr>
-                        <td colspan="3"></td>
-                        <td class="text-right invoice-payed">
+                    <div class="row invoice-summary">
+                        <div class="col-xs-8"></div>
+                        <div class="col-xs-2 text-right invoice-payed">
                             <strong><?=$this->translate("Payed")?>:</strong>
-                        </td>
-                        <td colspan="1" class="text-right invoice-payed">
+                        </div>
+                        <div class="col-xs-2 text-right invoice-payed">
                             <?=\CoreShop\Tool::formatPrice($this->order->getPayedTotal())?>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     <?php }?>
 
                     <?php
                         $amountOpen = $this->order->getTotal() - $this->order->getPayedTotal();
                     ?>
                     <?php if($amountOpen > 0) { ?>
-                    <tr>
-                        <td colspan="3"></td>
-                        <td class="text-right invoice-payment-open text-danger">
+                    <div class="row invoice-summary">
+                        <div class="col-xs-8">&nbsp;</div>
+                        <div class="col-xs-2 text-right invoice-payment-open text-danger">
                             <strong><?=$this->translate("Open")?>:</strong>
-                        </td>
-                        <td colspan="1" class="text-right invoice-payment-open text-danger">
+                        </div>
+                        <div class="col-xs-2 text-right invoice-payment-open text-danger">
                             <?=\CoreShop\Tool::formatPrice($amountOpen)?>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     <?php }?>
-                </tfoot>
-            </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

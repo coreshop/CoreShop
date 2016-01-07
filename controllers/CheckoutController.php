@@ -154,6 +154,7 @@ class CoreShop_CheckoutController extends Action
                 $this->session->order['paymentProvider'] = $provider;
                 $order = new CoreShopOrder();
                 $order->setKey(uniqid());
+                $order->setOrderNumber(\CoreShop\Model\NumberRange::getNextNumberForType("order"));
                 $order->setParent(Service::createFolderByPath('/coreshop/orders/' . date('Y/m/d')));
                 $order->setPublished(true);
                 $order->setLang($this->view->language);

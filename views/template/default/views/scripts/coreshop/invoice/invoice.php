@@ -21,7 +21,7 @@ if(!$this->billingAddress || !$this->shippingAddress) {
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Invoice <?=$this->order->getId()?></title>
+        <title>Invoice <?=$this->order->getOrderNumber()?></title>
 
         <!-- Google Web Fonts -->
         <link href="http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
@@ -33,7 +33,7 @@ if(!$this->billingAddress || !$this->shippingAddress) {
         <link href="<?=CORESHOP_TEMPLATE_RESOURCES?>css/invoice.css" rel="stylesheet">
     </head>
     <body class="lang-<?=$this->language?>">
-        <h1><?=$this->translate("Invoice")?> #<?=$this->order->getId()?></h1>
+        <h1><?=$this->translate("Invoice")?> #<?=$this->order->getOrderNumber()?></h1>
         <?php $this->template("helper/address.php")?>
         <?php $this->template("helper/items.php")?>
 
