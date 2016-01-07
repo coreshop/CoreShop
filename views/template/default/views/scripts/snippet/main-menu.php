@@ -1,4 +1,4 @@
-<?
+<?php
 $categoriesHref = $this->multihref("categories");
 
 if($this->editmode) {
