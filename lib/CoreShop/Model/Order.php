@@ -17,6 +17,8 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as CorePayment;
+use CoreShop\Plugin;
+use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopPayment;
 
@@ -48,6 +50,7 @@ class Order extends Base
             $item->setPrice($cartItem->getProduct()->getProductPrice());
             $item->setAmount($cartItem->getAmount());
             $item->setExtraInformation($cartItem->getExtraInformation());
+            $item->setIsGiftItem($cartItem->getIsGiftItem());
             $item->save();
             
             $items[] = $item;
@@ -66,7 +69,7 @@ class Order extends Base
     /**
      * Create a new Payment
      *
-     * @param Payment $provider
+     * @param CorePayment $provider
      * @param $amount
      * @return Object\CoreShopPayment
      * @throws \Exception
@@ -137,6 +140,99 @@ class Order extends Base
     }
 
     /**
+     * Returns the total payed amount for the Order
+     *
+     * @return float|int
+     * @throws UnsupportedException
+     */
+    public function getPayedTotal() {
+        $totalPayed = 0;
+
+        foreach($this->getPayments() as $payment) {
+            if($payment->getPayed()) {
+                $totalPayed += $payment->getAmount();
+            }
+        }
+
+        return $totalPayed;
+    }
+
+    /**
+     * Returns Customers shipping address
+     *
+     * @return Object\Fieldcollection\Data\CoreShopUserAddress|bool
+     */
+    public function getCustomerShippingAddress() {
+        $address = $this->getShippingAddress()->getItems();
+
+        if(count($address) > 0) {
+            return $address[0];
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns Customers billing address
+     *
+     * @return Object\Fieldcollection\Data\CoreShopUserAddress|bool
+     */
+    public function getCustomerBillingAddress() {
+        $address = $this->getBillingAddress()->getItems();
+
+        if(count($address) > 0) {
+            return $address[0];
+        }
+
+        return false;
+    }
+
+    /**
+     * checks if shipping and billing addresses are the same
+     *
+     * @returns boolean
+     */
+    public function isShippingAndBillingAddressEqual() {
+        $shipping = $this->getCustomerShippingAddress();
+        $billing = $this->getCustomerBillingAddress();
+
+        $billingVars = $billing->getObjectVars();
+        $shippingVars = $shipping->getObjectVars();
+
+        foreach($shippingVars as $key => $value) {
+            if($key === "fieldname")
+                continue;
+
+            if(array_key_exists($key, $billingVars)) {
+                if(!is_object($value)) {
+                    if ($billingVars[$key] !== $value) {
+                        return false;
+                    }
+                }
+                else {
+                    if($value instanceof Object\AbstractObject) {
+                        if($value->getId() !== $billingVars[$key]->getId()) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return bool|\CoreShop\Model\Plugin\Payment
+     * @throws UnsupportedException
+     */
+    public function getPaymentProviderObject() {
+        $paymentProvider = $this->getPaymentProvider();
+
+        return Plugin::getPaymentProvider($paymentProvider);
+    }
+
+    /**
      * Pimcore: When save is called from Pimcore, check for changes of the OrderState
      *
      * @return int
@@ -162,6 +258,17 @@ class Order extends Base
         }
 
         parent::save();
+    }
+
+    public function getInvoice() {
+        //Check if invoice has already been generated
+        $document = $this->getProperty("invioce");
+
+        if($document instanceof Document) {
+            return $document;
+        }
+
+        return Invoice::generateInvoice($this);
     }
 
     /**
@@ -272,5 +379,35 @@ class Order extends Base
      */
     public function getItems() {
         throw new UnsupportedException("getItems is not supported for " . get_class($this));
+    }
+
+    /**
+     * shipping address
+     *
+     * @throws UnsupportedException
+     * @return \Pimcore\Model\Object\Fieldcollection
+     */
+    public function getShippingAddress() {
+        throw new UnsupportedException("getShippingAddress is not supported for " . get_class($this));
+    }
+
+    /**
+     * billing address
+     *
+     * @throws UnsupportedException
+     * @return \Pimcore\Model\Object\Fieldcollection
+     */
+    public function getBillingAddress() {
+        throw new UnsupportedException("getBillingAddress is not supported for " . get_class($this));
+    }
+
+    /**
+     * payment provider Token
+     *
+     * @throws UnsupportedException
+     * @return string
+     */
+    public function getPaymentProvider() {
+        throw new UnsupportedException("getPaymentProvider is not supported for " . get_class($this));
     }
 }

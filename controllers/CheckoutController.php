@@ -160,7 +160,9 @@ class CoreShop_CheckoutController extends Action
                 $order->setCustomer($this->session->user);
                 $order->setShippingAddress($fieldCollectionShipping);
                 $order->setBillingAddress($fieldCollectionBilling);
-                $order->setPaymentProvider($provider->getIdentifier());
+                $order->setPaymentProviderToken($provider->getIdentifier());
+                $order->setPaymentProvider($provider->getName());
+                $order->setPaymentProviderDescription($provider->getDescription());
                 $order->setOrderDate(new \Zend_Date());
 
                 if($this->session->order['carrier'] instanceof \CoreShop\Model\Carrier)

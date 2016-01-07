@@ -1,0 +1,16 @@
+.invoice-table {
+    margin-top: 30px;
+    background: #fff;
+    text-transform: uppercase;
+
+    thead > tr > td {
+        font-weight: 600;
+        border-bottom: none;
+    }
+
+    tbody > tr > td {
+        a:hover {
+            color: #252a2f;
+        }
+    }
+}

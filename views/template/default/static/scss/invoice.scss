@@ -1,0 +1,11 @@
+$icon-font-path: "/plugins/CoreShop/views/template/default/static/fonts/";
+
+@import "compass/css3";
+@import "compass/utilities";
+
+@import "./bootstrap/bootstrap";
+@import "./font-awesome/font-awesome";
+
+@import "./shop/shop";
+@import "./shop/shop-wizard";
+@import "./shop/invoice";
