@@ -21,7 +21,7 @@ You can setup your own example:
 ___
 
 # Features
-* Productmanagement
+* Product Management
 * Variants of Products
 * Countries with Currencies
 * Currency conversion
@@ -30,10 +30,11 @@ ___
 * Abstract Payment
 * Price Rules for Vouchers/Discounts
 * ~~Different Delivery Providers~~
-* Shipping Management
+* Carrier Management
 * Different Payment Providers
 * Multiple Themes supported
-
+* PDF-Invoice Generation
+* Different Order Steps
 ____
 
 # Themes
