@@ -135,7 +135,6 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $install->removeClass('CoreShopCartItem');
             $install->removeClass("CoreShopUser");
             $install->removeClass("CoreShopOrder");
-            $install->removeClass("CoreShopOrderState");
             $install->removeClass("CoreShopPayment");
             $install->removeClass("CoreShopOrderItem");
 
@@ -161,9 +160,8 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         $order = Object\ClassDefinition::getByName('CoreShopOrder');
         $orderItem = Object\ClassDefinition::getByName('CoreShopOrderItem');
         $orderPayment = Object\ClassDefinition::getByName('CoreShopPayment');
-        $orderState = Object\ClassDefinition::getByName('CoreShopOrderState');
 
-        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment && $orderState) {
+        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment) {
             return true;
         }
 
