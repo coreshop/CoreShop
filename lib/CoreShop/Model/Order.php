@@ -21,6 +21,7 @@ use CoreShop\Plugin;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopPayment;
+use Pimcore\Model\Version;
 
 class Order extends Base
 {
@@ -258,14 +259,17 @@ class Order extends Base
      * @return int
      */
     public function save() {
+        Version::disable();
 
-        if (isset($_REQUEST['data']) && false) {
+        if (isset($_REQUEST['data'])) {
             try {
                 $data = \Zend_Json::decode($_REQUEST['data']);
 
                 if (isset($data['orderState']))
                 {
                     $orderStep = OrderState::getById($data['orderState']);
+
+                    unset($_REQUEST['data']);
 
                     if ($orderStep instanceof OrderState)
                     {
@@ -276,6 +280,8 @@ class Order extends Base
                 \Logger::error($ex);
             }
         }
+
+        Version::enable();
 
         parent::save();
     }
