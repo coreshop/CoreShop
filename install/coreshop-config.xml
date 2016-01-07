@@ -12,5 +12,10 @@
     <template>
         <name>default</name>
     </template>
+    <invoice>
+        <create>1</create>
+        <prefix>RE</prefix>
+        <suffix></suffix>
+    </invoice>
     <isInstalled>0</isInstalled>
 </zend-config>

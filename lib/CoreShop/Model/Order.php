@@ -15,6 +15,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Config;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Plugin;
@@ -24,6 +25,26 @@ use Pimcore\Model\Object\CoreShopPayment;
 
 class Order extends Base
 {
+    /**
+     * Creates next OrderNumber
+     *
+     * @return int|string
+     */
+    public static function getNextOrderNumber() {
+        $number = NumberRange::getNextNumberForType("order");
+        $config = Config::getConfig()->toArray();
+
+        if($config['invoice'] && $config['invoice']['prefix']) {
+            $number = $config['invoice']['prefix'] . $number;
+        }
+
+        if($config['invoice'] && $config['invoice']['suffix']) {
+            $number = $number . $config['invoice']['suffix'];
+        }
+
+        return $number;
+    }
+
     /**
      * Import a Cart to the Order
      *

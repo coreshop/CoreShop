@@ -74,17 +74,13 @@
                 "visibleSearch":false
               },
               {
-                "fieldtype":"numeric",
-                "width":"",
-                "defaultValue":null,
-                "queryColumnType":"double",
-                "columnType":"double",
-                "phpdocType":"float",
-                "integer":false,
-                "unsigned":false,
-                "minValue":null,
-                "maxValue":null,
-                "decimalPrecision":null,
+                "fieldtype":"input",
+                "width":null,
+                "queryColumnType":"varchar",
+                "columnType":"varchar",
+                "columnLength":255,
+                "phpdocType":"string",
+                "regex":"",
                 "name":"orderNumber",
                 "title":"Order Number",
                 "tooltip":"",
@@ -3304,7 +3300,7 @@
                 "mandatory":false,
                 "noteditable":false,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",
@@ -3327,7 +3323,7 @@
                 "mandatory":false,
                 "noteditable":false,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",
@@ -3364,7 +3360,7 @@
                 "visibleSearch":false
               }
             ],
-            "locked":null
+            "locked":false
           },
           {
             "fieldtype":"panel",

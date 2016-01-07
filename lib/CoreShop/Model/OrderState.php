@@ -15,15 +15,81 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Exception\UnsupportedException;
+use CoreShop\Config;
 use CoreShop\Plugin;
-use CoreShop\Tool;
-
-use Pimcore\Model\Document;
 use Pimcore\Mail;
+use Pimcore\Model\Document;
 
-class OrderState extends Base
+class OrderState extends AbstractModel
 {
+    /**
+     * @var int
+     */
+    public $id;
+
+    /**
+     * @var string
+     */
+    public $name;
+
+    /**
+     * @var boolean
+     */
+    public $accepted;
+
+    /**
+     * @var boolean
+     */
+    public $shipped;
+
+    /**
+     * @var boolean
+     */
+    public $paid;
+
+    /**
+     * @var boolean
+     */
+    public $invoice;
+
+    /**
+     * @var boolean
+     */
+    public $email;
+
+    /**
+     * @var string
+     */
+    public $emailDocument;
+
+    /**
+     * Save OrderState
+     *
+     * @return mixed
+     */
+    public function save() {
+        return $this->getDao()->save();
+    }
+
+    /**
+     * get OrderState by ID
+     *
+     * @param $id
+     * @return Carrier|null
+     */
+    public static function getById($id) {
+        try {
+            $obj = new self;
+            $obj->getDao()->getById($id);
+            return $obj;
+        }
+        catch(\Exception $ex) {
+
+        }
+
+        return null;
+    }
+
     /**
      * Process OrderState for Order
      *
@@ -34,7 +100,8 @@ class OrderState extends Base
      */
     public function processStep(Order $order, $locale = null)
     {
-        $emailDocument = $this->getEmailDocument($locale);
+        $config = Config::getConfig()->toArray();
+        $emailDocument = $this->getEmailDocument();
         $emailParameters = array(
             "order" => $order,
             "newOrderStatus" => $this,
@@ -47,6 +114,12 @@ class OrderState extends Base
 
         if($this->getShipped()) {
 
+        }
+
+        if($this->getInvoice()) {
+            if((bool)$config['invoice']['create']) {
+                Invoice::generateInvoice($order);
+            }
         }
 
         if($this->getPaid()) {
@@ -74,58 +147,130 @@ class OrderState extends Base
     }
 
     /**
-     * returns discount for order
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @throws UnsupportedException
-     * @return Document\Email
+     * @return int
      */
-    public function getEmailDocument($locale = null) {
-        throw new UnsupportedException("getEmailDocument is not supported for " . get_class($this));
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
-     * returns accepted
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @throws UnsupportedException
-     * @return boolean
+     * @param int $id
      */
-    public function getAccepted() {
-        throw new UnsupportedException("getAccepted is not supported for " . get_class($this));
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
-     * returns shipped
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @throws UnsupportedException
-     * @return boolean
+     * @return string
      */
-    public function getShipped() {
-        throw new UnsupportedException("getShipped is not supported for " . get_class($this));
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
-     * returns paid
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @throws UnsupportedException
-     * @return boolean
+     * @param string $name
      */
-    public function getPaid() {
-        throw new UnsupportedException("getPaid is not supported for " . get_class($this));
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     /**
-     * returns email
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @throws UnsupportedException
      * @return boolean
      */
-    public function getEmail() {
-        throw new UnsupportedException("getEmail is not supported for " . get_class($this));
+    public function getAccepted()
+    {
+        return $this->accepted;
     }
 
+    /**
+     * @param boolean $accepted
+     */
+    public function setAccepted($accepted)
+    {
+        $this->accepted = $accepted;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShipped()
+    {
+        return $this->shipped;
+    }
+
+    /**
+     * @param boolean $shipped
+     */
+    public function setShipped($shipped)
+    {
+        $this->shipped = $shipped;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPaid()
+    {
+        return $this->paid;
+    }
+
+    /**
+     * @param boolean $paid
+     */
+    public function setPaid($paid)
+    {
+        $this->paid = $paid;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getInvoice()
+    {
+        return $this->invoice;
+    }
+
+    /**
+     * @param boolean $invoice
+     */
+    public function setInvoice($invoice)
+    {
+        $this->invoice = $invoice;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param boolean $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailDocument()
+    {
+        return $this->emailDocument;
+    }
+
+    /**
+     * @param string $emailDocument
+     */
+    public function setEmailDocument($emailDocument)
+    {
+        $this->emailDocument = $emailDocument;
+    }
 }

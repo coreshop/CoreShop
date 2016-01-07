@@ -430,3 +430,15 @@ CREATE TABLE `coreshop_numberRanges` (
 );
 
 ALTER TABLE coreshop_numberRanges ADD UNIQUE (`type`);
+
+DROP TABLE IF EXISTS `coreshop_orderStates`;
+CREATE TABLE `coreshop_orderStates` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(255) NOT NULL,
+  `accepted` tinyint(1) NOT NULL DEFAULT '0',
+  `shipped` tinyint(1) NOT NULL DEFAULT '0',
+  `paid` tinyint(1) NOT NULL DEFAULT '0',
+  `invoice` tinyint(1) NOT NULL DEFAULT '0',
+  `email` tinyint(1) NOT NULL DEFAULT '0',
+  `emailDocument` varchar(255) NULL
+);

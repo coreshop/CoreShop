@@ -235,7 +235,35 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 name: 'template.name',
                                 value: this.getValue("template.name"),
                                 enableKeyEvents: true
+                            }
+                        ]
+                    },
+                    {
+                        xtype:'fieldset',
+                        title: t('coreshop_invoice'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight:true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: {width: 600},
+                        items :[
+                            {
+                                fieldLabel: t('coreshop_invoice_create'),
+                                xtype: "checkbox",
+                                name: "invoice.create",
+                                checked: this.getValue("invoice.create")
                             },
+                            {
+                                fieldLabel: t("coreshop_invoice_prefix"),
+                                name: "invoice.prefix",
+                                value: this.getValue("invoice.prefix")
+                            },
+                            {
+                                fieldLabel: t("coreshop_invoice_suffix"),
+                                name: "invoice.suffix",
+                                value: this.getValue("invoice.suffix")
+                            }
                         ]
                     }
                 ]

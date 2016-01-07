@@ -93,6 +93,21 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                     });
 
                     coreShopMenuItems.push({
+                        text: t("coreshop_order"),
+                        iconCls: "coreshop_icon_order",
+                        hideOnClick: false,
+                        menu: {
+                            cls: "pimcore_navigation_flyout",
+                            shadow: false,
+                            items: [{
+                                text: t("coreshop_order_states"),
+                                iconCls: "coreshop_icon_order_states",
+                                handler: this.openOrderStates
+                            }]
+                        }
+                    });
+
+                    coreShopMenuItems.push({
                         text: t("coreshop_shipping"),
                         iconCls: "coreshop_icon_shipping",
                         hideOnClick: false,
@@ -222,6 +237,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_install", new pimcore.plugin.coreshop.install());
+        }
+    },
+
+    openOrderStates : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_order_states").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_order_states", new pimcore.plugin.coreshop.orderstate.panel());
         }
     }
 });

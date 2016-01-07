@@ -64,6 +64,9 @@ class CoreShop_Admin_SettingsController extends Admin
         $settings['product']['days-as-new'] = $values["product.days-as-new"];
         $settings['category']['default-image'] = $values["category.default-image"];
         $settings['template']['name'] = $values['template.name'];
+        $settings['invoice']['create'] = $values['invoice.create'];
+        $settings['invoice']['prefix'] = $values['invoice.prefix'];
+        $settings['invoice']['suffix'] = $values['invoice.suffix'];
 
         $config = new \Zend_Config($settings, true);
         $writer = new \Zend_Config_Writer_Xml(array(

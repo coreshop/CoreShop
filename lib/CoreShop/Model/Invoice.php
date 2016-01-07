@@ -15,10 +15,12 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Config;
 use CoreShop\Exception;
 use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Asset\Service;
+use Pimcore\View;
 
 class Invoice
 {
@@ -32,7 +34,7 @@ class Invoice
      */
     public static function generateInvoice(Order $order)
     {
-        $view = new \Pimcore\View();
+        $view = new View();
         $view->setScriptPath(CORESHOP_TEMPLATE_PATH . "/views/scripts/coreshop/invoice/");
         $view->assign("order", $order);
         $view->addHelperPath(PIMCORE_PATH . "/lib/Pimcore/View/Helper", "\\Pimcore\\View\\Helper\\");
