@@ -4,7 +4,7 @@
 Onlineshop Plugin for Pimcore
 
 # Demo
-Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at) (Currently offline)
+Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at)
 
 (Still under Development - Pimcore Login will follow)
 
