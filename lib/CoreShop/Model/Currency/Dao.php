@@ -22,7 +22,7 @@ class Dao extends AbstractDao {
 
     public function getByName($name = null) {
 
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE name = ?', $name);
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE name = ?', $name);
 
         if(!$data["id"])
             throw new \Exception("Object with the name " . $name . " doesn't exists");

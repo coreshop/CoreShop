@@ -22,6 +22,8 @@ use Pimcore\Model\Document;
 
 class OrderState extends AbstractModel
 {
+    protected $localizedValues = array("emailDocument");
+
     /**
      * @var int
      */
@@ -58,16 +60,12 @@ class OrderState extends AbstractModel
     public $email;
 
     /**
-     * @var string
-     */
-    public $emailDocument;
-
-    /**
      * Save OrderState
      *
      * @return mixed
      */
     public function save() {
+        $this->getLocalizedFields()->getDao()->save();
         return $this->getDao()->save();
     }
 
@@ -279,18 +277,20 @@ class OrderState extends AbstractModel
     }
 
     /**
+     * @param string $language language
      * @return string
      */
-    public function getEmailDocument()
+    public function getEmailDocument($language = null)
     {
-        return $this->emailDocument;
+        return $this->getLocalizedFields()->getLocalizedValue("emailDocument", $language);
     }
 
     /**
      * @param string $emailDocument
+     * @param string $language language
      */
-    public function setEmailDocument($emailDocument)
+    public function setEmailDocument($emailDocument, $language = null)
     {
-        $this->emailDocument = $emailDocument;
+        $this->getLocalizedFields()->setLocalizedValue("emailDocument", $emailDocument, $language);
     }
 }

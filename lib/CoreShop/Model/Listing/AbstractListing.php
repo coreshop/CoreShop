@@ -26,6 +26,18 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     public $data = null;
 
     /**
+     * @var string|\Zend_Locale
+     */
+    public $locale;
+
+    /**
+     * do not use the localized views for this list (in the case the class contains localized fields),
+     * conditions on localized fields are not possible
+     * @var bool
+     */
+    public $ignoreLocalizedFields = false;
+
+    /**
      * List of valid order keys
      *
      * @var array
@@ -82,6 +94,39 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
         return $this;
     }
 
+    /**
+     * @param mixed $locale
+     * @return void
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string|\Zend_Locale
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param bool $ignoreLocalizedFields
+     * @return void
+     */
+    public function setIgnoreLocalizedFields($ignoreLocalizedFields)
+    {
+        $this->ignoreLocalizedFields = $ignoreLocalizedFields;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIgnoreLocalizedFields()
+    {
+        return $this->ignoreLocalizedFields;
+    }
 
     /**
      * Methods for Iterator

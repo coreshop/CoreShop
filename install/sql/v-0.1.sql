@@ -439,8 +439,7 @@ CREATE TABLE `coreshop_orderStates` (
   `shipped` tinyint(1) NOT NULL DEFAULT '0',
   `paid` tinyint(1) NOT NULL DEFAULT '0',
   `invoice` tinyint(1) NOT NULL DEFAULT '0',
-  `email` tinyint(1) NOT NULL DEFAULT '0',
-  `emailDocument` varchar(255) NULL
+  `email` tinyint(1) NOT NULL DEFAULT '0'
 );
 
 INSERT INTO `coreshop_orderStates` (`id`, `name`, `accepted`, `shipped`, `paid`, `invoice`, `email`, `emailDocument`) VALUES

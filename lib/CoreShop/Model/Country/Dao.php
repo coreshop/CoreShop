@@ -22,7 +22,7 @@ class Dao extends AbstractDao {
 
     public function getByIsoCode($isoCode = null)
     {
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE isoCode = ?', $isoCode);
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE isoCode = ?', $isoCode);
 
         if(!$data["id"])
             throw new \Exception("Object with the isoCode " . $isoCode . " doesn't exists");

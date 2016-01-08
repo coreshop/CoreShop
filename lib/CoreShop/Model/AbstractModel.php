@@ -16,6 +16,49 @@ namespace CoreShop\Model;
 
 use Pimcore\Model;
 
-class AbstractModel extends Model\AbstractModel {
+class AbstractModel extends Model\AbstractModel
+{
+    /**
+     * @var array
+     */
+    protected $localizedValues = array();
 
+    /**
+     * @var LocalizedFields
+     */
+    protected $localizedFields;
+
+    public function getLocalizedFields() {
+        if(count($this->localizedValues) > 0) {
+            if (is_null($this->localizedFields)) {
+                $this->localizedFields = new LocalizedFields($this->localizedValues);
+                $this->localizedFields->setObject($this);
+            }
+
+            return $this->localizedFields;
+        }
+
+        return null;
+    }
+
+    /**
+     * Override setValue function to support localized fields
+     *
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function setValue($key, $value) {
+        if($this->getLocalizedFields()) {
+            $key = explode(".", $key); //0 => key, 1 => language
+
+            if(in_array($key[0], $this->localizedValues)) {
+                $this->getLocalizedFields()->setLocalizedValue($key[0], $value, $key[1]);
+
+                return $this;
+            }
+        }
+
+        return parent::setValue($key, $value);
+    }
 }

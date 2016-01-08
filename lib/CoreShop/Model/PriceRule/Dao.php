@@ -25,7 +25,7 @@ class Dao extends AbstractDao {
         if ($id != null)
             $this->model->setId($id);
 
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE id = ?', $this->model->getId());
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE id = ?', $this->model->getId());
 
         if(!$data["id"])
             throw new \Exception("PriceRule with the ID " . $this->model->getId() . " doesn't exists");
@@ -35,7 +35,7 @@ class Dao extends AbstractDao {
     }
 
     public function getByCode($code = null) {
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE code = ?', $code);
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE code = ?', $code);
 
         if(!$data["id"])
             throw new \Exception("PriceRule with the Code " . $this->model->getCode() . " doesn't exists");
@@ -49,7 +49,7 @@ class Dao extends AbstractDao {
 
         $buffer = array();
 
-        $validColumns = $this->getValidTableColumns($this->tableName);
+        $validColumns = $this->getValidTableColumns($this->getTableName());
 
         if(count($vars))
             foreach ($vars as $k => $v) {
@@ -73,16 +73,16 @@ class Dao extends AbstractDao {
             }
 
         if($this->model->getId() !== null) {
-            $this->db->update($this->tableName, $buffer, $this->db->quoteInto("id = ?", $this->model->getId()));
+            $this->db->update($this->getTableName(), $buffer, $this->db->quoteInto("id = ?", $this->model->getId()));
             return;
         }
 
-        $this->db->insert($this->tableName, $buffer);
+        $this->db->insert($this->getTableName(), $buffer);
         $this->model->setId($this->db->lastInsertId());
     }
 
     public function delete() {
-        $this->db->delete($this->tableName, $this->db->quoteInto("id = ?", $this->model->getId()));
+        $this->db->delete($this->getTableName(), $this->db->quoteInto("id = ?", $this->model->getId()));
     }
 
     protected function assignVariablesToModel($data) {

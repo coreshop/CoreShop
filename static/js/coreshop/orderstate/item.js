@@ -48,6 +48,55 @@ pimcore.plugin.coreshop.orderstate.item = Class.create({
     {
         var data = this.data;
 
+        var langTabs = [];
+        Ext.each(pimcore.settings.websiteLanguages, function(lang) {
+            var tab = {
+                title: pimcore.available_languages[lang],
+                iconCls: "pimcore_icon_language_" + lang.toLowerCase(),
+                layout:'form',
+                items: [{
+                    fieldLabel: t("coreshop_order_state_emailDocument"),
+                    labelWidth: 350,
+                    name: "emailDocument." + lang,
+                    fieldCls: "pimcore_droptarget_input",
+                    value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].emailDocument : "",
+                    xtype: "textfield",
+                    listeners: {
+                        "render": function (el) {
+                            new Ext.dd.DropZone(el.getEl(), {
+                                reference: this,
+                                ddGroup: "element",
+                                getTargetFromEvent: function(e) {
+                                    return this.getEl();
+                                }.bind(el),
+
+                                onNodeOver : function(target, dd, e, data) {
+                                    data = data.records[0].data;
+
+                                    if (data.elementType == "document") {
+                                        return Ext.dd.DropZone.prototype.dropAllowed;
+                                    }
+                                    return Ext.dd.DropZone.prototype.dropNotAllowed;
+                                },
+
+                                onNodeDrop : function (target, dd, e, data) {
+                                    data = data.records[0].data;
+
+                                    if (data.elementType == "document") {
+                                        this.setValue(data.path);
+                                        return true;
+                                    }
+                                    return false;
+                                }.bind(el)
+                            });
+                        }
+                    }
+                }]
+            };
+
+            langTabs.push( tab );
+        });
+
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
@@ -68,15 +117,15 @@ pimcore.plugin.coreshop.orderstate.item = Class.create({
                 {
                     xtype:'fieldset',
                     autoHeight:true,
-                    labelWidth: 250,
+                    labelWidth: 350,
                     defaultType: 'textfield',
-                    defaults: {width: 300},
+                    defaults: {width: '100%'},
                     items :[
                         {
                             xtype: "textfield",
                             name: "name",
                             fieldLabel: t("name"),
-                            width: 250,
+                            width: 400,
                             value: data.name
                         }, {
                             xtype: "checkbox",
@@ -109,41 +158,13 @@ pimcore.plugin.coreshop.orderstate.item = Class.create({
                             width: 250,
                             checked: parseInt(data.email)
                         }, {
-                            fieldLabel: t("coreshop_order_state_emailDocument"),
-                            name: "emailDocument",
-                            cls: "input_drop_target",
-                            value: data.emailDocument,
-                            xtype: "textfield",
-                            listeners: {
-                                "render": function (el) {
-                                    new Ext.dd.DropZone(el.getEl(), {
-                                        reference: this,
-                                        ddGroup: "element",
-                                        getTargetFromEvent: function(e) {
-                                            return this.getEl();
-                                        }.bind(el),
-
-                                        onNodeOver : function(target, dd, e, data) {
-                                            data = data.records[0].data;
-
-                                            if (data.elementType == "document") {
-                                                return Ext.dd.DropZone.prototype.dropAllowed;
-                                            }
-                                            return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                        },
-
-                                        onNodeDrop : function (target, dd, e, data) {
-                                            data = data.records[0].data;
-
-                                            if (data.elementType == "document") {
-                                                this.setValue(data.path);
-                                                return true;
-                                            }
-                                            return false;
-                                        }.bind(el)
-                                    });
-                                }
-                            }
+                            xtype: "tabpanel",
+                            activeTab: 0,
+                            defaults: {
+                                autoHeight:true,
+                                bodyStyle:'padding:10px;'
+                            },
+                            items: langTabs
                         }
                     ]
                 }

@@ -16,12 +16,49 @@ namespace CoreShop\Model\Listing\Dao;
 
 use Pimcore\Model\Listing;
 use CoreShop\Model;
+use Pimcore\Tool;
 
 class AbstractDao extends Listing\Dao\AbstractDao {
 
     protected $tableName = '';
 
     protected $modelClass;
+
+    protected function getTableName () {
+        if(!$this->model->getIgnoreLocalizedFields())
+        {
+            $language = null;
+
+            $model = new $this->modelClass();
+
+            if(count($model->getLocalizedFields()) > 0) {
+                if($this->model->getLocale()) {
+                    if(Tool::isValidLanguage((string) $this->model->getLocale())) {
+                        $language = (string) $this->model->getLocale();
+                    }
+                }
+
+                if(!$language && \Zend_Registry::isRegistered("Zend_Locale")) {
+                    $locale = \Zend_Registry::get("Zend_Locale");
+                    if(Tool::isValidLanguage((string) $locale)) {
+                        $language = (string) $locale;
+                    }
+                }
+
+                if (!$language) {
+                    $language = Tool::getDefaultLanguage();
+                }
+
+                if (!$language) {
+                    throw new \Exception("No valid language/locale set. Use \$list->setLocale() to add a language to the listing, or register a global locale");
+                }
+
+                $this->tableName = $this->tableName . "_data_localized_" . $language;
+            }
+        }
+
+        return $this->tableName;
+    }
 
     /**
      * Get the assets from database
@@ -32,7 +69,7 @@ class AbstractDao extends Listing\Dao\AbstractDao {
         $modelClass = $this->modelClass;
 
         $data = array();
-        $rawData = $this->db->fetchAll("SELECT id FROM " . $this->tableName . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
+        $rawData = $this->db->fetchAll("SELECT id FROM " . $this->getTableName() . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
 
         foreach ($rawData as $raw) {
 
@@ -51,17 +88,17 @@ class AbstractDao extends Listing\Dao\AbstractDao {
      * @return array
      */
     public function loadIdList() {
-        $currencyIds = $this->db->fetchCol("SELECT id FROM " . $this->tableName . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
+        $currencyIds = $this->db->fetchCol("SELECT id FROM " . $this->getTableName() . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
         return $currencyIds;
     }
 
     public function getCount() {
-        $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->tableName . $this->getCondition() . $this->getOffsetLimit(), $this->model->getConditionVariables());
+        $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->getTableName() . $this->getCondition() . $this->getOffsetLimit(), $this->model->getConditionVariables());
         return $amount;
     }
 
     public function getTotalCount() {
-        $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->tableName . $this->getCondition(), $this->model->getConditionVariables());
+        $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->getTableName() . $this->getCondition(), $this->model->getConditionVariables());
         return $amount;
     }
 }

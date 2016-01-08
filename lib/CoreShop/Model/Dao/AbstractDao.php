@@ -21,18 +21,35 @@ abstract class AbstractDao extends Dao\AbstractDao {
 
     protected $tableName = '';
 
+    public function getTableName() {
+        return $this->tableName;
+    }
+
     public function getById($id = null) {
 
         if ($id != null)
             $this->model->setId($id);
 
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE id = ?', $this->model->getId());
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE id = ?', $this->model->getId());
 
         if(!$data["id"])
             throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
 
 
         $this->assignVariablesToModel($data);
+        $this->getData();
+    }
+
+    /**
+     * Get the data-elements for the object from database for the given path
+     *
+     * @return void
+     */
+    public function getData()
+    {
+        if($this->model->getLocalizedFields()) {
+            $this->model->getLocalizedFields()->load();
+        }
     }
 
     public function save() {
@@ -41,7 +58,7 @@ abstract class AbstractDao extends Dao\AbstractDao {
 
         $buffer = array();
 
-        $validColumns = $this->getValidTableColumns($this->tableName);
+        $validColumns = $this->getValidTableColumns($this->getTableName());
 
         if(count($vars))
             foreach ($vars as $k => $v) {
@@ -67,15 +84,15 @@ abstract class AbstractDao extends Dao\AbstractDao {
             }
 
         if($this->model->getId() !== null) {
-            $this->db->update($this->tableName, $buffer, $this->db->quoteInto("id = ?", $this->model->getId()));
+            $this->db->update($this->getTableName(), $buffer, $this->db->quoteInto("id = ?", $this->model->getId()));
             return;
         }
 
-        $this->db->insert($this->tableName, $buffer);
+        $this->db->insert($this->getTableName(), $buffer);
         $this->model->setId($this->db->lastInsertId());
     }
 
     public function delete() {
-        $this->db->delete($this->tableName, $this->db->quoteInto("id = ?", $this->model->getId()));
+        $this->db->delete($this->getTableName(), $this->db->quoteInto("id = ?", $this->model->getId()));
     }
 }

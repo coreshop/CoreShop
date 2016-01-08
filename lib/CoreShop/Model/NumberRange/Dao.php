@@ -22,7 +22,7 @@ class Dao extends AbstractDao {
 
     public function getByType($type = null)
     {
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE type = ?', $type);
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE type = ?', $type);
 
         if(!$data["id"])
             throw new \Exception("Object with the type " . $type . " doesn't exists");

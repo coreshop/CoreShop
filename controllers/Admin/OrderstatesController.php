@@ -77,10 +77,11 @@ class CoreShop_Admin_OrderstatesController extends Admin
 
     public function getAction() {
         $id = $this->getParam("id");
-        $oderState = OrderState::getById($id);
+        $orderState = OrderState::getById($id);
 
-        if($oderState instanceof OrderState)
-            $this->_helper->json($oderState);
+        if($orderState instanceof OrderState) {
+            $this->_helper->json($orderState->getObjectVars());
+        }
         else
             $this->_helper->json(array("success" => false));
     }
