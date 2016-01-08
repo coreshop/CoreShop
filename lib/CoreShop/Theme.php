@@ -99,6 +99,36 @@ abstract class Theme {
                                     }
 
                                     $document->save();
+
+                                    if(array_key_exists("content", $doc)) {
+                                        foreach($doc['content'] as $fieldLanguage=>$fields) {
+                                            if($fieldLanguage !== $language)
+                                                continue;
+
+                                            foreach($fields['field'] as $field) {
+                                                $key = $field['key'];
+                                                $type = $field['type'];
+                                                $content = null;
+
+                                                if(array_key_exists("file", $field)) {
+                                                    $file = $this->getTemplatePath() . "/" . $field['file'];
+
+                                                    if(file_exists($file))
+                                                        $content = file_get_contents($file);
+                                                }
+
+                                                if(array_key_exists("value", $field)) {
+                                                    $content = $field['value'];
+                                                }
+
+                                                if($content) {
+                                                    $document->setRawElement($key, $type, $content);
+                                                }
+                                            }
+                                        }
+
+                                        $document->save();
+                                    }
                                 }
                             }
                         }

@@ -139,16 +139,18 @@ class OrderState extends AbstractModel
         if($this->getEmail())
         {
             $emailDocument = $this->getEmailDocument();
+            $emailDocument = Document::getByPath($emailDocument);
+
             if($emailDocument instanceof Document\Email) {
-                $emailParameters = array(
-                    "order" => $order,
-                    "newOrderStatus" => $this,
-                    "user" => $order->getCustomer()
-                );
+
+                $emailParameters = array_merge($order->getObjectVars(), $this->getObjectVars(), $order->getCustomer()->getObjectVars());
+
+                $emailParameters['orderTotal'] = $order->gettotal();
 
                 $mail = new Mail();
                 $mail->setDocument($emailDocument);
                 $mail->setParams($emailParameters);
+                $mail->setEnableLayoutOnPlaceholderRendering(false);
                 $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . " " . $order->getCustomer()->getLastname());
 
                 Tool::addAdminToMail($mail);
