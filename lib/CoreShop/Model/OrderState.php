@@ -60,16 +60,6 @@ class OrderState extends AbstractModel
     public $email;
 
     /**
-     * Save OrderState
-     *
-     * @return mixed
-     */
-    public function save() {
-        $this->getLocalizedFields()->getDao()->save();
-        return $this->getDao()->save();
-    }
-
-    /**
      * get OrderState by ID
      *
      * @param $id

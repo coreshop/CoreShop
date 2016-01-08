@@ -53,7 +53,7 @@ class AbstractDao extends Listing\Dao\AbstractDao {
                     throw new \Exception("No valid language/locale set. Use \$list->setLocale() to add a language to the listing, or register a global locale");
                 }
 
-                $this->tableName = $this->tableName . "_data_localized_" . $language;
+                return $this->tableName . "_data_localized_" . $language;
             }
         }
 

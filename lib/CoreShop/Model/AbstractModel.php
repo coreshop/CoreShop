@@ -50,10 +50,10 @@ class AbstractModel extends Model\AbstractModel
      */
     public function setValue($key, $value) {
         if($this->getLocalizedFields()) {
-            $key = explode(".", $key); //0 => key, 1 => language
+            $mykey = explode(".", $key); //0 => key, 1 => language
 
-            if(in_array($key[0], $this->localizedValues)) {
-                $this->getLocalizedFields()->setLocalizedValue($key[0], $value, $key[1]);
+            if(in_array($mykey [0], $this->localizedValues)) {
+                $this->getLocalizedFields()->setLocalizedValue($mykey [0], $value, $mykey [1]);
 
                 return $this;
             }

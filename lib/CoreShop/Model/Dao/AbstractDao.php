@@ -90,6 +90,9 @@ abstract class AbstractDao extends Dao\AbstractDao {
 
         $this->db->insert($this->getTableName(), $buffer);
         $this->model->setId($this->db->lastInsertId());
+
+        if($this->model->getLocalizedFields())
+            $this->model->getLocalizedFields()->save();
     }
 
     public function delete() {
