@@ -36,7 +36,7 @@ class Config {
                     $config = new \Zend_Config_Xml($mappingFile);
                     self::setModelClassMappingConfig($config);
                 } catch (Exception $e) {
-                    \Logger::error("coreshop_classmap.xml exists but it is not a valid Zend_Config_Xml configuration. Maybe there is a syntaxerror in the XML.");
+                    \Logger::error("coreshop_classmap.xml exists but it is not a valid Zend_Config_Xml configuration. Maybe there is a Syntax Error in the XML.");
                 }
             }
         }

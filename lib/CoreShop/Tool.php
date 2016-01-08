@@ -281,6 +281,7 @@ class Tool {
     /**
      * Retreive the values in an array
      *
+     * @param $object
      * @return array
      */
     public static function objectToArray(Object\Concrete $object)
@@ -291,6 +292,7 @@ class Tool {
     /**
      * Retreive the values in json format
      *
+     * @param $object
      * @return string
      */
     public static function objectToJson(Object\Concrete $object)
@@ -370,6 +372,7 @@ class Tool {
     /**
      * @static
      * @param  $sourceClassName
+     * @param $interfaceToImplement
      * @return string
      */
     public static function getModelClassMapping($sourceClassName, $interfaceToImplement = null) {

@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\PriceRule\Action;
 
+use CoreShop\Model\Currency;
 use Pimcore\Model;
 use CoreShop\Tool;
 
@@ -47,7 +48,7 @@ class DiscountAmount extends AbstractAction {
     }
 
     /**
-     * @param mixed $currency_id
+     * @param Currency|int $currency
      */
     public function setCurrency($currency)
     {

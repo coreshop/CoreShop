@@ -374,6 +374,7 @@ class Cart extends Base {
      * sets price rule for this cart
      * this method has to be overwritten in Pimcore Object
      *
+     * @param $priceRule
      * @throws UnsupportedException
      * @return PriceRule
      */

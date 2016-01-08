@@ -140,7 +140,7 @@ class Category extends Base {
      * Checks if category is child of hierachy
      *
      * @param Category $category
-     * @level int $level to check hierachy (0 = topMost)
+     * @param int $level to check hierachy (0 = topMost)
      * @return bool
      */
     public function inCategory(Category $category, $level = 0) {

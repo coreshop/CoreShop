@@ -47,10 +47,20 @@ class AbstractRange extends AbstractModel
      */
     public $delimiter2;
 
+    /**
+     * Save AbstractRange
+     *
+     * @return mixed
+     */
     public function save() {
         return $this->getDao()->save();
     }
 
+    /**
+     * Delete AbstractRange
+     *
+     * @return mixed
+     */
     public function delete() {
         $prices = $this->getPrices();
 
@@ -71,6 +81,13 @@ class AbstractRange extends AbstractModel
         return new $className();
     }
 
+    /**
+     * Get Range by id
+     *
+     * @param $id
+     * @param $rangeType
+     * @return null
+     */
     public static function getById($id, $rangeType) {
         try {
             $className = "CoreShop\\Model\\Carrier\\" . ($rangeType == "weight" ? "RangeWeight" : "RangePrice");
@@ -100,7 +117,6 @@ class AbstractRange extends AbstractModel
     /**
      * Get price for Zone
      *
-     * @param Zone $zone
      * @return DeliveryPrice|null
      */
     public function getPrices() {

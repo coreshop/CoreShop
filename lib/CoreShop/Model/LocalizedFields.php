@@ -87,7 +87,10 @@ class LocalizedFields extends Model\AbstractModel {
     }
 
     /**
-     * @param array $items
+     * LocalizedFields constructor.
+     *
+     * @param $fields
+     * @param null $items
      */
     public function __construct($fields, $items = null) {
         if($items) {
@@ -190,7 +193,8 @@ class LocalizedFields extends Model\AbstractModel {
     /**
      * @param $name
      * @param null $language
-     * @return
+     * @param bool $ignoreFallbackLanguage
+     * @return null
      */
     public function getLocalizedValue ($name, $language = null, $ignoreFallbackLanguage = false) {
 

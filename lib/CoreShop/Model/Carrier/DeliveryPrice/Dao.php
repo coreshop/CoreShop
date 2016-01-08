@@ -20,6 +20,11 @@ class Dao extends AbstractDao {
 
     protected $tableName = 'coreshop_carriers_delivery_price';
 
+    /**
+     * @param $carrier
+     * @param $range
+     * @throws \Exception
+     */
     public function getByCarrierAndRange($carrier, $range)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE `carrier` = ? AND `range` = ?', [$carrier, $range]);
@@ -30,6 +35,12 @@ class Dao extends AbstractDao {
         $this->assignVariablesToModel($data);
     }
 
+    /**
+     * @param $carrier
+     * @param $range
+     * @param $zone
+     * @throws \Exception
+     */
     public function getForCarrierInZone($carrier, $range, $zone) {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE `carrierId` = ? AND `rangeId` = ? AND zoneId = ?', [$carrier, $range, $zone]);
 

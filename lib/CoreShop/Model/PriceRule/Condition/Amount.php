@@ -44,7 +44,7 @@ class Amount extends AbstractCondition {
     }
 
     /**
-     * @param mixed $currency_id
+     * @param mixed $currency
      */
     public function setCurrency($currency)
     {

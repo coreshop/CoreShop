@@ -28,6 +28,9 @@ class AbstractPriceRule {
      */
     public $type;
 
+    /**
+     * @param array $values
+     */
     public function setValues(array $values) {
         foreach($values as $key=>$value) {
 

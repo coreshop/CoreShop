@@ -20,6 +20,9 @@ use Pimcore\Model\Object\Concrete;
 
 class Base extends Concrete
 {
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return Tool::objectToArray($this);

@@ -286,6 +286,11 @@ class Order extends Base
         parent::save();
     }
 
+    /**
+     * Get Invoice for Order
+     *
+     * @return bool|mixed|Document
+     */
     public function getInvoice() {
         //Check if invoice has already been generated
         $document = $this->getProperty("invioce");

@@ -20,6 +20,10 @@ class Dao extends AbstractDao {
 
     protected $tableName = 'coreshop_pricerules';
 
+    /**
+     * @param null $id
+     * @throws \Exception
+     */
     public function getById($id = null) {
 
         if ($id != null)
@@ -34,6 +38,10 @@ class Dao extends AbstractDao {
         $this->assignVariablesToModel($data);
     }
 
+    /**
+     * @param null $code
+     * @throws \Exception
+     */
     public function getByCode($code = null) {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE code = ?', $code);
 
@@ -43,6 +51,9 @@ class Dao extends AbstractDao {
         $this->assignVariablesToModel($data);
     }
 
+    /**
+     * @throws \Zend_Db_Adapter_Exception
+     */
     public function save() {
 
         $vars = get_object_vars($this->model);
@@ -81,10 +92,16 @@ class Dao extends AbstractDao {
         $this->model->setId($this->db->lastInsertId());
     }
 
+    /**
+     *
+     */
     public function delete() {
         $this->db->delete($this->getTableName(), $this->db->quoteInto("id = ?", $this->model->getId()));
     }
 
+    /**
+     * @param array $data
+     */
     protected function assignVariablesToModel($data) {
         parent::assignVariablesToModel($data);
 

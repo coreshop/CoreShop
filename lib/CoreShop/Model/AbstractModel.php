@@ -28,6 +28,11 @@ class AbstractModel extends Model\AbstractModel
      */
     protected $localizedFields;
 
+    /**
+     * Get LocalizedFields Provider
+     *
+     * @return LocalizedFields|null
+     */
     public function getLocalizedFields() {
         if(count($this->localizedValues) > 0) {
             if (is_null($this->localizedFields)) {

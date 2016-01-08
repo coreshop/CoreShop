@@ -20,6 +20,10 @@ class Dao extends AbstractDao {
 
     protected $tableName = 'coreshop_currencies';
 
+    /**
+     * @param null $name
+     * @throws \Exception
+     */
     public function getByName($name = null) {
 
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE name = ?', $name);

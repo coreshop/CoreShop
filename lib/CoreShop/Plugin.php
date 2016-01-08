@@ -42,6 +42,11 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      */
     protected static $_theme;
 
+    /**
+     * Plugin constructor.
+     * @param null $jsPaths
+     * @param null $cssPaths
+     */
     public function __construct($jsPaths = null, $cssPaths = null) {
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/startup.php");
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/helper.php");
@@ -75,18 +80,33 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         });
     }
 
+    /**
+     * Install Plugin
+     *
+     * @param InstallPlugin $installPlugin
+     */
     public static function installPlugin(InstallPlugin $installPlugin)
     {
         $install = new Install();
         $installPlugin->install($install);
     }
 
+    /**
+     * Uninstall Plugin
+     *
+     * @param InstallPlugin $installPlugin
+     */
     public static function uninstallPlugin(InstallPlugin $installPlugin)
     {
         $install = new Install();
         $installPlugin->uninstall($install);
     }
 
+    /**
+     * Install Pimcore CoreShop Plugin
+     *
+     * @return mixed
+     */
     public static function install()
     {
         try
@@ -152,6 +172,11 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         }
     }
 
+    /**
+     * Check if CoreShop is installed
+     *
+     * @return bool
+     */
     public static function coreShopIsInstalled()
     {
         $entry = Object\ClassDefinition::getByName('CoreShopProduct');
@@ -227,7 +252,11 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return self::$_translate;
     }
 
-
+    /**
+     * Get CoreShop classmap file
+     *
+     * @return string
+     */
     public static function getClassmapFile()
     {
         return PIMCORE_CONFIGURATION_DIRECTORY . "/coreshop_classmap.xml";
@@ -317,14 +346,32 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return self::$eventManager;
     }
 
+    /**
+     * Get CoreShop default layout
+     *
+     * @return string
+     */
     public static function getLayout() {
         return self::$layout;
     }
 
+    /**
+     * Set CoreShop default layout
+     *
+     * @param $layout
+     */
     public static function setLayout($layout) {
         self::$layout = $layout;
     }
 
+    /**
+     * get Shipping Providers
+     *
+     * @deprecated Not used any more
+     * @param Zone $zone
+     * @param Cart $cart
+     * @return array
+     */
     public static function getShippingProviders(Zone $zone, Cart $cart)
     {
         $results = self::getEventManager()->trigger("shipping.getProvider", null, array("zone" => $zone, "cart" => $cart), function($v) {
@@ -346,6 +393,13 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return array();
     }
 
+    /**
+     * Get Shipping Providier by identifier
+     *
+     * @deprecated Not used anymore
+     * @param $identifier
+     * @return bool|mixed
+     */
     public static function getShippingProvider($identifier)
     {
         $results = self::getEventManager()->trigger("shipping.getProvider", null, array(), function($v) use ($identifier) {
@@ -360,6 +414,12 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return false;
     }
 
+    /**
+     * Get PaymentProviders
+     *
+     * @param Cart $cart
+     * @return array
+     */
     public static function getPaymentProviders(Cart $cart)
     {
         $results = self::getEventManager()->trigger("payment.getProvider", null, array("cart" => $cart));
@@ -375,6 +435,12 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return $provider;
     }
 
+    /**
+     * Get PaymentProvider by identifier
+     *
+     * @param $identifier
+     * @return bool
+     */
     public static function getPaymentProvider($identifier)
     {
         $providers = self::getPaymentProviders(null);
@@ -388,6 +454,14 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return false;
     }
 
+    /**
+     * Call a CoreShop hook
+     *
+     * @param $name
+     * @param array $params
+     * @return string
+     * @throws \Zend_Exception
+     */
     public static function hook($name, $params = array())
     {
         $results = self::getEventManager()->trigger("hook." . $name, null, array(), function($v) {
@@ -411,6 +485,14 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         return "";
     }
 
+    /**
+     * Call an action hook
+     *
+     * @param $name
+     * @param array $params
+     * @return string
+     * @throws \Zend_Exception
+     */
     public static function actionHook($name, $params = array())
     {
         $results = self::getEventManager()->trigger("actionHook." . $name, null, array(), function($v) {

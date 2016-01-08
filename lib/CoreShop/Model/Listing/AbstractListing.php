@@ -68,7 +68,7 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * @param array $carriers
+     * @param array $data
      * @return void
      */
     public function setData($data) {
@@ -84,12 +84,22 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
         return $this->getTotalCount();
     }
 
+    /**
+     * get all items
+     *
+     * @param int $offset
+     * @param int $itemCountPerPage
+     * @return mixed
+     */
     public function getItems($offset, $itemCountPerPage) {
         $this->setOffset($offset);
         $this->setLimit($itemCountPerPage);
         return $this->load();
     }
 
+    /**
+     * @return $this
+     */
     public function getPaginatorAdapter() {
         return $this;
     }
@@ -137,24 +147,36 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
         reset($this->data);
     }
 
+    /**
+     * @return mixed
+     */
     public function current() {
         $this->getData();
         $var = current($this->data);
         return $var;
     }
 
+    /**
+     * @return mixed
+     */
     public function key() {
         $this->getData();
         $var = key($this->data);
         return $var;
     }
 
+    /**
+     * @return mixed
+     */
     public function next() {
         $this->getData();
         $var = next($this->date);
         return $var;
     }
 
+    /**
+     * @return bool
+     */
     public function valid() {
         $this->getData();
         $var = $this->current() !== false;

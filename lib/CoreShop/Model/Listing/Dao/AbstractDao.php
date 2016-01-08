@@ -24,6 +24,13 @@ class AbstractDao extends Listing\Dao\AbstractDao {
 
     protected $modelClass;
 
+    /**
+     * Get tableName, either for localized or non-localized data
+     *
+     * @return string
+     * @throws \Exception
+     * @throws \Zend_Exception
+     */
     protected function getTableName () {
         if(!$this->model->getIgnoreLocalizedFields())
         {
@@ -92,11 +99,19 @@ class AbstractDao extends Listing\Dao\AbstractDao {
         return $currencyIds;
     }
 
+    /**
+     * @return int
+     * @throws \Exception
+     */
     public function getCount() {
         $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->getTableName() . $this->getCondition() . $this->getOffsetLimit(), $this->model->getConditionVariables());
         return $amount;
     }
 
+    /**
+     * @return int
+     * @throws \Exception
+     */
     public function getTotalCount() {
         $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->getTableName() . $this->getCondition(), $this->model->getConditionVariables());
         return $amount;

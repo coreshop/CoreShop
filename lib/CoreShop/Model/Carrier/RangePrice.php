@@ -18,6 +18,12 @@ use CoreShop\Tool;
 
 class RangePrice extends AbstractRange
 {
+    /**
+     * Get RangePrice by id
+     *
+     * @param $id
+     * @return null|static
+     */
     public static function getById($id) {
         try {
             $obj = new static();

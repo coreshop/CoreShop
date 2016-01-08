@@ -18,6 +18,11 @@ use CoreShop\Tool;
 
 class RangeWeight extends AbstractRange
 {
+    /**
+     * Get RangeWeight by id
+     * @param $id
+     * @return null|static
+     */
     public static function getById($id) {
         try {
             $obj = new static();

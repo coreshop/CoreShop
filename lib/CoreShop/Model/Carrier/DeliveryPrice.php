@@ -71,6 +71,12 @@ class DeliveryPrice extends AbstractModel
         return $this->getDao()->save();
     }
 
+    /**
+     * Get DeliveryPrice by id
+     *
+     * @param $id
+     * @return DeliveryPrice|null
+     */
     public static function getById($id) {
         try {
             $obj = new self;

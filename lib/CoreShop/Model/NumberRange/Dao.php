@@ -20,6 +20,10 @@ class Dao extends AbstractDao {
 
     protected $tableName = 'coreshop_numberRanges';
 
+    /**
+     * @param null $type
+     * @throws \Exception
+     */
     public function getByType($type = null)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE type = ?', $type);

@@ -23,14 +23,33 @@ use CoreShop\Plugin;
 
 abstract class Payment implements AbstractPlugin
 {
+    /**
+     * Get Payment Fee
+     *
+     * @param Cart $cart
+     * @throws UnsupportedException
+     */
     public function getPaymentFee(Cart $cart) {
         throw new UnsupportedException("");
     }
 
+    /**
+     * Process Payment
+     *
+     * @param Order $order
+     * @throws UnsupportedException
+     */
     public function processPayment(Order $order) {
         throw new UnsupportedException("");
     }
 
+    /**
+     * Validate Order
+     *
+     * @param \CoreShop\Model\Payment|null $payment
+     * @param Order|null $order
+     * @param OrderState|null $orderState
+     */
     public function validateOrder(\CoreShop\Model\Payment $payment = null, Order $order = null, OrderState $orderState = null) {
         $paymentHandled = false;
         $result = Plugin::getEventManager()->trigger('payment', $this, array("payment" => $payment), function($v) {

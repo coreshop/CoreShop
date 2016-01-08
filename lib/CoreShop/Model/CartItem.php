@@ -81,6 +81,7 @@ class CartItem extends Base {
      * sets amount for item
      * this method has to be overwritten in Pimcore Object
      *
+     * @param $amount
      * @throws UnsupportedException
      */
     public function setAmount($amount) {

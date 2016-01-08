@@ -16,9 +16,41 @@ namespace CoreShop\Model;
 
 interface CarrierInterface
 {
+    /**
+     * Get Shipping Costs
+     *
+     * @deprecated Not used anymore
+     * @param Cart $cart
+     * @param Zone $zone
+     * @return mixed
+     */
     public function getShipping(Cart $cart, Zone $zone);
+
+    /**
+     * Get Carrier Name
+     *
+     * @return mixed
+     */
     public function getName();
+
+    /**
+     * Get Carrier Image
+     *
+     * @return mixed
+     */
     public function getImage();
+
+    /**
+     * Get Carrier Description
+     *
+     * @return mixed
+     */
     public function getDescription();
+
+    /**
+     * Get Carrier identifier
+     *
+     * @return mixed
+     */
     public function getIdentifier();
 }

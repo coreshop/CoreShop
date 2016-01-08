@@ -21,10 +21,17 @@ abstract class AbstractDao extends Dao\AbstractDao {
 
     protected $tableName = '';
 
+    /**
+     * @return string
+     */
     public function getTableName() {
         return $this->tableName;
     }
 
+    /**
+     * @param null $id
+     * @throws \Exception
+     */
     public function getById($id = null) {
 
         if ($id != null)
@@ -52,6 +59,9 @@ abstract class AbstractDao extends Dao\AbstractDao {
         }
     }
 
+    /**
+     * @throws \Zend_Db_Adapter_Exception
+     */
     public function save() {
 
         $vars = get_object_vars($this->model);
@@ -95,6 +105,9 @@ abstract class AbstractDao extends Dao\AbstractDao {
             $this->model->getLocalizedFields()->save();
     }
 
+    /**
+     *
+     */
     public function delete() {
         $this->db->delete($this->getTableName(), $this->db->quoteInto("id = ?", $this->model->getId()));
     }

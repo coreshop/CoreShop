@@ -627,11 +627,18 @@ class Country {
         'USS' => array('name' => 'United States dollar ', 'isocode' => '998', 'symbol' => '$')
     );
 
+    /**
+     * @return array
+     */
     public static function getCountries()
     {
         return self::$countryMap;
     }
 
+    /**
+     * @param $countryCode
+     * @return bool
+     */
     public static function getCurrencyCodeForCountry($countryCode)
     {
         if(array_key_exists($countryCode, self::$countryCurrencyMap))
@@ -640,6 +647,10 @@ class Country {
         return false;
     }
 
+    /**
+     * @param $currencyCode
+     * @return bool
+     */
     public static function getCurrencyDetail($currencyCode) {
         if(!is_string($currencyCode) && !is_int($currencyCode))
             return false;

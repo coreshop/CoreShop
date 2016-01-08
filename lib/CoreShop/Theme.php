@@ -28,10 +28,23 @@ abstract class Theme {
         throw new UnsupportedException("Please implement me");
     }
 
+    /**
+     * Get Theme Path
+     *
+     * @return string
+     * @throws UnsupportedException
+     */
     public function getTemplatePath() {
         return $templatePath = CORESHOP_TEMPLATE_BASE_PATH . "/" . $this->getName();
     }
 
+    /**
+     * Get Theme Config
+     *
+     * @return array
+     * @throws UnsupportedException
+     * @throws \Exception
+     */
     public function getConfig() {
         $templatePath = $this->getTemplatePath();
 

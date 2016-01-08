@@ -20,11 +20,19 @@ class TranslateCountry
 {
     public $view;
 
+    /**
+     * @param \Zend_View_Interface $view
+     */
     public function setView(\Zend_View_Interface $view)
     {
         $this->view = $view;
     }
 
+    /**
+     * @param $countryCode
+     * @return bool
+     * @throws \Zend_Exception
+     */
     public function translateCountry($countryCode)
     {
         if($countryCode instanceof Country)

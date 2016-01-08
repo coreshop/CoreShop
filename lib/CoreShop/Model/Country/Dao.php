@@ -20,6 +20,10 @@ class Dao extends AbstractDao {
 
     protected $tableName = 'coreshop_countries';
 
+    /**
+     * @param null $isoCode
+     * @throws \Exception
+     */
     public function getByIsoCode($isoCode = null)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE isoCode = ?', $isoCode);

@@ -20,11 +20,17 @@ class Countries
 {
     public $view;
 
+    /**
+     * @param \Zend_View_Interface $view
+     */
     public function setView(\Zend_View_Interface $view)
     {
         $this->view = $view;
     }
 
+    /**
+     * @return array
+     */
     public function countries()
     {
         $countries = Country::getActiveCountries();

@@ -217,6 +217,13 @@ class Product extends Base {
         return false;
     }
 
+    /**
+     * Apply Specific Price to Product
+     *
+     * @param CoreShopProductSpecificPrice $sPrice
+     * @return float
+     * @throws UnsupportedException
+     */
     protected function applySpecificPrice(CoreShopProductSpecificPrice $sPrice)
     {
         $basePrice = $sPrice->getPrice() > 0 ? $sPrice->getPrice() : $this->getPrice();
@@ -404,6 +411,7 @@ class Product extends Base {
      * sets price
      * this method has to be overwritten in Pimcore Object
      *
+     * @param $price
      * @throws UnsupportedException
      */
     public function setPrice($price) {
