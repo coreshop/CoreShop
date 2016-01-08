@@ -53,8 +53,11 @@ class CoreShop_CheckoutController extends Action
         $this->view->headTitle($this->view->translate("Checkout"));
     }
     
-    public function registerAction() {
-        
+    public function registerAction()
+    {
+        $this->view->redirect = $this->view->url(array("lang" => $this->view->language, "action" => "address"), "coreshop_checkout");
+
+        $this->_helper->viewRenderer('user/register', null, true);
     }
     
     public function addressAction() {

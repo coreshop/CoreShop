@@ -1,13 +1,13 @@
 <?php
 //TODO: finish View
-$class = Object_Class::getByName("CoreShopUser");
+$class = Pimcore\Model\Object\ClassDefinition::getByName("CoreShopUser");
 
 $postValue = function ($name) {
     if (isset($_POST[$name])) {
         return $_POST[$name];
     }
 
-    return;
+    return null;
 };
 ?>
 
@@ -46,7 +46,9 @@ $postValue = function ($name) {
                             <input type="hidden" name="appName" id="appName" />
                             <input type="hidden" name="userAgent" id="userAgent" />
                             <input type="hidden" name="os" id="os" />
-                            <input type="hidden" name="_redirect" value="<?=$this->url(array("lang" => $this->language, "action" => "address"), "coreshop_checkout")?>" />
+                            <?php if($this->redirect) { ?>
+                            <input type="hidden" name="_redirect" value="<?=$this->redirect?>" />
+                            <?php }?>
 
                             <!-- Personal Information Starts -->
                             <div class="form-group">

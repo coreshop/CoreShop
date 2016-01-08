@@ -175,9 +175,9 @@ class CoreShop_UserController extends Action
                 $this->session->user = $user;
 
                 if (array_key_exists("_redirect", $params))
-                    $this->_redirect($params['_redirect']);
+                    $this->redirect($params['_redirect']);
                 else {
-                    print_r($params);exit;
+                    $this->redirect($this->view->url(array("lang" => $this->view->language, "action" => "profile"), "coreshop_user"));
                 }
             }
             catch (\Exception $ex) {
