@@ -442,7 +442,7 @@ CREATE TABLE `coreshop_orderStates` (
   `email` tinyint(1) NOT NULL DEFAULT '0'
 );
 
-INSERT INTO `coreshop_orderStates` (`id`, `name`, `accepted`, `shipped`, `paid`, `invoice`, `email`, `emailDocument`) VALUES
+INSERT INTO `coreshop_orderStates` (`id`, `name`, `accepted`, `shipped`, `paid`, `invoice`, `email`) VALUES
 (1,	'Awaiting check payment',	0,	0,	0,	0,	1,	NULL),
 (2,	'Payment accepted',	1,	0,	1,	1,	1,	''),
 (3,	'Processing in progress',	1,	0,	1,	1,	1,	''),
@@ -455,3 +455,61 @@ INSERT INTO `coreshop_orderStates` (`id`, `name`, `accepted`, `shipped`, `paid`,
 (10,	'Awaiting bank wire payment',	0,	0,	0,	0,	1,	''),
 (11,	'On backorder (not paid)',	0,	0,	0,	0,	1,	''),
 (12,	'Awaiting Cash On Delivery validation',	0,	0,	0,	0,	0,	NULL);
+
+DROP TABLE IF EXISTS `coreshop_orderStates_data`;
+CREATE TABLE `coreshop_orderStates_data` (
+  `ooo_id` int(11) NOT NULL DEFAULT '0',
+  `language` varchar(10) NOT NULL DEFAULT '',
+  `emailDocument` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ooo_id`,`language`),
+  KEY `ooo_id` (`ooo_id`),
+  KEY `language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `coreshop_orderStates_data` (`ooo_id`, `language`, `emailDocument`) VALUES
+(1,	'de',	'/en/shop/email/awaiting-check-payment'),
+(1,	'en',	'/de/shop/email/awaiting-check-payment'),
+(2,	'de',	'/de/shop/email/payment'),
+(2,	'en',	'/en/shop/email/payment');
+
+DROP VIEW IF EXISTS `coreshop_orderstates_data_localized_de`;
+CREATE TABLE `coreshop_orderstates_data_localized_de` (`id` int(11), `name` varchar(255), `accepted` tinyint(1), `shipped` tinyint(1), `paid` tinyint(1), `invoice` tinyint(1), `email` tinyint(1), `ooo_id` int(11), `language` varchar(10), `emailDocument` varchar(255));
+
+
+DROP VIEW IF EXISTS `coreshop_orderstates_data_localized_en`;
+CREATE TABLE `coreshop_orderstates_data_localized_en` (`id` int(11), `name` varchar(255), `accepted` tinyint(1), `shipped` tinyint(1), `paid` tinyint(1), `invoice` tinyint(1), `email` tinyint(1), `ooo_id` bigint(11), `language` varchar(10), `emailDocument` varchar(255));
+
+
+DROP TABLE IF EXISTS `coreshop_orderStates_query_de`;
+CREATE TABLE `coreshop_orderStates_query_de` (
+  `ooo_id` int(11) NOT NULL DEFAULT '0',
+  `language` varchar(10) NOT NULL DEFAULT '',
+  `emailDocument` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ooo_id`,`language`),
+  KEY `ooo_id` (`ooo_id`),
+  KEY `language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `coreshop_orderStates_query_de` (`ooo_id`, `language`, `emailDocument`) VALUES
+(1,	'de',	'/en/shop/email/awaiting-check-payment'),
+(2,	'de',	'/de/shop/email/payment');
+
+DROP TABLE IF EXISTS `coreshop_orderStates_query_en`;
+CREATE TABLE `coreshop_orderStates_query_en` (
+  `ooo_id` int(11) NOT NULL DEFAULT '0',
+  `language` varchar(10) NOT NULL DEFAULT '',
+  `emailDocument` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ooo_id`,`language`),
+  KEY `ooo_id` (`ooo_id`),
+  KEY `language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `coreshop_orderStates_query_en` (`ooo_id`, `language`, `emailDocument`) VALUES
+(1,	'en',	'/de/shop/email/awaiting-check-payment'),
+(2,	'en',	'/en/shop/email/payment');
+
+DROP TABLE IF EXISTS `coreshop_orderstates_data_localized_de`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `coreshop_orderstates_data_localized_de` AS select `coreshop_orderstates`.`id` AS `id`,`coreshop_orderstates`.`name` AS `name`,`coreshop_orderstates`.`accepted` AS `accepted`,`coreshop_orderstates`.`shipped` AS `shipped`,`coreshop_orderstates`.`paid` AS `paid`,`coreshop_orderstates`.`invoice` AS `invoice`,`coreshop_orderstates`.`email` AS `email`,`de`.`ooo_id` AS `ooo_id`,`de`.`language` AS `language`,`de`.`emailDocument` AS `emailDocument` from (`coreshop_orderstates` left join `coreshop_orderstates_query_de` `de` on((1 and (`coreshop_orderstates`.`id` = `de`.`ooo_id`))));
+
+DROP TABLE IF EXISTS `coreshop_orderstates_data_localized_en`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `coreshop_orderstates_data_localized_en` AS select `coreshop_orderstates`.`id` AS `id`,`coreshop_orderstates`.`name` AS `name`,`coreshop_orderstates`.`accepted` AS `accepted`,`coreshop_orderstates`.`shipped` AS `shipped`,`coreshop_orderstates`.`paid` AS `paid`,`coreshop_orderstates`.`invoice` AS `invoice`,`coreshop_orderstates`.`email` AS `email`,ifnull(`en`.`ooo_id`,`de`.`ooo_id`) AS `ooo_id`,ifnull(`en`.`language`,`de`.`language`) AS `language`,ifnull(`en`.`emailDocument`,`de`.`emailDocument`) AS `emailDocument` from ((`coreshop_orderstates` left join `coreshop_orderstates_query_en` `en` on((1 and (`coreshop_orderstates`.`id` = `en`.`ooo_id`)))) left join `coreshop_orderstates_query_de` `de` on((1 and (`coreshop_orderstates`.`id` = `de`.`ooo_id`))));
