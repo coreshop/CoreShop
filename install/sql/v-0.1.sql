@@ -443,7 +443,7 @@ CREATE TABLE `coreshop_orderStates` (
   `emailDocument` varchar(255) NULL
 );
 
-INSERT INTO `coreshop_orderstates` (`id`, `name`, `accepted`, `shipped`, `paid`, `invoice`, `email`, `emailDocument`) VALUES
+INSERT INTO `coreshop_orderStates` (`id`, `name`, `accepted`, `shipped`, `paid`, `invoice`, `email`, `emailDocument`) VALUES
 (1,	'Awaiting check payment',	0,	0,	0,	0,	1,	NULL),
 (2,	'Payment accepted',	1,	0,	1,	1,	1,	''),
 (3,	'Processing in progress',	1,	0,	1,	1,	1,	''),
