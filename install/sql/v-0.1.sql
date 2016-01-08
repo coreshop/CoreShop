@@ -442,6 +442,10 @@ CREATE TABLE `coreshop_orderStates` (
   `email` tinyint(1) NOT NULL DEFAULT '0'
 );
 
+/*
+  TODO: Move this to any programmed Import
+*/
+
 INSERT INTO `coreshop_orderStates` (`id`, `name`, `accepted`, `shipped`, `paid`, `invoice`, `email`) VALUES
 (1,	'Awaiting check payment',	0,	0,	0,	0,	1,	NULL),
 (2,	'Payment accepted',	1,	0,	1,	1,	1,	''),
