@@ -53,7 +53,6 @@ class CoreShop_Admin_InstallController extends Admin
             $fcUserAddress = $install->createFieldcollection('CoreShopUserAddress');
 
             // create object classes
-            $orerStateClass = $install->createClass("CoreShopOrderState");
             $categoryClass = $install->createClass('CoreShopCategory');
             $productClass = $install->createClass('CoreShopProduct');
             $cartClass = $install->createClass('CoreShopCart');
@@ -76,8 +75,7 @@ class CoreShop_Admin_InstallController extends Admin
                 $orderItemClass->getId(),
                 $orderClass->getId(),
                 $paymentClass->getId(),
-                $countryTaxClass->getId(),
-                $orerStateClass->getId()
+                $countryTaxClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();
