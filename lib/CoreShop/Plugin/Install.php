@@ -271,6 +271,24 @@ class Install
             $last = end($customViews);
             $customViewId = $last['id'] + 1;
         }
+
+        $alreadyDefined = FALSE;
+
+        // does custom view already exists?
+        if( !empty( $customViews ) ) {
+
+            foreach($customViews as $view) {
+
+                if( $view['name'] == 'CoreShop') {
+                    $alreadyDefined = TRUE;
+                    break;
+                }
+            }
+        }
+
+        if( $alreadyDefined === TRUE )
+            return false;
+
         $customViews[] = array(
             'name' => 'CoreShop',
             'condition' => '',
