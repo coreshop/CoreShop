@@ -14,7 +14,6 @@
 
 namespace CoreShop\Controller\Action;
 
-use CoreShop\Config;
 use CoreShop\Controller\Action;
 
 use CoreShop\Model\OrderState;

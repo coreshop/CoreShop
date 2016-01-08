@@ -14,20 +14,35 @@
 
 namespace CoreShop\Controller;
 
+use CoreShop\Model\Cart;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
 use CoreShop\Model\PriceRule;
 
 use Pimcore\Model\Object\CoreShopUser;
+use Pimcore\Tool\Session;
 
 class Action extends \Website\Controller\Action {
-    
-    /*
-        Zend_Session_Namespace
-    */
+
+    /**
+     * @var \Zend_Session_Namespace
+     */
     protected $cartSession;
-    
+
+    /**
+     * @var Cart
+     */
+    protected $cart;
+
+    /**
+     * @var Session
+     */
+    protected $session;
+
+    /**
+     * Init CoreShop Controller
+     */
     public function init()
     {
         parent::init();
@@ -50,17 +65,6 @@ class Action extends \Website\Controller\Action {
 
         $this->session = $this->view->session = Tool::getSession();
 
-        /*
-        if(!$this->session->country instanceof CoreShopCountry) {
-            if($this->session->user instanceof \CoreShop\Plugin\User && count($this->session->user->getAddresses()) > 0)
-            {
-                $this->session->country = $this->session->user->getAddresses()->get(0)->getCountry();
-            }
-            else
-                $this->session->country = Tool::getCountry();
-        }
-        */
-
         if($this->getParam("currency"))
         {
             if(Currency::getById($this->getParam("currency")) instanceof Currency)
@@ -76,22 +80,14 @@ class Action extends \Website\Controller\Action {
 
         $this->view->isShop = true;
     }
-    
-    public function preDispatch()
-    {
-        parent::preDispatch();
 
-        $result = Plugin::getEventManager()->trigger('action.' . $this->getRequest()->getActionName(), $this, array("controller" => $this, "request" => $this->getRequest()), function($v) {
-            return is_array($v) && array_key_exists("action", $v) && array_key_exists("controller", $v) && array_key_exists("module", $v);
-        });
-
-        if ($result->stopped()) {
-            $forward = $result->last();
-
-            $this->_forward($forward['action'], $forward['controller'], $forward['module'], $forward['params']);
-        }
-    }
-    
+    /**
+     * Prepare Cart
+     *
+     * If a user is available in session, set the user to the cart
+     *
+     * @throws \Exception
+     */
     protected function prepareCart()
     {
         $this->cart = $this->view->cart = Tool::prepareCart();

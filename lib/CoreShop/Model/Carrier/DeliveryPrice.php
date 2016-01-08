@@ -15,7 +15,6 @@
 namespace CoreShop\Model\Carrier;
 
 use CoreShop\Model\Carrier;
-use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\Zone;
 use Pimcore\Model\AbstractModel;
 

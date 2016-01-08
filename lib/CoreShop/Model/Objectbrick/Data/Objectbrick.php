@@ -14,20 +14,24 @@
 
 namespace CoreShop\Objectbrick\Data;
 
-use Object\Objectbrick\Data\Abstract;
+use CoreShop\Exception\UnsupportedException;
+use Pimcore\Model\Object\Objectbrick\Data\AbstractData;
 
-class Abstract extends Abstract
+class Objectbrick extends AbstractData
 {
     /**
     *  Zend_View
     */
     protected $view;
-    
+
+    /**
+     * @return \Zend_View
+     */
     public function getView()
     {
         if(!$this->view)
         {
-            $this->view = new Zend_View();
+            $this->view = new \Zend_View();
             $this->view->brick = $this;
             
             $this->view->setScriptPath(
@@ -43,9 +47,12 @@ class Abstract extends Abstract
         
         return $this->view;
     }
-    
+
+    /**
+     * @throws UnsupportedException
+     */
     public function render()
     {
-        throw new Exception("not implemented");
+        throw new UnsupportedException();
     }
 }

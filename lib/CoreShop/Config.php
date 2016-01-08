@@ -14,6 +14,8 @@
 
 namespace CoreShop;
 
+use Pimcore\Tool;
+
 class Config {
 
     /**
@@ -68,7 +70,7 @@ class Config {
                 \Logger::emergency("Cannot find system configuration, should be located at: " . CORESHOP_CONFIGURATION);
                 if(is_file(CORESHOP_CONFIGURATION)) {
                     $m = "Your coreshop-config.xml located at " . CORESHOP_CONFIGURATION . " is invalid, please check and correct it manually!";
-                    \Pimcore\Tool::exitWithError($m);
+                    Tool::exitWithError($m);
                 }
             }
         }

@@ -14,7 +14,7 @@
 
 namespace CoreShop\Model\Carrier;
 
-use Pimcore\Model\AbstractModel;
+use CoreShop\Model\AbstractModel;
 
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Zone;

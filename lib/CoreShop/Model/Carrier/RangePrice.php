@@ -14,7 +14,6 @@
 
 namespace CoreShop\Model\Carrier;
 
-use Pimcore\Model\AbstractModel;
 use CoreShop\Tool;
 
 class RangePrice extends AbstractRange

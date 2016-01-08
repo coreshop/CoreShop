@@ -52,12 +52,11 @@ class Dao extends AbstractDao {
 
         foreach ($validLanguages as $language)
         {
-            $storeTable = $this->getTableName();
             $queryTable = $this->getQueryTableName() . "_" . $language;
             $sql = "SELECT * FROM " . $queryTable . " WHERE ooo_id = " . $object->getId() . " AND language = '" . $language . "'";
-            $oldData = [];
+
             try {
-                $oldData = $this->db->fetchRow($sql);
+                $this->db->fetchRow($sql);
             } catch (\Exception $e) {
                 // if the table doesn't exist -> create it!
                 if(strpos($e->getMessage(), "exist")) {
@@ -104,7 +103,6 @@ class Dao extends AbstractDao {
                 if (!(in_array($key, $untouchable) and !is_array($this->model->$key))) {
                     $localizedValue = $this->model->getLocalizedValue($key, $language);
                     $insertData = $localizedValue;
-                    $isEmpty = $insertData;
 
                     if (is_array($insertData)) {
                         $data = array_merge($data, $insertData);

@@ -14,7 +14,9 @@
 
 namespace CoreShop\Model\Carrier\RangeWeight;
 
-class Listing extends \CoreShop\Model\Listing\AbstractListing
+use \CoreShop\Model\Listing\AbstractListing;
+
+class Listing extends AbstractListing
 {
 
 }

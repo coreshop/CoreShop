@@ -28,6 +28,8 @@ use CoreShop\Model\Plugin\InstallPlugin;
 
 use CoreShop\Plugin\Install;
 
+use CoreShopTemplate\Theme as TemplateTheme;
+
 class Plugin extends AbstractPlugin implements PluginInterface {
 
     /**
@@ -291,8 +293,8 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      * @return Theme|\CoreShopTemplate\Theme
      */
     public static function getTheme() {
-        if(!self::$_theme instanceof \CoreShop\Theme) {
-            self::$_theme = new \CoreShopTemplate\Theme();
+        if(!self::$_theme instanceof Theme) {
+            self::$_theme = new TemplateTheme();
         }
 
         return self::$_theme;

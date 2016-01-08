@@ -14,7 +14,7 @@
 
 namespace CoreShop\Model;
 
-use Pimcore\Model\Cache;
+use Pimcore\Cache;
 use Pimcore\Model\Object;
 use Pimcore\View\Helper\Url;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopProductSpecificPrice;
@@ -66,7 +66,7 @@ class Product extends Base {
     {
         $cacheKey = "coreshop_latest";
 
-        if(!$objects = \Pimcore\Model\Cache::load($cacheKey)) {
+        if(!$objects = \Pimcore\Cache::load($cacheKey)) {
 
             $list = new Object\CoreShopProduct\Listing();
             $list->setCondition("enabled=1");

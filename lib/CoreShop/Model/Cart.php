@@ -18,7 +18,6 @@ use CoreShop\Exception\UnsupportedException;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
-use CoreShop\Model\Plugin\Shipping;
 
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
@@ -247,7 +246,7 @@ class Cart extends Base {
             $items[] = $item;
 
             $this->setItems($items);
-            $this->save(true);
+            $this->save();
         }
 
         if($autoAddPriceRule)

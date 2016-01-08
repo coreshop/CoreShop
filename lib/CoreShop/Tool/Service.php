@@ -24,7 +24,7 @@ class Service
     /**
      * Gets all Differences in the variants
      *
-     * @param CoreShopProduct $product
+     * @param Product $product
      * @return array
      */
     public static function getDimensions(Product $product)

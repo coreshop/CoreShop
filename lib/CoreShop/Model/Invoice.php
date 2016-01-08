@@ -14,7 +14,6 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Config;
 use CoreShop\Exception;
 use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Model\Asset\Document;

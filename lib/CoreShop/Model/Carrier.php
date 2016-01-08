@@ -410,7 +410,7 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * @return id
+     * @return int
      */
     public function getImage()
     {
@@ -418,7 +418,7 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * @param id $image
+     * @param int $image
      */
     public function setImage($image)
     {

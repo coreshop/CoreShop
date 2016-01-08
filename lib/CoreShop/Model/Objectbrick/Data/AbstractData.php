@@ -22,7 +22,10 @@ class AbstractData extends \Pimcore\Model\Object\Objectbrick\Data\AbstractData
     *  Zend_View
     */
     protected $view;
-    
+
+    /**
+     * @return \Zend_View
+     */
     public function getView()
     {
         if(!$this->view)
@@ -43,9 +46,12 @@ class AbstractData extends \Pimcore\Model\Object\Objectbrick\Data\AbstractData
         
         return $this->view;
     }
-    
+
+    /**
+     * @throws Exception\UnsupportedException
+     */
     public function render()
     {
-        throw new Exception("not implemented");
+        throw new Exception\UnsupportedException();
     }
 }

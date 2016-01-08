@@ -14,6 +14,8 @@
 
 namespace CoreShop;
 
+use CoreShop\Model\AbstractModel;
+use Pimcore\Date;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object;
@@ -83,7 +85,7 @@ class Tool {
     /**
      * Get CoreShop Session
      *
-     * @return \stdClass
+     * @return Session
      */
     public static function getSession()
     {
@@ -93,7 +95,7 @@ class Tool {
     /**
      * Get current User
      *
-     * @return null|Object\User
+     * @return null|User
      */
     public static function getUser() {
         $session = self::getSession();
@@ -262,11 +264,11 @@ class Tool {
     /**
      * Check if Object $object in array $objectList
      *
-     * @param AbstractObject $object
+     * @param AbstractModel $object
      * @param array $objectList
      * @return bool
      */
-    public static function objectInList(AbstractObject $object, array $objectList)
+    public static function objectInList(AbstractModel $object, array $objectList)
     {
         foreach($objectList as $o) {
             if($o->getId() == $object->getId())
@@ -337,7 +339,7 @@ class Tool {
                 case 'fieldcollections':
                     if(($value instanceof Object\Fieldcollection) && is_array($value->getItems()))
                     {
-                        /** @var $value Object_Fieldcollection */
+                        /** @var $value Object\Fieldcollection */
                         $def = $value->getItemDefinitions();
                         if(method_exists($def['children'], 'getFieldDefinitions'))
                             $collection[$fieldName] = self::_objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
@@ -345,8 +347,8 @@ class Tool {
                     break;
 
                 case 'date':
-                    /** @var $value Pimcore_Date */
-                    $collection[$fieldName] = ($value instanceof \Pimcore\Date) ? $value->getTimestamp() : 0;
+                    /** @var $value \Pimcore\Date */
+                    $collection[$fieldName] = ($value instanceof Date) ? $value->getTimestamp() : 0;
                     break;
                 default:
                     /** @var $value string */
@@ -377,7 +379,7 @@ class Tool {
         if(!$interfaceToImplement)
             $interfaceToImplement = $targetClassName;
 
-        if($map = \CoreShop\Config::getModelClassMappingConfig()) {
+        if($map = Config::getModelClassMappingConfig()) {
             $tmpClassName = $map->{$sourceClassName};
             
             if($tmpClassName)  {

@@ -124,7 +124,7 @@ class LocalizedFields extends Model\AbstractModel {
     }
 
     /**
-     * @param  array fields
+     * @param array $fields
      * @return void
      */
     public function setFields($fields)

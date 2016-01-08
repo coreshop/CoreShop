@@ -14,7 +14,6 @@
 
 namespace CoreShop\Plugin;
 
-use CoreShop\Model\Category;
 use CoreShop\Plugin;
 use CoreShop\Config;
 
@@ -35,6 +34,11 @@ class Install
      */
     protected $_user;
 
+    /**
+     * executes some install SQL
+     *
+     * @param $fileName
+     */
     public function executeSQL($fileName) {
         $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/sql/$fileName.sql";;
 
@@ -42,12 +46,21 @@ class Install
         $setup->insertDump($file);
     }
 
+    /**
+     * creates a mew Class if it doesn't exists
+     *
+     * @param $className
+     * @return mixed|Object\ClassDefinition
+     */
     public function createClass($className)
     {
         $class = Object\ClassDefinition::getByName($className);
 
         if (!$class)
         {
+            $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
+            $json = file_get_contents($jsonFile);
+
             $result = Plugin::getEventManager()->trigger("install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function($v) {
                 return ($v instanceof Object\ClassDefinition);
             });
@@ -56,13 +69,9 @@ class Install
                 return $result->last();
             }
 
-            $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
-
             $class = Object\ClassDefinition::create();
             $class->setName($className);
             $class->setUserOwner($this->_getUser()->getId());
-
-            $json = file_get_contents($jsonFile);
 
             $result = Plugin::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
@@ -84,7 +93,12 @@ class Install
 
         return $class;
     }
-    
+
+    /**
+     * Removes a class definition
+     *
+     * @param $name
+     */
     public function removeClass($name)
     {
         $class = Object\ClassDefinition::getByName($name);
@@ -92,7 +106,14 @@ class Install
             $class->delete();
         }
     }
-    
+
+    /**
+     * Creates a new ObjectBrick
+     *
+     * @param $name
+     * @param null $jsonPath
+     * @return mixed|Object\Objectbrick\Definition
+     */
     public function createObjectBrick($name, $jsonPath = null)
     {
         try {
@@ -125,7 +146,13 @@ class Install
         
         return $objectBrick;
     }
-    
+
+    /**
+     * Removes an ObjectBrick
+     *
+     * @param $name
+     * @return bool
+     */
     public function removeObjectBrick($name)
     {
         try
@@ -143,7 +170,14 @@ class Install
         
         return true;
     }
-    
+
+    /**
+     * Creates a FieldCollection
+     *
+     * @param $name
+     * @param null $jsonPath
+     * @return mixed|null|Object\Fieldcollection\Definition
+     */
     public function createFieldCollection($name, $jsonPath = null)
     {
         try {
@@ -176,7 +210,13 @@ class Install
         
         return $fieldCollection;
     }
-    
+
+    /**
+     * Removes a FieldCollection
+     *
+     * @param $name
+     * @return bool
+     */
     public function removeFieldcollection($name)
     {
         try
@@ -195,6 +235,11 @@ class Install
         return true;
     }
 
+    /**
+     * Create needed CoreShop Folders
+     *
+     * @return Object\AbstractObject|Folder
+     */
     public function createFolders()
     {
         $root = Folder::getByPath("/coreshop");
@@ -252,7 +297,10 @@ class Install
 
         return $root;
     }
-    
+
+    /**
+     * Remove CoreShop Folders
+     */
     public function removeFolders()
     {
         $blogFolder = Folder::getByPath('/coreshop');
@@ -260,10 +308,18 @@ class Install
             $blogFolder->delete();
         }
     }
-    
+
+    /**
+     * Creates CustomView for CoreShop if it doesn't exist
+     *
+     * @param $rootFolder
+     * @param array $classIds
+     * @return bool
+     * @throws \Zend_Config_Exception
+     */
     public function createCustomView($rootFolder, array $classIds)
     {
-        $customViews = \Pimcore\Tool::getCustomViewConfig();
+        $customViews = Tool::getCustomViewConfig();
         
         if (!$customViews) {
             $customViews = array();
@@ -304,8 +360,15 @@ class Install
             'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
         ));
         $writer->write();
+
+        return true;
     }
 
+    /**
+     * installs some data based from an XML File
+     *
+     * @param $xml
+     */
     public function installObjectData($xml) {
         $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/data/objects/$xml.xml";
 
@@ -341,6 +404,12 @@ class Install
         }
     }
 
+    /**
+     * Creates some Documents with Data based from XML file
+     *
+     * @param $xml
+     * @throws \Exception
+     */
     public function installDocuments($xml) {
         $dataPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/data/documents";
         $file = $dataPath . "/$xml.xml";
@@ -375,7 +444,7 @@ class Install
                             {
                                 $class = "Pimcore\\Model\\Document\\" . ucfirst($doc['type']);
 
-                                if(\Pimcore\Tool::classExists($class))
+                                if(Tool::classExists($class))
                                 {
                                     $document = new $class();
                                     $document->setParent(Document::getByPath("/" . $language . "/" . $doc['path']));
@@ -432,9 +501,14 @@ class Install
         }
     }
 
+    /**
+     * Removes CoreShop CustomView
+     *
+     * @throws \Zend_Config_Exception
+     */
     public function removeCustomView()
     {
-        $customViews = \Pimcore\Tool::getCustomViewConfig();
+        $customViews = Tool::getCustomViewConfig();
         if ($customViews) {
             foreach ($customViews as $key => $view) {
                 if ($view['name'] == 'CoreShop') {
@@ -450,6 +524,11 @@ class Install
         }
     }
 
+    /**
+     * set isInstalled true in CoreShop Config
+     *
+     * @throws \Zend_Config_Exception
+     */
     public function setConfigInstalled() {
         $oldConfig = Config::getConfig();
         $oldValues = $oldConfig->toArray();
@@ -464,6 +543,9 @@ class Install
         $writer->write();
     }
 
+    /**
+     * Creates CoreShop Static Routes
+     */
     public function createStaticRoutes()
     {
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
@@ -482,16 +564,33 @@ class Install
         }
     }
 
+    /**
+     * Installs the Theme
+     *
+     * @param string $template
+     * @param bool $installDemoData
+     * @throws \CoreShop\Exception\ThemeNotFoundException
+     */
     public function installTheme($template = "default", $installDemoData = true)
     {
-        Plugin::enableTheme($template, $installDemoData);
+        Plugin::enableTheme($template);
+
+        if($installDemoData) {
+            Plugin::getTheme()->installDemoData();
+        }
     }
 
+    /**
+     * Install Demo Theme Data
+     */
     public function installThemeDemo()
     {
         Plugin::getTheme()->installDemoData();
     }
 
+    /**
+     * Remove CoreShop Static Routes
+     */
     public function removeStaticRoutes()
     {
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
@@ -503,7 +602,10 @@ class Install
             }
         }
     }
-    
+
+    /**
+     * Create CoreShop Classmap File
+     */
     public function createClassmap()
     {
         if(!is_file(Plugin::getClassmapFile()))
@@ -511,7 +613,10 @@ class Install
             copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop_classmap.xml', Plugin::getClassmapFile());
         }
     }
-    
+
+    /**
+     * Remove CoreShop Classmap File
+     */
     public function removeClassmap()
     {
         if(is_file(Plugin::getClassmapFile()))
@@ -520,6 +625,9 @@ class Install
         }
     }
 
+    /**
+     * Create CoreShop Config
+     */
     public function createConfig()
     {
         if(!is_file(CORESHOP_CONFIGURATION))
@@ -528,6 +636,9 @@ class Install
         }
     }
 
+    /**
+     * Remove CoreShop Config
+     */
     public function removeConfig()
     {
         if(is_file(CORESHOP_CONFIGURATION))
@@ -535,12 +646,18 @@ class Install
             unlink(CORESHOP_CONFIGURATION);
         }
     }
-    
+
+    /**
+     * Creates CoreShop Image Thumbnails
+     */
     public function createImageThumbnails()
     {
         recurse_copy(PIMCORE_PLUGINS_PATH . "/CoreShop/install/thumbnails/image", PIMCORE_WEBSITE_PATH . "/var/config/imagepipelines", true);
     }
-    
+
+    /**
+     * Removes CoreShop Image Thumbnails
+     */
     public function removeImageThumbnails()
     {
         foreach (glob(PIMCORE_WEBSITE_PATH . "/var/config/imagepipelines/coreshop_*.xml") as $filename) 

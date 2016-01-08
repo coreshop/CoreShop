@@ -31,7 +31,7 @@ class Category extends AbstractCondition {
     public $type = "category";
 
     /**
-     * @return int
+     * @return CoreShopCategory
      */
     public function getCategory()
     {
