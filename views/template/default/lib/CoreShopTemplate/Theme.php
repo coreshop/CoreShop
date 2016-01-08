@@ -128,6 +128,7 @@ class Theme extends CoreShopTheme
                         $product->setParent($parent);
                         $product->setKey(File::getValidFilename($data[3]));
                         $product->setName($data[3], "de");
+                        $product->setName($data[3], "en");
                         $product->setCategories($categories);
                         $product->setEan($data[16]);
                         $product->setWholesalePrice($data[21]);

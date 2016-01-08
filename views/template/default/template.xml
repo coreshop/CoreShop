@@ -6,10 +6,6 @@
     <version>1.0</version>
 
     <installation>
-        <documents>
-
-        </documents>
-w
         <demo>
             <categories>data/categories.csv</categories>
             <products>data/products.csv</products>

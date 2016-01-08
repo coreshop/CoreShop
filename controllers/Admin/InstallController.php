@@ -47,6 +47,10 @@ class CoreShop_Admin_InstallController extends Admin
 
             $install->executeSQL("v-0.1");
 
+            //install Data
+            $install->installObjectData("orderStates");
+            $install->installDocuments("documents");
+
             $countryTaxClass = $install->createClass("CoreShopCountryTax");
 
             $fcSpecificAddress = $install->createFieldCollection("CoreShopProductSpecificPrice");
@@ -85,10 +89,6 @@ class CoreShop_Admin_InstallController extends Admin
             $install->createClassmap();
             $install->createImageThumbnails();
             $install->installTheme();
-
-            //install Data
-            $install->installObjectData("orderStates");
-            $install->installDocuments("documents");
 
             Plugin::getEventManager()->trigger('install.post', null, array("installer" => $install));
 
