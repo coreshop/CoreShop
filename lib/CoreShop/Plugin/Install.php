@@ -26,6 +26,7 @@ use Pimcore\Model\User;
 use Pimcore\Model\Staticroute;
 
 use Pimcore\Model\Tool\Setup;
+use Pimcore\Tool;
 
 class Install
 {
@@ -304,6 +305,133 @@ class Install
         ));
         $writer->write();
     }
+
+    public function installObjectData($xml) {
+        $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/data/objects/$xml.xml";
+
+        if(file_exists($file)) {
+            $config = new \Zend_Config_Xml($file);
+            $config = $config->toArray();
+            $coreShopNamespace = "\\CoreShop\\Model\\";
+
+            foreach($config['objects'] as $class=>$amounts) {
+                $class = $coreShopNamespace . $class;
+
+                foreach($amounts as $values) {
+                    if(Tool::classExists($class)) {
+                        $object = new $class();
+
+                        foreach ($values as $key => $value) {
+                            //Localized Value
+                            $setter = "set" . ucfirst($key);
+
+                            if (is_array($value)) {
+                                foreach ($value as $lang => $val) {
+                                    $object->$setter($val, $lang);
+                                }
+                            } else {
+                                $object->$setter($value);
+                            }
+                        }
+
+                        $object->save();
+                    }
+                }
+            }
+        }
+    }
+
+    public function installDocuments($xml) {
+        $dataPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/data/documents";
+        $file = $dataPath . "/$xml.xml";
+
+        if(file_exists($file))
+        {
+            $config = new \Zend_Config_Xml($file);
+            $config = $config->toArray();
+
+            if(array_key_exists("documents", $config))
+            {
+                $validLanguages = explode(",", \Pimcore\Config::getSystemConfig()->general->validLanguages);
+
+                foreach($validLanguages as $language)
+                {
+                    $languageDocument = Document::getByPath("/" . $language);
+
+                    if(!$languageDocument instanceof Document) {
+                        $languageDocument = new Document\Page();
+                        $languageDocument->setParent(Document::getById(1));
+                        $languageDocument->setKey($language);
+                        $languageDocument->save();
+                    }
+
+                    foreach($config["documents"] as $value)
+                    {
+                        foreach($value as $doc)
+                        {
+                            $document = Document::getByPath("/" . $language . "/" . $doc['path'] . "/" . $doc['key']);
+
+                            if(!$document)
+                            {
+                                $class = "Pimcore\\Model\\Document\\" . ucfirst($doc['type']);
+
+                                if(\Pimcore\Tool::classExists($class))
+                                {
+                                    $document = new $class();
+                                    $document->setParent(Document::getByPath("/" . $language . "/" . $doc['path']));
+                                    $document->setKey($doc['key']);
+
+                                    if($document instanceof Document\PageSnippet) {
+                                        if(array_key_exists("action", $doc))
+                                            $document->setAction($doc['action']);
+
+                                        if(array_key_exists("controller", $doc))
+                                            $document->setController($doc['controller']);
+
+                                        if(array_key_exists("module", $doc))
+                                            $document->setModule($doc['module']);
+                                    }
+
+                                    $document->save();
+
+                                    if(array_key_exists("content", $doc)) {
+                                        foreach($doc['content'] as $fieldLanguage=>$fields) {
+                                            if($fieldLanguage !== $language)
+                                                continue;
+
+                                            foreach($fields['field'] as $field) {
+                                                $key = $field['key'];
+                                                $type = $field['type'];
+                                                $content = null;
+
+                                                if(array_key_exists("file", $field)) {
+                                                    $file = $dataPath . "/" . $field['file'];
+
+                                                    if(file_exists($file))
+                                                        $content = file_get_contents($file);
+                                                }
+
+                                                if(array_key_exists("value", $field)) {
+                                                    $content = $field['value'];
+                                                }
+
+                                                if($content) {
+                                                    $document->setRawElement($key, $type, $content);
+                                                }
+                                            }
+                                        }
+
+                                        $document->save();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public function removeCustomView()
     {
         $customViews = \Pimcore\Tool::getCustomViewConfig();

@@ -7,76 +7,9 @@
 
     <installation>
         <documents>
-            <document>
-                <type>page</type>
-                <module>CoreShop</module>
-                <action>index</action>
-                <controller>index</controller>
-                <path></path>
-                <key>shop</key>
-            </document>
-            <document>
-                <type>folder</type>
-                <path>shop</path>
-                <key>snippet</key>
-            </document>
-            <document>
-                <type>snippet</type>
-                <action>footer</action>
-                <controller>snippet</controller>
-                <module>CoreShopTemplate</module>
-                <path>shop/snippet</path>
-                <key>footer</key>
-            </document>
-            <document>
-                <type>snippet</type>
-                <action>main-menu</action>
-                <controller>snippet</controller>
-                <module>CoreShopTemplate</module>
-                <path>shop/snippet</path>
-                <key>menu</key>
-            </document>
-            <document>
-                <type>folder</type>
-                <path>shop</path>
-                <key>email</key>
-            </document>
-            <document>
-                <type>email</type>
-                <action>email</action>
-                <controller>email</controller>
-                <module>CoreShop</module>
-                <path>shop/email</path>
-                <key>awaiting-check-payment</key>
-                <content>
-                    <de>
-                        <field>
-                            <key>text</key>
-                            <type>wysiwyg</type>
-                            <file>data/de/awaiting-check-payment.html</file>
-                        </field>
-                        <field>
-                            <key>head</key>
-                            <type>input</type>
-                            <value>Warten auf Checkzahlung</value>
-                        </field>
-                    </de>
-                    <en>
-                        <field>
-                            <key>text</key>
-                            <type>wysiwyg</type>
-                            <file>data/en/awaiting-check-payment.html</file>
-                        </field>
-                        <field>
-                            <key>head</key>
-                            <type>input</type>
-                            <value>Awaiting Check Payment</value>
-                        </field>
-                    </en>
-                </content>
-            </document>
-        </documents>
 
+        </documents>
+w
         <demo>
             <categories>data/categories.csv</categories>
             <products>data/products.csv</products>

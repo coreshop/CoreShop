@@ -86,6 +86,10 @@ class CoreShop_Admin_InstallController extends Admin
             $install->createImageThumbnails();
             $install->installTheme();
 
+            //install Data
+            $install->installObjectData("orderStates");
+            $install->installDocuments("documents");
+
             Plugin::getEventManager()->trigger('install.post', null, array("installer" => $install));
 
             $install->setConfigInstalled();
