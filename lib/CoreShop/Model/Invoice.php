@@ -18,6 +18,7 @@ use CoreShop\Exception;
 use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Asset\Service;
+use Pimcore\Model\Object\Localizedfield;
 use Pimcore\View;
 
 class Invoice
@@ -36,6 +37,8 @@ class Invoice
         \Zend_Locale::setDefault($locale);
         \Zend_Registry::set("Zend_Locale", $locale);
 
+        Localizedfield::setGetFallbackValues(true);
+
         $view = new View();
         $view->setScriptPath(CORESHOP_TEMPLATE_PATH . "/views/scripts/coreshop/invoice/");
         $view->assign("order", $order);
@@ -44,6 +47,8 @@ class Invoice
         $html = $view->render("invoice.php");
         $header = $view->render("header.php");
         $footer = $view->render("footer.php");
+
+        Localizedfield::setGetFallbackValues(false);
 
         try {
             $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, array("options" => array("-T" => "35mm")));
