@@ -24,7 +24,7 @@
             <tbody>
                 <?php foreach($this->session->user->getOrders() as $order) { ?>
                 <tr>
-                    <td><?=$order->getId()?></td>
+                    <td><?=$order->getOrderNumber()?></td>
                     <td>
                         <?=$order->getOrderDate()?>
                     </td>
@@ -32,7 +32,9 @@
                         <?=\CoreShop\Tool::formatPrice($order->getTotal())?>
                     </td>
                     <td>
-                        <?=$order->getOrderState()->getName()?>
+                        <?php if($order->getOrderState() instanceof CoreShop\Model\OrderState) { ?>
+                            <?=$order->getOrderState()->getName()?>
+                        <?php } ?>
                     </td>
                 </tr>
                 <?php } ?>
