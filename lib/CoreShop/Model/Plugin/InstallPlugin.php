@@ -22,7 +22,6 @@ interface InstallPlugin
      * Install Plugin
      *
      * @param Install $installer
-     * @return mixed
      */
     public function install(Install $installer);
 
@@ -30,7 +29,6 @@ interface InstallPlugin
      * Uninstall Plugin
      *
      * @param Install $installer
-     * @return mixed
      */
     public function uninstall(Install $installer);
 }

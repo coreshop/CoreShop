@@ -45,7 +45,7 @@
             "title":null,
             "width":null,
             "height":null,
-            "collapsible":null,
+            "collapsible":false,
             "collapsed":null,
             "bodyStyle":null,
             "datatype":"layout",
@@ -104,10 +104,10 @@
                     "options":[
                       {
                         "key":"Post",
-                        "value":"2"
+                        "value":"1"
                       }
                     ],
-                    "width":null,
+                    "width":"",
                     "defaultValue":null,
                     "name":"carrier",
                     "title":"Carrier",
@@ -115,7 +115,7 @@
                     "mandatory":false,
                     "noteditable":false,
                     "index":false,
-                    "locked":null,
+                    "locked":false,
                     "style":"",
                     "permissions":null,
                     "datatype":"data",
@@ -130,10 +130,7 @@
                     "columnType":"int(11)",
                     "phpdocType":"CoreShop\\Model\\PriceRule",
                     "options":[
-                      {
-                        "key":"test",
-                        "value":"1"
-                      }
+
                     ],
                     "width":"",
                     "defaultValue":null,
@@ -151,9 +148,32 @@
                     "invisible":false,
                     "visibleGridView":false,
                     "visibleSearch":false
+                  },
+                  {
+                    "fieldtype":"input",
+                    "width":null,
+                    "queryColumnType":"varchar",
+                    "columnType":"varchar",
+                    "columnLength":255,
+                    "phpdocType":"string",
+                    "regex":"",
+                    "name":"customIdentifier",
+                    "title":"Custom Identifier",
+                    "tooltip":"",
+                    "mandatory":false,
+                    "noteditable":true,
+                    "index":false,
+                    "locked":null,
+                    "style":"",
+                    "permissions":null,
+                    "datatype":"data",
+                    "relationType":false,
+                    "invisible":true,
+                    "visibleGridView":false,
+                    "visibleSearch":false
                   }
                 ],
-                "locked":null
+                "locked":false
               },
               {
                 "fieldtype":"panel",
@@ -225,7 +245,7 @@
                     "mandatory":false,
                     "noteditable":false,
                     "index":false,
-                    "locked":null,
+                    "locked":false,
                     "style":"",
                     "permissions":null,
                     "datatype":"data",
@@ -254,7 +274,7 @@
                     "mandatory":false,
                     "noteditable":false,
                     "index":false,
-                    "locked":null,
+                    "locked":false,
                     "style":"",
                     "permissions":null,
                     "datatype":"data",
@@ -266,10 +286,10 @@
                     "visibleSearch":false
                   }
                 ],
-                "locked":null
+                "locked":false
               }
             ],
-            "locked":null
+            "locked":false
           }
         ],
         "locked":false

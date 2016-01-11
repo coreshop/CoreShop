@@ -26,6 +26,24 @@ use Pimcore\Model\Object\Service;
 class Cart extends Base {
 
     /**
+     * Return Cart by custom identifier
+     *
+     * @param $transactionIdentification
+     * @return bool|Cart
+     */
+    public static function findByCustomIdentifer($transactionIdentification) {
+        $list = CoreShopCart::getByCustomIdentifier($transactionIdentification);
+
+        $carts = $list->getObjects();
+
+        if (count($carts) > 0) {
+            return $carts[0];
+        }
+
+        return false;
+    }
+
+    /**
      * Get all existing Carts
      *
      * @return array CoreShopCart

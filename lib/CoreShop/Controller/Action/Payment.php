@@ -44,7 +44,7 @@ class Payment extends Action {
             array_merge(
                 $this->view->getScriptPaths(),
                 array(
-                    CORESHOP_TEMPLATE_PATH . '/views/scripts/' . $this->getModule()->getIdentifier()
+                    CORESHOP_TEMPLATE_PATH . '/views/scripts/' . strtolower($this->getModule()->getIdentifier())
                 )
             )
         );
