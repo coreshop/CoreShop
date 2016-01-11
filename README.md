@@ -15,7 +15,7 @@ You can setup your own example:
 * After Installation within Pimcore Extension Manager, you have to reload Pimcore
 * Now the CoreShop Icon will appear in the Menu
 * You now have to let CoreShop install itself
-* finised
+* finished
 * Go To http://yourdomain/en/shop
 
 ___
