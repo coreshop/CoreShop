@@ -132,8 +132,9 @@ class OrderState extends AbstractModel
             if($emailDocument instanceof Document\Email) {
 
                 $emailParameters = array_merge($order->getObjectVars(), $this->getObjectVars(), $order->getCustomer()->getObjectVars());
-
                 $emailParameters['orderTotal'] = $order->gettotal();
+
+                unset($emailParameters['____pimcore_cache_item__']);
 
                 $mail = new Mail();
                 $mail->setDocument($emailDocument);
