@@ -52,7 +52,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/awaiting-check-payment.html</file>
+                        <file>de/awaiting-check-payment.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -69,7 +69,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/awaiting-check-payment.html</file>
+                        <file>en/awaiting-check-payment.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -92,7 +92,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/payment-accepted.html</file>
+                        <file>de/payment-accepted.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -109,7 +109,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/payment-accepted.html</file>
+                        <file>en/payment-accepted.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -137,7 +137,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/preparation-in-progress.html</file>
+                        <file>de/preparation-in-progress.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -154,7 +154,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/preparation-in-progress.html</file>
+                        <file>en/preparation-in-progress.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -182,7 +182,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/shipped.html</file>
+                        <file>de/shipped.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -199,7 +199,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/shipped.html</file>
+                        <file>en/shipped.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -227,7 +227,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/refunded.html</file>
+                        <file>de/refunded.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -244,7 +244,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/refunded.html</file>
+                        <file>en/refunded.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -272,7 +272,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/payment-error.html</file>
+                        <file>de/payment-error.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -289,7 +289,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/payment-error.html</file>
+                        <file>en/payment-error.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -317,7 +317,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/out-of-stock.html</file>
+                        <file>de/out-of-stock.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -334,7 +334,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/out-of-stock.html</file>
+                        <file>en/out-of-stock.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -362,7 +362,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/bankwire.html</file>
+                        <file>de/bankwire.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -379,7 +379,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/bankwire.html</file>
+                        <file>en/bankwire.html</file>
                     </field>
                     <field>
                         <key>head</key>
