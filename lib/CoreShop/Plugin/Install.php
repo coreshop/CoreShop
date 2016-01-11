@@ -486,7 +486,12 @@ class Install
                                                 }
 
                                                 if($content) {
-                                                    $document->setRawElement($key, $type, $content);
+                                                    if($type === "objectProperty") {
+                                                        $document->setValue($key, $content);
+                                                    }
+                                                    else {
+                                                        $document->setRawElement($key, $type, $content);
+                                                    }
                                                 }
                                             }
                                         }
