@@ -47,7 +47,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/de/awaiting-check-payment.html</file>
+                        <file>de/awaiting-check-payment.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -59,7 +59,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>data/en/awaiting-check-payment.html</file>
+                        <file>en/awaiting-check-payment.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -69,5 +69,251 @@
                 </en>
             </content>
         </document>
+
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>payment-accepted</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/payment-accepted.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Zahlung für die Bestellung %Text(orderNumber);</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/payment-accepted.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Payment for Order %Text(orderNumber);</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>preparation-in-progress</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/preparation-in-progress.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Bestellung in Vorbereitung (%Text(orderNumber);)</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/preparation-in-progress.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Preparation in progress (%Text(orderNumber);)</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>shipped</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/shipped.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Ihre Bestellung wurde versandt (%Text(orderNumber);)</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/shipped.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Your order has been shipped (%Text(orderNumber);)</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>refunded</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/refunded.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Ihre Bestellung wurde erstattet (%Text(orderNumber);)</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/refunded.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Your order has been refunded (%Text(orderNumber);)</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>payment-error</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/payment-error.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Fehler bei der Bezahlung (%Text(orderNumber);)</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/payment-error.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Error on payment (%Text(orderNumber);)</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>out-of-stock</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/out-of-stock.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Produkte derzeit nicht auf Lager (%Text(orderNumber);)</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/out-of-stock.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Out of Stock (%Text(orderNumber);)</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>bankwire</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/bankwire.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Bezahlung per Überweißung (%Text(orderNumber);)</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/bankwire.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Payment by Bankwire (%Text(orderNumber);)</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
     </documents>
 </zend-config>

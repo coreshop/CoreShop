@@ -26,15 +26,15 @@
             </emailDocument>
         </OrderState>
         <OrderState>
-            <name>Processing in progress</name>
+            <name>Preparation in progress</name>
             <accepted>1</accepted>
             <shipped>0</shipped>
             <paid>1</paid>
             <invoice>1</invoice>
             <email>1</email>
             <emailDocument>
-                <de>/de/shop/email/payment-in-progress</de>
-                <en>/en/shop/email/payment-in-progress</en>
+                <de>/de/shop/email/preparation-in-progress</de>
+                <en>/en/shop/email/preparation-in-progress</en>
             </emailDocument>
         </OrderState>
         <OrderState>
@@ -105,8 +105,8 @@
             <invoice>1</invoice>
             <email>1</email>
             <emailDocument>
-                <de>/de/shop/email/on-backorder-paid</de>
-                <en>/en/shop/email/on-backorder-paid</en>
+                <de>/de/shop/email/out-of-stock</de>
+                <en>/en/shop/email/out-of-stock</en>
             </emailDocument>
         </OrderState>
         <OrderState>
@@ -117,8 +117,8 @@
             <invoice>0</invoice>
             <email>1</email>
             <emailDocument>
-                <de>/de/shop/email/bankwire-payment</de>
-                <en>/en/shop/email/bankwire-payment</en>
+                <de>/de/shop/email/bankwire</de>
+                <en>/en/shop/email/bankwire</en>
             </emailDocument>
         </OrderState>
         <OrderState>
@@ -129,8 +129,8 @@
             <invoice>0</invoice>
             <email>1</email>
             <emailDocument>
-                <de>/de/shop/email/on-backorder-unpaid</de>
-                <en>/en/shop/email/on-backorder-unpaid</en>
+                <de>/de/shop/email/out-of-stock</de>
+                <en>/en/shop/email/out-of-stock</en>
             </emailDocument>
         </OrderState>
         <OrderState>

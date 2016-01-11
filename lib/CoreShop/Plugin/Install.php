@@ -449,6 +449,7 @@ class Install
                                     $document = new $class();
                                     $document->setParent(Document::getByPath("/" . $language . "/" . $doc['path']));
                                     $document->setKey($doc['key']);
+                                    $document->setProperty("language", $language, 'text', true);
 
                                     if($document instanceof Document\PageSnippet) {
                                         if(array_key_exists("action", $doc))
