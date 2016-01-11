@@ -97,13 +97,13 @@ class CoreShop_CheckoutController extends Action
         
         if($this->getRequest()->isPost())
         {
-            $shippingProvider = $this->getParam("carrier", false);
+            $carrier = $this->getParam("carrier", false);
             
-            foreach($this->view->carriers as $carrier)
+            foreach($this->view->carriers as $c)
             {
-                if($carrier->getId() == $shippingProvider)
+                if($c->getId() == $carrier)
                 {
-                    $shippingProvider = $carrier;
+                    $carrier = $c;
                     break;
                 }
             }
