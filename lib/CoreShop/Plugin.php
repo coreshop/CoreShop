@@ -61,6 +61,18 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $autoloader = \Zend_Loader_Autoloader::getInstance();
             $frontController = $e->getTarget();
 
+            $router = $frontController->getRouter();
+
+            $routePluginPayment = new \Zend_Controller_Router_Route(
+                '/:language/shop/payment/:action/*',
+                array(
+                    "controller" => "payment",
+                    "action" => "index"
+                )
+            );
+
+            $router->addRoute("coreshop_payment", $routePluginPayment);
+
             if($frontController instanceof \Zend_Controller_Front) {
                 $namespace = "CoreShopTemplate";
 
@@ -420,7 +432,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      * @param Cart $cart
      * @return array
      */
-    public static function getPaymentProviders(Cart $cart)
+    public static function getPaymentProviders(Cart $cart = null)
     {
         $results = self::getEventManager()->trigger("payment.getProvider", null, array("cart" => $cart));
         $provider = array();

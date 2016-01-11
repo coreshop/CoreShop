@@ -16,10 +16,15 @@ namespace CoreShop\Model\Plugin;
 
 use CoreShop\Config;
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Carrier;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\OrderState;
+use CoreShop\Model\User;
 use CoreShop\Plugin;
+use Pimcore\Date;
+use Pimcore\Model\Object\CoreShopOrder;
+use Pimcore\Model\Object\Service;
 
 abstract class Payment implements AbstractPlugin
 {
@@ -39,53 +44,70 @@ abstract class Payment implements AbstractPlugin
      * @param Order $order
      * @throws UnsupportedException
      */
-    public function processPayment(Order $order) {
+    public function process(Order $order) {
         throw new UnsupportedException("");
     }
 
     /**
-     * Validate Order
+     * Creates order after successfull payment
      *
-     * @param \CoreShop\Model\Payment|null $payment
-     * @param Order|null $order
-     * @param OrderState|null $orderState
+     * @param Cart $cart
+     * @param OrderState $state
+     * @param $totalPayed
+     * @return Order
      */
-    public function validateOrder(\CoreShop\Model\Payment $payment = null, Order $order = null, OrderState $orderState = null) {
-        $paymentHandled = false;
-        $result = Plugin::getEventManager()->trigger('payment', $this, array("payment" => $payment), function($v) {
-            return is_bool($v);
-        });
+    public function createOrder(Cart $cart, OrderState $state, $totalPayed = 0, $language = null) {
+        $orderNumber = Order::getNextOrderNumber();
 
-        if ($result->stopped()) {
-            $paymentHandled = $result->last();
+        if(is_null($language)) {
+            $language = \Zend_Registry::get("Zend_Locale");
         }
 
-        if(!$paymentHandled)
-        {
-            if($payment instanceof \CoreShop\Model\Payment) {
-                if($order instanceof Order) {
-                    if($orderState instanceof $orderState) {
-                        $orderState->processStep($order);
+        $order = new CoreShopOrder();
+        $order->setKey(\Pimcore\File::getValidFilename($orderNumber));
+        $order->setOrderNumber($orderNumber);
+        $order->setParent(Service::createFolderByPath('/coreshop/orders/' . date('Y/m/d')));
+        $order->setPublished(true);
+        $order->setLang($language);
+        $order->setCustomer($cart->getUser());
+        $order->setShippingAddress($cart->getShippingAddress());
+        $order->setBillingAddress($cart->getBillingAddress());
+        $order->setPaymentProviderToken($this->getIdentifier());
+        $order->setPaymentProvider($this->getName());
+        $order->setPaymentProviderDescription($this->getDescription());
+        $order->setOrderDate(new Date());
 
-                        $paymentHandled = true;
-                    }
-                }
-            }
+        if($cart->getCarrier() instanceof Carrier) {
+            $order->setCarrier($cart->getCarrier());
+            $order->setShipping($cart->getCarrier()->getDeliveryPrice($cart));
+        }
+        else {
+            $order->setShipping(0);
         }
 
-        //Error occured, set state to error
-        if(!$paymentHandled) {
-            if($order instanceof Order) {
-                $errorOrderState = OrderState::getById(Config::getValue("ORDERSTATE.ERROR"));
-                $errorOrderState->processStep($order);
+        $order->setTotal($cart->getTotal());
+        $order->setSubtotal($cart->getSubtotal());
+        $order->save();
+        $order->importCart($cart);
 
-                $paymentHandled = true;
-            }
-        }
+        $order->createPayment($this, $totalPayed, true);
 
-        if(!$paymentHandled) {
-            //Something unkown happend
-            die("something unkown happend");
-        }
+        $state->processStep($order);
+
+        return $order;
+    }
+
+    /**
+     * assemble route with zend router
+     *
+     * @param $module string module name
+     * @action $action string action name
+     * @return string
+     */
+    public function url($module, $action) {
+        $controller = \Zend_Controller_Front::getInstance();
+        $router = $controller->getRouter();
+
+        return $router->assemble(array("module" => $module, "action" => $action, "language" => \Zend_Registry::get("Zend_Locale")), "coreshop_payment");
     }
 }

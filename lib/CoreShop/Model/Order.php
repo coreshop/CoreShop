@@ -95,7 +95,7 @@ class Order extends Base
      * @return Object\CoreShopPayment
      * @throws \Exception
      */
-    public function createPayment(CorePayment $provider, $amount)
+    public function createPayment(CorePayment $provider, $amount, $paid = false)
     {
         $payment = new Object\CoreShopPayment();
         $payment->setKey(uniqid());
@@ -104,6 +104,7 @@ class Order extends Base
         $payment->setAmount($amount);
         $payment->setTransactionIdentifier(uniqid());
         $payment->setProvider($provider->getIdentifier());
+        $payment->setPayed($paid);
         $payment->save();
         
         $this->addPayment($payment);

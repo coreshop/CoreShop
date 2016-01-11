@@ -17,6 +17,7 @@ namespace CoreShop\Model;
 use CoreShop\Config;
 use CoreShop\Plugin;
 use CoreShop\Tool;
+use Pimcore\Date;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 
@@ -110,16 +111,16 @@ class OrderState extends AbstractModel
 
         }
 
+        if($this->getPaid())
+        {
+            //Plugin::actionHook("paymentConfirmation", array("order" => $order));
+        }
+
         if($this->getInvoice())
         {
             if((bool)Config::getValue("INVOICE.CREATE")) {
                 Invoice::generateInvoice($order);
             }
-        }
-
-        if($this->getPaid())
-        {
-            Plugin::actionHook("paymentConfirmation", array("order" => $order));
         }
 
         Plugin::actionHook("orderStatusUpdate", array("newOrderStatus" => $this, "order" => $order));

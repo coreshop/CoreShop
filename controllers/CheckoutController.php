@@ -73,10 +73,15 @@ class CoreShop_CheckoutController extends Action
                 $billingAddress = $this->getParam("shipping-address");
             }
 
-            $this->session->order['address'] = array(
-                "billing" => $billingAddress,
-                "shipping" => $shippingAddress
-            );
+            $fieldCollectionShipping = new \Pimcore\Model\Object\Fieldcollection();
+            $fieldCollectionShipping->add($this->session->user->findAddressByName($shippingAddress));
+
+            $fieldCollectionBilling = new \Pimcore\Model\Object\Fieldcollection();
+            $fieldCollectionBilling->add($this->session->user->findAddressByName($billingAddress));
+
+            $this->cart->setShippingAddress($fieldCollectionShipping);
+            $this->cart->setBillingAddress($fieldCollectionBilling);
+            $this->cart->save();
             
             $this->_redirect($this->view->url(array("action" => "shipping"), "coreshop_checkout"));
         }
@@ -114,8 +119,9 @@ class CoreShop_CheckoutController extends Action
             }
             else
             {
-                $this->session->order['carrier'] = $carrier;
-                
+                $this->cart->setCarrier($carrier);
+                $this->cart->save();
+
                 $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
             }
         }
@@ -147,47 +153,7 @@ class CoreShop_CheckoutController extends Action
             }
             else
             {
-                $fieldCollectionShipping = new \Pimcore\Model\Object\Fieldcollection();
-                $fieldCollectionShipping->add($this->session->user->findAddressByName($this->session->order['address']['shipping']));
-
-                $fieldCollectionBilling = new \Pimcore\Model\Object\Fieldcollection();
-                $fieldCollectionBilling->add($this->session->user->findAddressByName($this->session->order['address']['billing']));
-
-                $orderNumber = CoreShopOrder::getNextOrderNumber();
-
-                $this->session->order['paymentProvider'] = $provider;
-                $order = new CoreShopOrder();
-                $order->setKey(\Pimcore\File::getValidFilename($orderNumber));
-                $order->setOrderNumber($orderNumber);
-                $order->setParent(Service::createFolderByPath('/coreshop/orders/' . date('Y/m/d')));
-                $order->setPublished(true);
-                $order->setLang($this->view->language);
-                $order->setCustomer($this->session->user);
-                $order->setShippingAddress($fieldCollectionShipping);
-                $order->setBillingAddress($fieldCollectionBilling);
-                $order->setPaymentProviderToken($provider->getIdentifier());
-                $order->setPaymentProvider($provider->getName());
-                $order->setPaymentProviderDescription($provider->getDescription());
-                $order->setOrderDate(new \Zend_Date());
-
-                if($this->session->order['carrier'] instanceof \CoreShop\Model\Carrier)
-                {
-                    $order->setCarrier($this->session->order['carrier']);
-                    $order->setShipping($this->session->order['carrier']->getDeliveryPrice($this->cart));
-                }
-                else
-                {
-                    $order->setShipping(0);
-                }
-
-                $order->setTotal($this->cart->getTotal());
-                $order->setSubtotal($this->cart->getSubtotal());
-                $order->save();
-                $order->importCart($this->cart);
-
-                $this->session->orderId = $order->getId();
-
-                $this->_helper->viewRenderer($provider->processPayment($order, $this->view->url(array("action" => "paymentreturn"), "coreshop_checkout")), null, true);
+                $this->redirect($paymentProvider->process($this->cart));
             }
         }
         
