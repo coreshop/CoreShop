@@ -21,7 +21,7 @@ class CoreShop_EmailController extends Action
         parent::init();
 
         //Cannot use layouts, since pimcore renders layouts with different script paths. therefore this is not working!
-        $this->disableLayout();
+        //$this->disableLayout();
     }
 
     public function emailAction()
