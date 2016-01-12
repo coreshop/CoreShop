@@ -196,7 +196,7 @@ class Carrier extends AbstractModel
      *
      * @param Zone $zone
      * @param Cart|null $cart
-     * @return CarrierInterface[]
+     * @return Carrier[]
      */
     public static function getCarriersForCart(Cart $cart = null, Zone $zone = null) {
         if(is_null($cart)) {
