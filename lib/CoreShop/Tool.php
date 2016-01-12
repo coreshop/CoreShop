@@ -363,43 +363,6 @@ class Tool {
         $collection['key'] = $object->o_key;
         return $collection;
     }
-    
-    /*
-     * Class Mapping Tools
-     * They are used to map some instances of CoreShop_base to an defined class (type)
-     */
-
-    /**
-     * @static
-     * @param  $sourceClassName
-     * @param $interfaceToImplement
-     * @return string
-     */
-    public static function getModelClassMapping($sourceClassName, $interfaceToImplement = null) {
-
-        $targetClassName = $sourceClassName;
-        
-        if(!$interfaceToImplement)
-            $interfaceToImplement = $targetClassName;
-
-        if($map = Config::getModelClassMappingConfig()) {
-            $tmpClassName = $map->{$sourceClassName};
-            
-            if($tmpClassName)  {
-                if(\Pimcore\Tool::classExists($tmpClassName)) {
-                    if(is_subclass_of($tmpClassName, $interfaceToImplement)) {
-                        $targetClassName = $tmpClassName;
-                    } else {
-                        \Logger::error("Classmapping for " . $sourceClassName . " failed. '" . $tmpClassName . " is not a subclass of '" . $interfaceToImplement . "'. " . $tmpClassName . " has to extend " . $interfaceToImplement);
-                    }
-                } else {
-                    \Logger::error("Classmapping for " . $sourceClassName . " failed. Cannot find class '" . $tmpClassName . "'");
-                }
-            }
-        }
-
-        return $targetClassName;
-    }
 
     /**
      * Add all Users to mail

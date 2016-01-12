@@ -86,7 +86,6 @@ class CoreShop_Admin_InstallController extends Admin
             // create predefined document types
             //$install->createDocTypes();
 
-            $install->createClassmap();
             $install->createImageThumbnails();
             $install->installTheme();
 

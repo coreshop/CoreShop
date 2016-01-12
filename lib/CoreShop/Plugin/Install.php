@@ -610,28 +610,6 @@ class Install
     }
 
     /**
-     * Create CoreShop Classmap File
-     */
-    public function createClassmap()
-    {
-        if(!is_file(Plugin::getClassmapFile()))
-        {
-            copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop_classmap.xml', Plugin::getClassmapFile());
-        }
-    }
-
-    /**
-     * Remove CoreShop Classmap File
-     */
-    public function removeClassmap()
-    {
-        if(is_file(Plugin::getClassmapFile()))
-        {
-            unlink(Plugin::getClassmapFile());
-        }
-    }
-
-    /**
      * Create CoreShop Config
      */
     public function createConfig()

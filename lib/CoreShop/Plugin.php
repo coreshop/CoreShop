@@ -160,8 +160,6 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $install->removeFolders();
             // remove classes
 
-            $install->removeClassmap();
-
             $install->removeClass('CoreShopProduct');
             $install->removeClass('CoreShopCategory');
             $install->removeClass('CoreShopCart');
@@ -262,16 +260,6 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             array('delimiter' => ',')
         );
         return self::$_translate;
-    }
-
-    /**
-     * Get CoreShop classmap file
-     *
-     * @return string
-     */
-    public static function getClassmapFile()
-    {
-        return PIMCORE_CONFIGURATION_DIRECTORY . "/coreshop_classmap.xml";
     }
 
     /**
