@@ -29,8 +29,8 @@ ___
 * Category Management
 * Abstract Payment
 * Price Rules for Vouchers/Discounts
-* ~~Different Delivery Providers~~
 * Carrier Management
+* Extendable Carriers
 * Different Payment Providers
 * Multiple Themes supported
 * PDF-Invoice Generation
