@@ -377,56 +377,6 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     }
 
     /**
-     * get Shipping Providers
-     *
-     * @deprecated Not used any more
-     * @param Zone $zone
-     * @param Cart $cart
-     * @return array
-     */
-    public static function getShippingProviders(Zone $zone, Cart $cart)
-    {
-        $results = self::getEventManager()->trigger("shipping.getProvider", null, array("zone" => $zone, "cart" => $cart), function($v) {
-            return ($v instanceof Shipping);
-        });
-
-        if($results->stopped())
-        {
-            $provider = array();
-
-            foreach($results as $result)
-            {
-                $provider[] = $result;
-            }
-
-            return $provider;
-        }
-
-        return array();
-    }
-
-    /**
-     * Get Shipping Providier by identifier
-     *
-     * @deprecated Not used anymore
-     * @param $identifier
-     * @return bool|mixed
-     */
-    public static function getShippingProvider($identifier)
-    {
-        $results = self::getEventManager()->trigger("shipping.getProvider", null, array(), function($v) use ($identifier) {
-            return ($v instanceof Shipping && $v->getIdentifier() == $identifier);
-        });
-
-        if($results->stopped())
-        {
-            return $results->last();
-        }
-
-        return false;
-    }
-
-    /**
      * Get PaymentProviders
      *
      * @param Cart $cart

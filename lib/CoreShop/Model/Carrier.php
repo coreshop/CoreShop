@@ -214,14 +214,7 @@ class Carrier extends AbstractModel
                 $availableCarriers[] = $carrier;
             }
         }
-
-        //TODO: allow carriers as plugins
-        /*$providers = Plugin::getShippingProviders($zone, $cart);
-
-        foreach($providers as $provider) {
-            $availableCarriers[] = $provider;
-        }*/
-
+        
         return $availableCarriers;
     }
 
