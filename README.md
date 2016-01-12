@@ -67,14 +67,10 @@ To implement a new Payment Plugin you need to extend the class CoreShop\Plugin\P
 
 For example take a look at the pimcore-payunity Plugin: [https://github.com/dpfaffenbauer/pimcore-payunity](https://github.com/dpfaffenbauer/pimcore-payunity)
 
-# Delivery Provider
-**Currently not supported**: Use Carriers instead.
+# Carrier
+Carriers can be extended with your own plugin. For more information take a look at the Demo implementation: [https://github.com/dpfaffenbauer/coreshop-carrier-custom](https://github.com/dpfaffenbauer/coreshop-carrier-custom)
 
-A Delivery Provider is implemented using a Pimcore-Plugin.
-
-To implement a new Delivery Prodiver you need to extend the class CoreShop\Plugin\Delivery.
-
-For example take a look the the coreshop-demo Plugin "CoreShopDeliveryPost";
+To implement a new Carrier you need to extend the class CoreShop\Model\Carrier.
 
 # GeoIP v2
 CoreShop can use GeoIP to locate visitors countries using IP-Addresses.
