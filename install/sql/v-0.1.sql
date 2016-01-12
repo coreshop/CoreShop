@@ -441,3 +441,6 @@ CREATE TABLE `coreshop_orderStates` (
   `invoice` tinyint(1) NOT NULL DEFAULT '0',
   `email` tinyint(1) NOT NULL DEFAULT '0'
 );
+
+ALTER TABLE `coreshop_carriers`
+ADD `class` varchar(255) NULL;

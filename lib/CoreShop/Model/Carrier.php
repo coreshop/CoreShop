@@ -18,6 +18,8 @@ use CoreShop\Model\Carrier\AbstractRange;
 use CoreShop\Model\Carrier\DeliveryPrice;
 use CoreShop\Plugin;
 use CoreShop\Tool;
+use Pimcore\Cache;
+use Pimcore\Db;
 
 class Carrier extends AbstractModel
 {
@@ -111,6 +113,11 @@ class Carrier extends AbstractModel
     public $maxWeight;
 
     /**
+     * @var string
+     */
+    public $class;
+
+    /**
      * Save carrier
      *
      * @return mixed
@@ -127,9 +134,42 @@ class Carrier extends AbstractModel
      */
     public static function getById($id) {
         try {
-            $obj = new self;
-            $obj->getDao()->getById($id);
-            return $obj;
+            $cacheKey = "coreshop_carrier_" . $id;
+            $class = get_called_class();
+
+            try {
+                $carrier = \Zend_Registry::get($cacheKey);
+                if(!$carrier) {
+                    throw new \Exception("Carrier in registry is null");
+                }
+            }
+            catch (\Exception $e) {
+                if(!$carrier = Cache::load($cacheKey)) {
+                    $db = Db::get();
+                    //Todo: TableName already definied within 2 Dao files
+                    $data = $db->fetchRow('SELECT class FROM coreshop_carriers WHERE id = ?', $id);
+
+                    if(is_array($data) && $data['class']) {
+                        if(\Pimcore\Tool::classExists($data['class'])) {
+                            $class = $data['class'];
+                        }
+                        else {
+                            \Logger::warning(sprintf("Carrier with ID %s has definied class '%s' which cannot be loaded.", $id, $data['class']));
+                        }
+                    }
+
+                    $carrier = new $class();
+                    $carrier->getDao()->getById($id);
+
+                    \Zend_Registry::set($cacheKey, $carrier);
+                    \Pimcore\Cache::save($carrier, $cacheKey);
+                }
+                else {
+                    \Zend_Registry::set($cacheKey, $carrier);
+                }
+            }
+
+            return $carrier;
         }
         catch(\Exception $ex) {
 
@@ -170,46 +210,9 @@ class Carrier extends AbstractModel
 
         foreach($carriers as $carrier)
         {
-            if(!$carrier->getMaxDeliveryPrice())
-                continue;
-
-            //Check for Ranges
-            if($carrier->getRangeBehaviour() == self::RANGE_BEHAVIOUR_DEACTIVATE)
-            {
-                if($carrier->getShippingMethod() == self::SHIPPING_METHOD_PRICE) {
-                    if (!$carrier->checkDeliveryPriceByValue($zone, $cart->getTotal())) {
-                        continue;
-                    }
-                }
-
-                if($carrier->getShippingMethod() == self::SHIPPING_METHOD_WEIGHT) {
-                    if (!$carrier->checkDeliveryPriceByValue($zone, $cart->getTotalWeight())) {
-                        continue;
-                    }
-                }
+            if($carrier->checkCarrierForCart($cart, $zone)) {
+                $availableCarriers[] = $carrier;
             }
-
-            $carrierIsAllowed = true;
-
-            //Check for max-size
-            foreach($cart->getItems() as $item) {
-                $product = $item->getProduct();
-
-                if(($carrier->getMaxWidth() > 0 && $product->getWidth() > $carrier->getMaxWidth())
-                    || ($carrier->getMaxHeight() > 0 && $product->getHeight() > $carrier->getMaxHeight())
-                    || ($carrier->getMaxDepth() > 0 && $product->getDepth() > $carrier->getMaxDepth())
-                    || ($carrier->getMaxWeight() > 0 && $product->getWeight() > $carrier->getMaxWeight())) {
-
-                    $carrierIsAllowed = false;
-                    break;
-                }
-            }
-
-            if(!$carrierIsAllowed) {
-                continue;
-            }
-
-            $availableCarriers[] = $carrier;
         }
 
         //TODO: allow carriers as plugins
@@ -220,6 +223,57 @@ class Carrier extends AbstractModel
         }*/
 
         return $availableCarriers;
+    }
+
+    /**
+     * Check if carrier is allowed for cart and zone
+     *
+     * @param Cart|null $cart
+     * @param Zone|null $zone
+     * @return bool
+     * @throws \CoreShop\Exception\UnsupportedException
+     */
+    public function checkCarrierForCart(Cart $cart = null, Zone $zone = null) {
+        if(!$this->getMaxDeliveryPrice())
+            return false;
+
+        //Check for Ranges
+        if($this->getRangeBehaviour() == self::RANGE_BEHAVIOUR_DEACTIVATE)
+        {
+            if($this->getShippingMethod() == self::SHIPPING_METHOD_PRICE) {
+                if (!$this->checkDeliveryPriceByValue($zone, $cart->getTotal())) {
+                    return false;
+                }
+            }
+
+            if($this->getShippingMethod() == self::SHIPPING_METHOD_WEIGHT) {
+                if (!$this->checkDeliveryPriceByValue($zone, $cart->getTotalWeight())) {
+                    return false;
+                }
+            }
+        }
+
+        $carrierIsAllowed = true;
+
+        //Check for max-size
+        foreach($cart->getItems() as $item) {
+            $product = $item->getProduct();
+
+            if(($this->getMaxWidth() > 0 && $product->getWidth() > $this->getMaxWidth())
+                || ($this->getMaxHeight() > 0 && $product->getHeight() > $this->getMaxHeight())
+                || ($this->getMaxDepth() > 0 && $product->getDepth() > $this->getMaxDepth())
+                || ($this->getMaxWeight() > 0 && $product->getWeight() > $this->getMaxWeight())) {
+
+                $carrierIsAllowed = false;
+                break;
+            }
+        }
+
+        if(!$carrierIsAllowed) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -583,5 +637,21 @@ class Carrier extends AbstractModel
     public function setNeedsRange($needsRange)
     {
         $this->needsRange = $needsRange;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * @param string $class
+     */
+    public function setClass($class)
+    {
+        $this->class = $class;
     }
 }
