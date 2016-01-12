@@ -83,10 +83,10 @@ CoreShop uses the already existing Pimcore GeoIP Database located in website/var
 /website/var/config/GeoIP/GeoIP.dat
 ```
 
-# Overwrite
+# Extending CoreShop
 
 ## CoreShop Classes
-All CoreShop Classes except Carriers classes can be overwritten using Pimcore Classmaps
+All CoreShop Classes except Carriers classes can be extended using Pimcore Classmaps
 
 [https://github.com/dpfaffenbauer/pimcore-payunity](https://github.com/dpfaffenbauer/pimcore-payunity)
 
@@ -96,6 +96,6 @@ For Example
 ```
 
 ## CoreShop Controller
-CoreShop Controller can be overwritten using the Template.
+CoreShop Controller can be extended using the Template.
 
 If the controller class is available in your templates controller directory. Your controller will be dispatched
