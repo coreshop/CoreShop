@@ -14,8 +14,10 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Config;
 use Pimcore\Cache;
 use Pimcore\Model;
+use Pimcore\Tool;
 
 class AbstractModel extends Model\AbstractModel
 {
@@ -56,6 +58,8 @@ class AbstractModel extends Model\AbstractModel
         catch (\Exception $e) {
             try {
                 if(!$object = Cache::load($cacheKey)) {
+                    $className = Tool::getModelClassMapping($className);
+
                     $object = new $className();
                     $object ->getDao()->getById($id);
 
