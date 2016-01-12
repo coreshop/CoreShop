@@ -143,10 +143,8 @@ class Cart extends Base {
         $session = Tool::getSession();
 
         //check for existing shipping
-        if($session->order) {
-            if (array_key_exists("carrier", $session->order) && $session->order['carrier'] instanceof Carrier) {
-                return $session->order['carrier']->getDeliveryPrice($this);
-            }
+        if($this->getCarrier() instanceof Carrier) {
+            return $this->getCarrier()->getDeliveryPrice($this);
         }
 
         //get all provider and choose cheapest
