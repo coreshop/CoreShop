@@ -127,23 +127,28 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * get Carriere by ID
+     * get Carrier by ID
      *
      * @param $id
      * @return Carrier|null
      */
     public static function getById($id) {
-        try {
-            $cacheKey = "coreshop_carrier_" . $id;
-            $class = get_called_class();
+        $id = intval($id);
 
-            try {
-                $carrier = \Zend_Registry::get($cacheKey);
-                if(!$carrier) {
-                    throw new \Exception("Carrier in registry is null");
-                }
+        if ($id < 1) {
+            return null;
+        }
+
+        $cacheKey = "coreshop_carrier_" . $id;
+
+        try {
+            $carrier = \Zend_Registry::get($cacheKey);
+            if(!$carrier) {
+                throw new \Exception("Carrier in registry is null");
             }
-            catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
+            try {
                 if(!$carrier = Cache::load($cacheKey)) {
                     $db = Db::get();
                     //Todo: TableName already definied within 2 Dao files
@@ -162,17 +167,17 @@ class Carrier extends AbstractModel
                     $carrier->getDao()->getById($id);
 
                     \Zend_Registry::set($cacheKey, $carrier);
-                    \Pimcore\Cache::save($carrier, $cacheKey);
+                    Cache::save($carrier, $cacheKey);
                 }
                 else {
                     \Zend_Registry::set($cacheKey, $carrier);
                 }
+
+                return $carrier;
             }
-
-            return $carrier;
-        }
-        catch(\Exception $ex) {
-
+            catch(\Exception $e) {
+                \Logger::warning($e->getMessage());
+            }
         }
 
         return null;
@@ -275,10 +280,10 @@ class Carrier extends AbstractModel
      * @return AbstractRange[]
      */
     public function getRanges() {
-        if($this->getRangeBehaviour() == "weight")
+        if($this->getShippingMethod() == "weight")
             $list = new Carrier\RangeWeight\Listing();
         else
-            $list = new Carrier\RangeWeight\Listing();
+            $list = new Carrier\RangePrice\Listing();
 
         $list->setCondition("carrierId=?", array($this->getId()));
         $list->load();
