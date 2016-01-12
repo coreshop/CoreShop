@@ -89,13 +89,15 @@ class AbstractModel extends Model\AbstractModel
      */
     public static function getByField($field, $value) {
         $className = get_called_class();
-        $cacheKey = "coreshop_" . $className . "_" . $field . "_" . $value;
+        $cacheKey = "coreshop_" . str_replace("\\", "_", $className) . "_" . $field . "_" . $value;
 
         try {
             $object = \Zend_Registry::get($cacheKey);
             if(!$object) {
                 throw new \Exception($className . " in registry is null");
             }
+
+            return $object;
         }
         catch (\Exception $e) {
             try {
