@@ -72,16 +72,7 @@ class Country extends AbstractModel {
      * @return Country|null
      */
     public static function getById($id) {
-        try {
-            $obj = new self;
-            $obj->getDao()->getById($id);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getById($id);
     }
 
     /**
@@ -91,16 +82,7 @@ class Country extends AbstractModel {
      * @return Country|null
      */
     public static function getByIsoCode($isoCode) {
-        try {
-            $obj = new self;
-            $obj->getDao()->getByIsoCode($isoCode);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getByField("isoCode", $isoCode);
     }
 
     /**

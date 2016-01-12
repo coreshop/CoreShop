@@ -110,16 +110,7 @@ class PriceRule extends AbstractModel {
      * @return PriceRule|null
      */
     public static function getById($id) {
-        try {
-            $obj = new self;
-            $obj->getDao()->getById($id);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getById($id);
     }
 
     /**
@@ -129,16 +120,7 @@ class PriceRule extends AbstractModel {
      * @return PriceRule|null
      */
     public static function getByCode($code) {
-        try {
-            $obj = new self;
-            $obj->getDao()->getByCode($code);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getByField("code", $code);
     }
 
     /**

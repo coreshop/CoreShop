@@ -74,9 +74,10 @@ class CoreShop_Admin_CarrierController extends Admin
     public function getRangeAction() {
         $id = $this->getParam("carrier");
         $carrier = Carrier::getById($id);
+        $ranges = $carrier->getRanges();
 
         if($carrier instanceof Carrier)
-            $this->_helper->json(array("success" => true, "total" => count($carrier->getRanges()), "data" => $carrier->getRanges()));
+            $this->_helper->json(array("success" => true, "total" => count($ranges), "data" => $ranges));
         else
             $this->_helper->json(array("success" => false));
     }

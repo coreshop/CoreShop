@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use Pimcore\Cache;
 use Pimcore\Model;
 
 class AbstractModel extends Model\AbstractModel
@@ -27,6 +28,93 @@ class AbstractModel extends Model\AbstractModel
      * @var LocalizedFields
      */
     protected $localizedFields;
+
+    /**
+     * Get Range by id
+     *
+     * @param $id
+     * @return null|AbstractModel
+     */
+    public static function getById($id) {
+        $id = intval($id);
+
+        if ($id < 1) {
+            return null;
+        }
+
+        $className = get_called_class();
+        $cacheKey = "coreshop_" . str_replace("\\", "_", $className) . "_" . $id;
+
+        try {
+            $object = \Zend_Registry::get($cacheKey);
+            if(!$object) {
+                throw new \Exception($className . " in registry is null");
+            }
+
+            return $object;
+        }
+        catch (\Exception $e) {
+            try {
+                if(!$object = Cache::load($cacheKey)) {
+                    $object = new $className();
+                    $object ->getDao()->getById($id);
+
+                    \Zend_Registry::set($cacheKey, $object);
+                    Cache::save($object, $cacheKey);
+                }
+                else {
+                    \Zend_Registry::set($cacheKey, $object);
+                }
+
+                return $object;
+            }
+            catch(\Exception $e) {
+                \Logger::warning($e->getMessage());
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get Range by id
+     *
+     * @param string $field
+     * @param string $value
+     * @return null|AbstractModel
+     */
+    public static function getByField($field, $value) {
+        $className = get_called_class();
+        $cacheKey = "coreshop_" . $className . "_" . $field . "_" . $value;
+
+        try {
+            $object = \Zend_Registry::get($cacheKey);
+            if(!$object) {
+                throw new \Exception($className . " in registry is null");
+            }
+        }
+        catch (\Exception $e) {
+            try {
+                if(!$object = Cache::load($cacheKey)) {
+                    $object = new $className();
+                    $object ->getDao()->getByField($field, $value);
+
+                    \Zend_Registry::set($cacheKey, $object);
+                    Cache::save($object, $cacheKey);
+                }
+                else {
+                    \Zend_Registry::set($cacheKey, $object);
+                }
+
+                return $object;
+            }
+            catch(\Exception $e) {
+                \Logger::warning($e->getMessage());
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Get LocalizedFields Provider

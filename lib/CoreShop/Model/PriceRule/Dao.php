@@ -39,19 +39,6 @@ class Dao extends AbstractDao {
     }
 
     /**
-     * @param null $code
-     * @throws \Exception
-     */
-    public function getByCode($code = null) {
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE code = ?', $code);
-
-        if(!$data["id"])
-            throw new \Exception("PriceRule with the Code " . $this->model->getCode() . " doesn't exists");
-
-        $this->assignVariablesToModel($data);
-    }
-
-    /**
      * @throws \Zend_Db_Adapter_Exception
      */
     public function save() {

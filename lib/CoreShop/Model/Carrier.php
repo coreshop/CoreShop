@@ -146,6 +146,8 @@ class Carrier extends AbstractModel
             if(!$carrier) {
                 throw new \Exception("Carrier in registry is null");
             }
+
+            return $carrier;
         }
         catch (\Exception $e) {
             try {
@@ -154,6 +156,7 @@ class Carrier extends AbstractModel
                     //Todo: TableName already definied within 2 Dao files
                     $data = $db->fetchRow('SELECT class FROM coreshop_carriers WHERE id = ?', $id);
 
+                    $class = get_called_class();
                     if(is_array($data) && $data['class']) {
                         if(\Pimcore\Tool::classExists($data['class'])) {
                             $class = $data['class'];

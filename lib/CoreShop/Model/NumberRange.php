@@ -48,16 +48,7 @@ class NumberRange extends AbstractModel
      * @return Carrier|null
      */
     public static function getById($id) {
-        try {
-            $obj = new self;
-            $obj->getDao()->getById($id);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getById($id);
     }
 
     /**
@@ -67,18 +58,16 @@ class NumberRange extends AbstractModel
      * @return NumberRange
      */
     public static function getByType($type) {
-        try {
-            $obj = new self;
-            $obj->getDao()->getByType($type);
-        }
-        catch(\Exception $ex) {
-            $obj = new self();
-            $obj->setType($type);
-            $obj->setNumber(0);
-            $obj->save();
+        $numberRange = parent::getByField("type", $type);
+
+        if(!$numberRange) {
+            $numberRange = new self();
+            $numberRange->setType($type);
+            $numberRange->setNumber(0);
+            $numberRange->save();
         }
 
-        return $obj;
+        return $numberRange;
     }
 
     /**

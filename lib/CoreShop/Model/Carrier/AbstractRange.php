@@ -19,6 +19,7 @@ use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Zone;
 use CoreShop\Tool;
+use Pimcore\Cache;
 
 class AbstractRange extends AbstractModel
 {
@@ -89,16 +90,41 @@ class AbstractRange extends AbstractModel
      * @return null
      */
     public static function getById($id, $rangeType) {
-        try {
-            $className = "CoreShop\\Model\\Carrier\\" . ($rangeType == "weight" ? "RangeWeight" : "RangePrice");
+        $id = intval($id);
 
-            $obj = new $className();
-            $obj->getDao()->getById($id);
-
-            return $obj;
+        if ($id < 1) {
+            return null;
         }
-        catch(\Exception $ex) {
 
+        $cacheKey = "coreshop_" . $rangeType . "_" . $id;
+
+        try {
+            $range = \Zend_Registry::get($cacheKey);
+            if(!$range) {
+                throw new \Exception("RangeType in registry is null");
+            }
+            return $range;
+        }
+        catch (\Exception $e) {
+            try {
+                if(!$range = Cache::load($cacheKey)) {
+                    $className = "CoreShop\\Model\\Carrier\\" . ($rangeType == "weight" ? "RangeWeight" : "RangePrice");
+
+                    $range = new $className();
+                    $range ->getDao()->getById($id);
+
+                    \Zend_Registry::set($cacheKey, $range);
+                    Cache::save($range, $cacheKey);
+                }
+                else {
+                    \Zend_Registry::set($cacheKey, $range);
+                }
+
+                return $range;
+            }
+            catch(\Exception $e) {
+                \Logger::warning($e->getMessage());
+            }
         }
 
         return null;

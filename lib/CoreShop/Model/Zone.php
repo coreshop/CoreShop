@@ -47,16 +47,7 @@ class Zone extends AbstractModel {
      * @return Country|null
      */
     public static function getById($id) {
-        try {
-            $obj = new self;
-            $obj->getDao()->getById($id);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getById($id);
     }
 
     /**

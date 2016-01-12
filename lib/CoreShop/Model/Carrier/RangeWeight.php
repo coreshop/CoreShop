@@ -24,16 +24,6 @@ class RangeWeight extends AbstractRange
      * @return null|static
      */
     public static function getById($id) {
-        try {
-            $obj = new static();
-            $obj->getDao()->getById($id);
-
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getById($id, "weight");
     }
 }

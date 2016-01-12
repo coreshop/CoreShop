@@ -48,6 +48,22 @@ abstract class AbstractDao extends Dao\AbstractDao {
     }
 
     /**
+     * @param string $field
+     * @param string $value
+     * @throws \Exception
+     */
+    public function getByField($field, $value) {
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName()." WHERE $field = ?", $value);
+
+        if(!$data["id"])
+            throw new \Exception(get_class($this->model) . " with the field/value " . $field . '-' . $value . " doesn't exists");
+
+
+        $this->assignVariablesToModel($data);
+        $this->getData();
+    }
+
+    /**
      * Get the data-elements for the object from database for the given path
      *
      * @return void

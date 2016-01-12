@@ -72,6 +72,7 @@ class Currency extends AbstractModel {
      */
     public static function getByName($name) {
         try {
+            //TODO: add some caching
             $obj = new self;
             $obj->getDao()->getByName($name);
             return $obj;
@@ -90,16 +91,7 @@ class Currency extends AbstractModel {
      * @return Currency|null
      */
     public static function getById($id) {
-        try {
-            $obj = new self;
-            $obj->getDao()->getById($id);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getById($id);
     }
 
     /**
