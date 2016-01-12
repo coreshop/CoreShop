@@ -88,7 +88,7 @@ CoreShop uses the already existing Pimcore GeoIP Database located in website/var
 ## CoreShop Classes
 All CoreShop Classes except Carriers classes can be extended using Pimcore Classmaps
 
-[https://github.com/dpfaffenbauer/pimcore-payunity](https://github.com/dpfaffenbauer/pimcore-payunity)
+[https://www.pimcore.org/wiki/display/PIMCORE4/Class-Mappings+-+Overwrite+pimcore+models](https://www.pimcore.org/wiki/display/PIMCORE4/Class-Mappings+-+Overwrite+pimcore+models)
 
 For Example
 ```
