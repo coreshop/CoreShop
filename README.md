@@ -35,6 +35,8 @@ ___
 * Multiple Themes supported
 * PDF-Invoice Generation
 * Different Order Steps
+* Overwrite CoreShop Classes
+* Overwrite CoreShop Controllers
 ____
 
 # Themes
@@ -80,3 +82,20 @@ CoreShop uses the already existing Pimcore GeoIP Database located in website/var
 ```
 /website/var/config/GeoIP/GeoIP.dat
 ```
+
+# Overwrite
+
+## CoreShop Classes
+All CoreShop Classes except Carriers classes can be overwritten using Pimcore Classmaps
+
+[https://github.com/dpfaffenbauer/pimcore-payunity](https://github.com/dpfaffenbauer/pimcore-payunity)
+
+For Example
+```
+<CoreShop_Model_Country>\Website\Model\Country</CoreShop_Model_Country>
+```
+
+## CoreShop Controller
+CoreShop Controller can be overwritten using the Template.
+
+If the controller class is available in your templates controller directory. Your controller will be dispatched
