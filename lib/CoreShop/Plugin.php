@@ -87,7 +87,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
                 );
                 set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
 
-                $frontController->registerPlugin(new Controller\Plugin\TemplateRouter(), 3);
+                $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
             }
         });
     }
