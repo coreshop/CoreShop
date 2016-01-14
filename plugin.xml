@@ -8,7 +8,7 @@
     <pluginVersion>0.1</pluginVersion>
     <pluginRevision>2</pluginRevision>
     <pluginBuildTimestamp>1452720948</pluginBuildTimestamp>
-    <pluginGitRevision>0efaafff7df1be84fa3a847e378664862568d891</pluginGitRevision>
+    <pluginGitRevision>68818172d065bb245aae67acabbe619b9f2c4c6a</pluginGitRevision>
     <pluginClassName>\CoreShop\Plugin</pluginClassName>
     <pluginIncludePaths>
       <path>/CoreShop/lib</path>
