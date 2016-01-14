@@ -45,6 +45,40 @@ class Config {
     }
 
     /**
+     * @return mixed|null|\Zend_Config_Xml
+     * @throws \Zend_Exception
+     */
+    public static function getPluginConfig()
+    {
+        $config = null;
+
+        if(\Zend_Registry::isRegistered("coreshop_plugin_config")) {
+            $config = \Zend_Registry::get("coreshop_plugin_config");
+        } else  {
+            try {
+                $config = new \Zend_Config_Xml(CORESHOP_PLUGIN_CONFIG);
+                self::setPluginConfig($config);
+            } catch (\Exception $e) {
+                if(is_file(CORESHOP_PLUGIN_CONFIG)) {
+                    $m = "Your plugin_xml.xml located at " . CORESHOP_PLUGIN_CONFIG . " is invalid, please check and correct it manually!";
+                    Tool::exitWithError($m);
+                }
+            }
+        }
+
+        return $config;
+    }
+
+    /**
+     * @static
+     * @param \Zend_Config $config
+     * @return void
+     */
+    public static function setPluginConfig (\Zend_Config $config) {
+        \Zend_Registry::set("coreshop_plugin_config", $config);
+    }
+
+    /**
      * Gets a value in config by a key-path eg currency.default
      *
      * @param $key

@@ -27,12 +27,7 @@ class Version {
      * @return array
      */
     protected static function getPluginConfig() {
-        if(!self::$config) {
-            $config = new \Zend_Config_Xml(CORESHOP_PLUGIN_CONFIG);
-            self::$config = $config;
-        }
-
-        return self::$config;
+        return Config::getPluginConfig();
     }
 
     /**

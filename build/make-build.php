@@ -40,10 +40,15 @@ include(__DIR__ . "/../config/startup.php");
 
 if (!defined("CORESHOP_CHANGED_FILES")) define("CORESHOP_CHANGED_FILES", CORESHOP_BUILD_DIRECTORY . "/changedFiles.txt");
 
-$changedFiles = getChangedFiles();
+$version = \CoreShop\Version::getVersion();
 
 $buildNumber = \CoreShop\Version::getBuildNumber();
 $buildNumber = $buildNumber + 1;
+
+$timestamp = time();
+$gitRevision = getGitRevision();
+
+$changedFiles = getChangedFiles();
 
 if(count($changedFiles) > 0)
 {
@@ -67,7 +72,7 @@ if(count($changedFiles) > 0)
     //Copy all Files into files folder
     foreach ($changedFiles as $file) {
         $file = str_replace("\n", "", $file);
-        $sourceFile = __DIR__ . "/../" . $file;
+        $sourceFile = CORESHOP_PATH . "/" . $file;
         $destinationFile = $buildFolderFiles . "/" . $file;
         $pathInfo = pathinfo($destinationFile);
 
@@ -84,28 +89,37 @@ if(count($changedFiles) > 0)
         copy($sourceFile, $destinationFile);
     }
 
-    updateVersionFile($buildNumber);
+    rename(CORESHOP_CHANGED_FILES, CORESHOP_BUILD_DIRECTORY . "/" . $buildNumber . "/changedFiles.txt");
+
+    updateVersionFile($buildNumber, $version, $timestamp, $gitRevision);
+    writeBuildToBuildFile($buildNumber, $version, $timestamp, $gitRevision);
+    gitAddAndCommit($buildNumber);
 }
 else {
+    //delete "changedfiles" when no files has been changed
+    unlink(CORESHOP_CHANGED_FILES);
+
     echo "no files changed, no build will be created!" . PHP_EOL;
     exit;
 }
-
-unlink(CORESHOP_CHANGED_FILES);
 
 /**
  * Update Plugin XML File
  *
  * @param $buildNumber
+ * @param $version
+ * @param $timestamp
+ * @param $gitRevision
  * @throws Exception
  * @throws Zend_Config_Exception
  */
-function updateVersionFile($buildNumber) {
+function updateVersionFile($buildNumber, $version, $timestamp, $gitRevision) {
     $config = \Pimcore\ExtensionManager::getPluginConfig("CoreShop");
 
     $config['plugin']['pluginRevision'] = $buildNumber;
-    $config['plugin']['pluginBuildTimestamp'] = time();
-    $config['plugin']['pluginGitRevision'] = getGitRevision();
+    $config['plugin']['pluginVersion'] = $version;
+    $config['plugin']['pluginBuildTimestamp'] = $timestamp;
+    $config['plugin']['pluginGitRevision'] = $gitRevision;
 
     $config = new \Zend_Config($config, true);
     $writer = new \Zend_Config_Writer_Xml(array(
@@ -137,3 +151,44 @@ function getChangedFiles() {
     return file(CORESHOP_CHANGED_FILES);
 }
 
+/**
+ * add files to git and make a commit
+ *
+ * @param $buildNumber
+ */
+function gitAddAndCommit($buildNumber) {
+    \Pimcore\Tool\Console::exec("git add plugin.xml; git add -f build/$buildNumber");
+    //\Pimcore\Tool\Console::exec("git commit -m \"Build Version $buildNumber\"");
+}
+
+/**
+ * write build to build file
+ *
+ * @param $buildNumber
+ * @param $version
+ * @param $timestamp
+ * @param $gitRevision
+ */
+function writeBuildToBuildFile($buildNumber, $version, $timestamp, $gitRevision) {
+    $buildsFile = file_get_contents(CORESHOP_BUILD_DIRECTORY . "/builds.json");
+
+    try {
+        $json = \Zend_Json::decode($buildsFile);
+    }
+    catch (\Exception $ex) {
+        $json = array(
+            "builds" => array()
+        );
+    }
+
+    $json["builds"][] = array(
+        "number" => $buildNumber,
+        "version" => $version,
+        "timestamp" => $timestamp,
+        "gitRevision" => $gitRevision
+    );
+
+    $buildsFile = \Zend_Json::encode($json);
+
+    file_put_contents(CORESHOP_BUILD_DIRECTORY . "/builds.json", $buildsFile);
+}
