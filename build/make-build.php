@@ -159,7 +159,7 @@ function getChangedFiles() {
  * @param $buildNumber
  */
 function gitAddAndCommit($buildNumber) {
-    \Pimcore\Tool\Console::exec("git add plugin.xml; git add -f build/$buildNumber");
+    \Pimcore\Tool\Console::exec("git add plugin.xml; git add -f build/builds.json; git add -f build/$buildNumber");
     //\Pimcore\Tool\Console::exec("git commit -m \"Build Version $buildNumber\"");
 }
 
