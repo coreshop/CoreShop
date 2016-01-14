@@ -198,7 +198,7 @@ class Update {
             $baseUrl .= "/build/$revision/scripts/";
         }
 
-        $file = file_get_contents($baseUrl . $url);
+        $file = @file_get_contents($baseUrl . $url);
 
         if($file)
         {
@@ -236,7 +236,7 @@ class Update {
             }
 
             $srcFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision . "/files/" . $file['path'];
-            $destFile = CORESHOP_PATH . $file["path"];
+            $destFile = CORESHOP_PATH . "/" . $file["path"];
 
             copy($srcFile, $destFile);
         }
@@ -295,7 +295,7 @@ class Update {
      */
     public static function getScriptForBuild($build, $name) {
         try {
-            $updateScript = file_get_contents(self::getRepoUrl() . "/build/" . $build . "/scripts/" . $name . ".php");
+            $updateScript = @file_get_contents(self::getRepoUrl() . "/build/" . $build . "/scripts/" . $name . ".php");
 
             if($updateScript) {
                 return $updateScript;
@@ -312,7 +312,7 @@ class Update {
      */
     public static function getChangedFilesForBuild($build) {
         try {
-            $changedFiles = file_get_contents(self::getChangedFilesFileForBuild($build));
+            $changedFiles = @file_get_contents(self::getChangedFilesFileForBuild($build));
 
             if($changedFiles) {
                 return explode(PHP_EOL, $changedFiles);
@@ -368,7 +368,7 @@ class Update {
      */
     public static function getBuildsFile() {
         try {
-            $builds = file_get_contents(self::getRepoUrl() . "/build/builds.json");
+            $builds = @file_get_contents(self::getRepoUrl() . "/build/builds.json");
 
             if($builds) {
                 $builds = \Zend_Json::decode($builds);
