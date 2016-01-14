@@ -123,7 +123,6 @@
 "coreshop_invoice_create","Create Invoice for new Orders"
 "coreshop_invoice_suffix","Suffix"
 "coreshop_invoice_prefix","Prefix"
-
 "coreshop_order","Order"
 "coreshop_order_states","Order States"
 "coreshop_order_state","Order State"
@@ -139,3 +138,4 @@
 "coreshop_order_state_invoice","Invoice"
 "coreshop_order_state_email","Email"
 "coreshop_order_state_emailDocument","Email Document"
+"coreshop_update","Update"
