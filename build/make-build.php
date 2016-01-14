@@ -36,6 +36,8 @@ if(!\Pimcore\Tool::classExists("\\CoreShop\\Version")) {
     set_include_path(implode(PATH_SEPARATOR, $includePaths));
 }
 
+chdir(CORESHOP_PATH);
+
 include(__DIR__ . "/../config/startup.php");
 
 if (!defined("CORESHOP_CHANGED_FILES")) define("CORESHOP_CHANGED_FILES", CORESHOP_BUILD_DIRECTORY . "/changedFiles.txt");
