@@ -27,7 +27,7 @@ class CoreShop_CartController extends Action {
     {
         parent::init();
         
-        $this->disableLayout();;
+        $this->disableLayout();
     }
     
     public function preDispatch()
