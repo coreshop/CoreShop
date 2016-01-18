@@ -116,7 +116,9 @@ class BuildCommand extends AbstractCommand
                 $this->output->writeln("<info>no files changed, no build will be created</info>");
             }
 
-            unlink(CORESHOP_CHANGED_FILES);
+            if($dryRun) {
+                unlink(CORESHOP_CHANGED_FILES);
+            }
         }
     }
 
@@ -145,6 +147,9 @@ class BuildCommand extends AbstractCommand
                 "filename" => CORESHOP_PLUGIN_CONFIG
             ));
             $writer->write();
+
+            //Copy new plugin.xml to BuildFolder
+            copy(CORESHOP_PLUGIN_CONFIG, CORESHOP_BUILD_DIRECTORY . "/" , $buildNumber . "/files/plugin.xml");
         }
 
         $this->output->writeln("wrote new plugin.xml");
@@ -171,7 +176,7 @@ class BuildCommand extends AbstractCommand
         if(!$gitRevision)
             $gitRevision = '383e78d';
 
-        \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT $gitRevision HEAD $gitDirectory | sed '/^build\\/[0-9]/ d'", CORESHOP_CHANGED_FILES);
+        \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT $gitRevision HEAD $gitDirectory | sed '/^build/ d'", CORESHOP_CHANGED_FILES);
 
         return file(CORESHOP_CHANGED_FILES);
     }
