@@ -71,6 +71,8 @@
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>
+      <path>/CoreShop/static/js/coreshop/document/tags/coreshopareablock.js</path>
+      <path>/CoreShop/static/js/coreshop/document/tags/coreshoparea.js</path>
     </pluginDocumentEditmodeJsPaths>
     <pluginCssPaths-extjs6>
       <path>/plugins/CoreShop/static/css/coreshop.css</path>

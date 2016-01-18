@@ -4,42 +4,10 @@
         <?=$this->template("coreshop/helper/left.php")?>
         <!-- Primary Content Starts -->
         <div class="col-md-9">
-            <!-- Slider Section Starts -->
-            <div class="slider">
-                <div id="main-carousel" class="carousel slide" data-ride="carousel">
-                    <!-- Wrapper For Slides Starts -->
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/slider-imgs/slide1-img.jpg" alt="Slider" class="img-responsive" />
-                        </div>
-                        <div class="item">
-                            <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/slider-imgs/slide2-img.jpg" alt="Slider" class="img-responsive" />
-                        </div>
-                    </div>
-                    <!-- Wrapper For Slides Ends -->
-                    <!-- Controls Starts -->
-                    <a class="left carousel-control" href="#main-carousel" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                    </a>
-                    <a class="right carousel-control" href="#main-carousel" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </a>
-                    <!-- Controls Ends -->
-                </div>
-            </div>
-            <!-- Slider Section Ends -->
-            <!-- 2 Column Banners Starts -->
-            <div class="col2-banners">
-                <ul class="row list-unstyled">
-                    <li class="col-sm-8">
-                        <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/banners/2col-banner1.jpg" alt="banners" class="img-responsive" />
-                    </li>
-                    <li class="col-sm-4">
-                        <img src="<?=CORESHOP_TEMPLATE_RESOURCES?>images/banners/2col-banner2.jpg" alt="banners" class="img-responsive" />
-                    </li>
-                </ul>
-            </div>
-            <!-- 2 Column Banners Ends -->
+
+
+
+            <?php echo $this->coreshopareablock("content"); ?>
 
             <?=$this->template("coreshop/product/helper/latest-products.php");?>
 
