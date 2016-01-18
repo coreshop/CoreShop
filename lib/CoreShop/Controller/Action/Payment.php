@@ -83,5 +83,9 @@ class Payment extends Action {
         unset($this->session->order);
         unset($this->session->cart);
         unset($this->session->cartId);
+
+        if($this->session->user->getIsGuest()) {
+            unset($this->session->user);
+        }
     }
 }

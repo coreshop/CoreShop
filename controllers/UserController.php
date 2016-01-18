@@ -147,12 +147,20 @@ class CoreShop_UserController extends Action
             }
 
             try {
+                $isGuest = intval($this->getParam("isGuest", 0)) === 1;
+
                 //Check User exists
-                if (CoreShopUser::getUniqueByEmail($userParams['email']) instanceof CoreShopUser) {
+                if (CoreShopUser::getUserByEmail($userParams['email']) instanceof CoreShopUser) {
                     throw new \Exception("E-Mail already exists");
                 }
 
                 $folder = "/users/" . strtolower(substr($userParams['lastname'], 0, 1));
+                $key = Pimcore\File::getValidFilename($userParams['email']);
+
+                if($isGuest) {
+                    $folder = "/guests/" . strtolower(substr($userParams['lastname'], 0, 1));
+                    $key = Pimcore\File::getValidFilename($userParams['email'] . " " . time());
+                }
 
                 $adresses = new Object\Fieldcollection();
 
@@ -163,7 +171,7 @@ class CoreShop_UserController extends Action
                 $adresses->add($address);
 
                 $user = new CoreShopUser();
-                $user->setKey(Pimcore\File::getValidFilename($userParams['email']));
+                $user->setKey($key);
                 $user->setPublished(true);
                 $user->setParent(Pimcore\Model\Object\Service::createFolderByPath($folder));
                 $user->setValues($userParams);

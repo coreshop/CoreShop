@@ -1,6 +1,7 @@
 {
   "description":null,
   "parentClass":"CoreShop\\Model\\User",
+  "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,
   "showVariants":false,
@@ -99,6 +100,7 @@
               }
             ],
             "width":"",
+            "defaultValue":null,
             "queryColumnType":"varchar(255)",
             "columnType":"varchar(255)",
             "phpdocType":"string",
@@ -166,7 +168,7 @@
           },
           {
             "fieldtype":"fieldcollections",
-            "phpdocType":"\\Object\\Fieldcollection",
+            "phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
             "allowedTypes":[
               "CoreShopUserAddress"
             ],
@@ -234,6 +236,27 @@
             "invisible":false,
             "visibleGridView":true,
             "visibleSearch":true
+          },
+          {
+            "fieldtype":"checkbox",
+            "defaultValue":0,
+            "queryColumnType":"tinyint(1)",
+            "columnType":"tinyint(1)",
+            "phpdocType":"boolean",
+            "name":"isGuest",
+            "title":"Guest customer",
+            "tooltip":"",
+            "mandatory":false,
+            "noteditable":false,
+            "index":false,
+            "locked":null,
+            "style":"",
+            "permissions":null,
+            "datatype":"data",
+            "relationType":false,
+            "invisible":false,
+            "visibleGridView":false,
+            "visibleSearch":false
           }
         ],
         "locked":false

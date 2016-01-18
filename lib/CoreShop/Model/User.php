@@ -19,6 +19,7 @@ use CoreShop\Tool;
 
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopCart;
+use Pimcore\Model\Object\CoreShopUser;
 
 class User extends Base
 {
@@ -28,9 +29,10 @@ class User extends Base
      * @param $email
      * @return bool
      */
-    public static function getUniqueByEmail($email)
+    public static function getUniqueByEmail($email, $isGuest = false)
     {
-        $list = self::getByEmail($email);
+        $list = new CoreShopUser\Listing();
+        $list->setCondition("email = ? AND isGuest = ?", array($email, $isGuest ? 1 : 0));
 
         $users = $list->getObjects();
 
@@ -39,6 +41,22 @@ class User extends Base
         }
 
         return false;
+    }
+
+    /**
+     * @param $email
+     * @return CoreShopUser|bool
+     */
+    public static function getGuestByEmail($email) {
+        return self::getUniqueByEmail($email, true);
+    }
+
+    /**
+     * @param $email
+     * @return CoreShopUser|bool
+     */
+    public static function getUserByEmail($email) {
+        return self::getUniqueByEmail($email, false);
     }
 
     /**

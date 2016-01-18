@@ -178,6 +178,10 @@ class CoreShop_CheckoutController extends Action
         
         unset($this->session->order);
         unset($this->session->cart);
+
+        if($this->session->user->getIsGuest()) {
+            unset($this->session->user);
+        }
         
         $this->view->headTitle($this->view->translate("Thank you"));
     }
