@@ -1,0 +1,13 @@
+controllers/Admin/CarrierController.php
+controllers/Admin/CountryController.php
+controllers/Admin/CurrencyController.php
+controllers/Admin/OrderstatesController.php
+controllers/Admin/PricerulesController.php
+controllers/Admin/SettingsController.php
+controllers/Admin/ZoneController.php
+install/sql/b-5.sql
+install/sql/v-0.1.sql
+lib/CoreShop/Update.php
+plugin.xml
+static/js/startup.js
+static/texts/en.csv

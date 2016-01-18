@@ -148,7 +148,7 @@ function getChangedFiles() {
     if(!$gitRevision)
         $gitRevision = '383e78d';
 
-    \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT $gitRevision HEAD $gitDirectory", CORESHOP_CHANGED_FILES);
+    \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT $gitRevision HEAD $gitDirectory | sed '/^build\\// d'", CORESHOP_CHANGED_FILES);
 
     return file(CORESHOP_CHANGED_FILES);
 }
@@ -160,7 +160,7 @@ function getChangedFiles() {
  */
 function gitAddAndCommit($buildNumber) {
     \Pimcore\Tool\Console::exec("git add plugin.xml; git add -f build/builds.json; git add -f build/$buildNumber");
-    \Pimcore\Tool\Console::exec("git commit -m \"Build Version $buildNumber\"");
+    //\Pimcore\Tool\Console::exec("git commit -m \"Build Version $buildNumber\"");
 }
 
 /**
