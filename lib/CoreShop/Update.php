@@ -77,7 +77,7 @@ class Update {
      * @param $toBuild
      * @return array
      */
-    public static function getJobs($toBuild, $currentBuild) {
+    public static function getJobs($toBuild, $currentBuild = null) {
         if(!$currentBuild) {
             $currentBuild = Version::getBuildNumber();
         }
