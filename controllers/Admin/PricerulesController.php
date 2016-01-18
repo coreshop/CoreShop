@@ -22,6 +22,17 @@ use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_PricerulesController extends Admin
 {
+    public function init() {
+
+        parent::init();
+
+        // check permissions
+        $notRestrictedActions = array();
+        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
+            $this->checkPermission("coreshop_permission_priceRules");
+        }
+    }
+
     public function listAction() {
         $list = new PriceRule\Listing();
 

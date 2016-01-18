@@ -22,6 +22,17 @@ use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_CarrierController extends Admin
 {
+    public function init() {
+
+        parent::init();
+
+        // check permissions
+        $notRestrictedActions = array('list');
+        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
+            $this->checkPermission("coreshop_permission_carriers");
+        }
+    }
+
     public function listAction()
     {
         $list = new Carrier\Listing();

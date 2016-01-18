@@ -25,9 +25,9 @@ class CoreShop_Admin_ZoneController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array();
+        $notRestrictedActions = array('get');
         if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_zone");
+            $this->checkPermission("coreshop_permission_zones");
         }
     }
 

@@ -23,6 +23,17 @@ use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_SettingsController extends Admin
 {
+    public function init() {
+
+        parent::init();
+
+        // check permissions
+        $notRestrictedActions = array('get-settings');
+        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
+            $this->checkPermission("coreshop_permission_settings");
+        }
+    }
+
     public function getSettingsAction()
     {
         $values = Config::getConfig();

@@ -52,107 +52,138 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
             success: function (response)
             {
                 var resp = Ext.decode(response.responseText);
+                var user = pimcore.globalmanager.get("user");
 
                 this.settings = resp;
 
                 if(intval(this.settings.coreshop.isInstalled)) {
-                    coreShopMenuItems.push({
-                        text: t("coreshop_settings"),
-                        iconCls: "coreshop_icon_settings",
-                        handler: this.openSettings
-                    });
 
-                    coreShopMenuItems.push({
-                        text: t("coreshop_price_rules"),
-                        iconCls: "coreshop_icon_price_rule",
-                        handler: this.openPriceRules
-                    });
+                    if(user.isAllowed("coreshop_permission_settings")) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_settings"),
+                            iconCls: "coreshop_icon_settings",
+                            handler: this.openSettings
+                        });
+                    }
 
-                    coreShopMenuItems.push({
-                        text: t("coreshop_localization"),
-                        iconCls: "coreshop_icon_localization",
-                        hideOnClick: false,
-                        menu: {
-                            cls: "pimcore_navigation_flyout",
-                            shadow: false,
-                            items: [{
-                                text: t("coreshop_countries"),
-                                iconCls: "coreshop_icon_country",
-                                handler: this.openCountryList
-                            }, {
-                                text: t("coreshop_currencies"),
-                                iconCls: "coreshop_icon_currency",
-                                handler: this.openCurrencyList
-                            }, {
-                                text: t("coreshop_zones"),
-                                iconCls: "coreshop_icon_zone",
-                                handler: this.openZoneList
-                            }]
-                        }
-                    });
+                    if(user.isAllowed("coreshop_permission_priceRules")) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_price_rules"),
+                            iconCls: "coreshop_icon_price_rule",
+                            handler: this.openPriceRules
+                        });
+                    }
 
-                    coreShopMenuItems.push({
-                        text: t("coreshop_order"),
-                        iconCls: "coreshop_icon_order",
-                        hideOnClick: false,
-                        menu: {
-                            cls: "pimcore_navigation_flyout",
-                            shadow: false,
-                            items: [{
-                                text: t("coreshop_order_states"),
-                                iconCls: "coreshop_icon_order_states",
-                                handler: this.openOrderStates
-                            }]
-                        }
-                    });
+                    var localizationMenu = [];
 
-                    coreShopMenuItems.push({
-                        text: t("coreshop_shipping"),
-                        iconCls: "coreshop_icon_shipping",
-                        hideOnClick: false,
-                        menu: {
-                            shadow: false,
-                            cls: "pimcore_navigation_flyout",
-                            items: [{
-                                text: t("coreshop_carriers"),
-                                iconCls: "coreshop_icon_carriers",
-                                handler: this.openCarriersList
-                            }]
-                        }
-                    });
+                    if(user.isAllowed("coreshop_permission_countries")) {
+                        localizationMenu.push({
+                            text: t("coreshop_countries"),
+                            iconCls: "coreshop_icon_country",
+                            handler: this.openCountryList
+                        });
+                    }
 
-                    coreShopMenuItems.push({
-                        text: t("coreshop_update"),
-                        iconCls: "pimcore_icon_update",
-                        handler: function () {
-                            new coreshop.update();
-                        }
-                    });
+                    if(user.isAllowed("coreshop_permission_currencies")) {
+                        localizationMenu.push({
+                            text: t("coreshop_currencies"),
+                            iconCls: "coreshop_icon_currency",
+                            handler: this.openCurrencyList
+                        });
+                    }
+
+                    if(user.isAllowed("coreshop_permission_zones")) {
+                        localizationMenu.push({
+                            text: t("coreshop_zones"),
+                            iconCls: "coreshop_icon_zone",
+                            handler: this.openZoneList
+                        });
+                    }
+
+                    if(localizationMenu.length > 0) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_localization"),
+                            iconCls: "coreshop_icon_localization",
+                            hideOnClick: false,
+                            menu: {
+                                cls: "pimcore_navigation_flyout",
+                                shadow: false,
+                                items: localizationMenu
+                            }
+                        });
+                    }
+
+                    if(user.isAllowed("coreshop_permission_orderStates")) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_order"),
+                            iconCls: "coreshop_icon_order",
+                            hideOnClick: false,
+                            menu: {
+                                cls: "pimcore_navigation_flyout",
+                                shadow: false,
+                                items: [{
+                                    text: t("coreshop_order_states"),
+                                    iconCls: "coreshop_icon_order_states",
+                                    handler: this.openOrderStates
+                                }]
+                            }
+                        });
+                    }
+
+                    if(user.isAllowed("coreshop_permission_carriers")) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_shipping"),
+                            iconCls: "coreshop_icon_shipping",
+                            hideOnClick: false,
+                            menu: {
+                                shadow: false,
+                                cls: "pimcore_navigation_flyout",
+                                items: [{
+                                    text: t("coreshop_carriers"),
+                                    iconCls: "coreshop_icon_carriers",
+                                    handler: this.openCarriersList
+                                }]
+                            }
+                        });
+                    }
+
+                    if (user.admin) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_update"),
+                            iconCls: "pimcore_icon_update",
+                            handler: function () {
+                                new coreshop.update();
+                            }
+                        });
+                    }
                 }
                 else {
-                    coreShopMenuItems.push({
-                        text: t("coreshop_install"),
-                        iconCls: "coreshop_icon_setup",
-                        handler: this.openSetup
-                    });
+                    if (user.admin) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_install"),
+                            iconCls: "coreshop_icon_setup",
+                            handler: this.openSetup
+                        });
+                    }
                 }
 
+                if(coreShopMenuItems.length > 0) {
+                    var menu = new Ext.menu.Menu({
+                        items: coreShopMenuItems,
+                        shadow: false,
+                        cls: "pimcore_navigation_flyout"
+                    });
 
-                var menu = new Ext.menu.Menu({
-                    items: coreShopMenuItems,
-                    shadow: false,
-                    cls: "pimcore_navigation_flyout"
-                });
-
-                Ext.get('pimcore_menu_logout').insertSibling('<li id="pimcore_menu_coreshop" class="pimcore_menu_item icon-coreshop-shop">'+t("coreshop")+'</li>');
-                Ext.get("pimcore_menu_coreshop").on("mousedown", function(e, el) {
-                    if(!self.isInitialized) {
-                        Ext.Msg.alert(t('coreshop'), t('coreshop_not_initialized'));
-                    }
-                    else {
-                        toolbar.showSubMenu.call(menu, e, el);
-                    }
-                });
+                    Ext.get('pimcore_menu_logout').insertSibling('<li id="pimcore_menu_coreshop" class="pimcore_menu_item icon-coreshop-shop">' + t("coreshop") + '</li>');
+                    Ext.get("pimcore_menu_coreshop").on("mousedown", function (e, el) {
+                        if (!self.isInitialized) {
+                            Ext.Msg.alert(t('coreshop'), t('coreshop_not_initialized'));
+                        }
+                        else {
+                            toolbar.showSubMenu.call(menu, e, el);
+                        }
+                    });
+                }
 
                 pimcore.plugin.coreshop.global.initialize(this.settings);
 

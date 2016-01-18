@@ -26,9 +26,9 @@ class CoreShop_Admin_CurrencyController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array();
+        $notRestrictedActions = array('get');
         if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_currency");
+            $this->checkPermission("coreshop_permission_currencies");
         }
     }
 

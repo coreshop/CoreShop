@@ -389,9 +389,6 @@ INSERT INTO `coreshop_countries` (`id`, `name`, `isoCode`, `active`, `currencyId
 (243, 'French Southern Territories', 'TF', 0, 1, 5),
 (244, 'Åland Islands', 'AX', 0, NULL, 1);
 
-INSERT INTO `users_permission_definitions` (`key`)
-VALUES ('plugin_coreshop');
-
 DROP TABLE IF EXISTS `coreshop_pricerules`;
 CREATE TABLE `coreshop_pricerules` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -444,3 +441,13 @@ CREATE TABLE `coreshop_orderStates` (
 
 ALTER TABLE `coreshop_carriers`
 ADD `class` varchar(255) NULL;
+
+INSERT INTO `users_permission_definitions` (`key`)
+VALUES
+  ('coreshop_permission_carrier'),
+  ('coreshop_permission_zone'),
+  ('coreshop_permission_settings'),
+  ('coreshop_permission_priceRules'),
+  ('coreshop_permission_orderStates'),
+  ('coreshop_permission_currency'),
+  ('coreshop_permission_country');

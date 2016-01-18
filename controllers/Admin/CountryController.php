@@ -25,9 +25,9 @@ class CoreShop_Admin_CountryController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array();
+        $notRestrictedActions = array("get-countries");
         if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_country");
+            $this->checkPermission("coreshop_permission_countries");
         }
     }
 
