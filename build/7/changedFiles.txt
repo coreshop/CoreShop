@@ -1,0 +1,7 @@
+build/builds.json
+install/sql/b-6.sql
+lib/CoreShop/Console/Command/BuildCommand.php
+lib/CoreShop/Console/Command/UpdateCommand.php
+lib/CoreShop/Plugin.php
+lib/CoreShop/Update.php
+plugin.xml
