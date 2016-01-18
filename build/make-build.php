@@ -148,7 +148,7 @@ function getChangedFiles() {
     if(!$gitRevision)
         $gitRevision = '383e78d';
 
-    \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT $gitRevision HEAD $gitDirectory | sed '/^build\\// d'", CORESHOP_CHANGED_FILES);
+    \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT $gitRevision HEAD $gitDirectory | sed '/^build\\/[0-9]/ d'", CORESHOP_CHANGED_FILES);
 
     return file(CORESHOP_CHANGED_FILES);
 }
