@@ -57,6 +57,17 @@ class Plugin extends AbstractPlugin implements PluginInterface {
 
     public function init()
     {
+        \Pimcore::getEventManager()->attach('system.console.init', function(\Zend_EventManager_Event $e) {
+            /** @var \Pimcore\Console\Application $application */
+            $application = $e->getTarget();
+
+            // add a namespace to autoload commands from
+            $application->addAutoloadNamespace('CoreShop\\Console', CORESHOP_PATH . '/lib/CoreShop/Console');
+
+            // add a single command
+            $application->add(new \CoreShop\Console\Command\UpdateCommand());
+        });
+
         \Pimcore::getEventManager()->attach("system.startup", function (\Zend_EventManager_Event $e) {
             $autoloader = \Zend_Loader_Autoloader::getInstance();
             $frontController = $e->getTarget();

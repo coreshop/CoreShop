@@ -44,8 +44,12 @@ class Update {
     /**
      *
      */
-    public static function getAvailableUpdates() {
-        $newerBuilds = self::getNewerBuilds();
+    public static function getAvailableUpdates($currentBuild = null) {
+        if(!$currentBuild) {
+            $currentBuild = Version::getBuildNumber();
+        }
+
+        $newerBuilds = self::getNewerBuilds($currentBuild);
 
         return array("revisions" => $newerBuilds, "releases" => array());
     }
@@ -73,8 +77,12 @@ class Update {
      * @param $toBuild
      * @return array
      */
-    public static function getJobs($toBuild) {
-        $builds = self::getNewerBuilds($toBuild);
+    public static function getJobs($toBuild, $currentBuild) {
+        if(!$currentBuild) {
+            $currentBuild = Version::getBuildNumber();
+        }
+
+        $builds = self::getNewerBuilds($currentBuild, $toBuild);
 
         $updateScripts = array();
         $revisions = array();
@@ -326,11 +334,15 @@ class Update {
     /**
      *
      */
-    public static function getNewerBuilds($to = null) {
+    public static function getNewerBuilds($currentBuild = null, $to = null) {
         $builds = self::getBuildsFile();
 
+        if(!$currentBuild) {
+            $currentBuild = Version::getBuildNumber();
+        }
+
         if(is_array($builds)) {
-            $pluginVersion = intval(Version::getBuildNumber());
+            $pluginVersion = intval($currentBuild);
             $newerBuilds = array();
 
             if(array_key_exists("builds", $builds)) {
