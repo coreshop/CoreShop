@@ -1,0 +1,3 @@
+lib/CoreShop/Console/Command/BuildCommand.php
+lib/CoreShop/Update.php
+plugin.xml
