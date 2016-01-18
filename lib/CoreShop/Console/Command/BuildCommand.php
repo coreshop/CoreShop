@@ -149,7 +149,7 @@ class BuildCommand extends AbstractCommand
             $writer->write();
 
             //Copy new plugin.xml to BuildFolder
-            copy(CORESHOP_PLUGIN_CONFIG, CORESHOP_BUILD_DIRECTORY . "/" , $buildNumber . "/files/plugin.xml");
+            copy(CORESHOP_PLUGIN_CONFIG, CORESHOP_BUILD_DIRECTORY . "/" . $buildNumber . "/files/plugin.xml");
         }
 
         $this->output->writeln("wrote new plugin.xml");
