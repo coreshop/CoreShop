@@ -1,0 +1,2 @@
+lib/CoreShop/Update.php
+plugin.xml
