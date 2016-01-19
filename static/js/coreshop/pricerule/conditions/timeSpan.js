@@ -3,13 +3,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 
@@ -22,24 +21,24 @@ pimcore.plugin.coreshop.pricerule.conditions.timeSpan = Class.create(pimcore.plu
 
         var dateFrom = {
             itemCls:"object_field",
-            width:100,
+            width:160
         };
 
         var dateTo = {
             itemCls:"object_field",
-            width:100,
+            width:160
         };
 
         var timeFrom = {
             format:"H:i",
             emptyText:"",
-            width:60
+            width:120
         };
 
         var timeTo = {
             format:"H:i",
             emptyText:"",
-            width:60
+            width:120
         };
 
         if (this.data) {
@@ -58,10 +57,11 @@ pimcore.plugin.coreshop.pricerule.conditions.timeSpan = Class.create(pimcore.plu
         this.dateToField = new Ext.form.DateField(dateTo);
         this.timeToField = new Ext.form.TimeField(timeTo);
 
-        var dateFromField = new Ext.form.CompositeField({
-            xtype:'compositefield',
+        var dateFromField = new Ext.form.FieldContainer({
+            xtype:'fieldcontainer',
             fieldLabel: t('coreshop_condition_timeSpan_dateFrom'),
-            combineErrors:false,
+            combineErrors:true,
+            layout: 'hbox',
             items:[this.dateFromField, this.timeFromField],
             itemCls:"object_field",
             name : "dateFrom",
@@ -81,10 +81,11 @@ pimcore.plugin.coreshop.pricerule.conditions.timeSpan = Class.create(pimcore.plu
             }.bind(this)
         });
 
-        var dateToField = new Ext.form.CompositeField({
-            xtype: 'compositefield',
+        var dateToField = new Ext.form.FieldContainer({
+            xtype: 'fieldcontainer',
             fieldLabel: t('coreshop_condition_timeSpan_dateTo'),
-            combineErrors: false,
+            combineErrors: true,
+            layout: 'hbox',
             items: [this.dateToField, this.timeToField],
             itemCls: "object_field",
             name : "dateTo",
@@ -107,8 +108,7 @@ pimcore.plugin.coreshop.pricerule.conditions.timeSpan = Class.create(pimcore.plu
         this.form = new Ext.form.FieldSet({
             items : [
                 dateFromField, dateToField
-            ],
-            border : 0
+            ]
         });
 
         return this.form;

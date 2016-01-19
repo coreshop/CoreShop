@@ -77,20 +77,30 @@
     background: url(/pimcore/static/img/icon/car_delete.png) left center no-repeat!important;
 }
 
+.coreshop_icon_zone {
+    background: url(/pimcore/static/img/icon/world.png) left center no-repeat!important;
+}
+.coreshop_icon_zone_add {
+    background: url(/pimcore/static/img/icon/world_add.png) left center no-repeat!important;
+}
+.coreshop_icon_zone_remove {
+    background: url(/pimcore/static/img/icon/world_delete.png) left center no-repeat!important;
+}
+
 .pimcore_icon_data_group_coreshop {
     background: url(/pimcore/static/img/icon/basket.png) left center no-repeat!important;
 }
 
 .pimcore_icon_objectSelect {
-    background: url(/pimcore/static/img/icon/select.png) no-repeat!important;
+    background: url(/pimcore/static/img/icon/select.png) center center no-repeat!important;
 }
 
 .coreshop_icon_create_order {
-    background: url(/pimcore/static/img/icon/page_white_add.png) no-repeat!important;
+    background: url(/pimcore/static/img/icon/page_white_add.png) center center no-repeat!important;
 }
 
 .coreshop_icon_price_rule {
-    background: url(/pimcore/static/img/icon/calculator_edit.png) no-repeat!important;
+    background: url(/pimcore/static/img/icon/calculator_edit.png) center center no-repeat!important;
 }
 
 .coreshop_price_rule_settings {
@@ -158,7 +168,7 @@
     background: url(/pimcore/static/img/icon/money.png) left center no-repeat!important;
 }
 
-.coreshop_icon_carriers, .coreshop_icon_carrier {
+.coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier {
     background: url(/pimcore/static/img/icon/lorry.png) no-repeat scroll left center transparent !important;
 }
 
@@ -176,4 +186,12 @@
 
 .coreshop_carrier_costs_icon {
     background: url(/pimcore/static/img/icon/coins.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_icon_order {
+    background: url(/pimcore/static/img/icon/page_white.png) left center no-repeat!important;
+}
+
+.coreshop_icon_order_states, .pimcore_icon_coreShopOrderState {
+    background: url(/pimcore/static/img/icon/page_white_gear.png) left center no-repeat!important;
 }

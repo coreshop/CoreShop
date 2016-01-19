@@ -3,13 +3,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 
@@ -24,24 +23,24 @@ pimcore.plugin.coreshop.pricerule.conditions.amount = Class.create(pimcore.plugi
         var currencyValue = null;
         var me = this;
 
-        if(this.data.minAmount) {
+        if(this.data && this.data.minAmount) {
             minAmountValue = this.data.minAmount;
             currencyValue = this.data.currency;
         }
 
-        var minAmount = new Ext.ux.form.SpinnerField({
+        var minAmount = new Ext.form.NumberField({
             fieldLabel:t("coreshop_condition_amount_minAmount"),
             name:'minAmount',
             value : minAmountValue,
             minValue : 0,
-            decimalPrecision : 0
+            decimalPrecision : 0,
+            step : 1
         });
 
         var currency = {
             xtype: 'combo',
             fieldLabel: t('coreshop_condition_amount_currency'),
             typeAhead: true,
-            value: this.data.currency,
             mode: 'local',
             listWidth: 100,
             width : 200,
@@ -60,8 +59,12 @@ pimcore.plugin.coreshop.pricerule.conditions.amount = Class.create(pimcore.plugi
             }
         };
 
+        if(this.data && this.data.currency) {
+            currency.value = this.data.currency;
+        }
 
-        this.form = new Ext.form.FieldSet({
+
+        this.form = Ext.create("Ext.form.FieldSet", {
             items : [
                 minAmount, currency
             ]

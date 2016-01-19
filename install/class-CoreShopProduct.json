@@ -1,6 +1,7 @@
 {
   "description":null,
   "parentClass":"CoreShop\\Model\\Product",
+  "useTraits":null,
   "allowInherit":true,
   "allowVariants":true,
   "showVariants":true,
@@ -437,7 +438,7 @@
               },
               {
                 "fieldtype":"fieldcollections",
-                "phpdocType":"\\Object\\Fieldcollection",
+                "phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
                 "allowedTypes":[
                   "CoreShopProductSpecificPrice"
                 ],
@@ -607,11 +608,11 @@
                 "phpdocType":"float",
                 "integer":false,
                 "unsigned":false,
-                "minValue":"",
-                "maxValue":"",
-                "decimalPrecision":"",
-                "name":"length",
-                "title":"L\u00e4nge",
+                "minValue":null,
+                "maxValue":null,
+                "decimalPrecision":null,
+                "name":"depth",
+                "title":"Tiefe",
                 "tooltip":"",
                 "mandatory":false,
                 "noteditable":false,
@@ -738,11 +739,15 @@
                 "assetsAllowed":true,
                 "assetTypes":[
                   {
-                    "assetTypes":"image"
+                    "assetTypes":{
+                      "assetTypes":"image"
+                    }
                   }
                 ],
                 "documentsAllowed":false,
-                "documentTypes":"",
+                "documentTypes":[
+
+                ],
                 "lazyLoading":false,
                 "classes":[
 

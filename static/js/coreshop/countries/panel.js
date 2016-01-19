@@ -3,13 +3,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 pimcore.registerNS("pimcore.plugin.coreshop.countries.panel");
@@ -23,7 +22,7 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
 
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.activate("coreshop_country");
+        tabPanel.setActiveItem("coreshop_country");
     },
 
     getTabPanel: function () {
@@ -36,12 +35,12 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
                 border: false,
                 layout: "border",
                 closable:true,
-                items: [this.getLayout()]
+                items: [this.getTree(), this.getEditPanel()]
             });
 
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add(this.panel);
-            tabPanel.activate("coreshop_country");
+            tabPanel.setActiveItem("coreshop_country");
 
 
             this.panel.on("destroy", function () {
@@ -55,49 +54,83 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
     },
 
     getTreeNodeListeners: function () {
-        var treeNodeListeners = {
-            'click' : this.onTreeNodeClick.bind(this),
-            "contextmenu": this.onTreeNodeContextmenu
+
+        return {
+            "itemclick" : this.onTreeNodeClick.bind(this),
+            "itemcontextmenu": this.onTreeNodeContextmenu.bind(this)
         };
-
-        return treeNodeListeners;
     },
 
-    getLayout: function ()
-    {
-        this.tree = new Ext.tree.TreePanel({
-            xtype: "treepanel",
-            region: "west",
-            title: t("coreshop_countries"),
-            width: 200,
-            enableDD: false,
-            autoScroll: true,
-            collapsible: true,
-            rootVisible: false,
-            root: {
-                id: "0",
-                root: true
-            },
-            tbar : [{
-                text: t('coreshop_country_add'),
-                iconCls: 'coreshop_icon_country_add',
-                handler : this.addCountry.bind(this)
-            }],
-            loader: new Ext.tree.TreeLoader({
-                dataUrl: '/plugin/CoreShop/admin_country/get-countries',
-                requestMethod: "GET",
-                baseAttrs: {
-                    reference: this,
-                    allowChildren: true,
-                    isTarget: true,
-                    listeners : this.getTreeNodeListeners()
+    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts ) {
+        e.stopEvent();
+        tree.select();
+
+        var menu = new Ext.menu.Menu();
+
+        menu.add(new Ext.menu.Item({
+            text: t('delete'),
+            iconCls: "coreshop_icon_country_remove",
+            listeners: {
+                "click": this.removeCountry.bind(this, record)
+            }
+        }));
+
+        menu.showAt(e.pageX, e.pageY);
+    },
+
+    onTreeNodeClick: function (tree, record, item, index, e, eOpts ) {
+        this.openCountry(record.id, item);
+    },
+
+    getTree: function () {
+        if (!this.tree) {
+            this.store = Ext.create('Ext.data.TreeStore', {
+                autoLoad: false,
+                autoSync: true,
+                proxy: {
+                    type: 'ajax',
+                    url: '/plugin/CoreShop/admin_country/get-countries',
+                    reader: {
+                        type: 'json'
+
+                    },
+                    extraParams: {
+                        grouped: 1
+                    }
                 }
-            }),
-            bodyStyle: "padding: 5px;"
-        });
+            });
 
-        return [this.tree, this.getEditPanel()];
+
+            this.tree = Ext.create('pimcore.tree.Panel', {
+                region: "west",
+                useArrows: true,
+                autoScroll: true,
+                animate: true,
+                containerScroll: true,
+                width: 200,
+                split: true,
+                root: {
+                    id: "0",
+                    root: true
+                },
+                rootVisible: false,
+                store: this.store,
+                listeners : this.getTreeNodeListeners(),
+                tbar : [{
+                    text: t('coreshop_country_add'),
+                    iconCls: 'coreshop_icon_country_add',
+                    handler : this.addCountry.bind(this)
+                }],
+            });
+
+            this.tree.on("render", function () {
+                this.getRootNode().expand();
+            });
+        }
+
+        return this.tree;
     },
+
 
     getEditPanel: function () {
         if (!this.editPanel) {
@@ -109,32 +142,6 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
         }
 
         return this.editPanel;
-    },
-
-    onTreeNodeClick: function (node) {
-
-        if(!node.attributes.allowChildren && node.id > 0) {
-            this.openCountry(node.id);
-        }
-    },
-
-    onTreeNodeContextmenu: function () {
-
-        this.select();
-        var menu = new Ext.menu.Menu();
-
-        menu.add(new Ext.menu.Item({
-            text: t('delete'),
-            iconCls: "coreshop_icon_country_remove",
-            listeners: {
-                "click": this.attributes.reference.removeCountry.bind(this)
-            }
-        }));
-
-        if(typeof menu.items != "undefined" && typeof menu.items.items != "undefined"
-            && menu.items.items.length > 0) {
-            menu.show(this.ui.getAnchor());
-        }
     },
 
     addCountry : function() {
@@ -156,7 +163,7 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
             var data = Ext.decode(transport.responseText);
 
             if(data && data.success){
-                this.tree.root.reload();
+                this.tree.getStore().reload();
                 this.openCountry(data.country.id);
             } else {
                 pimcore.helpers.showNotification(t("error"), t("coreshop_country_creation_error"), "error", t(data.message));
@@ -167,21 +174,24 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
         }
     },
 
-    removeCountry : function() {
+    removeCountry : function(record, item)
+    {
         Ext.MessageBox.show({
             title: t('delete'),
             msg: t("are_you_sure"),
             buttons: Ext.Msg.OKCANCEL ,
             icon: Ext.MessageBox.QUESTION,
-            fn: function (button) {
-                if (button == "ok") {
+            fn: function (button)
+            {
+                if (button == "ok")
+                {
                     Ext.Ajax.request({
                         url: "/plugin/CoreShop/admin_country/remove",
                         params: {
-                            id: this.id
+                            id: record.id
                         },
                         success: function() {
-                            this.remove();
+                            this.tree.getStore().reload();
                         }.bind(this)
                     });
                 }

@@ -4,13 +4,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model\PriceRule\Condition;
@@ -65,15 +64,15 @@ class TotalPerCustomer extends AbstractCondition {
         if($session->user instanceof CoreShopUser)
         {
             $orders = $session->user->getOrders();
-            $cartRulesUsed = 0;
+            $priceRulesUsed = 0;
 
             foreach($orders as $order)
             {
                 if($order->getPriceRule() instanceof PriceRule && $order->getPriceRule()->getId() == $priceRule->getId())
-                    $cartRulesUsed++;
+                    $priceRulesUsed++;
             }
 
-            if($cartRulesUsed >= $this->getTotal())
+            if($priceRulesUsed >= $this->getTotal())
                 if($throwException) throw new \Exception("You cannot use this voucher anymore (usage limit reached)"); else return false;
         }
 

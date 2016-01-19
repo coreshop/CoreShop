@@ -1,0 +1,32 @@
+ul.myaccount-link-list li {
+    overflow: hidden;
+    padding-bottom: 10px;
+
+    a {
+        display: block;
+        overflow: hidden;
+        text-decoration: none;
+        position: relative;
+        border: 1px solid #eeeeee;
+
+        i {
+            font-size: 17px;
+            position: absolute;
+            left: 0;
+            top: 0px;
+            width: 52px;
+            height: 100%;
+            border-right: 1px solid #EEEEEE;
+            padding: 15px;
+            text-align: center;
+        }
+
+        span {
+            display: block;
+            padding: 12px 15px 15px 12px;
+            overflow: hidden;
+            margin-left: 52px;
+            font-size: 14px;
+        }
+    }
+}

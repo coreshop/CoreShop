@@ -3,13 +3,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 
@@ -42,7 +41,7 @@ pimcore.plugin.coreshop.countries.country= Class.create({
 
     initPanel: function () {
 
-        this.panel = new Ext.Panel({
+        this.panel = new Ext.panel.Panel({
             title: this.data.country.name,
             closable: true,
             iconCls: "coreshop_icon_country",
@@ -55,11 +54,11 @@ pimcore.plugin.coreshop.countries.country= Class.create({
         }.bind(this));
 
         this.parentPanel.getEditPanel().add(this.panel);
-        this.parentPanel.getEditPanel().activate(this.panel);
+        this.parentPanel.getEditPanel().setActiveItem(this.panel);
     },
 
     activate : function() {
-        this.parentPanel.getEditPanel().activate(this.panel);
+        this.parentPanel.getEditPanel().setActiveItem(this.panel);
     },
 
     getFormPanel : function() {
@@ -67,7 +66,7 @@ pimcore.plugin.coreshop.countries.country= Class.create({
         /*
         }*/
 
-        this.formPanel = new Ext.FormPanel({
+        this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
             region : "center",
@@ -76,7 +75,6 @@ pimcore.plugin.coreshop.countries.country= Class.create({
             defaults: {
                 forceLayout: true
             },
-            layout: "pimcoreform",
             buttons: [
                 {
                     text: t("save"),
@@ -106,13 +104,13 @@ pimcore.plugin.coreshop.countries.country= Class.create({
                             xtype : 'checkbox',
                             fieldLabel: t("coreshop_country_active"),
                             name: "active",
-                            checked: this.data.country.active == 1 ? true : false
+                            checked: this.data.country.active === "1"
                         },
                         {
                             xtype:'combo',
                             fieldLabel:t('coreshop_country_currency'),
                             typeAhead:true,
-                            value:this.data.country.currency__id,
+                            value:this.data.country.currencyId,
                             mode:'local',
                             listWidth:100,
                             store:pimcore.globalmanager.get("coreshop_currencies"),
@@ -120,7 +118,29 @@ pimcore.plugin.coreshop.countries.country= Class.create({
                             valueField:'id',
                             forceSelection:true,
                             triggerAction:'all',
-                            hiddenName:'currency__id',
+                            name:'currencyId',
+                            listeners: {
+                                change: function () {
+                                    this.forceReloadOnSave = true;
+                                }.bind(this),
+                                select: function () {
+                                    this.forceReloadOnSave = true;
+                                }.bind(this)
+                            }
+                        },
+                        {
+                            xtype:'combo',
+                            fieldLabel:t('coreshop_country_zone'),
+                            typeAhead:true,
+                            value:this.data.country.zoneId,
+                            mode:'local',
+                            listWidth:100,
+                            store:pimcore.globalmanager.get("coreshop_zones"),
+                            displayField:'name',
+                            valueField:'id',
+                            forceSelection:true,
+                            triggerAction:'all',
+                            name:'zoneId',
                             listeners: {
                                 change: function () {
                                     this.forceReloadOnSave = true;

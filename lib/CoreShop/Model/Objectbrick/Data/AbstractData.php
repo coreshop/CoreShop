@@ -4,13 +4,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model\Objectbrick\Data;
@@ -23,7 +22,10 @@ class AbstractData extends \Pimcore\Model\Object\Objectbrick\Data\AbstractData
     *  Zend_View
     */
     protected $view;
-    
+
+    /**
+     * @return \Zend_View
+     */
     public function getView()
     {
         if(!$this->view)
@@ -44,9 +46,12 @@ class AbstractData extends \Pimcore\Model\Object\Objectbrick\Data\AbstractData
         
         return $this->view;
     }
-    
+
+    /**
+     * @throws Exception\UnsupportedException
+     */
     public function render()
     {
-        throw new Exception("not implemented");
+        throw new Exception\UnsupportedException();
     }
 }

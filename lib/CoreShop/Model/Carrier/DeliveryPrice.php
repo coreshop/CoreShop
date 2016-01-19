@@ -4,18 +4,20 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model\Carrier;
 
-use Pimcore\Model\AbstractModel;
+use CoreShop\Model\Carrier;
+use CoreShop\Model\Zone;
+use CoreShop\Model\AbstractModel;
+
 use CoreShop\Tool;
 
 class DeliveryPrice extends AbstractModel
@@ -26,14 +28,14 @@ class DeliveryPrice extends AbstractModel
     public $id;
 
     /**
-     * @var int
+     * @var AbstractRange
      */
-    public $carrier;
+    public $range;
 
     /**
      * @var int
      */
-    public $range;
+    public $rangeId;
 
     /**
      * @var string
@@ -41,18 +43,56 @@ class DeliveryPrice extends AbstractModel
     public $rangeType;
 
     /**
+     * @var int
+     */
+    public $zoneId;
+
+    /**
+     * @var Zone
+     */
+    public $zone;
+
+    /**
+     * @var int
+     */
+    public $carrierId;
+
+    /**
+     * @var Carrier
+     */
+    public $carrier;
+
+    /**
      * @var float
      */
     public $price;
 
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
+    /**
+     * Get DeliveryPrice by id
+     *
+     * @param $id
+     * @return DeliveryPrice|null
+     */
     public static function getById($id) {
+        return parent::getById($id);
+    }
+
+    /**
+     * Get all prices for this carrier in this range
+     *
+     * @param Carrier $carrier
+     * @param AbstractRange $range
+     * @return DeliveryPrice|null
+     */
+    public static function getByCarrierAndRange(Carrier $carrier, AbstractRange $range) {
         try {
             $obj = new self;
-            $obj->getResource()->getById($id);
+            $obj->getDao()->getByCarrierAndRange($carrier->getId(), $range->getId());
+
             return $obj;
         }
         catch(\Exception $ex) {
@@ -62,10 +102,19 @@ class DeliveryPrice extends AbstractModel
         return null;
     }
 
-    public static function getByCarrierAndRange($carrier, $range) {
+    /**
+     * Get price for carrier in range in zone
+     *
+     * @param Carrier $carrier
+     * @param AbstractRange $range
+     * @param Zone $zone
+     *
+     * @return DeliveryPrice|null
+     */
+    public static function getForCarrierInZone(Carrier $carrier, AbstractRange $range, Zone $zone) {
         try {
             $obj = new self;
-            $obj->getResource()->getByCarrierAndRange($carrier, $range);
+            $obj->getDao()->getForCarrierInZone($carrier->getId(), $range->getId(), $zone->getId());
 
             return $obj;
         }
@@ -95,21 +144,31 @@ class DeliveryPrice extends AbstractModel
     /**
      * @return int
      */
-    public function getCarrier()
+    public function getRangeId()
     {
-        return $this->carrier;
+        return $this->rangeId;
     }
 
     /**
-     * @param int $carrier
+     * @param int $rangeId
      */
-    public function setCarrier($carrier)
+    public function setRangeId($rangeId)
     {
-        $this->carrier = $carrier;
+        $range = AbstractRange::getById($rangeId, $this->getRangeType());
+
+        if(!$range instanceof AbstractRange) {
+            $this->rangeId = null;
+            $this->range = null;
+        }
+        else {
+            $this->rangeId = $rangeId;
+            $this->range = $range;
+        }
     }
 
+
     /**
-     * @return int
+     * @return Zone
      */
     public function getRange()
     {
@@ -117,11 +176,20 @@ class DeliveryPrice extends AbstractModel
     }
 
     /**
-     * @param int $range
+     * @param $range
+     * @throws \Exception
      */
     public function setRange($range)
     {
+        if(is_int($range)) {
+            $range = AbstractRange::getById($range, $this->getRangeType());
+        }
+
+        if(!$range instanceof AbstractRange)
+            throw new \Exception("\$zone must be instance of Zone");
+
         $this->range = $range;
+        $this->rangeId = $range->getId();
     }
 
     /**
@@ -154,5 +222,106 @@ class DeliveryPrice extends AbstractModel
     public function setPrice($price)
     {
         $this->price = $price;
+    }
+
+
+    /**
+     * @return Zone
+     */
+    public function getZone()
+    {
+        return $this->zone;
+    }
+
+    /**
+     * @param $zone
+     * @throws \Exception
+     */
+    public function setZone($zone)
+    {
+        if(is_int($zone))
+            $zone = Zone::getById($zone);
+
+        if(!$zone instanceof Zone)
+            throw new \Exception("\$zone must be instance of Zone");
+
+        $this->zone = $zone;
+        $this->zoneId = $zone->getId();
+    }
+
+    /**
+     * @return int
+     */
+    public function getZoneId()
+    {
+        return $this->zoneId;
+    }
+
+    /**
+     * @param $zoneId
+     * @throws \Exception
+     */
+    public function setZoneId($zoneId)
+    {
+        $zone = Zone::getById($zoneId);
+
+        if(!$zone instanceof Zone) {
+            $this->zoneId = null;
+            $this->zone = null;
+        }
+        else {
+            $this->zoneId = $zoneId;
+            $this->zone = $zone;
+        }
+    }
+
+    /**
+     * @return Carrier
+     */
+    public function getCarrier()
+    {
+        return $this->zone;
+    }
+
+    /**
+     * @param $carrier
+     * @throws \Exception
+     */
+    public function setCarrier($carrier)
+    {
+        if(is_int($carrier))
+            $carrier = Carrier::getById($carrier);
+
+        if(!$carrier instanceof Carrier)
+            throw new \Exception("\$carrier must be instance of Carrier");
+
+        $this->carrier = $carrier;
+        $this->carrierId = $carrier->getId();
+    }
+
+    /**
+     * @return int
+     */
+    public function getCarrierId()
+    {
+        return $this->carrierId;
+    }
+
+    /**
+     * @param $carrierId
+     * @throws \Exception
+     */
+    public function setCarrierId($carrierId)
+    {
+        $carrier = Carrier::getById($carrierId);
+
+        if(!$carrier instanceof Carrier) {
+            $this->carrierId = null;
+            $this->carrier = null;
+        }
+        else {
+            $this->carrierId = $carrierId;
+            $this->carrier = $carrier;
+        }
     }
 }

@@ -3,19 +3,18 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 pimcore.registerNS("pimcore.document.tags.product");
 pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
 
-    defaultHeight: 100,
+    defaultHeight: 300,
 
     initialize: function(id, name, options, data, inherited) {
         this.id = id;
@@ -55,7 +54,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
             });
 
             this.getBody().insertHtml("beforeEnd",'<div class="pimcore_tag_droptarget"></div>');
-            this.getBody().addClass("pimcore_tag_snippet_empty");
+            this.getBody().addCls("pimcore_tag_snippet_empty");
 
             el.getEl().on("contextmenu", this.onContextMenu.bind(this));
 
@@ -72,12 +71,14 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
         }
     },
 
-    onNodeDrop: function (target, dd, e, data) {
+    onNodeDrop: function (target, dd, e, data)
+    {
+        var record = data.records[0];
 
         // get path from nodes data
-        this.data.id = data.node.attributes.id;
-        this.data.type = data.node.attributes.elementType;
-        this.data.subtype = data.node.attributes.type;
+        this.data.id = record.get("id");
+        this.data.type = record.get("elementType");
+        this.data.subtype = record.get("type");
 
         if (this.options.reload) {
             this.reloadDocument();
@@ -90,10 +91,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
 
 
     dndAllowed: function(data) {
-        if(data.node.attributes.className == "CoreShopProduct")
-            return true;
-
-        return false;
+        return data.records[0].get("className") === "CoreShopProduct";
     },
 
     onNodeOver: function(target, dd, e, data)
@@ -115,7 +113,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
 
     updateContent: function (path) {
 
-        this.getBody().removeClass("pimcore_tag_snippet_empty");
+        this.getBody().removeCls("pimcore_tag_snippet_empty");
         this.getBody().dom.innerHTML = '<br />&nbsp;&nbsp;Loading ...';
 
         var params = this.data;
@@ -163,7 +161,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
                     this.data = {};
                     this.getBody().update('');
                     this.getBody().insertHtml("beforeEnd",'<div class="pimcore_tag_droptarget"></div>');
-                    this.getBody().addClass("pimcore_tag_snippet_empty");
+                    this.getBody().addCls("pimcore_tag_snippet_empty");
                     this.getBody().setHeight(height + "px");
 
                     if (this.options.reload) {

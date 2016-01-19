@@ -3,13 +3,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 
@@ -29,6 +28,8 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
     initialize: function() {
         // create layout
         this.getLayout();
+
+        this.panels = [];
     },
 
 
@@ -37,7 +38,7 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
      */
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.activate( this.layoutId );
+        tabPanel.setActiveItem( this.layoutId );
     },
 
 
@@ -74,7 +75,7 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
             // add panel to pimcore panel tabs
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add( this.layout );
-            tabPanel.activate( this.layoutId );
+            tabPanel.setActiveItem( this.layoutId );
 
             // update layout
             pimcore.layout.refresh();
@@ -83,6 +84,31 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
         return this.layout;
     },
 
+    getTreeNodeListeners: function () {
+
+        return {
+            "itemclick" : this.onTreeNodeClick.bind(this),
+            "itemcontextmenu": this.onTreeNodeContextmenu.bind(this)
+        };
+    },
+
+    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts ) {
+        e.stopEvent();
+        tree.select();
+
+        var menu = new Ext.menu.Menu();
+        menu.add(new Ext.menu.Item({
+            text: t('delete'),
+            iconCls: "pimcore_icon_delete",
+            handler: this.deleteCarrier.bind(this, record)
+        }));
+
+        menu.showAt(e.pageX, e.pageY);
+    },
+
+    onTreeNodeClick: function (tree, record, item, index, e, eOpts ) {
+        this.openCarrier(record);
+    },
 
     /**
      * return treelist
@@ -90,11 +116,28 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
      */
     getTree: function () {
         if (!this.tree) {
-            this.tree = new Ext.tree.TreePanel({
+            this.store = Ext.create('Ext.data.TreeStore', {
+                autoLoad: false,
+                autoSync: true,
+                proxy: {
+                    type: 'ajax',
+                    url: '/plugin/CoreShop/admin_Carrier/list',
+                    reader: {
+                        type: 'json'
+
+                    },
+                    extraParams: {
+                        grouped: 1
+                    }
+                }
+            });
+
+
+            this.tree = Ext.create('pimcore.tree.Panel', {
                 region: "west",
-                useArrows:true,
-                autoScroll:true,
-                animate:true,
+                useArrows: true,
+                autoScroll: true,
+                animate: true,
                 containerScroll: true,
                 width: 200,
                 split: true,
@@ -102,31 +145,9 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
                     nodeType: 'async',
                     id: '0'
                 },
-                loader: new Ext.tree.TreeLoader({
-                    dataUrl: "/plugin/CoreShop/admin_Carrier/list",
-                    requestMethod: "GET",
-                    baseAttrs: {
-                        listeners: {
-                            click: this.openCarrier.bind(this),
-                            contextmenu: function () {
-                                this.select();
-
-                                var menu = new Ext.menu.Menu();
-                                menu.add(new Ext.menu.Item({
-                                    text: t('delete'),
-                                    iconCls: "pimcore_icon_delete",
-                                    handler: this.attributes.reference.deleteCarrier.bind(this)
-                                }));
-
-                                menu.show(this.ui.getAnchor());
-                            }
-                        },
-                        reference: this,
-                        iconCls: "coreshop_carrier_icon",
-                        leaf: true
-                    }
-                }),
                 rootVisible: false,
+                store: this.store,
+                listeners : this.getTreeNodeListeners(),
                 tbar: {
                     items: [
                         {
@@ -176,12 +197,12 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
 
-                    this.tree.getRootNode().reload();
+                    this.tree.getStore().reload();
 
                     if(!data || !data.success) {
                         Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
                     } else {
-                        this.openCarrier(intval(data.id));
+                        this.openCarrier(data);
                     }
                 }.bind(this)
             });
@@ -197,14 +218,14 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
     /**
      * delete existing carrier
      */
-    deleteCarrier: function () {
+    deleteCarrier: function (record) {
         Ext.Ajax.request({
             url: "/plugin/CoreShop/admin_Carrier/delete",
             params: {
-                id: this.id
+                id: record.id
             },
             success: function () {
-                this.attributes.reference.tree.getRootNode().reload();
+                this.tree.getStore().reload();
             }.bind(this)
         });
     },
@@ -212,26 +233,29 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
 
     /**
      * open carrier
-     * @param node
+     * @param record
      */
-    openCarrier: function (node) {
+    openCarrier: function (record) {
+        var carrierPanelKey = "coreshop_carrier_" + record.id;
 
-        if(!is_numeric(node)) {
-            node = node.id;
+        if(this.panels[carrierPanelKey]) {
+            this.panels[carrierPanelKey].activate();
+        } else {
+
+            // load defined carrier
+            Ext.Ajax.request({
+                url: "/plugin/CoreShop/admin_Carrier/get",
+                params: {
+                    id: record.id
+                },
+                success: function (response) {
+                    var res = Ext.decode(response.responseText);
+                    var item = new pimcore.plugin.coreshop.carrier.item(this, res);
+
+                    this.panels[carrierPanelKey] = item;
+                }.bind(this)
+            });
         }
-
-        // load defined carrier
-        Ext.Ajax.request({
-            url: "/plugin/CoreShop/admin_Carrier/get",
-            params: {
-                id: node
-            },
-            success: function (response) {
-                var res = Ext.decode(response.responseText);
-                var item = new pimcore.plugin.coreshop.carrier.item(this, res);
-            }.bind(this)
-        });
-
     },
 
 

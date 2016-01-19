@@ -3,13 +3,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 
@@ -73,8 +72,12 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
         // ...
         var panel = this.parent.getTabPanel();
         panel.add(this.tabPanel);
-        panel.activate(this.tabPanel);
-        panel.doLayout();
+        panel.setActiveItem(this.tabPanel);
+        panel.updateLayout();
+    },
+
+    activate : function() {
+        this.parent.getTabPanel().setActiveItem(this.tabPanel);
     },
 
     /**
@@ -84,13 +87,7 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
     getSettings: function () {
         var data = this.data;
 
-        var tab = {
-            layout:'form',
-            items: []
-        }
-
-        this.settingsForm = new Ext.form.FormPanel({
-            layout: "pimcoreform",
+        this.settingsForm = Ext.create('Ext.form.Panel', {
             iconCls: "coreshop_price_rule_settings",
             title: t("settings"),
             bodyStyle: "padding:10px;",
@@ -115,9 +112,6 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
                 width: 400,
                 height: 100,
                 value: data.description
-            }, {
-                xtype: "spacer",
-                height: 15
             }, {
                 xtype: "checkbox",
                 name: "active",
@@ -151,7 +145,7 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
             addMenu.push({
                 iconCls: "coreshop_price_rule_icon_condition_" + condition,
                 text: t("coreshop_condition_" + condition),
-                handler: _this.addCondition.bind(_this, condition)
+                handler: _this.addCondition.bind(_this, condition, null)
             });
 
         });
@@ -191,7 +185,7 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
             addMenu.push({
                 iconCls: "coreshop_price_rule_icon_action_" + action,
                 text: t("coreshop_action_" + action),
-                handler: _this.addAction.bind(_this, action)
+                handler: _this.addAction.bind(_this, action, null)
             });
         });
 
@@ -227,7 +221,7 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
         var tab = this;
 
         this.conditionsContainer.add(item.getLayout());
-        this.conditionsContainer.doLayout();
+        this.conditionsContainer.updateLayout();
     },
 
     /**
@@ -240,7 +234,7 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
         var item = new pimcore.plugin.coreshop.pricerule.actions[type](this, data);
 
         this.actionsContainer.add(item.getLayout());
-        this.actionsContainer.doLayout();
+        this.actionsContainer.updateLayout();
     },
 
     /**
@@ -260,12 +254,12 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
             var condition = {};
 
             var conditionItem = conditions[i];
-            var conditionClass = conditionItem.parent;
+            var conditionClass = conditionItem.xparent;
             var form = conditionClass.form;
 
             for(var c=0; c < form.items.length; c++)
             {
-                var item = form.items.item(c);
+                var item = form.items.get(c);
 
                 try {
                     condition[item.getName()] = item.getValue();
@@ -277,7 +271,7 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
 
             }
 
-            condition['type'] = conditions[i].parent.type;
+            condition['type'] = conditions[i].xparent.type;
             conditionsData.push(condition);
         }
         saveData["conditions"] = conditionsData;
@@ -290,12 +284,12 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
             var action = {};
 
             var actionItem = actions[i];
-            var actionClass = actionItem.parent;
+            var actionClass = actionItem.xparent;
             var form = actionClass.form;
 
             for(var c=0; c < form.items.length; c++)
             {
-                var item = form.items.item(c);
+                var item = form.items.get(c);
 
                 try {
                     action[item.getName()] = item.getValue();
@@ -307,7 +301,7 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
 
             }
 
-            action['type'] = actions[i].parent.type;
+            action['type'] = actions[i].xparent.type;
             actionData.push(action);
         }
         saveData["actions"] = actionData;
@@ -328,7 +322,8 @@ pimcore.plugin.coreshop.pricerule.item = Class.create({
      * saved
      */
     saveOnComplete: function () {
-        this.parent.getTree().getRootNode().reload();
+        this.parent.getTree().getStore().reload();
+
         pimcore.helpers.showNotification(t("success"), t("coreshop_price_rule_saved_successfully"), "success");
     }
 });

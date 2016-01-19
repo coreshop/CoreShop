@@ -1,0 +1,32 @@
+.invoice-table {
+    margin-top: 30px;
+    background: #fff;
+
+    thead > tr > td {
+        font-weight: 600;
+        border-bottom: none;
+    }
+
+    tbody > tr > td {
+        a:hover {
+            color: #252a2f;
+        }
+    }
+
+    .invoice-item {
+        &:nth-child(2n) {
+            background:#ccc;
+        }
+    }
+
+    .invoice-header {
+        background:#4d4d4d;
+        color:white;
+
+        font-weight:bold;
+    }
+
+    .invoice-header, .invoice-item, .invoice-summary {
+        padding:1px 5px;
+    }
+}

@@ -4,13 +4,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model;
@@ -45,7 +44,17 @@ class Country extends AbstractModel {
     /**
      * @var int
      */
-    public $currency__id;
+    public $currencyId;
+
+    /**
+     * @var int
+     */
+    public $zoneId;
+
+    /**
+     * @var Zone
+     */
+    public $zone;
 
     /**
      * save currency
@@ -53,7 +62,7 @@ class Country extends AbstractModel {
      * @return mixed
      */
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
     /**
@@ -63,16 +72,7 @@ class Country extends AbstractModel {
      * @return Country|null
      */
     public static function getById($id) {
-        try {
-            $obj = new self;
-            $obj->getResource()->getById($id);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getById($id);
     }
 
     /**
@@ -82,16 +82,7 @@ class Country extends AbstractModel {
      * @return Country|null
      */
     public static function getByIsoCode($isoCode) {
-        try {
-            $obj = new self;
-            $obj->getResource()->getByIsoCode($isoCode);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getByField("isoCode", $isoCode);
     }
 
     /**
@@ -104,7 +95,7 @@ class Country extends AbstractModel {
         $list = new Country\Listing();
         $list->setCondition("active = 1");
 
-        return $list->getCountries();
+        return $list->getData();
     }
 
     /**
@@ -198,34 +189,80 @@ class Country extends AbstractModel {
             throw new \Exception("\$currency must be instance of Currency");
 
         $this->currency = $currency;
-        $this->currency__id = $currency->getId();
+        $this->currencyId = $currency->getId();
     }
 
     /**
      * @return int
      */
-    public function getCurrency__Id()
+    public function getCurrencyId()
     {
-        return $this->currency__id;
+        return $this->currencyId;
     }
 
     /**
-     * @param $currency__id
+     * @param $currencyId
      * @throws \Exception
      */
-    public function setCurrency__Id($currency__id)
+    public function setCurrencyId($currencyId)
     {
-        $currency = null;
+        $currency = Currency::getById($currencyId);
 
-        if(is_int($currency__id)) {
-            $currency = Currency::getById($currency__id);
+        if(!$currency instanceof Currency)
+            throw new \Exception("Currency with ID '$currencyId' not found");
 
-            if(!$currency instanceof Currency)
-                throw new \Exception("Currency with ID '$currency__id' not found");
-        }
-
-        $this->currency__id = $currency__id;
+        $this->currencyId = $currencyId;
         $this->currency = $currency;
+    }
+
+    /**
+     * @return Zone
+     */
+    public function getZone()
+    {
+        return $this->zone;
+    }
+
+    /**
+     * @param $zone
+     * @throws \Exception
+     */
+    public function setZone($zone)
+    {
+        if(is_int($zone))
+            $zone = Zone::getById($zone);
+
+        if(!$zone instanceof Zone)
+            throw new \Exception("\$zone must be instance of Zone");
+
+        $this->zone = $zone;
+        $this->zoneId = $zone->getId();
+    }
+
+    /**
+     * @return int
+     */
+    public function getZoneId()
+    {
+        return $this->zoneId;
+    }
+
+    /**
+     * @param $zoneId
+     * @throws \Exception
+     */
+    public function setZoneId($zoneId)
+    {
+        $zone = Zone::getById($zoneId);
+
+        if(!$zone instanceof Zone) {
+            $this->zoneId = null;
+            $this->zone = null;
+        }
+        else {
+            $this->zoneId = $zoneId;
+            $this->zone = $zone;
+        }
     }
 
     /**

@@ -3,13 +3,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 
@@ -23,7 +22,6 @@ pimcore.plugin.coreshop.pricerule.conditions.customer = Class.create(pimcore.plu
             fieldLabel: t("coreshop_condition_customer_customer"),
             name: "customer",
             cls: "input_drop_target",
-            value: this.data.customer,
             width: 300,
             xtype: "textfield",
             listeners: {
@@ -36,15 +34,19 @@ pimcore.plugin.coreshop.pricerule.conditions.customer = Class.create(pimcore.plu
                         }.bind(el),
 
                         onNodeOver : function(target, dd, e, data) {
-                            if (data.node.attributes.elementType == "object" && data.node.attributes.className == "CoreShopUser") {
+                            data = data.records[0].data;
+
+                            if (data.elementType == "object" && data.className == "CoreShopUser") {
                                 return Ext.dd.DropZone.prototype.dropAllowed;
                             }
                             return Ext.dd.DropZone.prototype.dropNotAllowed;
                         },
 
                         onNodeDrop : function (target, dd, e, data) {
-                            if (data.node.attributes.elementType == "object" && data.node.attributes.className == "CoreShopUser") {
-                                this.setValue(data.node.attributes.path);
+                            data = data.records[0].data;
+
+                            if (data.elementType == "object" && data.className == "CoreShopUser") {
+                                this.setValue(data.path);
                                 return true;
                             }
                             return false;
@@ -54,11 +56,14 @@ pimcore.plugin.coreshop.pricerule.conditions.customer = Class.create(pimcore.plu
             }
         };
 
+        if(this.data && this.data.customer) {
+            customer.value = this.data.customer;
+        }
+
         this.form = new Ext.form.FieldSet({
             items : [
                 customer
-            ],
-            border : 0
+            ]
         });
 
         return this.form;

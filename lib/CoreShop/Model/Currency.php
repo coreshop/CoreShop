@@ -4,13 +4,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model;
@@ -53,7 +52,7 @@ class Currency extends AbstractModel {
      * @return mixed
      */
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
     /**
@@ -62,7 +61,7 @@ class Currency extends AbstractModel {
      * @return mixed
      */
     public function delete() {
-        return $this->getResource()->delete();
+        return $this->getDao()->delete();
     }
 
     /**
@@ -73,8 +72,9 @@ class Currency extends AbstractModel {
      */
     public static function getByName($name) {
         try {
+            //TODO: add some caching
             $obj = new self;
-            $obj->getResource()->getByName($name);
+            $obj->getDao()->getByName($name);
             return $obj;
         }
         catch(\Exception $ex) {
@@ -91,16 +91,7 @@ class Currency extends AbstractModel {
      * @return Currency|null
      */
     public static function getById($id) {
-        try {
-            $obj = new self;
-            $obj->getResource()->getById($id);
-            return $obj;
-        }
-        catch(\Exception $ex) {
-
-        }
-
-        return null;
+        return parent::getById($id);
     }
 
     /**
@@ -116,8 +107,10 @@ class Currency extends AbstractModel {
 
         foreach($countries as $c)
         {
-            if(!array_key_exists($c->getCurrency()->getId(), $currencies))
-                $currencies[$c->getCurrency()->getId()] = $c->getCurrency();
+            if($c instanceof Country) {
+                if (!array_key_exists($c->getCurrency()->getId(), $currencies))
+                    $currencies[$c->getCurrency()->getId()] = $c->getCurrency();
+            }
         }
 
         return array_values($currencies);

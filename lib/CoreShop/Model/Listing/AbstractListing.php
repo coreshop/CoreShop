@@ -4,13 +4,12 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model\Listing;
@@ -25,6 +24,18 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
      * @var array
      */
     public $data = null;
+
+    /**
+     * @var string|\Zend_Locale
+     */
+    public $locale;
+
+    /**
+     * do not use the localized views for this list (in the case the class contains localized fields),
+     * conditions on localized fields are not possible
+     * @var bool
+     */
+    public $ignoreLocalizedFields = false;
 
     /**
      * List of valid order keys
@@ -57,7 +68,7 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * @param array $carriers
+     * @param array $data
      * @return void
      */
     public function setData($data) {
@@ -73,16 +84,59 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
         return $this->getTotalCount();
     }
 
+    /**
+     * get all items
+     *
+     * @param int $offset
+     * @param int $itemCountPerPage
+     * @return mixed
+     */
     public function getItems($offset, $itemCountPerPage) {
         $this->setOffset($offset);
         $this->setLimit($itemCountPerPage);
         return $this->load();
     }
 
+    /**
+     * @return $this
+     */
     public function getPaginatorAdapter() {
         return $this;
     }
 
+    /**
+     * @param mixed $locale
+     * @return void
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string|\Zend_Locale
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param bool $ignoreLocalizedFields
+     * @return void
+     */
+    public function setIgnoreLocalizedFields($ignoreLocalizedFields)
+    {
+        $this->ignoreLocalizedFields = $ignoreLocalizedFields;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIgnoreLocalizedFields()
+    {
+        return $this->ignoreLocalizedFields;
+    }
 
     /**
      * Methods for Iterator
@@ -93,24 +147,36 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
         reset($this->data);
     }
 
+    /**
+     * @return mixed
+     */
     public function current() {
         $this->getData();
         $var = current($this->data);
         return $var;
     }
 
+    /**
+     * @return mixed
+     */
     public function key() {
         $this->getData();
         $var = key($this->data);
         return $var;
     }
 
+    /**
+     * @return mixed
+     */
     public function next() {
         $this->getData();
         $var = next($this->date);
         return $var;
     }
 
+    /**
+     * @return bool
+     */
     public function valid() {
         $this->getData();
         $var = $this->current() !== false;

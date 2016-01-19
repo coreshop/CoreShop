@@ -19,7 +19,7 @@
             <controller>index</controller>
             <action>index</action>
             <variables>lang</variables>
-            <priority>3</priority>
+            <priority>1</priority>
         </route>
         <route>
             <name>coreshop_detail</name>

@@ -4,17 +4,18 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop;
 
+use CoreShop\Model\AbstractModel;
+use Pimcore\Date;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object;
@@ -25,6 +26,9 @@ use CoreShop\Model\Country;
 use CoreShop\Model\User;
 
 use Pimcore\Tool\Session;
+
+use GeoIp2\Database\Reader;
+
 
 class Tool {
 
@@ -57,7 +61,7 @@ class Tool {
      * @param Currency|null $fromCurrency
      * @return mixed
      */
-    public static function convertToCurrency($value, Currency $toCurrency = null, Currency $fromCurrency = null)
+    public static function convertToCurrency($value, $toCurrency = null, $fromCurrency = null)
     {
         $config = Config::getConfig();
         $configArray = $config->toArray();
@@ -81,7 +85,7 @@ class Tool {
     /**
      * Get CoreShop Session
      *
-     * @return \stdClass
+     * @return Session
      */
     public static function getSession()
     {
@@ -91,7 +95,7 @@ class Tool {
     /**
      * Get current User
      *
-     * @return null|Object\User
+     * @return null|User
      */
     public static function getUser() {
         $session = self::getSession();
@@ -162,24 +166,29 @@ class Tool {
         }
 
         if (!$country instanceof Country) {
-            if(file_exists(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat")) {
-                $gi = geoip_open(CORESHOP_CONFIGURATION_PATH . "/GeoIP/GeoIP.dat", GEOIP_MEMORY_CACHE);
 
-                $country = geoip_country_code_by_addr($gi, \Pimcore\Tool::getClientIp());
+            $geoDbFile = realpath(PIMCORE_WEBSITE_VAR . "/config/GeoLite2-City.mmdb");
+            $record = null;
 
-                geoip_close($gi);
+            if(file_exists($geoDbFile)) {
+                try {
+                    $reader = new Reader($geoDbFile);
 
-                $country = Country::getByIsoCode($country);
-            }
-            else
-            {
-                $enabled = Country::getActiveCountries();
+                    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+                        $ip = $_SERVER['HTTP_CLIENT_IP'];
+                    } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                    } else {
+                        $ip = $_SERVER['REMOTE_ADDR'];
+                    }
 
-                if(count($enabled) > 0)
-                    return $enabled[0];
-                else
-                {
-                    throw new \Exception("no enabled countries found");
+                    if(!self::checkIfIpIsPrivate($ip)) {
+                        $record = $reader->city($ip);
+
+                        $country = Country::getByIsoCode($record->country->isoCode);
+                    }
+                } catch (\Exception $e) {
+                    
                 }
             }
         }
@@ -189,7 +198,7 @@ class Tool {
 
             //Using Default Country: AT
             //TODO: Default Country configurable thru settings
-            $country = Country::getById(7);
+            $country = Country::getById(2);
             //throw new \Exception("Country with code $country not found");
         }
 
@@ -197,6 +206,38 @@ class Tool {
 
         return $country;
     }
+
+    /**
+     * Check if ip is private
+     *
+     * @param $ip
+     * @return bool
+     */
+    private static function checkIfIpIsPrivate ($ip) {
+        $pri_addrs = array (
+            '10.0.0.0|10.255.255.255', // single class A network
+            '172.16.0.0|172.31.255.255', // 16 contiguous class B network
+            '192.168.0.0|192.168.255.255', // 256 contiguous class C network
+            '169.254.0.0|169.254.255.255', // Link-local address also refered to as Automatic Private IP Addressing
+            '127.0.0.0|127.255.255.255' // localhost
+        );
+
+        $long_ip = ip2long ($ip);
+        if ($long_ip != -1) {
+
+            foreach ($pri_addrs AS $pri_addr) {
+                list ($start, $end) = explode('|', $pri_addr);
+
+                // IF IS PRIVATE
+                if ($long_ip >= ip2long ($start) && $long_ip <= ip2long ($end)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * Get current Currency by Country
@@ -223,11 +264,11 @@ class Tool {
     /**
      * Check if Object $object in array $objectList
      *
-     * @param AbstractObject $object
+     * @param AbstractModel $object
      * @param array $objectList
      * @return bool
      */
-    public static function objectInList(AbstractObject $object, array $objectList)
+    public static function objectInList(AbstractModel $object, array $objectList)
     {
         foreach($objectList as $o) {
             if($o->getId() == $object->getId())
@@ -240,6 +281,7 @@ class Tool {
     /**
      * Retreive the values in an array
      *
+     * @param $object
      * @return array
      */
     public static function objectToArray(Object\Concrete $object)
@@ -250,6 +292,7 @@ class Tool {
     /**
      * Retreive the values in json format
      *
+     * @param $object
      * @return string
      */
     public static function objectToJson(Object\Concrete $object)
@@ -298,7 +341,7 @@ class Tool {
                 case 'fieldcollections':
                     if(($value instanceof Object\Fieldcollection) && is_array($value->getItems()))
                     {
-                        /** @var $value Object_Fieldcollection */
+                        /** @var $value Object\Fieldcollection */
                         $def = $value->getItemDefinitions();
                         if(method_exists($def['children'], 'getFieldDefinitions'))
                             $collection[$fieldName] = self::_objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
@@ -306,8 +349,8 @@ class Tool {
                     break;
 
                 case 'date':
-                    /** @var $value Pimcore_Date */
-                    $collection[$fieldName] = ($value instanceof \Pimcore\Date) ? $value->getTimestamp() : 0;
+                    /** @var $value \Pimcore\Date */
+                    $collection[$fieldName] = ($value instanceof Date) ? $value->getTimestamp() : 0;
                     break;
                 default:
                     /** @var $value string */
@@ -319,42 +362,6 @@ class Tool {
         $collection['id']  = $object->o_id;
         $collection['key'] = $object->o_key;
         return $collection;
-    }
-    
-    /*
-     * Class Mapping Tools
-     * They are used to map some instances of CoreShop_base to an defined class (type)
-     */
-
-    /**
-     * @static
-     * @param  $sourceClassName
-     * @return string
-     */
-    public static function getModelClassMapping($sourceClassName, $interfaceToImplement = null) {
-
-        $targetClassName = $sourceClassName;
-        
-        if(!$interfaceToImplement)
-            $interfaceToImplement = $targetClassName;
-
-        if($map = \CoreShop\Config::getModelClassMappingConfig()) {
-            $tmpClassName = $map->{$sourceClassName};
-            
-            if($tmpClassName)  {
-                if(\Pimcore\Tool::classExists($tmpClassName)) {
-                    if(is_subclass_of($tmpClassName, $interfaceToImplement)) {
-                        $targetClassName = $tmpClassName;
-                    } else {
-                        \Logger::error("Classmapping for " . $sourceClassName . " failed. '" . $tmpClassName . " is not a subclass of '" . $interfaceToImplement . "'. " . $tmpClassName . " has to extend " . $interfaceToImplement);
-                    }
-                } else {
-                    \Logger::error("Classmapping for " . $sourceClassName . " failed. Cannot find class '" . $tmpClassName . "'");
-                }
-            }
-        }
-
-        return $targetClassName;
     }
 
     /**

@@ -4,17 +4,17 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 
@@ -48,14 +48,52 @@ class Category extends Base {
     }
 
     /**
-     * Get Products from the Category
+     * Returns all Child Categories from $category
      *
+     * @param Category $category
      * @return array
      */
-    public function getProducts()
+    public static function getAllChildCategories(Category $category) {
+        $allChildren = array($category->getId());
+
+        $loopChilds = function(Category $child) use(&$loopChilds, &$allChildren) {
+            $childs = $child->getChildCategories();
+
+            foreach($childs as $child) {
+                $allChildren[] = $child->getId();
+
+                $loopChilds($child);
+            }
+        };
+
+        $loopChilds($category);
+
+        return $allChildren;
+    }
+
+    /**
+     * Get Products from the Category
+     *
+     * @param bool $includeChildCategories
+     * @return array
+     */
+    public function getProducts($includeChildCategories = false)
     {
         $list = new Object\CoreShopProduct\Listing();
-        $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+
+        if(!$includeChildCategories)
+            $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+        else {
+            $categories = $this->getCatChilds();
+            $categoriesWhere = array();
+
+            foreach($categories as $cat)
+            {
+                $categoriesWhere[] = "categories LIKE '%," . $cat . ",%'";
+            }
+
+            $list->setCondition("enabled = 1 AND (".implode(" OR ", $categoriesWhere).")");
+        }
 
         return $list->getObjects();
     }
@@ -66,13 +104,27 @@ class Category extends Base {
      * @param int $page
      * @param int $itemsPerPage
      * @param array $sort
+     * @param bool $includeChildCategories
      * @return \Zend_Paginator
      * @throws \Zend_Paginator_Exception
      */
-    public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array("name" => "name", "direction" => "asc"))
+    public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array("name" => "name", "direction" => "asc"), $includeChildCategories = false)
     {
         $list = new Object\CoreShopProduct\Listing();
-        $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+
+        if(!$includeChildCategories)
+            $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+        else {
+            $categories = $this->getCatChilds();
+            $categoriesWhere = array();
+
+            foreach($categories as $cat)
+            {
+                $categoriesWhere[] = "categories LIKE '%," . $cat . ",%'";
+            }
+
+            $list->setCondition("enabled = 1 AND (".implode(" OR ", $categoriesWhere).")");
+        }
 
         $list->setOrderKey($sort['name']);
         $list->setOrder($sort['direction']);
@@ -82,6 +134,40 @@ class Category extends Base {
         $paginator->setItemCountPerPage($itemsPerPage);
 
         return $paginator;
+    }
+
+    /**
+     * Checks if category is child of hierachy
+     *
+     * @param Category $category
+     * @param int $level to check hierachy (0 = topMost)
+     * @return bool
+     */
+    public function inCategory(Category $category, $level = 0) {
+        $mostTop = $this->getHierarchy();
+        $mostTop = $mostTop[$level];
+
+        $childs = self::getAllChildCategories($mostTop);
+
+        return in_array($category->getId(), $childs);
+    }
+
+    /**
+     * Get Level of Category
+     *
+     * @return int
+     */
+    public function getLevel() {
+        return count($this->getHierarchy());
+    }
+
+    /**
+     * Returns all Children from this Category
+     *
+     * @return array
+     */
+    public function getCatChilds() {
+        return self::getAllChildCategories($this);
     }
 
     /**
@@ -132,7 +218,7 @@ class Category extends Base {
 
             $category = $category->getParentCategory();
         }
-        while($category instanceof Object\CoreShopCategory);
+        while($category instanceof Category);
 
         return array_reverse($hierarchy);
     }
@@ -149,4 +235,27 @@ class Category extends Base {
 
         return $list->getObjects();
     }
+
+    /**
+     * returns category image
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return Image
+     */
+    public function getCategoryImage() {
+        throw new UnsupportedException("getCategoryImage is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns parent category
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return Category
+     */
+    public function getParentCategory() {
+        throw new UnsupportedException("getParentCategory is not supported for " . get_class($this));
+    }
+
 }

@@ -1,7 +1,7 @@
 {
     "name": "dpfaffenbauer/CoreShop",
     "type": "pimcore-plugin",
-    "license": "Simple BSD",
+    "license": "GPLv3",
     "description": "Creates an Pimcore Online Shop",
     "keywords": ["pimcore", "coreshop", "pimcore-onlineshop", "onlineshop"],
     "homepage": "https://github.com/dpfaffenbauer/CoreShop",
@@ -12,7 +12,6 @@
         "role": "Developer"
     }],
     "require": {
-        "pimcore/installer-plugin": ">=1",
-        "geoip/geoip": "~1.14"
+        "pimcore/installer-plugin": ">=1"
     }
 }

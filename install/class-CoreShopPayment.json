@@ -1,6 +1,7 @@
 {
   "description":null,
   "parentClass":"CoreShop\\Model\\Payment",
+  "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,
   "showVariants":false,
@@ -14,7 +15,7 @@
     "title":null,
     "width":null,
     "height":null,
-    "collapsible":null,
+    "collapsible":false,
     "collapsed":null,
     "bodyStyle":null,
     "datatype":"layout",
@@ -179,7 +180,7 @@
         "locked":false
       }
     ],
-    "locked":null
+    "locked":false
   },
   "icon":null,
   "previewUrl":null,

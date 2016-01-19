@@ -4,23 +4,33 @@
  *
  * LICENSE
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.coreshop.org/license
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     New BSD License
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Model;
 
+use CoreShop\Model\Carrier\AbstractRange;
+use CoreShop\Model\Carrier\DeliveryPrice;
+use CoreShop\Plugin;
 use CoreShop\Tool;
+use Pimcore\Cache;
+use Pimcore\Db;
 
-class Carrier extends AbstractModel {
+class Carrier extends AbstractModel
+{
+    const SHIPPING_METHOD_WEIGHT = "weight";
+    const SHIPPING_METHOD_PRICE = "price";
 
-    public static $shippingMethods = array("price", "weight");
-    public static $rangeBehaviours = array("largest", "deactivate");
+    const RANGE_BEHAVIOUR_DEACTIVATE = "deactivate";
+    const RANGE_BEHAVIOUR_LARGEST = "largest";
+
+    public static $shippingMethods = array(self::SHIPPING_METHOD_PRICE, self::SHIPPING_METHOD_WEIGHT);
+    public static $rangeBehaviours = array(self::RANGE_BEHAVIOUR_LARGEST, self::RANGE_BEHAVIOUR_DEACTIVATE);
 
     /**
      * @var int
@@ -43,12 +53,17 @@ class Carrier extends AbstractModel {
     public $delay;
 
     /**
+     * @var boolean
+     */
+    public $needsRange;
+
+    /**
      * @var int
      */
     public $grade;
 
     /**
-     * @var id
+     * @var int
      */
     public $image;
 
@@ -98,62 +113,275 @@ class Carrier extends AbstractModel {
     public $maxWeight;
 
     /**
+     * @var string
+     */
+    public $class;
+
+    /**
      * Save carrier
      *
      * @return mixed
      */
     public function save() {
-        return $this->getResource()->save();
+        return $this->getDao()->save();
     }
 
     /**
-     * get Carriere by ID
+     * get Carrier by ID
      *
      * @param $id
      * @return Carrier|null
      */
     public static function getById($id) {
-        try {
-            $obj = new self;
-            $obj->getResource()->getById($id);
-            return $obj;
-        }
-        catch(\Exception $ex) {
+        $id = intval($id);
 
+        if ($id < 1) {
+            return null;
+        }
+
+        $cacheKey = "coreshop_carrier_" . $id;
+
+        try {
+            $carrier = \Zend_Registry::get($cacheKey);
+            if(!$carrier) {
+                throw new \Exception("Carrier in registry is null");
+            }
+
+            return $carrier;
+        }
+        catch (\Exception $e) {
+            try {
+                if(!$carrier = Cache::load($cacheKey)) {
+                    $db = Db::get();
+                    //Todo: TableName already definied within 2 Dao files
+                    $data = $db->fetchRow('SELECT class FROM coreshop_carriers WHERE id = ?', $id);
+
+                    $class = get_called_class();
+                    if(is_array($data) && $data['class']) {
+                        if(\Pimcore\Tool::classExists($data['class'])) {
+                            $class = $data['class'];
+                        }
+                        else {
+                            \Logger::warning(sprintf("Carrier with ID %s has definied class '%s' which cannot be loaded.", $id, $data['class']));
+                        }
+                    }
+
+                    $carrier = new $class();
+                    $carrier->getDao()->getById($id);
+
+                    \Zend_Registry::set($cacheKey, $carrier);
+                    Cache::save($carrier, $cacheKey);
+                }
+                else {
+                    \Zend_Registry::set($cacheKey, $carrier);
+                }
+
+                return $carrier;
+            }
+            catch(\Exception $e) {
+                \Logger::warning($e->getMessage());
+            }
         }
 
         return null;
     }
 
     /**
-     * Get the Ranges for this carrier
+     * get all carriers
      *
-     * @return array
+     * @return Carrier[]
      */
-    public function getRange() {
-        if($this->getRangeBehaviour() == "weight")
-            $list = new Carrier\RangeWeight\Listing();
-        else
-            $list = new Carrier\RangeWeight\Listing();
+    public static function getAll() {
+        $list = new Carrier\Listing();
+        $list->setOrder("ASC");
+        $list->setOrderKey("grade");
 
-        $list->setCondition("carrier=?", array($this->getId()));
-        $list->load();
+        return $list->getData();
+    }
 
-        $data = $list->getData();
-        $returnData = array();
+    /**
+     * Get all available Carriers for cart
+     *
+     * @param Zone $zone
+     * @param Cart|null $cart
+     * @return Carrier[]
+     */
+    public static function getCarriersForCart(Cart $cart = null, Zone $zone = null) {
+        if(is_null($cart)) {
+            $cart = Tool::prepareCart();
+        }
+        if(is_null($zone))
+            $zone = Tool::getCountry()->getZone();
 
-        foreach($data as $entry) {
-            $price = Carrier\DeliveryPrice::getByCarrierAndRange($this->getId(), $entry->getId());
+        $carriers = self::getAll();
+        $availableCarriers = array();
 
-            $returnData[] = array(
-                "id" => $entry->getId(),
-                "delimiter1" => $entry->getDelimiter1(),
-                "delimiter2" => $entry->getDelimiter2(),
-                "price" => $price ? $price->getPrice() : 0
-            );
+        foreach($carriers as $carrier)
+        {
+            if($carrier->checkCarrierForCart($cart, $zone)) {
+                $availableCarriers[] = $carrier;
+            }
+        }
+        
+        return $availableCarriers;
+    }
+
+    /**
+     * Check if carrier is allowed for cart and zone
+     *
+     * @param Cart|null $cart
+     * @param Zone|null $zone
+     * @return bool
+     * @throws \CoreShop\Exception\UnsupportedException
+     */
+    public function checkCarrierForCart(Cart $cart = null, Zone $zone = null) {
+        if(!$this->getMaxDeliveryPrice())
+            return false;
+
+        //Check for Ranges
+        if($this->getRangeBehaviour() == self::RANGE_BEHAVIOUR_DEACTIVATE)
+        {
+            if($this->getShippingMethod() == self::SHIPPING_METHOD_PRICE) {
+                if (!$this->checkDeliveryPriceByValue($zone, $cart->getTotal())) {
+                    return false;
+                }
+            }
+
+            if($this->getShippingMethod() == self::SHIPPING_METHOD_WEIGHT) {
+                if (!$this->checkDeliveryPriceByValue($zone, $cart->getTotalWeight())) {
+                    return false;
+                }
+            }
         }
 
-        return $returnData;
+        $carrierIsAllowed = true;
+
+        //Check for max-size
+        foreach($cart->getItems() as $item) {
+            $product = $item->getProduct();
+
+            if(($this->getMaxWidth() > 0 && $product->getWidth() > $this->getMaxWidth())
+                || ($this->getMaxHeight() > 0 && $product->getHeight() > $this->getMaxHeight())
+                || ($this->getMaxDepth() > 0 && $product->getDepth() > $this->getMaxDepth())
+                || ($this->getMaxWeight() > 0 && $product->getWeight() > $this->getMaxWeight())) {
+
+                $carrierIsAllowed = false;
+                break;
+            }
+        }
+
+        if(!$carrierIsAllowed) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the Ranges for this carrier
+     *
+     * @return AbstractRange[]
+     */
+    public function getRanges() {
+        if($this->getShippingMethod() == "weight")
+            $list = new Carrier\RangeWeight\Listing();
+        else
+            $list = new Carrier\RangePrice\Listing();
+
+        $list->setCondition("carrierId=?", array($this->getId()));
+        $list->load();
+
+        return $list->getData();
+    }
+
+    /**
+     * Get max possible delivery price for this carrier
+     *
+     * @param Zone $zone
+     * @return float|bool
+     */
+    public function getMaxDeliveryPrice(Zone $zone = null) {
+        if(is_null($zone))
+            $zone = Tool::getCountry()->getZone();
+
+        $ranges = $this->getRanges();
+
+        if(count($ranges) === 0)
+            return false;
+
+        $maxPrice = 0;
+
+        foreach($ranges as $range) {
+            $price = $range->getPriceForZone($zone);
+
+            if($price instanceof DeliveryPrice) {
+                if ($price->getPrice() > $maxPrice)
+                    $maxPrice = $price->getPrice();
+            }
+        }
+
+        return $maxPrice;
+    }
+
+    /**
+     * Get delivery Price for cart
+     *
+     * @param Zone $zone
+     * @param Cart $cart
+     * @return bool|float
+     */
+    public function getDeliveryPrice(Cart $cart, Zone $zone = null) {
+        if(is_null($zone))
+            $zone = Tool::getCountry()->getZone();
+
+        if($this->getShippingMethod() === self::SHIPPING_METHOD_PRICE) {
+            $value = $cart->getTotal();
+        }
+        else {
+            $value = $cart->getTotalWeight();
+        }
+
+        $ranges = $this->getRanges();
+
+        foreach($ranges as $range) {
+            $price = $range->getPriceForZone($zone);
+
+            if($price instanceof DeliveryPrice) {
+                if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
+                    return $price->getPrice() * (1 + ($this->getTax() / 100));
+                }
+            }
+        }
+
+        if($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
+            return $this->getMaxDeliveryPrice($zone) * (1 + ($this->getTax() / 100));
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Check if carrier is available for zone and value
+     *
+     * @param Zone $zone
+     * @param $value
+     * @return bool
+     */
+    public function checkDeliveryPriceByValue(Zone $zone, $value) {
+        $ranges = $this->getRanges();
+
+        foreach($ranges as $range) {
+            $price = $range->getPriceForZone($zone);
+
+            if($price instanceof DeliveryPrice) {
+                if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -237,7 +465,7 @@ class Carrier extends AbstractModel {
     }
 
     /**
-     * @return id
+     * @return int
      */
     public function getImage()
     {
@@ -245,7 +473,7 @@ class Carrier extends AbstractModel {
     }
 
     /**
-     * @param id $image
+     * @param int $image
      */
     public function setImage($image)
     {
@@ -394,5 +622,37 @@ class Carrier extends AbstractModel {
     public function setMaxWeight($maxWeight)
     {
         $this->maxWeight = $maxWeight;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getNeedsRange()
+    {
+        return $this->needsRange;
+    }
+
+    /**
+     * @param boolean $needsRange
+     */
+    public function setNeedsRange($needsRange)
+    {
+        $this->needsRange = $needsRange;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * @param string $class
+     */
+    public function setClass($class)
+    {
+        $this->class = $class;
     }
 }
