@@ -167,20 +167,27 @@ class CoreShop_UserController extends Action
                     $key = Pimcore\File::getValidFilename($userParams['email'] . " " . time());
                 }
 
-                $adresses = new Object\Fieldcollection();
+                $addresses = new Object\Fieldcollection();
 
                 $address = new CoreShopUserAddress();
                 $address->setValues($addressParams);
                 $address->setCountry(Country::getById($addressParams['country']));
 
-                $adresses->add($address);
+                $addresses->add($address);
+
+                if($isGuest) {
+                    //Set billing and shipping address in cart
+                    $this->cart->setBillingAddress(clone $addresses);
+                    $this->cart->setShippingAddress(clone $addresses);
+                    $this->cart->save();
+                }
 
                 $user = new CoreShopUser();
                 $user->setKey($key);
                 $user->setPublished(true);
                 $user->setParent(Pimcore\Model\Object\Service::createFolderByPath($folder));
                 $user->setValues($userParams);
-                $user->setAddresses($adresses);
+                $user->setAddresses($addresses);
                 $user->save();
 
                 Plugin::getEventManager()->trigger('user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
