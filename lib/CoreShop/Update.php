@@ -38,7 +38,7 @@ class Update {
      *
      * @var string
      */
-    public static $branch = "Pimcore-4.0";
+    public static $branch = "master";
 
 
     /**
