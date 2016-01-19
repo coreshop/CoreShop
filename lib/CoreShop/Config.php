@@ -132,4 +132,26 @@ class Config {
     public static function setConfig (\Zend_Config $config) {
         \Zend_Registry::set("coreshop_config", $config);
     }
+
+    /**
+     * Check if Catalog Mode is activated
+     *
+     * @return bool
+     */
+    public static function isCatalogMode() {
+        if(\Zend_Registry::isRegistered("coreshop_catalogmode")) {
+            return \Zend_Registry::get("coreshop_catalogmode");
+        }
+        else {
+            $catalogMode = intval(self::getValue("base.catalog-mode")) === 1;
+
+            if(is_bool($catalogMode)) {
+                \Zend_Registry::set("coreshop_catalogmode", $catalogMode);
+
+                return $catalogMode;
+            }
+        }
+
+        return false;
+    }
 }

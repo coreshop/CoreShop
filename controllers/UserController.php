@@ -29,6 +29,11 @@ class CoreShop_UserController extends Action
     public function preDispatch() {
         parent::preDispatch();
 
+        //Users are not allowed in CatalogMode
+        if(\CoreShop\Config::isCatalogMode()) {
+            $this->redirect($this->view->url(array(), "coreshop_index"));
+        }
+
         if($this->getParam("action") != "login" && $this->getParam("action") != "register") {
             if (!$this->session->user instanceof CoreShopUser) {
                 $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));

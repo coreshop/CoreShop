@@ -125,6 +125,12 @@ pimcore.plugin.coreshop.settings= Class.create({
                                         this.forceReloadOnSave = true;
                                     }.bind(this)
                                 }
+                            },
+                            {
+                                fieldLabel: t('coreshop_base_catalogmode'),
+                                xtype: "checkbox",
+                                name: "base.catalog-mode",
+                                checked: this.getValue("base.catalog-mode")
                             }
                         ]
                     },

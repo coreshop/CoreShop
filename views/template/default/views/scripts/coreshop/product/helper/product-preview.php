@@ -24,15 +24,17 @@
             <?=$this->product->getShortDescription()?>
         </div>
         <?php if($this->product->getAvailableForOrder()) { ?>
-        <div class="price">
-            <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getProductPrice())?></span>
-        </div>
-        <div class="cart-button">
-            <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="<?=$uniqid ?>">
-                <?=$this->translate("Add to cart")?>
-                <i class="fa fa-shopping-cart"></i>
-            </button>
-        </div>
+            <div class="price">
+                <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getProductPrice())?></span>
+            </div>
+            <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
+                <div class="cart-button">
+                    <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="<?=$uniqid ?>">
+                        <?=$this->translate("Add to cart")?>
+                        <i class="fa fa-shopping-cart"></i>
+                    </button>
+                </div>
+            <?php } ?>
         <?php } ?>
     </div>
 </div>

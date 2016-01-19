@@ -59,10 +59,13 @@
                         <hr />
 
                         <div class="options">
+                            <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
                             <div class="form-group">
                                 <label class="control-label text-uppercase" for="input-quantity"><?=$this->translate("Qty")?>:</label>
                                 <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
                             </div>
+                            <?php } ?>
+
                             <div class="cart-button button-group">
                                 <button type="button" title="Wishlist" class="btn btn-wishlist">
                                     <i class="fa fa-heart"></i>
@@ -70,10 +73,13 @@
                                 <button type="button" title="Compare" class="btn btn-compare">
                                     <i class="fa fa-bar-chart-o"></i>
                                 </button>
-                                <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#product-image-<?=$this->product->getId()?>">
-                                    <?=$this->translate("Add to cart")?>
-                                    <i class="fa fa-shopping-cart"></i>
-                                </button>
+
+                                <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
+                                    <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#product-image-<?=$this->product->getId()?>">
+                                        <?=$this->translate("Add to cart")?>
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </button>
+                                <?php } ?>
                             </div>
                         </div>
                     <?php } ?>

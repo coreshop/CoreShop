@@ -13,20 +13,22 @@
         </div>
         <!-- Information Links Ends -->
         <!-- My Account Links Starts -->
-        <div class="col-md-2 col-sm-6">
-            <h5><?=$this->translate("My Account")?></h5>
-            <ul>
-                <?php if($this->session->user instanceof \CoreShop\Plugin\User) { ?>
-                    <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user")?>"><?=$this->translate("My Account")?></a></li>
-                    <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "orders"), "coreshop_user")?>"><?=$this->translate("My orders")?></a></li>
-                    <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "addresses"), "coreshop_user")?>"><?=$this->translate("My addresses")?></a></li>
-                    <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "settings"), "coreshop_user")?>"><?=$this->translate("My personal info")?></a></li>
-                <?php } else { ?>
-                    <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "register"), "coreshop_user")?>"><?=$this->translate("Register")?></a></li>
-                    <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "login"), "coreshop_user")?>"><?=$this->translate("Login")?></a></li>
-                <?php } ?>
-            </ul>
-        </div>
+        <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
+            <div class="col-md-2 col-sm-6">
+                <h5><?=$this->translate("My Account")?></h5>
+                <ul>
+                    <?php if($this->session->user instanceof \CoreShop\Model\User) { ?>
+                        <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user")?>"><?=$this->translate("My Account")?></a></li>
+                        <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "orders"), "coreshop_user")?>"><?=$this->translate("My orders")?></a></li>
+                        <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "addresses"), "coreshop_user")?>"><?=$this->translate("My addresses")?></a></li>
+                        <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "settings"), "coreshop_user")?>"><?=$this->translate("My personal info")?></a></li>
+                    <?php } else { ?>
+                        <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "register"), "coreshop_user")?>"><?=$this->translate("Register")?></a></li>
+                        <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "login"), "coreshop_user")?>"><?=$this->translate("Login")?></a></li>
+                    <?php } ?>
+                </ul>
+            </div>
+        <?php } ?>
         <!-- My Account Links Ends -->
         <!-- Customer Service Links Starts -->
         <div class="col-md-2 col-sm-6">

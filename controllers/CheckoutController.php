@@ -28,6 +28,11 @@ class CoreShop_CheckoutController extends Action
 {
     public function preDispatch() {
         parent::preDispatch();
+
+        //Checkout is not allowed in CatalogMode
+        if(\CoreShop\Config::isCatalogMode()) {
+            $this->redirect($this->view->url(array(), "coreshop_index"));
+        }
         
         if(count($this->view->cart->getItems()) == 0 && $this->getParam("action") != "thankyou")
         {

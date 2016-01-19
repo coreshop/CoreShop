@@ -37,6 +37,7 @@ ___
 * Different Order Steps
 * Overwrite CoreShop Classes
 * Overwrite CoreShop Controllers
+* Catalogmode (No Cart, Checkout and Customers)
 ____
 
 # Themes

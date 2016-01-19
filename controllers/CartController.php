@@ -33,7 +33,12 @@ class CoreShop_CartController extends Action {
     public function preDispatch()
     {
         parent::preDispatch();
-        
+
+        //Cart is not allowed in CatalogMode
+        if(\CoreShop\Config::isCatalogMode()) {
+            $this->redirect($this->view->url(array(), "coreshop_index"));
+        }
+
         $this->prepareCart();
     }
     

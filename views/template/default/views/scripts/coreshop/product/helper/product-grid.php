@@ -33,10 +33,12 @@
                     <button type="button" title="Compare" class="btn btn-compare">
                         <i class="fa fa-bar-chart-o"></i>
                     </button>
+                    <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
                     <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#product-image-<?=$this->product->getId()?>">
                         Add to cart
                         <i class="fa fa-shopping-cart"></i>
                     </button>
+                    <?php } ?>
                 </div>
             <?php } ?>
         </div>

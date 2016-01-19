@@ -70,6 +70,7 @@ class CoreShop_Admin_SettingsController extends Admin
         $settings = $oldConfig->toArray();
 
         $settings['base']['base-currency'] = $values["base.base-currency"];
+        $settings['base']['catalog-mode'] = $values["base.catalog-mode"];
         $settings['product']['default-image'] = $values["product.default-image"];
         $settings['product']['days-as-new'] = $values["product.days-as-new"];
         $settings['category']['default-image'] = $values["category.default-image"];

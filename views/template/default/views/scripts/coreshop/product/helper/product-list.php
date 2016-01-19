@@ -30,10 +30,13 @@
                     <button type="button" title="" class="btn btn-compare" data-original-title="Compare">
                         <i class="fa fa-bar-chart-o"></i>
                     </button>
-                    <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#<?=$uniqid?>">
-                        Add to cart
-                        <i class="fa fa-shopping-cart"></i>
-                    </button>
+
+                    <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
+                        <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#<?=$uniqid?>">
+                            Add to cart
+                            <i class="fa fa-shopping-cart"></i>
+                        </button>
+                    <?php } ?>
                 </div>
             <?php } ?>
         </div>
