@@ -41,6 +41,21 @@
 
 </head>
 <body class="lang-<?=$this->language?>">
+
+    <?php if($this->config->coreshop_demo) { ?>
+        <!-- DEMO BANNER -->
+        <div class="demo-banner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <?php echo $this->translate("This Shop is only for DEMO purpose. All products listed cannot be ordered and will not be shipped!"); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ DEMO BANNER -->
+    <?php } ?>
+
 <!-- Header Section Starts -->
     <header id="header-area">
     <!-- Header Top Starts -->

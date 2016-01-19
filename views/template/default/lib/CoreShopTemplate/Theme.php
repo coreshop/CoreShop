@@ -21,6 +21,7 @@ use Pimcore\Model\Asset;
 use Pimcore\Model\Asset\Image;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
+use Pimcore\Tool\Frontend;
 
 class Theme extends CoreShopTheme
 {
@@ -52,6 +53,8 @@ class Theme extends CoreShopTheme
         if (!file_exists($csvFile)) {
             return false;
         }
+
+        $websiteConfig = Frontend::getWebsiteConfig();
 
         $row = 0;
 
@@ -148,38 +151,38 @@ class Theme extends CoreShopTheme
                         $product->setMetaTitle($data[60]);
                         $product->setPublished(true);
 
-                        $imageId = str_replace("-large.jpg", "", basename($data[56]));
+                        if(!$websiteConfig->coreshop_demo) {
+                            $imageId = str_replace("-large.jpg", "", basename($data[56]));
 
-                        $url = "http://shop.kaiba.at/".$imageId."-large_default/image.jpg";
-                        $imageUrl = parse_url($url);
+                            $url = "http://shop.kaiba.at/" . $imageId . "-large_default/image.jpg";
+                            $imageUrl = parse_url($url);
 
-                        if($imageUrl)
-                        {
-                            try {
-                                $imageData = @file_get_contents($url);
+                            if ($imageUrl) {
+                                try {
+                                    $imageData = @file_get_contents($url);
 
-                                if($imageData) {
-                                    $imageType = pathinfo($imageUrl['path'], PATHINFO_EXTENSION);
+                                    if ($imageData) {
+                                        $imageType = pathinfo($imageUrl['path'], PATHINFO_EXTENSION);
 
-                                    $assetParent = Asset\Service::createFolderByPath($path);
-                                    $key = File::getValidFilename($data[3]) . "." . $imageType;
-                                    $fullPath = $assetParent->getFullPath() . "/" . $key;
+                                        $assetParent = Asset\Service::createFolderByPath($path);
+                                        $key = File::getValidFilename($data[3]) . "." . $imageType;
+                                        $fullPath = $assetParent->getFullPath() . "/" . $key;
 
-                                    if($existingAsset = Asset::getByPath($fullPath)) {
-                                        $existingAsset->delete();
+                                        if ($existingAsset = Asset::getByPath($fullPath)) {
+                                            $existingAsset->delete();
+                                        }
+
+                                        $image = new Image();
+                                        $image->setParent($assetParent);
+                                        $image->setFilename($key);
+                                        $image->setData($imageData);
+                                        $image->save();
+
+                                        $product->setImages(array($image));
                                     }
+                                } catch (\Exception $ex) {
 
-                                    $image = new Image();
-                                    $image->setParent($assetParent);
-                                    $image->setFilename($key);
-                                    $image->setData($imageData);
-                                    $image->save();
-
-                                    $product->setImages(array($image));
                                 }
-                            }
-                            catch(\Exception $ex) {
-
                             }
                         }
 
