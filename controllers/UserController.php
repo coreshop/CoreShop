@@ -154,6 +154,10 @@ class CoreShop_UserController extends Action
             try {
                 $isGuest = intval($this->getParam("isGuest", 0)) === 1;
 
+                if($isGuest && !\CoreShop\Config::isGuestCheckoutActivated()) {
+                    throw new Exception\UnsupportedException("Guest checkout is disabled");
+                }
+
                 //Check User exists
                 if (CoreShopUser::getUserByEmail($userParams['email']) instanceof CoreShopUser) {
                     throw new \Exception("E-Mail already exists");

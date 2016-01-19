@@ -131,6 +131,12 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 xtype: "checkbox",
                                 name: "base.catalog-mode",
                                 checked: this.getValue("base.catalog-mode")
+                            },
+                            {
+                                fieldLabel: t('coreshop_base_guestcheckout'),
+                                xtype: "checkbox",
+                                name: "base.guest-checkout",
+                                checked: this.getValue("base.guest-checkout")
                             }
                         ]
                     },

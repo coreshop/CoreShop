@@ -154,4 +154,26 @@ class Config {
 
         return false;
     }
+
+    /**
+     * Check if guest checkout mode is activated
+     *
+     * @return bool
+     */
+    public static function isGuestCheckoutActivated() {
+        if(\Zend_Registry::isRegistered("coreshop_guestcheckout")) {
+            return \Zend_Registry::get("coreshop_guestcheckout");
+        }
+        else {
+            $guestCheckout = intval(self::getValue("base.guest-checkout")) === 1;
+
+            if(is_bool($guestCheckout)) {
+                \Zend_Registry::set("coreshop_guestcheckout", $guestCheckout);
+
+                return $guestCheckout;
+            }
+        }
+
+        return false;
+    }
 }

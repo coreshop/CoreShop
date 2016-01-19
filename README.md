@@ -38,6 +38,7 @@ ___
 * Overwrite CoreShop Classes
 * Overwrite CoreShop Controllers
 * Catalogmode (No Cart, Checkout and Customers)
+* Guest Checkout
 ____
 
 # Themes
