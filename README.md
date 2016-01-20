@@ -40,6 +40,7 @@ ___
 * Catalogmode (No Cart, Checkout and Customers)
 * Guest Checkout
 * Tax Manager
+
 ____
 
 # Themes
