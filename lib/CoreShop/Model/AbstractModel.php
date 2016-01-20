@@ -213,6 +213,7 @@ class AbstractModel extends Model\AbstractModel
 
     public function __wakeup()
     {
-        $this->getLocalizedFields()->setObject($this);
+        if($this->getLocalizedFields())
+            $this->getLocalizedFields()->setObject($this);
     }
 }
