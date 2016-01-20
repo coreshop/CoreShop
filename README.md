@@ -75,11 +75,6 @@ To implement a new Payment Plugin you need to extend the class CoreShop\Plugin\P
 
 For example take a look at the pimcore-payunity Plugin: [https://github.com/dpfaffenbauer/pimcore-payunity](https://github.com/dpfaffenbauer/pimcore-payunity)
 
-# Carrier
-Carriers can be extended with your own plugin. For more information take a look at the Demo implementation: [https://github.com/dpfaffenbauer/coreshop-carrier-custom](https://github.com/dpfaffenbauer/coreshop-carrier-custom)
-
-To implement a new Carrier you need to extend the class CoreShop\Model\Carrier.
-
 # GeoIP v2
 CoreShop can use GeoIP to locate visitors countries using IP-Addresses.
 
@@ -92,7 +87,7 @@ CoreShop uses the already existing Pimcore GeoIP Database located in website/var
 # Extending CoreShop
 
 ## CoreShop Classes
-All CoreShop Classes except Carriers classes can be extended using Pimcore Classmaps
+All CoreShop Classes (except Carriers) can be extended using Pimcore Classmaps
 
 [https://www.pimcore.org/wiki/display/PIMCORE4/Class-Mappings+-+Overwrite+pimcore+models](https://www.pimcore.org/wiki/display/PIMCORE4/Class-Mappings+-+Overwrite+pimcore+models)
 
@@ -110,3 +105,8 @@ If the controller class is available in your templates controller directory. You
 You can implement your own TaxManager. Take a look at CoreShopDemoTaxManager for more information.
 
 [https://github.com/dpfaffenbauer/coreshop-demo-taxmanager](https://github.com/dpfaffenbauer/coreshop-demo-taxmanager)
+
+## Carrier
+Carriers can be extended with your own plugin. For more information take a look at the Demo implementation: [https://github.com/dpfaffenbauer/coreshop-carrier-custom](https://github.com/dpfaffenbauer/coreshop-carrier-custom)
+
+To implement a new Carrier you need to extend the class CoreShop\Model\Carrier.
