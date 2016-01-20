@@ -1,24 +1,13 @@
 # pimcore-coreshop
 
 [![Join the chat at https://gitter.im/dpfaffenbauer/pimcore-coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dpfaffenbauer/pimcore-coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-Onlineshop Plugin for Pimcore
+
+CoreShop is the first OpenSource Onlineshop plugin for Pimcore.
 
 # Demo
-Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at)
+Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at) (Stil under Development)
 
-(Still under Development - Pimcore Login will follow)
-
-You can setup your own example:
-
-* Download Plugin and place it in your plugins directory
-* Open Extension Manager in Pimcore and enable/install Plugin
-* After Installation within Pimcore Extension Manager, you have to reload Pimcore
-* Now the CoreShop Icon will appear in the Menu
-* You now have to let CoreShop install itself
-* finished
-* Go To http://yourdomain/en/shop
-
-___
+[Getting started] (https://github.com/dpfaffenbauer/pimcore-coreshop/wiki/Getting-Started)
 
 # Features
 * Product Management
@@ -39,74 +28,3 @@ ___
 * Catalog-Mode (No Cart, Checkout and Customers)
 * Guest Checkout
 * Tax Manager (Custom Taxes for Products and Countries)
-
-____
-
-# Themes
-Themes are installed within plugins/CoreShop/views/template/[Name] or /website/views/coreshop/template/[Name]
-
-A Theme is basically a Zend Module with the Namespace CoreShopTheme. All views and controllers specific for this theme are placed inside the theme-folder.
-
-____
-
-# Plugins
-Coreshop was designed to make use of other Pimcore-Plugins. 
-
-Plugins can extend following things:
-* Payment (Every Payment Provider needs to be implemeted using a Plugin)
-* Carrier (Carriers can be extended using a Plugin)
-* TaxManager (TaxManager can be extended using a Plugin)
-
-## Hooks
-CoreShop uses Hooks to call Pimcore-Plugins from template files.
-
-**Hooks are currently not consistently implemented.**
-
-For example on the product-detail template file (in Demo Shop):
-
-```
-<?=\CoreShop\Plugin::hook("product-detail-bottom", array("product" => $this->product))?>
-```
-
-# Payment
-A Payment Provider is implemented using a Pimcore-Plugin.
-
-To implement a new Payment Plugin you need to extend the class CoreShop\Plugin\Payment.
-
-For example take a look at the pimcore-payunity Plugin: [https://github.com/dpfaffenbauer/pimcore-payunity](https://github.com/dpfaffenbauer/pimcore-payunity)
-
-# GeoIP v2
-CoreShop can use GeoIP to locate visitors countries using IP-Addresses.
-
-CoreShop uses the already existing Pimcore GeoIP Database located in website/var/GeoLite2-City.mmdb
-
-```
-/website/var/config/GeoIP/GeoIP.dat
-```
-
-# Extending CoreShop
-
-## CoreShop Classes
-All CoreShop Classes (except Carriers) can be extended using Pimcore Classmaps
-
-[https://www.pimcore.org/wiki/display/PIMCORE4/Class-Mappings+-+Overwrite+pimcore+models](https://www.pimcore.org/wiki/display/PIMCORE4/Class-Mappings+-+Overwrite+pimcore+models)
-
-For Example
-```
-<CoreShop_Model_Country>\Website\Model\Country</CoreShop_Model_Country>
-```
-
-## CoreShop Controller
-CoreShop Controller can be extended using the Template.
-
-If the controller class is available in your templates controller directory. Your controller will be dispatched
-
-## TaxManager
-You can implement your own TaxManager. Take a look at CoreShopDemoTaxManager for more information.
-
-[https://github.com/dpfaffenbauer/coreshop-demo-taxmanager](https://github.com/dpfaffenbauer/coreshop-demo-taxmanager)
-
-## Carrier
-Carriers can be extended with your own plugin. For more information take a look at the Demo implementation: [https://github.com/dpfaffenbauer/coreshop-carrier-custom](https://github.com/dpfaffenbauer/coreshop-carrier-custom)
-
-To implement a new Carrier you need to extend the class CoreShop\Model\Carrier.
