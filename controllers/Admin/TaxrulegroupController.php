@@ -105,6 +105,7 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
             $group->save();
 
             $taxRules = \Zend_Json::decode($this->getParam("taxRules"));
+            $taxRulesUpdated = array();
 
             foreach($taxRules as $taxRule) {
                 $id = intval($taxRule['id']);
@@ -125,6 +126,16 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
                 $taxRuleObject->setBehavior($taxRule['behavior']);
                 $taxRuleObject->setTaxRuleGroup($group);
                 $taxRuleObject->save();
+
+                $taxRulesUpdated[] = $taxRuleObject->getId();
+            }
+
+            $taxRules = $group->getRules();
+
+            foreach($taxRules as $rule) {
+                if(!in_array($rule->getId(), $taxRulesUpdated)) {
+                    $rule->delete();
+                }
             }
 
             $this->_helper->json(array("success" => true, "taxRuleGroup" => $group));
@@ -179,18 +190,5 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
         }
         else
             $this->_helper->json(array("success" => false));
-    }
-
-    public function deleteRuleAction() {
-        $id = $this->getParam("id");
-        $rule = \CoreShop\Model\TaxRule::getById($id);
-
-        if($rule instanceof \CoreShop\Model\TaxRule) {
-            $rule->delete();
-
-            $this->_helper->json(array("success" => true));
-        }
-
-        $this->_helper->json(array("success" => false));
     }
 }
