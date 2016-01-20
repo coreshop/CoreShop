@@ -52,7 +52,7 @@ class CoreShop_Admin_InstallController extends Admin
 
             PLugin::getEventManager()->trigger('install.pre', null, array("installer" => $install));
 
-            $install->executeSQL("v-0.1");
+            $install->executeSQL("CoreShop");
 
             //install Data
             $install->installObjectData("orderStates");
