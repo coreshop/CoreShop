@@ -193,4 +193,26 @@ class AbstractModel extends Model\AbstractModel
 
         return parent::setValue($key, $value);
     }
+
+    /**
+     * @return array
+     */
+    /*public function __sleep() {
+        $vars = parent::__sleep();
+        $blockedVars = array("localizedValues", "localizedFields");
+        $finalVars = array();
+
+        foreach ($vars as $key) {
+            if (!in_array($key, $blockedVars)) {
+                $finalVars[] = $key;
+            }
+        }
+
+        return $finalVars;
+    }*/
+
+    public function __wakeup()
+    {
+        $this->getLocalizedFields()->setObject($this);
+    }
 }
