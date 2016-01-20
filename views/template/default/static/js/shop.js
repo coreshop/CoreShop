@@ -425,7 +425,7 @@ $(document).ready(function(){
     
     shop.initChangeAddress = function()
     {
-        $('select[name=delivery-address]').change(function(){
+        $('select[name=shipping-address]').change(function(){
             var value = $(this).val();
             
             value = $(this).find("[value='"+value+"']").data("value");
@@ -447,7 +447,7 @@ $(document).ready(function(){
             $('.panel-billing-address').html($('#address-' + value).html());
         });
         
-        $('[name=useDeliveryAsBilling]').change(function(){
+        $('[name=useShippingAsBilling]').change(function(){
             if($(this).is(":checked"))
             {
                 $('.billing-address-selector').slideUp();
