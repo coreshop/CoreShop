@@ -114,6 +114,7 @@ class OrderState extends AbstractModel
             }
         }
 
+        //Todo: remove?
         Plugin::actionHook("orderStatusUpdate", array("newOrderStatus" => $this, "order" => $order));
 
         if($this->getEmail())
