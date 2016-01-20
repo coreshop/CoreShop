@@ -15,6 +15,7 @@
 namespace CoreShop;
 
 use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Cart;
 use Pimcore\Date;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
@@ -149,6 +150,7 @@ class Tool {
     {
         $session = self::getSession();
         $country = null;
+        $cart = self::prepareCart();
 
         if($session->countryId) {
             $country = Country::getById($session->countryId);
@@ -157,12 +159,24 @@ class Tool {
                 return $country;
         }
 
+        if($cart instanceof Cart) {
+            if(count($cart->getBillingAddress()) > 0) {
+                $address = $cart->getBillingAddress()->get(0);
 
-        if (self::getSession()->user instanceof User) {
-            $user = self::getSession()->user;
+                if ($address instanceof Object\Fieldcollection\Data\CoreShopUserAddress) {
+                    $country = $address->getCountry();
+                }
+            }
+        }
 
-            if (count($user->getAddresses()) > 0)
-                $country = $user->getAddresses()->get(0);
+        if(!$country instanceof Country) {
+            if ($session->user instanceof User) {
+                $user = $session->user;
+
+                if (count($user->getAddresses()) > 0) {
+                    $country = $user->getAddresses()->get(0)->getCountry();
+                }
+            }
         }
 
         if (!$country instanceof Country) {

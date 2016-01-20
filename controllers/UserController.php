@@ -104,6 +104,9 @@ class CoreShop_UserController extends Action
                     if($isAuthenticated) {
                         $this->session->user = $user;
 
+                        //Reset country
+                        unset($this->session->countryId);
+
                         if(count($this->cart->getItems()) <= 0)
                         {
                             $cart = $user->getLatestCart();

@@ -87,7 +87,10 @@ class CoreShop_CheckoutController extends Action
             $this->cart->setShippingAddress($fieldCollectionShipping);
             $this->cart->setBillingAddress($fieldCollectionBilling);
             $this->cart->save();
-            
+
+            //Reset Country in Session, now we use BillingAddressCountry
+            unset($this->session->countryId);
+
             $this->_redirect($this->view->url(array("action" => "shipping"), "coreshop_checkout"));
         }
         
