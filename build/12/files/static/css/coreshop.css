@@ -1,0 +1,205 @@
+@font-face {
+  font-family: 'coreshop';
+  src: url('../font/coreshop.eot?62234477');
+  src: url('../font/coreshop.eot?62234477#iefix') format('embedded-opentype'),
+       url('../font/coreshop.woff?62234477') format('woff'),
+       url('../font/coreshop.ttf?62234477') format('truetype'),
+       url('../font/coreshop.svg?62234477#coreshop') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'coreshop';
+    src: url('../font/coreshop.svg?62234477#coreshop') format('svg');
+  }
+}
+*/
+ 
+ [class^="icon-coreshop"]:before, [class*=" icon-coreshop"]:before {
+  font-family: "coreshop";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+     
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.icon-coreshop-shop:before { content: '\e800'; } /* '' */
+
+.coreshop_icon_settings {
+    background: url(/pimcore/static/img/icon/cog.png) left center no-repeat !important;
+}
+.coreshop_icon_localization {
+    background: url(/pimcore/static/img/icon/translation.png) left center no-repeat!important;
+}
+.coreshop_icon_currency, .pimcore_icon_coreShopCurrencyMultiselect, .pimcore_icon_coreShopCurrency {
+    background: url(/pimcore/static/img/icon/money.png) left center no-repeat!important;
+}
+.coreshop_icon_currency_add {
+    background: url(/pimcore/static/img/icon/money_add.png) left center no-repeat!important;
+}
+.coreshop_icon_currency_remove {
+    background: url(/pimcore/static/img/icon/money_delete.png) left center no-repeat!important;
+}
+.coreshop_icon_country, .pimcore_icon_coreShopCountryMultiselect, .pimcore_icon_coreShopCountry{
+    background: url(/pimcore/static/img/icon/car.png) left center no-repeat!important;
+}
+.coreshop_icon_country_add {
+    background: url(/pimcore/static/img/icon/car_add.png) left center no-repeat!important;
+}
+.coreshop_icon_country_remove {
+    background: url(/pimcore/static/img/icon/car_delete.png) left center no-repeat!important;
+}
+
+.coreshop_icon_zone {
+    background: url(/pimcore/static/img/icon/world.png) left center no-repeat!important;
+}
+.coreshop_icon_zone_add {
+    background: url(/pimcore/static/img/icon/world_add.png) left center no-repeat!important;
+}
+.coreshop_icon_zone_remove {
+    background: url(/pimcore/static/img/icon/world_delete.png) left center no-repeat!important;
+}
+
+.pimcore_icon_data_group_coreshop {
+    background: url(/pimcore/static/img/icon/basket.png) left center no-repeat!important;
+}
+
+.pimcore_icon_objectSelect {
+    background: url(/pimcore/static/img/icon/select.png) center center no-repeat!important;
+}
+
+.coreshop_icon_create_order {
+    background: url(/pimcore/static/img/icon/page_white_add.png) center center no-repeat!important;
+}
+
+.coreshop_icon_price_rule {
+    background: url(/pimcore/static/img/icon/calculator_edit.png) center center no-repeat!important;
+}
+
+.coreshop_price_rule_settings {
+    background: url(/pimcore/static/img/icon/cog.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_conditions {
+    background: url(/pimcore/static/img/icon/magnifier.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_actions {
+    background: url(/pimcore/static/img/icon/lightning.png) no-repeat scroll left center transparent !important;
+}
+
+
+.coreshop_price_rule_icon_condition_amount {
+    background: url(/pimcore/static/img/icon/basket.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_category {
+    background: url(/pimcore/static/img/icon/report.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_customer {
+    background: url(/pimcore/static/img/icon/group.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_country {
+    background: url(/pimcore/static/img/icon/car.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_product {
+    background: url(/pimcore/static/img/icon/coins.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_timeSpan {
+    background: url(/pimcore/static/img/icon/date.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_totalAvailable {
+    background: url(/pimcore/static/img/icon/cart.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_condition_totalPerCustomer {
+    background: url(/pimcore/static/img/icon/group_go.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_action_freeShipping {
+    background: url(/pimcore/static/img/icon/lorry.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_action_discountAmount {
+    background: url(/pimcore/static/img/icon/money.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_action_discountPercent {
+    background: url(/pimcore/static/img/icon/money.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_price_rule_icon_action_gift {
+    background: url(/pimcore/static/img/icon/heart.png) no-repeat scroll left center transparent !important;
+}
+
+.pimcore_icon_coreShopPriceRule, .coreshop_icon_priceRule {
+    background: url(/pimcore/static/img/icon/money.png) left center no-repeat!important;
+}
+
+.coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier {
+    background: url(/pimcore/static/img/icon/lorry.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_carrier_settings_icon {
+    background: url(/pimcore/static/img/icon/cog.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_icon_shipping {
+    background: url(/pimcore/static/img/icon/lorry_flatbed.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_carrier_dimensions_icon {
+    background: url(/pimcore/static/img/icon/box.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_carrier_costs_icon {
+    background: url(/pimcore/static/img/icon/coins.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_icon_order {
+    background: url(/pimcore/static/img/icon/page_white.png) left center no-repeat!important;
+}
+
+.coreshop_icon_order_states, .pimcore_icon_coreShopOrderState {
+    background: url(/pimcore/static/img/icon/page_white_gear.png) left center no-repeat!important;
+}
+
+.coreshop_icon_taxes {
+    background: url(/pimcore/static/img/icon/coins.png) left center no-repeat!important;
+}
+
+.coreshop_icon_tax_rule_groups, .pimcore_icon_coreShopTaxRuleGroup {
+    background: url(/pimcore/static/img/icon/coins.png) left center no-repeat!important;
+}
