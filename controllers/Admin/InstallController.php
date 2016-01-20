@@ -30,16 +30,8 @@ class CoreShop_Admin_InstallController extends Admin
     }
 
     public function installThemeDemoDataAction() {
-        //$install = new Plugin\Install();
-        //$install->installThemeDemo();
-
-        $products = \CoreShop\Model\Product::getAll();
-        $taxRule = \CoreShop\Model\TaxRuleGroup::getById(2);
-
-        foreach($products as $pr) {
-            $pr->setTaxRule($taxRule);
-            $pr->save();
-        }
+        $install = new Plugin\Install();
+        $install->installThemeDemo();
 
         $this->_helper->json(array("success" => true));
     }
