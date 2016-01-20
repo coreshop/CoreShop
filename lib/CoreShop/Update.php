@@ -239,8 +239,8 @@ class Update {
         foreach ($files as $file) {
             $path = pathinfo($file['path']);
 
-            if (!is_dir(dirname(CORESHOP_PATH . "/" . $path["dirname"]))) {
-                File::mkdir(dirname(CORESHOP_PATH . "/" . $path["dirname"]));
+            if ( !is_dir( CORESHOP_PATH . "/" . $path["dirname"] ) ) {
+                File::mkdir( CORESHOP_PATH . "/" . $path["dirname"] );
             }
 
             $srcFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision . "/files/" . $file['path'];
