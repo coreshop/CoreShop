@@ -27,7 +27,7 @@ class CartItem extends Base {
      */
     public function getTotal()
     {
-        return $this->getAmount() * $this->getProduct()->getProductPrice();
+        return $this->getAmount() * $this->getProduct()->getPrice();
     }
 
     /**
@@ -61,7 +61,7 @@ class CartItem extends Base {
             "id" => $this->getId(),
             "product" => $this->getProduct()->toArray(),
             "amount" => $this->getAmount(),
-            "price" => Tool::formatPrice($this->getProduct()->getProductPrice()),
+            "price" => Tool::formatPrice($this->getProduct()->getPrice()),
             "total" => Tool::formatPrice($this->getTotal()),
         );
     }

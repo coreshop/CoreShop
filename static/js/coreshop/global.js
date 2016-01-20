@@ -21,6 +21,8 @@ pimcore.plugin.coreshop.global = {
         this._currenciesLoaded = false;
         this._zonesLoaded = false;
         this._orderStatesLoaded = false;
+        this._taxesLoaded = false;
+        this._taxRuleGroupsLoaded = false;
 
         this.settings = settings;
 
@@ -37,6 +39,8 @@ pimcore.plugin.coreshop.global = {
         this._initCurrencies();
         this._initZones();
         this._initOrderStates();
+        this._initTaxes();
+        this._initTaxRuleGroups();
     },
 
     _initCurrencies : function() {
@@ -177,8 +181,71 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.add("coreshop_order_states", orderStateStore);
     },
 
+    _initTaxes : function() {
+        var self = this;
+        var taxProxy = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_Tax/list'
+        });
+        var taxReader = new Ext.data.JsonReader({},
+            [
+                {name:'id'},
+                {name:'name'},
+                {name:'rate'}
+            ]
+        );
+
+        var taxStore = new Ext.data.Store({
+            restful:false,
+            proxy:taxProxy,
+            reader:taxReader
+        });
+        taxStore.load();
+
+        taxStore.on("beforeload", function() {
+            self._taxesLoaded = false;
+        });
+
+        taxStore.on("load", function() {
+            self._taxesLoaded = true;
+            self._checkStoresLoaded();
+        });
+
+        pimcore.globalmanager.add("coreshop_taxes", taxStore);
+    },
+
+    _initTaxRuleGroups : function() {
+        var self = this;
+        var taxRuleGroupProxy = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_Taxrulegroup/list'
+        });
+        var taxRuleGroupReader = new Ext.data.JsonReader({},
+            [
+                {name:'id'},
+                {name:'name'}
+            ]
+        );
+
+        var taxRuleGroupStore = new Ext.data.Store({
+            restful:false,
+            proxy:taxRuleGroupProxy,
+            reader:taxRuleGroupReader
+        });
+        taxRuleGroupStore.load();
+
+        taxRuleGroupStore.on("beforeload", function() {
+            self._taxRuleGroupsLoaded  = false;
+        });
+
+        taxRuleGroupStore.on("load", function() {
+            self._taxRuleGroupsLoaded = true;
+            self._checkStoresLoaded();
+        });
+
+        pimcore.globalmanager.add("coreshop_tax_rule_groups", taxRuleGroupStore);
+    },
+
     _checkStoresLoaded : function() {
-        if(this._countriesLoaded && this._zonesLoaded && this._currenciesLoaded && this._orderStatesLoaded) {
+        if(this._countriesLoaded && this._zonesLoaded && this._currenciesLoaded && this._orderStatesLoaded && this._taxesLoaded && this._taxRuleGroupsLoaded) {
             pimcore.plugin.coreshop.broker.fireEvent("storesLoaded");
             return true;
         }

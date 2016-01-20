@@ -53,10 +53,10 @@
                     <?php } ?>
                 </td>
                 <td class="text-right cart-item-price">
-                    <?=\CoreShop\Tool::formatPrice($item->getProduct()->getProductPrice())?>
+                    <?=\CoreShop\Tool::formatPrice($item->getProduct()->getPrice())?>
                 </td>
                 <td class="text-right cart-item-total-price">
-                    <?=\CoreShop\Tool::formatPrice($item->getAmount() * $item->getProduct()->getProductPrice())?>
+                    <?=\CoreShop\Tool::formatPrice($item->getAmount() * $item->getProduct()->getPrice())?>
                 </td>
                 <?php if($this->edit) { ?>
                     <td class="text-center">

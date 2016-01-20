@@ -45,7 +45,7 @@ class AbstractModel extends Model\AbstractModel
         }
 
         $className = get_called_class();
-        $cacheKey = "coreshop_" . str_replace("\\", "_", $className) . "_" . $id;
+        $cacheKey = self::getCacheKey($className, $id);
 
         try {
             $object = \Zend_Registry::get($cacheKey);
@@ -88,8 +88,10 @@ class AbstractModel extends Model\AbstractModel
      * @return null|AbstractModel
      */
     public static function getByField($field, $value) {
+        //Todo: what if a object changes and is still in cache?
+
         $className = get_called_class();
-        $cacheKey = "coreshop_" . str_replace("\\", "_", $className) . "_" . $field . "_" . $value;
+        $cacheKey = self::getCacheKey($className, $field . "_" . $value);
 
         try {
             $object = \Zend_Registry::get($cacheKey);
@@ -122,6 +124,28 @@ class AbstractModel extends Model\AbstractModel
         return null;
     }
 
+
+    /**
+     * @param $className
+     * @return string
+     */
+    protected static function getCacheKey($className, $append) {
+        return "coreshop_" . str_replace("\\", "_", $className) . "_" . $append;
+    }
+
+    /**
+     *
+     */
+    public function save() {
+        $this->getDao()->save();
+
+        $cacheKey = self::getCacheKey(get_called_class(), $this->getId());
+
+        //Set new object to cache
+        \Zend_Registry::set($cacheKey, $this);
+        Cache::save($this, $cacheKey);
+    }
+
     /**
      * Get LocalizedFields Provider
      *
@@ -138,6 +162,15 @@ class AbstractModel extends Model\AbstractModel
         }
 
         return null;
+    }
+
+    /**
+     * Get LocalizedFields Provider
+     *
+     * @return LocalizedFields|null
+     */
+    public function setLocalizedFields($localizedFields) {
+        $this->localizedFields = $localizedFields;
     }
 
     /**

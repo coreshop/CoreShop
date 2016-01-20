@@ -27,7 +27,6 @@ use CoreShop\Tool\Service;
 
 class Product extends Base {
 
-
     /**
      * @static
      * @param int $id
@@ -142,25 +141,6 @@ class Product extends Base {
     }
 
     /**
-     * Save Product
-     *
-     * @throws \Exception
-     */
-    public function save()
-    {
-        $currentGetInheritedValues = Object\AbstractObject::getGetInheritedValues();
-        Object\AbstractObject::setGetInheritedValues(true);
-        
-        //Calculate Retail Price with Tax
-        $retailPriceWithTax = $this->getRetailPrice() * (1 + $this->getTax());
-        $this->setPrice($retailPriceWithTax);
-        
-        Object\AbstractObject::setGetInheritedValues($currentGetInheritedValues);
-        
-        parent::save();
-    }
-
-    /**
      * Check if Product is in Categry
      *
      * @param Category $category
@@ -188,8 +168,8 @@ class Product extends Base {
 
         return array(
             "image" => $this->getImage()->getFullPath(),
-            "price" => $this->getProductPrice(),
-            "priceFormatted" => Tool::formatPrice($this->getProductPrice()),
+            "price" => $this->getPrice(),
+            "priceFormatted" => Tool::formatPrice($this->getPrice()),
             "name" => $this->getName(),
             "thumbnail" => array(
                 "cart" => $this->getImage() instanceof Image ? $this->getImage()->getThumbnail("coreshop_productCartPreview")->getPath(true) : ""
@@ -240,22 +220,19 @@ class Product extends Base {
     }
 
     /**
-     * Calculate Product Price
-     *
-     * @depcreated: Should be replaced with PriceRules
+     * get price without tax
      *
      * @return float|mixed
-     * @throws \Exception
+     * @throws UnsupportedException
      */
-    public function getProductPrice()
-    {
+    public function getPriceWithoutTax() {
         $cacheKey = "coreshop_product_price_" . $this->getId();
 
         if($price = Cache::load($cacheKey)) {
             return $price;
         }
 
-        $price = $this->getPrice();
+        $price = $this->getRetailPrice();
 
         try {
             if (count($this->getSpecificPrice()) > 0) {
@@ -315,7 +292,62 @@ class Product extends Base {
             \Logger::err(sprintf("No SpecificPrice inside Product Model (%s)", $ex->getMessage()));
         }
 
+        return $price;
+    }
+
+    /**
+     * Get Product Price with Tax
+     *
+     * @return float|mixed
+     * @throws \Exception
+     */
+    public function getPrice()
+    {
+        $price = $this->getPriceWithoutTax();
+        $calculator = $this->getTaxCalculator();
+
+        if($calculator) {
+            $price = $calculator->addTaxes($price);
+        }
+
         return Tool::convertToCurrency($price);
+    }
+
+    /**
+     * returns tax
+     * @return float
+     */
+    public function getTax() {
+        $calculator = $this->getTaxCalculator();
+
+        if($calculator) {
+            return $calculator->getTaxesAmount($this->getPriceWithoutTax());
+        }
+
+        return 0;
+    }
+
+    /**
+     * get TaxCalculator
+     *
+     * @param Country $country
+     * @return bool|TaxCalculator
+     */
+    public function getTaxCalculator(Country $country = null) {
+        if(is_null($country)) {
+            $country = Tool::getCountry();
+        }
+
+        $taxRule = $this->getTaxRule();
+
+        if($taxRule instanceof TaxRuleGroup) {
+            $taxManager = TaxManagerFactory::getTaxManager($country, $taxRule->getId());
+            $taxCalculator = $taxManager->getTaxCalculator();
+
+            return $taxCalculator;
+        }
+
+        return false;
     }
 
     /**
@@ -352,17 +384,6 @@ class Product extends Base {
     }
 
     /**
-     * returns tax
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @throws UnsupportedException
-     * @return float
-     */
-    public function getTax() {
-        throw new UnsupportedException("getTax is not supported for " . get_class($this));
-    }
-
-    /**
      * returns name
      * this method has to be overwritten in Pimcore Object
      *
@@ -371,6 +392,17 @@ class Product extends Base {
      */
     public function getName() {
         throw new UnsupportedException("getName is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns TaxRuleGroup
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return TaxRuleGroup
+     */
+    public function getTaxRule() {
+        throw new UnsupportedException("getTaxRule is not supported for " . get_class($this));
     }
 
 
@@ -394,28 +426,6 @@ class Product extends Base {
      */
     public function getWholesalePrice() {
         throw new UnsupportedException("getWholesalePrice is not supported for " . get_class($this));
-    }
-
-    /**
-     * returns price
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @throws UnsupportedException
-     * @return float
-     */
-    public function getPrice() {
-        throw new UnsupportedException("getPrice is not supported for " . get_class($this));
-    }
-
-    /**
-     * sets price
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @param $price
-     * @throws UnsupportedException
-     */
-    public function setPrice($price) {
-        throw new UnsupportedException("setPrice is not supported for " . get_class($this));
     }
 
     /**

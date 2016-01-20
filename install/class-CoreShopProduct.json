@@ -383,46 +383,20 @@
                 "visibleSearch":false
               },
               {
-                "fieldtype":"numeric",
+                "fieldtype":"coreShopTaxRuleGroup",
+                "queryColumnType":"int(11)",
+                "columnType":"int(11)",
+                "phpdocType":"CoreShop\\Model\\TaxRuleGroup",
+                "options":[
+                  {
+                    "key":"Standard",
+                    "value":"2"
+                  }
+                ],
                 "width":"",
                 "defaultValue":null,
-                "queryColumnType":"double",
-                "columnType":"double",
-                "phpdocType":"float",
-                "integer":false,
-                "unsigned":false,
-                "minValue":"",
-                "maxValue":"",
-                "decimalPrecision":"",
-                "name":"tax",
-                "title":"Tax",
-                "tooltip":"",
-                "mandatory":false,
-                "noteditable":false,
-                "index":false,
-                "locked":false,
-                "style":"",
-                "permissions":null,
-                "datatype":"data",
-                "relationType":false,
-                "invisible":false,
-                "visibleGridView":false,
-                "visibleSearch":false
-              },
-              {
-                "fieldtype":"numeric",
-                "width":"",
-                "defaultValue":null,
-                "queryColumnType":"double",
-                "columnType":"double",
-                "phpdocType":"float",
-                "integer":false,
-                "unsigned":false,
-                "minValue":"",
-                "maxValue":"",
-                "decimalPrecision":"",
-                "name":"price",
-                "title":"Retail Price with Tax",
+                "name":"taxRule",
+                "title":"Tax Rule",
                 "tooltip":"",
                 "mandatory":false,
                 "noteditable":false,
@@ -739,9 +713,7 @@
                 "assetsAllowed":true,
                 "assetTypes":[
                   {
-                    "assetTypes":{
-                      "assetTypes":"image"
-                    }
+                    "assetTypes":"image"
                   }
                 ],
                 "documentsAllowed":false,

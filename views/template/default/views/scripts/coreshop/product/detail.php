@@ -54,7 +54,7 @@
                     <?php if($this->product->getAvailableForOrder()) { ?>
                         <div class="price">
                             <span class="price-head"><?=$this->translate("Price")?> :</span>
-                            <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getProductPrice());?></span>
+                            <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getPrice());?></span>
                         </div>
                         <hr />
 

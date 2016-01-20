@@ -39,6 +39,7 @@ ___
 * Overwrite CoreShop Controllers
 * Catalogmode (No Cart, Checkout and Customers)
 * Guest Checkout
+* Tax Manager
 ____
 
 # Themes
@@ -101,3 +102,8 @@ For Example
 CoreShop Controller can be extended using the Template.
 
 If the controller class is available in your templates controller directory. Your controller will be dispatched
+
+## TaxManager
+You can implement your own TaxManager. Take a look at CoreShopDemoTaxManager for more information.
+
+[https://github.com/dpfaffenbauer/coreshop-demo-taxmanager](https://github.com/dpfaffenbauer/coreshop-demo-taxmanager)

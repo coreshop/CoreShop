@@ -21,7 +21,7 @@
             </div>
             <?php if($this->product->getAvailableForOrder()) { ?>
                 <div class="price">
-                    <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getProductPrice())?></span>
+                    <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getPrice())?></span>
                 </div>
                 <div class="cart-button button-group">
                     <button type="button" title="" class="btn btn-wishlist" data-original-title="Wishlist">

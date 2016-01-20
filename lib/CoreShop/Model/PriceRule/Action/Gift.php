@@ -59,7 +59,7 @@ class Gift extends AbstractAction {
      */
     public function getDiscount(CoreShopCart $cart)
     {
-        $discount = Tool::convertToCurrency($this->getGift()->getProductPrice(), Tool::getCurrency());
+        $discount = Tool::convertToCurrency($this->getGift()->getPrice(), Tool::getCurrency());
 
         return $discount;
     }

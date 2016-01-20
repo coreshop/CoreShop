@@ -100,6 +100,22 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                         });
                     }
 
+                    if(user.isAllowed("coreshop_permission_taxes")) {
+                        localizationMenu.push({
+                            text: t("coreshop_taxes"),
+                            iconCls: "coreshop_icon_taxes",
+                            handler: this.openTaxes
+                        });
+                    }
+
+                    if(user.isAllowed("coreshop_permission_tax_rules")) {
+                        localizationMenu.push({
+                            text: t("coreshop_tax_rule_groups"),
+                            iconCls: "coreshop_icon_tax_rule_groups",
+                            handler: this.openTaxRuleGroups
+                        });
+                    }
+
                     if(localizationMenu.length > 0) {
                         coreShopMenuItems.push({
                             text: t("coreshop_localization"),
@@ -284,6 +300,24 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_order_states", new pimcore.plugin.coreshop.orderstate.panel());
+        }
+    },
+
+    openTaxes : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_taxes").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_taxes", new pimcore.plugin.coreshop.tax.panel());
+        }
+    },
+
+    openTaxRuleGroups : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_tax_rule_groups").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_tax_rule_groups", new pimcore.plugin.coreshop.taxrulegroup.panel());
         }
     }
 });

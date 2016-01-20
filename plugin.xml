@@ -68,6 +68,12 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopOrderState.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/broker.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/install/install.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/tax/panel.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/tax/item.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/taxrulegroup/panel.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/taxrulegroup/item.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopTaxRuleGroup.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopTaxRuleGroup.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

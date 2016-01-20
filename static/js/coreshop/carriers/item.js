@@ -162,11 +162,18 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                 forceSelection: true,
                 mode: "local"
             }, {
-                xtype: "textfield",
-                name: "tax",
-                fieldLabel: t("coreshop_carrier_tax"),
-                width: 500,
-                value: this.data.tax
+                xtype:'combo',
+                fieldLabel:t('coreshop_carrier_tax_rule_group'),
+                typeAhead:true,
+                value:this.data.taxRuleGroupId,
+                mode:'local',
+                listWidth:100,
+                store:pimcore.globalmanager.get("coreshop_tax_rule_groups"),
+                displayField:'name',
+                valueField:'id',
+                forceSelection:true,
+                triggerAction:'all',
+                name:'taxRuleGroupId'
             }, {
                 fieldLabel: t("coreshop_carrier_rangeBehaviour"),
                 name: "rangeBehaviour",

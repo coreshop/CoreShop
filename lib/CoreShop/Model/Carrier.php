@@ -85,7 +85,12 @@ class Carrier extends AbstractModel
     /**
      * @var int
      */
-    public $tax;
+    public $taxRuleGroupId;
+
+    /**
+     * @var TaxRuleGroup
+     */
+    public $taxRuleGroup;
 
     /**
      * @var int
@@ -331,6 +336,8 @@ class Carrier extends AbstractModel
      * @return bool|float
      */
     public function getDeliveryPrice(Cart $cart, Zone $zone = null) {
+        $taxCalculator = $this->getTaxCalculator();
+
         if(is_null($zone))
             $zone = Tool::getCountry()->getZone();
 
@@ -348,18 +355,52 @@ class Carrier extends AbstractModel
 
             if($price instanceof DeliveryPrice) {
                 if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
-                    return $price->getPrice() * (1 + ($this->getTax() / 100));
+                    $deliveryPrice = $price->getPrice();
+
+                    if($taxCalculator) {
+                        return $taxCalculator->addTaxes($deliveryPrice);
+                    }
+
+                    return $deliveryPrice;
                 }
             }
         }
 
         if($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
-            return $this->getMaxDeliveryPrice($zone) * (1 + ($this->getTax() / 100));
+            $deliveryPrice = $this->getMaxDeliveryPrice($zone);
+
+            if($taxCalculator) {
+                return $taxCalculator->addTaxes($deliveryPrice);
+            }
+
+            return $deliveryPrice;
         }
 
         return false;
     }
 
+    /**
+     * get TaxCalculator
+     *
+     * @param Country $country
+     * @return bool|TaxCalculator
+     */
+    public function getTaxCalculator(Country $country = null) {
+        if(is_null($country)) {
+            $country = Tool::getCountry();
+        }
+
+        $taxRule = $this->getTaxRuleGroup();
+
+        if($taxRule instanceof TaxRuleGroup) {
+            $taxManager = TaxManagerFactory::getTaxManager($country, $taxRule->getId());
+            $taxCalculator = $taxManager->getTaxCalculator();
+
+            return $taxCalculator;
+        }
+
+        return false;
+    }
 
     /**
      * Check if carrier is available for zone and value
@@ -531,17 +572,48 @@ class Carrier extends AbstractModel
     /**
      * @return int
      */
-    public function getTax()
+    public function getTaxRuleGroupId()
     {
-        return $this->tax;
+        return $this->taxRuleGroupId;
     }
 
     /**
-     * @param int $tax
+     * @param int $taxRuleGroupId
+     * @throws \Exception
      */
-    public function setTax($tax)
+    public function setTaxRuleGroupId($taxRuleGroupId)
     {
-        $this->tax = $tax;
+        $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroupId);
+
+        if(!$taxRuleGroup instanceof TaxRuleGroup)
+            throw new \Exception("TaxRuleGroup with ID '$taxRuleGroupId' not found");
+
+        $this->taxRuleGroupId = $taxRuleGroupId;
+        $this->taxRuleGroup = $taxRuleGroup;
+    }
+
+    /**
+     * @return TaxRuleGroup
+     */
+    public function getTaxRuleGroup()
+    {
+        return $this->taxRuleGroup;
+    }
+
+    /**
+     * @param int|TaxRuleGroup $taxRuleGroup
+     * @throws \Exception
+     */
+    public function setTaxRuleGroup($taxRuleGroup)
+    {
+        if(is_int($taxRuleGroup))
+            $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroup);
+
+        if(!$taxRuleGroup instanceof TaxRuleGroup)
+            throw new \Exception("\$taxRuleGroup must be instance of TaxRuleGroup");
+
+        $this->taxRuleGroup = $taxRuleGroup;
+        $this->taxRuleGroupId = $taxRuleGroup->getId();
     }
 
     /**

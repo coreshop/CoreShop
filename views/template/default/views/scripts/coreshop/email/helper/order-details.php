@@ -21,10 +21,10 @@
                 <span class=""><?=$item->getAmount()?></span>
             </td>
             <td class="col-sm-1 text-center cart-item-price">
-                <strong><?=\CoreShop\Tool::formatPrice($item->getProduct()->getProductPrice())?></strong>
+                <strong><?=\CoreShop\Tool::formatPrice($item->getProduct()->getPrice())?></strong>
             </td>
             <td class="col-sm-1 text-right cart-item-total-price">
-                <strong><?=\CoreShop\Tool::formatPrice($item->getAmount() * $item->getProduct()->getProductPrice())?></strong>
+                <strong><?=\CoreShop\Tool::formatPrice($item->getAmount() * $item->getProduct()->getPrice())?></strong>
             </td>
         </tr>
         <tr>

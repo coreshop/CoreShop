@@ -195,3 +195,11 @@
 .coreshop_icon_order_states, .pimcore_icon_coreShopOrderState {
     background: url(/pimcore/static/img/icon/page_white_gear.png) left center no-repeat!important;
 }
+
+.coreshop_icon_taxes {
+    background: url(/pimcore/static/img/icon/coins.png) left center no-repeat!important;
+}
+
+.coreshop_icon_tax_rule_groups, .pimcore_icon_coreShopTaxRuleGroup {
+    background: url(/pimcore/static/img/icon/coins.png) left center no-repeat!important;
+}

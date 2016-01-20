@@ -111,6 +111,10 @@ abstract class AbstractDao extends Dao\AbstractDao {
 
         if($this->model->getId() !== null) {
             $this->db->update($this->getTableName(), $buffer, $this->db->quoteInto("id = ?", $this->model->getId()));
+
+            if($this->model->getLocalizedFields())
+                $this->model->getLocalizedFields()->save();
+
             return;
         }
 

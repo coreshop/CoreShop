@@ -123,7 +123,7 @@ class Cart extends Base {
         
         foreach($this->getItems() as $item)
         {
-            $subtotal += ($item->getAmount() * $item->getProduct()->getProductPrice());
+            $subtotal += ($item->getAmount() * $item->getProduct()->getPrice());
         }
         
         return $subtotal;
