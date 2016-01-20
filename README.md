@@ -25,26 +25,25 @@ ___
 * Variants of Products
 * Countries with Currencies
 * Currency conversion
-* Country Taxes (not yet implemented)
 * Category Management
 * Abstract Payment
 * Price Rules for Vouchers/Discounts
 * Carrier Management
-* Extendable Carriers
+* Extensible Carriers
 * Different Payment Providers
 * Multiple Themes supported
 * PDF-Invoice Generation
 * Different Order Steps
 * Overwrite CoreShop Classes
 * Overwrite CoreShop Controllers
-* Catalogmode (No Cart, Checkout and Customers)
+* Catalog-Mode (No Cart, Checkout and Customers)
 * Guest Checkout
-* Tax Manager
+* Tax Manager (Custom Taxes for Products and Countries)
 
 ____
 
 # Themes
-Themes are installed within plugins/CoreShop/views/template/[Name]
+Themes are installed within plugins/CoreShop/views/template/[Name] or /website/views/coreshop/template/[Name]
 
 A Theme is basically a Zend Module with the Namespace CoreShopTheme. All views and controllers specific for this theme are placed inside the theme-folder.
 
@@ -53,7 +52,10 @@ ____
 # Plugins
 Coreshop was designed to make use of other Pimcore-Plugins. 
 
-Every Payment Provider or Delivery Provider is a Pimcore-Plugin that integrates with CoreShop.
+Plugins can extend following things:
+* Payment (Every Payment Provider needs to be implemeted using a Plugin)
+* Carrier (Carriers can be extended using a Plugin)
+* TaxManager (TaxManager can be extended using a Plugin)
 
 ## Hooks
 CoreShop uses Hooks to call Pimcore-Plugins from template files.
