@@ -71,7 +71,10 @@ class Install
                 return $result->last();
             }
 
-            $class = Object\ClassDefinition::create();
+            if(!$class) {
+                $class = Object\ClassDefinition::create();
+            }
+
             $class->setName($className);
             $class->setUserOwner($this->_getUser()->getId());
 

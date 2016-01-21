@@ -170,10 +170,12 @@ class Update {
 
             if($deletedFiles) {
                 foreach ($deletedFiles as $toDelete) {
-                    $jobs['procedural'][] = array(
-                        "type" => "deleteFile",
-                        "url" => $toDelete
-                    );
+                    if($toDelete) {
+                        $jobs['procedural'][] = array(
+                            "type" => "deleteFile",
+                            "url" => $toDelete
+                        );
+                    }
                 }
             }
 
