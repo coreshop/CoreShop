@@ -11,28 +11,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
 pimcore.registerNS("pimcore.object.classes.data.coreShopOrderState");
-pimcore.object.classes.data.coreShopOrderState = Class.create(pimcore.object.classes.data.data, {
+pimcore.object.classes.data.coreShopOrderState = Class.create(coreshop.object.classes.data.data, {
 
     type: "coreShopOrderState",
-    /**
-     * define where this datatype is allowed
-     */
-    allowIn: {
-        object: true,
-        objectbrick: true,
-        fieldcollection: true,
-        localizedfield: true
-    },
-
-    initialize: function (treeNode, initData) {
-        this.type = "coreShopOrderState";
-
-        this.initData(initData);
-
-        this.treeNode = treeNode;
-    },
 
     getTypeName: function () {
         return t("coreshop_order_state");
@@ -44,26 +26,5 @@ pimcore.object.classes.data.coreShopOrderState = Class.create(pimcore.object.cla
 
     getIconClass: function () {
         return "coreshop_icon_order_state";
-    },
-
-    getLayout: function ($super) {
-
-        $super();
-
-        this.specificPanel.removeAll();
-
-        return this.layout;
-    },
-
-    applySpecialData: function(source) {
-        if (source.datax) {
-            if (!this.datax) {
-                this.datax =  {};
-            }
-            Ext.apply(this.datax,
-                {
-                    restrictTo: source.datax.restrictTo
-                });
-        }
     }
 });

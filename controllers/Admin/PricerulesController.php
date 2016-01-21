@@ -27,7 +27,7 @@ class CoreShop_Admin_PricerulesController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array();
+        $notRestrictedActions = array("list");
         if (!in_array($this->getParam("action"), $notRestrictedActions)) {
             $this->checkPermission("coreshop_permission_priceRules");
         }

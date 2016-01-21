@@ -26,22 +26,13 @@ class CoreShop_Admin_CurrencyController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('get');
+        $notRestrictedActions = array('list');
         if (!in_array($this->getParam("action"), $notRestrictedActions)) {
             $this->checkPermission("coreshop_permission_currencies");
         }
     }
 
-    public function getAction()
-    {
-        $list = new Currency\Listing();
-        $list->setOrder("ASC");
-        $list->load();
-
-        $this->_helper->json($list->getData());
-    }
-
-    public function getCurrenciesAction()
+    public function listAction()
     {
         $list = new Currency\Listing();
         $list->setOrder("ASC");

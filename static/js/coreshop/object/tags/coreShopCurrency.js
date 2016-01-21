@@ -12,13 +12,8 @@
  */
 
 pimcore.registerNS("pimcore.object.tags.coreShopCurrency");
-pimcore.object.tags.coreShopCurrency = Class.create(pimcore.object.tags.select, {
+pimcore.object.tags.coreShopCurrency = Class.create(coreshop.object.tags.select, {
 
     type: "coreShopCurrency",
-
-    initialize: function (data, fieldConfig) {
-        this.data = data;
-        this.fieldConfig = fieldConfig;
-        this.fieldConfig.width = 350;
-    }
+    storeName : "currencies"
 });

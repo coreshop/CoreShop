@@ -89,7 +89,7 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
                 autoSync: true,
                 proxy: {
                     type: 'ajax',
-                    url: '/plugin/CoreShop/admin_country/get-countries',
+                    url: '/plugin/CoreShop/admin_country/list',
                     reader: {
                         type: 'json'
 

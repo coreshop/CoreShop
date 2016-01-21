@@ -29,6 +29,10 @@
       <path>/plugins/CoreShop/static/js/coreshop/countries/country.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/zones/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/zones/zone.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/multiselect.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/select.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/data.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/dataMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCountryMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCountryMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCountry.js</path>

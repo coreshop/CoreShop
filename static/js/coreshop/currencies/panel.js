@@ -89,7 +89,7 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
                 autoSync: true,
                 proxy: {
                     type: 'ajax',
-                    url: '/plugin/CoreShop/admin_currency/get-currencies',
+                    url: '/plugin/CoreShop/admin_currency/list',
                     reader: {
                         type: 'json'
 

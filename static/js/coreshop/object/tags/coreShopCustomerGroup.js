@@ -12,13 +12,8 @@
  */
 
 pimcore.registerNS("pimcore.object.tags.coreShopCustomerGroup");
-pimcore.object.tags.coreShopCustomerGroup = Class.create(pimcore.object.tags.select, {
+pimcore.object.tags.coreShopCustomerGroup = Class.create(coreshop.object.tags.select, {
 
     type: "coreShopCustomerGroup",
-
-    initialize: function (data, fieldConfig) {
-        this.data = data;
-        this.fieldConfig = fieldConfig;
-        this.fieldConfig.width = 350;
-    }
+    storeName : "customer_groups"
 });

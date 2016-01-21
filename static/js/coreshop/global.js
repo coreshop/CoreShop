@@ -43,13 +43,15 @@ pimcore.plugin.coreshop.global = {
         this._initTaxes();
         this._initTaxRuleGroups();
         this._initCustomerGroups();
+        this._initCarriers();
+        this._initPriceRules();
     },
 
     _initCurrencies : function() {
         var self = this;
 
         var currencyProxy = new Ext.data.HttpProxy({
-            url:'/plugin/CoreShop/admin_currency/get'
+            url:'/plugin/CoreShop/admin_currency/list'
         });
         var currencyReader = new Ext.data.JsonReader({
             totalProperty:'total',
@@ -57,6 +59,7 @@ pimcore.plugin.coreshop.global = {
         }, [
             {name:'id'},
             {name:'name'},
+            {name:'key'},
             {name:'symbol'},
             {name:'isoCode'},
             {name:'numericIsoCode'},
@@ -85,7 +88,7 @@ pimcore.plugin.coreshop.global = {
     _initZones : function() {
         var self = this;
         var zoneProxy = new Ext.data.HttpProxy({
-            url:'/plugin/CoreShop/admin_zone/get'
+            url:'/plugin/CoreShop/admin_zone/list'
         });
         var zoneReader = new Ext.data.JsonReader({
             totalProperty:'total',
@@ -118,7 +121,7 @@ pimcore.plugin.coreshop.global = {
     _initCountries : function() {
         var self = this;
         var countryProxy = new Ext.data.HttpProxy({
-            url:'/plugin/CoreShop/admin_country/get-countries'
+            url:'/plugin/CoreShop/admin_country/list'
         });
         var countryReader = new Ext.data.JsonReader({
             totalProperty:'total',
@@ -275,6 +278,50 @@ pimcore.plugin.coreshop.global = {
         });
 
         pimcore.globalmanager.add("coreshop_customer_groups", store);
+    },
+
+    _initCarriers: function() {
+        var self = this;
+        var proxy = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_Carrier/list'
+        });
+        var reader = new Ext.data.JsonReader({},
+            [
+                {name:'id'},
+                {name:'name'}
+            ]
+        );
+
+        var store = new Ext.data.Store({
+            restful:false,
+            proxy:proxy,
+            reader:reader
+        });
+        store.load();
+
+        pimcore.globalmanager.add("coreshop_carriers", store);
+    },
+
+    _initPriceRules: function() {
+        var self = this;
+        var proxy = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_Pricerules/list'
+        });
+        var reader = new Ext.data.JsonReader({},
+            [
+                {name:'id'},
+                {name:'name'}
+            ]
+        );
+
+        var store = new Ext.data.Store({
+            restful:false,
+            proxy:proxy,
+            reader:reader
+        });
+        store.load();
+
+        pimcore.globalmanager.add("coreshop_price_rules", store);
     },
 
     _checkStoresLoaded : function() {

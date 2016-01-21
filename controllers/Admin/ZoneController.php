@@ -25,22 +25,13 @@ class CoreShop_Admin_ZoneController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('get');
+        $notRestrictedActions = array('list');
         if (!in_array($this->getParam("action"), $notRestrictedActions)) {
             $this->checkPermission("coreshop_permission_zones");
         }
     }
 
-    public function getAction()
-    {
-        $list = new Zone\Listing();
-        $list->setOrder("ASC");
-        $list->load();
-
-        $this->_helper->json($list->getData());
-    }
-
-    public function getZonesAction()
+    public function listAction()
     {
         $list = new Zone\Listing();
         $list->setOrder("ASC");

@@ -12,13 +12,8 @@
  */
 
 pimcore.registerNS("pimcore.object.tags.coreShopOrderState");
-pimcore.object.tags.coreShopOrderState = Class.create(pimcore.object.tags.select, {
+pimcore.object.tags.coreShopOrderState = Class.create(coreshop.object.tags.select, {
 
     type: "coreShopOrderState",
-
-    initialize: function (data, fieldConfig) {
-        this.data = data;
-        this.fieldConfig = fieldConfig;
-        this.fieldConfig.width = 350;
-    }
+    storeName : "order_states"
 });

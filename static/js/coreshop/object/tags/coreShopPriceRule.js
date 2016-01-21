@@ -12,13 +12,8 @@
  */
 
 pimcore.registerNS("pimcore.object.tags.coreShopPriceRule");
-pimcore.object.tags.coreShopPriceRule = Class.create(pimcore.object.tags.select, {
+pimcore.object.tags.coreShopPriceRule = Class.create(coreshop.object.tags.select, {
 
     type: "coreShopPriceRule",
-
-    initialize: function (data, fieldConfig) {
-        this.data = data;
-        this.fieldConfig = fieldConfig;
-        this.fieldConfig.width = 350;
-    }
+    storeName : "price_rules"
 });

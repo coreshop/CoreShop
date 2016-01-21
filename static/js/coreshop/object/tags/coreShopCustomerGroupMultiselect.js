@@ -11,10 +11,9 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
 pimcore.registerNS("pimcore.object.tags.coreShopCustomerGroupMultiselect");
-pimcore.object.tags.coreShopCustomerGroupMultiselect = Class.create(pimcore.object.tags.multiselect, {
+pimcore.object.tags.coreShopCustomerGroupMultiselect = Class.create(coreshop.object.tags.multiselect, {
 
-    type: "coreShopCustomerGroupMultiselect"
-
+    type: "coreShopCustomerGroupMultiselect",
+    storeName : "customer_groups"
 });

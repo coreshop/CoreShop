@@ -14,68 +14,21 @@
 
 namespace Pimcore\Model\Object\ClassDefinition\Data;
 
-use Pimcore\Model;
-use CoreShop\Model\Currency;
+use CoreShop\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
 
-class CoreShopCurrency extends Model\Object\ClassDefinition\Data\Select {
+class CoreShopCurrency extends CoreShopSelect {
 
     /**
      * Static type of this element
      *
      * @var string
      */
-    public $fieldtype = "coreShopCurrency";
-
-    /** Restrict selection to comma-separated list of currencies.
-     * @var null
-     */
-    public $restrictTo = null;
-
-
-    public function __construct() {
-        $this->buildOptions();
-    }
-
-    public function __wakeup() {
-        $this->buildOptions();
-    }
-
-    private function buildOptions() {
-        $currencies = new Currency\Listing();
-        $currencies = $currencies->getData();
-
-        $options = array();
-
-        foreach ($currencies as $currency) {
-            $options[] = array(
-                "key" => $currency->getName(),
-                "value" => $currency->getId()
-            );
-        }
-
-        $this->setOptions($options);
-    }
-
-    /** True if change is allowed in edit mode.
-     * @return bool
-     */
-    public function isDiffChangeAllowed() {
-        return true;
-    }
+    public $fieldtype = "coreShopCountry";
 
     /**
-     * @param string $restrictTo
+     * Type for the generated phpdoc
+     *
+     * @var string
      */
-    public function setRestrictTo($restrictTo)
-    {
-        $this->restrictTo = $restrictTo;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRestrictTo()
-    {
-        return $this->restrictTo;
-    }
+    public $phpdocType = "\\CoreShop\\Model\\Country";
 }

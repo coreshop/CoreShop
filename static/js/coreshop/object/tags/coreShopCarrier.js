@@ -12,13 +12,8 @@
  */
 
 pimcore.registerNS("pimcore.object.tags.coreShopCarrier");
-pimcore.object.tags.coreShopCarrier = Class.create(pimcore.object.tags.select, {
+pimcore.object.tags.coreShopCarrier = Class.create(coreshop.object.tags.select, {
 
     type: "coreShopCarrier",
-
-    initialize: function (data, fieldConfig) {
-        this.data = data;
-        this.fieldConfig = fieldConfig;
-        this.fieldConfig.width = 350;
-    }
+    storeName : "carriers"
 });

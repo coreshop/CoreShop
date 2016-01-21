@@ -11,10 +11,9 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
 pimcore.registerNS("pimcore.object.tags.coreShopCurrencyMultiselect");
-pimcore.object.tags.coreShopCurrencyMultiselect = Class.create(pimcore.object.tags.multiselect, {
+pimcore.object.tags.coreShopCurrencyMultiselect = Class.create(coreshop.object.tags.multiselect, {
 
-    type: "coreShopCurrencyMultiselect"
-
+    type: "coreShopCurrencyMultiselect",
+    storeName : "currencies"
 });

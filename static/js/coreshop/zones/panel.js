@@ -89,7 +89,7 @@ pimcore.plugin.coreshop.zones.panel = Class.create({
                 autoSync: true,
                 proxy: {
                     type: 'ajax',
-                    url: '/plugin/CoreShop/admin_zone/get-zones',
+                    url: '/plugin/CoreShop/admin_zone/list',
                     reader: {
                         type: 'json'
 
