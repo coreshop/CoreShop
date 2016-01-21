@@ -170,7 +170,7 @@
             </tr>
         <?php } ?>
         <tr>
-            <td class="text-right cart-sub-total">
+            <td class="text-right">
                 <strong><?=$this->translate("Total ")?>:</strong>
             </td>
             <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-total-price">
