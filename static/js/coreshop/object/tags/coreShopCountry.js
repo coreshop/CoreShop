@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS("pimcore.object.tags.coreShopCountry");
-pimcore.object.tags.coreShopCountry = Class.create(coreshop.object.tags.select, {
+pimcore.object.tags.coreShopCountry = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
     type: "coreShopCountry",
     storeName : "countries"

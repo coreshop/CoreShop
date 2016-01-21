@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS("pimcore.object.classes.data.coreShopCurrencyMultiselect");
-pimcore.object.classes.data.coreShopCurrencyMultiselect = Class.create(coreshop.object.classes.data.dataMultiselect, {
+pimcore.object.classes.data.coreShopCurrencyMultiselect = Class.create(pimcore.plugin.coreshop.object.classes.data.dataMultiselect, {
 
     type: "coreShopCurrencyMultiselect",
 

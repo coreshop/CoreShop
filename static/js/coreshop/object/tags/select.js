@@ -11,8 +11,8 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("coreshop.object.tags.select");
-coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
+pimcore.registerNS("pimcore.plugin.coreshop.object.tags.select");
+pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
 
     initialize: function (data, fieldConfig) {
         this.data = data;

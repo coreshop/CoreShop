@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS("pimcore.object.tags.coreShopOrderState");
-pimcore.object.tags.coreShopOrderState = Class.create(coreshop.object.tags.select, {
+pimcore.object.tags.coreShopOrderState = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
     type: "coreShopOrderState",
     storeName : "order_states"

@@ -11,8 +11,8 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("coreshop.object.classes.data.data");
-coreshop.object.classes.data.data = Class.create(pimcore.object.classes.data.data, {
+pimcore.registerNS("pimcore.plugin.coreshop.object.classes.data.data");
+pimcore.plugin.coreshop.object.classes.data.data = Class.create(pimcore.object.classes.data.data, {
 
     /**
      * define where this datatype is allowed

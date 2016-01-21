@@ -11,8 +11,8 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("coreshop.object.tags.multiselect");
-coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect, {
+pimcore.registerNS("pimcore.plugin.coreshop.object.tags.multiselect");
+pimcore.plugin.coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect, {
 
     getLayoutEdit: function () {
 

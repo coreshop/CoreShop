@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS("pimcore.object.classes.data.coreShopCurrency");
-pimcore.object.classes.data.coreShopCurrency = Class.create(coreshop.object.classes.data.data, {
+pimcore.object.classes.data.coreShopCurrency = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
 
     type: "coreShopCurrency",
 

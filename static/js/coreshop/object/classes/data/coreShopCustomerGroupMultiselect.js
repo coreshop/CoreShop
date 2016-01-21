@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS("pimcore.object.classes.data.coreShopCustomerGroupMultiselect");
-pimcore.object.classes.data.coreShopCustomerGroupMultiselect = Class.create(coreshop.object.classes.data.dataMultiselect, {
+pimcore.object.classes.data.coreShopCustomerGroupMultiselect = Class.create(pimcore.plugin.coreshop.object.classes.data.dataMultiselect, {
 
     type: "coreShopCustomerGroupMultiselect",
 
