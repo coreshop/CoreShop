@@ -105,6 +105,16 @@ class Tool {
     }
 
     /**
+     * Load Controller from CoreShop
+     * @param string $controllerName
+     */
+    public static function loadController( $controllerName = '' )
+    {
+        if( file_exists( CORESHOP_PATH . "/controllers/" . $controllerName . "Controller.php" ) )
+            require( CORESHOP_PATH . "/controllers/" . $controllerName . "Controller.php" );
+    }
+
+    /**
      * Format Tax
      *
      * TODO: Localization
