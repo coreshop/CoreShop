@@ -166,15 +166,19 @@ class Product extends Base {
     {
         $urlHelper = new Url();
 
+        $image = $this->getImage();
+
+        $lang = \Zend_Controller_Front::getInstance()->getRequest()->getParam('lang');
+
         return array(
-            "image" => $this->getImage()->getFullPath(),
+            "image" => $image !== FALSE ? $image->getFullPath() : FALSE,
             "price" => $this->getPrice(),
             "priceFormatted" => Tool::formatPrice($this->getPrice()),
             "name" => $this->getName(),
             "thumbnail" => array(
                 "cart" => $this->getImage() instanceof Image ? $this->getImage()->getThumbnail("coreshop_productCartPreview")->getPath(true) : ""
             ),
-            "href" => $urlHelper->url(array("lang" => \Zend_Registry::get("Zend_Locale"), "name" => $this->getName(), "product" => $this->getId()), 'coreshop_detail')
+            "href" => $urlHelper->url(array("lang" => $lang, "name" => $this->getName(), "product" => $this->getId()), 'coreshop_detail')
         );
     }
 
