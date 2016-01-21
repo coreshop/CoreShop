@@ -49,6 +49,7 @@ class BuildCommand extends AbstractCommand
         }
 
         if (!defined("CORESHOP_CHANGED_FILES")) define("CORESHOP_CHANGED_FILES", CORESHOP_BUILD_DIRECTORY . "/changedFiles.txt");
+        if (!defined("CORESHOP_DELETED_FILES")) define("CORESHOP_DELETED_FILES", CORESHOP_BUILD_DIRECTORY . "/deletedFiles.txt");
 
         if($input->getOption("build")) {
             $version = \CoreShop\Version::getVersion();
@@ -60,58 +61,71 @@ class BuildCommand extends AbstractCommand
             $gitRevision = $this->getGitRevision();
 
             $changedFiles = $this->getChangedFiles();
+            $deletedFiles = $this->getDeletedFiles();
 
-            if (count($changedFiles) > 0) {
-                $buildFolder = CORESHOP_BUILD_DIRECTORY . "/" . $buildNumber;
-                $buildFolderScripts = $buildFolder . "/scripts";
-                $buildFolderFiles = $buildFolder . "/files";
+            if(count($changedFiles) > 0 || count($deletedFiles) > 0) {
+                if (count($changedFiles) > 0) {
+                    $buildFolder = CORESHOP_BUILD_DIRECTORY . "/" . $buildNumber;
+                    $buildFolderScripts = $buildFolder . "/scripts";
+                    $buildFolderFiles = $buildFolder . "/files";
 
-                if (!$dryRun) {
-                    if (!is_dir($buildFolder)) {
-                        mkdir($buildFolder);
+                    if (!$dryRun) {
+                        if (!is_dir($buildFolder)) {
+                            mkdir($buildFolder);
+                        }
+
+                        if (!is_dir($buildFolderScripts)) {
+                            mkdir($buildFolderScripts);
+                        }
+
+                        if (!is_dir($buildFolderFiles)) {
+                            mkdir($buildFolderFiles);
+                        }
                     }
 
-                    if (!is_dir($buildFolderScripts)) {
-                        mkdir($buildFolderScripts);
-                    }
 
-                    if (!is_dir($buildFolderFiles)) {
-                        mkdir($buildFolderFiles);
+                    //Copy all Files into files folder
+                    foreach ($changedFiles as $file) {
+                        $file = str_replace("\n", "", $file);
+                        $sourceFile = CORESHOP_PATH . "/" . $file;
+                        $destinationFile = $buildFolderFiles . "/" . $file;
+                        $pathInfo = pathinfo($destinationFile);
+
+                        if (!$dryRun) {
+                            if (!is_dir($pathInfo['dirname'])) {
+                                mkdir($pathInfo['dirname'], 0755, true);
+                            }
+
+                            if (file_exists($destinationFile)) {
+                                unlink($destinationFile);
+                            }
+
+                            copy($sourceFile, $destinationFile);
+                        }
+
+                        $this->output->writeln("copy file <comment>$file</comment> to <comment>$destinationFile</comment>");
                     }
                 }
 
+                if(count($deletedFiles) > 0) {
+                    foreach ($deletedFiles as $file) {
+                        $file = str_replace("\n", "", $file);
 
-                //Copy all Files into files folder
-                foreach ($changedFiles as $file) {
-                    $file = str_replace("\n", "", $file);
-                    $sourceFile = CORESHOP_PATH . "/" . $file;
-                    $destinationFile = $buildFolderFiles . "/" . $file;
-                    $pathInfo = pathinfo($destinationFile);
-
-                    if (!$dryRun) {
-                        if (!is_dir($pathInfo['dirname'])) {
-                            mkdir($pathInfo['dirname'], 0755, true);
-                        }
-
-                        if (file_exists($destinationFile)) {
-                            unlink($destinationFile);
-                        }
-
-                        copy($sourceFile, $destinationFile);
+                        $this->output->writeln("file has been deleted <comment>$file</comment>");
                     }
-
-                    $this->output->writeln("copy file <comment>$file</comment> to <comment>$destinationFile</comment>");
                 }
 
                 if (!$dryRun) {
                     rename(CORESHOP_CHANGED_FILES, CORESHOP_BUILD_DIRECTORY . "/" . $buildNumber . "/changedFiles.txt");
+                    rename(CORESHOP_DELETED_FILES, CORESHOP_BUILD_DIRECTORY . "/" . $buildNumber . "/deletedFiles.txt");
                 }
 
                 $this->updateVersionFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision);
                 $this->writeBuildToBuildFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision);
                 $this->gitAddAndCommit($dryRun, $buildNumber);
 
-            } else {
+            }
+            else {
                 //delete "changedfiles" when no files has been changed
                 unlink(CORESHOP_CHANGED_FILES);
 
@@ -120,6 +134,7 @@ class BuildCommand extends AbstractCommand
 
             if($dryRun) {
                 unlink(CORESHOP_CHANGED_FILES);
+                unlink(CORESHOP_DELETED_FILES);
             }
         }
     }
@@ -181,6 +196,21 @@ class BuildCommand extends AbstractCommand
         \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT $gitRevision HEAD $gitDirectory | sed '/^build/ d'", CORESHOP_CHANGED_FILES);
 
         return file(CORESHOP_CHANGED_FILES);
+    }
+
+    /**
+     * @return array
+     */
+    private function getDeletedFiles() {
+        $gitDirectory = CORESHOP_PATH;
+        $gitRevision = \CoreShop\Version::getGitRevision();
+
+        if(!$gitRevision)
+            $gitRevision = '383e78d';
+
+        \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=D $gitRevision HEAD $gitDirectory | sed '/^build/ d'", CORESHOP_DELETED_FILES);
+
+        return file(CORESHOP_DELETED_FILES);
     }
 
     /**

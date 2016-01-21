@@ -72,6 +72,8 @@ class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
 
         if($this->getParam("type") == "files") {
             \CoreShop\Update::installData($this->getParam("revision"));
+        } else if ($this->getParam("type") == "deleteFile") {
+            \CoreShop\Update::deleteData($this->getParam("url"));
         } else if ($this->getParam("type") == "clearcache") {
             \Pimcore\Cache::clearAll();
         } else if ($this->getParam("type") == "preupdate") {

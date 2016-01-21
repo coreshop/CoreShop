@@ -103,6 +103,7 @@ class Update {
             $preUpdateScript = self::getScriptForBuild($build['number'], "preupdate");
             $postUpdateScript = self::getScriptForBuild($build['number'], "postupdate");
 
+
             foreach ($changedFiles as $download) {
                 $jobs["parallel"][] = array(
                     "type" => "download",
@@ -165,6 +166,17 @@ class Update {
                 $jobs["procedural"][] = $updateScripts[$revision]["preupdate"];
             }
 
+            $deletedFiles = self::getDeletedFilesForBuild($revision);
+
+            if($deletedFiles) {
+                foreach ($deletedFiles as $toDelete) {
+                    $jobs['procedural'][] = array(
+                        "type" => "deleteFile",
+                        "url" => $toDelete
+                    );
+                }
+            }
+
             $jobs["procedural"][] = array(
                 "type" => "files",
                 "revision" => (string)$revision
@@ -190,6 +202,19 @@ class Update {
         );
 
         return $jobs;
+    }
+
+    /**
+     * Delete file
+     *
+     * @param $file
+     */
+    public static function deleteData($file) {
+        $file = CORESHOP_PATH . "/" . $file;
+
+        if(file_exists($file)) {
+            unlink($file);
+        }
     }
 
     /**
@@ -374,6 +399,23 @@ class Update {
     }
 
     /**
+     * @param $build
+     * @return array|null
+     */
+    public static function getDeletedFilesForBuild($build) {
+        try {
+            $changedFiles = @file_get_contents(self::getDeletedFilesFileForBuild($build));
+
+            if($changedFiles) {
+                return explode(PHP_EOL, $changedFiles);
+            }
+        }
+        catch(\Exception $ex) {
+            return null;
+        }
+    }
+
+    /**
      *
      */
     public static function getNewerBuilds($currentBuild = null, $to = null) {
@@ -413,11 +455,19 @@ class Update {
     }
 
     /**
-     * @param $buildNumber
+     * @param $build
      * @return string
      */
     public static function getChangedFilesFileForBuild($build) {
         return self::getRepoUrl() . "/build/$build/changedFiles.txt";
+    }
+
+    /**
+     * @param $build
+     * @return string
+     */
+    public static function getDeletedFilesFileForBuild($build) {
+        return self::getRepoUrl() . "/build/$build/deletedFiles.txt";
     }
 
     /**

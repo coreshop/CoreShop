@@ -43,6 +43,8 @@ class InternalUpdateProcessorCommand extends AbstractCommand
                 if (isset($job["dry-run"])) {
                     // do not do anything here
                     \Logger::info("skipped update job because it is in dry-run mode", $job);
+                } else if ($job["type"] == "deleteFile") {
+                    Update::deleteData($job["url"]);
                 } else if ($job["type"] == "files") {
                     Update::installData($job["revision"]);
                 } else if ($job["type"] == "clearcache") {
