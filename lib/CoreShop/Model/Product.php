@@ -165,9 +165,10 @@ class Product extends Base {
     public function toArray()
     {
         $urlHelper = new Url();
+        $image = $this->getImage();
 
         return array(
-            "image" => $this->getImage()->getFullPath(),
+            "image" => $image !== FALSE ? $image->getFullPath() : FALSE,
             "price" => $this->getPrice(),
             "priceFormatted" => Tool::formatPrice($this->getPrice()),
             "name" => $this->getName(),
