@@ -88,7 +88,7 @@
                 </td>
                 <?php if($this->edit) { ?>
                     <td colspan="1" class="text-left cart-sub-total">
-                        <a title="<?=$this->translate("Remove")?>" class="btn btn-default tool-tip removeFromCart" href="<?=$this->url(array("action" => "remove-price-rule"), "coreshop_cart")?>">
+                        <a title="<?=$this->translate("Remove")?>" class="btn btn-default tool-tip removeFromCart" href="<?=$this->url(array("action" => "removepricerule"), "coreshop_cart")?>">
                             <i class="fa fa-times-circle"></i>
                         </a>
                     </td>
@@ -111,7 +111,7 @@
         ?>
         <tr>
             <td colspan="3" rowspan="<?=$rowspan?>">
-                <form class="form-inline" role="form" method="post" action="<?=$this->url(array("lang" => $this->language, "action" => "price-rule"), "coreshop_cart")?>">
+                <form class="form-inline" role="form" method="post" action="<?=$this->url(array("lang" => $this->language, "action" => "pricerule"), "coreshop_cart")?>">
                     <?php if(!$this->edit) { ?>
                         <input type="hidden" name="redirect" value="<?=$this->url(array("action" => "payment"), "coreshop_checkout")?>" />
                     <?php } ?>

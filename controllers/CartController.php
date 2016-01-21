@@ -151,7 +151,7 @@ class CoreShop_CartController extends Action {
         $this->view->headTitle($this->view->translate("Cart"));
     }
 
-    public function priceRuleAction()
+    public function priceruleAction()
     {
         $this->enableLayout();
 
@@ -175,7 +175,7 @@ class CoreShop_CartController extends Action {
         $this->_redirect($this->getParam("redirect") ? $this->getParam("redirect") : $this->view->url(array("action" => "list"), "coreshop_cart"));
     }
 
-    public function removePriceRuleAction()
+    public function removepriceruleAction()
     {
         $this->enableLayout();
 

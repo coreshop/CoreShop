@@ -23,7 +23,7 @@ class PriceRule extends AbstractModel {
      * possible types of a condition
      * @var array
      */
-    static $availableConditions = array("customer", "timeSpan", "amount", "totalAvailable", "totalPerCustomer", "country", "product", "category");
+    static $availableConditions = array("customer", "timeSpan", "amount", "totalAvailable", "totalPerCustomer", "country", "product", "category", "customerGroup");
 
     /**
      * possible types of a action
@@ -93,15 +93,6 @@ class PriceRule extends AbstractModel {
      * @var array
      */
     public $actions;
-
-    /**
-     * Save PriceRule
-     *
-     * @return mixed
-     */
-    public function save() {
-        return $this->getDao()->save();
-    }
 
     /**
      * Get PriceRule by ID
