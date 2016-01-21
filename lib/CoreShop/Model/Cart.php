@@ -240,7 +240,15 @@ class Cart extends Base {
                 return false;
             }
             else {
-                $item->setAmount($amount);
+
+                $newAmount = $amount;
+
+                $currentAmount = $item->getAmount();
+
+                if( is_integer($currentAmount ) )
+                    $newAmount = $currentAmount + $amount;
+
+                $item->setAmount( $newAmount );
                 $item->save();
             }
         }
