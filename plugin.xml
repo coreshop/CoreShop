@@ -41,8 +41,6 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrencyMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCurrency.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrency.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/objectSelect.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/object/tags/objectSelect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/abstract.js</path>
@@ -76,6 +74,12 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopTaxRuleGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/ordersAndCartsFromLastDays.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/salesFromLastDays.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/customergroup/panel.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/customergroup/item.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroup.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroup.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroupMultiselect.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroupMultiselect.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

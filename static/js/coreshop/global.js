@@ -23,6 +23,7 @@ pimcore.plugin.coreshop.global = {
         this._orderStatesLoaded = false;
         this._taxesLoaded = false;
         this._taxRuleGroupsLoaded = false;
+        this._customerGroupsLoaded = false;
 
         this.settings = settings;
 
@@ -41,6 +42,7 @@ pimcore.plugin.coreshop.global = {
         this._initOrderStates();
         this._initTaxes();
         this._initTaxRuleGroups();
+        this._initCustomerGroups();
     },
 
     _initCurrencies : function() {
@@ -244,8 +246,39 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.add("coreshop_tax_rule_groups", taxRuleGroupStore);
     },
 
+    _initCustomerGroups : function() {
+        var self = this;
+        var proxy = new Ext.data.HttpProxy({
+            url:'/plugin/CoreShop/admin_Customergroup/list'
+        });
+        var reader = new Ext.data.JsonReader({},
+            [
+                {name:'id'},
+                {name:'name'}
+            ]
+        );
+
+        var store = new Ext.data.Store({
+            restful:false,
+            proxy:proxy,
+            reader:reader
+        });
+        store.load();
+
+        store.on("beforeload", function() {
+            self._customerGroupsLoaded  = false;
+        });
+
+        store.on("load", function() {
+            self._customerGroupsLoaded = true;
+            self._checkStoresLoaded();
+        });
+
+        pimcore.globalmanager.add("coreshop_customer_groups", store);
+    },
+
     _checkStoresLoaded : function() {
-        if(this._countriesLoaded && this._zonesLoaded && this._currenciesLoaded && this._orderStatesLoaded && this._taxesLoaded && this._taxRuleGroupsLoaded) {
+        if(this._countriesLoaded && this._zonesLoaded && this._currenciesLoaded && this._orderStatesLoaded && this._taxesLoaded && this._taxRuleGroupsLoaded && this._customerGroupsLoaded) {
             pimcore.plugin.coreshop.broker.fireEvent("storesLoaded");
             return true;
         }

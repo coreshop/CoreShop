@@ -12,7 +12,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Objectbrick\Data;
+namespace CoreShop\Model\Objectbrick\Data;
 
 use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Object\Objectbrick\Data\AbstractData;

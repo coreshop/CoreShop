@@ -146,6 +146,23 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                         });
                     }
 
+                    if(user.isAllowed("coreshop_permission_customer_groups")) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_customer"),
+                            iconCls: "coreshop_icon_customers",
+                            hideOnClick: false,
+                            menu: {
+                                shadow: false,
+                                cls: "pimcore_navigation_flyout",
+                                items: [{
+                                    text: t("coreshop_customer_groups"),
+                                    iconCls: "coreshop_icon_customer_groups",
+                                    handler: this.openCustomerGroups
+                                }]
+                            }
+                        });
+                    }
+
                     if(user.isAllowed("coreshop_permission_carriers")) {
                         coreShopMenuItems.push({
                             text: t("coreshop_shipping"),
@@ -318,6 +335,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_tax_rule_groups", new pimcore.plugin.coreshop.taxrulegroup.panel());
+        }
+    },
+
+    openCustomerGroups : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_customer_groups").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_customer_groups", new pimcore.plugin.coreshop.customergroup.panel());
         }
     }
 });

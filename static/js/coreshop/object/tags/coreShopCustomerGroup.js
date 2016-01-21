@@ -11,16 +11,14 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+pimcore.registerNS("pimcore.object.tags.coreShopCustomerGroup");
+pimcore.object.tags.coreShopCustomerGroup = Class.create(pimcore.object.tags.select, {
 
-pimcore.registerNS("pimcore.object.tags.objectSelect");
-pimcore.object.tags.objectSelect = Class.create(pimcore.object.tags.select, {
-
-    type: "objectSelect",
+    type: "coreShopCustomerGroup",
 
     initialize: function (data, fieldConfig) {
         this.data = data;
         this.fieldConfig = fieldConfig;
-        this.fieldConfig.width = 250;
-
+        this.fieldConfig.width = 350;
     }
 });

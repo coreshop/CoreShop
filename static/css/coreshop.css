@@ -203,3 +203,11 @@
 .coreshop_icon_tax_rule_groups, .pimcore_icon_coreShopTaxRuleGroup {
     background: url(/pimcore/static/img/icon/coins.png) left center no-repeat!important;
 }
+
+.coreshop_icon_customers {
+    background: url(/pimcore/static/img/icon/user.png) left center no-repeat!important;
+}
+
+.coreshop_icon_customer_groups, .pimcore_icon_coreShopCustomerGroupMultiselect, .pimcore_icon_coreShopCustomerGroup {
+    background: url(/pimcore/static/img/icon/group.png) left center no-repeat!important;
+}
