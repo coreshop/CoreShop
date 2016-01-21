@@ -34,6 +34,10 @@ class BuildCommand extends AbstractCommand
                 'dry-run', 'd',
                 InputOption::VALUE_NONE,
                 'Dry-run'
+            )->addOption(
+                'no-commit', 'c',
+                InputOption::VALUE_NONE,
+                'Make no commit on git'
             );
     }
 
@@ -122,7 +126,7 @@ class BuildCommand extends AbstractCommand
 
                 $this->updateVersionFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision);
                 $this->writeBuildToBuildFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision);
-                $this->gitAddAndCommit($dryRun, $buildNumber);
+                $this->gitAddAndCommit($dryRun, $buildNumber, $input->getOption("no-commit"));
 
             }
             else {
@@ -218,13 +222,19 @@ class BuildCommand extends AbstractCommand
      *
      * @param $buildNumber
      */
-    private function gitAddAndCommit($dryRun, $buildNumber) {
+    private function gitAddAndCommit($dryRun, $buildNumber, $disableCommit = false) {
         if(!$dryRun) {
             \Pimcore\Tool\Console::exec("git add plugin.xml; git add -f build/builds.json; git add -f build/$buildNumber");
-            \Pimcore\Tool\Console::exec("git commit -m \"Build Version $buildNumber\"");
+
+            if(!$disableCommit)
+                \Pimcore\Tool\Console::exec("git commit -m \"Build Version $buildNumber\"");
         }
 
-        $this->output->writeln("made git add and git commit");
+        $this->output->writeln("made git add");
+
+        if(!$disableCommit) {
+            $this->output->writeln("made git commit");
+        }
     }
 
     /**
