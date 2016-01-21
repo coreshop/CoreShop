@@ -1,0 +1,7 @@
+install/thumbnails/image/coreshop_categoryThumbnail.xml
+install/thumbnails/image/coreshop_productCart.xml
+install/thumbnails/image/coreshop_productCartPreview.xml
+install/thumbnails/image/coreshop_productDetail.xml
+install/thumbnails/image/coreshop_productDetailThumbnail.xml
+install/thumbnails/image/coreshop_productInvoice.xml
+install/thumbnails/image/coreshop_productList.xml
