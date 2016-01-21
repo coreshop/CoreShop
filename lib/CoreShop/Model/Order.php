@@ -32,6 +32,17 @@ class Order extends Base
      */
     public static function getNextOrderNumber() {
         $number = NumberRange::getNextNumberForType("order");
+
+        return self::getValidOrderNumber($number);
+    }
+
+    /**
+     * Converts any Number to a valid OrderNumber with Suffix and Prefix
+     *
+     * @param $number
+     * @return string
+     */
+    public static function getValidOrderNumber($number) {
         $config = Config::getConfig()->toArray();
 
         if($config['invoice'] && $config['invoice']['prefix']) {

@@ -20,6 +20,7 @@
     </pluginNamespaces>
     <pluginJsPaths-extjs6>
       <path>/plugins/CoreShop/static/js/startup.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/helper.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/global.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/settings.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/update.js</path>

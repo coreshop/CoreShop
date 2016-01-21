@@ -176,7 +176,6 @@
 "coreshop_orders_and_carts_from_last_days","Orders and Carts from last 31 days"
 "coreshop_sales_from_last_days","Sales from last 31 days"
 "coreshop_sales","Sales"
-
 "coreshop_customer_group_add","Add Customer Group"
 "coreshop_customer_group_discount","Discount"
 "coreshop_customer_group_enter_the_name_of_new","Name of new Custome Group"
@@ -187,3 +186,5 @@
 "coreshop_customer_groups","Groups"
 "coreshop_customer_group","Customer Group"
 "coreshop_customer_group_multiselect","Customer Group Multiselect"
+"coreshop_order_by_number","Open order by number"
+"coreshop_please_enter_the_number_of_the_order","Please enter order number"

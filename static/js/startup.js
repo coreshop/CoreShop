@@ -58,6 +58,12 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                 if(intval(this.settings.coreshop.isInstalled)) {
 
+                    coreShopMenuItems.push({
+                        text: t("coreshop_order_by_number"),
+                        iconCls: "pimcore_icon_open_object_by_id",
+                        handler: coreshop.helpers.openOrderByNumberDialog.bind(this)
+                    });
+
                     if(user.isAllowed("coreshop_permission_settings")) {
                         coreShopMenuItems.push({
                             text: t("coreshop_settings"),
