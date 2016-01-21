@@ -12,7 +12,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-require(CORESHOP_PATH . "/controllers/CartController.php");
+\CoreShop\Tool::loadController('Cart');
 
 class CoreShopTemplate_CartController extends CoreShop_CartController {
 
