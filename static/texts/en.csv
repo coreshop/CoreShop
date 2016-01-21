@@ -167,3 +167,8 @@
 "coreshop_tax_rule_country","Country"
 "coreshop_tax_rule_tax","Tax"
 "coreshop_tax_rule_behavior","Behavior"
+"coreshop_order","Order"
+"coreshop_cart","Cart"
+"coreshop_orders_and_carts_from_last_days","Orders and Carts from last 31 days"
+"coreshop_sales_from_last_days","Sales from last 31 days"
+"coreshop_sales","Sales"

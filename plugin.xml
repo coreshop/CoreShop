@@ -74,6 +74,8 @@
       <path>/plugins/CoreShop/static/js/coreshop/taxrulegroup/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopTaxRuleGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopTaxRuleGroup.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/ordersAndCartsFromLastDays.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/salesFromLastDays.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>
