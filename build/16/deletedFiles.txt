@@ -1,0 +1,4 @@
+lib/Pimcore/Model/Object/ClassDefinition/Data/CoreShopSelect.php
+lib/Pimcore/Model/Object/ClassDefinition/Data/ObjectSelect.php
+static/js/coreshop/object/classes/data/objectSelect.js
+static/js/coreshop/object/tags/objectSelect.js
