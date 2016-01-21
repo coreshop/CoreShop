@@ -126,6 +126,29 @@
                 "visibleSearch":false
               },
               {
+                "fieldtype":"input",
+                "width":null,
+                "queryColumnType":"varchar",
+                "columnType":"varchar",
+                "columnLength":255,
+                "phpdocType":"string",
+                "regex":"",
+                "name":"articleNumber",
+                "title":"Article Number",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":null,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
                 "fieldtype":"checkbox",
                 "defaultValue":0,
                 "queryColumnType":"tinyint(1)",
@@ -389,8 +412,12 @@
                 "phpdocType":"CoreShop\\Model\\TaxRuleGroup",
                 "options":[
                   {
-                    "key":"Standard",
+                    "key":"AT Standard 20%",
                     "value":"2"
+                  },
+                  {
+                    "key":"AT Standard 10%",
+                    "value":"3"
                   }
                 ],
                 "width":"",
