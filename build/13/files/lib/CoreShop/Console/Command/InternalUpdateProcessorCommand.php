@@ -53,7 +53,7 @@ class InternalUpdateProcessorCommand extends AbstractCommand
                     $status = Update::executeScript($job["revision"], "preupdate");
                 } else if ($job["type"] == "postupdate") {
                     $status = Update::executeScript($job["revision"], "postupdate");
-                } else if ($this->getParam("type") == "installClass") {
+                } else if ($job["type"] == "installClass") {
                     $status = Update::installClass($job["class"]);
                 }else if ($job["type"] == "cleanup") {
                     Update::cleanup();
