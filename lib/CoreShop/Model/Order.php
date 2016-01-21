@@ -83,6 +83,10 @@ class Order extends Base
         $this->setPriceRule($cart->getPriceRule());
         $this->setItems($items);
         $this->save();
+
+        //Store Order into cart for statistic purpose
+        $cart->setOrder($this);
+        $cart->save();
         
         return true;
     }

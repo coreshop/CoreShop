@@ -73,7 +73,7 @@ class Payment extends Action {
 
     public function confirmationAction() {
         $this->prepareCart();
-        $this->cart->delete();
+        //$this->cart->delete(); //Keep Cart for Statistics Purpose
 
         if(!$this->session->order instanceof Order)
             $this->redirect("/" . $this->view->language);

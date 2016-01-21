@@ -102,10 +102,7 @@
                     "columnType":"int(11)",
                     "phpdocType":"CoreShop\\Model\\Carrier",
                     "options":[
-                      {
-                        "key":"Post",
-                        "value":"1"
-                      }
+
                     ],
                     "width":"",
                     "defaultValue":null,
@@ -163,12 +160,52 @@
                     "mandatory":false,
                     "noteditable":true,
                     "index":false,
-                    "locked":null,
+                    "locked":false,
                     "style":"",
                     "permissions":null,
                     "datatype":"data",
                     "relationType":false,
                     "invisible":true,
+                    "visibleGridView":false,
+                    "visibleSearch":false
+                  },
+                  {
+                    "fieldtype":"href",
+                    "width":"",
+                    "assetUploadPath":"",
+                    "relationType":true,
+                    "queryColumnType":{
+                      "id":"int(11)",
+                      "type":"enum('document','asset','object')"
+                    },
+                    "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
+                    "objectsAllowed":true,
+                    "assetsAllowed":false,
+                    "assetTypes":[
+
+                    ],
+                    "documentsAllowed":false,
+                    "documentTypes":[
+
+                    ],
+                    "lazyLoading":true,
+                    "classes":[
+                      {
+                        "classes":"CoreShopOrder"
+                      }
+                    ],
+                    "name":"order",
+                    "title":"Order",
+                    "tooltip":"",
+                    "mandatory":false,
+                    "noteditable":true,
+                    "index":false,
+                    "locked":null,
+                    "style":"",
+                    "permissions":null,
+                    "datatype":"data",
+                    "columnType":null,
+                    "invisible":false,
                     "visibleGridView":false,
                     "visibleSearch":false
                   }
