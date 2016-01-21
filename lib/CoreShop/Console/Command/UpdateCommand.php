@@ -1,13 +1,15 @@
 <?php
 /**
- * Pimcore
+ * CoreShop
+ *
+ * LICENSE
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2009-2016 pimcore GmbH (http://www.pimcore.org)
- * @license    http://www.pimcore.org/license     GNU General Public License version 3 (GPLv3)
+ * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
+ * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Console\Command;
@@ -45,16 +47,27 @@ class UpdateCommand extends AbstractCommand
                 'source-build', null,
                 InputOption::VALUE_OPTIONAL,
                 'specify a source build where the update should start from - this is mainly for debugging purposes'
-            );
+            )->addOption(
+                'dry-run', 'd',
+                InputOption::VALUE_NONE,
+                'Dry-run'
+            );;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $dryRun = $input->getOption("dry-run");
         $currentRevision = null;
+
+        if($dryRun) {
+            $this->output->writeln("<info>---------- DRY-RUN ----------</info>");
+        }
 
         if($input->getOption("source-build")) {
             $currentRevision = $input->getOption("source-build");
         }
+
+        Update::$dryRun = $dryRun;
 
         $availableUpdates = Update::getAvailableUpdates($currentRevision);
 
@@ -84,8 +97,8 @@ class UpdateCommand extends AbstractCommand
             }
         }
 
-        if($input->getOption("update")) {
-
+        if($input->getOption("update"))
+        {
             $returnMessages = [];
             $build = null;
             $updateInfo = trim($input->getOption("update"));
@@ -138,7 +151,11 @@ class UpdateCommand extends AbstractCommand
             foreach($jobs["procedural"] as $job) {
                 $phpCli = Console::getPhpCli();
 
-                $cmd = $phpCli . " " . realpath(PIMCORE_PATH . DIRECTORY_SEPARATOR . "cli" . DIRECTORY_SEPARATOR . "console.php"). " internal:update-processor " . escapeshellarg(json_encode($job));
+                if($dryRun) {
+                    $job["dry-run"] = true;
+                }
+
+                $cmd = $phpCli . " " . realpath(PIMCORE_PATH . DIRECTORY_SEPARATOR . "cli" . DIRECTORY_SEPARATOR . "console.php"). " coreshop:internal:update-processor " . escapeshellarg(json_encode($job));
                 $return = Console::exec($cmd);
 
                 $return = trim($return);

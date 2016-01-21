@@ -14,6 +14,7 @@
 
 namespace CoreShop;
 
+use CoreShop\Plugin\Install;
 use Pimcore\Cache;
 use Pimcore\Db;
 use Pimcore\File;
@@ -40,6 +41,11 @@ class Update {
      */
     public static $branch = "master";
 
+    /**
+     * @var bool
+     */
+    public static $dryRun = false;
+
 
     /**
      *
@@ -59,6 +65,9 @@ class Update {
      */
     public static function isWriteable ()
     {
+        if(self::$dryRun) {
+            return true;
+        }
         // check permissions
         $files = rscandir(CORESHOP_PATH . "/");
 
@@ -101,6 +110,17 @@ class Update {
                     "file" => "file",
                     "url" => $download
                 );
+
+                if(strpos($download, "install/class-") === 0) {
+                    if(!is_array($updateScripts[$buildNumber]["installClass"]))
+                        $updateScripts[$buildNumber]["installClass"] = array();
+
+                    $updateScripts[$buildNumber]["installClass"][] = array(
+                        "type" => "installClass",
+                        "revision" => $buildNumber,
+                        "class" => str_replace(".json", "", str_replace("install/class-", "", $download))
+                    );
+                }
 
                 $revisions[] = (int)$buildNumber;
             }
@@ -150,6 +170,11 @@ class Update {
                 "revision" => (string)$revision
             );
 
+            if(is_array($updateScripts[$revision]["installClass"])) {
+                foreach($updateScripts[$revision]["installClass"] as $installClass) {
+                    $jobs["procedural"][] = $installClass;
+                }
+            }
 
             if($updateScripts[$revision]["postupdate"]) {
                 $jobs["procedural"][] = $updateScripts[$revision]["postupdate"];
@@ -177,7 +202,6 @@ class Update {
         $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision;
 
         $db = Db::get();
-
         $db->query("CREATE TABLE IF NOT EXISTS `" . self::$tmpTable . "` (
           `revision` int(11) NULL DEFAULT NULL,
           `path` varchar(255) NULL DEFAULT NULL
@@ -239,14 +263,17 @@ class Update {
         foreach ($files as $file) {
             $path = pathinfo($file['path']);
 
-            if ( !is_dir( CORESHOP_PATH . "/" . $path["dirname"] ) ) {
-                File::mkdir( CORESHOP_PATH . "/" . $path["dirname"] );
+            if(!self::$dryRun) {
+                if (!is_dir(CORESHOP_PATH . "/" . $path["dirname"])) {
+                    File::mkdir(CORESHOP_PATH . "/" . $path["dirname"]);
+                }
             }
 
             $srcFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision . "/files/" . $file['path'];
             $destFile = CORESHOP_PATH . "/" . $file["path"];
 
-            copy($srcFile, $destFile);
+            if(!self::$dryRun)
+                copy($srcFile, $destFile);
         }
     }
 
@@ -270,18 +297,33 @@ class Update {
         {
             ob_start();
             try {
-                include($script);
-            }
-            catch (\Exception $e) {
+                if(!self::$dryRun) {
+                    include($script);
+                }
+            } catch (\Exception $e) {
                 \Logger::error($e);
             }
             $outputMessage = ob_get_clean();
+
         }
 
         return array(
             "message" => $outputMessage,
             "success" => true
         );
+    }
+
+    /**
+     * @param $class
+     * @return boolean
+     */
+    public static function installClass($class) {
+        if(!self::$dryRun) {
+            $install = new Install();
+            $install->createClass($class, true);
+        }
+
+        return true;
     }
 
     /**
@@ -345,12 +387,17 @@ class Update {
             $pluginVersion = intval($currentBuild);
             $newerBuilds = array();
 
-            if(array_key_exists("builds", $builds)) {
-                foreach ($builds['builds'] as $build) {
-                    if ($build['number'] > $pluginVersion) {
-                        if(!is_null($to)) {
-                            if($to <= $build['number'])
+            if(array_key_exists("builds", $builds))
+            {
+                foreach ($builds['builds'] as $build)
+                {
+                    if ($build['number'] > $pluginVersion)
+                    {
+                        if(!is_null($to))
+                        {
+                            if($to >= $build['number']) {
                                 $newerBuilds[] = $build;
+                            }
                         }
                         else {
                             $newerBuilds[] = $build;

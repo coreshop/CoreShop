@@ -50,13 +50,14 @@ class Install
      * creates a mew Class if it doesn't exists
      *
      * @param $className
+     * @param bool $updateClass should class be updated if it already exists
      * @return mixed|Object\ClassDefinition
      */
-    public function createClass($className)
+    public function createClass($className, $updateClass = false)
     {
         $class = Object\ClassDefinition::getByName($className);
 
-        if (!$class)
+        if (!$class || $updateClass)
         {
             $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
             $json = file_get_contents($jsonFile);

@@ -78,6 +78,8 @@ class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
             $status = \CoreShop\Update::executeScript($this->getParam("revision"), "preupdate");
         } else if ($this->getParam("type") == "postupdate") {
             $status = \CoreShop\Update::executeScript($this->getParam("revision"), "postupdate");
+        } else if ($this->getParam("type") == "installClass") {
+            $status = \CoreShop\Update::installClass($this->getParam("class"));
         } else if ($this->getParam("type") == "cleanup") {
             \CoreShop\Update::cleanup();
         }
