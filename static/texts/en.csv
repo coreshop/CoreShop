@@ -67,6 +67,7 @@
 "coreshop_condition_totalAvailable_totalUsed","Used"
 "coreshop_condition_totalPerCustomer","Total Per Customer",
 "coreshop_condition_totalPerCustomer_total", "Total"
+"coreshop_condition_customerGroup","Customer Group"
 "coreshop_action_freeShipping", "Free Shipping"
 "coreshop_action_discountAmount", "Discount Amount"
 "coreshop_action_discountAmount_amount", "Amount"

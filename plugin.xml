@@ -54,6 +54,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/category.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/country.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/customer.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/customerGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/product.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/timeSpan.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerule/conditions/totalAvailable.js</path>
