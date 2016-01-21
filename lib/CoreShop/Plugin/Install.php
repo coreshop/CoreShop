@@ -26,6 +26,7 @@ use Pimcore\Model\Staticroute;
 
 use Pimcore\Model\Tool\Setup;
 use Pimcore\Tool;
+use Pimcore\Version;
 
 class Install
 {
@@ -601,7 +602,7 @@ class Install
     public function removeStaticRoutes()
     {
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
-        
+
         foreach ($conf->routes->route as $def) {
             $route = Staticroute::getByName($def->name);
             if ($route) {
@@ -637,7 +638,20 @@ class Install
      */
     public function createImageThumbnails()
     {
-        recurse_copy(PIMCORE_PLUGINS_PATH . "/CoreShop/install/thumbnails/image", PIMCORE_WEBSITE_PATH . "/var/config/imagepipelines", true);
+        $images = file_get_contents(PIMCORE_PLUGINS_PATH . "/CoreShop/install/thumbnails/images.json");
+        $images = \Zend_Json::decode($images);
+
+        foreach($images as $name => $values) {
+            $thumbnail = \Pimcore\Model\Asset\Image\Thumbnail\Config::getByName($name);
+
+            if(!$thumbnail) {
+                $thumbnail = new \Pimcore\Model\Asset\Image\Thumbnail\Config();
+            }
+
+            $thumbnail->setName($name);
+            $thumbnail->setValues($values);
+            $thumbnail->save();
+        }
     }
 
     /**
@@ -645,9 +659,20 @@ class Install
      */
     public function removeImageThumbnails()
     {
-        foreach (glob(PIMCORE_WEBSITE_PATH . "/var/config/imagepipelines/coreshop_*.xml") as $filename) 
-        {
-            unlink($filename);
+        if(\Pimcore\Version::getRevision() >= 3608) {
+            $definitions = new \Pimcore\Model\Asset\Image\Thumbnail\Config\Listing();
+            $definitions = $definitions->getThumbnails();
+
+            foreach($definitions as $definition) {
+                if(strpos($definition->getName(), "coreshop") === 0) {
+                    $definition->delete();
+                }
+            }
+        }
+        else {
+            foreach (glob(PIMCORE_WEBSITE_PATH . "/var/config/imagepipelines/coreshop_*.xml") as $filename) {
+                unlink($filename);
+            }
         }
     }
 
