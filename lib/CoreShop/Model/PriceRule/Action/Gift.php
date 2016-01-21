@@ -73,7 +73,7 @@ class Gift extends AbstractAction {
     public function applyRule(CoreShopCart $cart)
     {
         if($this->getGift() instanceof CoreShopProduct) {
-            $item = $cart->updateQuantity($this->getGift(), 1, false);
+            $item = $cart->updateQuantity($this->getGift(), 1, false, false);
             $item->setIsGiftItem(true);
             $item->save();
         }
@@ -90,7 +90,7 @@ class Gift extends AbstractAction {
     public function unApplyRule(CoreShopCart $cart)
     {
         if($this->getGift() instanceof CoreShopProduct) {
-            $cart->updateQuantity($this->getGift(), 0, false);
+            $cart->updateQuantity($this->getGift(), 0, false, false);
         }
 
         return true;
