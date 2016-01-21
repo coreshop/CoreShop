@@ -31,7 +31,7 @@ class Cart extends Base {
      * @param $transactionIdentification
      * @return bool|Cart
      */
-    public static function findByCustomIdentifer($transactionIdentification) {
+    public static function findByCustomIdentifier($transactionIdentification) {
         $list = CoreShopCart::getByCustomIdentifier($transactionIdentification);
 
         $carts = $list->getObjects();
