@@ -187,10 +187,13 @@ class Product extends Base {
     public function getVariantDifferences()
     {
         $master = $this;
-        $parent = Object\Service::hasInheritableParentObject($this);
-        
-        if($parent)
-            $master = $parent;
+
+        //Find master object
+        if($master->getType() === "variant") {
+            do {
+                $master = $master->getParent();
+            } while ($master->getType() !== "object");
+        }
 
         if($master instanceof Product)
             return Service::getDimensions($master);

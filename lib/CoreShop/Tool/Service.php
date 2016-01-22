@@ -21,6 +21,15 @@ use CoreShop\Model\Product;
 
 class Service
 {
+    public static function getAllChilds(AbstractObject $object) {
+        $list = new \Pimcore\Model\Object\Listing();
+        $list->setCondition("o_path LIKE ?", $object->getFullPath() . "/%");
+        $list->setOrderKey("o_key");
+        $list->setOrder("asc");
+        $list->setObjectTypes(array(AbstractObject::OBJECT_TYPE_VARIANT));
+
+        return $list->load();
+    }
     /**
      * Gets all Differences in the variants
      *
@@ -29,7 +38,7 @@ class Service
      */
     public static function getDimensions(Product $product)
     {
-        $variants = $product->getChilds(array(AbstractObject::OBJECT_TYPE_VARIANT));
+        $variants = self::getAllChilds($product);
         $fieldDefinition = $product->getClass()->getFieldDefinition("dimensions");
         
         $variantsAndMaster = array_merge(array($product), $variants);
@@ -86,13 +95,13 @@ class Service
                         foreach($overwrittenKeys[$singleBrickData['type']] as $key)
                         {
                             $found = false;
-                            
-                            foreach($overwrittenKeyValues[$singleBrickData['type']][$key] as $existingValue)
-                            {
-                                if($existingValue['value'] == $singleBrickData['data'][$key])
-                                {
-                                    $found = true;
-                                    break;
+
+                            if(count($overwrittenKeyValues[$singleBrickData['type']]) > 0 && array_key_exists($key, $overwrittenKeyValues[$singleBrickData['type']])) {
+                                foreach ($overwrittenKeyValues[$singleBrickData['type']][$key] as $existingValue) {
+                                    if ($existingValue['value'] == $singleBrickData['data'][$key]) {
+                                        $found = true;
+                                        break;
+                                    }
                                 }
                             }
                             

@@ -1,7 +1,7 @@
 <div id="main-container" class="container">
     <div class="row">
 
-    <?=$this->template("coreshop/helper/left.php")?>
+        <?=$this->template("coreshop/helper/left.php")?>
 
         <div class="col-md-9">
 
@@ -27,16 +27,16 @@
                         <img src="<?=$this->product->getImage()->getThumbnail("coreshop_productDetail")?>?>" alt="<?=$this->product->getName()?>" id="product-image-<?=$this->product->getId()?>" class="img-responsive thumbnail" />
                     <?php } ?>
                     <?php if(count($this->product->getImages()) > 0) { ?>
-                    <ul class="list-unstyled list-inline">
-                        <?php foreach($this->product->getImages() as $image) { ?>
-                        <li>
-                            <?php
-                                echo $image->getThumbnail("coreshop_productDetailThumbnail")->getHtml(array("class" => "img-responsive thumbnail", "alt" => $this->product->getName()));
-                            ?>
-                        </li>
-                        <?php } ?>
-                    </ul>
-                    <?php } ?>
+                        <ul class="list-unstyled list-inline">
+                            <?php foreach($this->product->getImages() as $image) { ?>
+                                <li>
+                                    <?php
+                                    echo $image->getThumbnail("coreshop_productDetailThumbnail")->getHtml(array("class" => "img-responsive thumbnail", "alt" => $this->product->getName()));
+                                    ?>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    <?php } ?>
                 </div>
 
                 <div class="col-sm-7 product-details">
@@ -60,10 +60,10 @@
 
                         <div class="options">
                             <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
-                            <div class="form-group">
-                                <label class="control-label text-uppercase" for="input-quantity"><?=$this->translate("Qty")?>:</label>
-                                <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
-                            </div>
+                                <div class="form-group">
+                                    <label class="control-label text-uppercase" for="input-quantity"><?=$this->translate("Qty")?>:</label>
+                                    <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
+                                </div>
                             <?php } ?>
 
                             <div class="cart-button button-group">
@@ -96,9 +96,37 @@
                 </div>
             <?php } ?>
 
+            <?php
+            $variants = $this->product->getVariantDifferences();
+
+            foreach($variants as $key => $fields)
+            {
+                foreach($fields as $field) {
+                    ?>
+                    <div class="col-xs-12">
+                    <div class="form-group">
+                        <select name="variant" class="selectpicker btn-white">
+                            <?php foreach($field as $option) { ?>
+                                <?php
+                                $variant = \Pimcore\Model\Object\CoreShopProduct::getById($option['object']);
+
+                                if(!$variant instanceof \Pimcore\Model\Object\CoreShopProduct)
+                                    continue;
+
+                                $href = $this->url(array("lang" => $this->language, "product" => $variant->getId(), "name" => $variant->getName()), "coreshop_detail");
+                                ?>
+                                <option data-href="<?=$href?>" value="<?=$option['object']?>" <?=$this->product->getId() == $option['object'] ? "selected" : ""?>><?=$this->translate($option['value'])?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    </div><?php
+                }
+            }
+            ?>
+
             <?=\CoreShop\Plugin::hook("product-detail-bottom", array("product" => $this->product))?>
-        
-        
+
+
         </div>
     </div>
 </div>
