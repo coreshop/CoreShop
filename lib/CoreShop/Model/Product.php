@@ -189,10 +189,8 @@ class Product extends Base {
         $master = $this;
 
         //Find master object
-        if($master->getType() === "variant") {
-            do {
-                $master = $master->getParent();
-            } while ($master->getType() !== "object");
+        while($master->getType() === "variant") {
+            $master = $master->getParent();
         }
 
         if($master instanceof Product)
