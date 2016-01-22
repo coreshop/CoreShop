@@ -221,11 +221,12 @@ class Cart extends Base {
      *
      * @param Product $product
      * @param int $amount
+     * @param bool|false $increaseAmount
      * @param bool|true $autoAddPriceRule
      * @return bool|CoreShopCartItem
      * @throws \Exception
      */
-    public function updateQuantity(Product $product, $amount = 0, $autoAddPriceRule = true)
+    public function updateQuantity(Product $product, $amount = 0, $increaseAmount = false, $autoAddPriceRule = true)
     {
         if(!$product instanceof Product)
             throw new \Exception("\$product must be instance of Product");
@@ -238,9 +239,22 @@ class Cart extends Base {
                 $this->removeItem($item);
 
                 return false;
-            }
-            else {
-                $item->setAmount($amount);
+
+            } else {
+
+                $newAmount = $amount;
+
+                if( $increaseAmount === TRUE ) {
+
+                    $currentAmount = $item->getAmount();
+
+                    if( is_integer( $currentAmount ) ) {
+                        $newAmount = $currentAmount + $amount;
+                    }
+
+                }
+
+                $item->setAmount( $newAmount );
                 $item->save();
             }
         }
@@ -281,7 +295,7 @@ class Cart extends Base {
      */
     public function addItem(Product $product, $amount = 1)
     {
-        return $this->updateQuantity($product, $amount);
+        return $this->updateQuantity($product, $amount, true);
     }
 
     /**
@@ -304,7 +318,7 @@ class Cart extends Base {
      */
     public function modifyItem(CartItem $item, $amount)
     {
-        return $this->updateQuantity($item->getProduct(), $amount);
+        return $this->updateQuantity($item->getProduct(), $amount, false);
     }
 
     /**
