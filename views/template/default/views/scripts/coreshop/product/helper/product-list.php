@@ -27,7 +27,7 @@
                     <button type="button" title="" class="btn btn-wishlist" data-original-title="Wishlist">
                         <i class="fa fa-heart"></i>
                     </button>
-                    <button type="button" title="" class="btn btn-compare" data-original-title="Compare">
+                    <button type="button" title="" class="btn btn-compare" data-original-title="Compare" data-id="<?=$this->product->getId()?>">
                         <i class="fa fa-bar-chart-o"></i>
                     </button>
 
