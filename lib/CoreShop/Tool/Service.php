@@ -16,101 +16,179 @@ namespace CoreShop\Tool;
 
 
 use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\Object\Objectbrick\Definition;
 
 use CoreShop\Model\Product;
 
 class Service
 {
-    /**
-     * Gets all Differences in the variants
-     *
-     * @param Product $product
-     * @return array
-     */
-    public static function getDimensions(Product $product)
-    {
-        $variants = $product->getChilds(array(AbstractObject::OBJECT_TYPE_VARIANT));
-        $fieldDefinition = $product->getClass()->getFieldDefinition("dimensions");
-        
-        $variantsAndMaster = array_merge(array($product), $variants);
-        
-        $currentInheritedValue = AbstractObject::getGetInheritedValues();
-        AbstractObject::setGetInheritedValues(false);
-        
-        $overwrittenKeyValues = array();
-        $overwrittenKeys = array();
 
-        if(count($variants) > 0)
-        {
-            foreach($variants as $variant)
-            {
-                $fieldData = $variant->getDimensions();
-                $value = $fieldDefinition->getDataForEditmode($fieldData, $variant);
+    private static $allowedVariationTypes = array("input","numeric","checkbox","select","slider");
 
-                //Search for not inherited fields
-                foreach($value as $singleBrickData)
-                {
-                    if(!$singleBrickData)
-                        continue;
+    public static function getDimensionVariations( Product $product ) {
 
-                    if(!array_key_exists($singleBrickData['type'], $overwrittenKeys))
-                        $overwrittenKeys[$singleBrickData['type']] = array();
+        $productVariants = $product->getChilds(array(AbstractObject::OBJECT_TYPE_VARIANT));
 
-                    foreach($singleBrickData['metaData'] as $key=>$meta)
-                    {
-                        if(!$meta['inherited'])
-                        {
-                            if(!in_array($key, $overwrittenKeys[$singleBrickData['type']]))
-                                $overwrittenKeys[$singleBrickData['type']][] = $key;
-                        }
-                    }
-                }
+        $variantsAndMaster = array_merge(array($product), $productVariants);
+
+        $productMethods = self::getProductValidMethods( $product, 'CoreShop\Model\Product' );
+
+        //we do have some dimension entries!
+        $dimensionsData = $product->getDimensions();
+
+        $brickGetters = $dimensionsData->getBrickGetters();
+
+        $dimensionInfo = array();
+
+        if( !empty( $brickGetters ) ) {
+
+            foreach( $brickGetters as $brickGetter ) {
+
+                $getter = $dimensionsData->{$brickGetter}();
+
+                if( is_null( $getter ) )
+                    continue;
+
+                $dimensionMethods = self::getProductValidMethods( $getter, get_class( $getter ), array('getType'), $getter->getType() );
+
+                $dimensionInfo[] = array(
+
+                    'getterName' => $brickGetter,
+                    'methods' => $dimensionMethods
+
+                );
+
             }
-            
-            //We now have the keys and reloop the variants to get all the values
-            foreach($variantsAndMaster as $variant)
-            {
-                $fieldData = $variant->getDimensions();
-                $value = $fieldDefinition->getDataForEditmode($fieldData, $variant);
-                
-                foreach($value as $singleBrickData) 
-                {
-                    if(!$singleBrickData)
-                        continue;
-                    
-                    if(array_key_exists($singleBrickData['type'], $overwrittenKeys))
-                    {
-                        if(!is_array($overwrittenKeyValues[$singleBrickData['type']]))
-                            $overwrittenKeyValues[$singleBrickData['type']] = array();
-                        
-                        foreach($overwrittenKeys[$singleBrickData['type']] as $key)
-                        {
-                            $found = false;
-                            
-                            foreach($overwrittenKeyValues[$singleBrickData['type']][$key] as $existingValue)
-                            {
-                                if($existingValue['value'] == $singleBrickData['data'][$key])
-                                {
-                                    $found = true;
-                                    break;
-                                }
-                            }
-                            
-                            if(!$found)
-                            {
-                                $overwrittenKeyValues[$singleBrickData['type']][$key][] = array(
-                                    "value" => $singleBrickData['data'][$key],
-                                    "object" => $variant->getId()
-                                );
-                            }
-                        }
-                    }
-                }
-            }
+
         }
 
-        AbstractObject::setGetInheritedValues($currentInheritedValue);
-        
-        return $overwrittenKeyValues;
+        $validData = array(
+
+            'productMethods' => $productMethods,
+            'dimensionInfo' => $dimensionInfo
+
+        );
+
+        $compareValues = array();
+
+        foreach ($variantsAndMaster as $productVariant) {
+
+            $productId = $productVariant->getId();
+
+            if( !empty( $validData['productMethods'])) {
+
+                foreach( $validData['productMethods'] as $pMethod ) {
+
+                    $getpMethod = 'get' . $pMethod;
+
+                    $compareValues[ $pMethod ][ $productId ] = $productVariant->{$getpMethod}();
+
+                }
+
+            }
+
+            if( !empty( $validData['dimensionInfo'] )) {
+
+                foreach( $validData['dimensionInfo'] as $dData ) {
+
+                    $getterName = $dData['getterName'];
+                    $getter = $productVariant->getDimensions()->{$getterName}();
+
+                    if( !empty( $dData['methods'] )) {
+
+                        foreach( $dData['methods'] as $dMethod ) {
+
+                            $getdMethod = 'get' . $dMethod;
+                            $compareValues[ $getter->getType() . '_' . $dMethod ][ $productId ] = $getter->{$getdMethod}();
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        $validVariations = array();
+
+        foreach( $compareValues as $variantName => $variantValues ) {
+
+            if( count(array_unique( $variantValues )) !== 1 )
+                $validVariations[ $variantName ] = $variantValues;
+
+        }
+
+        return $validVariations;
+
     }
+
+    private static function getProductValidMethods( $obj, $classNameSpace = NULL, $excludeMethods = NULL, $brickName = FALSE ) {
+
+        $exclude = array_flip(
+
+            $excludeMethods !== NULL ? $excludeMethods : array(
+
+                'getById',
+                'getAll',
+                'getLatest',
+                'getImage',
+                'getName',
+                'getImages',
+                'getDefaultImage',
+                'getCategories',
+                'getIsNew',
+                'getVariantDifferences',
+                'getPrice',
+                'getRetailPrice',
+                'getTax','getTaxRule',
+                'getTaxCalculator',
+                'getPriceWithoutTax',
+                'getSpecificPrice',
+                'getWholesalePrice',
+                'getIsDownloadProduct'
+
+            )
+        );
+
+        $fields = array_map( function($v) { return substr($v->name, 3); },
+
+            array_filter( (new \ReflectionClass($classNameSpace) )->getMethods(\ReflectionMethod::IS_PUBLIC),
+
+                function ($v) use ($classNameSpace, $exclude) {
+
+                    return (strpos($v->name, 'get') === 0 && $v->class === $classNameSpace) && !array_key_exists($v->name, $exclude);
+
+                }
+
+            )
+
+        );
+
+        if( empty( $fields ) )
+            return array();
+
+        $valid = array();
+
+        foreach( $fields as $method ) {
+
+            if( $brickName !== FALSE ) {
+
+                $fieldDefinition = Definition::getByKey( $brickName )->getFieldDefinition( strtolower($method) );
+
+            } else {
+
+                $fieldDefinition = $obj->getClass()->getFieldDefinition( strtolower($method) );
+            }
+
+            if( $fieldDefinition !== FALSE && in_array( $fieldDefinition->getFieldType(), self::$allowedVariationTypes ) )
+                $valid[] = $method;
+
+        }
+
+        return $valid;
+
+    }
+
 }

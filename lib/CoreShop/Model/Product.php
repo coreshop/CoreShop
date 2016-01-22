@@ -193,7 +193,7 @@ class Product extends Base {
             $master = $parent;
 
         if($master instanceof Product)
-            return Service::getDimensions($master);
+            return Service::getDimensionVariations($master);
 
         return false;
     }

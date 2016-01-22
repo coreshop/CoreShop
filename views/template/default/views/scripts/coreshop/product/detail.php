@@ -96,6 +96,53 @@
                 </div>
             <?php } ?>
 
+            <?php $variants = $this->product->getVariantDifferences(); ?>
+
+            <?php if( !empty( $variants ) ) { ?>
+
+                <div class="aligned-row">
+
+                    <div class="">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3><?=$this->translate("Ausführung")?></h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <?php foreach( $variants as $variantName => $variantValues ) { ?>
+
+                                <div class="col-xs-12">
+
+                                    <div class="form-group">
+
+                                        <label><?php echo $variantName; ?></label>
+                                        <select name="variant" class="selectpicker btn-white">
+
+                                            <?php foreach( $variantValues as $variantValue ) { ?>
+
+                                                <option value="<?php ?>"><?php echo $variantValue; ?></option>
+
+                                            <?php } ?>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            <?php } ?>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <?php } ?>
+
             <?=\CoreShop\Plugin::hook("product-detail-bottom", array("product" => $this->product))?>
         
         
