@@ -92,6 +92,9 @@ class CoreShop_Admin_InstallController extends Admin
 
             $install->setConfigInstalled();
 
+            $tax = new \CoreShop\Model\Tax();
+            $tax->getLocalizedFields()->createUpdateTable();
+
             $success = true;
         }
         catch(Exception $e)
