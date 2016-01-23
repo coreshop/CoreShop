@@ -17,52 +17,77 @@ namespace CoreShop\Model;
 use CoreShop\Tool;
 use Pimcore\Model\Object;
 
-
+/**
+ * Class BrickVariant
+ * @package CoreShop\Model
+ */
 class BrickVariant extends Object\Objectbrick\Data\AbstractData
 {
 
-    public function getValueForVariant( $fieldName, $language = 'en' ) {
+    /**
+     * Format Value from Brick Element.
+     *
+     * override this class / method to implement your own formatting logic.
+     * if method returns FALSE no value will be added.
+     *
+     * @param array  $fieldInfo name,type,title
+     * @param string $language
+     *
+     * @return bool|float|int|string
+     */
+    public function getValueForVariant( $fieldInfo = array(), $language = 'en' )
+    {
+        $methodName = 'get' . $fieldInfo['name'];
 
-        $methodName = 'get' . $fieldName;
-
-        if( !method_exists( $this, $methodName ) ) {
-
+        if( !method_exists( $this, $methodName ) )
+        {
             return $methodName . ' not implemented';
-
         }
 
         $output = $this->{$methodName}();
+        $data = FALSE;
 
-        if( is_string( $output ) ) {
-
+        if( is_string( $output ) )
+        {
             $data = $output;
-
-        } else if( is_array( $output ) ) {
-
-            foreach ($output as $t) {
-
-                if ($t->getType() == 'object') {
-
+        }
+        else if( is_float( $output ) )
+        {
+            $data = $output;
+        }
+        else if( is_int( $output ) )
+        {
+            $data = $output;
+        }
+        else if( is_bool( $output ) )
+        {
+            $data = $fieldInfo['name'];
+        }
+        else if( is_array( $output ) )
+        {
+            foreach ($output as $t)
+            {
+                if ($t->getType() == 'object')
+                {
                     //check if there are some localize fields?
-                    if (isset($t->localizedfields) && $t->localizedfields instanceof Object\LocalizedField) {
-
+                    if (isset($t->localizedfields) && $t->localizedfields instanceof Object\LocalizedField)
+                    {
                         $items = $t->getLocalizedFields()->getItems();
 
-                        if (isset($items[$language])) {
-
+                        if (isset($items[$language]))
+                        {
                             $itemValues = array_values($items[$language]);
                         }
                     }
-                    else {
-
+                    else
+                    {
                         $items = $t->getItems();
                         $itemValues = is_array($items) ? array_values($items[$language]) : array();
                     }
 
-                    if (isset($itemValues[0]) && is_string($itemValues[0])) {
-
+                    if (isset($itemValues[0]) && is_string($itemValues[0]))
+                    {
                         $data = $itemValues[0];
-
                     }
                 }
             }
