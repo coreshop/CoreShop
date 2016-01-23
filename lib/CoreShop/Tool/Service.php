@@ -91,7 +91,7 @@ class Service
                     //Getter must be an instance of Variant Model
                     if( !$getter instanceof BrickVariant ) {
 
-                        throw new Exception( 'Objectbrick "' . self::$dimensionClass . '" needs to be a instance of \CoreShop\Model\BrickVariant"');
+                        throw new Exception( 'Objectbrick "' . $dimensionGetter . '" needs to be a instance of \CoreShop\Model\BrickVariant"');
 
                     } else if( !method_exists( $getter, 'getValueForVariant')) {
 
