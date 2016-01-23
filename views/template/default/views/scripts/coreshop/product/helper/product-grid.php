@@ -30,7 +30,7 @@
                     <button type="button" title="Wishlist" class="btn btn-wishlist">
                         <i class="fa fa-heart"></i>
                     </button>
-                    <button type="button" title="Compare" class="btn btn-compare">
+                    <button type="button" title="Compare" class="btn btn-compare" data-id="<?=$this->product->getId()?>">
                         <i class="fa fa-bar-chart-o"></i>
                     </button>
                     <?php if(!\CoreShop\Config::isCatalogMode()) { ?>

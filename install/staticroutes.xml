@@ -71,5 +71,15 @@
             <variables>lang</variables>
             <priority>5</priority>
         </route>
+        <route>
+            <name>coreshop_compare</name>
+            <pattern>#(\w+)/compare/(\w+)#</pattern>
+            <reverse>/%lang/compare/%action</reverse>
+            <module>CoreShop</module>
+            <controller>compare</controller>
+            <action>%action</action>
+            <variables>lang,action</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>

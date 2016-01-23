@@ -25,6 +25,7 @@
                     <?php } else { ?>
                         <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "register"), "coreshop_user")?>"><?=$this->translate("Register")?></a></li>
                         <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "login"), "coreshop_user")?>"><?=$this->translate("Login")?></a></li>
+                        <li><a href="<?=$this->url(array("lang" => $this->language, "action" => "list"), "coreshop_compare")?>"><?=$this->translate("Product Compare")?></a></li>
                     <?php } ?>
                 </ul>
             </div>

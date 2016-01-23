@@ -42,6 +42,10 @@ $(document).ready(function(){
         
         shop.initChangeAddress();
         shop.addCartEventListeners();
+
+        $(document.body).append( $('<div/>', {'id' : 'coreshop-bt-message'}) );
+
+
     };
 
     shop.addCartEventListeners = function()
@@ -204,6 +208,60 @@ $(document).ready(function(){
         shop.addCartEventListeners();
     };
 
+    shop.addToCompareList = function(product_id, sender, extraData, callback)
+    {
+        var data = $.extend({product : product_id}, extraData ? extraData : {});
+
+        $.ajax({
+            url : '/de/compare/add',
+            data : data,
+            dataType: 'json',
+            success : function(result,status,xhr) {
+                if(status == "success")
+                {
+                    if(result.success)
+                    {
+
+                        shop.showMessage('product successfully added to compare list.');
+
+                        if(callback)
+                            callback();
+
+                    } else {
+
+                        shop.showMessage( result.message );
+                    }
+                }
+            }
+        });
+    };
+
+    shop.removeFromCompareList = function(product_id, sender, extraData, callback)
+    {
+        var data = $.extend({product : product_id}, extraData ? extraData : {});
+
+        $.ajax({
+            url : '/de/compare/remove',
+            data : data,
+            dataType: 'json',
+            success : function(result,status,xhr) {
+                if(status == "success")
+                {
+                    if(result.success)
+                    {
+
+                        sender.closest('.compare-block').remove();
+                        window.location.reload();
+
+                        if(callback)
+                            callback();
+
+                    }
+                }
+            }
+        });
+    };
+
     shop.initRegisterForm = function()
     {
         $('#shop-register-form').bootstrapValidator({
@@ -215,7 +273,31 @@ $(document).ready(function(){
             fields: shop.fieldsForRegister()
         });
     };
-    
+
+    shop.showMessage = function( message, type ) {
+
+        $('#coreshop-bt-message').html('' +
+        '<div class="modal fade" tabindex="-1" role="dialog">' +
+        '  <div class="modal-dialog" role="document" style="z-index:1040;">' +
+        '        <div class="modal-content">' +
+        '        <div class="modal-header">' +
+        '        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
+        '        <h4 class="modal-title">Modal title</h4>' +
+        '        </div>' +
+        '        <div class="modal-body">' +
+        '        <p>' + message + '</p>' +
+        '        </div>' +
+        '        <div class="modal-footer"> ' +
+        '        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> ' +
+        '        </div>' +
+        '        </div>' +
+        ' </div>' +
+        '</div>');
+
+        $('#coreshop-bt-message').find('.modal').modal();
+
+    };
+
     shop.fieldsForRegister = function()
     {
         return $.extend({
