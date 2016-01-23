@@ -27,4 +27,23 @@ class Base extends Concrete
     {
         return Tool::objectToArray($this);
     }
+
+    /**
+     * @return \Pimcore\Model\Element\AdminStyle
+     */
+    public function getElementAdminStyle()
+    {
+        if (!$this->o_elementAdminStyle) {
+            $class = get_parent_class(get_called_class());
+            $class .= "\\AdminStyle";
+
+            if (\Pimcore\Tool::classExists($class)) {
+                $this->o_elementAdminStyle = new $class($this);
+            } else {
+                $this->o_elementAdminStyle = parent::getElementAdminStyle();
+            }
+        }
+
+        return $this->o_elementAdminStyle;
+    }
 }
