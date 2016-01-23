@@ -188,3 +188,8 @@
 "coreshop_customer_group_multiselect","Customer Group Multiselect"
 "coreshop_order_by_number","Open order by number"
 "coreshop_please_enter_the_number_of_the_order","Please enter order number"
+"coreshop_variant_generator","Variant Generator"
+"coreshop_generate_variants","Generate Variants"
+"coreshop_variant_generator_brick","Brick"
+"coreshop_variant_generator_field","Field"
+"coreshop_variant_generator_input","Values (CSV)"

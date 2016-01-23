@@ -232,21 +232,50 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
     postOpenObject : function(tab, type)
     {
-        if(tab.data.general.o_className == "CoreShopCart")
-        {
-            tab.toolbar.insert(tab.toolbar.items.length,
-                '-'
-            );
-            tab.toolbar.insert(tab.toolbar.items.length,
-                {
-                    text: t("coreshop_cart_create_order"),
-                    scale: "medium",
-                    iconCls: "coreshop_icon_create_order",
-                    handler: function() {
-                        alert("Create Order from Cart");
+        if (intval(this.settings.coreshop.isInstalled)) {
+            if(tab.data.general.o_className == "CoreShopCart")
+            {
+                tab.toolbar.insert(tab.toolbar.items.length,
+                    '-'
+                );
+                tab.toolbar.insert(tab.toolbar.items.length,
+                    {
+                        text: t("coreshop_cart_create_order"),
+                        scale: "medium",
+                        iconCls: "coreshop_icon_create_order",
+                        handler: function() {
+                            alert("Create Order from Cart");
+                        }
                     }
-                }
-            );
+                );
+            }
+            else if(tab.data.general.o_className == "CoreShopProduct") {
+
+                tab.toolbar.insert(tab.toolbar.items.length,
+                    '-'
+                );
+                tab.toolbar.insert(tab.toolbar.items.length,
+                    {
+                        text: t("coreshop_generate_variants"),
+                        scale: "medium",
+                        iconCls: "pimcore_icon_tab_variants",
+                        handler: function() {
+                            new pimcore.plugin.coreshop.object.variantGenerator(tab);
+                        }.bind(this, tab)
+                    }
+                );
+
+                /*tab.tab.items.items[0].add({
+                    text: t('generate_variants'),
+                    iconCls: 'pimcore_icon_tab_variants',
+                    scale: 'medium',
+                    handler: function(obj){
+                        //new pimcore.plugin.VariantGenerator.VariantGeneratorDialog(obj);
+                    }.bind(this, tab)
+                });*/
+            }
+
+            pimcore.layout.refresh();
         }
     },
 
