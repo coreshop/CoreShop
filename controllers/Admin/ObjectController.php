@@ -21,17 +21,10 @@ use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_ObjectController extends Admin
 {
-    protected $dimensionsBrick = "dimensions";
+    protected $variantsBrick = "variants";
 
     public function init() {
         parent::init();
-
-        // check permissions
-        /*$notRestrictedActions = array("list");
-
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_customer_groups");
-        }*/
     }
 
     public function generateVariantsAction() {
@@ -46,10 +39,10 @@ class CoreShop_Admin_ObjectController extends Admin
             $this->_helper->json(array("success" => false, "message" => "only CoreShopProduct is allowed"));
         }
 
-        $field = $object->getClass()->getFieldDefinition("dimensions");
+        $field = $object->getClass()->getFieldDefinition($this->variantsBrick);
 
         if(!$field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
-            $this->_helper->json(array("success" => false, "message" => "dimensions field has wrong type"));
+            $this->_helper->json(array("success" => false, "message" => "variants field has wrong type"));
         }
 
         $allowedTypes = $field->getAllowedTypes();
@@ -69,8 +62,8 @@ class CoreShop_Admin_ObjectController extends Admin
         }
 
         $className = get_class($object);
-        $brickSetter = "set" . ucfirst($this->dimensionsBrick);
-        $brickGetter = "get" . ucfirst($this->dimensionsBrick);
+        $brickSetter = "set" . ucfirst($this->variantsBrick);
+        $brickGetter = "get" . ucfirst($this->variantsBrick);
         $brickTypeSetter = "set" . ucfirst($brickType);
         $fieldSetter = "set" . ucfirst($fieldName);
 
@@ -105,10 +98,10 @@ class CoreShop_Admin_ObjectController extends Admin
             $this->_helper->json(array("success" => false, "message" => "only CoreShopProduct is allowed"));
         }
 
-        $field = $object->getClass()->getFieldDefinition($this->dimensionsBrick);
+        $field = $object->getClass()->getFieldDefinition($this->variantsBrick);
 
         if(!$field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
-            $this->_helper->json(array("success" => false, "message" => "dimensions field has wrong type"));
+            $this->_helper->json(array("success" => false, "message" => "variants field has wrong type"));
         }
 
         $allowedTypes = $field->getAllowedTypes();
