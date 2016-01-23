@@ -184,9 +184,16 @@ class Product extends Base {
      *
      * @return array
      */
-    public function getVariantDifferences()
+    public function getVariantDifferences( $language = 'en' )
     {
-        return Service::getDimensions($this);
+        $master = $this;
+        //Find master object
+        while($master->getType() === "variant") {
+            $master = $master->getParent();
+        }
+        if($master instanceof Product)
+            return Service::getProductVariations($master, $this, $language);
+        return false;
     }
 
     /**

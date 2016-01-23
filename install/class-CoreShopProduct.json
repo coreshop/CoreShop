@@ -773,10 +773,10 @@
             "fieldtype":"panel",
             "labelWidth":100,
             "layout":"",
-            "name":"Dimensionen",
+            "name":"Custom Properties",
             "type":null,
             "region":"",
-            "title":"Dimensionen",
+            "title":"Custom Properties",
             "width":"",
             "height":"",
             "collapsible":false,
@@ -785,14 +785,14 @@
             "datatype":"layout",
             "permissions":null,
             "childs":[
-              {
+            {
                 "fieldtype":"objectbricks",
                 "phpdocType":"\\Pimcore\\Model\\Object\\Objectbrick",
                 "allowedTypes":[
 
                 ],
-                "name":"dimensions",
-                "title":"Dimensionen",
+                "name":"customProperties",
+                "title":"Custom Properties",
                 "tooltip":"",
                 "mandatory":false,
                 "noteditable":false,
@@ -807,9 +807,51 @@
                 "invisible":false,
                 "visibleGridView":false,
                 "visibleSearch":false
-              }
+           }
+           ],
+           "locked":false
+           },
+           {
+            "fieldtype":"panel",
+            "labelWidth":100,
+            "layout":"",
+            "name":"Variants",
+            "type":null,
+            "region":"",
+            "title":"Variants",
+            "width":"",
+            "height":"",
+            "collapsible":false,
+            "collapsed":false,
+            "bodyStyle":"",
+            "datatype":"layout",
+            "permissions":null,
+            "childs":[
+            {
+                "fieldtype":"objectbricks",
+                "phpdocType":"\\Pimcore\\Model\\Object\\Objectbrick",
+                "allowedTypes":[
+
+                ],
+                "name":"variants",
+                "title":"Variants",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "columnType":null,
+                "queryColumnType":null,
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+            }
             ],
-            "locked":false
+          "locked":false
           }
         ],
         "locked":false

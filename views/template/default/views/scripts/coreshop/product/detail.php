@@ -96,33 +96,36 @@
                 </div>
             <?php } ?>
 
-            <?php
-            $variants = $this->product->getVariantDifferences();
+            <?php  $variants = $this->product->getVariantDifferences( $this->language ); ?>
 
-            foreach($variants as $key => $fields)
-            {
-                foreach($fields as $field) {
-                    ?>
+            <?php if( !empty( $variants ) ) { ?>
+
+                <?php foreach($variants as $variant) {  ?>
+
+                    <h4><?=$variant['variantName']?></h4>
+
                     <div class="col-xs-12">
-                    <div class="form-group">
-                        <select name="variant" class="selectpicker btn-white">
-                            <?php foreach($field as $option) { ?>
-                                <?php
-                                $variant = \Pimcore\Model\Object\CoreShopProduct::getById($option['object']);
 
-                                if(!$variant instanceof \Pimcore\Model\Object\CoreShopProduct)
-                                    continue;
+                        <div class="form-group">
 
-                                $href = $this->url(array("lang" => $this->language, "product" => $variant->getId(), "name" => $variant->getName()), "coreshop_detail");
-                                ?>
-                                <option data-href="<?=$href?>" value="<?=$option['object']?>" <?=$this->product->getId() == $option['object'] ? "selected" : ""?>><?=$this->translate($option['value'])?></option>
-                            <?php } ?>
-                        </select>
+                            <select name="variant" class="selectpicker btn-white">
+
+                                <?php foreach($variant['variantValues'] as $variantValue) { ?>
+
+                                    <?php $href = $this->url(array("lang" => $this->language, "product" => $variantValue['productId'], "name" => $variantValue['productName']), "coreshop_detail");?>
+                                    <option data-href="<?=$href?>" value="<?=$variantValue['productId']?>" <?=$variantValue['selected'] ? "selected" : ""?>><?=$this->translate($variantValue['variantName'])?></option>
+
+                                <?php } ?>
+
+                            </select>
+
+                        </div>
+
                     </div>
-                    </div><?php
-                }
-            }
-            ?>
+
+                <?php } ?>
+
+            <?php } ?>
 
             <?=\CoreShop\Plugin::hook("product-detail-bottom", array("product" => $this->product))?>
 

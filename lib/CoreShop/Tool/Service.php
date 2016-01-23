@@ -14,112 +14,263 @@
 
 namespace CoreShop\Tool;
 
-
 use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\Object\Objectbrick\Definition;
 
 use CoreShop\Model\Product;
+use CoreShop\Model\BrickVariant;
+use TijsVerkoyen\CssToInlineStyles\Exception;
 
 class Service
 {
-    public static function getAllChilds(AbstractObject $object) {
+
+    private static $allowedVariationTypes = array("input","numeric","checkbox","select","slider", "objects");
+
+    /**
+     * @param \CoreShop\Model\Product $master
+     * @param \CoreShop\Model\Product $currentProduct
+     * @param string                  $language
+     *
+     * @return array
+     * @throws \TijsVerkoyen\CssToInlineStyles\Exception
+     */
+    public static function getProductVariations( Product $master, Product $currentProduct, $language = 'en' ) {
+
+        $productVariants = self::getAllChildren($master);
+
+        $projectId = $currentProduct->getId();
+
+        $variantsAndMaster = array_merge(array($master), $productVariants);
+
+        //we do have some dimension entries!
+        $variantData = $master->getVariants();
+
+        $dimensionInfo = array();
+        $variantUrls = array();
+
+        if( !is_null( $variantData ) ) {
+
+            $brickGetters = $variantData->getBrickGetters();
+
+            if( !empty( $brickGetters ) ) {
+
+                foreach( $brickGetters as $brickGetter) {
+
+                    $getter = $variantData->{$brickGetter}();
+
+                    if( !is_null( $getter ) ) {
+
+                        $dimensionMethods = self::getProductValidMethods( $getter );
+
+                        $dimensionInfo[$brickGetter] = $dimensionMethods;
+
+                    }
+
+                }
+
+
+            }
+
+        }
+
+        $compareValues = array();
+
+        foreach ($variantsAndMaster as $productVariant) {
+
+            $productId = $productVariant->getId();
+
+            if( !empty( $dimensionInfo ) ) {
+
+                foreach( $dimensionInfo as $dimensionGetter => $dimensionMethods ) {
+
+                    if( empty( $dimensionMethods ) )
+                        continue;
+
+                    $getter = $productVariant->getVariants()->{$dimensionGetter}();
+
+                    //Getter must be an instance of Variant Model
+                    if( !$getter instanceof BrickVariant ) {
+
+                        throw new Exception( 'Objectbrick "' . self::$dimensionClass . '" needs to be a instance of \CoreShop\Model\BrickVariant"');
+
+                    } else if( !method_exists( $getter, 'getValueForVariant')) {
+
+                        throw new Exception( 'Variant Class needs a implemented "getValueForVariant" Method.');
+
+                    } else {
+
+                        foreach( $dimensionMethods as $dMethod ) {
+
+                            $variantValue = $getter->getValueForVariant($dMethod,$language );
+
+                            if( !is_string( $variantValue ) ) {
+
+                                throw new Exception( 'Variant return value needs to be string, ' . gettype($variantValue) . ' given.');
+
+                            }
+
+                            //Add a namespace, so fields from different blocks can have same name!
+                            $secureNameSpace = '__' . $getter->getType() . '__';
+
+                            $compareValues[ $secureNameSpace . $dMethod ][ $productId ] = $variantValue;
+                            $variantUrls[ $productVariant->getId() ] = $productVariant->getName();
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        $filtered = $compareValues;
+
+        foreach( $compareValues as $variantName => $variantValues ) {
+
+            $currentVariantName = isset( $variantValues[ $projectId ] ) ? $variantValues[ $projectId ] : NULL;
+
+            if( is_null( $currentVariantName ) )
+                continue;
+
+            $tmpArray = $compareValues;
+            unset( $tmpArray[ $variantName ]);
+
+            $available = self::findProjectIDsInVariant($currentVariantName, $variantValues);
+
+            $filtered = self::findInOthers($tmpArray, $available, $filtered);
+
+        }
+
+        $orderedData = array();
+
+        if( !empty( $filtered ) ) {
+
+            foreach ($filtered as $variantName => $variantValues ) {
+
+                $currentVariantName = isset( $variantValues[ $projectId ] ) ? $variantValues[ $projectId ] : NULL;
+
+                $variantSelections = array(
+
+                    'variantName' =>  preg_replace("/__(.*?)__/", "", $variantName),
+                    'variantValues' => array()
+
+                );
+
+                $variantValues = array_unique( $variantValues );
+
+                if( !empty( $variantValues ) ) {
+
+                    foreach( $variantValues as $pid => $variantValue ) {
+
+                        $variantSelections['variantValues'][] = array(
+
+                            'productId' => $pid,
+                            'productName' => isset( $variantUrls[ $pid ] ) ?  $variantUrls[ $pid ] : NULL,
+                            'selected' => $currentVariantName === $variantValue,
+                            'variantName' => $variantValue
+
+                        );
+
+                    }
+
+                }
+
+                if( !empty( $variantSelections['variantValues'] ) ) {
+
+                    $orderedData[ strtolower( $variantName ) ] = $variantSelections;
+
+                }
+
+            }
+
+        }
+
+        return $orderedData;
+
+    }
+
+    private static function findInOthers( $tmpArray, $allowedProductIds, $filtered ) {
+
+        foreach( $tmpArray as $variantName => $variantValues ) {
+
+            foreach ($variantValues as $productId => $variantValue) {
+
+                if( !in_array( $productId, $allowedProductIds ) ) {
+
+                    if( isset( $filtered[ $variantName ] ) ) {
+
+                        unset( $filtered[ $variantName ][ $productId ] );
+
+                    }
+
+                }
+
+
+            }
+
+        }
+
+        return $filtered;
+
+    }
+
+    private static function findProjectIDsInVariant( $value, $array ) {
+
+        $v=array();
+
+        foreach( $array as $projectID => $variantName) {
+
+            if( $variantName == $value ) {
+                $v[]=$projectID;
+            }
+        }
+
+        return $v;
+
+    }
+
+    private static function getProductValidMethods( $getter, $restrictTypes = TRUE ) {
+
+        $fields = $getter->getDefinition()->getFieldDefinitions();
+
+        if( empty( $fields ) )
+            return array();
+
+        $valid = array();
+
+        foreach( $fields as $field ) {
+
+            if( $restrictTypes == TRUE ) {
+
+                if( in_array( $field->getFieldType(), self::$allowedVariationTypes ) )
+                    $valid[] = $field->getName();
+
+            } else {
+
+                $valid[] = $field->getName();
+
+            }
+
+        }
+
+        return $valid;
+
+    }
+
+    private static function getAllChildren(AbstractObject $object) {
+
         $list = new \Pimcore\Model\Object\Listing();
+
         $list->setCondition("o_path LIKE ?", $object->getFullPath() . "/%");
         $list->setOrderKey("o_key");
         $list->setOrder("asc");
         $list->setObjectTypes(array(AbstractObject::OBJECT_TYPE_VARIANT));
 
         return $list->load();
+
     }
-    /**
-     * Gets all Differences in the variants
-     *
-     * @param Product $product
-     * @return array
-     */
-    public static function getDimensions(Product $product)
-    {
-        $variants = self::getAllChilds($product);
-        $fieldDefinition = $product->getClass()->getFieldDefinition("dimensions");
-        
-        $variantsAndMaster = array_merge(array($product), $variants);
-        
-        $currentInheritedValue = AbstractObject::getGetInheritedValues();
-        AbstractObject::setGetInheritedValues(false);
-        
-        $overwrittenKeyValues = array();
-        $overwrittenKeys = array();
 
-        if(count($variants) > 0)
-        {
-            foreach($variants as $variant)
-            {
-                $fieldData = $variant->getDimensions();
-                $value = $fieldDefinition->getDataForEditmode($fieldData, $variant);
 
-                //Search for not inherited fields
-                foreach($value as $singleBrickData)
-                {
-                    if(!$singleBrickData)
-                        continue;
-
-                    if(!array_key_exists($singleBrickData['type'], $overwrittenKeys))
-                        $overwrittenKeys[$singleBrickData['type']] = array();
-
-                    foreach($singleBrickData['metaData'] as $key=>$meta)
-                    {
-                        if(!$meta['inherited'])
-                        {
-                            if(!in_array($key, $overwrittenKeys[$singleBrickData['type']]))
-                                $overwrittenKeys[$singleBrickData['type']][] = $key;
-                        }
-                    }
-                }
-            }
-            
-            //We now have the keys and reloop the variants to get all the values
-            foreach($variantsAndMaster as $variant)
-            {
-                $fieldData = $variant->getDimensions();
-                $value = $fieldDefinition->getDataForEditmode($fieldData, $variant);
-                
-                foreach($value as $singleBrickData) 
-                {
-                    if(!$singleBrickData)
-                        continue;
-                    
-                    if(array_key_exists($singleBrickData['type'], $overwrittenKeys))
-                    {
-                        if(!is_array($overwrittenKeyValues[$singleBrickData['type']]))
-                            $overwrittenKeyValues[$singleBrickData['type']] = array();
-                        
-                        foreach($overwrittenKeys[$singleBrickData['type']] as $key)
-                        {
-                            $found = false;
-
-                            if(count($overwrittenKeyValues[$singleBrickData['type']]) > 0 && array_key_exists($key, $overwrittenKeyValues[$singleBrickData['type']])) {
-                                foreach ($overwrittenKeyValues[$singleBrickData['type']][$key] as $existingValue) {
-                                    if ($existingValue['value'] == $singleBrickData['data'][$key]) {
-                                        $found = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            
-                            if(!$found)
-                            {
-                                $overwrittenKeyValues[$singleBrickData['type']][$key][] = array(
-                                    "value" => $singleBrickData['data'][$key],
-                                    "object" => $variant->getId()
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        AbstractObject::setGetInheritedValues($currentInheritedValue);
-        
-        return $overwrittenKeyValues;
-    }
 }
