@@ -34,27 +34,19 @@
                 </tr>
             <?php } ?>
 
-            <tr>
-                <td>Depth</td>
-                <td align="right"><?=$this->product->getDepth();?> cm</td>
-            </tr>
-            <tr>
-                <td>Width</td>
-                <td align="right"><?=$this->product->getWidth();?> cm</td>
-            </tr>
-            <tr>
-                <td>Height</td>
-                <td align="right"><?=$this->product->getHeight();?> cm</td>
-            </tr>
+            <?php if($this->compareValues !== FALSE) { ?>
 
-            <tr>
-                <td>Custom Val 1</td>
-                <td align="right">--</td>
-            </tr>
-            <tr>
-                <td>Custom Val 2</td>
-                <td align="right">--</td>
-            </tr>
+                <?php foreach( $this->compareValues as $cValue ) { ?>
+
+                    <tr>
+                        <td><?=$this->translate($cValue['name'])?></td>
+                        <td align="right"><?=$cValue['value']?></td>
+                    </tr>
+
+                <?php } ?>
+
+            <?php } ?>
+
         </table>
 
     </div>

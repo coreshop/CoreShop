@@ -27,25 +27,25 @@ class CoreShop_CompareController extends Action {
      */
     protected $deposit;
 
+    /**
+     * @var int
+     */
     protected $maxCompareElements = 3;
 
     public function init()
     {
         parent::init();
-        
         $this->disableLayout();
     }
-    
+
     public function preDispatch()
     {
         parent::preDispatch();
-
         $this->prepareCompareList();
     }
 
-    public function addAction () 
+    public function addAction ()
     {
-
         $product_id = $this->getParam("product", null);
         $product = CoreShopProduct::getById($product_id);
 
@@ -54,7 +54,8 @@ class CoreShop_CompareController extends Action {
             return is_bool($v);
         });
 
-        if ($result->stopped()) {
+        if ($result->stopped())
+        {
             $isAllowed = $result->last();
         }
 
@@ -62,61 +63,66 @@ class CoreShop_CompareController extends Action {
         {
             if($product instanceof CoreShopProduct && $product->getEnabled() && $product->getAvailableForOrder())
             {
-
                 $checkAvailability = $this->deposit->allowedToAdd( $product->getId() );
 
-                if( $checkAvailability === TRUE ) {
-
+                if( $checkAvailability === TRUE )
+                {
                     //add compare element to session
                     $this->deposit->add( $product->getId() );
 
                     $this->_helper->json(array("success" => true, "compareList" => $this->deposit->toArray()));
 
-                } else {
-
-                    if( $checkAvailability == 'limit_reached') {
+                }
+                else
+                {
+                    if( $checkAvailability == 'limit_reached')
+                    {
                         $message = $this->view->translate('You reached the limit of products to compare.');
-                    } else if( $checkAvailability == 'already_added') {
+                    }
+                    else if( $checkAvailability == 'already_added')
+                    {
                         $message = $this->view->translate('This product is already in your compare list.');
-                    } else {
+                    }
+                    else
+                    {
                         $message = 'Error: ' . $checkAvailability;
                     }
-
                     $this->_helper->json(array("success" => false, "message" => $message ));
 
                 }
 
             }
 
-        } else {
+        }
+        else
+        {
             $this->_helper->json(array("success" => false, "message" => 'not allowed'));
         }
 
         $this->_helper->json(array("success" => false, "compareList" => $this->deposit->toArray()));
+
     }
-    
+
     public function removeAction()
     {
-
         $product_id = $this->getParam("product", null);
         $product = CoreShopProduct::getById($product_id);
-        
+
         $isAllowed = true;
         $result = Plugin::getEventManager()->trigger('compare.preRemove', $this, array("product" => $product, "deposit" => $this->deposit, "request" => $this->getRequest()), function($v) {
             return is_bool($v);
         });
 
-        if ($result->stopped()) {
+        if ($result->stopped())
+        {
             $isAllowed = $result->last();
         }
-        
+
         if($isAllowed)
         {
             if($product instanceof CoreShopProduct)
             {
-
                 $this->deposit->remove( $product->getId() );
-                
                 $this->_helper->json(array("success" => true, "compareList" => $this->deposit->toArray()));
             }
         }
@@ -124,13 +130,12 @@ class CoreShop_CompareController extends Action {
         {
             $this->_helper->json(array("success" => false, "message" => 'not allowed'));
         }
-        
+
         $this->_helper->json(array("success" => false, "compareList" => $this->deposit->toArray()));
     }
 
     public function listAction()
     {
-
         $this->enableLayout();
 
         $message = NULL;
@@ -141,14 +146,14 @@ class CoreShop_CompareController extends Action {
         $productIds = $this->deposit->toArray();
 
         $products = array();
+        $compareValues = array();
 
-        if( !empty( $productIds ) ) {
-
-            if( count( $productIds ) < 2 ) {
-
+        if( !empty( $productIds ) )
+        {
+            if( count( $productIds ) < 2 )
+            {
                 $error = TRUE;
                 $message = $this->view->translate("you need at least 2 products to start comparing.");
-
             }
 
             $list = new Object\CoreShopProduct\Listing();
@@ -157,7 +162,18 @@ class CoreShop_CompareController extends Action {
 
             $products = $list->getObjects();
 
-        } else {
+            $dings = Plugin::getEventManager()->trigger('compare.products', $this, array("products" => $products, "language" => $this->language, "request" => $this->getRequest()), function($v) {
+                return $v;
+            });
+
+            if ($dings->stopped())
+            {
+                $compareValues = $dings->last();
+            }
+
+        }
+        else
+        {
 
             $error = TRUE;
             $message = $this->view->translate("no products to compare");
@@ -168,15 +184,14 @@ class CoreShop_CompareController extends Action {
         $this->view->message = $message;
 
         $this->view->compareProducts = $products;
+        $this->view->compareValues = $compareValues;
 
     }
 
     protected function prepareCompareList()
     {
-
         $this->deposit = new Deposit();
         $this->deposit->setNamespace( 'compare' )->setLimit( $this->maxCompareElements );
-
     }
 
 }

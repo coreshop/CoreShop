@@ -16,17 +16,28 @@
 
             <div class="row">
 
-               <?php foreach( $this->compareProducts as $product ) { ?>
+                <?php
 
-                <div class="col-xs-12 col-sm-4 compare-block">
+                $compareValues = $this->compareValues;
 
-                    <div class="block">
+                foreach( $this->compareProducts as $product ) { ?>
 
-                        <?= $this->template("coreshop/compare/helper/product.php", array("product" => $product)); ?>
+                    <div class="col-xs-12 col-sm-4 compare-block">
+
+                        <div class="block">
+
+                            <?php
+
+                            echo $this->template("coreshop/compare/helper/product.php",
+                                array(
+                                    "product" => $product,
+                                    "compareValues" => isset( $compareValues[$product->getId()] ) ? $compareValues[$product->getId()] : FALSE
+                                )
+                            ); ?>
+
+                        </div>
 
                     </div>
-
-                </div>
 
                 <?php } ?>
 
