@@ -28,7 +28,7 @@ class Service
      * allowed elements to display in variants
      * @var array
      */
-    private static $allowedVariationTypes = array("input","numeric","checkbox","select","slider", "objects");
+    private static $allowedVariationTypes = array("input","numeric","checkbox","select","slider", "href", "objects");
 
     /**
      * @param \CoreShop\Model\Product $master

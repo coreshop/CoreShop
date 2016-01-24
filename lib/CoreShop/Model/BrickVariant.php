@@ -65,32 +65,49 @@ class BrickVariant extends Object\Objectbrick\Data\AbstractData
         }
         else if( is_array( $output ) )
         {
-            foreach ($output as $t)
+            //maybe the object contains multiple values. only use the first one.
+            $object = $output[0];
+
+            if ($object->getType() == 'object')
             {
-                if ($t->getType() == 'object')
-                {
-                    //check if there are some localize fields?
-                    if (isset($t->localizedfields) && $t->localizedfields instanceof Object\LocalizedField)
-                    {
-                        $items = $t->getLocalizedFields()->getItems();
+                $data = $this->extractObjectData($object, $language);
 
-                        if (isset($items[$language]))
-                        {
-                            $itemValues = array_values($items[$language]);
-                        }
-                    }
-                    else
-                    {
-                        $items = $t->getItems();
-                        $itemValues = is_array($items) ? array_values($items[$language]) : array();
-                    }
-
-                    if (isset($itemValues[0]) && is_string($itemValues[0]))
-                    {
-                        $data = $itemValues[0];
-                    }
-                }
             }
+
+        }
+        else if( is_object( $output ) ) {
+
+            $data = $this->extractObjectData($output, $language);
+
+        }
+
+        return $data;
+
+    }
+
+    private function extractObjectData( $object, $language ) {
+
+        $data = FALSE;
+
+        //check if there are some localize fields?
+        if (isset($object->localizedfields) && $object->localizedfields instanceof Object\LocalizedField)
+        {
+            $items = $object->getLocalizedFields()->getItems();
+
+            if (isset($items[$language]))
+            {
+                $itemValues = array_values($items[$language]);
+            }
+        }
+        else
+        {
+            $items = $object->getItems();
+            $itemValues = is_array($items) ? array_values($items[$language]) : array();
+        }
+
+        if (isset($itemValues[0]) && is_string($itemValues[0]))
+        {
+            $data = $itemValues[0];
         }
 
         return $data;
