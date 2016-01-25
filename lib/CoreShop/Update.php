@@ -350,7 +350,10 @@ class Update {
             $install->createClass($class, true);
         }
 
-        return true;
+        return array(
+            "message" => "class installeds",
+            "success" => true
+        );
     }
 
     /**
