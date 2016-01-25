@@ -562,16 +562,18 @@ class Install
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
         
         foreach ($conf->routes->route as $def) {
-            $route = Staticroute::create();
-            $route->setName($def->name);
-            $route->setPattern($def->pattern);
-            $route->setReverse($def->reverse);
-            $route->setModule($def->module);
-            $route->setController($def->controller);
-            $route->setAction($def->action);
-            $route->setVariables($def->variables);
-            $route->setPriority($def->priority);
-            $route->save();
+            if(!Staticroute::getByName($def->name)) {
+                $route = Staticroute::create();
+                $route->setName($def->name);
+                $route->setPattern($def->pattern);
+                $route->setReverse($def->reverse);
+                $route->setModule($def->module);
+                $route->setController($def->controller);
+                $route->setAction($def->action);
+                $route->setVariables($def->variables);
+                $route->setPriority($def->priority);
+                $route->save();
+            }
         }
     }
 
