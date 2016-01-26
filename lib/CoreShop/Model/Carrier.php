@@ -586,7 +586,7 @@ class Carrier extends AbstractModel
         $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroupId);
 
         if(!$taxRuleGroup instanceof TaxRuleGroup)
-            throw new \Exception("TaxRuleGroup with ID '$taxRuleGroupId' not found");
+            return;
 
         $this->taxRuleGroupId = $taxRuleGroupId;
         $this->taxRuleGroup = $taxRuleGroup;
