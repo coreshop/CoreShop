@@ -18,7 +18,9 @@ use CoreShop\Exception;
 use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Asset\Service;
+use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Localizedfield;
+use Pimcore\Tool;
 use Pimcore\View;
 
 class Invoice
@@ -38,12 +40,16 @@ class Invoice
         \Zend_Registry::set("Zend_Locale", $locale);
 
         Localizedfield::setGetFallbackValues(true);
+        AbstractObject::setGetInheritedValues(true);
+
+        self::initTranslation();
 
         $view = new View();
         $view->setScriptPath(CORESHOP_TEMPLATE_PATH . "/views/scripts/coreshop/invoice/");
         $view->assign("order", $order);
         $view->addHelperPath(PIMCORE_PATH . "/lib/Pimcore/View/Helper", "\\Pimcore\\View\\Helper\\");
         $view->addHelperPath(CORESHOP_PATH . '/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
+        $view->language = (string) $locale;
         $html = $view->render("invoice.php");
         $header = $view->render("header.php");
         $footer = $view->render("footer.php");
@@ -81,5 +87,56 @@ class Invoice
         }
 
         return false;
+    }
+
+    /**
+     * @return null|\Pimcore\Translate|\Pimcore\Translate\Website
+     * @throws \Zend_Exception
+     */
+    protected static function initTranslation() {
+
+        $translate = null;
+        if(\Zend_Registry::isRegistered("Zend_Translate")) {
+            $t = \Zend_Registry::get("Zend_Translate");
+            // this check is necessary for the case that a document is rendered within an admin request
+            // example: send test newsletter
+            if($t instanceof \Pimcore\Translate) {
+                $translate = $t;
+            }
+        }
+
+        if(!$translate) {
+            // setup \Zend_Translate
+            try {
+                $locale = \Zend_Registry::get("Zend_Locale");
+
+                $translate = new \Pimcore\Translate\Website($locale);
+
+                if(Tool::isValidLanguage($locale)) {
+                    $translate->setLocale($locale);
+                } else {
+                    \Logger::error("You want to use an invalid language which is not defined in the system settings: " . $locale);
+                    // fall back to the first (default) language defined
+                    $languages = Tool::getValidLanguages();
+                    if($languages[0]) {
+                        \Logger::error("Using '" . $languages[0] . "' as a fallback, because the language '".$locale."' is not defined in system settings");
+                        $translate = new \Pimcore\Translate\Website($languages[0]); // reinit with new locale
+                        $translate->setLocale($languages[0]);
+                    } else {
+                        throw new \Exception("You have not defined a language in the system settings (Website -> Frontend-Languages), please add at least one language.");
+                    }
+                }
+
+
+                // register the translator in \Zend_Registry with the key "\Zend_Translate" to use the translate helper for \Zend_View
+                \Zend_Registry::set("Zend_Translate", $translate);
+            }
+            catch (\Exception $e) {
+                \Logger::error("initialization of Pimcore_Translate failed");
+                \Logger::error($e);
+            }
+        }
+
+        return $translate;
     }
 }
