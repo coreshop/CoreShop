@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Model\Objectbrick\Data\Objectbrick;
 use CoreShop\Tool;
 use Pimcore\Model\Object;
 
@@ -21,7 +22,7 @@ use Pimcore\Model\Object;
  * Class BrickVariant
  * @package CoreShop\Model
  */
-class BrickVariant extends Object\Objectbrick\Data\AbstractData
+class BrickVariant extends Objectbrick
 {
 
     /**

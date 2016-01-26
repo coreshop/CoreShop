@@ -14,14 +14,13 @@
 
 namespace CoreShop\Model\Objectbrick\Data;
 
-use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Object\Objectbrick\Data\AbstractData;
 
 class Objectbrick extends AbstractData
 {
     /**
-    *  Zend_View
-    */
+     *  Zend_View
+     */
     protected $view;
 
     /**
@@ -32,27 +31,31 @@ class Objectbrick extends AbstractData
         if(!$this->view)
         {
             $this->view = new \Zend_View();
-            $this->view->brick = $this;
-            
-            $this->view->setScriptPath(
-                array(
-                    PIMCORE_PLUGINS_PATH . '/CoreShop/views/scripts',
-                    PIMCORE_WEBSITE_PATH . '/views/scripts/',
-                    PIMCORE_WEBSITE_PATH . '/views/layouts/',
-                    PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/',
-                    PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/cart',
-                )
-            );
         }
-        
+
+        $this->view->brick = $this;
+
+        $this->view->setScriptPath(
+            array(
+                CORESHOP_TEMPLATE_PATH . '/views/scripts/' . strtolower(array_pop(explode('\\', get_class($this))))
+            )
+        );
+
         return $this->view;
     }
 
     /**
-     * @throws UnsupportedException
+     * @return string|boolean
      */
-    public function render()
+    public function renderCart()
     {
-        throw new UnsupportedException();
+        return false;
+    }
+
+    /**
+     * @return string|bool
+     */
+    public function renderInvoice() {
+        return false;
     }
 }
