@@ -514,7 +514,7 @@ $(document).ready(function(){
             
             $('.panel-delivery-address').html($('#address-' + value).html());
             
-            if($('[name=useDeliveryAsBilling]').is(":checked"))
+            if($('[name=useShippingAsBilling]').is(":checked"))
             {
                 $('.panel-billing-address').html($('#address-' + value).html());
                 
