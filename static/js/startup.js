@@ -312,10 +312,10 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
     openZoneList : function() {
         try {
-            pimcore.globalmanager.get("coreshop_zones").activate();
+            pimcore.globalmanager.get("coreshop_zones_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_zones", new pimcore.plugin.coreshop.zones.panel());
+            pimcore.globalmanager.add("coreshop_zones_panel", new pimcore.plugin.coreshop.zones.panel());
         }
     },
 
