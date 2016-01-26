@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.taxrulegroup.panel = Class.create({
     /**
      * @var string
      */
-    layoutId: "coreshop_tax_rule_groups",
+    layoutId: "coreshop_tax_rule_groups_panel",
 
     /**
      * @var array

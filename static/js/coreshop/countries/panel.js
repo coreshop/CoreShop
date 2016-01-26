@@ -22,14 +22,14 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
 
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.setActiveItem("coreshop_country");
+        tabPanel.setActiveItem("coreshop_countries_panel");
     },
 
     getTabPanel: function () {
 
         if (!this.panel) {
             this.panel = new Ext.Panel({
-                id: "coreshop_country",
+                id: "coreshop_countries_panel",
                 iconCls: "coreshop_icon_country",
                 title: t("coreshop_countries"),
                 border: false,
@@ -40,11 +40,11 @@ pimcore.plugin.coreshop.countries.panel = Class.create({
 
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add(this.panel);
-            tabPanel.setActiveItem("coreshop_country");
+            tabPanel.setActiveItem("coreshop_countries_panel");
 
 
             this.panel.on("destroy", function () {
-                pimcore.globalmanager.remove("coreshop_country");
+                pimcore.globalmanager.remove("coreshop_countries_panel");
             }.bind(this));
 
             pimcore.layout.refresh();

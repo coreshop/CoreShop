@@ -293,20 +293,20 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
     openPriceRules : function()
     {
         try {
-            pimcore.globalmanager.get("coreshop_price_rules").activate();
+            pimcore.globalmanager.get("coreshop_price_rules_panel").activate();
         }
         catch (e) {
             //console.log(e);
-            pimcore.globalmanager.add("coreshop_price_rules", new pimcore.plugin.coreshop.pricerule.panel());
+            pimcore.globalmanager.add("coreshop_price_rules_panel", new pimcore.plugin.coreshop.pricerule.panel());
         }
     },
 
     openCurrencyList : function() {
         try {
-            pimcore.globalmanager.get("coreshop_currency").activate();
+            pimcore.globalmanager.get("coreshop_currencies_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_currency", new pimcore.plugin.coreshop.currencies.panel());
+            pimcore.globalmanager.add("coreshop_currencies_panel", new pimcore.plugin.coreshop.currencies.panel());
         }
     },
 
@@ -321,19 +321,19 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
     openCountryList : function() {
         try {
-            pimcore.globalmanager.get("coreshop_country").activate();
+            pimcore.globalmanager.get("coreshop_countries_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_country", new pimcore.plugin.coreshop.countries.panel());
+            pimcore.globalmanager.add("coreshop_countries_panel", new pimcore.plugin.coreshop.countries.panel());
         }
     },
 
     openCarriersList : function() {
         try {
-            pimcore.globalmanager.get("coreshop_carriers").activate();
+            pimcore.globalmanager.get("coreshop_carriers_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_carriers", new pimcore.plugin.coreshop.carriers.panel());
+            pimcore.globalmanager.add("coreshop_carriers_panel", new pimcore.plugin.coreshop.carriers.panel());
         }
     },
 
@@ -348,37 +348,37 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
     openOrderStates : function() {
         try {
-            pimcore.globalmanager.get("coreshop_order_states").activate();
+            pimcore.globalmanager.get("coreshop_order_states_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_order_states", new pimcore.plugin.coreshop.orderstate.panel());
+            pimcore.globalmanager.add("coreshop_order_states_panel", new pimcore.plugin.coreshop.orderstate.panel());
         }
     },
 
     openTaxes : function() {
         try {
-            pimcore.globalmanager.get("coreshop_taxes").activate();
+            pimcore.globalmanager.get("coreshop_taxes_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_taxes", new pimcore.plugin.coreshop.tax.panel());
+            pimcore.globalmanager.add("coreshop_taxes_panel", new pimcore.plugin.coreshop.tax.panel());
         }
     },
 
     openTaxRuleGroups : function() {
         try {
-            pimcore.globalmanager.get("coreshop_tax_rule_groups").activate();
+            pimcore.globalmanager.get("coreshop_tax_rule_groups_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_tax_rule_groups", new pimcore.plugin.coreshop.taxrulegroup.panel());
+            pimcore.globalmanager.add("coreshop_tax_rule_groups_panel", new pimcore.plugin.coreshop.taxrulegroup.panel());
         }
     },
 
     openCustomerGroups : function() {
         try {
-            pimcore.globalmanager.get("coreshop_customer_groups").activate();
+            pimcore.globalmanager.get("coreshop_customer_groups_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_customer_groups", new pimcore.plugin.coreshop.customergroup.panel());
+            pimcore.globalmanager.add("coreshop_customer_groups_panel", new pimcore.plugin.coreshop.customergroup.panel());
         }
     }
 });

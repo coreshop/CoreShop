@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.orderstate.panel = Class.create({
     /**
      * @var string
      */
-    layoutId: "coreshop_order_states",
+    layoutId: "coreshop_order_states_panel",
 
     /**
      * @var array

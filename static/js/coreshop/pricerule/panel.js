@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.pricerule.panel = Class.create({
     /**
      * @var string
      */
-    layoutId: "coreshop_price_rules",
+    layoutId: "coreshop_price_rules_panel",
 
     /**
      * @var array

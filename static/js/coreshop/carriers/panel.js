@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.carriers.panel = Class.create({
     /**
      * @var string
      */
-    layoutId: "coreshop_carriers",
+    layoutId: "coreshop_carriers_panel",
 
     /**
      * constructor

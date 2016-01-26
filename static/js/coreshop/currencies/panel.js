@@ -22,14 +22,14 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
 
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.setActiveItem("coreshop_currency");
+        tabPanel.setActiveItem("coreshop_currencies_panel");
     },
 
     getTabPanel: function () {
 
         if (!this.panel) {
             this.panel = new Ext.Panel({
-                id: "coreshop_currency",
+                id: "coreshop_currencies_panel",
                 iconCls: "coreshop_icon_currency",
                 title: t("coreshop_currencies"),
                 border: false,
@@ -40,11 +40,11 @@ pimcore.plugin.coreshop.currencies.panel = Class.create({
 
             var tabPanel = Ext.getCmp("pimcore_panel_tabs");
             tabPanel.add(this.panel);
-            tabPanel.setActiveItem("coreshop_currency");
+            tabPanel.setActiveItem("coreshop_currencies_panel");
 
 
             this.panel.on("destroy", function () {
-                pimcore.globalmanager.remove("coreshop_currency");
+                pimcore.globalmanager.remove("coreshop_currencies_panel");
             }.bind(this));
 
             pimcore.layout.refresh();

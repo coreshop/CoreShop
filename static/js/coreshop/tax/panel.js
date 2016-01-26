@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.tax.panel = Class.create({
     /**
      * @var string
      */
-    layoutId: "coreshop_taxes",
+    layoutId: "coreshop_taxes_panel",
 
     /**
      * @var array
