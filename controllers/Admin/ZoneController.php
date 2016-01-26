@@ -54,7 +54,8 @@ class CoreShop_Admin_ZoneController extends Admin
             "qtipCfg" => array(
                 "title" => "ID: " . $zone->getId()
             ),
-            "name" => $zone->getName()
+            "name" => $zone->getName(),
+            "active" => intval($zone->getActive())
         );
 
         $tmpZone["leaf"] = true;

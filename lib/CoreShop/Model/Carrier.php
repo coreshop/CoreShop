@@ -75,7 +75,7 @@ class Carrier extends AbstractModel
     /**
      * @var bool
      */
-    public $is_free;
+    public $isFree;
 
     /**
      * @var string
@@ -227,7 +227,7 @@ class Carrier extends AbstractModel
                 $availableCarriers[] = $carrier;
             }
         }
-        
+
         return $availableCarriers;
     }
 
@@ -540,17 +540,17 @@ class Carrier extends AbstractModel
     /**
      * @return boolean
      */
-    public function isIsFree()
+    public function getIsFree()
     {
-        return $this->is_free;
+        return $this->isFree;
     }
 
     /**
-     * @param boolean $is_free
+     * @param boolean $isFree
      */
-    public function setIsFree($is_free)
+    public function setIsFree($isFree)
     {
-        $this->is_free = $is_free;
+        $this->isFree = $isFree;
     }
 
     /**

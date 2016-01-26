@@ -55,6 +55,10 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
         panel.add(this.tabPanel);
         panel.setActiveItem(this.tabPanel);
         panel.updateLayout();
+
+        this.tabPanel.on("beforedestroy", function () {
+            delete this.parent.panels["coreshop_carrier_" + this.data.id];
+        }.bind(this));
     },
 
     activate : function() {
@@ -148,7 +152,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                 name: "isFree",
                 fieldLabel: t("coreshop_carrier_isFree"),
                 width: 250,
-                value: this.data.label
+                value: parseInt(this.data.isFree)
             }, {
                 xtype: "combo",
                 store: [["price",t("coreshop_carrier_shippingMethod_price")],["weight",t("coreshop_carrier_shippingMethod_weight")]],
@@ -246,11 +250,11 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
                 }.bind(this)
             }
             /*{
-                header: t("coreshop_carrier_price"),
-                width: 200,
-                dataIndex: 'price',
-                editor: new Ext.form.TextField({})
-            }*/
+             header: t("coreshop_carrier_price"),
+             width: 200,
+             dataIndex: 'price',
+             editor: new Ext.form.TextField({})
+             }*/
         ];
 
         this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
