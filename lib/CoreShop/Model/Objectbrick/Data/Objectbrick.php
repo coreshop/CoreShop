@@ -24,15 +24,22 @@ class Objectbrick extends AbstractData
     protected $view;
 
     /**
+     * @param $language
      * @return \Zend_View
      */
-    public function getView()
+    public function getView($language = null)
     {
+        if(!$language)
+        {
+            $language = \Zend_Registry::get("Zend_Locale");
+        }
+
         if(!$this->view)
         {
             $this->view = new \Zend_View();
         }
 
+        $this->view->language = (string) $language;
         $this->view->brick = $this;
 
         $this->view->setScriptPath(
