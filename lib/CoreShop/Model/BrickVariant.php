@@ -85,6 +85,16 @@ class BrickVariant extends Object\Objectbrick\Data\AbstractData
 
     }
 
+    /**
+     * Get Name for Variant Value
+     *
+     * @param $fieldInfo
+     * @return mixed
+     */
+    public function getNameForVariant($fieldInfo) {
+        return $fieldInfo['name'];
+    }
+
     private function extractObjectData( $object, $language ) {
 
         $data = FALSE;

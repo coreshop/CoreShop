@@ -104,7 +104,8 @@ class Service
                     {
                         foreach( $dimensionMethodData as $dMethod )
                         {
-                            $variantValue = $getter->getValueForVariant($dMethod,$language );
+                            $variantValue = $getter->getValueForVariant($dMethod, $language);
+                            $variantName = $getter->getNameForVariant($dMethod);
 
                             if( $variantValue === FALSE )
                                 continue;
@@ -117,7 +118,7 @@ class Service
                             //Add a namespace, so fields from different blocks can have same name!
                             $secureNameSpace = '__' . $getter->getType() . '__';
 
-                            $compareValues[ $secureNameSpace . $dMethod['name'] ][ $productId ] = $variantValue;
+                            $compareValues[ $secureNameSpace . $variantName ][ $productId ] = $variantValue;
                             $variantUrls[ $productVariant->getId() ] = $productVariant->getName();
 
                         }
