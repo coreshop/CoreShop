@@ -90,6 +90,10 @@ class CoreShop_UserController extends Action
     }
 
     public function loginAction() {
+        if($this->session->user instanceof \CoreShop\Model\User) {
+            $this->redirect($this->view->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user"));
+        }
+
         $redirect = $this->getParam("_redirect", $this->view->url(array("action" => "address"), "coreshop_checkout"));
         $base = $this->getParam("_base");
 
@@ -133,6 +137,10 @@ class CoreShop_UserController extends Action
     }
 
     public function registerAction() {
+        if($this->session->user instanceof \CoreShop\Model\User) {
+            $this->redirect($this->view->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user"));
+        }
+
         if($this->getRequest()->isPost())
         {
             $params = $this->getAllParams();
