@@ -73,9 +73,6 @@ class Action extends \Website\Controller\Action {
 
         $this->view->country = Tool::getCountry();
 
-        $this->enableLayout();
-        $this->setLayout(Plugin::getLayout());
-
         $this->prepareCart();
 
         $this->view->isShop = true;

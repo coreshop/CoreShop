@@ -15,6 +15,7 @@
 namespace CoreShopTemplate\Controller;
 
 use CoreShop\Controller\Action as CoreShopAction;
+use CoreShop\Plugin;
 
 class Action extends CoreShopAction
 {
@@ -23,5 +24,8 @@ class Action extends CoreShopAction
         parent::init();
 
         $this->view->headTitle()->setSeparator(" " . ("|") . " ");
+
+        $this->enableLayout();
+        $this->setLayout(Plugin::getLayout());
     }
 }
