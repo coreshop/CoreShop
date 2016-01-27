@@ -14,7 +14,6 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Config;
 use Pimcore\Cache;
 use Pimcore\Model;
 use Pimcore\Tool;

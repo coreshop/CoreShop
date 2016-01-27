@@ -14,13 +14,11 @@
 
 namespace CoreShop\Model\Plugin;
 
-use CoreShop\Config;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\OrderState;
-use CoreShop\Model\User;
 use CoreShop\Plugin;
 use Pimcore\Date;
 use Pimcore\Model\Object\CoreShopOrder;

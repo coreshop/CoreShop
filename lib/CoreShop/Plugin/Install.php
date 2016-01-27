@@ -14,8 +14,8 @@
 
 namespace CoreShop\Plugin;
 
+use CoreShop\Model\Configuration;
 use CoreShop\Plugin;
-use CoreShop\Config;
 
 use Pimcore\File;
 use Pimcore\Model\Document;
@@ -23,10 +23,8 @@ use Pimcore\Model\Object;
 use Pimcore\Model\Object\Folder;
 use Pimcore\Model\User;
 use Pimcore\Model\Staticroute;
-
 use Pimcore\Model\Tool\Setup;
 use Pimcore\Tool;
-use Pimcore\Version;
 
 class Install
 {
@@ -541,17 +539,7 @@ class Install
      * @throws \Zend_Config_Exception
      */
     public function setConfigInstalled() {
-        $oldConfig = Config::getConfig();
-        $oldValues = $oldConfig->toArray();
-
-        $oldValues['isInstalled'] = true;
-
-        $config = new \Zend_Config($oldValues, true);
-        $writer = new \Zend_Config_Writer_Xml(array(
-            "config" => $config,
-            "filename" => CORESHOP_CONFIGURATION
-        ));
-        $writer->write();
+        Configuration::set("SYSTEM.ISINSTALLED", true);
     }
 
     /**
@@ -621,6 +609,28 @@ class Install
      */
     public function createConfig()
     {
+        Configuration::set("SYSTEM.BASE.CURRENCY", null);
+        Configuration::set("SYSTEM.BASE.CATALOGMODE", false);
+        Configuration::set("SYSTEM.PRODUCT.DEFAULTIMAGE", null);
+        Configuration::set("SYSTEM.CATEGORY.DEFAULTIMAGE", null);
+        Configuration::set("SYSTEM.TEMPLATE.NAME", "default");
+        Configuration::set("SYSTEM.INVOICE.CREATE", true);
+        Configuration::set("SYSTEM.INVOICE.PREFIX", "RE");
+        Configuration::set("SYSTEM.INVOICE.SUFFIX", "");
+        Configuration::set("SYSTEM.ORDERSTATE.QUEUE", 1);
+        Configuration::set("SYSTEM.ORDERSTATE.PAYMENT", 2);
+        Configuration::set("SYSTEM.ORDERSTATE.PREPERATION", 3);
+        Configuration::set("SYSTEM.ORDERSTATE.SHIPPING", 4);
+        Configuration::set("SYSTEM.ORDERSTATE.DELIVERED", 5);
+        Configuration::set("SYSTEM.ORDERSTATE.CANCELED", 6);
+        Configuration::set("SYSTEM.ORDERSTATE.REFUND", 7);
+        Configuration::set("SYSTEM.ORDERSTATE.ERROR", 8);
+        Configuration::set("SYSTEM.ORDERSTATE.OUTOFSTOCK", 9);
+        Configuration::set("SYSTEM.ORDERSTATE.BANKWIRE", 10);
+        Configuration::set("SYSTEM.ORDERSTATE.OUTOFSTOCK_UNPAID", 11);
+        Configuration::set("SYSTEM.ORDERSTATE.COD", 12);
+        Configuration::set("SYSTEM.ISINSTALLED", false);
+
         if(!is_file(CORESHOP_CONFIGURATION))
         {
             copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop-config.xml', CORESHOP_CONFIGURATION);

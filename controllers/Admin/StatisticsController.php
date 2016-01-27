@@ -13,10 +13,7 @@
  */
 
 use CoreShop\Plugin;
-use CoreShop\Config;
 use CoreShop\Tool;
-use CoreShop\Helper\Country;
-
 use CoreShop\Model;
 
 use Pimcore\Controller\Action\Admin;

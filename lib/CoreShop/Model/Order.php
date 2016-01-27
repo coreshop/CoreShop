@@ -14,7 +14,6 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Config;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Plugin;
@@ -43,14 +42,15 @@ class Order extends Base
      * @return string
      */
     public static function getValidOrderNumber($number) {
-        $config = Config::getConfig()->toArray();
+        $prefix = Configuration::get("SYSTEM.INVOICE.PREFIX");
+        $suffix = Configuration::get("SYSTEM.INVOICE.SUFFIX");
 
-        if($config['invoice'] && $config['invoice']['prefix']) {
-            $number = $config['invoice']['prefix'] . $number;
+        if($prefix) {
+            $number = $prefix . $number;
         }
 
-        if($config['invoice'] && $config['invoice']['suffix']) {
-            $number = $number . $config['invoice']['suffix'];
+        if($suffix) {
+            $number = $number . $suffix;
         }
 
         return $number;

@@ -14,7 +14,7 @@
 
 namespace CoreShop;
 
-use Pimcore\ExtensionManager;
+use CoreShop\Model\Configuration;
 
 class Version {
 
@@ -27,7 +27,7 @@ class Version {
      * @return array
      */
     protected static function getPluginConfig() {
-        return Config::getPluginConfig();
+        return Configuration::getPluginConfig();
     }
 
     /**

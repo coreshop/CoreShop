@@ -13,10 +13,8 @@
  */
 
 use CoreShop\Plugin;
-use CoreShop\Config;
 use CoreShop\Tool;
 use CoreShop\Helper\Country;
-
 use CoreShop\Model;
 
 use Pimcore\Controller\Action\Admin;
@@ -36,9 +34,21 @@ class CoreShop_Admin_SettingsController extends Admin
 
     public function getSettingsAction()
     {
-        $values = Config::getConfig();
+        $config = new Model\Configuration\Listing();
+        $config->setFilter(function($entry) {
+            if(startsWith($entry['key'], "SYSTEM.")) {
+                return true;
+            }
 
-        $valueArray = $values->toArray();
+            return false;
+        });
+
+        $valueArray = array();
+
+        foreach($config->getConfigurations() as $c) {
+            $valueArray[$c->getKey()] = $c->getData();
+        }
+
         $pluginConfig = \Pimcore\ExtensionManager::getPluginConfig("CoreShop");
 
         $this->_helper->json(array("coreshop" => $valueArray, "plugin" => $pluginConfig['plugin']));
@@ -46,9 +56,20 @@ class CoreShop_Admin_SettingsController extends Admin
 
     public function getAction()
     {
-        $values = Config::getConfig();
+        $config = new Model\Configuration\Listing();
+        $config->setFilter(function($entry) {
+            if(startsWith($entry['key'], "SYSTEM.")) {
+                return true;
+            }
 
-        $valueArray = $values->toArray();
+            return false;
+        });
+
+        $valueArray = array();
+
+        foreach($config->getConfigurations() as $c) {
+            $valueArray[$c->getKey()] = $c->getData();
+        }
 
         $response = array(
             "values" => $valueArray,
@@ -65,27 +86,9 @@ class CoreShop_Admin_SettingsController extends Admin
         // convert all special characters to their entities so the xml writer can put it into the file
         $values = array_htmlspecialchars($values);
 
-        // email settings
-        $oldConfig = Config::getConfig();
-        $settings = $oldConfig->toArray();
-
-        $settings['base']['base-currency'] = $values["base.base-currency"];
-        $settings['base']['catalog-mode'] = $values["base.catalog-mode"];
-        $settings['base']['guest-checkout'] = $values["base.guest-checkout"];
-        $settings['product']['default-image'] = $values["product.default-image"];
-        $settings['product']['days-as-new'] = $values["product.days-as-new"];
-        $settings['category']['default-image'] = $values["category.default-image"];
-        $settings['template']['name'] = $values['template.name'];
-        $settings['invoice']['create'] = $values['invoice.create'];
-        $settings['invoice']['prefix'] = $values['invoice.prefix'];
-        $settings['invoice']['suffix'] = $values['invoice.suffix'];
-
-        $config = new \Zend_Config($settings, true);
-        $writer = new \Zend_Config_Writer_Xml(array(
-            "config" => $config,
-            "filename" => CORESHOP_CONFIGURATION
-        ));
-        $writer->write();
+        foreach($values as $key => $value) {
+            Model\Configuration::set($key, $value);
+        }
 
         $this->_helper->json(array("success" => true));
     }

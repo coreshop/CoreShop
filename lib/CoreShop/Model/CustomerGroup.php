@@ -14,11 +14,8 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Config;
 use CoreShop\Plugin;
 use CoreShop\Tool;
-use Pimcore\Date;
-use Pimcore\Mail;
 use Pimcore\Model\Document;
 
 class CustomerGroup extends AbstractModel

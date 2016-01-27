@@ -21,7 +21,6 @@ use Pimcore\Model\Object\Fieldcollection\Data\CoreShopProductSpecificPrice;
 use Pimcore\Model\Asset\Image;
 
 use CoreShop\Tool;
-use CoreShop\Config;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Tool\Service;
 
@@ -105,12 +104,14 @@ class Product extends Base {
      */
     public function getDefaultImage()
     {
-        $config = Config::getConfig();
-        $config = $config->toArray();
-        $image = Image::getByPath($config['product']['default-image']);
+        $defaultImage = Configuration::get("SYSTEM.PRODUCT.DEFAULTIMAGE");
 
-        if($image instanceof Image)
-            return $image;
+        if($defaultImage) {
+            $image = Image::getByPath($defaultImage);
+
+            if ($image instanceof Image)
+                return $image;
+        }
 
         return false;
     }
@@ -122,10 +123,9 @@ class Product extends Base {
      */
     public function getIsNew()
     {
-        $config = Config::getConfig();
-        $configArray = $config->toArray();
+        $markAsNew = Configuration::get("SYSTEM.PRODUCT.DAYSASNEW");
 
-        if($configArray['product']['days-as-new'] > 0)
+        if(is_int($markAsNew) && $markAsNew > 0)
         {
             $creationDate = new \Zend_Date($this->getCreationDate());
             $nowDate = new \Zend_Date();
@@ -133,7 +133,7 @@ class Product extends Base {
             $diff = $nowDate->sub($creationDate)->toValue();
             $days = ceil($diff/60/60/24) +1;
 
-            if($days <= $configArray['product']['days-as-new'])
+            if($days <= $markAsNew)
                 return true;
         }
 

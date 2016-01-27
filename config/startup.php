@@ -14,7 +14,6 @@
 if (!defined("CORESHOP_PATH")) define("CORESHOP_PATH", PIMCORE_PLUGINS_PATH . "/CoreShop");
 if (!defined("CORESHOP_PLUGIN_CONFIG")) define("CORESHOP_PLUGIN_CONFIG", CORESHOP_PATH . "/plugin.xml");
 if (!defined("CORESHOP_CONFIGURATION_PATH")) define("CORESHOP_CONFIGURATION_PATH", PIMCORE_CONFIGURATION_DIRECTORY);
-if (!defined("CORESHOP_CONFIGURATION")) define("CORESHOP_CONFIGURATION", CORESHOP_CONFIGURATION_PATH . "/coreshop-config.xml");
 if (!defined("CORESHOP_TEMPORARY_DIRECTORY")) define("CORESHOP_TEMPORARY_DIRECTORY", PIMCORE_TEMPORARY_DIRECTORY);
 if (!defined("CORESHOP_BUILD_DIRECTORY")) define("CORESHOP_BUILD_DIRECTORY", CORESHOP_PATH . "/build");
 
@@ -23,9 +22,7 @@ if(Pimcore\Tool::classExists("CoreShop\\Plugin")) {
     $plugin = new CoreShop\Plugin();
 
     if($plugin->isInstalled()) {
-        $config = \CoreShop\Config::getConfig();
-
-        $template = $config->template->name;
+        $template = \CoreShop\Model\Configuration::get("SYSTEM.TEMPLATE.NAME");
 
         if (!$template) {
             die("No template configured");

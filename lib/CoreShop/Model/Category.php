@@ -18,8 +18,6 @@ use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 
-use CoreShop\Config;
-
 class Category extends Base {
 
     /**
@@ -177,12 +175,14 @@ class Category extends Base {
      */
     public function getDefaultImage()
     {
-        $config = Config::getConfig();
-        $config = $config->toArray();
-        $image = Image::getByPath($config['category']['default-image']);
+        $defaultImage = Configuration::get("SYSTEM.CATEGORY.DEFAULTIMAGE");
 
-        if($image instanceof Image)
-            return $image;
+        if($defaultImage) {
+            $image = Image::getByPath($defaultImage);
+
+            if ($image instanceof Image)
+                return $image;
+        }
 
         return false;
     }

@@ -14,10 +14,8 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Config;
 use CoreShop\Plugin;
 use CoreShop\Tool;
-use Pimcore\Date;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 
@@ -109,7 +107,7 @@ class OrderState extends AbstractModel
 
         if($this->getInvoice())
         {
-            if((bool)Config::getValue("INVOICE.CREATE")) {
+            if((bool)Configuration::get("SYSTEM.INVOICE.CREATE")) {
                 Invoice::generateInvoice($order);
             }
         }

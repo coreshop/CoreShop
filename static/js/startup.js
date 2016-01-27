@@ -56,7 +56,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                 this.settings = resp;
 
-                if(intval(this.settings.coreshop.isInstalled)) {
+                if(intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
 
                     coreShopMenuItems.push({
                         text: t("coreshop_order_by_number"),
@@ -232,7 +232,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
     postOpenObject : function(tab, type)
     {
-        if (intval(this.settings.coreshop.isInstalled)) {
+        if (intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
             if(tab.data.general.o_className == "CoreShopCart")
             {
                 tab.toolbar.insert(tab.toolbar.items.length,

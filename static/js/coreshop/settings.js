@@ -33,17 +33,10 @@ pimcore.plugin.coreshop.settings= Class.create({
     },
 
     getValue: function (key) {
+        var current = null;
 
-        var nk = key.split("\.");
-        var current = this.data.values;
-
-        for (var i = 0; i < nk.length; i++) {
-            if (current[nk[i]]) {
-                current = current[nk[i]];
-            } else {
-                current = null;
-                break;
-            }
+        if(this.data.values.hasOwnProperty(key)) {
+            current = this.data.values[key];
         }
 
         if (typeof current != "object" && typeof current != "array" && typeof current != "function") {
@@ -108,7 +101,7 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 xtype:'combo',
                                 fieldLabel:t('coreshop_base_currency'),
                                 typeAhead:true,
-                                value:this.getValue("base.base-currency"),
+                                value:this.getValue("SYSTEM.BASE.CURRENCY"),
                                 mode:'local',
                                 listWidth:100,
                                 store:pimcore.globalmanager.get("coreshop_currencies"),
@@ -116,7 +109,7 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 valueField:'id',
                                 forceSelection:true,
                                 triggerAction:'all',
-                                hiddenName:'base.base-currency',
+                                name:'SYSTEM.BASE.CURRENCY',
                                 listeners: {
                                     change: function () {
                                         this.forceReloadOnSave = true;
@@ -129,14 +122,14 @@ pimcore.plugin.coreshop.settings= Class.create({
                             {
                                 fieldLabel: t('coreshop_base_catalogmode'),
                                 xtype: "checkbox",
-                                name: "base.catalog-mode",
-                                checked: this.getValue("base.catalog-mode")
+                                name: "SYSTEM.BASE.CATALOGMODE",
+                                checked: this.getValue("SYSTEM.BASE.CATALOGMODE")
                             },
                             {
                                 fieldLabel: t('coreshop_base_guestcheckout'),
                                 xtype: "checkbox",
-                                name: "base.guest-checkout",
-                                checked: this.getValue("base.guest-checkout")
+                                name: "SYSTEM.BASE.GUESTCHECKOUT",
+                                checked: this.getValue("SYSTEM.BASE.GUESTCHECKOUT")
                             }
                         ]
                     },
@@ -152,9 +145,9 @@ pimcore.plugin.coreshop.settings= Class.create({
                         items :[
                             {
                                 fieldLabel: t("coreshop_default_image"),
-                                name: "product.default-image",
+                                name: "SYSTEM.PRODUCT.DEFAULTIMAGE",
                                 cls: "input_drop_target",
-                                value: this.getValue("product.default-image"),
+                                value: this.getValue("SYSTEM.PRODUCT.DEFAULTIMAGE"),
                                 xtype: "textfield",
                                 listeners: {
                                     "render": function (el) {
@@ -189,8 +182,8 @@ pimcore.plugin.coreshop.settings= Class.create({
                             },
                             {
                                 fieldLabel: t('coreshop_product_daysasnew'),
-                                name: 'product.days-as-new',
-                                value: this.getValue("product.days-as-new"),
+                                name: 'SYSTEM.PRODUCT.DAYSASNEW',
+                                value: this.getValue("SYSTEM.PRODUCT.DAYSASNEW"),
                                 xtype: "spinnerfield",
                                 enableKeyEvents: true
                             }
@@ -208,9 +201,9 @@ pimcore.plugin.coreshop.settings= Class.create({
                         items :[
                             {
                                 fieldLabel: t("coreshop_default_image"),
-                                name: "category.default-image",
+                                name: "SYSTEM.CATEGORY.DEFAULTIMAGE",
                                 cls: "input_drop_target",
-                                value: this.getValue("category.default-image"),
+                                value: this.getValue("SYSTEM.CATEGORY.DEFAULTIMAGE"),
                                 xtype: "textfield",
                                 listeners: {
                                     "render": function (el) {
@@ -257,8 +250,8 @@ pimcore.plugin.coreshop.settings= Class.create({
                         items :[
                             {
                                 fieldLabel: t('coreshop_template_name'),
-                                name: 'template.name',
-                                value: this.getValue("template.name"),
+                                name: 'SYSTEM.TEMPLATE.NAME',
+                                value: this.getValue("SYSTEM.TEMPLATE.NAME"),
                                 enableKeyEvents: true
                             }
                         ]
@@ -276,18 +269,18 @@ pimcore.plugin.coreshop.settings= Class.create({
                             {
                                 fieldLabel: t('coreshop_invoice_create'),
                                 xtype: "checkbox",
-                                name: "invoice.create",
-                                checked: this.getValue("invoice.create")
+                                name: "SYSTEM.INVOICE.CREATE",
+                                checked: this.getValue("SYSTEM.INVOICE.CREATE")
                             },
                             {
                                 fieldLabel: t("coreshop_invoice_prefix"),
-                                name: "invoice.prefix",
-                                value: this.getValue("invoice.prefix")
+                                name: "SYSTEM.INVOICE.PREFIX",
+                                value: this.getValue("SYSTEM.INVOICE.PREFIX")
                             },
                             {
                                 fieldLabel: t("coreshop_invoice_suffix"),
-                                name: "invoice.suffix",
-                                value: this.getValue("invoice.suffix")
+                                name: "SYSTEM.INVOICE.SUFFIX",
+                                value: this.getValue("SYSTEM.INVOICE.SUFFIX")
                             }
                         ]
                     }

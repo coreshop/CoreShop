@@ -16,6 +16,7 @@ namespace CoreShop;
 
 use CoreShop\Exception\ThemeNotFoundException;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Configuration;
 use CoreShop\Model\Zone;
 use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
@@ -220,7 +221,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      */
     public static function isInstalled()
     {
-        $config = Config::getConfig();
+        $config = Configuration::get("SYSTEM.ISINSTALLED");
 
         if($config) {
             return true;
@@ -281,13 +282,11 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      */
     public static function enableTheme($name)
     {
-        $config = Config::getConfig();
-        $config = $config->toArray();
-
         if($themeDir = self::getThemeDirectory($name))
         {
             //disable current template
-            $currentTemplate = $config['template']['name'];
+            $currentTemplate = Configuration::get("SYSTEM.TEMPLATE.NAME");
+
             if($oldThemeDir = self::getThemeDirectory($currentTemplate)) {
                 $disableScript = $themeDir . "/disable.php";
 

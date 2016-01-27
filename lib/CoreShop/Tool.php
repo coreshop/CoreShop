@@ -16,6 +16,7 @@ namespace CoreShop;
 
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Configuration;
 use Pimcore\Date;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
@@ -64,11 +65,14 @@ class Tool {
      */
     public static function convertToCurrency($value, $toCurrency = null, $fromCurrency = null)
     {
-        $config = Config::getConfig();
-        $configArray = $config->toArray();
+        if(!$fromCurrency instanceof Currency) {
+            $baseCurrency = Configuration::get("SYSTEM.BASE.CURRENCY");
 
-        if(!$fromCurrency instanceof Currency)
-            $fromCurrency= Currency::getById($configArray['base']['base-currency']);
+            if($baseCurrency)
+                $fromCurrency = Currency::getById($baseCurrency);
+            else
+                return $value;
+        }
 
         if(!$toCurrency instanceof Currency) {
             $toCurrency = Tool::getCurrency();
