@@ -15,14 +15,11 @@
 use CoreShopTemplate\Controller\Action;
 
 use CoreShop\Plugin;
-use CoreShop\Model\Plugin\Shipping;
 use CoreShop\Model\Plugin\Payment;
 use CoreShop\Tool;
 
 use Pimcore\Model\Object\CoreShopOrder;
-use Pimcore\Model\Object\CoreShopOrderState;
 use Pimcore\Model\Object\CoreShopUser;
-use Pimcore\Model\Object\Service;
 
 class CoreShop_CheckoutController extends Action 
 {
