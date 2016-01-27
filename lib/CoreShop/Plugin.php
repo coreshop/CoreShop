@@ -76,7 +76,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             $router = $frontController->getRouter();
 
             $routePluginPayment = new \Zend_Controller_Router_Route(
-                '/:language/shop/payment/:action/*',
+                '/:lang/shop/payment/:action/*',
                 array(
                     "controller" => "payment",
                     "action" => "index"
