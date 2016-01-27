@@ -93,6 +93,7 @@ abstract class Payment implements AbstractPlugin
             $order->setShipping(0);
         }
 
+        $order->setPaymentFee($cart->getPaymentFee());
         $order->setTotal($cart->getTotal());
         $order->setSubtotal($cart->getSubtotal());
         $order->save();

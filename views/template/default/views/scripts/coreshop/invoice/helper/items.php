@@ -96,7 +96,7 @@
                                 <strong><?=$this->translate("Payment Fee")?>:</strong>
                             </div>
                             <div class="col-xs-2 text-right invoice-discount">
-                                -<?=\CoreShop\Tool::formatPrice($payment)?>
+                                <?=\CoreShop\Tool::formatPrice($payment)?>
                             </div>
                         </div>
                     <?php } ?>
