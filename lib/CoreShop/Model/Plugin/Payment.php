@@ -108,6 +108,6 @@ abstract class Payment implements AbstractPlugin
         $controller = \Zend_Controller_Front::getInstance();
         $router = $controller->getRouter();
 
-        return $router->assemble(array("module" => $module, "action" => $action, "language" => \Zend_Registry::get("Zend_Locale")), "coreshop_payment");
+        return $router->assemble(array("module" => $module, "action" => $action, "lang" => (string)\Zend_Registry::get("Zend_Locale")), "coreshop_payment");
     }
 }
