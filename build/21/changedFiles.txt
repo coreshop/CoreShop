@@ -1,0 +1,4 @@
+controllers/CheckoutController.php
+lib/CoreShop/Controller/Action.php
+plugin.xml
+views/template/default/lib/CoreShopTemplate/Controller/Action.php
