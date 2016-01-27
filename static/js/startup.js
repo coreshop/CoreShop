@@ -45,6 +45,8 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
             this.isInitialized = true;
 
             coreShopStatusItem.setHtml('<em class="fa fa-shopping-cart"></em> ' + t("coreshop_loaded").format(this.settings.plugin.pluginVersion))
+
+            coreshop.plugin.broker.fireEvent("coreshopReady", this);
         }, this);
 
         Ext.Ajax.request({
@@ -207,7 +209,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                 }
 
                 if(coreShopMenuItems.length > 0) {
-                    var menu = new Ext.menu.Menu({
+                    this._menu = new Ext.menu.Menu({
                         items: coreShopMenuItems,
                         shadow: false,
                         cls: "pimcore_navigation_flyout"
@@ -219,15 +221,32 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                             Ext.Msg.alert(t('coreshop'), t('coreshop_not_initialized'));
                         }
                         else {
-                            toolbar.showSubMenu.call(menu, e, el);
+                            toolbar.showSubMenu.call(this._menu, e, el);
                         }
-                    });
+                    }.bind(this));
                 }
 
                 pimcore.plugin.coreshop.global.initialize(this.settings);
 
             }.bind(this)
         });
+    },
+
+    addPluginMenu : function(menu) {
+        if(!this._pluginsMenu) {
+            this._pluginsMenu = this._menu.add({
+                text: t("coreshop_plugins"),
+                iconCls: "coreshop_icon_plugins",
+                hideOnClick: false,
+                menu : {
+                    shadow: false,
+                    cls: "pimcore_navigation_flyout",
+                    items : []
+                }
+            });
+        }
+
+        this._pluginsMenu.menu.add(menu);
     },
 
     postOpenObject : function(tab, type)
