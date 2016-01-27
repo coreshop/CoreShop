@@ -172,8 +172,9 @@ class Order extends Base
         $subtotal = $this->getSubtotal();
         $shipping = $this->getShipping();
         $discount = $this->getDiscount();
+        $paymentFee = $this->getPaymentFee();
 
-        return ($subtotal  + $shipping) - $discount;
+        return ($subtotal  + $shipping + $paymentFee) - $discount;
     }
 
     /**
@@ -371,6 +372,17 @@ class Order extends Base
      */
     public function getShipping() {
         throw new UnsupportedException("getShipping is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns paymentFee for order
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return float
+     */
+    public function getPaymentFee() {
+        throw new UnsupportedException("getPaymentFee is not supported for " . get_class($this));
     }
 
     /**

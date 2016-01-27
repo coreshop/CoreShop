@@ -487,3 +487,6 @@ CREATE TABLE `coreshop_customer_groups` (
 
 INSERT INTO `users_permission_definitions` (`key`)
 VALUES ('coreshop_permission_customer_groups');
+
+INSERT INTO `users_permission_definitions` (`key`)
+VALUES ('coreshop_permission_plugins');

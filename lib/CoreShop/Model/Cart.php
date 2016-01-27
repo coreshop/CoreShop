@@ -15,6 +15,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Plugin\Payment;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
@@ -140,8 +141,6 @@ class Cart extends Base {
             return 0;
         }
 
-        $session = Tool::getSession();
-
         //check for existing shipping
         if($this->getCarrier() instanceof Carrier) {
             return $this->getCarrier()->getDeliveryPrice($this);
@@ -166,6 +165,21 @@ class Cart extends Base {
     }
 
     /**
+     * Calculate the payment fee
+     *
+     * @return float
+     */
+    public function getPaymentFee() {
+        $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
+
+        if($paymentProvider instanceof Payment) {
+            return $paymentProvider->getPaymentFee($this);
+        }
+
+        return 0;
+    }
+
+    /**
      * calculates the total of the cart
      *
      * @return int
@@ -175,8 +189,9 @@ class Cart extends Base {
         $subtotal = $this->getSubtotal();
         $discount = $this->getDiscount();
         $shipping = $this->getShipping();
+        $payment = $this->getPaymentFee();
 
-        return ($subtotal + $shipping) - $discount;
+        return ($subtotal + $shipping + $payment) - $discount;
     }
 
     /**

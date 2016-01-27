@@ -98,11 +98,18 @@
                   },
                   {
                     "fieldtype":"coreShopCarrier",
+                    "phpdocType":"\\CoreShop\\Model\\Carrier",
                     "queryColumnType":"int(11)",
                     "columnType":"int(11)",
-                    "phpdocType":"CoreShop\\Model\\Carrier",
                     "options":[
-
+                      {
+                        "key":"Post",
+                        "value":"2"
+                      },
+                      {
+                        "key":"Custom",
+                        "value":"3"
+                      }
                     ],
                     "width":"",
                     "defaultValue":null,
@@ -123,11 +130,14 @@
                   },
                   {
                     "fieldtype":"coreShopPriceRule",
+                    "phpdocType":"CoreShop\\Model\\PriceRule",
                     "queryColumnType":"int(11)",
                     "columnType":"int(11)",
-                    "phpdocType":"CoreShop\\Model\\PriceRule",
                     "options":[
-
+                      {
+                        "key":"test",
+                        "value":"1"
+                      }
                     ],
                     "width":"",
                     "defaultValue":null,
@@ -200,11 +210,34 @@
                     "mandatory":false,
                     "noteditable":true,
                     "index":false,
-                    "locked":null,
+                    "locked":false,
                     "style":"",
                     "permissions":null,
                     "datatype":"data",
                     "columnType":null,
+                    "invisible":false,
+                    "visibleGridView":false,
+                    "visibleSearch":false
+                  },
+                  {
+                    "fieldtype":"input",
+                    "width":null,
+                    "queryColumnType":"varchar",
+                    "columnType":"varchar",
+                    "columnLength":255,
+                    "phpdocType":"string",
+                    "regex":"",
+                    "name":"paymentModule",
+                    "title":"Payment Module",
+                    "tooltip":"",
+                    "mandatory":false,
+                    "noteditable":true,
+                    "index":false,
+                    "locked":null,
+                    "style":"",
+                    "permissions":null,
+                    "datatype":"data",
+                    "relationType":false,
                     "invisible":false,
                     "visibleGridView":false,
                     "visibleSearch":false

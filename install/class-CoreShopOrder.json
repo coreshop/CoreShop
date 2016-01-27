@@ -53,9 +53,9 @@
             "childs":[
               {
                 "fieldtype":"coreShopOrderState",
+                "phpdocType":"CoreShop\\Model\\OrderState",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
-                "phpdocType":"CoreShop\\Model\\OrderState",
                 "options":[
                   {
                     "key":"Payment accepted",
@@ -3111,9 +3111,9 @@
               },
               {
                 "fieldtype":"coreShopCarrier",
+                "phpdocType":"\\CoreShop\\Model\\Carrier",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
-                "phpdocType":"CoreShop\\Model\\Carrier",
                 "options":[
                   {
                     "key":"Post",
@@ -3139,9 +3139,9 @@
               },
               {
                 "fieldtype":"coreShopPriceRule",
+                "phpdocType":"CoreShop\\Model\\PriceRule",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
-                "phpdocType":"CoreShop\\Model\\PriceRule",
                 "options":[
                   {
                     "key":"test",
@@ -3238,6 +3238,33 @@
                 "noteditable":true,
                 "index":false,
                 "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
+                "fieldtype":"numeric",
+                "width":"",
+                "defaultValue":null,
+                "queryColumnType":"double",
+                "columnType":"double",
+                "phpdocType":"float",
+                "integer":false,
+                "unsigned":false,
+                "minValue":null,
+                "maxValue":null,
+                "decimalPrecision":null,
+                "name":"paymentFee",
+                "title":"Payment Fee",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":true,
+                "index":false,
+                "locked":null,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",

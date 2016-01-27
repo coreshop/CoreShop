@@ -27,6 +27,16 @@ use Pimcore\Model\Object\Service;
 abstract class Payment implements AbstractPlugin
 {
     /**
+     * Check if available for cart
+     *
+     * @param Cart $cart
+     * @returns boolean if available
+     */
+    public function isAvailable(Cart $cart) {
+        return true;
+    }
+
+    /**
      * Get Payment Fee
      *
      * @param Cart $cart

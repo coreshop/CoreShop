@@ -125,6 +125,7 @@ class CoreShop_CheckoutController extends Action
             else
             {
                 $this->cart->setCarrier($carrier);
+                $this->cart->setPaymentModule(null); //Reset PaymentModule, payment could not be available for this carrier
                 $this->cart->save();
 
                 $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
@@ -142,6 +143,7 @@ class CoreShop_CheckoutController extends Action
         if($this->getRequest()->isPost())
         {
             $paymentProvider = $this->getParam("payment_provider", array());
+            $provider = null;
 
             foreach($this->view->provider as $provider)
             {
@@ -158,6 +160,9 @@ class CoreShop_CheckoutController extends Action
             }
             else
             {
+                $this->cart->setPaymentModule($provider->getIdentifier());
+                $this->cart->save();
+
                 $this->redirect($paymentProvider->process($this->cart));
             }
         }

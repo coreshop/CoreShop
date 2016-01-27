@@ -56,13 +56,17 @@
                     <?php
                     $shipping = $this->order->getShipping();
                     $discount = $this->order->getDiscount();
+                    $payment = $this->order->getPaymentFee();
 
-                    $rowspan = 4;
+                    $rowspan = 5;
 
                     if($shipping == 0)
                         $rowspan--;
 
                     if($discount == 0)
+                        $rowspan--;
+
+                    if($payment == 0)
                         $rowspan--;
                     ?>
                     <div class="row invoice-summary">
@@ -82,6 +86,17 @@
                             </div>
                             <div class="col-xs-2 text-right invoice-shipping">
                                 <?=\CoreShop\Tool::formatPrice($shipping)?>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if($payment > 0) { ?>
+                        <div class="row invoice-summary">
+                            <div class="col-xs-8"></div>
+                            <div class="col-xs-2 text-right">
+                                <strong><?=$this->translate("Payment Fee")?>:</strong>
+                            </div>
+                            <div class="col-xs-2 text-right invoice-discount">
+                                -<?=\CoreShop\Tool::formatPrice($payment)?>
                             </div>
                         </div>
                     <?php } ?>

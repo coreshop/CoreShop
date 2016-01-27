@@ -100,13 +100,17 @@
         <?php
         $shipping = $this->cart->getShipping();
         $discount = $this->cart->getDiscount();
+        $payment = $this->cart->getPaymentFee();
 
-        $rowspan = 4;
+        $rowspan = 5;
 
         if($shipping == 0)
             $rowspan--;
 
         if($discount == 0)
+            $rowspan--;
+
+        if($payment == 0)
             $rowspan--;
         ?>
         <tr>
@@ -156,6 +160,16 @@
                 </td>
                 <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-sub-total">
                     <?=\CoreShop\Tool::formatPrice($shipping)?>
+                </td>
+            </tr>
+        <?php } ?>
+        <?php if($payment > 0) { ?>
+            <tr>
+                <td class="text-right">
+                    <strong><?=$this->translate("Payment Fee")?>:</strong>
+                </td>
+                <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-sub-total">
+                    <?=\CoreShop\Tool::formatPrice($payment)?>
                 </td>
             </tr>
         <?php } ?>
