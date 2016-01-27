@@ -630,11 +630,6 @@ class Install
         Configuration::set("SYSTEM.ORDERSTATE.OUTOFSTOCK_UNPAID", 11);
         Configuration::set("SYSTEM.ORDERSTATE.COD", 12);
         Configuration::set("SYSTEM.ISINSTALLED", false);
-
-        if(!is_file(CORESHOP_CONFIGURATION))
-        {
-            copy(PIMCORE_PLUGINS_PATH . '/CoreShop/install/coreshop-config.xml', CORESHOP_CONFIGURATION);
-        }
     }
 
     /**
@@ -642,10 +637,7 @@ class Install
      */
     public function removeConfig()
     {
-        if(is_file(CORESHOP_CONFIGURATION))
-        {
-            unlink(CORESHOP_CONFIGURATION);
-        }
+        //TODO: Remove Config file
     }
 
     /**
