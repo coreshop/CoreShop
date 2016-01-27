@@ -1,0 +1,2 @@
+lib/CoreShop/Model/Objectbrick/Data/AbstractData.php
+lib/CoreShop/Model/Objectbrick/Data/CartItem.php
