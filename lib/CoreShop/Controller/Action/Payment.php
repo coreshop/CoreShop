@@ -14,7 +14,7 @@
 
 namespace CoreShop\Controller\Action;
 
-use CoreShop\Controller\Action;
+use CoreShopTemplate\Controller\Action;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Order;
