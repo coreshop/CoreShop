@@ -138,6 +138,7 @@ class CoreShop_Admin_CarrierController extends Admin
             $carrier->setName($name);
             $carrier->setLabel($name);
             $carrier->setGrade(1);
+            $carrier->setIsFree(0);
             $carrier->setShippingMethod("weight");
             $carrier->setRangeBehaviour("largest");
             $carrier->setMaxDepth(0);
