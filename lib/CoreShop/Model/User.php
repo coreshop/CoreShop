@@ -32,7 +32,19 @@ class User extends Base
     public static function getUniqueByEmail($email, $isGuest = false)
     {
         $list = new CoreShopUser\Listing();
-        $list->setCondition("email = ? AND isGuest = ?", array($email, $isGuest ? 1 : 0));
+
+        $conditions = array("email = ?");
+        $conditionsValues = array($email);
+        $conditionsValues[] = $isGuest ? 1 : 0;
+
+        if(!$isGuest) {
+            $conditions[] = "(isGuest = ? OR isGuest IS NULL)";
+        }
+        else {
+            $conditions[] = "isGuest = ?";
+        }
+
+        $list->setCondition(implode(" AND ", $conditions), $conditionsValues);
 
         $users = $list->getObjects();
 
