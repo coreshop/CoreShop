@@ -19,6 +19,6 @@ use CoreShop\Model;
 
 class Dao extends Listing\Dao\AbstractDao {
 
-    protected $tableName = 'coreshop_orderStates';
+    protected $tableName = 'coreshop_orderstates';
     protected $modelClass = '\\CoreShop\\Model\\OrderState';
 }

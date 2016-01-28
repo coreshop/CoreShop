@@ -19,6 +19,6 @@ use CoreShop\Model;
 
 class Dao extends Listing\Dao\AbstractDao {
 
-    protected $tableName = 'coreshop_numberRanges';
+    protected $tableName = 'coreshop_numberranges';
     protected $modelClass = '\\CoreShop\\Model\\NumberRange';
 }

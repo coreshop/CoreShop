@@ -419,17 +419,17 @@ INSERT INTO `coreshop_zones` (`id`, `name`, `active`) VALUES
 (6,	'South America',	0),
 (7,	'Central America/Antilla',	0);
 
-DROP TABLE IF EXISTS `coreshop_numberRanges`;
-CREATE TABLE `coreshop_numberRanges` (
+DROP TABLE IF EXISTS `coreshop_numberranges`;
+CREATE TABLE `coreshop_numberranges` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `type` varchar(255) NOT NULL,
   `number` int(11) NOT NULL DEFAULT '0'
 );
 
-ALTER TABLE coreshop_numberRanges ADD UNIQUE (`type`);
+ALTER TABLE coreshop_numberranges ADD UNIQUE (`type`);
 
-DROP TABLE IF EXISTS `coreshop_orderStates`;
-CREATE TABLE `coreshop_orderStates` (
+DROP TABLE IF EXISTS `coreshop_orderstates`;
+CREATE TABLE `coreshop_orderstates` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
   `accepted` tinyint(1) NOT NULL DEFAULT '0',
