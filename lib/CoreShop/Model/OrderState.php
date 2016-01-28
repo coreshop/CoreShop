@@ -133,6 +133,19 @@ class OrderState extends AbstractModel
                 $mail->setEnableLayoutOnPlaceholderRendering(false);
                 $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . " " . $order->getCustomer()->getLastname());
 
+                if($this->getInvoice()) {
+
+                    $invoice = Invoice::generateInvoice($order);
+
+                    $attachment = new \Zend_Mime_Part($invoice->getData());
+                    $attachment->type = $invoice->getMimetype();
+                    $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
+                    $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
+                    $attachment->filename = $invoice->getFilename();
+
+                    $mail->addAttachment($attachment);
+                }
+
                 Tool::addAdminToMail($mail);
 
                 $mail->send();
