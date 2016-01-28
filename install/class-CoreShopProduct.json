@@ -740,7 +740,9 @@
                 "assetsAllowed":true,
                 "assetTypes":[
                   {
-                    "assetTypes":"image"
+                      "assetTypes":{
+                          "assetTypes":"image"
+                      }
                   }
                 ],
                 "documentsAllowed":false,
