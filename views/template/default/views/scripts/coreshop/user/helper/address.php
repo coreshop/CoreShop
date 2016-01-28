@@ -1,4 +1,4 @@
-<?
+<?php
 $postValue = function ($name) {
     if (isset($_POST[$name])) {
         return $_POST[$name];

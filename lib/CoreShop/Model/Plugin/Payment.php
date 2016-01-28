@@ -103,7 +103,10 @@ abstract class Payment implements AbstractPlugin
 
         $state->processStep($order);
 
+        Plugin::actionHook("order.created", array("order" => $order) );
+
         return $order;
+
     }
 
     /**

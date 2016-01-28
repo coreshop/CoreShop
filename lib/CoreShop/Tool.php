@@ -392,14 +392,4 @@ class Tool {
         return $collection;
     }
 
-    /**
-     * Add all Users to mail
-     *
-     * TODO: Use Users from Pimcore
-     *
-     * @param Mail $mail
-     */
-    public static function addAdminToMail(Mail $mail) {
-        $mail->addBcc("dominik@pfaffenbauer.at");
-    }
 }

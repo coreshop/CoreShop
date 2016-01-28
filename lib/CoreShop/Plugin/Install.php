@@ -624,6 +624,8 @@ class Install
         Configuration::set("SYSTEM.INVOICE.CREATE", true);
         Configuration::set("SYSTEM.INVOICE.PREFIX", "RE");
         Configuration::set("SYSTEM.INVOICE.SUFFIX", "");
+        Configuration::set("SYSTEM.MAIL.ORDER.NOTIFICATION", "");
+        Configuration::set("SYSTEM.MAIL.ORDER.NOTIFICATION", true);
         Configuration::set("SYSTEM.ORDERSTATE.QUEUE", 1);
         Configuration::set("SYSTEM.ORDERSTATE.PAYMENT", 2);
         Configuration::set("SYSTEM.ORDERSTATE.PREPERATION", 3);

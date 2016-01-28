@@ -283,6 +283,32 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 value: this.getValue("SYSTEM.INVOICE.SUFFIX")
                             }
                         ]
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: t('coreshop_mail'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight: true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: {width: 600},
+                        items: [
+                            {
+                                fieldLabel: t('coreshop_mail_order_notification'),
+                                name: "SYSTEM.MAIL.ORDER.NOTIFICATION",
+                                regex: /^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},?)+$/i,
+                                emptyText: "john@doe.com,jane@doe.com",
+                                value: this.getValue("SYSTEM.MAIL.ORDER.NOTIFICATION")
+                            },
+                            {
+                                fieldLabel: t('coreshop_mail_order_bbc'),
+                                name: "SYSTEM.MAIL.ORDER.BCC",
+                                xtype: "checkbox",
+                                checked: this.getValue("SYSTEM.MAIL.ORDER.BCC")
+
+                            }
+                        ]
                     }
                 ]
             });

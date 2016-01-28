@@ -112,8 +112,6 @@ class OrderState extends AbstractModel
             }
         }
 
-        //Todo: remove?
-        Plugin::actionHook("orderStatusUpdate", array("newOrderStatus" => $this, "order" => $order));
 
         if($this->getEmail())
         {
@@ -146,17 +144,29 @@ class OrderState extends AbstractModel
                     $mail->addAttachment($attachment);
                 }
 
-                Tool::addAdminToMail($mail);
+                //check if admin copy mail address has been set. if => send him a lovely copy!
+                $sendBccToUser = Configuration::get("SYSTEM.MAIL.ORDER.BCC");
+                $adminMailAddress = Configuration::get("SYSTEM.MAIL.ORDER.NOTIFICATION");
+
+                if( $sendBccToUser === TRUE && !empty( $adminMailAddress ) )
+                {
+                    $mail->addBcc( explode(',', $adminMailAddress) );
+                }
 
                 $mail->send();
+
             }
         }
 
         $order->setOrderState($this);
         $order->save();
 
+        Plugin::actionHook("orderstate.process.post", array("newOrderStatus" => $this, "order" => $order));
+
+        //@TODO: Stock Management
+
         return true;
-        //TODO: Stock Management
+
     }
 
     /**
