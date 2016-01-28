@@ -68,10 +68,12 @@ class Payment extends Action {
     }
 
     public function validateAction() {
-        $this->test = 1;
+        $this->view->headTitle($this->view->translate("Payment"));
     }
 
     public function confirmationAction() {
+        $this->view->headTitle($this->view->translate("Payment"));
+        
         $this->prepareCart();
         //$this->cart->delete(); //Keep Cart for Statistics Purpose
 
