@@ -322,24 +322,28 @@ class Install
      */
     public function createCustomView($rootFolder, array $classIds)
     {
-        $customViews = Tool::getCustomViewConfig();
-        
-        if (!$customViews) {
-            $customViews = array();
+        $storedViews = Tool::getCustomViewConfig();
+
+        if ( empty( $storedViews ) )
+        {
             $customViewId = 1;
-        } else {
-            $last = end($customViews);
+            $storedViews = array();
+        }
+        else
+        {
+            $last = end($storedViews);
             $customViewId = $last['id'] + 1;
         }
 
         $alreadyDefined = FALSE;
 
         // does custom view already exists?
-        if( !empty( $customViews ) ) {
-
-            foreach($customViews as $view) {
-
-                if( $view['name'] == 'CoreShop') {
+        if( !empty( $storedViews ) )
+        {
+            foreach($storedViews as $view)
+            {
+                if( $view['name'] == 'CoreShop')
+                {
                     $alreadyDefined = TRUE;
                     break;
                 }
@@ -349,20 +353,23 @@ class Install
         if( $alreadyDefined === TRUE )
             return false;
 
-        $customViews[] = array(
+        $view =  array(
             'name' => 'CoreShop',
             'condition' => '',
             'icon' => '/pimcore/static/img/icon/cart.png',
             'id' => $customViewId,
             'rootfolder' => $rootFolder->getFullPath(),
             'showroot' => false,
-            'classes' => implode(',', $classIds),
+            'classes' => implode(',', $classIds)
         );
-        $writer = new \Zend_Config_Writer_Xml(array(
-            'config' => new \Zend_Config(array('views'=> array('view' => $customViews))),
-            'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
-        ));
-        $writer->write();
+
+
+        $storedViews[] = $view;
+
+        $customViews = array('views' => $storedViews);
+
+        $configFile = \Pimcore\Config::locateConfigFile("customviews.php");
+        File::put($configFile, to_php_data_file_format($customViews));
 
         return true;
     }
