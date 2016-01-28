@@ -25,7 +25,7 @@ pimcore.plugin.coreshop.install = Class.create({
                         var data = Ext.decode(response.responseText);
 
                         if(data.success) {
-                            Ext.MessageBox.prompt(t("info"), t("coreshop_installed_successfully"), function () {
+                            Ext.MessageBox.alert(t("info"), t("coreshop_installed_successfully"), function () {
                                 window.location.reload();
                             });
                         }

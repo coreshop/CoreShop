@@ -637,7 +637,12 @@ class Install
      */
     public function removeConfig()
     {
-        //TODO: Remove Config file
+        $configFile = \Pimcore\Config::locateConfigFile('coreshop_configurations');
+
+        if( is_file( $configFile  . '.php' ) )
+        {
+            rename( $configFile  . '.php', $configFile  . '.BACKUP' );
+        }
     }
 
     /**

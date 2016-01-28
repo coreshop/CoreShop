@@ -223,11 +223,13 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     {
         $config = Configuration::get("SYSTEM.ISINSTALLED");
 
-        if($config) {
+        if( !is_null( $config ) )
+        {
             return true;
         }
 
         return false;
+
     }
 
     /**
