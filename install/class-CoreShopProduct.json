@@ -852,7 +852,76 @@
             }
             ],
           "locked":false
-          }
+          },
+            {
+            "fieldtype":"panel",
+            "labelWidth":100,
+            "layout":null,
+            "name":"Classifcation Store",
+            "type":null,
+            "region":null,
+            "title":"Classifcation Store",
+            "width":null,
+            "height":null,
+            "collapsible":false,
+            "collapsed":false,
+            "bodyStyle":"",
+            "datatype":"layout",
+            "permissions":null,
+            "childs":[
+            {
+                "fieldtype":"text",
+                "html":"Use the Classification Store to add localized, structured Data.&nbsp;<br><b>Attention: <\/b>You cannot use relation-data here. If you need it, use the \"Custom Properties\" Section.",
+                "name":"Layout",
+                "type":null,
+                "region":null,
+                "title":"",
+                "width":null,
+                "height":null,
+                "collapsible":false,
+                "collapsed":false,
+                "bodyStyle":"padding:10px;border:0;",
+                "datatype":"layout",
+                "permissions":null,
+                "childs":[
+
+                ],
+            "locked":null
+            },
+            {
+            "fieldtype":"classificationstore",
+            "phpdocType":"\\Pimcore\\Model\\Object\\Data\\ClassificationStore",
+            "childs":[
+
+            ],
+            "name":"ClassificationStore",
+            "region":null,
+            "layout":null,
+            "title":"Classification Store",
+            "width":null,
+            "height":null,
+            "maxTabs":null,
+            "labelWidth":0,
+            "localized":true,
+            "allowedGroupIds":null,
+            "tooltip":"",
+            "mandatory":false,
+            "noteditable":false,
+            "index":false,
+            "locked":null,
+            "style":"",
+            "permissions":null,
+            "datatype":"data",
+            "columnType":null,
+            "queryColumnType":null,
+            "relationType":false,
+            "invisible":false,
+            "visibleGridView":false,
+            "visibleSearch":false
+            }
+            ],
+            "locked":null
+            }
         ],
         "locked":false
       }
