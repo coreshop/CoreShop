@@ -76,10 +76,7 @@ class CoreShop_Admin_TaxController extends Admin
             $tax->setActive(1);
             $tax->save();
 
-            $config = $this->getTreeNodeConfig($tax);
-            $config['success'] = true;
-
-            $this->_helper->json($config);
+            $this->_helper->json(array("success" => true, "data" => $tax));
         }
     }
 
@@ -88,7 +85,7 @@ class CoreShop_Admin_TaxController extends Admin
         $tax = Tax::getById($id);
 
         if($tax instanceof Tax) {
-            $this->_helper->json($tax->getObjectVars());
+            $this->_helper->json(array("success" => true, "data" => $tax->getObjectVars()));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -106,7 +103,7 @@ class CoreShop_Admin_TaxController extends Admin
             $tax->setValues($data);
             $tax->save();
 
-            $this->_helper->json(array("success" => true, "tax" => $tax));
+            $this->_helper->json(array("success" => true, "data" => $tax));
         } else
             $this->_helper->json(array("success" => false));
     }

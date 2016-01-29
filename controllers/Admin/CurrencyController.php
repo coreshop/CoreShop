@@ -65,12 +65,12 @@ class CoreShop_Admin_CurrencyController extends Admin
         return $tmpCurrency;
     }
 
-    public function getCurrencyAction() {
+    public function getAction() {
         $id = $this->getParam("id");
         $currency = Currency::getById($id);
 
         if($currency instanceof Currency)
-            $this->_helper->json(array("success" => true, "currency" => $currency));
+            $this->_helper->json(array("success" => true, "data" => $currency));
         else
             $this->_helper->json(array("success" => false));
     }
@@ -87,7 +87,7 @@ class CoreShop_Admin_CurrencyController extends Admin
             $currency->setValues($data);
             $currency->save();
 
-            $this->_helper->json(array("success" => true, "currency" => $currency));
+            $this->_helper->json(array("success" => true, "data" => $currency));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -104,11 +104,11 @@ class CoreShop_Admin_CurrencyController extends Admin
             $currency->setName($name);
             $currency->save();
 
-            $this->_helper->json(array("success" => true, "currency" => $currency));
+            $this->_helper->json(array("success" => true, "data" => $currency));
         }
     }
 
-    public function removeAction() {
+    public function deleteAction() {
         $id = $this->getParam("id");
         $currency = Currency::getById($id);
 

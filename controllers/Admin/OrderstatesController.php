@@ -79,10 +79,7 @@ class CoreShop_Admin_OrderstatesController extends Admin
             $orderState->setInvoice(0);
             $orderState->save();
 
-            $config = $this->getTreeNodeConfig($orderState);
-            $config['success'] = true;
-
-            $this->_helper->json($config);
+            $this->_helper->json(array("success" => true, "data" => $orderState));
         }
     }
 
@@ -91,7 +88,7 @@ class CoreShop_Admin_OrderstatesController extends Admin
         $orderState = OrderState::getById($id);
 
         if($orderState instanceof OrderState) {
-            $this->_helper->json($orderState->getObjectVars());
+            $this->_helper->json(array("success" => true, "data" => $orderState->getObjectVars()));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -109,7 +106,7 @@ class CoreShop_Admin_OrderstatesController extends Admin
             $oderState->setValues($data);
             $oderState->save();
 
-            $this->_helper->json(array("success" => true, "orderState" => $oderState));
+            $this->_helper->json(array("success" => true, "data" => $oderState));
         } else
             $this->_helper->json(array("success" => false));
     }

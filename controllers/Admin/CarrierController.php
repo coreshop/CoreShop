@@ -151,7 +151,7 @@ class CoreShop_Admin_CarrierController extends Admin
             $config = $this->getTreeNodeConfig($carrier);
             $config['success'] = true;
 
-            $this->_helper->json($config);
+            $this->_helper->json(array("success" => true, "data" => $carrier));
         }
     }
 
@@ -160,7 +160,7 @@ class CoreShop_Admin_CarrierController extends Admin
         $carrier = Carrier::getById($id);
 
         if($carrier instanceof Carrier) {
-            $this->_helper->json($carrier);
+            $this->_helper->json(array("success" => true, "data" => $carrier));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -257,7 +257,7 @@ class CoreShop_Admin_CarrierController extends Admin
                 }
             }
 
-            $this->_helper->json(array("success" => true, "carrier" => $carrier));
+            $this->_helper->json(array("success" => true, "data" => $carrier));
         } else
             $this->_helper->json(array("success" => false));
     }

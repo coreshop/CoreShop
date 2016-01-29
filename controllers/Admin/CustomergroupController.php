@@ -75,19 +75,16 @@ class CoreShop_Admin_CustomergroupController extends Admin
             $group->setDiscount(0);
             $group->save();
 
-            $config = $this->getTreeNodeConfig($group);
-            $config['success'] = true;
-
-            $this->_helper->json($config);
+            $this->_helper->json(array("success" => true, "data" => $group));
         }
     }
 
     public function getAction() {
         $id = $this->getParam("id");
-        $tax = CustomerGroup::getById($id);
+        $group = CustomerGroup::getById($id);
 
-        if($tax instanceof CustomerGroup) {
-            $this->_helper->json($tax->getObjectVars());
+        if($group instanceof CustomerGroup) {
+            $this->_helper->json(array("success" => true, "data" => $group));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -105,7 +102,7 @@ class CoreShop_Admin_CustomergroupController extends Admin
             $group->setValues($data);
             $group->save();
 
-            $this->_helper->json(array("success" => true, "customerGroup" => $group));
+            $this->_helper->json(array("success" => true, "data" => $group));
         } else
             $this->_helper->json(array("success" => false));
     }

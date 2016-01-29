@@ -65,12 +65,12 @@ class CoreShop_Admin_CountryController extends Admin
         return $tmpCountry;
     }
 
-    public function getCountryAction() {
+    public function getAction() {
         $id = $this->getParam("id");
         $country = Country::getById($id);
 
         if($country instanceof Country)
-            $this->_helper->json(array("success" => true, "country" => $country));
+            $this->_helper->json(array("success" => true, "data" => $country));
         else
             $this->_helper->json(array("success" => false));
     }
@@ -87,7 +87,7 @@ class CoreShop_Admin_CountryController extends Admin
             $country->setValues($data);
             $country->save();
 
-            $this->_helper->json(array("success" => true, "country" => $country));
+            $this->_helper->json(array("success" => true, "data" => $country));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -105,11 +105,11 @@ class CoreShop_Admin_CountryController extends Admin
             $country->setActive(1);
             $country->save();
 
-            $this->_helper->json(array("success" => true, "country" => $country));
+            $this->_helper->json(array("success" => true, "data" => $country));
         }
     }
 
-    public function removeAction() {
+    public function deleteAction() {
         $id = $this->getParam("id");
         $country = Country::getById($id);
 

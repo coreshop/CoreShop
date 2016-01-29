@@ -74,10 +74,7 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
             $group->setActive(1);
             $group->save();
 
-            $config = $this->getTreeNodeConfig($group);
-            $config['success'] = true;
-
-            $this->_helper->json($config);
+            $this->_helper->json(array("success" => true, "data" => $group));
         }
     }
 
@@ -86,7 +83,7 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
         $group = TaxRuleGroup::getById($id);
 
         if($group instanceof TaxRuleGroup) {
-            $this->_helper->json($group->getObjectVars());
+            $this->_helper->json(array("success" => true, "data" => $group->getObjectVars()));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -138,7 +135,7 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
                 }
             }
 
-            $this->_helper->json(array("success" => true, "taxRuleGroup" => $group));
+            $this->_helper->json(array("success" => true, "data" => $group));
         } else
             $this->_helper->json(array("success" => false));
     }

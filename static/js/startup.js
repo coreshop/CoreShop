@@ -76,7 +76,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                     if(user.isAllowed("coreshop_permission_priceRules")) {
                         coreShopMenuItems.push({
-                            text: t("coreshop_price_rules"),
+                            text: t("coreshop_pricerules"),
                             iconCls: "coreshop_icon_price_rule",
                             handler: this.openPriceRules
                         });
@@ -118,7 +118,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                     if(user.isAllowed("coreshop_permission_tax_rules")) {
                         localizationMenu.push({
-                            text: t("coreshop_tax_rule_groups"),
+                            text: t("coreshop_taxrulegroups"),
                             iconCls: "coreshop_icon_tax_rule_groups",
                             handler: this.openTaxRuleGroups
                         });
@@ -146,7 +146,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                                 cls: "pimcore_navigation_flyout",
                                 shadow: false,
                                 items: [{
-                                    text: t("coreshop_order_states"),
+                                    text: t("coreshop_orderstates"),
                                     iconCls: "coreshop_icon_order_states",
                                     handler: this.openOrderStates
                                 }]
@@ -163,7 +163,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                                 shadow: false,
                                 cls: "pimcore_navigation_flyout",
                                 items: [{
-                                    text: t("coreshop_customer_groups"),
+                                    text: t("coreshop_customergroups"),
                                     iconCls: "coreshop_icon_customer_groups",
                                     handler: this.openCustomerGroups
                                 }]
@@ -316,7 +316,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             //console.log(e);
-            pimcore.globalmanager.add("coreshop_price_rules_panel", new pimcore.plugin.coreshop.pricerule.panel());
+            pimcore.globalmanager.add("coreshop_price_rules_panel", new pimcore.plugin.coreshop.pricerules.panel());
         }
     },
 
@@ -370,7 +370,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
             pimcore.globalmanager.get("coreshop_order_states_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_order_states_panel", new pimcore.plugin.coreshop.orderstate.panel());
+            pimcore.globalmanager.add("coreshop_order_states_panel", new pimcore.plugin.coreshop.orderstates.panel());
         }
     },
 
@@ -379,7 +379,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
             pimcore.globalmanager.get("coreshop_taxes_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_taxes_panel", new pimcore.plugin.coreshop.tax.panel());
+            pimcore.globalmanager.add("coreshop_taxes_panel", new pimcore.plugin.coreshop.taxes.panel());
         }
     },
 
@@ -388,7 +388,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
             pimcore.globalmanager.get("coreshop_tax_rule_groups_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_tax_rule_groups_panel", new pimcore.plugin.coreshop.taxrulegroup.panel());
+            pimcore.globalmanager.add("coreshop_tax_rule_groups_panel", new pimcore.plugin.coreshop.taxrulegroups.panel());
         }
     },
 
@@ -397,7 +397,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
             pimcore.globalmanager.get("coreshop_customer_groups_panel").activate();
         }
         catch (e) {
-            pimcore.globalmanager.add("coreshop_customer_groups_panel", new pimcore.plugin.coreshop.customergroup.panel());
+            pimcore.globalmanager.add("coreshop_customer_groups_panel", new pimcore.plugin.coreshop.customergroups.panel());
         }
     }
 });

@@ -65,12 +65,12 @@ class CoreShop_Admin_ZoneController extends Admin
         return $tmpZone;
     }
 
-    public function getZoneAction() {
+    public function getAction() {
         $id = $this->getParam("id");
         $zone = Zone::getById($id);
 
         if($zone instanceof Zone)
-            $this->_helper->json(array("success" => true, "zone" => $zone));
+            $this->_helper->json(array("success" => true, "data" => $zone));
         else
             $this->_helper->json(array("success" => false));
     }
@@ -87,7 +87,7 @@ class CoreShop_Admin_ZoneController extends Admin
             $zone->setValues($data);
             $zone->save();
 
-            $this->_helper->json(array("success" => true, "zone" => $zone));
+            $this->_helper->json(array("success" => true, "data" => $zone));
         }
         else
             $this->_helper->json(array("success" => false));
@@ -105,11 +105,11 @@ class CoreShop_Admin_ZoneController extends Admin
             $zone->setActive(1);
             $zone->save();
 
-            $this->_helper->json(array("success" => true, "zone" => $zone));
+            $this->_helper->json(array("success" => true, "data" => $zone));
         }
     }
 
-    public function removeAction() {
+    public function deleteAction() {
         $id = $this->getParam("id");
         $zone = Zone::getById($id);
 

@@ -209,7 +209,7 @@ class Country extends AbstractModel {
         $currency = Currency::getById($currencyId);
 
         if(!$currency instanceof Currency)
-            throw new \Exception("Currency with ID '$currencyId' not found");
+            return;
 
         $this->currencyId = $currencyId;
         $this->currency = $currency;

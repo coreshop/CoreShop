@@ -84,10 +84,7 @@ class CoreShop_Admin_PricerulesController extends Admin
             $priceRule->setHighlight(0);
             $priceRule->save();
 
-            $config = $this->getTreeNodeConfig($priceRule);
-            $config['success'] = true;
-
-            $this->_helper->json($config);
+            $this->_helper->json(array("success" => true, "data" => $priceRule));
         }
     }
 
@@ -96,7 +93,7 @@ class CoreShop_Admin_PricerulesController extends Admin
         $priceRule = PriceRule::getById($id);
 
         if($priceRule instanceof PriceRule)
-            $this->_helper->json($priceRule);
+            $this->_helper->json(array("success" => true, "data" => $priceRule->getObjectVars()));
         else
             $this->_helper->json(array("success" => false));
     }
@@ -140,8 +137,6 @@ class CoreShop_Admin_PricerulesController extends Admin
                     $instance = new $class();
                     $instance->setValues($action);
 
-                    print_r($action);
-
                     $actionInstances[] = $instance;
                 }
                 else {
@@ -154,7 +149,7 @@ class CoreShop_Admin_PricerulesController extends Admin
             $priceRule->setConditions($conditionInstances);
             $priceRule->save();
 
-            $this->_helper->json(array("success" => true, "priceRule" => $priceRule));
+            $this->_helper->json(array("success" => true, "data" => $priceRule));
         } else
             $this->_helper->json(array("success" => false));
     }

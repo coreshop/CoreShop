@@ -12,57 +12,40 @@
  */
 
 
-pimcore.registerNS("pimcore.plugin.coreshop.carrier.item");
-pimcore.plugin.coreshop.carrier.item = Class.create({
+pimcore.registerNS("pimcore.plugin.coreshop.carriers.item");
+pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    /**
-     * pimcore.plugin.coreshop.carrier.panel
-     */
-    parent: {},
+    iconCls : 'coreshop_icon_carrier',
 
+    url : {
+        save : '/plugin/CoreShop/admin_Carrier/save'
+    },
 
-    /**
-     * constructor
-     * @param parent
-     * @param data
-     */
-    initialize: function(parent, data) {
-        this.parent = parent;
-        this.data = data;
-        this.currentIndex = 0;
-
-        this.tabPanel = new Ext.TabPanel({
+    getPanel: function() {
+        var panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
             closable: true,
             deferredRender: false,
             forceLayout: true,
-            id: "pimcore_targeting_panel_" + this.data.id,
+            iconCls : this.iconCls,
             buttons: [{
                 text: t("save"),
                 iconCls: "pimcore_icon_apply",
                 handler: this.save.bind(this)
             }],
-            items: [
-                this.getSettings(),
-                this.getShippingLocationsAndCosts(),
-                this.getDimensions()
-            ]
+            items: this.getItems()
         });
 
-        // ...
-        var panel = this.parent.getTabPanel();
-        panel.add(this.tabPanel);
-        panel.setActiveItem(this.tabPanel);
-        panel.updateLayout();
-
-        this.tabPanel.on("beforedestroy", function () {
-            delete this.parent.panels["coreshop_carrier_" + this.data.id];
-        }.bind(this));
+        return panel;
     },
 
-    activate : function() {
-        this.parent.getTabPanel().setActiveItem(this.tabPanel);
+    getItems : function() {
+        return [
+            this.getSettings(),
+            this.getShippingLocationsAndCosts(),
+            this.getDimensions()
+        ];
     },
 
     /**
@@ -431,12 +414,7 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
         return this.dimensionsForm;
     },
 
-    /**
-     * save config
-     * @todo
-     */
-    save: function () {
-
+    getSaveData : function() {
         var data = {
             settings : {}
         };
@@ -448,25 +426,12 @@ pimcore.plugin.coreshop.carrier.item = Class.create({
         data["range"] = Ext.pluck(this.store.getRange(), 'data');
         data["deliveryPrices"] = Ext.pluck(this.zonesStore.getRange(), 'data');
 
-        // send data
-        Ext.Ajax.request({
-            url: "/plugin/CoreShop/admin_Carrier/save",
-            params: {
-                id: this.data.id,
-                data: Ext.encode(data)
-            },
-            method: "post",
-            success: this.saveOnComplete.bind(this)
-        });
+        return {
+            data : Ext.encode(data)
+        };
     },
 
-    /**
-     * saved
-     */
-    saveOnComplete: function () {
-        this.parent.getTree().getStore().reload();
-        pimcore.helpers.showNotification(t("success"), t("coreshop_carrier_saved_successfully"), "success");
-
+    postSave: function () {
         this.zonesGrid.setDisabled(false);
         this.zonesStore.load();
 
