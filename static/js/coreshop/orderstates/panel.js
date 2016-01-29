@@ -17,7 +17,7 @@ pimcore.registerNS("pimcore.plugin.coreshop.orderstates.panel");
 pimcore.plugin.coreshop.orderstates.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     layoutId: "coreshop_order_states_panel",
-    storeId : "coreshop_order_states",
+    storeId : "coreshop_orderstates",
     iconCls : "coreshop_icon_order_states",
     type : "orderstates",
 

@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.pricerules.conditions.customerGroup = Class.create(pimco
 
     getForm : function() {
         var me = this;
-        var store = pimcore.globalmanager.get("coreshop_customer_groups");
+        var store = pimcore.globalmanager.get("coreshop_customergroups");
 
         var customerGroup = {
             xtype: 'combo',

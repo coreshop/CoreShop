@@ -15,5 +15,5 @@ pimcore.registerNS("pimcore.object.tags.coreShopPriceRule");
 pimcore.object.tags.coreShopPriceRule = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
     type: "coreShopPriceRule",
-    storeName : "price_rules"
+    storeName : "pricerules"
 });

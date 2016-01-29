@@ -34,16 +34,16 @@ pimcore.plugin.coreshop.global = {
             {name:'active'}
         ]);
         this._createStore("coreshop_countries", 'Country');
-        this._createStore("coreshop_order_states", 'OrderStates');
+        this._createStore("coreshop_orderstates", 'OrderStates');
         this._createStore("coreshop_taxes", 'Tax', [
             {name:'id'},
             {name:'name'},
             {name:'rate'}
         ]);
-        this._createStore("coreshop_tax_rule_groups", 'TaxRuleGroup');
-        this._createStore("coreshop_customer_groups", 'CustomerGroup');
+        this._createStore("coreshop_taxrulegroups", 'TaxRuleGroup');
+        this._createStore("coreshop_customergroups", 'CustomerGroup');
         this._createStore("coreshop_carriers", 'Carrier');
-        this._createStore("coreshop_price_rules", 'PriceRules');
+        this._createStore("coreshop_pricerules", 'PriceRules');
     },
 
     _initUpdate : function() {

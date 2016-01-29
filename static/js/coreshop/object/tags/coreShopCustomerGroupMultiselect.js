@@ -15,5 +15,5 @@ pimcore.registerNS("pimcore.object.tags.coreShopCustomerGroupMultiselect");
 pimcore.object.tags.coreShopCustomerGroupMultiselect = Class.create(pimcore.plugin.coreshop.object.tags.multiselect, {
 
     type: "coreShopCustomerGroupMultiselect",
-    storeName : "customer_groups"
+    storeName : "customergroups"
 });

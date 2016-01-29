@@ -15,5 +15,5 @@ pimcore.registerNS("pimcore.object.tags.coreShopCustomerGroup");
 pimcore.object.tags.coreShopCustomerGroup = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
     type: "coreShopCustomerGroup",
-    storeName : "customer_groups"
+    storeName : "customergroups"
 });

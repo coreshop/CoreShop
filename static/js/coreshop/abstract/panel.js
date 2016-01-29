@@ -206,6 +206,10 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
 
                     this.tree.getStore().reload();
 
+                    if(pimcore.globalmanager.exists("coreshop_" + this.type)) {
+                        pimcore.globalmanager.get("coreshop_" + this.type).load();
+                    }
+
                     if(!data || !data.success) {
                         Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
                     } else {
@@ -233,6 +237,10 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
             },
             success: function () {
                 this.tree.getStore().reload();
+
+                if(pimcore.globalmanager.exists("coreshop_" + this.type)) {
+                    pimcore.globalmanager.get("coreshop_" + this.type).load();
+                }
             }.bind(this)
         });
     },

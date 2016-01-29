@@ -20,7 +20,7 @@ pimcore.plugin.coreshop.customergroups.panel = Class.create(pimcore.plugin.cores
      * @var string
      */
     layoutId: "coreshop_customer_groups_panel",
-    storeId : "coreshop_customer_groups",
+    storeId : "coreshop_customergroups",
     iconCls : "coreshop_icon_customer_groups",
     type : "customergroups",
 

@@ -87,6 +87,10 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
                         this.parentPanel.store.load();
                     }
 
+                    if(pimcore.globalmanager.exists("coreshop_" + this.type)) {
+                        pimcore.globalmanager.get("coreshop_" + this.type).load();
+                    }
+
                     var res = Ext.decode(response.responseText);
                     if (res.success) {
                         pimcore.helpers.showNotification(t("success"), t("coreshop_save_success"), "success");
