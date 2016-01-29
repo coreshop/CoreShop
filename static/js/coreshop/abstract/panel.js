@@ -16,10 +16,6 @@ pimcore.registerNS("pimcore.plugin.coreshop.abstract.panel");
 
 pimcore.plugin.coreshop.abstract.panel = Class.create({
 
-    /**
-     * @var string
-     */
-
     layoutId: "abstract_layout",
     storeId : "abstract_store",
     iconCls : "coreshop_abstract_icon",
@@ -32,9 +28,6 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         list : ""
     },
 
-    /**
-     * constructor
-     */
     initialize: function() {
         // create layout
         this.getLayout();
@@ -42,20 +35,11 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         this.panels = [];
     },
 
-
-    /**
-     * activate panel
-     */
     activate: function () {
         var tabPanel = Ext.getCmp("pimcore_panel_tabs");
         tabPanel.setActiveItem( this.layoutId );
     },
 
-
-    /**
-     * create tab panel
-     * @returns Ext.Panel
-     */
     getLayout: function () {
         if (!this.layout) {
 
@@ -89,46 +73,34 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
     },
 
     getItems : function() {
-        return [this.getTree(), this.getTabPanel()];
+        return [this.getNavigation(), this.getTabPanel()];
     },
 
-    /**
-     * return treelist
-     * @returns {*}
-     */
-    getTree: function () {
-        if (!this.tree) {
-            this.store = Ext.create('Ext.data.TreeStore', {
-                autoLoad: false,
-                autoSync: true,
-                proxy: {
-                    type: 'ajax',
-                    url: this.url.list,
-                    reader: {
-                        type: 'json'
-
-                    },
-                    extraParams: {
-                        grouped: 1
-                    }
-                }
-            });
-
-            this.tree = Ext.create('pimcore.tree.Panel', {
+    getNavigation: function () {
+        if (!this.grid) {
+            this.grid = Ext.create('Ext.grid.Panel', {
                 region: "west",
+                store: pimcore.globalmanager.get(this.storeId),
+                columns: [
+                    {
+                        text: '',
+                        dataIndex: 'text',
+                        flex : 1,
+                        renderer: function( value, metadata, record )
+                        {
+                            metadata.tdCls = record.get("iconCls") + " td-icon";
+
+                            return value;
+                        }
+                    }
+                ],
+                listeners : this.getTreeNodeListeners(),
                 useArrows: true,
                 autoScroll: true,
                 animate: true,
                 containerScroll: true,
                 width: 200,
                 split: true,
-                root: {
-                    nodeType: 'async',
-                    id: '0'
-                },
-                rootVisible: false,
-                store: this.store,
-                listeners : this.getTreeNodeListeners(),
                 tbar: {
                     items: [
                         {
@@ -138,15 +110,17 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                             handler: this.addItem.bind(this)
                         }
                     ]
-                }
+                },
+                hideHeaders: true
             });
 
-            this.tree.on("render", function () {
-                this.getRootNode().expand();
+            this.tree.on("beforerender", function () {
+                this.getStore().load();
             });
+
         }
 
-        return this.tree;
+        return this.grid;
     },
 
     getTreeNodeListeners: function () {
@@ -175,23 +149,11 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         this.openItem(record.data);
     },
 
-
-    /**
-     * add item popup
-     */
     addItem: function () {
         Ext.MessageBox.prompt(t('coreshop_' + this.type + '_add'), t('coreshop_'+this.type+'_enter_the_name'),
             this.addItemComplete.bind(this), null, null, "");
     },
 
-
-    /**
-     * save added item
-     * @param button
-     * @param value
-     * @param object
-     * @todo ...
-     */
     addItemComplete: function (button, value, object) {
 
         var regresult = value.match(/[a-zA-Z0-9_\-]+/);
@@ -225,10 +187,6 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         }
     },
 
-
-    /**
-     * delete existing item
-     */
     deleteItem: function (record) {
         Ext.Ajax.request({
             url: this.url.delete,
@@ -245,11 +203,6 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         });
     },
 
-
-    /**
-     * open item
-     * @param record
-     */
     openItem: function (record) {
         var panelKey = this.layoutId + record.id;
 
@@ -280,9 +233,6 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         }
     },
 
-    /**
-     * @returns Ext.TabPanel
-     */
     getTabPanel: function () {
         if (!this.panel) {
             this.panel = new Ext.TabPanel({
