@@ -166,7 +166,7 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
 
-                    this.tree.getStore().reload();
+                    this.grid.getStore().reload();
 
                     if(pimcore.globalmanager.exists("coreshop_" + this.type)) {
                         pimcore.globalmanager.get("coreshop_" + this.type).load();
@@ -194,7 +194,7 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                 id: record.id
             },
             success: function () {
-                this.tree.getStore().reload();
+                this.grid.getStore().reload();
 
                 if(pimcore.globalmanager.exists("coreshop_" + this.type)) {
                     pimcore.globalmanager.get("coreshop_" + this.type).load();

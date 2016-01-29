@@ -41,8 +41,8 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
     },
 
     getItems : function() {
-        this.actions = new pimcore.plugin.coreshop.pricerules.action(this.parentPanel.action);
-        this.conditions = new pimcore.plugin.coreshop.pricerules.condition(this.parentPanel.condition);
+        this.actions = new pimcore.plugin.coreshop.pricerules.action(this.parentPanel.actions);
+        this.conditions = new pimcore.plugin.coreshop.pricerules.condition(this.parentPanel.conditions);
 
         var items = [
             this.getSettings(),

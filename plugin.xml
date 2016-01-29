@@ -93,6 +93,8 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroupMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroupMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/variantGenerator.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/specificprice.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/item.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

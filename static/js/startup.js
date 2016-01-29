@@ -265,6 +265,8 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                     }
                 );
 
+                tab.tabbar.add(new pimcore.plugin.coreshop.product.specificprice(tab).getLayout());
+
                 /*tab.tab.items.items[0].add({
                     text: t('generate_variants'),
                     iconCls: 'pimcore_icon_tab_variants',

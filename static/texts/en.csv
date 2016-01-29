@@ -183,3 +183,5 @@
 "coreshop_variant_generator_field","Field"
 "coreshop_variant_generator_input","Values (CSV)"
 "coreshop_plugins","Plugins"
+"coreshop_productSpecificPrice","Specific Price"
+"coreshop_productSpecificPrice_add","Add Specific Price"

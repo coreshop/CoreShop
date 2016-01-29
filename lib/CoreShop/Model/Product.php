@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Model\Product\SpecificPrice;
 use Pimcore\Cache;
 use Pimcore\Model\Object;
 use Pimcore\View\Helper\Url;
@@ -347,6 +348,15 @@ class Product extends Base {
         }
 
         return false;
+    }
+
+    /**
+     * get all specific prices
+     *
+     * @return array
+     */
+    public function getSpecificPrices() {
+        return SpecificPrice::getSpecificPrices($this);
     }
 
     /**

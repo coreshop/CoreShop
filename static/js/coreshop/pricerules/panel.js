@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
      * @var string
      */
     layoutId: "coreshop_price_rules_panel",
-    storeId : "coreshop_pricerules",
+    storeId : "coreshop_price_rules",
     iconCls : "coreshop_icon_price_rule",
     type : "pricerules",
 
@@ -52,8 +52,8 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
             method: "GET",
             success: function(result){
                 var config = Ext.decode(result.responseText);
-                me.condition = config.conditions;
-                me.action = config.actions;
+                me.conditions = config.conditions;
+                me.actions = config.actions;
             }
         });
 
