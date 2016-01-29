@@ -114,7 +114,7 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                 hideHeaders: true
             });
 
-            this.tree.on("beforerender", function () {
+            this.grid.on("beforerender", function () {
                 this.getStore().load();
             });
 

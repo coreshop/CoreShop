@@ -50,6 +50,8 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrencyMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCurrency.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCurrency.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/action.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/condition.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/abstract.js</path>

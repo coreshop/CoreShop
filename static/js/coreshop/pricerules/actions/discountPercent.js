@@ -49,7 +49,7 @@ pimcore.plugin.coreshop.pricerules.actions.discountPercent = Class.create(pimcor
             valueField: 'id',
             forceSelection: true,
             triggerAction: 'all',
-            hiddenName:'currency',
+            name:'currency',
             listeners: {
                 listeners: {
                     beforerender: function () {
