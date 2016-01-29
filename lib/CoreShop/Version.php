@@ -27,35 +27,35 @@ class Version {
      * @return array
      */
     protected static function getPluginConfig() {
-        return Configuration::getPluginConfig();
+        return Configuration::getPluginConfig()->plugin;
     }
 
     /**
      * @return string
      */
     public static function getVersion() {
-        return self::getPluginConfig()->plugin->pluginVersion;
+        return self::getPluginConfig()->pluginVersion;
     }
 
     /**
      * @return int
      */
     public static function getBuildNumber() {
-        return self::getPluginConfig()->plugin->pluginRevision;
+        return self::getPluginConfig()->pluginRevision;
     }
 
     /**
      * @return string
      */
     public static function getGitRevision() {
-        return self::getPluginConfig()->plugin->pluginGitRevision;
+        return self::getPluginConfig()->pluginGitRevision;
     }
 
     /**
      * @return int
      */
     public static function getPluginTimestamp() {
-        return self::getPluginConfig()->plugin->pluginBuildTimestamp;
+        return self::getPluginConfig()->pluginBuildTimestamp;
     }
 
 

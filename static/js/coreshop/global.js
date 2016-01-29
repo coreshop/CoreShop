@@ -36,6 +36,9 @@ pimcore.plugin.coreshop.global = {
     },
 
     _initStores : function() {
+
+        this._initUpdate();
+
         this._initCountries();
         this._initCurrencies();
         this._initZones();
@@ -45,6 +48,12 @@ pimcore.plugin.coreshop.global = {
         this._initCustomerGroups();
         this._initCarriers();
         this._initPriceRules();
+    },
+
+    _initUpdate : function() {
+
+        new coreshop.update();
+
     },
 
     _initCurrencies : function() {

@@ -1,5 +1,0 @@
-install/class-CoreShopProduct.json
-install/thumbnails/images.json
-lib/CoreShop/Console/Command/InternalUpdateProcessorCommand.php
-lib/CoreShop/Plugin/Install.php
-plugin.xml
