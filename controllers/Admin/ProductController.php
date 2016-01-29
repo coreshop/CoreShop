@@ -118,8 +118,8 @@ class CoreShop_Admin_ProductController extends Admin
             $actionInstances = array();
             $conditionInstances = array();
 
-            $actionNamespace = "CoreShop\\Model\\PriceRule\\Action\\";
-            $conditionNamespace = "CoreShop\\Model\\PriceRule\\Condition\\";
+            $actionNamespace = "CoreShop\\Model\\Product\\SpecificPrice\\Action\\";
+            $conditionNamespace = "CoreShop\\Model\\Product\\SpecificPrice\\Condition\\";
 
             foreach($conditions as $condition) {
                 $class = $conditionNamespace . ucfirst($condition['type']);

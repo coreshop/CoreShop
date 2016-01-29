@@ -26,13 +26,13 @@ class SpecificPrice extends AbstractModel {
      * possible types of a condition
      * @var array
      */
-    static $availableConditions = array("customer", "timeSpan", "amount", "totalAvailable", "totalPerCustomer", "country", "product", "category", "customerGroup");
+    static $availableConditions = array("customer", "timeSpan", "country", "customerGroup");
 
     /**
      * possible types of a action
      * @var array
      */
-    static $availableActions = array("freeShipping", "discountAmount", "discountPercent", "gift");
+    static $availableActions = array("discountAmount", "discountPercent");
 
     /**
      * @param $condition
@@ -134,7 +134,7 @@ class SpecificPrice extends AbstractModel {
     }
 
     /**
-     * @return array
+     * @return Product\SpecificPrice\Condition\AbstractCondition[]
      */
     public function getConditions()
     {
@@ -154,7 +154,7 @@ class SpecificPrice extends AbstractModel {
     }
 
     /**
-     * @return array
+     * @return Product\SpecificPrice\Action\AbstractAction[]
      */
     public function getActions()
     {

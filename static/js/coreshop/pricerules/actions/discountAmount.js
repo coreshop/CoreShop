@@ -29,7 +29,7 @@ pimcore.plugin.coreshop.pricerules.actions.discountAmount = Class.create(pimcore
 
         var amount = new Ext.form.NumberField({
             fieldLabel:t("coreshop_action_discountAmount_amount"),
-            name:'percent',
+            name:'amount',
             value : amountValue,
             decimalPrecision : 2
         });

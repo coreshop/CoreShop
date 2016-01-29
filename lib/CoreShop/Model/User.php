@@ -140,6 +140,22 @@ class User extends Base
     }
 
     /**
+     * Check if user is in group
+     *
+     * @param CustomerGroup $group
+     * @return bool
+     */
+    public function isInGroup(CustomerGroup $group) {
+        foreach($this->getGroups() as $myGroup) {
+            if($myGroup === $group->getName()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * returns email
      * this method has to be overwritten in Pimcore Object
      *

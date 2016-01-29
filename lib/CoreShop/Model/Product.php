@@ -198,28 +198,6 @@ class Product extends Base {
     }
 
     /**
-     * Apply Specific Price to Product
-     *
-     * @param CoreShopProductSpecificPrice $sPrice
-     * @return float
-     * @throws UnsupportedException
-     */
-    protected function applySpecificPrice(CoreShopProductSpecificPrice $sPrice)
-    {
-        $basePrice = $sPrice->getPrice() > 0 ? $sPrice->getPrice() : $this->getPrice();
-
-        if($sPrice->getReductionType() == "percentage") {
-            return $basePrice * (100 - $sPrice->getReduction()) / 100;
-        }
-
-        if($sPrice->getReductionType() == "amount") {
-            return $basePrice - $sPrice->getReduction();
-        }
-
-        return $basePrice;
-    }
-
-    /**
      * get price without tax
      *
      * @return float|mixed
@@ -233,66 +211,46 @@ class Product extends Base {
         }
 
         $price = $this->getRetailPrice();
+        $price -= $this->getSpecificPriceDiscount();
 
-        try {
-            if (count($this->getSpecificPrice()) > 0) {
-                $session = Tool::getSession();
-                //Process Specific Prices
-                foreach ($this->getSpecificPrice() as $sPrice) {
-                    $date = \Zend_Date::now();
+        return $price;
+    }
 
-                    $hasCustomer = false;
-                    $hasCountry = false;
-                    $hasCurrency = false;
+    /**
+     * Get Discount from Specific Prices
+     *
+     * @return float
+     */
+    public function getSpecificPriceDiscount() {
+        $specificPrices = $this->getSpecificPrices();
+        $discount = 0;
 
-                    if ($sPrice->getFrom() instanceof \Zend_Date) {
-                        if ($date->get(\Zend_Date::TIMESTAMP) < $sPrice->getFrom()->get(\Zend_Date::TIMESTAMP)) {
-                            continue;
-                        }
-                    }
+        foreach($specificPrices as $specificPrice) {
+            if($specificPrice instanceof SpecificPrice) {
+                $conditions = $specificPrice->getConditions();
+                $actions = $specificPrice->getActions();
 
-                    if ($sPrice->getTo() instanceof \Zend_Date) {
-                        if ($date->get(\Zend_Date::TIMESTAMP) > $sPrice->getTo()->get(\Zend_Date::TIMESTAMP)) {
-                            continue;
-                        }
-                    }
+                $isValid = true;
 
-
-                    if (count($sPrice->getCustomers()) > 0 && $session->user instanceof User) {
-                        foreach ($sPrice->getCustomers() as $cust) {
-                            if($cust instanceof User) {
-                                if ($cust->getId() == $session->user->getId())
-                                    $hasCustomer = true;
-                            }
-                        }
-                    } else if (count($sPrice->getCustomers()) == 0) { //Non is selected means all Users
-                        $hasCustomer = true;
-                    }
-
-                    if (count($sPrice->getCountries()) > 0 && Tool::objectInList(Tool::getCountry(), $sPrice->getCountries())) {
-                        $hasCountry = true;
-                    } else if (count($sPrice->getCountries()) == 0) { //Non selected means all
-                        $hasCountry = true;
-                    }
-
-                    if (count($sPrice->getCurrencies()) > 0 && Tool::objectInList(Tool::getCurrency(), $sPrice->getCurrencies())) {
-                        $hasCurrency = true;
-                    } else if (count($sPrice->getCountries()) == 0) { //Non selected means all
-                        $hasCurrency = true;
-                    }
-
-                    if ($hasCountry && $hasCustomer && $hasCurrency) {
-                        $price = $this->applySpecificPrice($sPrice);
+                foreach($conditions as $condition) {
+                    if(!$condition->checkCondition($this, $specificPrice)) {
+                        $isValid = false;
                         break;
+                    }
+                }
+
+                if(!$isValid) {
+                    break;
+                }
+                else {
+                    foreach($actions as $action) {
+                        $discount += $action->getDiscount($this);
                     }
                 }
             }
         }
-        catch(\Exception $ex) {
-            \Logger::err(sprintf("No SpecificPrice inside Product Model (%s)", $ex->getMessage()));
-        }
 
-        return $price;
+        return $discount;
     }
 
     /**
