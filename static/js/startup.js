@@ -41,14 +41,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
         pimcore.globalmanager.add("coreshop_statusbar_item", coreShopStatusItem);
 
-        pimcore.plugin.coreshop.broker.addListener("storesLoaded", function() {
-            this.isInitialized = true;
-
-            coreShopStatusItem.setHtml('<em class="fa fa-shopping-cart"></em> ' + t("coreshop_loaded").format(this.settings.plugin.pluginVersion))
-
-            coreshop.plugin.broker.fireEvent("coreshopReady", this);
-        }, this);
-
         Ext.Ajax.request({
             url: "/plugin/CoreShop/admin_settings/get-settings",
             success: function (response)
@@ -207,16 +199,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                     Ext.get('pimcore_menu_logout').insertSibling('<li id="pimcore_menu_coreshop" class="pimcore_menu_item icon-coreshop-shop">' + t("coreshop") + '</li>');
                     Ext.get("pimcore_menu_coreshop").on("mousedown", function (e, el) {
-                        if (!self.isInitialized) {
-                            Ext.Msg.alert(t('coreshop'), t('coreshop_not_initialized'));
-                        }
-                        else {
-                            toolbar.showSubMenu.call(this._menu, e, el);
-                        }
+                        toolbar.showSubMenu.call(this._menu, e, el);
                     }.bind(this));
                 }
 
                 pimcore.plugin.coreshop.global.initialize(this.settings);
+
+                coreShopStatusItem.setHtml('<em class="fa fa-shopping-cart"></em> ' + t("coreshop_loaded").format(this.settings.plugin.pluginVersion))
+
+                coreshop.plugin.broker.fireEvent("coreshopReady", this);
 
             }.bind(this)
         });

@@ -35,10 +35,9 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
         var options = {
             name: this.fieldConfig.name,
             triggerAction: "all",
-            editable: true,
-            typeAhead: true,
+            editable: false,
+            typeAhead: false,
             forceSelection: true,
-            selectOnFocus: true,
             fieldLabel: this.fieldConfig.title,
             store: store,
             componentCls: "object_field",
@@ -47,7 +46,13 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
             displayField:'name',
             valueField:'id',
             queryMode : 'local',
-            value:this.data ? parseInt(this.data) : null
+            value:this.data ? parseInt(this.data) : null,
+            listeners : {
+                beforerender : function() {
+                    if(!store.isLoaded() && !store.isLoading())
+                        store.load();
+                }
+            }
         };
 
         if (this.fieldConfig.labelWidth) {

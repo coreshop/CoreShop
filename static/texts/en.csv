@@ -4,7 +4,6 @@
 "coreshop_install_failed","Could not install CoreShop plugin. See log for more details."
 "coreshop_uninstalled_successfully","Successfully uninstalled CoreShop plugin. Please don't forget to reload pimcore!"
 "coreshop_uninstall_failed","Could not uninstall CoreShop plugin. See log for more details."
-"coreshop_not_initialized","CoresShop is not fully initialized, please wait"
 "coreshop_save_success","Item has been successfully saved"
 "coreshop_save_error","Error saving item"
 "coreshop_loading", "CoreShop is loading"
