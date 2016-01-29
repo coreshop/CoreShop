@@ -19,15 +19,15 @@ pimcore.plugin.coreshop.pricerules.conditions.country = Class.create(pimcore.plu
 
     getForm : function() {
         var me = this;
+        var store = pimcore.globalmanager.get("coreshop_countries");
 
         var country = {
             xtype: 'combo',
             fieldLabel: t('coreshop_condition_country_country'),
             typeAhead: true,
-            mode: 'local',
             listWidth: 100,
-            width : 200,
-            store: pimcore.globalmanager.get("coreshop_countries"),
+            width : 500,
+            store: store,
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -35,6 +35,9 @@ pimcore.plugin.coreshop.pricerules.conditions.country = Class.create(pimcore.plu
             name:'country',
             listeners: {
                 beforerender: function () {
+                    if(!store.isLoaded() && !store.isLoading())
+                        store.load();
+
                     if(me.data && me.data.country)
                         this.setValue(me.data.country);
                 }

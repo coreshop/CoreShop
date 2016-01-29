@@ -27,8 +27,6 @@ pimcore.plugin.coreshop.global = {
     },
 
     _initStores : function() {
-        this._initUpdate();
-
         this._createStore("coreshop_currencies", 'Currency');
         this._createStore("coreshop_zones", 'OrderStates', [
             {name:'id'},

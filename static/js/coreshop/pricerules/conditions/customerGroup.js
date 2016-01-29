@@ -19,15 +19,15 @@ pimcore.plugin.coreshop.pricerules.conditions.customerGroup = Class.create(pimco
 
     getForm : function() {
         var me = this;
+        var store = pimcore.globalmanager.get("coreshop_customer_groups");
 
         var customerGroup = {
             xtype: 'combo',
             fieldLabel: t('coreshop_condition_customerGroup'),
             typeAhead: true,
-            queryMode: 'local',
             listWidth: 100,
             width : 200,
-            store: pimcore.globalmanager.get("coreshop_customer_groups"),
+            store: store,
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -35,6 +35,9 @@ pimcore.plugin.coreshop.pricerules.conditions.customerGroup = Class.create(pimco
             name:'customerGroup',
             listeners: {
                 beforerender: function () {
+                    if(!store.isLoaded() && !store.isLoading())
+                        store.load();
+
                     if(me.data && me.data.customerGroup)
                         this.setValue(me.data.customerGroup);
                 }
