@@ -1,8 +1,0 @@
-lib/CoreShop/Controller/Action/Payment.php
-lib/CoreShop/Plugin.php
-plugin.xml
-static/css/coreshop.css
-static/js/coreshop/plugin/broker.js
-static/js/coreshop/plugin/plugin.js
-static/js/startup.js
-static/texts/en.csv

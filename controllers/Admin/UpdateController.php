@@ -12,83 +12,54 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+use Pimcore\Tool\Admin;
+
 class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
 {
-    public function init() {
+    public function init()
+    {
         parent::init();
-
         // clear the opcache (as of PHP 5.5)
         if(function_exists("opcache_reset")) {
             opcache_reset();
         }
-
         // clear the APC opcode cache (<= PHP 5.4)
         if(function_exists("apc_clear_cache")) {
             apc_clear_cache();
         }
-
         // clear the Zend Optimizer cache (Zend Server <= PHP 5.4)
         if (function_exists('accelerator_reset')) {
             accelerator_reset();
         }
+
     }
 
-    public function checkFilePermissionsAction () {
+    public function hasUpdatesAction ()
+    {
+        $updater = new \CoreShop\Plugin\Update();
 
-        $success = false;
-        if(\CoreShop\Update::isWriteable()) {
-            $success = true;
-        }
+        $hasUpdates = $updater->getAvailableBuildList() !== FALSE;
 
-        $this->_helper->json(array(
-            "success" => $success
-        ));
+        if( $hasUpdates === FALSE )
+            $updater->removeUpdateFolder();
+
+        $this->_helper->json( array('hasUpdate' => $hasUpdates) );
+
     }
 
-    public function getAvailableUpdatesAction () {
+    public function installUpdateAction ()
+    {
+        $maintenanceModeId = 'cache-warming-dummy-session-id';
+        Admin::activateMaintenanceMode($maintenanceModeId);
 
-        $availableUpdates = \CoreShop\Update::getAvailableUpdates();
-        $this->_helper->json($availableUpdates);
+        $updater = new \CoreShop\Plugin\Update();
+
+        $execution = $updater->updateCoreData();
+
+        Admin::deactivateMaintenanceMode();
+
+        $this->_helper->json(array('success' => true, 'log' => $execution));
+
     }
 
-    public function getJobsAction () {
-
-        $jobs = \CoreShop\Update::getJobs($this->getParam("toRevision"));
-
-        $this->_helper->json($jobs);
-    }
-
-    public function jobParallelAction () {
-        if($this->getParam("type") == "download") {
-            \CoreShop\Update::downloadData($this->getParam("revision"), $this->getParam("url"), $this->getParam("file"));
-        }
-
-        $this->_helper->json(array("success" => true));
-    }
-
-    public function jobProceduralAction () {
-
-        $status = array("success" => true);
-
-        if($this->getParam("type") == "files") {
-            \CoreShop\Update::installData($this->getParam("revision"));
-        } else if ($this->getParam("type") == "deleteFile") {
-            \CoreShop\Update::deleteData($this->getParam("url"));
-        } else if ($this->getParam("type") == "clearcache") {
-            \Pimcore\Cache::clearAll();
-        } else if ($this->getParam("type") == "preupdate") {
-            $status = \CoreShop\Update::executeScript($this->getParam("revision"), "preupdate");
-        } else if ($this->getParam("type") == "postupdate") {
-            $status = \CoreShop\Update::executeScript($this->getParam("revision"), "postupdate");
-        } else if ($this->getParam("type") == "installClass") {
-            $status = \CoreShop\Update::installClass($this->getParam("class"));
-        } else if ($this->getParam("type") == "cleanup") {
-            \CoreShop\Update::cleanup();
-        }
-
-        // we use pure PHP here, otherwise this can cause issues with dependencies that changed during the update
-        header("Content-type: application/json");
-        echo json_encode($status);
-        exit;
-    }
 }

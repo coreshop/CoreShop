@@ -16,6 +16,7 @@ namespace CoreShop\Plugin;
 
 use CoreShop\Model\Configuration;
 use CoreShop\Plugin;
+use CoreShop\Version;
 
 use Pimcore\File;
 use Pimcore\Model\Document;
@@ -618,6 +619,8 @@ class Install
     {
         Configuration::set("SYSTEM.BASE.CURRENCY", null);
         Configuration::set("SYSTEM.BASE.CATALOGMODE", false);
+        Configuration::set("SYSTEM.BASE.BUILD", Version::getBuildNumber());
+        Configuration::set("SYSTEM.BASE.VERSION", (string) Version::getVersion());
         Configuration::set("SYSTEM.PRODUCT.DEFAULTIMAGE", null);
         Configuration::set("SYSTEM.CATEGORY.DEFAULTIMAGE", null);
         Configuration::set("SYSTEM.TEMPLATE.NAME", "default");

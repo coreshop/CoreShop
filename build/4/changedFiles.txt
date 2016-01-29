@@ -1,3 +1,0 @@
-build/make-build.php
-controllers/CartController.php
-plugin.xml
