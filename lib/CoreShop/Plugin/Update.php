@@ -207,7 +207,7 @@ class Update
     {
         \Pimcore\Cache::clearAll();
 
-        $this->removeUpdateFolder();
+        //$this->removeUpdateFolder(); //Do not clean up, since the files are also going to be removed from git
 
     }
 
