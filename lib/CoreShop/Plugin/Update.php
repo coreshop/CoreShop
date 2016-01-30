@@ -69,6 +69,8 @@ class Update
 
         $availableBuilds = $this->getBuilds( $buildState['installed'], $buildState['newest'] );
 
+        $log = array();
+
         if( !empty( $availableBuilds ) )
         {
             $execution = $this->executeBuildUpdates( $availableBuilds );
@@ -78,13 +80,16 @@ class Update
                 //clear cache and kill update folder.
                 $this->cleanUp( $buildState['newest'] );
 
-                return $execution;
+                array_merge( $log, $execution['log']);
 
             }
 
         }
 
-        return FALSE;
+        $this->updateClasses();
+
+        return array('success' => TRUE, 'log' => $log);
+
 
     }
 
@@ -196,8 +201,11 @@ class Update
         if( $fileName === FALSE || !is_file( $fileName ) )
             return FALSE;
 
-        $setup = new Setup();
-        $setup->insertDump( $fileName );
+        if( filesize( ($fileName) ) > 0 )
+        {
+            $setup = new Setup();
+            $setup->insertDump( $fileName );
+        }
 
         return TRUE;
 
@@ -207,16 +215,49 @@ class Update
     {
         \Pimcore\Cache::clearAll();
 
-        //$this->removeUpdateFolder(); //Do not clean up, since the files are also going to be removed from git
+        $this->removeUpdateFolder();
 
     }
 
+    /**
+     * Remove Update Folder after Update.
+     * @fixme: ugly idea, can we do that better?
+     */
     public function removeUpdateFolder()
     {
+        //Do not clean up, since the files are also going to be removed from git
         if( is_dir( CORESHOP_UPDATE_DIRECTORY ) )
         {
-            recursiveDelete( CORESHOP_UPDATE_DIRECTORY, true);
+            //recursiveDelete( CORESHOP_UPDATE_DIRECTORY, true);
         }
+
+    }
+
+    /**
+     * In ci-mode, we can't add the classes, because of the missing root user.
+     * @fixme
+     * @return bool
+     */
+    private function updateClasses()
+    {
+        if (!\Zend_Registry::isRegistered("pimcore_admin_user"))
+        {
+            return FALSE;
+        }
+
+        $classes = glob(PIMCORE_PLUGINS_PATH . '/CoreShop/install/class-*.json');
+
+        if (!$this->dryRun && !empty( $classes ) && is_array( $classes ) )
+        {
+            $install = new Install();
+            foreach ($classes as $class)
+            {
+                $name = str_replace('class-','', basename($class, '.json') );
+                $install->createClass( $name, TRUE);
+            }
+        }
+
+        return TRUE;
 
     }
 
