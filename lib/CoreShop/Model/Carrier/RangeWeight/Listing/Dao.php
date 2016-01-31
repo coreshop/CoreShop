@@ -17,7 +17,8 @@ namespace CoreShop\Model\Carrier\RangeWeight\Listing;
 use CoreShop\Model\Listing;
 use CoreShop\Model;
 
-class Dao extends Listing\Dao\AbstractDao {
+class Dao extends Listing\Dao\AbstractDao
+{
 
     protected $tableName = 'coreshop_carriers_range_weight';
     protected $modelClass = '\\CoreShop\\Model\\Carrier\\RangeWeight';

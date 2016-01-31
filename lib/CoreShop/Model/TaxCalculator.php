@@ -83,19 +83,18 @@ class TaxCalculator
     public function getTotalRate()
     {
         $taxes = 0;
-        if ($this->computation_method == TaxCalculator::ONE_AFTER_ANOTHER_METHOD)
-        {
+        if ($this->computation_method == TaxCalculator::ONE_AFTER_ANOTHER_METHOD) {
             $taxes = 1;
-            foreach ($this->taxes as $tax)
+            foreach ($this->taxes as $tax) {
                 $taxes *= (1 + (abs($tax->getRate()) / 100));
+            }
 
             $taxes = $taxes - 1;
             $taxes = $taxes * 100;
-        }
-        else
-        {
-            foreach ($this->taxes as $tax)
+        } else {
+            foreach ($this->taxes as $tax) {
                 $taxes += abs($tax->getRate());
+            }
         }
 
         return (float)$taxes;
@@ -104,8 +103,9 @@ class TaxCalculator
     public function getTaxesName($language = null)
     {
         $name = '';
-        foreach ($this->taxes as $tax)
+        foreach ($this->taxes as $tax) {
             $name .= $tax->getName($language) . ' - ';
+        }
 
         $name = rtrim($name, ' - ');
 
@@ -123,22 +123,19 @@ class TaxCalculator
         $taxes_amounts = array();
         $taxAmount = 0;
 
-        foreach ($this->taxes as $tax)
-        {
-            if ($this->computation_method == TaxCalculator::ONE_AFTER_ANOTHER_METHOD)
-            {
+        foreach ($this->taxes as $tax) {
+            if ($this->computation_method == TaxCalculator::ONE_AFTER_ANOTHER_METHOD) {
                 $taxes_amounts += $price * (abs($tax->getRate()) / 100);
                 $price = $price + $taxes_amounts[$tax->id];
-            }
-            else
+            } else {
                 $taxes_amounts[$tax->id] = ($price * (abs($tax->getRate()) / 100));
+            }
         }
 
-        foreach($taxes_amounts as $t) {
+        foreach ($taxes_amounts as $t) {
             $taxAmount += $t;
         }
 
         return $taxAmount;
     }
 }
-

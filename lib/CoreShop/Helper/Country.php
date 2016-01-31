@@ -14,7 +14,8 @@
 
 namespace CoreShop\Helper;
 
-class Country {
+class Country
+{
 
     protected static $countryMap = array(
         "AD" => "Andorra",
@@ -641,8 +642,9 @@ class Country {
      */
     public static function getCurrencyCodeForCountry($countryCode)
     {
-        if(array_key_exists($countryCode, self::$countryCurrencyMap))
+        if (array_key_exists($countryCode, self::$countryCurrencyMap)) {
             return self::$countryCurrencyMap[$countryCode];
+        }
 
         return false;
     }
@@ -651,12 +653,15 @@ class Country {
      * @param $currencyCode
      * @return bool
      */
-    public static function getCurrencyDetail($currencyCode) {
-        if(!is_string($currencyCode) && !is_int($currencyCode))
+    public static function getCurrencyDetail($currencyCode)
+    {
+        if (!is_string($currencyCode) && !is_int($currencyCode)) {
             return false;
+        }
 
-        if(array_key_exists($currencyCode, self::$currencyDetailMap))
+        if (array_key_exists($currencyCode, self::$currencyDetailMap)) {
             return self::$currencyDetailMap[$currencyCode];
+        }
 
         return false;
     }

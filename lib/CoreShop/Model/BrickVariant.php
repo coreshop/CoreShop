@@ -36,54 +36,37 @@ class BrickVariant extends Objectbrick
      *
      * @return bool|float|int|string
      */
-    public function getValueForVariant( $fieldInfo = array(), $language = 'en' )
+    public function getValueForVariant($fieldInfo = array(), $language = 'en')
     {
         $methodName = 'get' . $fieldInfo['name'];
 
-        if( !method_exists( $this, $methodName ) )
-        {
+        if (!method_exists($this, $methodName)) {
             return $methodName . ' not implemented';
         }
 
         $output = $this->{$methodName}();
-        $data = FALSE;
+        $data = false;
 
-        if( is_string( $output ) )
-        {
+        if (is_string($output)) {
             $data = $output;
-        }
-        else if( is_float( $output ) )
-        {
+        } elseif (is_float($output)) {
             $data = $output;
-        }
-        else if( is_int( $output ) )
-        {
+        } elseif (is_int($output)) {
             $data = $output;
-        }
-        else if( is_bool( $output ) )
-        {
+        } elseif (is_bool($output)) {
             $data = $fieldInfo['name'];
-        }
-        else if( is_array( $output ) )
-        {
+        } elseif (is_array($output)) {
             //maybe the object contains multiple values. only use the first one.
             $object = $output[0];
 
-            if ($object->getType() == 'object')
-            {
+            if ($object->getType() == 'object') {
                 $data = $this->extractObjectData($object, $language);
-
             }
-
-        }
-        else if( is_object( $output ) ) {
-
+        } elseif (is_object($output)) {
             $data = $this->extractObjectData($output, $language);
-
         }
 
         return $data;
-
     }
 
     /**
@@ -92,37 +75,31 @@ class BrickVariant extends Objectbrick
      * @param $fieldInfo
      * @return mixed
      */
-    public function getNameForVariant($fieldInfo) {
+    public function getNameForVariant($fieldInfo)
+    {
         return $fieldInfo['name'];
     }
 
-    private function extractObjectData( $object, $language ) {
-
-        $data = FALSE;
+    private function extractObjectData($object, $language)
+    {
+        $data = false;
 
         //check if there are some localize fields?
-        if (isset($object->localizedfields) && $object->localizedfields instanceof Object\LocalizedField)
-        {
+        if (isset($object->localizedfields) && $object->localizedfields instanceof Object\LocalizedField) {
             $items = $object->getLocalizedFields()->getItems();
 
-            if (isset($items[$language]))
-            {
+            if (isset($items[$language])) {
                 $itemValues = array_values($items[$language]);
             }
-        }
-        else
-        {
+        } else {
             $items = $object->getItems();
             $itemValues = is_array($items) ? array_values($items[$language]) : array();
         }
 
-        if (isset($itemValues[0]) && is_string($itemValues[0]))
-        {
+        if (isset($itemValues[0]) && is_string($itemValues[0])) {
             $data = $itemValues[0];
         }
 
         return $data;
-
     }
-
 }

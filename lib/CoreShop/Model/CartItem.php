@@ -16,10 +16,10 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Tool;
-
 use Pimcore\Model\Object\CoreShopCart;
 
-class CartItem extends Base {
+class CartItem extends Base
+{
     /**
      * Calculates the total for the CartItem
      *
@@ -73,7 +73,8 @@ class CartItem extends Base {
      * @throws UnsupportedException
      * @return int
      */
-    public function getAmount() {
+    public function getAmount()
+    {
         throw new UnsupportedException("getAmount is not supported for " . get_class($this));
     }
 
@@ -84,7 +85,8 @@ class CartItem extends Base {
      * @param $amount
      * @throws UnsupportedException
      */
-    public function setAmount($amount) {
+    public function setAmount($amount)
+    {
         throw new UnsupportedException("setAmount is not supported for " . get_class($this));
     }
 
@@ -95,7 +97,8 @@ class CartItem extends Base {
      * @throws UnsupportedException
      * @return Product
      */
-    public function getProduct() {
+    public function getProduct()
+    {
         throw new UnsupportedException("getProduct is not supported for " . get_class($this));
     }
 }

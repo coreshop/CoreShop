@@ -20,25 +20,27 @@ use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopCart;
 use CoreShop\Model\PriceRule;
 
-class SpecificPrice extends AbstractModel {
+class SpecificPrice extends AbstractModel
+{
 
     /**
      * possible types of a condition
      * @var array
      */
-    static $availableConditions = array("customer", "timeSpan", "country", "customerGroup");
+    public static $availableConditions = array("customer", "timeSpan", "country", "customerGroup");
 
     /**
      * possible types of a action
      * @var array
      */
-    static $availableActions = array("discountAmount", "discountPercent");
+    public static $availableActions = array("discountAmount", "discountPercent");
 
     /**
      * @param $condition
      */
-    public static function addCondition($condition) {
-        if(!in_array($condition, self::$availableConditions)) {
+    public static function addCondition($condition)
+    {
+        if (!in_array($condition, self::$availableConditions)) {
             self::$availableConditions[] = $condition;
         }
     }
@@ -46,8 +48,9 @@ class SpecificPrice extends AbstractModel {
     /**
      * @param $action
      */
-    public static function addAction($action) {
-        if(!in_array($action, self::$availableActions)) {
+    public static function addAction($action)
+    {
+        if (!in_array($action, self::$availableActions)) {
             self::$availableActions[] = $action;
         }
     }
@@ -83,7 +86,8 @@ class SpecificPrice extends AbstractModel {
      * @param $id
      * @return SpecificPrice|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
@@ -138,7 +142,7 @@ class SpecificPrice extends AbstractModel {
      */
     public function getConditions()
     {
-        if(!is_array($this->conditions)) {
+        if (!is_array($this->conditions)) {
             $this->conditions = array();
         }
 
@@ -158,7 +162,7 @@ class SpecificPrice extends AbstractModel {
      */
     public function getActions()
     {
-        if(!is_array($this->actions)) {
+        if (!is_array($this->actions)) {
             $this->actions = array();
         }
 
@@ -192,7 +196,8 @@ class SpecificPrice extends AbstractModel {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return strval($this->getName());
     }
 }

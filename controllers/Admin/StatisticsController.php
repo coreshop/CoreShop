@@ -15,13 +15,12 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model;
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_StatisticsController extends Admin
 {
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -38,7 +37,7 @@ class CoreShop_Admin_StatisticsController extends Admin
     public function getOrdersCartsFromLastDaysAction()
     {
         $days = 31;
-        $startDate = mktime(23,59,59,date("m"),date("d"),date("Y"));
+        $startDate = mktime(23, 59, 59, date("m"), date("d"), date("Y"));
 
         $data = array();
 
@@ -71,9 +70,10 @@ class CoreShop_Admin_StatisticsController extends Admin
     /**
      * Return Sales from last 31 days
      */
-    public function getSalesFromLastDaysAction() {
+    public function getSalesFromLastDaysAction()
+    {
         $days = 31;
-        $startDate = mktime(23,59,59,date("m"),date("d"),date("Y"));
+        $startDate = mktime(23, 59, 59, date("m"), date("d"), date("Y"));
 
         $data = array();
 
@@ -87,7 +87,7 @@ class CoreShop_Admin_StatisticsController extends Admin
             $listOrders->setCondition("o_creationDate > ? AND o_creationDate < ?", array($start, $end));
             $total = 0;
 
-            foreach($listOrders->getObjects() as $order) {
+            foreach ($listOrders->getObjects() as $order) {
                 $total += $order->getTotal();
             }
 

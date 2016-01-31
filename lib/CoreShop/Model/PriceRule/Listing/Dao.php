@@ -16,7 +16,8 @@ namespace CoreShop\Model\PriceRule\Listing;
 
 use CoreShop\Model\Listing;
 
-class Dao extends Listing\Dao\AbstractDao {
+class Dao extends Listing\Dao\AbstractDao
+{
 
     protected $tableName = 'coreshop_pricerules';
     protected $modelClass = '\\CoreShop\\Model\\PriceRule';

@@ -15,7 +15,6 @@
 namespace CoreShop\Model;
 
 use CoreShop\Tool;
-
 use Pimcore\Model\Object\Concrete;
 
 class Base extends Concrete

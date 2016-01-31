@@ -18,7 +18,8 @@ use CoreShop\Model\PriceRule;
 use CoreShop\Model\Cart;
 use Pimcore\Model;
 
-class TotalAvailable extends AbstractCondition {
+class TotalAvailable extends AbstractCondition
+{
 
     /**
      * @var int
@@ -79,9 +80,15 @@ class TotalAvailable extends AbstractCondition {
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
         //Check Total Available
-        if($this->getTotalAvailable() > 0)
-            if($this->getTotalUsed() >= $this->getTotalAvailable())
-                if($throwException) throw new \Exception("This voucher has already been used"); else return false;
+        if ($this->getTotalAvailable() > 0) {
+            if ($this->getTotalUsed() >= $this->getTotalAvailable()) {
+                if ($throwException) {
+                    throw new \Exception("This voucher has already been used");
+                } else {
+                    return false;
+                }
+            }
+        }
 
         return true;
     }

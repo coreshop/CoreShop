@@ -16,7 +16,6 @@ namespace CoreShop\Model;
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
-
 use Pimcore\Model\Document;
 
 class TaxRuleGroup extends AbstractModel
@@ -42,14 +41,16 @@ class TaxRuleGroup extends AbstractModel
      * @param $id
      * @return TaxRuleGroup|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
     /**
      * @return TaxRuleGroup[]
      */
-    public static function getAll() {
+    public static function getAll()
+    {
         $list = new TaxRuleGroup\Listing();
 
         return $list->getData();
@@ -60,7 +61,8 @@ class TaxRuleGroup extends AbstractModel
      *
      * @return TaxRule[]
      */
-    public function getRules() {
+    public function getRules()
+    {
         $listing = new TaxRule\Listing();
         $listing->setCondition("taxRuleGroupId = ?", array($this->getId()));
 
@@ -73,7 +75,8 @@ class TaxRuleGroup extends AbstractModel
      * @param Country $country
      * @return TaxRule[]
      */
-    public function getCountries(Country $country) {
+    public function getCountries(Country $country)
+    {
         $listing = new TaxRule\Listing();
         $listing->setCondition("taxRuleGroupId = ? AND countryId = ?", array($this->getId(), $country->getId()));
 

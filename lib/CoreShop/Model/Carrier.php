@@ -127,7 +127,8 @@ class Carrier extends AbstractModel
      *
      * @return mixed
      */
-    public function save() {
+    public function save()
+    {
         return $this->getDao()->save();
     }
 
@@ -137,7 +138,8 @@ class Carrier extends AbstractModel
      * @param $id
      * @return Carrier|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         $id = intval($id);
 
         if ($id < 1) {
@@ -148,25 +150,23 @@ class Carrier extends AbstractModel
 
         try {
             $carrier = \Zend_Registry::get($cacheKey);
-            if(!$carrier) {
+            if (!$carrier) {
                 throw new \Exception("Carrier in registry is null");
             }
 
             return $carrier;
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             try {
-                if(!$carrier = Cache::load($cacheKey)) {
+                if (!$carrier = Cache::load($cacheKey)) {
                     $db = Db::get();
                     //Todo: TableName already definied within 2 Dao files
                     $data = $db->fetchRow('SELECT class FROM coreshop_carriers WHERE id = ?', $id);
 
                     $class = get_called_class();
-                    if(is_array($data) && $data['class']) {
-                        if(\Pimcore\Tool::classExists($data['class'])) {
+                    if (is_array($data) && $data['class']) {
+                        if (\Pimcore\Tool::classExists($data['class'])) {
                             $class = $data['class'];
-                        }
-                        else {
+                        } else {
                             \Logger::warning(sprintf("Carrier with ID %s has definied class '%s' which cannot be loaded.", $id, $data['class']));
                         }
                     }
@@ -176,14 +176,12 @@ class Carrier extends AbstractModel
 
                     \Zend_Registry::set($cacheKey, $carrier);
                     Cache::save($carrier, $cacheKey);
-                }
-                else {
+                } else {
                     \Zend_Registry::set($cacheKey, $carrier);
                 }
 
                 return $carrier;
-            }
-            catch(\Exception $e) {
+            } catch (\Exception $e) {
                 \Logger::warning($e->getMessage());
             }
         }
@@ -196,7 +194,8 @@ class Carrier extends AbstractModel
      *
      * @return Carrier[]
      */
-    public static function getAll() {
+    public static function getAll()
+    {
         $list = new Carrier\Listing();
         $list->setOrder("ASC");
         $list->setOrderKey("grade");
@@ -211,19 +210,20 @@ class Carrier extends AbstractModel
      * @param Cart|null $cart
      * @return Carrier[]
      */
-    public static function getCarriersForCart(Cart $cart = null, Zone $zone = null) {
-        if(is_null($cart)) {
+    public static function getCarriersForCart(Cart $cart = null, Zone $zone = null)
+    {
+        if (is_null($cart)) {
             $cart = Tool::prepareCart();
         }
-        if(is_null($zone))
+        if (is_null($zone)) {
             $zone = Tool::getCountry()->getZone();
+        }
 
         $carriers = self::getAll();
         $availableCarriers = array();
 
-        foreach($carriers as $carrier)
-        {
-            if($carrier->checkCarrierForCart($cart, $zone)) {
+        foreach ($carriers as $carrier) {
+            if ($carrier->checkCarrierForCart($cart, $zone)) {
                 $availableCarriers[] = $carrier;
             }
         }
@@ -239,20 +239,21 @@ class Carrier extends AbstractModel
      * @return bool
      * @throws \CoreShop\Exception\UnsupportedException
      */
-    public function checkCarrierForCart(Cart $cart = null, Zone $zone = null) {
-        if(!$this->getMaxDeliveryPrice())
+    public function checkCarrierForCart(Cart $cart = null, Zone $zone = null)
+    {
+        if (!$this->getMaxDeliveryPrice()) {
             return false;
+        }
 
         //Check for Ranges
-        if($this->getRangeBehaviour() == self::RANGE_BEHAVIOUR_DEACTIVATE)
-        {
-            if($this->getShippingMethod() == self::SHIPPING_METHOD_PRICE) {
+        if ($this->getRangeBehaviour() == self::RANGE_BEHAVIOUR_DEACTIVATE) {
+            if ($this->getShippingMethod() == self::SHIPPING_METHOD_PRICE) {
                 if (!$this->checkDeliveryPriceByValue($zone, $cart->getTotal())) {
                     return false;
                 }
             }
 
-            if($this->getShippingMethod() == self::SHIPPING_METHOD_WEIGHT) {
+            if ($this->getShippingMethod() == self::SHIPPING_METHOD_WEIGHT) {
                 if (!$this->checkDeliveryPriceByValue($zone, $cart->getTotalWeight())) {
                     return false;
                 }
@@ -262,20 +263,19 @@ class Carrier extends AbstractModel
         $carrierIsAllowed = true;
 
         //Check for max-size
-        foreach($cart->getItems() as $item) {
+        foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
 
-            if(($this->getMaxWidth() > 0 && $product->getWidth() > $this->getMaxWidth())
+            if (($this->getMaxWidth() > 0 && $product->getWidth() > $this->getMaxWidth())
                 || ($this->getMaxHeight() > 0 && $product->getHeight() > $this->getMaxHeight())
                 || ($this->getMaxDepth() > 0 && $product->getDepth() > $this->getMaxDepth())
                 || ($this->getMaxWeight() > 0 && $product->getWeight() > $this->getMaxWeight())) {
-
                 $carrierIsAllowed = false;
                 break;
             }
         }
 
-        if(!$carrierIsAllowed) {
+        if (!$carrierIsAllowed) {
             return false;
         }
 
@@ -287,11 +287,13 @@ class Carrier extends AbstractModel
      *
      * @return AbstractRange[]
      */
-    public function getRanges() {
-        if($this->getShippingMethod() == "weight")
+    public function getRanges()
+    {
+        if ($this->getShippingMethod() == "weight") {
             $list = new Carrier\RangeWeight\Listing();
-        else
+        } else {
             $list = new Carrier\RangePrice\Listing();
+        }
 
         $list->setCondition("carrierId=?", array($this->getId()));
         $list->load();
@@ -305,23 +307,27 @@ class Carrier extends AbstractModel
      * @param Zone $zone
      * @return float|bool
      */
-    public function getMaxDeliveryPrice(Zone $zone = null) {
-        if(is_null($zone))
+    public function getMaxDeliveryPrice(Zone $zone = null)
+    {
+        if (is_null($zone)) {
             $zone = Tool::getCountry()->getZone();
+        }
 
         $ranges = $this->getRanges();
 
-        if(count($ranges) === 0)
+        if (count($ranges) === 0) {
             return false;
+        }
 
         $maxPrice = 0;
 
-        foreach($ranges as $range) {
+        foreach ($ranges as $range) {
             $price = $range->getPriceForZone($zone);
 
-            if($price instanceof DeliveryPrice) {
-                if ($price->getPrice() > $maxPrice)
+            if ($price instanceof DeliveryPrice) {
+                if ($price->getPrice() > $maxPrice) {
                     $maxPrice = $price->getPrice();
+                }
             }
         }
 
@@ -335,29 +341,30 @@ class Carrier extends AbstractModel
      * @param Cart $cart
      * @return bool|float
      */
-    public function getDeliveryPrice(Cart $cart, Zone $zone = null) {
+    public function getDeliveryPrice(Cart $cart, Zone $zone = null)
+    {
         $taxCalculator = $this->getTaxCalculator();
 
-        if(is_null($zone))
+        if (is_null($zone)) {
             $zone = Tool::getCountry()->getZone();
-
-        if($this->getShippingMethod() === self::SHIPPING_METHOD_PRICE) {
-            $value = $cart->getTotal();
         }
-        else {
+
+        if ($this->getShippingMethod() === self::SHIPPING_METHOD_PRICE) {
+            $value = $cart->getTotal();
+        } else {
             $value = $cart->getTotalWeight();
         }
 
         $ranges = $this->getRanges();
 
-        foreach($ranges as $range) {
+        foreach ($ranges as $range) {
             $price = $range->getPriceForZone($zone);
 
-            if($price instanceof DeliveryPrice) {
+            if ($price instanceof DeliveryPrice) {
                 if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
                     $deliveryPrice = $price->getPrice();
 
-                    if($taxCalculator) {
+                    if ($taxCalculator) {
                         return $taxCalculator->addTaxes($deliveryPrice);
                     }
 
@@ -366,10 +373,10 @@ class Carrier extends AbstractModel
             }
         }
 
-        if($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
+        if ($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
             $deliveryPrice = $this->getMaxDeliveryPrice($zone);
 
-            if($taxCalculator) {
+            if ($taxCalculator) {
                 return $taxCalculator->addTaxes($deliveryPrice);
             }
 
@@ -385,14 +392,15 @@ class Carrier extends AbstractModel
      * @param Country $country
      * @return bool|TaxCalculator
      */
-    public function getTaxCalculator(Country $country = null) {
-        if(is_null($country)) {
+    public function getTaxCalculator(Country $country = null)
+    {
+        if (is_null($country)) {
             $country = Tool::getCountry();
         }
 
         $taxRule = $this->getTaxRuleGroup();
 
-        if($taxRule instanceof TaxRuleGroup) {
+        if ($taxRule instanceof TaxRuleGroup) {
             $taxManager = TaxManagerFactory::getTaxManager($country, $taxRule->getId());
             $taxCalculator = $taxManager->getTaxCalculator();
 
@@ -409,13 +417,14 @@ class Carrier extends AbstractModel
      * @param $value
      * @return bool
      */
-    public function checkDeliveryPriceByValue(Zone $zone, $value) {
+    public function checkDeliveryPriceByValue(Zone $zone, $value)
+    {
         $ranges = $this->getRanges();
 
-        foreach($ranges as $range) {
+        foreach ($ranges as $range) {
             $price = $range->getPriceForZone($zone);
 
-            if($price instanceof DeliveryPrice) {
+            if ($price instanceof DeliveryPrice) {
                 if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
                     return true;
                 }
@@ -585,8 +594,9 @@ class Carrier extends AbstractModel
     {
         $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroupId);
 
-        if(!$taxRuleGroup instanceof TaxRuleGroup)
+        if (!$taxRuleGroup instanceof TaxRuleGroup) {
             return;
+        }
 
         $this->taxRuleGroupId = $taxRuleGroupId;
         $this->taxRuleGroup = $taxRuleGroup;
@@ -606,11 +616,13 @@ class Carrier extends AbstractModel
      */
     public function setTaxRuleGroup($taxRuleGroup)
     {
-        if(is_int($taxRuleGroup))
+        if (is_int($taxRuleGroup)) {
             $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroup);
+        }
 
-        if(!$taxRuleGroup instanceof TaxRuleGroup)
+        if (!$taxRuleGroup instanceof TaxRuleGroup) {
             throw new \Exception("\$taxRuleGroup must be instance of TaxRuleGroup");
+        }
 
         $this->taxRuleGroup = $taxRuleGroup;
         $this->taxRuleGroupId = $taxRuleGroup->getId();

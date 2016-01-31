@@ -17,7 +17,8 @@ namespace CoreShop\Model\PriceRule\Action;
 use Pimcore\Model;
 use CoreShop\Model\PriceRule\AbstractPriceRule;
 
-abstract class AbstractAction extends AbstractPriceRule {
+abstract class AbstractAction extends AbstractPriceRule
+{
     /**
      * @var string
      */
@@ -29,7 +30,7 @@ abstract class AbstractAction extends AbstractPriceRule {
      * @param Model\Object\CoreShopCart $cart
      * @return bool
      */
-    public abstract function applyRule(Model\Object\CoreShopCart $cart);
+    abstract public function applyRule(Model\Object\CoreShopCart $cart);
 
     /**
      * Remove Rule from Cart
@@ -37,7 +38,7 @@ abstract class AbstractAction extends AbstractPriceRule {
      * @param Model\Object\CoreShopCart $cart
      * @return bool
      */
-    public abstract function unApplyRule(Model\Object\CoreShopCart $cart);
+    abstract public function unApplyRule(Model\Object\CoreShopCart $cart);
 
     /**
      * Calculate discount
@@ -45,5 +46,5 @@ abstract class AbstractAction extends AbstractPriceRule {
      * @param Model\Object\CoreShopCart $cart
      * @return int
      */
-    public abstract function getDiscount(Model\Object\CoreShopCart $cart);
+    abstract public function getDiscount(Model\Object\CoreShopCart $cart);
 }

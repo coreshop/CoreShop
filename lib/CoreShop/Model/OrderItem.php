@@ -14,9 +14,12 @@
 
 namespace CoreShop\Model;
 
-use \Pimcore\Model\Object\CoreShopOrder;;
+use \Pimcore\Model\Object\CoreShopOrder;
 
-class OrderItem extends Base {
+;
+
+class OrderItem extends Base
+{
 
     /**
      * Calculate Total of OrderItem

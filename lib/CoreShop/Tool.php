@@ -22,17 +22,14 @@ use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object;
 use Pimcore\Mail;
-
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
 use CoreShop\Model\User;
-
 use Pimcore\Tool\Session;
-
 use GeoIp2\Database\Reader;
 
-
-class Tool {
+class Tool
+{
 
     /**
      * Format Price to locale
@@ -42,13 +39,10 @@ class Tool {
      */
     public static function formatPrice($price)
     {
-        try
-        {
+        try {
             $zCurrency = new \Zend_Currency("de_DE"); //TODO: fix to use Zend_Locale
             return $zCurrency->toCurrency($price, array('symbol' => Tool::getCurrency()->getSymbol()));
-        }
-        catch(\Exception $ex)
-        {
+        } catch (\Exception $ex) {
             echo $ex;
         }
         
@@ -65,21 +59,22 @@ class Tool {
      */
     public static function convertToCurrency($value, $toCurrency = null, $fromCurrency = null)
     {
-        if(!$fromCurrency instanceof Currency) {
+        if (!$fromCurrency instanceof Currency) {
             $baseCurrency = Configuration::get("SYSTEM.BASE.CURRENCY");
 
-            if($baseCurrency)
+            if ($baseCurrency) {
                 $fromCurrency = Currency::getById($baseCurrency);
-            else
+            } else {
                 return $value;
+            }
         }
 
-        if(!$toCurrency instanceof Currency) {
+        if (!$toCurrency instanceof Currency) {
             $toCurrency = Tool::getCurrency();
         }
 
-        if($fromCurrency instanceof Currency) {
-            if($toCurrency instanceof Currency && $toCurrency->getId() != $fromCurrency->getId()) {
+        if ($fromCurrency instanceof Currency) {
+            if ($toCurrency instanceof Currency && $toCurrency->getId() != $fromCurrency->getId()) {
                 return $value * $toCurrency->getExchangeRate();
             }
         }
@@ -102,7 +97,8 @@ class Tool {
      *
      * @return null|User
      */
-    public static function getUser() {
+    public static function getUser()
+    {
         $session = self::getSession();
 
         return $session->user instanceof User ? $session->user : null;
@@ -112,10 +108,11 @@ class Tool {
      * Load Controller from CoreShop
      * @param string $controllerName
      */
-    public static function loadController( $controllerName = '' )
+    public static function loadController($controllerName = '')
     {
-        if( file_exists( CORESHOP_PATH . "/controllers/" . $controllerName . "Controller.php" ) )
-            require( CORESHOP_PATH . "/controllers/" . $controllerName . "Controller.php" );
+        if (file_exists(CORESHOP_PATH . "/controllers/" . $controllerName . "Controller.php")) {
+            require(CORESHOP_PATH . "/controllers/" . $controllerName . "Controller.php");
+        }
     }
 
     /**
@@ -140,12 +137,12 @@ class Tool {
     {
         $cartSession = self::getSession();
 
-        if($cartSession->cartId)
-        {
+        if ($cartSession->cartId) {
             $cart = CoreShopCart::getById($cartSession->cartId);
 
-            if($cart instanceof CoreShopCart)
+            if ($cart instanceof CoreShopCart) {
                 return $cart;
+            }
         }
 
         $cart = CoreShopCart::prepare();
@@ -166,15 +163,16 @@ class Tool {
         $country = null;
         $cart = self::prepareCart();
 
-        if($session->countryId) {
+        if ($session->countryId) {
             $country = Country::getById($session->countryId);
 
-            if ($country instanceof Country)
+            if ($country instanceof Country) {
                 return $country;
+            }
         }
 
-        if($cart instanceof Cart) {
-            if(count($cart->getBillingAddress()) > 0) {
+        if ($cart instanceof Cart) {
+            if (count($cart->getBillingAddress()) > 0) {
                 $address = $cart->getBillingAddress()->get(0);
 
                 if ($address instanceof Object\Fieldcollection\Data\CoreShopUserAddress) {
@@ -183,7 +181,7 @@ class Tool {
             }
         }
 
-        if(!$country instanceof Country) {
+        if (!$country instanceof Country) {
             if ($session->user instanceof User) {
                 $user = $session->user;
 
@@ -194,35 +192,33 @@ class Tool {
         }
 
         if (!$country instanceof Country) {
-
             $geoDbFile = realpath(PIMCORE_WEBSITE_VAR . "/config/GeoLite2-City.mmdb");
             $record = null;
 
-            if(file_exists($geoDbFile)) {
+            if (file_exists($geoDbFile)) {
                 try {
                     $reader = new Reader($geoDbFile);
 
                     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
                         $ip = $_SERVER['HTTP_CLIENT_IP'];
-                    } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
                         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
                     } else {
                         $ip = $_SERVER['REMOTE_ADDR'];
                     }
 
-                    if(!self::checkIfIpIsPrivate($ip)) {
+                    if (!self::checkIfIpIsPrivate($ip)) {
                         $record = $reader->city($ip);
 
                         $country = Country::getByIsoCode($record->country->isoCode);
                     }
                 } catch (\Exception $e) {
-                    
                 }
             }
         }
 
 
-        if(!$country instanceof Country) {
+        if (!$country instanceof Country) {
 
             //Using Default Country: AT
             //TODO: Default Country configurable thru settings
@@ -241,8 +237,9 @@ class Tool {
      * @param $ip
      * @return bool
      */
-    private static function checkIfIpIsPrivate ($ip) {
-        $pri_addrs = array (
+    private static function checkIfIpIsPrivate($ip)
+    {
+        $pri_addrs = array(
             '10.0.0.0|10.255.255.255', // single class A network
             '172.16.0.0|172.31.255.255', // 16 contiguous class B network
             '192.168.0.0|192.168.255.255', // 256 contiguous class C network
@@ -250,14 +247,13 @@ class Tool {
             '127.0.0.0|127.255.255.255' // localhost
         );
 
-        $long_ip = ip2long ($ip);
+        $long_ip = ip2long($ip);
         if ($long_ip != -1) {
-
-            foreach ($pri_addrs AS $pri_addr) {
-                list ($start, $end) = explode('|', $pri_addr);
+            foreach ($pri_addrs as $pri_addr) {
+                list($start, $end) = explode('|', $pri_addr);
 
                 // IF IS PRIVATE
-                if ($long_ip >= ip2long ($start) && $long_ip <= ip2long ($end)) {
+                if ($long_ip >= ip2long($start) && $long_ip <= ip2long($end)) {
                     return true;
                 }
             }
@@ -277,12 +273,12 @@ class Tool {
     {
         $session = self::getSession();
 
-        if($session->currencyId)
-        {
+        if ($session->currencyId) {
             $currency = Currency::getById($session->currencyId);
 
-            if($currency instanceof Currency)
+            if ($currency instanceof Currency) {
                 return $currency;
+            }
         }
 
 
@@ -298,9 +294,10 @@ class Tool {
      */
     public static function objectInList(AbstractModel $object, array $objectList)
     {
-        foreach($objectList as $o) {
-            if($o->getId() == $object->getId())
+        foreach ($objectList as $o) {
+            if ($o->getId() == $object->getId()) {
                 return true;
+            }
         }
 
         return false;
@@ -340,39 +337,36 @@ class Tool {
     protected static function _objectToArray($object, $fieldDefintions=null)
     {
         //if the given object is an array then loop through each element
-        if(is_array($object))
-        {
+        if (is_array($object)) {
             $collections = array();
-            foreach($object as $o)
-            {
+            foreach ($object as $o) {
                 $collections[] = self::_objectToArray($o, $fieldDefintions);
             }
             return $collections;
         }
-        if(!is_object($object)) return false;
+        if (!is_object($object)) {
+            return false;
+        }
 
         //Custom list field definitions
-        if(null === $fieldDefintions)
-        {
+        if (null === $fieldDefintions) {
             $fieldDefintions = $object->getClass()->getFieldDefinitions();
         }
 
         $collection = array();
-        foreach($fieldDefintions as $fd)
-        {
+        foreach ($fieldDefintions as $fd) {
             $fieldName = $fd->getName();
             $getter    = "get" . ucfirst($fieldName);
             $value     = $object->$getter();
 
-            switch($fd->getFieldtype())
-            {
+            switch ($fd->getFieldtype()) {
                 case 'fieldcollections':
-                    if(($value instanceof Object\Fieldcollection) && is_array($value->getItems()))
-                    {
+                    if (($value instanceof Object\Fieldcollection) && is_array($value->getItems())) {
                         /** @var $value Object\Fieldcollection */
                         $def = $value->getItemDefinitions();
-                        if(method_exists($def['children'], 'getFieldDefinitions'))
+                        if (method_exists($def['children'], 'getFieldDefinitions')) {
                             $collection[$fieldName] = self::_objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
+                        }
                     }
                     break;
 
@@ -391,5 +385,4 @@ class Tool {
         $collection['key'] = $object->o_key;
         return $collection;
     }
-
 }

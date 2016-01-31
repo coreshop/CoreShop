@@ -19,11 +19,11 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
 use CoreShop\Model\PriceRule;
-
 use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Tool\Session;
 
-class Action extends \Website\Controller\Action {
+class Action extends \Website\Controller\Action
+{
 
     /**
      * @var \Zend_Session_Namespace
@@ -65,10 +65,10 @@ class Action extends \Website\Controller\Action {
 
         $this->session = $this->view->session = Tool::getSession();
 
-        if($this->getParam("currency"))
-        {
-            if(Currency::getById($this->getParam("currency")) instanceof Currency)
+        if ($this->getParam("currency")) {
+            if (Currency::getById($this->getParam("currency")) instanceof Currency) {
                 $this->session->currencyId = $this->getParam("currency");
+            }
         }
 
         $this->view->country = Tool::getCountry();
@@ -89,8 +89,7 @@ class Action extends \Website\Controller\Action {
     {
         $this->cart = $this->view->cart = Tool::prepareCart();
 
-        if($this->session->user instanceof CoreShopUser && !$this->cart->getUser() instanceof CoreShopUser)
-        {
+        if ($this->session->user instanceof CoreShopUser && !$this->cart->getUser() instanceof CoreShopUser) {
             $this->cart->setUser($this->session->user);
             $this->cart->save();
         }

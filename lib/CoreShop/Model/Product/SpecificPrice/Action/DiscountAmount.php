@@ -23,7 +23,8 @@ use CoreShop\Tool;
  * Class DiscountAmount
  * @package CoreShop\Model\PriceRule\Action
  */
-class DiscountAmount extends AbstractAction {
+class DiscountAmount extends AbstractAction
+{
 
     /**
      * @var int
@@ -78,7 +79,8 @@ class DiscountAmount extends AbstractAction {
      * @param Product $product
      * @return float
      */
-    public function getDiscount(Product $product) {
+    public function getDiscount(Product $product)
+    {
         return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
     }
 }

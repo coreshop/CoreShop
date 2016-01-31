@@ -16,7 +16,8 @@ namespace CoreShop\Model\Product\SpecificPrice\Condition;
 
 use CoreShop\Model;
 
-class TimeSpan extends AbstractCondition {
+class TimeSpan extends AbstractCondition
+{
 
     /**
      * @var int
@@ -38,8 +39,9 @@ class TimeSpan extends AbstractCondition {
      */
     public function getDateFrom()
     {
-        if(!$this->dateFrom instanceof \Zend_Date)
+        if (!$this->dateFrom instanceof \Zend_Date) {
             $this->dateFrom = new \Zend_Date($this->dateFrom / 1000);
+        }
 
         return $this->dateFrom;
     }
@@ -57,8 +59,9 @@ class TimeSpan extends AbstractCondition {
      */
     public function getDateTo()
     {
-        if(!$this->dateTo instanceof \Zend_Date)
+        if (!$this->dateTo instanceof \Zend_Date) {
             $this->dateTo = new \Zend_Date($this->dateTo / 1000);
+        }
 
         return $this->dateTo;
     }
@@ -83,13 +86,13 @@ class TimeSpan extends AbstractCondition {
         //Check Availability
         $date = \Zend_Date::now();
 
-        if($this->getDateFrom() instanceof \Zend_Date) {
+        if ($this->getDateFrom() instanceof \Zend_Date) {
             if ($date->get(\Zend_Date::TIMESTAMP) < $this->getDateFrom()->get(\Zend_Date::TIMESTAMP)) {
                 return false;
             }
         }
 
-        if($this->getDateTo() instanceof \Zend_Date) {
+        if ($this->getDateTo() instanceof \Zend_Date) {
             if ($date->get(\Zend_Date::TIMESTAMP) > $this->getDateTo()->get(\Zend_Date::TIMESTAMP)) {
                 return false;
             }

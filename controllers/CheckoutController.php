@@ -13,40 +13,37 @@
  */
 
 use CoreShopTemplate\Controller\Action;
-
 use CoreShop\Plugin;
 use CoreShop\Model\Plugin\Payment;
 use CoreShop\Tool;
-
 use Pimcore\Model\Object\CoreShopOrder;
 use Pimcore\Model\Object\CoreShopUser;
 
-class CoreShop_CheckoutController extends Action 
+class CoreShop_CheckoutController extends Action
 {
-    public function preDispatch() {
+    public function preDispatch()
+    {
         parent::preDispatch();
 
         //Checkout is not allowed in CatalogMode
-        if(\CoreShop\Config::isCatalogMode()) {
+        if (\CoreShop\Config::isCatalogMode()) {
             $this->redirect($this->view->url(array(), "coreshop_index"));
         }
         
-        if(count($this->view->cart->getItems()) == 0 && $this->getParam("action") != "thankyou")
-        {
+        if (count($this->view->cart->getItems()) == 0 && $this->getParam("action") != "thankyou") {
             $this->_redirect($this->view->url(array("action" => "list"), "coreshop_cart"));
         }
         
-        if(!is_array($this->session->order))
-        {
+        if (!is_array($this->session->order)) {
             $this->session->order = array();
         }
         
         $this->prepareCart();
     }
     
-    public function indexAction() {
-        if($this->session->user instanceof CoreShopUser)
-        {
+    public function indexAction()
+    {
+        if ($this->session->user instanceof CoreShopUser) {
             $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
         }
         
@@ -62,16 +59,15 @@ class CoreShop_CheckoutController extends Action
         $this->_helper->viewRenderer('user/register', null, true);
     }
     
-    public function addressAction() {
+    public function addressAction()
+    {
         $this->checkIsAllowed();
         
-        if($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $shippingAddress = $this->getParam("shipping-address");
             $billingAddress = $this->getParam("billing-address");
             
-            if($this->getParam("useShippingAsBilling", "off") == "on")
-            {
+            if ($this->getParam("useShippingAsBilling", "off") == "on") {
                 $billingAddress = $this->getParam("shipping-address");
             }
 
@@ -94,36 +90,31 @@ class CoreShop_CheckoutController extends Action
         $this->view->headTitle($this->view->translate("Address"));
     }
     
-    public function shippingAction() {
+    public function shippingAction()
+    {
         $this->checkIsAllowed();
         
         
         //Download Article - no need for Shipping
-        if(!$this->cart->hasPhysicalItems()) {
+        if (!$this->cart->hasPhysicalItems()) {
             $this->_redirect($this->view->url(array("action" => "payment"), "coreshop_checkout"));
         }
         
         $this->view->carriers = \CoreShop\Model\Carrier::getCarriersForCart($this->cart);
         
-        if($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $carrier = $this->getParam("carrier", false);
             
-            foreach($this->view->carriers as $c)
-            {
-                if($c->getId() == $carrier)
-                {
+            foreach ($this->view->carriers as $c) {
+                if ($c->getId() == $carrier) {
                     $carrier = $c;
                     break;
                 }
             }
             
-            if(!$carrier instanceof \CoreShop\Model\Carrier)
-            {
+            if (!$carrier instanceof \CoreShop\Model\Carrier) {
                 $this->view->error = "oh shit, not found";
-            }
-            else
-            {
+            } else {
                 $this->cart->setCarrier($carrier);
                 $this->cart->setPaymentModule(null); //Reset PaymentModule, payment could not be available for this carrier
                 $this->cart->save();
@@ -135,31 +126,26 @@ class CoreShop_CheckoutController extends Action
         $this->view->headTitle($this->view->translate("Shipping"));
     }
     
-    public function paymentAction() {
+    public function paymentAction()
+    {
         $this->checkIsAllowed();
 
         $this->view->provider = Plugin::getPaymentProviders($this->cart);
 
-        if($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $paymentProvider = $this->getParam("payment_provider", array());
             $provider = null;
 
-            foreach($this->view->provider as $provider)
-            {
-                if($provider->getIdentifier() == $paymentProvider)
-                {
+            foreach ($this->view->provider as $provider) {
+                if ($provider->getIdentifier() == $paymentProvider) {
                     $paymentProvider = $provider;
                     break;
                 }
             }
             
-            if(!$provider instanceof Payment)
-            {
+            if (!$provider instanceof Payment) {
                 $this->view->error = "oh shit, not found";
-            }
-            else
-            {
+            } else {
                 $this->cart->setPaymentModule($provider->getIdentifier());
                 $this->cart->save();
 
@@ -172,7 +158,7 @@ class CoreShop_CheckoutController extends Action
 
     public function thankyouAction()
     {
-        if(!$this->session->user instanceof CoreShopUser) {
+        if (!$this->session->user instanceof CoreShopUser) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }
@@ -180,8 +166,9 @@ class CoreShop_CheckoutController extends Action
         $this->view->order = CoreShopOrder::getById($this->session->orderId);
 
 
-        if(!$this->view->order instanceof CoreShopOrder)
+        if (!$this->view->order instanceof CoreShopOrder) {
             $this->_redirect("/" . $this->language . "/shop");
+        }
 
         $this->cart->delete();
         $this->prepareCart();
@@ -189,7 +176,7 @@ class CoreShop_CheckoutController extends Action
         unset($this->session->order);
         unset($this->session->cart);
 
-        if($this->session->user->getIsGuest()) {
+        if ($this->session->user->getIsGuest()) {
             unset($this->session->user);
         }
         
@@ -198,12 +185,11 @@ class CoreShop_CheckoutController extends Action
 
     public function errorAction()
     {
-
     }
     
     protected function checkIsAllowed()
     {
-        if(!$this->session->user instanceof CoreShopUser) {
+        if (!$this->session->user instanceof CoreShopUser) {
             $this->_redirect($this->view->url(array("action" => "index"), "coreshop_checkout"));
             exit;
         }

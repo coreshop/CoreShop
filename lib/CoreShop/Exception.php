@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * CoreShop
  *
@@ -16,5 +16,4 @@ namespace CoreShop;
 
 class Exception extends \Exception
 {
-    
 }

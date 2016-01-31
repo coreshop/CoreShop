@@ -16,7 +16,6 @@ namespace CoreShop\Model;
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
-
 use Pimcore\Model\Document;
 
 class Tax extends AbstractModel
@@ -44,7 +43,8 @@ class Tax extends AbstractModel
      * @param $id
      * @return Tax|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 

@@ -17,14 +17,16 @@ namespace CoreShop\Model\Dao;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Dao;
 
-abstract class AbstractDao extends Dao\AbstractDao {
+abstract class AbstractDao extends Dao\AbstractDao
+{
 
     protected $tableName = '';
 
     /**
      * @return string
      */
-    public function getTableName() {
+    public function getTableName()
+    {
         return $this->tableName;
     }
 
@@ -32,15 +34,17 @@ abstract class AbstractDao extends Dao\AbstractDao {
      * @param null $id
      * @throws \Exception
      */
-    public function getById($id = null) {
-
-        if ($id != null)
+    public function getById($id = null)
+    {
+        if ($id != null) {
             $this->model->setId($id);
+        }
 
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE id = ?', $this->model->getId());
 
-        if(!$data["id"])
+        if (!$data["id"]) {
             throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
+        }
 
 
         $this->assignVariablesToModel($data);
@@ -52,11 +56,13 @@ abstract class AbstractDao extends Dao\AbstractDao {
      * @param string $value
      * @throws \Exception
      */
-    public function getByField($field, $value) {
+    public function getByField($field, $value)
+    {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName()." WHERE $field = ?", $value);
 
-        if(!$data["id"])
+        if (!$data["id"]) {
             throw new \Exception(get_class($this->model) . " with the field/value " . $field . '-' . $value . " doesn't exists");
+        }
 
 
         $this->assignVariablesToModel($data);
@@ -70,7 +76,7 @@ abstract class AbstractDao extends Dao\AbstractDao {
      */
     public function getData()
     {
-        if($this->model->getLocalizedFields()) {
+        if ($this->model->getLocalizedFields()) {
             $this->model->getLocalizedFields()->load();
         }
     }
@@ -78,42 +84,48 @@ abstract class AbstractDao extends Dao\AbstractDao {
     /**
      * @throws \Zend_Db_Adapter_Exception
      */
-    public function save() {
-
+    public function save()
+    {
         $vars = get_object_vars($this->model);
 
         $buffer = array();
 
         $validColumns = $this->getValidTableColumns($this->getTableName());
 
-        if(count($vars))
+        if (count($vars)) {
             foreach ($vars as $k => $v) {
-
-                if(!in_array($k, $validColumns))
+                if (!in_array($k, $validColumns)) {
                     continue;
+                }
 
                 $getter = "get" . ucfirst($k);
 
-                if(!is_callable(array($this->model, $getter)))
+                if (!is_callable(array($this->model, $getter))) {
                     continue;
+                }
 
                 $value = $this->model->$getter();
 
-                if(is_bool($value))
+                if (is_bool($value)) {
                     $value = (int)$value;
-                if(is_array($value))
+                }
+                if (is_array($value)) {
                     $value = serialize($value);
-                if($value instanceof AbstractObject)
+                }
+                if ($value instanceof AbstractObject) {
                     $value = $value->getId();
+                }
 
                 $buffer[$k] = $value;
             }
+        }
 
-        if($this->model->getId() !== null) {
+        if ($this->model->getId() !== null) {
             $this->db->update($this->getTableName(), $buffer, $this->db->quoteInto("id = ?", $this->model->getId()));
 
-            if($this->model->getLocalizedFields())
+            if ($this->model->getLocalizedFields()) {
                 $this->model->getLocalizedFields()->save();
+            }
 
             return;
         }
@@ -121,14 +133,16 @@ abstract class AbstractDao extends Dao\AbstractDao {
         $this->db->insert($this->getTableName(), $buffer);
         $this->model->setId($this->db->lastInsertId());
 
-        if($this->model->getLocalizedFields())
+        if ($this->model->getLocalizedFields()) {
             $this->model->getLocalizedFields()->save();
+        }
     }
 
     /**
      *
      */
-    public function delete() {
+    public function delete()
+    {
         $this->db->delete($this->getTableName(), $this->db->quoteInto("id = ?", $this->model->getId()));
     }
 }

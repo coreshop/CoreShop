@@ -29,13 +29,11 @@ class Objectbrick extends AbstractData
      */
     public function getView($language = null)
     {
-        if(!$language)
-        {
+        if (!$language) {
             $language = \Zend_Registry::get("Zend_Locale");
         }
 
-        if(!$this->view)
-        {
+        if (!$this->view) {
             $this->view = new \Zend_View();
         }
 
@@ -62,7 +60,8 @@ class Objectbrick extends AbstractData
     /**
      * @return string|bool
      */
-    public function renderInvoice() {
+    public function renderInvoice()
+    {
         return false;
     }
 }

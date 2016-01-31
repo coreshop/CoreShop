@@ -16,7 +16,8 @@ namespace CoreShop\Model\Product\SpecificPrice;
 
 use Pimcore\Model;
 
-class AbstractSpecificPrice {
+class AbstractSpecificPrice
+{
 
     /**
      * @var string
@@ -31,15 +32,16 @@ class AbstractSpecificPrice {
     /**
      * @param array $values
      */
-    public function setValues(array $values) {
-        foreach($values as $key=>$value) {
-
-            if($key == "type")
+    public function setValues(array $values)
+    {
+        foreach ($values as $key=>$value) {
+            if ($key == "type") {
                 continue;
+            }
 
             $setter = "set" . ucfirst($key);
 
-            if(method_exists($this, $setter)) {
+            if (method_exists($this, $setter)) {
                 $this->$setter($value);
             }
         }

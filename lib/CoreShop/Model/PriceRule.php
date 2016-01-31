@@ -17,25 +17,27 @@ namespace CoreShop\Model;
 use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopCart;
 
-class PriceRule extends AbstractModel {
+class PriceRule extends AbstractModel
+{
 
     /**
      * possible types of a condition
      * @var array
      */
-    static $availableConditions = array("customer", "timeSpan", "amount", "totalAvailable", "totalPerCustomer", "country", "product", "category", "customerGroup");
+    public static $availableConditions = array("customer", "timeSpan", "amount", "totalAvailable", "totalPerCustomer", "country", "product", "category", "customerGroup");
 
     /**
      * possible types of a action
      * @var array
      */
-    static $availableActions = array("freeShipping", "discountAmount", "discountPercent", "gift");
+    public static $availableActions = array("freeShipping", "discountAmount", "discountPercent", "gift");
 
     /**
      * @param $condition
      */
-    public static function addCondition($condition) {
-        if(!in_array($condition, self::$availableConditions)) {
+    public static function addCondition($condition)
+    {
+        if (!in_array($condition, self::$availableConditions)) {
             self::$availableConditions[] = $condition;
         }
     }
@@ -43,8 +45,9 @@ class PriceRule extends AbstractModel {
     /**
      * @param $action
      */
-    public static function addAction($action) {
-        if(!in_array($action, self::$availableActions)) {
+    public static function addAction($action)
+    {
+        if (!in_array($action, self::$availableActions)) {
             self::$availableActions[] = $action;
         }
     }
@@ -100,7 +103,8 @@ class PriceRule extends AbstractModel {
      * @param $id
      * @return PriceRule|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
@@ -110,7 +114,8 @@ class PriceRule extends AbstractModel {
      * @param $code
      * @return PriceRule|null
      */
-    public static function getByCode($code) {
+    public static function getByCode($code)
+    {
         return parent::getByField("code", $code);
     }
 
@@ -142,11 +147,9 @@ class PriceRule extends AbstractModel {
 
         $availablePriceRules = array();
 
-        foreach($priceRules as $priceRule)
-        {
-            if($priceRule->checkValidity(false, true))
-            {
-                if($cart->getPriceRule() instanceof PriceRule && $priceRule->getId() == $cart->getPriceRule()->getId()) {
+        foreach ($priceRules as $priceRule) {
+            if ($priceRule->checkValidity(false, true)) {
+                if ($cart->getPriceRule() instanceof PriceRule && $priceRule->getId() == $cart->getPriceRule()->getId()) {
                     continue;
                 }
 
@@ -164,10 +167,11 @@ class PriceRule extends AbstractModel {
      */
     public static function autoRemoveFromCart(CoreShopCart $cart = null)
     {
-        if($cart == null)
+        if ($cart == null) {
             $cart = Tool::prepareCart();
+        }
 
-        if($cart->getPriceRule() instanceof PriceRule) {
+        if ($cart->getPriceRule() instanceof PriceRule) {
             if (!$cart->getPriceRule()->checkValidity(false, true)) {
                 $cart->removePriceRule();
             }
@@ -182,17 +186,18 @@ class PriceRule extends AbstractModel {
      */
     public static function autoAddToCart(Cart $cart = null)
     {
-        if($cart == null)
+        if ($cart == null) {
             $cart = Tool::prepareCart();
+        }
 
-        if($cart->getPriceRule() == null) {
+        if ($cart->getPriceRule() == null) {
             $priceRules = new PriceRule\Listing();
             $priceRules->setCondition("code IS NULL OR code = ''");
 
             $priceRules = $priceRules->getData();
 
             foreach ($priceRules as $priceRule) {
-                if($priceRule instanceof PriceRule) {
+                if ($priceRule instanceof PriceRule) {
                     if ($priceRule->checkValidity(false)) {
                         $cart->addPriceRule($priceRule);
                     }
@@ -217,13 +222,13 @@ class PriceRule extends AbstractModel {
         $cart = Tool::prepareCart();
 
         //Price Rule without actions doesnt make any sense
-        if(count($this->getActions()) <= 0) {
+        if (count($this->getActions()) <= 0) {
             return false;
         }
 
-        if($this->getConditions()) {
+        if ($this->getConditions()) {
             foreach ($this->getConditions() as $condition) {
-                if($condition instanceof PriceRule\Condition\AbstractCondition) {
+                if ($condition instanceof PriceRule\Condition\AbstractCondition) {
                     if (!$condition->checkCondition($cart, $this, $throwException)) {
                         return false;
                     }
@@ -237,24 +242,28 @@ class PriceRule extends AbstractModel {
     /**
      * Applies Rules to Cart
      */
-    public function applyRules() {
+    public function applyRules()
+    {
         $cart = Tool::prepareCart();
 
-        foreach($this->getActions() as $action) {
-            if($action instanceof PriceRule\Action\AbstractAction)
+        foreach ($this->getActions() as $action) {
+            if ($action instanceof PriceRule\Action\AbstractAction) {
                 $action->applyRule($cart);
+            }
         }
     }
 
     /**
      * Removes Rules from Cart
      */
-    public function unApplyRules() {
+    public function unApplyRules()
+    {
         $cart = Tool::prepareCart();
 
-        foreach($this->getActions() as $action) {
-            if($action instanceof PriceRule\Action\AbstractAction)
+        foreach ($this->getActions() as $action) {
+            if ($action instanceof PriceRule\Action\AbstractAction) {
                 $action->unApplyRule($cart);
+            }
         }
     }
 
@@ -268,10 +277,11 @@ class PriceRule extends AbstractModel {
         $cart = Tool::prepareCart();
         $discount = 0;
 
-        if($this->getActions()) {
-            foreach($this->getActions() as $action) {
-                if($action instanceof PriceRule\Action\AbstractAction)
+        if ($this->getActions()) {
+            foreach ($this->getActions() as $action) {
+                if ($action instanceof PriceRule\Action\AbstractAction) {
                     $discount += $action->getDiscount($cart);
+                }
             }
         }
 
@@ -363,7 +373,7 @@ class PriceRule extends AbstractModel {
      */
     public function getConditions()
     {
-        if(!is_array($this->conditions)) {
+        if (!is_array($this->conditions)) {
             $this->conditions = array();
         }
 
@@ -383,7 +393,7 @@ class PriceRule extends AbstractModel {
      */
     public function getActions()
     {
-        if(!is_array($this->actions)) {
+        if (!is_array($this->actions)) {
             $this->actions = array();
         }
 
@@ -433,7 +443,8 @@ class PriceRule extends AbstractModel {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return strval($this->getName());
     }
 }

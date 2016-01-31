@@ -36,7 +36,8 @@ class AbstractModel extends Model\AbstractModel
      * @param $id
      * @return null|AbstractModel
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         $id = intval($id);
 
         if ($id < 1) {
@@ -48,15 +49,14 @@ class AbstractModel extends Model\AbstractModel
 
         try {
             $object = \Zend_Registry::get($cacheKey);
-            if(!$object) {
+            if (!$object) {
                 throw new \Exception($className . " in registry is null");
             }
 
             return $object;
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             try {
-                if(!$object = Cache::load($cacheKey)) {
+                if (!$object = Cache::load($cacheKey)) {
                     $className = Tool::getModelClassMapping($className);
 
                     $object = new $className();
@@ -64,14 +64,12 @@ class AbstractModel extends Model\AbstractModel
 
                     \Zend_Registry::set($cacheKey, $object);
                     Cache::save($object, $cacheKey);
-                }
-                else {
+                } else {
                     \Zend_Registry::set($cacheKey, $object);
                 }
 
                 return $object;
-            }
-            catch(\Exception $e) {
+            } catch (\Exception $e) {
                 \Logger::warning($e->getMessage());
             }
         }
@@ -86,7 +84,8 @@ class AbstractModel extends Model\AbstractModel
      * @param string $value
      * @return null|AbstractModel
      */
-    public static function getByField($field, $value) {
+    public static function getByField($field, $value)
+    {
         //Todo: what if a object changes and is still in cache?
 
         $className = get_called_class();
@@ -94,28 +93,25 @@ class AbstractModel extends Model\AbstractModel
 
         try {
             $object = \Zend_Registry::get($cacheKey);
-            if(!$object) {
+            if (!$object) {
                 throw new \Exception($className . " in registry is null");
             }
 
             return $object;
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             try {
-                if(!$object = Cache::load($cacheKey)) {
+                if (!$object = Cache::load($cacheKey)) {
                     $object = new $className();
                     $object ->getDao()->getByField($field, $value);
 
                     \Zend_Registry::set($cacheKey, $object);
                     Cache::save($object, $cacheKey);
-                }
-                else {
+                } else {
                     \Zend_Registry::set($cacheKey, $object);
                 }
 
                 return $object;
-            }
-            catch(\Exception $e) {
+            } catch (\Exception $e) {
                 \Logger::warning($e->getMessage());
             }
         }
@@ -128,14 +124,16 @@ class AbstractModel extends Model\AbstractModel
      * @param $className
      * @return string
      */
-    protected static function getCacheKey($className, $append) {
+    protected static function getCacheKey($className, $append)
+    {
         return "coreshop_" . str_replace("\\", "_", $className) . "_" . $append;
     }
 
     /**
      *
      */
-    public function save() {
+    public function save()
+    {
         $this->getDao()->save();
 
         $cacheKey = self::getCacheKey(get_called_class(), $this->getId());
@@ -150,8 +148,9 @@ class AbstractModel extends Model\AbstractModel
      *
      * @return LocalizedFields|null
      */
-    public function getLocalizedFields() {
-        if(count($this->localizedValues) > 0) {
+    public function getLocalizedFields()
+    {
+        if (count($this->localizedValues) > 0) {
             if (is_null($this->localizedFields)) {
                 $this->localizedFields = new LocalizedFields($this->localizedValues);
                 $this->localizedFields->setObject($this);
@@ -168,7 +167,8 @@ class AbstractModel extends Model\AbstractModel
      *
      * @return LocalizedFields|null
      */
-    public function setLocalizedFields($localizedFields) {
+    public function setLocalizedFields($localizedFields)
+    {
         $this->localizedFields = $localizedFields;
     }
 
@@ -179,11 +179,12 @@ class AbstractModel extends Model\AbstractModel
      * @param $value
      * @return $this
      */
-    public function setValue($key, $value) {
-        if($this->getLocalizedFields()) {
+    public function setValue($key, $value)
+    {
+        if ($this->getLocalizedFields()) {
             $mykey = explode(".", $key); //0 => key, 1 => language
 
-            if(in_array($mykey [0], $this->localizedValues)) {
+            if (in_array($mykey [0], $this->localizedValues)) {
                 $this->getLocalizedFields()->setLocalizedValue($mykey [0], $value, $mykey [1]);
 
                 return $this;
@@ -212,7 +213,8 @@ class AbstractModel extends Model\AbstractModel
 
     public function __wakeup()
     {
-        if($this->getLocalizedFields())
+        if ($this->getLocalizedFields()) {
             $this->getLocalizedFields()->setObject($this);
+        }
     }
 }

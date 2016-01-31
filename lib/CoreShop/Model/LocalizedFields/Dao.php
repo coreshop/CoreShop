@@ -19,7 +19,8 @@ use Pimcore\Model;
 use Pimcore\Model\Object;
 use Pimcore\Tool;
 
-class Dao extends AbstractDao {
+class Dao extends AbstractDao
+{
 
     /**
      * @var null
@@ -29,29 +30,31 @@ class Dao extends AbstractDao {
     /**
      * @return string
      */
-    public function getTableName () {
+    public function getTableName()
+    {
         return $this->model->getObject()->getTableName() . "_data";
     }
 
     /**
      * @return string
      */
-    public function getQueryTableName () {
+    public function getQueryTableName()
+    {
         return $this->model->getObject()->getTableName() . "_query";
     }
 
     /**
      *
      */
-    public function save () {
+    public function save()
+    {
         $this->delete(false);
 
         $object = $this->model->getObject();
         $validLanguages = Tool::getValidLanguages();
         $localizedFields = $this->model->getFields();
 
-        foreach ($validLanguages as $language)
-        {
+        foreach ($validLanguages as $language) {
             $queryTable = $this->getQueryTableName() . "_" . $language;
             $sql = "SELECT * FROM " . $queryTable . " WHERE ooo_id = " . $object->getId() . " AND language = '" . $language . "'";
 
@@ -59,7 +62,7 @@ class Dao extends AbstractDao {
                 $this->db->fetchRow($sql);
             } catch (\Exception $e) {
                 // if the table doesn't exist -> create it!
-                if(strpos($e->getMessage(), "exist")) {
+                if (strpos($e->getMessage(), "exist")) {
 
                     // the following is to ensure consistent data and atomic transactions, while having the flexibility
                     // to add new languages on the fly without saving all classes having localized fields
@@ -83,7 +86,7 @@ class Dao extends AbstractDao {
                 "language" => $language
             );
 
-            foreach($localizedFields as $field) {
+            foreach ($localizedFields as $field) {
                 $insertData[$field] = $this->model->getLocalizedValue($field, $language, true);
             }
 
@@ -98,8 +101,7 @@ class Dao extends AbstractDao {
             // get fields which shouldn't be updated
             $untouchable = array();
 
-            foreach($this->model->getFields() as $key)
-            {
+            foreach ($this->model->getFields() as $key) {
                 if (!(in_array($key, $untouchable) and !is_array($this->model->$key))) {
                     $localizedValue = $this->model->getLocalizedValue($key, $language);
                     $insertData = $localizedValue;
@@ -122,7 +124,8 @@ class Dao extends AbstractDao {
     /**
      * @param boolean $deleteQuery
      */
-    public function delete ($deleteQuery = true) {
+    public function delete($deleteQuery = true)
+    {
         try {
             if ($deleteQuery) {
                 $this->db->delete($this->getTableName(), $this->db->quoteInto("ooo_id = ?", $this->model->getObject()->getId()));
@@ -133,7 +136,6 @@ class Dao extends AbstractDao {
                     $this->db->delete($queryTable, $this->db->quoteInto("ooo_id = ?", $this->model->getObject()->getId()));
                 }
             }
-
         } catch (\Exception $e) {
             \Logger::error($e);
             $this->createUpdateTable();
@@ -143,18 +145,17 @@ class Dao extends AbstractDao {
     /**
      *
      */
-    public function load () {
+    public function load()
+    {
         $validLanguages = Tool::getValidLanguages();
         foreach ($validLanguages as &$language) {
             $language = $this->db->quote($language);
         }
 
-        $data = $this->db->fetchAll("SELECT * FROM " . $this->getTableName() . " WHERE ooo_id = ? AND language IN (" . implode(",",$validLanguages) . ")", $this->model->getObject()->getId());
+        $data = $this->db->fetchAll("SELECT * FROM " . $this->getTableName() . " WHERE ooo_id = ? AND language IN (" . implode(",", $validLanguages) . ")", $this->model->getObject()->getId());
 
-        foreach ($data as $row)
-        {
-            foreach($this->model->getFields() as $field)
-            {
+        foreach ($data as $row) {
+            foreach ($this->model->getFields() as $field) {
                 $this->model->setLocalizedValue($field, $row[$field], $row['language']);
             }
         }
@@ -164,7 +165,8 @@ class Dao extends AbstractDao {
     /**
      *
      */
-    public function createLocalizedViews () {
+    public function createLocalizedViews()
+    {
 
         // init
         $languages = Tool::getValidLanguages();
@@ -185,15 +187,12 @@ class Dao extends AbstractDao {
 
             // get fallback for current language
             $fallback = count($languages) > 0
-                ? $getFallbackValue( $field, $languages )
+                ? $getFallbackValue($field, $languages)
                 : 'null'
             ;
 
             // create query
-            $sql = sprintf('ifnull(`%s`.`%s`, %s)'
-                , $lang
-                , $field
-                , $fallback
+            $sql = sprintf('ifnull(`%s`.`%s`, %s)', $lang, $field, $fallback
             );
 
             return $fallback !== 'null'
@@ -217,8 +216,7 @@ class Dao extends AbstractDao {
 
                 // get view fields
                 $viewFields = [];
-                foreach($viewColumns as $row)
-                {
+                foreach ($viewColumns as $row) {
                     $viewFields[] = $this->db->quoteIdentifier($row['Field']);
                 }
 
@@ -227,8 +225,7 @@ class Dao extends AbstractDao {
                 $localizedFields = [];
                 $fallbackLanguages = array_unique(Tool::getFallbackLanguagesFor($language));
                 array_unshift($fallbackLanguages, $language);
-                foreach($localizedColumns as $row)
-                {
+                foreach ($localizedColumns as $row) {
                     $localizedFields[] = $getFallbackValue($row['Field'], $fallbackLanguages) . sprintf(' as "%s"', $row['Field']);
                 }
 
@@ -247,21 +244,18 @@ QUERY;
 
 
                 // join fallback languages
-                foreach($fallbackLanguages as $lang)
-                {
+                foreach ($fallbackLanguages as $lang) {
                     $viewQuery .= <<<QUERY
 LEFT JOIN {$this->getQueryTableName()}_{$lang} as {$lang}
     ON( 1
         AND {$this->model->getObject()->getTableName()}.id = {$lang}.ooo_id
     )
 QUERY;
-
                 }
 
                 // execute
-                $this->db->query( $viewQuery );
-            }
-            catch (\Exception $e) {
+                $this->db->query($viewQuery);
+            } catch (\Exception $e) {
                 \Logger::error($e);
             }
         }
@@ -271,8 +265,8 @@ QUERY;
     /**
      *
      */
-    public function createUpdateTable () {
-
+    public function createUpdateTable()
+    {
         $table = $this->getTableName();
 
         $this->db->query("CREATE TABLE IF NOT EXISTS `" . $table . "` (
@@ -287,7 +281,7 @@ QUERY;
         $columnsToRemove = $existingColumns;
         $protectedColumns = array("ooo_id", "language");
 
-        foreach($this->model->getFields() as $field) {
+        foreach ($this->model->getFields() as $field) {
             $this->addModifyColumn($table, $field, "varchar(255)", "", "NULL");
             $protectedColumns[] = $field;
         }
@@ -314,7 +308,7 @@ QUERY;
             $existingColumns = $this->getValidTableColumns($queryTable, false); // no caching of table definition
             $columnsToRemove = $existingColumns;
 
-            foreach($this->model->getFields() as $field) {
+            foreach ($this->model->getFields() as $field) {
                 $this->addModifyColumn($queryTable, $field, "varchar(255)", "", "NULL");
                 $protectedColumns[] = $field;
             }
@@ -335,14 +329,14 @@ QUERY;
      * @param $default
      * @param $null
      */
-    private function addModifyColumn ($table, $colName, $type, $default, $null) {
-
+    private function addModifyColumn($table, $colName, $type, $default, $null)
+    {
         $existingColumns = $this->getValidTableColumns($table, false);
         $existingColName = null;
 
         // check for existing column case insensitive eg a rename from myInput to myinput
         $matchingExisting = preg_grep('/^' . preg_quote($colName, '/') . '$/i', $existingColumns);
-        if(is_array($matchingExisting) && !empty($matchingExisting)) {
+        if (is_array($matchingExisting) && !empty($matchingExisting)) {
             $existingColName = current($matchingExisting);
         }
 
@@ -361,7 +355,8 @@ QUERY;
      * @param $columnsToRemove
      * @param $protectedColumns
      */
-    private function removeUnusedColumns ($table, $columnsToRemove, $protectedColumns) {
+    private function removeUnusedColumns($table, $columnsToRemove, $protectedColumns)
+    {
         if (is_array($columnsToRemove) && count($columnsToRemove) > 0) {
             foreach ($columnsToRemove as $value) {
                 //if (!in_array($value, $protectedColumns)) {

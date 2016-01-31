@@ -18,7 +18,8 @@ use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 
-class Category extends Base {
+class Category extends Base
+{
 
     /**
      * Get all Categories
@@ -51,13 +52,14 @@ class Category extends Base {
      * @param Category $category
      * @return array
      */
-    public static function getAllChildCategories(Category $category) {
+    public static function getAllChildCategories(Category $category)
+    {
         $allChildren = array($category->getId());
 
-        $loopChilds = function(Category $child) use(&$loopChilds, &$allChildren) {
+        $loopChilds = function (Category $child) use (&$loopChilds, &$allChildren) {
             $childs = $child->getChildCategories();
 
-            foreach($childs as $child) {
+            foreach ($childs as $child) {
                 $allChildren[] = $child->getId();
 
                 $loopChilds($child);
@@ -79,14 +81,13 @@ class Category extends Base {
     {
         $list = new Object\CoreShopProduct\Listing();
 
-        if(!$includeChildCategories)
+        if (!$includeChildCategories) {
             $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
-        else {
+        } else {
             $categories = $this->getCatChilds();
             $categoriesWhere = array();
 
-            foreach($categories as $cat)
-            {
+            foreach ($categories as $cat) {
                 $categoriesWhere[] = "categories LIKE '%," . $cat . ",%'";
             }
 
@@ -110,14 +111,13 @@ class Category extends Base {
     {
         $list = new Object\CoreShopProduct\Listing();
 
-        if(!$includeChildCategories)
+        if (!$includeChildCategories) {
             $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
-        else {
+        } else {
             $categories = $this->getCatChilds();
             $categoriesWhere = array();
 
-            foreach($categories as $cat)
-            {
+            foreach ($categories as $cat) {
                 $categoriesWhere[] = "categories LIKE '%," . $cat . ",%'";
             }
 
@@ -141,7 +141,8 @@ class Category extends Base {
      * @param int $level to check hierachy (0 = topMost)
      * @return bool
      */
-    public function inCategory(Category $category, $level = 0) {
+    public function inCategory(Category $category, $level = 0)
+    {
         $mostTop = $this->getHierarchy();
         $mostTop = $mostTop[$level];
 
@@ -155,7 +156,8 @@ class Category extends Base {
      *
      * @return int
      */
-    public function getLevel() {
+    public function getLevel()
+    {
         return count($this->getHierarchy());
     }
 
@@ -164,7 +166,8 @@ class Category extends Base {
      *
      * @return array
      */
-    public function getCatChilds() {
+    public function getCatChilds()
+    {
         return self::getAllChildCategories($this);
     }
 
@@ -177,11 +180,12 @@ class Category extends Base {
     {
         $defaultImage = Configuration::get("SYSTEM.CATEGORY.DEFAULTIMAGE");
 
-        if($defaultImage) {
+        if ($defaultImage) {
             $image = Image::getByPath($defaultImage);
 
-            if ($image instanceof Image)
+            if ($image instanceof Image) {
                 return $image;
+            }
         }
 
         return false;
@@ -194,8 +198,7 @@ class Category extends Base {
      */
     public function getImage()
     {
-        if($this->getCategoryImage() instanceof Image)
-        {
+        if ($this->getCategoryImage() instanceof Image) {
             return $this->getCategoryImage();
         }
 
@@ -217,8 +220,7 @@ class Category extends Base {
             $hierarchy[] = $category;
 
             $category = $category->getParentCategory();
-        }
-        while($category instanceof Category);
+        } while ($category instanceof Category);
 
         return array_reverse($hierarchy);
     }
@@ -243,7 +245,8 @@ class Category extends Base {
      * @throws UnsupportedException
      * @return Image
      */
-    public function getCategoryImage() {
+    public function getCategoryImage()
+    {
         throw new UnsupportedException("getCategoryImage is not supported for " . get_class($this));
     }
 
@@ -254,8 +257,8 @@ class Category extends Base {
      * @throws UnsupportedException
      * @return Category
      */
-    public function getParentCategory() {
+    public function getParentCategory()
+    {
         throw new UnsupportedException("getParentCategory is not supported for " . get_class($this));
     }
-
 }

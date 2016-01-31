@@ -17,7 +17,8 @@ namespace CoreShop\Model\TaxRule\Listing;
 use CoreShop\Model\Listing;
 use CoreShop\Model;
 
-class Dao extends Listing\Dao\AbstractDao {
+class Dao extends Listing\Dao\AbstractDao
+{
 
     protected $tableName = 'coreshop_tax_rules';
     protected $modelClass = '\\CoreShop\\Model\\TaxRule';

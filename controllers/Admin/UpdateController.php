@@ -20,34 +20,33 @@ class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
     {
         parent::init();
         // clear the opcache (as of PHP 5.5)
-        if(function_exists("opcache_reset")) {
+        if (function_exists("opcache_reset")) {
             opcache_reset();
         }
         // clear the APC opcode cache (<= PHP 5.4)
-        if(function_exists("apc_clear_cache")) {
+        if (function_exists("apc_clear_cache")) {
             apc_clear_cache();
         }
         // clear the Zend Optimizer cache (Zend Server <= PHP 5.4)
         if (function_exists('accelerator_reset')) {
             accelerator_reset();
         }
-
     }
 
-    public function hasUpdatesAction ()
+    public function hasUpdatesAction()
     {
         $updater = new \CoreShop\Plugin\Update();
 
-        $hasUpdates = $updater->getAvailableBuildList() !== FALSE;
+        $hasUpdates = $updater->getAvailableBuildList() !== false;
 
-        if( $hasUpdates === FALSE )
+        if ($hasUpdates === false) {
             $updater->removeUpdateFolder();
+        }
 
-        $this->_helper->json( array('hasUpdate' => $hasUpdates) );
-
+        $this->_helper->json(array('hasUpdate' => $hasUpdates));
     }
 
-    public function installUpdateAction ()
+    public function installUpdateAction()
     {
         $maintenanceModeId = 'cache-warming-dummy-session-id';
         Admin::activateMaintenanceMode($maintenanceModeId);
@@ -59,7 +58,5 @@ class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
         Admin::deactivateMaintenanceMode();
 
         $this->_helper->json(array('success' => true, 'log' => $execution));
-
     }
-
 }

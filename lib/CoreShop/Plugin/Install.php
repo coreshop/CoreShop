@@ -17,7 +17,6 @@ namespace CoreShop\Plugin;
 use CoreShop\Model\Configuration;
 use CoreShop\Plugin;
 use CoreShop\Version;
-
 use Pimcore\File;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
@@ -39,8 +38,10 @@ class Install
      *
      * @param $fileName
      */
-    public function executeSQL($fileName) {
-        $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/sql/$fileName.sql";;
+    public function executeSQL($fileName)
+    {
+        $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/sql/$fileName.sql";
+        ;
 
         $setup = new Setup();
         $setup->insertDump($file);
@@ -57,12 +58,11 @@ class Install
     {
         $class = Object\ClassDefinition::getByName($className);
 
-        if (!$class || $updateClass)
-        {
+        if (!$class || $updateClass) {
             $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
             $json = file_get_contents($jsonFile);
 
-            $result = Plugin::getEventManager()->trigger("install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function($v) {
+            $result = Plugin::getEventManager()->trigger("install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function ($v) {
                 return ($v instanceof Object\ClassDefinition);
             });
 
@@ -70,22 +70,21 @@ class Install
                 return $result->last();
             }
 
-            if(!$class) {
+            if (!$class) {
                 $class = Object\ClassDefinition::create();
             }
 
             $class->setName($className);
             $class->setUserOwner($this->_getUser()->getId());
 
-            $result = Plugin::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function($v) {
+            $result = Plugin::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function ($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
 
             if ($result->stopped()) {
                 $resultJson = $result->last();
 
-                if($resultJson)
-                {
+                if ($resultJson) {
                     $json = $resultJson;
                 }
             }
@@ -122,25 +121,24 @@ class Install
     {
         try {
             $objectBrick = Object\Objectbrick\Definition::getByKey($name);
-        } 
-        catch (\Exception $e) {
-            if($jsonPath == null)
+        } catch (\Exception $e) {
+            if ($jsonPath == null) {
                 $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
+            }
             
             $objectBrick = new Object\Objectbrick\Definition();
             $objectBrick->setKey($name);
             
             $json = file_get_contents($jsonPath);
             
-            $result = Plugin::getEventManager()->trigger('install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function($v) {
+            $result = Plugin::getEventManager()->trigger('install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function ($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
     
             if ($result->stopped()) {
                 $resultJson = $result->last();
                 
-                if($resultJson)
-                {
+                if ($resultJson) {
                     $json = $resultJson;
                 }
             }
@@ -159,16 +157,13 @@ class Install
      */
     public function removeObjectBrick($name)
     {
-        try
-        {
+        try {
             $brick = Object\Objectbrick\Definition::getByKey($name);
 
             if ($brick) {
                 $brick->delete();
             }
-        } 
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             return false;
         }
         
@@ -186,25 +181,24 @@ class Install
     {
         try {
             $fieldCollection = Object\Fieldcollection\Definition::getByKey($name);
-        } 
-        catch (\Exception $e) {
-            if($jsonPath == null)
+        } catch (\Exception $e) {
+            if ($jsonPath == null) {
                 $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
+            }
                 
             $fieldCollection = new Object\Fieldcollection\Definition();
             $fieldCollection->setKey($name);
             
             $json = file_get_contents($jsonPath);
 
-            $result = Plugin::getEventManager()->trigger('install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function($v) {
+            $result = Plugin::getEventManager()->trigger('install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function ($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
     
             if ($result->stopped()) {
                 $resultJson = $result->last();
                 
-                if($resultJson)
-                {
+                if ($resultJson) {
                     $json = $resultJson;
                 }
             }
@@ -223,16 +217,13 @@ class Install
      */
     public function removeFieldcollection($name)
     {
-        try
-        {
+        try {
             $fc = Object\Fieldcollection\Definition::getByKey($name);
 
             if ($fc) {
                 $fc->delete();
             }
-        } 
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             return false;
         }
         
@@ -251,8 +242,7 @@ class Install
         $categories = Folder::getByPath("/coreshop/categories");
         $cart = Folder::getByPath("/coreshop/carts");
 
-        if(!$root instanceof Folder)
-        {
+        if (!$root instanceof Folder) {
             $root = Folder::create(array(
                 'o_parentId' => 1,
                 'o_creationDate' => time(),
@@ -263,8 +253,7 @@ class Install
             ));
         }
         
-        if(!$products instanceof Folder)
-        {
+        if (!$products instanceof Folder) {
             Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
@@ -275,8 +264,7 @@ class Install
             ));
         }
         
-        if(!$categories instanceof Folder)
-        {
+        if (!$categories instanceof Folder) {
             Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
@@ -287,8 +275,7 @@ class Install
             ));
         }
         
-        if(!$cart instanceof Folder)
-        {
+        if (!$cart instanceof Folder) {
             Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
@@ -325,34 +312,29 @@ class Install
     {
         $storedViews = Tool::getCustomViewConfig();
 
-        if ( empty( $storedViews ) )
-        {
+        if (empty($storedViews)) {
             $customViewId = 1;
             $storedViews = array();
-        }
-        else
-        {
+        } else {
             $last = end($storedViews);
             $customViewId = $last['id'] + 1;
         }
 
-        $alreadyDefined = FALSE;
+        $alreadyDefined = false;
 
         // does custom view already exists?
-        if( !empty( $storedViews ) )
-        {
-            foreach($storedViews as $view)
-            {
-                if( $view['name'] == 'CoreShop')
-                {
-                    $alreadyDefined = TRUE;
+        if (!empty($storedViews)) {
+            foreach ($storedViews as $view) {
+                if ($view['name'] == 'CoreShop') {
+                    $alreadyDefined = true;
                     break;
                 }
             }
         }
 
-        if( $alreadyDefined === TRUE )
+        if ($alreadyDefined === true) {
             return false;
+        }
 
         $view =  array(
             'name' => 'CoreShop',
@@ -380,19 +362,20 @@ class Install
      *
      * @param $xml
      */
-    public function installObjectData($xml) {
+    public function installObjectData($xml)
+    {
         $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/data/objects/$xml.xml";
 
-        if(file_exists($file)) {
+        if (file_exists($file)) {
             $config = new \Zend_Config_Xml($file);
             $config = $config->toArray();
             $coreShopNamespace = "\\CoreShop\\Model\\";
 
-            foreach($config['objects'] as $class=>$amounts) {
+            foreach ($config['objects'] as $class=>$amounts) {
                 $class = $coreShopNamespace . $class;
 
-                foreach($amounts as $values) {
-                    if(Tool::classExists($class)) {
+                foreach ($amounts as $values) {
+                    if (Tool::classExists($class)) {
                         $object = new $class();
 
                         foreach ($values as $key => $value) {
@@ -421,86 +404,84 @@ class Install
      * @param $xml
      * @throws \Exception
      */
-    public function installDocuments($xml) {
+    public function installDocuments($xml)
+    {
         $dataPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/data/documents";
         $file = $dataPath . "/$xml.xml";
 
-        if(file_exists($file))
-        {
+        if (file_exists($file)) {
             $config = new \Zend_Config_Xml($file);
             $config = $config->toArray();
 
-            if(array_key_exists("documents", $config))
-            {
+            if (array_key_exists("documents", $config)) {
                 $validLanguages = explode(",", \Pimcore\Config::getSystemConfig()->general->validLanguages);
 
-                foreach($validLanguages as $language)
-                {
+                foreach ($validLanguages as $language) {
                     $languageDocument = Document::getByPath("/" . $language);
 
-                    if(!$languageDocument instanceof Document) {
+                    if (!$languageDocument instanceof Document) {
                         $languageDocument = new Document\Page();
                         $languageDocument->setParent(Document::getById(1));
                         $languageDocument->setKey($language);
                         $languageDocument->save();
                     }
 
-                    foreach($config["documents"] as $value)
-                    {
-                        foreach($value as $doc)
-                        {
+                    foreach ($config["documents"] as $value) {
+                        foreach ($value as $doc) {
                             $document = Document::getByPath("/" . $language . "/" . $doc['path'] . "/" . $doc['key']);
 
-                            if(!$document)
-                            {
+                            if (!$document) {
                                 $class = "Pimcore\\Model\\Document\\" . ucfirst($doc['type']);
 
-                                if(Tool::classExists($class))
-                                {
+                                if (Tool::classExists($class)) {
                                     $document = new $class();
                                     $document->setParent(Document::getByPath("/" . $language . "/" . $doc['path']));
                                     $document->setKey($doc['key']);
                                     $document->setProperty("language", $language, 'text', true);
 
-                                    if($document instanceof Document\PageSnippet) {
-                                        if(array_key_exists("action", $doc))
+                                    if ($document instanceof Document\PageSnippet) {
+                                        if (array_key_exists("action", $doc)) {
                                             $document->setAction($doc['action']);
+                                        }
 
-                                        if(array_key_exists("controller", $doc))
+                                        if (array_key_exists("controller", $doc)) {
                                             $document->setController($doc['controller']);
+                                        }
 
-                                        if(array_key_exists("module", $doc))
+                                        if (array_key_exists("module", $doc)) {
                                             $document->setModule($doc['module']);
+                                        }
                                     }
 
                                     $document->save();
 
-                                    if(array_key_exists("content", $doc)) {
-                                        foreach($doc['content'] as $fieldLanguage=>$fields) {
-                                            if($fieldLanguage !== $language)
+                                    if (array_key_exists("content", $doc)) {
+                                        foreach ($doc['content'] as $fieldLanguage=>$fields) {
+                                            if ($fieldLanguage !== $language) {
                                                 continue;
+                                            }
 
-                                            foreach($fields['field'] as $field) {
+                                            foreach ($fields['field'] as $field) {
                                                 $key = $field['key'];
                                                 $type = $field['type'];
                                                 $content = null;
 
-                                                if(array_key_exists("file", $field)) {
+                                                if (array_key_exists("file", $field)) {
                                                     $file = $dataPath . "/" . $field['file'];
 
-                                                    if(file_exists($file))
+                                                    if (file_exists($file)) {
                                                         $content = file_get_contents($file);
+                                                    }
                                                 }
 
-                                                if(array_key_exists("value", $field)) {
+                                                if (array_key_exists("value", $field)) {
                                                     $content = $field['value'];
                                                 }
 
-                                                if($content) {
-                                                    if($type === "objectProperty") {
+                                                if ($content) {
+                                                    if ($type === "objectProperty") {
                                                         $document->setValue($key, $content);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         $document->setRawElement($key, $type, $content);
                                                     }
                                                 }
@@ -546,7 +527,8 @@ class Install
      *
      * @throws \Zend_Config_Exception
      */
-    public function setConfigInstalled() {
+    public function setConfigInstalled()
+    {
         Configuration::set("SYSTEM.ISINSTALLED", true);
     }
 
@@ -558,7 +540,7 @@ class Install
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
         
         foreach ($conf->routes->route as $def) {
-            if(!Staticroute::getByName($def->name)) {
+            if (!Staticroute::getByName($def->name)) {
                 $route = Staticroute::create();
                 $route->setName($def->name);
                 $route->setPattern($def->pattern);
@@ -584,7 +566,7 @@ class Install
     {
         Plugin::enableTheme($template);
 
-        if($installDemoData) {
+        if ($installDemoData) {
             Plugin::getTheme()->installDemoData();
         }
     }
@@ -651,9 +633,8 @@ class Install
     {
         $configFile = \Pimcore\Config::locateConfigFile('coreshop_configurations');
 
-        if( is_file( $configFile  . '.php' ) )
-        {
-            rename( $configFile  . '.php', $configFile  . '.BACKUP' );
+        if (is_file($configFile  . '.php')) {
+            rename($configFile  . '.php', $configFile  . '.BACKUP');
         }
     }
 
@@ -665,10 +646,10 @@ class Install
         $images = file_get_contents(PIMCORE_PLUGINS_PATH . "/CoreShop/install/thumbnails/images.json");
         $images = \Zend_Json::decode($images);
 
-        foreach($images as $name => $values) {
+        foreach ($images as $name => $values) {
             $thumbnail = \Pimcore\Model\Asset\Image\Thumbnail\Config::getByName($name);
 
-            if(!$thumbnail) {
+            if (!$thumbnail) {
                 $thumbnail = new \Pimcore\Model\Asset\Image\Thumbnail\Config();
             }
 
@@ -683,17 +664,16 @@ class Install
      */
     public function removeImageThumbnails()
     {
-        if(\Pimcore\Version::getRevision() >= 3608) {
+        if (\Pimcore\Version::getRevision() >= 3608) {
             $definitions = new \Pimcore\Model\Asset\Image\Thumbnail\Config\Listing();
             $definitions = $definitions->getThumbnails();
 
-            foreach($definitions as $definition) {
-                if(strpos($definition->getName(), "coreshop") === 0) {
+            foreach ($definitions as $definition) {
+                if (strpos($definition->getName(), "coreshop") === 0) {
                     $definition->delete();
                 }
             }
-        }
-        else {
+        } else {
             foreach (glob(PIMCORE_WEBSITE_PATH . "/var/config/imagepipelines/coreshop_*.xml") as $filename) {
                 unlink($filename);
             }

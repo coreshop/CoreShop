@@ -32,7 +32,8 @@ abstract class Payment implements AbstractPlugin
      * @param Cart $cart
      * @returns boolean if available
      */
-    public function isAvailable(Cart $cart) {
+    public function isAvailable(Cart $cart)
+    {
         return true;
     }
 
@@ -42,7 +43,8 @@ abstract class Payment implements AbstractPlugin
      * @param Cart $cart
      * @throws UnsupportedException
      */
-    public function getPaymentFee(Cart $cart) {
+    public function getPaymentFee(Cart $cart)
+    {
         throw new UnsupportedException("");
     }
 
@@ -52,7 +54,8 @@ abstract class Payment implements AbstractPlugin
      * @param Order $order
      * @throws UnsupportedException
      */
-    public function process(Order $order) {
+    public function process(Order $order)
+    {
         throw new UnsupportedException("");
     }
 
@@ -64,10 +67,11 @@ abstract class Payment implements AbstractPlugin
      * @param $totalPayed
      * @return Order
      */
-    public function createOrder(Cart $cart, OrderState $state, $totalPayed = 0, $language = null) {
+    public function createOrder(Cart $cart, OrderState $state, $totalPayed = 0, $language = null)
+    {
         $orderNumber = Order::getNextOrderNumber();
 
-        if(is_null($language)) {
+        if (is_null($language)) {
             $language = \Zend_Registry::get("Zend_Locale");
         }
 
@@ -85,11 +89,10 @@ abstract class Payment implements AbstractPlugin
         $order->setPaymentProviderDescription($this->getDescription());
         $order->setOrderDate(new Date());
 
-        if($cart->getCarrier() instanceof Carrier) {
+        if ($cart->getCarrier() instanceof Carrier) {
             $order->setCarrier($cart->getCarrier());
             $order->setShipping($cart->getCarrier()->getDeliveryPrice($cart));
-        }
-        else {
+        } else {
             $order->setShipping(0);
         }
 
@@ -103,10 +106,9 @@ abstract class Payment implements AbstractPlugin
 
         $state->processStep($order);
 
-        Plugin::actionHook("order.created", array("order" => $order) );
+        Plugin::actionHook("order.created", array("order" => $order));
 
         return $order;
-
     }
 
     /**
@@ -116,7 +118,8 @@ abstract class Payment implements AbstractPlugin
      * @action $action string action name
      * @return string
      */
-    public function url($module, $action) {
+    public function url($module, $action)
+    {
         $controller = \Zend_Controller_Front::getInstance();
         $router = $controller->getRouter();
 

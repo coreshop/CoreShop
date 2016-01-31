@@ -35,14 +35,16 @@ class TranslateCountry
      */
     public function translateCountry($countryCode)
     {
-        if($countryCode instanceof Country)
+        if ($countryCode instanceof Country) {
             $countryCode = $countryCode->getIsoCode();
+        }
 
         $locale = \Zend_Registry::get("Zend_Locale");
         $countries = $locale->getTranslationList('Territory', $locale, 2);
 
-        if(array_key_exists($countryCode, $countries))
+        if (array_key_exists($countryCode, $countries)) {
             return $countries[$countryCode];
+        }
 
         return false;
     }

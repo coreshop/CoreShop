@@ -19,7 +19,8 @@ use CoreShop\Model\Cart;
 use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopUser;
 
-class TotalPerCustomer extends AbstractCondition {
+class TotalPerCustomer extends AbstractCondition
+{
 
     /**
      * @var int
@@ -61,19 +62,23 @@ class TotalPerCustomer extends AbstractCondition {
         $session = Tool::getSession();
 
         //Check Total For Customer
-        if($session->user instanceof CoreShopUser)
-        {
+        if ($session->user instanceof CoreShopUser) {
             $orders = $session->user->getOrders();
             $priceRulesUsed = 0;
 
-            foreach($orders as $order)
-            {
-                if($order->getPriceRule() instanceof PriceRule && $order->getPriceRule()->getId() == $priceRule->getId())
+            foreach ($orders as $order) {
+                if ($order->getPriceRule() instanceof PriceRule && $order->getPriceRule()->getId() == $priceRule->getId()) {
                     $priceRulesUsed++;
+                }
             }
 
-            if($priceRulesUsed >= $this->getTotal())
-                if($throwException) throw new \Exception("You cannot use this voucher anymore (usage limit reached)"); else return false;
+            if ($priceRulesUsed >= $this->getTotal()) {
+                if ($throwException) {
+                    throw new \Exception("You cannot use this voucher anymore (usage limit reached)");
+                } else {
+                    return false;
+                }
+            }
         }
 
         return true;

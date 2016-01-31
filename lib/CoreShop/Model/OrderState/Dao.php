@@ -16,7 +16,8 @@ namespace CoreShop\Model\OrderState;
 
 use CoreShop\Model\Dao\AbstractDao;
 
-class Dao extends AbstractDao {
+class Dao extends AbstractDao
+{
 
     protected $tableName = 'coreshop_orderstates';
 }

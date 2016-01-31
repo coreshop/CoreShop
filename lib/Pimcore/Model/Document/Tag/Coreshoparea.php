@@ -24,15 +24,18 @@ class Coreshoparea extends Area
     /**
      * @return array
      */
-    public function getAreaDirs () {
+    public function getAreaDirs()
+    {
         return ExtensionManager::getBrickDirectories($this->getThemeAreaDir());
     }
 
-    public function getBrickConfigs() {
+    public function getBrickConfigs()
+    {
         return ExtensionManager::getBrickConfigs($this->getThemeAreaDir());
     }
 
-    protected function getThemeAreaDir() {
+    protected function getThemeAreaDir()
+    {
         return CORESHOP_TEMPLATE_PATH . "/views/areas";
     }
 }

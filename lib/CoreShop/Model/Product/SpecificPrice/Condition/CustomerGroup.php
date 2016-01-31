@@ -18,7 +18,8 @@ use CoreShop\Model;
 use CoreShop\Model\CustomerGroup as CustomerGroupModel;
 use CoreShop\Tool;
 
-class CustomerGroup extends AbstractCondition {
+class CustomerGroup extends AbstractCondition
+{
 
     /**
      * @var int
@@ -35,8 +36,9 @@ class CustomerGroup extends AbstractCondition {
      */
     public function getCustomerGroup()
     {
-        if(!$this->customerGroup instanceof CustomerGroupModel)
+        if (!$this->customerGroup instanceof CustomerGroupModel) {
             $this->customerGroup = CustomerGroupModel::getById($this->customerGroup);
+        }
 
         return $this->customerGroup;
     }
@@ -61,8 +63,8 @@ class CustomerGroup extends AbstractCondition {
         $cart = Tool::prepareCart();
         $customer = $cart->getUser();
 
-        if($customer) {
-            if($customer->isInGroup($this->getCustomerGroup())) {
+        if ($customer) {
+            if ($customer->isInGroup($this->getCustomerGroup())) {
                 return true;
             }
         }

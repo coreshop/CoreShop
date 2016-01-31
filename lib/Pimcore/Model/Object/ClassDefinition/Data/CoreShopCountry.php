@@ -16,7 +16,8 @@ namespace Pimcore\Model\Object\ClassDefinition\Data;
 
 use CoreShop\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
 
-class CoreShopCountry extends CoreShopSelect {
+class CoreShopCountry extends CoreShopSelect
+{
 
     /**
      * Static type of this element
@@ -31,5 +32,4 @@ class CoreShopCountry extends CoreShopSelect {
      * @var string
      */
     public $phpdocType = "\\CoreShop\\Model\\Country";
-
 }

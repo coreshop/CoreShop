@@ -18,7 +18,8 @@ use CoreShop\Model\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Tool;
 
-class Amount extends AbstractCondition {
+class Amount extends AbstractCondition
+{
 
     /**
      * @var int
@@ -79,15 +80,19 @@ class Amount extends AbstractCondition {
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
         //Check Cart Amount
-        if($this->getMinAmount() > 0)
-        {
+        if ($this->getMinAmount() > 0) {
             $minAmount = $this->getMinAmount();
             $minAmount = Tool::convertToCurrency($minAmount, $this->getCurrency(), Tool::getCurrency());
 
             $cartTotal = $cart->getSubtotal();
 
-            if($minAmount > $cartTotal)
-                if($throwException) throw new \Exception("You have not reached the minimum amount required to use this voucher"); else return false;
+            if ($minAmount > $cartTotal) {
+                if ($throwException) {
+                    throw new \Exception("You have not reached the minimum amount required to use this voucher");
+                } else {
+                    return false;
+                }
+            }
         }
 
         return true;

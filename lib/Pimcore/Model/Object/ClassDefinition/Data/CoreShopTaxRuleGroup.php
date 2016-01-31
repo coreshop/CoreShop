@@ -16,7 +16,8 @@ namespace Pimcore\Model\Object\ClassDefinition\Data;
 
 use CoreShop\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
 
-class CoreShopTaxRuleGroup extends CoreShopSelect {
+class CoreShopTaxRuleGroup extends CoreShopSelect
+{
 
     /**
      * Static type of this element

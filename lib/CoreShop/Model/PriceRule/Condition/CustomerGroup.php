@@ -19,7 +19,8 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\CustomerGroup as CustomerGroupModel;
 use CoreShop\Tool;
 
-class CustomerGroup extends AbstractCondition {
+class CustomerGroup extends AbstractCondition
+{
 
     /**
      * @var int
@@ -36,8 +37,9 @@ class CustomerGroup extends AbstractCondition {
      */
     public function getCustomerGroup()
     {
-        if(!$this->customerGroup instanceof CustomerGroupModel)
+        if (!$this->customerGroup instanceof CustomerGroupModel) {
             $this->customerGroup = CustomerGroupModel::getById($this->customerGroup);
+        }
 
         return $this->customerGroup;
     }
@@ -63,17 +65,28 @@ class CustomerGroup extends AbstractCondition {
     {
         $customer = $cart->getUser();
 
-        if(!$customer) {
-            if($throwException) throw new \Exception("Customer in cart is emtpy!"); else return false;
+        if (!$customer) {
+            if ($throwException) {
+                throw new \Exception("Customer in cart is emtpy!");
+            } else {
+                return false;
+            }
         }
 
-        if(!$customer->getCustomerGroup() instanceof CustomerGroupModel) {
-            if($throwException) throw new \Exception("Customer has no Customer Group!"); else return false;
+        if (!$customer->getCustomerGroup() instanceof CustomerGroupModel) {
+            if ($throwException) {
+                throw new \Exception("Customer has no Customer Group!");
+            } else {
+                return false;
+            }
         }
 
-        if($this->getCustomerGroup()->getId() !== $customer->getCustomerGroup()->getId())
-        {
-            if($throwException) throw new \Exception("You cannot use this voucher."); else return false;
+        if ($this->getCustomerGroup()->getId() !== $customer->getCustomerGroup()->getId()) {
+            if ($throwException) {
+                throw new \Exception("You cannot use this voucher.");
+            } else {
+                return false;
+            }
         }
 
         return true;

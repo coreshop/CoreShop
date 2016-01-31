@@ -16,7 +16,8 @@ namespace CoreShop\Model\Carrier\DeliveryPrice;
 
 use CoreShop\Model\Dao\AbstractDao;
 
-class Dao extends AbstractDao {
+class Dao extends AbstractDao
+{
 
     protected $tableName = 'coreshop_carriers_delivery_price';
 
@@ -29,8 +30,9 @@ class Dao extends AbstractDao {
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE `carrier` = ? AND `range` = ?', [$carrier, $range]);
 
-        if(!$data["id"])
+        if (!$data["id"]) {
             throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
+        }
 
         $this->assignVariablesToModel($data);
     }
@@ -41,11 +43,13 @@ class Dao extends AbstractDao {
      * @param $zone
      * @throws \Exception
      */
-    public function getForCarrierInZone($carrier, $range, $zone) {
+    public function getForCarrierInZone($carrier, $range, $zone)
+    {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE `carrierId` = ? AND `rangeId` = ? AND zoneId = ?', [$carrier, $range, $zone]);
 
-        if(!$data["id"])
+        if (!$data["id"]) {
             throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
+        }
 
         $this->assignVariablesToModel($data);
     }

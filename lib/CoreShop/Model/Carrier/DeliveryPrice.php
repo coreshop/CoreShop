@@ -17,7 +17,6 @@ namespace CoreShop\Model\Carrier;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Zone;
 use CoreShop\Model\AbstractModel;
-
 use CoreShop\Tool;
 
 class DeliveryPrice extends AbstractModel
@@ -67,7 +66,8 @@ class DeliveryPrice extends AbstractModel
      */
     public $price;
 
-    public function save() {
+    public function save()
+    {
         return $this->getDao()->save();
     }
 
@@ -77,7 +77,8 @@ class DeliveryPrice extends AbstractModel
      * @param $id
      * @return DeliveryPrice|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
@@ -88,15 +89,14 @@ class DeliveryPrice extends AbstractModel
      * @param AbstractRange $range
      * @return DeliveryPrice|null
      */
-    public static function getByCarrierAndRange(Carrier $carrier, AbstractRange $range) {
+    public static function getByCarrierAndRange(Carrier $carrier, AbstractRange $range)
+    {
         try {
             $obj = new self;
             $obj->getDao()->getByCarrierAndRange($carrier->getId(), $range->getId());
 
             return $obj;
-        }
-        catch(\Exception $ex) {
-
+        } catch (\Exception $ex) {
         }
 
         return null;
@@ -111,15 +111,14 @@ class DeliveryPrice extends AbstractModel
      *
      * @return DeliveryPrice|null
      */
-    public static function getForCarrierInZone(Carrier $carrier, AbstractRange $range, Zone $zone) {
+    public static function getForCarrierInZone(Carrier $carrier, AbstractRange $range, Zone $zone)
+    {
         try {
             $obj = new self;
             $obj->getDao()->getForCarrierInZone($carrier->getId(), $range->getId(), $zone->getId());
 
             return $obj;
-        }
-        catch(\Exception $ex) {
-
+        } catch (\Exception $ex) {
         }
 
         return null;
@@ -156,11 +155,10 @@ class DeliveryPrice extends AbstractModel
     {
         $range = AbstractRange::getById($rangeId, $this->getRangeType());
 
-        if(!$range instanceof AbstractRange) {
+        if (!$range instanceof AbstractRange) {
             $this->rangeId = null;
             $this->range = null;
-        }
-        else {
+        } else {
             $this->rangeId = $rangeId;
             $this->range = $range;
         }
@@ -181,12 +179,13 @@ class DeliveryPrice extends AbstractModel
      */
     public function setRange($range)
     {
-        if(is_int($range)) {
+        if (is_int($range)) {
             $range = AbstractRange::getById($range, $this->getRangeType());
         }
 
-        if(!$range instanceof AbstractRange)
+        if (!$range instanceof AbstractRange) {
             throw new \Exception("\$zone must be instance of Zone");
+        }
 
         $this->range = $range;
         $this->rangeId = $range->getId();
@@ -239,11 +238,13 @@ class DeliveryPrice extends AbstractModel
      */
     public function setZone($zone)
     {
-        if(is_int($zone))
+        if (is_int($zone)) {
             $zone = Zone::getById($zone);
+        }
 
-        if(!$zone instanceof Zone)
+        if (!$zone instanceof Zone) {
             throw new \Exception("\$zone must be instance of Zone");
+        }
 
         $this->zone = $zone;
         $this->zoneId = $zone->getId();
@@ -265,11 +266,10 @@ class DeliveryPrice extends AbstractModel
     {
         $zone = Zone::getById($zoneId);
 
-        if(!$zone instanceof Zone) {
+        if (!$zone instanceof Zone) {
             $this->zoneId = null;
             $this->zone = null;
-        }
-        else {
+        } else {
             $this->zoneId = $zoneId;
             $this->zone = $zone;
         }
@@ -289,11 +289,13 @@ class DeliveryPrice extends AbstractModel
      */
     public function setCarrier($carrier)
     {
-        if(is_int($carrier))
+        if (is_int($carrier)) {
             $carrier = Carrier::getById($carrier);
+        }
 
-        if(!$carrier instanceof Carrier)
+        if (!$carrier instanceof Carrier) {
             throw new \Exception("\$carrier must be instance of Carrier");
+        }
 
         $this->carrier = $carrier;
         $this->carrierId = $carrier->getId();
@@ -315,11 +317,10 @@ class DeliveryPrice extends AbstractModel
     {
         $carrier = Carrier::getById($carrierId);
 
-        if(!$carrier instanceof Carrier) {
+        if (!$carrier instanceof Carrier) {
             $this->carrierId = null;
             $this->carrier = null;
-        }
-        else {
+        } else {
             $this->carrierId = $carrierId;
             $this->carrier = $carrier;
         }

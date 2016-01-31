@@ -15,13 +15,12 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Country;
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_CountryController extends Admin
 {
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -39,7 +38,7 @@ class CoreShop_Admin_CountryController extends Admin
         $list->load();
 
         $countries = array();
-        if(is_array($list->getData())){
+        if (is_array($list->getData())) {
             foreach ($list->getData() as $country) {
                 $countries[] = $this->getTreeNodeConfig($country);
             }
@@ -47,7 +46,8 @@ class CoreShop_Admin_CountryController extends Admin
         $this->_helper->json($countries);
     }
 
-    protected function getTreeNodeConfig($country) {
+    protected function getTreeNodeConfig($country)
+    {
         $tmpCountry= array(
             "id" => $country->getId(),
             "text" => $country->getName(),
@@ -65,41 +65,44 @@ class CoreShop_Admin_CountryController extends Admin
         return $tmpCountry;
     }
 
-    public function getAction() {
+    public function getAction()
+    {
         $id = $this->getParam("id");
         $country = Country::getById($id);
 
-        if($country instanceof Country)
+        if ($country instanceof Country) {
             $this->_helper->json(array("success" => true, "data" => $country));
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function saveAction() {
+    public function saveAction()
+    {
         $id = $this->getParam("id");
         $data = $this->getParam("data");
         $country = Country::getById($id);
 
 
-        if($data && $country instanceof Country) {
+        if ($data && $country instanceof Country) {
             $data = \Zend_Json::decode($this->getParam("data"));
 
             $country->setValues($data);
             $country->save();
 
             $this->_helper->json(array("success" => true, "data" => $country));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function addAction() {
+    public function addAction()
+    {
         $name = $this->getParam("name");
 
-        if(strlen($name) <= 0) {
+        if (strlen($name) <= 0) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
-        }
-        else {
+        } else {
             $country = new Country();
             $country->setName($name);
             $country->setActive(1);
@@ -109,11 +112,12 @@ class CoreShop_Admin_CountryController extends Admin
         }
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->getParam("id");
         $country = Country::getById($id);
 
-        if($country instanceof Country) {
+        if ($country instanceof Country) {
             $country->delete();
 
             $this->_helper->json(array("success" => true));

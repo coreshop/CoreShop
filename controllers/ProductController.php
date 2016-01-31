@@ -13,18 +13,18 @@
  */
 
 use CoreShopTemplate\Controller\Action;
-
 use Pimcore\Model\Object\CoreShopProduct;
 use Pimcore\Model\Object\CoreShopCategory;
 
-class CoreShop_ProductController extends Action {
+class CoreShop_ProductController extends Action
+{
     
-    public function detailAction () {
+    public function detailAction()
+    {
         $id = $this->getParam("product");
         $product = CoreShopProduct::getById($id);
         
-        if($product instanceof CoreShopProduct)
-        {
+        if ($product instanceof CoreShopProduct) {
             $this->view->product = $product;
             
             $this->view->seo = array(
@@ -33,9 +33,7 @@ class CoreShop_ProductController extends Action {
             );
             
             $this->view->headTitle($product->getMetaTitle() ? $product->getMetaTitle() : $product->getName());
-        }
-        else
-        {
+        } else {
             throw new CoreShop\Exception(sprintf('Product with id "%s" not found', $id));
         }
     }
@@ -52,17 +50,15 @@ class CoreShop_ProductController extends Action {
 
         $this->disableLayout();
 
-        if($product instanceof $product)
-        {
+        if ($product instanceof $product) {
             $this->view->product = $product;
-        }
-        else
-        {
+        } else {
             throw new \Exception(sprintf("Product with id %s not found", $id));
         }
     }
     
-    public function listAction() {
+    public function listAction()
+    {
         $id = $this->getParam("category");
         $page = $this->getParam("page", 0);
         $sort = $this->getParam("sort", "NAMEA");
@@ -71,7 +67,7 @@ class CoreShop_ProductController extends Action {
 
         $category = CoreShopCategory::getById($id);
 
-        if($category instanceof CoreShopCategory) {
+        if ($category instanceof CoreShopCategory) {
             $this->view->category = $category;
             $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort), true);
 
@@ -86,8 +82,7 @@ class CoreShop_ProductController extends Action {
             );
 
             $this->view->headTitle($category->getMetaTitle() ? $category->getMetaTitle() : $category->getName());
-        }
-        else {
+        } else {
             throw new CoreShop\Exception(sprintf('Category with id "%s" not found', $id));
         }
     }
@@ -102,14 +97,14 @@ class CoreShop_ProductController extends Action {
 
         $sortString = explode("_", $sortString);
 
-        if(count($sortString) < 2)
+        if (count($sortString) < 2) {
             return $sort;
+        }
 
         $name = strtolower($sortString[0]);
         $direction = strtolower($sortString[1]);
 
-        if(in_array($name, $allowed) && in_array($direction, array("desc", "asc")))
-        {
+        if (in_array($name, $allowed) && in_array($direction, array("desc", "asc"))) {
             return array(
                 "name" => $name,
                 "direction" => $direction

@@ -13,28 +13,27 @@
  */
 
 use CoreShopTemplate\Controller\Action;
-
 use CoreShop\Tool;
 use CoreShop\Plugin;
 use CoreShop\Exception;
 use CoreShop\Model\Country;
-
 use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 use Pimcore\Model\Object;
 
-class CoreShop_UserController extends Action 
+class CoreShop_UserController extends Action
 {
-    public function preDispatch() {
+    public function preDispatch()
+    {
         parent::preDispatch();
 
         //Users are not allowed in CatalogMode
-        if(\CoreShop\Config::isCatalogMode()) {
+        if (\CoreShop\Config::isCatalogMode()) {
             $this->redirect($this->view->url(array(), "coreshop_index"));
         }
 
-        if($this->getParam("action") != "login" && $this->getParam("action") != "register") {
+        if ($this->getParam("action") != "login" && $this->getParam("action") != "register") {
             if (!$this->session->user instanceof CoreShopUser) {
                 $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));
                 exit;
@@ -42,29 +41,30 @@ class CoreShop_UserController extends Action
         }
     }
     
-    public function indexAction() {
-        
+    public function indexAction()
+    {
     }
 
-    public function profileAction() {
-
+    public function profileAction()
+    {
     }
 
-    public function ordersAction() {
-
+    public function ordersAction()
+    {
     }
 
-    public function settingsAction() {
+    public function settingsAction()
+    {
         $this->view->success = false;
 
-        if($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             try {
                 $params = $this->getAllParams();
 
                 if ($params['password']) {
-                    if ($params['password'] != $params['repassword'])
+                    if ($params['password'] != $params['repassword']) {
                         throw new Exception("Passwords do not match!");
+                    }
                 }
 
                 $this->session->user->setValues($params);
@@ -72,92 +72,86 @@ class CoreShop_UserController extends Action
 
                 $this->view->success = true;
 
-                if(array_key_exists("_redirect", $params))
+                if (array_key_exists("_redirect", $params)) {
                     $this->_redirect($params['_redirect']);
-            }
-            catch(Exception $ex)
-            {
+                }
+            } catch (Exception $ex) {
                 $this->view->message = $ex->getMessage();
             }
         }
     }
     
-    public function logoutAction() {
+    public function logoutAction()
+    {
         $this->session->user = null;
         $this->session->cartId = null;
 
         $this->_redirect("/" . $this->language . "/shop");
     }
 
-    public function loginAction() {
-        if($this->session->user instanceof \CoreShop\Model\User) {
+    public function loginAction()
+    {
+        if ($this->session->user instanceof \CoreShop\Model\User) {
             $this->redirect($this->view->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user"));
         }
 
         $redirect = $this->getParam("_redirect", $this->view->url(array("action" => "address"), "coreshop_checkout"));
         $base = $this->getParam("_base");
 
-        if($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $user = CoreShopUser::getUniqueByEmail($this->getParam("email"));
 
             if ($user instanceof CoreShopUser) {
                 try {
                     $isAuthenticated = $user->authenticate($this->getParam("password"));
 
-                    if($isAuthenticated) {
+                    if ($isAuthenticated) {
                         $this->session->user = $user;
 
                         //Reset country
                         unset($this->session->countryId);
 
-                        if(count($this->cart->getItems()) <= 0)
-                        {
+                        if (count($this->cart->getItems()) <= 0) {
                             $cart = $user->getLatestCart();
 
-                            if($cart instanceof CoreShopCart)
+                            if ($cart instanceof CoreShopCart) {
                                 $this->session->cartId = $cart->getId();
+                            }
                         }
 
                         $this->_redirect($redirect);
                     }
-                }
-                catch (\Exception $ex) {
+                } catch (\Exception $ex) {
                     $this->view->message = $this->view->translate($ex->getMessage());
                 }
-            }
-            else
+            } else {
                 $this->view->message = $this->view->translate("User not found");
+            }
         }
 
-        if($base)
-        {
+        if ($base) {
             $this->_redirect($base . "?message=" . $this->view->message);
         }
     }
 
-    public function registerAction() {
-        if($this->session->user instanceof \CoreShop\Model\User) {
+    public function registerAction()
+    {
+        if ($this->session->user instanceof \CoreShop\Model\User) {
             $this->redirect($this->view->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user"));
         }
 
-        if($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $params = $this->getAllParams();
             
             $addressParams = array();
             $userParams = array();
             
-            foreach($params as $key=>$value)
-            {
-                if(startsWith($key, "address_"))
-                {
+            foreach ($params as $key=>$value) {
+                if (startsWith($key, "address_")) {
                     $addressKey = str_replace("address_", "", $key);
                     
                     $addressParams[$addressKey] = $value;
-                }
-                else
-                {
+                } else {
                     $userParams[$key] = $value;
                 }
             }
@@ -165,7 +159,7 @@ class CoreShop_UserController extends Action
             try {
                 $isGuest = intval($this->getParam("isGuest", 0)) === 1;
 
-                if($isGuest && !\CoreShop\Config::isGuestCheckoutActivated()) {
+                if ($isGuest && !\CoreShop\Config::isGuestCheckoutActivated()) {
                     throw new Exception\UnsupportedException("Guest checkout is disabled");
                 }
 
@@ -177,7 +171,7 @@ class CoreShop_UserController extends Action
                 $folder = "/users/" . strtolower(substr($userParams['lastname'], 0, 1));
                 $key = Pimcore\File::getValidFilename($userParams['email']);
 
-                if($isGuest) {
+                if ($isGuest) {
                     $folder = "/guests/" . strtolower(substr($userParams['lastname'], 0, 1));
                     $key = Pimcore\File::getValidFilename($userParams['email'] . " " . time());
                 }
@@ -190,7 +184,7 @@ class CoreShop_UserController extends Action
 
                 $addresses->add($address);
 
-                if($isGuest) {
+                if ($isGuest) {
                     //Set billing and shipping address in cart
                     $this->cart->setBillingAddress(clone $addresses);
                     $this->cart->setShippingAddress(clone $addresses);
@@ -209,13 +203,12 @@ class CoreShop_UserController extends Action
 
                 $this->session->user = $user;
 
-                if (array_key_exists("_redirect", $params))
+                if (array_key_exists("_redirect", $params)) {
                     $this->redirect($params['_redirect']);
-                else {
+                } else {
                     $this->redirect($this->view->url(array("lang" => $this->view->language, "action" => "profile"), "coreshop_user"));
                 }
-            }
-            catch (\Exception $ex) {
+            } catch (\Exception $ex) {
                 $this->view->error = $ex->getMessage();
                 throw $ex;
             }
@@ -223,8 +216,8 @@ class CoreShop_UserController extends Action
     }
 
 
-    public function addressesAction() {
-
+    public function addressesAction()
+    {
     }
 
     public function addressAction()
@@ -233,27 +226,24 @@ class CoreShop_UserController extends Action
         $update = $this->getParam("address");
         $this->view->isNew = false;
 
-        foreach($this->session->user->getAddresses() as $address)
-        {
-            if($address->getName() === $update)
+        foreach ($this->session->user->getAddresses() as $address) {
+            if ($address->getName() === $update) {
                 $this->view->address = $address;
+            }
         }
 
-        if(!$this->view->address instanceof CoreShopUserAddress) {
+        if (!$this->view->address instanceof CoreShopUserAddress) {
             $this->view->address = new CoreShopUserAddress();
             $this->view->isNew = true;
         }
 
-        if($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $params = $this->getAllParams();
             
             $addressParams = array();
             
-            foreach($params as $key=>$value)
-            {
-                if(startsWith($key, "address_"))
-                {
+            foreach ($params as $key=>$value) {
+                if (startsWith($key, "address_")) {
                     $addressKey = str_replace("address_", "", $key);
                     
                     $addressParams[$addressKey] = $value;
@@ -262,15 +252,13 @@ class CoreShop_UserController extends Action
             
             $adresses = $this->session->user->getAddresses();
 
-            if(!$adresses instanceof Object\Fieldcollection)
+            if (!$adresses instanceof Object\Fieldcollection) {
                 $adresses = new Object\Fieldcollection();
+            }
 
-            if($update)
-            {
-                for($i = 0; $i < count($this->session->user->getAddresses()); $i++)
-                {
-                    if($this->session->user->getAddresses()->get($i)->getName() == $update)
-                    {
+            if ($update) {
+                for ($i = 0; $i < count($this->session->user->getAddresses()); $i++) {
+                    if ($this->session->user->getAddresses()->get($i)->getName() == $update) {
                         //$this->session->user->getAddresses()->remove($i);
                         break;
                     }
@@ -282,15 +270,17 @@ class CoreShop_UserController extends Action
             //TODO: Check if country exists and is valid
             $this->view->address->setCountry(Country::getById($addressParams['country']));
 
-            if($this->view->isNew)
+            if ($this->view->isNew) {
                 $adresses->add($this->view->address);
+            }
             
             $this->session->user->save();
             
-            if(array_key_exists("_redirect", $params))
+            if (array_key_exists("_redirect", $params)) {
                 $this->_redirect($params['_redirect']);
-            else
+            } else {
                 $this->_redirect("/de/shop");
+            }
         }
     }
 
@@ -299,16 +289,17 @@ class CoreShop_UserController extends Action
         $address = $this->getParam("address");
         $i = -1;
 
-        foreach($this->session->user->getAddresses() as $a)
-        {
+        foreach ($this->session->user->getAddresses() as $a) {
             $i++;
 
-            if($a->getName() === $address)
+            if ($a->getName() === $address) {
                 break;
+            }
         }
 
-        if($i >= 0)
+        if ($i >= 0) {
             $this->session->user->getAddresses()->remove($i);
+        }
 
         $this->_redirect($this->view->url(array("lang" => $this->language, "action" => "addresses"), "coreshop_user", true));
     }

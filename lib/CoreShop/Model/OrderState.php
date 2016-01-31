@@ -64,7 +64,8 @@ class OrderState extends AbstractModel
      * @param $id
      * @return OrderState|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
@@ -90,36 +91,28 @@ class OrderState extends AbstractModel
      */
     public function processStep(Order $order, $locale = null)
     {
-        if($this->getAccepted())
-        {
-
+        if ($this->getAccepted()) {
         }
 
-        if($this->getShipped())
-        {
-
+        if ($this->getShipped()) {
         }
 
-        if($this->getPaid())
-        {
+        if ($this->getPaid()) {
             //Plugin::actionHook("paymentConfirmation", array("order" => $order));
         }
 
-        if($this->getInvoice())
-        {
-            if((bool)Configuration::get("SYSTEM.INVOICE.CREATE")) {
+        if ($this->getInvoice()) {
+            if ((bool)Configuration::get("SYSTEM.INVOICE.CREATE")) {
                 Invoice::generateInvoice($order);
             }
         }
 
 
-        if($this->getEmail())
-        {
+        if ($this->getEmail()) {
             $emailDocument = $this->getEmailDocument();
             $emailDocument = Document::getByPath($emailDocument);
 
-            if($emailDocument instanceof Document\Email) {
-
+            if ($emailDocument instanceof Document\Email) {
                 $emailParameters = array_merge($order->getObjectVars(), $this->getObjectVars(), $order->getCustomer()->getObjectVars());
                 $emailParameters['orderTotal'] = $order->gettotal();
 
@@ -131,8 +124,7 @@ class OrderState extends AbstractModel
                 $mail->setEnableLayoutOnPlaceholderRendering(false);
                 $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . " " . $order->getCustomer()->getLastname());
 
-                if($this->getInvoice()) {
-
+                if ($this->getInvoice()) {
                     $invoice = Invoice::generateInvoice($order);
 
                     $attachment = new \Zend_Mime_Part($invoice->getData());
@@ -148,13 +140,11 @@ class OrderState extends AbstractModel
                 $sendBccToUser = Configuration::get("SYSTEM.MAIL.ORDER.BCC");
                 $adminMailAddress = Configuration::get("SYSTEM.MAIL.ORDER.NOTIFICATION");
 
-                if( $sendBccToUser === TRUE && !empty( $adminMailAddress ) )
-                {
-                    $mail->addBcc( explode(',', $adminMailAddress) );
+                if ($sendBccToUser === true && !empty($adminMailAddress)) {
+                    $mail->addBcc(explode(',', $adminMailAddress));
                 }
 
                 $mail->send();
-
             }
         }
 
@@ -166,7 +156,6 @@ class OrderState extends AbstractModel
         //@TODO: Stock Management
 
         return true;
-
     }
 
     /**

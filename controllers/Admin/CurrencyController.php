@@ -15,14 +15,12 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
-
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_CurrencyController extends Admin
 {
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -39,7 +37,7 @@ class CoreShop_Admin_CurrencyController extends Admin
         $list->load();
 
         $currencies = array();
-        if(is_array($list->getData())){
+        if (is_array($list->getData())) {
             foreach ($list->getData() as $currency) {
                 $currencies[] = $this->getTreeNodeConfig($currency);
             }
@@ -47,7 +45,8 @@ class CoreShop_Admin_CurrencyController extends Admin
         $this->_helper->json($currencies);
     }
 
-    protected function getTreeNodeConfig($currency) {
+    protected function getTreeNodeConfig($currency)
+    {
         $tmpCurrency= array(
             "id" => $currency->getId(),
             "text" => $currency->getName(),
@@ -65,41 +64,44 @@ class CoreShop_Admin_CurrencyController extends Admin
         return $tmpCurrency;
     }
 
-    public function getAction() {
+    public function getAction()
+    {
         $id = $this->getParam("id");
         $currency = Currency::getById($id);
 
-        if($currency instanceof Currency)
+        if ($currency instanceof Currency) {
             $this->_helper->json(array("success" => true, "data" => $currency));
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function saveAction() {
+    public function saveAction()
+    {
         $id = $this->getParam("id");
         $data = $this->getParam("data");
         $currency = Currency::getById($id);
 
 
-        if($data && $currency instanceof Currency) {
+        if ($data && $currency instanceof Currency) {
             $data = \Zend_Json::decode($this->getParam("data"));
 
             $currency->setValues($data);
             $currency->save();
 
             $this->_helper->json(array("success" => true, "data" => $currency));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function addAction() {
+    public function addAction()
+    {
         $name = $this->getParam("name");
 
-        if(strlen($name) <= 0) {
+        if (strlen($name) <= 0) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
-        }
-        else {
+        } else {
             $currency = new Currency();
             $currency->setName($name);
             $currency->save();
@@ -108,11 +110,12 @@ class CoreShop_Admin_CurrencyController extends Admin
         }
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->getParam("id");
         $currency = Currency::getById($id);
 
-        if($currency instanceof Currency) {
+        if ($currency instanceof Currency) {
             $currency->delete();
 
             $this->_helper->json(array("success" => true));

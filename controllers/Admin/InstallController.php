@@ -15,13 +15,12 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
-
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_InstallController extends Admin
 {
-    public function installThemeAction() {
+    public function installThemeAction()
+    {
         $install = new Plugin\Install();
 
         $install->installTheme();
@@ -29,7 +28,8 @@ class CoreShop_Admin_InstallController extends Admin
         $this->_helper->json(array("success" => true));
     }
 
-    public function installThemeDemoDataAction() {
+    public function installThemeDemoDataAction()
+    {
         $install = new Plugin\Install();
         $install->installThemeDemo();
 
@@ -38,8 +38,7 @@ class CoreShop_Admin_InstallController extends Admin
 
     public function installAction()
     {
-        try
-        {
+        try {
             $install = new Plugin\Install();
 
             PLugin::getEventManager()->trigger('install.pre', null, array("installer" => $install));
@@ -96,9 +95,7 @@ class CoreShop_Admin_InstallController extends Admin
             $tax->getLocalizedFields()->createUpdateTable();
 
             $success = true;
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             \Logger::crit($e);
 
             $success = false;

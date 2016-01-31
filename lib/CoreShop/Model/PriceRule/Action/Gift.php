@@ -16,11 +16,11 @@ namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\PriceRule;
 use CoreShop\Tool;
-
 use Pimcore\Model\Object\CoreShopProduct;
 use Pimcore\Model\Object\CoreShopCart;
 
-class Gift extends AbstractAction {
+class Gift extends AbstractAction
+{
 
     /**
      * @var int
@@ -37,8 +37,9 @@ class Gift extends AbstractAction {
      */
     public function getGift()
     {
-        if(!$this->gift instanceof CoreShopProduct)
+        if (!$this->gift instanceof CoreShopProduct) {
             $this->gift = CoreShopProduct::getByPath($this->gift);
+        }
 
         return $this->gift;
     }
@@ -72,7 +73,7 @@ class Gift extends AbstractAction {
      */
     public function applyRule(CoreShopCart $cart)
     {
-        if($this->getGift() instanceof CoreShopProduct) {
+        if ($this->getGift() instanceof CoreShopProduct) {
             $item = $cart->updateQuantity($this->getGift(), 1, false, false);
             $item->setIsGiftItem(true);
             $item->save();
@@ -89,7 +90,7 @@ class Gift extends AbstractAction {
      */
     public function unApplyRule(CoreShopCart $cart)
     {
-        if($this->getGift() instanceof CoreShopProduct) {
+        if ($this->getGift() instanceof CoreShopProduct) {
             $cart->updateQuantity($this->getGift(), 0, false, false);
         }
 

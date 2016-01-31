@@ -35,4 +35,3 @@ interface TaxManager
      */
     public function getTaxCalculator();
 }
-

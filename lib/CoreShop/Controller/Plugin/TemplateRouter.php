@@ -15,7 +15,8 @@ namespace CoreShop\Controller\Plugin;
 
 use Pimcore\Tool;
 
-class TemplateRouter extends \Zend_Controller_Plugin_Abstract {
+class TemplateRouter extends \Zend_Controller_Plugin_Abstract
+{
 
     /**
      * Checks if Controller is available in Template and use it
@@ -25,16 +26,16 @@ class TemplateRouter extends \Zend_Controller_Plugin_Abstract {
     public function routeShutdown(\Zend_Controller_Request_Abstract $request)
     {
         $coreShopRequest = clone $request;
-        if($request->getModuleName() === "CoreShop") {
+        if ($request->getModuleName() === "CoreShop") {
             $modulesToTest = array("Default", "CoreShopTemplate");
 
             //Check if TemplateController is available
             $frontController = \Zend_Controller_Front::getInstance();
 
-            foreach($modulesToTest as $test) {
+            foreach ($modulesToTest as $test) {
                 $coreShopRequest->setModuleName($test);
 
-                if($frontController->getDispatcher()->isDispatchable($coreShopRequest)) {
+                if ($frontController->getDispatcher()->isDispatchable($coreShopRequest)) {
                     $request->setModuleName($test);
                     break;
                 }

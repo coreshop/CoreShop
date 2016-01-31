@@ -15,14 +15,13 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\CustomerGroup;
-
 use Pimcore\Controller\Action\Admin;
-
 use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_CustomergroupController extends Admin
 {
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -33,11 +32,12 @@ class CoreShop_Admin_CustomergroupController extends Admin
         }
     }
 
-    public function listAction() {
+    public function listAction()
+    {
         $list = new CustomerGroup\Listing();
 
         $data = array();
-        if(is_array($list->getData())){
+        if (is_array($list->getData())) {
             foreach ($list->getData() as $group) {
                 $data[] = $this->getTreeNodeConfig($group);
             }
@@ -45,7 +45,8 @@ class CoreShop_Admin_CustomergroupController extends Admin
         $this->_helper->json($data);
     }
 
-    protected function getTreeNodeConfig(CustomerGroup $group) {
+    protected function getTreeNodeConfig(CustomerGroup $group)
+    {
         $tmp = array(
             "id" => $group->getId(),
             "text" => $group->getName(),
@@ -63,13 +64,13 @@ class CoreShop_Admin_CustomergroupController extends Admin
         return $tmp;
     }
 
-    public function addAction() {
+    public function addAction()
+    {
         $name = $this->getParam("name");
 
-        if(strlen($name) <= 0) {
+        if (strlen($name) <= 0) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
-        }
-        else {
+        } else {
             $group = new CustomerGroup();
             $group->setName($name);
             $group->setDiscount(0);
@@ -79,15 +80,16 @@ class CoreShop_Admin_CustomergroupController extends Admin
         }
     }
 
-    public function getAction() {
+    public function getAction()
+    {
         $id = $this->getParam("id");
         $group = CustomerGroup::getById($id);
 
-        if($group instanceof CustomerGroup) {
+        if ($group instanceof CustomerGroup) {
             $this->_helper->json(array("success" => true, "data" => $group));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
     public function saveAction()
@@ -103,15 +105,17 @@ class CoreShop_Admin_CustomergroupController extends Admin
             $group->save();
 
             $this->_helper->json(array("success" => true, "data" => $group));
-        } else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->getParam("id");
         $group = CustomerGroup::getById($id);
 
-        if($group instanceof CustomerGroup) {
+        if ($group instanceof CustomerGroup) {
             $group->delete();
 
             $this->_helper->json(array("success" => true));

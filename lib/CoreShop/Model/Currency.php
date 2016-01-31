@@ -14,7 +14,8 @@
 
 namespace CoreShop\Model;
 
-class Currency extends AbstractModel {
+class Currency extends AbstractModel
+{
 
     /**
      * @var int
@@ -51,7 +52,8 @@ class Currency extends AbstractModel {
      *
      * @return mixed
      */
-    public function save() {
+    public function save()
+    {
         return $this->getDao()->save();
     }
 
@@ -60,7 +62,8 @@ class Currency extends AbstractModel {
      *
      * @return mixed
      */
-    public function delete() {
+    public function delete()
+    {
         return $this->getDao()->delete();
     }
 
@@ -70,15 +73,14 @@ class Currency extends AbstractModel {
      * @param $name
      * @return Currency|null
      */
-    public static function getByName($name) {
+    public static function getByName($name)
+    {
         try {
             //TODO: add some caching
             $obj = new self;
             $obj->getDao()->getByName($name);
             return $obj;
-        }
-        catch(\Exception $ex) {
-
+        } catch (\Exception $ex) {
         }
 
         return null;
@@ -90,7 +92,8 @@ class Currency extends AbstractModel {
      * @param $id
      * @return Currency|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
@@ -105,11 +108,11 @@ class Currency extends AbstractModel {
 
         $currencies = array();
 
-        foreach($countries as $c)
-        {
-            if($c instanceof Country) {
-                if (!array_key_exists($c->getCurrency()->getId(), $currencies))
+        foreach ($countries as $c) {
+            if ($c instanceof Country) {
+                if (!array_key_exists($c->getCurrency()->getId(), $currencies)) {
                     $currencies[$c->getCurrency()->getId()] = $c->getCurrency();
+                }
             }
         }
 

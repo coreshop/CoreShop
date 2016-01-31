@@ -15,27 +15,25 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
-
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_HelperController extends Admin
 {
-    public function getOrderAction() {
+    public function getOrderAction()
+    {
         $orderNumber = $this->getParam("orderNumber");
 
-        if($orderNumber) {
+        if ($orderNumber) {
             $list = new \Pimcore\Model\Object\CoreShopOrder\Listing();
             $list->setCondition("orderNumber = ? OR orderNumber = ?", array($orderNumber, \CoreShop\Model\Order::getValidOrderNumber($orderNumber)));
 
             $orders = $list->getObjects();
 
-            if(count($orders) > 0) {
+            if (count($orders) > 0) {
                 $this->_helper->json(array("success" => true, "id" => $orders[0]->getId()));
             }
         }
 
         $this->_helper->json(array("success" => false));
     }
-
 }

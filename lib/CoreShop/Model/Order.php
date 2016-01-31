@@ -29,7 +29,8 @@ class Order extends Base
      *
      * @return int|string
      */
-    public static function getNextOrderNumber() {
+    public static function getNextOrderNumber()
+    {
         $number = NumberRange::getNextNumberForType("order");
 
         return self::getValidOrderNumber($number);
@@ -41,15 +42,16 @@ class Order extends Base
      * @param $number
      * @return string
      */
-    public static function getValidOrderNumber($number) {
+    public static function getValidOrderNumber($number)
+    {
         $prefix = Configuration::get("SYSTEM.INVOICE.PREFIX");
         $suffix = Configuration::get("SYSTEM.INVOICE.SUFFIX");
 
-        if($prefix) {
+        if ($prefix) {
             $number = $prefix . $number;
         }
 
-        if($suffix) {
+        if ($suffix) {
             $number = $number . $suffix;
         }
 
@@ -68,8 +70,7 @@ class Order extends Base
         $items = array();
         $i = 1;
         
-        foreach($cart->getItems() as $cartItem)
-        {
+        foreach ($cart->getItems() as $cartItem) {
             $item = new Object\CoreShopOrderItem();
             $item->setKey($i);
             $item->setParent(Object\Service::createFolderByPath($this->getFullPath() . "/items/"));
@@ -136,8 +137,9 @@ class Order extends Base
     {
         $payments = $this->getPayments();
         
-        if(!is_array($payments))
+        if (!is_array($payments)) {
             $payments = array();
+        }
             
         $payments[] = $payment;
         
@@ -154,8 +156,7 @@ class Order extends Base
     {
         $total = 0;
 
-        foreach($this->getItems() as $item)
-        {
+        foreach ($this->getItems() as $item) {
             $total += $item->getTotal();
         }
 
@@ -183,11 +184,12 @@ class Order extends Base
      * @return float|int
      * @throws UnsupportedException
      */
-    public function getPayedTotal() {
+    public function getPayedTotal()
+    {
         $totalPayed = 0;
 
-        foreach($this->getPayments() as $payment) {
-            if($payment->getPayed()) {
+        foreach ($this->getPayments() as $payment) {
+            if ($payment->getPayed()) {
                 $totalPayed += $payment->getAmount();
             }
         }
@@ -200,10 +202,11 @@ class Order extends Base
      *
      * @return Object\Fieldcollection\Data\CoreShopUserAddress|bool
      */
-    public function getCustomerShippingAddress() {
+    public function getCustomerShippingAddress()
+    {
         $address = $this->getShippingAddress()->getItems();
 
-        if(count($address) > 0) {
+        if (count($address) > 0) {
             return $address[0];
         }
 
@@ -215,10 +218,11 @@ class Order extends Base
      *
      * @return Object\Fieldcollection\Data\CoreShopUserAddress|bool
      */
-    public function getCustomerBillingAddress() {
+    public function getCustomerBillingAddress()
+    {
         $address = $this->getBillingAddress()->getItems();
 
-        if(count($address) > 0) {
+        if (count($address) > 0) {
             return $address[0];
         }
 
@@ -230,26 +234,27 @@ class Order extends Base
      *
      * @returns boolean
      */
-    public function isShippingAndBillingAddressEqual() {
+    public function isShippingAndBillingAddressEqual()
+    {
         $shipping = $this->getCustomerShippingAddress();
         $billing = $this->getCustomerBillingAddress();
 
         $billingVars = $billing->getObjectVars();
         $shippingVars = $shipping->getObjectVars();
 
-        foreach($shippingVars as $key => $value) {
-            if($key === "fieldname")
+        foreach ($shippingVars as $key => $value) {
+            if ($key === "fieldname") {
                 continue;
+            }
 
-            if(array_key_exists($key, $billingVars)) {
-                if(!is_object($value)) {
+            if (array_key_exists($key, $billingVars)) {
+                if (!is_object($value)) {
                     if ($billingVars[$key] !== $value) {
                         return false;
                     }
-                }
-                else {
-                    if($value instanceof Object\AbstractObject) {
-                        if($value->getId() !== $billingVars[$key]->getId()) {
+                } else {
+                    if ($value instanceof Object\AbstractObject) {
+                        if ($value->getId() !== $billingVars[$key]->getId()) {
                             return false;
                         }
                     }
@@ -264,7 +269,8 @@ class Order extends Base
      * @return bool|\CoreShop\Model\Plugin\Payment
      * @throws UnsupportedException
      */
-    public function getPaymentProviderObject() {
+    public function getPaymentProviderObject()
+    {
         $paymentProvider = $this->getPaymentProvider();
 
         return Plugin::getPaymentProvider($paymentProvider);
@@ -275,21 +281,20 @@ class Order extends Base
      *
      * @return int
      */
-    public function save() {
+    public function save()
+    {
         Version::disable();
 
         if (isset($_REQUEST['data'])) {
             try {
                 $data = \Zend_Json::decode($_REQUEST['data']);
 
-                if (isset($data['orderState']))
-                {
+                if (isset($data['orderState'])) {
                     $orderStep = OrderState::getById($data['orderState']);
 
                     unset($_REQUEST['data']);
 
-                    if ($orderStep instanceof OrderState)
-                    {
+                    if ($orderStep instanceof OrderState) {
                         $orderStep->processStep($this);
                     }
                 }
@@ -308,11 +313,12 @@ class Order extends Base
      *
      * @return bool|mixed|Document
      */
-    public function getInvoice() {
+    public function getInvoice()
+    {
         //Check if invoice has already been generated
         $document = $this->getProperty("invioce");
 
-        if($document instanceof Document) {
+        if ($document instanceof Document) {
             return $document;
         }
 
@@ -326,7 +332,8 @@ class Order extends Base
      * @param OrderState $state
      * @throws UnsupportedException
      */
-    public function setOrderState($state) {
+    public function setOrderState($state)
+    {
         throw new UnsupportedException("setOrderState is not supported for " . get_class($this));
     }
 
@@ -337,7 +344,8 @@ class Order extends Base
      * @param float $discount
      * @throws UnsupportedException
      */
-    public function setDiscount($discount) {
+    public function setDiscount($discount)
+    {
         throw new UnsupportedException("setDiscount is not supported for " . get_class($this));
     }
 
@@ -348,7 +356,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return float
      */
-    public function getDiscount() {
+    public function getDiscount()
+    {
         throw new UnsupportedException("getDiscount is not supported for " . get_class($this));
     }
 
@@ -359,7 +368,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return User
      */
-    public function getCustomer() {
+    public function getCustomer()
+    {
         throw new UnsupportedException("getCustomer is not supported for " . get_class($this));
     }
 
@@ -370,7 +380,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return float
      */
-    public function getShipping() {
+    public function getShipping()
+    {
         throw new UnsupportedException("getShipping is not supported for " . get_class($this));
     }
 
@@ -381,7 +392,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return float
      */
-    public function getPaymentFee() {
+    public function getPaymentFee()
+    {
         throw new UnsupportedException("getPaymentFee is not supported for " . get_class($this));
     }
 
@@ -392,7 +404,8 @@ class Order extends Base
      * @param PriceRule $priceRule
      * @throws UnsupportedException
      */
-    public function setPriceRule($priceRule) {
+    public function setPriceRule($priceRule)
+    {
         throw new UnsupportedException("setPriceRule is not supported for " . get_class($this));
     }
 
@@ -403,7 +416,8 @@ class Order extends Base
      * @param OrderItem[] $items
      * @throws UnsupportedException
      */
-    public function setItems($items) {
+    public function setItems($items)
+    {
         throw new UnsupportedException("setItems is not supported for " . get_class($this));
     }
 
@@ -414,7 +428,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return CoreShopPayment[]
      */
-    public function getPayments() {
+    public function getPayments()
+    {
         throw new UnsupportedException("getPayments is not supported for " . get_class($this));
     }
 
@@ -425,7 +440,8 @@ class Order extends Base
      * @param CoreShopPayment[] $payments
      * @throws UnsupportedException
      */
-    public function setPayments($payments) {
+    public function setPayments($payments)
+    {
         throw new UnsupportedException("setPayments is not supported for " . get_class($this));
     }
 
@@ -436,7 +452,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return OrderItem[]
      */
-    public function getItems() {
+    public function getItems()
+    {
         throw new UnsupportedException("getItems is not supported for " . get_class($this));
     }
 
@@ -446,7 +463,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return \Pimcore\Model\Object\Fieldcollection
      */
-    public function getShippingAddress() {
+    public function getShippingAddress()
+    {
         throw new UnsupportedException("getShippingAddress is not supported for " . get_class($this));
     }
 
@@ -456,7 +474,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return \Pimcore\Model\Object\Fieldcollection
      */
-    public function getBillingAddress() {
+    public function getBillingAddress()
+    {
         throw new UnsupportedException("getBillingAddress is not supported for " . get_class($this));
     }
 
@@ -466,7 +485,8 @@ class Order extends Base
      * @throws UnsupportedException
      * @return string
      */
-    public function getPaymentProvider() {
+    public function getPaymentProvider()
+    {
         throw new UnsupportedException("getPaymentProvider is not supported for " . get_class($this));
     }
 }

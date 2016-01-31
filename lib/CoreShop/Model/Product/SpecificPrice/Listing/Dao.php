@@ -16,7 +16,8 @@ namespace CoreShop\Model\Product\SpecificPrice\Listing;
 
 use CoreShop\Model\Listing;
 
-class Dao extends Listing\Dao\AbstractDao {
+class Dao extends Listing\Dao\AbstractDao
+{
 
     protected $tableName = 'coreshop_product_specificprice';
     protected $modelClass = '\\CoreShop\\Model\\Product\\SpecificPrice';

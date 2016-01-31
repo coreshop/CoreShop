@@ -21,17 +21,15 @@ use CoreShop\Model\Zone;
 use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
 use Pimcore\Model\Object;
-
 use CoreShop\Model\Plugin\Shipping;
 use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\Plugin\Hook;
 use CoreShop\Model\Plugin\InstallPlugin;
-
 use CoreShop\Plugin\Install;
-
 use CoreShopTemplate\Theme as TemplateTheme;
 
-class Plugin extends AbstractPlugin implements PluginInterface {
+class Plugin extends AbstractPlugin implements PluginInterface
+{
 
     /**
      * @var \Zend_Translate
@@ -48,17 +46,17 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      * @param null $jsPaths
      * @param null $cssPaths
      */
-    public function __construct($jsPaths = null, $cssPaths = null) {
+    public function __construct($jsPaths = null, $cssPaths = null)
+    {
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/startup.php");
         require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/helper.php");
 
         parent::__construct($jsPaths, $cssPaths);
-
     }
 
     public function init()
     {
-        \Pimcore::getEventManager()->attach('system.console.init', function(\Zend_EventManager_Event $e) {
+        \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
             /** @var \Pimcore\Console\Application $application */
             $application = $e->getTarget();
 
@@ -85,7 +83,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
 
             $router->addRoute("coreshop_payment", $routePluginPayment);
 
-            if($frontController instanceof \Zend_Controller_Front) {
+            if ($frontController instanceof \Zend_Controller_Front) {
                 $namespace = "CoreShopTemplate";
 
                 $frontController->addControllerDirectory(CORESHOP_TEMPLATE_PATH . "/controllers", $namespace);
@@ -133,16 +131,13 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      */
     public static function install()
     {
-        try
-        {
+        try {
             $install = new Install();
 
             $install->createConfig();
 
             self::getEventManager()->trigger('install.post', null, array("installer" => $install));
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             \Logger::crit($e);
             return self::getTranslate()->_('coreshop_install_failed');
         }
@@ -223,13 +218,11 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     {
         $config = Configuration::get("SYSTEM.ISINSTALLED");
 
-        if( !is_null( $config ) )
-        {
+        if (!is_null($config)) {
             return true;
         }
 
         return false;
-
     }
 
     /**
@@ -259,7 +252,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      */
     public static function getTranslate()
     {
-        if(self::$_translate instanceof \Zend_Translate) {
+        if (self::$_translate instanceof \Zend_Translate) {
             return self::$_translate;
         }
         try {
@@ -284,15 +277,14 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      */
     public static function enableTheme($name)
     {
-        if($themeDir = self::getThemeDirectory($name))
-        {
+        if ($themeDir = self::getThemeDirectory($name)) {
             //disable current template
             $currentTemplate = Configuration::get("SYSTEM.TEMPLATE.NAME");
 
-            if($oldThemeDir = self::getThemeDirectory($currentTemplate)) {
+            if ($oldThemeDir = self::getThemeDirectory($currentTemplate)) {
                 $disableScript = $themeDir . "/disable.php";
 
-                if(is_file($disableScript)) {
+                if (is_file($disableScript)) {
                     include($disableScript);
                 }
             }
@@ -300,13 +292,12 @@ class Plugin extends AbstractPlugin implements PluginInterface {
             //enable new template
             $enableScript = $themeDir . "/enable.php";
 
-            if(is_file($enableScript)) {
+            if (is_file($enableScript)) {
                 include($enableScript);
             }
 
             self::getTheme()->installTheme();
-        }
-        else {
+        } else {
             throw new ThemeNotFoundException();
         }
     }
@@ -317,13 +308,11 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      * @param $name
      * @return bool|string
      */
-    public static function getThemeDirectory($name) {
+    public static function getThemeDirectory($name)
+    {
         if (is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $name)) {
             return PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $name;
-
-        }
-        else if(is_dir(CORESHOP_PATH . "/views/template/" . $name))
-        {
+        } elseif (is_dir(CORESHOP_PATH . "/views/template/" . $name)) {
             return CORESHOP_PATH . "/views/template/" . $name;
         }
 
@@ -333,8 +322,9 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     /**
      * @return Theme|\CoreShopTemplate\Theme
      */
-    public static function getTheme() {
-        if(!self::$_theme instanceof Theme) {
+    public static function getTheme()
+    {
+        if (!self::$_theme instanceof Theme) {
             self::$_theme = new TemplateTheme();
         }
 
@@ -351,8 +341,9 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     /**
      * @return \Zend_EventManager_EventManager
      */
-    public static function getEventManager() {
-        if(!self::$eventManager) {
+    public static function getEventManager()
+    {
+        if (!self::$eventManager) {
             self::$eventManager = new \Zend_EventManager_EventManager();
         }
         return self::$eventManager;
@@ -363,7 +354,8 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      *
      * @return string
      */
-    public static function getLayout() {
+    public static function getLayout()
+    {
         return self::$layout;
     }
 
@@ -372,7 +364,8 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      *
      * @param $layout
      */
-    public static function setLayout($layout) {
+    public static function setLayout($layout)
+    {
         self::$layout = $layout;
     }
 
@@ -387,15 +380,13 @@ class Plugin extends AbstractPlugin implements PluginInterface {
         $results = self::getEventManager()->trigger("payment.getProvider");
         $provider = array();
 
-        foreach($results as $result)
-        {
-            if($result instanceof Payment) {
-                if($cart instanceof Cart) {
-                    if($result->isAvailable($cart)) {
+        foreach ($results as $result) {
+            if ($result instanceof Payment) {
+                if ($cart instanceof Cart) {
+                    if ($result->isAvailable($cart)) {
                         $provider[] = $result;
                     }
-                }
-                else {
+                } else {
                     $provider[] = $result;
                 }
             }
@@ -414,10 +405,10 @@ class Plugin extends AbstractPlugin implements PluginInterface {
     {
         $providers = self::getPaymentProviders(null);
 
-        foreach($providers as $provider)
-        {
-            if($provider->getIdentifier() == $identifier)
+        foreach ($providers as $provider) {
+            if ($provider->getIdentifier() == $identifier) {
                 return $provider;
+            }
         }
 
         return false;
@@ -437,7 +428,7 @@ class Plugin extends AbstractPlugin implements PluginInterface {
 
         $params['language'] = \Zend_Registry::get("Zend_Locale");
 
-        if(count($results) > 0) {
+        if (count($results) > 0) {
             $return = array();
 
             foreach ($results as $result) {
@@ -460,18 +451,16 @@ class Plugin extends AbstractPlugin implements PluginInterface {
      */
     public static function actionHook($name, $params = array())
     {
-        $results = self::getEventManager()->trigger("actionHook." . $name, null, array(), function($v) {
+        $results = self::getEventManager()->trigger("actionHook." . $name, null, array(), function ($v) {
             return ($v instanceof Hook);
         });
 
         $params['language'] = \Zend_Registry::get("Zend_Locale");
 
-        if($results->stopped())
-        {
+        if ($results->stopped()) {
             $return = array();
 
-            foreach($results as $result)
-            {
+            foreach ($results as $result) {
                 $return[] = $result->render($params);
             }
 

@@ -16,8 +16,8 @@ namespace CoreShop\Plugin\Controller;
 
 class Admin extends \CoreShop\Controller\Action\Admin
 {
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         $notRestrictedActions = array();

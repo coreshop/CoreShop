@@ -19,12 +19,12 @@ use CoreShop\Model\Plugin\Payment;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
-
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\Service;
 
-class Cart extends Base {
+class Cart extends Base
+{
 
     /**
      * Return Cart by custom identifier
@@ -32,7 +32,8 @@ class Cart extends Base {
      * @param $transactionIdentification
      * @return bool|Cart
      */
-    public static function findByCustomIdentifier($transactionIdentification) {
+    public static function findByCustomIdentifier($transactionIdentification)
+    {
         $list = CoreShopCart::getByCustomIdentifier($transactionIdentification);
 
         $carts = $list->getObjects();
@@ -71,7 +72,7 @@ class Cart extends Base {
         $cart->setParent($cartsFolder);
         $cart->setPublished(true);
 
-        if(Tool::getUser() instanceof User) {
+        if (Tool::getUser() instanceof User) {
             $cart->setUser(Tool::getUser());
         }
 
@@ -87,10 +88,8 @@ class Cart extends Base {
      */
     public function hasPhysicalItems()
     {
-        foreach($this->getItems() as $item)
-        {
-            if($item->getProduct()->getIsDownloadProduct() !== "yes")
-            {
+        foreach ($this->getItems() as $item) {
+            if ($item->getProduct()->getIsDownloadProduct() !== "yes") {
                 return true;
             }
         }
@@ -107,8 +106,9 @@ class Cart extends Base {
     {
         $priceRule = $this->getPriceRule();
 
-        if($priceRule instanceof PriceRule)
+        if ($priceRule instanceof PriceRule) {
             return $priceRule->getDiscount();
+        }
 
         return 0;
     }
@@ -122,8 +122,7 @@ class Cart extends Base {
     {
         $subtotal = 0;
         
-        foreach($this->getItems() as $item)
-        {
+        foreach ($this->getItems() as $item) {
             $subtotal += ($item->getAmount() * $item->getProduct()->getPrice());
         }
         
@@ -137,12 +136,12 @@ class Cart extends Base {
      */
     public function getShipping()
     {
-        if(count($this->getItems()) === 0) {
+        if (count($this->getItems()) === 0) {
             return 0;
         }
 
         //check for existing shipping
-        if($this->getCarrier() instanceof Carrier) {
+        if ($this->getCarrier() instanceof Carrier) {
             return $this->getCarrier()->getDeliveryPrice($this);
         }
 
@@ -150,16 +149,17 @@ class Cart extends Base {
         $providers = Carrier::getCarriersForCart($this);
         $cheapestProvider = null;
 
-        foreach($providers as $p)
-        {
-            if($cheapestProvider === null)
+        foreach ($providers as $p) {
+            if ($cheapestProvider === null) {
                 $cheapestProvider = $p;
-            else if($cheapestProvider->getDeliveryPrice($this) > $p->getDeliveryPrice($this))
+            } elseif ($cheapestProvider->getDeliveryPrice($this) > $p->getDeliveryPrice($this)) {
                 $cheapestProvider = $p;
+            }
         }
 
-        if($cheapestProvider instanceof Carrier)
+        if ($cheapestProvider instanceof Carrier) {
             return $cheapestProvider->getDeliveryPrice($this);
+        }
 
         return 0;
     }
@@ -169,10 +169,11 @@ class Cart extends Base {
      *
      * @return float
      */
-    public function getPaymentFee() {
+    public function getPaymentFee()
+    {
         $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
 
-        if($paymentProvider instanceof Payment) {
+        if ($paymentProvider instanceof Payment) {
             return $paymentProvider->getPaymentFee($this);
         }
 
@@ -203,8 +204,7 @@ class Cart extends Base {
     {
         $weight = 0;
 
-        foreach($this->getItems() as $item)
-        {
+        foreach ($this->getItems() as $item) {
             $weight += ($item->getAmount() * $item->getProduct()->getWeight());
         }
 
@@ -220,12 +220,14 @@ class Cart extends Base {
      */
     public function findItemForProduct(Product $product)
     {
-        if (!$product instanceof Product)
+        if (!$product instanceof Product) {
             throw new \Exception("\$product must be instance of Product");
+        }
 
-        foreach ($this->getItems() as $item){
-            if($item->getProduct()->getId() == $product->getId())
+        foreach ($this->getItems() as $item) {
+            if ($item->getProduct()->getId() == $product->getId()) {
                 return $item;
+            }
         }
 
         return false;
@@ -243,42 +245,37 @@ class Cart extends Base {
      */
     public function updateQuantity(Product $product, $amount = 0, $increaseAmount = false, $autoAddPriceRule = true)
     {
-        if(!$product instanceof Product)
+        if (!$product instanceof Product) {
             throw new \Exception("\$product must be instance of Product");
+        }
 
         $item = $this->findItemForProduct($product);
 
-        if($item instanceof CartItem)
-        {
-            if($amount <= 0) {
+        if ($item instanceof CartItem) {
+            if ($amount <= 0) {
                 $this->removeItem($item);
 
                 return false;
-
             } else {
-
                 $newAmount = $amount;
 
-                if( $increaseAmount === TRUE ) {
-
+                if ($increaseAmount === true) {
                     $currentAmount = $item->getAmount();
 
-                    if( is_integer( $currentAmount ) ) {
+                    if (is_integer($currentAmount)) {
                         $newAmount = $currentAmount + $amount;
                     }
-
                 }
 
-                $item->setAmount( $newAmount );
+                $item->setAmount($newAmount);
                 $item->save();
             }
-        }
-        else
-        {
+        } else {
             $items = $this->getItems();
 
-            if(!is_array($items))
+            if (!is_array($items)) {
                 $items = array();
+            }
 
             $item = new CoreShopCartItem();
             $item->setKey(uniqid());
@@ -294,8 +291,9 @@ class Cart extends Base {
             $this->save();
         }
 
-        if($autoAddPriceRule)
+        if ($autoAddPriceRule) {
             PriceRule::autoAddToCart();
+        }
 
         return $item;
     }
@@ -344,8 +342,7 @@ class Cart extends Base {
      */
     public function removePriceRule()
     {
-        if($this->getPriceRule() instanceof PriceRule)
-        {
+        if ($this->getPriceRule() instanceof PriceRule) {
             $this->getPriceRule()->unApplyRules();
 
             $this->setPriceRule(null);
@@ -379,8 +376,7 @@ class Cart extends Base {
     {
         $items = array();
         
-        foreach($this->getItems() as $item)
-        {
+        foreach ($this->getItems() as $item) {
             $items[] = $item->toArray();
         }
         
@@ -400,7 +396,8 @@ class Cart extends Base {
      * @throws UnsupportedException
      * @return CartItem[]
      */
-    public function getItems() {
+    public function getItems()
+    {
         throw new UnsupportedException("getItems is not supported for " . get_class($this));
     }
 
@@ -411,7 +408,8 @@ class Cart extends Base {
      * @throws UnsupportedException
      * @return PriceRule
      */
-    public function getPriceRule() {
+    public function getPriceRule()
+    {
         throw new UnsupportedException("getPriceRule is not supported for " . get_class($this));
     }
 
@@ -423,7 +421,8 @@ class Cart extends Base {
      * @throws UnsupportedException
      * @return PriceRule
      */
-    public function setPriceRule($priceRule) {
+    public function setPriceRule($priceRule)
+    {
         throw new UnsupportedException("setPriceRule is not supported for " . get_class($this));
     }
 
@@ -434,7 +433,8 @@ class Cart extends Base {
      * @throws UnsupportedException
      * @return User
      */
-    public function getUser() {
+    public function getUser()
+    {
         throw new UnsupportedException("getUser is not supported for " . get_class($this));
     }
 }

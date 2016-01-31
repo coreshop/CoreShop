@@ -16,7 +16,8 @@ namespace CoreShop\Model;
 
 use Pimcore\Tool;
 
-class Configuration extends AbstractModel {
+class Configuration extends AbstractModel
+{
 
     /**
      * @var integer
@@ -54,24 +55,21 @@ class Configuration extends AbstractModel {
      * @param integer $id
      * @return Configuration
      */
-    public static function getById($id) {
-
+    public static function getById($id)
+    {
         $cacheKey = "coreshop_configuration_" . $id;
 
         try {
             $configurationEntry = \Zend_Registry::get($cacheKey);
-            if(!$configurationEntry){
+            if (!$configurationEntry) {
                 throw new \Exception("Configuration in registry is null");
             }
-        }
-        catch (\Exception $e) {
-
+        } catch (\Exception $e) {
             try {
                 $configurationEntry = new self();
                 \Zend_Registry::set($cacheKey, $configurationEntry);
                 $configurationEntry->setId(intval($id));
                 $configurationEntry->getDao()->getById();
-
             } catch (\Exception $e) {
                 \Logger::error($e);
                 return null;
@@ -86,16 +84,17 @@ class Configuration extends AbstractModel {
      * @param boolean $returnObject
      * @return mixed|null
      */
-    public static function get($key, $returnObject = false) {
-
+    public static function get($key, $returnObject = false)
+    {
         $cacheKey = $key . "~~~";
 
         // check if pimcore already knows the id for this $name, if yes just return it
-        if(array_key_exists($cacheKey, self::$nameIdMappingCache)) {
+        if (array_key_exists($cacheKey, self::$nameIdMappingCache)) {
             $entry = self::getById(self::$nameIdMappingCache[$cacheKey]);
 
-            if($returnObject)
+            if ($returnObject) {
                 return $entry;
+            }
 
             return $entry instanceof Configuration ? $entry->getData() : null;
         }
@@ -111,13 +110,14 @@ class Configuration extends AbstractModel {
         }
 
         // to have a singleton in a way. like all instances of Element\ElementInterface do also, like Object\AbstractObject
-        if($configurationEntry->getId() > 0) {
+        if ($configurationEntry->getId() > 0) {
             // add it to the mini-per request cache
             self::$nameIdMappingCache[$cacheKey] = $configurationEntry->getId();
             $entry = self::getById($configurationEntry->getId());
 
-            if($returnObject)
+            if ($returnObject) {
                 return $entry;
+            }
 
             return $entry instanceof Configuration ? $entry->getData() : null;
         }
@@ -129,10 +129,11 @@ class Configuration extends AbstractModel {
      * @param $key
      * @param $data
      */
-    public static function set($key, $data) {
+    public static function set($key, $data)
+    {
         $configEntry = self::get($key, true);
 
-        if(!$configEntry) {
+        if (!$configEntry) {
             $configEntry = new self();
             $configEntry->setKey($key);
         }
@@ -149,14 +150,14 @@ class Configuration extends AbstractModel {
     {
         $config = null;
 
-        if(\Zend_Registry::isRegistered("coreshop_plugin_config")) {
+        if (\Zend_Registry::isRegistered("coreshop_plugin_config")) {
             $config = \Zend_Registry::get("coreshop_plugin_config");
-        } else  {
+        } else {
             try {
                 $config = new \Zend_Config_Xml(CORESHOP_PLUGIN_CONFIG);
                 self::setPluginConfig($config);
             } catch (\Exception $e) {
-                if(is_file(CORESHOP_PLUGIN_CONFIG)) {
+                if (is_file(CORESHOP_PLUGIN_CONFIG)) {
                     $m = "Your plugin_xml.xml located at " . CORESHOP_PLUGIN_CONFIG . " is invalid, please check and correct it manually!";
                     Tool::exitWithError($m);
                 }
@@ -171,7 +172,8 @@ class Configuration extends AbstractModel {
      * @param \Zend_Config $config
      * @return void
      */
-    public static function setPluginConfig (\Zend_Config $config) {
+    public static function setPluginConfig(\Zend_Config $config)
+    {
         \Zend_Registry::set("coreshop_plugin_config", $config);
     }
 
@@ -180,14 +182,14 @@ class Configuration extends AbstractModel {
      *
      * @return bool
      */
-    public static function isCatalogMode() {
-        if(\Zend_Registry::isRegistered("coreshop_catalogmode")) {
+    public static function isCatalogMode()
+    {
+        if (\Zend_Registry::isRegistered("coreshop_catalogmode")) {
             return \Zend_Registry::get("coreshop_catalogmode");
-        }
-        else {
+        } else {
             $catalogMode = intval(self::get("SYSTEM.BASE.CATALOGMODE")) === 1;
 
-            if(is_bool($catalogMode)) {
+            if (is_bool($catalogMode)) {
                 \Zend_Registry::set("coreshop_catalogmode", $catalogMode);
 
                 return $catalogMode;
@@ -202,14 +204,14 @@ class Configuration extends AbstractModel {
      *
      * @return bool
      */
-    public static function isGuestCheckoutActivated() {
-        if(\Zend_Registry::isRegistered("coreshop_guestcheckout")) {
+    public static function isGuestCheckoutActivated()
+    {
+        if (\Zend_Registry::isRegistered("coreshop_guestcheckout")) {
             return \Zend_Registry::get("coreshop_guestcheckout");
-        }
-        else {
+        } else {
             $guestCheckout = intval(self::get("SYSTEM.BASE.GUESTCHECKOUT")) === 1;
 
-            if(is_bool($guestCheckout)) {
+            if (is_bool($guestCheckout)) {
                 \Zend_Registry::set("coreshop_guestcheckout", $guestCheckout);
 
                 return $guestCheckout;

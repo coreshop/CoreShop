@@ -17,7 +17,8 @@ namespace CoreShop\Model\Zone\Listing;
 use CoreShop\Model\Listing;
 use CoreShop\Model;
 
-class Dao extends Listing\Dao\AbstractDao {
+class Dao extends Listing\Dao\AbstractDao
+{
 
     protected $tableName = 'coreshop_zones';
     protected $modelClass = '\\CoreShop\\Model\\Zone';

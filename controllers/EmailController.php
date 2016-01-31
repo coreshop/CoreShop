@@ -20,20 +20,22 @@ class CoreShop_EmailController extends Action
     {
         parent::init();
         
-        if($this->view->editmode)
+        if ($this->view->editmode) {
             $this->disableLayout();
+        }
     }
 
     public function emailAction()
     {
-        
     }
 
-    public function orderAcceptedAction() {
+    public function orderAcceptedAction()
+    {
         $this->view->params = $this->getAllParams();
     }
 
-    public function orderPaidAction() {
+    public function orderPaidAction()
+    {
         $this->view->params = $this->getAllParams();
     }
 }

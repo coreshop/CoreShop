@@ -65,7 +65,7 @@ class Invoice
 
                 $invoice = Document::getByPath($path . "/" . $fileName);
 
-                if($invoice instanceof Document) {
+                if ($invoice instanceof Document) {
                     $invoice->delete();
                 }
 
@@ -81,8 +81,7 @@ class Invoice
 
                 return $invoice;
             }
-        }
-        catch(Exception $ex) {
+        } catch (Exception $ex) {
             \Logger::warn("wkhtmltopdf library not found, no invoice was generated");
         }
 
@@ -93,32 +92,32 @@ class Invoice
      * @return null|\Pimcore\Translate|\Pimcore\Translate\Website
      * @throws \Zend_Exception
      */
-    protected static function initTranslation() {
-
+    protected static function initTranslation()
+    {
         $translate = null;
-        if(\Zend_Registry::isRegistered("Zend_Translate")) {
+        if (\Zend_Registry::isRegistered("Zend_Translate")) {
             $t = \Zend_Registry::get("Zend_Translate");
             // this check is necessary for the case that a document is rendered within an admin request
             // example: send test newsletter
-            if($t instanceof \Pimcore\Translate) {
+            if ($t instanceof \Pimcore\Translate) {
                 $translate = $t;
             }
         }
 
-        if(!$translate) {
+        if (!$translate) {
             // setup \Zend_Translate
             try {
                 $locale = \Zend_Registry::get("Zend_Locale");
 
                 $translate = new \Pimcore\Translate\Website($locale);
 
-                if(Tool::isValidLanguage($locale)) {
+                if (Tool::isValidLanguage($locale)) {
                     $translate->setLocale($locale);
                 } else {
                     \Logger::error("You want to use an invalid language which is not defined in the system settings: " . $locale);
                     // fall back to the first (default) language defined
                     $languages = Tool::getValidLanguages();
-                    if($languages[0]) {
+                    if ($languages[0]) {
                         \Logger::error("Using '" . $languages[0] . "' as a fallback, because the language '".$locale."' is not defined in system settings");
                         $translate = new \Pimcore\Translate\Website($languages[0]); // reinit with new locale
                         $translate->setLocale($languages[0]);
@@ -130,8 +129,7 @@ class Invoice
 
                 // register the translator in \Zend_Registry with the key "\Zend_Translate" to use the translate helper for \Zend_View
                 \Zend_Registry::set("Zend_Translate", $translate);
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 \Logger::error("initialization of Pimcore_Translate failed");
                 \Logger::error($e);
             }

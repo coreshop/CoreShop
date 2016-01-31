@@ -15,10 +15,10 @@
 namespace Pimcore\Model\Object\ClassDefinition\Data;
 
 use Pimcore\Model;
-
 use CoreShop\Model\CustomerGroup;
 
-class CoreShopCustomerGroupMultiselect extends Model\Object\ClassDefinition\Data\Multiselect {
+class CoreShopCustomerGroupMultiselect extends Model\Object\ClassDefinition\Data\Multiselect
+{
 
     /**
      * Static type of this element

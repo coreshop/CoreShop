@@ -14,7 +14,6 @@
 
 namespace CoreShop\Exception;
 
-class UnsupportedException extends \Exception {
-
-
+class UnsupportedException extends \Exception
+{
 }

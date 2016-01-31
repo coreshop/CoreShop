@@ -16,7 +16,6 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Tool;
-
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopUser;
@@ -37,10 +36,9 @@ class User extends Base
         $conditionsValues = array($email);
         $conditionsValues[] = $isGuest ? 1 : 0;
 
-        if(!$isGuest) {
+        if (!$isGuest) {
             $conditions[] = "(isGuest = ? OR isGuest IS NULL)";
-        }
-        else {
+        } else {
             $conditions[] = "isGuest = ?";
         }
 
@@ -59,7 +57,8 @@ class User extends Base
      * @param $email
      * @return CoreShopUser|bool
      */
-    public static function getGuestByEmail($email) {
+    public static function getGuestByEmail($email)
+    {
         return self::getUniqueByEmail($email, true);
     }
 
@@ -67,7 +66,8 @@ class User extends Base
      * @param $email
      * @return CoreShopUser|bool
      */
-    public static function getUserByEmail($email) {
+    public static function getUserByEmail($email)
+    {
         return self::getUniqueByEmail($email, false);
     }
 
@@ -82,8 +82,7 @@ class User extends Base
     {
         if ($this->getPassword() == hash("md5", $password)) {
             return true;
-        }
-        else {
+        } else {
             throw new \Exception("User and Password doesn't match", 0);
         }
     }
@@ -96,9 +95,8 @@ class User extends Base
      */
     public function findAddressByName($name)
     {
-        foreach($this->getAddresses() as $address)
-        {
-            if($address->getName() == $name) {
+        foreach ($this->getAddresses() as $address) {
+            if ($address->getName() == $name) {
                 return $address;
             }
         }
@@ -133,8 +131,9 @@ class User extends Base
 
         $carts = $list->getObjects();
 
-        if(count($carts) > 0)
+        if (count($carts) > 0) {
             return $carts[0];
+        }
 
         return false;
     }
@@ -145,9 +144,10 @@ class User extends Base
      * @param CustomerGroup $group
      * @return bool
      */
-    public function isInGroup(CustomerGroup $group) {
-        foreach($this->getGroups() as $myGroup) {
-            if($myGroup === $group->getName()) {
+    public function isInGroup(CustomerGroup $group)
+    {
+        foreach ($this->getGroups() as $myGroup) {
+            if ($myGroup === $group->getName()) {
                 return true;
             }
         }
@@ -162,7 +162,8 @@ class User extends Base
      * @throws UnsupportedException
      * @return string
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         throw new UnsupportedException("getEmail is not supported for " . get_class($this));
     }
 
@@ -173,7 +174,8 @@ class User extends Base
      * @throws UnsupportedException
      * @return string
      */
-    public function getFirstname() {
+    public function getFirstname()
+    {
         throw new UnsupportedException("getFirstname is not supported for " . get_class($this));
     }
 
@@ -184,7 +186,8 @@ class User extends Base
      * @throws UnsupportedException
      * @return string
      */
-    public function getLastname() {
+    public function getLastname()
+    {
         throw new UnsupportedException("getLastname is not supported for " . get_class($this));
     }
 }

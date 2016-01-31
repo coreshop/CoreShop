@@ -17,7 +17,8 @@ namespace CoreShop\Model\Carrier\Listing;
 use CoreShop\Model\Listing;
 use CoreShop\Model;
 
-class Dao extends Listing\Dao\AbstractDao {
+class Dao extends Listing\Dao\AbstractDao
+{
 
     protected $tableName = 'coreshop_carriers';
     protected $modelClass = '\\CoreShop\\Model\\Carrier';

@@ -14,7 +14,8 @@
 
 namespace CoreShop\Model;
 
-class Zone extends AbstractModel {
+class Zone extends AbstractModel
+{
 
     /**
      * @var int
@@ -36,7 +37,8 @@ class Zone extends AbstractModel {
      *
      * @return mixed
      */
-    public function save() {
+    public function save()
+    {
         return $this->getDao()->save();
     }
 
@@ -46,7 +48,8 @@ class Zone extends AbstractModel {
      * @param $id
      * @return Country|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
@@ -107,11 +110,12 @@ class Zone extends AbstractModel {
      */
     public function setActive($active)
     {
-        if(is_bool($active)) {
-            if($active)
+        if (is_bool($active)) {
+            if ($active) {
                 $active = 1;
-            else
+            } else {
                 $active = 0;
+            }
         }
         $this->active = $active;
     }
@@ -119,7 +123,8 @@ class Zone extends AbstractModel {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return strval($this->getName());
     }
 }

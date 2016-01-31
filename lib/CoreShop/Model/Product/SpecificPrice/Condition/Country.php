@@ -18,7 +18,8 @@ use CoreShop\Model;
 use CoreShop\Model\Country as CountryModel;
 use CoreShop\Tool;
 
-class Country extends AbstractCondition {
+class Country extends AbstractCondition
+{
 
     /**
      * @var int
@@ -35,8 +36,9 @@ class Country extends AbstractCondition {
      */
     public function getCountry()
     {
-        if(!$this->country instanceof CountryModel)
+        if (!$this->country instanceof CountryModel) {
             $this->country = CountryModel::getById($this->country);
+        }
 
         return $this->country;
     }
@@ -58,8 +60,7 @@ class Country extends AbstractCondition {
      */
     public function checkCondition(Model\Product $product, Model\Product\SpecificPrice $specificPrice)
     {
-        if($this->getCountry()->getId() !== Tool::getCountry()->getId())
-        {
+        if ($this->getCountry()->getId() !== Tool::getCountry()->getId()) {
             return false;
         }
 

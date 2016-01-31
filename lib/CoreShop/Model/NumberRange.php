@@ -14,7 +14,6 @@
 
 namespace CoreShop\Model;
 
-
 class NumberRange extends AbstractModel
 {
     /**
@@ -37,7 +36,8 @@ class NumberRange extends AbstractModel
      *
      * @return mixed
      */
-    public function save() {
+    public function save()
+    {
         return $this->getDao()->save();
     }
 
@@ -47,7 +47,8 @@ class NumberRange extends AbstractModel
      * @param $id
      * @return Carrier|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
@@ -57,10 +58,11 @@ class NumberRange extends AbstractModel
      * @param $type
      * @return NumberRange
      */
-    public static function getByType($type) {
+    public static function getByType($type)
+    {
         $numberRange = parent::getByField("type", $type);
 
-        if(!$numberRange) {
+        if (!$numberRange) {
             $numberRange = new self();
             $numberRange->setType($type);
             $numberRange->setNumber(0);
@@ -76,7 +78,8 @@ class NumberRange extends AbstractModel
      * @param $type
      * @return int
      */
-    public static function getNextNumberForType($type) {
+    public static function getNextNumberForType($type)
+    {
         $numberRange = self::getByType($type);
         $numberRange->increaseNumber();
 
@@ -86,7 +89,8 @@ class NumberRange extends AbstractModel
     /**
      * Increase number for this NumberRange
      */
-    public function increaseNumber() {
+    public function increaseNumber()
+    {
         $this->number++;
         $this->save();
     }

@@ -18,7 +18,8 @@ use CoreShop\Model\AbstractModel;
 use Pimcore\Model;
 use CoreShop\Model\Country;
 
-class Select extends Model\Object\ClassDefinition\Data\Select {
+class Select extends Model\Object\ClassDefinition\Data\Select
+{
     
     /**
      * Type for the column to query
@@ -38,7 +39,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select {
     /** True if change is allowed in edit mode.
      * @return bool
      */
-    public function isDiffChangeAllowed() {
+    public function isDiffChangeAllowed()
+    {
         return true;
     }
 
@@ -48,7 +50,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select {
      * @param null|Model\Object\AbstractObject $object
      * @return integer|null
      */
-    public function getDataForResource($data, $object = null) {
+    public function getDataForResource($data, $object = null)
+    {
         if (is_a($data, $this->getPhpdocType())) {
             return $data->getId();
         }
@@ -60,7 +63,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select {
      * @param integer $data
      * @return AbstractModel
      */
-    public function getDataFromResource($data) {
+    public function getDataFromResource($data)
+    {
         if (intval($data) > 0) {
             return call_user_func($this->getPhpdocType() . '::getById', $data);
         }
@@ -73,7 +77,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select {
      * @param null|Model\Object\AbstractObject $object
      * @return integer|null
      */
-    public function getDataForQueryResource($data, $object = null) {
+    public function getDataForQueryResource($data, $object = null)
+    {
         if (is_a($data, $this->getPhpdocType())) {
             return $data->getId();
         }
@@ -86,7 +91,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select {
      * @param null|Model\Object\AbstractObject $object
      * @return integer
      */
-    public function getDataForEditmode($data, $object = null, $objectFromVersion = NULL) {
+    public function getDataForEditmode($data, $object = null, $objectFromVersion = null)
+    {
         return $this->getDataForResource($data, $object);
     }
 
@@ -96,7 +102,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select {
      * @param null|Model\Object\AbstractObject $object
      * @return AbstractModel
      */
-    public function getDataFromEditmode($data, $object = null) {
+    public function getDataFromEditmode($data, $object = null)
+    {
         return $this->getDataFromResource($data);
     }
 
@@ -115,8 +122,9 @@ class Select extends Model\Object\ClassDefinition\Data\Select {
      */
     public function getDataForSearchIndex($object)
     {
-        if($object instanceof Model\Object\AbstractObject)
+        if ($object instanceof Model\Object\AbstractObject) {
             return $object->getId();
+        }
 
         return parent::getDataForSearchIndex($object);
     }

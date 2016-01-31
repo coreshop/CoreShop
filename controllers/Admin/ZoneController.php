@@ -15,13 +15,12 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Zone;
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_ZoneController extends Admin
 {
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -38,7 +37,7 @@ class CoreShop_Admin_ZoneController extends Admin
         $list->load();
 
         $zones = array();
-        if(is_array($list->getData())){
+        if (is_array($list->getData())) {
             foreach ($list->getData() as $zone) {
                 $zones[] = $this->getTreeNodeConfig($zone);
             }
@@ -46,7 +45,8 @@ class CoreShop_Admin_ZoneController extends Admin
         $this->_helper->json($zones);
     }
 
-    protected function getTreeNodeConfig($zone) {
+    protected function getTreeNodeConfig($zone)
+    {
         $tmpZone= array(
             "id" => $zone->getId(),
             "text" => $zone->getName(),
@@ -65,41 +65,44 @@ class CoreShop_Admin_ZoneController extends Admin
         return $tmpZone;
     }
 
-    public function getAction() {
+    public function getAction()
+    {
         $id = $this->getParam("id");
         $zone = Zone::getById($id);
 
-        if($zone instanceof Zone)
+        if ($zone instanceof Zone) {
             $this->_helper->json(array("success" => true, "data" => $zone));
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function saveAction() {
+    public function saveAction()
+    {
         $id = $this->getParam("id");
         $data = $this->getParam("data");
         $zone = Zone::getById($id);
 
 
-        if($data && $zone instanceof Zone) {
+        if ($data && $zone instanceof Zone) {
             $data = \Zend_Json::decode($this->getParam("data"));
 
             $zone->setValues($data);
             $zone->save();
 
             $this->_helper->json(array("success" => true, "data" => $zone));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function addAction() {
+    public function addAction()
+    {
         $name = $this->getParam("name");
 
-        if(strlen($name) <= 0) {
+        if (strlen($name) <= 0) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
-        }
-        else {
+        } else {
             $zone = new Zone();
             $zone->setName($name);
             $zone->setActive(1);
@@ -109,11 +112,12 @@ class CoreShop_Admin_ZoneController extends Admin
         }
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->getParam("id");
         $zone = Zone::getById($id);
 
-        if($zone instanceof Zone) {
+        if ($zone instanceof Zone) {
             $zone->delete();
 
             $this->_helper->json(array("success" => true));

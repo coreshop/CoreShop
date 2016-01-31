@@ -17,7 +17,8 @@ namespace CoreShop\Model\Product\SpecificPrice\Action;
 use CoreShop\Model\Product;
 use Pimcore\Model;
 
-class DiscountPercent extends AbstractAction {
+class DiscountPercent extends AbstractAction
+{
 
     /**
      * @var int
@@ -72,7 +73,8 @@ class DiscountPercent extends AbstractAction {
      * @param Product $product
      * @return float
      */
-    public function getDiscount(Product $product) {
+    public function getDiscount(Product $product)
+    {
         return $product->getRetailPrice() * ($this->getPercent() / 100);
     }
 }

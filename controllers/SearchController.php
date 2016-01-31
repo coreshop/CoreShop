@@ -13,7 +13,6 @@
  */
 
 use CoreShopTemplate\Controller\Action;
-
 use Pimcore\Model\Object\CoreShopProduct;
 
 class CoreShop_SearchController extends Action

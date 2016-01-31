@@ -18,7 +18,8 @@ use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model;
 use CoreShop\Model\PriceRule;
 
-abstract class AbstractCondition extends AbstractPriceRule {
+abstract class AbstractCondition extends AbstractPriceRule
+{
     /**
      * @var string
      */
@@ -32,5 +33,5 @@ abstract class AbstractCondition extends AbstractPriceRule {
      * @param bool|false $throwException
      * @return mixed
      */
-    public abstract function checkCondition(Model\Cart $cart, PriceRule $priceRule, $throwException = false);
+    abstract public function checkCondition(Model\Cart $cart, PriceRule $priceRule, $throwException = false);
 }

@@ -16,7 +16,8 @@ namespace CoreShop\Model;
 
 use Pimcore\Model\Object;
 
-class Payment extends Base {
+class Payment extends Base
+{
 
     /**
      * Return Payment by transaction identifier
@@ -24,7 +25,8 @@ class Payment extends Base {
      * @param $transactionIdentification
      * @return bool|Payment
      */
-    public static function findByTransactionIdentifier($transactionIdentification) {
+    public static function findByTransactionIdentifier($transactionIdentification)
+    {
         $list = Object\CoreShopPayment::getByTransactionIdentifier($transactionIdentification);
 
         $users = $list->getObjects();
@@ -41,7 +43,8 @@ class Payment extends Base {
      *
      * @return bool|Object\AbstractObject
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         $parent = $this->getParent();
 
         do {

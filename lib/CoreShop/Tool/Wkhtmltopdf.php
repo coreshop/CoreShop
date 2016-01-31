@@ -19,7 +19,8 @@ use CoreShop\Exception;
 use Pimcore\Config;
 use Pimcore\Tool\Console;
 
-class Wkhtmltopdf {
+class Wkhtmltopdf
+{
 
     /**
      * Converts HTML from url to PDF
@@ -30,7 +31,8 @@ class Wkhtmltopdf {
      *
      * @throws Exception
      */
-    public static function fromUrl ($url, $config = array()) {
+    public static function fromUrl($url, $config = array())
+    {
         return self::convert($url, $config);
     }
 
@@ -45,13 +47,13 @@ class Wkhtmltopdf {
      *
      * @throws Exception
      */
-    public static function fromString ($string, $header = "", $footer = "", $config = array()) {
-
+    public static function fromString($string, $header = "", $footer = "", $config = array())
+    {
         $bodyHtml = self::createHtmlFile($string);
         $headerHtml = self::createHtmlFile($header);
         $footerHtml = self::createHtmlFile($footer);
 
-        if(!is_array($config['options'])) {
+        if (!is_array($config['options'])) {
             $config['options'] = array();
         }
 
@@ -73,10 +75,11 @@ class Wkhtmltopdf {
      * @param $string
      * @return string
      */
-    protected static function createHtmlFile($string) {
+    protected static function createHtmlFile($string)
+    {
         $tmpHtmlFile = PIMCORE_TEMPORARY_DIRECTORY . "/" . uniqid() . ".htm";
         file_put_contents($tmpHtmlFile, $string);
-        $httpSource = $_SERVER["HTTP_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . str_replace($_SERVER["DOCUMENT_ROOT"],"",$tmpHtmlFile);
+        $httpSource = $_SERVER["HTTP_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . str_replace($_SERVER["DOCUMENT_ROOT"], "", $tmpHtmlFile);
 
         return $httpSource;
     }
@@ -90,16 +93,16 @@ class Wkhtmltopdf {
      *
      * @throws Exception
      */
-    protected static function convert ($httpSource, $config = array()) {
-
+    protected static function convert($httpSource, $config = array())
+    {
         $tmpPdfFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/" . uniqid() . ".pdf";
         $options = " ";
         $optionConfig = array();
 
-        if(is_array($config["options"])) {
+        if (is_array($config["options"])) {
             foreach ($config["options"] as $argument => $value) {
                 // there is no value only the option
-                if(is_numeric($argument)) {
+                if (is_numeric($argument)) {
                     $optionConfig[] = $value;
                 } else {
                     $optionConfig[] = $argument . " " . $value;
@@ -111,11 +114,11 @@ class Wkhtmltopdf {
 
         $wkhtmltopdfBinary = self::getWkhtmltodfBinary();
 
-        if($config["bin"]) {
+        if ($config["bin"]) {
             $wkhtmltopdfBinary = $config["bin"];
         }
 
-        if($wkhtmltopdfBinary) {
+        if ($wkhtmltopdfBinary) {
             Console::exec($wkhtmltopdfBinary . $options . " " . $httpSource . " " . $tmpPdfFile);
 
             $pdfContent = file_get_contents($tmpPdfFile);
@@ -134,10 +137,10 @@ class Wkhtmltopdf {
      *
      * @return bool|string
      */
-    protected static function getWkhtmltodfBinary () {
-
-        if(Config::getSystemConfig()->documents->wkhtmltopdf) {
-            if(@is_executable(Config::getSystemConfig()->documents->wkhtmltopdf)) {
+    protected static function getWkhtmltodfBinary()
+    {
+        if (Config::getSystemConfig()->documents->wkhtmltopdf) {
+            if (@is_executable(Config::getSystemConfig()->documents->wkhtmltopdf)) {
                 return (string) Config::getSystemConfig()->documents->wkhtmltopdf;
             } else {
                 \Logger::critical("wkhtmltopdf binary: " . Config::getSystemConfig()->documents->wkhtmltopdf . " is not executable");
@@ -155,12 +158,11 @@ class Wkhtmltopdf {
         );
 
         foreach ($paths as $path) {
-            if(@is_executable($path)) {
+            if (@is_executable($path)) {
                 return $path;
             }
         }
 
         return false;
     }
-
 }

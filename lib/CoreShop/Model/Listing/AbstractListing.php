@@ -16,7 +16,8 @@ namespace CoreShop\Model\Listing;
 
 use Pimcore\Model;
 
-class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Paginator_Adapter_Interface, \Zend_Paginator_AdapterAggregate, \Iterator {
+class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Paginator_Adapter_Interface, \Zend_Paginator_AdapterAggregate, \Iterator
+{
 
     /**
      * List of PriceRule
@@ -53,14 +54,16 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
      * @param string $key
      * @return boolean
      */
-    public function isValidOrderKey($key) {
+    public function isValidOrderKey($key)
+    {
         return true;
     }
 
     /**
      * @return array
      */
-    public function getData() {
+    public function getData()
+    {
         if ($this->data === null) {
             $this->load();
         }
@@ -71,7 +74,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
      * @param array $data
      * @return void
      */
-    public function setData($data) {
+    public function setData($data)
+    {
         $this->data = $data;
     }
 
@@ -80,7 +84,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
      * Methods for \Zend_Paginator_Adapter_Interface
      */
 
-    public function count() {
+    public function count()
+    {
         return $this->getTotalCount();
     }
 
@@ -91,7 +96,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
      * @param int $itemCountPerPage
      * @return mixed
      */
-    public function getItems($offset, $itemCountPerPage) {
+    public function getItems($offset, $itemCountPerPage)
+    {
         $this->setOffset($offset);
         $this->setLimit($itemCountPerPage);
         return $this->load();
@@ -100,7 +106,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     /**
      * @return $this
      */
-    public function getPaginatorAdapter() {
+    public function getPaginatorAdapter()
+    {
         return $this;
     }
 
@@ -142,7 +149,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
      * Methods for Iterator
      */
 
-    public function rewind() {
+    public function rewind()
+    {
         $this->getData();
         reset($this->data);
     }
@@ -150,7 +158,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     /**
      * @return mixed
      */
-    public function current() {
+    public function current()
+    {
         $this->getData();
         $var = current($this->data);
         return $var;
@@ -159,7 +168,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     /**
      * @return mixed
      */
-    public function key() {
+    public function key()
+    {
         $this->getData();
         $var = key($this->data);
         return $var;
@@ -168,7 +178,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     /**
      * @return mixed
      */
-    public function next() {
+    public function next()
+    {
         $this->getData();
         $var = next($this->date);
         return $var;
@@ -177,7 +188,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     /**
      * @return bool
      */
-    public function valid() {
+    public function valid()
+    {
         $this->getData();
         $var = $this->current() !== false;
         return $var;

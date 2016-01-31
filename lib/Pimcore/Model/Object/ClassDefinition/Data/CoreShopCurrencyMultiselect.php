@@ -15,10 +15,10 @@
 namespace Pimcore\Model\Object\ClassDefinition\Data;
 
 use Pimcore\Model;
-
 use CoreShop\Model\Currency;
 
-class CoreShopCurrencyMultiselect extends Model\Object\ClassDefinition\Data\Multiselect {
+class CoreShopCurrencyMultiselect extends Model\Object\ClassDefinition\Data\Multiselect
+{
 
     /**
      * Static type of this element

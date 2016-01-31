@@ -16,7 +16,6 @@ namespace CoreShop\Tool;
 
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Objectbrick\Definition;
-
 use CoreShop\Model\Product;
 use CoreShop\Model\BrickVariant;
 use TijsVerkoyen\CssToInlineStyles\Exception;
@@ -38,8 +37,8 @@ class Service
      * @return array
      * @throws \Exception
      */
-    public static function getProductVariations( Product $master, Product $currentProduct, $language = 'en' ) {
-
+    public static function getProductVariations(Product $master, Product $currentProduct, $language = 'en')
+    {
         $productVariants = self::getAllChildren($master);
 
         $projectId = $currentProduct->getId();
@@ -52,67 +51,50 @@ class Service
         $dimensionInfo = array();
         $variantUrls = array();
 
-        if( !is_null( $variantData ) )
-        {
+        if (!is_null($variantData)) {
             $brickGetters = $variantData->getBrickGetters();
 
-            if( !empty( $brickGetters ) )
-            {
-                foreach( $brickGetters as $brickGetter)
-                {
+            if (!empty($brickGetters)) {
+                foreach ($brickGetters as $brickGetter) {
                     $getter = $variantData->{$brickGetter}();
 
-                    if( !is_null( $getter ) )
-                    {
-                        $dimensionMethodData = self::getProductValidMethods( $getter );
+                    if (!is_null($getter)) {
+                        $dimensionMethodData = self::getProductValidMethods($getter);
                         $dimensionInfo[$brickGetter] = $dimensionMethodData;
-
                     }
-
                 }
-
             }
-
         }
 
         $compareValues = array();
 
-        foreach ($variantsAndMaster as $productVariant)
-        {
+        foreach ($variantsAndMaster as $productVariant) {
             $productId = $productVariant->getId();
 
-            if( !empty( $dimensionInfo ) )
-            {
-                foreach( $dimensionInfo as $dimensionGetter => $dimensionMethodData )
-                {
-                    if( empty( $dimensionMethodData ) )
+            if (!empty($dimensionInfo)) {
+                foreach ($dimensionInfo as $dimensionGetter => $dimensionMethodData) {
+                    if (empty($dimensionMethodData)) {
                         continue;
+                    }
 
                     $getter = $productVariant->getVariants()->{$dimensionGetter}();
 
                     //Getter must be an instance of Variant Model
-                    if( !$getter instanceof BrickVariant )
-                    {
-                        throw new Exception( 'Objectbrick "' . $dimensionGetter . '" needs to be a instance of \CoreShop\Model\BrickVariant"');
-
-                    }
-                    else if( !method_exists( $getter, 'getValueForVariant'))
-                    {
-                        throw new Exception( 'Variant Class needs a implemented "getValueForVariant" Method.');
-
-                    } else
-                    {
-                        foreach( $dimensionMethodData as $dMethod )
-                        {
+                    if (!$getter instanceof BrickVariant) {
+                        throw new Exception('Objectbrick "' . $dimensionGetter . '" needs to be a instance of \CoreShop\Model\BrickVariant"');
+                    } elseif (!method_exists($getter, 'getValueForVariant')) {
+                        throw new Exception('Variant Class needs a implemented "getValueForVariant" Method.');
+                    } else {
+                        foreach ($dimensionMethodData as $dMethod) {
                             $variantValue = $getter->getValueForVariant($dMethod, $language);
                             $variantName = $getter->getNameForVariant($dMethod);
 
-                            if( $variantValue === FALSE )
+                            if ($variantValue === false) {
                                 continue;
+                            }
 
-                            if( !is_string( $variantValue ) && !is_numeric( $variantValue ) )
-                            {
-                                throw new Exception( 'Variant return value needs to be string or numeric, ' . gettype($variantValue) . ' given.');
+                            if (!is_string($variantValue) && !is_numeric($variantValue)) {
+                                throw new Exception('Variant return value needs to be string or numeric, ' . gettype($variantValue) . ' given.');
                             }
 
                             //Add a namespace, so fields from different blocks can have same name!
@@ -120,42 +102,34 @@ class Service
 
                             $compareValues[ $secureNameSpace . $variantName ][ $productId ] = $variantValue;
                             $variantUrls[ $productVariant->getId() ] = $productVariant->getName();
-
                         }
-
                     }
-
                 }
-
             }
-
         }
 
         $filtered = $compareValues;
 
-        foreach( $compareValues as $variantName => $variantValues )
-        {
-            $currentVariantName = isset( $variantValues[ $projectId ] ) ? $variantValues[ $projectId ] : NULL;
+        foreach ($compareValues as $variantName => $variantValues) {
+            $currentVariantName = isset($variantValues[ $projectId ]) ? $variantValues[ $projectId ] : null;
 
-            if( is_null( $currentVariantName ) )
+            if (is_null($currentVariantName)) {
                 continue;
+            }
 
             $tmpArray = $compareValues;
-            unset( $tmpArray[ $variantName ]);
+            unset($tmpArray[ $variantName ]);
 
             $available = self::findProjectIDsInVariant($currentVariantName, $variantValues);
 
             $filtered = self::findInOthers($tmpArray, $available, $filtered);
-
         }
 
         $orderedData = array();
 
-        if( !empty( $filtered ) )
-        {
-            foreach ($filtered as $variantName => $variantValues )
-            {
-                $currentVariantName = isset( $variantValues[ $projectId ] ) ? $variantValues[ $projectId ] : NULL;
+        if (!empty($filtered)) {
+            foreach ($filtered as $variantName => $variantValues) {
+                $currentVariantName = isset($variantValues[ $projectId ]) ? $variantValues[ $projectId ] : null;
 
                 $variantSelections = array(
 
@@ -164,36 +138,28 @@ class Service
 
                 );
 
-                $variantValues = array_unique( $variantValues );
+                $variantValues = array_unique($variantValues);
 
-                if( !empty( $variantValues ) )
-                {
-                    foreach( $variantValues as $pid => $variantValue )
-                    {
+                if (!empty($variantValues)) {
+                    foreach ($variantValues as $pid => $variantValue) {
                         $variantSelections['variantValues'][] = array(
 
                             'productId' => $pid,
-                            'productName' => isset( $variantUrls[ $pid ] ) ?  $variantUrls[ $pid ] : NULL,
+                            'productName' => isset($variantUrls[ $pid ]) ?  $variantUrls[ $pid ] : null,
                             'selected' => $currentVariantName === $variantValue,
                             'variantName' => $variantValue
 
                         );
-
                     }
-
                 }
 
-                if( !empty( $variantSelections['variantValues'] ) )
-                {
-                    $orderedData[ strtolower( $variantName ) ] = $variantSelections;
+                if (!empty($variantSelections['variantValues'])) {
+                    $orderedData[ strtolower($variantName) ] = $variantSelections;
                 }
-
             }
-
         }
 
         return $orderedData;
-
     }
 
     /**
@@ -203,28 +169,19 @@ class Service
      *
      * @return mixed
      */
-    private static function findInOthers( $tmpArray, $allowedProductIds, $filtered )
+    private static function findInOthers($tmpArray, $allowedProductIds, $filtered)
     {
-
-        foreach( $tmpArray as $variantName => $variantValues )
-        {
-            foreach ($variantValues as $productId => $variantValue)
-            {
-                if( !in_array( $productId, $allowedProductIds ) )
-                {
-                    if( isset( $filtered[ $variantName ] ) )
-                    {
-                        unset( $filtered[ $variantName ][ $productId ] );
+        foreach ($tmpArray as $variantName => $variantValues) {
+            foreach ($variantValues as $productId => $variantValue) {
+                if (!in_array($productId, $allowedProductIds)) {
+                    if (isset($filtered[ $variantName ])) {
+                        unset($filtered[ $variantName ][ $productId ]);
                     }
-
                 }
-
             }
-
         }
 
         return $filtered;
-
     }
 
     /**
@@ -233,20 +190,17 @@ class Service
      *
      * @return array
      */
-    private static function findProjectIDsInVariant( $value, $array )
+    private static function findProjectIDsInVariant($value, $array)
     {
         $v = array();
 
-        foreach( $array as $projectID => $variantName)
-        {
-            if( $variantName == $value )
-            {
+        foreach ($array as $projectID => $variantName) {
+            if ($variantName == $value) {
                 $v[] = $projectID;
             }
         }
 
         return $v;
-
     }
 
     /**
@@ -255,42 +209,37 @@ class Service
      *
      * @return array
      */
-    private static function getProductValidMethods( $getter, $restrictTypes = TRUE )
+    private static function getProductValidMethods($getter, $restrictTypes = true)
     {
         $fields = $getter->getDefinition()->getFieldDefinitions();
 
-        if( empty( $fields ) )
+        if (empty($fields)) {
             return array();
+        }
 
         $validValues = array();
 
-        foreach( $fields as $field )
-        {
-            $isValid = FALSE;
+        foreach ($fields as $field) {
+            $isValid = false;
 
-            if( $restrictTypes == TRUE )
-            {
-                if( in_array( $field->getFieldType(), self::$allowedVariationTypes ) )
-                    $isValid = TRUE;
-            }
-            else
-            {
-                $isValid = TRUE;
+            if ($restrictTypes == true) {
+                if (in_array($field->getFieldType(), self::$allowedVariationTypes)) {
+                    $isValid = true;
+                }
+            } else {
+                $isValid = true;
             }
 
-            if( $isValid)
-            {
+            if ($isValid) {
                 $validValues[] = array(
                     'name' => $field->getName(),
                     'type' => $field->getPhpdocType(),
                     'title' => $field->getTitle()
                 );
             }
-
         }
 
         return $validValues;
-
     }
 
     /**
@@ -308,7 +257,5 @@ class Service
         $list->setObjectTypes(array(AbstractObject::OBJECT_TYPE_VARIANT));
 
         return $list->load();
-
     }
-
 }

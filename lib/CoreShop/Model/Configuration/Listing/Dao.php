@@ -17,7 +17,8 @@ namespace CoreShop\Model\Configuration\Listing;
 use Pimcore;
 use CoreShop\Model;
 
-class Dao extends Pimcore\Model\Dao\PhpArrayTable {
+class Dao extends Pimcore\Model\Dao\PhpArrayTable
+{
 
     /**
      *
@@ -33,8 +34,8 @@ class Dao extends Pimcore\Model\Dao\PhpArrayTable {
      *
      * @return array
      */
-    public function load() {
-
+    public function load()
+    {
         $routesData = $this->db->fetchAll($this->model->getFilter(), $this->model->getOrder());
 
         $routes = array();
@@ -49,8 +50,8 @@ class Dao extends Pimcore\Model\Dao\PhpArrayTable {
     /**
      * @return int
      */
-    public function getTotalCount() {
-
+    public function getTotalCount()
+    {
         $data = $this->db->fetchAll($this->model->getFilter(), $this->model->getOrder());
         $amount = count($data);
 

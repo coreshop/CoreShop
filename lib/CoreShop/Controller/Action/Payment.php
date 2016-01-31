@@ -15,26 +15,26 @@
 namespace CoreShop\Controller\Action;
 
 use CoreShopTemplate\Controller\Action;
-
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Order;
 use CoreShop\Model\OrderState;
 use CoreShop\Plugin;
-
 use Pimcore\Model\Document;
 use Pimcore\Model\Object\CoreShopPayment;
 use Pimcore\Model\Object\CoreShopOrder;
 use Pimcore\Model\Object\CoreShopUser;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 
-class Payment extends Action {
+class Payment extends Action
+{
 
     /**+
      * @var CorePayment
      */
     protected $module;
 
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $this->view->document = $this->document = Document::getByPath("/" . $this->language . "/shop");
@@ -55,7 +55,7 @@ class Payment extends Action {
      */
     public function getModule()
     {
-        if(is_null($this->module)) {
+        if (is_null($this->module)) {
             $this->module = Plugin::getPaymentProvider($this->getParam("module"));
         }
 
@@ -67,18 +67,21 @@ class Payment extends Action {
         throw new UnsupportedException("This Method has to implemented by the Plugin Controller");
     }
 
-    public function validateAction() {
+    public function validateAction()
+    {
         $this->view->headTitle($this->view->translate("Payment"));
     }
 
-    public function confirmationAction() {
+    public function confirmationAction()
+    {
         $this->view->headTitle($this->view->translate("Payment"));
         
         $this->prepareCart();
         //$this->cart->delete(); //Keep Cart for Statistics Purpose
 
-        if(!$this->session->order instanceof Order)
+        if (!$this->session->order instanceof Order) {
             $this->redirect("/" . $this->view->language);
+        }
 
         $this->view->order = $this->session->order;
 
@@ -86,7 +89,7 @@ class Payment extends Action {
         unset($this->session->cart);
         unset($this->session->cartId);
 
-        if($this->session->user->getIsGuest()) {
+        if ($this->session->user->getIsGuest()) {
             unset($this->session->user);
         }
     }

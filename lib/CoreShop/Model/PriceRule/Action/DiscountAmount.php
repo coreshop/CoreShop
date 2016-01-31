@@ -22,7 +22,8 @@ use CoreShop\Tool;
  * Class DiscountAmount
  * @package CoreShop\Model\PriceRule\Action
  */
-class DiscountAmount extends AbstractAction {
+class DiscountAmount extends AbstractAction
+{
 
     /**
      * @var int
@@ -77,7 +78,8 @@ class DiscountAmount extends AbstractAction {
      * @param Model\Object\CoreShopCart $cart
      * @return bool
      */
-    public function applyRule(Model\Object\CoreShopCart $cart) {
+    public function applyRule(Model\Object\CoreShopCart $cart)
+    {
         return true;
     }
 
@@ -87,7 +89,8 @@ class DiscountAmount extends AbstractAction {
      * @param Model\Object\CoreShopCart $cart
      * @return bool
      */
-    public function unApplyRule(Model\Object\CoreShopCart $cart) {
+    public function unApplyRule(Model\Object\CoreShopCart $cart)
+    {
         return true;
     }
 
@@ -97,7 +100,8 @@ class DiscountAmount extends AbstractAction {
      * @param Model\Object\CoreShopCart $cart
      * @return int
      */
-    public function getDiscount(Model\Object\CoreShopCart $cart) {
+    public function getDiscount(Model\Object\CoreShopCart $cart)
+    {
         return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
     }
 }

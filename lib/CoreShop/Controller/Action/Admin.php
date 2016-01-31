@@ -14,6 +14,6 @@
 
 namespace CoreShop\Controller\Action;
 
-class Admin extends \Pimcore\Controller\Action\Admin {
-
+class Admin extends \Pimcore\Controller\Action\Admin
+{
 }

@@ -14,7 +14,6 @@
 
 namespace CoreShop\Exception;
 
-class ThemeNotFoundException extends \Exception {
-
-
+class ThemeNotFoundException extends \Exception
+{
 }

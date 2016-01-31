@@ -15,17 +15,17 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model;
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_ThemeController extends Admin
 {
-    public function enableAction() {
+    public function enableAction()
+    {
         try {
             \CoreShop\Theme::enableTheme($this->getParam("theme"));
 
             $this->_helper->json(array("success" => true));
-        } catch(\Exception $ex) {
+        } catch (\Exception $ex) {
             $this->_helper->json(array("success" => false, "message" => $ex->getMessage()));
         }
     }

@@ -17,7 +17,8 @@ namespace CoreShop\Model;
 use Pimcore\Model;
 use Pimcore\Tool;
 
-class LocalizedFields extends Model\AbstractModel {
+class LocalizedFields extends Model\AbstractModel
+{
 
     const STRICT_DISABLED = 0;
 
@@ -92,8 +93,9 @@ class LocalizedFields extends Model\AbstractModel {
      * @param $fields
      * @param null $items
      */
-    public function __construct($fields, $items = null) {
-        if($items) {
+    public function __construct($fields, $items = null)
+    {
+        if ($items) {
             $this->setItems($items);
         }
 
@@ -165,15 +167,16 @@ class LocalizedFields extends Model\AbstractModel {
      * @param null $language
      * @return string
      */
-    public function getLanguage ($language = null) {
-        if($language) {
+    public function getLanguage($language = null)
+    {
+        if ($language) {
             return (string) $language;
         }
 
         // try to get the language from the registry
         try {
             $locale = \Zend_Registry::get("Zend_Locale");
-            if(Tool::isValidLanguage((string) $locale)) {
+            if (Tool::isValidLanguage((string) $locale)) {
                 return (string) $locale;
             }
             throw new \Exception("Not supported language");
@@ -186,7 +189,8 @@ class LocalizedFields extends Model\AbstractModel {
      * @param $language
      * @return bool
      */
-    public function languageExists ($language) {
+    public function languageExists($language)
+    {
         return array_key_exists($language, $this->getItems());
     }
 
@@ -196,22 +200,22 @@ class LocalizedFields extends Model\AbstractModel {
      * @param bool $ignoreFallbackLanguage
      * @return null
      */
-    public function getLocalizedValue ($name, $language = null, $ignoreFallbackLanguage = false) {
-
+    public function getLocalizedValue($name, $language = null, $ignoreFallbackLanguage = false)
+    {
         $data = null;
         $language = $this->getLanguage($language);
 
-        if($this->languageExists($language)) {
-            if(array_key_exists($name, $this->items[$language])) {
+        if ($this->languageExists($language)) {
+            if (array_key_exists($name, $this->items[$language])) {
                 $data = $this->items[$language][$name];
             }
         }
 
         // check for fallback value
-        if(!$data && !$ignoreFallbackLanguage && self::doGetFallbackValues()) {
+        if (!$data && !$ignoreFallbackLanguage && self::doGetFallbackValues()) {
             foreach (Tool::getFallbackLanguagesFor($language) as $l) {
-                if($this->languageExists($l)) {
-                    if(array_key_exists($name, $this->items[$l])) {
+                if ($this->languageExists($l)) {
+                    if (array_key_exists($name, $this->items[$l])) {
                         $data = $this->getLocalizedValue($name, $l);
                     }
                 }
@@ -228,8 +232,8 @@ class LocalizedFields extends Model\AbstractModel {
      * @return void
      * @throws \Exception
      */
-    public function setLocalizedValue ($name, $value, $language = null) {
-
+    public function setLocalizedValue($name, $value, $language = null)
+    {
         if (self::$strictMode) {
             if (!$language || !in_array($language, Tool::getValidLanguages())) {
                 throw new \Exception("Language " . $language . " not accepted in strict mode");
@@ -237,7 +241,7 @@ class LocalizedFields extends Model\AbstractModel {
         }
 
         $language  = $this->getLanguage($language);
-        if(!$this->languageExists($language)) {
+        if (!$this->languageExists($language)) {
             $this->items[$language] = array();
         }
 
@@ -247,7 +251,8 @@ class LocalizedFields extends Model\AbstractModel {
     /**
      * @return array
      */
-    public function __sleep() {
+    public function __sleep()
+    {
         return array("items");
     }
 }

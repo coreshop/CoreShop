@@ -17,7 +17,8 @@ namespace CoreShop\Model\Product\SpecificPrice\Action;
 use CoreShop\Model\Product;
 use Pimcore\Model;
 
-abstract class AbstractAction extends Product\SpecificPrice\AbstractSpecificPrice {
+abstract class AbstractAction extends Product\SpecificPrice\AbstractSpecificPrice
+{
     /**
      * @var string
      */
@@ -29,5 +30,5 @@ abstract class AbstractAction extends Product\SpecificPrice\AbstractSpecificPric
      * @param Product $product
      * @return float
      */
-    public abstract function getDiscount(Product $product);
+    abstract public function getDiscount(Product $product);
 }

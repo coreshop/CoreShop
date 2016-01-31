@@ -18,7 +18,8 @@ use CoreShop\Model\PriceRule;
 use CoreShop\Model\Cart;
 use Pimcore\Model\Object\CoreShopCategory;
 
-class Category extends AbstractCondition {
+class Category extends AbstractCondition
+{
 
     /**
      * @var int
@@ -35,8 +36,9 @@ class Category extends AbstractCondition {
      */
     public function getCategory()
     {
-        if(!$this->category instanceof CoreShopCategory)
+        if (!$this->category instanceof CoreShopCategory) {
             $this->category = CoreShopCategory::getByPath($this->category);
+        }
 
         return $this->category;
     }
@@ -62,15 +64,21 @@ class Category extends AbstractCondition {
     {
         $found = false;
 
-        if($this->getCategory() instanceof CoreShopCategory) {
+        if ($this->getCategory() instanceof CoreShopCategory) {
             foreach ($cart->getItems() as $i) {
-                if ($i->getProduct()->inCategory($this->getCategory()))
+                if ($i->getProduct()->inCategory($this->getCategory())) {
                     $found = true;
+                }
             }
         }
 
-        if(!$found)
-            if($throwException) throw new \Exception("You cannot use this voucher with these products"); else return false;
+        if (!$found) {
+            if ($throwException) {
+                throw new \Exception("You cannot use this voucher with these products");
+            } else {
+                return false;
+            }
+        }
 
         return true;
     }

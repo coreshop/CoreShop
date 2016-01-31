@@ -15,14 +15,13 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\TaxRuleGroup;
-
 use Pimcore\Controller\Action\Admin;
-
 use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_TaxrulegroupController extends Admin
 {
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -32,11 +31,12 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
         }
     }
 
-    public function listAction() {
+    public function listAction()
+    {
         $list = new TaxRuleGroup\Listing();
 
         $data = array();
-        if(is_array($list->getData())){
+        if (is_array($list->getData())) {
             foreach ($list->getData() as $group) {
                 $data[] = $this->getTreeNodeConfig($group);
             }
@@ -44,7 +44,8 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
         $this->_helper->json($data);
     }
 
-    protected function getTreeNodeConfig(TaxRuleGroup $group) {
+    protected function getTreeNodeConfig(TaxRuleGroup $group)
+    {
         $tmp = array(
             "id" => $group->getId(),
             "text" => $group->getName(),
@@ -62,13 +63,13 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
         return $tmp;
     }
 
-    public function addAction() {
+    public function addAction()
+    {
         $name = $this->getParam("name");
 
-        if(strlen($name) <= 0) {
+        if (strlen($name) <= 0) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
-        }
-        else {
+        } else {
             $group = new TaxRuleGroup();
             $group->setName($name);
             $group->setActive(1);
@@ -78,15 +79,16 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
         }
     }
 
-    public function getAction() {
+    public function getAction()
+    {
         $id = $this->getParam("id");
         $group = TaxRuleGroup::getById($id);
 
-        if($group instanceof TaxRuleGroup) {
+        if ($group instanceof TaxRuleGroup) {
             $this->_helper->json(array("success" => true, "data" => $group->getObjectVars()));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
     public function saveAction()
@@ -104,17 +106,17 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
             $taxRules = \Zend_Json::decode($this->getParam("taxRules"));
             $taxRulesUpdated = array();
 
-            foreach($taxRules as $taxRule) {
+            foreach ($taxRules as $taxRule) {
                 $id = intval($taxRule['id']);
                 $taxRuleObject = null;
 
                 unset($taxRule['id']);
 
-                if($id) {
+                if ($id) {
                     $taxRuleObject = \CoreShop\Model\TaxRule::getById($id);
                 }
 
-                if(!$taxRuleObject instanceof \CoreShop\Model\TaxRule) {
+                if (!$taxRuleObject instanceof \CoreShop\Model\TaxRule) {
                     $taxRuleObject = new \CoreShop\Model\TaxRule();
                 }
 
@@ -129,22 +131,24 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
 
             $taxRules = $group->getRules();
 
-            foreach($taxRules as $rule) {
-                if(!in_array($rule->getId(), $taxRulesUpdated)) {
+            foreach ($taxRules as $rule) {
+                if (!in_array($rule->getId(), $taxRulesUpdated)) {
                     $rule->delete();
                 }
             }
 
             $this->_helper->json(array("success" => true, "data" => $group));
-        } else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->getParam("id");
         $group = TaxRuleGroup::getById($id);
 
-        if($group instanceof TaxRuleGroup) {
+        if ($group instanceof TaxRuleGroup) {
             $group->delete();
 
             $this->_helper->json(array("success" => true));
@@ -154,24 +158,26 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
     }
 
 
-    public function listRulesAction() {
+    public function listRulesAction()
+    {
         $id = $this->getParam("id");
         $group = TaxRuleGroup::getById($id);
 
-        if($group instanceof TaxRuleGroup) {
+        if ($group instanceof TaxRuleGroup) {
             $rules = $group->getRules();
 
             $this->_helper->json(array("total" => count($rules), "data" => $rules));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function addRuleAction() {
+    public function addRuleAction()
+    {
         $id = $this->getParam("id");
         $group = TaxRuleGroup::getById($id);
 
-        if($group instanceof TaxRuleGroup) {
+        if ($group instanceof TaxRuleGroup) {
             $countryId = $this->getParam("countryId");
             $taxId = $this->getParam("taxId");
             $behavior = $this->getParam("behavior");
@@ -184,8 +190,8 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
             $taxRule->save();
 
             $this->_helper->json(array("success" => true, "taxRule" => $taxRule));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 }

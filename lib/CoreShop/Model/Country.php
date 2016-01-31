@@ -14,7 +14,8 @@
 
 namespace CoreShop\Model;
 
-class Country extends AbstractModel {
+class Country extends AbstractModel
+{
 
     /**
      * @var int
@@ -61,7 +62,8 @@ class Country extends AbstractModel {
      *
      * @return mixed
      */
-    public function save() {
+    public function save()
+    {
         return $this->getDao()->save();
     }
 
@@ -71,7 +73,8 @@ class Country extends AbstractModel {
      * @param $id
      * @return Country|null
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return parent::getById($id);
     }
 
@@ -81,7 +84,8 @@ class Country extends AbstractModel {
      * @param $isoCode
      * @return Country|null
      */
-    public static function getByIsoCode($isoCode) {
+    public static function getByIsoCode($isoCode)
+    {
         return parent::getByField("isoCode", $isoCode);
     }
 
@@ -159,11 +163,12 @@ class Country extends AbstractModel {
      */
     public function setActive($active)
     {
-        if(is_bool($active)) {
-            if($active)
+        if (is_bool($active)) {
+            if ($active) {
                 $active = 1;
-            else
+            } else {
                 $active = 0;
+            }
         }
         $this->active = $active;
     }
@@ -182,11 +187,13 @@ class Country extends AbstractModel {
      */
     public function setCurrency($currency)
     {
-        if(is_int($currency))
+        if (is_int($currency)) {
             $currency = Currency::getById($currency);
+        }
 
-        if(!$currency instanceof Currency)
+        if (!$currency instanceof Currency) {
             throw new \Exception("\$currency must be instance of Currency");
+        }
 
         $this->currency = $currency;
         $this->currencyId = $currency->getId();
@@ -208,8 +215,9 @@ class Country extends AbstractModel {
     {
         $currency = Currency::getById($currencyId);
 
-        if(!$currency instanceof Currency)
+        if (!$currency instanceof Currency) {
             return;
+        }
 
         $this->currencyId = $currencyId;
         $this->currency = $currency;
@@ -229,11 +237,13 @@ class Country extends AbstractModel {
      */
     public function setZone($zone)
     {
-        if(is_int($zone))
+        if (is_int($zone)) {
             $zone = Zone::getById($zone);
+        }
 
-        if(!$zone instanceof Zone)
+        if (!$zone instanceof Zone) {
             throw new \Exception("\$zone must be instance of Zone");
+        }
 
         $this->zone = $zone;
         $this->zoneId = $zone->getId();
@@ -255,11 +265,10 @@ class Country extends AbstractModel {
     {
         $zone = Zone::getById($zoneId);
 
-        if(!$zone instanceof Zone) {
+        if (!$zone instanceof Zone) {
             $this->zoneId = null;
             $this->zone = null;
-        }
-        else {
+        } else {
             $this->zoneId = $zoneId;
             $this->zone = $zone;
         }
@@ -268,7 +277,8 @@ class Country extends AbstractModel {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return strval($this->getName());
     }
 }

@@ -18,5 +18,4 @@ use \CoreShop\Model\Listing\AbstractListing;
 
 class Listing extends AbstractListing
 {
-
 }

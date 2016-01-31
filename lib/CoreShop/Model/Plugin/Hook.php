@@ -16,5 +16,4 @@ namespace CoreShop\Model\Plugin;
 
 interface Hook extends AbstractPlugin
 {
-    
 }

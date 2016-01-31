@@ -16,7 +16,8 @@ namespace CoreShop;
 
 use CoreShop\Model\Configuration;
 
-class Version {
+class Version
+{
 
     /**
      * @var array $config
@@ -26,37 +27,40 @@ class Version {
     /**
      * @return array
      */
-    protected static function getPluginConfig() {
+    protected static function getPluginConfig()
+    {
         return Configuration::getPluginConfig()->plugin;
     }
 
     /**
      * @return string
      */
-    public static function getVersion() {
+    public static function getVersion()
+    {
         return self::getPluginConfig()->pluginVersion;
     }
 
     /**
      * @return int
      */
-    public static function getBuildNumber() {
+    public static function getBuildNumber()
+    {
         return self::getPluginConfig()->pluginRevision;
     }
 
     /**
      * @return string
      */
-    public static function getGitRevision() {
+    public static function getGitRevision()
+    {
         return self::getPluginConfig()->pluginGitRevision;
     }
 
     /**
      * @return int
      */
-    public static function getPluginTimestamp() {
+    public static function getPluginTimestamp()
+    {
         return self::getPluginConfig()->pluginBuildTimestamp;
     }
-
-
 }

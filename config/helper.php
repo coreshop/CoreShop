@@ -21,42 +21,41 @@
  * @param string $dst
  * @param boolean $overwrite
  */
-function recurse_copy($src, $dst, $overwrite = false) { 
-    $dir = opendir($src); 
-    @mkdir($dst); 
-    while(false !== ( $file = readdir($dir)) ) { 
-        if (( $file != '.' ) && ( $file != '..' )) { 
-            if ( is_dir($src . '/' . $file) ) { 
-                recurse_copy($src . '/' . $file,$dst . '/' . $file); 
-            } 
-            else { 
-                if(is_file($dst . "/" . $file) && $overwrite) 
-                {
-                    if($overwrite) {
+function recurse_copy($src, $dst, $overwrite = false)
+{
+    $dir = opendir($src);
+    @mkdir($dst);
+    while (false !== ($file = readdir($dir))) {
+        if (($file != '.') && ($file != '..')) {
+            if (is_dir($src . '/' . $file)) {
+                recurse_copy($src . '/' . $file, $dst . '/' . $file);
+            } else {
+                if (is_file($dst . "/" . $file) && $overwrite) {
+                    if ($overwrite) {
                         unlink($dst . "/" . $file);
-                        copy($src . '/' . $file,$dst . '/' . $file); 
+                        copy($src . '/' . $file, $dst . '/' . $file);
                     }
+                } else {
+                    copy($src . '/' . $file, $dst . '/' . $file);
                 }
-                else
-                    copy($src . '/' . $file,$dst . '/' . $file); 
-            } 
-        } 
-    } 
-    closedir($dir); 
+            }
+        }
+    }
+    closedir($dir);
 }
 
-if(!function_exists("startsWith")) {
+if (!function_exists("startsWith")) {
     function startsWith($haystack, $needle)
     {
         // search backwards starting from haystack length characters from the end
-        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
     }
 }
 
-if(!function_exists("endsWith")) {
+if (!function_exists("endsWith")) {
     function endsWith($haystack, $needle)
     {
         // search forward starting from end minus needle length characters
-        return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== FALSE);
+        return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
     }
 }

@@ -18,7 +18,8 @@ use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model;
 use CoreShop\Model\PriceRule;
 
-abstract class AbstractCondition extends Model\Product\SpecificPrice\AbstractSpecificPrice {
+abstract class AbstractCondition extends Model\Product\SpecificPrice\AbstractSpecificPrice
+{
     /**
      * @var string
      */
@@ -31,5 +32,5 @@ abstract class AbstractCondition extends Model\Product\SpecificPrice\AbstractSpe
      * @param Model\Product\SpecificPrice $specificPrice
      * @return boolean
      */
-    public abstract function checkCondition(Model\Product $product, Model\Product\SpecificPrice $specificPrice);
+    abstract public function checkCondition(Model\Product $product, Model\Product\SpecificPrice $specificPrice);
 }

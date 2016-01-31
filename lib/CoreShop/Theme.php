@@ -18,13 +18,15 @@ use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
 
-abstract class Theme {
+abstract class Theme
+{
 
     /**
      * @returns string
      * @throws UnsupportedException
      */
-    public function getName() {
+    public function getName()
+    {
         throw new UnsupportedException("Please implement me");
     }
 
@@ -34,7 +36,8 @@ abstract class Theme {
      * @return string
      * @throws UnsupportedException
      */
-    public function getTemplatePath() {
+    public function getTemplatePath()
+    {
         return $templatePath = CORESHOP_TEMPLATE_BASE_PATH . "/" . $this->getName();
     }
 
@@ -45,11 +48,12 @@ abstract class Theme {
      * @throws UnsupportedException
      * @throws \Exception
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         $templatePath = $this->getTemplatePath();
 
         //Get Template Xml
-        if(!file_exists("$templatePath/template.xml")) {
+        if (!file_exists("$templatePath/template.xml")) {
             throw new \Exception("Template " . $this->getName() . " not found");
         }
 
@@ -66,10 +70,8 @@ abstract class Theme {
     {
         $config = $this->getConfig();
 
-        if(array_key_exists("installation", $config))
-        {
+        if (array_key_exists("installation", $config)) {
             //Install CoreShop Documents
-
         }
     }
 
@@ -78,7 +80,8 @@ abstract class Theme {
      *
      * @return bool
      */
-    public function installDemoData() {
+    public function installDemoData()
+    {
         return true;
     }
 }

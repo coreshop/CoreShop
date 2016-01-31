@@ -15,15 +15,13 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\OrderState;
-
 use Pimcore\Controller\Action\Admin;
-
 use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_OrderstatesController extends Admin
 {
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -33,11 +31,12 @@ class CoreShop_Admin_OrderstatesController extends Admin
         }
     }
 
-    public function listAction() {
+    public function listAction()
+    {
         $list = new OrderState\Listing();
 
         $data = array();
-        if(is_array($list->getData())){
+        if (is_array($list->getData())) {
             foreach ($list->getData() as $orderState) {
                 $data[] = $this->getTreeNodeConfig($orderState);
             }
@@ -45,7 +44,8 @@ class CoreShop_Admin_OrderstatesController extends Admin
         $this->_helper->json($data);
     }
 
-    protected function getTreeNodeConfig($orderState) {
+    protected function getTreeNodeConfig($orderState)
+    {
         $tmp = array(
             "id" => $orderState->getId(),
             "text" => $orderState->getName(),
@@ -63,13 +63,13 @@ class CoreShop_Admin_OrderstatesController extends Admin
         return $tmp;
     }
 
-    public function addAction() {
+    public function addAction()
+    {
         $name = $this->getParam("name");
 
-        if(strlen($name) <= 0) {
+        if (strlen($name) <= 0) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
-        }
-        else {
+        } else {
             $orderState = new OrderState();
             $orderState->setName($name);
             $orderState->setAccepted(0);
@@ -83,15 +83,16 @@ class CoreShop_Admin_OrderstatesController extends Admin
         }
     }
 
-    public function getAction() {
+    public function getAction()
+    {
         $id = $this->getParam("id");
         $orderState = OrderState::getById($id);
 
-        if($orderState instanceof OrderState) {
+        if ($orderState instanceof OrderState) {
             $this->_helper->json(array("success" => true, "data" => $orderState->getObjectVars()));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
     public function saveAction()
@@ -107,15 +108,17 @@ class CoreShop_Admin_OrderstatesController extends Admin
             $oderState->save();
 
             $this->_helper->json(array("success" => true, "data" => $oderState));
-        } else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->getParam("id");
         $oderState = OrderState::getById($id);
 
-        if($oderState instanceof OrderState) {
+        if ($oderState instanceof OrderState) {
             $oderState->delete();
 
             $this->_helper->json(array("success" => true));

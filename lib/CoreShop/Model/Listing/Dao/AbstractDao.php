@@ -18,7 +18,8 @@ use Pimcore\Model\Listing;
 use CoreShop\Model;
 use Pimcore\Tool;
 
-class AbstractDao extends Listing\Dao\AbstractDao {
+class AbstractDao extends Listing\Dao\AbstractDao
+{
 
     protected $tableName = '';
 
@@ -31,23 +32,23 @@ class AbstractDao extends Listing\Dao\AbstractDao {
      * @throws \Exception
      * @throws \Zend_Exception
      */
-    protected function getTableName () {
-        if(!$this->model->getIgnoreLocalizedFields())
-        {
+    protected function getTableName()
+    {
+        if (!$this->model->getIgnoreLocalizedFields()) {
             $language = null;
 
             $model = new $this->modelClass();
 
-            if(count($model->getLocalizedFields()) > 0) {
-                if($this->model->getLocale()) {
-                    if(Tool::isValidLanguage((string) $this->model->getLocale())) {
+            if (count($model->getLocalizedFields()) > 0) {
+                if ($this->model->getLocale()) {
+                    if (Tool::isValidLanguage((string) $this->model->getLocale())) {
                         $language = (string) $this->model->getLocale();
                     }
                 }
 
-                if(!$language && \Zend_Registry::isRegistered("Zend_Locale")) {
+                if (!$language && \Zend_Registry::isRegistered("Zend_Locale")) {
                     $locale = \Zend_Registry::get("Zend_Locale");
-                    if(Tool::isValidLanguage((string) $locale)) {
+                    if (Tool::isValidLanguage((string) $locale)) {
                         $language = (string) $locale;
                     }
                 }
@@ -72,15 +73,15 @@ class AbstractDao extends Listing\Dao\AbstractDao {
      *
      * @return array
      */
-    public function load() {
+    public function load()
+    {
         $modelClass = $this->modelClass;
 
         $data = array();
         $rawData = $this->db->fetchAll("SELECT id FROM " . $this->getTableName() . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
 
         foreach ($rawData as $raw) {
-
-            if($object = $modelClass::getById($raw["id"])) {
+            if ($object = $modelClass::getById($raw["id"])) {
                 $data[] = $object;
             }
         }
@@ -94,7 +95,8 @@ class AbstractDao extends Listing\Dao\AbstractDao {
      *
      * @return array
      */
-    public function loadIdList() {
+    public function loadIdList()
+    {
         $currencyIds = $this->db->fetchCol("SELECT id FROM " . $this->getTableName() . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
         return $currencyIds;
     }
@@ -103,7 +105,8 @@ class AbstractDao extends Listing\Dao\AbstractDao {
      * @return int
      * @throws \Exception
      */
-    public function getCount() {
+    public function getCount()
+    {
         $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->getTableName() . $this->getCondition() . $this->getOffsetLimit(), $this->model->getConditionVariables());
         return $amount;
     }
@@ -112,7 +115,8 @@ class AbstractDao extends Listing\Dao\AbstractDao {
      * @return int
      * @throws \Exception
      */
-    public function getTotalCount() {
+    public function getTotalCount()
+    {
         $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->getTableName() . $this->getCondition(), $this->model->getConditionVariables());
         return $amount;
     }

@@ -16,7 +16,6 @@ namespace CoreShop\Plugin;
 
 use Pimcore\Model\Tool\Setup;
 use Pimcore\Cache;
-
 use CoreShop\Version;
 use CoreShop\Model\Configuration;
 
@@ -26,14 +25,13 @@ class Update
     /**
      * @var bool
      */
-    private $dryRun = FALSE;
+    private $dryRun = false;
 
-    public function setDryRun( $mode = TRUE ) {
-
+    public function setDryRun($mode = true)
+    {
         $this->dryRun = $mode;
 
         return $this;
-
     }
 
     /**
@@ -42,15 +40,15 @@ class Update
      *
      * @return bool
      */
-    public function getAvailableBuildList() {
-
+    public function getAvailableBuildList()
+    {
         $buildState = $this->getBuildStatus();
 
-        if( $buildState === FALSE )
-            return FALSE;
+        if ($buildState === false) {
+            return false;
+        }
 
-        return $this->getBuilds( $buildState['installed'], $buildState['newest'] );
-
+        return $this->getBuilds($buildState['installed'], $buildState['newest']);
     }
 
     /**
@@ -64,33 +62,28 @@ class Update
     {
         $buildState = $this->getBuildStatus();
 
-        if( $buildState === FALSE )
-            return FALSE;
+        if ($buildState === false) {
+            return false;
+        }
 
-        $availableBuilds = $this->getBuilds( $buildState['installed'], $buildState['newest'] );
+        $availableBuilds = $this->getBuilds($buildState['installed'], $buildState['newest']);
 
         $log = array();
 
-        if( !empty( $availableBuilds ) )
-        {
-            $execution = $this->executeBuildUpdates( $availableBuilds );
+        if (!empty($availableBuilds)) {
+            $execution = $this->executeBuildUpdates($availableBuilds);
 
-            if( $execution['success'] == TRUE )
-            {
+            if ($execution['success'] == true) {
                 //clear cache and kill update folder.
-                $this->cleanUp( $buildState['newest'] );
+                $this->cleanUp($buildState['newest']);
 
-                array_merge( $log, $execution['log']);
-
+                array_merge($log, $execution['log']);
             }
-
         }
 
         $this->updateClasses();
 
-        return array('success' => TRUE, 'log' => $log);
-
-
+        return array('success' => true, 'log' => $log);
     }
 
 
@@ -99,58 +92,59 @@ class Update
         $currentBuild = (int) Version::getBuildNumber();
         $installedBuild = Configuration::get("SYSTEM.BASE.BUILD");
 
-        if( $currentBuild <= $installedBuild )
-            return FALSE;
+        if ($currentBuild <= $installedBuild) {
+            return false;
+        }
 
         return array( 'newest' => (int) $currentBuild, 'installed' => (int) $installedBuild );
-
     }
 
-    private function updateCoreShopBuild( $toBuild = 0)
+    private function updateCoreShopBuild($toBuild = 0)
     {
         return Configuration::set("SYSTEM.BASE.BUILD", $toBuild);
     }
 
-    private function getBuilds( $fromBuild = 0, $toBuild = 0)
+    private function getBuilds($fromBuild = 0, $toBuild = 0)
     {
-        if( $toBuild < $fromBuild )
-            return FALSE;
+        if ($toBuild < $fromBuild) {
+            return false;
+        }
 
         $builds = array();
 
         $newBuild = $fromBuild;
 
-        while( $newBuild < $toBuild ) {
-
+        while ($newBuild < $toBuild) {
             $newBuild++;
 
             $buildDir = CORESHOP_UPDATE_DIRECTORY . "/" . $newBuild;
 
-            if( !is_dir( $buildDir ) )
+            if (!is_dir($buildDir)) {
                 continue;
+            }
 
             $scriptFile = $buildDir . "/postupdate.php";
             $QueryFile = $buildDir . "/query.sql";
 
-            if( !is_file( $scriptFile ) )
+            if (!is_file($scriptFile)) {
                 continue;
+            }
 
             $builds[] = array(
                 'build' => $newBuild,
                 'script' => $scriptFile,
-                'query' => is_file( $QueryFile ) ? $QueryFile : FALSE,
+                'query' => is_file($QueryFile) ? $QueryFile : false,
             );
-
         }
 
         return $builds;
-
     }
 
-    private function executeBuildUpdates( $builds )
+    private function executeBuildUpdates($builds)
     {
-        if( !is_array( $builds ) || empty( $builds ) )
+        if (!is_array($builds) || empty($builds)) {
             return false;
+        }
 
         $logs = array();
 
@@ -160,63 +154,54 @@ class Update
 
         Cache::disable();
 
-        foreach( $builds as $build )
-        {
+        foreach ($builds as $build) {
             ob_start();
 
-            try
-            {
-                if(!$this->dryRun)
-                {
+            try {
+                if (!$this->dryRun) {
                     //trigger script
-                    include( $build['script'] );
+                    include($build['script']);
 
                     //trigger sql update
-                    $this->executeSQL( $build['query'] );
+                    $this->executeSQL($build['query']);
 
                     //update config
-                    $this->updateCoreShopBuild( (int) $build['build'] );
+                    $this->updateCoreShopBuild((int) $build['build']);
                 }
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 \Logger::error($e);
             }
 
             $logs[] = array($build['build'], $this->dryRun ? '- dry run, no message - ' : ob_get_clean() );
 
             \Logger::info('CoreShop System Build implemented: ' . $build['build']);
-
         }
 
         return array(
             "log" => $logs,
             "success" => true
         );
-
     }
 
     private function executeSQL($fileName)
     {
-        if( $fileName === FALSE || !is_file( $fileName ) )
-            return FALSE;
-
-        if( filesize( ($fileName) ) > 0 )
-        {
-            $setup = new Setup();
-            $setup->insertDump( $fileName );
+        if ($fileName === false || !is_file($fileName)) {
+            return false;
         }
 
-        return TRUE;
+        if (filesize(($fileName)) > 0) {
+            $setup = new Setup();
+            $setup->insertDump($fileName);
+        }
 
+        return true;
     }
 
-    private function cleanUp( )
+    private function cleanUp()
     {
         \Pimcore\Cache::clearAll();
 
         $this->removeUpdateFolder();
-
     }
 
     /**
@@ -226,11 +211,9 @@ class Update
     public function removeUpdateFolder()
     {
         //Do not clean up, since the files are also going to be removed from git
-        if( is_dir( CORESHOP_UPDATE_DIRECTORY ) )
-        {
+        if (is_dir(CORESHOP_UPDATE_DIRECTORY)) {
             //recursiveDelete( CORESHOP_UPDATE_DIRECTORY, true);
         }
-
     }
 
     /**
@@ -240,25 +223,20 @@ class Update
      */
     private function updateClasses()
     {
-        if (!\Zend_Registry::isRegistered("pimcore_admin_user"))
-        {
-            return FALSE;
+        if (!\Zend_Registry::isRegistered("pimcore_admin_user")) {
+            return false;
         }
 
         $classes = glob(PIMCORE_PLUGINS_PATH . '/CoreShop/install/class-*.json');
 
-        if (!$this->dryRun && !empty( $classes ) && is_array( $classes ) )
-        {
+        if (!$this->dryRun && !empty($classes) && is_array($classes)) {
             $install = new Install();
-            foreach ($classes as $class)
-            {
-                $name = str_replace('class-','', basename($class, '.json') );
-                $install->createClass( $name, TRUE);
+            foreach ($classes as $class) {
+                $name = str_replace('class-', '', basename($class, '.json'));
+                $install->createClass($name, true);
             }
         }
 
-        return TRUE;
-
+        return true;
     }
-
 }

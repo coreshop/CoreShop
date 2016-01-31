@@ -23,7 +23,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Pimcore\Tool\Admin;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-
 use CoreShop\Plugin\Update;
 
 class UpdateCommand extends AbstractCommand
@@ -49,8 +48,6 @@ class UpdateCommand extends AbstractCommand
                 'Dry-run'
             )
             ->addArgument("config");
-
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -58,25 +55,21 @@ class UpdateCommand extends AbstractCommand
         $dryRun = $input->getOption("dry-run");
         $currentRevision = null;
 
-        if($dryRun)
-        {
+        if ($dryRun) {
             $this->output->writeln("<info>---------- DRY-RUN ----------</info>");
         }
 
         $updater = new Update();
 
-        $updater->setDryRun( $dryRun );
+        $updater->setDryRun($dryRun);
 
         $availableUpdates = $updater->getAvailableBuildList();
 
-        if($input->getOption("list"))
-        {
-            if( $availableUpdates !== FALSE && !empty( $availableUpdates) )
-            {
+        if ($input->getOption("list")) {
+            if ($availableUpdates !== false && !empty($availableUpdates)) {
                 $rows = [];
 
-                foreach ($availableUpdates as $release)
-                {
+                foreach ($availableUpdates as $release) {
                     $rows[] = array( $release["build"] );
                 }
 
@@ -89,19 +82,13 @@ class UpdateCommand extends AbstractCommand
                 $latest = end($availableUpdates);
 
                 $this->output->writeln("The latest available build is: <comment>" . $latest["build"] . "</comment>");
-
-            }
-            else
-            {
+            } else {
                 $this->output->writeln("<info>No updates available</info>");
             }
-
         }
 
-        if($input->getOption("update"))
-        {
-            if( $availableUpdates == FALSE || empty( $availableUpdates ) )
-            {
+        if ($input->getOption("update")) {
+            if ($availableUpdates == false || empty($availableUpdates)) {
                 $this->writeError("No update found.");
                 exit;
             }
@@ -111,8 +98,7 @@ class UpdateCommand extends AbstractCommand
             $helper = $this->getHelper('question');
             $question = new ConfirmationQuestion("You are going to update to build <comment>" . $latest['build'] . "</comment> Continue with this action? (y/n)", false);
 
-            if (!$helper->ask($input, $output, $question))
-            {
+            if (!$helper->ask($input, $output, $question)) {
                 return;
             }
 
@@ -122,7 +108,7 @@ class UpdateCommand extends AbstractCommand
             Admin::activateMaintenanceMode($maintenanceModeId);
 
             $stoppedByError = false;
-            $lastError = NULL;
+            $lastError = null;
 
             $execution = $updater->updateCoreData();
 
@@ -130,21 +116,17 @@ class UpdateCommand extends AbstractCommand
 
             $this->output->writeln("\n");
 
-            if($stoppedByError)
-            {
+            if ($stoppedByError) {
                 $this->output->writeln("<error>Update stopped by error! Please check your logs</error>");
                 $this->output->writeln("Last return value was: " . $lastError);
-            }
-            else
-            {
+            } else {
                 $this->output->writeln("<info>Update done!</info>");
 
-                if($execution['success'] === TRUE && !empty( $execution['log'] ) )
-                {
+                if ($execution['success'] === true && !empty($execution['log'])) {
                     $table = new Table($output);
                     $table
-                        ->setHeaders( array('Build', 'Message') )
-                        ->setRows( $execution['log'] );
+                        ->setHeaders(array('Build', 'Message'))
+                        ->setRows($execution['log']);
                     $table->render();
                 }
             }

@@ -14,15 +14,13 @@
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
-
 use Pimcore\Controller\Action\Admin;
-
 use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_ProductController extends Admin
 {
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -33,25 +31,26 @@ class CoreShop_Admin_ProductController extends Admin
         }
     }
 
-    public function listSpecificPricesAction() {
+    public function listSpecificPricesAction()
+    {
         $product = \CoreShop\Model\Product::getById($this->getParam("product"));
 
-        if($product instanceof \CoreShop\Model\Product) {
+        if ($product instanceof \CoreShop\Model\Product) {
             $prices = $product->getSpecificPrices();
             $data = array();
 
-            foreach($prices as $price) {
+            foreach ($prices as $price) {
                 $data[] = $this->getSpecificPriceTreeNodeConfig($price);
             }
 
             $this->_helper->json(array("success" => true, "data" => $data));
-        }
-        else {
+        } else {
             $this->_helper->json(array("success" => false));
         }
     }
 
-    protected function getSpecificPriceTreeNodeConfig($price) {
+    protected function getSpecificPriceTreeNodeConfig($price)
+    {
         $tmpPriceRule= array(
             "id" => $price->getId(),
             "text" => $price->getName(),
@@ -69,7 +68,8 @@ class CoreShop_Admin_ProductController extends Admin
         return $tmpPriceRule;
     }
 
-    public function getSpecificPriceConfigAction() {
+    public function getSpecificPriceConfigAction()
+    {
         $this->_helper->json(array(
             "success" => true,
             "conditions" => \CoreShop\Model\Product\SpecificPrice::$availableConditions,
@@ -77,14 +77,14 @@ class CoreShop_Admin_ProductController extends Admin
         ));
     }
 
-    public function addSpecificPriceAction() {
+    public function addSpecificPriceAction()
+    {
         $product = \CoreShop\Model\Product::getById($this->getParam("product"));
         $name = $this->getParam("name");
 
-        if(strlen($name) <= 0 && $product instanceof \CoreShop\Model\Product) {
+        if (strlen($name) <= 0 && $product instanceof \CoreShop\Model\Product) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
-        }
-        else {
+        } else {
             $specificPrice = new \CoreShop\Model\Product\SpecificPrice();
             $specificPrice->setName($name);
             $specificPrice->setO_Id($product->getId());
@@ -94,14 +94,16 @@ class CoreShop_Admin_ProductController extends Admin
         }
     }
 
-    public function getSpecificPriceAction() {
+    public function getSpecificPriceAction()
+    {
         $id = $this->getParam("id");
         $specificPrice = \CoreShop\Model\Product\SpecificPrice::getById($id);
 
-        if($specificPrice instanceof \CoreShop\Model\Product\SpecificPrice)
+        if ($specificPrice instanceof \CoreShop\Model\Product\SpecificPrice) {
             $this->_helper->json(array("success" => true, "data" => $specificPrice->getObjectVars()));
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
     public function saveSpecificPriceAction()
@@ -121,30 +123,28 @@ class CoreShop_Admin_ProductController extends Admin
             $actionNamespace = "CoreShop\\Model\\Product\\SpecificPrice\\Action\\";
             $conditionNamespace = "CoreShop\\Model\\Product\\SpecificPrice\\Condition\\";
 
-            foreach($conditions as $condition) {
+            foreach ($conditions as $condition) {
                 $class = $conditionNamespace . ucfirst($condition['type']);
 
-                if(PimTool::classExists($class)) {
+                if (PimTool::classExists($class)) {
                     $instance = new $class();
                     $instance->setValues($condition);
 
                     $conditionInstances[] = $instance;
-                }
-                else {
+                } else {
                     throw new \Exception(sprintf("Condition with type %s not found"), $condition['type']);
                 }
             }
 
-            foreach($actions as $action) {
+            foreach ($actions as $action) {
                 $class = $actionNamespace . ucfirst($action['type']);
 
-                if(PimTool::classExists($class)) {
+                if (PimTool::classExists($class)) {
                     $instance = new $class();
                     $instance->setValues($action);
 
                     $actionInstances[] = $instance;
-                }
-                else {
+                } else {
                     throw new \Exception(sprintf("Action with type %s not found"), $action['type']);
                 }
             }
@@ -155,15 +155,17 @@ class CoreShop_Admin_ProductController extends Admin
             $specificPrice->save();
 
             $this->_helper->json(array("success" => true, "data" => $specificPrice));
-        } else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function deleteSpecificPriceAction() {
+    public function deleteSpecificPriceAction()
+    {
         $id = $this->getParam("id");
         $specificPrice = \CoreShop\Model\Product\SpecificPrice::getById($id);
 
-        if($specificPrice instanceof \CoreShop\Model\Product\SpecificPrice) {
+        if ($specificPrice instanceof \CoreShop\Model\Product\SpecificPrice) {
             $specificPrice->delete();
 
             $this->_helper->json(array("success" => true));

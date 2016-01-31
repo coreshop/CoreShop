@@ -17,10 +17,10 @@ namespace CoreShop\Model\PriceRule\Condition;
 use CoreShop\Model\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Tool;
-
 use Pimcore\Model\Object\CoreShopUser;
 
-class Customer extends AbstractCondition {
+class Customer extends AbstractCondition
+{
 
     /**
      * @var int
@@ -61,11 +61,13 @@ class Customer extends AbstractCondition {
     {
         $session = Tool::getSession();
 
-        if($cart->getUser() instanceof CoreShopUser && $session->user instanceof CoreShopUser)
-        {
-            if (!$cart->getUser()->getId() == $session->user->getId())
-            {
-                if($throwException) throw new \Exception("You cannot use this voucher"); else return false;
+        if ($cart->getUser() instanceof CoreShopUser && $session->user instanceof CoreShopUser) {
+            if (!$cart->getUser()->getId() == $session->user->getId()) {
+                if ($throwException) {
+                    throw new \Exception("You cannot use this voucher");
+                } else {
+                    return false;
+                }
             }
         }
 

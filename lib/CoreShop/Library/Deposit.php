@@ -15,17 +15,18 @@
 
 namespace CoreShop\Library;
 
-class Deposit {
+class Deposit
+{
 
     /**
      * @var null
      */
-    var $depositNamespace = NULL;
+    public $depositNamespace = null;
 
     /**
      * @var array
      */
-    var $depositData = array();
+    public $depositData = array();
 
     /**
      * set max elements per deposit
@@ -33,7 +34,7 @@ class Deposit {
      *
      * @var array
      */
-    var $maxElements = 0;
+    public $maxElements = 0;
 
     const LIMIT_REACHED = 'limit_reached';
     const ALREADY_ADDED = 'already_added';
@@ -45,34 +46,30 @@ class Deposit {
      *
      * @return $this
      */
-    public function setNamespace( $namespace = NULL )
+    public function setNamespace($namespace = null)
     {
-
         $session = $this->getSession();
 
         $this->depositNamespace = $namespace;
 
-        if( !isset( $session->deposits ) )
+        if (!isset($session->deposits)) {
             $session->deposits = array();
+        }
 
-        if( !isset( $session->deposits[ $this->depositNamespace ] ) ) {
-
+        if (!isset($session->deposits[ $this->depositNamespace ])) {
             $session->deposits[ $this->depositNamespace ] = array();
-
         }
 
         $this->depositData = $session->deposits[ $this->depositNamespace ];
 
         return $this;
-
     }
 
-    public function setLimit( $limit = 0 ) {
-
+    public function setLimit($limit = 0)
+    {
         $this->maxElements = $limit;
 
         return $this;
-
     }
 
     /**
@@ -83,20 +80,16 @@ class Deposit {
      *
      * @return bool
      */
-    public function add( $id, $value = true )
+    public function add($id, $value = true)
     {
-
-        if( $this->allowedToAdd( $id ) === TRUE ) {
-
+        if ($this->allowedToAdd($id) === true) {
             $this->depositData[ (int) $id ] = $value;
             $this->save();
 
             return true;
-
         }
 
         return false;
-
     }
 
 
@@ -104,17 +97,13 @@ class Deposit {
      * Remove a Element from Deposit
      * @param $id
      */
-    public function remove( $id )
+    public function remove($id)
     {
-
-        if( isset( $this->depositData[ $id ])) {
-
-            unset( $this->depositData[ $id ] );
-
+        if (isset($this->depositData[ $id ])) {
+            unset($this->depositData[ $id ]);
         }
 
         $this->save();
-
     }
 
     /**
@@ -123,55 +112,41 @@ class Deposit {
      */
     public function toArray()
     {
-
-        if( empty( $this->depositData ) )
+        if (empty($this->depositData)) {
             return array();
+        }
 
         $data = array();
 
-        foreach( $this->depositData as $id => $val) {
-
+        foreach ($this->depositData as $id => $val) {
             $data[]= $id;
-
         }
         return $data;
-
     }
 
     /**
      * Check if element is allowed to add
      */
-    public function allowedToAdd( $id )
+    public function allowedToAdd($id)
     {
-
-        if( $this->maxElements !== 0 && count( $this->depositData ) >= $this->maxElements ) {
-
+        if ($this->maxElements !== 0 && count($this->depositData) >= $this->maxElements) {
             return self::LIMIT_REACHED;
-
-        } elseif ( isset( $this->depositData[ $id ] ) ) {
-
+        } elseif (isset($this->depositData[ $id ])) {
             return self::ALREADY_ADDED;
-
         }
 
         return true;
-
     }
 
     protected function getSession()
     {
-
         return \CoreShop\Tool::getSession();
-
     }
 
     protected function save()
     {
-
         $session = $this->getSession();
 
         $session->deposits[ $this->depositNamespace ] = $this->depositData;
-
     }
-
 }

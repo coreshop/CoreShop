@@ -15,14 +15,13 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Tax;
-
 use Pimcore\Controller\Action\Admin;
-
 use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_TaxController extends Admin
 {
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         // check permissions
@@ -32,11 +31,12 @@ class CoreShop_Admin_TaxController extends Admin
         }
     }
 
-    public function listAction() {
+    public function listAction()
+    {
         $list = new Tax\Listing();
 
         $data = array();
-        if(is_array($list->getData())){
+        if (is_array($list->getData())) {
             foreach ($list->getData() as $tax) {
                 $data[] = $this->getTreeNodeConfig($tax);
             }
@@ -44,7 +44,8 @@ class CoreShop_Admin_TaxController extends Admin
         $this->_helper->json($data);
     }
 
-    protected function getTreeNodeConfig(Tax $tax) {
+    protected function getTreeNodeConfig(Tax $tax)
+    {
         $tmp = array(
             "id" => $tax->getId(),
             "text" => $tax->getName(),
@@ -63,13 +64,13 @@ class CoreShop_Admin_TaxController extends Admin
         return $tmp;
     }
 
-    public function addAction() {
+    public function addAction()
+    {
         $name = $this->getParam("name");
 
-        if(strlen($name) <= 0) {
+        if (strlen($name) <= 0) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
-        }
-        else {
+        } else {
             $tax = new Tax();
             $tax->setName($name);
             $tax->setRate(0);
@@ -80,15 +81,16 @@ class CoreShop_Admin_TaxController extends Admin
         }
     }
 
-    public function getAction() {
+    public function getAction()
+    {
         $id = $this->getParam("id");
         $tax = Tax::getById($id);
 
-        if($tax instanceof Tax) {
+        if ($tax instanceof Tax) {
             $this->_helper->json(array("success" => true, "data" => $tax->getObjectVars()));
-        }
-        else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
     public function saveAction()
@@ -104,15 +106,17 @@ class CoreShop_Admin_TaxController extends Admin
             $tax->save();
 
             $this->_helper->json(array("success" => true, "data" => $tax));
-        } else
+        } else {
             $this->_helper->json(array("success" => false));
+        }
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->getParam("id");
         $tax = Tax::getById($id);
 
-        if($tax instanceof Tax) {
+        if ($tax instanceof Tax) {
             $tax->delete();
 
             $this->_helper->json(array("success" => true));

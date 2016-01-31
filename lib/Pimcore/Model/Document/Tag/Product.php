@@ -19,10 +19,10 @@ use Pimcore\Model\Document;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Element;
-
 use Pimcore\Model\Object\CoreShopProduct;
 
-class Product extends Model\Document\Tag {
+class Product extends Model\Document\Tag
+{
 
     /**
      * Contains the ID of the linked object
@@ -58,7 +58,8 @@ class Product extends Model\Document\Tag {
      * @see Document\Tag\TagInterface::getType
      * @return string
      */
-    public function getType() {
+    public function getType()
+    {
         return "product";
     }
 
@@ -66,7 +67,8 @@ class Product extends Model\Document\Tag {
      * @see Document\Tag\TagInterface::getData
      * @return mixed
      */
-    public function getData() {
+    public function getData()
+    {
         return array(
             "id" => $this->id,
             "type" => $this->getObjectType(),
@@ -79,7 +81,8 @@ class Product extends Model\Document\Tag {
      *
      * @return mixed
      */
-    public function getDataEditmode() {
+    public function getDataEditmode()
+    {
         if ($this->o instanceof Element\ElementInterface) {
             return array(
                 "id" => $this->id,
@@ -94,11 +97,12 @@ class Product extends Model\Document\Tag {
      * @see Document\Tag\TagInterface::frontend
      * @return string
      */
-    public function frontend() {
-
+    public function frontend()
+    {
         if ($this->o instanceof CoreShopProduct) {
-            if($this->getView())
+            if ($this->getView()) {
                 return $this->getView()->template("coreshop/product/preview.php", array("product" => $this->o));
+            }
         }
     }
 
@@ -107,8 +111,8 @@ class Product extends Model\Document\Tag {
      * @param mixed $data
      * @return void
      */
-    public function setDataFromResource($data) {
-
+    public function setDataFromResource($data)
+    {
         $data = \Pimcore\Tool\Serialize::unserialize($data);
 
         $this->id = $data["id"];
@@ -124,8 +128,8 @@ class Product extends Model\Document\Tag {
      * @param mixed $data
      * @return void
      */
-    public function setDataFromEditmode($data) {
-
+    public function setDataFromEditmode($data)
+    {
         $this->id = $data["id"];
         $this->type = $data["type"];
         $this->subtype = $data["subtype"];
@@ -139,7 +143,8 @@ class Product extends Model\Document\Tag {
      *
      * @return void
      */
-    public function setElement() {
+    public function setElement()
+    {
         $this->o = Element\Service::getElementById($this->type, $this->id);
         return $this;
     }
@@ -147,14 +152,13 @@ class Product extends Model\Document\Tag {
     /**
      * @return array
      */
-    public function resolveDependencies() {
-
+    public function resolveDependencies()
+    {
         $this->load();
 
         $dependencies = array();
 
         if ($this->o instanceof Element\ElementInterface) {
-
             $elementType = Element\Service::getElementType($this->o);
             $key = $elementType . "_" . $this->o->getId();
 
@@ -172,14 +176,14 @@ class Product extends Model\Document\Tag {
      * @param mixed $data
      * @return void
      */
-    public function getObjectType($object = null) {
-
+    public function getObjectType($object = null)
+    {
         $this->load();
 
         if (!$object) {
             $object = $this->o;
         }
-        if($object instanceof Element\ElementInterface){
+        if ($object instanceof Element\ElementInterface) {
             return Element\Service::getType($object);
         } else {
             return false;
@@ -190,11 +194,11 @@ class Product extends Model\Document\Tag {
     /**
      * @return boolean
      */
-    public function isEmpty () {
-
+    public function isEmpty()
+    {
         $this->load();
 
-        if($this->o instanceof Element\ElementInterface) {
+        if ($this->o instanceof Element\ElementInterface) {
             return false;
         }
         return true;
@@ -205,10 +209,10 @@ class Product extends Model\Document\Tag {
      * @param null $idMapper
      * @throws \Exception
      */
-    public function getFromWebserviceImport($wsElement, $idMapper = null) {
+    public function getFromWebserviceImport($wsElement, $idMapper = null)
+    {
         $data = $wsElement->value;
         if ($data->id !==null) {
-
             $this->type = $data->type;
             $this->subtype = $data->subtype;
             if (is_numeric($this->id)) {
@@ -218,27 +222,27 @@ class Product extends Model\Document\Tag {
 
                 if ($this->type == "asset") {
                     $this->o = Asset::getById($id);
-                    if(!$this->o instanceof Asset){
+                    if (!$this->o instanceof Asset) {
                         if ($idMapper && $idMapper->ignoreMappingFailures()) {
-                            $idMapper->recordMappingFailure($this->getDocumentId(),$this->type, $this->id);
+                            $idMapper->recordMappingFailure($this->getDocumentId(), $this->type, $this->id);
                         } else {
                             throw new \Exception("cannot get values from web service import - referenced asset with id [ ".$this->id." ] is unknown");
                         }
                     }
-                } else if ($this->type == "document") {
+                } elseif ($this->type == "document") {
                     $this->o = Document::getById($id);
-                    if(!$this->o instanceof Document){
+                    if (!$this->o instanceof Document) {
                         if ($idMapper && $idMapper->ignoreMappingFailures()) {
-                            $idMapper->recordMappingFailure($this->getDocumentId(),$this->type, $this->id);
+                            $idMapper->recordMappingFailure($this->getDocumentId(), $this->type, $this->id);
                         } else {
                             throw new \Exception("cannot get values from web service import - referenced document with id [ ".$this->id." ] is unknown");
                         }
                     }
-                } else if ($this->type == "object") {
+                } elseif ($this->type == "object") {
                     $this->o = Object::getById($id);
-                    if(!$this->o instanceof Object\AbstractObject){
+                    if (!$this->o instanceof Object\AbstractObject) {
                         if ($idMapper && $idMapper->ignoreMappingFailures()) {
-                            $idMapper->recordMappingFailure($this->getDocumentId(),$this->type, $this->id);
+                            $idMapper->recordMappingFailure($this->getDocumentId(), $this->type, $this->id);
                         } else {
                             throw new \Exception("cannot get values from web service import - referenced object with id [ ".$this->id." ] is unknown");
                         }
@@ -256,11 +260,12 @@ class Product extends Model\Document\Tag {
     /**
      * @return bool
      */
-    public function checkValidity() {
+    public function checkValidity()
+    {
         $sane = true;
-        if($this->id){
+        if ($this->id) {
             $el = Element\Service::getElementById($this->type, $this->id);
-            if(!$el instanceof Element\ElementInterface){
+            if (!$el instanceof Element\ElementInterface) {
                 $sane = false;
                 \Logger::notice("Detected insane relation, removing reference to non existent ".$this->type." with id [".$this->id."]");
                 $this->id = null;
@@ -275,8 +280,8 @@ class Product extends Model\Document\Tag {
     /**
      * @return array
      */
-    public function __sleep() {
-
+    public function __sleep()
+    {
         $finalVars = array();
         $parentVars = parent::__sleep();
         $blockedVars = array("o");
@@ -294,8 +299,9 @@ class Product extends Model\Document\Tag {
      *
      * @return void
      */
-    public function load () {
-        if(!$this->o) {
+    public function load()
+    {
+        if (!$this->o) {
             $this->setElement();
         }
     }
@@ -367,9 +373,10 @@ class Product extends Model\Document\Tag {
      * @param array $idMapping
      * @return void
      */
-    public function rewriteIds($idMapping) {
+    public function rewriteIds($idMapping)
+    {
         $type = (string) $this->type;
-        if($type && array_key_exists($this->type, $idMapping) and array_key_exists($this->getId(), $idMapping[$this->type])) {
+        if ($type && array_key_exists($this->type, $idMapping) and array_key_exists($this->getId(), $idMapping[$this->type])) {
             $this->setId($idMapping[$this->type][$this->getId()]);
             $this->setO(null);
         }

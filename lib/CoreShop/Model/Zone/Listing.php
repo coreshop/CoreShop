@@ -18,5 +18,4 @@ use CoreShop\Model;
 
 class Listing extends Model\Listing\AbstractListing
 {
-
 }

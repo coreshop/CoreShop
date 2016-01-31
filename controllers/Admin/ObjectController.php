@@ -15,19 +15,19 @@
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
-
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_ObjectController extends Admin
 {
     protected $variantsBrick = "variants";
 
-    public function init() {
+    public function init()
+    {
         parent::init();
     }
 
-    public function generateVariantsAction() {
+    public function generateVariantsAction()
+    {
         $objectId = $this->getParam("objectId");
         $brickType = $this->getParam("brickType");
         $fieldName = $this->getParam("field");
@@ -35,28 +35,28 @@ class CoreShop_Admin_ObjectController extends Admin
 
         $object = \Pimcore\Model\Object\AbstractObject::getById($objectId);
 
-        if(!$object instanceof \Pimcore\Model\Object\CoreShopProduct) {
+        if (!$object instanceof \Pimcore\Model\Object\CoreShopProduct) {
             $this->_helper->json(array("success" => false, "message" => "only CoreShopProduct is allowed"));
         }
 
         $field = $object->getClass()->getFieldDefinition($this->variantsBrick);
 
-        if(!$field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
+        if (!$field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
             $this->_helper->json(array("success" => false, "message" => "variants field has wrong type"));
         }
 
         $allowedTypes = $field->getAllowedTypes();
 
-        if(!in_array($brickType, $allowedTypes)) {
+        if (!in_array($brickType, $allowedTypes)) {
             $this->_helper->json(array("success" => false, "message" => "$brickType is not allowed"));
         }
 
         $definition = \Pimcore\Model\Object\Objectbrick\Definition::getByKey($brickType);
 
-        if($definition instanceof \Pimcore\Model\Object\Objectbrick\Definition) {
+        if ($definition instanceof \Pimcore\Model\Object\Objectbrick\Definition) {
             $fieldDefinition = $definition->getFieldDefinition($fieldName);
 
-            if(!$fieldDefinition instanceof \Pimcore\Model\Object\ClassDefinition\Data) {
+            if (!$fieldDefinition instanceof \Pimcore\Model\Object\ClassDefinition\Data) {
                 $this->_helper->json(array("success" => false, "message" => "$fieldName not found in brick $brickType"));
             }
         }
@@ -69,7 +69,7 @@ class CoreShop_Admin_ObjectController extends Admin
 
         $brickClass = "\\Pimcore\\Model\\Object\\Objectbrick\\Data\\$brickType";
 
-        foreach($values as $value) {
+        foreach ($values as $value) {
             $object = new $className();
             $object->setType("variant");
             $object->setKey(\Pimcore\File::getValidFilename($value));
@@ -87,27 +87,28 @@ class CoreShop_Admin_ObjectController extends Admin
         return $this->_helper->json(array("success" => true));
     }
 
-    public function getVariantBricksAction() {
+    public function getVariantBricksAction()
+    {
         $id = intval($this->getParam("id"));
 
         $id = intval($this->getParam("id"));
 
         $object = \Pimcore\Model\Object\AbstractObject::getById($id);
 
-        if(!$object instanceof \Pimcore\Model\Object\CoreShopProduct) {
+        if (!$object instanceof \Pimcore\Model\Object\CoreShopProduct) {
             $this->_helper->json(array("success" => false, "message" => "only CoreShopProduct is allowed"));
         }
 
         $field = $object->getClass()->getFieldDefinition($this->variantsBrick);
 
-        if(!$field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
+        if (!$field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
             $this->_helper->json(array("success" => false, "message" => "variants field has wrong type"));
         }
 
         $allowedTypes = $field->getAllowedTypes();
         $brickFields = array();
 
-        foreach($allowedTypes as $type) {
+        foreach ($allowedTypes as $type) {
             $definition = \Pimcore\Model\Object\Objectbrick\Definition::getByKey($type);
 
             $brickFields[] = array(
@@ -118,13 +119,14 @@ class CoreShop_Admin_ObjectController extends Admin
         $this->_helper->json(array("success" => true, "data" => $brickFields));
     }
 
-    public function getBrickFieldsAction() {
+    public function getBrickFieldsAction()
+    {
         $key = $this->getParam("key");
 
         $variantFields = array();
         $definition = \Pimcore\Model\Object\Objectbrick\Definition::getByKey($key);
 
-        if($definition instanceof \Pimcore\Model\Object\Objectbrick\Definition) {
+        if ($definition instanceof \Pimcore\Model\Object\Objectbrick\Definition) {
             $fieldsInDefinition = $definition->getFieldDefinitions();
 
             foreach ($fieldsInDefinition as $field) {

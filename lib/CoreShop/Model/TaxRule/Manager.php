@@ -19,7 +19,8 @@ use CoreShop\Model\Plugin\TaxManager;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
 
-class Manager implements TaxManager {
+class Manager implements TaxManager
+{
 
     /**
      * @var TaxCalculator
@@ -64,32 +65,33 @@ class Manager implements TaxManager {
      */
     public function getTaxCalculator()
     {
-        if ($this->tax_calculator instanceof TaxCalculator)
+        if ($this->tax_calculator instanceof TaxCalculator) {
             return $this->tax_calculator;
+        }
 
         //Todo:: Configure if taxes are enabled
 
         $cacheKey = "coreshop_tax_calculator_" . $this->country->getId() . '_' . (int)$this->type;
 
-        if(!\Zend_Registry::isRegistered($cacheKey)) {
+        if (!\Zend_Registry::isRegistered($cacheKey)) {
             $taxRuleGroup = TaxRuleGroup::getById($this->type);
             $taxRules = $taxRuleGroup->getCountries($this->country);
             $taxes = array();
             $firstRow = true;
             $behavior = false;
 
-            foreach($taxRules as $rule) {
+            foreach ($taxRules as $rule) {
                 $tax = $rule->getTax();
                 $taxes[] = $tax;
 
                 //Tax behaviour will be applied from first rule
-                if($firstRow) {
+                if ($firstRow) {
                     $behavior = $rule->getBehavior();
 
                     $firstRow = false;
                 }
 
-                if($rule->getBehavior() == TaxCalculator::DISABLE_METHOD) {
+                if ($rule->getBehavior() == TaxCalculator::DISABLE_METHOD) {
                     break;
                 }
             }

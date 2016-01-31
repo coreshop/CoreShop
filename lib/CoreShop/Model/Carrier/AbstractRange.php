@@ -15,7 +15,6 @@
 namespace CoreShop\Model\Carrier;
 
 use CoreShop\Model\AbstractModel;
-
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Zone;
 use CoreShop\Tool;
@@ -53,7 +52,8 @@ class AbstractRange extends AbstractModel
      *
      * @return mixed
      */
-    public function save() {
+    public function save()
+    {
         return $this->getDao()->save();
     }
 
@@ -62,10 +62,11 @@ class AbstractRange extends AbstractModel
      *
      * @return mixed
      */
-    public function delete() {
+    public function delete()
+    {
         $prices = $this->getPrices();
 
-        foreach($prices as $price) {
+        foreach ($prices as $price) {
             $price->delete();
         }
 
@@ -76,7 +77,8 @@ class AbstractRange extends AbstractModel
      * @param $rangeType
      * @return AbstractRange
      */
-    public static function create($rangeType) {
+    public static function create($rangeType)
+    {
         $className = "CoreShop\\Model\\Carrier\\" . ($rangeType == "weight" ? "RangeWeight" : "RangePrice");
 
         return new $className();
@@ -89,7 +91,8 @@ class AbstractRange extends AbstractModel
      * @param $rangeType
      * @return null
      */
-    public static function getById($id, $rangeType) {
+    public static function getById($id, $rangeType)
+    {
         $id = intval($id);
 
         if ($id < 1) {
@@ -100,14 +103,13 @@ class AbstractRange extends AbstractModel
 
         try {
             $range = \Zend_Registry::get($cacheKey);
-            if(!$range) {
+            if (!$range) {
                 throw new \Exception("RangeType in registry is null");
             }
             return $range;
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             try {
-                if(!$range = Cache::load($cacheKey)) {
+                if (!$range = Cache::load($cacheKey)) {
                     $className = "CoreShop\\Model\\Carrier\\" . ($rangeType == "weight" ? "RangeWeight" : "RangePrice");
 
                     $range = new $className();
@@ -115,14 +117,12 @@ class AbstractRange extends AbstractModel
 
                     \Zend_Registry::set($cacheKey, $range);
                     Cache::save($range, $cacheKey);
-                }
-                else {
+                } else {
                     \Zend_Registry::set($cacheKey, $range);
                 }
 
                 return $range;
-            }
-            catch(\Exception $e) {
+            } catch (\Exception $e) {
                 \Logger::warning($e->getMessage());
             }
         }
@@ -136,7 +136,8 @@ class AbstractRange extends AbstractModel
      * @param Zone $zone
      * @return DeliveryPrice|null
      */
-    public function getPriceForZone(Zone $zone) {
+    public function getPriceForZone(Zone $zone)
+    {
         return DeliveryPrice::getForCarrierInZone($this->getCarrier(), $this, $zone);
     }
 
@@ -145,7 +146,8 @@ class AbstractRange extends AbstractModel
      *
      * @return DeliveryPrice|null
      */
-    public function getPrices() {
+    public function getPrices()
+    {
         return DeliveryPrice::getByCarrierAndRange($this->getCarrier(), $this);
     }
 
@@ -195,11 +197,13 @@ class AbstractRange extends AbstractModel
      */
     public function setCarrier($carrier)
     {
-        if(is_int($carrier))
+        if (is_int($carrier)) {
             $carrier = Carrier::getById($carrier);
+        }
 
-        if(!$carrier instanceof Carrier)
+        if (!$carrier instanceof Carrier) {
             throw new \Exception("\$carrier must be instance of Carrier");
+        }
 
         $this->carrier = $carrier;
         $this->carrierId = $carrier->getId();
@@ -221,11 +225,10 @@ class AbstractRange extends AbstractModel
     {
         $carrier = Carrier::getById($carrierId);
 
-        if(!$carrier instanceof Carrier) {
+        if (!$carrier instanceof Carrier) {
             $this->carrier = null;
             $this->carrierId = null;
-        }
-        else {
+        } else {
             $this->carrierId = $carrierId;
             $this->carrier = $carrier;
         }

@@ -20,19 +20,20 @@ use Pimcore\Model\Object;
 use Pimcore\View\Helper\Url;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopProductSpecificPrice;
 use Pimcore\Model\Asset\Image;
-
 use CoreShop\Tool;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Tool\Service;
 
-class Product extends Base {
+class Product extends Base
+{
 
     /**
      * @static
      * @param int $id
      * @return null|Product
      */
-    public static function getById($id) {
+    public static function getById($id)
+    {
         $object = Object\AbstractObject::getById($id);
 
         if ($object instanceof Product) {
@@ -65,14 +66,13 @@ class Product extends Base {
     {
         $cacheKey = "coreshop_latest";
 
-        if(!$objects = \Pimcore\Cache::load($cacheKey)) {
-
+        if (!$objects = \Pimcore\Cache::load($cacheKey)) {
             $list = new Object\CoreShopProduct\Listing();
             $list->setCondition("enabled=1");
             $list->setOrderKey("o_creationDate");
             $list->setOrder("DESC");
 
-            if($limit) {
+            if ($limit) {
                 $list->setLimit($limit);
             }
 
@@ -89,9 +89,7 @@ class Product extends Base {
      */
     public function getImage()
     {
-        if(count($this->getImages()) > 0)
-        {
-
+        if (count($this->getImages()) > 0) {
             return $this->getImages()[0];
         }
 
@@ -107,11 +105,12 @@ class Product extends Base {
     {
         $defaultImage = Configuration::get("SYSTEM.PRODUCT.DEFAULTIMAGE");
 
-        if($defaultImage) {
+        if ($defaultImage) {
             $image = Image::getByPath($defaultImage);
 
-            if ($image instanceof Image)
+            if ($image instanceof Image) {
                 return $image;
+            }
         }
 
         return false;
@@ -126,16 +125,16 @@ class Product extends Base {
     {
         $markAsNew = Configuration::get("SYSTEM.PRODUCT.DAYSASNEW");
 
-        if(is_int($markAsNew) && $markAsNew > 0)
-        {
+        if (is_int($markAsNew) && $markAsNew > 0) {
             $creationDate = new \Zend_Date($this->getCreationDate());
             $nowDate = new \Zend_Date();
 
             $diff = $nowDate->sub($creationDate)->toValue();
             $days = ceil($diff/60/60/24) +1;
 
-            if($days <= $markAsNew)
+            if ($days <= $markAsNew) {
                 return true;
+            }
         }
 
         return false;
@@ -147,10 +146,12 @@ class Product extends Base {
      * @param Category $category
      * @return bool
      */
-    public function inCategory(Category $category) {
-        foreach($this->getCategories() as $c) {
-            if($c->getId() == $category->getId())
+    public function inCategory(Category $category)
+    {
+        foreach ($this->getCategories() as $c) {
+            if ($c->getId() == $category->getId()) {
                 return true;
+            }
         }
 
         return false;
@@ -169,7 +170,7 @@ class Product extends Base {
         $image = $this->getImage();
 
         return array(
-            "image" => $image !== FALSE ? $image->getFullPath() : FALSE,
+            "image" => $image !== false ? $image->getFullPath() : false,
             "price" => $this->getPrice(),
             "priceFormatted" => Tool::formatPrice($this->getPrice()),
             "name" => $this->getName(),
@@ -185,15 +186,16 @@ class Product extends Base {
      *
      * @return array
      */
-    public function getVariantDifferences( $language = 'en' )
+    public function getVariantDifferences($language = 'en')
     {
         $master = $this;
         //Find master object
-        while($master->getType() === "variant") {
+        while ($master->getType() === "variant") {
             $master = $master->getParent();
         }
-        if($master instanceof Product)
+        if ($master instanceof Product) {
             return Service::getProductVariations($master, $this, $language);
+        }
         return false;
     }
 
@@ -203,10 +205,11 @@ class Product extends Base {
      * @return float|mixed
      * @throws UnsupportedException
      */
-    public function getPriceWithoutTax() {
+    public function getPriceWithoutTax()
+    {
         $cacheKey = "coreshop_product_price_" . $this->getId();
 
-        if($price = Cache::load($cacheKey)) {
+        if ($price = Cache::load($cacheKey)) {
             return $price;
         }
 
@@ -221,29 +224,29 @@ class Product extends Base {
      *
      * @return float
      */
-    public function getSpecificPriceDiscount() {
+    public function getSpecificPriceDiscount()
+    {
         $specificPrices = $this->getSpecificPrices();
         $discount = 0;
 
-        foreach($specificPrices as $specificPrice) {
-            if($specificPrice instanceof SpecificPrice) {
+        foreach ($specificPrices as $specificPrice) {
+            if ($specificPrice instanceof SpecificPrice) {
                 $conditions = $specificPrice->getConditions();
                 $actions = $specificPrice->getActions();
 
                 $isValid = true;
 
-                foreach($conditions as $condition) {
-                    if(!$condition->checkCondition($this, $specificPrice)) {
+                foreach ($conditions as $condition) {
+                    if (!$condition->checkCondition($this, $specificPrice)) {
                         $isValid = false;
                         break;
                     }
                 }
 
-                if(!$isValid) {
+                if (!$isValid) {
                     break;
-                }
-                else {
-                    foreach($actions as $action) {
+                } else {
+                    foreach ($actions as $action) {
                         $discount += $action->getDiscount($this);
                     }
                 }
@@ -264,7 +267,7 @@ class Product extends Base {
         $price = $this->getPriceWithoutTax();
         $calculator = $this->getTaxCalculator();
 
-        if($calculator) {
+        if ($calculator) {
             $price = $calculator->addTaxes($price);
         }
 
@@ -275,10 +278,11 @@ class Product extends Base {
      * returns tax
      * @return float
      */
-    public function getTax() {
+    public function getTax()
+    {
         $calculator = $this->getTaxCalculator();
 
-        if($calculator) {
+        if ($calculator) {
             return $calculator->getTaxesAmount($this->getPriceWithoutTax());
         }
 
@@ -291,14 +295,15 @@ class Product extends Base {
      * @param Country $country
      * @return bool|TaxCalculator
      */
-    public function getTaxCalculator(Country $country = null) {
-        if(is_null($country)) {
+    public function getTaxCalculator(Country $country = null)
+    {
+        if (is_null($country)) {
             $country = Tool::getCountry();
         }
 
         $taxRule = $this->getTaxRule();
 
-        if($taxRule instanceof TaxRuleGroup) {
+        if ($taxRule instanceof TaxRuleGroup) {
             $taxManager = TaxManagerFactory::getTaxManager($country, $taxRule->getId());
             $taxCalculator = $taxManager->getTaxCalculator();
 
@@ -313,7 +318,8 @@ class Product extends Base {
      *
      * @return array
      */
-    public function getSpecificPrices() {
+    public function getSpecificPrices()
+    {
         return SpecificPrice::getSpecificPrices($this);
     }
 
@@ -324,7 +330,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return Image[]
      */
-    public function getImages() {
+    public function getImages()
+    {
         throw new UnsupportedException("getImages is not supported for " . get_class($this));
     }
 
@@ -335,7 +342,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return Category[]
      */
-    public function getCategories() {
+    public function getCategories()
+    {
         throw new UnsupportedException("getCategories is not supported for " . get_class($this));
     }
 
@@ -346,7 +354,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return float
      */
-    public function getRetailPrice() {
+    public function getRetailPrice()
+    {
         throw new UnsupportedException("getRetailPrice is not supported for " . get_class($this));
     }
 
@@ -357,7 +366,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         throw new UnsupportedException("getName is not supported for " . get_class($this));
     }
 
@@ -368,7 +378,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return TaxRuleGroup
      */
-    public function getTaxRule() {
+    public function getTaxRule()
+    {
         throw new UnsupportedException("getTaxRule is not supported for " . get_class($this));
     }
 
@@ -380,7 +391,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return CoreShopProductSpecificPrice[]
      */
-    public function getSpecificPrice() {
+    public function getSpecificPrice()
+    {
         throw new UnsupportedException("getPrice is not supported for " . get_class($this));
     }
 
@@ -391,7 +403,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return float
      */
-    public function getWholesalePrice() {
+    public function getWholesalePrice()
+    {
         throw new UnsupportedException("getWholesalePrice is not supported for " . get_class($this));
     }
 
@@ -402,7 +415,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return string
      */
-    public function getIsDownloadProduct() {
+    public function getIsDownloadProduct()
+    {
         throw new UnsupportedException("getIsDownloadProduct is not supported for " . get_class($this));
     }
 
@@ -413,7 +427,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return float
      */
-    public function getWeight() {
+    public function getWeight()
+    {
         throw new UnsupportedException("getWeight is not supported for " . get_class($this));
     }
 
@@ -424,7 +439,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return float
      */
-    public function getWidth() {
+    public function getWidth()
+    {
         throw new UnsupportedException("getWidth is not supported for " . get_class($this));
     }
 
@@ -435,7 +451,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return float
      */
-    public function getHeight() {
+    public function getHeight()
+    {
         throw new UnsupportedException("getHeight is not supported for " . get_class($this));
     }
 
@@ -446,7 +463,8 @@ class Product extends Base {
      * @throws UnsupportedException
      * @return float
      */
-    public function getDepth() {
+    public function getDepth()
+    {
         throw new UnsupportedException("getDepth is not supported for " . get_class($this));
     }
 }

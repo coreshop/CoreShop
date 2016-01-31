@@ -19,27 +19,31 @@ use Pimcore\ExtensionManager;
 use Pimcore\Tool;
 use Pimcore\Model\Document;
 
-class Coreshopareablock extends Areablock {
+class Coreshopareablock extends Areablock
+{
 
     /**
      * @see Document\Tag\TagInterface::getType
      * @return string
      */
-    public function getType() {
+    public function getType()
+    {
         return "coreshopareablock";
     }
 
     /**
      * @return bool
      */
-    public function isCustomAreaPath(){
+    public function isCustomAreaPath()
+    {
         return true;
     }
 
     /**
      * @return string
      */
-    public function getAreaDirectory() {
+    public function getAreaDirectory()
+    {
         return CORESHOP_TEMPLATE_PATH . "/views/areas";
     }
 }

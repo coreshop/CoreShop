@@ -16,7 +16,8 @@ namespace CoreShop\Model\TaxRuleGroup;
 
 use CoreShop\Model\Dao\AbstractDao;
 
-class Dao extends AbstractDao {
+class Dao extends AbstractDao
+{
 
     protected $tableName = 'coreshop_tax_rule_groups';
 }
