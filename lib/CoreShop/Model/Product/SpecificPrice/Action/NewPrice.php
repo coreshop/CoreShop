@@ -63,7 +63,8 @@ class NewPrice extends AbstractAction
      * @param Product $product
      * @return float $price
      */
-    public function getPrice(Product $product) {
+    public function getPrice(Product $product)
+    {
         return $this->getNewPrice();
     }
 }

@@ -27,7 +27,7 @@ class SpecificPrice extends AbstractModel
      * possible types of a condition
      * @var array
      */
-    public static $availableConditions = array("customer", "timeSpan", "country", "customerGroup");
+    public static $availableConditions = array("customer", "timeSpan", "country", "customerGroup", "zone");
 
     /**
      * possible types of a action

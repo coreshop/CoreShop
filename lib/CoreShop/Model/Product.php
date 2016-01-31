@@ -228,8 +228,22 @@ class Product extends Base
         $specificPrices = $this->getSpecificPrices();
         $price = $this->getRetailPrice();
 
-        foreach($specificPrices as $specificPrice) {
+        foreach ($specificPrices as $specificPrice) {
             $actions = $specificPrice->getActions();
+            $conditions = $specificPrice->getConditions();
+
+            $isValid = true;
+
+            foreach ($conditions as $condition) {
+                if (!$condition->checkCondition($this, $specificPrice)) {
+                    $isValid = false;
+                    break;
+                }
+            }
+
+            if (!$isValid) {
+                break;
+            }
 
             foreach ($actions as $action) {
                 if ($action->getPrice($this) < $price) {

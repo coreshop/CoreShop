@@ -24,7 +24,7 @@ class PriceRule extends AbstractModel
      * possible types of a condition
      * @var array
      */
-    public static $availableConditions = array("customer", "timeSpan", "amount", "totalAvailable", "totalPerCustomer", "country", "product", "category", "customerGroup");
+    public static $availableConditions = array("customer", "timeSpan", "amount", "totalAvailable", "totalPerCustomer", "country", "product", "category", "customerGroup", "zone");
 
     /**
      * possible types of a action

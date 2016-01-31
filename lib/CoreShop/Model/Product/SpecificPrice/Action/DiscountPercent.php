@@ -86,7 +86,8 @@ class DiscountPercent extends AbstractAction
      * @param Product $product
      * @return float $price
      */
-    public function getPrice(Product $product) {
+    public function getPrice(Product $product)
+    {
         return $product->getRetailPrice();
     }
 }

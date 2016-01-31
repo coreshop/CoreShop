@@ -78,6 +78,8 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
 
     getNavigation: function () {
         if (!this.grid) {
+
+
             this.grid = Ext.create('Ext.grid.Panel', {
                 region: "west",
                 store: pimcore.globalmanager.get(this.storeId),

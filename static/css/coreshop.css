@@ -72,7 +72,7 @@
     background: url(/pimcore/static6/img/icon/car.png)  no-repeat scroll left center transparent !important;
 }
 
-.coreshop_icon_zone {
+.coreshop_icon_zone, .coreshop_price_rule_icon_condition_zone {
     background: url(/pimcore/static6/img/icon/world.png) no-repeat scroll left center transparent !important;
 }
 
