@@ -28,3 +28,4 @@ Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at) (Stil und
 * Catalog-Mode (No Cart, Checkout and Customers)
 * Guest Checkout
 * Tax Manager (Custom Taxes for Products and Countries)
+* Specific Price Rules based on Conditions
