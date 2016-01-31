@@ -51,7 +51,6 @@ class CoreShop_Admin_InstallController extends Admin
 
             $countryTaxClass = $install->createClass("CoreShopCountryTax");
 
-            $fcSpecificAddress = $install->createFieldCollection("CoreShopProductSpecificPrice");
             $fcUserAddress = $install->createFieldcollection('CoreShopUserAddress');
 
             // create object classes

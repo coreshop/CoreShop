@@ -213,10 +213,32 @@ class Product extends Base
             return $price;
         }
 
-        $price = $this->getRetailPrice();
-        $price -= $this->getSpecificPriceDiscount();
+        $price = $this->getSpecificPrice();
 
         return $price;
+    }
+
+    /**
+     * Get Specific Price
+     *
+     * @return float
+     */
+    public function getSpecificPrice()
+    {
+        $specificPrices = $this->getSpecificPrices();
+        $price = $this->getRetailPrice();
+
+        foreach($specificPrices as $specificPrice) {
+            $actions = $specificPrice->getActions();
+
+            foreach ($actions as $action) {
+                if ($action->getPrice($this) < $price) {
+                    $price = $action->getPrice($this);
+                }
+            }
+        }
+
+        return $price - $this->getSpecificPriceDiscount($price);
     }
 
     /**
@@ -224,7 +246,7 @@ class Product extends Base
      *
      * @return float
      */
-    public function getSpecificPriceDiscount()
+    public function getSpecificPriceDiscount($price)
     {
         $specificPrices = $this->getSpecificPrices();
         $discount = 0;
@@ -247,7 +269,7 @@ class Product extends Base
                     break;
                 } else {
                     foreach ($actions as $action) {
-                        $discount += $action->getDiscount($this);
+                        $discount += $action->getDiscount($price, $this);
                     }
                 }
             }
@@ -381,19 +403,6 @@ class Product extends Base
     public function getTaxRule()
     {
         throw new UnsupportedException("getTaxRule is not supported for " . get_class($this));
-    }
-
-
-    /**
-     * returns price
-     * this method has to be overwritten in Pimcore Object
-     *
-     * @throws UnsupportedException
-     * @return CoreShopProductSpecificPrice[]
-     */
-    public function getSpecificPrice()
-    {
-        throw new UnsupportedException("getPrice is not supported for " . get_class($this));
     }
 
     /**

@@ -149,6 +149,10 @@
     background: url(/pimcore/static6/img/icon/money.png) no-repeat scroll left center transparent !important;
 }
 
+.coreshop_price_rule_icon_action_newPrice {
+    background: url(/pimcore/static6/img/icon/money.png) no-repeat scroll left center transparent !important;
+}
+
 .coreshop_price_rule_icon_action_gift {
     background: url(/pimcore/static6/img/icon/heart.png) no-repeat scroll left center transparent !important;
 }

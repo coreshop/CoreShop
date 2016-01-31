@@ -70,11 +70,23 @@ class DiscountPercent extends AbstractAction
     /**
      * Calculate discount
      *
+     * @param float $basePrice
      * @param Product $product
      * @return float
      */
-    public function getDiscount(Product $product)
+    public function getDiscount($basePrice, Product $product)
     {
-        return $product->getRetailPrice() * ($this->getPercent() / 100);
+        return $basePrice * ($this->getPercent() / 100);
+    }
+
+
+    /**
+     * get new price for product
+     *
+     * @param Product $product
+     * @return float $price
+     */
+    public function getPrice(Product $product) {
+        return $product->getRetailPrice();
     }
 }

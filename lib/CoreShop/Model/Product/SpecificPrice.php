@@ -33,7 +33,7 @@ class SpecificPrice extends AbstractModel
      * possible types of a action
      * @var array
      */
-    public static $availableActions = array("discountAmount", "discountPercent");
+    public static $availableActions = array("discountAmount", "discountPercent", "newPrice");
 
     /**
      * @param $condition

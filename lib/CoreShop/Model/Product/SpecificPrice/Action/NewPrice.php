@@ -14,63 +14,35 @@
 
 namespace CoreShop\Model\Product\SpecificPrice\Action;
 
-use CoreShop\Model\Currency;
 use CoreShop\Model\Product;
 use Pimcore\Model;
-use CoreShop\Tool;
 
-/**
- * Class DiscountAmount
- * @package CoreShop\Model\PriceRule\Action
- */
-class DiscountAmount extends AbstractAction
+class NewPrice extends AbstractAction
 {
-
-    /**
-     * @var int
-     */
-    public $currency;
-
     /**
      * @var float
      */
-    public $amount;
+    public $newPrice;
 
     /**
      * @var string
      */
-    public $type = "discountAmount";
-
-    /**
-     * @return mixed
-     */
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @param Currency|int $currency
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
-    }
+    public $type = "newPrice";
 
     /**
      * @return float
      */
-    public function getAmount()
+    public function getNewPrice()
     {
-        return $this->amount;
+        return $this->newPrice;
     }
 
     /**
-     * @param float $amount
+     * @param float $newPrice
      */
-    public function setAmount($amount)
+    public function setNewPrice($newPrice)
     {
-        $this->amount = $amount;
+        $this->newPrice = $newPrice;
     }
 
     /**
@@ -82,7 +54,7 @@ class DiscountAmount extends AbstractAction
      */
     public function getDiscount($basePrice, Product $product)
     {
-        return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
+        return 0;
     }
 
     /**
@@ -92,6 +64,6 @@ class DiscountAmount extends AbstractAction
      * @return float $price
      */
     public function getPrice(Product $product) {
-        return $product->getRetailPrice();
+        return $this->getNewPrice();
     }
 }

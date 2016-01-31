@@ -27,8 +27,17 @@ abstract class AbstractAction extends Product\SpecificPrice\AbstractSpecificPric
     /**
      * Calculate discount
      *
+     * @param float $basePrice
      * @param Product $product
      * @return float
      */
-    abstract public function getDiscount(Product $product);
+    abstract public function getDiscount($basePrice, Product $product);
+
+    /**
+     * get new price for product
+     *
+     * @param Product $product
+     * @return float $price
+     */
+    abstract public function getPrice(Product $product);
 }
