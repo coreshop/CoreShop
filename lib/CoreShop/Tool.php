@@ -218,12 +218,17 @@ class Tool
         }
 
 
-        if (!$country instanceof Country) {
+        if (!$country instanceof Country)
+        {
+            $country = Plugin::actionHook("country");
 
-            //Using Default Country: AT
-            //TODO: Default Country configurable thru settings
-            $country = Country::getById(2);
-            //throw new \Exception("Country with code $country not found");
+            if(!$country instanceof Country) {
+                $country = Country::getById(Configuration::get("SYSTEM.BASE.COUNTRY"));
+
+                if (!$country instanceof Country) {
+                    $country = Country::getById(2);
+                }
+            }
         }
 
         $session->countryId = $country->getId();

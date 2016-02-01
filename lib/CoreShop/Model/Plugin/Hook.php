@@ -16,4 +16,12 @@ namespace CoreShop\Model\Plugin;
 
 interface Hook extends AbstractPlugin
 {
+    /**
+     * Call the Hook to get the result
+     *
+     * @param $name
+     * @param array $params
+     * @return mixed
+     */
+    public function getResult($name, $params = array());
 }

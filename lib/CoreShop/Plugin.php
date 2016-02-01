@@ -446,27 +446,25 @@ class Plugin extends AbstractPlugin implements PluginInterface
      *
      * @param $name
      * @param array $params
-     * @return string
+     * @return mixed
      * @throws \Zend_Exception
      */
     public static function actionHook($name, $params = array())
     {
         $results = self::getEventManager()->trigger("actionHook." . $name, null, array(), function ($v) {
-            return ($v instanceof Hook);
+            return (is_callable($v));
         });
 
         $params['language'] = \Zend_Registry::get("Zend_Locale");
 
         if ($results->stopped()) {
-            $return = array();
-
-            foreach ($results as $result) {
-                $return[] = $result->render($params);
+            foreach($results as $result) {
+                if($r = call_user_func($result)) {
+                    return $r;
+                }
             }
-
-            return implode($return, "\n");
         }
 
-        return "";
+        return false;
     }
 }

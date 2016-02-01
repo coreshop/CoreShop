@@ -120,6 +120,28 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 }
                             },
                             {
+                                xtype:'combo',
+                                fieldLabel:t('coreshop_base_country'),
+                                typeAhead:true,
+                                value:this.getValue("SYSTEM.BASE.COUNTRY"),
+                                mode:'local',
+                                listWidth:100,
+                                store:pimcore.globalmanager.get("coreshop_countries"),
+                                displayField:'name',
+                                valueField:'id',
+                                forceSelection:true,
+                                triggerAction:'all',
+                                name:'SYSTEM.BASE.COUNTRY',
+                                listeners: {
+                                    change: function () {
+                                        this.forceReloadOnSave = true;
+                                    }.bind(this),
+                                    select: function () {
+                                        this.forceReloadOnSave = true;
+                                    }.bind(this)
+                                }
+                            },
+                            {
                                 fieldLabel: t('coreshop_base_catalogmode'),
                                 xtype: "checkbox",
                                 name: "SYSTEM.BASE.CATALOGMODE",
