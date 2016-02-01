@@ -50,6 +50,16 @@ class Tool
     }
 
     /**
+     * Format Number without thousands seperator (eg 1540,32)
+     *
+     * @param $number
+     * @return string
+     */
+    public static function numberFormat($number) {
+        return number_format($number, 2, ',', '');
+    }
+
+    /**
      * Converts value from currency to currency
      *
      * @param $value
@@ -131,17 +141,20 @@ class Tool
     /**
      * Prepare Cart
      *
+     * @param $resetCart bool create a new cart
      * @return CoreShopCart|static
      */
-    public static function prepareCart()
+    public static function prepareCart($resetCart = false)
     {
         $cartSession = self::getSession();
 
-        if ($cartSession->cartId) {
-            $cart = CoreShopCart::getById($cartSession->cartId);
+        if(!$resetCart) {
+            if ($cartSession->cartId) {
+                $cart = CoreShopCart::getById($cartSession->cartId);
 
-            if ($cart instanceof CoreShopCart) {
-                return $cart;
+                if ($cart instanceof CoreShopCart) {
+                    return $cart;
+                }
             }
         }
 
