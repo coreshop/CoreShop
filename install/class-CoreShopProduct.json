@@ -436,6 +436,29 @@
 								"invisible":false,
 								"visibleGridView":false,
 								"visibleSearch":false
+							},
+							{
+								"fieldtype":"calculatedValue",
+								"width":0,
+								"calculatorClass":"CoreShop\\Model\\Product\\CalculatedTax",
+								"queryColumnType":"varchar",
+								"columnLength":255,
+								"phpdocType":"\\Pimcore\\Model\\Object\\Data\\CalculatedValue",
+								"name":"priceWithTax",
+								"title":"Price with Tax",
+								"tooltip":"",
+								"mandatory":false,
+								"noteditable":false,
+								"index":false,
+								"locked":null,
+								"style":"",
+								"permissions":null,
+								"datatype":"data",
+								"columnType":null,
+								"relationType":false,
+								"invisible":false,
+								"visibleGridView":false,
+								"visibleSearch":false
 							}
 						],
 						"locked":false
