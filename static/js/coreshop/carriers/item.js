@@ -21,6 +21,17 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         save : '/plugin/CoreShop/admin_Carrier/save'
     },
 
+    initialize: function (parentPanel, data, panelKey, type) {
+        this.parentPanel = parentPanel;
+        this.data = data;
+        this.panelKey = panelKey;
+        this.type = type;
+
+        pimcore.globalmanager.get("coreshop_zones").load(function() {
+            this.initPanel();
+        }.bind(this));
+    },
+
     getPanel: function() {
         var panel = new Ext.TabPanel({
             activeTab: 0,
@@ -155,12 +166,18 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 value:this.data.taxRuleGroupId,
                 mode:'local',
                 listWidth:100,
-                store:pimcore.globalmanager.get("coreshop_tax_rule_groups"),
+                store:pimcore.globalmanager.get("coreshop_taxrulegroups"),
                 displayField:'name',
                 valueField:'id',
                 forceSelection:true,
                 triggerAction:'all',
-                name:'taxRuleGroupId'
+                name:'taxRuleGroupId',
+                listeners : {
+                    beforerender : function() {
+                        if(!this.getStore().isLoaded() && !this.getStore().isLoading())
+                            this.getStore().load();
+                    }
+                }
             }, {
                 fieldLabel: t("coreshop_carrier_rangeBehaviour"),
                 name: "rangeBehaviour",
