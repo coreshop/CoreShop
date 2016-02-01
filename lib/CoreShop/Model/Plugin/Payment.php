@@ -20,6 +20,7 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\OrderState;
 use CoreShop\Plugin;
+use CoreShop\Tool;
 use Pimcore\Date;
 use Pimcore\Model\Object\CoreShopOrder;
 use Pimcore\Model\Object\Service;
@@ -69,6 +70,8 @@ abstract class Payment implements AbstractPlugin
      */
     public function createOrder(Cart $cart, OrderState $state, $totalPayed = 0, $language = null)
     {
+        \Logger::info("Create order for cart " . $cart->getId());
+
         $orderNumber = Order::getNextOrderNumber();
 
         if (is_null($language)) {
