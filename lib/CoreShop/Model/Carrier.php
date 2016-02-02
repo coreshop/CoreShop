@@ -345,7 +345,7 @@ class Carrier extends AbstractModel
      */
     public function getDeliveryPrice(Cart $cart, Zone $zone = null)
     {
-        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress());
+        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
 
         if (is_null($zone)) {
             $zone = Tool::getCountry()->getZone();
