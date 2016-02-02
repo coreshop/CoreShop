@@ -14,6 +14,7 @@ namespace CoreShop\Plugin;
 use Pimcore\Model\Tool\Setup;
 use Pimcore\Cache;
 use Pimcore\File;
+use CoreShop\Tool;
 use CoreShop\Version;
 use CoreShop\Model\Configuration;
 
@@ -415,7 +416,7 @@ class Update {
 
                         if( is_dir( $baseGitDir ) )
                         {
-                            recursiveCopy( $baseGitDir, $coreShopFolder[0] . '/.git');
+                            Tool::recursiveCopy( $baseGitDir, $coreShopFolder[0] . '/.git');
                         }
 
                         recursiveDelete( PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName, true);
