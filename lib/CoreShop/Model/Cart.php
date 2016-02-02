@@ -375,10 +375,12 @@ class Cart extends Base
      */
     public function getCustomerShippingAddress()
     {
-        $address = $this->getShippingAddress()->getItems();
+        if($this->getShippingAddress()) {
+            $address = $this->getShippingAddress()->getItems();
 
-        if (count($address) > 0) {
-            return $address[0];
+            if (count($address) > 0) {
+                return $address[0];
+            }
         }
 
         return false;
@@ -391,15 +393,16 @@ class Cart extends Base
      */
     public function getCustomerBillingAddress()
     {
-        $address = $this->getBillingAddress()->getItems();
+        if($this->getBillingAddress()) {
+            $address = $this->getBillingAddress()->getItems();
 
-        if (count($address) > 0) {
-            return $address[0];
+            if (count($address) > 0) {
+                return $address[0];
+            }
         }
 
         return false;
     }
-
 
     /**
      * Returns the cart as array
