@@ -138,9 +138,9 @@ class AbstractModel extends Model\AbstractModel
 
         $cacheKey = self::getCacheKey(get_called_class(), $this->getId());
 
-        //Set new object to cache
-        \Zend_Registry::set($cacheKey, $this);
-        Cache::save($this, $cacheKey);
+        //unset object in cache
+        Cache::clearTag($cacheKey);
+        \Zend_Registry::set($cacheKey, null);
     }
 
     /**
