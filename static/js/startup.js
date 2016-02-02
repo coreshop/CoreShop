@@ -179,6 +179,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                             }
                         });
                     }
+
+                    if (user.admin) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_update"),
+                            iconCls: "pimcore_icon_update",
+                            handler: this.openUpdate
+                        });
+                    }
+
                 }
                 else {
                     if (user.admin) {
@@ -291,6 +300,17 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         catch (e) {
             //console.log(e);
             pimcore.globalmanager.add("coreshop_settings", new pimcore.plugin.coreshop.settings());
+        }
+    },
+
+    openUpdate : function()
+    {
+        try {
+            pimcore.globalmanager.get("coreshop_update").checkAvailableUpdates();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_update", new pimcore.plugin.coreshop.update());
+            pimcore.globalmanager.get("coreshop_update").checkAvailableUpdates();
         }
     },
 

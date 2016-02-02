@@ -50,7 +50,16 @@ pimcore.plugin.coreshop.global = {
     },
 
     _initUpdate : function() {
-        new coreshop.update();
+
+        var updater = pimcore.globalmanager.get("coreshop_update");
+
+        if( updater === false ) {
+            pimcore.globalmanager.add("coreshop_update", new pimcore.plugin.coreshop.update());
+            pimcore.globalmanager.get("coreshop_update").checkSystem();
+        } else {
+            updater.checkSystem();
+        }
+
     },
 
     _createStore : function(name, url, fields) {

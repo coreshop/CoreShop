@@ -138,6 +138,8 @@
 "coreshop_order_state_email","Email"
 "coreshop_order_state_emailDocument","Email Document"
 "coreshop_update","Update"
+"coreshop_latest_version_already_installed","Latest CoreShop Version is already installed."
+"coreshop_server_is_currently_offline","CoreShop Update Server currently offline."
 "coreshop_permission_carriers","CoreShop Carrier"
 "coreshop_permission_zones","CoreShop Zones"
 "coreshop_permission_settings","CoreShop Settings"
