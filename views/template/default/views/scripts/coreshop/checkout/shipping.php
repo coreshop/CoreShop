@@ -16,9 +16,9 @@
                                 <input class="delivery_option_radio" type="radio" name="carrier" value="<?=$carrier->getId()?>">
                             </td>
                             <td class="delivery-option-image col-xs-3">
-                                <?php if($carrier->getImage()) { ?>
-                                    <img src="<?=$carrier->getImage()?>" class="img-responsive" alt="<?=$carrier->getName()?>">
-                                <?php } ?>
+                                <?php if($carrier->getImage() instanceof \Pimcore\Model\Asset\Image) {
+                                    echo $carrier->getImage()->getThumbnail("coreshop_carrier")->getHtml(array("class" => "img-responsive"));
+                                } ?>
                             </td>
                             <td class="delivery-option-text">
                                 <strong><?=$carrier->getName()?></strong> <?=$carrier->getLabel()?>

@@ -105,15 +105,19 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                             }.bind(el),
 
                             onNodeOver : function(target, dd, e, data) {
-                                if (data.node.attributes.elementType == "asset" && data.node.attributes.type == "image") {
+                                data = data.records[0].data;
+
+                                if (data.elementType == "asset") {
                                     return Ext.dd.DropZone.prototype.dropAllowed;
                                 }
                                 return Ext.dd.DropZone.prototype.dropNotAllowed;
                             },
 
                             onNodeDrop : function (target, dd, e, data) {
-                                if (data.node.attributes.elementType == "asset" && data.node.attributes.type == "image") {
-                                    this.setValue(data.node.attributes.path);
+                                data = data.records[0].data;
+
+                                if (data.elementType == "asset") {
+                                    this.setValue(data.path);
                                     return true;
                                 }
                                 return false;

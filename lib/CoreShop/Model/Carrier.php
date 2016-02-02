@@ -20,6 +20,7 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Cache;
 use Pimcore\Db;
+use Pimcore\Model\Asset;
 
 class Carrier extends AbstractModel
 {
@@ -519,6 +520,13 @@ class Carrier extends AbstractModel
      */
     public function getImage()
     {
+        if(is_string($this->image)) {
+            $asset = Asset::getByPath($this->image);
+
+            if($asset instanceof Asset) {
+                $this->image = $asset;
+            }
+        }
         return $this->image;
     }
 

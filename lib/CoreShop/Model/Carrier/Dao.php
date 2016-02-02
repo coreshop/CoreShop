@@ -15,9 +15,27 @@
 namespace CoreShop\Model\Carrier;
 
 use CoreShop\Model\Dao\AbstractDao;
+use Pimcore\Model\Asset;
 
 class Dao extends AbstractDao
 {
-
     protected $tableName = 'coreshop_carriers';
+
+    /**
+     * @param array $data
+     */
+    protected function assignVariablesToModel($data)
+    {
+        parent::assignVariablesToModel($data);
+
+        foreach ($data as $key=>$value) {
+            if ($key == "image") {
+                $asset = Asset::getById($value);
+
+                if($asset instanceof Asset) {
+                    $this->model->setImage($asset->getFullPath());
+                }
+            }
+        }
+    }
 }
