@@ -9,26 +9,27 @@
             </div>
             <div class="panel-body delivery-options">
                 <table class="table table-unstyled delivery-option">
-                <?php foreach($this->carriers as $carrier) { ?>
-                        <tr>
+                    <?php $i = 0; ?>
+                    <?php foreach($this->carriers as $carrier) { ?>
+                            <tr>
 
-                            <td class="delivery-option-radio">
-                                <input class="delivery_option_radio" type="radio" name="carrier" value="<?=$carrier->getId()?>">
-                            </td>
-                            <td class="delivery-option-image col-xs-3">
-                                <?php if($carrier->getImage() instanceof \Pimcore\Model\Asset\Image) {
-                                    echo $carrier->getImage()->getThumbnail("coreshop_carrier")->getHtml(array("class" => "img-responsive"));
-                                } ?>
-                            </td>
-                            <td class="delivery-option-text">
-                                <strong><?=$carrier->getName()?></strong> <?=$carrier->getLabel()?>
-                            </td>
-                            <td class="delivery-option-price">
-                                <?=\CoreShop\Tool::formatPrice($carrier->getDeliveryPrice($this->cart))?>
-                            </td>
-                        </tr>
-
-                <?php } ?>
+                                <td class="delivery-option-radio">
+                                    <input class="delivery_option_radio" type="radio" name="carrier" value="<?=$carrier->getId()?>"  <?php echo $i === 0 ? 'checked="checked"' : ''?>>
+                                </td>
+                                <td class="delivery-option-image col-xs-3">
+                                    <?php if($carrier->getImage() instanceof \Pimcore\Model\Asset\Image) {
+                                        echo $carrier->getImage()->getThumbnail("coreshop_carrier")->getHtml(array("class" => "img-responsive"));
+                                    } ?>
+                                </td>
+                                <td class="delivery-option-text">
+                                    <strong><?=$carrier->getName()?></strong> <?=$carrier->getLabel()?>
+                                </td>
+                                <td class="delivery-option-price">
+                                    <?=\CoreShop\Tool::formatPrice($carrier->getDeliveryPrice($this->cart))?>
+                                </td>
+                            </tr>
+                        <?php $i++; ?>
+                    <?php } ?>
                 </table>
 
                 <div class="row">
