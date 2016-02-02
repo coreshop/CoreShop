@@ -46,7 +46,11 @@ class CoreShop_CheckoutController extends Action
         if ($this->session->user instanceof CoreShopUser) {
             $this->_redirect($this->view->url(array("action" => "address"), "coreshop_checkout"));
         }
-        
+
+        if($this->getParam("error")) {
+            $this->view->error = $this->getParam("error");
+        }
+
         $this->view->message = $this->getParam("message");
         
         $this->view->headTitle($this->view->translate("Checkout"));

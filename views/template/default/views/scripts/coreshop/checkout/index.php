@@ -91,19 +91,14 @@
             return null;
         };
         ?>
-        <!-- Breadcrumb Ends -->
-        <!-- Main Heading Starts -->
+
         <h2 class="main-heading text-center">
             <?=$this->translate("Checkout as Guest")?>
         </h2>
         <section class="guest-area">
-            <?php if($this->message) { ?>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="alert alert-danger">
-                        <?=$this->message?>
-                    </div>
-                </div>
+            <?php if($this->error) { ?>
+            <div class="alert alert-danger">
+                <?=$this->error?>
             </div>
             <?php } ?>
 
@@ -130,6 +125,7 @@
                                 <input type="hidden" name="userAgent" id="userAgent" />
                                 <input type="hidden" name="os" id="os" />
                                 <input type="hidden" name="_redirect" value="<?=$this->url(array("lang" => $this->language, "action" => "shipping"), "coreshop_checkout")?>" />
+                                <input type="hidden" name="_error" value="<?=$this->url(array("lang" => $this->language, "action" => "index"), "coreshop_checkout")?>" />
 
                                 <input type="hidden" name="isGuest" id="isGuest" value="1" />
 

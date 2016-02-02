@@ -195,12 +195,9 @@
           },
           {
             "fieldtype":"coreShopCountry",
+            "phpdocType":"\\CoreShop\\Model\\Country",
             "queryColumnType":"int(11)",
             "columnType":"int(11)",
-            "phpdocType":"CoreShop\\Model\\Country",
-            "restrictTo":[
-
-            ],
             "options":[
               {
                 "key":"Austria",
@@ -219,7 +216,7 @@
                 "value":128
               }
             ],
-            "width":null,
+            "width":"",
             "defaultValue":null,
             "name":"country",
             "title":"Country",
@@ -227,7 +224,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",
@@ -320,6 +317,29 @@
             "noteditable":false,
             "index":false,
             "locked":false,
+            "style":"",
+            "permissions":null,
+            "datatype":"data",
+            "relationType":false,
+            "invisible":false,
+            "visibleGridView":false,
+            "visibleSearch":false
+          },
+          {
+            "fieldtype":"input",
+            "width":null,
+            "queryColumnType":"varchar",
+            "columnType":"varchar",
+            "columnLength":255,
+            "phpdocType":"string",
+            "regex":"",
+            "name":"vatNumber",
+            "title":"VAT Number",
+            "tooltip":"",
+            "mandatory":false,
+            "noteditable":false,
+            "index":false,
+            "locked":null,
             "style":"",
             "permissions":null,
             "datatype":"data",

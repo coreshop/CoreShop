@@ -29,6 +29,11 @@ $postValue = function ($name) {
     <!-- Main Heading Ends -->
     <!-- Registration Section Starts -->
     <section class="registration-area">
+        <?php if($this->error) { ?>
+            <div class="alert alert-danger">
+                <?=$this->error?>
+            </div>
+        <?php } ?>
         <div class="row">
             <div class="col-sm-12">
                 <!-- Registration Block Starts -->

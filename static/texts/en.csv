@@ -190,3 +190,5 @@
 "coreshop_productSpecificPrice","Specific Price"
 "coreshop_productSpecificPrice_add","Add Specific Price"
 "coreshop_productSpecificPrice_enter_the_name","Name of specific price"
+"coreshop_base_checkvat","Validate VAT"
+"coreshop_base_disablevatforbasecountry","Disable VAT for Base Country"

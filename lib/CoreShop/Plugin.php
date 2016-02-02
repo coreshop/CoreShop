@@ -17,6 +17,7 @@ namespace CoreShop;
 use CoreShop\Exception\ThemeNotFoundException;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
+use CoreShop\Model\TaxRule\VatManager;
 use CoreShop\Model\Zone;
 use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
@@ -100,6 +101,12 @@ class Plugin extends AbstractPlugin implements PluginInterface
                 $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
             }
         });
+
+        if(Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
+            self::getEventManager()->attach("tax.getTaxManager", function () {
+                return new VatManager();
+            });
+        }
     }
 
     /**

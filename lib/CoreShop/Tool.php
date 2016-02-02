@@ -304,6 +304,105 @@ class Tool
     }
 
     /**
+     * Validate VAT for address
+     *
+     * @param string $vatNubmer
+     * @return boolean
+     */
+    public static function validateVatNumber($vatNumber) {
+        $intracom_array = array(
+            'AT' => 'AT',
+            //Austria
+            'BE' => 'BE',
+            //Belgium
+            'DK' => 'DK',
+            //Denmark
+            'FI' => 'FI',
+            //Finland
+            'FR' => 'FR',
+            //France
+            'FX' => 'FR',
+            //France métropolitaine
+            'DE' => 'DE',
+            //Germany
+            'GR' => 'EL',
+            //Greece
+            'IE' => 'IE',
+            //Irland
+            'IT' => 'IT',
+            //Italy
+            'LU' => 'LU',
+            //Luxembourg
+            'NL' => 'NL',
+            //Netherlands
+            'PT' => 'PT',
+            //Portugal
+            'ES' => 'ES',
+            //Spain
+            'SE' => 'SE',
+            //Sweden
+            'GB' => 'GB',
+            //United Kingdom
+            'CY' => 'CY',
+            //Cyprus
+            'EE' => 'EE',
+            //Estonia
+            'HU' => 'HU',
+            //Hungary
+            'LV' => 'LV',
+            //Latvia
+            'LT' => 'LT',
+            //Lithuania
+            'MT' => 'MT',
+            //Malta
+            'PL' => 'PL',
+            //Poland
+            'SK' => 'SK',
+            //Slovakia
+            'CZ' => 'CZ',
+            //Czech Republic
+            'SI' => 'SI',
+            //Slovenia
+            'RO' => 'RO',
+            //Romania
+            'BG' => 'BG',
+            //Bulgaria
+            'HR' => 'HR',
+            //Croatia
+        );
+
+        $vatNumber = str_replace(' ', '', $vatNumber);
+        $prefix = substr($vatNumber, 0, 2);
+
+        if (array_search($prefix, $intracom_array) === false)
+            return false;
+
+        $vat = substr($vatNumber, 2);
+        $url = 'http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms='.urlencode($prefix).'&iso='.urlencode($prefix).'&vat='.urlencode($vat);
+
+        for ($i = 0; $i < 3; $i++)
+        {
+            if ($page_res = @file_get_contents($url))
+            {
+                if (preg_match('/invalid VAT number/i', $page_res))
+                {
+                    return false;
+                }
+                else if (preg_match('/valid VAT number/i', $page_res))
+                {
+                    return true;
+                }
+                else
+                    $i++;
+            }
+            else
+                sleep(1);
+        }
+
+        return false;
+    }
+
+    /**
      * Check if Object $object in array $objectList
      *
      * @param AbstractModel $object

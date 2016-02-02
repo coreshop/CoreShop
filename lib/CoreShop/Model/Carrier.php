@@ -21,6 +21,7 @@ use CoreShop\Tool;
 use Pimcore\Cache;
 use Pimcore\Db;
 use Pimcore\Model\Asset;
+use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class Carrier extends AbstractModel
 {
@@ -344,7 +345,7 @@ class Carrier extends AbstractModel
      */
     public function getDeliveryPrice(Cart $cart, Zone $zone = null)
     {
-        $taxCalculator = $this->getTaxCalculator();
+        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress());
 
         if (is_null($zone)) {
             $zone = Tool::getCountry()->getZone();
@@ -390,19 +391,20 @@ class Carrier extends AbstractModel
     /**
      * get TaxCalculator
      *
-     * @param Country $country
+     * @param CoreShopUserAddress $address
      * @return bool|TaxCalculator
      */
-    public function getTaxCalculator(Country $country = null)
+    public function getTaxCalculator(CoreShopUserAddress $address = null)
     {
-        if (is_null($country)) {
-            $country = Tool::getCountry();
+        if(is_null($address)) {
+            $address = new CoreShopUserAddress();
+            $address->setCountry(Tool::getCountry());
         }
 
         $taxRule = $this->getTaxRuleGroup();
 
         if ($taxRule instanceof TaxRuleGroup) {
-            $taxManager = TaxManagerFactory::getTaxManager($country, $taxRule->getId());
+            $taxManager = TaxManagerFactory::getTaxManager($address, $taxRule->getId());
             $taxCalculator = $taxManager->getTaxCalculator();
 
             return $taxCalculator;

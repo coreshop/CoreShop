@@ -18,18 +18,34 @@ use CoreShop\Model\Plugin\TaxManager as PluginTaxManager;
 use CoreShop\Model\TaxRule\Manager;
 use CoreShop\Plugin;
 use Pimcore\Cache;
+use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class TaxManagerFactory
 {
 
     /**
-     * @param Country $country
+     * get CacheKey for Address
+     *
+     * @param CoreShopUserAddress $address
+     * @return string
+     */
+    private static function getCacheKey(CoreShopUserAddress $address) {
+        return md5($address->getCountry()->getId() .
+            ($address->getName() ? $address->getName() : "") .
+            ($address->getVatNumber() ? $address->getVatNumber() : "") .
+            ($address->getStreet() ? $address->getStreet() : "") .
+            ($address->getCity() ? $address->getCity() : "") .
+            ($address->getCompany() ? $address->getCompany() : ""));
+    }
+
+    /**
+     * @param CoreShopUserAddress $address
      * @param $type
      * @return bool|Manager|mixed|null
      */
-    public static function getTaxManager(Country $country, $type)
+    public static function getTaxManager(CoreShopUserAddress $address, $type)
     {
-        $cacheKey = "coreshop_tax_manager_" . $country->getId() . "_" . $type;
+        $cacheKey = "coreshop_tax_manager_" . self::getCacheKey($address) . "_" . $type;
 
         try {
             $taxManager = \Zend_Registry::get($cacheKey);
@@ -42,10 +58,10 @@ class TaxManagerFactory
         } catch (\Exception $e) {
             try {
                 if (!$taxManager = Cache::load($cacheKey)) {
-                    $taxManager = self::getPluginTaxManager($country, $type);
+                    $taxManager = self::getPluginTaxManager($address, $type);
 
                     if (!$taxManager instanceof PluginTaxManager) {
-                        $taxManager = new Manager($country, $type);
+                        $taxManager = new Manager($address, $type);
                     }
 
                     \Zend_Registry::set($cacheKey, $taxManager);
@@ -64,17 +80,17 @@ class TaxManagerFactory
     }
 
     /**
-     * @param Country $country
+     * @param CoreShopUserAddress $address
      * @param $type
      * @return bool
      */
-    protected static function getPluginTaxManager(Country $country, $type)
+    protected static function getPluginTaxManager(CoreShopUserAddress $address, $type)
     {
-        $results = Plugin::getEventManager()->trigger("tax.getTaxManager", null, array("country" => $country, "type" => $type));
+        $results = Plugin::getEventManager()->trigger("tax.getTaxManager", null, array("address" => $address, "type" => $type));
 
         foreach ($results as $result) {
             if ($result instanceof PluginTaxManager) {
-                if ($result->isAvailableForThisAddress($country, $type)) {
+                if ($result->isAvailableForThisAddress($address, $type)) {
                     return $result;
                 }
             }

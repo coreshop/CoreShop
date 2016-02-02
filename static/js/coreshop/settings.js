@@ -152,6 +152,18 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 xtype: "checkbox",
                                 name: "SYSTEM.BASE.GUESTCHECKOUT",
                                 checked: this.getValue("SYSTEM.BASE.GUESTCHECKOUT")
+                            },
+                            {
+                                fieldLabel: t('coreshop_base_checkvat'),
+                                xtype: "checkbox",
+                                name: "SYSTEM.BASE.CHECKVAT",
+                                checked: this.getValue("SYSTEM.BASE.CHECKVAT")
+                            },
+                            {
+                                fieldLabel: t('coreshop_base_disablevatforbasecountry'),
+                                xtype: "checkbox",
+                                name: "SYSTEM.BASE.DISABLEVATFORBASECOUNTRY",
+                                checked: this.getValue("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")
                             }
                         ]
                     },

@@ -17,39 +17,18 @@ namespace CoreShop\Model\TaxRule;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Country;
 use CoreShop\Model\Plugin\TaxManager;
+use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
 use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
-class Manager implements TaxManager
+class VatManager implements TaxManager
 {
-
     /**
      * @var TaxCalculator
      */
     protected $tax_calculator;
-
-    /**
-     * @var CoreShopUserAddress
-     */
-    protected $address;
-
-    /**
-     * @var int
-     */
-    protected $type;
-
-    /**
-     * Manager constructor.
-     * @param CoreShopUserAddress $address
-     * @param $type
-     */
-    public function __construct(CoreShopUserAddress $address, $type)
-    {
-        $this->address = $address;
-        $this->type = $type;
-    }
 
     /**
      * @param CoreShopUserAddress $address
@@ -58,7 +37,21 @@ class Manager implements TaxManager
      */
     public static function isAvailableForThisAddress(CoreShopUserAddress $address, $type)
     {
-        return true; // default manager, available for all addresses
+        if(Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
+            if(empty($address->getVatNumber())) {
+                return false;
+            }
+
+            if($countryId = Configuration::get("SYSTEM.BASE.COUNTRY")) {
+                if(($country = Country::getById($countryId)) instanceof Country) {
+                    if($country->getId() !== $address->getCountry()->getId()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -72,34 +65,13 @@ class Manager implements TaxManager
             return $this->tax_calculator;
         }
 
-        //Todo:: Configure if taxes are enabled
-
-        $cacheKey = "coreshop_tax_calculator_" . $this->address->getCountry()->getId() . '_' . (int)$this->type;
+        $cacheKey = "coreshop_vattax_calculator";
 
         if (!\Zend_Registry::isRegistered($cacheKey)) {
-            $taxRuleGroup = TaxRuleGroup::getById($this->type);
-            $taxRules = $taxRuleGroup->getCountries($this->address->getCountry());
-            $taxes = array();
-            $firstRow = true;
-            $behavior = false;
+            $tax = new Tax();
+            $tax->setRate(0);
 
-            foreach ($taxRules as $rule) {
-                $tax = $rule->getTax();
-                $taxes[] = $tax;
-
-                //Tax behaviour will be applied from first rule
-                if ($firstRow) {
-                    $behavior = $rule->getBehavior();
-
-                    $firstRow = false;
-                }
-
-                if ($rule->getBehavior() == TaxCalculator::DISABLE_METHOD) {
-                    break;
-                }
-            }
-
-            \Zend_Registry::set($cacheKey, new TaxCalculator($taxes, $behavior));
+            \Zend_Registry::set($cacheKey, new TaxCalculator(array($tax), 0));
         }
 
         return \Zend_Registry::get($cacheKey);

@@ -72,7 +72,7 @@
             </tr>
         <?php } ?>
 
-        <?php if($this->cart->getPriceRule() instanceof \CoreShop\Model\PriceRule) { ?>
+            <?php if($this->cart->getPriceRule() instanceof \CoreShop\Model\PriceRule) { ?>
             <tr>
                 <td colspan="2" class="text-center">
                     <?=$this->cart->getPriceRule()->getName()?>

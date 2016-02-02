@@ -21,6 +21,7 @@ use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
+use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 use Pimcore\Model\Object\Service;
 
 class Cart extends Base
@@ -366,6 +367,39 @@ class Cart extends Base
 
         $this->save();
     }
+
+    /**
+     * Returns Customers shipping address
+     *
+     * @return CoreShopUserAddress|bool
+     */
+    public function getCustomerShippingAddress()
+    {
+        $address = $this->getShippingAddress()->getItems();
+
+        if (count($address) > 0) {
+            return $address[0];
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns Customers billing address
+     *
+     * @return CoreShopUserAddress|bool
+     */
+    public function getCustomerBillingAddress()
+    {
+        $address = $this->getBillingAddress()->getItems();
+
+        if (count($address) > 0) {
+            return $address[0];
+        }
+
+        return false;
+    }
+
 
     /**
      * Returns the cart as array

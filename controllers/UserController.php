@@ -176,6 +176,15 @@ class CoreShop_UserController extends Action
                     $key = Pimcore\File::getValidFilename($userParams['email'] . " " . time());
                 }
 
+                //Check for European VAT Number
+                if(\CoreShop\Model\Configuration::get("SYSTEM.BASE.CHECKVAT")) {
+                    if($addressParams['vatNumber']) {
+                        if(!Tool::validateVatNumber($addressParams['vatNumber'])) {
+                            throw new \Exception($this->view->translate("Invalid VAT Number"));
+                        }
+                    }
+                }
+
                 $addresses = new Object\Fieldcollection();
 
                 $address = new CoreShopUserAddress();
@@ -209,8 +218,11 @@ class CoreShop_UserController extends Action
                     $this->redirect($this->view->url(array("lang" => $this->view->language, "action" => "profile"), "coreshop_user"));
                 }
             } catch (\Exception $ex) {
+                if (array_key_exists("_error", $params)) {
+                    $this->redirect($params['_error'] . "?error=" . $ex->getMessage());
+                }
+
                 $this->view->error = $ex->getMessage();
-                throw $ex;
             }
         }
     }
@@ -238,48 +250,62 @@ class CoreShop_UserController extends Action
         }
 
         if ($this->getRequest()->isPost()) {
-            $params = $this->getAllParams();
-            
-            $addressParams = array();
-            
-            foreach ($params as $key=>$value) {
-                if (startsWith($key, "address_")) {
-                    $addressKey = str_replace("address_", "", $key);
-                    
-                    $addressParams[$addressKey] = $value;
-                }
-            }
-            
-            $adresses = $this->session->user->getAddresses();
+            try {
+                $params = $this->getAllParams();
 
-            if (!$adresses instanceof Object\Fieldcollection) {
-                $adresses = new Object\Fieldcollection();
-            }
+                $addressParams = array();
 
-            if ($update) {
-                for ($i = 0; $i < count($this->session->user->getAddresses()); $i++) {
-                    if ($this->session->user->getAddresses()->get($i)->getName() == $update) {
-                        //$this->session->user->getAddresses()->remove($i);
-                        break;
+                foreach ($params as $key => $value) {
+                    if (startsWith($key, "address_")) {
+                        $addressKey = str_replace("address_", "", $key);
+
+                        $addressParams[$addressKey] = $value;
                     }
                 }
+
+                //Check for European VAT Number
+                if (\CoreShop\Model\Configuration::get("SYSTEM.BASE.CHECKVAT")) {
+                    if ($addressParams['vatNumber']) {
+                        if (!Tool::validateVatNumber($addressParams['vatNumber'])) {
+                            throw new \Exception($this->view->translate("Invalid VAT Number"));
+                        }
+                    }
+                }
+
+                $adresses = $this->session->user->getAddresses();
+
+                if (!$adresses instanceof Object\Fieldcollection) {
+                    $adresses = new Object\Fieldcollection();
+                }
+
+                if ($update) {
+                    for ($i = 0; $i < count($this->session->user->getAddresses()); $i++) {
+                        if ($this->session->user->getAddresses()->get($i)->getName() == $update) {
+                            //$this->session->user->getAddresses()->remove($i);
+                            break;
+                        }
+                    }
+                }
+
+                $this->view->address->setValues($addressParams);
+                //TODO: Check if country exists and is valid
+                $this->view->address->setCountry(Country::getById($addressParams['country']));
+
+                if ($this->view->isNew) {
+                    $adresses->add($this->view->address);
+                }
+
+                $this->session->user->save();
+
+
+                if (array_key_exists("_redirect", $params)) {
+                    $this->redirect($params['_redirect']);
+                } else {
+                    $this->redirect("/de/shop");
+                }
             }
-
-
-            $this->view->address->setValues($addressParams);
-            //TODO: Check if country exists and is valid
-            $this->view->address->setCountry(Country::getById($addressParams['country']));
-
-            if ($this->view->isNew) {
-                $adresses->add($this->view->address);
-            }
-            
-            $this->session->user->save();
-            
-            if (array_key_exists("_redirect", $params)) {
-                $this->_redirect($params['_redirect']);
-            } else {
-                $this->_redirect("/de/shop");
+            catch(\Exception $ex) {
+                $this->view->error = $ex->getMessage();
             }
         }
     }

@@ -328,19 +328,26 @@ class Product extends Base
     /**
      * get TaxCalculator
      *
-     * @param Country $country
+     * @param Object\Fieldcollection\Data\CoreShopUserAddress $address
      * @return bool|TaxCalculator
      */
-    public function getTaxCalculator(Country $country = null)
+    public function getTaxCalculator(Object\Fieldcollection\Data\CoreShopUserAddress $address = null)
     {
-        if (is_null($country)) {
-            $country = Tool::getCountry();
+        if (is_null($address)) {
+            $cart = Tool::prepareCart();
+
+            $address = $cart->getCustomerShippingAddress();
+
+            if(!$address instanceof Object\Fieldcollection\Data\CoreShopUserAddress) {
+                $address = new Object\Fieldcollection\Data\CoreShopUserAddress();
+                $address->setCountry(Tool::getCountry());
+            }
         }
 
         $taxRule = $this->getTaxRule();
 
         if ($taxRule instanceof TaxRuleGroup) {
-            $taxManager = TaxManagerFactory::getTaxManager($country, $taxRule->getId());
+            $taxManager = TaxManagerFactory::getTaxManager($address, $taxRule->getId());
             $taxCalculator = $taxManager->getTaxCalculator();
 
             return $taxCalculator;

@@ -45,6 +45,14 @@ $postValue = function ($name) {
 </div>
 
 <div class="form-group">
+    <label for="address_vatNumber" class="col-sm-3 control-label"><?=$this->translate("VAT")?>:</label>
+    <div class="col-sm-9">
+        <input type="text" class="form-control" id="address_vatNumber" name="address_vatNumber" placeholder="<?=$this->translate("VAT")?>" value="<?=$postValue("vatNumber")?>">
+    </div>
+    <div data-for="address_vatNumber" class="col-sm-push-3 col-sm-9"></div>
+</div>
+
+<div class="form-group">
     <label for="address_street" class="col-sm-3 control-label"><?=$this->translate("Street")?>:</label>
     <div class="col-sm-9">
         <input type="text" class="form-control" id="address_street" name="address_street" placeholder="<?=$this->translate("Street")?>" value="<?=$postValue("street")?>">
@@ -82,7 +90,7 @@ $postValue = function ($name) {
         <select name="address_country" class="form-control" title="<?=$this->translate("Country")?>">
             <?php
             $countries = $this->countries();
-            $pvalue = $postValue("country") instanceof \Pimcore\Model\Object\CoreShopCountry ? $postValue("country")->getId() : -1;
+            $pvalue = $postValue("country") instanceof \CoreShop\Model\Country ? $postValue("country")->getId() : -1;
             ?>
             <?php foreach ($countries as $country) { ?>
                 <option value="<?=$country->getId()?>" <?=$country->getId() == $pvalue ? "selected" : ""?>><?=$this->translateCountry($country->getIsoCode())?></option>

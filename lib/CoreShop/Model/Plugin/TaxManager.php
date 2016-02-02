@@ -15,18 +15,20 @@
 namespace CoreShop\Model\Plugin;
 
 use CoreShop\Model\Country;
+use CoreShop\Model\TaxCalculator;
+use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 interface TaxManager
 {
     /**
      * This method determine if the tax manager is available for the specified address.
      *
-     * @param Country $country
+     * @param CoreShopUserAddress $address
      * @param string $type
      *
      * @return boolean
      */
-    public static function isAvailableForCountry(Country $country, $type);
+    public static function isAvailableForThisAddress(CoreShopUserAddress $address, $type);
 
     /**
      * Return the tax calculator associated to this address
