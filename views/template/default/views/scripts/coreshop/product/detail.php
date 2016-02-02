@@ -59,7 +59,7 @@
                         <hr />
 
                         <div class="options">
-                            <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
+                            <?php if(!\CoreShop\Config::isCatalogMode() && ($this->product->isAvailableWhenOutOfStock() || $this->product->getQuantity() > 0)) { ?>
                                 <div class="form-group">
                                     <label class="control-label text-uppercase" for="input-quantity"><?=$this->translate("Qty")?>:</label>
                                     <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
@@ -74,13 +74,18 @@
                                     <i class="fa fa-bar-chart-o"></i>
                                 </button>
 
-                                <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
+                                <?php if(!\CoreShop\Config::isCatalogMode() && ($this->product->isAvailableWhenOutOfStock() || $this->product->getQuantity() > 0)) { ?>
                                     <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#product-image-<?=$this->product->getId()?>">
                                         <?=$this->translate("Add to cart")?>
                                         <i class="fa fa-shopping-cart"></i>
                                     </button>
                                 <?php } ?>
                             </div>
+
+                            <?php if(!$this->product->isAvailableWhenOutOfStock() && $this->product->getQuantity() <= 0) { ?>
+                                <hr />
+                                <p><?=$this->translate("Out of Stock")?></p>
+                            <?php } ?>
                         </div>
                     <?php } ?>
                     <hr />

@@ -28,6 +28,21 @@ class Product extends Base
 {
 
     /**
+     * OUT_OF_STOCK_DENY denies order of product if out-of-stock
+     */
+    const OUT_OF_STOCK_DENY = 0;
+
+    /**
+     * OUT_OF_STOCK_ALLOW allows order of product if out-of-stock
+     */
+    const OUT_OF_STOCK_ALLOW = 1;
+
+    /**
+     * OUT_OF_STOCK_DEFAULT Default behaviour for out of stock.
+     */
+    const OUT_OF_STOCK_DEFAULT = 2;
+
+    /**
      * @static
      * @param int $id
      * @return null|Product
@@ -357,6 +372,36 @@ class Product extends Base
     }
 
     /**
+     * Adds $delta to current Quantity
+     *
+     * @param $delta
+     */
+    public function updateQuantity($delta) {
+        $this->setQuantity($this->getQuantity() + $delta);
+        $this->save();
+    }
+
+    /**
+     * Is Available when out-of-stock
+     *
+     * @return bool
+     * @throws UnsupportedException
+     */
+    public function isAvailableWhenOutOfStock() {
+        $outOfStockBehaviour = $this->getOutOfStockBehaviour();
+
+        if(is_null($outOfStockBehaviour)) {
+            $outOfStockBehaviour = self::OUT_OF_STOCK_DEFAULT;
+        }
+
+        if($outOfStockBehaviour === self::OUT_OF_STOCK_DEFAULT) {
+            return intval(Configuration::get("SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR")) === self::OUT_OF_STOCK_ALLOW;
+        }
+
+        return intval($outOfStockBehaviour) === self::OUT_OF_STOCK_ALLOW;
+    }
+
+    /**
      * get all specific prices
      *
      * @return array
@@ -496,5 +541,43 @@ class Product extends Base
     public function getDepth()
     {
         throw new UnsupportedException("getDepth is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns current Quantity
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return int
+     */
+    public function getQuantity()
+    {
+        throw new UnsupportedException("getQuantity is not supported for " . get_class($this));
+    }
+
+    /**
+     * set Quantity
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @param $quantity
+     *
+     * @throws UnsupportedException
+     * @return int
+     */
+    public function setQuantity($quantity)
+    {
+        throw new UnsupportedException("setQuantity is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns out of stock Behaviour
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return int
+     */
+    public function getOutOfStockBehaviour()
+    {
+        throw new UnsupportedException("getOutOfStockBehaviour is not supported for " . get_class($this));
     }
 }

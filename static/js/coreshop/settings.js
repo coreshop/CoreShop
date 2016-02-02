@@ -168,6 +168,31 @@ pimcore.plugin.coreshop.settings= Class.create({
                         ]
                     },
                     {
+                        xtype: 'fieldset',
+                        title: t('coreshop_stock'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight:true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: {width: 600},
+                        items : [
+                            {
+                                fieldLabel: t('coreshop_stock_defaultoutofstock_behavior'),
+                                name: "SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR",
+                                value: this.getValue("SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR"),
+                                width: 500,
+                                xtype: "combo",
+                                store: [[0,t("Deny Order")],[1,t("Allow Order")]],
+                                triggerAction: "all",
+                                typeAhead: false,
+                                editable: false,
+                                forceSelection: true,
+                                queryMode: "local"
+                            }
+                        ]
+                    },
+                    {
                         xtype:'fieldset',
                         title: t('coreshop_product'),
                         collapsible: true,

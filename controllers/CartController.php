@@ -46,8 +46,15 @@ class CoreShop_CartController extends Action
         $product_id = $this->getParam("product", null);
         $amount = $this->getParam("amount", 1);
         $product = CoreShopProduct::getById($product_id);
-
         $isAllowed = true;
+        $message = "is not allowed";
+
+        if (!$product->isAvailableWhenOutOfStock() && $product->getQuantity() <= 0) {
+            $isAllowed = false;
+
+            $message = $this->view->translate("Product is out of stock");
+        }
+
         $result = Plugin::getEventManager()->trigger('cart.preAdd', $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
             return is_bool($v);
         });
@@ -65,7 +72,7 @@ class CoreShop_CartController extends Action
                 $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray()));
             }
         } else {
-            $this->_helper->json(array("success" => false, "message" => 'not allowed'));
+            $this->_helper->json(array("success" => false, "message" => $message));
         }
 
         $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray()));

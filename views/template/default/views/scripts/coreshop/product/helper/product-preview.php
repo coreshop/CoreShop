@@ -27,7 +27,7 @@
             <div class="price">
                 <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getPrice())?></span>
             </div>
-            <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
+            <?php if(!\CoreShop\Config::isCatalogMode() && ($this->product->isAvailableWhenOutOfStock() || $this->product->getQuantity() > 0)) { ?>
                 <div class="cart-button">
                     <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="<?=$uniqid ?>">
                         <?=$this->translate("Add to cart")?>

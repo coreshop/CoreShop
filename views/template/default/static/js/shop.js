@@ -116,6 +116,9 @@ $(document).ready(function(){
                         if(callback)
                             callback();
                     }
+                    else {
+                        alert(result.message);
+                    }
                 }
             }
         });

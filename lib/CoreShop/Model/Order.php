@@ -85,6 +85,9 @@ class Order extends Base
             $item->setExtraInformation($cartItem->getExtraInformation());
             $item->setIsGiftItem($cartItem->getIsGiftItem());
             $item->save();
+
+            //Stock Management
+            $cartItem->getProduct()->updateQuantity(-$cartItem->getAmount());
             
             $items[] = $item;
             
@@ -488,5 +491,16 @@ class Order extends Base
     public function getPaymentProvider()
     {
         throw new UnsupportedException("getPaymentProvider is not supported for " . get_class($this));
+    }
+
+    /**
+     * Get OrderState
+     *
+     * @throws UnsupportedException
+     * @return OrderState
+     */
+    public function getOrderState()
+    {
+        throw new UnsupportedException("getOrderStates is not supported for " . get_class($this));
     }
 }
