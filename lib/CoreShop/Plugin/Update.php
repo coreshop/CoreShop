@@ -336,7 +336,7 @@ class Update {
             $masterInfo[] = array(
                 'sha' => $master->sha,
                 'date' => $master->commit->committer->date,
-                'message' => $master->commit->message
+                'message' => $master->commit->message . ' (#' . substr($master->sha, 0, 7) . ')'
             );
         }
 
@@ -410,7 +410,16 @@ class Update {
                     //delete old CoreShop Plugin!
                     if( is_dir( PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName ) )
                     {
+                        //Backup .git first, if available!
+                        $baseGitDir = PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName . '/.git';
+
+                        if( is_dir( $baseGitDir ) )
+                        {
+                            recursiveCopy( $baseGitDir, $coreShopFolder[0] . '/.git');
+                        }
+
                         recursiveDelete( PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName, true);
+
                     }
 
                     rename( $coreShopFolder[0], PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName);
