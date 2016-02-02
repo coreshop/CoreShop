@@ -207,6 +207,8 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                 coreShopStatusItem.setHtml('<em class="fa fa-shopping-cart"></em> ' + t("coreshop_loaded").format(this.settings.plugin.pluginVersion))
 
+                $(document).trigger("coreShopReady");
+
                 coreshop.plugin.broker.fireEvent("coreshopReady", this);
 
             }.bind(this)
