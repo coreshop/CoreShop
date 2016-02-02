@@ -116,10 +116,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                     store: pimcore.globalmanager.get("coreshop_countries"),
                     valueField: "id",
                     displayField: "name",
-                    triggerAction: "all",
-                    typeAhead: false,
-                    editable: false,
-                    forceSelection: true
+                    queryMode : "local"
                 }),
                 renderer: function (countryId) {
                     var store = pimcore.globalmanager.get("coreshop_countries");
@@ -138,10 +135,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                     store: pimcore.globalmanager.get("coreshop_taxes"),
                     valueField: "id",
                     displayField: "name",
-                    triggerAction: "all",
-                    typeAhead: false,
-                    editable: false,
-                    forceSelection: true
+                    queryMode : "local"
                 }),
                 renderer: function (countryId) {
                     var store = pimcore.globalmanager.get("coreshop_taxes");
@@ -159,12 +153,11 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 editor: new Ext.form.ComboBox({
                     store: [[0, t("coreshop_tax_rule_behavior_disable")],[1,t("coreshop_tax_rule_behavior_combine")], [2,t("coreshop_tax_rule_behavior_on_after_another")]],
                     triggerAction: "all",
-                    typeAhead: false,
                     editable: false,
-                    forceSelection: true,
+                    queryMode : "local"
                 }),
                 renderer: function (behavior) {
-                    switch(behavior) {
+                    switch(parseInt(behavior)) {
                         case 0:
                             return t("coreshop_tax_rule_behavior_disable");
                             break;

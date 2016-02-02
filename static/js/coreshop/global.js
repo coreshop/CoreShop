@@ -44,6 +44,9 @@ pimcore.plugin.coreshop.global = {
         this._createStore("coreshop_customergroups", 'CustomerGroup');
         this._createStore("coreshop_carriers", 'Carrier');
         this._createStore("coreshop_pricerules", 'PriceRules');
+
+        pimcore.globalmanager.get("coreshop_taxes").load();
+        pimcore.globalmanager.get("coreshop_countries").load();
     },
 
     _initUpdate : function() {
