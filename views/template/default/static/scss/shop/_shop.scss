@@ -1116,6 +1116,28 @@ hr {
                 color: #2f353b;
             }
         }
+
+        .quantity {
+            display:inline-block;
+            margin-right:10px;
+        }
+
+        .quantity-info {
+            background:#4bac52;
+            color:white;
+            padding:5px;
+            display:inline-block;
+            margin-bottom:20px;
+
+            &.backorder {
+                background:#fe9126;
+            }
+
+            &.out-of-stock {
+                background:red;
+            }
+        }
+
         .price {}
         .price-head {
             padding-right: 10px;

@@ -51,12 +51,29 @@
                         <hr />
                     <?php } ?>
 
+                    <?php if($this->product->getQuantity() > 0) { ?>
+                        <div class="quantity">
+                            <?=sprintf($this->translate("%s Items"), $this->product->getQuantity())?>
+                        </div>
+                        <div class="quantity-info">
+                            <?=$this->translate("In Stock")?>
+                        </div>
+                    <?php } else if($this->product->isAvailableWhenOutOfStock()) { //Out of stock but available for backorder ?>
+                        <div class="quantity-info backorder">
+                            <?=$this->translate("Out of Stock, but already on back order.")?>
+                        </div>
+                    <?php } else { ?>
+                        <div class="quantity-info out-of-stock">
+                            <?=$this->translate("Out of Stock")?>
+                        </div>
+                    <?php } ?>
+
                     <?php if($this->product->getAvailableForOrder()) { ?>
                         <div class="price">
                             <span class="price-head"><?=$this->translate("Price")?> :</span>
                             <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getPrice());?></span>
                         </div>
-                        <hr />
+                        <hr/>
 
                         <div class="options">
                             <?php if(!\CoreShop\Config::isCatalogMode() && ($this->product->isAvailableWhenOutOfStock() || $this->product->getQuantity() > 0)) { ?>
@@ -81,11 +98,6 @@
                                     </button>
                                 <?php } ?>
                             </div>
-
-                            <?php if(!$this->product->isAvailableWhenOutOfStock() && $this->product->getQuantity() <= 0) { ?>
-                                <hr />
-                                <p><?=$this->translate("Out of Stock")?></p>
-                            <?php } ?>
                         </div>
                     <?php } ?>
                     <hr />
