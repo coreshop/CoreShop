@@ -337,16 +337,13 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * Get delivery Price for cart
+     * Get DeliveryPrice without Tax
      *
-     * @param Zone $zone
      * @param Cart $cart
+     * @param Zone|null $zone
      * @return bool|float
      */
-    public function getDeliveryPrice(Cart $cart, Zone $zone = null)
-    {
-        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
-
+    public function getDeliveryPriceWithoutTax(Cart $cart, Zone $zone = null) {
         if (is_null($zone)) {
             $zone = Tool::getCountry()->getZone();
         }
@@ -366,10 +363,6 @@ class Carrier extends AbstractModel
                 if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
                     $deliveryPrice = $price->getPrice();
 
-                    if ($taxCalculator) {
-                        return $taxCalculator->addTaxes($deliveryPrice);
-                    }
-
                     return $deliveryPrice;
                 }
             }
@@ -378,14 +371,48 @@ class Carrier extends AbstractModel
         if ($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
             $deliveryPrice = $this->getMaxDeliveryPrice($zone);
 
-            if ($taxCalculator) {
-                return $taxCalculator->addTaxes($deliveryPrice);
-            }
-
             return $deliveryPrice;
         }
 
         return false;
+    }
+
+    /**
+     * Get delivery Price for cart
+     *
+     * @param Zone $zone
+     * @param Cart $cart
+     * @return bool|float
+     */
+    public function getDeliveryPrice(Cart $cart, Zone $zone = null)
+    {
+        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
+        $deliveryPrice = $this->getDeliveryPriceWithoutTax($cart, $zone);
+
+        if ($taxCalculator) {
+            return $taxCalculator->addTaxes($deliveryPrice);
+        }
+
+        return $deliveryPrice;
+    }
+
+    /**
+     * get delivery Tax for cart
+     *
+     * @param Cart $cart
+     * @param Zone|null $zone
+     *
+     * @return float;
+     */
+    public function getTaxAmount(Cart $cart, Zone $zone = null) {
+        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
+        $deliveryPrice = $this->getDeliveryPriceWithoutTax($cart, $zone);
+
+        if($taxCalculator) {
+            return $taxCalculator->getTaxesAmount($deliveryPrice);
+        }
+
+        return $deliveryPrice;
     }
 
     /**

@@ -326,14 +326,14 @@ class Product extends Base
     }
 
     /**
-     * returns tax
+     * Get Product Tax Amount
+     *
      * @return float
      */
-    public function getTax()
-    {
+    public function getTaxAmount() {
         $calculator = $this->getTaxCalculator();
 
-        if ($calculator) {
+        if($calculator) {
             return $calculator->getTaxesAmount($this->getPriceWithoutTax());
         }
 

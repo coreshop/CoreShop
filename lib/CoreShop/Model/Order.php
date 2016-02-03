@@ -79,7 +79,7 @@ class Order extends Base
             $item->setProduct($cartItem->getProduct());
             $item->setWholesalePrice($cartItem->getProduct()->getWholesalePrice());
             $item->setRetailPrice($cartItem->getProduct()->getRetailPrice());
-            $item->setTax($cartItem->getProduct()->getTax());
+            $item->setTax($cartItem->getProduct()->getTaxAmount());
             $item->setPrice($cartItem->getProduct()->getPrice());
             $item->setAmount($cartItem->getAmount());
             $item->setExtraInformation($cartItem->getExtraInformation());

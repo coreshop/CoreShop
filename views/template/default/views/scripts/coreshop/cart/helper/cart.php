@@ -102,7 +102,7 @@
         $discount = $this->cart->getDiscount();
         $payment = $this->cart->getPaymentFee();
 
-        $rowspan = 5;
+        $rowspan = 6;
 
         if($shipping == 0)
             $rowspan--;
@@ -173,6 +173,14 @@
                 </td>
             </tr>
         <?php } ?>
+        <tr>
+            <td class="text-right">
+                <strong><?=$this->translate("Tax (incl.)")?>:</strong>
+            </td>
+            <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-sub-total">
+                <?=\CoreShop\Tool::formatPrice($this->cart->getTotalTax())?>
+            </td>
+        </tr>
         <?php if($discount > 0) { ?>
             <tr>
                 <td class="text-right">

@@ -42,11 +42,21 @@ abstract class Payment implements AbstractPlugin
      * Get Payment Fee
      *
      * @param Cart $cart
-     * @throws UnsupportedException
+     * @return float
      */
     public function getPaymentFee(Cart $cart)
     {
-        throw new UnsupportedException("");
+        return 0;
+    }
+
+    /**
+     * Get Taxes for payment fee
+     *
+     * @param Cart $cart
+     * @return float
+     */
+    public function getPaymentFeeTaxes(Cart $cart) {
+        return 0;
     }
 
     /**
@@ -100,6 +110,7 @@ abstract class Payment implements AbstractPlugin
         }
 
         $order->setPaymentFee($cart->getPaymentFee());
+        $order->setTotalTax($cart->getTotalTax());
         $order->setTotal($cart->getTotal());
         $order->setSubtotal($cart->getSubtotal());
         $order->save();

@@ -3264,6 +3264,33 @@
                 "mandatory":false,
                 "noteditable":true,
                 "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
+                "fieldtype":"numeric",
+                "width":"",
+                "defaultValue":null,
+                "queryColumnType":"double",
+                "columnType":"double",
+                "phpdocType":"float",
+                "integer":false,
+                "unsigned":false,
+                "minValue":null,
+                "maxValue":null,
+                "decimalPrecision":null,
+                "name":"totalTax",
+                "title":"Total Tax",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
                 "locked":null,
                 "style":"",
                 "permissions":null,
@@ -3493,13 +3520,17 @@
                 "assetsAllowed":false,
                 "assetTypes":[
                   {
-                    "assetTypes":""
+                    "assetTypes":{
+                      "assetTypes":""
+                    }
                   }
                 ],
                 "documentsAllowed":false,
                 "documentTypes":[
                   {
-                    "documentTypes":""
+                    "documentTypes":{
+                      "documentTypes":""
+                    }
                   }
                 ],
                 "lazyLoading":false,

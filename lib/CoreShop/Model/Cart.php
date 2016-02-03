@@ -117,7 +117,7 @@ class Cart extends Base
     /**
      * calculates the subtotal for the cart
      *
-     * @return int
+     * @return float
      */
     public function getSubtotal()
     {
@@ -131,19 +131,34 @@ class Cart extends Base
     }
 
     /**
-     * calculates shipping costs for the cart
+     * calculates the subtotal tax for the cart
      *
-     * @return int
+     * @return float
      */
-    public function getShipping()
-    {
+    public function getSubtotalTax() {
+        $subtotal = 0;
+
+        foreach ($this->getItems() as $item) {
+            $subtotal += ($item->getAmount() * $item->getProduct()->getTaxAmount());
+        }
+
+        return $subtotal;
+    }
+
+    /**
+     * get shipping carrier for cart (if non selected, get cheapest)
+     *
+     * @return null|Carrier
+     * @throws UnsupportedException
+     */
+    public function getShippingProvider() {
         if (count($this->getItems()) === 0) {
-            return 0;
+            return null;
         }
 
         //check for existing shipping
         if ($this->getCarrier() instanceof Carrier) {
-            return $this->getCarrier()->getDeliveryPrice($this);
+            return $this->getCarrier();
         }
 
         //get all provider and choose cheapest
@@ -159,7 +174,34 @@ class Cart extends Base
         }
 
         if ($cheapestProvider instanceof Carrier) {
-            return $cheapestProvider->getDeliveryPrice($this);
+            return $cheapestProvider;
+        }
+
+        return null;
+    }
+
+    /**
+     * calculates shipping costs for the cart
+     *
+     * @return float
+     */
+    public function getShipping()
+    {
+        if($this->getShippingProvider() instanceof Carrier) {
+            return $this->getShippingProvider()->getDeliveryPrice($this);
+        }
+
+        return 0;
+    }
+
+    /**
+     * calculates shipping tax for the cart
+     *
+     * @return float
+     */
+    public function getShippingTax() {
+        if($this->getShippingProvider() instanceof Carrier) {
+           return $this->getShippingProvider()->getTaxAmount($this);
         }
 
         return 0;
@@ -182,9 +224,38 @@ class Cart extends Base
     }
 
     /**
+     * Calculate the payment fee
+     *
+     * @return float
+     */
+    public function getPaymentFeeTaxes()
+    {
+        $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
+
+        if ($paymentProvider instanceof Payment) {
+            return $paymentProvider->getPaymentFeeTaxes($this);
+        }
+
+        return 0;
+    }
+
+    /**
+     * get all taxes
+     *
+     * @return float
+     */
+    public function getTotalTax() {
+        $subtotalTax = $this->getSubtotalTax();
+        $shippingTax = $this->getShippingTax();
+        $paymentTax = $this->getPaymentFeeTaxes();
+
+        return $subtotalTax + $shippingTax + $paymentTax;
+    }
+
+    /**
      * calculates the total of the cart
      *
-     * @return int
+     * @return float
      */
     public function getTotal()
     {
@@ -473,5 +544,16 @@ class Cart extends Base
     public function getUser()
     {
         throw new UnsupportedException("getUser is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns carrier for this cart
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return null|Carrier
+     */
+    public function getCarrier() {
+        throw new UnsupportedException("getCarrier is not supported for " . get_class($this));
     }
 }
