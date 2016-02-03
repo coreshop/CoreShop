@@ -48,6 +48,11 @@ class Country extends AbstractModel
     public $currencyId;
 
     /**
+     * @var bool
+     */
+    public $useStoreCurrency;
+
+    /**
      * @var int
      */
     public $zoneId;
@@ -178,6 +183,10 @@ class Country extends AbstractModel
      */
     public function getCurrency()
     {
+        if($this->getUseStoreCurrency()) {
+            return Currency::getById(Configuration::get("SYSTEM.BASE.CURRENCY"));
+        }
+
         return $this->currency;
     }
 
@@ -213,14 +222,17 @@ class Country extends AbstractModel
      */
     public function setCurrencyId($currencyId)
     {
-        $currency = Currency::getById($currencyId);
+        if(is_int(intval($currencyId))) {
+            $currency = Currency::getById($currencyId);
 
-        if (!$currency instanceof Currency) {
-            return;
+            if (!$currency instanceof Currency) {
+                return;
+            }
+
+            $this->currency = $currency;
         }
 
         $this->currencyId = $currencyId;
-        $this->currency = $currency;
     }
 
     /**
@@ -272,6 +284,22 @@ class Country extends AbstractModel
             $this->zoneId = $zoneId;
             $this->zone = $zone;
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseStoreCurrency()
+    {
+        return $this->useStoreCurrency;
+    }
+
+    /**
+     * @param boolean $useStoreCurrency
+     */
+    public function setUseStoreCurrency($useStoreCurrency)
+    {
+        $this->useStoreCurrency = $useStoreCurrency;
     }
 
     /**

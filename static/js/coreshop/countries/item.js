@@ -46,7 +46,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                 {
                     xtype:'fieldset',
                     autoHeight:true,
-                    labelWidth: 250,
+                    labelWidth: 350,
                     defaultType: 'textfield',
                     defaults: {width: 300},
                     items :[
@@ -67,6 +67,22 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                             checked: this.data.active === "1"
                         },
                         {
+                            xtype : 'checkbox',
+                            fieldLabel: t("coreshop_country_use_default_store_currency"),
+                            name: "useDefaultStoreCurrency ",
+                            checked: parseInt(this.data.useStoreCurrency) === 1,
+                            listeners : {
+                                change : function(checkbox, newValue) {
+                                    if(newValue) {
+                                        this.nextSibling().disable();
+                                    }
+                                    else {
+                                        this.nextSibling().enable();
+                                    }
+                                }
+                            }
+                        },
+                        {
                             xtype:'combo',
                             fieldLabel:t('coreshop_country_currency'),
                             typeAhead:true,
@@ -79,6 +95,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                             forceSelection:true,
                             triggerAction:'all',
                             name:'currencyId',
+                            disabled : parseInt(this.data.useStoreCurrency) === 1,
                             listeners: {
                                 change: function () {
                                     this.forceReloadOnSave = true;
