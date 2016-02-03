@@ -38,6 +38,8 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
     initialize: function(element) {
         var me = this;
 
+        this.layoutId = this.layoutId + "_" + element.id;
+
         this.element = element;
 
         Ext.Ajax.request({
