@@ -3289,9 +3289,9 @@
                 "title":"Total Tax",
                 "tooltip":"",
                 "mandatory":false,
-                "noteditable":false,
+                "noteditable":true,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",
@@ -3521,7 +3521,9 @@
                 "assetTypes":[
                   {
                     "assetTypes":{
-                      "assetTypes":""
+                      "assetTypes":{
+                        "assetTypes":""
+                      }
                     }
                   }
                 ],
@@ -3529,7 +3531,9 @@
                 "documentTypes":[
                   {
                     "documentTypes":{
-                      "documentTypes":""
+                      "documentTypes":{
+                        "documentTypes":""
+                      }
                     }
                   }
                 ],
