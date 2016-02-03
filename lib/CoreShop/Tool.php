@@ -502,28 +502,4 @@ class Tool
         $collection['key'] = $object->o_key;
         return $collection;
     }
-
-
-    /**
-     *
-     * Recursively copy a directory
-     *
-     * @param $src
-     * @param $dst
-     */
-    public static function recursiveCopy($src,$dst) {
-        $dir = opendir($src);
-        @mkdir($dst);
-        while(false !== ( $file = readdir($dir)) ) {
-            if (( $file != '.' ) && ( $file != '..' )) {
-                if ( is_dir($src . '/' . $file) ) {
-                    self::recursiveCopy($src . '/' . $file,$dst . '/' . $file);
-                }
-                else {
-                    copy($src . '/' . $file,$dst . '/' . $file);
-                }
-            }
-        }
-        closedir($dir);
-    }
 }
