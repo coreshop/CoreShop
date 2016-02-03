@@ -234,6 +234,32 @@ class Carrier extends AbstractModel
     }
 
     /**
+     * Get cheapest carrier for cart
+     *
+     * @param Cart $cart
+     * @param Zone $zone
+     * @return Carrier|null
+     */
+    public static function getCheapestCarrierForCart(Cart $cart, Zone $zone = null) {
+        $providers = self::getCarriersForCart($cart, $zone);
+        $cheapestProvider = null;
+
+        foreach ($providers as $p) {
+            if ($cheapestProvider === null) {
+                $cheapestProvider = $p;
+            } elseif ($cheapestProvider->getDeliveryPrice($cart) > $p->getDeliveryPrice($cart)) {
+                $cheapestProvider = $p;
+            }
+        }
+
+        if ($cheapestProvider instanceof Carrier) {
+            return $cheapestProvider;
+        }
+
+        return null;
+    }
+
+    /**
      * Check if carrier is allowed for cart and zone
      *
      * @param Cart|null $cart

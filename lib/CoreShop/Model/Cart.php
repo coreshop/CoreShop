@@ -161,20 +161,10 @@ class Cart extends Base
             return $this->getCarrier();
         }
 
-        //get all provider and choose cheapest
-        $providers = Carrier::getCarriersForCart($this);
-        $cheapestProvider = null;
+        $carrier = Carrier::getCheapestCarrierForCart($this);
 
-        foreach ($providers as $p) {
-            if ($cheapestProvider === null) {
-                $cheapestProvider = $p;
-            } elseif ($cheapestProvider->getDeliveryPrice($this) > $p->getDeliveryPrice($this)) {
-                $cheapestProvider = $p;
-            }
-        }
-
-        if ($cheapestProvider instanceof Carrier) {
-            return $cheapestProvider;
+        if($carrier instanceof Carrier) {
+            return $carrier;
         }
 
         return null;

@@ -43,6 +43,11 @@ class Product extends Base
     const OUT_OF_STOCK_DEFAULT = 2;
 
     /**
+     * @var float
+     */
+    protected $cheapestDeliveryPrice = null;
+
+    /**
      * @static
      * @param int $id
      * @return null|Product
@@ -326,6 +331,21 @@ class Product extends Base
     }
 
     /**
+     * Get Tax Rate
+     *
+     * @return float
+     */
+    public function getTaxRate() {
+        $calculator = $this->getTaxCalculator();
+
+        if($calculator) {
+            return $calculator->getTotalRate();
+        }
+
+        return 0;
+    }
+
+    /**
      * Get Product Tax Amount
      *
      * @return float
@@ -409,6 +429,42 @@ class Product extends Base
     public function getSpecificPrices()
     {
         return SpecificPrice::getSpecificPrices($this);
+    }
+
+    /**
+     * get cheapest delivery price for product
+     *
+     * @return float
+     */
+    public function getCheapestDeliveryPrice() {
+        //TODO: check for PriceRule?
+        if(is_null($this->cheapestDeliveryPrice)) {
+            $cart = new Object\CoreShopCart();
+            $cartItem = new Object\CoreShopCartItem();
+            $cartItem->setAmount(1);
+            $cartItem->setProduct($this);
+            $cart->setItems(array($cartItem));
+
+            /**
+             * TODO
+             * Does currently not work cause of $cart->getItems() will no be loaded with data from setItems, cart has to be saved first
+             * Solution: get rid of CoreShopCart and implement it as Custom Model
+             *
+             * PriceRule::autoAddToCart($cart);
+             * $this->cheapestDeliveryPrice = $cart->getShipping();
+            */
+
+            $carrier = Carrier::getCheapestCarrierForCart($cart);
+
+            if ($carrier instanceof Carrier) {
+                $this->cheapestDeliveryPrice = $carrier->getDeliveryPrice($cart);
+            }
+            else {
+                $this->cheapestDeliveryPrice = 0;
+            }
+        }
+
+        return $this->cheapestDeliveryPrice;
     }
 
     /**

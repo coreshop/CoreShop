@@ -10102,6 +10102,10 @@ hr {
 .product-info .product-details .quantity-info.out-of-stock {
   background: red;
 }
+.product-info .product-details .shipping {
+  margin-top: 10px;
+  font-size: 18px;
+}
 .product-info .product-details .price-head {
   padding-right: 10px;
   font-size: 24px;

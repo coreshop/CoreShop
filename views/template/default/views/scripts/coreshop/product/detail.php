@@ -72,6 +72,18 @@
                         <div class="price">
                             <span class="price-head"><?=$this->translate("Price")?> :</span>
                             <span class="price-new"><?=\CoreShop\Tool::formatPrice($this->product->getPrice());?></span>
+
+                        </div>
+                        <div class="tax">
+                            <?=sprintf($this->translate("incl. %s%% Tax"), $this->product->getTaxRate())?>
+                        </div>
+
+                        <div class="shipping">
+                            <?php if($this->product->getCheapestDeliveryPrice() > 0) { ?>
+                                <?=sprintf($this->translate("Shipping from %s"), \CoreShop\Tool::formatPrice($this->product->getCheapestDeliveryPrice()))?>
+                            <?php } else { ?>
+                                <?=$this->translate("Free Shipping")?>
+                            <?php } ?>
                         </div>
                         <hr/>
 

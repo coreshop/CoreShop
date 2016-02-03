@@ -198,7 +198,7 @@ class PriceRule extends AbstractModel
 
             foreach ($priceRules as $priceRule) {
                 if ($priceRule instanceof PriceRule) {
-                    if ($priceRule->checkValidity(false)) {
+                    if ($priceRule->checkValidity($cart, false)) {
                         $cart->addPriceRule($priceRule);
                     }
                 }
@@ -213,13 +213,16 @@ class PriceRule extends AbstractModel
     /**
      * Check if PriceRule is Valid for Cart
      *
+     * @param Cart $cart
      * @param bool|false $throwException
      * @param bool|false $alreadyInCart
      * @return bool
      */
-    public function checkValidity($throwException = false, $alreadyInCart = false)
+    public function checkValidity(Cart $cart = null, $throwException = false, $alreadyInCart = false)
     {
-        $cart = Tool::prepareCart();
+        if(is_null($cart)) {
+            $cart = Tool::prepareCart();
+        }
 
         //Price Rule without actions doesnt make any sense
         if (count($this->getActions()) <= 0) {
