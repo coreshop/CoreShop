@@ -334,11 +334,18 @@ class Update {
 
         if (!empty($master))
         {
-            $masterInfo[] = array(
-                'sha' => $master->sha,
-                'date' => $master->commit->committer->date,
-                'message' => $master->commit->message . ' (#' . substr($master->sha, 0, 7) . ')'
-            );
+            $installedSha = Configuration::get("SYSTEM.BASE.COMMITSHA");
+
+            //master is head.
+            if( is_null( $installedSha ) || $installedSha !== $master->sha)
+            {
+
+                $masterInfo[] = array(
+                    'sha' => $master->sha,
+                    'date' => $master->commit->committer->date,
+                    'message' => $master->commit->message . ' (#' . substr($master->sha, 0, 7) . ')'
+                );
+            }
         }
 
         return $masterInfo;
@@ -407,26 +414,27 @@ class Update {
                 //all done. move folder!
                 if( !empty( $coreShopFolder ) && isset( $coreShopFolder[0]))
                 {
+                    $hasGit = FALSE;
 
                     //delete old CoreShop Plugin!
                     if( is_dir( PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName ) )
                     {
-                        //Backup .git first, if available!
-                        $baseGitDir = PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName . '/.git';
-
-                        if( is_dir( $baseGitDir ) )
-                        {
-                            Tool::recursiveCopy( $baseGitDir, $coreShopFolder[0] . '/.git');
-                        }
-
+                        $hasGit = is_dir( PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName . '/.git' );
                         recursiveDelete( PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName, true);
-
                     }
 
                     rename( $coreShopFolder[0], PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName);
 
                     //now start default system update scripts!
                     $this->updateCoreData();
+
+                    //@todo if $hasGit is true, trigger git pull to fetch latest
+
+                    //if type is master, save commitsha in config
+                    if ($type == 'update_master')
+                    {
+                        Configuration::set("SYSTEM.BASE.COMMITSHA", $release);
+                    }
 
                     $success = TRUE;
 
@@ -457,7 +465,7 @@ class Update {
      *
      * @return bool|array
      */
-    public function gitRequest($url)
+    private function gitRequest($url)
     {
         $curl = curl_init();
 
@@ -480,4 +488,5 @@ class Update {
 
         return FALSE;
     }
+
 }
