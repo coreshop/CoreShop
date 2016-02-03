@@ -104,7 +104,7 @@
                                 </button>
 
                                 <?php if(!\CoreShop\Config::isCatalogMode() && ($this->product->isAvailableWhenOutOfStock() || $this->product->getQuantity() > 0)) { ?>
-                                    <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#product-image-<?=$this->product->getId()?>">
+                                    <button type="button" class="btn btn-cart" data-id="<?=$this->product->getId()?>" data-img="#product-image-<?=$this->product->getId()?>" data-amount="input-quantity">
                                         <?=$this->translate("Add to cart")?>
                                         <i class="fa fa-shopping-cart"></i>
                                     </button>

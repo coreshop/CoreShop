@@ -9,7 +9,22 @@ $(document).ready(function(){
     
     shop.init = function() {
         $('.btn-cart').click(function(){
-            shop.addToCart($(this).data("id"), $(this));
+            var amountField = $(this).data("amount");
+            var amount = 1;
+
+            if(amountField) {
+                var amountFieldInput = $('#' + amountField);
+
+                if(amountFieldInput) {
+                    amount = amountFieldInput.val();
+
+                    if(amount <= 0) {
+                        amount = 1;
+                    }
+                }
+            }
+
+            shop.addToCart($(this).data("id"), amount, $(this));
         });
 
         $('select.site-reload').change(function() {
@@ -85,9 +100,9 @@ $(document).ready(function(){
             </tr>';
     }
     
-    shop.addToCart = function(product_id, sender, extraData, callback)
+    shop.addToCart = function(product_id, amount, sender, extraData, callback)
     {
-        var data = $.extend({product : product_id}, extraData ? extraData : {});
+        var data = $.extend({product : product_id, amount : amount}, extraData ? extraData : {});
         
         $.ajax({
             url : '/de/cart/add',
