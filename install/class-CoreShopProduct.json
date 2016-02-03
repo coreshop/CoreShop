@@ -810,15 +810,11 @@
 								"relationType":true,
 								"objectsAllowed":false,
 								"assetsAllowed":true,
-								"assetTypes":[
-									{
-										"assetTypes":{
-											"assetTypes":{
-												"assetTypes":"image"
-											}
-										}
-									}
-								],
+                                "assetTypes":[
+                                    {
+                                        "assetTypes":"image"
+                                    }
+                                ],
 								"documentsAllowed":false,
 								"documentTypes":[
 
