@@ -196,3 +196,5 @@
 "coreshop_base_disablevatforbasecountry","Disable VAT for Base Country"
 "coreshop_stock_defaultoutofstock_behavior","Default out of stock behaviour"
 "coreshop_stock","Stock"
+"coreshop_stock_deny_order","Deny Order"
+coreshop_stock_allow_order","Allow Order"

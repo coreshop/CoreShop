@@ -183,7 +183,7 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 value: this.getValue("SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR"),
                                 width: 500,
                                 xtype: "combo",
-                                store: [[0,t("Deny Order")],[1,t("Allow Order")]],
+                                store: [[0,t("coreshop_stock_deny_order")],[1,t("coreshop_stock_allow_order")]],
                                 triggerAction: "all",
                                 typeAhead: false,
                                 editable: false,
