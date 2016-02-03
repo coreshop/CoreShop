@@ -158,7 +158,7 @@
                 <td class="text-right">
                     <strong><?=$this->translate("Shipping")?>:</strong>
                 </td>
-                <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-sub-total">
+                <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-shipping">
                     <?=\CoreShop\Tool::formatPrice($shipping)?>
                 </td>
             </tr>
@@ -168,7 +168,7 @@
                 <td class="text-right">
                     <strong><?=$this->translate("Payment Fee")?>:</strong>
                 </td>
-                <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-sub-total">
+                <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-payment">
                     <?=\CoreShop\Tool::formatPrice($payment)?>
                 </td>
             </tr>
@@ -177,7 +177,7 @@
             <td class="text-right">
                 <strong><?=$this->translate("Tax (incl.)")?>:</strong>
             </td>
-            <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-sub-total">
+            <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-tax">
                 <?=\CoreShop\Tool::formatPrice($this->cart->getTotalTax())?>
             </td>
         </tr>
@@ -186,7 +186,7 @@
                 <td class="text-right">
                     <strong><?=$this->translate("Discount")?>:</strong>
                 </td>
-                <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-sub-total">
+                <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-discount">
                     -<?=\CoreShop\Tool::formatPrice($discount)?>
                 </td>
             </tr>

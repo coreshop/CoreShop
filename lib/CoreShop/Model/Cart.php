@@ -482,6 +482,10 @@ class Cart extends Base
             "user" => $this->getUser() ? $this->getUser()->toArray() : null,
             "items" => $items,
             "subtotal" => Tool::formatPrice($this->getSubtotal()),
+            "shipping" => Tool::formatPrice($this->getShipping()),
+            "payment" => Tool::formatPrice($this->getPaymentFee()),
+            "tax" => Tool::formatPrice($this->getTotalTax()),
+            "discount" => Tool::formatPrice($this->getDiscount()),
             "total" => Tool::formatPrice($this->getTotal())
         );
     }

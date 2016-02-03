@@ -199,7 +199,11 @@ $(document).ready(function(){
             }
 
             $('.shopping-cart-table .cart-total-price').html(cart.total);
-            $('.shopping-cart-table .cart-sub-total').html(cart.total);
+            $('.shopping-cart-table .cart-shipping').html(cart.shipping);
+            $('.shopping-cart-table .cart-payment').html(cart.payment);
+            $('.shopping-cart-table .cart-discount').html(cart.discount);
+            $('.shopping-cart-table .cart-tax').html(cart.tax);
+            $('.shopping-cart-table .cart-sub-total').html(cart.subtotal);
         }
         
         $('.cart-items').html(html);
