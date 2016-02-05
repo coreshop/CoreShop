@@ -290,7 +290,7 @@ class Update {
             }
 
             $srcFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision . "/files/" . $file['path'];
-            $destFile = CORESHOP_PATH . "/" . $file["path"];
+            $destFile = CORESHOP_PATH . "/" . substr($file["path"], 0, -1 * strlen(".build"));
 
             if(!self::$dryRun)
                 copy($srcFile, $destFile);
