@@ -31,9 +31,7 @@ class FreeShipping extends AbstractAction
      */
     public function getDiscount(Model\Object\CoreShopCart $cart)
     {
-        $discount = $cart->getShipping();
-
-        return $discount;
+        return 0;
     }
 
     /**

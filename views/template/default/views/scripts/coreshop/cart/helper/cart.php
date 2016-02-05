@@ -72,13 +72,13 @@
             </tr>
         <?php } ?>
 
-            <?php if($this->cart->getPriceRule() instanceof \CoreShop\Model\PriceRule) { ?>
+            <?php if($this->cart->getPriceRule() instanceof \CoreShop\Model\PriceRule && $this->cart->getPriceRule()->getDiscount() > 0) { ?>
             <tr>
                 <td colspan="2" class="text-center">
                     <?=$this->cart->getPriceRule()->getName()?>
                 </td>
                 <td class="text-center">
-                    1 a
+
                 </td>
                 <td class="text-right">
                     -<?=\CoreShop\Tool::formatPrice($this->cart->getPriceRule()->getDiscount())?>

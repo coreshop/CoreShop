@@ -172,7 +172,7 @@ class PriceRule extends AbstractModel
         }
 
         if ($cart->getPriceRule() instanceof PriceRule) {
-            if (!$cart->getPriceRule()->checkValidity(false, true)) {
+            if (!$cart->getPriceRule()->checkValidity($cart, false, true)) {
                 $cart->removePriceRule();
             }
         }

@@ -28,6 +28,11 @@ class Cart extends Base
 {
 
     /**
+     * @var float shipping costs
+     */
+    protected $shipping;
+
+    /**
      * Return Cart by custom identifier
      *
      * @param $transactionIdentification
@@ -177,11 +182,24 @@ class Cart extends Base
      */
     public function getShipping()
     {
-        if($this->getShippingProvider() instanceof Carrier) {
-            return $this->getShippingProvider()->getDeliveryPrice($this);
+        if(is_null($this->shipping))
+        {
+            $this->shipping = 0;
+
+            if ($this->getPriceRule() instanceof PriceRule) {
+                foreach ($this->getPriceRule()->getActions() as $action) {
+                    if ($action instanceof PriceRule\Action\FreeShipping) {
+                        $this->shipping = 0;
+                    }
+                }
+            }
+
+            if ($this->getShippingProvider() instanceof Carrier) {
+                $this->shipping = $this->getShippingProvider()->getDeliveryPrice($this);
+            }
         }
 
-        return 0;
+        return $this->shipping = 0;
     }
 
     /**
@@ -426,7 +444,8 @@ class Cart extends Base
         $this->setPriceRule($priceRule);
         $this->getPriceRule()->applyRules();
 
-        $this->save();
+        if($this->getId())
+            $this->save();
     }
 
     /**

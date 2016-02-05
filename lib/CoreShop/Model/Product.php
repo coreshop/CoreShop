@@ -436,32 +436,19 @@ class Product extends Base
      *
      * @return float
      */
-    public function getCheapestDeliveryPrice() {
-        //TODO: check for PriceRule?
+    public function getCheapestDeliveryPrice()
+    {
         if(is_null($this->cheapestDeliveryPrice)) {
             $cart = new Object\CoreShopCart();
             $cartItem = new Object\CoreShopCartItem();
+            $cartItem->setPublished(true);
             $cartItem->setAmount(1);
             $cartItem->setProduct($this);
             $cart->setItems(array($cartItem));
+            $cart->getItems();
 
-            /**
-             * TODO
-             * Does currently not work cause of $cart->getItems() will no be loaded with data from setItems, cart has to be saved first
-             * Solution: get rid of CoreShopCart and implement it as Custom Model
-             *
-             * PriceRule::autoAddToCart($cart);
-             * $this->cheapestDeliveryPrice = $cart->getShipping();
-            */
-
-            $carrier = Carrier::getCheapestCarrierForCart($cart);
-
-            if ($carrier instanceof Carrier) {
-                $this->cheapestDeliveryPrice = $carrier->getDeliveryPrice($cart);
-            }
-            else {
-                $this->cheapestDeliveryPrice = 0;
-            }
+            PriceRule::autoAddToCart($cart);
+            $this->cheapestDeliveryPrice = $cart->getShipping();
         }
 
         return $this->cheapestDeliveryPrice;
