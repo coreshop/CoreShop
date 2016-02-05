@@ -245,7 +245,8 @@ class BuildCommand extends AbstractCommand
      */
     private function uploadToUpdateServer($dryRun) {
         if(!$dryRun) {
-            \Pimcore\Tool\Console::exec("./build/copy-to-update-server.php");
+            chdir(CORESHOP_PATH);
+            echo shell_exec("build/copy-to-update-server.sh");
         }
     }
 
