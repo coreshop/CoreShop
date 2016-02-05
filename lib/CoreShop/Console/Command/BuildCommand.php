@@ -225,7 +225,7 @@ class BuildCommand extends AbstractCommand
      */
     private function gitAddAndCommit($dryRun, $buildNumber, $disableCommit = false) {
         if(!$dryRun) {
-            \Pimcore\Tool\Console::exec("git add plugin.xml; git add -f build/builds.json; git add -f build/$buildNumber");
+            \Pimcore\Tool\Console::exec("git add plugin.xml; git add -f build/builds.json");
 
             if(!$disableCommit)
                 \Pimcore\Tool\Console::exec("git commit -m \"Build Version $buildNumber\"");
