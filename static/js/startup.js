@@ -306,11 +306,10 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
     openUpdate : function()
     {
         try {
-            pimcore.globalmanager.get("coreshop_update").checkAvailableUpdates();
+            pimcore.globalmanager.get("coreshop_update").activate();
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_update", new pimcore.plugin.coreshop.update());
-            pimcore.globalmanager.get("coreshop_update").checkAvailableUpdates();
         }
     },
 

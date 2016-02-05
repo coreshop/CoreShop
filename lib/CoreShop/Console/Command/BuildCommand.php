@@ -92,7 +92,7 @@ class BuildCommand extends AbstractCommand
                     foreach ($changedFiles as $file) {
                         $file = str_replace("\n", "", $file);
                         $sourceFile = CORESHOP_PATH . "/" . $file;
-                        $destinationFile = $buildFolderFiles . "/" . $file;
+                        $destinationFile = $buildFolderFiles . "/" . $file . ".build";
                         $pathInfo = pathinfo($destinationFile);
 
                         if (!$dryRun) {

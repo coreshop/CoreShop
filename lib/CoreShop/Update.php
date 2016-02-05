@@ -32,14 +32,7 @@ class Update {
      *
      * @var string
      */
-    public static $githubRepo = "https://raw.githubusercontent.com/coreshop/CoreShop";
-
-    /**
-     * Branch
-     *
-     * @var string
-     */
-    public static $branch = "master";
+    public static $updateServer = "http://update.coreshop.org";
 
     /**
      * @var bool
@@ -109,7 +102,7 @@ class Update {
                     "type" => "download",
                     "revision" => $buildNumber,
                     "file" => "file",
-                    "url" => $download
+                    "url" => $download . ".build"
                 );
 
                 if(strpos($download, "install/class-") === 0) {
@@ -251,10 +244,10 @@ class Update {
         $baseUrl = self::getRepoUrl();
 
         if($fileType === "file") {
-            $baseUrl .= "/build/$revision/files/";
+            $baseUrl .= "/$revision/files/";
         }
         else if($fileType === "script") {
-            $baseUrl .= "/build/$revision/scripts/";
+            $baseUrl .= "/$revision/scripts/";
         }
 
         $file = @file_get_contents($baseUrl . $url);
@@ -375,7 +368,7 @@ class Update {
      */
     public static function getScriptForBuild($build, $name) {
         try {
-            $updateScript = @file_get_contents(self::getRepoUrl() . "/build/" . $build . "/scripts/" . $name . ".php");
+            $updateScript = @file_get_contents(self::getRepoUrl() . "" . $build . "/scripts/" . $name . ".php");
 
             if($updateScript) {
                 return $updateScript;
@@ -464,7 +457,7 @@ class Update {
      * @return string
      */
     public static function getChangedFilesFileForBuild($build) {
-        return self::getRepoUrl() . "/build/$build/changedFiles.txt";
+        return self::getRepoUrl() . "/$build/changedFiles.txt";
     }
 
     /**
@@ -472,7 +465,7 @@ class Update {
      * @return string
      */
     public static function getDeletedFilesFileForBuild($build) {
-        return self::getRepoUrl() . "/build/$build/deletedFiles.txt";
+        return self::getRepoUrl() . "/$build/deletedFiles.txt";
     }
 
     /**
@@ -482,7 +475,7 @@ class Update {
      */
     public static function getBuildsFile() {
         try {
-            $builds = @file_get_contents(self::getRepoUrl() . "/build/builds.json");
+            $builds = @file_get_contents(self::getRepoUrl() . "/builds.json");
 
             if($builds) {
                 $builds = \Zend_Json::decode($builds);
@@ -499,6 +492,6 @@ class Update {
      * @return string
      */
     public static function getRepoUrl() {
-        return self::$githubRepo . (self::$branch ? "/" . self::$branch : "");
+        return self::$updateServer;
     }
 }

@@ -22,7 +22,6 @@ pimcore.plugin.coreshop.global = {
 
         if(intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
             this._initStores();
-            this._initUpdate();
         }
     },
 
@@ -49,19 +48,6 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.get("coreshop_countries").load();
         pimcore.globalmanager.get("coreshop_zones").load();
         pimcore.globalmanager.get("coreshop_currencies").load();
-    },
-
-    _initUpdate : function() {
-
-        var updater = pimcore.globalmanager.get("coreshop_update");
-
-        if( updater === false ) {
-            pimcore.globalmanager.add("coreshop_update", new pimcore.plugin.coreshop.update());
-            pimcore.globalmanager.get("coreshop_update").checkSystem();
-        } else {
-            updater.checkSystem();
-        }
-
     },
 
     _createStore : function(name, url, fields) {
