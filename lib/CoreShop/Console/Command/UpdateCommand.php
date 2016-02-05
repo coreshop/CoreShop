@@ -23,15 +23,16 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Pimcore\Tool\Admin;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use CoreShop\Plugin\Update;
+
+use CoreShop\Update;
 
 class UpdateCommand extends AbstractCommand
 {
     protected function configure()
     {
         $this
-            ->setName('coreshop:internal:update')
-            ->setDescription('Update CoreShop to the desired build')
+            ->setName('coreshop-update')
+            ->setDescription('Update CoreShop to the desired version/build')
             ->addOption(
                 'list', 'l',
                 InputOption::VALUE_NONE,
@@ -40,14 +41,17 @@ class UpdateCommand extends AbstractCommand
             ->addOption(
                 'update', 'u',
                 InputOption::VALUE_OPTIONAL,
-                'Update to recent build'
+                'Update to the given number / build'
             )
             ->addOption(
+                'source-build', null,
+                InputOption::VALUE_OPTIONAL,
+                'specify a source build where the update should start from - this is mainly for debugging purposes'
+            )->addOption(
                 'dry-run', 'd',
                 InputOption::VALUE_NONE,
                 'Dry-run'
-            )
-            ->addArgument("config");
+            );;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -55,48 +59,68 @@ class UpdateCommand extends AbstractCommand
         $dryRun = $input->getOption("dry-run");
         $currentRevision = null;
 
-        if ($dryRun) {
+        if($dryRun) {
             $this->output->writeln("<info>---------- DRY-RUN ----------</info>");
         }
 
-        $updater = new Update();
+        if($input->getOption("source-build")) {
+            $currentRevision = $input->getOption("source-build");
+        }
 
-        $updater->setDryRun($dryRun);
+        Update::$dryRun = $dryRun;
 
-        $availableUpdates = $updater->getAvailableBuildList();
+        $availableUpdates = Update::getAvailableUpdates($currentRevision);
 
-        if ($input->getOption("list")) {
-            if ($availableUpdates !== false && !empty($availableUpdates)) {
+        if($input->getOption("list")) {
+
+            if(count($availableUpdates["releases"])) {
                 $rows = [];
-
-                foreach ($availableUpdates as $release) {
-                    $rows[] = array( $release["build"] );
+                foreach ($availableUpdates["releases"] as $release) {
+                    $rows[] = [$release["version"], date("Y-m-d", $release["date"]), $release["id"]];
                 }
 
                 $table = new Table($output);
                 $table
-                    ->setHeaders(array("Build"))
+                    ->setHeaders(array('Version', 'Date', 'Build'))
                     ->setRows($rows);
                 $table->render();
+            }
 
-                $latest = end($availableUpdates);
+            if(count($availableUpdates["revisions"])) {
+                $latest = count($availableUpdates['revisions']) - 1;
 
-                $this->output->writeln("The latest available build is: <comment>" . $latest["build"] . "</comment>");
-            } else {
+                $this->output->writeln("The latest available build is: <comment>" . $availableUpdates["revisions"][$latest]["number"] . "</comment> (" . date("Y-m-d", $availableUpdates["revisions"][$latest]["timestamp"]) . ")");
+            }
+
+            if(!count($availableUpdates["releases"]) && !count($availableUpdates["revisions"])) {
                 $this->output->writeln("<info>No updates available</info>");
             }
         }
 
-        if ($input->getOption("update")) {
-            if ($availableUpdates == false || empty($availableUpdates)) {
-                $this->writeError("No update found.");
+        if($input->getOption("update"))
+        {
+            $returnMessages = [];
+            $build = null;
+            $updateInfo = trim($input->getOption("update"));
+            if(is_numeric($updateInfo)) {
+                $build = $updateInfo;
+            } else {
+                // get build nr. by version number
+                foreach ($availableUpdates["releases"] as $release) {
+                    if($release["version"] == $updateInfo) {
+                        $build = $release["id"];
+                        break;
+                    }
+                }
+            }
+
+            if(!$build) {
+                $this->writeError("Update with build / version " . $updateInfo . " not found.");
                 exit;
             }
 
-            $latest = end($availableUpdates);
-
             $helper = $this->getHelper('question');
-            $question = new ConfirmationQuestion("You are going to update to build <comment>" . $latest['build'] . "</comment> Continue with this action? (y/n)", false);
+            $question = new ConfirmationQuestion("You are going to update to build $build! Continue with this action? (y/n)", false);
 
             if (!$helper->ask($input, $output, $question)) {
                 return;
@@ -104,29 +128,74 @@ class UpdateCommand extends AbstractCommand
 
             $this->output->writeln("Starting the update process ...");
 
+            $jobs = Update::getJobs($build, $currentRevision);
+
+            $steps = count($jobs["parallel"]) + count($jobs["procedural"]);
+
+            $progress = new ProgressBar($output, $steps);
+            $progress->start();
+
+            foreach($jobs["parallel"] as $job) {
+                if($job["type"] == "download") {
+                    Update::downloadData($job["revision"], $job["url"], $job["file"]);
+                }
+
+                $progress->advance();
+            }
+
+
             $maintenanceModeId = 'cache-warming-dummy-session-id';
             Admin::activateMaintenanceMode($maintenanceModeId);
 
             $stoppedByError = false;
-            $lastError = null;
+            foreach($jobs["procedural"] as $job) {
+                $phpCli = Console::getPhpCli();
 
-            $execution = $updater->updateCoreData();
+                if($dryRun) {
+                    $job["dry-run"] = true;
+                }
+
+                $cmd = $phpCli . " " . realpath(PIMCORE_PATH . DIRECTORY_SEPARATOR . "cli" . DIRECTORY_SEPARATOR . "console.php"). " coreshop:internal:update-processor " . escapeshellarg(json_encode($job));
+                $return = Console::exec($cmd);
+
+                $return = trim($return);
+
+                $returnData = @json_decode($return, true);
+                if(is_array($returnData)) {
+
+                    if(trim($returnData["message"])) {
+                        $returnMessages[] = [$job["revision"], strip_tags($returnData["message"])];
+                    }
+
+                    if(!$returnData["success"]) {
+                        $stoppedByError = true;
+                        break;
+                    }
+                } else {
+                    $stoppedByError = true;
+                    break;
+                }
+
+                $progress->advance();
+            }
+
+            $progress->finish();
 
             Admin::deactivateMaintenanceMode();
 
             $this->output->writeln("\n");
 
-            if ($stoppedByError) {
+            if($stoppedByError) {
                 $this->output->writeln("<error>Update stopped by error! Please check your logs</error>");
-                $this->output->writeln("Last return value was: " . $lastError);
+                $this->output->writeln("Last return value was: " . $return);
             } else {
                 $this->output->writeln("<info>Update done!</info>");
 
-                if ($execution['success'] === true && !empty($execution['log'])) {
+                if(count($returnMessages)) {
                     $table = new Table($output);
                     $table
                         ->setHeaders(array('Build', 'Message'))
-                        ->setRows($execution['log']);
+                        ->setRows($returnMessages);
                     $table->render();
                 }
             }

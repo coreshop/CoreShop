@@ -27,6 +27,11 @@ if (!defined("CORESHOP_UPDATE_DIRECTORY")) {
     define("CORESHOP_UPDATE_DIRECTORY", CORESHOP_PATH . "/update");
 }
 
+if (!defined("CORESHOP_BUILD_DIRECTORY")) {
+    define("CORESHOP_BUILD_DIRECTORY", CORESHOP_PATH . "/build");
+}
+
+
 if (Pimcore\Tool::classExists("CoreShop\\Plugin")) {
     $plugin = new CoreShop\Plugin();
 
