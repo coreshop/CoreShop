@@ -241,19 +241,44 @@ class Carrier extends AbstractModel
      * @return Carrier|null
      */
     public static function getCheapestCarrierForCart(Cart $cart, Zone $zone = null) {
-        $providers = self::getCarriersForCart($cart, $zone);
-        $cheapestProvider = null;
+        $cacheKey = "cheapest_carrier_" - $cart->getId();
 
-        foreach ($providers as $p) {
-            if ($cheapestProvider === null) {
-                $cheapestProvider = $p;
-            } elseif ($cheapestProvider->getDeliveryPrice($cart) > $p->getDeliveryPrice($cart)) {
-                $cheapestProvider = $p;
+        try {
+            $cheapestProvider = \Zend_Registry::get($cacheKey);
+            if (!$cheapestProvider) {
+                throw new \Exception($cacheKey . " in registry is null");
             }
-        }
 
-        if ($cheapestProvider instanceof Carrier) {
             return $cheapestProvider;
+        } catch (\Exception $e) {
+            try {
+                if (!$cheapestProvider = Cache::load($cacheKey))
+                {
+                    $providers = self::getCarriersForCart($cart, $zone);
+                    $cheapestProvider = null;
+
+                    foreach ($providers as $p) {
+                        if ($cheapestProvider === null) {
+                            $cheapestProvider = $p;
+                        } elseif ($cheapestProvider->getDeliveryPrice($cart) > $p->getDeliveryPrice($cart)) {
+                            $cheapestProvider = $p;
+                        }
+                    }
+
+                    if ($cheapestProvider instanceof Carrier) {
+                        return $cheapestProvider;
+                    }
+
+                    \Zend_Registry::set($cacheKey, $cheapestProvider);
+                    Cache::save($cheapestProvider, $cacheKey);
+                } else {
+                    \Zend_Registry::set($cacheKey, $cheapestProvider);
+                }
+
+                return $cheapestProvider;
+            } catch (\Exception $e) {
+                \Logger::warning($e->getMessage());
+            }
         }
 
         return null;
