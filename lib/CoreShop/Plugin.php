@@ -102,6 +102,21 @@ class Plugin extends AbstractPlugin implements PluginInterface
             }
         });
 
+        \Pimcore::getEventManager()->attach("system.console.init", function (\Zend_EventManager_Event $e) {
+
+            $autoloader = \Zend_Loader_Autoloader::getInstance();
+
+            $autoloader->registerNamespace("CoreShopTemplate");
+
+            $includePaths = array(
+                get_include_path(),
+                CORESHOP_TEMPLATE_PATH . "/controllers",
+                CORESHOP_TEMPLATE_PATH . "/lib"
+            );
+            set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
+
+        });
+
         if(Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
             self::getEventManager()->attach("tax.getTaxManager", function () {
                 return new VatManager();
