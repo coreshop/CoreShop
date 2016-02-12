@@ -80,7 +80,7 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
 
     showEmptyPanel : function() {
         var emptyPanel = new Ext.Panel({
-            html : '<p>' + t('Invoice has not yet been generated') + '</p>',
+            html : '<p>' + t('coreshop_invoice_not_generated') + '</p>',
             region : 'center'
         });
 
