@@ -53,6 +53,7 @@ CREATE TABLE `coreshop_countries` (
   `isoCode` varchar(2) NULL,
   `active` tinyint(1) DEFAULT 0,
   `currencyId` int,
+  `useStoreCurrency` int(11) NOT NULL DEFAULT 0,
   `zoneId` int,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -493,6 +494,3 @@ CREATE TABLE `coreshop_product_specificprice` (
   `conditions` text NULL,
   `actions` text NULL
 ) COMMENT='';
-
-ALTER TABLE `coreshop_countries`
-ADD `useStoreCurrency` int(11) NOT NULL DEFAULT '0' AFTER `currencyId`;
