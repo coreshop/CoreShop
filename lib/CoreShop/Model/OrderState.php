@@ -103,7 +103,8 @@ class OrderState extends AbstractModel
 
         if ($this->getInvoice()) {
             if ((bool)Configuration::get("SYSTEM.INVOICE.CREATE")) {
-                Invoice::generateInvoice($order);
+                //Generates the invoice, force re-generation cause of state change
+                $order->getInvoice(true);
             }
         }
 
@@ -124,16 +125,20 @@ class OrderState extends AbstractModel
                 $mail->setEnableLayoutOnPlaceholderRendering(false);
                 $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . " " . $order->getCustomer()->getLastname());
 
-                if ($this->getInvoice()) {
-                    $invoice = Invoice::generateInvoice($order);
+                if ((bool)Configuration::get("SYSTEM.INVOICE.CREATE"))
+                {
+                    if ($this->getInvoice())
+                    {
+                        $invoice = $order->getInvoice();
 
-                    $attachment = new \Zend_Mime_Part($invoice->getData());
-                    $attachment->type = $invoice->getMimetype();
-                    $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
-                    $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
-                    $attachment->filename = $invoice->getFilename();
+                        $attachment = new \Zend_Mime_Part($invoice->getData());
+                        $attachment->type = $invoice->getMimetype();
+                        $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
+                        $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
+                        $attachment->filename = $invoice->getFilename();
 
-                    $mail->addAttachment($attachment);
+                        $mail->addAttachment($attachment);
+                    }
                 }
 
                 //check if admin copy mail address has been set. if => send him a lovely copy!

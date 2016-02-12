@@ -322,14 +322,16 @@ class Order extends Base
     /**
      * Get Invoice for Order
      *
+     * @param boolean $renewInvoice Recreate Invoice?
+     *
      * @return bool|mixed|Document
      */
-    public function getInvoice()
+    public function getInvoice($renewInvoice = false)
     {
         //Check if invoice has already been generated
         $document = $this->getProperty("invoice");
 
-        if ($document instanceof Document) {
+        if ($document instanceof Document && !$renewInvoice) {
             return $document;
         }
 
