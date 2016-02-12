@@ -100,14 +100,15 @@
                             </div>
                         </div>
                     <?php } ?>
-                    <tr>
-                        <td class="text-right">
+                    <div class="row invoice-summary">
+                        <div class="col-xs-8">&nbsp;</div>
+                        <div class="col-xs-2 text-right invoice-tax">
                             <strong><?=$this->translate("Tax (incl.)")?>:</strong>
-                        </td>
-                        <td colspan="<?=$this->edit ? "2" : "1" ?>" class="text-right cart-sub-total">
+                        </div>
+                        <div class="col-xs-2 text-right invoice-tax">
                             <?=\CoreShop\Tool::formatPrice($this->order->getTotalTax())?>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     <?php if($discount > 0) { ?>
                         <div class="row invoice-summary">
                             <div class="col-xs-8"></div>

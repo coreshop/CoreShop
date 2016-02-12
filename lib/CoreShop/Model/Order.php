@@ -306,6 +306,14 @@ class Order extends Base
             }
         }
 
+        $orderState = $this->getOrderState();
+
+        if($orderState instanceof OrderState) {
+            if($orderState->getInvoice()) {
+                $this->getInvoice(); //Re-Generate Invoice if it does not exist
+            }
+        }
+
         Version::enable();
 
         parent::save();
@@ -319,7 +327,7 @@ class Order extends Base
     public function getInvoice()
     {
         //Check if invoice has already been generated
-        $document = $this->getProperty("invioce");
+        $document = $this->getProperty("invoice");
 
         if ($document instanceof Document) {
             return $document;

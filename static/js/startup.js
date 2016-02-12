@@ -297,6 +297,21 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                     }.bind(this, tab)
                 });*/
             }
+            else if(tab.data.general.o_className === "CoreShopOrder") {
+                if(this.settings.coreshop['SYSTEM.INVOICE.CREATE']) {
+                    var resetChangesFunction = tab.resetChanges;
+
+                    var invoiceTab = new pimcore.plugin.coreshop.orders.invoice(tab);
+
+                    tab.tabbar.add(invoiceTab.getLayout());
+
+                    tab.resetChanges = function () {
+                        resetChangesFunction.call(tab);
+
+                        invoiceTab.reload();
+                    };
+                }
+            }
 
             pimcore.layout.refresh();
         }

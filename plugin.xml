@@ -98,6 +98,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/actions/newPrice.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/grid.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/orders/invoice.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

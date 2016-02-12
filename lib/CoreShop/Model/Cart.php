@@ -15,7 +15,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Model\Plugin\Payment;
+use CoreShop\Model\Plugin\Payment as PaymentPlugin;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
@@ -253,7 +253,7 @@ class Cart extends Base
     {
         $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
 
-        if ($paymentProvider instanceof Payment) {
+        if ($paymentProvider instanceof PaymentPlugin) {
             return $paymentProvider->getPaymentFee($this);
         }
 
@@ -269,7 +269,7 @@ class Cart extends Base
     {
         $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
 
-        if ($paymentProvider instanceof Payment) {
+        if ($paymentProvider instanceof PaymentPlugin) {
             return $paymentProvider->getPaymentFeeTaxes($this);
         }
 

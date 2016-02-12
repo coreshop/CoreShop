@@ -74,4 +74,19 @@ class CoreShop_Admin_OrderController extends Admin
 
         return $element;
     }
+
+    public function getInvoiceForOrderAction() {
+        $orderId = $this->getParam("id");
+        $order = \CoreShop\Model\Order::getById($orderId);
+
+        if($order instanceof \CoreShop\Model\Order) {
+            $invoice = $order->getProperty("invoice");
+
+            if($invoice instanceof \Pimcore\Model\Asset\Document) {
+                $this->_helper->json(array("success" => true, "assetId" => $invoice->getId()));
+            }
+        }
+
+        $this->_helper->json(array("success" => false));
+    }
 }
