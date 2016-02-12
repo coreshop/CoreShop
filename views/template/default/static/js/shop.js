@@ -54,7 +54,23 @@ $(document).ready(function(){
         $('.price-rule').click(function() {
             $('#priceRule').val($(this).find(".price-rule-code").html())
         })
-        
+
+        $('.btn-compare').on('click', function(ev) {
+
+            var $el = $(ev.target),
+                product_id = $el.data("id");
+            shop.addToCompareList( product_id, $el );
+
+        });
+
+        $('.btn-compare-remove').on('click', function( ev ) {
+
+            var $el = $(ev.target),
+                product_id = $el.data("id");
+            shop.removeFromCompareList( product_id, $el );
+
+        });
+
         shop.initChangeAddress();
         shop.addCartEventListeners();
 
