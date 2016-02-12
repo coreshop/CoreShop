@@ -186,7 +186,7 @@
 }
 
 .coreshop_icon_order_states, .pimcore_icon_coreShopOrderState {
-    background: url(/pimcore/static6/img/icon/page_white_gear.png) left center no-repeat!important;
+    background: url(/pimcore/static6/img/icon/script_link.png) left center no-repeat!important;
 }
 
 .coreshop_icon_taxes {
@@ -215,4 +215,8 @@
 
 .coreshop_icon_customer_groups, .pimcore_icon_coreShopCustomerGroupMultiselect, .pimcore_icon_coreShopCustomerGroup, .coreshop_price_rule_icon_condition_customerGroup {
     background: url(/pimcore/static6/img/icon/group.png) left center no-repeat!important;
+}
+
+.coreshop_icon_orders {
+    background: url(/pimcore/static6/img/icon/script.png) left center no-repeat!important;
 }

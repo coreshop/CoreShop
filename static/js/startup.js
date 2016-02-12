@@ -129,20 +129,30 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                         });
                     }
 
+                    var ordersMenu = [];
+
+                    ordersMenu.push({
+                        text: t("coreshop_orders"),
+                        iconCls: "coreshop_icon_orders",
+                        handler: this.openOrders
+                    });
+
+                    coreShopMenuItems.push({
+                        text: t("coreshop_order"),
+                        iconCls: "coreshop_icon_order",
+                        hideOnClick: false,
+                        menu: {
+                            cls: "pimcore_navigation_flyout",
+                            shadow: false,
+                            items: ordersMenu
+                        }
+                    });
+
                     if(user.isAllowed("coreshop_permission_orderStates")) {
-                        coreShopMenuItems.push({
-                            text: t("coreshop_order"),
-                            iconCls: "coreshop_icon_order",
-                            hideOnClick: false,
-                            menu: {
-                                cls: "pimcore_navigation_flyout",
-                                shadow: false,
-                                items: [{
-                                    text: t("coreshop_orderstates"),
-                                    iconCls: "coreshop_icon_order_states",
-                                    handler: this.openOrderStates
-                                }]
-                            }
+                        ordersMenu.push({
+                            text: t("coreshop_orderstates"),
+                            iconCls: "coreshop_icon_order_states",
+                            handler: this.openOrderStates
                         });
                     }
 
@@ -402,6 +412,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_customer_groups_panel", new pimcore.plugin.coreshop.customergroups.panel());
+        }
+    },
+
+    openOrders : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_orders").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_orders", new pimcore.plugin.coreshop.orders.grid());
         }
     }
 });
