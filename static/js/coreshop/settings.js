@@ -193,6 +193,36 @@ pimcore.plugin.coreshop.settings= Class.create({
                         ]
                     },
                     {
+                        xtype: 'fieldset',
+                        title: t('coreshop_shipping'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight:true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: {width: 600},
+                        items : [
+                            {
+                                xtype: "numberfield",
+                                name: "SYSTEM.SHIPPING.FREESHIPPING_WEIGHT",
+                                fieldLabel: t("coreshop_freeshipping_weight"),
+                                width: 500,
+                                value: this.getValue("SYSTEM.SHIPPING.FREESHIPPING_WEIGHT"),
+                                decimalPrecision : 2,
+                                step : 1
+                            },
+                            {
+                                xtype: "numberfield",
+                                name: "SYSTEM.SHIPPING.FREESHIPPING_PRICE",
+                                fieldLabel: t("coreshop_freeshipping_price"),
+                                width: 500,
+                                value: this.getValue("SYSTEM.SHIPPING.FREESHIPPING_PRICE"),
+                                decimalPrecision : 2,
+                                step : 1
+                            }
+                        ]
+                    },
+                    {
                         xtype:'fieldset',
                         title: t('coreshop_product'),
                         collapsible: true,

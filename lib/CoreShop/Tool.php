@@ -70,13 +70,7 @@ class Tool
     public static function convertToCurrency($value, $toCurrency = null, $fromCurrency = null)
     {
         if (!$fromCurrency instanceof Currency) {
-            $baseCurrency = Configuration::get("SYSTEM.BASE.CURRENCY");
-
-            if ($baseCurrency) {
-                $fromCurrency = Currency::getById($baseCurrency);
-            } else {
-                return $value;
-            }
+            $fromCurrency = self::getBaseCurrency();
         }
 
         if (!$toCurrency instanceof Currency) {
@@ -90,6 +84,26 @@ class Tool
         }
 
         return $value;
+    }
+
+    /**
+     * get base Currency
+     *
+     * @return Currency
+     */
+    public static function getBaseCurrency() {
+        $baseCurrency = Configuration::get("SYSTEM.BASE.CURRENCY");
+        $currency = null;
+
+        if ($baseCurrency) {
+            $currency = Currency::getById($baseCurrency);
+        }
+
+        if(!$currency instanceof Currency) {
+            $currency = Currency::getById(1); //TODO: Throw Exception because there is no base currency?
+        }
+
+        return $currency;
     }
 
     /**

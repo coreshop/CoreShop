@@ -176,6 +176,35 @@ class Cart extends Base
     }
 
     /**
+     * get Shipping costs for specific carrier
+     *
+     * @param Carrier $carrier
+     * @param boolean $useTax
+     *
+     * @return float
+     */
+    public function getShippingCostsForCarrier(Carrier $carrier, $useTax = true) {
+        $freeShippingCurrency = floatval(Configuration::get("SYSTEM.SHIPPING.FREESHIPPING_PRICE"));
+        $freeShippingWeight = floatval(Configuration::get("SYSTEM.SHIPPING.FREESHIPPING_WEIGHT"));
+
+        if(isset($freeShippingCurrency) && $freeShippingCurrency > 0) {
+            $freeShippingCurrency = Tool::convertToCurrency($freeShippingCurrency, Tool::getCurrency());
+
+            if($this->getSubtotal() >= $freeShippingCurrency) {
+                return 0;
+            }
+        }
+
+        if(isset($freeShippingWeight) && $freeShippingWeight > 0) {
+            if($this->getTotalWeight() >= $freeShippingWeight) {
+                return 0;
+            }
+        }
+
+        return $useTax ? $carrier->getDeliveryPrice($this) : $carrier->getDeliveryPriceWithoutTax($this);
+    }
+
+    /**
      * calculates shipping costs for the cart
      *
      * @return float
@@ -195,11 +224,11 @@ class Cart extends Base
             }
 
             if ($this->getShippingProvider() instanceof Carrier) {
-                $this->shipping = $this->getShippingProvider()->getDeliveryPrice($this);
+                $this->shipping = $this->getShippingCostsForCarrier($this->getShippingProvider());
             }
         }
 
-        return $this->shipping = 0;
+        return $this->shipping;
     }
 
     /**
@@ -568,5 +597,15 @@ class Cart extends Base
      */
     public function getCarrier() {
         throw new UnsupportedException("getCarrier is not supported for " . get_class($this));
+    }
+
+    /**
+     * @return array
+     */
+    public function __sleep()
+    {
+        $this->shipping = null;
+
+        return parent::__sleep();
     }
 }

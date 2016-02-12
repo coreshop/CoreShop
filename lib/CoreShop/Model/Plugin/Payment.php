@@ -104,7 +104,7 @@ abstract class Payment implements AbstractPlugin
 
         if ($cart->getCarrier() instanceof Carrier) {
             $order->setCarrier($cart->getCarrier());
-            $order->setShipping($cart->getCarrier()->getDeliveryPrice($cart));
+            $order->setShipping($cart->getShipping());
         } else {
             $order->setShipping(0);
         }
