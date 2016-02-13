@@ -21,7 +21,7 @@
                     <?=$this->billingAddress->getZip(); ?> <?=$this->billingAddress->getCity(); ?><br/>
                 </div>
                 <div class="col-xs-6 text-right">
-                    <?=$this->order->getOrderDate()->get("dd.MM.yyyy")?>
+                    <?=$this->order->getOrderDate()->format("d.m.Y")?>
                 </div>
             </div>
             <div class="row">
@@ -65,7 +65,7 @@
                     <?=$this->billingAddress->getZip(); ?> <?=$this->billingAddress->getCity(); ?><br/>
                 </div>
                 <div class="col-xs-4 text-right">
-                    <?=$this->order->getOrderDate()->get("dd.MM.yyyy")?>
+                    <?=$this->order->getOrderDate()->format("d.m.Y")?>
                 </div>
             </div>
             <div class="row">

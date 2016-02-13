@@ -17,6 +17,7 @@ namespace CoreShop\Tool;
 
 use CoreShop\Exception;
 use Pimcore\Config;
+use Pimcore\Tool;
 use Pimcore\Tool\Console;
 
 class Wkhtmltopdf
@@ -57,14 +58,14 @@ class Wkhtmltopdf
             $config['options'] = array();
         }
 
-        $config['options']['--header-html'] = $headerHtml;
-        $config['options']['--footer-html'] = $footerHtml;
+        $config['options']['--header-html'] = $headerHtml['absolutePath'];
+        $config['options']['--footer-html'] = $footerHtml['absolutePath'];
 
-        $pdfContent = self::convert($bodyHtml, $config);
+        $pdfContent = self::convert($bodyHtml['absolutePath'], $config);
 
-        @unlink($bodyHtml);
-        @unlink($headerHtml);
-        @unlink($footerHtml);
+        @unlink($bodyHtml['relativePath']);
+        @unlink($headerHtml['relativePath']);
+        @unlink($footerHtml['relativePath']);
 
         return $pdfContent;
     }
@@ -73,15 +74,15 @@ class Wkhtmltopdf
      * Creates an Temporary HTML File
      *
      * @param $string
-     * @return string
+     * @return array( absolutePath, relativePath )
      */
     protected static function createHtmlFile($string)
     {
         $tmpHtmlFile = PIMCORE_TEMPORARY_DIRECTORY . "/" . uniqid() . ".htm";
         file_put_contents($tmpHtmlFile, $string);
-        $httpSource = $_SERVER["HTTP_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . str_replace($_SERVER["DOCUMENT_ROOT"], "", $tmpHtmlFile);
+        $httpSource = Tool::getHostUrl() . str_replace($_SERVER["DOCUMENT_ROOT"], "", $tmpHtmlFile);
 
-        return $httpSource;
+        return array('absolutePath' => $httpSource, 'relativePath' => $tmpHtmlFile);
     }
 
     /**

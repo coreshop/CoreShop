@@ -1,50 +1,53 @@
-<div class="row">
+<div class="container"
+    <div class="row">
 
-    <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-3"></div>
+        <div class="col-xs-12 col-sm-9">
 
-        <h2 class="main-heading2">
-            <?=$this->translate("Compare")?>
-        </h2>
+            <h2 class="main-heading2">
+                <?=$this->translate("Compare")?>
+            </h2>
 
-        <?php if( $this->error === TRUE ) { ?>
+            <?php if( $this->error === TRUE ) { ?>
 
-            <div class="alert alert-info">
-                <p><?=$this->message;?></p>
-            </div>
+                <div class="alert alert-info">
+                    <p><?=$this->message;?></p>
+                </div>
 
-        <?php } else { ?>
+            <?php } else { ?>
 
-            <div class="row">
+                <div class="row">
 
-                <?php
+                    <?php
 
-                $compareValues = $this->compareValues;
+                    $compareValues = $this->compareValues;
 
-                foreach( $this->compareProducts as $product ) { ?>
+                    foreach( $this->compareProducts as $product ) { ?>
 
-                    <div class="col-xs-12 col-sm-4 compare-block">
+                        <div class="col-xs-12 col-sm-4 compare-block">
 
-                        <div class="block">
+                            <div class="block">
 
-                            <?php
+                                <?php
 
-                            echo $this->template("coreshop/compare/helper/product.php",
-                                array(
-                                    "product" => $product,
-                                    "compareValues" => isset( $compareValues[$product->getId()] ) ? $compareValues[$product->getId()] : FALSE
-                                )
-                            ); ?>
+                                echo $this->template("coreshop/compare/helper/product.php",
+                                    array(
+                                        "product" => $product,
+                                        "compareValues" => isset( $compareValues[$product->getId()] ) ? $compareValues[$product->getId()] : FALSE
+                                    )
+                                ); ?>
+
+                            </div>
 
                         </div>
 
-                    </div>
+                    <?php } ?>
 
-                <?php } ?>
+                </div>
 
-            </div>
+            <?php } ?>
 
-        <?php } ?>
+        </div>
 
     </div>
-
 </div>
