@@ -131,13 +131,17 @@ class OrderState extends AbstractModel
                     {
                         $invoice = $order->getInvoice();
 
-                        $attachment = new \Zend_Mime_Part($invoice->getData());
-                        $attachment->type = $invoice->getMimetype();
-                        $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
-                        $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
-                        $attachment->filename = $invoice->getFilename();
+                        if ($invoice !== FALSE)
+                        {
+                            $attachment = new \Zend_Mime_Part($invoice->getData());
+                            $attachment->type = $invoice->getMimetype();
+                            $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
+                            $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
+                            $attachment->filename = $invoice->getFilename();
 
-                        $mail->addAttachment($attachment);
+                            $mail->addAttachment($attachment);
+                        }
+
                     }
                 }
 
