@@ -26,7 +26,7 @@
                 <tr>
                     <td><?=$order->getOrderNumber()?></td>
                     <td>
-                        <?=$order->getOrderDate()?>
+                        <?=$order->getOrderDate()->format('d.m.Y')?>
                     </td>
                     <td>
                         <?=\CoreShop\Tool::formatPrice($order->getTotal())?>
