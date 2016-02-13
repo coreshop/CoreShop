@@ -190,11 +190,34 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                         });
                     }
 
+                    var productsMenu = [];
+
+                    if(user.isAllowed("coreshop_permission_filters")) {
+                        productsMenu.push({
+                            text: t("coreshop_product_filters"),
+                            iconCls: "coreshop_icon_product_filters",
+                            handler: this.openProductFilters
+                        });
+                    }
+
                     if(user.isAllowed("coreshop_permission_indexes")) {
-                        coreShopMenuItems.push({
+                        productsMenu.push({
                             text: t("coreshop_indexes"),
                             iconCls: "coreshop_icon_indexes",
                             handler: this.openIndexes
+                        });
+                    }
+
+                    if(productsMenu.length > 0) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_product"),
+                            iconCls: "coreshop_icon_product",
+                            hideOnClick: false,
+                            menu: {
+                                cls: "pimcore_navigation_flyout",
+                                shadow: false,
+                                items: productsMenu
+                            }
                         });
                     }
 
@@ -453,6 +476,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_indexes_panel", new pimcore.plugin.coreshop.indexes.panel());
+        }
+    },
+
+    openProductFilters : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_product_filters_panel").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_product_filters_panel", new pimcore.plugin.coreshop.filters.panel());
         }
     }
 });
