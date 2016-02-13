@@ -4,6 +4,16 @@
 
     <?=$this->template("coreshop/helper/left/categories.php");?>
 
+    <?php if($this->filter instanceof CoreShop\Model\Product\Filter) {
+
+        if(is_array($this->filter->getFilters())) {
+            foreach($this->filter->getFilters() as $filter) {
+                echo $filter->render($this->filter, $this->list, $this->params);
+            }
+        }
+
+    } ?>
+
 <?php /*
 <!-- Special Products Starts -->
     <h3 class="side-heading">Specials</h3>

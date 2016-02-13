@@ -25,7 +25,7 @@ class Select extends AbstractCondition
     public $type = "select";
 
     /**
-     * add Condition to Productlist
+     * add Condition to Product list
      *
      * @param Filter $filter
      * @param Listing $list
@@ -52,17 +52,5 @@ class Select extends AbstractCondition
                 $list->addCondition("TRIM(`" . $this->getField() . "`) = " . $list->quote($value), $this->getField());
             }
         }
-    }
-
-    /**
-     * render HTML for filter
-     *
-     * @param Filter $filter
-     * @param Listing $list
-     * @param $currentFilter
-     * @return mixed
-     */
-    public function render(Filter $filter, Listing $list, $currentFilter) {
-
     }
 }

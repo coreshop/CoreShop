@@ -27,7 +27,7 @@ class Helper extends AbstractModel {
      * @param $params
      * @param Service $filterService
      */
-    public static function setupProductList(Filter $filter, Listing $list, $params, Service $filterService = null) {
+    public static function setupProductList(Listing $list, $params, Filter $filter = null, Service $filterService = null) {
         $orderKey = $filter->getOrderKey();
         $orderDirection = $filter->getOrder();
 

@@ -9,7 +9,7 @@
                 <li><a href="<?=$this->url(array("lang" => $this->language), "coreshop_index", true)?>"><?=$this->translate("Home")?></a></li>
                 <?php if(count($this->product->getCategories()) > 0) { ?>
                     <?php foreach($this->product->getCategories()[0]->getHierarchy() as $cat) { ?>
-                        <li><a href="<?=$this->url(array("lang" => $this->language, "name" => $cat->getName(), "category" => $cat->getId()), "coreshop_list", true)?>"><?=$cat->getName()?></a></li>
+                        <li><a href="<?=$this->url(array("lang" => $this->language, "name" => \Pimcore\File::getValidFilename($cat->getName()), "category" => $cat->getId()), "coreshop_list", true)?>"><?=$cat->getName()?></a></li>
                     <?php } ?>
                 <?php } ?>
                 <li class="active"><a href="<?=$this->url(array("lang" => $this->language, "name" => $this->product->getName(), "product" => $this->product->getId()), "coreshop_detail", true)?>"><?=$this->product->getName()?></a></li>

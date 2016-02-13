@@ -18,7 +18,7 @@ use CoreShop\IndexService\AbstractWorker;
 use CoreShop\IndexService\Mysql;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
-use Pimcore\Tool;
+use Pimcore\Tool as PimTool;
 
 class IndexService
 {
@@ -78,7 +78,7 @@ class IndexService
         foreach($indexes as $index) {
             $class = "\\CoreShop\\IndexService\\" . $index->getType();
 
-            if(Tool::classExists($class)) {
+            if(PimTool::classExists($class)) {
                 $this->worker[] = new $class($index);
             }
         }

@@ -68,8 +68,30 @@ class CoreShop_ProductController extends Action
         $category = CoreShopCategory::getById($id);
 
         if ($category instanceof CoreShopCategory) {
+            //TODO: Load Filter from any configuration (eg: category or default settings)
+
+            $indexService = \CoreShop\IndexService::getIndexService()->getWorker("default");
+            $list = $indexService->getProductList();
+            $list->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_INCLUDE_PARENT_OBJECT);
+
+            $filter = \CoreShop\Model\Product\Filter::getById(1);
+
+            \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $filter, new \CoreShop\Model\Product\Filter\Service());
+
+            $list->addCondition("parentCategoryIds LIKE '%,".$category->getId().",%'", "categoryIds");
+
+            $this->view->filter = $filter;
+            $this->view->list = $list;
+            $this->view->params = $this->getAllParams();
+
             $this->view->category = $category;
-            $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort), true);
+
+            $paginator = Zend_Paginator::factory( $list );
+            $paginator->setCurrentPageNumber($this->getParam('page'));
+            $paginator->setItemCountPerPage($list->getLimit());
+            $paginator->setPageRange(10);
+
+            $this->view->paginator = $paginator;
 
             $this->view->page = $page;
             $this->view->sort = $sort;

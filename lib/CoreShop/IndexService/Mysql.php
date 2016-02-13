@@ -46,6 +46,7 @@ class Mysql extends AbstractWorker
           `o_classId` int(11) NOT NULL,
           `o_type` varchar(20) NOT NULL,
           `categoryIds` varchar(255) NOT NULL,
+          `parentCategoryIds` varchar(255) NOT NULL,
           `active` TINYINT(1) NOT NULL,
           PRIMARY KEY  (`o_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
@@ -140,10 +141,18 @@ class Mysql extends AbstractWorker
             $categories = $object->getCategories();
 
             $categoryIds = array();
+            $parentCategoryIds = array();
 
             if($categories) {
                 foreach($categories as $c) {
                     $categoryIds[$c->getId()] = $c->getId();
+
+                    $parents = $c->getHierarchy();
+
+                    foreach($parents as $p) {
+                        $parentCategoryIds[] = $p->getId();
+                    }
+
                 }
             }
 
@@ -170,6 +179,7 @@ class Mysql extends AbstractWorker
                 "o_virtualProductActive" => $virtualProductActive,
                 "o_type" => $object->getType(),
                 "categoryIds" => ',' . implode(",", $categoryIds) . ",",
+                "parentCategoryIds" => ',' . implode(",", $parentCategoryIds) . ",",
                 "active" => $object->getEnabled()
             );
 
@@ -314,6 +324,6 @@ class Mysql extends AbstractWorker
      * @return array
      */
     protected function getSystemAttributes() {
-        return array("o_id", "o_classId", "o_virtualProductId", "o_virtualProductActive", "o_type", "categoryIds", "active");
+        return array("o_id", "o_classId", "o_virtualProductId", "o_virtualProductActive", "o_type", "categoryIds", "parentCategoryIds", "active");
     }
 }

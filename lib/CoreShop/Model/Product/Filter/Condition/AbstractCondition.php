@@ -40,6 +40,38 @@ abstract class AbstractCondition {
     public $preSelect;
 
     /**
+     *  Zend_View
+     */
+    protected $view;
+
+    /**
+     * @param $language
+     * @return \Zend_View
+     */
+    public function getView($language = null)
+    {
+        if (!$language) {
+            $language = \Zend_Registry::get("Zend_Locale");
+        }
+
+        if (!$this->view) {
+            $this->view = new \Zend_View();
+        }
+
+        $this->view->language = (string) $language;
+        $this->view->brick = $this;
+
+        $this->view->setScriptPath(
+            array(
+                CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/product/filter',
+                CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/product/filter/' . strtolower(array_pop(explode('\\', get_class($this))))
+            )
+        );
+
+        return $this->view;
+    }
+
+    /**
      * add Condition to Productlist
      *
      * @param Filter $filter
@@ -58,7 +90,16 @@ abstract class AbstractCondition {
      * @param $currentFilter
      * @return mixed
      */
-    public abstract function render(Filter $filter, Listing $list, $currentFilter);
+    public function render(Filter $filter, Listing $list, $currentFilter) {
+        $rawValues = $list->getGroupByValues($this->getField(), true);
+
+        return $this->getView()->partial($this->getField() . ".php", array(
+            "label" => $this->getLabel(),
+            "currentValue" => $currentFilter[$this->getField()],
+            "values" => array_values($rawValues),
+            "fieldname" => $this->getField()
+        ));
+    }
 
     /**
      * @param array $values

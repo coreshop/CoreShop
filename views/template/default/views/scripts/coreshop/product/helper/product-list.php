@@ -1,6 +1,6 @@
 <?php
     $uniqid = uniqid() . "-product-image-" . $this->product->getId();
-    $href = $this->url(array("lang" => $this->language, "name" => $this->product->getName(), "product" => $this->product->getId()), "coreshop_detail");
+    $href = $this->url(array("lang" => $this->language, "name" => \Pimcore\File::getValidFilename($this->product->getName()), "product" => $this->product->getId()), "coreshop_detail");
 ?>
 <div class="col-xs-12">
     <div class="product-col list clearfix">

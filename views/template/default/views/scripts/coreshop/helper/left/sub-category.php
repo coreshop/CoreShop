@@ -10,7 +10,7 @@ $currentActiveCategory = $this->category instanceof \CoreShop\Model\Category ? $
     <?php foreach($categories as $cat) {
         $active = $currentActiveCategory ? $cat->inCategory($currentActiveCategory, $cat->getLevel()-1) : false;
         ?>
-        <a href="<?=$this->url(array("lang" => $this->language, "category" => $cat->getId(), "name" => $cat->getName()), "coreshop_list")?>" class="list-group-item <?=$active ? "active" : ""?>">
+        <a href="<?=$this->url(array("lang" => $this->language, "category" => $cat->getId(), "name" => \Pimcore\File::getValidFilename($cat->getName())), "coreshop_list")?>" class="list-group-item <?=$active ? "active" : ""?>">
             <i class="fa fa-chevron-right"></i>
             <?=$cat->getName()?>
         </a>
