@@ -289,7 +289,7 @@ class Mysql extends AbstractWorker
      * @return Product\Listing\Mysql
      */
     public function getProductList() {
-        return new Product\Listing\Mysql();
+        return new Product\Listing\Mysql($this->getIndex());
     }
 
     /**
