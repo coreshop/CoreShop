@@ -204,6 +204,44 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
     public abstract function load();
 
     /**
+     * loads group by values based on fieldname either from local variable if prepared or directly from product index
+     *
+     * @param $fieldname
+     * @param bool $countValues
+     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public abstract function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+
+
+    /**
+     * loads group by values based on relation fieldname either from local variable if prepared or directly from product index
+     *
+     * @param      $fieldname
+     * @param bool $countValues
+     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public abstract function getGroupByRelationValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+
+
+    /**
+     * loads group by values based on relation fieldname either from local variable if prepared or directly from product index
+     *
+     * @param      $fieldname
+     * @param bool $countValues
+     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public abstract function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+
+    /**
      * @return Index|null
      */
     public function getIndex()

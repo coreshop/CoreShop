@@ -41,6 +41,8 @@ pimcore.plugin.coreshop.filters.panel = Class.create(pimcore.plugin.coreshop.abs
     initialize: function() {
         var me = this;
 
+        pimcore.globalmanager.get("coreshop_indexes").load();
+
         Ext.Ajax.request({
             url: "/plugin/CoreShop/admin_Filter/get-config",
             method: "GET",

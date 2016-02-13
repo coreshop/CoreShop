@@ -15,11 +15,13 @@ pimcore.registerNS("pimcore.plugin.coreshop.filters.item");
 
 pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    iconCls : 'coreshop_icon_filters',
+    iconCls : 'coreshop_icon_product_filters',
 
     url : {
         save : '/plugin/CoreShop/admin_Filter/save'
     },
+
+    indexFieldsStore : null,
 
     getPanel: function() {
         panel = new Ext.TabPanel({
@@ -41,37 +43,100 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     },
 
     getItems : function() {
-        /*this.actions = new pimcore.plugin.coreshop.pricerules.action(this.parentPanel.actions);
-        this.conditions = new pimcore.plugin.coreshop.pricerules.condition(this.parentPanel.conditions);
+        this.conditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, "preconditions");
+        this.filters = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, "filters");
 
         var items = [
             this.getSettings(),
             this.conditions.getLayout(),
-            this.actions.getLayout()
+            this.filters.getLayout()
         ];
 
         // add saved conditions
-        if(this.data.conditions)
+        if(this.data.preConditions)
         {
-            Ext.each(this.data.conditions, function(condition) {
+            Ext.each(this.data.preConditions, function(condition) {
                 this.conditions.addCondition(condition.type, condition);
             }.bind(this));
         }
 
-        // add saved actions
-        if(this.data.actions)
-        {
-            Ext.each(this.data.actions, function(action) {
-                this.actions.addAction(action.type, action);
+        if(this.data.filters) {
+            Ext.each(this.data.filters, function(condition) {
+                this.filters.addCondition(condition.type, condition);
             }.bind(this));
         }
 
-        return items;*/
-        return [];
+        this.indexCombo.setValue(this.data.index);
+
+        if(!this.data.index) {
+            this.conditions.disable();
+            this.filters.disable();
+        }
+
+        return items;
+    },
+
+    getFieldsForIndex : function(forceReload) {
+        if(!this.indexFieldsStore) {
+            var proxy = new Ext.data.HttpProxy({
+                url : '/plugin/CoreShop/admin_Filter/get-fields-for-index'
+            });
+
+            var reader = new Ext.data.JsonReader({}, [
+                {name:'name'}
+            ]);
+
+            this.indexFieldsStore = new Ext.data.Store({
+                restful:    false,
+                proxy:      proxy,
+                reader:     reader,
+                autoload:   true
+            });
+        }
+
+        if(forceReload || !this.indexFieldsStore.isLoaded()) {
+            this.indexFieldsStore.proxy.extraParams = {index : this.indexCombo.getValue()};
+            this.indexFieldsStore.load({
+                params: {
+                    index: this.indexCombo.getValue()
+                }
+            });
+        }
+
+        return this.indexFieldsStore;
     },
 
     getSettings: function () {
         var data = this.data;
+
+        this.indexCombo = Ext.create({
+            xtype: 'combo',
+            fieldLabel: t('coreshop_product_filters_index'),
+            typeAhead: true,
+            listWidth: 100,
+            width : 250,
+            store: pimcore.globalmanager.get("coreshop_indexes"),
+            displayField: 'name',
+            valueField: 'id',
+            forceSelection: true,
+            triggerAction: 'all',
+            name:'index',
+            value : data.index,
+            listeners: {
+                change : function(combo, value) {
+                    if(value) {
+                        this.conditions.enable();
+                        this.filters.enable();
+
+                        this.getFieldsForIndex();
+                    }
+                    else {
+                        this.conditions.disable();
+                        this.filters.disable();
+                    }
+                }.bind(this)
+            }
+        });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
             iconCls: "coreshop_price_rule_settings",
@@ -81,34 +146,37 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
             border:false,
             items: [{
                 xtype: "textfield",
-                name: "label",
-                fieldLabel: t("label"),
+                name: "name",
+                fieldLabel: t("name"),
                 width: 250,
-                value: data.label
+                value: data.name
+            }, {
+                xtype : 'numberfield',
+                fieldLabel:t("coreshop_product_filters_resultsPerPage"),
+                name:'resultsPerPage',
+                value : data.resultsPerPage,
+                minValue : 1,
+                decimalPrecision : 0,
+                step : 1
+            }, {
+                xtype: "combo",
+                fieldLabel: t('coreshop_product_filters_order'),
+                name: "order",
+                value: data.order,
+                width: 250,
+                store: [["desc",t("coreshop_product_filters_order_desc")],["asc",t("coreshop_product_filters_order_asc")]],
+                triggerAction: "all",
+                typeAhead: false,
+                editable: false,
+                forceSelection: true,
+                queryMode: "local"
             }, {
                 xtype: "textfield",
-                name: "code",
-                fieldLabel: t("code"),
+                name: "orderKey",
+                fieldLabel: t("coreshop_product_filters_orderKey"),
                 width: 250,
-                value: data.code
-            }, {
-                xtype: "textarea",
-                name: "description",
-                fieldLabel: t("description"),
-                width: 400,
-                height: 100,
-                value: data.description
-            }, {
-                xtype: "checkbox",
-                name: "active",
-                fieldLabel: t("active"),
-                checked: this.data.active == "1"
-            }, {
-                xtype: "checkbox",
-                name: "highlight",
-                fieldLabel: t("highlight"),
-                checked: this.data.highlight == "1"
-            }]
+                value: data.orderKey
+            }, this.indexCombo]
         });
 
         return this.settingsForm;
@@ -119,8 +187,8 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
 
         // general settings
         saveData["settings"] = this.settingsForm.getForm().getFieldValues();
-        saveData["conditions"] = this.conditions.getConditionsData();
-        saveData["actions"] = this.actions.getActionsData();
+        saveData["conditions"] = this.conditions.getData();
+        saveData["filters"] = this.filters.getData();
 
         return {
             data : Ext.encode(saveData)

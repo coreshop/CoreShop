@@ -374,6 +374,21 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * loads group by values based on relation fieldname either from local variable if prepared or directly from product index
+     *
+     * @param      $fieldname
+     * @param bool $countValues
+     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
+    {
+        // not supported with mysql tables
+    }
+
+    /**
      * @param bool $excludeConditions
      * @param null $excludedFieldname
      * @param null $variantMode
@@ -523,7 +538,7 @@ class Mysql extends AbstractListing
      *
      * @return string
      */
-    protected function getRelationTablename() {
+    public function getRelationTablename() {
         return "coreshop_index_mysql_relations_" . $this->getIndex()->getName();
     }
 

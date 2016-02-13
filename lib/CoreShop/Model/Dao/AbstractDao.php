@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Dao;
 
+use CoreShop\Model\AbstractModel;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Dao;
 
@@ -113,6 +114,9 @@ abstract class AbstractDao extends Dao\AbstractDao
                     $value = serialize($value);
                 }
                 if ($value instanceof AbstractObject) {
+                    $value = $value->getId();
+                }
+                if($value instanceof AbstractModel) {
                     $value = $value->getId();
                 }
 

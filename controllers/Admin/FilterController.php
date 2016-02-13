@@ -88,8 +88,12 @@ class CoreShop_Admin_FilterController extends Admin
         $id = $this->getParam("id");
         $filter = Filter::getById($id);
 
-        if ($filter instanceof Filter) {
-            $this->_helper->json(array("success" => true, "data" => $filter));
+        if ($filter instanceof Filter)
+        {
+            $data = get_object_vars($filter);
+            $data['index'] = $filter->getIndex() instanceof \CoreShop\Model\Index ? $filter->getIndex()->getId() : null;
+
+            $this->_helper->json(array("success" => true, "data" => $data));
         } else {
             $this->_helper->json(array("success" => false));
         }
@@ -104,7 +108,43 @@ class CoreShop_Admin_FilterController extends Admin
         if ($data && $filter instanceof Filter) {
             $data = \Zend_Json::decode($this->getParam("data"));
 
-            $filter->setValues($data);
+            $preConditions = $data['conditions'];
+            $preConditionInstances = array();
+
+            $conditionNamespace = "CoreShop\\Model\\Product\\Filter\\Condition\\";
+
+            foreach ($preConditions as $condition) {
+                $class = $conditionNamespace . ucfirst($condition['type']);
+
+                if (\Pimcore\Tool::classExists($class)) {
+                    $instance = new $class();
+                    $instance->setValues($condition);
+
+                    $preConditionInstances[] = $instance;
+                } else {
+                    throw new \Exception(sprintf("Condition with type %s not found"), $condition['type']);
+                }
+            }
+
+            $filters = $data['filters'];
+            $filtersInstances = array();
+
+            foreach ($filters as $filterCondition) {
+                $class = $conditionNamespace . ucfirst($filterCondition['type']);
+
+                if (\Pimcore\Tool::classExists($class)) {
+                    $instance = new $class();
+                    $instance->setValues($filterCondition);
+
+                    $filtersInstances[] = $instance;
+                } else {
+                    throw new \Exception(sprintf("Condition with type %s not found"), $filterCondition['type']);
+                }
+            }
+
+            $filter->setValues($data['settings']);
+            $filter->setPreConditions($preConditionInstances);
+            $filter->setFilters($filtersInstances);
             $filter->save();
 
             $this->_helper->json(array("success" => true, "data" => $filter));
@@ -131,7 +171,61 @@ class CoreShop_Admin_FilterController extends Admin
     {
         $this->_helper->json(array(
             "success" => true,
-            "conditions" => array() //Filter::$availableConditions
+            "conditions" => Filter::getConditions()
         ));
+    }
+
+    public function getFieldsForIndexAction() {
+        $index = $this->getParam("index");
+        $index = \CoreShop\Model\Index::getById($index);
+
+        if($index instanceof $index) {
+            $columns = array();
+            $config = $index->getConfig();
+
+            if($config['columns']) {
+                foreach($config['columns'] as $col) {
+                    $columns[] = array(
+                        "name" => $col['config']['name']
+                    );
+                }
+            }
+
+            $this->_helper->json($columns);
+        }
+
+        $this->_helper->json(false);
+    }
+
+    public function getValuesForFilterFieldAction() {
+        $index = $this->getParam("index");
+        $index = \CoreShop\Model\Index::getById($index);
+
+        if($index instanceof $index) {
+            $list = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
+            $productList = $list->getProductList();
+
+            $values = $productList->getGroupByValues($this->getParam("field"));
+            $returnValues = array();
+
+            foreach($values as $value) {
+                if($value) {
+                    $returnValues[] = array(
+                        "value" => $value,
+                        "key" => $value
+                    );
+                }
+                else {
+                    $returnValues[] = array(
+                        "value" => Filter\Service::EMPTY_STRING,
+                        "key" => "empty"
+                    );
+                }
+            }
+
+            $this->_helper->json($returnValues);
+        }
+
+        $this->_helper->json(false);
     }
 }

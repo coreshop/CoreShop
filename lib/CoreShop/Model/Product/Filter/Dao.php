@@ -19,4 +19,20 @@ use CoreShop\Model\Dao\AbstractDao;
 class Dao extends AbstractDao
 {
     protected $tableName = 'coreshop_product_filters';
+
+    /**
+     * @param array $data
+     */
+    protected function assignVariablesToModel($data)
+    {
+        parent::assignVariablesToModel($data);
+
+        foreach ($data as $key=>$value) {
+            if ($key == "filters") {
+                $this->model->setFilters(unserialize($value));
+            } elseif ($key == "preConditions") {
+                $this->model->setPreConditions(unserialize($value));
+            }
+        }
+    }
 }

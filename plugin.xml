@@ -104,9 +104,13 @@
       <path>/plugins/CoreShop/static/js/coreshop/indexes/fields.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/elements/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/elements/mysql/default.js</path>
-
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/panel.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/filters/abstract.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/filters/condition.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/abstract.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/select.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/multiselect.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

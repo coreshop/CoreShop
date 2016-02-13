@@ -12,5 +12,6 @@ CREATE TABLE `coreshop_product_filters` (
   `order` varchar(255) NOT NULL,
   `orderKey` varchar(255) NOT NULL,
   `preConditions` text NOT NULL,
-  `filters` text NOT NULL
+  `filters` text NOT NULL,
+  `index` int(11) NULL
 );

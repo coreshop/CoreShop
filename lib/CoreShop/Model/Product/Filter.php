@@ -15,9 +15,34 @@
 namespace CoreShop\Model\Product;
 
 use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Index;
+use CoreShop\Model\Product\Filter\Condition\AbstractCondition;
 
 class Filter extends AbstractModel
 {
+    /**
+     * possible types of a condition
+     * @var array
+     */
+    public static $availableConditions = array("select");
+
+    /**
+     * @param $condition
+     */
+    public static function addCondition($condition)
+    {
+        if (!in_array($condition, self::$availableConditions)) {
+            self::$availableConditions[] = $condition;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function getConditions() {
+        return self::$availableConditions;
+    }
+
     /**
      * @var int
      */
@@ -44,14 +69,19 @@ class Filter extends AbstractModel
     public $orderKey;
 
     /**
-     * @var array
+     * @var AbstractCondition[]
      */
     public $preConditions;
 
     /**
-     * @var array
+     * @var AbstractCondition[]
      */
     public $filters;
+
+    /**
+     * @var Index $index
+     */
+    public $index;
 
     /**
      * get Filter by ID
@@ -155,7 +185,7 @@ class Filter extends AbstractModel
     }
 
     /**
-     * @return array
+     * @return AbstractCondition[]
      */
     public function getPreConditions()
     {
@@ -163,7 +193,7 @@ class Filter extends AbstractModel
     }
 
     /**
-     * @param array $preConditions
+     * @param AbstractCondition[] $preConditions
      */
     public function setPreConditions($preConditions)
     {
@@ -171,7 +201,7 @@ class Filter extends AbstractModel
     }
 
     /**
-     * @return array
+     * @return AbstractCondition[]
      */
     public function getFilters()
     {
@@ -179,10 +209,32 @@ class Filter extends AbstractModel
     }
 
     /**
-     * @param array $filters
+     * @param AbstractCondition[] $filters
      */
     public function setFilters($filters)
     {
         $this->filters = $filters;
+    }
+
+    /**
+     * @return Index
+     */
+    public function getIndex()
+    {
+        if(!$this->index instanceof Index)
+            $this->index = Index::getById($this->index);
+
+        return $this->index;
+    }
+
+    /**
+     * @param Index $index
+     */
+    public function setIndex($index)
+    {
+        if(!$index instanceof Index)
+            $index = Index::getById($index);
+
+        $this->index = $index;
     }
 }
