@@ -29,3 +29,5 @@ Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at) (Stil und
 * Guest Checkout
 * Tax Manager (Custom Taxes for Products and Countries)
 * Specific Price Rules based on Conditions
+* Index Services: create custom indexes for your searches, with different index providers (eg Mysql)
+* Filter Service: create custom filter service so your customers can find your products
