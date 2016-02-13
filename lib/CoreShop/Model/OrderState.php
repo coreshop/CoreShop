@@ -131,7 +131,7 @@ class OrderState extends AbstractModel
                     {
                         $invoice = $order->getInvoice();
 
-                        if ($invoice !== FALSE)
+                        if ($invoice instanceof \Pimcore\Model\Asset\Document)
                         {
                             $attachment = new \Zend_Mime_Part($invoice->getData());
                             $attachment->type = $invoice->getMimetype();
