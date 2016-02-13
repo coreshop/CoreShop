@@ -17,6 +17,7 @@ namespace CoreShop;
 use CoreShop\Exception\ThemeNotFoundException;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
+use CoreShop\Model\Product;
 use CoreShop\Model\TaxRule\VatManager;
 use CoreShop\Model\Zone;
 use Pimcore\API\Plugin\AbstractPlugin;
@@ -121,6 +122,39 @@ class Plugin extends AbstractPlugin implements PluginInterface
             self::getEventManager()->attach("tax.getTaxManager", function () {
                 return new VatManager();
             });
+        }
+    }
+
+    /**
+     * @param Object\AbstractObject $object
+     */
+    public function postAddObject(Object\AbstractObject $object)
+    {
+        if ($object instanceof Product) {
+            $indexService = IndexService::getIndexService();
+            $indexService->updateIndex($object);
+        }
+    }
+
+    /**
+     * @param Object\AbstractObject $object
+     */
+    public function postUpdateObject(Object\AbstractObject $object)
+    {
+        if ($object instanceof Product) {
+            $indexService = IndexService::getIndexService();
+            $indexService->updateIndex($object);
+        }
+    }
+
+    /**
+     * @param Object\AbstractObject $object
+     */
+    public function preDeleteObject(Object\AbstractObject $object)
+    {
+        if ($object instanceof Product) {
+            $indexService = IndexService::getIndexService();
+            $indexService->deleteFromIndex($object);
         }
     }
 

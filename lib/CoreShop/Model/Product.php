@@ -455,6 +455,15 @@ class Product extends Base
     }
 
     /**
+     * Determines if product should be indexed
+     *
+     * @return bool
+     */
+    public function getDoIndex() {
+        return true;
+    }
+
+    /**
      * returns array of images.
      * this method has to be overwritten in Pimcore Object
      *

@@ -190,6 +190,14 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                         });
                     }
 
+                    if(user.isAllowed("coreshop_permission_indexes")) {
+                        coreShopMenuItems.push({
+                            text: t("coreshop_indexes"),
+                            iconCls: "coreshop_icon_indexes",
+                            handler: this.openIndexes
+                        });
+                    }
+
                     if (user.admin) {
                         coreShopMenuItems.push({
                             text: t("coreshop_update"),
@@ -436,6 +444,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
         }
         catch (e) {
             pimcore.globalmanager.add("coreshop_orders", new pimcore.plugin.coreshop.orders.grid());
+        }
+    },
+
+    openIndexes : function() {
+        try {
+            pimcore.globalmanager.get("coreshop_indexes_panel").activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add("coreshop_indexes_panel", new pimcore.plugin.coreshop.indexes.panel());
         }
     }
 });
