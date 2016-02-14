@@ -34,13 +34,13 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
     getData: function () {
 
-        this.data = {};
+        var data = {};
         if(this.languageField) {
-            this.data.language = this.languageField.getValue();
+            data.language = this.languageField.getValue();
         }
 
         if(this.selectionPanel) {
-            this.data.columns = [];
+            data.columns = [];
             this.selectionPanel.getRootNode().eachChild(function(child) {
                 var obj = {};
                 obj.key = child.data.key;
@@ -52,11 +52,11 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                     obj.width = child.data.width;
                 }
 
-                this.data.columns.push(obj);
+                data.columns.push(obj);
             }.bind(this));
         }
 
-        return this.data;
+        return data;
     },
 
     getSelectionPanel: function () {
