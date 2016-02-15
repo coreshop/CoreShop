@@ -290,6 +290,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
             var newNode = Ext.Object.merge(initData, {
                 text :  key,
+                key : initData.name,
                 type : "data",
                 layout : initData,
                 leaf : isLeaf,
