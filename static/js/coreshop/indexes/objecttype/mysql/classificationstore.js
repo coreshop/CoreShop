@@ -14,5 +14,19 @@
 pimcore.registerNS("pimcore.plugin.coreshop.indexes.objecttype.mysql.classificationstore");
 
 pimcore.plugin.coreshop.indexes.objecttype.mysql.classificationstore = Class.create(pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract, {
+    getObjectTypeItems : function(record) {
+        var fields = pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract.prototype.getObjectTypeItems.call(this, record);
 
+        //TODO: Make combobox and query ClassDefinition
+        //TODO: classificationStoreField would be needed in every Index-Type: Maybe include some helper js?
+        fields.push(new Ext.form.TextField({
+            fieldLabel : t('coreshop_index_field_classificationstore'),
+            name : 'classificationStoreField',
+            length : 255,
+            width : 200,
+            value : record.data.classificationStoreField
+        }));
+
+        return fields;
+    }
 });

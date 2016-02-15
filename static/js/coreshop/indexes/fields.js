@@ -61,13 +61,9 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                     var child = Ext.Object.merge(nodeConf,
                         {
                             text: nodeConf.name,
-                            key: nodeConf.key,
-                            dataType : nodeConf.dataType, //Used for icons
                             type: "data",
                             leaf: true,
-                            iconCls: "pimcore_icon_" + nodeConf.dataType,
-                            objectType : nodeConf.objectType,
-                            className : nodeConf.className
+                            iconCls: "pimcore_icon_" + nodeConf.dataType
                         }
                     );
 
@@ -292,19 +288,17 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
             var key = initData.name;
 
-            var newNode = {
-                text: key,
-                key: key,
-                type: "data",
-                layout: initData,
-                leaf: isLeaf,
-                allowDrag: draggable,
-                dataType: type,
+            var newNode = Ext.Object.merge(initData, {
+                text :  key,
+                type : "data",
+                layout : initData,
+                leaf : isLeaf,
+                allowDrag : draggable,
+                dataType : type,
                 iconCls: "pimcore_icon_" + type,
                 expanded: true,
-                objectType : objectType, //eg objectbrick, collectionstore or fieldcollection
-                className : className
-            };
+                objectType : objectType
+            });
 
             newNode = this.appendChild(newNode);
 

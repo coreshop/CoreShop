@@ -324,7 +324,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
                 $keyConfig = Object\Classificationstore\KeyConfig::getById($keyId);
 
-                $result['childs'][] = $this->getClassificationStoreFieldConfiguration($keyConfig);
+                $result['childs'][] = $this->getClassificationStoreFieldConfiguration($keyConfig, $config);
             }
         }
 
@@ -340,12 +340,14 @@ class CoreShop_Admin_IndexesController extends Admin
         );
     }
 
-    protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field) {
+    protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig) {
         return array(
             "name" => $field->getName(),
             "fieldtype" => $field->getType(),
             "title" => $field->getName(),
-            "tooltip" => $field->getDescription()
+            "tooltip" => $field->getDescription(),
+            "keyConfigId" => $field->getId(),
+            "groupConfigId" => $groupConfig->getId()
         );
     }
 }

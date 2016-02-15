@@ -15,27 +15,27 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Model\Index\Config\Column\Objectbricks;
+use CoreShop\Model\Index\Config\Column\Classificationstore as Config;
 use CoreShop\Model\Product;
 
-class Brick extends AbstractGetter {
+class Classificationstore extends AbstractGetter {
 
     /**
      * @param $object
-     * @param Objectbricks $config
+     * @param Config $config
      * @return mixed
      * @throws UnsupportedException
      */
-    public static function get(Product $object, Objectbricks $config = null) {
-        $brickContainerGetter = "get" . ucfirst($config->getBrickField());
-        $brickContainer = $object->$brickContainerGetter();
+    public static function get(Product $object, Config $config = null) {
 
-        $brickGetter = "get" . ucfirst($config->getClassName());
-        $brick = $brickContainer->$brickGetter();
+        $classificationStoreGetter = "get" . ucfirst($config->getClassificationStoreField());
 
-        if($brick) {
-            $fieldGetter = "get" . ucfirst($config->getKey());
-            return $brick->$fieldGetter();
+        if(method_exists($object, $classificationStoreGetter)) {
+            $classificationStore = $object->$classificationStoreGetter();
+
+            if($classificationStore instanceof \Pimcore\Model\Object\Classificationstore) {
+                return $classificationStore->getLocalizedKeyValue($config->getGroupConfigId(), $config->getKeyConfigId());
+            }
         }
 
         return null;

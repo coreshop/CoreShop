@@ -189,6 +189,12 @@ class Mysql extends AbstractWorker
                         }
                     }
 
+                    if($column instanceof Index\Config\Column\Classificationstore) {
+                        if(empty($getter)) {
+                            $getter = "Classificationstore";
+                        }
+                    }
+
                     if(!empty($getter)) {
                         $getterClass = "\\CoreShop\\IndexService\\Getter\\" . $getter;
 

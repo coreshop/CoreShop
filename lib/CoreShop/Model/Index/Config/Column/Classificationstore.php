@@ -17,5 +17,66 @@ namespace CoreShop\Model\Index\Config\Column;
 use CoreShop\Model;
 
 class Classificationstore extends AbstractColumn {
+    /**
+     * @var
+     */
+    public $classificationStoreField;
 
+    /**
+     * @var int
+     */
+    public $keyConfigId;
+
+    /**
+     * @var int
+     */
+    public $groupConfigId;
+
+    /**
+     * @return mixed
+     */
+    public function getClassificationStoreField()
+    {
+        return $this->classificationStoreField;
+    }
+
+    /**
+     * @param mixed $classificationStoreField
+     */
+    public function setClassificationStoreField($classificationStoreField)
+    {
+        $this->classificationStoreField = $classificationStoreField;
+    }
+
+    /**
+     * @return int
+     */
+    public function getKeyConfigId()
+    {
+        return $this->keyConfigId;
+    }
+
+    /**
+     * @param int $keyConfigId
+     */
+    public function setKeyConfigId($keyConfigId)
+    {
+        $this->keyConfigId = $keyConfigId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroupConfigId()
+    {
+        return $this->groupConfigId;
+    }
+
+    /**
+     * @param int $groupConfigId
+     */
+    public function setGroupConfigId($groupConfigId)
+    {
+        $this->groupConfigId = $groupConfigId;
+    }
 }
