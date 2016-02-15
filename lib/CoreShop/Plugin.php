@@ -118,6 +118,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
         });
 
+
+        \Pimcore::getEventManager()->attach("object.postAdd", array($this, 'postAddObject') );
+        \Pimcore::getEventManager()->attach("object.postAdd", array($this, 'postAddObject') );
+        \Pimcore::getEventManager()->attach("object.postUpdate", array($this, 'postUpdateObject') );
+
         if(Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
             self::getEventManager()->attach("tax.getTaxManager", function () {
                 return new VatManager();
@@ -126,10 +131,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * @param Object\AbstractObject $object
+     * @param \Zend_EventManager_Event $e
      */
-    public function postAddObject(Object\AbstractObject $object)
+    public function postAddObject(\Zend_EventManager_Event $e)
     {
+        $object = $e->getTarget();
         if ($object instanceof Product) {
             $indexService = IndexService::getIndexService();
             $indexService->updateIndex($object);
@@ -137,10 +143,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * @param Object\AbstractObject $object
+     * @param \Zend_EventManager_Event $e
      */
-    public function postUpdateObject(Object\AbstractObject $object)
+    public function postUpdateObject(\Zend_EventManager_Event $e)
     {
+        $object = $e->getTarget();
         if ($object instanceof Product) {
             $indexService = IndexService::getIndexService();
             $indexService->updateIndex($object);
@@ -148,10 +155,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * @param Object\AbstractObject $object
+     * @param \Zend_EventManager_Event $e
      */
-    public function preDeleteObject(Object\AbstractObject $object)
+    public function preDeleteObject(\Zend_EventManager_Event $e)
     {
+        $object = $e->getTarget();
         if ($object instanceof Product) {
             $indexService = IndexService::getIndexService();
             $indexService->deleteFromIndex($object);

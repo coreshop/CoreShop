@@ -183,10 +183,10 @@ class CoreShop_Admin_FilterController extends Admin
             $columns = array();
             $config = $index->getConfig();
 
-            if($config['columns']) {
-                foreach($config['columns'] as $col) {
+            if($config->columns) {
+                foreach($config->columns as $col) {
                     $columns[] = array(
-                        "name" => $col['config']['name']
+                        "name" => $col->name
                     );
                 }
             }
