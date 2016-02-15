@@ -94,17 +94,12 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
                             if (target != source) {
                                 var record = data.records[0];
+                                var copy = record.createNode(Ext.apply({}, record.data));
+                                var element = this.getConfigElement(copy);
 
-                                if (this.selectionPanel.getRootNode().findChild("key", record.data.key)) {
-                                    dropHandlers.cancelDrop();
-                                } else {
-                                    var copy = record.createNode(Ext.apply({}, record.data));
+                                element.getConfigDialog(copy);
 
-                                    var element = this.getConfigElement(copy);
-                                    element.getConfigDialog(copy);
-
-                                    data.records = [copy]; // assign the copy as the new dropNode
-                                }
+                                data.records = [copy]; // assign the copy as the new dropNode
                             }
                         }.bind(this),
                         options: {
@@ -225,7 +220,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                 && record.data.dataType != 'localizedfields') {
                 var copy = Ext.apply({}, record.data);
 
-                if(this.selectionPanel && !this.selectionPanel.getRootNode().findChild("key", record.data.key)) {
+                if(this.selectionPanel && !this.selectionPanel.getRootNode().findChild("name", record.data.name)) {
                     this.selectionPanel.getRootNode().appendChild(copy);
                 }
 

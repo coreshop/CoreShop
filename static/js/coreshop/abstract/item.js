@@ -96,7 +96,7 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
                         pimcore.helpers.showNotification(t("success"), t("coreshop_save_success"), "success");
                     } else {
                         pimcore.helpers.showNotification(t("error"), t("coreshop_save_error"),
-                            "error", t(res.message));
+                            "error", res.message);
                     }
                 } catch(e) {
                     pimcore.helpers.showNotification(t("error"), t("coreshop_save_error"), "error");

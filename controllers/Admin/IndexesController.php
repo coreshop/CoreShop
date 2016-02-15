@@ -151,6 +151,19 @@ class CoreShop_Admin_IndexesController extends Admin
                 throw new \Exception("Config class for type " . $data['type'] . ' not found');
             }
 
+            //Check for unique fieldnames
+            $fieldNames = array();
+
+            foreach($config->getColumns() as $col) {
+                if(in_array($col->getName(), $fieldNames)) {
+                    $this->_helper->json(array(
+                        "success" => false,
+                        "message" => sprintf($this->view->translate("Duplicate fieldname '%s' found."), $col->getName())
+                    ));
+                }
+
+                $fieldNames[] = $col->getName();
+            }
 
             $index->setValues($data);
             $index->save();
@@ -193,45 +206,6 @@ class CoreShop_Admin_IndexesController extends Admin
     public function getClassDefinitionForFieldSelectionAction()
     {
         $class = Object\ClassDefinition::getById(intval($this->getParam("id")));
-
-        /*$layoutDefinitions = $class->getLayoutDefinitions();
-
-        $class->setFieldDefinitions(null);
-
-        $result = array();
-
-        $result['objectColumns']['childs'] = $layoutDefinitions->getChilds();
-        $result['objectColumns']['nodeLabel'] = "object_columns";
-        $result['objectColumns']['nodeType'] = "object";
-
-        // array("id", "fullpath", "published", "creationDate", "modificationDate", "filename", "classname");
-        $systemColumnNames = Object\Concrete::$systemColumnNames;
-        $systemColumns = array();
-        foreach ($systemColumnNames as $systemColumn) {
-            $systemColumns[] = array("title" => $systemColumn, "name" => $systemColumn, "datatype" => "data", "fieldtype" => "system");
-        }
-        $result['systemColumns']['nodeLabel'] = "system_columns";
-        $result['systemColumns']['nodeType'] = "system";
-        $result['systemColumns']['childs'] = $systemColumns;
-
-        $list = new Object\Objectbrick\Definition\Listing();
-        $list = $list->load();
-
-        foreach ($list as $brickDefinition) {
-            $classDefs = $brickDefinition->getClassDefinitions();
-            if (!empty($classDefs)) {
-                foreach ($classDefs as $classDef) {
-                    if ($classDef['classname'] == $class->getId()) {
-                        $key = $brickDefinition->getKey();
-                        $result[$key]['nodeLabel'] = $key;
-                        $result[$key]['nodeType'] = "objectbricks";
-                        $result[$key]['childs'] = $brickDefinition->getLayoutdefinitions()->getChilds();
-                        break;
-                    }
-                }
-            }
-        }*/
-
         $fields = $class->getFieldDefinitions();
 
         $result = array(
@@ -244,10 +218,18 @@ class CoreShop_Admin_IndexesController extends Admin
 
         foreach($fields as $field) {
             if($field instanceof Object\ClassDefinition\Data\Localizedfields) {
+                if(!is_array($result['localizedfields'])) {
+                    $result['localizedfields'] = array(
+                        "nodeLabel" => "localizedfields",
+                        "nodeType" => "localizedfields",
+                        "childs" => array()
+                    );
+                }
+
                 $localizedFields = $field->getFieldDefinitions();
 
                 foreach($localizedFields as $localizedField) {
-                    $result['fields']["childs"][] = $this->getFieldConfiguration($localizedField);
+                    $result['localizedfields']["childs"][] = $this->getFieldConfiguration($localizedField);
 
                 }
             }
