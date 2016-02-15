@@ -70,7 +70,9 @@ class CoreShop_ProductController extends Action
         {
             if($category->getFilterDefinition() instanceof \CoreShop\Model\Product\Filter)
             {
-                $indexService = $category->getFilterDefinition()->getIndex();
+                $index = $category->getFilterDefinition()->getIndex();
+                $indexService = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
+
                 $list = $indexService->getProductList();
                 $list->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_HIDE);
 
