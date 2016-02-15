@@ -298,7 +298,8 @@ class Order extends Base
                     unset($_REQUEST['data']);
 
                     if ($orderStep instanceof OrderState) {
-                        $orderStep->processStep($this);
+                        if($orderStep->getId() !== $this->getOrderState()->getId())
+                            $orderStep->processStep($this);
                     }
                 }
             } catch (\Exception $ex) {
