@@ -71,20 +71,22 @@ class CoreShop_ProductController extends Action
             if($category->getFilterDefinition() instanceof \CoreShop\Model\Product\Filter)
             {
                 $indexService = $category->getFilterDefinition()->getIndex();
-                $list = $indexService->getProductList();
-                $list->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_HIDE);
+                $list = \CoreShop\IndexService::getIndexService()->getWorker($indexService->getName());
+                $productList = $list->getProductList();
 
-                \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
+                $productList->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_HIDE);
 
-                $list->addCondition("parentCategoryIds LIKE '%,".$category->getId().",%'", "categoryIds");
+                \CoreShop\Model\Product\Filter\Helper::setupProductList($productList, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
+
+                $productList->addCondition("parentCategoryIds LIKE '%,".$category->getId().",%'", "categoryIds");
 
                 $this->view->filter = $category->getFilterDefinition();
                 $this->view->list = $list;
                 $this->view->params = $this->getAllParams();
 
-                $paginator = Zend_Paginator::factory( $list );
+                $paginator = Zend_Paginator::factory( $productList );
                 $paginator->setCurrentPageNumber($this->getParam('page'));
-                $paginator->setItemCountPerPage($list->getLimit());
+                $paginator->setItemCountPerPage($productList->getLimit());
                 $paginator->setPageRange(10);
 
                 $this->view->paginator = $paginator;
