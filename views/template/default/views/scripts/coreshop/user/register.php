@@ -149,7 +149,7 @@ $postValue = function ($name) {
                                 <div class="col-sm-offset-3 col-sm-9">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox"> <?=$this->translate("I'v read and agreed on Conditions")?>
+                                            <input type="checkbox"> <?=$this->translate("I'v read and agreed on ")?> <a id="openTerms" data-toggle="modal" data-target="#termsAndConditions"><?=$this->translate("Terms & Conditions")?></a>
                                         </label>
                                     </div>
                                 </div>
@@ -173,3 +173,21 @@ $postValue = function ($name) {
     <!-- Registration Section Ends -->
 </div>
 <!-- Main Container Ends -->
+
+
+<div class="modal fade" id="termsAndConditions" tabindex="-1" role="dialog" aria-labelledby="termsAndConditionLabel">
+    <div class="modal-dialog" role="document" style="z-index:1040;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="termsAndConditionLabel"><?=$this->translate("Terms and Conditions")?></h4>
+            </div>
+            <div class="modal-body">
+                <?=$this->inc("/" . $this->language . "/shop/snippet/terms")?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

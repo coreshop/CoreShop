@@ -97,7 +97,8 @@ class CoreShop_CheckoutController extends Action
     public function shippingAction()
     {
         $this->checkIsAllowed();
-        
+
+        $this->view->message = $this->getParam("message");
         
         //Download Article - no need for Shipping
         if (!$this->cart->hasPhysicalItems()) {
@@ -107,6 +108,10 @@ class CoreShop_CheckoutController extends Action
         $this->view->carriers = \CoreShop\Model\Carrier::getCarriersForCart($this->cart);
         
         if ($this->getRequest()->isPost()) {
+            if(!$this->getParam("termsAndConditions", false)) {
+                $this->_redirect($this->view->url(array("action" => "shipping", "message" => "Please check terms and conditions"), "coreshop_checkout"));
+            }
+
             $carrier = $this->getParam("carrier", false);
             
             foreach ($this->view->carriers as $c) {

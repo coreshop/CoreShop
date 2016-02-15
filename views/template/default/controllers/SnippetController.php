@@ -34,5 +34,11 @@ class CoreShopTemplate_SnippetController extends Action
     {
     }
 
-    public function mainMenuAction() {}
+    public function mainMenuAction() {
+
+    }
+
+    public function termsAction() {
+
+    }
 }

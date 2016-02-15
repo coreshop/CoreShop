@@ -2,7 +2,7 @@
     <!-- Breadcrumb Starts -->
     <ol class="breadcrumb">
         <li><a href="<?=$this->url(array("lang" => $this->language), "coreshop_index", true)?>"><?=$this->translate("Home")?></a></li>
-        <li class="active"><a href="<?=$this->url(array("lang" => $this->language, "action" => "index"), "coreshop_checkout")?>"><?=$this->translate("Login")?></a></li>
+        <li class="active"><a href="<?=$this->url(array("lang" => $this->language, "action" => "index"), "coreshop_checkout", true)?>"><?=$this->translate("Login")?></a></li>
     </ol>
 
     <?=$this->partial("coreshop/helper/order-steps.php", array("step" => 2));?>
@@ -36,7 +36,7 @@
                             <?=$this->translate("Please login using your existing account")?>
                         </p>
                         <!-- Login Form Starts -->
-                        <form class="form-inline" role="form" method="post" action="<?=$this->url(array("lang" => $this->language, "action" => "login"), "coreshop_user")?>">
+                        <form class="form-inline" role="form" method="post" action="<?=$this->url(array("lang" => $this->language, "action" => "login", true), "coreshop_user")?>">
                             <input type="hidden" name="_redirect" value="<?=$this->url(array("lang" =>  $this->language, "action" => "address"), "coreshop_checkout")?>" />
                             <input type="hidden" name="_base" value="<?=$this->url(array("lang" =>  $this->language, "action" => "index"), "coreshop_checkout")?>" />
 
@@ -69,7 +69,7 @@
                         <p>
                             <?=$this->translate("Registration allows you to avoid filling in billing and shipping forms every time you checkout on this website")?>
                         </p>
-                        <a href="<?=$this->url(array("lang" => $this->language, "action" => "register"), "coreshop_checkout")?>" class="btn btn-black">
+                        <a href="<?=$this->url(array("lang" => $this->language, "action" => "register"), "coreshop_checkout", true)?>" class="btn btn-black">
                             <?=$this->translate("Register")?>
                         </a>
                     </div>
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <form class="form-horizontal" role="form" id="shop-register-form" action="<?=$this->url(array("lang" => $this->language, "action" => "register"), "coreshop_user")?>" method="post">
+                            <form class="form-horizontal" role="form" id="shop-register-form" action="<?=$this->url(array("lang" => $this->language, "action" => "register"), "coreshop_user", true)?>" method="post">
 
                                 <input type="hidden" name="browserName" id="browserName" />
                                 <input type="hidden" name="majorVersion" id="majorVersion" />
@@ -124,8 +124,8 @@
                                 <input type="hidden" name="appName" id="appName" />
                                 <input type="hidden" name="userAgent" id="userAgent" />
                                 <input type="hidden" name="os" id="os" />
-                                <input type="hidden" name="_redirect" value="<?=$this->url(array("lang" => $this->language, "action" => "shipping"), "coreshop_checkout")?>" />
-                                <input type="hidden" name="_error" value="<?=$this->url(array("lang" => $this->language, "action" => "index"), "coreshop_checkout")?>" />
+                                <input type="hidden" name="_redirect" value="<?=$this->url(array("lang" => $this->language, "action" => "shipping"), "coreshop_checkout", true)?>" />
+                                <input type="hidden" name="_error" value="<?=$this->url(array("lang" => $this->language, "action" => "index"), "coreshop_checkout", true)?>" />
 
                                 <input type="hidden" name="isGuest" id="isGuest" value="1" />
 

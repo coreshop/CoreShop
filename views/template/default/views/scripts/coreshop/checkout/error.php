@@ -19,7 +19,7 @@
         </h5>
         <br>
         <p>
-            <a href="<?=$this->url(array(), "coreshop_index")?>" class="btn btn-black text-uppercase"><?=$this->translate("Back to Home")?></a>
+            <a href="<?=$this->url(array(), "coreshop_index", true)?>" class="btn btn-black text-uppercase"><?=$this->translate("Back to Home")?></a>
         </p>
     </div>
     <!-- Content Ends -->

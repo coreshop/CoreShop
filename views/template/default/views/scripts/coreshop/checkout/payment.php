@@ -7,7 +7,7 @@
     </div>
 
 
-    <form action="<?=$this->url(array("action" => "payment", "lang" => $this->language), "coreshop_checkout")?>" method="post">
+    <form action="<?=$this->url(array("action" => "payment", "lang" => $this->language), "coreshop_checkout", true)?>" method="post">
         <div class="panel panel-smart">
             <div class="panel-heading">
                 <h3 class="panel-title"><?=$this->translate("Payment")?></h3>
@@ -50,7 +50,7 @@
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <a href="<?=$this->url(array("lang" => $this->language, "action" => "shipping"), "coreshop_checkout")?>" class="btn btn-default pull-left">
+                        <a href="<?=$this->url(array("lang" => $this->language, "action" => "shipping"), "coreshop_checkout", true)?>" class="btn btn-default pull-left">
                             <?=$this->translate("Back")?>
                         </a>
 

@@ -24,6 +24,14 @@
         </document>
         <document>
             <type>snippet</type>
+            <action>terms</action>
+            <controller>snippet</controller>
+            <module>CoreShopTemplate</module>
+            <path>shop/snippet</path>
+            <key>terms</key>
+        </document>
+        <document>
+            <type>snippet</type>
             <action>main-menu</action>
             <controller>snippet</controller>
             <module>CoreShopTemplate</module>

@@ -17,7 +17,7 @@
     <div class="panel">
         <div class="panel-body">
             <!-- Form Starts -->
-            <form action="<?=$this->url(array("lang" => $this->language, "action" => "address"), "coreshop_checkout")?>" method="post">
+            <form action="<?=$this->url(array("lang" => $this->language, "action" => "address"), "coreshop_checkout", true)?>" method="post">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
@@ -85,7 +85,7 @@
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <a href="<?=$this->url(array("lang" => $this->language, "action" => "address", "redirect" => $this->url(array("lang" => $this->language, "action" => "address"))), "coreshop_user")?>" class="btn btn-default pull-left">
+                        <a href="<?=$this->url(array("lang" => $this->language, "action" => "address", "redirect" => $this->url(array("lang" => $this->language, "action" => "address"))), "coreshop_user", true)?>" class="btn btn-default pull-left">
                             <?=$this->translate("Add a new Address")?>
                         </a>
 
