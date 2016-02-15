@@ -1,3 +1,4 @@
+<?php
 /**
  * CoreShop
  *
@@ -11,21 +12,29 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.elements.abstract");
+namespace CoreShop\Model\Index\Config\Column\Mysql;
 
-pimcore.plugin.coreshop.indexes.elements.abstract = Class.create({
-    type: null,
-    class: null,
+use CoreShop\Model;
 
-    initialize: function() {
+trait HelperTrait {
+    /**
+     * @var
+     */
+    public $columnType;
 
-    },
-
-    getConfigDialog: function(record) {
-        this.window.show();
-    },
-
-    commitData: function() {
-        this.window.close();
+    /**
+     * @return mixed
+     */
+    public function getColumnType()
+    {
+        return $this->columnType;
     }
-});
+
+    /**
+     * @param mixed $columnType
+     */
+    public function setColumnType($columnType)
+    {
+        $this->columnType = $columnType;
+    }
+}

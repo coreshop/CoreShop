@@ -1,3 +1,4 @@
+<?php
 /**
  * CoreShop
  *
@@ -11,21 +12,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.elements.abstract");
+namespace CoreShop\Model\Index\Config;
 
-pimcore.plugin.coreshop.indexes.elements.abstract = Class.create({
-    type: null,
-    class: null,
+use CoreShop\Model;
 
-    initialize: function() {
+class Mysql extends Model\Index\Config {
 
-    },
-
-    getConfigDialog: function(record) {
-        this.window.show();
-    },
-
-    commitData: function() {
-        this.window.close();
-    }
-});
+}

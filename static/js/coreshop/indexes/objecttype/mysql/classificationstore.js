@@ -11,21 +11,8 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.elements.abstract");
+pimcore.registerNS("pimcore.plugin.coreshop.indexes.objecttype.mysql.classificationstore");
 
-pimcore.plugin.coreshop.indexes.elements.abstract = Class.create({
-    type: null,
-    class: null,
+pimcore.plugin.coreshop.indexes.objecttype.mysql.classificationstore = Class.create(pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract, {
 
-    initialize: function() {
-
-    },
-
-    getConfigDialog: function(record) {
-        this.window.show();
-    },
-
-    commitData: function() {
-        this.window.close();
-    }
 });

@@ -16,6 +16,7 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Index;
 use Pimcore\Controller\Action\Admin;
+use Pimcore\Model\Object;
 
 class CoreShop_Admin_IndexesController extends Admin
 {
@@ -104,6 +105,53 @@ class CoreShop_Admin_IndexesController extends Admin
         if ($data && $index instanceof Index) {
             $data = \Zend_Json::decode($this->getParam("data"));
 
+            $indexType = ucfirst($data['type']);
+
+            $configClass = "\\CoreShop\\Model\\Index\\Config\\" . ucfirst($indexType);
+
+            if(\Pimcore\Tool::classExists($configClass)) {
+                $config = new $configClass();
+
+                if($config instanceof \CoreShop\Model\Index\Config) {
+                    $columns = array();
+
+                    foreach ($data['config']['columns'] as $col) {
+                        $objectType = ucfirst($col['objectType']);
+
+                        $columnNamespace = "\\CoreShop\\Model\\Index\\Config\\Column\\";
+                        $columnClass = $columnNamespace . $indexType . "\\" . $objectType;
+
+                        if (!\Pimcore\Tool::classExists($columnClass)) {
+                            //Use fallback column
+                            throw new \Exception("No config implementation for column with type " . $objectType . " found");
+                        }
+
+                        $columnObject = new $columnClass();
+
+                        if($columnObject instanceof \CoreShop\Model\Index\Config\Column\AbstractColumn) {
+                            $columnObject->setValues($col);
+
+                            $columns[] = $columnObject;
+                        }
+                    }
+
+                    unset($data['config']['columns']);
+
+                    $config->setValues($data['config']);
+                    $config->setColumns($columns);
+
+                    $index->setConfig($config);
+                }
+                else {
+                    throw new \Exception("Config class for type " . $data['type'] . ' not instanceof \CoreShop\Model\Index\Config');
+                }
+                unset($data['config']);
+            }
+            else {
+                throw new \Exception("Config class for type " . $data['type'] . ' not found');
+            }
+
+
             $index->setValues($data);
             $index->save();
 
@@ -142,4 +190,162 @@ class CoreShop_Admin_IndexesController extends Admin
         $this->_helper->json($typesObject);
     }
 
+    public function getClassDefinitionForFieldSelectionAction()
+    {
+        $class = Object\ClassDefinition::getById(intval($this->getParam("id")));
+
+        /*$layoutDefinitions = $class->getLayoutDefinitions();
+
+        $class->setFieldDefinitions(null);
+
+        $result = array();
+
+        $result['objectColumns']['childs'] = $layoutDefinitions->getChilds();
+        $result['objectColumns']['nodeLabel'] = "object_columns";
+        $result['objectColumns']['nodeType'] = "object";
+
+        // array("id", "fullpath", "published", "creationDate", "modificationDate", "filename", "classname");
+        $systemColumnNames = Object\Concrete::$systemColumnNames;
+        $systemColumns = array();
+        foreach ($systemColumnNames as $systemColumn) {
+            $systemColumns[] = array("title" => $systemColumn, "name" => $systemColumn, "datatype" => "data", "fieldtype" => "system");
+        }
+        $result['systemColumns']['nodeLabel'] = "system_columns";
+        $result['systemColumns']['nodeType'] = "system";
+        $result['systemColumns']['childs'] = $systemColumns;
+
+        $list = new Object\Objectbrick\Definition\Listing();
+        $list = $list->load();
+
+        foreach ($list as $brickDefinition) {
+            $classDefs = $brickDefinition->getClassDefinitions();
+            if (!empty($classDefs)) {
+                foreach ($classDefs as $classDef) {
+                    if ($classDef['classname'] == $class->getId()) {
+                        $key = $brickDefinition->getKey();
+                        $result[$key]['nodeLabel'] = $key;
+                        $result[$key]['nodeType'] = "objectbricks";
+                        $result[$key]['childs'] = $brickDefinition->getLayoutdefinitions()->getChilds();
+                        break;
+                    }
+                }
+            }
+        }*/
+
+        $fields = $class->getFieldDefinitions();
+
+        $result = array(
+            "fields" => array(
+                "nodeLabel" => "fields",
+                "nodeType" => "object",
+                "childs" => array()
+            )
+        );
+
+        foreach($fields as $field) {
+            if($field instanceof Object\ClassDefinition\Data\Localizedfields) {
+                $localizedFields = $field->getFieldDefinitions();
+
+                foreach($localizedFields as $localizedField) {
+                    $result['fields']["childs"][] = $this->getFieldConfiguration($localizedField);
+
+                }
+            }
+            else if($field instanceof Object\ClassDefinition\Data\Objectbricks) {
+                $list = new Object\Objectbrick\Definition\Listing();
+                $list = $list->load();
+
+                foreach ($list as $brickDefinition) {
+                    if($brickDefinition instanceof Object\Objectbrick\Definition) {
+
+                        $key = $brickDefinition->getKey();
+                        $classDefs = $brickDefinition->getClassDefinitions();
+
+                        foreach($classDefs as $classDef) {
+                            if($classDef['classname'] === $class->getId()) {
+                                $fields = $brickDefinition->getFieldDefinitions();
+
+                                $result[$key] = array();
+                                $result[$key]['nodeLabel'] = $key;
+                                $result[$key]['class'] = $key;
+                                $result[$key]['nodeType'] = "objectbricks";
+                                $result[$key]['childs'] = array();
+
+                                foreach($fields as $field)
+                                {
+                                    $result[$key]['childs'][] = $this->getFieldConfiguration($field);
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else if($field instanceof Object\ClassDefinition\Data\Fieldcollections) {
+                //TODO: implement FieldCollection
+            }
+            else if($field instanceof Object\ClassDefinition\Data\Classificationstore) {
+                $list = new Object\Classificationstore\GroupConfig\Listing();
+
+                $allowedGroupIds = $field->getAllowedGroupIds();
+
+                if ($allowedGroupIds) {
+                    $list->setCondition("ID in (" . implode(",", $allowedGroupIds) . ")");
+                }
+
+                $list->load();
+
+                $groupConfigList = $list->getList();
+
+                foreach ($groupConfigList as $config) {
+                    $key = $config->getId() . ($config->getName() ? $config->getName() : "EMPTY");
+
+                    $result[$key] = $this->getClassificationStoreGroupConfiguration($config);
+                }
+            }
+            else {
+                $result['fields']["childs"][] = $this->getFieldConfiguration($field);
+            }
+        }
+
+        $this->_helper->json($result);
+    }
+
+    protected function getClassificationStoreGroupConfiguration(Object\Classificationstore\GroupConfig $config) {
+        $result = array();
+        $result['nodeLabel'] = $config->getName();
+        $result['nodeType'] = "classificationstore";
+        $result['childs'] = array();
+
+        foreach($config->getRelations() as $relation) {
+            if($relation instanceof Object\Classificationstore\KeyGroupRelation) {
+                $keyId = $relation->getKeyId();
+
+                $keyConfig = Object\Classificationstore\KeyConfig::getById($keyId);
+
+                $result['childs'][] = $this->getClassificationStoreFieldConfiguration($keyConfig);
+            }
+        }
+
+        return $result;
+    }
+
+    protected function getFieldConfiguration(Object\ClassDefinition\Data $field) {
+        return array(
+            "name" => $field->getName(),
+            "fieldtype" => $field->getFieldtype(),
+            "title" => $field->getTitle(),
+            "tooltip" => $field->getTooltip()
+        );
+    }
+
+    protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field) {
+        return array(
+            "name" => $field->getName(),
+            "fieldtype" => $field->getType(),
+            "title" => $field->getName(),
+            "tooltip" => $field->getDescription()
+        );
+    }
 }

@@ -36,7 +36,7 @@ class Index extends AbstractModel
     public $name;
 
     /**
-     * @var array
+     * @var \CoreShop\Model\Index\Config
      */
     public $config;
 
@@ -110,7 +110,7 @@ class Index extends AbstractModel
     }
 
     /**
-     * @return array
+     * @return \CoreShop\Model\Index\Config
      */
     public function getConfig()
     {
@@ -118,7 +118,7 @@ class Index extends AbstractModel
     }
 
     /**
-     * @param array $config
+     * @param \CoreShop\Model\Index\Config $config
      */
     public function setConfig($config)
     {

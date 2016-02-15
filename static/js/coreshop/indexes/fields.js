@@ -42,15 +42,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         if(this.selectionPanel) {
             data.columns = [];
             this.selectionPanel.getRootNode().eachChild(function(child) {
-                var obj = {};
-                obj.key = child.data.key;
-                obj.label = child.data.text;
-                obj.dataType = child.data.dataType;
-                obj.config = child.data.config;
-
-                if (child.data.width) {
-                    obj.width = child.data.width;
-                }
+                var obj = Ext.Object.merge(child.data, {}); //Removes unneeded nested data
 
                 data.columns.push(obj);
             }.bind(this));
@@ -66,18 +58,19 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
             if(this.config.hasOwnProperty("columns")) {
                 for (var i = 0; i < this.config.columns.length; i++) {
                     var nodeConf = this.config.columns[i];
-                    var child = {
-                        text: nodeConf.label,
-                        key: nodeConf.key,
-                        type: "data",
-                        dataType: nodeConf.dataType,
-                        leaf: true,
-                        iconCls: "pimcore_icon_" + nodeConf.dataType,
-                        config : nodeConf.config
-                    };
-                    if (nodeConf.width) {
-                        child.width = nodeConf.width;
-                    }
+                    var child = Ext.Object.merge(nodeConf,
+                        {
+                            text: nodeConf.name,
+                            key: nodeConf.key,
+                            dataType : nodeConf.dataType, //Used for icons
+                            type: "data",
+                            leaf: true,
+                            iconCls: "pimcore_icon_" + nodeConf.dataType,
+                            objectType : nodeConf.objectType,
+                            className : nodeConf.className
+                        }
+                    );
+
                     childs.push(child);
                 }
             }
@@ -173,24 +166,24 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     getConfigElement: function(record) {
         var element = null;
 
-        if(record.data.type) {
-            if(pimcore.plugin.coreshop.indexes.elements[this.data.type] && pimcore.plugin.coreshop.indexes.elements[this.data.type][record.data.type]) {
-                //Check if there is an dialog for index-type and data-type
-                element = new pimcore.plugin.coreshop.indexes.elements[this.data.type][record.data.type]();
-            }
-            else if (pimcore.plugin.coreshop.indexes.elements[this.data.type].default) {
-                //Check if there is an default dialog for index-type
-                element = new pimcore.plugin.coreshop.indexes.elements[this.data.type].default();
+        if(record.data.objectType) {
+            if(pimcore.plugin.coreshop.indexes.objecttype[this.data.type][record.data.objectType]) {
+                element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type][record.data.objectType]();
             }
         }
 
         return element;
     },
 
+    /*
+    *       FIELD-TREE
+    *
+    * */
+
     getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
-            this.classDefinitionTreePanel = this.getClassTree("/admin/class/get-class-definition-for-column-config", this.data.classId);
+            this.classDefinitionTreePanel = this.getClassTree("/plugin/CoreShop/admin_Indexes/get-class-definition-for-field-selection", this.data.classId);
         }
 
         return this.classDefinitionTreePanel;
@@ -198,8 +191,38 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
     getClassTree: function(url, classId) {
 
-        var classTreeHelper = new pimcore.object.helpers.classTree(false);
-        var tree = classTreeHelper.getClassTree(url, classId);
+        var tree = new Ext.tree.TreePanel({
+            title: t('class_definitions'),
+            region: "center",
+            //ddGroup: "columnconfigelement",
+            autoScroll: true,
+            rootVisible: false,
+            root: {
+                id: "0",
+                root: true,
+                text: t("base"),
+                allowDrag: false,
+                leaf: true,
+                isTarget: true
+            },
+            viewConfig: {
+                plugins: {
+                    ptype: 'treeviewdragdrop',
+                    enableDrag: true,
+                    enableDrop: false,
+                    ddGroup: "columnconfigelement"
+                }
+            }
+        });
+
+        Ext.Ajax.request({
+            url: url,
+            params: {
+                id: classId
+            },
+            success: this.initLayoutFields.bind(this, tree)
+        });
+
 
         tree.addListener("itemdblclick", function(tree, record, item, index, e, eOpts ) {
             if(!record.data.root && record.datatype != "layout"
@@ -218,5 +241,81 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         }.bind(this));
 
         return tree;
+    },
+
+    initLayoutFields : function(tree, response) {
+        var data = Ext.decode(response.responseText);
+
+        var keys = Object.keys(data);
+        for(var i = 0; i < keys.length; i++) {
+            if (data[keys[i]]) {
+                if (data[keys[i]].childs) {
+                    var text = t(data[keys[i]].nodeLabel);
+
+                    if(data[keys[i]].nodeType == "objectbricks") {
+                        text = ts(data[keys[i]].nodeLabel) + " " + t("columns");
+                    }
+
+                    if(data[keys[i]].nodeType == "classificationstore") {
+                        text = ts(data[keys[i]].nodeLabel) + " " + t("columns");
+                    }
+
+                    var baseNode = {
+                        type: "layout",
+                        allowDrag: false,
+                        iconCls: "pimcore_icon_" + data[keys[i]].nodeType,
+                        text: text
+                    };
+
+                    baseNode = tree.getRootNode().appendChild(baseNode);
+                    for (var j = 0; j < data[keys[i]].childs.length; j++) {
+                        var node = this.addDataChild.call(baseNode, data[keys[i]].childs[j].fieldtype, data[keys[i]].childs[j], data[keys[i]].nodeType, data[keys[i]].class);
+
+                        baseNode.appendChild(node);
+                    }
+                    if(data[keys[i]].nodeType == "object") {
+                        baseNode.expand();
+                    } else {
+                        baseNode.collapse();
+                    }
+                }
+            }
+        }
+    },
+
+
+    addDataChild: function (type, initData, objectType, className) {
+
+        if(type != "objectbricks" && !initData.invisible) {
+            var isLeaf = true;
+            var draggable = true;
+
+            var key = initData.name;
+
+            var newNode = {
+                text: key,
+                key: key,
+                type: "data",
+                layout: initData,
+                leaf: isLeaf,
+                allowDrag: draggable,
+                dataType: type,
+                iconCls: "pimcore_icon_" + type,
+                expanded: true,
+                objectType : objectType, //eg objectbrick, collectionstore or fieldcollection
+                className : className
+            };
+
+            newNode = this.appendChild(newNode);
+
+            if(this.rendered) {
+                this.expand();
+            }
+
+            return newNode;
+        } else {
+            return null;
+        }
+
     }
 });

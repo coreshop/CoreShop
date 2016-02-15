@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Index\Config\Column\Objectbricks;
 use CoreShop\Model\Product;
 
 class Brick extends AbstractGetter {
@@ -25,20 +26,15 @@ class Brick extends AbstractGetter {
      * @return mixed
      * @throws UnsupportedException
      */
-    public static function get(Product $object, $config = null) {
-        $brickContainerGetter = "get" . ucfirst($config['config']['brickfield']);
+    public static function get(Product $object, Objectbricks $config = null) {
+        $brickContainerGetter = "get" . ucfirst($config->getBrickField());
         $brickContainer = $object->$brickContainerGetter();
 
-        $key = explode("~", $config['key']);
-
-        $bricktype = $key[0];
-        $key = $key[1];
-
-        $brickGetter = "get" . ucfirst($bricktype);
+        $brickGetter = "get" . ucfirst($config->getClassName());
         $brick = $brickContainer->$brickGetter();
 
         if($brick) {
-            $fieldGetter = "get" . ucfirst($key);
+            $fieldGetter = "get" . ucfirst($config->getKey());
             return $brick->$fieldGetter();
         }
 

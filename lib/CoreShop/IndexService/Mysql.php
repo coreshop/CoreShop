@@ -19,6 +19,8 @@ use CoreShop\Model\Product;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Tool;
 
+use CoreShop\Model\Index\Config\Column\Mysql as Column;
+
 class Mysql extends AbstractWorker
 {
     /**
@@ -28,6 +30,8 @@ class Mysql extends AbstractWorker
 
     /**
      * Mysql constructor.
+     *
+     * @param Index $index
      */
     public function __construct(Index $index) {
         parent::__construct($index);
@@ -63,31 +67,18 @@ class Mysql extends AbstractWorker
         $columnsToDelete = $columns;
         $columnsToAdd = array();
 
-        //TODO: Load Configuration from anywhere (eg Configfile or Database)
         $columnConfig = $this->getColumnsConfiguration();
 
-        if($columnConfig) {
-            foreach($columnConfig as $column) {
-                if(!array_key_exists($column['config']['name'], $columns)) {
+        foreach($columnConfig as $column) {
+            if(!array_key_exists($column->getName(), $columns)) {
+                $doAdd = true;
 
-                    $doAdd = true;
-
-                    //TODO: Did not yet understood interpreter, maybe implement it anytime?
-                    /*if(!empty($column->interpreter)) {
-                        $interpreter = $column->interpreter;
-                        $interpreterObject = new $interpreter();
-                        if($interpreterObject instanceof OnlineShop_Framework_IndexService_RelationInterpreter) {
-                            $doAdd = false;
-                        }
-                    }*/
-
-                    if($doAdd) {
-                        $columnsToAdd[$column['config']['name']] = $column['config']['type'];
-                    }
+                if($doAdd) {
+                    $columnsToAdd[$column->getName()] = $column->getColumnType();
                 }
-
-                unset($columnsToDelete[$column['config']['name']]);
             }
+
+            unset($columnsToDelete[$column->getName()]);
         }
 
         foreach($columnsToDelete as $c)
@@ -190,37 +181,38 @@ class Mysql extends AbstractWorker
             foreach($columnConfig as $column) {
                 try {
                     $value = null;
+                    $getter = $column->getGetter();
 
-                    if(!empty($column['config']['getter']))
-                    {
-                        $getter = $column['config']['getter'];
+                    if($column instanceof Index\Config\Column\Objectbricks) {
+                        if(empty($getter)) {
+                            $getter = "Brick";
+                        }
+                    }
 
+                    if(!empty($getter)) {
                         $getterClass = "\\CoreShop\\IndexService\\Getter\\" . $getter;
 
                         if(Tool::classExists($getterClass)) {
                             $value = $getterClass::get($object, $column);
                         }
                     }
-                    else
-                    {
-                        $getter = "get" . ucfirst($column['key']);
+                    else {
+                        $getter = "get" . ucfirst($column->getKey());
 
-                        if(method_exists($object, $getter))
-                        {
-                            $value = $object->$getter($column['config']['locale']);
+                        if(method_exists($object, $getter)) {
+                            $value = $object->$getter();
                         }
                     }
 
-                    $data[$column['config']['name']] = $value;
-
-                    if(is_array($data[$column['config']['name']])) {
-                        $data[$column['config']['name']] = "," . implode($data[$column['config']['name']], ",") . ",";
+                    if(is_array($value)) {
+                        $value = "," . implode($value, ",") . ",";
                     }
+
+                    $data[$column->getName()] = $value;
 
                 } catch(\Exception $e) {
                     \Logger::err("Exception in CoreShopIndexService: " . $e->getMessage(), $e);
                 }
-
             }
 
             if($a) {
@@ -230,11 +222,13 @@ class Mysql extends AbstractWorker
             AbstractObject::setGetInheritedValues($b);
             AbstractObject::setHideUnpublished($hidePublishedMemory);
 
-            try {
-
+            try
+            {
                 $this->doInsertData($data);
 
-            } catch (\Exception $e) {
+            }
+            catch (\Exception $e)
+            {
                 \Logger::warn("Error during updating index table: " . $e);
             }
 
@@ -281,12 +275,10 @@ class Mysql extends AbstractWorker
     }
 
     /**
-     * @return array
+     * @return \CoreShop\Model\Index\Config
      */
     public function getColumnsConfiguration() {
-        $config = $this->index->getConfig();
-
-        return $config['columns'];
+        return $this->index->getConfig()->getColumns();
     }
 
     /**
