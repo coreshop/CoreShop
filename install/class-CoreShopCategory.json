@@ -1,6 +1,7 @@
 {
   "description":null,
   "parentClass":"CoreShop\\Model\\Category",
+  "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,
   "showVariants":false,
@@ -185,6 +186,48 @@
               }
             ],
             "locked":false
+          },
+          {
+            "fieldtype":"panel",
+            "labelWidth":100,
+            "layout":null,
+            "name":"Filter",
+            "type":null,
+            "region":null,
+            "title":"Filter",
+            "width":null,
+            "height":null,
+            "collapsible":false,
+            "collapsed":false,
+            "bodyStyle":"",
+            "datatype":"layout",
+            "permissions":null,
+            "childs":[
+              {
+                "fieldtype":"coreShopFilter",
+                "phpdocType":"CoreShop\\Model\\Product\\Filter",
+                "queryColumnType":"int(11)",
+                "columnType":"int(11)",
+                "options":null,
+                "width":"",
+                "defaultValue":null,
+                "name":"filterDefinition",
+                "title":"Filter",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              }
+            ],
+            "locked":null
           },
           {
             "fieldtype":"panel",

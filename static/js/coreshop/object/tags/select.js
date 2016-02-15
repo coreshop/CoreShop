@@ -14,6 +14,8 @@
 pimcore.registerNS("pimcore.plugin.coreshop.object.tags.select");
 pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
 
+    allowEmpty : false,
+
     initialize: function (data, fieldConfig) {
         this.data = data;
         this.fieldConfig = fieldConfig;
@@ -29,7 +31,33 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
             store = pimcore.globalmanager.get("coreshop_" + this.storeName);
         }
         else {
-            console.log("coreshop_" + this.storeName + " should be added as valid store");
+            throw "coreshop_" + this.storeName + " should be added as valid store";
+        }
+
+        var comboBoxStore = new Ext.data.Store({
+            proxy:      store.proxy,
+            reader:     store.reader
+        });
+
+        if(store.isLoaded()) {
+            comboBoxStore.add(store.getRange());
+
+            if(this.allowEmpty) {
+                comboBoxStore.insert(0, {
+                    name: t('empty'),
+                    id: 0
+                });
+            }
+        }
+        else {
+            comboBoxStore.load(function () {
+                if (this.allowEmpty) {
+                    comboBoxStore.insert(0, {
+                        name: t('empty'),
+                        id: 0
+                    });
+                }
+            }.bind(this));
         }
 
         var options = {
@@ -39,7 +67,7 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
             typeAhead: false,
             forceSelection: true,
             fieldLabel: this.fieldConfig.title,
-            store: store,
+            store: comboBoxStore,
             componentCls: "object_field",
             width: 250,
             labelWidth: 100,
@@ -51,7 +79,11 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
                 beforerender : function() {
                     if(!store.isLoaded() && !store.isLoading())
                         store.load();
-                }
+                },
+                select: function (comp, record, index) {
+                    if (comp.getValue() == 0 && this.allowEmpty)
+                        comp.setValue(null);
+                }.bind(this)
             }
         };
 

@@ -16,6 +16,7 @@ namespace CoreShop\IndexService;
 
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
+use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Tool;
 
 class Mysql extends AbstractWorker
@@ -132,11 +133,11 @@ class Mysql extends AbstractWorker
     {
         if($object->getDoIndex()) {
             $a = \Pimcore::inAdmin();
-            $b = \Pimcore\Model\Object\AbstractObject::doGetInheritedValues();
+            $b = AbstractObject::doGetInheritedValues();
             \Pimcore::unsetAdminMode();
-            \Pimcore\Model\Object\AbstractObject::setGetInheritedValues(true);
-            $hidePublishedMemory = \Pimcore\Model\Object\AbstractObject::doHideUnpublished();
-            \Pimcore\Model\Object\AbstractObject::setHideUnpublished(false);
+            AbstractObject::setGetInheritedValues(true);
+            $hidePublishedMemory = AbstractObject::doHideUnpublished();
+            AbstractObject::setHideUnpublished(false);
 
             $categories = $object->getCategories();
 
@@ -225,8 +226,9 @@ class Mysql extends AbstractWorker
             if($a) {
                 \Pimcore::setAdminMode();
             }
-            \Pimcore\Model\Object\AbstractObject::setGetInheritedValues($b);
-            \Pimcore\Model\Object\AbstractObject::setHideUnpublished($hidePublishedMemory);
+
+            AbstractObject::setGetInheritedValues($b);
+            AbstractObject::setHideUnpublished($hidePublishedMemory);
 
             try {
 

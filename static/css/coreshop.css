@@ -233,7 +233,7 @@
     background: url(/pimcore/static6/img/icon/table_relationship.png) left center no-repeat!important;
 }
 
-.coreshop_icon_product_filters {
+.coreshop_icon_product_filters, .pimcore_icon_coreShopFilter {
     background: url(/pimcore/static6/img/icon/sum.png) left center no-repeat!important;
 }
 
