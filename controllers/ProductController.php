@@ -68,6 +68,38 @@ class CoreShop_ProductController extends Action
         $category = CoreShopCategory::getById($id);
 
         if ($category instanceof CoreShopCategory) {
+            $this->view->params = $this->getAllParams();
+
+            $this->view->category = $category;
+
+            $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort), true);
+
+            $this->view->page = $page;
+            $this->view->sort = $sort;
+            $this->view->perPage = $perPage;
+            $this->view->type = $type;
+
+            $this->view->seo = array(
+                "image" => $category->getImage(),
+                "description" => $category->getMetaDescription() ? $category->getMetaDescription() : $category->getDescription()
+            );
+
+            $this->view->headTitle($category->getMetaTitle() ? $category->getMetaTitle() : $category->getName());
+        } else {
+            throw new CoreShop\Exception(sprintf('Category with id "%s" not found', $id));
+        }
+    }
+
+    public function listIndexAction() {
+        $id = $this->getParam("category");
+        $page = $this->getParam("page", 0);
+        $sort = $this->getParam("sort", "NAMEA");
+        $perPage = $this->getParam("perPage", 12);
+        $type = $this->getParam("type", "list");
+
+        $category = CoreShopCategory::getById($id);
+
+        if ($category instanceof CoreShopCategory) {
             //TODO: Load Filter from any configuration (eg: category or default settings)
 
             $indexService = \CoreShop\IndexService::getIndexService()->getWorker("default");
