@@ -80,7 +80,7 @@ class Multiselect extends AbstractCondition
     {
         $values = $params[$this->getField()];
 
-        if(empty($value)) {
+        if(empty($values)) {
             $values = $this->getPreSelect();
         }
 
@@ -98,7 +98,7 @@ class Multiselect extends AbstractCondition
             {
                 $condition .= "TRIM(`" . $this->getField() . "`) = " . $list->quote($value);
 
-                if( $c<count($values)-1)
+                if($c < count($values)-1)
                 {
                     $condition .= " OR ";
                 }

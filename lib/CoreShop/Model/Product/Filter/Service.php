@@ -41,13 +41,13 @@ class Service extends AbstractModel {
 
         if(is_array($filterObject->getFilters())) {
             foreach ($filterObject->getFilters() as $filter) {
-                $currentFilter = $filter->addCondition($filterObject, $list, $params, false);
+                $currentFilter = $filter->addCondition($filterObject, $list, $currentFilter, $params, false);
             }
         }
 
         if(is_array($filterObject->getPreConditions())) {
             foreach($filterObject->getPreConditions() as $filter) {
-                $currentFilter = $filter->addCondition($filterObject, $list, $params, true);
+                $currentFilter = $filter->addCondition($filterObject, $list, $currentFilter, $params, true);
             }
         }
 
