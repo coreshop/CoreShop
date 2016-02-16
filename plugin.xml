@@ -108,6 +108,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/objectbricks.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/classificationstore.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/localizedfields.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/class/CoreShopDimensionsTest.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/elements/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/elements/mysql/default.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/item.js</path>

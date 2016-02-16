@@ -118,15 +118,29 @@ class CoreShop_Admin_IndexesController extends Admin
                     foreach ($data['config']['columns'] as $col) {
                         $objectType = ucfirst($col['objectType']);
 
+                        if(!$col['key']) {
+                            continue;
+                        }
+
                         $columnNamespace = "\\CoreShop\\Model\\Index\\Config\\Column\\";
                         $columnClass = $columnNamespace . $indexType . "\\" . $objectType;
+                        $class = $columnClass;
 
-                        if (!\Pimcore\Tool::classExists($columnClass)) {
+                        $specialClass = $columnClass . "\\" . $col['key'];
+                        $brickClass = $columnClass . "\\" . $col['className'];
+
+                        if(\Pimcore\Tool::classExists($specialClass)) {
+                            $class = $specialClass;
+                        }
+                        else if(\Pimcore\Tool::classExists($brickClass)) {
+                            $class = $brickClass;
+                        }
+                        else if (!\Pimcore\Tool::classExists($columnClass)) {
                             //Use fallback column
                             throw new \Exception("No config implementation for column with type " . $objectType . " found");
                         }
 
-                        $columnObject = new $columnClass();
+                        $columnObject = new $class();
 
                         if($columnObject instanceof \CoreShop\Model\Index\Config\Column\AbstractColumn) {
                             $columnObject->setValues($col);
@@ -249,7 +263,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
                                 $result[$key] = array();
                                 $result[$key]['nodeLabel'] = $key;
-                                $result[$key]['class'] = $key;
+                                $result[$key]['className'] = $key;
                                 $result[$key]['nodeType'] = "objectbricks";
                                 $result[$key]['childs'] = array();
 

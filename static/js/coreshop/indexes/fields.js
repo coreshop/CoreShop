@@ -159,7 +159,17 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
         if(record.data.objectType) {
             if(pimcore.plugin.coreshop.indexes.objecttype[this.data.type][record.data.objectType]) {
-                element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type][record.data.objectType]();
+                //Check if there is any dialog for the key
+                if(pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field && pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field[record.data.key]) {
+                    element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field[record.data.key]();
+                }
+                //check if there is any dialog for the classname (eg. for special bricks)
+                else if(record.data.className && pimcore.plugin.coreshop.indexes.objecttype[this.data.type].class && record.data.className && pimcore.plugin.coreshop.indexes.objecttype[this.data.type].class[record.data.className]) {
+                    element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type].class[record.data.className]();
+                }
+                else {
+                    element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type][record.data.objectType]();
+                }
             }
         }
 
@@ -260,7 +270,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
                     baseNode = tree.getRootNode().appendChild(baseNode);
                     for (var j = 0; j < data[keys[i]].childs.length; j++) {
-                        var node = this.addDataChild.call(baseNode, data[keys[i]].childs[j].fieldtype, data[keys[i]].childs[j], data[keys[i]].nodeType, data[keys[i]].class);
+                        var node = this.addDataChild.call(baseNode, data[keys[i]].childs[j].fieldtype, data[keys[i]].childs[j], data[keys[i]].nodeType, data[keys[i]].className);
 
                         baseNode.appendChild(node);
                     }
@@ -293,7 +303,8 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                 dataType : type,
                 iconCls: "pimcore_icon_" + type,
                 expanded: true,
-                objectType : objectType
+                objectType : objectType,
+                className : className
             });
 
             newNode = this.appendChild(newNode);

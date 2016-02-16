@@ -11,20 +11,18 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.objecttype.mysql.objectbricks");
+pimcore.registerNS("pimcore.plugin.coreshop.indexes.objecttype.mysql.class.CoreShopDimensionTest");
 
-pimcore.plugin.coreshop.indexes.objecttype.mysql.objectbricks = Class.create(pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract, {
+pimcore.plugin.coreshop.indexes.objecttype.mysql.class.CoreShopDimensionTest = Class.create(pimcore.plugin.coreshop.indexes.objecttype.mysql.objectbricks, {
     getObjectTypeItems : function(record) {
-        var fields = pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract.prototype.getObjectTypeItems.call(this, record);
+        var fields = pimcore.plugin.coreshop.indexes.objecttype.mysql.objectbricks.prototype.getObjectTypeItems.call(this, record);
 
-        //TODO: Make combobox and query ClassDefinition
-        //TODO: Brickfield would be needed in every Index-Type: Maybe include some helper js?
         fields.push(new Ext.form.TextField({
-            fieldLabel : t('coreshop_index_field_brickfield'),
-            name : 'brickField',
+            fieldLabel : t('coreshop_index_field_brickfield2'),
+            name : 'brickField2',
             length : 255,
             width : 200,
-            value : record.data.brickField
+            value : record.data.brickField2
         }));
 
         return fields;
