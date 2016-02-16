@@ -117,14 +117,7 @@ class TaxRule extends AbstractModel
      */
     public function setTaxRuleGroupId($taxRuleGroupId)
     {
-        $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroupId);
-
-        if (!$taxRuleGroup instanceof TaxRuleGroup) {
-            throw new \Exception("TaxRuleGroup with ID '$taxRuleGroupId' not found");
-        }
-
         $this->taxRuleGroupId = $taxRuleGroupId;
-        $this->taxRuleGroup = $taxRuleGroup;
     }
 
     /**
@@ -132,6 +125,10 @@ class TaxRule extends AbstractModel
      */
     public function getTaxRuleGroup()
     {
+        if(!$this->taxRuleGroup instanceof TaxRuleGroup) {
+            $this->taxRuleGroup = TaxRuleGroup::getById($this->taxRuleGroupId);
+        }
+
         return $this->taxRuleGroup;
     }
 
@@ -141,10 +138,6 @@ class TaxRule extends AbstractModel
      */
     public function setTaxRuleGroup($taxRuleGroup)
     {
-        if (is_int($taxRuleGroup)) {
-            $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroup);
-        }
-
         if (!$taxRuleGroup instanceof TaxRuleGroup) {
             throw new \Exception("\$taxRuleGroup must be instance of TaxRuleGroup");
         }
@@ -167,14 +160,7 @@ class TaxRule extends AbstractModel
      */
     public function setCountryId($countryId)
     {
-        $country = Country::getById($countryId);
-
-        if (!$country instanceof Country) {
-            throw new \Exception("Country with ID '$countryId' not found");
-        }
-
         $this->countryId = $countryId;
-        $this->country = $country;
     }
 
     /**
@@ -182,6 +168,10 @@ class TaxRule extends AbstractModel
      */
     public function getCountry()
     {
+        if(!$this->country instanceof Country) {
+            $this->country = Country::getById($this->countryId);
+        }
+
         return $this->country;
     }
 
@@ -191,10 +181,6 @@ class TaxRule extends AbstractModel
      */
     public function setCountry($country)
     {
-        if (is_int($country)) {
-            $country = Country::getById($country);
-        }
-
         if (!$country instanceof Country) {
             throw new \Exception("\$country must be instance of Country");
         }
@@ -217,14 +203,7 @@ class TaxRule extends AbstractModel
      */
     public function setTaxId($taxId)
     {
-        $tax = Tax::getById($taxId);
-
-        if (!$tax instanceof Tax) {
-            throw new \Exception("Tax with ID '$taxId' not found");
-        }
-
         $this->taxId = $taxId;
-        $this->tax = $tax;
     }
 
     /**
@@ -232,6 +211,10 @@ class TaxRule extends AbstractModel
      */
     public function getTax()
     {
+        if(!$this->tax instanceof Tax) {
+            $this->tax = Tax::getById($this->taxId);
+        }
+
         return $this->tax;
     }
 
@@ -241,10 +224,6 @@ class TaxRule extends AbstractModel
      */
     public function setTax($tax)
     {
-        if (is_int($tax)) {
-            $tax = Tax::getById($tax);
-        }
-
         if (!$tax instanceof Currency) {
             throw new \Exception("\$tax must be instance of Tax");
         }

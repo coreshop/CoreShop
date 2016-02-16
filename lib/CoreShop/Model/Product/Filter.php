@@ -79,9 +79,14 @@ class Filter extends AbstractModel
     public $filters;
 
     /**
-     * @var Index $index
+     * @var int $index
      */
     public $index;
+
+    /**
+     * @var Index $indexObject
+     */
+    public $indexObject;
 
     /**
      * get Filter by ID
@@ -221,10 +226,10 @@ class Filter extends AbstractModel
      */
     public function getIndex()
     {
-        if(!$this->index instanceof Index)
-            $this->index = Index::getById($this->index);
+        if(!$this->indexObject instanceof Index)
+            $this->indexObject = Index::getById($this->index);
 
-        return $this->index;
+        return $this->indexObject;
     }
 
     /**
@@ -233,7 +238,7 @@ class Filter extends AbstractModel
     public function setIndex($index)
     {
         if(!$index instanceof Index)
-            $index = Index::getById($index);
+            $this->indexObject = Index::getById($index);
 
         $this->index = $index;
     }

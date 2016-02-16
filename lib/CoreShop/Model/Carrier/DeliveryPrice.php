@@ -153,23 +153,19 @@ class DeliveryPrice extends AbstractModel
      */
     public function setRangeId($rangeId)
     {
-        $range = AbstractRange::getById($rangeId, $this->getRangeType());
-
-        if (!$range instanceof AbstractRange) {
-            $this->rangeId = null;
-            $this->range = null;
-        } else {
-            $this->rangeId = $rangeId;
-            $this->range = $range;
-        }
+        $this->rangeId = $rangeId;
     }
 
 
     /**
-     * @return Zone
+     * @return AbstractRange
      */
     public function getRange()
     {
+        if(!$this->range instanceof AbstractRange) {
+            $this->range = AbstractRange::getById($this->rangeId, $this->getRangeType());
+        }
+
         return $this->range;
     }
 
@@ -179,10 +175,6 @@ class DeliveryPrice extends AbstractModel
      */
     public function setRange($range)
     {
-        if (is_int($range)) {
-            $range = AbstractRange::getById($range, $this->getRangeType());
-        }
-
         if (!$range instanceof AbstractRange) {
             throw new \Exception("\$zone must be instance of Zone");
         }
@@ -229,6 +221,10 @@ class DeliveryPrice extends AbstractModel
      */
     public function getZone()
     {
+        if(!$this->zone instanceof Zone) {
+            $this->zone = Zone::getById($this->zoneId);
+        }
+
         return $this->zone;
     }
 
@@ -238,10 +234,6 @@ class DeliveryPrice extends AbstractModel
      */
     public function setZone($zone)
     {
-        if (is_int($zone)) {
-            $zone = Zone::getById($zone);
-        }
-
         if (!$zone instanceof Zone) {
             throw new \Exception("\$zone must be instance of Zone");
         }
@@ -264,15 +256,7 @@ class DeliveryPrice extends AbstractModel
      */
     public function setZoneId($zoneId)
     {
-        $zone = Zone::getById($zoneId);
-
-        if (!$zone instanceof Zone) {
-            $this->zoneId = null;
-            $this->zone = null;
-        } else {
-            $this->zoneId = $zoneId;
-            $this->zone = $zone;
-        }
+        $this->zoneId = $zoneId;
     }
 
     /**
@@ -280,7 +264,11 @@ class DeliveryPrice extends AbstractModel
      */
     public function getCarrier()
     {
-        return $this->zone;
+        if(!$this->carrier instanceof Carrier) {
+            $this->carrier = Carrier::getById($this->carrierId);
+        }
+
+        return $this->carrier;
     }
 
     /**
@@ -289,10 +277,6 @@ class DeliveryPrice extends AbstractModel
      */
     public function setCarrier($carrier)
     {
-        if (is_int($carrier)) {
-            $carrier = Carrier::getById($carrier);
-        }
-
         if (!$carrier instanceof Carrier) {
             throw new \Exception("\$carrier must be instance of Carrier");
         }
@@ -315,14 +299,6 @@ class DeliveryPrice extends AbstractModel
      */
     public function setCarrierId($carrierId)
     {
-        $carrier = Carrier::getById($carrierId);
-
-        if (!$carrier instanceof Carrier) {
-            $this->carrierId = null;
-            $this->carrier = null;
-        } else {
-            $this->carrierId = $carrierId;
-            $this->carrier = $carrier;
-        }
+        $this->carrierId = $carrierId;
     }
 }

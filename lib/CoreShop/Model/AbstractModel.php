@@ -197,19 +197,21 @@ class AbstractModel extends Model\AbstractModel
     /**
      * @return array
      */
-    /*public function __sleep() {
+    public function __sleep() {
         $vars = parent::__sleep();
-        $blockedVars = array("localizedValues", "localizedFields");
-        $finalVars = array();
+        $returnVars = array();
+        $values = $this->getObjectVars();
 
-        foreach ($vars as $key) {
-            if (!in_array($key, $blockedVars)) {
-                $finalVars[] = $key;
+        foreach($vars as $key) {
+            $value = $values[$key];
+
+            if(!$value instanceof AbstractModel) {
+                $returnVars[] = $key;
             }
         }
 
-        return $finalVars;
-    }*/
+        return $returnVars;
+    }
 
     public function __wakeup()
     {

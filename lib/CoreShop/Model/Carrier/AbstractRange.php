@@ -188,6 +188,10 @@ class AbstractRange extends AbstractModel
      */
     public function getCarrier()
     {
+        if(!$this->carrier instanceof Carrier) {
+            $this->carrier = Carrier::getById($this->carrierId);
+        }
+
         return $this->carrier;
     }
 
@@ -197,10 +201,6 @@ class AbstractRange extends AbstractModel
      */
     public function setCarrier($carrier)
     {
-        if (is_int($carrier)) {
-            $carrier = Carrier::getById($carrier);
-        }
-
         if (!$carrier instanceof Carrier) {
             throw new \Exception("\$carrier must be instance of Carrier");
         }
@@ -223,15 +223,7 @@ class AbstractRange extends AbstractModel
      */
     public function setCarrierID($carrierId)
     {
-        $carrier = Carrier::getById($carrierId);
-
-        if (!$carrier instanceof Carrier) {
-            $this->carrier = null;
-            $this->carrierId = null;
-        } else {
-            $this->carrierId = $carrierId;
-            $this->carrier = $carrier;
-        }
+        $this->carrierId = $carrierId;
     }
 
     /**

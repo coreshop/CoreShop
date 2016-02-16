@@ -680,14 +680,7 @@ class Carrier extends AbstractModel
      */
     public function setTaxRuleGroupId($taxRuleGroupId)
     {
-        $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroupId);
-
-        if (!$taxRuleGroup instanceof TaxRuleGroup) {
-            return;
-        }
-
         $this->taxRuleGroupId = $taxRuleGroupId;
-        $this->taxRuleGroup = $taxRuleGroup;
     }
 
     /**
@@ -695,6 +688,10 @@ class Carrier extends AbstractModel
      */
     public function getTaxRuleGroup()
     {
+        if(!$this->taxRuleGroup instanceof TaxRuleGroup) {
+            $this->taxRuleGroup = TaxRuleGroup::getById($this->taxRuleGroupId);
+        }
+
         return $this->taxRuleGroup;
     }
 
@@ -704,10 +701,6 @@ class Carrier extends AbstractModel
      */
     public function setTaxRuleGroup($taxRuleGroup)
     {
-        if (is_int($taxRuleGroup)) {
-            $taxRuleGroup = TaxRuleGroup::getById($taxRuleGroup);
-        }
-
         if (!$taxRuleGroup instanceof TaxRuleGroup) {
             throw new \Exception("\$taxRuleGroup must be instance of TaxRuleGroup");
         }

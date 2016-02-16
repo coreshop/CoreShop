@@ -14,6 +14,8 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Tool;
+
 class Country extends AbstractModel
 {
 
@@ -183,8 +185,12 @@ class Country extends AbstractModel
      */
     public function getCurrency()
     {
-        if($this->getUseStoreCurrency()) {
-            return Currency::getById(Configuration::get("SYSTEM.BASE.CURRENCY"));
+        if ($this->getUseStoreCurrency()) {
+            return Tool::getBaseCurrency();
+        }
+
+        if(!$this->currency instanceof Currency) {
+            $this->currency = Currency::getById($this->currencyId);
         }
 
         return $this->currency;
@@ -196,10 +202,6 @@ class Country extends AbstractModel
      */
     public function setCurrency($currency)
     {
-        if (is_int($currency)) {
-            $currency = Currency::getById($currency);
-        }
-
         if (!$currency instanceof Currency) {
             throw new \Exception("\$currency must be instance of Currency");
         }
@@ -222,16 +224,6 @@ class Country extends AbstractModel
      */
     public function setCurrencyId($currencyId)
     {
-        if(is_int(intval($currencyId))) {
-            $currency = Currency::getById($currencyId);
-
-            if (!$currency instanceof Currency) {
-                return;
-            }
-
-            $this->currency = $currency;
-        }
-
         $this->currencyId = $currencyId;
     }
 
@@ -240,6 +232,10 @@ class Country extends AbstractModel
      */
     public function getZone()
     {
+        if(!$this->zone instanceof Zone) {
+            $this->zone = Zone::getById($this->zoneId);
+        }
+
         return $this->zone;
     }
 
@@ -249,10 +245,6 @@ class Country extends AbstractModel
      */
     public function setZone($zone)
     {
-        if (is_int($zone)) {
-            $zone = Zone::getById($zone);
-        }
-
         if (!$zone instanceof Zone) {
             throw new \Exception("\$zone must be instance of Zone");
         }
@@ -275,15 +267,7 @@ class Country extends AbstractModel
      */
     public function setZoneId($zoneId)
     {
-        $zone = Zone::getById($zoneId);
-
-        if (!$zone instanceof Zone) {
-            $this->zoneId = null;
-            $this->zone = null;
-        } else {
-            $this->zoneId = $zoneId;
-            $this->zone = $zone;
-        }
+        $this->zoneId = $zoneId;
     }
 
     /**
