@@ -16,6 +16,7 @@ namespace CoreShop\IndexService;
 
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
+use CoreShop\Plugin;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Tool;
 
@@ -196,10 +197,20 @@ class Mysql extends AbstractWorker
                     }
 
                     if(!empty($getter)) {
-                        $getterClass = "\\CoreShop\\IndexService\\Getter\\" . $getter;
+                        $namespaces = Plugin::getOverwriteNamespaces();
 
-                        if(Tool::classExists($getterClass)) {
-                            $value = $getterClass::get($object, $column);
+                        $class = null;
+
+                        foreach($namespaces as $namespace) {
+                            $getterClass = "\\$namespace\\IndexService\\Getter\\" . $getter;
+
+                            if(Tool::classExists($getterClass)) {
+                                $class = $getterClass;
+                            }
+                        }
+
+                        if(Tool::classExists($class)) {
+                            $value = $class::get($object, $column);
                         }
                     }
                     else {
