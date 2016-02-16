@@ -19,6 +19,23 @@ pimcore.plugin.coreshop.filters.conditions.multiselect = Class.create(pimcore.pl
 
     getItems : function()
     {
-        return [];
+        return [
+            {
+                xtype: "combo",
+                fieldLabel: t('coreshop_product_filters_values'),
+                name: "preSelects",
+                width: 400,
+                store: this.valueStore,
+                displayField : 'key',
+                multiSelect:true,
+                valueField : 'value',
+                triggerAction: "all",
+                typeAhead: false,
+                editable: false,
+                forceSelection: true,
+                queryMode: "local",
+                value : this.data.preSelects
+            }
+        ];
     }
 });
