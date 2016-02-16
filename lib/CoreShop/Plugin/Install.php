@@ -415,6 +415,7 @@ class Install
 
             if (array_key_exists("documents", $config)) {
                 $validLanguages = explode(",", \Pimcore\Config::getSystemConfig()->general->validLanguages);
+                $languagesDone = array();
 
                 foreach ($validLanguages as $language) {
                     $languageDocument = Document::getByPath("/" . $language);
@@ -492,9 +493,23 @@ class Install
                                     }
                                 }
                             }
+
+                            //Link translations
+                            foreach($languagesDone as $doneLanguage) {
+                                $translatedDocument = Document::getByPath("/" . $doneLanguage . "/" . $doc['path'] . "/" . $doc['key']);
+
+                                if($translatedDocument) {
+                                    $service = new \Pimcore\Model\Document\Service();
+
+                                    $service->addTranslation($document, $translatedDocument, $doneLanguage);
+                                }
+                            }
                         }
                     }
+
+                    $languagesDone[] = $language;
                 }
+
             }
         }
     }
