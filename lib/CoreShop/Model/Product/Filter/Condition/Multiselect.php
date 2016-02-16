@@ -84,7 +84,7 @@ class Multiselect extends AbstractCondition
             $values = $this->getPreSelect();
         }
 
-        if($value === Filter\Service::EMPTY_STRING) {
+        if($values === Filter\Service::EMPTY_STRING) {
             $values = null;
         }
 
