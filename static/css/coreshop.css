@@ -252,6 +252,11 @@
 .coreshop_product_filters_icon_condition_select {
     background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
 }
+
+.coreshop_product_filters_icon_condition_multiselect {
+    background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
+}
+
 .coreshop_product_filters_icon_condition_range {
     background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
 }

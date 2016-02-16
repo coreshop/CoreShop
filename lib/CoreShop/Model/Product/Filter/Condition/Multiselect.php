@@ -25,16 +25,24 @@ class Multiselect extends AbstractCondition
     public $type = "multiselect";
 
     /**
-     * add Condition to Productlist
-     *
-     * @param Filter $filter
-     * @param Listing $list
-     * @param $params
-     * @param bool $isPrecondition
+     * @var mixed
+     */
+    public $preSelects;
+
+    /**
      * @return mixed
      */
-    public function addCondition(Filter $filter, Listing $list, $params, $isPrecondition = false) {
+    public function getPreSelects()
+    {
+        return $this->preSelects;
+    }
 
+    /**
+     * @param mixed $preSelects
+     */
+    public function setPreSelects($preSelects)
+    {
+        $this->preSelects = $preSelects;
     }
 
     /**
@@ -47,5 +55,58 @@ class Multiselect extends AbstractCondition
      */
     public function render(Filter $filter, Listing $list, $currentFilter) {
 
+        $rawValues = $list->getGroupByValues($this->getField(), true);
+        $script = $this->getViewScript($filter, $list, $currentFilter);
+
+        return $this->getView()->partial($script, array(
+            "label" => $this->getLabel(),
+            "currentValues" => $currentFilter[$this->getField()],
+            "values" => array_values($rawValues),
+            "fieldname" => $this->getField()
+        ));
     }
+
+    /**
+     * add Condition to Productlist
+     *
+     * @param Filter $filter
+     * @param Listing $list
+     * @param $params
+     * @param bool $isPrecondition
+     * @return mixed
+     */
+    public function addCondition(Filter $filter, Listing $list, $params, $isPrecondition = false) {
+
+        $values = $params[$this->getField()];
+        if($isPrecondition && empty($values)) {
+            $values = $this->getPreSelects();
+        }
+
+        if($values == Filter\Service::EMPTY_STRING) {
+            $values = null;
+        }
+
+        if(!empty($values)) {
+
+            $fieldName = $isPrecondition ? "PRECONDITION_" . $this->getField() : $this->getField();
+
+            $condition = "(";
+
+            foreach( $values as $c => $value)
+            {
+                $condition .= "TRIM(`" . $this->getField() . "`) = " . $list->quote($value);
+
+                if( $c<count($values)-1)
+                {
+                    $condition .= " OR ";
+                }
+            }
+
+            $condition .= ")";
+
+            $list->addCondition($condition, $fieldName);
+
+        }
+    }
+
 }
