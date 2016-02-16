@@ -79,11 +79,7 @@ class Range extends AbstractCondition
     public function render(Filter $filter, Listing $list, $currentFilter) {
 
         $rawValues = $list->getGroupByValues($this->getField(), true);
-        $script = $this->getType() . ".php";
-
-        if($this->getView()->getScriptPath($this->getField() . ".php")) {
-            $script = $this->getField() . ".php";
-        }
+        $script = $this->getViewScript($filter, $list, $currentFilter);
 
         return $this->getView()->partial($script, array(
             "label" => $this->getLabel(),

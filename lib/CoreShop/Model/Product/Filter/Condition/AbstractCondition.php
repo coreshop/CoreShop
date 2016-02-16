@@ -92,11 +92,7 @@ abstract class AbstractCondition {
      */
     public function render(Filter $filter, Listing $list, $currentFilter) {
         $rawValues = $list->getGroupByValues($this->getField(), true);
-        $script = $this->getType() . ".php";
-
-        if($this->getView()->getScriptPath($this->getField() . ".php")) {
-            $script = $this->getField() . ".php";
-        }
+        $script = $this->getViewScript($filter, $list, $currentFilter);
 
         return $this->getView()->partial($script, array(
             "label" => $this->getLabel(),
@@ -104,6 +100,23 @@ abstract class AbstractCondition {
             "values" => array_values($rawValues),
             "fieldname" => $this->getField()
         ));
+    }
+
+    /**
+     * @param Filter $filter
+     * @param Listing $list
+     * @param $currentFilter
+     *
+     * @return string
+     */
+    protected function getViewScript(Filter $filter, Listing $list, $currentFilter) {
+        $script = $this->getType() . ".php";
+
+        if($this->getView()->getScriptPath($this->getField() . ".php")) {
+            $script = $this->getField() . ".php";
+        }
+
+        return $script;
     }
 
     /**
