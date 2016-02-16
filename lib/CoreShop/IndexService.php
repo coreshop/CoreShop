@@ -76,7 +76,7 @@ class IndexService
         $this->worker = array();
 
         foreach($indexes as $index) {
-            $class = "\\CoreShop\\IndexService\\" . $index->getType();
+            $class = "\\CoreShop\\IndexService\\" . ucfirst($index->getType());
 
             if(PimTool::classExists($class)) {
                 $this->worker[] = new $class($index);
