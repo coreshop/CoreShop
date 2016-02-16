@@ -71,18 +71,20 @@ class Multiselect extends AbstractCondition
      *
      * @param Filter $filter
      * @param Listing $list
+     * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
-     * @return mixed
+     * @return array $currentFilter
      */
-    public function addCondition(Filter $filter, Listing $list, $params, $isPrecondition = false) {
-
+    public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
+    {
         $values = $params[$this->getField()];
-        if($isPrecondition && empty($values)) {
-            $values = $this->getPreSelects();
+
+        if(empty($value)) {
+            $values = $this->getPreSelect();
         }
 
-        if($values == Filter\Service::EMPTY_STRING) {
+        if($value === Filter\Service::EMPTY_STRING) {
             $values = null;
         }
 
