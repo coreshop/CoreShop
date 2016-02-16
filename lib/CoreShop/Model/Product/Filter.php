@@ -24,7 +24,7 @@ class Filter extends AbstractModel
      * possible types of a condition
      * @var array
      */
-    public static $availableConditions = array("select", "range", "range");
+    public static $availableConditions = array("select", "multiselect", "range");
 
     /**
      * @param $condition
