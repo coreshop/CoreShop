@@ -176,10 +176,10 @@ class CoreShop_Admin_FilterController extends Admin
     }
 
     public function getFieldsForIndexAction() {
-        $index = $this->getParam("index");
-        $index = \CoreShop\Model\Index::getById($index);
+        $indexParam = $this->getParam("index");
+        $index = \CoreShop\Model\Index::getById($indexParam);
 
-        if($index instanceof $index) {
+        if($index instanceof $indexParam) {
             $columns = array();
             $config = $index->getConfig();
 
@@ -198,10 +198,10 @@ class CoreShop_Admin_FilterController extends Admin
     }
 
     public function getValuesForFilterFieldAction() {
-        $index = $this->getParam("index");
-        $index = \CoreShop\Model\Index::getById($index);
+        $indexParam = $this->getParam("index");
+        $index = \CoreShop\Model\Index::getById($indexParam);
 
-        if($index instanceof $index) {
+        if($index instanceof $indexParam) {
             $list = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
             $productList = $list->getProductList();
 
