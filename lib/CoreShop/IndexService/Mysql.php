@@ -106,6 +106,16 @@ class Mysql extends AbstractWorker
     }
 
     /**
+     * deletes necessary index structuers (like database tables)
+     *
+     * @return mixed
+     */
+    public function deleteIndexStructures() {
+        $this->db->query("DROP TABLE IF EXISTS `" . $this->getTablename() . "`");
+        $this->db->query("DROP TABLE IF EXISTS `" . $this->getRelationTablename() . "`");
+    }
+
+    /**
      * Delete Product from index
      *
      * @param Product $object

@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\IndexService;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Model\Document;
@@ -59,6 +60,19 @@ class Index extends AbstractModel
         $list = new Index\Listing();
 
         return $list->load();
+    }
+
+    /**
+     * delete index and workers index structures
+     */
+    public function delete() {
+        $worker = IndexService::getIndexService()->getWorker($this->getName());
+
+        if($worker instanceof IndexService\AbstractWorker) {
+            $worker->deleteIndexStructures();
+        }
+
+        $this->getDao()->delete();
     }
 
     /**

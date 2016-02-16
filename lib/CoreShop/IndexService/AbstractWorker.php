@@ -41,6 +41,13 @@ abstract class AbstractWorker
     abstract public function createOrUpdateIndexStructures();
 
     /**
+     * deletes necessary index structuers (like database tables)
+     *
+     * @return mixed
+     */
+    abstract public function deleteIndexStructures();
+
+    /**
      * deletes given element from index
      *
      * @param Product $object
