@@ -73,6 +73,36 @@ class Mysql extends AbstractListing
     protected $orderByPrice = false;
 
     /**
+     * @var string[]
+     */
+    protected $conditions = array();
+
+    /**
+     * @var string[]
+     */
+    protected $relationConditions = array();
+
+    /**
+     * @var string[][]
+     */
+    protected $queryConditions = array();
+
+    /**
+     * @var string[][]
+     */
+    protected $queryJoins = array();
+
+    /**
+     * @var float
+     */
+    protected $conditionPriceFrom = null;
+
+    /**
+     * @var float
+     */
+    protected $conditionPriceTo = null;
+
+    /**
      * Mysql constructor.
      */
     public function __construct(Index $index) {
@@ -90,31 +120,6 @@ class Mysql extends AbstractListing
         }
         return $this->products;
     }
-
-    /**
-     * @var string[]
-     */
-    protected $conditions = array();
-
-    /**
-     * @var string[]
-     */
-    protected $relationConditions = array();
-
-    /**
-     * @var string[][]
-     */
-    protected $queryConditions = array();
-
-    /**
-     * @var float
-     */
-    protected $conditionPriceFrom = null;
-
-    /**
-     * @var float
-     */
-    protected $conditionPriceTo = null;
 
     /**
      * @param string $condition
@@ -152,6 +157,7 @@ class Mysql extends AbstractListing
         $this->conditions = array();
         $this->relationConditions = array();
         $this->queryConditions = array();
+        $this->queryJoins = array();
         $this->conditionPriceFrom = null;
         $this->conditionPriceTo = null;
         $this->products = null;
@@ -170,6 +176,20 @@ class Mysql extends AbstractListing
     {
         $this->products = null;
         $this->queryConditions[$fieldname][] = $condition;
+    }
+
+
+    /**
+     * Adds query joins
+     * Use the joinTableAlias to catch joinTable in your custom condition!
+     *
+     * @param $table
+     * @param array $condition (type = 'LEFT|RIGHT|INNER|OUTER', joinTableAlias = xy)
+     */
+    public function addJoin($table, $condition = array())
+    {
+        $this->products = null;
+        $this->queryJoins[$table] = $condition;
     }
 
     /**
@@ -550,12 +570,36 @@ class Mysql extends AbstractListing
         return $this->resource->quote($value);
     }
 
+
     /**
      * @return string
-     * @todo: load form any configuration?!
      */
     public function getJoins() {
-        return "";
+
+        if( empty( $this->queryJoins ) )
+        {
+            return "";
+        }
+
+        $query = '';
+
+        foreach(  $this->queryJoins as $table => $tableJoins)
+        {
+            $joinType = isset( $tableJoins['type'] ) ? ' ' . $tableJoins['type'] : ' LEFT';
+
+            if( empty( $tableJoins['joinTableAlias']))
+            {
+                continue;
+            }
+
+            $joinName = $tableJoins['joinTableAlias'];
+
+            $query .= $joinType . ' JOIN ' . $table . ' as ' . $joinName. ' on `' . $joinName . '`.o_id = a.o_id ';
+
+        }
+
+        return $query;
+
     }
 
     /**

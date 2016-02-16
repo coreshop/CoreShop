@@ -110,6 +110,15 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
 
 
     /**
+     * Adds join to product list
+     *
+     * @param string $table
+     * @param string $query
+     */
+    public abstract function addJoin($table, $query);
+
+
+    /**
      * Resets all conditions of product list
      */
     public abstract function resetConditions();
