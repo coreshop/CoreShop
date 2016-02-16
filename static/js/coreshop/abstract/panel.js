@@ -206,12 +206,21 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                 if(pimcore.globalmanager.exists("coreshop_" + this.type)) {
                     pimcore.globalmanager.get("coreshop_" + this.type).load();
                 }
+
+                if(this.panels[this.getPanelKey(record)]) {
+                    this.panels[this.getPanelKey(record)].destroy();
+                }
+                
             }.bind(this)
         });
     },
 
+    getPanelKey : function(record) {
+        return this.layoutId + record.id;
+    },
+
     openItem: function (record) {
-        var panelKey = this.layoutId + record.id;
+        var panelKey = this.getPanelKey(record);
 
         if(this.panels[panelKey])
         {

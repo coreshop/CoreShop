@@ -41,6 +41,12 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         this.parentPanel.getTabPanel().setActiveItem(this.panel);
     },
 
+    destroy : function() {
+        if(this.panel) {
+            this.panel.destroy();
+        }
+    },
+
     getPanel: function() {
         panel = new Ext.panel.Panel({
             title: this.getTitleText(),
@@ -92,6 +98,10 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
                     var res = Ext.decode(response.responseText);
                     if (res.success) {
                         pimcore.helpers.showNotification(t("success"), t("coreshop_save_success"), "success");
+
+                        this.data = res.data;
+
+                        this.panel.setTitle(this.getTitleText());
                     } else {
                         pimcore.helpers.showNotification(t("error"), t("coreshop_save_error"),
                             "error", res.message);
