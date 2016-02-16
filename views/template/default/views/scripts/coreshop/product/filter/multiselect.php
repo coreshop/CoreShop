@@ -7,7 +7,7 @@
         <div class="filter-group">
             <?php
             foreach($this->values as $value) {
-                if(!$value)
+                if(!$value['value'])
                     continue;
                 ?>
                 <label class="checkbox">

@@ -81,8 +81,10 @@ class Multiselect extends AbstractCondition
         $values = $params[$this->getField()];
 
         if(empty($values)) {
-            $values = $this->getPreSelect();
+            $values = $this->getPreSelects();
         }
+
+        $currentFilter[$this->getField()] = $values;
 
         if($values === Filter\Service::EMPTY_STRING) {
             $values = null;
@@ -92,23 +94,20 @@ class Multiselect extends AbstractCondition
 
             $fieldName = $isPrecondition ? "PRECONDITION_" . $this->getField() : $this->getField();
 
-            $condition = "(";
+            $inValues = array();
 
             foreach( $values as $c => $value)
             {
-                $condition .= "TRIM(`" . $this->getField() . "`) = " . $list->quote($value);
-
-                if($c < count($values)-1)
-                {
-                    $condition .= " OR ";
-                }
+                $inValues[] = $list->quote($value);
             }
 
-            $condition .= ")";
-
-            $list->addCondition($condition, $fieldName);
-
+            if( !empty( $inValues ) )
+            {
+                $list->addCondition("TRIM(`" . $this->getField() . "`) IN (" . implode(',', $inValues ) . ")", $fieldName);
+            }
         }
+
+        return $currentFilter;
     }
 
 }

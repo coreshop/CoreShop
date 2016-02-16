@@ -120,6 +120,9 @@ class Range extends AbstractCondition
             $valueMin = null;
         }
 
+        $currentFilter[$this->getField() . "-min"] = $valueMin;
+        $currentFilter[$this->getField() . "-max"] = $valueMax;
+
         if(!empty($valueMin) && !empty($valueMax)) {
             if($isPrecondition) {
                 $list->addCondition("TRIM(`" . $this->getField() . "`) >= " . $valueMin . " AND TRIM(`" . $this->getField() . "`) <= " . $valueMax, "PRECONDITION_" . $this->getField());
