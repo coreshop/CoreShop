@@ -41,7 +41,7 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
             addMenu.push({
                 iconCls: "coreshop_product_filters_condition_" + condition,
                 text: t("coreshop_product_condition_" + condition),
-                handler: _this.addCondition.bind(_this, condition, null)
+                handler: _this.addCondition.bind(_this, condition, {})
             });
 
         });

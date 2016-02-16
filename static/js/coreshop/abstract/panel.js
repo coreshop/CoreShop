@@ -72,6 +72,12 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         return this.layout;
     },
 
+    refresh : function() {
+        if(pimcore.globalmanager.exists(this.storeId)) {
+            pimcore.globalmanager.get(this.storeId).load();
+        }
+    },
+
     getItems : function() {
         return [this.getNavigation(), this.getTabPanel()];
     },
@@ -222,7 +228,7 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                     var res = Ext.decode(response.responseText);
 
                     if(res.success) {
-                        this.panels[panelKey] = new pimcore.plugin.coreshop[this.type].item(this, res.data, panelKey, this.type);
+                        this.panels[panelKey] = new pimcore.plugin.coreshop[this.type].item(this, res.data, panelKey, this.type, this.storeId);
                     }
                     else {
                         //TODO: Show messagebox

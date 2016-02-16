@@ -94,7 +94,8 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
                 xtype : 'textfield',
                 name : 'label',
                 width : 400,
-                fieldLabel : t('label')
+                fieldLabel : t('label'),
+                value : this.data.label
             },
             this.fieldsCombo
         ];
