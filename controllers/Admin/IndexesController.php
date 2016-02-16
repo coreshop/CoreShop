@@ -129,9 +129,8 @@ class CoreShop_Admin_IndexesController extends Admin
                         foreach($namespaces as $namespace) {
                             $columnNamespace = "\\$namespace\\Model\\Index\\Config\\Column\\";
                             $columnClass = $columnNamespace . $indexType . "\\" . $objectType;
-                            $class = $columnClass;
 
-                            $specialClass = $columnClass . "\\" . $col['key'];
+                            $specialClass = $columnClass . "\\" . ucfirst($col['key']);
                             $brickClass = $columnClass . "\\" . $col['className'];
 
                             if(\Pimcore\Tool::classExists($specialClass)) {
