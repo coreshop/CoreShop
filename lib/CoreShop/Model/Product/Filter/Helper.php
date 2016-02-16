@@ -19,13 +19,15 @@ use CoreShop\Model\Index;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
-class Helper extends AbstractModel {
+class Helper {
 
     /**
      * @param Filter $filter
      * @param Listing $list
      * @param $params
      * @param Service $filterService
+     *
+     * @return array()
      */
     public static function setupProductList(Listing $list, $params, Filter $filter = null, Service $filterService = null) {
         $orderKey = $filter->getOrderKey();
@@ -50,9 +52,10 @@ class Helper extends AbstractModel {
         $list->setLimit($limit);
 
         if($filterService instanceof Service) {
-            $filterService->initFilterService($filter, $list, $params);
+            return $filterService->initFilterService($filter, $list, $params);
         }
 
+        return array();
     }
 
 }

@@ -95,29 +95,29 @@ class Range extends AbstractCondition
      *
      * @param Filter $filter
      * @param Listing $list
+     * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
-     * @return mixed
+     * @return array $currentFilter
      */
-    public function addCondition(Filter $filter, Listing $list, $params, $isPrecondition = false) {
+    public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false) {
 
         $valueMin = $params[$this->getField() . '-min'];
         $valueMax = $params[$this->getField() . '-max'];
 
-        if($isPrecondition && empty($valueMin)) {
-            $valueMin = (int) $this->getPreSelectMin();
+        if(empty($valueMax)) {
+            $valueMax = $this->getPreSelect();
         }
 
-        if($isPrecondition && empty($valueMax)) {
-            $valueMax = (int) $this->getPreSelectMax();
-        }
-
-        if($valueMin == Filter\Service::EMPTY_STRING) {
-            $valueMin = null;
-        }
-
-        if($valueMax == Filter\Service::EMPTY_STRING) {
+        if($valueMax === Filter\Service::EMPTY_STRING) {
             $valueMax = null;
+        }
+
+        if(empty($valueMin)) {
+            $valueMin = $this->getPreSelect();
+        }
+        if($valueMin === Filter\Service::EMPTY_STRING) {
+            $valueMin = null;
         }
 
         if(!empty($valueMin) && !empty($valueMax)) {
@@ -127,5 +127,7 @@ class Range extends AbstractCondition
                 $list->addCondition("TRIM(`" . $this->getField() . "`) >= " . $valueMin . " AND TRIM(`" . $this->getField() . "`) <= " . $valueMax, $this->getField());
             }
         }
+
+        return $currentFilter;
     }
 }

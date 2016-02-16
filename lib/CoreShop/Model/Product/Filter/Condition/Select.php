@@ -29,21 +29,26 @@ class Select extends AbstractCondition
      *
      * @param Filter $filter
      * @param Listing $list
+     * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
-     * @return mixed
+     * @return array $currentFilter
      */
-    public function addCondition(Filter $filter, Listing $list, $params, $isPrecondition = false) {
+    public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false) {
 
         $value = $params[$this->getField()];
 
-        if($isPrecondition && empty($value)) {
+        if(empty($value)) {
             $value = $this->getPreSelect();
         }
 
-        if($value == Filter\Service::EMPTY_STRING) {
+        if($value === Filter\Service::EMPTY_STRING) {
             $value = null;
         }
+
+        $value = trim($value);
+
+        $currentFilter[$this->getField()] = $value;
 
         if(!empty($value)) {
             if($isPrecondition) {
@@ -52,5 +57,7 @@ class Select extends AbstractCondition
                 $list->addCondition("TRIM(`" . $this->getField() . "`) = " . $list->quote($value), $this->getField());
             }
         }
+
+        return $currentFilter;
     }
 }

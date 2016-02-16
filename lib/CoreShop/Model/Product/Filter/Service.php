@@ -33,21 +33,25 @@ class Service extends AbstractModel {
      * @param Filter $filterObject
      * @param Listing $list
      * @param array $params
+     *
+     * @return array $currentFilter
      */
     public function initFilterService(Filter $filterObject, Listing $list, $params = array()) {
         $currentFilter = array();
 
         if(is_array($filterObject->getFilters())) {
             foreach ($filterObject->getFilters() as $filter) {
-                $currentFilter[$filter->getField()] = $filter->addCondition($filterObject, $list, $params, false);
+                $currentFilter = $filter->addCondition($filterObject, $list, $params, false);
             }
         }
 
         if(is_array($filterObject->getPreConditions())) {
             foreach($filterObject->getPreConditions() as $filter) {
-                $currentFilter[$filter->getField()] = $filter->addCondition($filterObject, $list, $params, true);
+                $currentFilter = $filter->addCondition($filterObject, $list, $params, true);
             }
         }
+
+        return $currentFilter;
     }
 
 }

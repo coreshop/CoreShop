@@ -29,11 +29,12 @@ class Multiselect extends AbstractCondition
      *
      * @param Filter $filter
      * @param Listing $list
+     * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
-     * @return mixed
+     * @return array $currentFilter
      */
-    public function addCondition(Filter $filter, Listing $list, $params, $isPrecondition = false) {
+    public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false) {
 
     }
 

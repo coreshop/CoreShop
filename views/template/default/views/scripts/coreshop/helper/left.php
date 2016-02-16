@@ -10,7 +10,7 @@
 
         <?php if(is_array($this->filter->getFilters())) {
                 foreach($this->filter->getFilters() as $filter) {
-                    echo $filter->render($this->filter, $this->list, $this->params);
+                    echo $filter->render($this->filter, $this->list, $this->currentFilter);
                 }
             }
 

@@ -76,7 +76,7 @@ class CoreShop_ProductController extends Action
                 $list = $indexService->getProductList();
                 $list->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_HIDE);
 
-                \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
+                $this->view->currentFilter = \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
 
                 $list->addCondition("parentCategoryIds LIKE '%,".$category->getId().",%'", "categoryIds");
 
