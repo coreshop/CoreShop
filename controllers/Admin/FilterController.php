@@ -198,10 +198,9 @@ class CoreShop_Admin_FilterController extends Admin
     }
 
     public function getValuesForFilterFieldAction() {
-        $indexParam = $this->getParam("index");
-        $index = \CoreShop\Model\Index::getById($indexParam);
+        $index = \CoreShop\Model\Index::getById($this->getParam("index"));
 
-        if($index instanceof $indexParam) {
+        if($index instanceof \CoreShop\Model\Index) {
             $list = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
             $productList = $list->getProductList();
 
