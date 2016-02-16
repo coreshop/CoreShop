@@ -184,7 +184,7 @@ class Mysql extends AbstractListing
      * Use the joinTableAlias to catch joinTable in your custom condition!
      *
      * @param $table
-     * @param array $condition (type = 'LEFT|RIGHT|INNER|OUTER', joinTableAlias = xy)
+     * @param array $condition (type = 'LEFT|RIGHT|INNER|OUTER', joinTableAlias = xy, objectKeyField = o_id)
      */
     public function addJoin($table, $condition = array())
     {
@@ -593,8 +593,9 @@ class Mysql extends AbstractListing
             }
 
             $joinName = $tableJoins['joinTableAlias'];
+            $objectKeyField = isset( $tableJoins['objectKeyField'] ) ? $tableJoins['objectKeyField'] : 'o_id';
 
-            $query .= $joinType . ' JOIN ' . $table . ' as ' . $joinName. ' on `' . $joinName . '`.o_id = a.o_id ';
+            $query .= $joinType . ' JOIN ' . $table . ' as ' . $joinName. ' on `' . $joinName . '`.'.$objectKeyField.' = a.o_id ';
 
         }
 
