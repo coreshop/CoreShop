@@ -39,7 +39,7 @@ class AbstractGetter {
     /**
      * @return array
      */
-    public static function getGetter()
+    public static function getGetters()
     {
         return self::$getter;
     }

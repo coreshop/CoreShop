@@ -50,6 +50,24 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
         });
         this.typesStore.load();
 
+
+        var store = new Ext.data.Store({
+            proxy: {
+                type: 'ajax',
+                url : '/plugin/CoreShop/admin_indexes/get-available-getters',
+                reader: {
+                    type: 'json',
+                    rootProperty : 'data'
+                }
+            }
+        });
+
+        store.load(function() {
+            store.insert(0, {type : null, 'name' : t('none')});
+        });
+
+        pimcore.globalmanager.add("coreshop_index_getters", store);
+
         // create layout
         this.getLayout();
 

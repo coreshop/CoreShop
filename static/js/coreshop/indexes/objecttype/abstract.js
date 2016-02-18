@@ -25,37 +25,55 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
     getConfigDialog : function(record) {
         this.record = record;
 
-        var configItems = [];
+        var fieldSetItems = [];
 
-        configItems.push(new Ext.form.TextField({
+        fieldSetItems.push(new Ext.form.TextField({
             fieldLabel : t('coreshop_index_field_name'),
             name : 'name',
             length : 255,
-            width : 200,
             value : record.data.name ? record.data.name : record.data.key
         }));
 
-        //TODO: Load all available getters and show in combo
-        configItems.push(new Ext.form.TextField({
+        fieldSetItems.push(new Ext.form.ComboBox({
             fieldLabel : t('coreshop_index_field_getter'),
             name : 'getter',
             length : 255,
-            width : 200,
-            value : record.data.getter
+            value : record.data.getter,
+            store : pimcore.globalmanager.get("coreshop_index_getters"),
+            valueField : 'type',
+            displayField : 'name',
+            queryMode : 'local',
+            listeners : {
+                change : function(combo, newValue) {
+                    this.getGetterPanel().removeAll();
+
+                    this.getGetterPanelLayout(newValue);
+                }.bind(this)
+            }
         }));
 
         var nodeTypeItems = this.getObjectTypeItems(record);
 
         if(nodeTypeItems.length > 0) {
             nodeTypeItems.forEach(function(item) {
-                configItems.push(item);
+                fieldSetItems.push(item);
             });
         }
 
-        this.configPanel = new Ext.form.Panel({
+        this.configForm = new Ext.form.FormPanel({
+            items : fieldSetItems,
             layout: "form",
-            bodyStyle: "padding: 10px;",
-            items: configItems,
+            defaults: {anchor: '90%'}
+        });
+
+        this.configPanel = new Ext.panel.Panel({
+            layout: "form",
+            scrollable : true,
+            items:
+                [
+                    this.configForm,
+                    this.getGetterPanel()
+                ],
             buttons: [{
                 text: t("apply"),
                 iconCls: "pimcore_icon_apply",
@@ -75,19 +93,57 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
             items: [this.configPanel]
         });
 
+        this.getGetterPanelLayout(record.data.getter);
+
         this.window.show();
     },
 
     commitData: function() {
+        var form = this.configForm.getForm();
+        var getterForm = this.getGetterPanel().getForm();
 
-        Ext.Object.each(this.configPanel.getForm().getFieldValues(), function(key, value) {
+        Ext.Object.each(form.getFieldValues(), function(key, value) {
             this.record.set(key, value);
         }.bind(this));
+
+        if(this.getGetterPanel().isVisible()) {
+            this.record.set("getterConfig", getterForm.getFieldValues());
+        }
 
         if(this.record.data.name !== this.record.data.text) {
             this.record.set("text", this.record.data.name);
         }
 
         this.window.close();
+    },
+
+    getGetterPanel : function() {
+        if(!this.getterPanel) {
+            this.getterPanel = new Ext.form.FormPanel({
+                defaults: {anchor: '90%'},
+                layout: "form"
+            });
+        }
+
+        return this.getterPanel;
+    },
+
+    getGetterPanelLayout : function(type) {
+        if(type) {
+            type = type.toLowerCase();
+            //Check if some class for getterPanel is available
+            if (pimcore.plugin.coreshop.indexes.getters[type]) {
+                var getter = new pimcore.plugin.coreshop.indexes.getters[type];
+
+                this.getGetterPanel().add(getter.getLayout(this.record));
+                this.getGetterPanel().show();
+            }
+            else {
+                this.getGetterPanel().hide()
+            }
+        }
+        else {
+            this.getGetterPanel().hide()
+        }
     }
 });

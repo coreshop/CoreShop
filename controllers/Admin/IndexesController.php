@@ -352,4 +352,21 @@ class CoreShop_Admin_IndexesController extends Admin
             "groupConfigId" => $groupConfig->getId()
         );
     }
+
+    public function getAvailableGettersAction() {
+        $getters = \CoreShop\IndexService\Getter\AbstractGetter::getGetters();
+        $result = array();
+
+        foreach($getters as $getter) {
+            $result[] = array(
+                "type" => $getter,
+                "name" => $getter
+            );
+        }
+
+        $this->_helper->json(array(
+            "success" => true,
+            "data" => $result
+        ));
+    }
 }

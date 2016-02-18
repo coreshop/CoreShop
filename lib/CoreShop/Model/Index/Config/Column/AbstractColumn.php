@@ -39,6 +39,11 @@ class AbstractColumn {
     public $getter;
 
     /**
+     * @var array
+     */
+    public $getterConfig;
+
+    /**
      * @var string
      */
     public $dataType;
@@ -105,6 +110,22 @@ class AbstractColumn {
     public function setGetter($getter)
     {
         $this->getter = $getter;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGetterConfig()
+    {
+        return $this->getterConfig;
+    }
+
+    /**
+     * @param array $getterConfig
+     */
+    public function setGetterConfig($getterConfig)
+    {
+        $this->getterConfig = $getterConfig;
     }
 
     /**
