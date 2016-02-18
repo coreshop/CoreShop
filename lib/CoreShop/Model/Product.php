@@ -207,8 +207,12 @@ class Product extends Base
      * @param $language
      * @return array
      */
-    public function getVariantDifferences($language = 'en')
+    public function getVariantDifferences($language = null)
     {
+        if($language) {
+            $language = \Zend_Registry::get("Zend_Locale")->getLanguage();
+        }
+
         $master = $this;
         //Find master object
         while ($master->getType() === "variant") {
