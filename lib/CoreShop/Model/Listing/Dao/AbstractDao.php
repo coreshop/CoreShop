@@ -20,9 +20,19 @@ use Pimcore\Tool;
 
 class AbstractDao extends Listing\Dao\AbstractDao
 {
+    /**
+     * @var bool
+     */
+    protected $firstException = true;
 
+    /**
+     * @var string
+     */
     protected $tableName = '';
 
+    /**
+     * @var string
+     */
     protected $modelClass;
 
     /**
@@ -69,25 +79,62 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
-     * Get the assets from database
+     * get select query
      *
-     * @return array
+     * @return \Zend_Db_Select
+     * @throws \Exception
+     */
+    public function getQuery()
+    {
+
+        // init
+        $select = $this->db->select();
+
+        // create base
+        $field = $this->getTableName() . ".id";
+        $select->from(
+            [ $this->getTableName() ], [
+                new \Zend_Db_Expr(sprintf('SQL_CALC_FOUND_ROWS %s as id', $field, 'o_type'))
+            ]
+        );
+
+        // add condition
+        $this->addConditions($select);
+
+        // group by
+        $this->addGroupBy($select);
+
+        // order
+        $this->addOrder($select);
+
+        // limit
+        $this->addLimit($select);
+
+        return $select;
+    }
+
+    /**
+     * Loads objects from the database
+     *
+     * @return Model\AbstractModel[]
      */
     public function load()
     {
         $modelClass = $this->modelClass;
 
-        $data = array();
-        $rawData = $this->db->fetchAll("SELECT id FROM " . $this->getTableName() . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
+        // load id's
+        $list = $this->loadIdList();
 
-        foreach ($rawData as $raw) {
-            if ($object = $modelClass::getById($raw["id"])) {
-                $data[] = $object;
+
+        $objects = array();
+        foreach ($list as $o_id) {
+            if ($object = $modelClass::getById($o_id)) {
+                $objects[] = $object;
             }
         }
 
-        $this->model->setData($data);
-        return $data;
+        $this->model->setData($objects);
+        return $objects;
     }
 
     /**
@@ -97,8 +144,46 @@ class AbstractDao extends Listing\Dao\AbstractDao
      */
     public function loadIdList()
     {
-        $currencyIds = $this->db->fetchCol("SELECT id FROM " . $this->getTableName() . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
-        return $currencyIds;
+        try {
+            $query = $this->getQuery();
+            $objectIds = $this->db->fetchCol($query, $this->model->getConditionVariables());
+            $this->totalCount = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+
+            return $objectIds;
+        } catch (\Exception $e) {
+            return $this->exceptionHandler($e);
+        }
+    }
+
+    /**
+     * @param $e
+     * @return array
+     * @throws
+     * @throws \Exception
+     */
+    protected function exceptionHandler($e)
+    {
+
+        // create view if it doesn't exist already // HACK
+        $pdoMySQL = preg_match("/Base table or view not found/", $e->getMessage());
+        $Mysqli = preg_match("/Table (.*) doesn't exist/", $e->getMessage());
+
+        if (($Mysqli || $pdoMySQL) && $this->firstException) {
+            $this->firstException = false;
+
+            $modelClass = $this->modelClass;
+            $model = new $modelClass();
+
+            $localizedFields = $model->getLocalizedFields();
+
+            if($localizedFields) {
+                $localizedFields->createUpdateTable();
+            }
+
+            return $this->loadIdList();
+        }
+
+        throw $e;
     }
 
     /**
