@@ -208,7 +208,7 @@ class Category extends Base
     /**
      * Get Category hierarchy
      *
-     * @return array
+     * @return Category[]
      */
     public function getHierarchy()
     {
