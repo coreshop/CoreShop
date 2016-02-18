@@ -49,8 +49,6 @@ class CoreShop_Admin_InstallController extends Admin
             $install->installObjectData("orderStates");
             $install->installDocuments("documents");
 
-            $countryTaxClass = $install->createClass("CoreShopCountryTax");
-
             $fcUserAddress = $install->createFieldcollection('CoreShopUserAddress');
 
             // create object classes
@@ -75,8 +73,7 @@ class CoreShop_Admin_InstallController extends Admin
                 $userClass->getId(),
                 $orderItemClass->getId(),
                 $orderClass->getId(),
-                $paymentClass->getId(),
-                $countryTaxClass->getId()
+                $paymentClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();
