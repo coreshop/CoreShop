@@ -6,9 +6,9 @@
             CoreShop is the first OpenSource Onlineshop plugin for Pimcore.
         </pluginDescription>
     <pluginVersion>0.2</pluginVersion>
-    <pluginRevision>40</pluginRevision>
-    <pluginBuildTimestamp>1455802245</pluginBuildTimestamp>
-    <pluginGitRevision>0d2f7bff758882c9cb24ace7f6e436b04b5dff10</pluginGitRevision>
+    <pluginRevision>41</pluginRevision>
+    <pluginBuildTimestamp>1455812629</pluginBuildTimestamp>
+    <pluginGitRevision>e7accfdbae8c9f41de91a1ded6f3acbcd2cd8b12</pluginGitRevision>
     <pluginClassName>\CoreShop\Plugin</pluginClassName>
     <pluginIncludePaths>
       <path>/CoreShop/lib</path>
