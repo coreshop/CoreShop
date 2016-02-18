@@ -216,12 +216,7 @@ class Mysql extends AbstractWorker
                         $getter = "get" . ucfirst($column->getKey());
 
                         if(method_exists($object, $getter)) {
-                            if($column instanceof Column\Localizedfields) {
-                                $value = $object->$getter($column->getLocale());
-                            }
-                            else {
-                                $value = $object->$getter();
-                            }
+                            $value = $object->$getter();
                         }
                     }
 
