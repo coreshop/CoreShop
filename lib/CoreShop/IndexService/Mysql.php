@@ -14,6 +14,9 @@
 
 namespace CoreShop\IndexService;
 
+use CoreShop\IndexService\Getter\AbstractGetter;
+use CoreShop\IndexService\Interpreter\AbstractInterpreter;
+use CoreShop\IndexService\Interpreter\RelationInterpreter;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
 use CoreShop\Plugin;
@@ -193,24 +196,20 @@ class Mysql extends AbstractWorker
                 try {
                     $value = null;
                     $getter = $column->getGetter();
-
-                    if($column instanceof Index\Config\Column\Objectbricks) {
-                        if(empty($getter)) {
-                            $getter = "Brick";
-                        }
-                    }
-
-                    if($column instanceof Index\Config\Column\Classificationstore) {
-                        if(empty($getter)) {
-                            $getter = "Classificationstore";
-                        }
-                    }
+                    $interpreter = $column->getInterpreter();
 
                     if(!empty($getter)) {
                         $getterClass = "\\CoreShop\\IndexService\\Getter\\" . $getter;
 
                         if(Tool::classExists($getterClass)) {
-                            $value = $getterClass::get($object, $column);
+                            $getterObject = new $getterClass();
+
+                            if($getterObject instanceof AbstractGetter) {
+                                $value = $getterObject->get($object, $column);
+                            }
+                            else {
+                                throw new \Exception("Getter class must inherit from AbstractGetter");
+                            }
                         }
                     }
                     else {
@@ -226,11 +225,46 @@ class Mysql extends AbstractWorker
                         }
                     }
 
-                    if(is_array($value)) {
-                        $value = "," . implode($value, ",") . ",";
+                    if(!empty($interpreter)) {
+                        $interpreterClass = "\\CoreShop\\IndexService\\Interpreter\\" . $interpreter;
+
+                        if(Tool::classExists($interpreterClass)) {
+                            $interpreterObject = new $interpreterClass();
+
+                            if($interpreterObject instanceof AbstractInterpreter) {
+                                $value = $interpreterObject->interpret($value, $column);
+
+                                if($interpreterObject instanceof RelationInterpreter)
+                                {
+                                    foreach($value as $v) {
+                                        $relData = array();
+                                        $relData['src'] = $object->getId();
+                                        $relData['src_virtualProductId'] = $virtualProductId;
+                                        $relData['dest'] = $v['dest'];
+                                        $relData['fieldname'] = $column->name;
+                                        $relData['type'] = $v['type'];
+                                        $relationData[] = $relData;
+                                    }
+                                }
+                                else {
+                                    $data[$column->getName()] = $value;
+                                }
+                            }
+                            else {
+                                throw new \Exception("Interpreter class must inherit form AbstractInterpreter");
+                            }
+                        }
+                        else {
+                            $data[$column->getName()] = $value;
+                        }
+                    }
+                    else {
+                        $data[$column->getName()] = $value;
                     }
 
-                    $data[$column->getName()] = $value;
+                    if(is_array($data[$column->getName()])) {
+                        $data[$column->getName()] = "," . implode($data[$column->getName()], ",") . ",";
+                    }
 
                 } catch(\Exception $e) {
                     \Logger::err("Exception in CoreShopIndexService: " . $e->getMessage(), $e);
@@ -247,13 +281,20 @@ class Mysql extends AbstractWorker
             try
             {
                 $this->doInsertData($data);
-
             }
             catch (\Exception $e)
             {
                 \Logger::warn("Error during updating index table: " . $e);
             }
 
+            try {
+                $this->db->delete($this->getRelationTablename(), "src = " . $this->db->quote($object->getId()));
+                foreach($relationData as $rd) {
+                    $this->db->insert($this->getRelationTablename(), $rd);
+                }
+            } catch (\Exception $e) {
+                \Logger::warn("Error during updating index relation table: " . $e->getMessage(), $e);
+            }
         }
         else
         {

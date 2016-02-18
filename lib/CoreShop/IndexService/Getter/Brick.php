@@ -26,8 +26,10 @@ class Brick extends AbstractGetter {
      * @return mixed
      * @throws UnsupportedException
      */
-    public static function get(Product $object, Objectbricks $config = null) {
-        $brickContainerGetter = "get" . ucfirst($config->getBrickField());
+    public function get(Product $object, Objectbricks $config = null) {
+        $brickField = $config->getGetterConfig()['brickField'];
+
+        $brickContainerGetter = "get" . ucfirst($brickField);
         $brickContainer = $object->$brickContainerGetter();
 
         $brickGetter = "get" . ucfirst($config->getClassName());

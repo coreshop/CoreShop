@@ -26,9 +26,10 @@ class Classificationstore extends AbstractGetter {
      * @return mixed
      * @throws UnsupportedException
      */
-    public static function get(Product $object, Config $config = null) {
+    public function get(Product $object, Config $config = null) {
 
-        $classificationStoreGetter = "get" . ucfirst($config->getClassificationStoreField());
+        $classificationStore = $config->getGetterConfig()['classificationStoreField'];
+        $classificationStoreGetter = "get" . ucfirst($classificationStore);
 
         if(method_exists($object, $classificationStoreGetter)) {
             $classificationStore = $object->$classificationStoreGetter();

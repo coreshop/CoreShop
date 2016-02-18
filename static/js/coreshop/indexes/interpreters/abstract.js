@@ -11,8 +11,13 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.objecttype.mysql.object");
+pimcore.registerNS("pimcore.plugin.coreshop.indexes.interpreters");
+pimcore.registerNS("pimcore.plugin.coreshop.indexes.interpreters.abstract");
 
-pimcore.plugin.coreshop.indexes.objecttype.mysql.object = Class.create(pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract, {
+pimcore.plugin.coreshop.indexes.interpreters.abstract = Class.create({
+
+    getLayout : function() {
+        return [];
+    }
 
 });

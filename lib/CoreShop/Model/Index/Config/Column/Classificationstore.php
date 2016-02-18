@@ -18,11 +18,6 @@ use CoreShop\Model;
 
 class Classificationstore extends AbstractColumn {
     /**
-     * @var
-     */
-    public $classificationStoreField;
-
-    /**
      * @var int
      */
     public $keyConfigId;
@@ -31,22 +26,6 @@ class Classificationstore extends AbstractColumn {
      * @var int
      */
     public $groupConfigId;
-
-    /**
-     * @return mixed
-     */
-    public function getClassificationStoreField()
-    {
-        return $this->classificationStoreField;
-    }
-
-    /**
-     * @param mixed $classificationStoreField
-     */
-    public function setClassificationStoreField($classificationStoreField)
-    {
-        $this->classificationStoreField = $classificationStoreField;
-    }
 
     /**
      * @return int

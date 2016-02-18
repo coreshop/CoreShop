@@ -50,7 +50,16 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
         });
         this.typesStore.load();
 
+        this.getGettersStore();
+        this.getInterpretersStore();
 
+        // create layout
+        this.getLayout();
+
+        this.panels = [];
+    },
+
+    getGettersStore : function() {
         var store = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
@@ -67,10 +76,24 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
         });
 
         pimcore.globalmanager.add("coreshop_index_getters", store);
+    },
 
-        // create layout
-        this.getLayout();
+    getInterpretersStore : function() {
+        var store = new Ext.data.Store({
+            proxy: {
+                type: 'ajax',
+                url : '/plugin/CoreShop/admin_indexes/get-available-interpreters',
+                reader: {
+                    type: 'json',
+                    rootProperty : 'data'
+                }
+            }
+        });
 
-        this.panels = [];
+        store.load(function() {
+            store.insert(0, {type : null, 'name' : t('none')});
+        });
+
+        pimcore.globalmanager.add("coreshop_index_interpreters", store);
     }
 });

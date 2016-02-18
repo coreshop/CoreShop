@@ -24,11 +24,6 @@ class Objectbricks extends AbstractColumn {
     public $className;
 
     /**
-     * @var
-     */
-    public $brickField;
-
-    /**
      * @return string
      */
     public function getClassName()
@@ -42,21 +37,5 @@ class Objectbricks extends AbstractColumn {
     public function setClassName($className)
     {
         $this->className = $className;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBrickField()
-    {
-        return $this->brickField;
-    }
-
-    /**
-     * @param mixed $brickField
-     */
-    public function setBrickField($brickField)
-    {
-        $this->brickField = $brickField;
     }
 }

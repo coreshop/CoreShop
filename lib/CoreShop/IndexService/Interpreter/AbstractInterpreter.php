@@ -12,45 +12,45 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\IndexService\Getter;
+namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Product;
 
-class AbstractGetter {
+class AbstractInterpreter {
 
     /**
      * defined getters
      *
      * @var array
      */
-    protected static $getter = array("Brick", "Classificationstore", "Localizedfield");
+    protected static $interpreters = array("Object");
 
     /**
-     * @param string $getter
+     * @param string $interpreter
      */
-    public static function addGetter($getter)
+    public static function addInterpreter($interpreter)
     {
-        if (!in_array($getter, self::$getter)) {
-            self::$getter[] = $getter;
+        if (!in_array($interpreter, self::$interpreters)) {
+            self::$interpreters[] = $interpreter;
         }
     }
 
     /**
      * @return array
      */
-    public static function getGetters()
+    public static function getInterpreters()
     {
-        return self::$getter;
+        return self::$interpreters;
     }
 
     /**
-     * @param $object
+     * @param mixed $value
      * @param array $config
      * @return mixed
      * @throws UnsupportedException
      */
-    public function get(Product $object, $config = null) {
+    public function interpret($value, $config = null) {
         throw new UnsupportedException("Not implemented in abstract");
     }
 }

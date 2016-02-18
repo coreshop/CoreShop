@@ -18,24 +18,4 @@ use CoreShop\Model;
 
 class Localizedfields extends AbstractColumn {
 
-    /**
-     * @var string
-     */
-    public $locale;
-
-    /**
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @param string $locale
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-    }
 }

@@ -15,42 +15,25 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Index\Config\Column\AbstractColumn;
 use CoreShop\Model\Product;
 
-class AbstractGetter {
-
-    /**
-     * defined getters
-     *
-     * @var array
-     */
-    protected static $getter = array("Brick", "Classificationstore", "Localizedfield");
-
-    /**
-     * @param string $getter
-     */
-    public static function addGetter($getter)
-    {
-        if (!in_array($getter, self::$getter)) {
-            self::$getter[] = $getter;
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public static function getGetters()
-    {
-        return self::$getter;
-    }
+class Localizedfield extends AbstractGetter {
 
     /**
      * @param $object
-     * @param array $config
+     * @param AbstractColumn $config
      * @return mixed
      * @throws UnsupportedException
      */
-    public function get(Product $object, $config = null) {
-        throw new UnsupportedException("Not implemented in abstract");
+    public function get(Product $object, AbstractColumn $config = null) {
+        $language = \Zend_Registry::get("Zend_Locale");
+
+        if($config->getGetterConfig()['locale'])
+            $language = $config->getGetterConfig()['locale'];
+
+        $getter = "get" . ucfirst($config->getKey());
+
+        return $object->$getter($language);
     }
 }

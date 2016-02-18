@@ -52,6 +52,24 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
             }
         }));
 
+        fieldSetItems.push(new Ext.form.ComboBox({
+            fieldLabel : t('coreshop_index_field_interpreter'),
+            name : 'interpreter',
+            length : 255,
+            value : record.data.interpreter,
+            store : pimcore.globalmanager.get("coreshop_index_interpreters"),
+            valueField : 'type',
+            displayField : 'name',
+            queryMode : 'local',
+            listeners : {
+                change : function(combo, newValue) {
+                    this.getInterpreterPanel().removeAll();
+
+                    this.getInterpreterPanelLayout(newValue);
+                }.bind(this)
+            }
+        }));
+
         var nodeTypeItems = this.getObjectTypeItems(record);
 
         if(nodeTypeItems.length > 0) {
@@ -63,7 +81,8 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         this.configForm = new Ext.form.FormPanel({
             items : fieldSetItems,
             layout: "form",
-            defaults: {anchor: '90%'}
+            defaults: {anchor: '90%'},
+            title : t('coreshop_index_field_settings')
         });
 
         this.configPanel = new Ext.panel.Panel({
@@ -72,7 +91,8 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
             items:
                 [
                     this.configForm,
-                    this.getGetterPanel()
+                    this.getGetterPanel(),
+                    this.getInterpreterPanel()
                 ],
             buttons: [{
                 text: t("apply"),
@@ -94,6 +114,7 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         });
 
         this.getGetterPanelLayout(record.data.getter);
+        this.getInterpreterPanelLayout(record.data.interpreter);
 
         this.window.show();
     },
@@ -101,6 +122,7 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
     commitData: function() {
         var form = this.configForm.getForm();
         var getterForm = this.getGetterPanel().getForm();
+        var interpreterForm = this.getInterpreterPanel().getForm();
 
         Ext.Object.each(form.getFieldValues(), function(key, value) {
             this.record.set(key, value);
@@ -108,6 +130,10 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
 
         if(this.getGetterPanel().isVisible()) {
             this.record.set("getterConfig", getterForm.getFieldValues());
+        }
+
+        if(this.getInterpreterPanel().isVisible()) {
+            this.record.set("interpreterConfig", interpreterForm.getFieldValues());
         }
 
         if(this.record.data.name !== this.record.data.text) {
@@ -121,7 +147,8 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         if(!this.getterPanel) {
             this.getterPanel = new Ext.form.FormPanel({
                 defaults: {anchor: '90%'},
-                layout: "form"
+                layout: "form",
+                title : t('coreshop_index_getter_settings')
             });
         }
 
@@ -144,6 +171,37 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         }
         else {
             this.getGetterPanel().hide()
+        }
+    },
+
+    getInterpreterPanel : function() {
+        if(!this.interpreterPanel) {
+            this.interpreterPanel = new Ext.form.FormPanel({
+                defaults: {anchor: '90%'},
+                layout: "form",
+                title : t('coreshop_index_interpreter_settings')
+            });
+        }
+
+        return this.interpreterPanel;
+    },
+
+    getInterpreterPanelLayout : function(type) {
+        if(type) {
+            type = type.toLowerCase();
+            //Check if some class for getterPanel is available
+            if (pimcore.plugin.coreshop.indexes.interpreters[type]) {
+                var getter = new pimcore.plugin.coreshop.indexes.interpreters[type];
+
+                this.getInterpreterPanel().add(getter.getLayout(this.record));
+                this.getInterpreterPanel().show();
+            }
+            else {
+                this.getInterpreterPanel().hide()
+            }
+        }
+        else {
+            this.getInterpreterPanel().hide()
         }
     }
 });

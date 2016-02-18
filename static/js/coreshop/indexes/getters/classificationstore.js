@@ -11,18 +11,18 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.getters.brick");
+pimcore.registerNS("pimcore.plugin.coreshop.indexes.getters.classificationstore");
 
-pimcore.plugin.coreshop.indexes.getters.brick = Class.create(pimcore.plugin.coreshop.indexes.getters.abstract, {
+pimcore.plugin.coreshop.indexes.getters.classificationstore = Class.create(pimcore.plugin.coreshop.indexes.getters.abstract, {
 
     getLayout : function(record) {
         return [
             {
                 xtype : 'textfield',
-                fieldLabel : t('coreshop_index_field_brickfield'),
-                name : 'brickField',
+                fieldLabel : t('coreshop_index_field_classificationstore'),
+                name : 'classificationStoreField',
                 length : 255,
-                value : record.data.getterConfig ? record.data.getterConfig.brickField : null
+                value : record.data.getterConfig ? record.data.getterConfig.classificationStoreField : null
             }
         ];
     }

@@ -103,15 +103,12 @@
       <path>/plugins/CoreShop/static/js/coreshop/indexes/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/fields.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/abstract.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/abstract.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/object.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/objectbricks.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/classificationstore.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/localizedfields.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/indexes/elements/abstract.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/indexes/elements/mysql/default.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/field.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/brick.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/localizedfield.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/classificationstore.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/interpreters/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/abstract.js</path>

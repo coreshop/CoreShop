@@ -49,6 +49,16 @@ class AbstractColumn {
     public $dataType;
 
     /**
+     * @var string
+     */
+    public $interpreter;
+
+    /**
+     * @var array
+     */
+    public $interpreterConfig;
+
+    /**
      * @return string
      */
     public function getKey()
@@ -142,6 +152,38 @@ class AbstractColumn {
     public function setDataType($dataType)
     {
         $this->dataType = $dataType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInterpreter()
+    {
+        return $this->interpreter;
+    }
+
+    /**
+     * @param string $interpreter
+     */
+    public function setInterpreter($interpreter)
+    {
+        $this->interpreter = $interpreter;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInterpreterConfig()
+    {
+        return $this->interpreterConfig;
+    }
+
+    /**
+     * @param array $interpreterConfig
+     */
+    public function setInterpreterConfig($interpreterConfig)
+    {
+        $this->interpreterConfig = $interpreterConfig;
     }
 
     /**

@@ -1,3 +1,4 @@
+<?php
 /**
  * CoreShop
  *
@@ -11,21 +12,19 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.elements.abstract");
+namespace CoreShop\IndexService\Interpreter;
 
-pimcore.plugin.coreshop.indexes.elements.abstract = Class.create({
-    type: null,
-    class: null,
+use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Product;
 
-    initialize: function() {
-
-    },
-
-    getConfigDialog: function(record) {
-        this.window.show();
-    },
-
-    commitData: function() {
-        this.window.close();
+class RelationInterpreter extends AbstractInterpreter {
+    /**
+     * @param mixed $value
+     * @param array $config
+     * @return mixed
+     * @throws UnsupportedException
+     */
+    public function interpret($value, $config = null) {
+        throw new UnsupportedException("Not implemented in abstract");
     }
-});
+}

@@ -128,16 +128,7 @@ class CoreShop_Admin_IndexesController extends Admin
                         $columnNamespace = "\\CoreShop\\Model\\Index\\Config\\Column\\";
                         $columnClass = $columnNamespace . $indexType . "\\" . $objectType;
 
-                        $specialClass = $columnClass . "\\" . ucfirst($col['key']);
-                        $brickClass = $columnClass . "\\" . $col['className'];
-
-                        if(\Pimcore\Tool::classExists($specialClass)) {
-                            $class = $specialClass;
-                        }
-                        else if(\Pimcore\Tool::classExists($brickClass)) {
-                            $class = $brickClass;
-                        }
-                        else if(\Pimcore\Tool::classExists($columnClass)) {
+                        if(\Pimcore\Tool::classExists($columnClass)) {
                             $class = $columnClass;
                         }
 
@@ -361,6 +352,23 @@ class CoreShop_Admin_IndexesController extends Admin
             $result[] = array(
                 "type" => $getter,
                 "name" => $getter
+            );
+        }
+
+        $this->_helper->json(array(
+            "success" => true,
+            "data" => $result
+        ));
+    }
+
+    public function getAvailableInterpretersAction() {
+        $interpreters = \CoreShop\IndexService\Interpreter\AbstractInterpreter::getInterpreters();
+        $result = array();
+
+        foreach($interpreters as $interpreter) {
+            $result[] = array(
+                "type" => $interpreter,
+                "name" => $interpreter
             );
         }
 

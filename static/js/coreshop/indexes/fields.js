@@ -158,18 +158,8 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         var element = null;
 
         if(record.data.objectType) {
-            if(pimcore.plugin.coreshop.indexes.objecttype[this.data.type][record.data.objectType]) {
-                //Check if there is any dialog for the key
-                if(pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field && pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field[record.data.key]) {
-                    element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field[record.data.key]();
-                }
-                //check if there is any dialog for the classname (eg. for special bricks)
-                else if(record.data.className && pimcore.plugin.coreshop.indexes.objecttype[this.data.type].class && record.data.className && pimcore.plugin.coreshop.indexes.objecttype[this.data.type].class[record.data.className]) {
-                    element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type].class[record.data.className]();
-                }
-                else {
-                    element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type][record.data.objectType]();
-                }
+            if(pimcore.plugin.coreshop.indexes.objecttype[this.data.type]) {
+                element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field();
             }
         }
 

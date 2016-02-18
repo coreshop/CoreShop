@@ -13,7 +13,7 @@
 
 pimcore.registerNS("pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract");
 
-pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract = Class.create(pimcore.plugin.coreshop.indexes.objecttype.abstract, {
+pimcore.plugin.coreshop.indexes.objecttype.mysql.field = Class.create(pimcore.plugin.coreshop.indexes.objecttype.abstract, {
 
     getObjectTypeItems : function(record) {
         return [new Ext.form.TextField({
