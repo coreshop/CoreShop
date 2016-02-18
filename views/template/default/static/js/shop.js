@@ -92,30 +92,7 @@ $(document).ready(function(){
             });
         });
     };
-    
-    shop.markupCart = function(cartItem) {
 
-        return '<tr>\
-                    <td class="text-center">\
-                        <a href="'+cartItem.product.href+'">\
-                            <img src="'+cartItem.product.thumbnail.cart+'" alt="'+cartItem.product.name+'" title="'+cartItem.product.name+'" class="img-thumbnail img-responsive">\
-                        </a>\
-                    </td>\
-                    <td class="text-left">\
-                        <a href="'+cartItem.product.href+'">\
-                            '+cartItem.product.name+'\
-                        </a>\
-                    </td>\
-                    <td class="text-right">x '+cartItem.amount+'</td>\
-                    <td class="text-right">'+cartItem.total+'</td>\
-                    <td class="text-center">\
-                        <a href="#" class="removeFromCart"  data-id="' + cartItem.id + '" data-refresh="true">\
-                            <i class="fa fa-times"></i>\
-                        </a>\
-                    </td>\
-            </tr>';
-    }
-    
     shop.addToCart = function(product_id, amount, sender, extraData, callback)
     {
         var data = $.extend({product : product_id, amount : amount}, extraData ? extraData : {});
@@ -142,6 +119,7 @@ $(document).ready(function(){
                             imgclone.animate({'top':cart.offset().top + 10,'left':cart.offset().left + 30, 'width' : 55, 'height' : 55}, 1000);
                             imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach() });
                         }
+
                         shop.updateCart(result.cart);
                         
                         if(callback)
@@ -199,15 +177,7 @@ $(document).ready(function(){
     
     shop.updateCart = function(cart)
     {
-        var html = '';
         var cartListItem;
-        
-        for(var i = 0; i < cart.items.length; i++)
-        {
-            var productHtml = shop.markupCart(cart.items[i]);
-            
-            html += productHtml;
-        }
 
         if($('.shopping-cart-table').length > 0)
         {
@@ -237,8 +207,8 @@ $(document).ready(function(){
             $('.shopping-cart-table .cart-sub-total').html(cart.subtotal);
         }
         
-        $('.cart-items').html(html);
-        $('.cart-badge').html(cart.items.length);
+        $('.dropdown-menu').replaceWith( cart.miniCart );
+        $('.cart-badge').html(cart.productAmount);
 
         $('.cart-total').html(cart.total);
         $('.cart-subtotal').html(cart.total);

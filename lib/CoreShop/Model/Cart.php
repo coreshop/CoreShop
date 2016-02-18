@@ -516,19 +516,29 @@ class Cart extends Base
     /**
      * Returns the cart as array
      *
+     * @param mixed $view
      * @return array
      */
-    public function toArray()
+    public function toArray( $view = NULL )
     {
-        $items = array();
-        
-        foreach ($this->getItems() as $item) {
-            $items[] = $item->toArray();
+        $viewArgs = array( "cart" => $this, "language" => (string) \Zend_Registry::get("Zend_Locale") );
+
+        if( !$view instanceof \Pimcore\View)
+        {
+            $view = new \Pimcore\View();
+            $view->addHelperPath(PIMCORE_PATH . "/lib/Pimcore/View/Helper", "\\Pimcore\\View\\Helper\\");
+            $view->setScriptPath(CORESHOP_TEMPLATE_PATH . "/views/scripts/coreshop/cart/");
+            $miniCart = $view->render('helper/minicart.php', $viewArgs);
         }
-        
+        else
+        {
+            $miniCart = $view->render('coreshop/cart/helper/minicart.php', $viewArgs);
+        }
+
         return array(
             "user" => $this->getUser() ? $this->getUser()->toArray() : null,
-            "items" => $items,
+            "miniCart" => $miniCart,
+            "productAmount" => count($this->getItems()),
             "subtotal" => Tool::formatPrice($this->getSubtotal()),
             "shipping" => Tool::formatPrice($this->getShipping()),
             "payment" => Tool::formatPrice($this->getPaymentFee()),

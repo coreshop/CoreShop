@@ -69,13 +69,13 @@ class CoreShop_CartController extends Action
                 
                 Plugin::getEventManager()->trigger('cart.postAdd', $this, array("request" => $this->getRequest(), "product" => $product, "cart" => $this->cart, "cartItem" => $item));
                 
-                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray()));
+                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray( $this->view )));
             }
         } else {
             $this->_helper->json(array("success" => false, "message" => $message));
         }
 
-        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray()));
+        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray( $this->view )));
     }
     
     public function removeAction()
@@ -100,13 +100,13 @@ class CoreShop_CartController extends Action
                 
                 Plugin::getEventManager()->trigger('cart.postRemove', $this, array("item" => $item, "cart" => $this->cart));
                 
-                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray()));
+                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray( $this->view )));
             }
         } else {
             $this->_helper->json(array("success" => false, "message" => 'not allowed'));
         }
         
-        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray()));
+        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray( $this->view )));
     }
     
     public function modifyAction()
@@ -132,13 +132,13 @@ class CoreShop_CartController extends Action
                 
                 Plugin::getEventManager()->trigger('cart.postModify', $this, array("item" => $item, "cart" => $this->cart));
                 
-                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray()));
+                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray( $this->view )));
             }
         } else {
             $this->_helper->json(array("success" => false, "message" => 'not allowed'));
         }
         
-        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray()));
+        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray( $this->view )));
     }
     
     public function listAction()
