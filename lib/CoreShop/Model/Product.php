@@ -414,7 +414,7 @@ class Product extends Base
             $outOfStockBehaviour = self::OUT_OF_STOCK_DEFAULT;
         }
 
-        if($outOfStockBehaviour === self::OUT_OF_STOCK_DEFAULT) {
+        if(intval($outOfStockBehaviour) === self::OUT_OF_STOCK_DEFAULT) {
             return intval(Configuration::get("SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR")) === self::OUT_OF_STOCK_ALLOW;
         }
 
