@@ -44,31 +44,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
     protected static $_theme;
 
     /**
-     * defined overwrite nemsapces
-     *
-     * @var array
-     */
-    protected static $overwriteNamespaces = array("CoreShop", "CoreShopTemplate", "Website");
-
-    /**
-     * @param string $namespace
-     */
-    public static function addOverwriteNamespaces($namespace)
-    {
-        if (!in_array($namespace, self::$overwriteNamespaces)) {
-            self::$overwriteNamespaces[] = $namespace;
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public static function getOverwriteNamespaces()
-    {
-        return self::$overwriteNamespaces;
-    }
-
-    /**
      * Plugin constructor.
      * @param null $jsPaths
      * @param null $cssPaths
@@ -153,6 +128,13 @@ class Plugin extends AbstractPlugin implements PluginInterface
                 return new VatManager();
             });
         }
+
+        //Allows to load classes with CoreShop namespace from Website (eg. for overriding classes)
+        $includePaths = array(
+            get_include_path(),
+            PIMCORE_WEBSITE_PATH . "/lib/CoreShop"
+        );
+        set_include_path(implode(PATH_SEPARATOR, $includePaths));
     }
 
     /**

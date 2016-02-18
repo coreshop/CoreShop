@@ -207,20 +207,10 @@ class Mysql extends AbstractWorker
                     }
 
                     if(!empty($getter)) {
-                        $namespaces = Plugin::getOverwriteNamespaces();
+                        $getterClass = "\\CoreShop\\IndexService\\Getter\\" . $getter;
 
-                        $class = null;
-
-                        foreach($namespaces as $namespace) {
-                            $getterClass = "\\$namespace\\IndexService\\Getter\\" . $getter;
-
-                            if(Tool::classExists($getterClass)) {
-                                $class = $getterClass;
-                            }
-                        }
-
-                        if(Tool::classExists($class)) {
-                            $value = $class::get($object, $column);
+                        if(Tool::classExists($getterClass)) {
+                            $value = $getterClass::get($object, $column);
                         }
                     }
                     else {

@@ -122,26 +122,23 @@ class CoreShop_Admin_IndexesController extends Admin
                             continue;
                         }
 
-                        $namespaces = Plugin::getOverwriteNamespaces();
                         $class = null;
 
                         //Allow Column-Types to be declared in Template and/or Website
-                        foreach($namespaces as $namespace) {
-                            $columnNamespace = "\\$namespace\\Model\\Index\\Config\\Column\\";
-                            $columnClass = $columnNamespace . $indexType . "\\" . $objectType;
+                        $columnNamespace = "\\CoreShop\\Model\\Index\\Config\\Column\\";
+                        $columnClass = $columnNamespace . $indexType . "\\" . $objectType;
 
-                            $specialClass = $columnClass . "\\" . ucfirst($col['key']);
-                            $brickClass = $columnClass . "\\" . $col['className'];
+                        $specialClass = $columnClass . "\\" . ucfirst($col['key']);
+                        $brickClass = $columnClass . "\\" . $col['className'];
 
-                            if(\Pimcore\Tool::classExists($specialClass)) {
-                                $class = $specialClass;
-                            }
-                            else if(\Pimcore\Tool::classExists($brickClass)) {
-                                $class = $brickClass;
-                            }
-                            else if(\Pimcore\Tool::classExists($columnClass)) {
-                                $class = $columnClass;
-                            }
+                        if(\Pimcore\Tool::classExists($specialClass)) {
+                            $class = $specialClass;
+                        }
+                        else if(\Pimcore\Tool::classExists($brickClass)) {
+                            $class = $brickClass;
+                        }
+                        else if(\Pimcore\Tool::classExists($columnClass)) {
+                            $class = $columnClass;
                         }
 
                         if (!$class) {

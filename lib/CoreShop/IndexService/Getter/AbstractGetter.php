@@ -20,6 +20,31 @@ use CoreShop\Model\Product;
 class AbstractGetter {
 
     /**
+     * defined getters
+     *
+     * @var array
+     */
+    protected static $getter = array("Brick", "ClassificationStore");
+
+    /**
+     * @param string $getter
+     */
+    public static function addGetter($getter)
+    {
+        if (!in_array($getter, self::$getter)) {
+            self::$getter[] = $getter;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function getGetter()
+    {
+        return self::$getter;
+    }
+
+    /**
      * @param $object
      * @param array $config
      * @return mixed
