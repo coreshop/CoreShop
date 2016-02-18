@@ -204,6 +204,7 @@ class Product extends Base
     /**
      * Get all Variants Differences
      *
+     * @param $language
      * @return array
      */
     public function getVariantDifferences($language = 'en')
