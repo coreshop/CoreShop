@@ -337,6 +337,11 @@ class Product extends Base
         return Tool::convertToCurrency($price);
     }
 
+    /**
+     * returns variant with cheapest price
+     *
+     * @return float|mixed
+     */
     public function getCheapestVariantPrice()
     {
         $cacheKey = "coreshop_product_cheapest_variant_price_" . $this->getId();
@@ -348,30 +353,28 @@ class Product extends Base
 
         if( $this->getType() == 'object')
         {
-            $childs = $this->getChilds( array(self::OBJECT_TYPE_VARIANT) );
+            $childs = $this->getChilds(array(self::OBJECT_TYPE_VARIANT));
 
-            $prices = array( $this->getPrice() );
+            $prices = array($this->getPrice());
 
-            if( empty( $childs ) )
+            if(empty($childs))
             {
                 return $this->getPrice();
             }
             else
             {
-                foreach( $childs as $child )
+                foreach($childs as $child)
                 {
                     $prices[] = $child->getPrice();
                 }
 
-                $price = min( $prices );
+                $price = min($prices);
 
                 Cache::save($price, $cacheKey);
 
                 return $price;
 
             }
-
-            return $this->getPrice();
         }
 
         return $this->getPrice();
