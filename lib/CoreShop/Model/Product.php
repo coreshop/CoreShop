@@ -240,6 +240,8 @@ class Product extends Base
 
         $price = $this->getSpecificPrice();
 
+        Cache::save($price, $cacheKey);
+
         return $price;
     }
 
@@ -333,6 +335,47 @@ class Product extends Base
         }
 
         return Tool::convertToCurrency($price);
+    }
+
+    public function getCheapestVariantPrice()
+    {
+        $cacheKey = "coreshop_product_cheapest_variant_price_" . $this->getId();
+
+        if ($price = Cache::load($cacheKey))
+        {
+            return $price;
+        }
+
+        if( $this->getType() == 'object')
+        {
+            $childs = $this->getChilds( array(self::OBJECT_TYPE_VARIANT) );
+
+            $prices = array();
+
+            if( empty( $childs ) )
+            {
+                return $this->getPrice();
+            }
+            else
+            {
+                foreach( $childs as $child )
+                {
+                    $prices[] = $child->getPrice();
+                }
+
+                $price = min( $prices );
+
+                Cache::save($price, $cacheKey);
+
+                return $price;
+
+            }
+
+            return $this->getPrice();
+        }
+
+        return $this->getPrice();
+
     }
 
     /**
