@@ -350,7 +350,7 @@ class Product extends Base
         {
             $childs = $this->getChilds( array(self::OBJECT_TYPE_VARIANT) );
 
-            $prices = array();
+            $prices = array( $this->getPrice() );
 
             if( empty( $childs ) )
             {
