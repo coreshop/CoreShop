@@ -46,7 +46,7 @@ class Deposit
      *
      * @return $this
      */
-    public function setNamespace($namespace = null)
+    protected function setNamespace($namespace = null)
     {
         $session = $this->getSession();
 
@@ -65,11 +65,29 @@ class Deposit
         return $this;
     }
 
-    public function setLimit($limit = 0)
+    protected function setLimit($limit = 0)
     {
         $this->maxElements = $limit;
 
         return $this;
+    }
+
+    /**
+     * Get formatted deposit
+     * @return array
+     */
+    protected function toArray()
+    {
+        if (empty($this->depositData)) {
+            return array();
+        }
+
+        $data = array();
+
+        foreach ($this->depositData as $id => $val) {
+            $data[]= $id;
+        }
+        return $data;
     }
 
     /**
@@ -106,23 +124,6 @@ class Deposit
         $this->save();
     }
 
-    /**
-     * Get formatted deposit
-     * @return array
-     */
-    public function toArray()
-    {
-        if (empty($this->depositData)) {
-            return array();
-        }
-
-        $data = array();
-
-        foreach ($this->depositData as $id => $val) {
-            $data[]= $id;
-        }
-        return $data;
-    }
 
     /**
      * Check if element is allowed to add
