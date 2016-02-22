@@ -57,7 +57,7 @@
 								"childs":[
 									{
 										"fieldtype":"input",
-										"width":"",
+										"width":null,
 										"queryColumnType":"varchar",
 										"columnType":"varchar",
 										"columnLength":255,
@@ -104,7 +104,7 @@
 							},
 							{
 								"fieldtype":"input",
-								"width":"",
+								"width":null,
 								"queryColumnType":"varchar",
 								"columnType":"varchar",
 								"columnLength":255,
@@ -225,7 +225,7 @@
 										"phpdocType":"string",
 										"toolbarConfig":"",
 										"name":"description",
-										"title":"description",
+										"title":"Description",
 										"tooltip":"",
 										"mandatory":false,
 										"noteditable":false,
@@ -360,9 +360,9 @@
 								"phpdocType":"float",
 								"integer":false,
 								"unsigned":false,
-								"minValue":"",
-								"maxValue":"",
-								"decimalPrecision":"",
+								"minValue":null,
+								"maxValue":null,
+								"decimalPrecision":null,
 								"name":"wholesalePrice",
 								"title":"Pre-tax wholesale price",
 								"tooltip":"",
@@ -387,9 +387,9 @@
 								"phpdocType":"float",
 								"integer":false,
 								"unsigned":false,
-								"minValue":"",
-								"maxValue":"",
-								"decimalPrecision":"",
+								"minValue":null,
+								"maxValue":null,
+								"decimalPrecision":null,
 								"name":"retailPrice",
 								"title":"Pre-tax retail price",
 								"tooltip":"",
@@ -685,7 +685,7 @@
 								"maxValue":null,
 								"decimalPrecision":null,
 								"name":"depth",
-								"title":"Tiefe",
+								"title":"Depth",
 								"tooltip":"",
 								"mandatory":false,
 								"noteditable":false,
@@ -708,11 +708,11 @@
 								"phpdocType":"float",
 								"integer":false,
 								"unsigned":false,
-								"minValue":"",
-								"maxValue":"",
-								"decimalPrecision":"",
+								"minValue":null,
+								"maxValue":null,
+								"decimalPrecision":null,
 								"name":"width",
-								"title":"Breite",
+								"title":"Width",
 								"tooltip":"",
 								"mandatory":false,
 								"noteditable":false,
@@ -735,11 +735,11 @@
 								"phpdocType":"float",
 								"integer":false,
 								"unsigned":false,
-								"minValue":"",
-								"maxValue":"",
-								"decimalPrecision":"",
+								"minValue":null,
+								"maxValue":null,
+								"decimalPrecision":null,
 								"name":"height",
-								"title":"H\u00f6he",
+								"title":"Height",
 								"tooltip":"",
 								"mandatory":false,
 								"noteditable":false,
@@ -762,11 +762,11 @@
 								"phpdocType":"float",
 								"integer":false,
 								"unsigned":false,
-								"minValue":"",
-								"maxValue":"",
-								"decimalPrecision":"",
+								"minValue":null,
+								"maxValue":null,
+								"decimalPrecision":null,
 								"name":"weight",
-								"title":"Gewicht",
+								"title":"Weight",
 								"tooltip":"",
 								"mandatory":false,
 								"noteditable":false,
@@ -810,11 +810,11 @@
 								"relationType":true,
 								"objectsAllowed":false,
 								"assetsAllowed":true,
-                                "assetTypes":[
-                                    {
-                                        "assetTypes":"image"
-                                    }
-                                ],
+								"assetTypes":[
+									{
+										"assetTypes":"[object Object]"
+									}
+								],
 								"documentsAllowed":false,
 								"documentTypes":[
 
@@ -903,7 +903,7 @@
 								"fieldtype":"objectbricks",
 								"phpdocType":"\\Pimcore\\Model\\Object\\Objectbrick",
 								"allowedTypes":[
-
+									"CoreShopDimensionTest"
 								],
 								"name":"variants",
 								"title":"Variants",
@@ -966,7 +966,7 @@
 								"childs":[
 
 								],
-								"name":"ClassificationStore",
+								"name":"classificationStore",
 								"region":null,
 								"layout":null,
 								"title":"Classification Store",
