@@ -362,6 +362,7 @@ class Install
      * Install Admin TranslationsFile
      *
      * @param $csv string Path to CSV File
+     * @return boolean
      */
     public function installAdminTranslations($csv) {
         Admin::importTranslationsFromFile($csv, true, Tool\Admin::getLanguages());

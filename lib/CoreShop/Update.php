@@ -116,6 +116,13 @@ class Update {
                     );
                 }
 
+                if(strpos($download, "install/translations/admin.csv") === 0) {
+                    $updateScripts[$buildNumber]["importTranslation"] = array(
+                        "type" => "importTranslations",
+                        "revision" => $buildNumber
+                    );
+                }
+
                 $revisions[] = (int)$buildNumber;
             }
 
@@ -181,6 +188,10 @@ class Update {
                 foreach($updateScripts[$revision]["installClass"] as $installClass) {
                     $jobs["procedural"][] = $installClass;
                 }
+            }
+
+            if($updateScripts[$revision]["importTranslation"]) {
+                $jobs["procedural"][] = $updateScripts[$revision]["importTranslation"];
             }
 
             if($updateScripts[$revision]["postupdate"]) {
@@ -344,7 +355,7 @@ class Update {
         }
 
         return array(
-            "message" => "class installeds",
+            "message" => "Installed Class " . $class,
             "success" => true
         );
     }

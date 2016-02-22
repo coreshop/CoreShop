@@ -82,6 +82,8 @@ class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
             $status = \CoreShop\Update::executeScript($this->getParam("revision"), "postupdate");
         } else if ($this->getParam("type") == "installClass") {
             $status = \CoreShop\Update::installClass($this->getParam("class"));
+        } else if ($this->getParam("type") == "importTranslation") {
+            \Pimcore\Model\Translation\Admin::importTranslationsFromFile(PIMCORE_PLUGINS_PATH . "/CoreShop/install/translations/admin.csv" . "", true, \Pimcore\Tool\Admin::getLanguages());
         } else if ($this->getParam("type") == "cleanup") {
             \CoreShop\Update::cleanup();
         }
