@@ -80,6 +80,8 @@ class CoreShop_Admin_InstallController extends Admin
             // create predefined document types
             //$install->createDocTypes();
 
+            $install->installAdminTranslations(PIMCORE_PLUGINS_PATH . "/CoreShop/install/translations/admin.csv");
+
             $install->createImageThumbnails();
             $install->installTheme();
 

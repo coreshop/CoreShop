@@ -21,6 +21,7 @@ use Pimcore\File;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\Folder;
+use Pimcore\Model\Translation\Admin;
 use Pimcore\Model\User;
 use Pimcore\Model\Staticroute;
 use Pimcore\Model\Tool\Setup;
@@ -353,6 +354,17 @@ class Install
 
         $configFile = \Pimcore\Config::locateConfigFile("customviews.php");
         File::put($configFile, to_php_data_file_format($customViews));
+
+        return true;
+    }
+
+    /**
+     * Install Admin TranslationsFile
+     *
+     * @param $csv string Path to CSV File
+     */
+    public function installAdminTranslations($csv) {
+        Admin::importTranslationsFromFile($csv, true, Tool\Admin::getLanguages());
 
         return true;
     }
