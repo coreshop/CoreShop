@@ -15,7 +15,7 @@
     "title":null,
     "width":null,
     "height":null,
-    "collapsible":false,
+    "collapsible":null,
     "collapsed":null,
     "bodyStyle":null,
     "datatype":"layout",
@@ -39,7 +39,7 @@
         "childs":[
           {
             "fieldtype":"input",
-            "width":"",
+            "width":null,
             "queryColumnType":"varchar",
             "columnType":"varchar",
             "columnLength":255,
@@ -69,9 +69,9 @@
             "phpdocType":"float",
             "integer":false,
             "unsigned":false,
-            "minValue":"",
-            "maxValue":"",
-            "decimalPrecision":"",
+            "minValue":null,
+            "maxValue":null,
+            "decimalPrecision":null,
             "name":"amount",
             "title":"Amount",
             "tooltip":"",
@@ -89,14 +89,14 @@
           },
           {
             "fieldtype":"input",
-            "width":"",
+            "width":null,
             "queryColumnType":"varchar",
             "columnType":"varchar",
             "columnLength":255,
             "phpdocType":"string",
             "regex":"",
             "name":"transactionIdentifier",
-            "title":"transactionIdentifier",
+            "title":"Transaction Identifier",
             "tooltip":"",
             "mandatory":false,
             "noteditable":false,
@@ -139,7 +139,7 @@
             "defaultValue":null,
             "useCurrentDate":false,
             "name":"datePayment",
-            "title":"datePayment",
+            "title":"Date of Payment",
             "tooltip":"",
             "mandatory":false,
             "noteditable":false,
@@ -160,7 +160,7 @@
               "CoreShopPaymentPayunity"
             ],
             "name":"paymentInformation",
-            "title":"paymentInformation",
+            "title":"Payment Information",
             "tooltip":"",
             "mandatory":false,
             "noteditable":false,
@@ -180,7 +180,7 @@
         "locked":false
       }
     ],
-    "locked":false
+    "locked":null
   },
   "icon":null,
   "previewUrl":null,
