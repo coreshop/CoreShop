@@ -136,7 +136,7 @@
                 "title":"Lang",
                 "tooltip":"",
                 "mandatory":false,
-                "noteditable":false,
+                "noteditable":true,
                 "index":false,
                 "locked":false,
                 "style":"",
@@ -376,8 +376,8 @@
             "type":null,
             "region":null,
             "title":"Payment",
-            "width":"",
-            "height":"",
+            "width":null,
+            "height":null,
             "collapsible":false,
             "collapsed":false,
             "bodyStyle":"",
@@ -396,7 +396,7 @@
                 "title":"Payment Provider",
                 "tooltip":"",
                 "mandatory":false,
-                "noteditable":false,
+                "noteditable":true,
                 "index":false,
                 "locked":false,
                 "style":"",
@@ -418,7 +418,7 @@
                 "title":"Payment Provider Description",
                 "tooltip":"",
                 "mandatory":false,
-                "noteditable":false,
+                "noteditable":true,
                 "index":false,
                 "locked":false,
                 "style":"",
@@ -441,7 +441,7 @@
                 "title":"Provider Token",
                 "tooltip":"",
                 "mandatory":false,
-                "noteditable":false,
+                "noteditable":true,
                 "index":false,
                 "locked":false,
                 "style":"",
@@ -556,21 +556,9 @@
                 "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
                 "objectsAllowed":true,
                 "assetsAllowed":false,
-                "assetTypes":[
-                  {
-                    "assetTypes":{
-                      "assetTypes":""
-                    }
-                  }
-                ],
+                "assetTypes":"",
                 "documentsAllowed":false,
-                "documentTypes":[
-                  {
-                    "documentTypes":{
-                      "documentTypes":""
-                    }
-                  }
-                ],
+                "documentTypes":"",
                 "lazyLoading":false,
                 "classes":[
 
