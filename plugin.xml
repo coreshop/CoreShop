@@ -121,6 +121,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopFilter.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopLanguage.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopLanguage.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/orders/createPayment.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

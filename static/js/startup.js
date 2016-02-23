@@ -341,6 +341,20 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                         invoiceTab.reload();
                     };
+
+                    tab.toolbar.insert(tab.toolbar.items.length,
+                        '-'
+                    );
+                    tab.toolbar.insert(tab.toolbar.items.length,
+                        {
+                            text: t("coreshop_add_payment"),
+                            scale: "medium",
+                            iconCls: "coreshop_icon_currency",
+                            handler: function() {
+                                pimcore.plugin.coreshop.orders.createPayment.showWindow(tab);
+                            }.bind(this, tab)
+                        }
+                    );
                 }
             }
 

@@ -89,4 +89,57 @@ class CoreShop_Admin_OrderController extends Admin
 
         $this->_helper->json(array("success" => false));
     }
+
+    public function getPaymentProvidersAction() {
+        $providers = Plugin::getPaymentProviders();
+        $result = array();
+
+        foreach($providers as $provider) {
+            if($provider instanceof \CoreShop\Model\Plugin\Payment) {
+                $result[] = array(
+                    "name" => $provider->getName(),
+                    "id" => $provider->getIdentifier()
+                );
+            }
+        }
+
+        $this->_helper->json(array("success" => true, "data" => $result));
+    }
+
+    public function addPaymentAction() {
+        //@TODO: Add translations for messages
+
+        $orderId = $this->getParam("o_id");
+        $order = \CoreShop\Model\Order::getById($orderId);
+        $amount = doubleval($this->getParam("amount", 0));
+        $paymentProviderName = $this->getParam("paymentProvider");
+
+        if(!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array("success" => false, "message" => "Order with ID '$orderId' not found"));
+        }
+
+        if($amount <= 0) {
+            $this->_helper->json(array("success" => false, "message" => "Amount must be greater 0"));
+        }
+
+        $paymentProvider = Plugin::getPaymentProvider($paymentProviderName);
+
+        if($paymentProvider instanceof \CoreShop\Model\Plugin\Payment) {
+            $payedTotal = $order->getPayedTotal();
+
+            $payedTotal += $amount;
+
+            if($payedTotal > $order->getTotal()) {
+                $this->_helper->json(array("success" => false, "message" => "Payed Amount is greater than order amount"));
+            }
+            else {
+                $order->createPayment($paymentProvider, $amount, $payedTotal === $order->getTotal());
+
+                $this->_helper->json(array("success" => true));
+            }
+        }
+        else {
+            $this->_helper->json(array("success" => false, "message" => "Payment Provider '$paymentProviderName' not found"));
+        }
+    }
 }

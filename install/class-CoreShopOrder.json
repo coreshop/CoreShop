@@ -364,6 +364,29 @@
                 "invisible":false,
                 "visibleGridView":false,
                 "visibleSearch":false
+              },
+              {
+                "fieldtype":"calculatedValue",
+                "width":0,
+                "calculatorClass":"CoreShop\\Model\\Order\\TotalPayed",
+                "queryColumnType":"varchar",
+                "columnLength":255,
+                "phpdocType":"\\Pimcore\\Model\\Object\\Data\\CalculatedValue",
+                "name":"totalPayed",
+                "title":"Total Payed",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":null,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "columnType":null,
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
               }
             ],
             "locked":false
