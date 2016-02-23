@@ -75,7 +75,6 @@ class CoreShop_Admin_InstallController extends Admin
             $install->installAdminTranslations(PIMCORE_PLUGINS_PATH . "/CoreShop/install/translations/admin.csv");
 
             $install->createImageThumbnails();
-            $install->installTheme();
 
             Plugin::getEventManager()->trigger('install.post', null, array("installer" => $install));
 
