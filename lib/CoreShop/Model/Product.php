@@ -268,13 +268,16 @@ class Product extends Base
                 }
             }
 
+            //Conditions are not valid, so continue with next rule
             if (!$isValid) {
-                break;
+                continue;
             }
 
             foreach ($actions as $action) {
-                if ($action->getPrice($this) < $price) {
-                    $price = $action->getPrice($this);
+                $actionsPrice = $action->getPrice($this);
+
+                if($actionsPrice !== false) {
+                    $price = $actionsPrice;
                 }
             }
         }
@@ -285,6 +288,8 @@ class Product extends Base
     /**
      * Get Discount from Specific Prices
      *
+     * @param $price float Base Price for Discounts
+     *
      * @return float
      */
     public function getSpecificPriceDiscount($price)
@@ -293,26 +298,25 @@ class Product extends Base
         $discount = 0;
 
         foreach ($specificPrices as $specificPrice) {
-            if ($specificPrice instanceof SpecificPrice) {
-                $conditions = $specificPrice->getConditions();
-                $actions = $specificPrice->getActions();
+            $conditions = $specificPrice->getConditions();
+            $actions = $specificPrice->getActions();
 
-                $isValid = true;
+            $isValid = true;
 
-                foreach ($conditions as $condition) {
-                    if (!$condition->checkCondition($this, $specificPrice)) {
-                        $isValid = false;
-                        break;
-                    }
-                }
-
-                if (!$isValid) {
+            foreach ($conditions as $condition) {
+                if (!$condition->checkCondition($this, $specificPrice)) {
+                    $isValid = false;
                     break;
-                } else {
-                    foreach ($actions as $action) {
-                        $discount += $action->getDiscount($price, $this);
-                    }
                 }
+            }
+
+            //Conditions are not valid, so continue with next rule
+            if (!$isValid) {
+                continue;
+            }
+
+            foreach ($actions as $action) {
+                $discount += $action->getDiscount($price, $this);
             }
         }
 
@@ -475,7 +479,7 @@ class Product extends Base
     /**
      * get all specific prices
      *
-     * @return array
+     * @return SpecificPrice[]|null
      */
     public function getSpecificPrices()
     {

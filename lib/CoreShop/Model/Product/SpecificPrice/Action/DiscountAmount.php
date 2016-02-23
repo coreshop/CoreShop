@@ -89,10 +89,10 @@ class DiscountAmount extends AbstractAction
      * get new price for product
      *
      * @param Product $product
-     * @return float $price
+     * @return float|boolean $price
      */
     public function getPrice(Product $product)
     {
-        return $product->getRetailPrice();
+        return false;
     }
 }
