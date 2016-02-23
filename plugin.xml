@@ -116,6 +116,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/select.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/multiselect.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/boolean.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/range.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopFilter.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopFilter.js</path>

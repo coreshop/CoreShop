@@ -63,8 +63,8 @@ abstract class AbstractCondition {
 
         $this->view->setScriptPath(
             array(
-                CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/product/filter',
-                CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/product/filter/' . strtolower(array_pop(explode('\\', get_class($this))))
+                CORESHOP_TEMPLATE_PATH . '/scripts/coreshop/product/filter',
+                CORESHOP_TEMPLATE_PATH . '/scripts/coreshop/product/filter/' . strtolower(array_pop(explode('\\', get_class($this))))
             )
         );
 

@@ -260,6 +260,9 @@
 .coreshop_product_filters_icon_condition_range {
     background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
 }
+.coreshop_product_filters_icon_condition_boolean {
+     background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
+}
 
 .coreshop_icon_language, .pimcore_icon_coreShopLanguage {
     background: url(/pimcore/static6/img/icon/comment.png) center center no-repeat !important;
