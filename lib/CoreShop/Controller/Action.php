@@ -53,9 +53,9 @@ class Action extends \Website\Controller\Action
             array_merge(
                 $this->view->getScriptPaths(),
                 array(
-                    CORESHOP_TEMPLATE_PATH . '/views/scripts/',
-                    CORESHOP_TEMPLATE_PATH . '/views/layouts/',
-                    CORESHOP_TEMPLATE_PATH . '/views/scripts/coreshop/',
+                    CORESHOP_TEMPLATE_PATH . '/scripts',
+                    CORESHOP_TEMPLATE_PATH . '/scripts/coreshop',
+                    CORESHOP_TEMPLATE_PATH . '/layouts',
                     PIMCORE_WEBSITE_PATH . '/views/scripts'
                 )
             )
@@ -76,6 +76,9 @@ class Action extends \Website\Controller\Action
         $this->prepareCart();
 
         $this->view->isShop = true;
+
+        $this->enableLayout();
+        $this->setLayout(Plugin::getLayout());
     }
 
     /**

@@ -14,7 +14,7 @@
 
 use CoreShop\Plugin;
 use CoreShop\Model\Compare;
-use CoreShopTemplate\Controller\Action;
+use CoreShop\Controller\Action;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopProduct;
 

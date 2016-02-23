@@ -584,27 +584,14 @@ class Install
     }
 
     /**
-     * Installs the Theme
+     * enables the Theme
      *
      * @param string $template
-     * @param bool $installDemoData
      * @throws \CoreShop\Exception\ThemeNotFoundException
      */
-    public function installTheme($template = "default", $installDemoData = true)
+    public function installTheme($template = "default")
     {
         Plugin::enableTheme($template);
-
-        if ($installDemoData) {
-            Plugin::getTheme()->installDemoData();
-        }
-    }
-
-    /**
-     * Install Demo Theme Data
-     */
-    public function installThemeDemo()
-    {
-        Plugin::getTheme()->installDemoData();
     }
 
     /**

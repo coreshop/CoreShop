@@ -14,7 +14,7 @@
 
 namespace CoreShop\Controller\Action;
 
-use CoreShopTemplate\Controller\Action;
+use CoreShop\Controller\Action;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Order;
 use CoreShop\Model\OrderState;
@@ -44,7 +44,8 @@ class Payment extends Action
             array_merge(
                 $this->view->getScriptPaths(),
                 array(
-                    CORESHOP_TEMPLATE_PATH . '/views/scripts/' . strtolower($this->getModule()->getIdentifier())
+                    CORESHOP_TEMPLATE_PATH . '/scripts/' . strtolower($this->getModule()->getIdentifier()),
+                    PIMCORE_WEBSITE_PATH . '/views/scripts/' . strtolower($this->getModule()->getIdentifier())
                 )
             )
         );

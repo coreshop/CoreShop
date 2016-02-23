@@ -36,6 +36,6 @@ class Coreshoparea extends Area
 
     protected function getThemeAreaDir()
     {
-        return CORESHOP_TEMPLATE_PATH . "/views/areas";
+        return CORESHOP_TEMPLATE_PATH . "/areas";
     }
 }

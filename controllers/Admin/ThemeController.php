@@ -22,7 +22,7 @@ class CoreShop_Admin_ThemeController extends Admin
     public function enableAction()
     {
         try {
-            \CoreShop\Theme::enableTheme($this->getParam("theme"));
+            Plugin::enableTheme($this->getParam("theme"));
 
             $this->_helper->json(array("success" => true));
         } catch (\Exception $ex) {

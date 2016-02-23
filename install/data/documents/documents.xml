@@ -18,7 +18,7 @@
             <type>snippet</type>
             <action>footer</action>
             <controller>snippet</controller>
-            <module>CoreShopTemplate</module>
+            <module></module>
             <path>shop/snippet</path>
             <key>footer</key>
         </document>
@@ -26,7 +26,7 @@
             <type>snippet</type>
             <action>terms</action>
             <controller>snippet</controller>
-            <module>CoreShopTemplate</module>
+            <module></module>
             <path>shop/snippet</path>
             <key>terms</key>
         </document>
@@ -34,7 +34,7 @@
             <type>snippet</type>
             <action>main-menu</action>
             <controller>snippet</controller>
-            <module>CoreShopTemplate</module>
+            <module></module>
             <path>shop/snippet</path>
             <key>menu</key>
         </document>

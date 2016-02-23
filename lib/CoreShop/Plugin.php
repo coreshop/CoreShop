@@ -28,7 +28,6 @@ use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\Plugin\Hook;
 use CoreShop\Model\Plugin\InstallPlugin;
 use CoreShop\Plugin\Install;
-use CoreShopTemplate\Theme as TemplateTheme;
 
 class Plugin extends AbstractPlugin implements PluginInterface
 {
@@ -37,11 +36,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
      * @var \Zend_Translate
      */
     protected static $_translate;
-
-    /**
-     * @var \CoreShop\Theme
-     */
-    protected static $_theme;
 
     /**
      * Plugin constructor.
@@ -86,19 +80,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $router->addRoute("coreshop_payment", $routePluginPayment);
 
             if ($frontController instanceof \Zend_Controller_Front) {
-                $namespace = "CoreShopTemplate";
-
-                $frontController->addControllerDirectory(CORESHOP_TEMPLATE_PATH . "/controllers", $namespace);
-
-                $autoloader->registerNamespace($namespace);
-
-                $includePaths = array(
-                    get_include_path(),
-                    CORESHOP_TEMPLATE_PATH . "/controllers",
-                    CORESHOP_TEMPLATE_PATH . "/lib"
-                );
-                set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
-
                 $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
             }
         });
@@ -369,8 +350,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
             if (is_file($enableScript)) {
                 include($enableScript);
             }
-
-            self::getTheme()->installTheme();
         } else {
             throw new ThemeNotFoundException();
         }
@@ -391,18 +370,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
         }
 
         return false;
-    }
-
-    /**
-     * @return Theme|\CoreShopTemplate\Theme
-     */
-    public static function getTheme()
-    {
-        if (!self::$_theme instanceof Theme) {
-            self::$_theme = new TemplateTheme();
-        }
-
-        return self::$_theme;
     }
 
     /**

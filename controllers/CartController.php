@@ -13,7 +13,7 @@
  */
 
 use CoreShop\Plugin;
-use CoreShopTemplate\Controller\Action;
+use CoreShop\Controller\Action;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\CoreShopProduct;

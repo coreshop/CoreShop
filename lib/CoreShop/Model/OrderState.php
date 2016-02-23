@@ -19,7 +19,6 @@ use CoreShop\Tool;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
-use Pimcore\Model\User;
 use Pimcore\Tool\Authentication;
 
 class OrderState extends AbstractModel

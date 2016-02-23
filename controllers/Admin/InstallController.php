@@ -28,14 +28,6 @@ class CoreShop_Admin_InstallController extends Admin
         $this->_helper->json(array("success" => true));
     }
 
-    public function installThemeDemoDataAction()
-    {
-        $install = new Plugin\Install();
-        $install->installThemeDemo();
-
-        $this->_helper->json(array("success" => true));
-    }
-
     public function installAction()
     {
         try {

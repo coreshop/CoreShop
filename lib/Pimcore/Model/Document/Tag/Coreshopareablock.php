@@ -44,6 +44,6 @@ class Coreshopareablock extends Areablock
      */
     public function getAreaDirectory()
     {
-        return CORESHOP_TEMPLATE_PATH . "/views/areas";
+        return CORESHOP_TEMPLATE_PATH . "/areas";
     }
 }

@@ -12,7 +12,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShopTemplate\Controller\Action;
+use CoreShop\Controller\Action;
 use Pimcore\Model\Object\CoreShopProduct;
 
 class CoreShop_SearchController extends Action

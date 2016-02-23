@@ -27,18 +27,11 @@ class TemplateRouter extends \Zend_Controller_Plugin_Abstract
     {
         $coreShopRequest = clone $request;
         if ($request->getModuleName() === "CoreShop") {
-            $modulesToTest = array("Default", "CoreShopTemplate");
-
-            //Check if TemplateController is available
             $frontController = \Zend_Controller_Front::getInstance();
+            $coreShopRequest->setModuleName("Default");
 
-            foreach ($modulesToTest as $test) {
-                $coreShopRequest->setModuleName($test);
-
-                if ($frontController->getDispatcher()->isDispatchable($coreShopRequest)) {
-                    $request->setModuleName($test);
-                    break;
-                }
+            if ($frontController->getDispatcher()->isDispatchable($coreShopRequest)) {
+                $request->setModuleName("Default");
             }
         }
     }
