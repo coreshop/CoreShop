@@ -65,7 +65,7 @@ class TaxManagerFactory
                     }
 
                     \Zend_Registry::set($cacheKey, $taxManager);
-                    Cache::save($taxManager, $cacheKey);
+                    Cache::save($taxManager, $cacheKey, array("coreshop_tax_manager"));
                 } else {
                     \Zend_Registry::set($cacheKey, $taxManager);
                 }

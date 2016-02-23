@@ -240,7 +240,7 @@ class Product extends Base
 
         $price = $this->getSpecificPrice();
 
-        Cache::save($price, $cacheKey);
+        Cache::save($price, $cacheKey, array("coreshop_product_price", "coreshop_product_" . $this->getId() . "_price"));
 
         return $price;
     }

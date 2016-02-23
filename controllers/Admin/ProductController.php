@@ -154,6 +154,8 @@ class CoreShop_Admin_ProductController extends Admin
             $specificPrice->setConditions($conditionInstances);
             $specificPrice->save();
 
+            \Pimcore\Cache::clearTag("coreshop_product_" . $specificPrice->getO_Id() . "_price");
+
             $this->_helper->json(array("success" => true, "data" => $specificPrice));
         } else {
             $this->_helper->json(array("success" => false));
