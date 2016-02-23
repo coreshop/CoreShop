@@ -134,7 +134,7 @@ class CoreShop_CheckoutController extends Action
         
         $this->view->headTitle($this->view->translate("Shipping"));
     }
-    
+
     public function paymentAction()
     {
         $this->checkIsAllowed();
@@ -151,17 +151,17 @@ class CoreShop_CheckoutController extends Action
                     break;
                 }
             }
-            
-            if (!$provider instanceof Payment) {
+
+            if (!$paymentProvider instanceof Payment) {
                 $this->view->error = "oh shit, not found";
             } else {
-                $this->cart->setPaymentModule($provider->getIdentifier());
+                $this->cart->setPaymentModule($paymentProvider->getIdentifier());
                 $this->cart->save();
 
                 $this->redirect($paymentProvider->process($this->cart));
             }
         }
-        
+
         $this->view->headTitle($this->view->translate("Payment"));
     }
 
