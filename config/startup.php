@@ -47,9 +47,6 @@ if (Pimcore\Tool::classExists("CoreShop\\Plugin")) {
         if (is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $template)) {
             $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/coreshop/template";
             $templateResources = "/website/views/coreshop/template/" . $template . "/static/";
-        } else {
-            $templateBasePath = CORESHOP_PATH . "/views/template";
-            $templateResources = "/plugins/CoreShop/views/template/" . $template . "/static/";
         }
 
         if (!defined("CORESHOP_TEMPLATE_BASE_PATH")) {

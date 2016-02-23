@@ -1,1 +1,0 @@
-<?=$this->template("coreshop/product/helper/product-preview.php", array("product" => $this->product))?>
