@@ -45,7 +45,7 @@ class Invoice
         self::initTranslation();
 
         $view = new View();
-        $view->setScriptPath(CORESHOP_TEMPLATE_PATH . "/views/scripts/coreshop/invoice/");
+        $view->setScriptPath(CORESHOP_TEMPLATE_PATH . "/scripts/coreshop/invoice/");
         $view->assign("order", $order);
         $view->addHelperPath(PIMCORE_PATH . "/lib/Pimcore/View/Helper", "\\Pimcore\\View\\Helper\\");
         $view->addHelperPath(CORESHOP_PATH . '/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
