@@ -321,16 +321,19 @@ class Plugin extends AbstractPlugin implements PluginInterface
     /**
      * @return \Zend_Translate
      */
-    public static function getTranslate()
+    public static function getTranslate($lang = null)
     {
         if (self::$_translate instanceof \Zend_Translate) {
             return self::$_translate;
         }
-        try {
-            $lang = \Zend_Registry::get('Zend_Locale')->getLanguage();
-        } catch (Exception $e) {
-            $lang = 'en';
+        if(is_null($lang)) {
+            try {
+                $lang = \Zend_Registry::get('Zend_Locale')->getLanguage();
+            } catch (Exception $e) {
+                $lang = 'en';
+            }
         }
+
         self::$_translate = new \Zend_Translate(
             'csv',
             PIMCORE_PLUGINS_PATH . self::getTranslationFile($lang),

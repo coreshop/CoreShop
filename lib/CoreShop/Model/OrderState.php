@@ -18,6 +18,9 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
+use Pimcore\Model\Element\Note;
+use Pimcore\Model\User;
+use Pimcore\Tool\Authentication;
 
 class OrderState extends AbstractModel
 {
@@ -85,12 +88,18 @@ class OrderState extends AbstractModel
      * Process OrderState for Order
      *
      * @param Order $order
-     * @param null $locale
      * @return bool
      * @throws \Exception
      */
-    public function processStep(Order $order, $locale = null)
+    public function processStep(Order $order)
     {
+        //Check if new OrderState is the same as the current one
+        if($order->getOrderState() instanceof OrderState) {
+            if($order->getOrderState()->getId() === $this->getId()) {
+                return false;
+            }
+        }
+
         if ($this->getAccepted()) {
         }
 
@@ -159,6 +168,19 @@ class OrderState extends AbstractModel
 
         $order->setOrderState($this);
         $order->save();
+
+        $translate = Plugin::getTranslate(\Pimcore\Tool::getDefaultLanguage())->getAdapter();
+
+        $note = $order->createNote("coreshop-orderstate");
+        $note->setTitle(sprintf($translate->translate("coreshop_note_orderstate_change"), $this->getName()));
+        $note->setDescription(sprintf($translate->translate("coreshop_note_orderstate_change_description"), $this->getName()));
+
+        if($order->getOrderState() instanceof OrderState) {
+            $note->addData("fromState", "text", $order->getOrderState()->getName());
+        }
+
+        $note->addData("toState", "text", $this->getName());
+        $note->save();
 
         Plugin::actionHook("orderstate.process.post", array("newOrderStatus" => $this, "order" => $order));
 

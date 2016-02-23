@@ -17,10 +17,14 @@ namespace CoreShop\Model;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Plugin;
+use Pimcore\Cache;
 use Pimcore\Model\Asset\Document;
+use Pimcore\Model\Element\Note;
 use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopPayment;
+use Pimcore\Model\User as PimcoreUser;
 use Pimcore\Model\Version;
+use Pimcore\Tool\Authentication;
 
 class Order extends Base
 {
@@ -293,13 +297,17 @@ class Order extends Base
                 $data = \Zend_Json::decode($_REQUEST['data']);
 
                 if (isset($data['orderState'])) {
+                    Cache::clearTag("object_" . $this->getId());
+                    \Zend_Registry::set("object_" . $this->getId(), null);
+
                     $orderStep = OrderState::getById($data['orderState']);
+                    $originalOrder = Order::getById($this->getId());
 
                     unset($_REQUEST['data']);
 
                     if ($orderStep instanceof OrderState) {
-                        if($orderStep->getId() !== $this->getOrderState()->getId())
-                            $orderStep->processStep($this);
+                        if($orderStep->getId() !== $originalOrder->getOrderState()->getId())
+                            $orderStep->processStep($originalOrder);
                     }
                 }
             } catch (\Exception $ex) {
@@ -337,6 +345,29 @@ class Order extends Base
         }
 
         return Invoice::generateInvoice($this);
+    }
+
+    /**
+     * Create a note for this order
+     *
+     * @param $type string
+     *
+     * @return Note $note
+     */
+    public function createNote($type) {
+        $note = new Note();
+        $note->setElement($this);
+        $note->setDate(time());
+        $note->setType($type);
+
+        if(\Pimcore::inAdmin()) {
+            $user = Authentication::authenticateSession();
+            if ($user instanceof PimcoreUser) {
+                $note->setUser($user->getId());
+            }
+        }
+
+        return $note;
     }
 
     /**
