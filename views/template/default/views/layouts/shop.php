@@ -202,7 +202,7 @@
                 <!-- Shopping Cart Starts -->
                     <div class="col-md-3">
                         <?php if(!\CoreShop\Config::isCatalogMode()) { ?>
-                            <?=$this->template("coreshop/cart/helper/dropdown.php") ?>
+                            <?=$this->template("coreshop/cart/helper/minicart.php") ?>
                         <?php } ?>
                     </div>
                 <!-- Shopping Cart Ends -->

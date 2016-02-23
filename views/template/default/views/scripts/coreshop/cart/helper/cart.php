@@ -1,3 +1,4 @@
+<?php if(count($this->cart->getItems()) > 0) { ?>
 <div class="table-responsive shopping-cart-table">
     <table class="table table-bordered">
         <thead>
@@ -63,7 +64,7 @@
                         <?php if($item->getIsGiftItem()) { ?>
 
                         <?php } else { ?>
-                            <button type="button" title="<?=$this->translate("Remove")?>" class="btn btn-default tool-tip removeFromCart" data-refresh="true" data-id="<?=$item->getId()?>">
+                            <button type="button" title="<?=$this->translate("Remove")?>" class="btn btn-default tool-tip removeFromCart" data-id="<?=$item->getId()?>">
                                 <i class="fa fa-times-circle"></i>
                             </button>
                         <?php } ?>
@@ -202,4 +203,6 @@
         </tfoot>
     </table>
 </div>
-
+<?php } else { ?>
+    <p><?=$this->translate("Your Shopping Cart is empty")?></p>
+<?php } ?>

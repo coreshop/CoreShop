@@ -51,22 +51,6 @@ class CartItem extends Base
     }
 
     /**
-     * Returns the CartItem as array
-     *
-     * @return array+
-     */
-    public function toArray()
-    {
-        return array(
-            "id" => $this->getId(),
-            "product" => $this->getProduct()->toArray(),
-            "amount" => $this->getAmount(),
-            "price" => Tool::formatPrice($this->getProduct()->getPrice()),
-            "total" => Tool::formatPrice($this->getTotal()),
-        );
-    }
-
-    /**
      * returns amount for item
      * this method has to be overwritten in Pimcore Object
      *

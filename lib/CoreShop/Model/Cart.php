@@ -514,42 +514,6 @@ class Cart extends Base
     }
 
     /**
-     * Returns the cart as array
-     *
-     * @param mixed $view
-     * @return array
-     */
-    public function toArray( $view = NULL )
-    {
-        $viewArgs = array( "cart" => $this, "language" => (string) \Zend_Registry::get("Zend_Locale") );
-
-        if( !$view instanceof \Pimcore\View)
-        {
-            $view = new \Pimcore\View();
-            $view->addHelperPath(PIMCORE_PATH . "/lib/Pimcore/View/Helper", "\\Pimcore\\View\\Helper\\");
-            $view->setScriptPath(CORESHOP_TEMPLATE_PATH . "/views/scripts/coreshop/cart/");
-            $miniCart = $view->render('helper/minicart.php', $viewArgs);
-        }
-        else
-        {
-            $miniCart = $view->render('coreshop/cart/helper/minicart.php', $viewArgs);
-        }
-
-        return array(
-            "user" => $this->getUser() ? $this->getUser()->toArray() : null,
-            "miniCart" => $miniCart,
-            "productAmount" => count($this->getItems()),
-            "subtotal" => Tool::formatPrice($this->getSubtotal()),
-            "shipping" => Tool::formatPrice($this->getShipping()),
-            "payment" => Tool::formatPrice($this->getPaymentFee()),
-            "tax" => Tool::formatPrice($this->getTotalTax()),
-            "discount" => Tool::formatPrice($this->getDiscount()),
-            "total" => Tool::formatPrice($this->getTotal())
-        );
-    }
-
-
-    /**
      * returns array cart items
      * this method has to be overwritten in Pimcore Object
      *

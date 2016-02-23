@@ -69,13 +69,13 @@ class CoreShop_CartController extends Action
                 
                 Plugin::getEventManager()->trigger('cart.postAdd', $this, array("request" => $this->getRequest(), "product" => $product, "cart" => $this->cart, "cartItem" => $item));
                 
-                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray( $this->view )));
+                $this->_helper->json(array("success" => true, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
             }
         } else {
             $this->_helper->json(array("success" => false, "message" => $message));
         }
 
-        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray( $this->view )));
+        $this->_helper->json(array("success" => false, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
     }
     
     public function removeAction()
@@ -97,16 +97,17 @@ class CoreShop_CartController extends Action
         if ($isAllowed) {
             if ($item instanceof CoreShopCartItem) {
                 $this->cart->removeItem($item);
-                
+                $this->reloadCart();
+
                 Plugin::getEventManager()->trigger('cart.postRemove', $this, array("item" => $item, "cart" => $this->cart));
                 
-                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray( $this->view )));
+                $this->_helper->json(array("success" => true, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
             }
         } else {
             $this->_helper->json(array("success" => false, "message" => 'not allowed'));
         }
         
-        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray( $this->view )));
+        $this->_helper->json(array("success" => false, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
     }
     
     public function modifyAction()
@@ -132,13 +133,13 @@ class CoreShop_CartController extends Action
                 
                 Plugin::getEventManager()->trigger('cart.postModify', $this, array("item" => $item, "cart" => $this->cart));
                 
-                $this->_helper->json(array("success" => true, "cart" => $this->cart->toArray( $this->view )));
+                $this->_helper->json(array("success" => true, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
             }
         } else {
             $this->_helper->json(array("success" => false, "message" => 'not allowed'));
         }
         
-        $this->_helper->json(array("success" => false, "cart" => $this->cart->toArray( $this->view )));
+        $this->_helper->json(array("success" => false, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
     }
     
     public function listAction()
@@ -176,5 +177,38 @@ class CoreShop_CartController extends Action
         $this->cart->removePriceRule();
 
         $this->_redirect($this->view->url(array("action" => "list"), "coreshop_cart"));
+    }
+
+    /**
+     * @return string
+     * @throws Zend_Exception
+     */
+    protected function renderMiniCart() {
+        return $this->renderCartView('coreshop/cart/helper/minicart.php');
+    }
+
+    /**
+     * @return string
+     */
+    protected function renderCart() {
+        return $this->renderCartView('coreshop/cart/helper/cart.php');
+    }
+
+    /**
+     * @param $view
+     * @return string
+     * @throws Zend_Exception
+     */
+    protected function renderCartView($view) {
+        return $this->view->partial($view, array(
+            "cart" => $this->cart,
+            "language" => (string)\Zend_Registry::get("Zend_Locale"),
+            "edit" => true
+        ));
+    }
+
+    protected function reloadCart() {
+        \Zend_Registry::set("object_" . $this->cart->getId(), null);
+        $this->prepareCart();
     }
 }

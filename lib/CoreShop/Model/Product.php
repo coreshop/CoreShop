@@ -178,30 +178,6 @@ class Product extends Base
     }
 
     /**
-     * Return Product as Array
-     *
-     * @return array
-     * @throws \Exception
-     * @throws \Zend_Exception
-     */
-    public function toArray()
-    {
-        $urlHelper = new Url();
-        $image = $this->getImage();
-
-        return array(
-            "image" => $image !== false ? $image->getFullPath() : false,
-            "price" => $this->getPrice(),
-            "priceFormatted" => Tool::formatPrice($this->getPrice()),
-            "name" => $this->getName(),
-            "thumbnail" => array(
-                "cart" => $this->getImage() instanceof Image ? $this->getImage()->getThumbnail("coreshop_productCartPreview")->getPath(true) : ""
-            ),
-            "href" => $urlHelper->url(array("lang" => \Zend_Registry::get("Zend_Locale"), "name" => $this->getName(), "product" => $this->getId()), 'coreshop_detail')
-        );
-    }
-
-    /**
      * Get all Variants Differences
      *
      * @param $language
