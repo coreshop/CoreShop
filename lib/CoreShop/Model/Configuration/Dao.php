@@ -70,7 +70,7 @@ class Dao extends Model\Dao\PhpArrayTable
         if (count($data) && $data[0]["id"]) {
             $this->assignVariablesToModel($data[0]);
         } else {
-            throw new \Exception("Configuration with key: " . $this->model->getName() . " does not exist");
+            throw new \Exception("Configuration with key: " . $this->model->getKey() . " does not exist");
         }
     }
 
