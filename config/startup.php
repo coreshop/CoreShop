@@ -44,9 +44,9 @@ if (Pimcore\Tool::classExists("CoreShop\\Plugin")) {
 
         $templateBasePath = '';
 
-        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $template)) {
-            $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/coreshop/template";
-            $templateResources = "/website/views/coreshop/template/" . $template . "/static/";
+        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $template)) {
+            $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/scripts/coreshop/template";
+            $templateResources = "/website/views/scripts/coreshop/template/" . $template . "/static/";
         }
 
         if (!defined("CORESHOP_TEMPLATE_BASE_PATH")) {

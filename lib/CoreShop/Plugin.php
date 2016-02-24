@@ -363,8 +363,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
      */
     public static function getThemeDirectory($name)
     {
-        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $name)) {
-            return PIMCORE_WEBSITE_PATH . '/views/coreshop/template/' . $name;
+        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $name)) {
+            return PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $name;
         } elseif (is_dir(CORESHOP_PATH . "/views/template/" . $name)) {
             return CORESHOP_PATH . "/views/template/" . $name;
         }
