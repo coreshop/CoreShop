@@ -34,12 +34,10 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
     pimcoreReady: function (params, broker) {
         var self = this;
         var coreShopMenuItems = [];
-        var statusbar = pimcore.globalmanager.get("statusbar");
-        var toolbar = pimcore.globalmanager.get("layout_toolbar");
-        var coreShopStatusItem = statusbar.insert(0, '<em class="fa fa-spinner"></em> ' + t("coreshop_loading"));
-        statusbar.insert(1, "-");
 
-        pimcore.globalmanager.add("coreshop_statusbar_item", coreShopStatusItem);
+        var toolbar = pimcore.globalmanager.get("layout_toolbar");
+
+        Ext.get("pimcore_status").insertHtml('beforeEnd', '<div id="coreshop_status" class="loading" data-menu-tooltip="'+t("coreshop_loading")+'"></div>');
 
         Ext.Ajax.request({
             url: "/plugin/CoreShop/admin_settings/get-settings",
@@ -247,7 +245,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                         cls: "pimcore_navigation_flyout"
                     });
 
-                    Ext.get('pimcore_menu_logout').insertSibling('<li id="pimcore_menu_coreshop" class="pimcore_menu_item icon-coreshop-shop">' + t("coreshop") + '</li>');
+                    Ext.get('pimcore_navigation').down("ul").insertHtml('beforeEnd', '<li id="pimcore_menu_coreshop" data-menu-tooltip="'+t("coreshop")+'" class="pimcore_menu_item pimcore_menu_needs_children"></li>');
                     Ext.get("pimcore_menu_coreshop").on("mousedown", function (e, el) {
                         toolbar.showSubMenu.call(this._menu, e, el);
                     }.bind(this));
@@ -255,7 +253,29 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                 pimcore.plugin.coreshop.global.initialize(this.settings);
 
-                coreShopStatusItem.setHtml('<em class="fa fa-shopping-cart"></em> ' + t("coreshop_loaded").format(this.settings.plugin.pluginVersion))
+                Ext.get('coreshop_status').set(
+                    {
+                        'data-menu-tooltip': t("coreshop_loaded").format(this.settings.plugin.pluginVersion),
+                        'class' : ''
+                    }
+                );
+
+                $('[data-menu-tooltip]').unbind("mouseenter");
+                $('[data-menu-tooltip]').unbind("mouseleave");
+                
+                $("[data-menu-tooltip]").mouseenter(function (e) {
+                    $("#pimcore_menu_tooltip").show();
+                    $("#pimcore_menu_tooltip").html($(this).data("menu-tooltip"));
+
+                    var offset = $(e.target).offset();
+                    var top = offset.top;
+                    top = top + ($(e.target).height() / 2);
+
+                    $("#pimcore_menu_tooltip").css({top: top});
+                });
+                $("[data-menu-tooltip]").mouseleave(function () {
+                    $("#pimcore_menu_tooltip").hide();
+                });
 
                 $(document).trigger("coreShopReady");
 
