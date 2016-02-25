@@ -34,31 +34,31 @@
         <route>
             <name>coreshop_cart</name>
             <pattern>#(\w+)/cart/(\w+)#</pattern>
-            <reverse>/%lang/cart/%action</reverse>
+            <reverse>/%lang/cart/%act</reverse>
             <module>CoreShop</module>
             <controller>cart</controller>
-            <action>%action</action>
-            <variables>lang,action</variables>
+            <action>%act</action>
+            <variables>lang,act</variables>
             <priority>1</priority>
         </route>
         <route>
             <name>coreshop_checkout</name>
             <pattern>#(\w+)/checkout/(\w+)#</pattern>
-            <reverse>/%lang/checkout/%action</reverse>
+            <reverse>/%lang/checkout/%act</reverse>
             <module>CoreShop</module>
             <controller>checkout</controller>
-            <action>%action</action>
-            <variables>lang,action</variables>
+            <action>%act</action>
+            <variables>lang,act</variables>
             <priority>1</priority>
         </route>
         <route>
             <name>coreshop_user</name>
             <pattern>#(\w+)/user/(\w+)#</pattern>
-            <reverse>/%lang/user/%action</reverse>
+            <reverse>/%lang/user/%act</reverse>
             <module>CoreShop</module>
             <controller>user</controller>
-            <action>%action</action>
-            <variables>lang,action</variables>
+            <action>%act</action>
+            <variables>lang,act</variables>
             <priority>1</priority>
         </route>
         <route>
@@ -74,11 +74,11 @@
         <route>
             <name>coreshop_compare</name>
             <pattern>#(\w+)/compare/(\w+)#</pattern>
-            <reverse>/%lang/compare/%action</reverse>
+            <reverse>/%lang/compare/%act</reverse>
             <module>CoreShop</module>
             <controller>compare</controller>
-            <action>%action</action>
-            <variables>lang,action</variables>
+            <action>%act</action>
+            <variables>lang,act</variables>
             <priority>1</priority>
         </route>
     </routes>
