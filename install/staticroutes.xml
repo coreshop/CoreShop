@@ -81,5 +81,15 @@
             <variables>lang,act</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>coreshop_change_currency</name>
+            <pattern>#(\w+)/currency/change~c([0-9]+)#</pattern>
+            <reverse>/%lang/currency/change~c%currency</reverse>
+            <module>CoreShop</module>
+            <controller>helper</controller>
+            <action>change-currency</action>
+            <variables>lang,currency</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>
