@@ -69,7 +69,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                         {
                             xtype : 'checkbox',
                             fieldLabel: t("coreshop_country_use_default_store_currency"),
-                            name: "useDefaultStoreCurrency ",
+                            name: "useStoreCurrency",
                             checked: parseInt(this.data.useStoreCurrency) === 1,
                             listeners : {
                                 change : function(checkbox, newValue) {
