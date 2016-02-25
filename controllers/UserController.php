@@ -92,10 +92,10 @@ class CoreShop_UserController extends Action
     public function loginAction()
     {
         if ($this->session->user instanceof \CoreShop\Model\User) {
-            $this->redirect($this->view->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user"));
+            $this->redirect($this->view->url(array("lang" => $this->language, "act" => "profile"), "coreshop_user"));
         }
 
-        $redirect = $this->getParam("_redirect", $this->view->url(array("action" => "address"), "coreshop_checkout"));
+        $redirect = $this->getParam("_redirect", $this->view->url(array("act" => "address"), "coreshop_checkout"));
         $base = $this->getParam("_base");
 
         if ($this->getRequest()->isPost()) {
@@ -137,7 +137,7 @@ class CoreShop_UserController extends Action
     public function registerAction()
     {
         if ($this->session->user instanceof \CoreShop\Model\User) {
-            $this->redirect($this->view->url(array("lang" => $this->language, "action" => "profile"), "coreshop_user"));
+            $this->redirect($this->view->url(array("lang" => $this->language, "act" => "profile"), "coreshop_user"));
         }
 
         if ($this->getRequest()->isPost()) {
@@ -215,7 +215,7 @@ class CoreShop_UserController extends Action
                 if (array_key_exists("_redirect", $params)) {
                     $this->redirect($params['_redirect']);
                 } else {
-                    $this->redirect($this->view->url(array("lang" => $this->view->language, "action" => "profile"), "coreshop_user"));
+                    $this->redirect($this->view->url(array("lang" => $this->view->language, "act" => "profile"), "coreshop_user"));
                 }
             } catch (\Exception $ex) {
                 if (array_key_exists("_error", $params)) {
@@ -234,7 +234,7 @@ class CoreShop_UserController extends Action
 
     public function addressAction()
     {
-        $this->view->redirect = $this->getParam("redirect", $this->view->url(array("lang" => $this->language, "action" => "addresses"), "coreshop_user", true));
+        $this->view->redirect = $this->getParam("redirect", $this->view->url(array("lang" => $this->language, "act" => "addresses"), "coreshop_user", true));
         $update = $this->getParam("address");
         $this->view->isNew = false;
 
@@ -327,6 +327,6 @@ class CoreShop_UserController extends Action
             $this->session->user->getAddresses()->remove($i);
         }
 
-        $this->_redirect($this->view->url(array("lang" => $this->language, "action" => "addresses"), "coreshop_user", true));
+        $this->_redirect($this->view->url(array("lang" => $this->language, "act" => "addresses"), "coreshop_user", true));
     }
 }

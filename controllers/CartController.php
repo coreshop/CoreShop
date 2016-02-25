@@ -167,7 +167,7 @@ class CoreShop_CartController extends Action
             }
         }
 
-        $this->_redirect($this->getParam("redirect") ? $this->getParam("redirect") : $this->view->url(array("action" => "list"), "coreshop_cart"));
+        $this->_redirect($this->getParam("redirect") ? $this->getParam("redirect") : $this->view->url(array("act" => "list"), "coreshop_cart"));
     }
 
     public function removepriceruleAction()
@@ -176,7 +176,7 @@ class CoreShop_CartController extends Action
 
         $this->cart->removePriceRule();
 
-        $this->_redirect($this->view->url(array("action" => "list"), "coreshop_cart"));
+        $this->_redirect($this->view->url(array("act" => "list"), "coreshop_cart"));
     }
 
     /**
