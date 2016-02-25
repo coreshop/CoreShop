@@ -64,13 +64,7 @@ class Action extends \Website\Controller\Action
         $this->view->addHelperPath(CORESHOP_PATH . '/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
 
         $this->session = $this->view->session = Tool::getSession();
-
-        if ($this->getParam("currency")) {
-            if (Currency::getById($this->getParam("currency")) instanceof Currency) {
-                $this->session->currencyId = $this->getParam("currency");
-            }
-        }
-
+        
         $this->view->country = Tool::getCountry();
 
         $this->prepareCart();
