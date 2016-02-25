@@ -7,220 +7,219 @@
 }
 
 #coreshop_status {
-    background-image: url(/plugins/CoreShop/static/img/shopping_cart-48.png)
+    background-image: url(/plugins/CoreShop/static/img/48/coreshop.png)
 }
 
 #pimcore_menu_coreshop {
-    background-image: url(/plugins/CoreShop/static/img/shopping_cart-48.png) !important;
+    background-image: url(/plugins/CoreShop/static/img/48/coreshop.png) !important;
 }
 
 .icon-coreshop-shop:before { content: '\e800'; } /* '' */
 
 .coreshop_icon_settings {
-    background: url(/pimcore/static6/img/icon/cog.png) no-repeat scroll left center transparent !important;
+    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important;
 }
 .coreshop_icon_localization {
-    background: url(/pimcore/static6/img/icon/translation.png) no-repeat scroll left center transparent !important;
+    background: url(/pimcore/static6/img/flat-color-icons/collaboration.svg) center center no-repeat !important;
 }
 .coreshop_icon_currency, .pimcore_icon_coreShopCurrencyMultiselect, .pimcore_icon_coreShopCurrency {
-    background: url(/pimcore/static6/img/icon/money.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/currencies.png) no-repeat scroll left center transparent !important;
 }
 .coreshop_icon_country, .pimcore_icon_coreShopCountryMultiselect, .pimcore_icon_coreShopCountry{
-    background: url(/pimcore/static6/img/icon/car.png)  no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/countries.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_zone, .coreshop_price_rule_icon_condition_zone {
-    background: url(/pimcore/static6/img/icon/world.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/zones.png) no-repeat scroll left center transparent !important;
 }
 
 .pimcore_icon_data_group_coreshop {
-    background: url(/pimcore/static6/img/icon/basket.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/cart.png) no-repeat scroll left center transparent !important;
 }
 
 .pimcore_icon_objectSelect {
-    background: url(/pimcore/static6/img/icon/select.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/select.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_create_order {
-    background: url(/pimcore/static6/img/icon/page_white_add.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/orders.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_price_rule {
-    background: url(/pimcore/static6/img/icon/calculator_edit.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/price-rules.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_settings {
-    background: url(/pimcore/static6/img/icon/cog.png) no-repeat scroll left center transparent !important;
+    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important;
 }
 
 .coreshop_price_rule_conditions {
-    background: url(/pimcore/static6/img/icon/magnifier.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/search.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_actions {
-    background: url(/pimcore/static6/img/icon/lightning.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/lightning.png) no-repeat scroll left center transparent !important;
 }
 
-
 .coreshop_price_rule_icon_condition_amount {
-    background: url(/pimcore/static6/img/icon/basket.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/cart.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_condition_category {
-    background: url(/pimcore/static6/img/icon/report.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/category.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_condition_customer {
-    background: url(/pimcore/static6/img/icon/group.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/customer.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_condition_country {
-    background: url(/pimcore/static6/img/icon/car.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/countries.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_condition_product {
-    background: url(/pimcore/static6/img/icon/coins.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/product.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_condition_timeSpan {
-    background: url(/pimcore/static6/img/icon/date.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/time_span.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_condition_totalAvailable {
-    background: url(/pimcore/static6/img/icon/cart.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/cart.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_condition_totalPerCustomer {
-    background: url(/pimcore/static6/img/icon/group_go.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/customer-group.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_action_freeShipping {
-    background: url(/pimcore/static6/img/icon/lorry.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/free_shipping.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_action_discountAmount {
-    background: url(/pimcore/static6/img/icon/money.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/currencies.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_action_discountPercent {
-    background: url(/pimcore/static6/img/icon/money.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/currencies.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_action_newPrice {
-    background: url(/pimcore/static6/img/icon/money.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/currencies.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_price_rule_icon_action_gift {
-    background: url(/pimcore/static6/img/icon/heart.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/gift.png) no-repeat scroll left center transparent !important;
 }
 
 .pimcore_icon_coreShopPriceRule, .coreshop_icon_priceRule {
-    background: url(/pimcore/static6/img/icon/money.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/currencies.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier {
-    background: url(/pimcore/static6/img/icon/lorry.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/carriers.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_carrier_settings_icon {
-    background: url(/pimcore/static6/img/icon/cog.png) no-repeat scroll left center transparent !important;
+    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important
 }
 
 .coreshop_icon_shipping {
-    background: url(/pimcore/static6/img/icon/lorry_flatbed.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/carriers.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_carrier_dimensions_icon {
-    background: url(/pimcore/static6/img/icon/box.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/box.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_carrier_costs_icon {
-    background: url(/pimcore/static6/img/icon/coins.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/currencies.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_order {
-    background: url(/pimcore/static6/img/icon/page_white.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/orders.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_order_states, .pimcore_icon_coreShopOrderState {
-    background: url(/pimcore/static6/img/icon/script_link.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/order-states.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_taxes {
-    background: url(/pimcore/static6/img/icon/coins.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/taxes.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_tax_rule_groups, .pimcore_icon_coreShopTaxRuleGroup {
-    background: url(/pimcore/static6/img/icon/coins.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/taxes.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_customers {
-    background: url(/pimcore/static6/img/icon/user.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/customer.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_plugins {
-    background: url(/pimcore/static6/img/icon/plugin.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/plugin.png) no-repeat scroll left center transparent !important;
 }
 
 .pimcore_icon_update {
-    background: url(/pimcore/static6/img/icon/arrow_refresh.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/update.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_setup {
-    background: url(/pimcore/static6/img/icon/package_add.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/setup.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_customer_groups, .pimcore_icon_coreShopCustomerGroupMultiselect, .pimcore_icon_coreShopCustomerGroup, .coreshop_price_rule_icon_condition_customerGroup {
-    background: url(/pimcore/static6/img/icon/group.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/customer-group.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_orders {
-    background: url(/pimcore/static6/img/icon/script.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/orders.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_orders_invoice {
-    background: url(/pimcore/static6/img/icon/page_white_acrobat.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/invoice.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_indexes_settings {
-    background: url(/pimcore/static6/img/icon/cog.png) left center no-repeat!important;
+    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important
 }
 
 .coreshop_icon_indexes, .coreshop_icon_indexes_fields {
-    background: url(/pimcore/static6/img/icon/table_relationship.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/indexes.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_product_filters, .pimcore_icon_coreShopFilter {
-    background: url(/pimcore/static6/img/icon/sum.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/filters.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_product {
-    background: url(/pimcore/static6/img/icon/sport_football.png) left center no-repeat!important;
+    background: url(/plugins/CoreShop/static/img/24/product.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_product_filters_preconditions {
-    background: url(/pimcore/static6/img/icon/magnifier.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/search.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_product_filters_filters {
-    background: url(/pimcore/static6/img/icon/wand.png) no-repeat scroll left center transparent !important;
+    background: url(/plugins/CoreShop/static/img/24/filter-empty.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_product_filters_icon_condition_select {
-    background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
+    background: url(/plugins/CoreShop/static/img/24/select.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_product_filters_icon_condition_multiselect {
-    background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
+    background: url(/plugins/CoreShop/static/img/24/multiselect.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_product_filters_icon_condition_range {
-    background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
+    background: url(/plugins/CoreShop/static/img/24/range.png) no-repeat scroll left center transparent !important;
 }
 .coreshop_product_filters_icon_condition_boolean {
-     background: url(/pimcore/static6/img/icon/select.png) center center no-repeat !important
+    background: url(/plugins/CoreShop/static/img/24/range.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_language, .pimcore_icon_coreShopLanguage {
-    background: url(/pimcore/static6/img/icon/comment.png) center center no-repeat !important;
+    background: url(/plugins/CoreShop/static/img/24/language.png) no-repeat scroll left center transparent !important;
 }
