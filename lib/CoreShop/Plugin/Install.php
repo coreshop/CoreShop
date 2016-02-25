@@ -467,6 +467,7 @@ class Install
                                         }
                                     }
 
+                                    $document->setProperty("language", "text", $language);
                                     $document->save();
 
                                     if (array_key_exists("content", $doc)) {
