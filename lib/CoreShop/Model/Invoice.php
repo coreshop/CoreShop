@@ -57,7 +57,7 @@ class Invoice
         Localizedfield::setGetFallbackValues(false);
 
         try {
-            $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, array("options" => array("-T" => "35mm")));
+            $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, array("options" => array(Configuration::get("SYSTEM.INVOICE.WKHTML"))));
 
             if ($pdfContent) {
                 $fileName = "order-" . $order->getId() . ".pdf";

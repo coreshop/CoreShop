@@ -370,6 +370,11 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 fieldLabel: t("coreshop_invoice_suffix"),
                                 name: "SYSTEM.INVOICE.SUFFIX",
                                 value: this.getValue("SYSTEM.INVOICE.SUFFIX")
+                            },
+                            {
+                                fieldLabel : t("coreshop_invoice_wkhtmltopdf_params"),
+                                name: "SYSTEM.INVOICE.WKHTML",
+                                value : this.getValue("SYSTEM.INVOICE.WKHTML")
                             }
                         ]
                     },
