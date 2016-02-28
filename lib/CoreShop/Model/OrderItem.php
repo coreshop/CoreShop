@@ -32,6 +32,15 @@ class OrderItem extends Base
     }
 
     /**
+     * Calculate Total of OrderItem without tax
+     *
+     * @return float
+     */
+    public function getTotalWithoutTax() {
+        return $this->getAmount() * $this->getRetailPrice();
+    }
+    
+    /**
      * Get Order for OrderItem
      *
      * @return null|\Pimcore\Model\Object\AbstractObject

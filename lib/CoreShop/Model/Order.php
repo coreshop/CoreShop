@@ -73,13 +73,13 @@ class Order extends Base
     {
         $items = array();
         $i = 1;
-        
+
         foreach ($cart->getItems() as $cartItem) {
             $item = new Object\CoreShopOrderItem();
             $item->setKey($i);
             $item->setParent(Object\Service::createFolderByPath($this->getFullPath() . "/items/"));
             $item->setPublished(true);
-            
+
             $item->setProduct($cartItem->getProduct());
             $item->setWholesalePrice($cartItem->getProduct()->getWholesalePrice());
             $item->setRetailPrice($cartItem->getProduct()->getRetailPrice());
@@ -92,9 +92,9 @@ class Order extends Base
 
             //Stock Management
             $cartItem->getProduct()->updateQuantity(-$cartItem->getAmount());
-            
+
             $items[] = $item;
-            
+
             $i++;
         }
 
@@ -106,7 +106,7 @@ class Order extends Base
         //Store Order into cart for statistic purpose
         $cart->setOrder($this);
         $cart->save();
-        
+
         return true;
     }
 
@@ -129,9 +129,9 @@ class Order extends Base
         $payment->setProvider($provider->getIdentifier());
         $payment->setPayed($paid);
         $payment->save();
-        
+
         $this->addPayment($payment);
-        
+
         return $payment;
     }
 
@@ -143,13 +143,13 @@ class Order extends Base
     public function addPayment(CoreShopPayment $payment)
     {
         $payments = $this->getPayments();
-        
+
         if (!is_array($payments)) {
             $payments = array();
         }
-            
+
         $payments[] = $payment;
-        
+
         $this->setPayments($payments);
         $this->save();
     }
@@ -157,7 +157,22 @@ class Order extends Base
     /**
      * Calculates the subtotal of the Order
      *
-     * @return int
+     * @return float
+     */
+    public function getSubtotalWithoutTax() {
+        $total = 0;
+
+        foreach($this->getItems() as $item) {
+            $total += $item->getTotalWithoutTax();
+        }
+
+        return $total;
+    }
+
+    /**
+     * Calculates the subtotal of the Order
+     *
+     * @return float
      */
     public function getSubtotal()
     {
