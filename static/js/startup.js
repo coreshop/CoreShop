@@ -349,6 +349,8 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                 });*/
             }
             else if(tab.data.general.o_className === "CoreShopOrder") {
+                var orderMoreButtons = [];
+
                 if(this.settings.coreshop['SYSTEM.INVOICE.CREATE']) {
                     var resetChangesFunction = tab.resetChanges;
 
@@ -362,17 +364,42 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
                         invoiceTab.reload();
                     };
 
+                    orderMoreButtons.push({
+                        text: t("coreshop_open_invoice"),
+                        iconCls: "coreshop_icon_orders_invoice",
+                        handler: function() {
+                            if(tab.data.properties.hasOwnProperty("invoice")) {
+                                pimcore.helpers.openAsset(tab.data.properties.invoice.data.id, tab.data.properties.invoice.data.type)
+                            }
+                            else {
+                                Ext.MessageBox.alert(t("error"), t("coreshop_invoice_not_generated"));
+                            }
+                        }.bind(this)
+                    });
+                }
+
+                orderMoreButtons.push(
+                    {
+                        text: t("coreshop_add_payment"),
+                        scale: "medium",
+                        iconCls: "coreshop_icon_currency",
+                        handler: function() {
+                            pimcore.plugin.coreshop.orders.createPayment.showWindow(tab);
+                        }.bind(this, tab)
+                    }
+                );
+
+                if(orderMoreButtons.length > 0) {
                     tab.toolbar.insert(tab.toolbar.items.length,
                         '-'
                     );
+
                     tab.toolbar.insert(tab.toolbar.items.length,
                         {
-                            text: t("coreshop_add_payment"),
+                            text: t("coreshop_more"),
                             scale: "medium",
-                            iconCls: "coreshop_icon_currency",
-                            handler: function() {
-                                pimcore.plugin.coreshop.orders.createPayment.showWindow(tab);
-                            }.bind(this, tab)
+                            iconCls: "coreshop_icon_more",
+                            menu : orderMoreButtons
                         }
                     );
                 }

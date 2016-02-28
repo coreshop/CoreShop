@@ -223,3 +223,7 @@
 .coreshop_icon_language, .pimcore_icon_coreShopLanguage {
     background: url(/plugins/CoreShop/static/img/24/language.png) no-repeat scroll left center transparent !important;
 }
+
+.coreshop_icon_more {
+    background: url(/plugins/CoreShop/static/img/24/cart.png) no-repeat scroll left center transparent !important;
+}
