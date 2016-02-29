@@ -223,24 +223,26 @@ class Cart extends Base
      */
     public function getShipping($useTax = true)
     {
-        if(is_null($this->shipping))
+        $cacheKey = $useTax ? "shipping" : "shippingWithoutTax";
+
+        if(is_null($this->$cacheKey))
         {
-            $this->shipping = 0;
+            $this->$cacheKey = 0;
 
             if ($this->getPriceRule() instanceof PriceRule) {
                 foreach ($this->getPriceRule()->getActions() as $action) {
                     if ($action instanceof PriceRule\Action\FreeShipping) {
-                        $this->shipping = 0;
+                        $this->$cacheKey = 0;
                     }
                 }
             }
 
             if ($this->getShippingProvider() instanceof Carrier) {
-                $this->shipping = $this->getShippingCostsForCarrier($this->getShippingProvider(), $useTax);
+                $this->$cacheKey = $this->getShippingCostsForCarrier($this->getShippingProvider(), $useTax);
             }
         }
 
-        return $this->shipping;
+        return $this->$cacheKey;
     }
 
     /**
