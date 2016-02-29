@@ -453,7 +453,7 @@ class Carrier extends AbstractModel
      * @param Cart $cart
      * @param Zone|null $zone
      *
-     * @return float;
+     * @return float
      */
     public function getTaxAmount(Cart $cart, Zone $zone = null) {
         $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
@@ -464,6 +464,23 @@ class Carrier extends AbstractModel
         }
 
         return $deliveryPrice;
+    }
+
+    /**
+     * get delivery Tax rate for cart
+     *
+     * @param Cart $cart
+     *
+     * @return integer
+     */
+    public function getTaxRate(Cart $cart) {
+        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
+
+        if($taxCalculator) {
+            return $taxCalculator->getTotalRate();
+        }
+
+        return 0;
     }
 
     /**

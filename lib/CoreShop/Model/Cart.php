@@ -246,6 +246,19 @@ class Cart extends Base
     }
 
     /**
+     * get shipping tax rate
+     *
+     * @return integer
+     */
+    public function getShippingTaxRate() {
+        if($this->getShippingProvider() instanceof Carrier) {
+            return $this->getShippingProvider()->getTaxRate($this);
+        }
+
+        return 0;
+    }
+
+    /**
      * calculates shipping tax for the cart
      *
      * @return float
@@ -270,6 +283,22 @@ class Cart extends Base
 
         if ($paymentProvider instanceof PaymentPlugin) {
             return $paymentProvider->getPaymentFee($this, $useTaxes);
+        }
+
+        return 0;
+    }
+
+    /**
+     * get payment fee tax rate
+     *
+     * @return float
+     */
+    public function getPaymentFeeTaxRate()
+    {
+        $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
+
+        if ($paymentProvider instanceof PaymentPlugin) {
+            return $paymentProvider->getPaymentFeeTaxRate($this);
         }
 
         return 0;
