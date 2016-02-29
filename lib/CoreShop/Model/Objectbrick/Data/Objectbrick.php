@@ -42,7 +42,7 @@ class Objectbrick extends AbstractData
 
         $this->view->setScriptPath(
             array(
-                CORESHOP_TEMPLATE_PATH . '/views/scripts/' . strtolower(array_pop(explode('\\', get_class($this))))
+                CORESHOP_TEMPLATE_PATH . '/scripts/' . strtolower(array_pop(explode('\\', get_class($this))))
             )
         );
 
