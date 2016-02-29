@@ -49,9 +49,17 @@
             "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
             "objectsAllowed":true,
             "assetsAllowed":false,
-            "assetTypes":"",
+            "assetTypes":[
+              {
+                "assetTypes":""
+              }
+            ],
             "documentsAllowed":false,
-            "documentTypes":"",
+            "documentTypes":[
+              {
+                "documentTypes":""
+              }
+            ],
             "lazyLoading":false,
             "classes":[
               {
@@ -146,6 +154,33 @@
             "noteditable":false,
             "index":false,
             "locked":false,
+            "style":"",
+            "permissions":null,
+            "datatype":"data",
+            "relationType":false,
+            "invisible":false,
+            "visibleGridView":false,
+            "visibleSearch":false
+          },
+          {
+            "fieldtype":"numeric",
+            "width":"",
+            "defaultValue":null,
+            "queryColumnType":"double",
+            "columnType":"double",
+            "phpdocType":"float",
+            "integer":false,
+            "unsigned":false,
+            "minValue":null,
+            "maxValue":null,
+            "decimalPrecision":null,
+            "name":"taxRate",
+            "title":"Tax Rate",
+            "tooltip":"",
+            "mandatory":false,
+            "noteditable":false,
+            "index":false,
+            "locked":null,
             "style":"",
             "permissions":null,
             "datatype":"data",

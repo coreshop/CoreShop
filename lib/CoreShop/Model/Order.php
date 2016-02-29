@@ -81,6 +81,7 @@ class Order extends Base
             $item->setPublished(true);
 
             $item->setProduct($cartItem->getProduct());
+            $item->setTaxRate($cartItem->getProduct()->getTaxRate());
             $item->setWholesalePrice($cartItem->getProduct()->getWholesalePrice());
             $item->setRetailPrice($cartItem->getProduct()->getRetailPrice());
             $item->setTax($cartItem->getProduct()->getTaxAmount());
@@ -197,7 +198,7 @@ class Order extends Base
         $discount = $this->getDiscount();
         $paymentFee = $this->getPaymentFee();
 
-        return ($subtotal  + $shipping + $paymentFee) - $discount;
+        return ($subtotal + $shipping + $paymentFee) - $discount;
     }
 
     /**

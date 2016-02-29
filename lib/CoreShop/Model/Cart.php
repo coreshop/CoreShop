@@ -33,6 +33,11 @@ class Cart extends Base
     protected $shipping;
 
     /**
+     * @var float shipping without tax
+     */
+    protected $shippingWithoutTax;
+
+    /**
      * Return Cart by custom identifier
      *
      * @param $transactionIdentification
@@ -122,14 +127,20 @@ class Cart extends Base
     /**
      * calculates the subtotal for the cart
      *
+     * @param boolean $useTaxes use taxes
      * @return float
      */
-    public function getSubtotal()
+    public function getSubtotal($useTaxes = true)
     {
         $subtotal = 0;
         
         foreach ($this->getItems() as $item) {
-            $subtotal += ($item->getAmount() * $item->getProduct()->getPrice());
+            if($useTaxes) {
+                $subtotal += ($item->getAmount() * $item->getProduct()->getPrice());
+            }
+            else {
+                $subtotal += ($item->getAmount() * $item->getProduct()->getPriceWithoutTax());
+            }
         }
         
         return $subtotal;
@@ -207,9 +218,10 @@ class Cart extends Base
     /**
      * calculates shipping costs for the cart
      *
+     * @param $useTax boolean include taxes
      * @return float
      */
-    public function getShipping()
+    public function getShipping($useTax = true)
     {
         if(is_null($this->shipping))
         {
@@ -224,7 +236,7 @@ class Cart extends Base
             }
 
             if ($this->getShippingProvider() instanceof Carrier) {
-                $this->shipping = $this->getShippingCostsForCarrier($this->getShippingProvider());
+                $this->shipping = $this->getShippingCostsForCarrier($this->getShippingProvider(), $useTax);
             }
         }
 
@@ -247,14 +259,15 @@ class Cart extends Base
     /**
      * Calculate the payment fee
      *
+     * @param $useTaxes boolean use taxes
      * @return float
      */
-    public function getPaymentFee()
+    public function getPaymentFee($useTaxes = true)
     {
         $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
 
         if ($paymentProvider instanceof PaymentPlugin) {
-            return $paymentProvider->getPaymentFee($this);
+            return $paymentProvider->getPaymentFee($this, $useTaxes);
         }
 
         return 0;

@@ -42,11 +42,23 @@ abstract class Payment implements AbstractPlugin
      * Get Payment Fee
      *
      * @param Cart $cart
+     * @param boolean $useTaxes Use Taxes?
      * @return float
      */
-    public function getPaymentFee(Cart $cart)
+    public function getPaymentFee(Cart $cart, $useTaxes = true)
     {
         return 0;
+    }
+
+    /**
+     * Get Payment Fee without Tax
+     *
+     * @param Cart $cart
+     * @return float
+     */
+    public function getPaymentFeeWithoutTax(Cart $cart)
+    {
+        return $this->getPaymentFee($cart) - $this->getPaymentFeeTaxes($cart);
     }
 
     /**
@@ -105,14 +117,18 @@ abstract class Payment implements AbstractPlugin
         if ($cart->getCarrier() instanceof Carrier) {
             $order->setCarrier($cart->getCarrier());
             $order->setShipping($cart->getShipping());
+            $order->setShippingWithoutTax($cart->getShipping(false));
         } else {
             $order->setShipping(0);
+            $order->setShippingWithoutTax(0);
         }
 
         $order->setPaymentFee($cart->getPaymentFee());
+        $order->setPaymentFeeWithoutTax($cart->getPaymentFee(false));
         $order->setTotalTax($cart->getTotalTax());
         $order->setTotal($cart->getTotal());
         $order->setSubtotal($cart->getSubtotal());
+        $order->setSubtotalWithoutTax($cart->getSubtotal(false));
         $order->save();
         $order->importCart($cart);
 
