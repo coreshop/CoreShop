@@ -387,6 +387,47 @@ class Order extends Base
     }
 
     /**
+     * Returns array with key=>value for tax and value
+     *
+     * @return array
+     */
+    public function getTaxRates() {
+        $taxes = array();
+
+        $taxValues = array();
+
+        foreach($this->getItems() as $item) {
+            $taxValues[] = array(
+                "rate" => $item->getTaxRate(),
+                "value" => $item->getTax()
+            );
+        }
+
+        if($this->getShipping() > 0) {
+            $taxValues[] = array(
+                "rate" => $this->getShippingTaxRate(),
+                "value" => $this->getShipping() - $this->getShippingWithoutTax()
+            );
+        }
+
+        if($this->getPaymentFee() > 0) {
+            $taxValues[] = array(
+                "rate" => $this->getPaymentFeeTaxRate(),
+                "value" => $this->getPaymentFee() - $this->getPaymentFeeWithoutTax()
+            );
+        }
+
+        foreach($taxValues as $tax) {
+            if(!array_key_exists($tax['rate'], $taxes))
+                $taxes[$tax['rate']] = 0;
+
+            $taxes[$tax['rate']] += $tax['value'];
+        }
+
+        return $taxes;
+    }
+
+    /**
      * set discount for order
      * this method has to be overwritten in Pimcore Object
      *
