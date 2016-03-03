@@ -149,6 +149,27 @@ class CoreShop_Admin_ReportsController extends Admin
         $this->_helper->json(array("data" => array_values($custSales)));
     }
 
+    public function getQuantitiesReportAction() {
+        $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
+
+        $list = new \Pimcore\Model\Object\CoreShopProduct\Listing();
+        $list->setCondition($filter);
+        $list = $list->getObjects();
+
+        $result = array();
+
+        foreach($list as $product) {
+            $result[] = array(
+                "name" => $product->getName(),
+                "quantity" => intval($product->getQuantity()),
+                "price" => Tool::formatPrice($product->getPrice()),
+                "totalPrice" => Tool::formatPrice($product->getPrice() * intval($product->getQuantity()))
+            );
+        }
+
+        $this->_helper->json(array("data" => $result));
+    }
+
     /**
      * Return Orders/Carts from last 31 Days
      */

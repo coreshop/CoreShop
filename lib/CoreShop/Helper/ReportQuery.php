@@ -22,22 +22,24 @@ class ReportQuery
      * @param $params
      * @returns string
      */
-    public static function extractFilterDefinition($params)
+    public static function extractFilterDefinition($params = array())
     {
         $allowedFields = array("from", "to");
         $conditions = [];
         $db = Db::get();
 
-        foreach($params as $param=>$value) {
-            if(in_array($param, $allowedFields)) {
-                switch($param) {
-                    case "from":
-                        $conditions[] = "o_creationDate >= " . $db->quote($value);
-                        break;
+        if(is_array($params)) {
+            foreach ($params as $param => $value) {
+                if (in_array($param, $allowedFields)) {
+                    switch ($param) {
+                        case "from":
+                            $conditions[] = "o_creationDate >= " . $db->quote($value);
+                            break;
 
-                    case "to":
-                        $conditions[] = "o_creationDate <= " . $db->quote($value);
-                        break;
+                        case "to":
+                            $conditions[] = "o_creationDate <= " . $db->quote($value);
+                            break;
+                    }
                 }
             }
         }

@@ -247,3 +247,7 @@
 .coreshop_icon_customer {
     background: url(/plugins/CoreShop/static/img/24/customer.png) no-repeat scroll left center transparent !important;
 }
+
+.coreshop_icon_quantity {
+    background: url(/plugins/CoreShop/static/img/24/stock.png) no-repeat scroll left center transparent !important;
+}
