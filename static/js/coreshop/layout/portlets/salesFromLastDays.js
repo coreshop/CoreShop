@@ -32,7 +32,11 @@ pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/plugin/CoreShop/admin_statistics/get-sales-from-last-days',
+                url: '/plugin/CoreShop/admin_reports/get-sales-report',
+                extraParams : {
+                    'filters[from]': new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
+                    'filters[to]': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000
+                },
                 reader: {
                     type: 'json',
                     rootProperty: 'data'

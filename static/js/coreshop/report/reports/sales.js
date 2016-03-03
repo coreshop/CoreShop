@@ -13,6 +13,9 @@
 
 pimcore.registerNS("pimcore.plugin.coreshop.report.reports.sales");
 pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.coreshop.report.abstract, {
+
+    url : '/plugin/CoreShop/admin_reports/get-sales-report',
+
     getName: function () {
         return t("coreshop_report_sales");
     },
@@ -22,27 +25,12 @@ pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.cores
     },
 
     getGrid : function() {
-        var store = new Ext.data.Store({
-            autoDestroy: true,
-            proxy: {
-                type: 'ajax',
-                url: '/plugin/CoreShop/admin_statistics/get-sales-from-last-days',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                }},
-            fields: ['timestamp','datetext',"sales"]
-        });
-
-        store.load();
-
-
         var panel = new Ext.Panel({
             layout:'fit',
             height: 275,
             items: {
                 xtype: 'cartesian',
-                store: store,
+                store: this.getStore(),
                 legend: {
                     docked: 'right'
                 },

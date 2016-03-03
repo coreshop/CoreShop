@@ -16,34 +16,60 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model;
 use Pimcore\Controller\Action\Admin;
+use CoreShop\Helper\ReportQuery;
 
-class CoreShop_Admin_StatisticsController extends Admin
+class CoreShop_Admin_ReportsController extends Admin
 {
-    public function init()
-    {
-        parent::init();
+    public function getProductsReportAction() {
+        $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
-        // check permissions
-        $notRestrictedActions = array();
+        $ordersItemsTable = "object_" . \Pimcore\Model\Object\CoreShopOrderItem::classId();
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_statistics");
+        $sql = "SELECT product__id as id, count(*) as count FROM $ordersItemsTable";
+
+        if($filter) {
+            $sql .= " WHERE $filter";
         }
+
+        $sql .= " GROUP BY product__id ORDER BY count(*) DESC";
+
+        $db = \Pimcore\Db::get();
+
+        $productsQuery = $db->fetchAll($sql);
+        $products = array();
+
+        foreach($productsQuery as $pr) {
+            $product = Model\Product::getById($pr['id']);
+
+            $products[] = array(
+                "id" => $product->getId(),
+                "name" => $product->getName(),
+                "count" => $pr['count']
+            );
+        }
+
+        $this->_helper->json(array("data" => $products));
     }
 
     /**
      * Return Orders/Carts from last 31 Days
      */
-    public function getOrdersCartsFromLastDaysAction()
+    public function getOrdersCartsReportAction()
     {
-        $days = 31;
-        $startDate = mktime(23, 59, 59, date("m"), date("d"), date("Y"));
+        $filters = $this->getParam("filters", array("from" => date('01-m-Y'), "to" => date('m-t-Y')));
+        $from = new \Pimcore\Date($filters['from']);
+        $to = new \Pimcore\Date($filters['to']);
+
+        $diff = $to->sub($from)->toValue();
+        $days = ceil($diff / 60 / 60 / 24) +1;
+
+        $startDate = $from->getTimestamp();
 
         $data = array();
 
         for ($i=0; $i<$days; $i++) {
             // documents
-            $end = $startDate - ($i*86400);
+            $end = $startDate + ($i * 86400);
             $start = $end - 86399;
             $date = new \Zend_Date($start);
 
@@ -62,24 +88,28 @@ class CoreShop_Admin_StatisticsController extends Admin
             );
         }
 
-        $data = array_reverse($data);
-
         $this->_helper->json(array("data" => $data));
     }
 
     /**
      * Return Sales from last 31 days
      */
-    public function getSalesFromLastDaysAction()
+    public function getSalesReportAction()
     {
-        $days = 31;
-        $startDate = mktime(23, 59, 59, date("m"), date("d"), date("Y"));
+        $filters = $this->getParam("filters", array("from" => date('01-m-Y'), "to" => date('m-t-Y')));
+        $from = new \Pimcore\Date($filters['from']);
+        $to = new \Pimcore\Date($filters['to']);
+
+        $diff = $to->sub($from)->toValue();
+        $days = ceil($diff / 60 / 60 / 24) +1;
+
+        $startDate = $from->getTimestamp();
 
         $data = array();
 
-        for ($i=0; $i < $days; $i++) {
+        for ($i=0; $i<$days; $i++) {
             // documents
-            $end = $startDate - ($i*86400);
+            $end = $startDate + ($i * 86400);
             $start = $end - 86399;
             $date = new \Zend_Date($start);
 
@@ -98,8 +128,6 @@ class CoreShop_Admin_StatisticsController extends Admin
                 "salesFormatted" => Tool::formatPrice($total)
             );
         }
-
-        $data = array_reverse($data);
 
         $this->_helper->json(array("data" => $data));
     }

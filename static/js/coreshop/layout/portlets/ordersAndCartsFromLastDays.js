@@ -32,7 +32,11 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/plugin/CoreShop/admin_statistics/get-orders-carts-from-last-days',
+                url: '/plugin/CoreShop/admin_reports/get-orders-carts-report',
+                extraParams : {
+                    'filters[from]' : new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
+                    'filters[to]' : new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000
+                },
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
