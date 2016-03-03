@@ -174,7 +174,7 @@ class CoreShop_Admin_CarrierController extends Admin
             $data = \Zend_Json::decode($this->getParam("data"));
 
             if($data['settings']['image']) {
-                $asset = \Pimcore\Model\Asset::getByPath($data['settings']['image']);
+                $asset = \Pimcore\Model\Asset::getById($data['settings']['image']);
 
                 if($asset instanceof \Pimcore\Model\Asset) {
                     $data['settings']['image'] = $asset->getId();
