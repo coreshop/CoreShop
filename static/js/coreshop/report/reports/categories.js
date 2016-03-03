@@ -50,7 +50,7 @@ pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.
                         align : 'right'
                     },
                     {
-                        text: t('coreshop_report_products_profit'),
+                        text: t('coreshop_report_categories_profit'),
                         dataIndex : 'profit',
                         width : 100,
                         align : 'right'
