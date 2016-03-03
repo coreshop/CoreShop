@@ -111,6 +111,44 @@ class CoreShop_Admin_ReportsController extends Admin
         $this->_helper->json(array("data" => array_values($catSales)));
     }
 
+    public function getCustomersReportAction() {
+        $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
+
+        $listOrders = new \Pimcore\Model\Object\CoreShopOrder\Listing();
+        $listOrders->setCondition($filter);
+        $listOrders = $listOrders->getObjects();
+
+        $custSales = array();
+
+        foreach($listOrders as $order) {
+            $customer = $order->getCustomer();
+
+            if($customer  instanceof Model\User) {
+                if (!array_key_exists($customer->getId(), $custSales)) {
+                    $custSales[$customer->getId()] = array(
+                        "name" => $customer->getFirstname() . " " . $customer->getLastname(),
+                        "count" => 0,
+                        "sales" => 0
+                    );
+                }
+
+                $custSales[$customer->getId()]['count']++;
+                $custSales[$customer->getId()]['sales'] += $order->getTotal();
+            }
+        }
+
+        foreach($custSales as &$sale) {
+            $sale['sales'] = Tool::formatPrice($sale['sales']);
+        }
+
+        usort($custSales, function ($item1, $item2) {
+            if ($item1['count'] == $item2['count']) return 0;
+            return $item1['count'] < $item2['count'] ? 1 : -1;
+        });
+
+        $this->_helper->json(array("data" => array_values($custSales)));
+    }
+
     /**
      * Return Orders/Carts from last 31 Days
      */

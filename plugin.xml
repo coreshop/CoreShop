@@ -128,6 +128,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/carts.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/products.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/categories.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/report/reports/customers.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

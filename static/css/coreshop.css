@@ -243,3 +243,7 @@
 .coreshop_icon_category {
     background: url(/plugins/CoreShop/static/img/24/category.png) no-repeat scroll left center transparent !important;
 }
+
+.coreshop_icon_customer {
+    background: url(/plugins/CoreShop/static/img/24/customer.png) no-repeat scroll left center transparent !important;
+}
