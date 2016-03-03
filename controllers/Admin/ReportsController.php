@@ -23,32 +23,92 @@ class CoreShop_Admin_ReportsController extends Admin
     public function getProductsReportAction() {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
-        $ordersItemsTable = "object_" . \Pimcore\Model\Object\CoreShopOrderItem::classId();
+        $listOrders = new \Pimcore\Model\Object\CoreShopOrderItem\Listing();
+        $listOrders->setCondition($filter);
+        $listOrders = $listOrders->getObjects();
 
-        $sql = "SELECT product__id as id, count(*) as count FROM $ordersItemsTable";
+        $productSales = array();
 
-        if($filter) {
-            $sql .= " WHERE $filter";
+        foreach($listOrders as $orderItem) {
+            $product = $orderItem->getProduct();
+
+            if($product instanceof Model\Product) {
+                if (!array_key_exists($product->getId(), $productSales)) {
+                    $productSales[$product->getId()] = array(
+                        "count" => 0,
+                        "salesPrice" => 0,
+                        "sales" => 0,
+                        "name" => $product->getName(),
+                        "profit" => 0
+                    );
+                }
+
+                $productSales[$product->getId()]['count']++;
+                $productSales[$product->getId()]['salesPrice'] = ($productSales[$product->getId()]['salesPrice'] + $orderItem->getRetailPrice()) / 2;
+                $productSales[$product->getId()]['sales'] += $orderItem->getRetailPrice() * $orderItem->getAmount();
+                $productSales[$product->getId()]['profit'] += (($orderItem->getRetailPrice() - $orderItem->getWholesalePrice()) * $orderItem->getAmount());
+            }
         }
 
-        $sql .= " GROUP BY product__id ORDER BY count(*) DESC";
-
-        $db = \Pimcore\Db::get();
-
-        $productsQuery = $db->fetchAll($sql);
-        $products = array();
-
-        foreach($productsQuery as $pr) {
-            $product = Model\Product::getById($pr['id']);
-
-            $products[] = array(
-                "id" => $product->getId(),
-                "name" => $product->getName(),
-                "count" => $pr['count']
-            );
+        foreach($productSales as &$sale) {
+            $sale['salesPrice'] = Tool::formatPrice($sale['salesPrice']);
+            $sale['sales'] = Tool::formatPrice($sale['sales']);
+            $sale['profit'] = Tool::formatPrice($sale['profit']);
         }
 
-        $this->_helper->json(array("data" => $products));
+        usort($productSales, function ($item1, $item2) {
+            if ($item1['count'] == $item2['count']) return 0;
+            return $item1['count'] < $item2['count'] ? 1 : -1;
+        });
+
+        $this->_helper->json(array("data" => array_values($productSales)));
+    }
+
+    public function getCategoriesReportAction() {
+        $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
+
+        $listOrders = new \Pimcore\Model\Object\CoreShopOrderItem\Listing();
+        $listOrders->setCondition($filter);
+        $listOrders = $listOrders->getObjects();
+
+        $catSales = array();
+
+        foreach($listOrders as $orderItem) {
+            $product = $orderItem->getProduct();
+
+            if($product instanceof Model\Product) {
+                $categories = $product->getCategories();
+
+                foreach($categories as $cat) {
+                    if($cat instanceof Model\Category) {
+                        if (!array_key_exists($cat->getId(), $catSales)) {
+                            $catSales[$cat->getId()] = array(
+                                "name" => $cat->getName(),
+                                "count" => 0,
+                                "sales" => 0,
+                                "profit" => 0
+                            );
+                        }
+
+                        $catSales[$cat->getId()]['count']++;
+                        $catSales[$cat->getId()]['sales'] += $orderItem->getRetailPrice() * $orderItem->getAmount();
+                        $catSales[$cat->getId()]['profit'] += ($orderItem->getRetailPrice() - $orderItem->getWholesalePrice()) * $orderItem->getAmount();
+                    }
+                }
+            }
+        }
+
+        foreach($catSales as &$sale) {
+            $sale['sales'] = Tool::formatPrice($sale['sales']);
+            $sale['profit'] = Tool::formatPrice($sale['profit']);
+        }
+
+        usort($catSales, function ($item1, $item2) {
+            if ($item1['count'] == $item2['count']) return 0;
+            return $item1['count'] < $item2['count'] ? 1 : -1;
+        });
+
+        $this->_helper->json(array("data" => array_values($catSales)));
     }
 
     /**

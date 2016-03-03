@@ -11,17 +11,17 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.report.reports.products");
-pimcore.plugin.coreshop.report.reports.products = Class.create(pimcore.plugin.coreshop.report.abstract, {
+pimcore.registerNS("pimcore.plugin.coreshop.report.reports.categories");
+pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/plugin/CoreShop/admin_reports/get-products-report',
+    url : '/plugin/CoreShop/admin_reports/get-categories-report',
 
     getName: function () {
-        return t("coreshop_report_products");
+        return t("coreshop_report_categories");
     },
 
     getIconCls: function () {
-        return "coreshop_icon_product";
+        return "coreshop_icon_category";
     },
 
     getGrid : function() {
@@ -33,24 +33,18 @@ pimcore.plugin.coreshop.report.reports.products = Class.create(pimcore.plugin.co
                 store: this.getStore(),
                 columns : [
                     {
-                        text: t('coreshop_report_products_name'),
+                        text: t('coreshop_report_categories_name'),
                         dataIndex : 'name',
                         flex : 1
                     },
                     {
-                        text: t('coreshop_report_products_count'),
+                        text: t('coreshop_report_categories_count'),
                         dataIndex : 'count',
                         width : 50,
                         align : 'right'
                     },
                     {
-                        text: t('coreshop_report_products_salesPrice'),
-                        dataIndex : 'salesPrice',
-                        width : 100,
-                        align : 'right'
-                    },
-                    {
-                        text: t('coreshop_report_products_sales'),
+                        text: t('coreshop_report_categories_sales'),
                         dataIndex : 'sales',
                         width : 100,
                         align : 'right'
