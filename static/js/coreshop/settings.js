@@ -47,7 +47,6 @@ pimcore.plugin.coreshop.settings= Class.create({
     },
 
     getTabPanel: function () {
-
         if (!this.panel) {
             this.panel = Ext.create('Ext.panel.Panel', {
                 id: "coreshop_settings",
@@ -219,6 +218,19 @@ pimcore.plugin.coreshop.settings= Class.create({
                                 value: this.getValue("SYSTEM.SHIPPING.FREESHIPPING_PRICE"),
                                 decimalPrecision : 2,
                                 step : 1
+                            },
+                            {
+                                fieldLabel: t('coreshop_carrier_sort'),
+                                name: "SYSTEM.SHIPPING.CARRIER_SORT",
+                                value: this.getValue("SYSTEM.SHIPPING.CARRIER_SORT"),
+                                width: 500,
+                                xtype: "combo",
+                                store: [['price',t("coreshop_carrier_sort_price")],['grade',t("coreshop_carrier_sort_grade")]],
+                                triggerAction: "all",
+                                typeAhead: false,
+                                editable: false,
+                                forceSelection: true,
+                                queryMode: "local"
                             }
                         ]
                     },

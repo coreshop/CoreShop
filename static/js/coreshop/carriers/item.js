@@ -92,7 +92,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 fieldLabel: t("coreshop_carrier_image"),
                 name: "image",
                 cls: "input_drop_target",
-                value: this.data.image.id,
+                value: this.data.image ? this.data.image.id : null,
                 width: 300,
                 xtype: "textfield",
                 listeners: {

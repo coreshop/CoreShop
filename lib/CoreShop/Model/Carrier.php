@@ -226,9 +226,28 @@ class Carrier extends AbstractModel
 
         foreach ($carriers as $carrier) {
             if ($carrier->checkCarrierForCart($cart, $zone)) {
+                $carrier->getDeliveryPrice($cart, $zone); //Cache Delivery Price
                 $availableCarriers[] = $carrier;
             }
         }
+
+        $sortField = Configuration::get("SYSTEM.SHIPPING.CARRIER_SORT") ? Configuration::get("SYSTEM.SHIPPING.CARRIER_SORT") : "price";
+
+        usort($availableCarriers, function ($carrier1, $carrier2) use ($sortField, $cart, $zone) {
+            if($sortField === "price") {
+                $deliveryPriceCarrier1 = $carrier1->getDeliveryPrice($cart, $zone);
+                $deliveryPriceCarrier2 = $carrier2->getDeliveryPrice($cart, $zone);
+
+                if($deliveryPriceCarrier1 === $deliveryPriceCarrier2) return 0;
+
+                return $deliveryPriceCarrier1 < $deliveryPriceCarrier2 ? -1 : 1;
+            }
+            else {
+                if($carrier1->getGrade() === $carrier2->getGrade()) return 0;
+
+                return $carrier1->getGrade() < $carrier2->getGrade() ? -1 : 1;
+            }
+        });
 
         return $availableCarriers;
     }
