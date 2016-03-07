@@ -131,6 +131,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/customers.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/quantities.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/carriers.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/report/reports/payments.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

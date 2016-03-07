@@ -272,4 +272,24 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $this->_helper->json(array("data" => $data));
     }
+
+    public function getPaymentReportAction() {
+        $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
+
+        $tableName = "object_query_" . \Pimcore\Model\Object\ClassDefinition::getByName("CoreShopOrder")->getId();
+        $sql = "SELECT paymentProvider, COUNT(1) as total, COUNT(1) / t.cnt * 100 as `percentage` FROM $tableName as `order` INNER JOIN objects as o ON o.o_id = `order`.oo_id CROSS JOIN (SELECT COUNT(1) as cnt FROM $tableName as `order` INNER JOIN objects as o ON o.o_id = `order`.oo_id  WHERE $filter) t WHERE $filter GROUP BY paymentProvider";
+
+        $db = \Pimcore\Db::get();
+        $results = $db->fetchAll($sql);
+        $data = array();
+
+        foreach($results as $result) {
+            $data[] = array(
+                "provider" => $result['paymentProvider'],
+                "data" => floatval($result['percentage'])
+            );
+        }
+
+        $this->_helper->json(array("data" => $data));
+    }
 }
