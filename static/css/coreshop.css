@@ -117,7 +117,7 @@
     background: url(/plugins/CoreShop/static/img/24/currencies.png) no-repeat scroll left center transparent !important;
 }
 
-.coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier {
+.coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier, .coreshop_icon_report_carriers {
     background: url(/plugins/CoreShop/static/img/24/carriers.png) no-repeat scroll left center transparent !important;
 }
 

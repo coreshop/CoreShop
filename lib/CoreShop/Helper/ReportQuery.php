@@ -44,6 +44,10 @@ class ReportQuery
             }
         }
 
+        if(count($conditions) === 0) {
+            $conditions[] = "1=1";
+        }
+
         return implode(" AND ", $conditions);
     }
 }
