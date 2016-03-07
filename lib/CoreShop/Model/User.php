@@ -113,7 +113,9 @@ class User extends Base
     {
         $list = new Object\CoreShopOrder\Listing();
         $list->setCondition("customer__id = ?", array($this->getId()));
-
+        $list->setOrderKey("orderDate");
+        $list->setOrder("DESC");
+        
         return $list->getObjects();
     }
 
