@@ -33,7 +33,7 @@ class CoreShop_Admin_InstallController extends Admin
         try {
             $install = new Plugin\Install();
 
-            PLugin::getEventManager()->trigger('install.pre', null, array("installer" => $install));
+            Plugin::getEventManager()->trigger('install.pre', null, array("installer" => $install));
 
             $install->executeSQL("CoreShop");
 

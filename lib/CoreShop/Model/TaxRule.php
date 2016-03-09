@@ -224,7 +224,7 @@ class TaxRule extends AbstractModel
      */
     public function setTax($tax)
     {
-        if (!$tax instanceof Currency) {
+        if (!$tax instanceof Tax) {
             throw new \Exception("\$tax must be instance of Tax");
         }
 
