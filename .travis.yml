@@ -15,9 +15,9 @@ matrix:
     - php: hhvm
 
 before_install:
- - mkdir $TRAVIS_BUILD_DIR/pimcore
+ - mkdir $TRAVIS_BUILD_DIR/plugin
  - mv !(plugin) plugin
- - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
+ - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/pimcore
  - mkdir $TRAVIS_BUILD_DIR/pimcore/plugins
  - mv $TRAVIS_BUILD_DIR/plugin/CoreShop $TRAVIS_BUILD_DIR/pimcore/plugins
 
