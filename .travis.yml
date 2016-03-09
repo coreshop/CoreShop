@@ -15,10 +15,10 @@ matrix:
     - php: hhvm
 
 before_install:
- - mkdir $TRAVIS_BUILD_DIR/pimcore
- - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/pimcore
- - mkdir $TRAVIS_BUILD_DIR/pimcore/plugins
- - mv $TRAVIS_BUILD_DIR/../CoreShop $TRAVIS_BUILD_DIR/pimcore/plugins
+ - mkdir $TRAVIS_BUILD_DIR/../pimcore
+ - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/../pimcore
+ - mkdir $TRAVIS_BUILD_DIR/../pimcore/plugins
+ - mv $TRAVIS_BUILD_DIR/../CoreShop $TRAVIS_BUILD_DIR/../pimcore/plugins
 
 install:
   - composer install
