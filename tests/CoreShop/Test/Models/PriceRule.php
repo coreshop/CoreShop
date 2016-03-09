@@ -193,7 +193,7 @@ class PriceRule extends Base
 
         $cart->addPriceRule($this->priceRule);
 
-        //$this->assertEquals(0, $cart->getShipping()); @todo: something doesnt work as expected
+        $this->assertEquals(0, $cart->getShipping());
     }
 
     public function testPriceRuleActionDiscountAmount() {

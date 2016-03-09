@@ -232,7 +232,7 @@ class Cart extends Base
             if ($this->getPriceRule() instanceof PriceRule) {
                 foreach ($this->getPriceRule()->getActions() as $action) {
                     if ($action instanceof PriceRule\Action\FreeShipping) {
-                        $this->$cacheKey = 0;
+                        return $this->$cacheKey = 0;
                     }
                 }
             }
