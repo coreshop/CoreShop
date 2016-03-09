@@ -19,6 +19,7 @@ before_install:
  - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/../pimcore
  - mkdir $TRAVIS_BUILD_DIR/../pimcore/plugins
  - mv $TRAVIS_BUILD_DIR/../CoreShop $TRAVIS_BUILD_DIR/../pimcore/plugins
+ - mv $TRAVIS_BUILD_DIR/../pimcore $TRAVIS_BUILD_DIR
 
 install:
   - composer install
