@@ -47,3 +47,5 @@ php-cgi.core
 views/template/default/data/categories.csv
 views/template/default/data/products.csv
 TestController.php
+tests/output
+tests/tmp
