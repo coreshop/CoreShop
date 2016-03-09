@@ -73,20 +73,27 @@ class CustomerGroup extends AbstractCondition
             }
         }
 
-        if (!$customer->getCustomerGroup() instanceof CustomerGroupModel) {
-            if ($throwException) {
-                throw new \Exception("Customer has no Customer Group!");
-            } else {
-                return false;
+        $validCustomerGroupFound = false;
+
+        if($this->getCustomerGroup() instanceof CustomerGroupModel) {
+            foreach ($customer->getGroups() as $customerGroup) {
+                $customerGroup = CustomerGroupModel::getByField("name", $customerGroup);
+
+                if ($customerGroup instanceof CustomerGroupModel) {
+                    if ($this->getCustomerGroup()->getId() === $customerGroup->getId()) {
+                        $validCustomerGroupFound = true;
+                        break;
+                    }
+                }
             }
         }
 
-        if ($this->getCustomerGroup()->getId() !== $customer->getCustomerGroup()->getId()) {
-            if ($throwException) {
+        if(!$validCustomerGroupFound) {
+            if($throwException) {
                 throw new \Exception("You cannot use this voucher.");
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         return true;

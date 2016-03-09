@@ -17,6 +17,7 @@ namespace CoreShop\Test;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Country;
+use CoreShop\Model\CustomerGroup;
 use CoreShop\Model\Product;
 use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
@@ -67,6 +68,16 @@ class Data {
      */
     public static $customer1;
 
+    /**
+     * @var CustomerGroup
+     */
+    public static $customerGroup1;
+
+    /**
+     * @var CustomerGroup
+     */
+    public static $customerGroup2;
+
     public static function createData() {
         Configuration::set("SYSTEM.BASE.COUNTRY", Country::getById(2));
 
@@ -77,6 +88,7 @@ class Data {
         self::createTestCarrierPrice();
         self::createTestCarrierWeight();
         self::createTestProduct();
+        self::createCustomerGroups();
         self::createCustomer();
 
         $session->user = self::$customer1;
@@ -238,6 +250,22 @@ class Data {
         return $cart;
     }
 
+    public static function createCustomerGroups() {
+        if(!self::$customerGroup1 instanceof CustomerGroup) {
+            self::$customerGroup1 = new CustomerGroup();
+            self::$customerGroup1->setName("Group1");
+            self::$customerGroup1->setDiscount(0);
+            self::$customerGroup1->save();
+        }
+
+        if(!self::$customerGroup2 instanceof CustomerGroup) {
+            self::$customerGroup2 = new CustomerGroup();
+            self::$customerGroup2->setName("Group2");
+            self::$customerGroup2->setDiscount(0);
+            self::$customerGroup2->save();
+        }
+    }
+
     public static function createCustomer() {
         if(!self::$customer1 instanceof CoreShopUser) {
             $customer = new CoreShopUser();
@@ -245,6 +273,7 @@ class Data {
             $customer->setParent(Service::createFolderByPath("/users"));
             $customer->setFirstname("customer");
             $customer->setLastname("1");
+            $customer->setGroups(array(self::$customerGroup1->getName()));
             $customer->save();
 
             self::$customer1 = $customer;
