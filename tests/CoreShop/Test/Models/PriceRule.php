@@ -30,6 +30,7 @@ use CoreShop\Model\PriceRule\Condition\TotalPerCustomer;
 use CoreShop\Model\PriceRule\Condition\Zone as ConditionZone;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
+use CoreShop\Tool;
 
 class PriceRule extends Base
 {
@@ -218,13 +219,13 @@ class PriceRule extends Base
 
         $this->priceRule->setActions(array($discount));
 
-        $cart = Data::createCart();
+        $cart = Tool::prepareCart();
         $cart->addItem(Data::$product2);
         $cart->addPriceRule($this->priceRule);
 
         $cart2 = Data::createCart();
         $cart2->addItem(Data::$product2);
 
-        //$this->assertEquals($cart2->getTotal() - ($cart2->getSubtotal() * (10 / 100)), $cart->getTotal()); @todo: something doesnt work as expected
+        $this->assertEquals($cart2->getSubtotal() * 0.1, $this->priceRule->getDiscount());
     }
 }
