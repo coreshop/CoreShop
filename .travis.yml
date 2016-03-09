@@ -15,17 +15,21 @@ matrix:
     - php: hhvm
 
 before_install:
- - mkdir $TRAVIS_BUILD_DIR/../pimcore
- - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/../pimcore
- - mkdir $TRAVIS_BUILD_DIR/../pimcore/plugins
- - mv $TRAVIS_BUILD_DIR/../CoreShop $TRAVIS_BUILD_DIR/../pimcore/plugins
- - mv $TRAVIS_BUILD_DIR/../pimcore $TRAVIS_BUILD_DIR
+ - mkdir $TRAVIS_BUILD_DIR/pimcore
+ - mv !(plugin) plugin
+ - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
+ - mkdir $TRAVIS_BUILD_DIR/pimcore/plugins
+ - mv $TRAVIS_BUILD_DIR/plugin/CoreShop $TRAVIS_BUILD_DIR/pimcore/plugins
 
 install:
+  - cd $TRAVIS_BUILD_DIR/pimcore
+  - composer install
+  - cd $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop
   - composer install
 
 before_script:
   # install apache
+  - cd $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop/
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   - sudo a2enmod rewrite actions fastcgi alias
