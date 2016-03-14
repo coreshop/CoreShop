@@ -88,7 +88,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             fields: [
                 'o_id',
                 'orderState',
-                {name:'orderDate', type: 'date'},
+                {name:'orderDate', type: 'date', dateFormat: 'timestamp'},
                 'orderNumber',
                 'lang',
                 'carrier',

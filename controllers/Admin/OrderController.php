@@ -59,7 +59,7 @@ class CoreShop_Admin_OrderController extends Admin
         $element = array(
             "o_id" => $order->getId(),
             "orderState" => $order->getOrderState() instanceof \CoreShop\Model\OrderState ? $order->getOrderState()->getId() : null,
-            "orderDate" => $order->getOrderDate() instanceof \Pimcore\Date ? $order->getOrderDate()->get("Y-m-d") : null,
+            "orderDate" => $order->getOrderDate() instanceof \Pimcore\Date ? intval($order->getOrderDate()->get(\Zend_Date::TIMESTAMP)) : null,
             "orderNumber" => $order->getOrderNumber(),
             "lang" => $order->getLang(),
             "carrier" => $order->getCarrier()->getId(),
