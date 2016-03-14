@@ -17,6 +17,7 @@ namespace CoreShop\Model;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Plugin;
+use CoreShop\Tool;
 use Pimcore\Cache;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Element\Note;
@@ -89,6 +90,8 @@ class Order extends Base
             $item->setAmount($cartItem->getAmount());
             $item->setExtraInformation($cartItem->getExtraInformation());
             $item->setIsGiftItem($cartItem->getIsGiftItem());
+            $item->setTotal(Tool::roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getPrice()));
+            $item->setTotalTax(Tool::roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getTaxAmount()));
             $item->save();
 
             //Stock Management
@@ -399,7 +402,7 @@ class Order extends Base
         foreach($this->getItems() as $item) {
             $taxValues[] = array(
                 "rate" => $item->getTaxRate(),
-                "value" => $item->getTax()
+                "value" => $item->getTotalTax()
             );
         }
 
@@ -418,10 +421,10 @@ class Order extends Base
         }
 
         foreach($taxValues as $tax) {
-            if(!array_key_exists($tax['rate'], $taxes))
+            if(!array_key_exists((string)$tax['rate'], $taxes))
                 $taxes[$tax['rate']] = 0;
 
-            $taxes[$tax['rate']] += $tax['value'];
+            $taxes[(string)$tax['rate']] += $tax['value'];
         }
 
         return $taxes;

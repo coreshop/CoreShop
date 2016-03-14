@@ -153,6 +153,8 @@ class CoreShop_CartController extends Action
     {
         $this->enableLayout();
 
+        $error = false;
+
         if ($this->getRequest()->isPost()) {
             $priceRule = PriceRule::getByCode($this->getParam("priceRule"));
 
@@ -160,14 +162,14 @@ class CoreShop_CartController extends Action
                 if ($priceRule->checkValidity()) {
                     $this->cart->addPriceRule($priceRule);
                 } else {
-                    die("not valid");
+                    $error = $this->view->translate("Voucher is invalid");
                 }
             } else {
-                die("not found");
+                $error = $this->view->translate("Voucher is invalid");
             }
         }
 
-        $this->_redirect($this->getParam("redirect") ? $this->getParam("redirect") : $this->view->url(array("act" => "list"), "coreshop_cart"));
+        $this->_redirect($this->getParam("redirect") ? $this->getParam("redirect") . "?error=" . $error : $this->view->url(array("act" => "list", "error" => $error), "coreshop_cart"));
     }
 
     public function removepriceruleAction()

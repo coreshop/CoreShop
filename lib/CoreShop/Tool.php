@@ -48,6 +48,16 @@ class Tool
         
         return $price;
     }
+    
+    /**
+     * Round Price
+     *
+     * @param $price
+     * @return float
+     */
+    public static function roundPrice($price) {
+        return round($price, 2);
+    }
 
     /**
      * Format Number without thousands seperator (eg 1540,32)

@@ -20,17 +20,6 @@ use \Pimcore\Model\Object\CoreShopOrder;
 
 class OrderItem extends Base
 {
-
-    /**
-     * Calculate Total of OrderItem
-     *
-     * @return mixed
-     */
-    public function getTotal()
-    {
-        return $this->getAmount() * $this->getPrice();
-    }
-
     /**
      * Calculate Total of OrderItem without tax
      *
