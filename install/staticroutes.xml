@@ -91,5 +91,15 @@
             <variables>lang,currency</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>coreshop_wishlist</name>
+            <pattern>#(\w+)/wishlist/(\w+)#</pattern>
+            <reverse>/%lang/wishlist/%act</reverse>
+            <module>CoreShop</module>
+            <controller>wishlist</controller>
+            <action>%act</action>
+            <variables>lang,act</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>
