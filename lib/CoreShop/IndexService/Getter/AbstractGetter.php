@@ -17,7 +17,8 @@ namespace CoreShop\IndexService\Getter;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Product;
 
-class AbstractGetter {
+class AbstractGetter
+{
 
     /**
      * defined getters
@@ -50,7 +51,8 @@ class AbstractGetter {
      * @return mixed
      * @throws UnsupportedException
      */
-    public function get(Product $object, $config = null) {
+    public function get(Product $object, $config = null)
+    {
         throw new UnsupportedException("Not implemented in abstract");
     }
 }

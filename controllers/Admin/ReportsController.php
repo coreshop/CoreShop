@@ -20,7 +20,8 @@ use CoreShop\Helper\ReportQuery;
 
 class CoreShop_Admin_ReportsController extends Admin
 {
-    public function getProductsReportAction() {
+    public function getProductsReportAction()
+    {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
         $listOrders = new \Pimcore\Model\Object\CoreShopOrderItem\Listing();
@@ -29,10 +30,10 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $productSales = array();
 
-        foreach($listOrders as $orderItem) {
+        foreach ($listOrders as $orderItem) {
             $product = $orderItem->getProduct();
 
-            if($product instanceof Model\Product) {
+            if ($product instanceof Model\Product) {
                 if (!array_key_exists($product->getId(), $productSales)) {
                     $productSales[$product->getId()] = array(
                         "count" => 0,
@@ -50,21 +51,24 @@ class CoreShop_Admin_ReportsController extends Admin
             }
         }
 
-        foreach($productSales as &$sale) {
+        foreach ($productSales as &$sale) {
             $sale['salesPrice'] = Tool::formatPrice($sale['salesPrice']);
             $sale['sales'] = Tool::formatPrice($sale['sales']);
             $sale['profit'] = Tool::formatPrice($sale['profit']);
         }
 
         usort($productSales, function ($item1, $item2) {
-            if ($item1['count'] == $item2['count']) return 0;
+            if ($item1['count'] == $item2['count']) {
+                return 0;
+            }
             return $item1['count'] < $item2['count'] ? 1 : -1;
         });
 
         $this->_helper->json(array("data" => array_values($productSales)));
     }
 
-    public function getCategoriesReportAction() {
+    public function getCategoriesReportAction()
+    {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
         $listOrders = new \Pimcore\Model\Object\CoreShopOrderItem\Listing();
@@ -73,14 +77,14 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $catSales = array();
 
-        foreach($listOrders as $orderItem) {
+        foreach ($listOrders as $orderItem) {
             $product = $orderItem->getProduct();
 
-            if($product instanceof Model\Product) {
+            if ($product instanceof Model\Product) {
                 $categories = $product->getCategories();
 
-                foreach($categories as $cat) {
-                    if($cat instanceof Model\Category) {
+                foreach ($categories as $cat) {
+                    if ($cat instanceof Model\Category) {
                         if (!array_key_exists($cat->getId(), $catSales)) {
                             $catSales[$cat->getId()] = array(
                                 "name" => $cat->getName(),
@@ -98,20 +102,23 @@ class CoreShop_Admin_ReportsController extends Admin
             }
         }
 
-        foreach($catSales as &$sale) {
+        foreach ($catSales as &$sale) {
             $sale['sales'] = Tool::formatPrice($sale['sales']);
             $sale['profit'] = Tool::formatPrice($sale['profit']);
         }
 
         usort($catSales, function ($item1, $item2) {
-            if ($item1['count'] == $item2['count']) return 0;
+            if ($item1['count'] == $item2['count']) {
+                return 0;
+            }
             return $item1['count'] < $item2['count'] ? 1 : -1;
         });
 
         $this->_helper->json(array("data" => array_values($catSales)));
     }
 
-    public function getCustomersReportAction() {
+    public function getCustomersReportAction()
+    {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
         $listOrders = new \Pimcore\Model\Object\CoreShopOrder\Listing();
@@ -120,10 +127,10 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $custSales = array();
 
-        foreach($listOrders as $order) {
+        foreach ($listOrders as $order) {
             $customer = $order->getCustomer();
 
-            if($customer  instanceof Model\User) {
+            if ($customer  instanceof Model\User) {
                 if (!array_key_exists($customer->getId(), $custSales)) {
                     $custSales[$customer->getId()] = array(
                         "name" => $customer->getFirstname() . " " . $customer->getLastname(),
@@ -137,19 +144,22 @@ class CoreShop_Admin_ReportsController extends Admin
             }
         }
 
-        foreach($custSales as &$sale) {
+        foreach ($custSales as &$sale) {
             $sale['sales'] = Tool::formatPrice($sale['sales']);
         }
 
         usort($custSales, function ($item1, $item2) {
-            if ($item1['count'] == $item2['count']) return 0;
+            if ($item1['count'] == $item2['count']) {
+                return 0;
+            }
             return $item1['count'] < $item2['count'] ? 1 : -1;
         });
 
         $this->_helper->json(array("data" => array_values($custSales)));
     }
 
-    public function getQuantitiesReportAction() {
+    public function getQuantitiesReportAction()
+    {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
         $list = new \Pimcore\Model\Object\CoreShopProduct\Listing();
@@ -158,7 +168,7 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $result = array();
 
-        foreach($list as $product) {
+        foreach ($list as $product) {
             $result[] = array(
                 "name" => $product->getName(),
                 "quantity" => intval($product->getQuantity()),
@@ -251,7 +261,8 @@ class CoreShop_Admin_ReportsController extends Admin
         $this->_helper->json(array("data" => $data));
     }
 
-    public function getCarrierReportAction() {
+    public function getCarrierReportAction()
+    {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
         $tableName = "object_query_" . \Pimcore\Model\Object\ClassDefinition::getByName("CoreShopOrder")->getId();
@@ -261,7 +272,7 @@ class CoreShop_Admin_ReportsController extends Admin
         $results = $db->fetchAll($sql);
         $data = array();
 
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $carrier = Model\Carrier::getById($result['carrier']);
 
             $data[] = array(
@@ -273,7 +284,8 @@ class CoreShop_Admin_ReportsController extends Admin
         $this->_helper->json(array("data" => $data));
     }
 
-    public function getPaymentReportAction() {
+    public function getPaymentReportAction()
+    {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
         $tableName = "object_query_" . \Pimcore\Model\Object\ClassDefinition::getByName("CoreShopOrder")->getId();
@@ -283,7 +295,7 @@ class CoreShop_Admin_ReportsController extends Admin
         $results = $db->fetchAll($sql);
         $data = array();
 
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $data[] = array(
                 "provider" => $result['paymentProvider'],
                 "data" => floatval($result['percentage'])
@@ -293,16 +305,17 @@ class CoreShop_Admin_ReportsController extends Admin
         $this->_helper->json(array("data" => $data));
     }
 
-    public function getEmptyCategoriesMonitoringAction() {
+    public function getEmptyCategoriesMonitoringAction()
+    {
         $cats = new \Pimcore\Model\Object\CoreShopCategory\Listing();
         $cats = $cats->getObjects();
 
         $emptyCategories = array();
 
-        foreach($cats as $category) {
+        foreach ($cats as $category) {
             $products = $category->getProducts(true);
 
-            if(count($products) === 0) {
+            if (count($products) === 0) {
                 $emptyCategories[] = array(
                     "name" => $category->getName(),
                     "id" => $category->getId()
@@ -313,13 +326,14 @@ class CoreShop_Admin_ReportsController extends Admin
         $this->_helper->json(array("data" => $emptyCategories));
     }
 
-    public function getDisabledProductsMonitoringAction() {
+    public function getDisabledProductsMonitoringAction()
+    {
         $products = new \Pimcore\Model\Object\CoreShopProduct\Listing();
         $products->setCondition("enabled=? OR availableForOrder=?", array(0, 0));
 
         $result = array();
 
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $result[] = array(
                 "id" => $product->getId(),
                 "name" => $product->getName(),

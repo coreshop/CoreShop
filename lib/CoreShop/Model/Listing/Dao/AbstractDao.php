@@ -176,7 +176,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
 
             $localizedFields = $model->getLocalizedFields();
 
-            if($localizedFields) {
+            if ($localizedFields) {
                 $localizedFields->createUpdateTable();
             }
 

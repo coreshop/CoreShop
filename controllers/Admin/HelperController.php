@@ -37,7 +37,8 @@ class CoreShop_Admin_HelperController extends Admin
         $this->_helper->json(array("success" => false));
     }
 
-    public function getLanguagesAction() {
+    public function getLanguagesAction()
+    {
         $locales = \Pimcore\Tool::getSupportedLocales();
         $languageOptions = array();
         foreach ($locales as $short => $translation) {

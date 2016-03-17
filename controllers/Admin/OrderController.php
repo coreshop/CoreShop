@@ -19,15 +19,17 @@ use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_OrderController extends Admin
 {
-    public function getOrdersAction() {
+    public function getOrdersAction()
+    {
         $list = new \Pimcore\Model\Object\CoreShopOrder\Listing();
         $list->setLimit($this->getParam("limit", 30));
         $list->setOffset($this->getParam("page", 1) - 1);
 
-        if($this->getParam("filter", null)) {
+        if ($this->getParam("filter", null)) {
             $conditionFilters[] = \Pimcore\Model\Object\Service::getFilterCondition($this->getParam("filter"), \Pimcore\Model\Object\ClassDefinition::getByName("CoreShopOrder"));
-            if(count($conditionFilters) > 0 && $conditionFilters[0] !== '(())')
-            $list->setCondition(implode(" AND ", $conditionFilters));
+            if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
+                $list->setCondition(implode(" AND ", $conditionFilters));
+            }
         }
 
         $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($this->getAllParams());
@@ -48,14 +50,15 @@ class CoreShop_Admin_OrderController extends Admin
         $orders = $list->load();
         $jsonOrders = array();
 
-        foreach($orders as $order) {
+        foreach ($orders as $order) {
             $jsonOrders[] = $this->prepareOrder($order);
         }
 
         $this->_helper->json(array("success" => true, "data" => $jsonOrders, "count" => count($jsonOrders), "total" => $list->getTotalCount()));
     }
 
-    protected function prepareOrder(\CoreShop\Model\Order $order) {
+    protected function prepareOrder(\CoreShop\Model\Order $order)
+    {
         $element = array(
             "o_id" => $order->getId(),
             "orderState" => $order->getOrderState() instanceof \CoreShop\Model\OrderState ? $order->getOrderState()->getId() : null,
@@ -75,14 +78,15 @@ class CoreShop_Admin_OrderController extends Admin
         return $element;
     }
 
-    public function getInvoiceForOrderAction() {
+    public function getInvoiceForOrderAction()
+    {
         $orderId = $this->getParam("id");
         $order = \CoreShop\Model\Order::getById($orderId);
 
-        if($order instanceof \CoreShop\Model\Order) {
+        if ($order instanceof \CoreShop\Model\Order) {
             $invoice = $order->getProperty("invoice");
 
-            if($invoice instanceof \Pimcore\Model\Asset\Document) {
+            if ($invoice instanceof \Pimcore\Model\Asset\Document) {
                 $this->_helper->json(array("success" => true, "assetId" => $invoice->getId()));
             }
         }
@@ -90,12 +94,13 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array("success" => false));
     }
 
-    public function getPaymentProvidersAction() {
+    public function getPaymentProvidersAction()
+    {
         $providers = Plugin::getPaymentProviders();
         $result = array();
 
-        foreach($providers as $provider) {
-            if($provider instanceof \CoreShop\Model\Plugin\Payment) {
+        foreach ($providers as $provider) {
+            if ($provider instanceof \CoreShop\Model\Plugin\Payment) {
                 $result[] = array(
                     "name" => $provider->getName(),
                     "id" => $provider->getIdentifier()
@@ -106,7 +111,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array("success" => true, "data" => $result));
     }
 
-    public function addPaymentAction() {
+    public function addPaymentAction()
+    {
         //@TODO: Add translations for messages
 
         $orderId = $this->getParam("o_id");
@@ -114,31 +120,29 @@ class CoreShop_Admin_OrderController extends Admin
         $amount = doubleval($this->getParam("amount", 0));
         $paymentProviderName = $this->getParam("paymentProvider");
 
-        if(!$order instanceof \CoreShop\Model\Order) {
+        if (!$order instanceof \CoreShop\Model\Order) {
             $this->_helper->json(array("success" => false, "message" => "Order with ID '$orderId' not found"));
         }
 
-        if($amount <= 0) {
+        if ($amount <= 0) {
             $this->_helper->json(array("success" => false, "message" => "Amount must be greater 0"));
         }
 
         $paymentProvider = Plugin::getPaymentProvider($paymentProviderName);
 
-        if($paymentProvider instanceof \CoreShop\Model\Plugin\Payment) {
+        if ($paymentProvider instanceof \CoreShop\Model\Plugin\Payment) {
             $payedTotal = $order->getPayedTotal();
 
             $payedTotal += $amount;
 
-            if($payedTotal > $order->getTotal()) {
+            if ($payedTotal > $order->getTotal()) {
                 $this->_helper->json(array("success" => false, "message" => "Payed Amount is greater than order amount"));
-            }
-            else {
+            } else {
                 $order->createPayment($paymentProvider, $amount, $payedTotal === $order->getTotal());
 
                 $this->_helper->json(array("success" => true));
             }
-        }
-        else {
+        } else {
             $this->_helper->json(array("success" => false, "message" => "Payment Provider '$paymentProviderName' not found"));
         }
     }

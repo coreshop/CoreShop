@@ -23,7 +23,8 @@ class Zone extends Base
         parent::setUp();
     }
 
-    public function testZoneCreation() {
+    public function testZoneCreation()
+    {
         $this->printTestName();
 
         $this->assertNotNull(\CoreShop\Model\Zone::getById(1));

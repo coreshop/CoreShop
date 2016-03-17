@@ -75,7 +75,7 @@ class CustomerGroup extends AbstractCondition
 
         $validCustomerGroupFound = false;
 
-        if($this->getCustomerGroup() instanceof CustomerGroupModel) {
+        if ($this->getCustomerGroup() instanceof CustomerGroupModel) {
             foreach ($customer->getGroups() as $customerGroup) {
                 $customerGroup = CustomerGroupModel::getByField("name", $customerGroup);
 
@@ -88,8 +88,8 @@ class CustomerGroup extends AbstractCondition
             }
         }
 
-        if(!$validCustomerGroupFound) {
-            if($throwException) {
+        if (!$validCustomerGroupFound) {
+            if ($throwException) {
                 throw new \Exception("You cannot use this voucher.");
             }
 

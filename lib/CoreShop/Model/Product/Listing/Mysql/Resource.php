@@ -17,7 +17,8 @@ namespace CoreShop\Model\Product\Listing\Mysql;
 use CoreShop\Model\Product\Listing\Mysql;
 use CoreShop\Model\Product\Listing as AbstractList;
 
-class Resource {
+class Resource
+{
 
     /**
      * @var \Zend_Db_Adapter_Abstract
@@ -35,32 +36,33 @@ class Resource {
     private $lastRecordCount;
 
 
-    public function __construct(Mysql $model) {
+    public function __construct(Mysql $model)
+    {
         $this->model = $model;
         $this->db = \Pimcore\Db::get();
     }
 
 
-    public function load($condition, $orderBy = null, $limit = null, $offset = null) {
-
-        if($condition) {
+    public function load($condition, $orderBy = null, $limit = null, $offset = null)
+    {
+        if ($condition) {
             $condition = "WHERE " . $condition;
         }
 
-        if($orderBy) {
+        if ($orderBy) {
             $orderBy = " ORDER BY " . $orderBy;
         }
 
-        if($limit) {
-            if($offset) {
+        if ($limit) {
+            if ($offset) {
                 $limit = "LIMIT " . $offset . ", " . $limit;
             } else {
                 $limit = "LIMIT " . $limit;
             }
         }
 
-        if($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            if($orderBy) {
+        if ($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+            if ($orderBy) {
                 $query = "SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualProductId as o_id FROM "
                     . $this->model->getTablename() . " a "
                     . $this->model->getJoins()
@@ -84,14 +86,14 @@ class Resource {
         return $result;
     }
 
-    public function loadGroupByValues($fieldname, $condition, $countValues = false) {
-
-        if($condition) {
+    public function loadGroupByValues($fieldname, $condition, $countValues = false)
+    {
+        if ($condition) {
             $condition = "WHERE " . $condition;
         }
 
-        if($countValues) {
-            if($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if ($countValues) {
+            if ($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualProductId) as `count` FROM "
                     . $this->model->getTablename() . " a "
                     . $this->model->getJoins()
@@ -116,14 +118,14 @@ class Resource {
         }
     }
 
-    public function loadGroupByRelationValues($fieldname, $condition, $countValues = false) {
-
-        if($condition) {
+    public function loadGroupByRelationValues($fieldname, $condition, $countValues = false)
+    {
+        if ($condition) {
             $condition = "WHERE " . $condition;
         }
 
-        if($countValues) {
-            if($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if ($countValues) {
+            if ($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $query = "SELECT dest as `value`, count(DISTINCT src_virtualProductId) as `count` FROM "
                     . $this->model->getRelationTablename() . " a "
                     . "WHERE fieldname = " . $this->quote($fieldname);
@@ -158,24 +160,25 @@ class Resource {
         }
     }
 
-    public function getCount($condition, $orderBy = null, $limit = null, $offset = null) {
-        if($condition) {
+    public function getCount($condition, $orderBy = null, $limit = null, $offset = null)
+    {
+        if ($condition) {
             $condition = "WHERE " . $condition;
         }
 
-        if($orderBy) {
+        if ($orderBy) {
             $orderBy = " ORDER BY " . $orderBy;
         }
 
-        if($limit) {
-            if($offset) {
+        if ($limit) {
+            if ($offset) {
                 $limit = "LIMIT " . $offset . ", " . $limit;
             } else {
                 $limit = "LIMIT " . $limit;
             }
         }
 
-        if($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if ($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             $query = "SELECT count(DISTINCT o_virtualProductId) FROM "
                 . $this->model->getTablename() . " a "
                 . $this->model->getJoins()
@@ -191,7 +194,8 @@ class Resource {
         return $result;
     }
 
-    public function quote($value) {
+    public function quote($value)
+    {
         return $this->db->quote($value);
     }
 
@@ -203,13 +207,13 @@ class Resource {
      *
      * @return mixed;
      */
-    public function buildSimularityOrderBy($fields, $objectId) {
-
+    public function buildSimularityOrderBy($fields, $objectId)
+    {
         try {
             $fieldString = "";
             $maxFieldString = "";
-            foreach($fields as $f) {
-                if(!empty($fieldString)) {
+            foreach ($fields as $f) {
+                if (!empty($fieldString)) {
                     $fieldString .= ",";
                     $maxFieldString .= ",";
                 }
@@ -223,9 +227,9 @@ class Resource {
             $query = "SELECT " . $maxFieldString . " FROM " . $this->model->getTablename() . " a";
             $maxObjectValues = $this->db->fetchRow($query);
 
-            if(!empty($objectValues)) {
+            if (!empty($objectValues)) {
                 $subStatement = array();
-                foreach($fields as $f) {
+                foreach ($fields as $f) {
                     $subStatement[] =
                         "(" .
                         $this->db->quoteIdentifier($f->getField()) . "/" . $maxObjectValues[$f->getField()] .
@@ -240,11 +244,7 @@ class Resource {
             } else {
                 throw new \Exception("Field array for given object id is empty");
             }
-
-
-
-        } catch(\Exception $e) {
-
+        } catch (\Exception $e) {
             return "";
         }
     }
@@ -256,9 +256,10 @@ class Resource {
      * @param $searchstring
      * @return string
      */
-    public function buildFulltextSearchWhere($fields, $searchstring) {
+    public function buildFulltextSearchWhere($fields, $searchstring)
+    {
         $columnNames = array();
-        foreach($fields as $c) {
+        foreach ($fields as $c) {
             $columnNames[] = $this->db->quoteIdentifier($c);
         }
         return 'MATCH (' . implode(",", $columnNames) . ') AGAINST (' . $this->db->quote($searchstring) . ' IN BOOLEAN MODE)';

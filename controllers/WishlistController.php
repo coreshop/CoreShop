@@ -47,24 +47,16 @@ class CoreShop_WishlistController extends Action
         if ($product instanceof CoreShopProduct && $product->getEnabled() && $product->getAvailableForOrder()) {
             $checkAvailability = $this->model->allowedToAdd($product->getId());
 
-            if ($checkAvailability === true)
-            {
+            if ($checkAvailability === true) {
                 $this->model->add($product->getId());
 
                 $this->_helper->json(array("success" => true, "wishlist" => $this->model->getWishlist()));
-            }
-            else
-            {
-                if ($checkAvailability == 'limit_reached')
-                {
+            } else {
+                if ($checkAvailability == 'limit_reached') {
                     $message = $this->view->translate('You reached the limit of products to your wishlist.');
-                }
-                else if ($checkAvailability == 'already_added')
-                {
+                } elseif ($checkAvailability == 'already_added') {
                     $message = $this->view->translate('This product is already in your wishlist list.');
-                }
-                else
-                {
+                } else {
                     $message = 'Error: ' . $checkAvailability;
                 }
 
@@ -80,8 +72,7 @@ class CoreShop_WishlistController extends Action
         $product_id = $this->getParam("product", null);
         $product = CoreShopProduct::getById($product_id);
 
-        if ($product instanceof CoreShopProduct)
-        {
+        if ($product instanceof CoreShopProduct) {
             $this->model->remove($product->getId());
 
             $this->_helper->json(array("success" => true, "wishlist" => $this->model->getWishlist()));
@@ -99,8 +90,7 @@ class CoreShop_WishlistController extends Action
         $productIds = $this->model->getWishlist();
         $products = array();
 
-        if (!empty($productIds))
-        {
+        if (!empty($productIds)) {
             $list = new Object\CoreShopProduct\Listing();
             $list->setCondition("oo_id IN (" . rtrim(str_repeat('?,', count($productIds)), ',').")", $productIds);
 

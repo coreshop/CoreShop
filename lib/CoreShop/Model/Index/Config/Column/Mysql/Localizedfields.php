@@ -16,7 +16,7 @@ namespace CoreShop\Model\Index\Config\Column\Mysql;
 
 use CoreShop\Model\Index\Config\Column\Localizedfields as DefaultLocalizedFields;
 
-class Localizedfields extends DefaultLocalizedFields {
+class Localizedfields extends DefaultLocalizedFields
+{
     use HelperTrait;
-
 }

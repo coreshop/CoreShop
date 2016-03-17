@@ -105,7 +105,8 @@ class Mysql extends AbstractListing
     /**
      * Mysql constructor.
      */
-    public function __construct(Index $index) {
+    public function __construct(Index $index)
+    {
         parent::__construct($index);
 
         $this->resource = new Product\Listing\Mysql\Resource($this);
@@ -114,7 +115,8 @@ class Mysql extends AbstractListing
     /**
      * @return Product[]
      */
-    public function getProducts() {
+    public function getProducts()
+    {
         if ($this->products === null) {
             $this->load();
         }
@@ -125,7 +127,8 @@ class Mysql extends AbstractListing
      * @param string $condition
      * @param string $fieldname
      */
-    public function addCondition($condition, $fieldname = "") {
+    public function addCondition($condition, $fieldname = "")
+    {
         $this->products = null;
         $this->conditions[$fieldname][] = $condition;
     }
@@ -136,7 +139,8 @@ class Mysql extends AbstractListing
      * @param $fieldname
      * @return void
      */
-    public function resetCondition($fieldname) {
+    public function resetCondition($fieldname)
+    {
         $this->products = null;
         unset($this->conditions[$fieldname]);
     }
@@ -145,7 +149,8 @@ class Mysql extends AbstractListing
      * @param string $fieldname
      * @param string $condition
      */
-    public function addRelationCondition($fieldname, $condition) {
+    public function addRelationCondition($fieldname, $condition)
+    {
         $this->products = null;
         $this->relationConditions[$fieldname][] = "`fieldname` = " . $this->quote($fieldname) . " AND "  . $condition;
     }
@@ -153,7 +158,8 @@ class Mysql extends AbstractListing
     /**
      * resets all conditions of product list
      */
-    public function resetConditions() {
+    public function resetConditions()
+    {
         $this->conditions = array();
         $this->relationConditions = array();
         $this->queryConditions = array();
@@ -208,7 +214,8 @@ class Mysql extends AbstractListing
      * @param null|float $from
      * @param null|float $to
      */
-    public function addPriceCondition($from = null, $to = null) {
+    public function addPriceCondition($from = null, $to = null)
+    {
         $this->products = null;
         $this->conditionPriceFrom = $from;
         $this->conditionPriceTo = $to;
@@ -219,7 +226,8 @@ class Mysql extends AbstractListing
      *
      * @param $order
      */
-    public function setOrder($order) {
+    public function setOrder($order)
+    {
         $this->products = null;
         $this->order = $order;
     }
@@ -229,16 +237,18 @@ class Mysql extends AbstractListing
      *
      * @return mixed
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return $this->order;
     }
 
     /**
      * @param $orderKey string | array  - either single field name, or array of field names or array of arrays (field name, direction)
      */
-    public function setOrderKey($orderKey) {
+    public function setOrderKey($orderKey)
+    {
         $this->products = null;
-        if($orderKey == AbstractListing::ORDERKEY_PRICE) {
+        if ($orderKey == AbstractListing::ORDERKEY_PRICE) {
             $this->orderByPrice = true;
         } else {
             $this->orderByPrice = false;
@@ -250,15 +260,17 @@ class Mysql extends AbstractListing
     /**
      * @return array|string
      */
-    public function getOrderKey() {
+    public function getOrderKey()
+    {
         return $this->orderKey;
     }
 
     /**
      * @param int $limit
      */
-    public function setLimit($limit) {
-        if($this->limit != $limit) {
+    public function setLimit($limit)
+    {
+        if ($this->limit != $limit) {
             $this->products = null;
         }
         $this->limit = $limit;
@@ -267,7 +279,8 @@ class Mysql extends AbstractListing
     /**
      * @return int
      */
-    public function getLimit() {
+    public function getLimit()
+    {
         return $this->limit;
     }
 
@@ -275,8 +288,9 @@ class Mysql extends AbstractListing
     /**
      * @param int $offset
      */
-    public function setOffset($offset) {
-        if($this->offset != $offset) {
+    public function setOffset($offset)
+    {
+        if ($this->offset != $offset) {
             $this->products = null;
         }
         $this->offset = $offset;
@@ -285,7 +299,8 @@ class Mysql extends AbstractListing
     /**
      * @return int
      */
-    public function getOffset() {
+    public function getOffset()
+    {
         return $this->offset;
     }
 
@@ -293,7 +308,8 @@ class Mysql extends AbstractListing
     /**
      * @param Category $category
      */
-    public function setCategory(Category $category) {
+    public function setCategory(Category $category)
+    {
         $this->products = null;
         $this->category = $category;
     }
@@ -301,14 +317,16 @@ class Mysql extends AbstractListing
     /**
      * @return Category
      */
-    public function getCategory() {
+    public function getCategory()
+    {
         return $this->category;
     }
 
     /**
      * @param $variantMode
      */
-    public function setVariantMode($variantMode) {
+    public function setVariantMode($variantMode)
+    {
         $this->products = null;
         $this->variantMode = $variantMode;
     }
@@ -316,7 +334,8 @@ class Mysql extends AbstractListing
     /**
      * @return string
      */
-    public function getVariantMode() {
+    public function getVariantMode()
+    {
         return $this->variantMode;
     }
 
@@ -324,7 +343,8 @@ class Mysql extends AbstractListing
      * @return array|\CoreShop\Model\Product[]|null
      * @throws \Exception
      */
-    public function load() {
+    public function load()
+    {
 
         //TODO: Load with price filter?!
 
@@ -332,9 +352,9 @@ class Mysql extends AbstractListing
         $this->totalCount = $this->resource->getLastRecordCount();
 
         $this->products = array();
-        foreach($objectRaws as $raw) {
+        foreach ($objectRaws as $raw) {
             $product = $this->loadElementById($raw['o_id']);
-            if($product) {
+            if ($product) {
                 $this->products[] = $product;
             }
         }
@@ -348,7 +368,8 @@ class Mysql extends AbstractListing
      * @param $elementId
      * @return array|AbstractObject
      */
-    protected function loadElementById($elementId) {
+    protected function loadElementById($elementId)
+    {
         return AbstractObject::getById($elementId);
     }
 
@@ -359,14 +380,14 @@ class Mysql extends AbstractListing
      * @return array
      * @throws \Exception
      */
-    public function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true) {
+    public function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
+    {
         $excludedFieldName = $fieldname;
-        if (!$fieldnameShouldBeExcluded){
+        if (!$fieldnameShouldBeExcluded) {
             $excludedFieldName=null;
         }
-        if($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
+        if ($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
             return $this->resource->loadGroupByValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
-
         } else {
             throw new \Exception("Not supported yet");
         }
@@ -380,14 +401,14 @@ class Mysql extends AbstractListing
      * @return array
      * @throws \Exception
      */
-    public function getGroupByRelationValues($fieldname, $countValues = false,$fieldnameShouldBeExcluded=true) {
+    public function getGroupByRelationValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded=true)
+    {
         $excludedFieldName=$fieldname;
-        if (!$fieldnameShouldBeExcluded){
+        if (!$fieldnameShouldBeExcluded) {
             $excludedFieldName=null;
         }
-        if($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
+        if ($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
             return $this->resource->loadGroupByRelationValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
-
         } else {
             throw new \Exception("Not supported yet");
         }
@@ -414,14 +435,15 @@ class Mysql extends AbstractListing
      * @param null $variantMode
      * @return string
      */
-    protected function buildQueryFromConditions($excludeConditions = false, $excludedFieldname = null, $variantMode = null) {
-        if($variantMode == null) {
+    protected function buildQueryFromConditions($excludeConditions = false, $excludedFieldname = null, $variantMode = null)
+    {
+        if ($variantMode == null) {
             $variantMode = $this->getVariantMode();
         }
 
         $preCondition = "active = 1 AND o_virtualProductActive = 1";
 
-        if($this->getCategory()) {
+        if ($this->getCategory()) {
             $preCondition .= " AND parentCategoryIds LIKE '%," . $this->getCategory()->getId() . ",%'";
         }
 
@@ -429,32 +451,31 @@ class Mysql extends AbstractListing
 
         //variant handling and userspecific conditions
 
-        if($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            if(!$excludeConditions) {
+        if ($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+            if (!$excludeConditions) {
                 $userspecific = $this->buildUserspecificConditions($excludedFieldname);
-                if($userspecific) {
+                if ($userspecific) {
                     $condition .= " AND " . $userspecific;
                 }
             }
-
         } else {
-            if($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
+            if ($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
                 $condition .= " AND o_type != 'variant'";
             }
 
-            if(!$excludeConditions) {
+            if (!$excludeConditions) {
                 $userspecific = $this->buildUserspecificConditions($excludedFieldname);
-                if($userspecific) {
+                if ($userspecific) {
                     $condition .= " AND " . $userspecific;
                 }
             }
         }
 
 
-        if($this->queryConditions) {
+        if ($this->queryConditions) {
             $searchstring = "";
-            foreach($this->queryConditions as $queryConditionPartArray) {
-                foreach($queryConditionPartArray as $queryConditionPart) {
+            foreach ($this->queryConditions as $queryConditionPartArray) {
+                foreach ($queryConditionPartArray as $queryConditionPart) {
                     $searchstring .= "+" . $queryConditionPart . "* ";
                 }
             }
@@ -469,12 +490,13 @@ class Mysql extends AbstractListing
      * @param null $excludedFieldname
      * @return string
      */
-    protected function buildUserspecificConditions($excludedFieldname = null) {
+    protected function buildUserspecificConditions($excludedFieldname = null)
+    {
         $condition = "";
-        foreach($this->relationConditions as $fieldname => $condArray) {
-            if($fieldname !== $excludedFieldname) {
-                foreach($condArray as $cond) {
-                    if($condition) {
+        foreach ($this->relationConditions as $fieldname => $condArray) {
+            if ($fieldname !== $excludedFieldname) {
+                foreach ($condArray as $cond) {
+                    if ($condition) {
                         $condition .= " AND ";
                     }
 
@@ -483,10 +505,10 @@ class Mysql extends AbstractListing
             }
         }
 
-        foreach($this->conditions as $fieldname => $condArray) {
-            if($fieldname !== $excludedFieldname) {
-                foreach($condArray as $cond) {
-                    if($condition) {
+        foreach ($this->conditions as $fieldname => $condArray) {
+            if ($fieldname !== $excludedFieldname) {
+                foreach ($condArray as $cond) {
+                    if ($condition) {
                         $condition .= " AND ";
                     }
 
@@ -504,17 +526,17 @@ class Mysql extends AbstractListing
     /**
      * @return null|string
      */
-    protected function buildOrderBy() {
-        if(!empty($this->orderKey) && $this->orderKey !== AbstractListing::ORDERKEY_PRICE) {
-
+    protected function buildOrderBy()
+    {
+        if (!empty($this->orderKey) && $this->orderKey !== AbstractListing::ORDERKEY_PRICE) {
             $orderKeys = $this->orderKey;
-            if(!is_array($orderKeys)) {
+            if (!is_array($orderKeys)) {
                 $orderKeys = array($orderKeys);
             }
 
             $directionOrderKeys = array();
-            foreach($orderKeys as $key) {
-                if(is_array($key)) {
+            foreach ($orderKeys as $key) {
+                if (is_array($key)) {
                     $directionOrderKeys[] = $key;
                 } else {
                     $directionOrderKeys[] = array($key, $this->order);
@@ -523,12 +545,12 @@ class Mysql extends AbstractListing
 
 
             $orderByStringArray = array();
-            foreach($directionOrderKeys as $keyDirection) {
+            foreach ($directionOrderKeys as $keyDirection) {
                 $key = $keyDirection[0];
                 $direction = $keyDirection[1];
 
-                if($this->getVariantMode() == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                    if(strtoupper($this->order) == "DESC") {
+                if ($this->getVariantMode() == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+                    if (strtoupper($this->order) == "DESC") {
                         $orderByStringArray[] = "max(" . $key . ") " . $direction;
                     } else {
                         $orderByStringArray[] = "min(" . $key . ") " . $direction;
@@ -539,7 +561,6 @@ class Mysql extends AbstractListing
             }
 
             return implode(",", $orderByStringArray);
-
         }
         return null;
     }
@@ -549,7 +570,8 @@ class Mysql extends AbstractListing
      *
      * @return string
      */
-    public function getTableName() {
+    public function getTableName()
+    {
         return "coreshop_index_mysql_" . $this->getIndex()->getName();
     }
 
@@ -558,7 +580,8 @@ class Mysql extends AbstractListing
      *
      * @return string
      */
-    public function getRelationTablename() {
+    public function getRelationTablename()
+    {
         return "coreshop_index_mysql_relations_" . $this->getIndex()->getName();
     }
 
@@ -566,7 +589,8 @@ class Mysql extends AbstractListing
      * @param $value
      * @return mixed
      */
-    public function quote($value) {
+    public function quote($value)
+    {
         return $this->resource->quote($value);
     }
 
@@ -574,33 +598,28 @@ class Mysql extends AbstractListing
     /**
      * @return string
      */
-    public function getJoins() {
-
-        if( empty( $this->queryJoins ) )
-        {
+    public function getJoins()
+    {
+        if (empty($this->queryJoins)) {
             return "";
         }
 
         $query = '';
 
-        foreach(  $this->queryJoins as $table => $tableJoins)
-        {
-            $joinType = isset( $tableJoins['type'] ) ? ' ' . $tableJoins['type'] : ' LEFT';
+        foreach ($this->queryJoins as $table => $tableJoins) {
+            $joinType = isset($tableJoins['type']) ? ' ' . $tableJoins['type'] : ' LEFT';
 
-            if( empty( $tableJoins['joinTableAlias']))
-            {
+            if (empty($tableJoins['joinTableAlias'])) {
                 continue;
             }
 
             $joinName = $tableJoins['joinTableAlias'];
-            $objectKeyField = isset( $tableJoins['objectKeyField'] ) ? $tableJoins['objectKeyField'] : 'o_id';
+            $objectKeyField = isset($tableJoins['objectKeyField']) ? $tableJoins['objectKeyField'] : 'o_id';
 
             $query .= $joinType . ' JOIN ' . $table . ' as ' . $joinName. ' on `' . $joinName . '`.'.$objectKeyField.' = a.o_id ';
-
         }
 
         return $query;
-
     }
 
     /**
@@ -618,8 +637,9 @@ class Mysql extends AbstractListing
      * <p>
      * The return value is cast to an integer.
      */
-    public function count() {
-        if($this->totalCount === null) {
+    public function count()
+    {
+        if ($this->totalCount === null) {
             $this->totalCount = $this->resource->getCount($this->buildQueryFromConditions());
         }
         return $this->totalCount;
@@ -631,7 +651,8 @@ class Mysql extends AbstractListing
      * @link http://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type.
      */
-    public function current() {
+    public function current()
+    {
         $this->getProducts();
         $var = current($this->products);
         return $var;
@@ -644,7 +665,8 @@ class Mysql extends AbstractListing
      * @param  integer $itemCountPerPage Number of items per page
      * @return array
      */
-    public function getItems($offset, $itemCountPerPage) {
+    public function getItems($offset, $itemCountPerPage)
+    {
         $this->setOffset($offset);
         $this->setLimit($itemCountPerPage);
         return $this->getProducts();
@@ -655,7 +677,8 @@ class Mysql extends AbstractListing
      *
      * @return \Zend_Paginator_Adapter_Interface
      */
-    public function getPaginatorAdapter() {
+    public function getPaginatorAdapter()
+    {
         return $this;
     }
 
@@ -666,7 +689,8 @@ class Mysql extends AbstractListing
      * @return mixed scalar scalar on success, integer
      * 0 on failure.
      */
-    public function key() {
+    public function key()
+    {
         $this->getProducts();
         $var = key($this->products);
         return $var;
@@ -678,7 +702,8 @@ class Mysql extends AbstractListing
      * @link http://php.net/manual/en/iterator.next.php
      * @return void Any returned value is ignored.
      */
-    public function next() {
+    public function next()
+    {
         $this->getProducts();
         $var = next($this->products);
         return $var;
@@ -690,7 +715,8 @@ class Mysql extends AbstractListing
      * @link http://php.net/manual/en/iterator.rewind.php
      * @return void Any returned value is ignored.
      */
-    public function rewind() {
+    public function rewind()
+    {
         $this->getProducts();
         reset($this->products);
     }
@@ -702,9 +728,9 @@ class Mysql extends AbstractListing
      * @return boolean The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
      */
-    public function valid() {
+    public function valid()
+    {
         $var = $this->current() !== false;
         return $var;
     }
-
 }

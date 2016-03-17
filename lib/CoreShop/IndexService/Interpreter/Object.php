@@ -26,24 +26,20 @@ class Object extends RelationInterpreter
      * @return mixed
      * @throws UnsupportedException
      */
-    public function interpret($value, $config = null) {
+    public function interpret($value, $config = null)
+    {
         $result = array();
 
-        if(is_array($value))
-        {
-            foreach($value as $v)
-            {
-                if($v instanceof AbstractObject)
-                {
+        if (is_array($value)) {
+            foreach ($value as $v) {
+                if ($v instanceof AbstractObject) {
                     $result[] = array(
                         "dest" => $v->getId(),
                         "type" => "object"
                     );
                 }
             }
-        }
-        else if($value instanceof AbstractObject)
-        {
+        } elseif ($value instanceof AbstractObject) {
             $result[] = array(
                 "dest" => $value->getId(),
                 "type" => "object"

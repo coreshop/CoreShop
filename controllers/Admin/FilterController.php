@@ -88,8 +88,7 @@ class CoreShop_Admin_FilterController extends Admin
         $id = $this->getParam("id");
         $filter = Filter::getById($id);
 
-        if ($filter instanceof Filter)
-        {
+        if ($filter instanceof Filter) {
             $data = get_object_vars($filter);
             $data['index'] = $filter->getIndex() instanceof \CoreShop\Model\Index ? $filter->getIndex()->getId() : null;
 
@@ -175,15 +174,16 @@ class CoreShop_Admin_FilterController extends Admin
         ));
     }
 
-    public function getFieldsForIndexAction() {
+    public function getFieldsForIndexAction()
+    {
         $index = \CoreShop\Model\Index::getById($this->getParam("index"));
 
-        if($index instanceof \CoreShop\Model\Index) {
+        if ($index instanceof \CoreShop\Model\Index) {
             $columns = array();
             $config = $index->getConfig();
 
-            if($config->columns) {
-                foreach($config->columns as $col) {
+            if ($config->columns) {
+                foreach ($config->columns as $col) {
                     $columns[] = array(
                         "name" => $col->name
                     );
@@ -196,24 +196,24 @@ class CoreShop_Admin_FilterController extends Admin
         $this->_helper->json(false);
     }
 
-    public function getValuesForFilterFieldAction() {
+    public function getValuesForFilterFieldAction()
+    {
         $index = \CoreShop\Model\Index::getById($this->getParam("index"));
 
-        if($index instanceof \CoreShop\Model\Index) {
+        if ($index instanceof \CoreShop\Model\Index) {
             $list = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
             $productList = $list->getProductList();
 
             $values = $productList->getGroupByValues($this->getParam("field"));
             $returnValues = array();
 
-            foreach($values as $value) {
-                if($value) {
+            foreach ($values as $value) {
+                if ($value) {
                     $returnValues[] = array(
                         "value" => $value,
                         "key" => $value
                     );
-                }
-                else {
+                } else {
                     $returnValues[] = array(
                         "value" => Filter\Service::EMPTY_STRING,
                         "key" => "empty"

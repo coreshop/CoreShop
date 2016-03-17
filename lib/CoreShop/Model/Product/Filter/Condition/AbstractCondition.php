@@ -17,7 +17,8 @@ namespace CoreShop\Model\Product\Filter\Condition;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
-abstract class AbstractCondition {
+abstract class AbstractCondition
+{
 
     /**
      * @var string
@@ -81,7 +82,7 @@ abstract class AbstractCondition {
      * @param bool $isPrecondition
      * @return array $currentFilter
      */
-    public abstract function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false);
+    abstract public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false);
 
     /**
      * render HTML for filter
@@ -91,7 +92,8 @@ abstract class AbstractCondition {
      * @param $currentFilter
      * @return mixed
      */
-    public function render(Filter $filter, Listing $list, $currentFilter) {
+    public function render(Filter $filter, Listing $list, $currentFilter)
+    {
         $rawValues = $list->getGroupByValues($this->getField(), true);
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
@@ -110,10 +112,11 @@ abstract class AbstractCondition {
      *
      * @return string
      */
-    protected function getViewScript(Filter $filter, Listing $list, $currentFilter) {
+    protected function getViewScript(Filter $filter, Listing $list, $currentFilter)
+    {
         $script = $this->getType() . ".php";
 
-        if($this->getView()->getScriptPath($this->getField() . ".php")) {
+        if ($this->getView()->getScriptPath($this->getField() . ".php")) {
             $script = $this->getField() . ".php";
         }
 

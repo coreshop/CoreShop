@@ -162,7 +162,7 @@ class DeliveryPrice extends AbstractModel
      */
     public function getRange()
     {
-        if(!$this->range instanceof AbstractRange) {
+        if (!$this->range instanceof AbstractRange) {
             $this->range = AbstractRange::getById($this->rangeId, $this->getRangeType());
         }
 
@@ -221,7 +221,7 @@ class DeliveryPrice extends AbstractModel
      */
     public function getZone()
     {
-        if(!$this->zone instanceof Zone) {
+        if (!$this->zone instanceof Zone) {
             $this->zone = Zone::getById($this->zoneId);
         }
 
@@ -264,7 +264,7 @@ class DeliveryPrice extends AbstractModel
      */
     public function getCarrier()
     {
-        if(!$this->carrier instanceof Carrier) {
+        if (!$this->carrier instanceof Carrier) {
             $this->carrier = Carrier::getById($this->carrierId);
         }
 

@@ -16,7 +16,8 @@ namespace CoreShop\Model\Index\Config\Column;
 
 use CoreShop\Model;
 
-class Classificationstore extends AbstractColumn {
+class Classificationstore extends AbstractColumn
+{
     /**
      * @var int
      */

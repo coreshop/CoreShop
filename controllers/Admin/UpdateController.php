@@ -14,16 +14,17 @@
 
 class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
 {
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         // clear the opcache (as of PHP 5.5)
-        if(function_exists("opcache_reset")) {
+        if (function_exists("opcache_reset")) {
             opcache_reset();
         }
 
         // clear the APC opcode cache (<= PHP 5.4)
-        if(function_exists("apc_clear_cache")) {
+        if (function_exists("apc_clear_cache")) {
             apc_clear_cache();
         }
 
@@ -33,10 +34,10 @@ class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
         }
     }
 
-    public function checkFilePermissionsAction () {
-
+    public function checkFilePermissionsAction()
+    {
         $success = false;
-        if(\CoreShop\Update::isWriteable()) {
+        if (\CoreShop\Update::isWriteable()) {
             $success = true;
         }
 
@@ -45,46 +46,47 @@ class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
         ));
     }
 
-    public function getAvailableUpdatesAction () {
-
+    public function getAvailableUpdatesAction()
+    {
         $availableUpdates = \CoreShop\Update::getAvailableUpdates();
         $this->_helper->json($availableUpdates);
     }
 
-    public function getJobsAction () {
-
+    public function getJobsAction()
+    {
         $jobs = \CoreShop\Update::getJobs($this->getParam("toRevision"));
 
         $this->_helper->json($jobs);
     }
 
-    public function jobParallelAction () {
-        if($this->getParam("type") == "download") {
+    public function jobParallelAction()
+    {
+        if ($this->getParam("type") == "download") {
             \CoreShop\Update::downloadData($this->getParam("revision"), $this->getParam("url"), $this->getParam("file"));
         }
 
         $this->_helper->json(array("success" => true));
     }
 
-    public function jobProceduralAction () {
-
+    public function jobProceduralAction()
+    {
         $status = array("success" => true);
 
-        if($this->getParam("type") == "files") {
+        if ($this->getParam("type") == "files") {
             \CoreShop\Update::installData($this->getParam("revision"));
-        } else if ($this->getParam("type") == "deleteFile") {
+        } elseif ($this->getParam("type") == "deleteFile") {
             \CoreShop\Update::deleteData($this->getParam("url"));
-        } else if ($this->getParam("type") == "clearcache") {
+        } elseif ($this->getParam("type") == "clearcache") {
             \Pimcore\Cache::clearAll();
-        } else if ($this->getParam("type") == "preupdate") {
+        } elseif ($this->getParam("type") == "preupdate") {
             $status = \CoreShop\Update::executeScript($this->getParam("revision"), "preupdate");
-        } else if ($this->getParam("type") == "postupdate") {
+        } elseif ($this->getParam("type") == "postupdate") {
             $status = \CoreShop\Update::executeScript($this->getParam("revision"), "postupdate");
-        } else if ($this->getParam("type") == "installClass") {
+        } elseif ($this->getParam("type") == "installClass") {
             $status = \CoreShop\Update::installClass($this->getParam("class"));
-        } else if ($this->getParam("type") == "importTranslation") {
+        } elseif ($this->getParam("type") == "importTranslation") {
             \Pimcore\Model\Translation\Admin::importTranslationsFromFile(PIMCORE_PLUGINS_PATH . "/CoreShop/install/translations/admin.csv" . "", true, \Pimcore\Tool\Admin::getLanguages());
-        } else if ($this->getParam("type") == "cleanup") {
+        } elseif ($this->getParam("type") == "cleanup") {
             \CoreShop\Update::cleanup();
         }
 

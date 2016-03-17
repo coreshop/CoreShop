@@ -23,7 +23,8 @@ class CustomerGroup extends Base
         parent::setUp();
     }
 
-    public function testCustomerGroupCreation() {
+    public function testCustomerGroupCreation()
+    {
         $this->printTestName();
 
         $group = new \CoreShop\Model\CustomerGroup();
@@ -34,7 +35,8 @@ class CustomerGroup extends Base
         $this->assertNotNull(\CoreShop\Model\CustomerGroup::getById($group->getId()));
     }
 
-    public function testCustomerGroupDiscount() {
+    public function testCustomerGroupDiscount()
+    {
         //@TODO: Customer Group Discount needs to be implemented first?
     }
 }

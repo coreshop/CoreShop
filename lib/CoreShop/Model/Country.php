@@ -189,7 +189,7 @@ class Country extends AbstractModel
             return Tool::getBaseCurrency();
         }
 
-        if(!$this->currency instanceof Currency) {
+        if (!$this->currency instanceof Currency) {
             $this->currency = Currency::getById($this->currencyId);
         }
 
@@ -232,7 +232,7 @@ class Country extends AbstractModel
      */
     public function getZone()
     {
-        if(!$this->zone instanceof Zone) {
+        if (!$this->zone instanceof Zone) {
             $this->zone = Zone::getById($this->zoneId);
         }
 

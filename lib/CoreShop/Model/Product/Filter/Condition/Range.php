@@ -76,8 +76,8 @@ class Range extends AbstractCondition
      * @param $currentFilter
      * @return mixed
      */
-    public function render(Filter $filter, Listing $list, $currentFilter) {
-
+    public function render(Filter $filter, Listing $list, $currentFilter)
+    {
         $rawValues = $list->getGroupByValues($this->getField(), true);
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
@@ -100,31 +100,31 @@ class Range extends AbstractCondition
      * @param bool $isPrecondition
      * @return array $currentFilter
      */
-    public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false) {
-
+    public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
+    {
         $valueMin = $params[$this->getField() . '-min'];
         $valueMax = $params[$this->getField() . '-max'];
 
-        if(empty($valueMax)) {
+        if (empty($valueMax)) {
             $valueMax = $this->getPreSelect();
         }
 
-        if($valueMax === Filter\Service::EMPTY_STRING) {
+        if ($valueMax === Filter\Service::EMPTY_STRING) {
             $valueMax = null;
         }
 
-        if(empty($valueMin)) {
+        if (empty($valueMin)) {
             $valueMin = $this->getPreSelect();
         }
-        if($valueMin === Filter\Service::EMPTY_STRING) {
+        if ($valueMin === Filter\Service::EMPTY_STRING) {
             $valueMin = null;
         }
 
         $currentFilter[$this->getField() . "-min"] = $valueMin;
         $currentFilter[$this->getField() . "-max"] = $valueMax;
 
-        if(!empty($valueMin) && !empty($valueMax)) {
-            if($isPrecondition) {
+        if (!empty($valueMin) && !empty($valueMax)) {
+            if ($isPrecondition) {
                 $list->addCondition("TRIM(`" . $this->getField() . "`) >= " . $valueMin . " AND TRIM(`" . $this->getField() . "`) <= " . $valueMax, "PRECONDITION_" . $this->getField());
             } else {
                 $list->addCondition("TRIM(`" . $this->getField() . "`) >= " . $valueMin . " AND TRIM(`" . $this->getField() . "`) <= " . $valueMax, $this->getField());

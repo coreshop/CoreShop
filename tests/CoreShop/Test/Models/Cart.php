@@ -24,7 +24,8 @@ class Cart extends Base
         parent::setUp();
     }
 
-    public function testCartCreation() {
+    public function testCartCreation()
+    {
         $this->printTestName();
 
         $cart = Data::createCart();
@@ -32,7 +33,8 @@ class Cart extends Base
         $this->assertNotNull($cart);
     }
 
-    public function testCartDeliveryPrice() {
+    public function testCartDeliveryPrice()
+    {
         $this->printTestName();
 
         $cart1 = Data::createCart();
@@ -50,7 +52,8 @@ class Cart extends Base
         $this->assertEquals(24, $cart3->getShipping());
     }
 
-    public function testCartSubtotal() {
+    public function testCartSubtotal()
+    {
         $this->printTestName();
 
         $cart = Data::createCartWithProducts();
@@ -64,7 +67,8 @@ class Cart extends Base
         $this->assertEquals($subtotal-$tax, $subTotalWT);
     }
 
-    public function testCartTotal() {
+    public function testCartTotal()
+    {
         $this->printTestName();
 
         $cart = Data::createCartWithProducts();
@@ -79,7 +83,8 @@ class Cart extends Base
         $this->assertEquals($total-$tax, $totalWT);
     }
 
-    public function testCartAddItem() {
+    public function testCartAddItem()
+    {
         $this->printTestName();
 
         $cart = Data::createCart();

@@ -16,7 +16,8 @@ namespace CoreShop\Model\Index;
 
 use CoreShop\Model;
 
-class Config {
+class Config
+{
 
     /**
      * @var Model\Index\Config\Column\AbstractColumn[]

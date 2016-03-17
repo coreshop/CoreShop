@@ -18,7 +18,8 @@ use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Index\Config\Column\Classificationstore as Config;
 use CoreShop\Model\Product;
 
-class Classificationstore extends AbstractGetter {
+class Classificationstore extends AbstractGetter
+{
 
     /**
      * @param $object
@@ -26,15 +27,15 @@ class Classificationstore extends AbstractGetter {
      * @return mixed
      * @throws UnsupportedException
      */
-    public function get(Product $object, Config $config = null) {
-
+    public function get(Product $object, Config $config = null)
+    {
         $classificationStore = $config->getGetterConfig()['classificationStoreField'];
         $classificationStoreGetter = "get" . ucfirst($classificationStore);
 
-        if(method_exists($object, $classificationStoreGetter)) {
+        if (method_exists($object, $classificationStoreGetter)) {
             $classificationStore = $object->$classificationStoreGetter();
 
-            if($classificationStore instanceof \Pimcore\Model\Object\Classificationstore) {
+            if ($classificationStore instanceof \Pimcore\Model\Object\Classificationstore) {
                 return $classificationStore->getLocalizedKeyValue($config->getGroupConfigId(), $config->getKeyConfigId());
             }
         }

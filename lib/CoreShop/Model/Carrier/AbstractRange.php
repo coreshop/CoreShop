@@ -188,7 +188,7 @@ class AbstractRange extends AbstractModel
      */
     public function getCarrier()
     {
-        if(!$this->carrier instanceof Carrier) {
+        if (!$this->carrier instanceof Carrier) {
             $this->carrier = Carrier::getById($this->carrierId);
         }
 

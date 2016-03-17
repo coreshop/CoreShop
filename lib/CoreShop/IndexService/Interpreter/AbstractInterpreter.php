@@ -17,7 +17,8 @@ namespace CoreShop\IndexService\Interpreter;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Product;
 
-class AbstractInterpreter {
+class AbstractInterpreter
+{
 
     /**
      * defined getters
@@ -50,7 +51,8 @@ class AbstractInterpreter {
      * @return mixed
      * @throws UnsupportedException
      */
-    public function interpret($value, $config = null) {
+    public function interpret($value, $config = null)
+    {
         throw new UnsupportedException("Not implemented in abstract");
     }
 }

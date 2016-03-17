@@ -33,5 +33,4 @@ class Wishlist extends Deposit
     {
         return $this->toArray();
     }
-
 }

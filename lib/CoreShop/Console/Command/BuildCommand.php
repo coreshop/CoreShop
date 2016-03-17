@@ -48,14 +48,18 @@ class BuildCommand extends AbstractCommand
 
         chdir(CORESHOP_PATH);
 
-        if($dryRun) {
+        if ($dryRun) {
             $this->output->writeln("<info>---------- DRY-RUN ----------</info>");
         }
 
-        if (!defined("CORESHOP_CHANGED_FILES")) define("CORESHOP_CHANGED_FILES", CORESHOP_BUILD_DIRECTORY . "/changedFiles.txt");
-        if (!defined("CORESHOP_DELETED_FILES")) define("CORESHOP_DELETED_FILES", CORESHOP_BUILD_DIRECTORY . "/deletedFiles.txt");
+        if (!defined("CORESHOP_CHANGED_FILES")) {
+            define("CORESHOP_CHANGED_FILES", CORESHOP_BUILD_DIRECTORY . "/changedFiles.txt");
+        }
+        if (!defined("CORESHOP_DELETED_FILES")) {
+            define("CORESHOP_DELETED_FILES", CORESHOP_BUILD_DIRECTORY . "/deletedFiles.txt");
+        }
 
-        if($input->getOption("build")) {
+        if ($input->getOption("build")) {
             $version = \CoreShop\Version::getVersion();
 
             $buildNumber = \CoreShop\Version::getBuildNumber();
@@ -67,7 +71,7 @@ class BuildCommand extends AbstractCommand
             $changedFiles = $this->getChangedFiles();
             $deletedFiles = $this->getDeletedFiles();
 
-            if(count($changedFiles) > 0 || count($deletedFiles) > 0) {
+            if (count($changedFiles) > 0 || count($deletedFiles) > 0) {
                 if (count($changedFiles) > 0) {
                     $buildFolder = CORESHOP_BUILD_DIRECTORY . "/" . $buildNumber;
                     $buildFolderScripts = $buildFolder . "/scripts";
@@ -111,7 +115,7 @@ class BuildCommand extends AbstractCommand
                     }
                 }
 
-                if(count($deletedFiles) > 0) {
+                if (count($deletedFiles) > 0) {
                     foreach ($deletedFiles as $file) {
                         $file = str_replace("\n", "", $file);
 
@@ -128,16 +132,14 @@ class BuildCommand extends AbstractCommand
                 $this->writeBuildToBuildFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision);
                 $this->gitAddAndCommit($dryRun, $buildNumber, $input->getOption("no-commit"));
                 $this->uploadToUpdateServer($dryRun);
-
-            }
-            else {
+            } else {
                 //delete "changedfiles" when no files has been changed
                 unlink(CORESHOP_CHANGED_FILES);
 
                 $this->output->writeln("<info>no files changed, no build will be created</info>");
             }
 
-            if($dryRun) {
+            if ($dryRun) {
                 unlink(CORESHOP_CHANGED_FILES);
                 unlink(CORESHOP_DELETED_FILES);
             }
@@ -154,8 +156,9 @@ class BuildCommand extends AbstractCommand
      * @throws \Exception
      * @throws \Zend_Config_Exception
      */
-    private function updateVersionFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision) {
-        if(!$dryRun) {
+    private function updateVersionFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision)
+    {
+        if (!$dryRun) {
             $config = \Pimcore\ExtensionManager::getPluginConfig("CoreShop");
 
             $config['plugin']['pluginRevision'] = $buildNumber;
@@ -184,19 +187,22 @@ class BuildCommand extends AbstractCommand
     /**
      * @return string
      */
-    private function getGitRevision() {
+    private function getGitRevision()
+    {
         return str_replace("\n", "", \Pimcore\Tool\Console::exec("git rev-parse HEAD"));
     }
 
     /**
      * @return array
      */
-    private function getChangedFiles() {
+    private function getChangedFiles()
+    {
         $gitDirectory = CORESHOP_PATH;
         $gitRevision = \CoreShop\Version::getGitRevision();
 
-        if(!$gitRevision)
+        if (!$gitRevision) {
             $gitRevision = '383e78d';
+        }
 
         \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT $gitRevision HEAD $gitDirectory | sed '/^build/ d'", CORESHOP_CHANGED_FILES);
 
@@ -206,12 +212,14 @@ class BuildCommand extends AbstractCommand
     /**
      * @return array
      */
-    private function getDeletedFiles() {
+    private function getDeletedFiles()
+    {
         $gitDirectory = CORESHOP_PATH;
         $gitRevision = \CoreShop\Version::getGitRevision();
 
-        if(!$gitRevision)
+        if (!$gitRevision) {
             $gitRevision = '383e78d';
+        }
 
         \Pimcore\Tool\Console::exec("git diff-tree -r --no-commit-id --name-only --diff-filter=D $gitRevision HEAD $gitDirectory | sed '/^build/ d'", CORESHOP_DELETED_FILES);
 
@@ -223,17 +231,19 @@ class BuildCommand extends AbstractCommand
      *
      * @param $buildNumber
      */
-    private function gitAddAndCommit($dryRun, $buildNumber, $disableCommit = false) {
-        if(!$dryRun) {
+    private function gitAddAndCommit($dryRun, $buildNumber, $disableCommit = false)
+    {
+        if (!$dryRun) {
             \Pimcore\Tool\Console::exec("git add plugin.xml");
 
-            if(!$disableCommit)
+            if (!$disableCommit) {
                 \Pimcore\Tool\Console::exec("git commit -m \"Build Version $buildNumber\"");
+            }
         }
 
         $this->output->writeln("made git add");
 
-        if(!$disableCommit) {
+        if (!$disableCommit) {
             $this->output->writeln("made git commit");
         }
     }
@@ -243,8 +253,9 @@ class BuildCommand extends AbstractCommand
      *
      * @param $dryRun
      */
-    private function uploadToUpdateServer($dryRun) {
-        if(!$dryRun) {
+    private function uploadToUpdateServer($dryRun)
+    {
+        if (!$dryRun) {
             chdir(CORESHOP_PATH);
             echo shell_exec("build/copy-to-update-server.sh");
         }
@@ -258,9 +269,9 @@ class BuildCommand extends AbstractCommand
      * @param $timestamp
      * @param $gitRevision
      */
-    private function writeBuildToBuildFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision) {
-
-        if(!$dryRun) {
+    private function writeBuildToBuildFile($dryRun, $buildNumber, $version, $timestamp, $gitRevision)
+    {
+        if (!$dryRun) {
             $buildsFile = file_get_contents(CORESHOP_BUILD_DIRECTORY . "/builds.json");
 
             try {

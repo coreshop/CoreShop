@@ -19,7 +19,8 @@ use CoreShop\Model\Index;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
-class Helper {
+class Helper
+{
 
     /**
      * @param Filter $filter
@@ -29,21 +30,22 @@ class Helper {
      *
      * @return array()
      */
-    public static function setupProductList(Listing $list, $params, Filter $filter = null, Service $filterService = null) {
+    public static function setupProductList(Listing $list, $params, Filter $filter = null, Service $filterService = null)
+    {
         $orderKey = $filter->getOrderKey();
         $orderDirection = $filter->getOrder();
 
-        if($params['orderKey']) {
+        if ($params['orderKey']) {
             $orderKey = $params['orderKey'];
         }
 
-        if($params['order']) {
+        if ($params['order']) {
             $orderDirection = $params['order'];
         }
 
         $limit = $filter->getResultsPerPage();
 
-        if($params['perPage']) {
+        if ($params['perPage']) {
             $limit = $params['perPage'];
         }
 
@@ -51,11 +53,10 @@ class Helper {
         $list->setOrder($orderDirection);
         $list->setLimit($limit);
 
-        if($filterService instanceof Service) {
+        if ($filterService instanceof Service) {
             return $filterService->initFilterService($filter, $list, $params);
         }
 
         return array();
     }
-
 }

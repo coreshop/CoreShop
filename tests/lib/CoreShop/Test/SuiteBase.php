@@ -25,6 +25,5 @@ class SuiteBase extends \PHPUnit_Framework_TestSuite
 
     protected function tearDown()
     {
-
     }
 }

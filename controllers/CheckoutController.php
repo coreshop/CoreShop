@@ -47,7 +47,7 @@ class CoreShop_CheckoutController extends Action
             $this->_redirect($this->view->url(array("act" => "address"), "coreshop_checkout"));
         }
 
-        if($this->getParam("error")) {
+        if ($this->getParam("error")) {
             $this->view->error = $this->getParam("error");
         }
 
@@ -108,7 +108,7 @@ class CoreShop_CheckoutController extends Action
         $this->view->carriers = \CoreShop\Model\Carrier::getCarriersForCart($this->cart);
         
         if ($this->getRequest()->isPost()) {
-            if(!$this->getParam("termsAndConditions", false)) {
+            if (!$this->getParam("termsAndConditions", false)) {
                 $this->_redirect($this->view->url(array("act" => "shipping", "message" => "Please check terms and conditions"), "coreshop_checkout"));
             }
 

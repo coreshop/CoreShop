@@ -16,6 +16,6 @@ namespace CoreShop\Model\Index\Config\Column;
 
 use CoreShop\Model;
 
-class Object extends AbstractColumn {
-
+class Object extends AbstractColumn
+{
 }

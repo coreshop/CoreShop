@@ -220,7 +220,7 @@ class PriceRule extends AbstractModel
      */
     public function checkValidity(Cart $cart = null, $throwException = false, $alreadyInCart = false)
     {
-        if(is_null($cart)) {
+        if (is_null($cart)) {
             $cart = Tool::prepareCart();
         }
 

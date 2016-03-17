@@ -23,7 +23,8 @@ class Tax extends Base
         parent::setUp();
     }
 
-    public function testTaxCreation() {
+    public function testTaxCreation()
+    {
         $this->printTestName();
 
         $this->assertNotNull(\CoreShop\Model\Tax::getById(1));

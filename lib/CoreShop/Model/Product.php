@@ -185,7 +185,7 @@ class Product extends Base
      */
     public function getVariantDifferences($language = null)
     {
-        if($language) {
+        if ($language) {
             $language = \Zend_Registry::get("Zend_Locale")->getLanguage();
         }
 
@@ -252,7 +252,7 @@ class Product extends Base
             foreach ($actions as $action) {
                 $actionsPrice = $action->getPrice($this);
 
-                if($actionsPrice !== false) {
+                if ($actionsPrice !== false) {
                     $price = $actionsPrice;
                 }
             }
@@ -326,25 +326,19 @@ class Product extends Base
     {
         $cacheKey = "coreshop_product_cheapest_variant_price_" . $this->getId();
 
-        if ($price = Cache::load($cacheKey))
-        {
+        if ($price = Cache::load($cacheKey)) {
             return $price;
         }
 
-        if( $this->getType() == 'object')
-        {
+        if ($this->getType() == 'object') {
             $childs = $this->getChilds(array(self::OBJECT_TYPE_VARIANT));
 
             $prices = array($this->getPrice());
 
-            if(empty($childs))
-            {
+            if (empty($childs)) {
                 return $this->getPrice();
-            }
-            else
-            {
-                foreach($childs as $child)
-                {
+            } else {
+                foreach ($childs as $child) {
                     $prices[] = $child->getPrice();
                 }
 
@@ -353,12 +347,10 @@ class Product extends Base
                 Cache::save($price, $cacheKey);
 
                 return $price;
-
             }
         }
 
         return $this->getPrice();
-
     }
 
     /**
@@ -366,10 +358,11 @@ class Product extends Base
      *
      * @return float
      */
-    public function getTaxRate() {
+    public function getTaxRate()
+    {
         $calculator = $this->getTaxCalculator();
 
-        if($calculator) {
+        if ($calculator) {
             return $calculator->getTotalRate();
         }
 
@@ -381,10 +374,11 @@ class Product extends Base
      *
      * @return float
      */
-    public function getTaxAmount() {
+    public function getTaxAmount()
+    {
         $calculator = $this->getTaxCalculator();
 
-        if($calculator) {
+        if ($calculator) {
             return $calculator->getTaxesAmount($this->getPriceWithoutTax());
         }
 
@@ -404,7 +398,7 @@ class Product extends Base
 
             $address = $cart->getCustomerShippingAddress();
 
-            if(!$address instanceof Object\Fieldcollection\Data\CoreShopUserAddress) {
+            if (!$address instanceof Object\Fieldcollection\Data\CoreShopUserAddress) {
                 $address = new Object\Fieldcollection\Data\CoreShopUserAddress();
                 $address->setCountry(Tool::getCountry());
             }
@@ -427,7 +421,8 @@ class Product extends Base
      *
      * @param $delta
      */
-    public function updateQuantity($delta) {
+    public function updateQuantity($delta)
+    {
         $this->setQuantity($this->getQuantity() + $delta);
         $this->save();
     }
@@ -438,14 +433,15 @@ class Product extends Base
      * @return bool
      * @throws UnsupportedException
      */
-    public function isAvailableWhenOutOfStock() {
+    public function isAvailableWhenOutOfStock()
+    {
         $outOfStockBehaviour = $this->getOutOfStockBehaviour();
 
-        if(is_null($outOfStockBehaviour)) {
+        if (is_null($outOfStockBehaviour)) {
             $outOfStockBehaviour = self::OUT_OF_STOCK_DEFAULT;
         }
 
-        if(intval($outOfStockBehaviour) === self::OUT_OF_STOCK_DEFAULT) {
+        if (intval($outOfStockBehaviour) === self::OUT_OF_STOCK_DEFAULT) {
             return intval(Configuration::get("SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR")) === self::OUT_OF_STOCK_ALLOW;
         }
 
@@ -469,7 +465,7 @@ class Product extends Base
      */
     public function getCheapestDeliveryPrice()
     {
-        if(is_null($this->cheapestDeliveryPrice)) {
+        if (is_null($this->cheapestDeliveryPrice)) {
             $cart = new Object\CoreShopCart();
             $cartItem = new Object\CoreShopCartItem();
             $cartItem->setPublished(true);
@@ -490,7 +486,8 @@ class Product extends Base
      *
      * @return bool
      */
-    public function getDoIndex() {
+    public function getDoIndex()
+    {
         return true;
     }
 

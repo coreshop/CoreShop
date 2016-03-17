@@ -65,10 +65,11 @@ class Index extends AbstractModel
     /**
      * delete index and workers index structures
      */
-    public function delete() {
+    public function delete()
+    {
         $worker = IndexService::getIndexService()->getWorker($this->getName());
 
-        if($worker instanceof IndexService\AbstractWorker) {
+        if ($worker instanceof IndexService\AbstractWorker) {
             $worker->deleteIndexStructures();
         }
 

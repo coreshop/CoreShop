@@ -17,14 +17,16 @@ namespace CoreShop\IndexService\Interpreter;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Product;
 
-class RelationInterpreter extends AbstractInterpreter {
+class RelationInterpreter extends AbstractInterpreter
+{
     /**
      * @param mixed $value
      * @param array $config
      * @return mixed
      * @throws UnsupportedException
      */
-    public function interpret($value, $config = null) {
+    public function interpret($value, $config = null)
+    {
         throw new UnsupportedException("Not implemented in abstract");
     }
 }

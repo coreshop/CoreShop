@@ -32,7 +32,7 @@ class Dao extends AbstractDao
             if ($key == "image") {
                 $asset = Asset::getById($value);
 
-                if($asset instanceof Asset) {
+                if ($asset instanceof Asset) {
                     $this->model->setImage($asset->getFullPath());
                 }
             }

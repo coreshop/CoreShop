@@ -16,6 +16,6 @@ namespace CoreShop\Model\Index\Config;
 
 use CoreShop\Model;
 
-class Mysql extends Model\Index\Config {
-
+class Mysql extends Model\Index\Config
+{
 }

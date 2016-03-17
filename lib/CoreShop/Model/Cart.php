@@ -135,10 +135,9 @@ class Cart extends Base
         $subtotal = 0;
         
         foreach ($this->getItems() as $item) {
-            if($useTaxes) {
+            if ($useTaxes) {
                 $subtotal += ($item->getAmount() * $item->getProduct()->getPrice());
-            }
-            else {
+            } else {
                 $subtotal += ($item->getAmount() * $item->getProduct()->getPriceWithoutTax());
             }
         }
@@ -151,7 +150,8 @@ class Cart extends Base
      *
      * @return float
      */
-    public function getSubtotalTax() {
+    public function getSubtotalTax()
+    {
         $subtotal = 0;
 
         foreach ($this->getItems() as $item) {
@@ -167,7 +167,8 @@ class Cart extends Base
      * @return null|Carrier
      * @throws UnsupportedException
      */
-    public function getShippingProvider() {
+    public function getShippingProvider()
+    {
         if (count($this->getItems()) === 0) {
             return null;
         }
@@ -179,7 +180,7 @@ class Cart extends Base
 
         $carrier = Carrier::getCheapestCarrierForCart($this);
 
-        if($carrier instanceof Carrier) {
+        if ($carrier instanceof Carrier) {
             return $carrier;
         }
 
@@ -194,20 +195,21 @@ class Cart extends Base
      *
      * @return float
      */
-    public function getShippingCostsForCarrier(Carrier $carrier, $useTax = true) {
+    public function getShippingCostsForCarrier(Carrier $carrier, $useTax = true)
+    {
         $freeShippingCurrency = floatval(Configuration::get("SYSTEM.SHIPPING.FREESHIPPING_PRICE"));
         $freeShippingWeight = floatval(Configuration::get("SYSTEM.SHIPPING.FREESHIPPING_WEIGHT"));
 
-        if(isset($freeShippingCurrency) && $freeShippingCurrency > 0) {
+        if (isset($freeShippingCurrency) && $freeShippingCurrency > 0) {
             $freeShippingCurrency = Tool::convertToCurrency($freeShippingCurrency, Tool::getCurrency());
 
-            if($this->getSubtotal() >= $freeShippingCurrency) {
+            if ($this->getSubtotal() >= $freeShippingCurrency) {
                 return 0;
             }
         }
 
-        if(isset($freeShippingWeight) && $freeShippingWeight > 0) {
-            if($this->getTotalWeight() >= $freeShippingWeight) {
+        if (isset($freeShippingWeight) && $freeShippingWeight > 0) {
+            if ($this->getTotalWeight() >= $freeShippingWeight) {
                 return 0;
             }
         }
@@ -225,8 +227,7 @@ class Cart extends Base
     {
         $cacheKey = $useTax ? "shipping" : "shippingWithoutTax";
 
-        if(is_null($this->$cacheKey))
-        {
+        if (is_null($this->$cacheKey)) {
             $this->$cacheKey = 0;
 
             if ($this->getPriceRule() instanceof PriceRule) {
@@ -250,8 +251,9 @@ class Cart extends Base
      *
      * @return integer
      */
-    public function getShippingTaxRate() {
-        if($this->getShippingProvider() instanceof Carrier) {
+    public function getShippingTaxRate()
+    {
+        if ($this->getShippingProvider() instanceof Carrier) {
             return $this->getShippingProvider()->getTaxRate($this);
         }
 
@@ -263,9 +265,10 @@ class Cart extends Base
      *
      * @return float
      */
-    public function getShippingTax() {
-        if($this->getShippingProvider() instanceof Carrier) {
-           return $this->getShippingProvider()->getTaxAmount($this);
+    public function getShippingTax()
+    {
+        if ($this->getShippingProvider() instanceof Carrier) {
+            return $this->getShippingProvider()->getTaxAmount($this);
         }
 
         return 0;
@@ -325,7 +328,8 @@ class Cart extends Base
      *
      * @return float
      */
-    public function getTotalTax() {
+    public function getTotalTax()
+    {
         $subtotalTax = $this->getSubtotalTax();
         $shippingTax = $this->getShippingTax();
         $paymentTax = $this->getPaymentFeeTaxes();
@@ -517,8 +521,9 @@ class Cart extends Base
         $this->setPriceRule($priceRule);
         $this->getPriceRule()->applyRules();
 
-        if($this->getId())
+        if ($this->getId()) {
             $this->save();
+        }
     }
 
     /**
@@ -528,7 +533,7 @@ class Cart extends Base
      */
     public function getCustomerShippingAddress()
     {
-        if($this->getShippingAddress()) {
+        if ($this->getShippingAddress()) {
             $address = $this->getShippingAddress()->getItems();
 
             if (count($address) > 0) {
@@ -546,7 +551,7 @@ class Cart extends Base
      */
     public function getCustomerBillingAddress()
     {
-        if($this->getBillingAddress()) {
+        if ($this->getBillingAddress()) {
             $address = $this->getBillingAddress()->getItems();
 
             if (count($address) > 0) {
@@ -613,7 +618,8 @@ class Cart extends Base
      * @throws UnsupportedException
      * @return null|Carrier
      */
-    public function getCarrier() {
+    public function getCarrier()
+    {
         throw new UnsupportedException("getCarrier is not supported for " . get_class($this));
     }
 

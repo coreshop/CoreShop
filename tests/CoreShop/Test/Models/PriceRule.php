@@ -54,7 +54,8 @@ class PriceRule extends Base
         $this->priceRule = $priceRule;
     }
 
-    public function testPriceRuleCondCustomer() {
+    public function testPriceRuleCondCustomer()
+    {
         $customerConditon = new Customer();
         $customerConditon->setCustomer(Data::$customer1->getId());
 
@@ -68,7 +69,8 @@ class PriceRule extends Base
         $this->assertTrue($customerConditon->checkCondition($cart, $this->priceRule));
     }
 
-    public function testPriceRuleCondTimeSpan() {
+    public function testPriceRuleCondTimeSpan()
+    {
         $today              = strtotime('12:00:00');
         $yesterday          = strtotime('-1 day', $today);
         $tomorrow          = strtotime('1 day', $today);
@@ -87,7 +89,8 @@ class PriceRule extends Base
         $this->assertFalse($timeSpan->checkCondition($cart, $this->priceRule));
     }
 
-    public function testPriceRuleCondAmount() {
+    public function testPriceRuleCondAmount()
+    {
         $amount = new Amount();
         $amount->setMinAmount(2);
 
@@ -100,7 +103,8 @@ class PriceRule extends Base
         $this->assertFalse($amount->checkCondition($cart, $this->priceRule));
     }
 
-    public function testPriceRuleCondTotalAvailable() {
+    public function testPriceRuleCondTotalAvailable()
+    {
         $total = new TotalAvailable();
         $total->setTotalAvailable(10);
         $total->setTotalUsed(1);
@@ -114,7 +118,8 @@ class PriceRule extends Base
         $this->assertFalse($total->checkCondition($cart, $this->priceRule));
     }
 
-    public function testPriceRuleCondTotalPerCustomer() {
+    public function testPriceRuleCondTotalPerCustomer()
+    {
         $total = new TotalPerCustomer();
         $total->setTotal(1);
 
@@ -125,7 +130,8 @@ class PriceRule extends Base
         //@todo: create order an test pricerule again with assertFalse result
     }
 
-    public function testPriceRuleCondCountry() {
+    public function testPriceRuleCondCountry()
+    {
         $country = new ConditionCountry();
         $country->setCountry(\CoreShop\Model\Country::getById(2));
 
@@ -138,7 +144,8 @@ class PriceRule extends Base
         $this->assertFalse($country->checkCondition($cart, $this->priceRule));
     }
 
-    public function testPriceRuleCondZone() {
+    public function testPriceRuleCondZone()
+    {
         $zone = new ConditionZone();
         $zone->setZone(\CoreShop\Model\Zone::getById(1));
 
@@ -151,11 +158,12 @@ class PriceRule extends Base
         $this->assertFalse($zone->checkCondition($cart, $this->priceRule));
     }
 
-    public function testPriceRuleCondCategory() {
-
+    public function testPriceRuleCondCategory()
+    {
     }
 
-    public function testPriceRuleCondCustomerGroup() {
+    public function testPriceRuleCondCustomerGroup()
+    {
         $customer = new ConditionCustomerGroup();
         $customer->setCustomerGroup(Data::$customerGroup1);
 
@@ -169,7 +177,8 @@ class PriceRule extends Base
         $this->assertFalse($customer->checkCondition($cart, $this->priceRule));
     }
 
-    public function testPriceRuleActionGift() {
+    public function testPriceRuleActionGift()
+    {
         $gift = new Gift();
         $gift->setGift(Data::$product1);
 
@@ -184,7 +193,8 @@ class PriceRule extends Base
         $this->assertEquals(Data::$product1->getPrice(), $cart->getDiscount());
     }
 
-    public function testPriceRuleActionFreeShipping() {
+    public function testPriceRuleActionFreeShipping()
+    {
         $freeShipping = new FreeShipping();
 
         $cart = Data::createCart();
@@ -197,7 +207,8 @@ class PriceRule extends Base
         $this->assertEquals(0, $cart->getShipping());
     }
 
-    public function testPriceRuleActionDiscountAmount() {
+    public function testPriceRuleActionDiscountAmount()
+    {
         $discount = new DiscountAmount();
         $discount->setAmount(10);
 
@@ -213,7 +224,8 @@ class PriceRule extends Base
         $this->assertEquals($cart2->getTotal() - 10, $cart->getTotal());
     }
 
-    public function testPriceRuleActionDiscountPercent() {
+    public function testPriceRuleActionDiscountPercent()
+    {
         $discount = new DiscountPercent();
         $discount->setPercent(10);
 

@@ -24,13 +24,15 @@ class Currency extends Base
         parent::setUp();
     }
 
-    public function testCurrencyCreation() {
+    public function testCurrencyCreation()
+    {
         $this->printTestName();
 
         $this->assertNotNull(\CoreShop\Model\Currency::getById(1));
     }
 
-    public function testCurrencyConversion() {
+    public function testCurrencyConversion()
+    {
         $usd = \CoreShop\Model\Currency::getByName("US Dollars");
         $euro = \CoreShop\Model\Currency::getByName("Euro");
         $asd = \CoreShop\Model\Currency::getByName("Australian Dollars");
@@ -40,6 +42,5 @@ class Currency extends Base
 
         $this->assertEquals(12, Tool::convertToCurrency(10, $usd, $euro));
         $this->assertEquals(20, Tool::convertToCurrency(10, $asd, $euro));
-
     }
 }

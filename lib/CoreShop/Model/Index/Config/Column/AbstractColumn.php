@@ -16,7 +16,8 @@ namespace CoreShop\Model\Index\Config\Column;
 
 use CoreShop\Model;
 
-class AbstractColumn {
+class AbstractColumn
+{
 
     /**
      * @var string

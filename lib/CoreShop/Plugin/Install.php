@@ -364,7 +364,8 @@ class Install
      * @param $csv string Path to CSV File
      * @return boolean
      */
-    public function installAdminTranslations($csv) {
+    public function installAdminTranslations($csv)
+    {
         Admin::importTranslationsFromFile($csv, true, Tool\Admin::getLanguages());
 
         return true;
@@ -509,10 +510,10 @@ class Install
                             }
 
                             //Link translations
-                            foreach($languagesDone as $doneLanguage) {
+                            foreach ($languagesDone as $doneLanguage) {
                                 $translatedDocument = Document::getByPath("/" . $doneLanguage . "/" . $doc['path'] . "/" . $doc['key']);
 
-                                if($translatedDocument) {
+                                if ($translatedDocument) {
                                     $service = new \Pimcore\Model\Document\Service();
 
                                     $service->addTranslation($document, $translatedDocument, $doneLanguage);
@@ -523,7 +524,6 @@ class Install
 
                     $languagesDone[] = $language;
                 }
-
             }
         }
     }

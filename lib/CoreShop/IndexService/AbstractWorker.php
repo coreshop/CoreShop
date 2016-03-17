@@ -45,7 +45,8 @@ abstract class AbstractWorker
      * @return array("data", "relation")
      * @throws \CoreShop\Exception\UnsupportedException
      */
-    protected function prepareData(Product $object) {
+    protected function prepareData(Product $object)
+    {
         $a = \Pimcore::inAdmin();
         $b = AbstractObject::doGetInheritedValues();
         \Pimcore::unsetAdminMode();
@@ -58,16 +59,15 @@ abstract class AbstractWorker
         $categoryIds = array();
         $parentCategoryIds = array();
 
-        if($categories) {
-            foreach($categories as $c) {
+        if ($categories) {
+            foreach ($categories as $c) {
                 $categoryIds[$c->getId()] = $c->getId();
 
                 $parents = $c->getHierarchy();
 
-                foreach($parents as $p) {
+                foreach ($parents as $p) {
                     $parentCategoryIds[] = $p->getId();
                 }
-
             }
         }
 
@@ -76,10 +76,10 @@ abstract class AbstractWorker
         $virtualProductId = $object->getId();
         $virtualProductActive = $object->getEnabled();
 
-        if($object->getType() === Product::OBJECT_TYPE_VARIANT) {
+        if ($object->getType() === Product::OBJECT_TYPE_VARIANT) {
             $parent = $object->getParent();
 
-            while($parent->getType() === Product::OBJECT_TYPE_VARIANT && $parent instanceof Product) {
+            while ($parent->getType() === Product::OBJECT_TYPE_VARIANT && $parent instanceof Product) {
                 $parent = $parent->getParent();
             }
 
@@ -101,8 +101,8 @@ abstract class AbstractWorker
         $relationData = array();
         $columnConfig = $this->getColumnsConfiguration();
 
-        foreach($columnConfig as $column) {
-            if($column instanceof Index\Config\Column\AbstractColumn) {
+        foreach ($columnConfig as $column) {
+            if ($column instanceof Index\Config\Column\AbstractColumn) {
                 try {
                     $value = null;
                     $getter = $column->getGetter();
@@ -163,14 +163,13 @@ abstract class AbstractWorker
                     if (is_array($data[$column->getName()])) {
                         $data[$column->getName()] = "," . implode($data[$column->getName()], ",") . ",";
                     }
-
                 } catch (\Exception $e) {
                     \Logger::err("Exception in CoreShopIndexService: " . $e->getMessage(), $e);
                 }
             }
         }
 
-        if($a) {
+        if ($a) {
             \Pimcore::setAdminMode();
         }
 
@@ -186,7 +185,8 @@ abstract class AbstractWorker
     /**
      * @return \CoreShop\Model\Index\Config
      */
-    public function getColumnsConfiguration() {
+    public function getColumnsConfiguration()
+    {
         return $this->index->getConfig()->getColumns();
     }
 

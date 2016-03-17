@@ -16,7 +16,8 @@ namespace CoreShop\Model\Index\Config\Column;
 
 use CoreShop\Model;
 
-class Objectbricks extends AbstractColumn {
+class Objectbricks extends AbstractColumn
+{
 
     /**
      * @var string

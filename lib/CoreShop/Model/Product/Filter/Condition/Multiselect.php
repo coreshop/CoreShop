@@ -53,8 +53,8 @@ class Multiselect extends AbstractCondition
      * @param $currentFilter
      * @return mixed
      */
-    public function render(Filter $filter, Listing $list, $currentFilter) {
-
+    public function render(Filter $filter, Listing $list, $currentFilter)
+    {
         $rawValues = $list->getGroupByValues($this->getField(), true);
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
@@ -80,34 +80,30 @@ class Multiselect extends AbstractCondition
     {
         $values = $params[$this->getField()];
 
-        if(empty($values)) {
+        if (empty($values)) {
             $values = $this->getPreSelects();
         }
 
         $currentFilter[$this->getField()] = $values;
 
-        if($values === Filter\Service::EMPTY_STRING) {
+        if ($values === Filter\Service::EMPTY_STRING) {
             $values = null;
         }
 
-        if(!empty($values)) {
-
+        if (!empty($values)) {
             $fieldName = $isPrecondition ? "PRECONDITION_" . $this->getField() : $this->getField();
 
             $inValues = array();
 
-            foreach( $values as $c => $value)
-            {
+            foreach ($values as $c => $value) {
                 $inValues[] = $list->quote($value);
             }
 
-            if( !empty( $inValues ) )
-            {
-                $list->addCondition("TRIM(`" . $this->getField() . "`) IN (" . implode(',', $inValues ) . ")", $fieldName);
+            if (!empty($inValues)) {
+                $list->addCondition("TRIM(`" . $this->getField() . "`) IN (" . implode(',', $inValues) . ")", $fieldName);
             }
         }
 
         return $currentFilter;
     }
-
 }

@@ -34,15 +34,15 @@ class Select extends AbstractCondition
      * @param bool $isPrecondition
      * @return array $currentFilter
      */
-    public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false) {
-
+    public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
+    {
         $value = $params[$this->getField()];
 
-        if(empty($value)) {
+        if (empty($value)) {
             $value = $this->getPreSelect();
         }
 
-        if($value === Filter\Service::EMPTY_STRING) {
+        if ($value === Filter\Service::EMPTY_STRING) {
             $value = null;
         }
 
@@ -50,8 +50,8 @@ class Select extends AbstractCondition
 
         $currentFilter[$this->getField()] = $value;
 
-        if(!empty($value)) {
-            if($isPrecondition) {
+        if (!empty($value)) {
+            if ($isPrecondition) {
                 $list->addCondition("TRIM(`" . $this->getField() . "`) = " . $list->quote($value), "PRECONDITION_" . $this->getField());
             } else {
                 $list->addCondition("TRIM(`" . $this->getField() . "`) = " . $list->quote($value), $this->getField());

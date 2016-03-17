@@ -100,11 +100,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
         });
 
 
-        \Pimcore::getEventManager()->attach("object.postAdd", array($this, 'postAddObject') );
-        \Pimcore::getEventManager()->attach("object.postAdd", array($this, 'postAddObject') );
-        \Pimcore::getEventManager()->attach("object.postUpdate", array($this, 'postUpdateObject') );
+        \Pimcore::getEventManager()->attach("object.postAdd", array($this, 'postAddObject'));
+        \Pimcore::getEventManager()->attach("object.postAdd", array($this, 'postAddObject'));
+        \Pimcore::getEventManager()->attach("object.postUpdate", array($this, 'postUpdateObject'));
 
-        if(Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
+        if (Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
             self::getEventManager()->attach("tax.getTaxManager", function () {
                 return new VatManager();
             });
@@ -307,7 +307,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
         if (self::$_translate instanceof \Zend_Translate) {
             return self::$_translate;
         }
-        if(is_null($lang)) {
+        if (is_null($lang)) {
             try {
                 $lang = \Zend_Registry::get('Zend_Locale')->getLanguage();
             } catch (Exception $e) {
@@ -499,8 +499,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
         $params['language'] = \Zend_Registry::get("Zend_Locale");
 
         if ($results->stopped()) {
-            foreach($results as $result) {
-                if($r = call_user_func($result)) {
+            foreach ($results as $result) {
+                if ($r = call_user_func($result)) {
                     return $r;
                 }
             }

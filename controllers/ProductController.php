@@ -57,7 +57,8 @@ class CoreShop_ProductController extends Action
         }
     }
 
-    public function listAction() {
+    public function listAction()
+    {
         $id = $this->getParam("category");
         $page = $this->getParam("page", 0);
         $sort = $this->getParam("sort", "NAMEA");
@@ -66,10 +67,8 @@ class CoreShop_ProductController extends Action
 
         $category = CoreShopCategory::getById($id);
 
-        if ($category instanceof CoreShopCategory)
-        {
-            if($category->getFilterDefinition() instanceof \CoreShop\Model\Product\Filter)
-            {
+        if ($category instanceof CoreShopCategory) {
+            if ($category->getFilterDefinition() instanceof \CoreShop\Model\Product\Filter) {
                 $index = $category->getFilterDefinition()->getIndex();
                 $indexService = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
 
@@ -84,14 +83,13 @@ class CoreShop_ProductController extends Action
                 $this->view->list = $list;
                 $this->view->params = $this->getAllParams();
 
-                $paginator = Zend_Paginator::factory( $list );
+                $paginator = Zend_Paginator::factory($list);
                 $paginator->setCurrentPageNumber($this->getParam('page'));
                 $paginator->setItemCountPerPage($list->getLimit());
                 $paginator->setPageRange(10);
 
                 $this->view->paginator = $paginator;
-            }
-            else {
+            } else {
                 $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort), true);
             }
 

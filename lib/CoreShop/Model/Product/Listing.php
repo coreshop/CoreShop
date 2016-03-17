@@ -59,7 +59,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      *
      * @return \CoreShop\Model\Product[]
      */
-    public abstract function getProducts();
+    abstract public function getProducts();
 
 
     /**
@@ -70,7 +70,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param string $condition
      * @param string $fieldname
      */
-    public abstract function addCondition($condition, $fieldname = "");
+    abstract public function addCondition($condition, $fieldname = "");
 
 
     /**
@@ -81,7 +81,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param $condition
      * @param string $fieldname
      */
-    public abstract function addQueryCondition($condition, $fieldname = "");
+    abstract public function addQueryCondition($condition, $fieldname = "");
 
     /**
      * Reset filter condition for fieldname
@@ -89,7 +89,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param $fieldname
      * @return mixed
      */
-    public abstract function resetCondition($fieldname);
+    abstract public function resetCondition($fieldname);
 
     /**
      * Reset query condition for fieldname
@@ -97,7 +97,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param $fieldname
      * @return mixed
      */
-    public abstract function resetQueryCondition($fieldname);
+    abstract public function resetQueryCondition($fieldname);
 
 
     /**
@@ -106,7 +106,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param string $fieldname
      * @param string $condition
      */
-    public abstract function addRelationCondition($fieldname, $condition);
+    abstract public function addRelationCondition($fieldname, $condition);
 
 
     /**
@@ -115,13 +115,13 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param string $table
      * @param string $query
      */
-    public abstract function addJoin($table, $query);
+    abstract public function addJoin($table, $query);
 
 
     /**
      * Resets all conditions of product list
      */
-    public abstract function resetConditions();
+    abstract public function resetConditions();
 
 
     /**
@@ -130,7 +130,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param null|float $from
      * @param null|float $to
      */
-    public abstract function addPriceCondition($from = null, $to = null);
+    abstract public function addPriceCondition($from = null, $to = null);
 
     /**
      * sets order direction
@@ -138,14 +138,14 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param $order
      * @return void
      */
-    public abstract function setOrder($order);
+    abstract public function setOrder($order);
 
     /**
      * gets order direction
      *
      * @return string
      */
-    public abstract function getOrder();
+    abstract public function getOrder();
 
 
     /**
@@ -154,63 +154,63 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param $orderKey string | array  - either single field name, or array of field names or array of arrays (field name, direction)
      * @return void
      */
-    public abstract function setOrderKey($orderKey);
+    abstract public function setOrderKey($orderKey);
 
     /**
      * @return string | array
      */
-    public abstract function getOrderKey();
+    abstract public function getOrderKey();
 
     /**
      * @param $limit int
      * @return void
      */
-    public abstract function setLimit($limit);
+    abstract public function setLimit($limit);
 
     /**
      * @return int
      */
-    public abstract function getLimit();
+    abstract public function getLimit();
 
     /**
      * @param $offset int
      * @return void
      */
-    public abstract function setOffset($offset);
+    abstract public function setOffset($offset);
 
     /**
      * @return int
      */
-    public abstract function getOffset();
+    abstract public function getOffset();
 
     /**
      * @param $category
      * @return void
      */
-    public abstract function setCategory(Category $category);
+    abstract public function setCategory(Category $category);
 
     /**
      * @return \CoreShop\Model\PriceRule\Condition\Category
      */
-    public abstract function getCategory();
+    abstract public function getCategory();
 
     /**
      * @param $variantMode
      * @return void
      */
-    public abstract function setVariantMode($variantMode);
+    abstract public function setVariantMode($variantMode);
 
     /**
      * @return string
      */
-    public abstract function getVariantMode();
+    abstract public function getVariantMode();
 
     /**
      * loads search results from index and returns them
      *
      * @return Product[]
      */
-    public abstract function load();
+    abstract public function load();
 
     /**
      * loads group by values based on fieldname either from local variable if prepared or directly from product index
@@ -222,7 +222,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @return array
      * @throws \Exception
      */
-    public abstract function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+    abstract public function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
 
 
     /**
@@ -235,7 +235,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @return array
      * @throws \Exception
      */
-    public abstract function getGroupByRelationValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+    abstract public function getGroupByRelationValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
 
 
     /**
@@ -248,7 +248,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @return array
      * @throws \Exception
      */
-    public abstract function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+    abstract public function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
 
     /**
      * @return Index|null

@@ -60,8 +60,9 @@ class IndexService
     /**
      * @return IndexService
      */
-    public static function getIndexService() {
-        if(is_null(self::$indexService)) {
+    public static function getIndexService()
+    {
+        if (is_null(self::$indexService)) {
             self::$indexService = new IndexService();
         }
 
@@ -71,14 +72,15 @@ class IndexService
     /**
      * IndexService constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $indexes = Index::getAll();
         $this->worker = array();
 
-        foreach($indexes as $index) {
+        foreach ($indexes as $index) {
             $class = "\\CoreShop\\IndexService\\" . ucfirst($index->getType());
 
-            if(PimTool::classExists($class)) {
+            if (PimTool::classExists($class)) {
                 $this->worker[] = new $class($index);
             }
         }
@@ -88,9 +90,10 @@ class IndexService
      * @param $name
      * @return AbstractWorker|null
      */
-    public function getWorker($name) {
-        foreach($this->worker as $worker) {
-            if($worker->getIndex()->getName() === $name) {
+    public function getWorker($name)
+    {
+        foreach ($this->worker as $worker) {
+            if ($worker->getIndex()->getName() === $name) {
                 return $worker;
             }
         }
@@ -101,8 +104,9 @@ class IndexService
     /**
      * @param Product $product
      */
-    public function deleteFromIndex(Product $product) {
-        foreach($this->worker as $worker) {
+    public function deleteFromIndex(Product $product)
+    {
+        foreach ($this->worker as $worker) {
             $worker->deleteFromIndex($product);
         }
     }
@@ -110,8 +114,9 @@ class IndexService
     /**
      * @param Product $product
      */
-    public function updateIndex(Product $product) {
-        foreach($this->worker as $worker) {
+    public function updateIndex(Product $product)
+    {
+        foreach ($this->worker as $worker) {
             $worker->updateIndex($product);
         }
     }

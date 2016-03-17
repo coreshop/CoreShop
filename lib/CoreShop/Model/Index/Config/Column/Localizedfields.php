@@ -16,6 +16,6 @@ namespace CoreShop\Model\Index\Config\Column;
 
 use CoreShop\Model;
 
-class Localizedfields extends AbstractColumn {
-
+class Localizedfields extends AbstractColumn
+{
 }

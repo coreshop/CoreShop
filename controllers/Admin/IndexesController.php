@@ -109,16 +109,16 @@ class CoreShop_Admin_IndexesController extends Admin
 
             $configClass = "\\CoreShop\\Model\\Index\\Config\\" . ucfirst($indexType);
 
-            if(\Pimcore\Tool::classExists($configClass)) {
+            if (\Pimcore\Tool::classExists($configClass)) {
                 $config = new $configClass();
 
-                if($config instanceof \CoreShop\Model\Index\Config) {
+                if ($config instanceof \CoreShop\Model\Index\Config) {
                     $columns = array();
 
                     foreach ($data['config']['columns'] as $col) {
                         $objectType = ucfirst($col['objectType']);
 
-                        if(!$col['key']) {
+                        if (!$col['key']) {
                             continue;
                         }
 
@@ -128,7 +128,7 @@ class CoreShop_Admin_IndexesController extends Admin
                         $columnNamespace = "\\CoreShop\\Model\\Index\\Config\\Column\\";
                         $columnClass = $columnNamespace . $indexType . "\\" . $objectType;
 
-                        if(\Pimcore\Tool::classExists($columnClass)) {
+                        if (\Pimcore\Tool::classExists($columnClass)) {
                             $class = $columnClass;
                         }
 
@@ -139,7 +139,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
                         $columnObject = new $class();
 
-                        if($columnObject instanceof \CoreShop\Model\Index\Config\Column\AbstractColumn) {
+                        if ($columnObject instanceof \CoreShop\Model\Index\Config\Column\AbstractColumn) {
                             $columnObject->setValues($col);
 
                             $columns[] = $columnObject;
@@ -152,21 +152,19 @@ class CoreShop_Admin_IndexesController extends Admin
                     $config->setColumns($columns);
 
                     $index->setConfig($config);
-                }
-                else {
+                } else {
                     throw new \Exception("Config class for type " . $data['type'] . ' not instanceof \CoreShop\Model\Index\Config');
                 }
                 unset($data['config']);
-            }
-            else {
+            } else {
                 throw new \Exception("Config class for type " . $data['type'] . ' not found');
             }
 
             //Check for unique fieldnames
             $fieldNames = array();
 
-            foreach($config->getColumns() as $col) {
-                if(in_array($col->getName(), $fieldNames)) {
+            foreach ($config->getColumns() as $col) {
+                if (in_array($col->getName(), $fieldNames)) {
                     $this->_helper->json(array(
                         "success" => false,
                         "message" => sprintf($this->view->translate("Duplicate fieldname '%s' found."), $col->getName())
@@ -201,11 +199,12 @@ class CoreShop_Admin_IndexesController extends Admin
         $this->_helper->json(array("success" => false));
     }
 
-    public function getTypesAction() {
+    public function getTypesAction()
+    {
         $types = \CoreShop\IndexService::getTypes();
         $typesObject = array();
 
-        foreach($types as $type) {
+        foreach ($types as $type) {
             $typesObject[] = array(
                 "name" => $type
             );
@@ -227,9 +226,9 @@ class CoreShop_Admin_IndexesController extends Admin
             )
         );
 
-        foreach($fields as $field) {
-            if($field instanceof Object\ClassDefinition\Data\Localizedfields) {
-                if(!is_array($result['localizedfields'])) {
+        foreach ($fields as $field) {
+            if ($field instanceof Object\ClassDefinition\Data\Localizedfields) {
+                if (!is_array($result['localizedfields'])) {
                     $result['localizedfields'] = array(
                         "nodeLabel" => "localizedfields",
                         "nodeType" => "localizedfields",
@@ -239,23 +238,20 @@ class CoreShop_Admin_IndexesController extends Admin
 
                 $localizedFields = $field->getFieldDefinitions();
 
-                foreach($localizedFields as $localizedField) {
+                foreach ($localizedFields as $localizedField) {
                     $result['localizedfields']["childs"][] = $this->getFieldConfiguration($localizedField);
-
                 }
-            }
-            else if($field instanceof Object\ClassDefinition\Data\Objectbricks) {
+            } elseif ($field instanceof Object\ClassDefinition\Data\Objectbricks) {
                 $list = new Object\Objectbrick\Definition\Listing();
                 $list = $list->load();
 
                 foreach ($list as $brickDefinition) {
-                    if($brickDefinition instanceof Object\Objectbrick\Definition) {
-
+                    if ($brickDefinition instanceof Object\Objectbrick\Definition) {
                         $key = $brickDefinition->getKey();
                         $classDefs = $brickDefinition->getClassDefinitions();
 
-                        foreach($classDefs as $classDef) {
-                            if($classDef['classname'] === $class->getId()) {
+                        foreach ($classDefs as $classDef) {
+                            if ($classDef['classname'] === $class->getId()) {
                                 $fields = $brickDefinition->getFieldDefinitions();
 
                                 $result[$key] = array();
@@ -264,8 +260,7 @@ class CoreShop_Admin_IndexesController extends Admin
                                 $result[$key]['nodeType'] = "objectbricks";
                                 $result[$key]['childs'] = array();
 
-                                foreach($fields as $field)
-                                {
+                                foreach ($fields as $field) {
                                     $result[$key]['childs'][] = $this->getFieldConfiguration($field);
                                 }
 
@@ -274,11 +269,9 @@ class CoreShop_Admin_IndexesController extends Admin
                         }
                     }
                 }
-            }
-            else if($field instanceof Object\ClassDefinition\Data\Fieldcollections) {
+            } elseif ($field instanceof Object\ClassDefinition\Data\Fieldcollections) {
                 //TODO: implement FieldCollection
-            }
-            else if($field instanceof Object\ClassDefinition\Data\Classificationstore) {
+            } elseif ($field instanceof Object\ClassDefinition\Data\Classificationstore) {
                 $list = new Object\Classificationstore\GroupConfig\Listing();
 
                 $allowedGroupIds = $field->getAllowedGroupIds();
@@ -296,8 +289,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
                     $result[$key] = $this->getClassificationStoreGroupConfiguration($config);
                 }
-            }
-            else {
+            } else {
                 $result['fields']["childs"][] = $this->getFieldConfiguration($field);
             }
         }
@@ -305,14 +297,15 @@ class CoreShop_Admin_IndexesController extends Admin
         $this->_helper->json($result);
     }
 
-    protected function getClassificationStoreGroupConfiguration(Object\Classificationstore\GroupConfig $config) {
+    protected function getClassificationStoreGroupConfiguration(Object\Classificationstore\GroupConfig $config)
+    {
         $result = array();
         $result['nodeLabel'] = $config->getName();
         $result['nodeType'] = "classificationstore";
         $result['childs'] = array();
 
-        foreach($config->getRelations() as $relation) {
-            if($relation instanceof Object\Classificationstore\KeyGroupRelation) {
+        foreach ($config->getRelations() as $relation) {
+            if ($relation instanceof Object\Classificationstore\KeyGroupRelation) {
                 $keyId = $relation->getKeyId();
 
                 $keyConfig = Object\Classificationstore\KeyConfig::getById($keyId);
@@ -324,7 +317,8 @@ class CoreShop_Admin_IndexesController extends Admin
         return $result;
     }
 
-    protected function getFieldConfiguration(Object\ClassDefinition\Data $field) {
+    protected function getFieldConfiguration(Object\ClassDefinition\Data $field)
+    {
         return array(
             "name" => $field->getName(),
             "fieldtype" => $field->getFieldtype(),
@@ -333,7 +327,8 @@ class CoreShop_Admin_IndexesController extends Admin
         );
     }
 
-    protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig) {
+    protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig)
+    {
         return array(
             "name" => $field->getName(),
             "fieldtype" => $field->getType(),
@@ -344,11 +339,12 @@ class CoreShop_Admin_IndexesController extends Admin
         );
     }
 
-    public function getAvailableGettersAction() {
+    public function getAvailableGettersAction()
+    {
         $getters = \CoreShop\IndexService\Getter\AbstractGetter::getGetters();
         $result = array();
 
-        foreach($getters as $getter) {
+        foreach ($getters as $getter) {
             $result[] = array(
                 "type" => $getter,
                 "name" => $getter
@@ -361,11 +357,12 @@ class CoreShop_Admin_IndexesController extends Admin
         ));
     }
 
-    public function getAvailableInterpretersAction() {
+    public function getAvailableInterpretersAction()
+    {
         $interpreters = \CoreShop\IndexService\Interpreter\AbstractInterpreter::getInterpreters();
         $result = array();
 
-        foreach($interpreters as $interpreter) {
+        foreach ($interpreters as $interpreter) {
             $result[] = array(
                 "type" => $interpreter,
                 "name" => $interpreter

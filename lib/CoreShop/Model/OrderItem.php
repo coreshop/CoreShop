@@ -25,7 +25,8 @@ class OrderItem extends Base
      *
      * @return float
      */
-    public function getTotalWithoutTax() {
+    public function getTotalWithoutTax()
+    {
         return $this->getAmount() * $this->getRetailPrice();
     }
     

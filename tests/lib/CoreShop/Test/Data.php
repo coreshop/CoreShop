@@ -31,7 +31,8 @@ use Pimcore\Model\Object\CoreShopProduct;
 use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Model\Object\Service;
 
-class Data {
+class Data
+{
 
     /**
      * @var CoreShopProduct
@@ -78,7 +79,8 @@ class Data {
      */
     public static $customerGroup2;
 
-    public static function createData() {
+    public static function createData()
+    {
         Configuration::set("SYSTEM.BASE.COUNTRY", Country::getById(2));
 
         $session = \CoreShop\Tool::getSession();
@@ -94,8 +96,9 @@ class Data {
         $session->user = self::$customer1;
     }
 
-    public static function createTaxRule() {
-        if(!self::$taxRuleGroup instanceof TaxRuleGroup) {
+    public static function createTaxRule()
+    {
+        if (!self::$taxRuleGroup instanceof TaxRuleGroup) {
             $tax = new Tax();
             $tax->setRate(20);
             $tax->setName("20");
@@ -118,8 +121,9 @@ class Data {
         }
     }
 
-    public static function createTestCarrierWeight() {
-        if(!self::$carrier1 instanceof Carrier) {
+    public static function createTestCarrierWeight()
+    {
+        if (!self::$carrier1 instanceof Carrier) {
             $carrier = new Carrier();
             $carrier->setName("Test-Carrier-Weight");
             $carrier->setLabel("Test-Carrier-Weight");
@@ -155,7 +159,7 @@ class Data {
 
     public static function createTestCarrierPrice()
     {
-        if(!self::$carrier2 instanceof Carrier) {
+        if (!self::$carrier2 instanceof Carrier) {
             $carrier = new Carrier();
             $carrier->setName("Test-Carrier-Weight No-Max");
             $carrier->setLabel("Test-Carrier-Weight No-Max");
@@ -189,8 +193,9 @@ class Data {
         }
     }
 
-    public static function createTestProduct() {
-        if(!self::$product1 instanceof CoreShopProduct) {
+    public static function createTestProduct()
+    {
+        if (!self::$product1 instanceof CoreShopProduct) {
             self::$product1 = new CoreShopProduct();
             self::$product1->setName("test1");
             self::$product1->setWholesalePrice(10);
@@ -205,7 +210,7 @@ class Data {
             self::$product1->save();
         }
 
-        if(!self::$product2 instanceof CoreShopProduct) {
+        if (!self::$product2 instanceof CoreShopProduct) {
             self::$product2 = new CoreShopProduct();
             self::$product2->setName("test2");
             self::$product2->setWholesalePrice(100);
@@ -220,7 +225,7 @@ class Data {
             self::$product2->save();
         }
 
-        if(!self::$product3 instanceof CoreShopProduct) {
+        if (!self::$product3 instanceof CoreShopProduct) {
             self::$product3 = new CoreShopProduct();
             self::$product3->setName("test3");
             self::$product3->setWholesalePrice(50);
@@ -236,11 +241,13 @@ class Data {
         }
     }
 
-    public static function createCart() {
+    public static function createCart()
+    {
         return CoreShopCart::prepare();
     }
 
-    public static function createCartWithProducts() {
+    public static function createCartWithProducts()
+    {
         $cart = self::createCart();
 
         $cart->addItem(self::$product1);
@@ -250,15 +257,16 @@ class Data {
         return $cart;
     }
 
-    public static function createCustomerGroups() {
-        if(!self::$customerGroup1 instanceof CustomerGroup) {
+    public static function createCustomerGroups()
+    {
+        if (!self::$customerGroup1 instanceof CustomerGroup) {
             self::$customerGroup1 = new CustomerGroup();
             self::$customerGroup1->setName("Group1");
             self::$customerGroup1->setDiscount(0);
             self::$customerGroup1->save();
         }
 
-        if(!self::$customerGroup2 instanceof CustomerGroup) {
+        if (!self::$customerGroup2 instanceof CustomerGroup) {
             self::$customerGroup2 = new CustomerGroup();
             self::$customerGroup2->setName("Group2");
             self::$customerGroup2->setDiscount(0);
@@ -266,8 +274,9 @@ class Data {
         }
     }
 
-    public static function createCustomer() {
-        if(!self::$customer1 instanceof CoreShopUser) {
+    public static function createCustomer()
+    {
+        if (!self::$customer1 instanceof CoreShopUser) {
             $customer = new CoreShopUser();
             $customer->setKey("customer1");
             $customer->setParent(Service::createFolderByPath("/users"));

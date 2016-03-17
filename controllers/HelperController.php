@@ -21,7 +21,8 @@ use CoreShop\Model\PriceRule;
 
 class CoreShop_HelperController extends Action
 {
-    public function changeCurrencyAction() {
+    public function changeCurrencyAction()
+    {
         if (\CoreShop\Model\Currency::getById($this->getParam("currency")) instanceof \CoreShop\Model\Currency) {
             $this->session->currencyId = $this->getParam("currency");
         }

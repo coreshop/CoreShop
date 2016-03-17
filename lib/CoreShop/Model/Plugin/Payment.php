@@ -78,7 +78,8 @@ abstract class Payment implements AbstractPlugin
      * @param Cart $cart
      * @return float
      */
-    public function getPaymentFeeTaxes(Cart $cart) {
+    public function getPaymentFeeTaxes(Cart $cart)
+    {
         return 0;
     }
 

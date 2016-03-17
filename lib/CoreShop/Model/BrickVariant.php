@@ -24,7 +24,6 @@ use Pimcore\Model\Object;
  */
 class BrickVariant extends Objectbrick
 {
-
     /**
      * Format Value from Brick Element.
      *

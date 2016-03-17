@@ -53,8 +53,8 @@ class Boolean extends AbstractCondition
      * @param $currentFilter
      * @return mixed
      */
-    public function render(Filter $filter, Listing $list, $currentFilter) {
-
+    public function render(Filter $filter, Listing $list, $currentFilter)
+    {
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
         return $this->getView()->partial($script, array(
@@ -85,81 +85,62 @@ class Boolean extends AbstractCondition
 
         $isInSearchMode = $this->isInFilterMode($definedValues, $params);
 
-        foreach($definedValues as $definedValue)
-        {
-            if (isset($params[$definedValue]))
-            {
+        foreach ($definedValues as $definedValue) {
+            if (isset($params[$definedValue])) {
                 $val = $params[$definedValue];
-            }
-            elseif ($isInSearchMode === FALSE && in_array($definedValue, $preSelects ) )
-            {
+            } elseif ($isInSearchMode === false && in_array($definedValue, $preSelects)) {
                 $val = 1;
-            }
-            else
-            {
+            } else {
                 $val = 0;
             }
 
             $values[$definedValue] = $val;
-
         }
 
         $name = \Pimcore\File::getValidFilename($this->getLabel());
 
-        foreach($values as $valueName => $boolValue)
-        {
+        foreach ($values as $valueName => $boolValue) {
             $currentFilter[$name][$valueName] = $boolValue;
 
-            if( $boolValue == 1 )
-            {
+            if ($boolValue == 1) {
                 $sqlFilter[ $valueName ] = 1;
             }
         }
 
-        if(!empty($sqlFilter))
-        {
+        if (!empty($sqlFilter)) {
             $fieldName = $isPrecondition ? "PRECONDITION_" . $name : $name;
 
             $condition = "(";
 
             $c = 0;
 
-            foreach( $sqlFilter as $valName => $boolVal)
-            {
+            foreach ($sqlFilter as $valName => $boolVal) {
                 $condition .= "TRIM(`" . $valName . "`) = " . (int) $boolVal;
-                if( $c < count($sqlFilter)-1)
-                {
+                if ($c < count($sqlFilter)-1) {
                     $condition .= " AND ";
                 }
 
                 $c++;
-
             }
 
             $condition .= ")";
 
-            if( !empty( $condition ) )
-            {
+            if (!empty($condition)) {
                 $list->addCondition($condition, $fieldName);
             }
         }
 
         return $currentFilter;
-
     }
 
-    private function isInFilterMode($definedValues, $params) {
-
-        foreach($definedValues as $d)
-        {
-            if (isset($params[$d]))
-            {
+    private function isInFilterMode($definedValues, $params)
+    {
+        foreach ($definedValues as $d) {
+            if (isset($params[$d])) {
                 return true;
             }
         }
 
         return false;
-
     }
-
 }

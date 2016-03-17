@@ -28,7 +28,7 @@ class ReportQuery
         $conditions = [];
         $db = Db::get();
 
-        if(is_array($params)) {
+        if (is_array($params)) {
             foreach ($params as $param => $value) {
                 if (in_array($param, $allowedFields)) {
                     switch ($param) {
@@ -44,7 +44,7 @@ class ReportQuery
             }
         }
 
-        if(count($conditions) === 0) {
+        if (count($conditions) === 0) {
             $conditions[] = "1=1";
         }
 

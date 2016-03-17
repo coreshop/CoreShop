@@ -39,7 +39,8 @@ class Filter extends AbstractModel
     /**
      * @return array
      */
-    public static function getConditions() {
+    public static function getConditions()
+    {
         return self::$availableConditions;
     }
 
@@ -226,8 +227,9 @@ class Filter extends AbstractModel
      */
     public function getIndex()
     {
-        if(!$this->indexObject instanceof Index)
+        if (!$this->indexObject instanceof Index) {
             $this->indexObject = Index::getById($this->index);
+        }
 
         return $this->indexObject;
     }
@@ -237,8 +239,9 @@ class Filter extends AbstractModel
      */
     public function setIndex($index)
     {
-        if(!$index instanceof Index)
+        if (!$index instanceof Index) {
             $this->indexObject = Index::getById($index);
+        }
 
         $this->index = $index;
     }

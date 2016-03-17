@@ -197,15 +197,16 @@ class AbstractModel extends Model\AbstractModel
     /**
      * @return array
      */
-    public function __sleep() {
+    public function __sleep()
+    {
         $vars = parent::__sleep();
         $returnVars = array();
         $values = $this->getObjectVars();
 
-        foreach($vars as $key) {
+        foreach ($vars as $key) {
             $value = $values[$key];
 
-            if(!$value instanceof AbstractModel) {
+            if (!$value instanceof AbstractModel) {
                 $returnVars[] = $key;
             }
         }

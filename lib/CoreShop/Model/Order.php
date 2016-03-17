@@ -163,10 +163,11 @@ class Order extends Base
      *
      * @return float
      */
-    public function getSubtotalWithoutTax() {
+    public function getSubtotalWithoutTax()
+    {
         $total = 0;
 
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $total += $item->getTotalWithoutTax();
         }
 
@@ -325,8 +326,9 @@ class Order extends Base
                     unset($_REQUEST['data']);
 
                     if ($orderStep instanceof OrderState) {
-                        if($orderStep->getId() !== $originalOrder->getOrderState()->getId())
+                        if ($orderStep->getId() !== $originalOrder->getOrderState()->getId()) {
                             $orderStep->processStep($originalOrder);
+                        }
                     }
                 }
             } catch (\Exception $ex) {
@@ -336,8 +338,8 @@ class Order extends Base
 
         $orderState = $this->getOrderState();
 
-        if($orderState instanceof OrderState) {
-            if($orderState->getInvoice()) {
+        if ($orderState instanceof OrderState) {
+            if ($orderState->getInvoice()) {
                 $this->getInvoice(); //Re-Generate Invoice if it does not exist
             }
         }
@@ -373,13 +375,14 @@ class Order extends Base
      *
      * @return Note $note
      */
-    public function createNote($type) {
+    public function createNote($type)
+    {
         $note = new Note();
         $note->setElement($this);
         $note->setDate(time());
         $note->setType($type);
 
-        if(\Pimcore::inAdmin()) {
+        if (\Pimcore::inAdmin()) {
             $user = Authentication::authenticateSession();
             if ($user instanceof PimcoreUser) {
                 $note->setUser($user->getId());
@@ -394,35 +397,37 @@ class Order extends Base
      *
      * @return array
      */
-    public function getTaxRates() {
+    public function getTaxRates()
+    {
         $taxes = array();
 
         $taxValues = array();
 
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $taxValues[] = array(
                 "rate" => $item->getTaxRate(),
                 "value" => $item->getTotalTax()
             );
         }
 
-        if($this->getShipping() > 0) {
+        if ($this->getShipping() > 0) {
             $taxValues[] = array(
                 "rate" => $this->getShippingTaxRate(),
                 "value" => $this->getShipping() - $this->getShippingWithoutTax()
             );
         }
 
-        if($this->getPaymentFee() > 0) {
+        if ($this->getPaymentFee() > 0) {
             $taxValues[] = array(
                 "rate" => $this->getPaymentFeeTaxRate(),
                 "value" => $this->getPaymentFee() - $this->getPaymentFeeWithoutTax()
             );
         }
 
-        foreach($taxValues as $tax) {
-            if(!array_key_exists((string)$tax['rate'], $taxes))
+        foreach ($taxValues as $tax) {
+            if (!array_key_exists((string)$tax['rate'], $taxes)) {
                 $taxes[$tax['rate']] = 0;
+            }
 
             $taxes[(string)$tax['rate']] += $tax['value'];
         }

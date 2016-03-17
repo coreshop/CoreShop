@@ -19,7 +19,6 @@ use CoreShop\Model\Product;
 use CoreShop\Plugin;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Tool;
-
 use CoreShop\Model\Index\Config\Column\Mysql as Column;
 
 class Mysql extends AbstractWorker
@@ -34,7 +33,8 @@ class Mysql extends AbstractWorker
      *
      * @param Index $index
      */
-    public function __construct(Index $index) {
+    public function __construct(Index $index)
+    {
         parent::__construct($index);
 
         $this->db = \Pimcore\Db::get();
@@ -70,11 +70,11 @@ class Mysql extends AbstractWorker
 
         $columnConfig = $this->getColumnsConfiguration();
 
-        foreach($columnConfig as $column) {
-            if(!array_key_exists($column->getName(), $columns)) {
+        foreach ($columnConfig as $column) {
+            if (!array_key_exists($column->getName(), $columns)) {
                 $doAdd = true;
 
-                if($doAdd) {
+                if ($doAdd) {
                     $columnsToAdd[$column->getName()] = $column->getColumnType();
                 }
             }
@@ -82,16 +82,14 @@ class Mysql extends AbstractWorker
             unset($columnsToDelete[$column->getName()]);
         }
 
-        foreach($columnsToDelete as $c)
-        {
-            if(!in_array($c, $systemColumns))
-            {
+        foreach ($columnsToDelete as $c) {
+            if (!in_array($c, $systemColumns)) {
                 $this->db->query('ALTER TABLE `' . $this->getTablename() . '` DROP COLUMN `' . $c . '`;');
             }
         }
 
 
-        foreach($columnsToAdd as $c => $type) {
+        foreach ($columnsToAdd as $c => $type) {
             $this->db->query('ALTER TABLE `' . $this->getTablename() . '` ADD `' . $c . '` ' . $type . ';');
         }
 
@@ -110,7 +108,8 @@ class Mysql extends AbstractWorker
      *
      * @return mixed
      */
-    public function deleteIndexStructures() {
+    public function deleteIndexStructures()
+    {
         $this->db->query("DROP TABLE IF EXISTS `" . $this->getTablename() . "`");
         $this->db->query("DROP TABLE IF EXISTS `" . $this->getRelationTablename() . "`");
     }
@@ -133,29 +132,24 @@ class Mysql extends AbstractWorker
      */
     public function updateIndex(Product $object)
     {
-        if($object->getDoIndex()) {
+        if ($object->getDoIndex()) {
             $preparedData = $this->prepareData($object);
 
-            try
-            {
+            try {
                 $this->doInsertData($preparedData['data']);
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 \Logger::warn("Error during updating index table: " . $e);
             }
 
             try {
                 $this->db->delete($this->getRelationTablename(), "src = " . $this->db->quote($object->getId()));
-                foreach($preparedData['relation'] as $rd) {
+                foreach ($preparedData['relation'] as $rd) {
                     $this->db->insert($this->getRelationTablename(), $rd);
                 }
             } catch (\Exception $e) {
                 \Logger::warn("Error during updating index relation table: " . $e->getMessage(), $e);
             }
-        }
-        else
-        {
+        } else {
             \Logger::info("Don't adding product " . $object->getId() . " to index.");
 
             try {
@@ -175,21 +169,22 @@ class Mysql extends AbstractWorker
     /**
      * @param $data
      */
-    protected function doInsertData($data) {
+    protected function doInsertData($data)
+    {
         //insert index data
         $dataKeys = [];
         $updateData = [];
         $insertData = [];
         $insertStatement = [];
 
-        foreach($data as $key => $d) {
+        foreach ($data as $key => $d) {
             $dataKeys[$this->db->quoteIdentifier($key)] = '?';
             $updateData[] = $d;
             $insertStatement[] = $this->db->quoteIdentifier($key) . " = ?";
             $insertData[] = $d;
         }
 
-        $insert = "INSERT INTO " . $this->getTablename() . " (" . implode(",", array_keys($dataKeys)) . ") VALUES (" . implode("," , $dataKeys) . ")"
+        $insert = "INSERT INTO " . $this->getTablename() . " (" . implode(",", array_keys($dataKeys)) . ") VALUES (" . implode(",", $dataKeys) . ")"
             . " ON DUPLICATE KEY UPDATE " . implode(",", $insertStatement);
 
         $this->db->query($insert, array_merge($updateData, $insertData));
@@ -198,7 +193,8 @@ class Mysql extends AbstractWorker
     /**
      * @return array
      */
-    public function getFulltextSearchColumns() {
+    public function getFulltextSearchColumns()
+    {
         //TODO: Load from configurations (eg configfile or database)
         return array("name");
     }
@@ -206,7 +202,8 @@ class Mysql extends AbstractWorker
     /**
      * @return Product\Listing\Mysql
      */
-    public function getProductList() {
+    public function getProductList()
+    {
         return new Product\Listing\Mysql($this->getIndex());
     }
 
@@ -215,7 +212,8 @@ class Mysql extends AbstractWorker
      *
      * @return string
      */
-    protected function getTablename() {
+    protected function getTablename()
+    {
         return "coreshop_index_mysql_" . $this->getIndex()->getName();
     }
 
@@ -224,14 +222,16 @@ class Mysql extends AbstractWorker
      *
      * @return string
      */
-    protected function getRelationTablename() {
+    protected function getRelationTablename()
+    {
         return "coreshop_index_mysql_relations_" . $this->getIndex()->getName();
     }
 
     /**
      * @return array
      */
-    protected function getSystemAttributes() {
+    protected function getSystemAttributes()
+    {
         return array("o_id", "o_classId", "o_virtualProductId", "o_virtualProductActive", "o_type", "categoryIds", "parentCategoryIds", "active");
     }
 }

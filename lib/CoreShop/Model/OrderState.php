@@ -93,8 +93,8 @@ class OrderState extends AbstractModel
     public function processStep(Order $order)
     {
         //Check if new OrderState is the same as the current one
-        if($order->getOrderState() instanceof OrderState) {
-            if($order->getOrderState()->getId() === $this->getId()) {
+        if ($order->getOrderState() instanceof OrderState) {
+            if ($order->getOrderState()->getId() === $this->getId()) {
                 return false;
             }
         }
@@ -133,14 +133,11 @@ class OrderState extends AbstractModel
                 $mail->setEnableLayoutOnPlaceholderRendering(false);
                 $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . " " . $order->getCustomer()->getLastname());
 
-                if ((bool)Configuration::get("SYSTEM.INVOICE.CREATE"))
-                {
-                    if ($this->getInvoice())
-                    {
+                if ((bool)Configuration::get("SYSTEM.INVOICE.CREATE")) {
+                    if ($this->getInvoice()) {
                         $invoice = $order->getInvoice();
 
-                        if ($invoice instanceof \Pimcore\Model\Asset\Document)
-                        {
+                        if ($invoice instanceof \Pimcore\Model\Asset\Document) {
                             $attachment = new \Zend_Mime_Part($invoice->getData());
                             $attachment->type = $invoice->getMimetype();
                             $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
@@ -149,7 +146,6 @@ class OrderState extends AbstractModel
 
                             $mail->addAttachment($attachment);
                         }
-
                     }
                 }
 
@@ -174,7 +170,7 @@ class OrderState extends AbstractModel
         $note->setTitle(sprintf($translate->translate("coreshop_note_orderstate_change"), $this->getName()));
         $note->setDescription(sprintf($translate->translate("coreshop_note_orderstate_change_description"), $this->getName()));
 
-        if($order->getOrderState() instanceof OrderState) {
+        if ($order->getOrderState() instanceof OrderState) {
             $note->addData("fromState", "text", $order->getOrderState()->getName());
         }
 

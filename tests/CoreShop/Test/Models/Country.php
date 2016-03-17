@@ -23,7 +23,8 @@ class Country extends Base
         parent::setUp();
     }
 
-    public function testCountryCreation() {
+    public function testCountryCreation()
+    {
         $this->printTestName();
 
         $this->assertNotNull(\CoreShop\Model\Country::getById(2));

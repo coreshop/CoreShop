@@ -234,16 +234,19 @@ class Carrier extends AbstractModel
         $sortField = Configuration::get("SYSTEM.SHIPPING.CARRIER_SORT") ? Configuration::get("SYSTEM.SHIPPING.CARRIER_SORT") : "price";
 
         usort($availableCarriers, function ($carrier1, $carrier2) use ($sortField, $cart, $zone) {
-            if($sortField === "price") {
+            if ($sortField === "price") {
                 $deliveryPriceCarrier1 = $carrier1->getDeliveryPrice($cart, $zone);
                 $deliveryPriceCarrier2 = $carrier2->getDeliveryPrice($cart, $zone);
 
-                if($deliveryPriceCarrier1 === $deliveryPriceCarrier2) return 0;
+                if ($deliveryPriceCarrier1 === $deliveryPriceCarrier2) {
+                    return 0;
+                }
 
                 return $deliveryPriceCarrier1 < $deliveryPriceCarrier2 ? -1 : 1;
-            }
-            else {
-                if($carrier1->getGrade() === $carrier2->getGrade()) return 0;
+            } else {
+                if ($carrier1->getGrade() === $carrier2->getGrade()) {
+                    return 0;
+                }
 
                 return $carrier1->getGrade() < $carrier2->getGrade() ? -1 : 1;
             }
@@ -259,7 +262,8 @@ class Carrier extends AbstractModel
      * @param Zone $zone
      * @return Carrier|null
      */
-    public static function getCheapestCarrierForCart(Cart $cart, Zone $zone = null) {
+    public static function getCheapestCarrierForCart(Cart $cart, Zone $zone = null)
+    {
         $cacheKey = "cheapest_carrier_" - $cart->getId();
 
         try {
@@ -271,8 +275,7 @@ class Carrier extends AbstractModel
             return $cheapestProvider;
         } catch (\Exception $e) {
             try {
-                if (!$cheapestProvider = Cache::load($cacheKey))
-                {
+                if (!$cheapestProvider = Cache::load($cacheKey)) {
                     $providers = self::getCarriersForCart($cart, $zone);
                     $cheapestProvider = null;
 
@@ -413,7 +416,8 @@ class Carrier extends AbstractModel
      * @param Zone|null $zone
      * @return bool|float
      */
-    public function getDeliveryPriceWithoutTax(Cart $cart, Zone $zone = null) {
+    public function getDeliveryPriceWithoutTax(Cart $cart, Zone $zone = null)
+    {
         if (is_null($zone)) {
             $zone = Tool::getCountry()->getZone();
         }
@@ -474,11 +478,12 @@ class Carrier extends AbstractModel
      *
      * @return float
      */
-    public function getTaxAmount(Cart $cart, Zone $zone = null) {
+    public function getTaxAmount(Cart $cart, Zone $zone = null)
+    {
         $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
         $deliveryPrice = $this->getDeliveryPriceWithoutTax($cart, $zone);
 
-        if($taxCalculator) {
+        if ($taxCalculator) {
             return $taxCalculator->getTaxesAmount($deliveryPrice);
         }
 
@@ -492,10 +497,11 @@ class Carrier extends AbstractModel
      *
      * @return integer
      */
-    public function getTaxRate(Cart $cart) {
+    public function getTaxRate(Cart $cart)
+    {
         $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
 
-        if($taxCalculator) {
+        if ($taxCalculator) {
             return $taxCalculator->getTotalRate();
         }
 
@@ -510,7 +516,7 @@ class Carrier extends AbstractModel
      */
     public function getTaxCalculator(CoreShopUserAddress $address = null)
     {
-        if(is_null($address)) {
+        if (is_null($address)) {
             $address = new CoreShopUserAddress();
             $address->setCountry(Tool::getCountry());
         }
@@ -636,10 +642,10 @@ class Carrier extends AbstractModel
      */
     public function getImage()
     {
-        if(is_string($this->image)) {
+        if (is_string($this->image)) {
             $asset = Asset::getByPath($this->image);
 
-            if($asset instanceof Asset) {
+            if ($asset instanceof Asset) {
                 $this->image = $asset;
             }
         }
@@ -724,7 +730,7 @@ class Carrier extends AbstractModel
      */
     public function getTaxRuleGroup()
     {
-        if(!$this->taxRuleGroup instanceof TaxRuleGroup) {
+        if (!$this->taxRuleGroup instanceof TaxRuleGroup) {
             $this->taxRuleGroup = TaxRuleGroup::getById($this->taxRuleGroupId);
         }
 

@@ -25,7 +25,8 @@ use CoreShop\Model\Product\Listing;
  *
  * @todo: Make override able
  */
-class Service extends AbstractModel {
+class Service extends AbstractModel
+{
 
     const EMPTY_STRING = "##EMPTY##";
 
@@ -36,22 +37,22 @@ class Service extends AbstractModel {
      *
      * @return array $currentFilter
      */
-    public function initFilterService(Filter $filterObject, Listing $list, $params = array()) {
+    public function initFilterService(Filter $filterObject, Listing $list, $params = array())
+    {
         $currentFilter = array();
 
-        if(is_array($filterObject->getFilters())) {
+        if (is_array($filterObject->getFilters())) {
             foreach ($filterObject->getFilters() as $filter) {
                 $currentFilter = $filter->addCondition($filterObject, $list, $currentFilter, $params, false);
             }
         }
 
-        if(is_array($filterObject->getPreConditions())) {
-            foreach($filterObject->getPreConditions() as $filter) {
+        if (is_array($filterObject->getPreConditions())) {
+            foreach ($filterObject->getPreConditions() as $filter) {
                 $currentFilter = $filter->addCondition($filterObject, $list, $currentFilter, $params, true);
             }
         }
 
         return $currentFilter;
     }
-
 }

@@ -18,7 +18,8 @@ use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Index\Config\Column\AbstractColumn;
 use CoreShop\Model\Product;
 
-class Localizedfield extends AbstractGetter {
+class Localizedfield extends AbstractGetter
+{
 
     /**
      * @param $object
@@ -26,11 +27,13 @@ class Localizedfield extends AbstractGetter {
      * @return mixed
      * @throws UnsupportedException
      */
-    public function get(Product $object, AbstractColumn $config = null) {
+    public function get(Product $object, AbstractColumn $config = null)
+    {
         $language = \Zend_Registry::get("Zend_Locale");
 
-        if($config->getGetterConfig()['locale'])
+        if ($config->getGetterConfig()['locale']) {
             $language = $config->getGetterConfig()['locale'];
+        }
 
         $getter = "get" . ucfirst($config->getKey());
 

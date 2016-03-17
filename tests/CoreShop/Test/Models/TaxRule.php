@@ -24,14 +24,16 @@ class TaxRule extends Base
         parent::setUp();
     }
 
-    public function testTaxCreation() {
+    public function testTaxCreation()
+    {
         $this->printTestName();
 
         $this->assertNotNull(\CoreShop\Model\TaxRuleGroup::getById(1));
         $this->assertNotNull(\CoreShop\Model\TaxRule::getById(1));
     }
 
-    public function testTaxCalculator() {
+    public function testTaxCalculator()
+    {
         $this->printTestName();
 
         $tax10 = new \CoreShop\Model\Tax();

@@ -24,25 +24,29 @@ class Product extends Base
         parent::setUp();
     }
 
-    public function testProductCreation() {
+    public function testProductCreation()
+    {
         $this->printTestName();
 
         $this->assertNotNull(Data::$product1);
     }
 
-    public function testProductPrice() {
+    public function testProductPrice()
+    {
         $this->printTestName();
 
         $this->assertEquals(15 * 1.2, Data::$product1->getPrice());
     }
 
-    public function testProductTax() {
+    public function testProductTax()
+    {
         $this->printTestName();
 
         $this->assertEquals(15 * 1.2 - 15, Data::$product1->getTaxAmount());
     }
 
-    public function testProductDeliveryPrice() {
+    public function testProductDeliveryPrice()
+    {
         $this->printTestName();
 
         $this->assertEquals(12, Data::$product1->getCheapestDeliveryPrice());

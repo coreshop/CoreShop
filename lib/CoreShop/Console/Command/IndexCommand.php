@@ -45,7 +45,7 @@ class IndexCommand extends AbstractCommand
         $progress = new ProgressBar($output, $steps);
         $progress->start();
 
-        foreach($allProducts as $product) {
+        foreach ($allProducts as $product) {
             IndexService::getIndexService()->updateIndex($product);
             $progress->advance();
         }

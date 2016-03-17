@@ -37,14 +37,14 @@ class VatManager implements TaxManager
      */
     public static function isAvailableForThisAddress(CoreShopUserAddress $address, $type)
     {
-        if(Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
-            if(empty($address->getVatNumber())) {
+        if (Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
+            if (empty($address->getVatNumber())) {
                 return false;
             }
 
-            if($countryId = Configuration::get("SYSTEM.BASE.COUNTRY")) {
-                if(($country = Country::getById($countryId)) instanceof Country) {
-                    if($country->getId() !== $address->getCountry()->getId()) {
+            if ($countryId = Configuration::get("SYSTEM.BASE.COUNTRY")) {
+                if (($country = Country::getById($countryId)) instanceof Country) {
+                    if ($country->getId() !== $address->getCountry()->getId()) {
                         return true;
                     }
                 }

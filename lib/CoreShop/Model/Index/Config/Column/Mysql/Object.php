@@ -16,7 +16,7 @@ namespace CoreShop\Model\Index\Config\Column\Mysql;
 
 use CoreShop\Model\Index\Config\Column\Object as DefaultObject;
 
-class Object extends DefaultObject {
+class Object extends DefaultObject
+{
     use HelperTrait;
-
 }

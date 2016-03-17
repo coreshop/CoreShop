@@ -27,14 +27,16 @@ class Carrier extends Base
         parent::setUp();
     }
 
-    public function testCarrierCreation() {
+    public function testCarrierCreation()
+    {
         $this->printTestName();
 
         $this->assertNotNull(\CoreShop\Model\Carrier::getById(1));
         $this->assertNotNull(\CoreShop\Model\Carrier::getById(2));
     }
 
-    public function testCarrierPrice() {
+    public function testCarrierPrice()
+    {
         $this->printTestName();
 
         $cart = Data::createCartWithProducts();
@@ -46,7 +48,8 @@ class Carrier extends Base
         $this->assertEquals(24, $price2);
     }
 
-    public function testCarrierTax() {
+    public function testCarrierTax()
+    {
         $this->printTestName();
 
         $cart = Data::createCartWithProducts();
@@ -56,7 +59,8 @@ class Carrier extends Base
         $this->assertEquals(2, $tax);
     }
 
-    public function testCarriersForCart() {
+    public function testCarriersForCart()
+    {
         $this->printTestName();
 
         $cart = Data::createCartWithProducts();

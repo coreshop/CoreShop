@@ -125,7 +125,7 @@ class TaxRule extends AbstractModel
      */
     public function getTaxRuleGroup()
     {
-        if(!$this->taxRuleGroup instanceof TaxRuleGroup) {
+        if (!$this->taxRuleGroup instanceof TaxRuleGroup) {
             $this->taxRuleGroup = TaxRuleGroup::getById($this->taxRuleGroupId);
         }
 
@@ -168,7 +168,7 @@ class TaxRule extends AbstractModel
      */
     public function getCountry()
     {
-        if(!$this->country instanceof Country) {
+        if (!$this->country instanceof Country) {
             $this->country = Country::getById($this->countryId);
         }
 
@@ -211,7 +211,7 @@ class TaxRule extends AbstractModel
      */
     public function getTax()
     {
-        if(!$this->tax instanceof Tax) {
+        if (!$this->tax instanceof Tax) {
             $this->tax = Tax::getById($this->taxId);
         }
 

@@ -32,10 +32,9 @@ class Compare extends Deposit
     /**
      * @param int $maxElements
      */
-    public function setMaxCompareElements(  $maxElements = 3 )
+    public function setMaxCompareElements($maxElements = 3)
     {
-        $this->setLimit( $maxElements );
-
+        $this->setLimit($maxElements);
     }
     /**
      * Calculates the total for the CartItem
@@ -46,5 +45,4 @@ class Compare extends Deposit
     {
         return $this->toArray();
     }
-
 }

@@ -177,9 +177,9 @@ class CoreShop_UserController extends Action
                 }
 
                 //Check for European VAT Number
-                if(\CoreShop\Model\Configuration::get("SYSTEM.BASE.CHECKVAT")) {
-                    if($addressParams['vatNumber']) {
-                        if(!Tool::validateVatNumber($addressParams['vatNumber'])) {
+                if (\CoreShop\Model\Configuration::get("SYSTEM.BASE.CHECKVAT")) {
+                    if ($addressParams['vatNumber']) {
+                        if (!Tool::validateVatNumber($addressParams['vatNumber'])) {
                             throw new \Exception($this->view->translate("Invalid VAT Number"));
                         }
                     }
@@ -303,8 +303,7 @@ class CoreShop_UserController extends Action
                 } else {
                     $this->redirect("/de/shop");
                 }
-            }
-            catch(\Exception $ex) {
+            } catch (\Exception $ex) {
                 $this->view->error = $ex->getMessage();
             }
         }

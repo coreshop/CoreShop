@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Tests;
+namespace CoreShop\tests;
 
 use CoreShop\Test\SuiteBase;
 

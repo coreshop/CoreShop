@@ -185,14 +185,16 @@ class CoreShop_CartController extends Action
      * @return string
      * @throws Zend_Exception
      */
-    protected function renderMiniCart() {
+    protected function renderMiniCart()
+    {
         return $this->renderCartView('coreshop/cart/helper/minicart.php');
     }
 
     /**
      * @return string
      */
-    protected function renderCart() {
+    protected function renderCart()
+    {
         return $this->renderCartView('coreshop/cart/helper/cart.php');
     }
 
@@ -201,7 +203,8 @@ class CoreShop_CartController extends Action
      * @return string
      * @throws Zend_Exception
      */
-    protected function renderCartView($view) {
+    protected function renderCartView($view)
+    {
         return $this->view->partial($view, array(
             "cart" => $this->cart,
             "language" => (string)\Zend_Registry::get("Zend_Locale"),
@@ -209,7 +212,8 @@ class CoreShop_CartController extends Action
         ));
     }
 
-    protected function reloadCart() {
+    protected function reloadCart()
+    {
         \Zend_Registry::set("object_" . $this->cart->getId(), null);
         $this->prepareCart();
     }

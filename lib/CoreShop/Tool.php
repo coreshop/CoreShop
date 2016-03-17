@@ -55,7 +55,8 @@ class Tool
      * @param $price
      * @return float
      */
-    public static function roundPrice($price) {
+    public static function roundPrice($price)
+    {
         return round($price, 2);
     }
 
@@ -65,7 +66,8 @@ class Tool
      * @param $number
      * @return string
      */
-    public static function numberFormat($number) {
+    public static function numberFormat($number)
+    {
         return number_format($number, 2, ',', '');
     }
 
@@ -101,7 +103,8 @@ class Tool
      *
      * @return Currency
      */
-    public static function getBaseCurrency() {
+    public static function getBaseCurrency()
+    {
         $baseCurrency = Configuration::get("SYSTEM.BASE.CURRENCY");
         $currency = null;
 
@@ -109,7 +112,7 @@ class Tool
             $currency = Currency::getById($baseCurrency);
         }
 
-        if(!$currency instanceof Currency) {
+        if (!$currency instanceof Currency) {
             $currency = Currency::getById(1); //TODO: Throw Exception because there is no base currency?
         }
 
@@ -172,7 +175,7 @@ class Tool
     {
         $cartSession = self::getSession();
 
-        if(!$resetCart) {
+        if (!$resetCart) {
             if ($cartSession->cartId) {
                 $cart = CoreShopCart::getById($cartSession->cartId);
 
@@ -255,11 +258,10 @@ class Tool
         }
 
 
-        if (!$country instanceof Country)
-        {
+        if (!$country instanceof Country) {
             $country = Plugin::actionHook("country");
 
-            if(!$country instanceof Country) {
+            if (!$country instanceof Country) {
                 $country = Country::getById(Configuration::get("SYSTEM.BASE.COUNTRY"));
 
                 if (!$country instanceof Country) {
@@ -323,8 +325,9 @@ class Tool
             }
         }
 
-        if(self::getCountry()->getCurrency() instanceof Currency)
+        if (self::getCountry()->getCurrency() instanceof Currency) {
             return self::getCountry()->getCurrency();
+        }
 
         return self::getBaseCurrency();
     }
@@ -335,7 +338,8 @@ class Tool
      * @param string $vatNubmer
      * @return boolean
      */
-    public static function validateVatNumber($vatNumber) {
+    public static function validateVatNumber($vatNumber)
+    {
         $intracom_array = array(
             'AT' => 'AT',
             //Austria
@@ -400,29 +404,25 @@ class Tool
         $vatNumber = str_replace(' ', '', $vatNumber);
         $prefix = substr($vatNumber, 0, 2);
 
-        if (array_search($prefix, $intracom_array) === false)
+        if (array_search($prefix, $intracom_array) === false) {
             return false;
+        }
 
         $vat = substr($vatNumber, 2);
         $url = 'http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms='.urlencode($prefix).'&iso='.urlencode($prefix).'&vat='.urlencode($vat);
 
-        for ($i = 0; $i < 3; $i++)
-        {
-            if ($page_res = @file_get_contents($url))
-            {
-                if (preg_match('/invalid VAT number/i', $page_res))
-                {
+        for ($i = 0; $i < 3; $i++) {
+            if ($page_res = @file_get_contents($url)) {
+                if (preg_match('/invalid VAT number/i', $page_res)) {
                     return false;
-                }
-                else if (preg_match('/valid VAT number/i', $page_res))
-                {
+                } elseif (preg_match('/valid VAT number/i', $page_res)) {
                     return true;
-                }
-                else
+                } else {
                     $i++;
-            }
-            else
+                }
+            } else {
                 sleep(1);
+            }
         }
 
         return false;

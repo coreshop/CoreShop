@@ -16,7 +16,7 @@ namespace CoreShop\Model\Index\Config\Column\Mysql;
 
 use CoreShop\Model\Index\Config\Column\Classificationstore as DefaultClassificationStore;
 
-class Classificationstore extends DefaultClassificationStore {
+class Classificationstore extends DefaultClassificationStore
+{
     use HelperTrait;
-
 }

@@ -29,7 +29,8 @@ class TaxManagerFactory
      * @param CoreShopUserAddress $address
      * @return string
      */
-    private static function getCacheKey(CoreShopUserAddress $address) {
+    private static function getCacheKey(CoreShopUserAddress $address)
+    {
         return md5($address->getCountry()->getId() .
             ($address->getName() ? $address->getName() : "") .
             ($address->getVatNumber() ? $address->getVatNumber() : "") .

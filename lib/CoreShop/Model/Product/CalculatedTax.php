@@ -21,7 +21,8 @@ use Pimcore\Model\Object\Concrete;
 use Pimcore\Model\Object\CoreShopProduct;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
-class CalculatedTax {
+class CalculatedTax
+{
     /**
      * @param $object Concrete
      * @param $context \Pimcore\Model\Object\Data\CalculatedValue
@@ -29,7 +30,7 @@ class CalculatedTax {
      */
     public static function compute($object, $context)
     {
-        if($object instanceof CoreShopProduct) {
+        if ($object instanceof CoreShopProduct) {
             $price = $object->getRetailPrice();
 
             $address = new CoreShopUserAddress();

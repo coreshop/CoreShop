@@ -16,7 +16,8 @@ namespace CoreShop\Model\Index\Config\Column\Mysql;
 
 use CoreShop\Model;
 
-trait HelperTrait {
+trait HelperTrait
+{
     /**
      * @var
      */

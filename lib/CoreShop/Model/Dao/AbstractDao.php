@@ -116,10 +116,10 @@ abstract class AbstractDao extends Dao\AbstractDao
                 if ($value instanceof AbstractObject) {
                     $value = $value->getId();
                 }
-                if($value instanceof AbstractModel) {
+                if ($value instanceof AbstractModel) {
                     $value = $value->getId();
                 }
-                if(is_object($value)) {
+                if (is_object($value)) {
                     $value = serialize($value);
                 }
 

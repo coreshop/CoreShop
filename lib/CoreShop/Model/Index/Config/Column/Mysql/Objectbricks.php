@@ -16,7 +16,7 @@ namespace CoreShop\Model\Index\Config\Column\Mysql;
 
 use CoreShop\Model\Index\Config\Column\Objectbricks as DefaultObjectbricks;
 
-class Objectbricks extends DefaultObjectbricks {
+class Objectbricks extends DefaultObjectbricks
+{
     use HelperTrait;
-
 }
