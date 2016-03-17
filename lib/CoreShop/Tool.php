@@ -323,8 +323,10 @@ class Tool
             }
         }
 
+        if(self::getCountry()->getCurrency() instanceof Currency)
+            return self::getCountry()->getCurrency();
 
-        return self::getCountry()->getCurrency();
+        return self::getBaseCurrency();
     }
 
     /**
