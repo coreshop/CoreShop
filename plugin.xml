@@ -132,6 +132,9 @@
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/quantities.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/carriers.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/report/reports/payments.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/report/monitoring/abstract.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/report/monitoring/reports/emptyCategories.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/report/monitoring/reports/disabledProducts.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

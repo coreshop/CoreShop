@@ -211,3 +211,4 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
     }
 });
 
+

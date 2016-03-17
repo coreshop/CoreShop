@@ -292,4 +292,42 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $this->_helper->json(array("data" => $data));
     }
+
+    public function getEmptyCategoriesMonitoringAction() {
+        $cats = new \Pimcore\Model\Object\CoreShopCategory\Listing();
+        $cats = $cats->getObjects();
+
+        $emptyCategories = array();
+
+        foreach($cats as $category) {
+            $products = $category->getProducts(true);
+
+            if(count($products) === 0) {
+                $emptyCategories[] = array(
+                    "name" => $category->getName(),
+                    "id" => $category->getId()
+                );
+            }
+        }
+
+        $this->_helper->json(array("data" => $emptyCategories));
+    }
+
+    public function getDisabledProductsMonitoringAction() {
+        $products = new \Pimcore\Model\Object\CoreShopProduct\Listing();
+        $products->setCondition("enabled=? OR availableForOrder=?", array(0, 0));
+
+        $result = array();
+
+        foreach($products as $product) {
+            $result[] = array(
+                "id" => $product->getId(),
+                "name" => $product->getName(),
+                "enabled" => $product->getEnabled(),
+                "availableForOrder" => $product->getAvailableForOrder()
+            );
+        }
+
+        $this->_helper->json(array("data" => $result));
+    }
 }

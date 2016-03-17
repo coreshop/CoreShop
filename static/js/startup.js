@@ -283,11 +283,23 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin,{
 
                 //Add Report Definition
                 pimcore.report.broker.addGroup('coreshop', "coreshop_reports", "coreshop_icon_report");
+                pimcore.report.broker.addGroup('coreshop_monitoring', "coreshop_monitoring", "coreshop_icon_monitoring");
 
                 Ext.Object.each(pimcore.plugin.coreshop.report.reports, function(report) {
                     report = pimcore.plugin.coreshop.report.reports[report];
 
                     pimcore.report.broker.addReport(report, 'coreshop', {
+                        name: report.prototype.getName(),
+                        text: report.prototype.getName(),
+                        niceName: report.prototype.getName(),
+                        iconCls: report.prototype.getIconCls()
+                    })
+                });
+
+                Ext.Object.each(pimcore.plugin.coreshop.report.monitoring.reports, function(report) {
+                    report = pimcore.plugin.coreshop.report.monitoring.reports[report];
+
+                    pimcore.report.broker.addReport(report, 'coreshop_monitoring', {
                         name: report.prototype.getName(),
                         text: report.prototype.getName(),
                         niceName: report.prototype.getName(),

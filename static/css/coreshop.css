@@ -255,3 +255,7 @@
 .coreshop_icon_report_payments {
     background: url(/plugins/CoreShop/static/img/24/payments.png) no-repeat scroll left center transparent !important;
 }
+
+.coreshop_icon_monitoring {
+    background: url(/plugins/CoreShop/static/img/24/monitor.png) no-repeat scroll left center transparent !important;
+}
