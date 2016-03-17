@@ -49,21 +49,9 @@
             "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
             "objectsAllowed":true,
             "assetsAllowed":false,
-            "assetTypes":[
-              {
-                "assetTypes":{
-                  "assetTypes":""
-                }
-              }
-            ],
+            "assetTypes":"",
             "documentsAllowed":false,
-            "documentTypes":[
-              {
-                "documentTypes":{
-                  "documentTypes":""
-                }
-              }
-            ],
+            "documentTypes":"",
             "lazyLoading":false,
             "classes":[
               {
@@ -260,12 +248,12 @@
             "maxValue":null,
             "decimalPrecision":null,
             "name":"totalTax",
-            "title":"totalTax",
+            "title":"Total Tax",
             "tooltip":"",
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",
@@ -287,12 +275,12 @@
             "maxValue":null,
             "decimalPrecision":null,
             "name":"total",
-            "title":"total",
+            "title":"Total",
             "tooltip":"",
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",
