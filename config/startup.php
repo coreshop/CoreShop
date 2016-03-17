@@ -63,7 +63,7 @@ if (Pimcore\Tool::classExists("CoreShop\\Plugin")) {
         }
 
         if (!is_dir(CORESHOP_TEMPLATE_PATH)) {
-            die(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
+            \Logger::critical(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
         }
     }
 }
