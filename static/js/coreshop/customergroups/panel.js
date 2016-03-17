@@ -11,23 +11,22 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.customergroups.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.customergroups.panel');
 
 pimcore.plugin.coreshop.customergroups.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     /**
      * @var string
      */
-    layoutId: "coreshop_customer_groups_panel",
-    storeId : "coreshop_customergroups",
-    iconCls : "coreshop_icon_customer_groups",
-    type : "customergroups",
+    layoutId: 'coreshop_customer_groups_panel',
+    storeId : 'coreshop_customergroups',
+    iconCls : 'coreshop_icon_customer_groups',
+    type : 'customergroups',
 
     url : {
-        add : "/plugin/CoreShop/admin_Customergroup/add",
-        delete : "/plugin/CoreShop/admin_Customergroup/delete",
-        get : "/plugin/CoreShop/admin_Customergroup/get",
-        list : "/plugin/CoreShop/admin_Customergroup/list"
+        add : '/plugin/CoreShop/admin_Customergroup/add',
+        delete : '/plugin/CoreShop/admin_Customergroup/delete',
+        get : '/plugin/CoreShop/admin_Customergroup/get',
+        list : '/plugin/CoreShop/admin_Customergroup/list'
     }
 });

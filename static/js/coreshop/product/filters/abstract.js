@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.filters.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.filters.abstract');
 
 pimcore.plugin.coreshop.filters.abstract = Class.create({
 
@@ -26,12 +26,12 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
 
     form : null,
 
-    initialize : function(parent, data) {
+    initialize : function (parent, data) {
         this.parent = parent;
         this.data = data;
     },
 
-    getLayout : function() {
+    getLayout : function () {
         var myId = Ext.id();
 
         var items = this.getDefaultItems();
@@ -41,8 +41,8 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         this.form = new Ext.form.Panel({
             xparent : this,
             id : myId,
-            style: "margin: 10px 0 0 0",
-            tbar : this.getTopBar(t("coreshop_product_filters_" + this.type), myId, this.parent, this.data, "coreshop_product_filters_icon_condition_" + this.type),
+            style: 'margin: 10px 0 0 0',
+            tbar : this.getTopBar(t('coreshop_product_filters_' + this.type), myId, this.parent, this.data, 'coreshop_product_filters_icon_condition_' + this.type),
             items : [
                 {
                     xtype : 'fieldset',
@@ -54,38 +54,38 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         return this.form;
     },
 
-    getDefaultItems : function() {
+    getDefaultItems : function () {
         this.valueStore = new Ext.data.ArrayStore({
             proxy: new Ext.data.HttpProxy({
                 url : '/plugin/CoreShop/admin_Filter/get-values-for-filter-field'
             }),
             reader: new Ext.data.JsonReader({}, [
-                {name:'value'}
+                { name:'value' }
             ])
         });
 
         this.fieldsCombo = Ext.create({
-            xtype: "combo",
+            xtype: 'combo',
             fieldLabel: t('coreshop_product_filters_field'),
-            name: "field",
+            name: 'field',
             width: 400,
             store: this.parent.getFieldsStore(),
             displayField : 'name',
             valueField : 'name',
-            triggerAction: "all",
+            triggerAction: 'all',
             typeAhead: false,
             editable: false,
             forceSelection: true,
-            queryMode: "local",
+            queryMode: 'local',
             value : this.data.field,
             listeners : {
-                change : function(combo, newValue) {
+                change : function (combo, newValue) {
                     this.onFieldChange.call(this, combo, newValue);
                 }.bind(this)
             }
         });
 
-        if(this.data.field) {
+        if (this.data.field) {
             this.onFieldChange(this.fieldsCombo, this.data.field);
         }
 
@@ -101,7 +101,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         ];
     },
 
-    onFieldChange : function(combo, newValue) {
+    onFieldChange : function (combo, newValue) {
         this.valueStore.proxy.extraParams = {
             field : newValue,
             index : combo.getStore().proxy.extraParams['index']
@@ -116,12 +116,13 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         // detect index
         var index;
 
-        for(var s=0; s < container.items.items.length; s++) {
-            if(container.items.items[s].getId() == blockElement.getId()) {
+        for (var s = 0; s < container.items.items.length; s++) {
+            if (container.items.items[s].getId() == blockElement.getId()) {
                 index = s;
                 break;
             }
         }
+
         return index;
     },
 
@@ -141,18 +142,18 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
             disabled: true,
             xtype : 'button'
         }, {
-            xtype: "tbtext",
-            text: "<b>" + name + "</b>"
-        },"-",{
-            iconCls: "pimcore_icon_up",
+            xtype: 'tbtext',
+            text: '<b>' + name + '</b>'
+        }, '-', {
+            iconCls: 'pimcore_icon_up',
             handler: function (blockId, parent, container) {
 
                 var blockElement = Ext.getCmp(blockId);
                 var index = pimcore.plugin.coreshop.filters.conditions.abstract.prototype.getIndex(blockElement, container);
                 var tmpContainer = pimcore.viewport;
 
-                var newIndex = index-1;
-                if(newIndex < 0) {
+                var newIndex = index - 1;
+                if (newIndex < 0) {
                     newIndex = 0;
                 }
 
@@ -163,7 +164,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
                 tmpContainer.updateLayout();
 
                 // move the element to the right position
-                tmpContainer.remove(blockElement,false);
+                tmpContainer.remove(blockElement, false);
                 container.insert(newIndex, blockElement);
                 container.updateLayout();
                 tmpContainer.updateLayout();
@@ -171,8 +172,8 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
                 pimcore.layout.refresh();
             }.bind(window, index, parent, container),
             xtype : 'button'
-        },{
-            iconCls: "pimcore_icon_down",
+        }, {
+            iconCls: 'pimcore_icon_down',
             handler: function (blockId, parent, container) {
 
                 var container = container;
@@ -187,8 +188,8 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
                 tmpContainer.updateLayout();
 
                 // move the element to the right position
-                tmpContainer.remove(blockElement,false);
-                container.insert(index+1, blockElement);
+                tmpContainer.remove(blockElement, false);
+                container.insert(index + 1, blockElement);
                 container.updateLayout();
                 tmpContainer.updateLayout();
 
@@ -196,8 +197,8 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
 
             }.bind(window, index, parent, container),
             xtype : 'button'
-        },"->",{
-            iconCls: "pimcore_icon_delete",
+        }, '->', {
+            iconCls: 'pimcore_icon_delete',
             handler: function (index, parent, container) {
                 container.remove(Ext.getCmp(index));
             }.bind(window, index, parent, container),

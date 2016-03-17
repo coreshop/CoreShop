@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.classes.data.coreShopLanguage");
+pimcore.registerNS('pimcore.object.classes.data.coreShopLanguage');
 pimcore.object.classes.data.coreShopLanguage = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
 
-    type: "coreShopLanguage",
+    type: 'coreShopLanguage',
 
     getTypeName: function () {
-        return t("coreshop_language");
+        return t('coreshop_language');
     },
 
     getGroup: function () {
-        return "coreshop";
+        return 'coreshop';
     },
 
     getIconClass: function () {
-        return "coreshop_icon_language";
+        return 'coreshop_icon_language';
     }
 });

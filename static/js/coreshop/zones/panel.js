@@ -11,22 +11,22 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.zones.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.zones.panel');
 
 pimcore.plugin.coreshop.zones.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     /**
      * @var string
      */
-    layoutId: "coreshop_zones_panel",
-    storeId : "coreshop_zones",
-    iconCls : "coreshop_icon_zone",
-    type : "zones",
+    layoutId: 'coreshop_zones_panel',
+    storeId : 'coreshop_zones',
+    iconCls : 'coreshop_icon_zone',
+    type : 'zones',
 
     url : {
-        add : "/plugin/CoreShop/admin_Zone/add",
-        delete : "/plugin/CoreShop/admin_Zone/delete",
-        get : "/plugin/CoreShop/admin_Zone/get",
-        list : "/plugin/CoreShop/admin_Zone/list"
+        add : '/plugin/CoreShop/admin_Zone/add',
+        delete : '/plugin/CoreShop/admin_Zone/delete',
+        get : '/plugin/CoreShop/admin_Zone/get',
+        list : '/plugin/CoreShop/admin_Zone/list'
     }
 });

@@ -11,11 +11,11 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("coreshop.plugin.admin");
+pimcore.registerNS('coreshop.plugin.admin');
 
 coreshop.plugin.admin = Class.create(pimcore.plugin.admin, {
 
-    initialize: function() {
+    initialize: function () {
 
     },
 

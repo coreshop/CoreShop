@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.filters.item");
+pimcore.registerNS('pimcore.plugin.coreshop.filters.item');
 
 pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
@@ -23,7 +23,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
 
     indexFieldsStore : null,
 
-    getPanel: function() {
+    getPanel: function () {
         panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -32,8 +32,8 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
             forceLayout: true,
             iconCls : this.iconCls,
             buttons: [{
-                text: t("save"),
-                iconCls: "pimcore_icon_apply",
+                text: t('save'),
+                iconCls: 'pimcore_icon_apply',
                 handler: this.save.bind(this)
             }],
             items: this.getItems()
@@ -42,9 +42,9 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
         return panel;
     },
 
-    getItems : function() {
-        this.conditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, "preconditions");
-        this.filters = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, "filters");
+    getItems : function () {
+        this.conditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'preconditions');
+        this.filters = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'filters');
 
         var items = [
             this.getSettings(),
@@ -53,22 +53,22 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
         ];
 
         // add saved conditions
-        if(this.data.preConditions)
+        if (this.data.preConditions)
         {
-            Ext.each(this.data.preConditions, function(condition) {
+            Ext.each(this.data.preConditions, function (condition) {
                 this.conditions.addCondition(condition.type, condition);
             }.bind(this));
         }
 
-        if(this.data.filters) {
-            Ext.each(this.data.filters, function(condition) {
+        if (this.data.filters) {
+            Ext.each(this.data.filters, function (condition) {
                 this.filters.addCondition(condition.type, condition);
             }.bind(this));
         }
 
         this.indexCombo.setValue(this.data.index);
 
-        if(!this.data.index) {
+        if (!this.data.index) {
             this.conditions.disable();
             this.filters.disable();
         }
@@ -76,14 +76,14 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
         return items;
     },
 
-    getFieldsForIndex : function(forceReload) {
-        if(!this.indexFieldsStore) {
+    getFieldsForIndex : function (forceReload) {
+        if (!this.indexFieldsStore) {
             var proxy = new Ext.data.HttpProxy({
                 url : '/plugin/CoreShop/admin_Filter/get-fields-for-index'
             });
 
             var reader = new Ext.data.JsonReader({}, [
-                {name:'name'}
+                { name:'name' }
             ]);
 
             this.indexFieldsStore = new Ext.data.Store({
@@ -94,8 +94,8 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
             });
         }
 
-        if(forceReload || !this.indexFieldsStore.isLoaded()) {
-            this.indexFieldsStore.proxy.extraParams = {index : this.indexCombo.getValue()};
+        if (forceReload || !this.indexFieldsStore.isLoaded()) {
+            this.indexFieldsStore.proxy.extraParams = { index : this.indexCombo.getValue() };
             this.indexFieldsStore.load({
                 params: {
                     index: this.indexCombo.getValue()
@@ -115,7 +115,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
             typeAhead: true,
             listWidth: 100,
             width : 250,
-            store: pimcore.globalmanager.get("coreshop_indexes"),
+            store: pimcore.globalmanager.get('coreshop_indexes'),
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -123,14 +123,13 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
             name:'index',
             value : data.index,
             listeners: {
-                change : function(combo, value) {
-                    if(value) {
+                change : function (combo, value) {
+                    if (value) {
                         this.conditions.enable();
                         this.filters.enable();
 
                         this.getFieldsForIndex();
-                    }
-                    else {
+                    } else {
                         this.conditions.disable();
                         this.filters.disable();
                     }
@@ -139,41 +138,41 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
         });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: "coreshop_price_rule_settings",
-            title: t("settings"),
-            bodyStyle: "padding:10px;",
+            iconCls: 'coreshop_price_rule_settings',
+            title: t('settings'),
+            bodyStyle: 'padding:10px;',
             autoScroll: true,
             border:false,
             items: [{
-                xtype: "textfield",
-                name: "name",
-                fieldLabel: t("name"),
+                xtype: 'textfield',
+                name: 'name',
+                fieldLabel: t('name'),
                 width: 250,
                 value: data.name
             }, {
                 xtype : 'numberfield',
-                fieldLabel:t("coreshop_product_filters_resultsPerPage"),
+                fieldLabel:t('coreshop_product_filters_resultsPerPage'),
                 name:'resultsPerPage',
                 value : data.resultsPerPage,
                 minValue : 1,
                 decimalPrecision : 0,
                 step : 1
             }, {
-                xtype: "combo",
+                xtype: 'combo',
                 fieldLabel: t('coreshop_product_filters_order'),
-                name: "order",
+                name: 'order',
                 value: data.order,
                 width: 250,
-                store: [["desc",t("coreshop_product_filters_order_desc")],["asc",t("coreshop_product_filters_order_asc")]],
-                triggerAction: "all",
+                store: [['desc', t('coreshop_product_filters_order_desc')], ['asc', t('coreshop_product_filters_order_asc')]],
+                triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
-                queryMode: "local"
+                queryMode: 'local'
             }, {
-                xtype: "textfield",
-                name: "orderKey",
-                fieldLabel: t("coreshop_product_filters_orderKey"),
+                xtype: 'textfield',
+                name: 'orderKey',
+                fieldLabel: t('coreshop_product_filters_orderKey'),
                 width: 250,
                 value: data.orderKey
             }, this.indexCombo]
@@ -182,13 +181,13 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
         return this.settingsForm;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         var saveData = {};
 
         // general settings
-        saveData["settings"] = this.settingsForm.getForm().getFieldValues();
-        saveData["conditions"] = this.conditions.getData();
-        saveData["filters"] = this.filters.getData();
+        saveData['settings'] = this.settingsForm.getForm().getFieldValues();
+        saveData['conditions'] = this.conditions.getData();
+        saveData['filters'] = this.filters.getData();
 
         return {
             data : Ext.encode(saveData)

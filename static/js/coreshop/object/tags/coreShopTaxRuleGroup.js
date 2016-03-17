@@ -11,9 +11,9 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.tags.coreShopTaxRuleGroup");
+pimcore.registerNS('pimcore.object.tags.coreShopTaxRuleGroup');
 pimcore.object.tags.coreShopTaxRuleGroup = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
-    type: "coreShopTaxRuleGroup",
-    storeName : "taxrulegroups"
+    type: 'coreShopTaxRuleGroup',
+    storeName : 'taxrulegroups'
 });

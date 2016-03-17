@@ -11,8 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.orders.grid");
+pimcore.registerNS('pimcore.plugin.coreshop.orders.grid');
 pimcore.plugin.coreshop.orders.grid = Class.create({
 
     layoutId : 'coreshop_orders',
@@ -25,7 +24,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
     },
 
     activate: function () {
-        var tabPanel = Ext.getCmp("pimcore_panel_tabs");
+        var tabPanel = Ext.getCmp('pimcore_panel_tabs');
         tabPanel.setActiveItem(this.layoutId);
     },
 
@@ -35,22 +34,22 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             // create new panel
             this.layout = new Ext.Panel({
                 id: this.layoutId,
-                title: t("coreshop_orders"),
-                iconCls: "coreshop_icon_orders",
+                title: t('coreshop_orders'),
+                iconCls: 'coreshop_icon_orders',
                 border: false,
-                layout: "border",
+                layout: 'border',
                 closable: true,
                 items: this.getItems()
             });
 
             // add event listener
             var layoutId = this.layoutId;
-            this.layout.on("destroy", function () {
+            this.layout.on('destroy', function () {
                 pimcore.globalmanager.remove(layoutId);
             }.bind(this));
 
             // add panel to pimcore panel tabs
-            var tabPanel = Ext.getCmp("pimcore_panel_tabs");
+            var tabPanel = Ext.getCmp('pimcore_panel_tabs');
             tabPanel.add(this.layout);
             tabPanel.setActiveItem(this.layoutId);
 
@@ -65,7 +64,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         return [this.getGrid()];
     },
 
-    getGrid : function() {
+    getGrid : function () {
         var itemsPerPage = 15;
 
         this.store = new Ext.data.JsonStore({
@@ -88,17 +87,17 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             fields: [
                 'o_id',
                 'orderState',
-                {name:'orderDate', type: 'date', dateFormat: 'timestamp'},
+                { name:'orderDate', type: 'date', dateFormat: 'timestamp' },
                 'orderNumber',
                 'lang',
                 'carrier',
                 'priceRule',
-                {name : 'discount', type : 'float'},
-                {name : 'subtotal', type : 'float'},
-                {name : 'shipping', type : 'float'},
-                {name : 'paymentFee', type : 'float'},
-                {name : 'totalTax', type : 'float'},
-                {name : 'total', type : 'float'}
+                { name : 'discount', type : 'float' },
+                { name : 'subtotal', type : 'float' },
+                { name : 'shipping', type : 'float' },
+                { name : 'paymentFee', type : 'float' },
+                { name : 'totalTax', type : 'float' },
+                { name : 'total', type : 'float' }
             ]
         });
 
@@ -130,29 +129,32 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                 {
                     text: t('coreshop_orders_orderState'),
                     dataIndex: 'orderState',
-                    renderer : function(val) {
-                        var store = pimcore.globalmanager.get("coreshop_orderstates");
-                        var pos = store.findExact("id", val);
-                        if(pos >= 0) {
-                            return store.getAt(pos).get("name");
+                    renderer : function (val) {
+                        var store = pimcore.globalmanager.get('coreshop_orderstates');
+                        var pos = store.findExact('id', val);
+                        if (pos >= 0) {
+                            return store.getAt(pos).get('name');
                         }
+
                         return null;
                     },
+
                     flex : 1,
                     filter: {
                         type : 'list',
-                        store : pimcore.globalmanager.get("coreshop_orderstates")
+                        store : pimcore.globalmanager.get('coreshop_orderstates')
                     }
                 },
                 {
                     xtype : 'datecolumn',
                     text: t('coreshop_orders_orderDate'),
                     dataIndex: 'orderDate',
-                    format:"d.m.Y",
+                    format:'d.m.Y',
                     filter: true
                 }
             ],
-            region: "center",
+            region: 'center',
+
             // paging bar on the bottom
             bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store, itemsPerPage),
             listeners : {
@@ -165,7 +167,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         return this.grid;
     },
 
-    openOrder : function(grid, record, item, index, e, eOpts) {
-        pimcore.helpers.openObject(record.get("o_id"));
+    openOrder : function (grid, record, item, index, e, eOpts) {
+        pimcore.helpers.openObject(record.get('o_id'));
     }
 });

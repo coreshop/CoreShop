@@ -11,15 +11,15 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions.zone");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions.zone');
 
 pimcore.plugin.coreshop.pricerules.conditions.zone = Class.create(pimcore.plugin.coreshop.pricerules.conditions.abstract, {
 
     type : 'zone',
 
-    getForm : function() {
+    getForm : function () {
         var me = this;
-        var store = pimcore.globalmanager.get("coreshop_zones");
+        var store = pimcore.globalmanager.get('coreshop_zones');
 
         var zone = {
             xtype: 'combo',
@@ -35,16 +35,16 @@ pimcore.plugin.coreshop.pricerules.conditions.zone = Class.create(pimcore.plugin
             name:'zone',
             listeners: {
                 beforerender: function () {
-                    if(!store.isLoaded() && !store.isLoading())
+                    if (!store.isLoaded() && !store.isLoading())
                         store.load();
 
-                    if(me.data && me.data.zone)
+                    if (me.data && me.data.zone)
                         this.setValue(me.data.zone);
                 }
             }
         };
 
-        if(this.data && this.data.zone) {
+        if (this.data && this.data.zone) {
             zone.value = this.data.zone;
         }
 

@@ -1,0 +1,11 @@
+{
+	"preset": "airbnb",
+	"validateIndentation": null,
+	"requireTrailingComma": null,
+	"disallowSpaceAfterObjectKeys": null,
+	"maximumLineLength": null,
+	"requireDotNotation" : false,
+	"requireCapitalizedConstructors" : false,
+	"disallowMultipleVarDecl" : false,
+	"safeContextKeyword" : false
+}

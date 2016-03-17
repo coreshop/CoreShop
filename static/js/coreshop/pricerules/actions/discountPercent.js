@@ -11,24 +11,24 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.actions.discountPercent");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.actions.discountPercent');
 
 pimcore.plugin.coreshop.pricerules.actions.discountPercent = Class.create(pimcore.plugin.coreshop.pricerules.actions.abstract, {
 
     type : 'discountPercent',
 
-    getForm : function() {
+    getForm : function () {
         var percentValue = 0;
         var currencyValue = null;
         var me = this;
 
-        if(this.data) {
+        if (this.data) {
             percentValue = this.data.percent;
             currencyValue = this.data.currency;
         }
 
         var percent = new Ext.form.NumberField({
-            fieldLabel:t("coreshop_action_discountPercent_percent"),
+            fieldLabel:t('coreshop_action_discountPercent_percent'),
             name:'percent',
             value : percentValue,
             minValue : 0,
@@ -44,7 +44,7 @@ pimcore.plugin.coreshop.pricerules.actions.discountPercent = Class.create(pimcor
             mode: 'local',
             listWidth: 100,
             width : 200,
-            store: pimcore.globalmanager.get("coreshop_currencies"),
+            store: pimcore.globalmanager.get('coreshop_currencies'),
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,

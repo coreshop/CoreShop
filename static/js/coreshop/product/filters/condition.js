@@ -11,19 +11,19 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.filters.condition");
+pimcore.registerNS('pimcore.plugin.coreshop.filters.condition');
 
 pimcore.plugin.coreshop.filters.condition = Class.create({
 
     type : null,
 
-    initialize : function(parent, conditions, type) {
+    initialize : function (parent, conditions, type) {
         this.parent = parent;
         this.conditions = conditions;
         this.type = type;
     },
 
-    getFieldsStore : function() {
+    getFieldsStore : function () {
         return this.parent.getFieldsForIndex();
     },
 
@@ -35,26 +35,25 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
         // show only defined conditions
         Ext.each(this.conditions, function (condition) {
 
-            if(condition == "abstract")
+            if (condition == 'abstract')
                 return;
 
             addMenu.push({
-                iconCls: "coreshop_product_filters_icon_condition_" + condition,
-                text: t("coreshop_product_filters_" + condition),
+                iconCls: 'coreshop_product_filters_icon_condition_' + condition,
+                text: t('coreshop_product_filters_' + condition),
                 handler: _this.addCondition.bind(_this, condition, {})
             });
 
         });
 
-
         this.conditionsContainer = new Ext.Panel({
-            iconCls: "coreshop_product_filters_" + this.type,
-            title: t("coreshop_product_filters_" + this.type),
+            iconCls: 'coreshop_product_filters_' + this.type,
+            title: t('coreshop_product_filters_' + this.type),
             autoScroll: true,
             style : 'padding: 10px',
             forceLayout: true,
             tbar: [{
-                iconCls: "pimcore_icon_add",
+                iconCls: 'pimcore_icon_add',
                 menu: addMenu
             }],
             border: false
@@ -63,11 +62,11 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
         return this.conditionsContainer;
     },
 
-    disable : function() {
+    disable : function () {
         this.conditionsContainer.disable();
     },
 
-    enable : function() {
+    enable : function () {
         this.conditionsContainer.enable();
     },
 
@@ -82,11 +81,11 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
         this.conditionsContainer.updateLayout();
     },
 
-    getData : function() {
+    getData : function () {
         // get defined conditions
         var conditionsData = [];
         var conditions = this.conditionsContainer.items.getRange();
-        for (var i=0; i<conditions.length; i++) {
+        for (var i = 0; i < conditions.length; i++) {
             var conditionItem = conditions[i];
             var conditionClass = conditionItem.xparent;
             var form = conditionClass.form;

@@ -11,22 +11,22 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("coreshop.plugin.broker");
+pimcore.registerNS('coreshop.plugin.broker');
 coreshop.plugin.broker = {
 
     plugins: [],
 
-    initialize: function() {
+    initialize: function () {
 
     },
 
-    registerPlugin: function(plugin) {
+    registerPlugin: function (plugin) {
         pimcore.plugin.broker.registerPlugin(plugin);
 
         this.plugins.push(plugin);
     },
 
-    getPlugins: function() {
+    getPlugins: function () {
         return this.plugins;
     },
 
@@ -36,11 +36,12 @@ coreshop.plugin.broker = {
         if (this.plugins != null && this.plugins.size() > 0) {
             return this.plugins.size();
         }
+
         return 0;
     },
 
     executePlugin: function (plugin, event, params) {
-        if (typeof plugin[event] == "function") {
+        if (typeof plugin[event] == 'function') {
             params.push(this);
             plugin[event].apply(plugin, params);
         }

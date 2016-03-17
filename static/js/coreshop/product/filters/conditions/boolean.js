@@ -11,45 +11,45 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.filters.conditions.boolean");
+pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.boolean');
 
 pimcore.plugin.coreshop.filters.conditions.boolean = Class.create(pimcore.plugin.coreshop.filters.conditions.abstract, {
 
     type : 'boolean',
 
-    getDefaultItems : function() {
+    getDefaultItems : function () {
         this.valueStore = new Ext.data.ArrayStore({
             proxy: new Ext.data.HttpProxy({
                 url : '/plugin/CoreShop/admin_Filter/get-values-for-filter-field'
             }),
             reader: new Ext.data.JsonReader({}, [
-                {name:'value'}
+                { name:'value' }
             ])
         });
 
         this.fieldsCombo = Ext.create({
-            xtype: "combo",
+            xtype: 'combo',
             fieldLabel: t('coreshop_product_filters_fields'),
-            name: "field",
+            name: 'field',
             width: 400,
             store: this.parent.getFieldsStore(),
             displayField : 'name',
             valueField : 'name',
-            triggerAction: "all",
+            triggerAction: 'all',
             multiSelect:true,
             typeAhead: false,
             editable: false,
             forceSelection: true,
-            queryMode: "local",
+            queryMode: 'local',
             value : this.data.field,
             listeners : {
-                change : function(combo, newValue) {
+                change : function (combo, newValue) {
                     this.onFieldChange.call(this, combo, newValue);
                 }.bind(this)
             }
         });
 
-        if(this.data.field) {
+        if (this.data.field) {
             this.onFieldChange(this.fieldsCombo, this.data.field);
         }
 
@@ -64,23 +64,24 @@ pimcore.plugin.coreshop.filters.conditions.boolean = Class.create(pimcore.plugin
             this.fieldsCombo
         ];
     },
-    getItems : function()
+
+    getItems : function ()
     {
         return [
             {
-                xtype: "combo",
+                xtype: 'combo',
                 fieldLabel: t('coreshop_product_filters_values'),
-                name: "preSelects",
+                name: 'preSelects',
                 width: 400,
                 store: this.parent.getFieldsStore(),
                 displayField : 'name',
                 multiSelect:true,
                 valueField : 'name',
-                triggerAction: "all",
+                triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
-                queryMode: "local",
+                queryMode: 'local',
                 value : this.data.preSelects
             }
         ];

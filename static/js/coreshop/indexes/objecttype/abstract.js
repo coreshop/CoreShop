@@ -11,18 +11,18 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.objecttype.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.indexes.objecttype.abstract');
 
 pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
-    initialize: function() {
+    initialize: function () {
 
     },
 
-    getObjectTypeItems : function(record) {
+    getObjectTypeItems : function (record) {
         return [];
     },
 
-    getConfigDialog : function(record) {
+    getConfigDialog : function (record) {
         this.record = record;
 
         var fieldSetItems = [];
@@ -39,12 +39,12 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
             name : 'getter',
             length : 255,
             value : record.data.getter,
-            store : pimcore.globalmanager.get("coreshop_index_getters"),
+            store : pimcore.globalmanager.get('coreshop_index_getters'),
             valueField : 'type',
             displayField : 'name',
             queryMode : 'local',
             listeners : {
-                change : function(combo, newValue) {
+                change : function (combo, newValue) {
                     this.getGetterPanel().removeAll();
 
                     this.getGetterPanelLayout(newValue);
@@ -57,12 +57,12 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
             name : 'interpreter',
             length : 255,
             value : record.data.interpreter,
-            store : pimcore.globalmanager.get("coreshop_index_interpreters"),
+            store : pimcore.globalmanager.get('coreshop_index_interpreters'),
             valueField : 'type',
             displayField : 'name',
             queryMode : 'local',
             listeners : {
-                change : function(combo, newValue) {
+                change : function (combo, newValue) {
                     this.getInterpreterPanel().removeAll();
 
                     this.getInterpreterPanelLayout(newValue);
@@ -72,21 +72,21 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
 
         var nodeTypeItems = this.getObjectTypeItems(record);
 
-        if(nodeTypeItems.length > 0) {
-            nodeTypeItems.forEach(function(item) {
+        if (nodeTypeItems.length > 0) {
+            nodeTypeItems.forEach(function (item) {
                 fieldSetItems.push(item);
             });
         }
 
         this.configForm = new Ext.form.FormPanel({
             items : fieldSetItems,
-            layout: "form",
-            defaults: {anchor: '90%'},
+            layout: 'form',
+            defaults: { anchor: '90%' },
             title : t('coreshop_index_field_settings')
         });
 
         this.configPanel = new Ext.panel.Panel({
-            layout: "form",
+            layout: 'form',
             scrollable : true,
             items:
                 [
@@ -95,8 +95,8 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
                     this.getInterpreterPanel()
                 ],
             buttons: [{
-                text: t("apply"),
-                iconCls: "pimcore_icon_apply",
+                text: t('apply'),
+                iconCls: 'pimcore_icon_apply',
                 handler: function () {
                     this.commitData();
                 }.bind(this)
@@ -108,8 +108,8 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
             height: 400,
             resizeable : true,
             modal: true,
-            title: t('coreshop_index_field') + " (" + this.record.data.key + ")",
-            layout: "fit",
+            title: t('coreshop_index_field') + ' (' + this.record.data.key + ')',
+            layout: 'fit',
             items: [this.configPanel]
         });
 
@@ -119,35 +119,35 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         this.window.show();
     },
 
-    commitData: function() {
+    commitData: function () {
         var form = this.configForm.getForm();
         var getterForm = this.getGetterPanel().getForm();
         var interpreterForm = this.getInterpreterPanel().getForm();
 
-        Ext.Object.each(form.getFieldValues(), function(key, value) {
+        Ext.Object.each(form.getFieldValues(), function (key, value) {
             this.record.set(key, value);
         }.bind(this));
 
-        if(this.getGetterPanel().isVisible()) {
-            this.record.set("getterConfig", getterForm.getFieldValues());
+        if (this.getGetterPanel().isVisible()) {
+            this.record.set('getterConfig', getterForm.getFieldValues());
         }
 
-        if(this.getInterpreterPanel().isVisible()) {
-            this.record.set("interpreterConfig", interpreterForm.getFieldValues());
+        if (this.getInterpreterPanel().isVisible()) {
+            this.record.set('interpreterConfig', interpreterForm.getFieldValues());
         }
 
-        if(this.record.data.name !== this.record.data.text) {
-            this.record.set("text", this.record.data.name);
+        if (this.record.data.name !== this.record.data.text) {
+            this.record.set('text', this.record.data.name);
         }
 
         this.window.close();
     },
 
-    getGetterPanel : function() {
-        if(!this.getterPanel) {
+    getGetterPanel : function () {
+        if (!this.getterPanel) {
             this.getterPanel = new Ext.form.FormPanel({
-                defaults: {anchor: '90%'},
-                layout: "form",
+                defaults: { anchor: '90%' },
+                layout: 'form',
                 title : t('coreshop_index_getter_settings')
             });
         }
@@ -155,30 +155,29 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         return this.getterPanel;
     },
 
-    getGetterPanelLayout : function(type) {
-        if(type) {
+    getGetterPanelLayout : function (type) {
+        if (type) {
             type = type.toLowerCase();
+
             //Check if some class for getterPanel is available
             if (pimcore.plugin.coreshop.indexes.getters[type]) {
                 var getter = new pimcore.plugin.coreshop.indexes.getters[type];
 
                 this.getGetterPanel().add(getter.getLayout(this.record));
                 this.getGetterPanel().show();
+            } else {
+                this.getGetterPanel().hide();
             }
-            else {
-                this.getGetterPanel().hide()
-            }
-        }
-        else {
-            this.getGetterPanel().hide()
+        } else {
+            this.getGetterPanel().hide();
         }
     },
 
-    getInterpreterPanel : function() {
-        if(!this.interpreterPanel) {
+    getInterpreterPanel : function () {
+        if (!this.interpreterPanel) {
             this.interpreterPanel = new Ext.form.FormPanel({
-                defaults: {anchor: '90%'},
-                layout: "form",
+                defaults: { anchor: '90%' },
+                layout: 'form',
                 title : t('coreshop_index_interpreter_settings')
             });
         }
@@ -186,22 +185,21 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         return this.interpreterPanel;
     },
 
-    getInterpreterPanelLayout : function(type) {
-        if(type) {
+    getInterpreterPanelLayout : function (type) {
+        if (type) {
             type = type.toLowerCase();
+
             //Check if some class for getterPanel is available
             if (pimcore.plugin.coreshop.indexes.interpreters[type]) {
                 var getter = new pimcore.plugin.coreshop.indexes.interpreters[type];
 
                 this.getInterpreterPanel().add(getter.getLayout(this.record));
                 this.getInterpreterPanel().show();
+            } else {
+                this.getInterpreterPanel().hide();
             }
-            else {
-                this.getInterpreterPanel().hide()
-            }
-        }
-        else {
-            this.getInterpreterPanel().hide()
+        } else {
+            this.getInterpreterPanel().hide();
         }
     }
 });

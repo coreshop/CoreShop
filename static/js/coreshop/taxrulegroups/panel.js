@@ -11,22 +11,22 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.taxrulegroups.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.taxrulegroups.panel');
 
 pimcore.plugin.coreshop.taxrulegroups.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     /**
      * @var string
      */
-    layoutId: "coreshop_tax_rule_groups_panel",
-    storeId : "coreshop_taxrulegroups",
-    iconCls : "coreshop_icon_tax_rule_groups",
-    type : "taxrulegroups",
+    layoutId: 'coreshop_tax_rule_groups_panel',
+    storeId : 'coreshop_taxrulegroups',
+    iconCls : 'coreshop_icon_tax_rule_groups',
+    type : 'taxrulegroups',
 
     url : {
-        add : "/plugin/CoreShop/admin_TaxRuleGroup/add",
-        delete : "/plugin/CoreShop/admin_TaxRuleGroup/delete",
-        get : "/plugin/CoreShop/admin_TaxRuleGroup/get",
-        list : "/plugin/CoreShop/admin_TaxRuleGroup/list"
+        add : '/plugin/CoreShop/admin_TaxRuleGroup/add',
+        delete : '/plugin/CoreShop/admin_TaxRuleGroup/delete',
+        get : '/plugin/CoreShop/admin_TaxRuleGroup/get',
+        list : '/plugin/CoreShop/admin_TaxRuleGroup/list'
     }
 });

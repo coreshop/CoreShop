@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.tags.coreShopLanguage");
+pimcore.registerNS('pimcore.object.tags.coreShopLanguage');
 pimcore.object.tags.coreShopLanguage = Class.create(pimcore.object.tags.select, {
 
     allowEmpty : false,
@@ -36,13 +36,13 @@ pimcore.object.tags.coreShopLanguage = Class.create(pimcore.object.tags.select, 
 
         var options = {
             name: this.fieldConfig.name,
-            triggerAction: "all",
+            triggerAction: 'all',
             editable: false,
             typeAhead: false,
             forceSelection: true,
             fieldLabel: this.fieldConfig.title,
             store: store,
-            componentCls: "object_field",
+            componentCls: 'object_field',
             width: 250,
             labelWidth: 100,
             displayField:'display',
@@ -50,8 +50,8 @@ pimcore.object.tags.coreShopLanguage = Class.create(pimcore.object.tags.select, 
             queryMode : 'local',
             value:this.data ? this.data : null,
             listeners : {
-                beforerender : function() {
-                    if(!store.isLoaded() && !store.isLoading())
+                beforerender : function () {
+                    if (!store.isLoaded() && !store.isLoading())
                         store.load();
                 }
             }

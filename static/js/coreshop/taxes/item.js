@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.taxes.item");
+pimcore.registerNS('pimcore.plugin.coreshop.taxes.item');
 
 pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
@@ -21,40 +21,40 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
         save : '/plugin/CoreShop/admin_Tax/save'
     },
 
-    getItems : function() {
+    getItems : function () {
         return [this.getFormPanel()];
     },
 
-    getTitleText : function() {
+    getTitleText : function () {
         return this.data.localizedFields.items[pimcore.settings.language].name;
     },
 
-    getFormPanel : function()
+    getFormPanel : function ()
     {
         var data = this.data;
 
         var langTabs = [];
-        Ext.each(pimcore.settings.websiteLanguages, function(lang) {
+        Ext.each(pimcore.settings.websiteLanguages, function (lang) {
             var tab = {
                 title: pimcore.available_languages[lang],
-                iconCls: "pimcore_icon_language_" + lang.toLowerCase(),
+                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout:'form',
                 items: [{
-                    xtype: "textfield",
-                    name: "name." + lang,
-                    fieldLabel: t("name"),
+                    xtype: 'textfield',
+                    name: 'name.' + lang,
+                    fieldLabel: t('name'),
                     width: 400,
-                    value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].name : ""
+                    value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].name : ''
                 }]
             };
 
-            langTabs.push( tab );
+            langTabs.push(tab);
         });
 
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
-            region : "center",
+            region : 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -62,9 +62,9 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
             },
             buttons: [
                 {
-                    text: t("save"),
+                    text: t('save'),
                     handler: this.save.bind(this),
-                    iconCls: "pimcore_icon_apply"
+                    iconCls: 'pimcore_icon_apply'
                 }
             ],
             items: [
@@ -73,10 +73,10 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
                     autoHeight:true,
                     labelWidth: 350,
                     defaultType: 'textfield',
-                    defaults: {width: '100%'},
+                    defaults: { width: '100%' },
                     items :[
                         {
-                            xtype: "tabpanel",
+                            xtype: 'tabpanel',
                             activeTab: 0,
                             defaults: {
                                 autoHeight:true,
@@ -85,17 +85,17 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
                             items: langTabs
                         },
                         {
-                            xtype: "numberfield",
-                            name: "rate",
-                            fieldLabel: t("coreshop_tax_rate"),
+                            xtype: 'numberfield',
+                            name: 'rate',
+                            fieldLabel: t('coreshop_tax_rate'),
                             width: 400,
                             value: data.rate,
                             decimalPrecision : 2,
                             step : 1
                         }, {
-                            xtype: "checkbox",
-                            name: "active",
-                            fieldLabel: t("coreshop_tax_active"),
+                            xtype: 'checkbox',
+                            name: 'active',
+                            fieldLabel: t('coreshop_tax_active'),
                             width: 250,
                             checked: data.active
                         }
@@ -107,7 +107,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
         return this.formPanel;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         return {
             data : Ext.encode(this.formPanel.getForm().getFieldValues())
         };
@@ -118,8 +118,8 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
         var values = this.formPanel.getForm().getFieldValues();
 
         Ext.Ajax.request({
-            url: "/plugin/CoreShop/admin_Tax/save",
-            method: "post",
+            url: '/plugin/CoreShop/admin_Tax/save',
+            method: 'post',
             params: {
                 data: Ext.encode(values),
                 id : this.data.id
@@ -128,13 +128,13 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
                 try {
                     var res = Ext.decode(response.responseText);
                     if (res.success) {
-                        pimcore.helpers.showNotification(t("success"), t("coreshop_tax_saved_successfully"), "success");
+                        pimcore.helpers.showNotification(t('success'), t('coreshop_tax_saved_successfully'), 'success');
                     } else {
-                        pimcore.helpers.showNotification(t("error"), t("coreshop_tax_saved_error"),
-                            "error", t(res.message));
+                        pimcore.helpers.showNotification(t('error'), t('coreshop_tax_saved_error'),
+                            'error', t(res.message));
                     }
-                } catch(e) {
-                    pimcore.helpers.showNotification(t("error"), t("coreshop_tax_saved_error"), "error");
+                } catch (e) {
+                    pimcore.helpers.showNotification(t('error'), t('coreshop_tax_saved_error'), 'error');
                 }
             }
         });

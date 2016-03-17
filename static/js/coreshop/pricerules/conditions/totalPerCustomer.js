@@ -11,24 +11,24 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions.totalPerCustomer");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions.totalPerCustomer');
 
 pimcore.plugin.coreshop.pricerules.conditions.totalPerCustomer = Class.create(pimcore.plugin.coreshop.pricerules.conditions.abstract, {
 
     type : 'totalPerCustomer',
 
-    getForm : function() {
+    getForm : function () {
 
         var totalValue  = 0;
 
-        if(this.data) {
+        if (this.data) {
             totalValue = this.data.total;
         }
 
         var total = new Ext.form.NumberField({
-            fieldLabel:t("coreshop_condition_totalPerCustomer_total"),
+            fieldLabel:t('coreshop_condition_totalPerCustomer_total'),
             name:'total',
-            value : totalValue ,
+            value : totalValue,
             minValue : 0,
             decimalPrecision : 0,
             step : 1

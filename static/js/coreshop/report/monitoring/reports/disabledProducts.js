@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.report.monitoring.reports.disabledProducts");
+pimcore.registerNS('pimcore.plugin.coreshop.report.monitoring.reports.disabledProducts');
 pimcore.plugin.coreshop.report.monitoring.reports.disabledProducts = Class.create(pimcore.plugin.coreshop.report.monitoring.abstract, {
 
     url : '/plugin/CoreShop/admin_reports/get-disabled-products-monitoring',
 
     getName: function () {
-        return t("coreshop_monitoring_disableProducts");
+        return t('coreshop_monitoring_disableProducts');
     },
 
     getIconCls: function () {
-        return "coreshop_icon_product";
+        return 'coreshop_icon_product';
     },
 
-    getGrid : function() {
+    getGrid : function () {
         return new Ext.Panel({
             layout:'fit',
             height: 275,
@@ -54,10 +54,10 @@ pimcore.plugin.coreshop.report.monitoring.reports.disabledProducts = Class.creat
                     }
                 ],
                 listeners : {
-                    rowclick : function(grid, record) {
+                    rowclick : function (grid, record) {
                         var d = record.data;
 
-                        pimcore.helpers.openObject(d.id, "object");
+                        pimcore.helpers.openObject(d.id, 'object');
                     }
                 }
             }

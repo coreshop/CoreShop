@@ -11,8 +11,8 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.actions");
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.actions.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.actions');
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.actions.abstract');
 
 pimcore.plugin.coreshop.pricerules.actions.abstract = Class.create(pimcore.plugin.coreshop.pricerules.abstract, {
     elementType : 'action'

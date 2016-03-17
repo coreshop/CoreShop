@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.item");
+pimcore.registerNS('pimcore.plugin.coreshop.indexes.item');
 
 pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
@@ -21,7 +21,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         save : '/plugin/CoreShop/admin_Indexes/save'
     },
 
-    getPanel: function() {
+    getPanel: function () {
         var panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -30,8 +30,8 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
             forceLayout: true,
             iconCls : this.iconCls,
             buttons: [{
-                text: t("save"),
-                iconCls: "pimcore_icon_apply",
+                text: t('save'),
+                iconCls: 'pimcore_icon_apply',
                 handler: this.save.bind(this)
             }],
             items: this.getItems()
@@ -40,21 +40,21 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         return panel;
     },
 
-    getItems : function() {
+    getItems : function () {
         return [
             this.getSettings(),
             this.getIndexFields()
         ];
     },
 
-    getSettings : function()
+    getSettings : function ()
     {
         this.formPanel = new Ext.form.Panel({
-            iconCls: "coreshop_icon_indexes_settings",
-            title: t("settings"),
+            iconCls: 'coreshop_icon_indexes_settings',
+            title: t('settings'),
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
-            region : "center",
+            region : 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -66,7 +66,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
                     autoHeight:true,
                     labelWidth: 350,
                     defaultType: 'textfield',
-                    defaults: {width: '100%'},
+                    defaults: { width: '100%' },
                     items :[
                         {
                             xtype : 'textfield',
@@ -96,15 +96,15 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         return this.formPanel;
     },
 
-    getIndexFields : function() {
+    getIndexFields : function () {
         this.fieldsPanel = new pimcore.plugin.coreshop.indexes.fields(this.data);
 
         this.indexFields = new Ext.panel.Panel({
-            iconCls: "coreshop_icon_indexes_fields",
-            title: t("coreshop_indexes_fields"),
+            iconCls: 'coreshop_icon_indexes_fields',
+            title: t('coreshop_indexes_fields'),
             border: false,
-            layout: "fit",
-            region : "center",
+            layout: 'fit',
+            region : 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -118,11 +118,11 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         return this.indexFields;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         var saveData = this.formPanel.getForm().getFieldValues();
 
         // general settings
-        saveData["config"] = this.fieldsPanel.getData();
+        saveData['config'] = this.fieldsPanel.getData();
 
         return {
             data : Ext.encode(saveData)

@@ -11,9 +11,9 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.tags.coreShopCarrier");
+pimcore.registerNS('pimcore.object.tags.coreShopCarrier');
 pimcore.object.tags.coreShopCarrier = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
-    type: "coreShopCarrier",
-    storeName : "carriers"
+    type: 'coreShopCarrier',
+    storeName : 'carriers'
 });

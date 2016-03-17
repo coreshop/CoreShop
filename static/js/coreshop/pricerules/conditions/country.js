@@ -11,15 +11,15 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions.country");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions.country');
 
 pimcore.plugin.coreshop.pricerules.conditions.country = Class.create(pimcore.plugin.coreshop.pricerules.conditions.abstract, {
 
     type : 'country',
 
-    getForm : function() {
+    getForm : function () {
         var me = this;
-        var store = pimcore.globalmanager.get("coreshop_countries");
+        var store = pimcore.globalmanager.get('coreshop_countries');
 
         var country = {
             xtype: 'combo',
@@ -35,16 +35,16 @@ pimcore.plugin.coreshop.pricerules.conditions.country = Class.create(pimcore.plu
             name:'country',
             listeners: {
                 beforerender: function () {
-                    if(!store.isLoaded() && !store.isLoading())
+                    if (!store.isLoaded() && !store.isLoading())
                         store.load();
 
-                    if(me.data && me.data.country)
+                    if (me.data && me.data.country)
                         this.setValue(me.data.country);
                 }
             }
         };
 
-        if(this.data && this.data.country) {
+        if (this.data && this.data.country) {
             country.value = this.data.country;
         }
 

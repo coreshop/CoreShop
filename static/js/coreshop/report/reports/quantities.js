@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.report.reports.quantities");
+pimcore.registerNS('pimcore.plugin.coreshop.report.reports.quantities');
 pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
     url : '/plugin/CoreShop/admin_reports/get-quantities-report',
 
     getName: function () {
-        return t("coreshop_report_quantities");
+        return t('coreshop_report_quantities');
     },
 
     getIconCls: function () {
-        return "coreshop_icon_quantity";
+        return 'coreshop_icon_quantity';
     },
 
-    getGrid : function() {
+    getGrid : function () {
         return new Ext.Panel({
             layout:'fit',
             height: 275,
@@ -60,11 +60,11 @@ pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.
         });
     },
 
-    getFilterFields : function() {
+    getFilterFields : function () {
         return [];
     },
 
-    getFilterParams : function() {
+    getFilterParams : function () {
         return {};
     }
 });

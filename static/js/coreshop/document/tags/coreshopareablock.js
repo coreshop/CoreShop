@@ -11,10 +11,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.document.tags.coreshopareablock");
+pimcore.registerNS('pimcore.document.tags.coreshopareablock');
 pimcore.document.tags.coreshopareablock = Class.create(pimcore.document.tags.areablock, {
     getType: function () {
-        return "coreshopareablock";
+        return 'coreshopareablock';
     }
 });
 

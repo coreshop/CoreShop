@@ -11,29 +11,29 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.filters.conditions.multiselect");
+pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.multiselect');
 
 pimcore.plugin.coreshop.filters.conditions.multiselect = Class.create(pimcore.plugin.coreshop.filters.conditions.abstract, {
 
     type : 'multiselect',
 
-    getItems : function()
+    getItems : function ()
     {
         return [
             {
-                xtype: "combo",
+                xtype: 'combo',
                 fieldLabel: t('coreshop_product_filters_values'),
-                name: "preSelects",
+                name: 'preSelects',
                 width: 400,
                 store: this.valueStore,
                 displayField : 'key',
                 multiSelect:true,
                 valueField : 'value',
-                triggerAction: "all",
+                triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
-                queryMode: "local",
+                queryMode: 'local',
                 value : this.data.preSelects
             }
         ];

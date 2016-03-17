@@ -11,11 +11,11 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.indexes.objecttype.mysql.abstract');
 
 pimcore.plugin.coreshop.indexes.objecttype.mysql.field = Class.create(pimcore.plugin.coreshop.indexes.objecttype.abstract, {
 
-    getObjectTypeItems : function(record) {
+    getObjectTypeItems : function (record) {
         return [new Ext.form.TextField({
             fieldLabel : t('coreshop_index_field_type'),
             name : 'columnType',

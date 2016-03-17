@@ -11,15 +11,15 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions.customerGroup");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions.customerGroup');
 
 pimcore.plugin.coreshop.pricerules.conditions.customerGroup = Class.create(pimcore.plugin.coreshop.pricerules.conditions.abstract, {
 
     type : 'customerGroup',
 
-    getForm : function() {
+    getForm : function () {
         var me = this;
-        var store = pimcore.globalmanager.get("coreshop_customergroups");
+        var store = pimcore.globalmanager.get('coreshop_customergroups');
 
         var customerGroup = {
             xtype: 'combo',
@@ -35,16 +35,16 @@ pimcore.plugin.coreshop.pricerules.conditions.customerGroup = Class.create(pimco
             name:'customerGroup',
             listeners: {
                 beforerender: function () {
-                    if(!store.isLoaded() && !store.isLoading())
+                    if (!store.isLoaded() && !store.isLoading())
                         store.load();
 
-                    if(me.data && me.data.customerGroup)
+                    if (me.data && me.data.customerGroup)
                         this.setValue(me.data.customerGroup);
                 }
             }
         };
 
-        if(this.data && this.data.customerGroup) {
+        if (this.data && this.data.customerGroup) {
             customerGroup.value = this.data.customerGroup;
         }
 

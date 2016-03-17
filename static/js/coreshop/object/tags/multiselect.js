@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.object.tags.multiselect");
+pimcore.registerNS('pimcore.plugin.coreshop.object.tags.multiselect');
 pimcore.plugin.coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect, {
 
     getLayoutEdit: function () {
@@ -19,25 +19,24 @@ pimcore.plugin.coreshop.object.tags.multiselect = Class.create(pimcore.object.ta
         // generate store
         var store = [];
 
-        if(pimcore.globalmanager.exists("coreshop_" + this.storeName)) {
-            store = pimcore.globalmanager.get("coreshop_" + this.storeName);
-        }
-        else {
-            console.log("coreshop_" + this.storeName + " should be added as valid store");
+        if (pimcore.globalmanager.exists('coreshop_' + this.storeName)) {
+            store = pimcore.globalmanager.get('coreshop_' + this.storeName);
+        } else {
+            console.log('coreshop_' + this.storeName + ' should be added as valid store');
         }
 
         var options = {
             name: this.fieldConfig.name,
-            triggerAction: "all",
+            triggerAction: 'all',
             editable: false,
             fieldLabel: this.fieldConfig.title,
             store: store,
-            itemCls: "object_field",
+            itemCls: 'object_field',
             maxHeight : 400,
             queryMode : 'local',
             listeners : {
-                beforerender : function() {
-                    if(!store.isLoaded() && !store.isLoading())
+                beforerender : function () {
+                    if (!store.isLoaded() && !store.isLoading())
                         store.load();
                 }
             }
@@ -46,11 +45,12 @@ pimcore.plugin.coreshop.object.tags.multiselect = Class.create(pimcore.object.ta
         if (this.fieldConfig.width) {
             options.width = this.fieldConfig.width;
         }
+
         if (this.fieldConfig.height) {
             options.height = this.fieldConfig.height;
         }
 
-        if (typeof this.data == "string" || typeof this.data == "number") {
+        if (typeof this.data == 'string' || typeof this.data == 'number') {
             options.value = this.data;
         }
 

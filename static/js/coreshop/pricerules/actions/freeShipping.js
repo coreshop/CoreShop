@@ -11,13 +11,13 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.actions.freeShipping");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.actions.freeShipping');
 
 pimcore.plugin.coreshop.pricerules.actions.freeShipping = Class.create(pimcore.plugin.coreshop.pricerules.actions.abstract, {
 
     type : 'freeShipping',
 
-    getForm : function() {
+    getForm : function () {
 
         this.form = new Ext.form.FieldSet({
             type: 'FreeShipping',

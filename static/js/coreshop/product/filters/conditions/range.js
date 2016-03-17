@@ -11,43 +11,43 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.filters.conditions.range");
+pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.range');
 
 pimcore.plugin.coreshop.filters.conditions.range = Class.create(pimcore.plugin.coreshop.filters.conditions.abstract, {
 
     type : 'range',
 
-    getItems : function()
+    getItems : function ()
     {
         return [
             {
-                xtype: "combo",
+                xtype: 'combo',
                 fieldLabel: t('coreshop_product_filters_value_min'),
-                name: "preSelectMin",
+                name: 'preSelectMin',
                 width: 400,
                 store: this.valueStore,
                 displayField : 'key',
                 valueField : 'value',
-                triggerAction: "all",
+                triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
-                queryMode: "local",
+                queryMode: 'local',
                 value : this.data.preSelectMin
             },
             {
-                xtype: "combo",
+                xtype: 'combo',
                 fieldLabel: t('coreshop_product_filters_value_max'),
-                name: "preSelectMax",
+                name: 'preSelectMax',
                 width: 400,
                 store: this.valueStore,
                 displayField : 'key',
                 valueField : 'value',
-                triggerAction: "all",
+                triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
-                queryMode: "local",
+                queryMode: 'local',
                 value : this.data.preSelectMax
             }
         ];

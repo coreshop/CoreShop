@@ -11,45 +11,46 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.report.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.report.abstract');
 pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, {
 
     url : '',
 
     matchType: function (type) {
-        var types = ["global"];
+        var types = ['global'];
         if (pimcore.report.abstract.prototype.matchTypeValidate(type, types)) {
             return true;
         }
+
         return false;
     },
 
     getName: function () {
-        return "coreshop";
+        return 'coreshop';
     },
 
     getIconCls: function () {
-        return "coreshop_icon_report";
+        return 'coreshop_icon_report';
     },
 
-    getGrid : function() {
+    getGrid : function () {
         return false;
     },
 
-    getFromField : function() {
-        return this.panel.down("[name=from]");
+    getFromField : function () {
+        return this.panel.down('[name=from]');
     },
 
-    getToField : function() {
-        return this.panel.down("[name=to]");
+    getToField : function () {
+        return this.panel.down('[name=to]');
     },
 
     getPanel: function () {
 
-        if(!this.panel) {
+        if (!this.panel) {
             this.panel = new Ext.Panel({
                 title: this.getName(),
-                layout: "fit",
+                layout: 'fit',
                 border: false,
                 items: [],
                 dockedItems : {
@@ -61,7 +62,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
 
             grid = this.getGrid();
 
-            if(grid) {
+            if (grid) {
                 this.panel.add(grid);
             }
 
@@ -71,12 +72,12 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
         return this.panel;
     },
 
-    getFilterFields : function() {
+    getFilterFields : function () {
         return [
             {
                 xtype : 'button',
                 text : t('coreshop_report_day'),
-                handler : function() {
+                handler : function () {
                     var today = new Date();
                     var yesterday = new Date();
 
@@ -91,7 +92,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
             {
                 xtype : 'button',
                 text : t('coreshop_report_month'),
-                handler : function() {
+                handler : function () {
                     var now = new Date();
 
                     this.getFromField().setValue(new Date(now.getFullYear(), now.getMonth(), 1));
@@ -103,7 +104,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
             {
                 xtype : 'button',
                 text : t('coreshop_report_year'),
-                handler : function() {
+                handler : function () {
                     var now = new Date();
 
                     this.getFromField().setValue(new Date(now.getFullYear(), 0, 1));
@@ -115,7 +116,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
             {
                 xtype : 'button',
                 text : t('coreshop_report_day_minus'),
-                handler : function() {
+                handler : function () {
                     var today = new Date();
                     var yesterday = new Date();
 
@@ -131,7 +132,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
             {
                 xtype : 'button',
                 text : t('coreshop_report_month_minus'),
-                handler : function() {
+                handler : function () {
                     var now = new Date();
 
                     this.getFromField().setValue(new Date(now.getFullYear(), now.getMonth() - 1, 1));
@@ -143,7 +144,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
             {
                 xtype : 'button',
                 text : t('coreshop_report_year_minus'),
-                handler : function() {
+                handler : function () {
                     var now = new Date();
 
                     this.getFromField().setValue(new Date(now.getFullYear() - 1, 0, 1));
@@ -168,15 +169,15 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
             {
                 xtype : 'button',
                 text : t('coreshop_report_filter'),
-                handler : function() {
+                handler : function () {
                     this.filter();
                 }.bind(this)
             }
         ];
     },
 
-    getStore : function() {
-        if(!this.store) {
+    getStore : function () {
+        if (!this.store) {
             this.store = new Ext.data.Store({
                 autoDestroy: true,
                 proxy: {
@@ -197,18 +198,17 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
         return this.store;
     },
 
-    filter : function() {
+    filter : function () {
         this.getStore().load({
             params : this.getFilterParams()
         });
     },
 
-    getFilterParams : function() {
+    getFilterParams : function () {
         return {
             'filters[from]' : this.getFromField().getValue().getTime() / 1000,
             'filters[to]' : this.getToField().getValue().getTime() / 1000
         };
     }
 });
-
 

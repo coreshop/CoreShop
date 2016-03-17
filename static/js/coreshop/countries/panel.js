@@ -11,22 +11,21 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.countries.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.countries.panel');
 pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
-
 
     /**
      * @var string
      */
-    layoutId: "coreshop_countries_panel",
-    storeId : "coreshop_countries",
-    iconCls : "coreshop_icon_country",
-    type : "countries",
+    layoutId: 'coreshop_countries_panel',
+    storeId : 'coreshop_countries',
+    iconCls : 'coreshop_icon_country',
+    type : 'countries',
 
     url : {
-        add : "/plugin/CoreShop/admin_Country/add",
-        delete : "/plugin/CoreShop/admin_Country/delete",
-        get : "/plugin/CoreShop/admin_Country/get",
-        list : "/plugin/CoreShop/admin_Country/list"
+        add : '/plugin/CoreShop/admin_Country/add',
+        delete : '/plugin/CoreShop/admin_Country/delete',
+        get : '/plugin/CoreShop/admin_Country/get',
+        list : '/plugin/CoreShop/admin_Country/list'
     }
 });

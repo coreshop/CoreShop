@@ -11,8 +11,8 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions");
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions');
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions.abstract');
 
 pimcore.plugin.coreshop.pricerules.conditions.abstract = Class.create(pimcore.plugin.coreshop.pricerules.abstract, {
     elementType : 'condition'

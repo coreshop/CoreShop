@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.classes.data.coreShopCurrency");
+pimcore.registerNS('pimcore.object.classes.data.coreShopCurrency');
 pimcore.object.classes.data.coreShopCurrency = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
 
-    type: "coreShopCurrency",
+    type: 'coreShopCurrency',
 
     getTypeName: function () {
-        return t("coreshop_currency");
+        return t('coreshop_currency');
     },
 
     getGroup: function () {
-        return "coreshop";
+        return 'coreshop';
     },
 
     getIconClass: function () {
-        return "coreshop_icon_currency";
+        return 'coreshop_icon_currency';
     }
 });

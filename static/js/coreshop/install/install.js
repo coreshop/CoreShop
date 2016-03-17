@@ -11,26 +11,25 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.install");
+pimcore.registerNS('pimcore.plugin.coreshop.install');
 pimcore.plugin.coreshop.install = Class.create({
 
     initialize: function () {
-        Ext.MessageBox.confirm(t("info"), t("coreshop_install_confirm"), function (buttonValue) {
-            if (buttonValue == "yes")
+        Ext.MessageBox.confirm(t('info'), t('coreshop_install_confirm'), function (buttonValue) {
+            if (buttonValue == 'yes')
             {
                 Ext.Ajax.request({
-                    url: "/plugin/CoreShop/admin_install/install",
-                    method: "post",
+                    url: '/plugin/CoreShop/admin_install/install',
+                    method: 'post',
                     success: function (response) {
                         var data = Ext.decode(response.responseText);
 
-                        if(data.success) {
-                            Ext.MessageBox.alert(t("info"), t("coreshop_installed_successfully"), function () {
+                        if (data.success) {
+                            Ext.MessageBox.alert(t('info'), t('coreshop_installed_successfully'), function () {
                                 window.location.reload();
                             });
-                        }
-                        else {
-                            Ext.MessageBox.alert(t("alert"), t("coreshop_install_failed"));
+                        } else {
+                            Ext.MessageBox.alert(t('alert'), t('coreshop_install_failed'));
                         }
                     }
                 });

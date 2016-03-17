@@ -11,8 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.currencies.item");
+pimcore.registerNS('pimcore.plugin.coreshop.currencies.item');
 pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
     iconCls : 'coreshop_icon_currency',
@@ -21,15 +20,15 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
         save : '/plugin/CoreShop/admin_Currency/save'
     },
 
-    getItems : function() {
+    getItems : function () {
         return [this.getFormPanel()];
     },
 
-    getFormPanel : function() {
+    getFormPanel : function () {
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
-            region : "center",
+            region : 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -37,9 +36,9 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
             },
             buttons: [
                 {
-                    text: t("save"),
+                    text: t('save'),
                     handler: this.save.bind(this),
-                    iconCls: "pimcore_icon_apply"
+                    iconCls: 'pimcore_icon_apply'
                 }
             ],
             items: [
@@ -48,32 +47,31 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
                     autoHeight:true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 300},
+                    defaults: { width: 300 },
                     items :[
                         {
-                            fieldLabel: t("coreshop_currency_name"),
-                            name: "name",
+                            fieldLabel: t('coreshop_currency_name'),
+                            name: 'name',
                             value: this.data.name
                         },
                         {
-                            fieldLabel: t("coreshop_currency_isoCode"),
-                            name: "isoCode",
+                            fieldLabel: t('coreshop_currency_isoCode'),
+                            name: 'isoCode',
                             value: this.data.isoCode
                         },
                         {
-                            fieldLabel: t("coreshop_currency_numericIsoCode"),
-                            name: "numericIsoCode",
+                            fieldLabel: t('coreshop_currency_numericIsoCode'),
+                            name: 'numericIsoCode',
                             value: this.data.numericIsoCode
                         },
                         {
-                            fieldLabel: t("coreshop_currency_symbol"),
-                            name: "symbol",
+                            fieldLabel: t('coreshop_currency_symbol'),
+                            name: 'symbol',
                             value: this.data.symbol
-                        }
-                        ,
+                        },
                         {
-                            fieldLabel: t("coreshop_currency_exchangeRate"),
-                            name: "exchangeRate",
+                            fieldLabel: t('coreshop_currency_exchangeRate'),
+                            name: 'exchangeRate',
                             value: this.data.exchangeRate,
                             xtype : 'spinnerfield'
                         }
@@ -85,7 +83,7 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
         return this.formPanel;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         return {
             data: Ext.encode(this.formPanel.getForm().getFieldValues())
         };

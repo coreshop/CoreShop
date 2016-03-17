@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.productSpecificPrice.item");
+pimcore.registerNS('pimcore.plugin.coreshop.productSpecificPrice.item');
 
 pimcore.plugin.coreshop.productSpecificPrice.item = Class.create(pimcore.plugin.coreshop.pricerules.item, {
 
@@ -25,15 +25,15 @@ pimcore.plugin.coreshop.productSpecificPrice.item = Class.create(pimcore.plugin.
         var data = this.data;
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: "coreshop_price_rule_settings",
-            title: t("settings"),
-            bodyStyle: "padding:10px;",
+            iconCls: 'coreshop_price_rule_settings',
+            title: t('settings'),
+            bodyStyle: 'padding:10px;',
             autoScroll: true,
             border:false,
             items: [{
-                xtype: "textfield",
-                name: "name",
-                fieldLabel: t("name"),
+                xtype: 'textfield',
+                name: 'name',
+                fieldLabel: t('name'),
                 width: 250,
                 value: data.name
             }]

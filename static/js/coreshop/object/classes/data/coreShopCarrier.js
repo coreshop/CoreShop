@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.classes.data.coreShopCarrier");
+pimcore.registerNS('pimcore.object.classes.data.coreShopCarrier');
 pimcore.object.classes.data.coreShopCarrier = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
 
-    type: "coreShopCarrier",
+    type: 'coreShopCarrier',
 
     getTypeName: function () {
-        return t("coreshop_carrier");
+        return t('coreshop_carrier');
     },
 
     getGroup: function () {
-        return "coreshop";
+        return 'coreshop';
     },
 
     getIconClass: function () {
-        return "coreshop_icon_carrier";
+        return 'coreshop_icon_carrier';
     }
 });

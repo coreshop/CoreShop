@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.classes.data.coreShopTaxRuleGroup");
+pimcore.registerNS('pimcore.object.classes.data.coreShopTaxRuleGroup');
 pimcore.object.classes.data.coreShopTaxRuleGroup = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
 
-    type: "coreShopTaxRuleGroup",
+    type: 'coreShopTaxRuleGroup',
 
     getTypeName: function () {
-        return t("coreshop_tax_rule_group");
+        return t('coreshop_tax_rule_group');
     },
 
     getGroup: function () {
-        return "coreshop";
+        return 'coreshop';
     },
 
     getIconClass: function () {
-        return "coreshop_icon_tax_rule_groups";
+        return 'coreshop_icon_tax_rule_groups';
     }
 });

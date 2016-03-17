@@ -11,23 +11,22 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.carriers.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.carriers.panel');
 
 pimcore.plugin.coreshop.carriers.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     /**
      * @var string
      */
-    layoutId: "coreshop_carriers_panel",
-    storeId : "coreshop_carriers",
-    iconCls : "coreshop_icon_carriers",
-    type : "carriers",
+    layoutId: 'coreshop_carriers_panel',
+    storeId : 'coreshop_carriers',
+    iconCls : 'coreshop_icon_carriers',
+    type : 'carriers',
 
     url : {
-        add : "/plugin/CoreShop/admin_Carrier/add",
-        delete : "/plugin/CoreShop/admin_Carrier/delete",
-        get : "/plugin/CoreShop/admin_Carrier/get",
-        list : "/plugin/CoreShop/admin_Carrier/list"
+        add : '/plugin/CoreShop/admin_Carrier/add',
+        delete : '/plugin/CoreShop/admin_Carrier/delete',
+        get : '/plugin/CoreShop/admin_Carrier/get',
+        list : '/plugin/CoreShop/admin_Carrier/list'
     }
 });

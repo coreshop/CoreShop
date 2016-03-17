@@ -11,22 +11,22 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.currencies.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.currencies.panel');
 
 pimcore.plugin.coreshop.currencies.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     /**
      * @var string
      */
-    layoutId: "coreshop_currencies_panel",
-    storeId : "coreshop_currencies",
-    iconCls : "coreshop_icon_currency",
-    type : "currencies",
+    layoutId: 'coreshop_currencies_panel',
+    storeId : 'coreshop_currencies',
+    iconCls : 'coreshop_icon_currency',
+    type : 'currencies',
 
     url : {
-        add : "/plugin/CoreShop/admin_Currency/add",
-        delete : "/plugin/CoreShop/admin_Currency/delete",
-        get : "/plugin/CoreShop/admin_Currency/get",
-        list : "/plugin/CoreShop/admin_Currency/list"
+        add : '/plugin/CoreShop/admin_Currency/add',
+        delete : '/plugin/CoreShop/admin_Currency/delete',
+        get : '/plugin/CoreShop/admin_Currency/get',
+        list : '/plugin/CoreShop/admin_Currency/list'
     }
 });

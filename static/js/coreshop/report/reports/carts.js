@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.report.reports.carts");
+pimcore.registerNS('pimcore.plugin.coreshop.report.reports.carts');
 pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
     url : '/plugin/CoreShop/admin_reports/get-orders-carts-report',
 
     getName: function () {
-        return t("coreshop_report_carts");
+        return t('coreshop_report_carts');
     },
 
     getIconCls: function () {
-        return "coreshop_icon_report_carts";
+        return 'coreshop_icon_report_carts';
     },
 
-    getGrid : function() {
+    getGrid : function () {
         var panel = new Ext.Panel({
             layout:'fit',
             height: 275,
@@ -46,8 +46,7 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
                     position: 'left',
                     grid: true,
                     minimum: 0
-                }
-                    , {
+                }, {
                         type: 'category',
                         fields: 'datetext',
                         position: 'bottom'
@@ -78,7 +77,7 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
                         tooltip: {
                             trackMouse: true,
                             style: 'background: #01841c',
-                            renderer: function(tooltip, storeItem, item) {
+                            renderer: function (tooltip, storeItem, item) {
                                 var title = item.series.getTitle();
                                 tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get(item.series.getYField()));
                             }
@@ -108,7 +107,7 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
                         tooltip: {
                             trackMouse: true,
                             style: 'background: #00bfff',
-                            renderer: function(tooltip, storeItem, item) {
+                            renderer: function (tooltip, storeItem, item) {
                                 var title = item.series.getTitle();
                                 tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get(item.series.getYField()));
                             }

@@ -11,9 +11,9 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.tags.coreShopCurrency");
+pimcore.registerNS('pimcore.object.tags.coreShopCurrency');
 pimcore.object.tags.coreShopCurrency = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
-    type: "coreShopCurrency",
-    storeName : "currencies"
+    type: 'coreShopCurrency',
+    storeName : 'currencies'
 });

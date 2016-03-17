@@ -11,23 +11,23 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.filters.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.filters.panel');
 
 pimcore.plugin.coreshop.filters.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     /**
      * @var string
      */
-    layoutId: "coreshop_product_filters_panel",
-    storeId : "coreshop_product_filters",
-    iconCls : "coreshop_icon_product_filters",
-    type : "filters",
+    layoutId: 'coreshop_product_filters_panel',
+    storeId : 'coreshop_product_filters',
+    iconCls : 'coreshop_icon_product_filters',
+    type : 'filters',
 
     url : {
-        add : "/plugin/CoreShop/admin_Filter/add",
-        delete : "/plugin/CoreShop/admin_Filter/delete",
-        get : "/plugin/CoreShop/admin_Filter/get",
-        list : "/plugin/CoreShop/admin_Filter/list"
+        add : '/plugin/CoreShop/admin_Filter/add',
+        delete : '/plugin/CoreShop/admin_Filter/delete',
+        get : '/plugin/CoreShop/admin_Filter/get',
+        list : '/plugin/CoreShop/admin_Filter/list'
     },
 
     /**
@@ -38,15 +38,15 @@ pimcore.plugin.coreshop.filters.panel = Class.create(pimcore.plugin.coreshop.abs
     /**
      * constructor
      */
-    initialize: function() {
+    initialize: function () {
         var me = this;
 
-        pimcore.globalmanager.get("coreshop_indexes").load();
+        pimcore.globalmanager.get('coreshop_indexes').load();
 
         Ext.Ajax.request({
-            url: "/plugin/CoreShop/admin_Filter/get-config",
-            method: "GET",
-            success: function(result){
+            url: '/plugin/CoreShop/admin_Filter/get-config',
+            method: 'GET',
+            success: function (result) {
                 var config = Ext.decode(result.responseText);
 
                 me.conditions = config.conditions;

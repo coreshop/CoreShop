@@ -11,10 +11,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.tags.coreShopCountry");
+pimcore.registerNS('pimcore.object.tags.coreShopCountry');
 pimcore.object.tags.coreShopCountry = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
-    type: "coreShopCountry",
-    storeName : "countries"
+    type: 'coreShopCountry',
+    storeName : 'countries'
 
 });

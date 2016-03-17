@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.orderstates.item");
+pimcore.registerNS('pimcore.plugin.coreshop.orderstates.item');
 
 pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
@@ -21,52 +21,54 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
         save : '/plugin/CoreShop/admin_OrderStates/save'
     },
 
-    getItems : function() {
+    getItems : function () {
         return [this.getFormPanel()];
     },
 
-    getFormPanel : function()
+    getFormPanel : function ()
     {
         var data = this.data;
 
         var langTabs = [];
-        Ext.each(pimcore.settings.websiteLanguages, function(lang) {
+        Ext.each(pimcore.settings.websiteLanguages, function (lang) {
             var tab = {
                 title: pimcore.available_languages[lang],
-                iconCls: "pimcore_icon_language_" + lang.toLowerCase(),
+                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout:'form',
                 items: [{
-                    fieldLabel: t("coreshop_order_state_emailDocument"),
+                    fieldLabel: t('coreshop_order_state_emailDocument'),
                     labelWidth: 350,
-                    name: "emailDocument." + lang,
-                    fieldCls: "pimcore_droptarget_input",
-                    value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].emailDocument : "",
-                    xtype: "textfield",
+                    name: 'emailDocument.' + lang,
+                    fieldCls: 'pimcore_droptarget_input',
+                    value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].emailDocument : '',
+                    xtype: 'textfield',
                     listeners: {
-                        "render": function (el) {
+                        render: function (el) {
                             new Ext.dd.DropZone(el.getEl(), {
                                 reference: this,
-                                ddGroup: "element",
-                                getTargetFromEvent: function(e) {
+                                ddGroup: 'element',
+                                getTargetFromEvent: function (e) {
                                     return this.getEl();
                                 }.bind(el),
 
-                                onNodeOver : function(target, dd, e, data) {
+                                onNodeOver : function (target, dd, e, data) {
                                     data = data.records[0].data;
 
-                                    if (data.elementType == "document") {
+                                    if (data.elementType == 'document') {
                                         return Ext.dd.DropZone.prototype.dropAllowed;
                                     }
+
                                     return Ext.dd.DropZone.prototype.dropNotAllowed;
                                 },
 
                                 onNodeDrop : function (target, dd, e, data) {
                                     data = data.records[0].data;
 
-                                    if (data.elementType == "document") {
+                                    if (data.elementType == 'document') {
                                         this.setValue(data.path);
                                         return true;
                                     }
+
                                     return false;
                                 }.bind(el)
                             });
@@ -75,13 +77,13 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
                 }]
             };
 
-            langTabs.push( tab );
+            langTabs.push(tab);
         });
 
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
-            region : "center",
+            region : 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -89,9 +91,9 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
             },
             buttons: [
                 {
-                    text: t("save"),
+                    text: t('save'),
                     handler: this.save.bind(this),
-                    iconCls: "pimcore_icon_apply"
+                    iconCls: 'pimcore_icon_apply'
                 }
             ],
             items: [
@@ -100,46 +102,46 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
                     autoHeight:true,
                     labelWidth: 350,
                     defaultType: 'textfield',
-                    defaults: {width: '100%'},
+                    defaults: { width: '100%' },
                     items :[
                         {
-                            xtype: "textfield",
-                            name: "name",
-                            fieldLabel: t("name"),
+                            xtype: 'textfield',
+                            name: 'name',
+                            fieldLabel: t('name'),
                             width: 400,
                             value: data.name
                         }, {
-                            xtype: "checkbox",
-                            name: "accepted",
-                            fieldLabel: t("coreshop_order_state_accepted"),
+                            xtype: 'checkbox',
+                            name: 'accepted',
+                            fieldLabel: t('coreshop_order_state_accepted'),
                             width: 250,
                             checked: parseInt(data.accepted)
                         }, {
-                            xtype: "checkbox",
-                            name: "shipped",
-                            fieldLabel: t("coreshop_order_state_shipped"),
+                            xtype: 'checkbox',
+                            name: 'shipped',
+                            fieldLabel: t('coreshop_order_state_shipped'),
                             width: 250,
                             checked: parseInt(data.shipped)
                         }, {
-                            xtype: "checkbox",
-                            name: "paid",
-                            fieldLabel: t("coreshop_order_state_paid"),
+                            xtype: 'checkbox',
+                            name: 'paid',
+                            fieldLabel: t('coreshop_order_state_paid'),
                             width: 250,
                             checked: parseInt(data.paid)
                         }, {
-                            xtype: "checkbox",
-                            name: "invoice",
-                            fieldLabel: t("coreshop_order_state_invoice"),
+                            xtype: 'checkbox',
+                            name: 'invoice',
+                            fieldLabel: t('coreshop_order_state_invoice'),
                             width: 250,
                             checked: parseInt(data.invoice)
                         }, {
-                            xtype: "checkbox",
-                            name: "email",
-                            fieldLabel: t("coreshop_order_state_email"),
+                            xtype: 'checkbox',
+                            name: 'email',
+                            fieldLabel: t('coreshop_order_state_email'),
                             width: 250,
                             checked: parseInt(data.email)
                         }, {
-                            xtype: "tabpanel",
+                            xtype: 'tabpanel',
                             activeTab: 0,
                             defaults: {
                                 autoHeight:true,
@@ -155,7 +157,7 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
         return this.formPanel;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         return {
             data: Ext.encode(this.formPanel.getForm().getFieldValues())
         };

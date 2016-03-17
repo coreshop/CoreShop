@@ -11,29 +11,29 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.report.monitoring.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.report.monitoring.abstract');
 pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
     url : '',
 
     getName: function () {
-        return "coreshop_monitoring";
+        return 'coreshop_monitoring';
     },
 
     getIconCls: function () {
-        return "coreshop_icon_monitoring";
+        return 'coreshop_icon_monitoring';
     },
 
-    getGrid : function() {
+    getGrid : function () {
         return false;
     },
 
     getPanel: function () {
 
-        if(!this.panel) {
+        if (!this.panel) {
             this.panel = new Ext.Panel({
                 title: this.getName(),
-                layout: "fit",
+                layout: 'fit',
                 border: false,
                 items: [],
                 dockedItems : {
@@ -45,7 +45,7 @@ pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin
 
             grid = this.getGrid();
 
-            if(grid) {
+            if (grid) {
                 this.panel.add(grid);
             }
 
@@ -55,14 +55,14 @@ pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin
         return this.panel;
     },
 
-    getFilterFields : function() {
+    getFilterFields : function () {
         return [
 
         ];
     },
 
-    getStore : function() {
-        if(!this.store) {
+    getStore : function () {
+        if (!this.store) {
             this.store = new Ext.data.Store({
                 autoDestroy: true,
                 proxy: {
@@ -83,13 +83,13 @@ pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin
         return this.store;
     },
 
-    filter : function() {
+    filter : function () {
         this.getStore().load({
             params : this.getFilterParams()
         });
     },
 
-    getFilterParams : function() {
+    getFilterParams : function () {
         return {
 
         };

@@ -11,11 +11,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.orders.createPayment");
+pimcore.registerNS('pimcore.plugin.coreshop.orders.createPayment');
 pimcore.plugin.coreshop.orders.createPayment = {
 
-    showWindow : function(tab) {
+    showWindow : function (tab) {
         var orderId = tab.id;
 
         var paymentProvidersStore = new Ext.data.Store({
@@ -41,7 +40,6 @@ pimcore.plugin.coreshop.orders.createPayment = {
 
         });
 
-
         var window = new Ext.window.Window({
             width : 380,
             height : 300,
@@ -58,11 +56,11 @@ pimcore.plugin.coreshop.orders.createPayment = {
                 },
                 buttons: [
                     {
-                        text: "Save",
-                        handler: function(btn) {
-                            var form = btn.up("window").down("form").getForm();
+                        text: 'Save',
+                        handler: function (btn) {
+                            var form = btn.up('window').down('form').getForm();
 
-                            if(form.isValid()) {
+                            if (form.isValid()) {
                                 var formValues = form.getFieldValues();
 
                                 formValues['o_id'] = orderId;
@@ -75,13 +73,12 @@ pimcore.plugin.coreshop.orders.createPayment = {
                                         try {
                                             response = Ext.decode(response.responseText);
 
-                                            if(response.success) {
+                                            if (response.success) {
                                                 window.close();
                                                 window.destroy();
 
                                                 tab.reload(tab.data.currentLayoutId);
-                                            }
-                                            else {
+                                            } else {
                                                 Ext.Msg.alert(t('error'), response.message);
                                             }
                                         }
@@ -92,7 +89,8 @@ pimcore.plugin.coreshop.orders.createPayment = {
                                 });
                             }
                         },
-                        iconCls: "pimcore_icon_apply"
+
+                        iconCls: 'pimcore_icon_apply'
                     }
                 ],
                 items : [

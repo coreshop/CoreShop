@@ -11,12 +11,12 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.getters");
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.getters.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.indexes.getters');
+pimcore.registerNS('pimcore.plugin.coreshop.indexes.getters.abstract');
 
 pimcore.plugin.coreshop.indexes.getters.abstract = Class.create({
 
-    getLayout : function() {
+    getLayout : function () {
         return [];
     }
 

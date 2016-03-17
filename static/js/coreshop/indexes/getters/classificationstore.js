@@ -11,11 +11,11 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.getters.classificationstore");
+pimcore.registerNS('pimcore.plugin.coreshop.indexes.getters.classificationstore');
 
 pimcore.plugin.coreshop.indexes.getters.classificationstore = Class.create(pimcore.plugin.coreshop.indexes.getters.abstract, {
 
-    getLayout : function(record) {
+    getLayout : function (record) {
         return [
             {
                 xtype : 'textfield',

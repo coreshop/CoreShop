@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.fields");
+pimcore.registerNS('pimcore.plugin.coreshop.indexes.fields');
 
 pimcore.plugin.coreshop.indexes.fields = Class.create({
     data: {},
@@ -22,9 +22,9 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         this.config = data.config;
     },
 
-    getLayout : function() {
+    getLayout : function () {
         this.configPanel = new Ext.Panel({
-            layout: "border",
+            layout: 'border',
             items: [this.getSelectionPanel(), this.getClassDefinitionTreePanel()]
 
         });
@@ -35,13 +35,13 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     getData: function () {
 
         var data = {};
-        if(this.languageField) {
+        if (this.languageField) {
             data.language = this.languageField.getValue();
         }
 
-        if(this.selectionPanel) {
+        if (this.selectionPanel) {
             data.columns = [];
-            this.selectionPanel.getRootNode().eachChild(function(child) {
+            this.selectionPanel.getRootNode().eachChild(function (child) {
                 var obj = Ext.Object.merge(child.data, {}); //Removes unneeded nested data
 
                 data.columns.push(obj);
@@ -52,18 +52,18 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     },
 
     getSelectionPanel: function () {
-        if(!this.selectionPanel) {
+        if (!this.selectionPanel) {
 
             var childs = [];
-            if(this.config.hasOwnProperty("columns")) {
+            if (this.config.hasOwnProperty('columns')) {
                 for (var i = 0; i < this.config.columns.length; i++) {
                     var nodeConf = this.config.columns[i];
                     var child = Ext.Object.merge(nodeConf,
                         {
                             text: nodeConf.name,
-                            type: "data",
+                            type: 'data',
                             leaf: true,
-                            iconCls: "pimcore_icon_" + nodeConf.dataType
+                            iconCls: 'pimcore_icon_' + nodeConf.dataType
                         }
                     );
 
@@ -73,9 +73,9 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
             this.selectionPanel = new Ext.tree.TreePanel({
                 root: {
-                    id: "0",
+                    id: '0',
                     root: true,
-                    text: t("coreshop_indexes_selected_fields"),
+                    text: t('coreshop_indexes_selected_fields'),
                     leaf: false,
                     isTarget: true,
                     expanded: true,
@@ -85,7 +85,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                 viewConfig: {
                     plugins: {
                         ptype: 'treeviewdragdrop',
-                        ddGroup: "columnconfigelement"
+                        ddGroup: 'columnconfigelement'
                     },
                     listeners: {
                         beforedrop: function (node, data, overModel, dropPosition, dropHandlers, eOpts) {
@@ -127,7 +127,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         return this.selectionPanel;
     },
 
-    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts ) {
+    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts) {
         e.stopEvent();
 
         tree.select();
@@ -137,15 +137,15 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         if (this.id != 0) {
             menu.add(new Ext.menu.Item({
                 text: t('delete'),
-                iconCls: "pimcore_icon_delete",
-                handler: function(node) {
+                iconCls: 'pimcore_icon_delete',
+                handler: function (node) {
                     this.selectionPanel.getRootNode().removeChild(record, true);
                 }.bind(this, record)
             }));
             menu.add(new Ext.menu.Item({
                 text: t('edit'),
-                iconCls: "pimcore_icon_edit",
-                handler: function(node) {
+                iconCls: 'pimcore_icon_edit',
+                handler: function (node) {
                     this.getConfigElement(record).getConfigDialog(record);
                 }.bind(this, record)
             }));
@@ -154,11 +154,11 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         menu.showAt(e.pageX, e.pageY);
     },
 
-    getConfigElement: function(record) {
+    getConfigElement: function (record) {
         var element = null;
 
-        if(record.data.objectType) {
-            if(pimcore.plugin.coreshop.indexes.objecttype[this.data.type]) {
+        if (record.data.objectType) {
+            if (pimcore.plugin.coreshop.indexes.objecttype[this.data.type]) {
                 element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field();
             }
         }
@@ -174,24 +174,25 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
-            this.classDefinitionTreePanel = this.getClassTree("/plugin/CoreShop/admin_Indexes/get-class-definition-for-field-selection", this.data.classId);
+            this.classDefinitionTreePanel = this.getClassTree('/plugin/CoreShop/admin_Indexes/get-class-definition-for-field-selection', this.data.classId);
         }
 
         return this.classDefinitionTreePanel;
     },
 
-    getClassTree: function(url, classId) {
+    getClassTree: function (url, classId) {
 
         var tree = new Ext.tree.TreePanel({
             title: t('class_definitions'),
-            region: "center",
+            region: 'center',
+
             //ddGroup: "columnconfigelement",
             autoScroll: true,
             rootVisible: false,
             root: {
-                id: "0",
+                id: '0',
                 root: true,
-                text: t("base"),
+                text: t('base'),
                 allowDrag: false,
                 leaf: true,
                 isTarget: true
@@ -201,7 +202,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                     ptype: 'treeviewdragdrop',
                     enableDrag: true,
                     enableDrop: false,
-                    ddGroup: "columnconfigelement"
+                    ddGroup: 'columnconfigelement'
                 }
             }
         });
@@ -214,17 +215,16 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
             success: this.initLayoutFields.bind(this, tree)
         });
 
-
-        tree.addListener("itemdblclick", function(tree, record, item, index, e, eOpts ) {
-            if(!record.data.root && record.datatype != "layout"
+        tree.addListener('itemdblclick', function (tree, record, item, index, e, eOpts) {
+            if (!record.data.root && record.datatype != 'layout'
                 && record.data.dataType != 'localizedfields') {
                 var copy = Ext.apply({}, record.data);
 
-                if(this.selectionPanel && !this.selectionPanel.getRootNode().findChild("name", record.data.name)) {
+                if (this.selectionPanel && !this.selectionPanel.getRootNode().findChild('name', record.data.name)) {
                     this.selectionPanel.getRootNode().appendChild(copy);
                 }
 
-                if (record.data.dataType == "keyValue") {
+                if (record.data.dataType == 'keyValue') {
                     var ccd = new pimcore.object.keyvalue.columnConfigDialog();
                     ccd.getConfigDialog(copy, this.selectionPanel);
                 }
@@ -234,27 +234,27 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         return tree;
     },
 
-    initLayoutFields : function(tree, response) {
+    initLayoutFields : function (tree, response) {
         var data = Ext.decode(response.responseText);
 
         var keys = Object.keys(data);
-        for(var i = 0; i < keys.length; i++) {
+        for (var i = 0; i < keys.length; i++) {
             if (data[keys[i]]) {
                 if (data[keys[i]].childs) {
                     var text = t(data[keys[i]].nodeLabel);
 
-                    if(data[keys[i]].nodeType == "objectbricks") {
-                        text = ts(data[keys[i]].nodeLabel) + " " + t("columns");
+                    if (data[keys[i]].nodeType == 'objectbricks') {
+                        text = ts(data[keys[i]].nodeLabel) + ' ' + t('columns');
                     }
 
-                    if(data[keys[i]].nodeType == "classificationstore") {
-                        text = ts(data[keys[i]].nodeLabel) + " " + t("columns");
+                    if (data[keys[i]].nodeType == 'classificationstore') {
+                        text = ts(data[keys[i]].nodeLabel) + ' ' + t('columns');
                     }
 
                     var baseNode = {
-                        type: "layout",
+                        type: 'layout',
                         allowDrag: false,
-                        iconCls: "pimcore_icon_" + data[keys[i]].nodeType,
+                        iconCls: 'pimcore_icon_' + data[keys[i]].nodeType,
                         text: text
                     };
 
@@ -264,7 +264,8 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
                         baseNode.appendChild(node);
                     }
-                    if(data[keys[i]].nodeType == "object") {
+
+                    if (data[keys[i]].nodeType == 'object') {
                         baseNode.expand();
                     } else {
                         baseNode.collapse();
@@ -274,10 +275,9 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         }
     },
 
-
     addDataChild: function (type, initData, objectType, className) {
 
-        if(type != "objectbricks" && !initData.invisible) {
+        if (type != 'objectbricks' && !initData.invisible) {
             var isLeaf = true;
             var draggable = true;
 
@@ -286,12 +286,12 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
             var newNode = Ext.Object.merge(initData, {
                 text :  key,
                 key : initData.name,
-                type : "data",
+                type : 'data',
                 layout : initData,
                 leaf : isLeaf,
                 allowDrag : draggable,
                 dataType : type,
-                iconCls: "pimcore_icon_" + type,
+                iconCls: 'pimcore_icon_' + type,
                 expanded: true,
                 objectType : objectType,
                 className : className
@@ -299,7 +299,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
             newNode = this.appendChild(newNode);
 
-            if(this.rendered) {
+            if (this.rendered) {
                 this.expand();
             }
 

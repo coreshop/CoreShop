@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.abstract.item");
+pimcore.registerNS('pimcore.plugin.coreshop.abstract.item');
 
 pimcore.plugin.coreshop.abstract.item = Class.create({
 
@@ -33,7 +33,7 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
     initPanel: function () {
         this.panel = this.getPanel();
 
-        this.panel.on("beforedestroy", function () {
+        this.panel.on('beforedestroy', function () {
             delete this.parentPanel.panels[this.panelKey];
         }.bind(this));
 
@@ -41,37 +41,37 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         this.parentPanel.getTabPanel().setActiveItem(this.panel);
     },
 
-    destroy : function() {
-        if(this.panel) {
+    destroy : function () {
+        if (this.panel) {
             this.panel.destroy();
         }
     },
 
-    getPanel: function() {
+    getPanel: function () {
         panel = new Ext.panel.Panel({
             title: this.getTitleText(),
             closable: true,
             iconCls: this.iconCls,
-            layout: "border",
+            layout: 'border',
             items : this.getItems()
         });
 
         return panel;
     },
 
-    getTitleText : function() {
+    getTitleText : function () {
         return this.data.name;
     },
 
-    activate : function() {
+    activate : function () {
         this.parentPanel.getTabPanel().setActiveItem(this.panel);
     },
 
-    getItems : function() {
+    getItems : function () {
         return [];
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         return {};
     },
 
@@ -83,13 +83,13 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
 
         Ext.Ajax.request({
             url: this.url.save,
-            method: "post",
+            method: 'post',
             params: saveData,
             success: function (response) {
                 try {
                     this.postSave();
 
-                    if(this.parentPanel.store) {
+                    if (this.parentPanel.store) {
                         this.parentPanel.store.load();
                     }
 
@@ -97,23 +97,23 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
 
                     var res = Ext.decode(response.responseText);
                     if (res.success) {
-                        pimcore.helpers.showNotification(t("success"), t("coreshop_save_success"), "success");
+                        pimcore.helpers.showNotification(t('success'), t('coreshop_save_success'), 'success');
 
                         this.data = res.data;
 
                         this.panel.setTitle(this.getTitleText());
                     } else {
-                        pimcore.helpers.showNotification(t("error"), t("coreshop_save_error"),
-                            "error", res.message);
+                        pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'),
+                            'error', res.message);
                     }
-                } catch(e) {
-                    pimcore.helpers.showNotification(t("error"), t("coreshop_save_error"), "error");
+                } catch (e) {
+                    pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
                 }
             }.bind(this)
         });
     },
 
-    postSave : function() {
+    postSave : function () {
 
     }
 });

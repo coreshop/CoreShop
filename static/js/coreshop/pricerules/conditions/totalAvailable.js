@@ -11,24 +11,24 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions.totalAvailable");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions.totalAvailable');
 
 pimcore.plugin.coreshop.pricerules.conditions.totalAvailable = Class.create(pimcore.plugin.coreshop.pricerules.conditions.abstract, {
 
     type : 'totalAvailable',
 
-    getForm : function() {
+    getForm : function () {
 
         var totalAvailableValue = 0;
         var totalUsedValue = 0;
 
-        if(this.data) {
+        if (this.data) {
             totalAvailableValue = this.data.totalAvailable;
             totalUsedValue = this.data.totalUsed;
         }
 
         var totalAvailable = new Ext.form.NumberField({
-            fieldLabel:t("coreshop_condition_totalAvailable_totalAvailable"),
+            fieldLabel:t('coreshop_condition_totalAvailable_totalAvailable'),
             name:'totalAvailable',
             value : totalAvailableValue,
             minValue : 0,
@@ -37,13 +37,12 @@ pimcore.plugin.coreshop.pricerules.conditions.totalAvailable = Class.create(pimc
         });
 
         var totalUsed = new Ext.form.TextField({
-            fieldLabel:t("coreshop_condition_totalAvailable_totalUsed"),
+            fieldLabel:t('coreshop_condition_totalAvailable_totalUsed'),
             name:'totalUsed',
             value : totalUsedValue,
             minValue : 0,
             decimalPrecision : 0
         });
-
 
         this.form = new Ext.form.FieldSet({
             items : [

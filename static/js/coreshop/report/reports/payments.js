@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.report.reports.payments");
+pimcore.registerNS('pimcore.plugin.coreshop.report.reports.payments');
 pimcore.plugin.coreshop.report.reports.payments = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
     url : '/plugin/CoreShop/admin_reports/get-payment-report',
 
     getName: function () {
-        return t("coreshop_report_payments");
+        return t('coreshop_report_payments');
     },
 
     getIconCls: function () {
-        return "coreshop_icon_report_payments";
+        return 'coreshop_icon_report_payments';
     },
 
-    getGrid : function() {
+    getGrid : function () {
         var panel = new Ext.Panel({
             layout:'fit',
             height: 275,
@@ -49,6 +49,7 @@ pimcore.plugin.coreshop.report.reports.payments = Class.create(pimcore.plugin.co
                         calloutLine: {
                             length: 60,
                             width: 3
+
                             // specifying 'color' is also possible here
                         }
                     },

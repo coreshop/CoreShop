@@ -11,58 +11,58 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.global");
+pimcore.registerNS('pimcore.plugin.coreshop.global');
 pimcore.plugin.coreshop.global = {
 
     settings : {},
 
-    initialize : function(settings)
+    initialize : function (settings)
     {
         this.settings = settings;
 
-        if(intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
+        if (intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
             this._initStores();
         }
     },
 
-    _initStores : function() {
-        this._createStore("coreshop_currencies", 'Currency');
-        this._createStore("coreshop_zones", 'Zone', [
-            {name:'id'},
-            {name:'name'},
-            {name:'active'}
+    _initStores : function () {
+        this._createStore('coreshop_currencies', 'Currency');
+        this._createStore('coreshop_zones', 'Zone', [
+            { name:'id' },
+            { name:'name' },
+            { name:'active' }
         ]);
-        this._createStore("coreshop_countries", 'Country');
-        this._createStore("coreshop_orderstates", 'OrderStates');
-        this._createStore("coreshop_taxes", 'Tax', [
-            {name:'id'},
-            {name:'name'},
-            {name:'rate'}
+        this._createStore('coreshop_countries', 'Country');
+        this._createStore('coreshop_orderstates', 'OrderStates');
+        this._createStore('coreshop_taxes', 'Tax', [
+            { name:'id' },
+            { name:'name' },
+            { name:'rate' }
         ]);
-        this._createStore("coreshop_taxrulegroups", 'TaxRuleGroup');
-        this._createStore("coreshop_customergroups", 'CustomerGroup');
-        this._createStore("coreshop_carriers", 'Carrier');
-        this._createStore("coreshop_pricerules", 'PriceRules');
-        this._createStore("coreshop_indexes", 'Indexes');
-        this._createStore("coreshop_product_filters", 'Filter');
+        this._createStore('coreshop_taxrulegroups', 'TaxRuleGroup');
+        this._createStore('coreshop_customergroups', 'CustomerGroup');
+        this._createStore('coreshop_carriers', 'Carrier');
+        this._createStore('coreshop_pricerules', 'PriceRules');
+        this._createStore('coreshop_indexes', 'Indexes');
+        this._createStore('coreshop_product_filters', 'Filter');
 
-        pimcore.globalmanager.get("coreshop_taxes").load();
-        pimcore.globalmanager.get("coreshop_countries").load();
-        pimcore.globalmanager.get("coreshop_zones").load();
-        pimcore.globalmanager.get("coreshop_currencies").load();
-        pimcore.globalmanager.get("coreshop_orderstates").load();
+        pimcore.globalmanager.get('coreshop_taxes').load();
+        pimcore.globalmanager.get('coreshop_countries').load();
+        pimcore.globalmanager.get('coreshop_zones').load();
+        pimcore.globalmanager.get('coreshop_currencies').load();
+        pimcore.globalmanager.get('coreshop_orderstates').load();
     },
 
-    _createStore : function(name, url, fields) {
+    _createStore : function (name, url, fields) {
         var proxy = new Ext.data.HttpProxy({
             url : '/plugin/CoreShop/admin_' + url + '/list'
         });
 
-        if(!fields) {
+        if (!fields) {
             fields = [
-                {name:'id'},
-                {name:'name'}
-            ]
+                { name:'id' },
+                { name:'name' }
+            ];
         }
 
         var reader = new Ext.data.JsonReader({}, fields);
@@ -79,9 +79,9 @@ pimcore.plugin.coreshop.global = {
 };
 
 if (!String.prototype.format) {
-    String.prototype.format = function() {
+    String.prototype.format = function () {
         var args = arguments;
-        return this.replace(/{(\d+)}/g, function(match, number) {
+        return this.replace(/{(\d+)}/g, function (match, number) {
             return typeof args[number] != 'undefined'
                 ? args[number]
                 : match

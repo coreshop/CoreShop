@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.zones.item");
+pimcore.registerNS('pimcore.plugin.coreshop.zones.item');
 
 pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
@@ -21,16 +21,16 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
         save : '/plugin/CoreShop/admin_Zone/save'
     },
 
-    getItems : function() {
+    getItems : function () {
         return [this.getFormPanel()];
     },
 
-    getFormPanel : function() {
+    getFormPanel : function () {
 
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
-            region : "center",
+            region : 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -38,9 +38,9 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
             },
             buttons: [
                 {
-                    text: t("save"),
+                    text: t('save'),
                     handler: this.save.bind(this),
-                    iconCls: "pimcore_icon_apply"
+                    iconCls: 'pimcore_icon_apply'
                 }
             ],
             items: [
@@ -49,17 +49,17 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
                     autoHeight:true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 300},
+                    defaults: { width: 300 },
                     items :[
                         {
-                            fieldLabel: t("coreshop_zone_name"),
-                            name: "name",
+                            fieldLabel: t('coreshop_zone_name'),
+                            name: 'name',
                             value: this.data.name
                         },
                         {
                             xtype : 'checkbox',
-                            fieldLabel: t("coreshop_zone_active"),
-                            name: "active",
+                            fieldLabel: t('coreshop_zone_active'),
+                            name: 'active',
                             checked: intval(this.data.active) === 1
                         }
                     ]
@@ -70,7 +70,7 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
         return this.formPanel;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         return {
             data : Ext.encode(this.formPanel.getForm().getFieldValues())
         };

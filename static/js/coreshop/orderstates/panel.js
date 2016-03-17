@@ -11,20 +11,19 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.orderstates.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.orderstates.panel');
 
 pimcore.plugin.coreshop.orderstates.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
-    layoutId: "coreshop_order_states_panel",
-    storeId : "coreshop_orderstates",
-    iconCls : "coreshop_icon_order_states",
-    type : "orderstates",
+    layoutId: 'coreshop_order_states_panel',
+    storeId : 'coreshop_orderstates',
+    iconCls : 'coreshop_icon_order_states',
+    type : 'orderstates',
 
     url : {
-        add : "/plugin/CoreShop/admin_OrderStates/add",
-        delete : "/plugin/CoreShop/admin_OrderStates/delete",
-        get : "/plugin/CoreShop/admin_OrderStates/get",
-        list : "/plugin/CoreShop/admin_OrderStates/list"
+        add : '/plugin/CoreShop/admin_OrderStates/add',
+        delete : '/plugin/CoreShop/admin_OrderStates/delete',
+        get : '/plugin/CoreShop/admin_OrderStates/get',
+        list : '/plugin/CoreShop/admin_OrderStates/list'
     }
 });

@@ -11,19 +11,19 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.layout.portlets.ordersAndCartsFromLastDays");
+pimcore.registerNS('pimcore.layout.portlets.ordersAndCartsFromLastDays');
 pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout.portlets.abstract, {
 
     getType: function () {
-        return "pimcore.layout.portlets.ordersAndCartsFromLastDays";
+        return 'pimcore.layout.portlets.ordersAndCartsFromLastDays';
     },
 
     getName: function () {
-        return t("coreshop_orders_and_carts_from_last_days");
+        return t('coreshop_orders_and_carts_from_last_days');
     },
 
     getIcon: function () {
-        return "pimcore_icon_portlet_modification_statistic";
+        return 'pimcore_icon_portlet_modification_statistic';
     },
 
     getLayout: function (portletId) {
@@ -40,12 +40,11 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
-                }},
-            fields: ['timestamp','datetext',"carts",'orders']
+                } },
+            fields: ['timestamp', 'datetext', 'carts', 'orders']
         });
 
         store.load();
-
 
         var panel = new Ext.Panel({
             layout:'fit',
@@ -68,8 +67,7 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
                     position: 'left',
                     grid: true,
                     minimum: 0
-                }
-                    , {
+                }, {
                         type: 'category',
                         fields: 'datetext',
                         position: 'bottom'
@@ -100,7 +98,7 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
                         tooltip: {
                             trackMouse: true,
                             style: 'background: #01841c',
-                            renderer: function(tooltip, storeItem, item) {
+                            renderer: function (tooltip, storeItem, item) {
                                 var title = item.series.getTitle();
                                 tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get(item.series.getYField()));
                             }
@@ -130,7 +128,7 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
                         tooltip: {
                             trackMouse: true,
                             style: 'background: #00bfff',
-                            renderer: function(tooltip, storeItem, item) {
+                            renderer: function (tooltip, storeItem, item) {
                                 var title = item.series.getTitle();
                                 tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get(item.series.getYField()));
                             }
@@ -140,12 +138,11 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
             }
         });
 
-
         this.layout = Ext.create('Portal.view.Portlet', Object.extend(this.getDefaultConfig(), {
             title: this.getName(),
             iconCls: this.getIcon(),
             height: 275,
-            layout: "fit",
+            layout: 'fit',
             items: [panel]
         }));
 

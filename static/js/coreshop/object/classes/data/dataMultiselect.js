@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.object.classes.data.dataMultiselect");
+pimcore.registerNS('pimcore.plugin.coreshop.object.classes.data.dataMultiselect');
 pimcore.plugin.coreshop.object.classes.data.dataMultiselect = Class.create(pimcore.object.classes.data.multiselect, {
 
     /**

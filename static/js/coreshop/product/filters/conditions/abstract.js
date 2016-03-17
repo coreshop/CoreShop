@@ -11,8 +11,8 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.filters.conditions");
-pimcore.registerNS("pimcore.plugin.coreshop.filters.conditions.abstract");
+pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions');
+pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.abstract');
 
 pimcore.plugin.coreshop.filters.conditions.abstract = Class.create(pimcore.plugin.coreshop.filters.abstract, {
 

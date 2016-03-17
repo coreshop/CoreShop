@@ -11,8 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.carriers.item");
+pimcore.registerNS('pimcore.plugin.coreshop.carriers.item');
 pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
     iconCls : 'coreshop_icon_carrier',
@@ -27,12 +26,12 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         this.panelKey = panelKey;
         this.type = type;
 
-        pimcore.globalmanager.get("coreshop_zones").load(function() {
+        pimcore.globalmanager.get('coreshop_zones').load(function () {
             this.initPanel();
         }.bind(this));
     },
 
-    getPanel: function() {
+    getPanel: function () {
         var panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -41,8 +40,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             forceLayout: true,
             iconCls : this.iconCls,
             buttons: [{
-                text: t("save"),
-                iconCls: "pimcore_icon_apply",
+                text: t('save'),
+                iconCls: 'pimcore_icon_apply',
                 handler: this.save.bind(this)
             }],
             items: this.getItems()
@@ -51,7 +50,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return panel;
     },
 
-    getItems : function() {
+    getItems : function () {
         return [
             this.getSettings(),
             this.getShippingLocationsAndCosts(),
@@ -65,70 +64,72 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
      */
     getSettings: function () {
         this.settingsForm = new Ext.form.Panel({
-            iconCls: "coreshop_carrier_settings_icon",
-            title: t("settings"),
-            bodyStyle: "padding:10px;",
+            iconCls: 'coreshop_carrier_settings_icon',
+            title: t('settings'),
+            bodyStyle: 'padding:10px;',
             autoScroll: true,
             border:false,
             items: [{
-                xtype: "textfield",
-                name: "label",
-                fieldLabel: t("coreshop_carrier_label"),
+                xtype: 'textfield',
+                name: 'label',
+                fieldLabel: t('coreshop_carrier_label'),
                 width: 250,
                 value: this.data.label
             }, {
-                xtype: "textfield",
-                name: "delay",
-                fieldLabel: t("coreshop_carrier_delay"),
+                xtype: 'textfield',
+                name: 'delay',
+                fieldLabel: t('coreshop_carrier_delay'),
                 width: 250,
                 value: this.data.delay
             }, {
-                xtype: "spinnerfield",
-                name: "grade",
-                fieldLabel: t("coreshop_carrier_grade"),
+                xtype: 'spinnerfield',
+                name: 'grade',
+                fieldLabel: t('coreshop_carrier_grade'),
                 width: 250,
                 value: this.data.grade
             }, {
-                fieldLabel: t("coreshop_carrier_image"),
-                name: "image",
-                cls: "input_drop_target",
+                fieldLabel: t('coreshop_carrier_image'),
+                name: 'image',
+                cls: 'input_drop_target',
                 value: this.data.image ? this.data.image.id : null,
                 width: 300,
-                xtype: "textfield",
+                xtype: 'textfield',
                 listeners: {
-                    "render": function (el) {
+                    render: function (el) {
                         new Ext.dd.DropZone(el.getEl(), {
                             reference: this,
-                            ddGroup: "element",
-                            getTargetFromEvent: function(e) {
+                            ddGroup: 'element',
+                            getTargetFromEvent: function (e) {
                                 return this.getEl();
                             }.bind(el),
 
-                            onNodeOver : function(target, dd, e, data) {
+                            onNodeOver : function (target, dd, e, data) {
                                 data = data.records[0].data;
 
-                                if (data.elementType == "asset") {
+                                if (data.elementType == 'asset') {
                                     return Ext.dd.DropZone.prototype.dropAllowed;
                                 }
+
                                 return Ext.dd.DropZone.prototype.dropNotAllowed;
                             },
 
                             onNodeDrop : function (target, dd, e, data) {
                                 data = data.records[0].data;
 
-                                if (data.elementType == "asset") {
+                                if (data.elementType == 'asset') {
                                     this.setValue(data.id);
                                     return true;
                                 }
+
                                 return false;
                             }.bind(el)
                         });
                     }
                 }
             }, {
-                xtype: "textfield",
-                name: "trackingCode",
-                fieldLabel: t("coreshop_carrier_trackingCode"),
+                xtype: 'textfield',
+                name: 'trackingCode',
+                fieldLabel: t('coreshop_carrier_trackingCode'),
                 width: 250,
                 value: this.data.trackingCode
             }]
@@ -137,32 +138,32 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.settingsForm;
     },
 
-    getShippingLocationsAndCosts : function() {
+    getShippingLocationsAndCosts : function () {
         //Shipping locations and costs
         this.shippingLocationAndCosts = new Ext.form.Panel({
-            iconCls: "coreshop_carrier_costs_icon",
-            title: t("coreshop_carrier_shipping_locations_and_costs"),
-            bodyStyle: "padding:10px;",
+            iconCls: 'coreshop_carrier_costs_icon',
+            title: t('coreshop_carrier_shipping_locations_and_costs'),
+            bodyStyle: 'padding:10px;',
             autoScroll: true,
             border:false,
             items: [{
-                xtype: "checkbox",
-                name: "isFree",
-                fieldLabel: t("coreshop_carrier_isFree"),
+                xtype: 'checkbox',
+                name: 'isFree',
+                fieldLabel: t('coreshop_carrier_isFree'),
                 width: 250,
                 value: parseInt(this.data.isFree)
             }, {
-                xtype: "combo",
-                store: [["price",t("coreshop_carrier_shippingMethod_price")],["weight",t("coreshop_carrier_shippingMethod_weight")]],
-                name: "shippingMethod",
-                fieldLabel: t("coreshop_carrier_shippingMethod"),
+                xtype: 'combo',
+                store: [['price', t('coreshop_carrier_shippingMethod_price')], ['weight', t('coreshop_carrier_shippingMethod_weight')]],
+                name: 'shippingMethod',
+                fieldLabel: t('coreshop_carrier_shippingMethod'),
                 width: 500,
                 value: this.data.shippingMethod,
-                triggerAction: "all",
+                triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
-                mode: "local"
+                mode: 'local'
             }, {
                 xtype:'combo',
                 fieldLabel:t('coreshop_carrier_tax_rule_group'),
@@ -170,37 +171,37 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 value:this.data.taxRuleGroupId,
                 mode:'local',
                 listWidth:100,
-                store:pimcore.globalmanager.get("coreshop_taxrulegroups"),
+                store:pimcore.globalmanager.get('coreshop_taxrulegroups'),
                 displayField:'name',
                 valueField:'id',
                 forceSelection:true,
                 triggerAction:'all',
                 name:'taxRuleGroupId',
                 listeners : {
-                    beforerender : function() {
-                        if(!this.getStore().isLoaded() && !this.getStore().isLoading())
+                    beforerender : function () {
+                        if (!this.getStore().isLoaded() && !this.getStore().isLoading())
                             this.getStore().load();
                     }
                 }
             }, {
-                fieldLabel: t("coreshop_carrier_rangeBehaviour"),
-                name: "rangeBehaviour",
+                fieldLabel: t('coreshop_carrier_rangeBehaviour'),
+                name: 'rangeBehaviour',
                 value: this.data.rangeBehaviour,
                 width: 500,
-                xtype: "combo",
-                store: [["largest",t("coreshop_carrier_rangeBehaviour_largest")],["deactivate",t("coreshop_carrier_rangeBehaviour_deactivate")]],
-                triggerAction: "all",
+                xtype: 'combo',
+                store: [['largest', t('coreshop_carrier_rangeBehaviour_largest')], ['deactivate', t('coreshop_carrier_rangeBehaviour_deactivate')]],
+                triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
-                mode: "local"
-            }, this.getRangeGrid(), {height:40}, this.getZonesGrid()]
+                mode: 'local'
+            }, this.getRangeGrid(), { height:40 }, this.getZonesGrid()]
         });
 
         return this.shippingLocationAndCosts;
     },
 
-    getRangeGrid : function() {
+    getRangeGrid : function () {
         var listeners = {};
 
         var modelName = 'coreshop.model.carrier.ranges';
@@ -233,13 +234,13 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
 
         var gridColumns = [
             {
-                header: t("coreshop_carrier_delimeter1"),
+                header: t('coreshop_carrier_delimeter1'),
                 width: 200,
                 dataIndex: 'delimiter1',
                 editor: new Ext.form.TextField({})
             },
             {
-                header: t("coreshop_carrier_delimeter2"),
+                header: t('coreshop_carrier_delimeter2'),
                 width: 200,
                 dataIndex: 'delimiter2',
                 editor: new Ext.form.TextField({})
@@ -248,7 +249,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 xtype:'actioncolumn',
                 width:40,
                 tooltip:t('delete'),
-                icon:"/pimcore/static6/img/icon/cross.png",
+                icon:'/pimcore/static6/img/icon/cross.png',
                 handler:function (grid, rowIndex) {
                     grid.getStore().removeAt(rowIndex);
                 }.bind(this)
@@ -265,7 +266,6 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             clicksToEdit: 1,
             listeners: {}
         });
-
 
         var gridConfig = {
             frame: false,
@@ -285,7 +285,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 {
                     text: t('add'),
                     handler: this.addRangeRow.bind(this),
-                    iconCls: "pimcore_icon_add"
+                    iconCls: 'pimcore_icon_add'
                 }
             ],
             plugins: [
@@ -300,7 +300,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.grid;
     },
 
-    getZonesGrid : function() {
+    getZonesGrid : function () {
         var listeners = {};
         var modelFields = [
             'range', 'rangeId'
@@ -312,16 +312,16 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             dataIndex : 'range'
         }];
 
-        pimcore.globalmanager.get("coreshop_zones").getRange().forEach(function(item) {
-            var fieldName = 'zone_' + item.get("id");
+        pimcore.globalmanager.get('coreshop_zones').getRange().forEach(function (item) {
+            var fieldName = 'zone_' + item.get('id');
 
             modelFields.push(fieldName);
             gridColumns.push({
-                header: item.get("name"),
+                header: item.get('name'),
                 width: 200,
                 dataIndex: fieldName,
-                editor: item.get("active") ? new Ext.form.TextField({}) : false,
-                disabled: !item.get("active")
+                editor: item.get('active') ? new Ext.form.TextField({}) : false,
+                disabled: !item.get('active')
             });
         });
 
@@ -353,7 +353,6 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             }
         });
 
-
         this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1,
             listeners: {}
@@ -384,12 +383,12 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.zonesGrid;
     },
 
-    addRangeRow : function() {
+    addRangeRow : function () {
         var model = this.store.getModel();
         var newRecord = new model({
-            'delimiter1' : 0,
-            'delimiter2' : 0,
-            'price' : 0
+            delimiter1 : 0,
+            delimiter2 : 0,
+            price : 0
         });
 
         this.store.add(newRecord);
@@ -398,35 +397,35 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         this.zonesGrid.setDisabled(true);
     },
 
-    getDimensions : function() {
+    getDimensions : function () {
         this.dimensionsForm = new Ext.form.Panel({
-            iconCls: "coreshop_carrier_dimensions_icon",
-            title: t("coreshop_carrier_dimensions"),
-            bodyStyle: "padding:10px;",
+            iconCls: 'coreshop_carrier_dimensions_icon',
+            title: t('coreshop_carrier_dimensions'),
+            bodyStyle: 'padding:10px;',
             autoScroll: true,
             border:false,
             items: [{
-                xtype: "textfield",
-                name: "maxHeight",
-                fieldLabel: t("coreshop_carrier_maxHeight"),
+                xtype: 'textfield',
+                name: 'maxHeight',
+                fieldLabel: t('coreshop_carrier_maxHeight'),
                 width: 250,
                 value: this.data.maxHeight
             }, {
-                xtype: "textfield",
-                name: "maxWidth",
-                fieldLabel: t("coreshop_carrier_maxWidth"),
+                xtype: 'textfield',
+                name: 'maxWidth',
+                fieldLabel: t('coreshop_carrier_maxWidth'),
                 width: 250,
                 value: this.data.maxWidth
             }, {
-                xtype: "textfield",
-                name: "maxDepth",
-                fieldLabel: t("coreshop_carrier_maxDepth"),
+                xtype: 'textfield',
+                name: 'maxDepth',
+                fieldLabel: t('coreshop_carrier_maxDepth'),
                 width: 250,
                 value: this.data.maxDepth
             }, {
-                xtype: "textfield",
-                name: "maxWeight",
-                fieldLabel: t("coreshop_carrier_maxWeight"),
+                xtype: 'textfield',
+                name: 'maxWeight',
+                fieldLabel: t('coreshop_carrier_maxWeight'),
                 width: 250,
                 value: this.data.maxWeight
             }]
@@ -435,7 +434,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.dimensionsForm;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         var data = {
             settings : {}
         };
@@ -444,8 +443,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         Ext.apply(data.settings, this.shippingLocationAndCosts.getForm().getFieldValues());
         Ext.apply(data.settings, this.dimensionsForm.getForm().getFieldValues());
 
-        data["range"] = Ext.pluck(this.store.getRange(), 'data');
-        data["deliveryPrices"] = Ext.pluck(this.zonesStore.getRange(), 'data');
+        data['range'] = Ext.pluck(this.store.getRange(), 'data');
+        data['deliveryPrices'] = Ext.pluck(this.zonesStore.getRange(), 'data');
 
         return {
             data : Ext.encode(data)

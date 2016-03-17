@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.object.tags.select");
+pimcore.registerNS('pimcore.plugin.coreshop.object.tags.select');
 pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
 
     allowEmpty : false,
@@ -27,11 +27,10 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
         var store = [];
         var validValues = [];
 
-        if(pimcore.globalmanager.exists("coreshop_" + this.storeName)) {
-            store = pimcore.globalmanager.get("coreshop_" + this.storeName);
-        }
-        else {
-            throw "coreshop_" + this.storeName + " should be added as valid store";
+        if (pimcore.globalmanager.exists('coreshop_' + this.storeName)) {
+            store = pimcore.globalmanager.get('coreshop_' + this.storeName);
+        } else {
+            throw 'coreshop_' + this.storeName + ' should be added as valid store';
         }
 
         var comboBoxStore = new Ext.data.Store({
@@ -39,17 +38,16 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
             reader:     store.reader
         });
 
-        if(store.isLoaded()) {
+        if (store.isLoaded()) {
             comboBoxStore.add(store.getRange());
 
-            if(this.allowEmpty) {
+            if (this.allowEmpty) {
                 comboBoxStore.insert(0, {
                     name: t('empty'),
                     id: 0
                 });
             }
-        }
-        else {
+        } else {
             comboBoxStore.load(function () {
                 if (this.allowEmpty) {
                     comboBoxStore.insert(0, {
@@ -62,13 +60,13 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
 
         var options = {
             name: this.fieldConfig.name,
-            triggerAction: "all",
+            triggerAction: 'all',
             editable: false,
             typeAhead: false,
             forceSelection: true,
             fieldLabel: this.fieldConfig.title,
             store: comboBoxStore,
-            componentCls: "object_field",
+            componentCls: 'object_field',
             width: 250,
             labelWidth: 100,
             displayField:'name',
@@ -76,10 +74,11 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
             queryMode : 'local',
             value:this.data ? parseInt(this.data) : null,
             listeners : {
-                beforerender : function() {
-                    if(!store.isLoaded() && !store.isLoading())
+                beforerender : function () {
+                    if (!store.isLoaded() && !store.isLoading())
                         store.load();
                 },
+
                 select: function (comp, record, index) {
                     if (comp.getValue() == 0 && this.allowEmpty)
                         comp.setValue(null);

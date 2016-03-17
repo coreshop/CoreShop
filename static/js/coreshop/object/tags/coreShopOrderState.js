@@ -11,9 +11,9 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.tags.coreShopOrderState");
+pimcore.registerNS('pimcore.object.tags.coreShopOrderState');
 pimcore.object.tags.coreShopOrderState = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
-    type: "coreShopOrderState",
-    storeName : "orderstates"
+    type: 'coreShopOrderState',
+    storeName : 'orderstates'
 });

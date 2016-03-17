@@ -11,10 +11,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.condition");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.condition');
 
 pimcore.plugin.coreshop.pricerules.condition = Class.create({
-    initialize : function(conditions) {
+    initialize : function (conditions) {
         this.conditions = conditions;
     },
 
@@ -26,26 +26,25 @@ pimcore.plugin.coreshop.pricerules.condition = Class.create({
         // show only defined conditions
         Ext.each(this.conditions, function (condition) {
 
-            if(condition == "abstract")
+            if (condition == 'abstract')
                 return;
 
             addMenu.push({
-                iconCls: "coreshop_price_rule_icon_condition_" + condition,
-                text: t("coreshop_condition_" + condition),
+                iconCls: 'coreshop_price_rule_icon_condition_' + condition,
+                text: t('coreshop_condition_' + condition),
                 handler: _this.addCondition.bind(_this, condition, null)
             });
 
         });
 
-
         this.conditionsContainer = new Ext.Panel({
-            iconCls: "coreshop_price_rule_conditions",
-            title: t("conditions"),
+            iconCls: 'coreshop_price_rule_conditions',
+            title: t('conditions'),
             autoScroll: true,
             style : 'padding: 10px',
             forceLayout: true,
             tbar: [{
-                iconCls: "pimcore_icon_add",
+                iconCls: 'pimcore_icon_add',
                 menu: addMenu
             }],
             border: false
@@ -65,18 +64,18 @@ pimcore.plugin.coreshop.pricerules.condition = Class.create({
         this.conditionsContainer.updateLayout();
     },
 
-    getConditionsData : function() {
+    getConditionsData : function () {
         // get defined conditions
         var conditionsData = [];
         var conditions = this.conditionsContainer.items.getRange();
-        for (var i=0; i<conditions.length; i++) {
+        for (var i = 0; i < conditions.length; i++) {
             var condition = {};
 
             var conditionItem = conditions[i];
             var conditionClass = conditionItem.xparent;
             var form = conditionClass.form;
 
-            for(var c=0; c < form.items.length; c++)
+            for (var c = 0; c < form.items.length; c++)
             {
                 var item = form.items.get(c);
 

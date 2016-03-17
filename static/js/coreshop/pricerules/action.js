@@ -11,11 +11,11 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.action");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.action');
 
 pimcore.plugin.coreshop.pricerules.action = Class.create({
 
-    initialize : function(actions) {
+    initialize : function (actions) {
         this.actions = actions;
     },
 
@@ -27,25 +27,24 @@ pimcore.plugin.coreshop.pricerules.action = Class.create({
         // show only defined actions
         Ext.each(this.actions, function (action) {
 
-            if(action == "abstract")
+            if (action == 'abstract')
                 return;
 
             addMenu.push({
-                iconCls: "coreshop_price_rule_icon_action_" + action,
-                text: t("coreshop_action_" + action),
+                iconCls: 'coreshop_price_rule_icon_action_' + action,
+                text: t('coreshop_action_' + action),
                 handler: _this.addAction.bind(_this, action, null)
             });
         });
 
-
         this.actionsContainer = new Ext.Panel({
-            iconCls: "coreshop_price_rule_actions",
-            title: t("actions"),
+            iconCls: 'coreshop_price_rule_actions',
+            title: t('actions'),
             autoScroll: true,
             forceLayout: true,
             style : 'padding: 10px',
             tbar: [{
-                iconCls: "pimcore_icon_add",
+                iconCls: 'pimcore_icon_add',
                 menu: addMenu
             }],
             border: false
@@ -61,11 +60,11 @@ pimcore.plugin.coreshop.pricerules.action = Class.create({
         this.actionsContainer.updateLayout();
     },
 
-    getActionsData : function() {
+    getActionsData : function () {
         // get defined actions
         var actionData = [];
         var actions = this.actionsContainer.items.getRange();
-        for (var i=0; i < actions.length; i++)
+        for (var i = 0; i < actions.length; i++)
         {
             var action = {};
 
@@ -73,7 +72,7 @@ pimcore.plugin.coreshop.pricerules.action = Class.create({
             var actionClass = actionItem.xparent;
             var form = actionClass.form;
 
-            for(var c=0; c < form.items.length; c++)
+            for (var c = 0; c < form.items.length; c++)
             {
                 var item = form.items.get(c);
 

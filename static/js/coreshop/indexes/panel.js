@@ -11,21 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.indexes.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.indexes.panel');
 
 pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
-    layoutId: "coreshop_indexes_panel",
-    storeId : "coreshop_indexes",
-    iconCls : "coreshop_icon_indexes",
-    type : "indexes",
+    layoutId: 'coreshop_indexes_panel',
+    storeId : 'coreshop_indexes',
+    iconCls : 'coreshop_icon_indexes',
+    type : 'indexes',
 
     url : {
-        add : "/plugin/CoreShop/admin_Indexes/add",
-        delete : "/plugin/CoreShop/admin_Indexes/delete",
-        get : "/plugin/CoreShop/admin_Indexes/get",
-        list : "/plugin/CoreShop/admin_Indexes/list"
+        add : '/plugin/CoreShop/admin_Indexes/add',
+        delete : '/plugin/CoreShop/admin_Indexes/delete',
+        get : '/plugin/CoreShop/admin_Indexes/get',
+        list : '/plugin/CoreShop/admin_Indexes/list'
     },
 
     typesStore : null,
@@ -33,13 +32,13 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
     /**
      * constructor
      */
-    initialize: function() {
+    initialize: function () {
         var proxy = new Ext.data.HttpProxy({
-            url : "/plugin/CoreShop/admin_Indexes/get-types"
+            url : '/plugin/CoreShop/admin_Indexes/get-types'
         });
 
         var reader = new Ext.data.JsonReader({}, [
-            {name:'name'}
+            { name:'name' }
         ]);
 
         this.typesStore = new Ext.data.Store({
@@ -59,7 +58,7 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
         this.panels = [];
     },
 
-    getGettersStore : function() {
+    getGettersStore : function () {
         var store = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
@@ -71,14 +70,14 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
             }
         });
 
-        store.load(function() {
-            store.insert(0, {type : null, 'name' : t('none')});
+        store.load(function () {
+            store.insert(0, { type : null, name : t('none') });
         });
 
-        pimcore.globalmanager.add("coreshop_index_getters", store);
+        pimcore.globalmanager.add('coreshop_index_getters', store);
     },
 
-    getInterpretersStore : function() {
+    getInterpretersStore : function () {
         var store = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
@@ -90,10 +89,10 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
             }
         });
 
-        store.load(function() {
-            store.insert(0, {type : null, 'name' : t('none')});
+        store.load(function () {
+            store.insert(0, { type : null, name : t('none') });
         });
 
-        pimcore.globalmanager.add("coreshop_index_interpreters", store);
+        pimcore.globalmanager.add('coreshop_index_interpreters', store);
     }
 });

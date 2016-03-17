@@ -11,24 +11,24 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.actions.discountAmount");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.actions.discountAmount');
 
 pimcore.plugin.coreshop.pricerules.actions.discountAmount = Class.create(pimcore.plugin.coreshop.pricerules.actions.abstract, {
 
     type : 'discountAmount',
 
-    getForm : function() {
+    getForm : function () {
         var amountValue = 0;
         var currencyValue = null;
         var me = this;
 
-        if(this.data) {
+        if (this.data) {
             amountValue = this.data.amount;
             currencyValue = this.data.currency;
         }
 
         var amount = new Ext.form.NumberField({
-            fieldLabel:t("coreshop_action_discountAmount_amount"),
+            fieldLabel:t('coreshop_action_discountAmount_amount'),
             name:'amount',
             value : amountValue,
             decimalPrecision : 2
@@ -42,7 +42,7 @@ pimcore.plugin.coreshop.pricerules.actions.discountAmount = Class.create(pimcore
             mode: 'local',
             listWidth: 100,
             width : 200,
-            store: pimcore.globalmanager.get("coreshop_currencies"),
+            store: pimcore.globalmanager.get('coreshop_currencies'),
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,

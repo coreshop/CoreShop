@@ -11,19 +11,19 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.layout.portlets.salesFromLastDays");
+pimcore.registerNS('pimcore.layout.portlets.salesFromLastDays');
 pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets.abstract, {
 
     getType: function () {
-        return "pimcore.layout.portlets.salesFromLastDays";
+        return 'pimcore.layout.portlets.salesFromLastDays';
     },
 
     getName: function () {
-        return t("coreshop_sales_from_last_days");
+        return t('coreshop_sales_from_last_days');
     },
 
     getIcon: function () {
-        return "coreshop_carrier_costs_icon";
+        return 'coreshop_carrier_costs_icon';
     },
 
     getLayout: function (portletId) {
@@ -40,12 +40,11 @@ pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
-                }},
-            fields: ['timestamp','datetext',"sales"]
+                } },
+            fields: ['timestamp', 'datetext', 'sales']
         });
 
         store.load();
-
 
         var panel = new Ext.Panel({
             layout:'fit',
@@ -68,8 +67,7 @@ pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets
                     position: 'left',
                     grid: true,
                     minimum: 0
-                }
-                    , {
+                }, {
                         type: 'category',
                         fields: 'datetext',
                         position: 'bottom'
@@ -100,9 +98,9 @@ pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets
                         tooltip: {
                             trackMouse: true,
                             style: 'background: #01841c',
-                            renderer: function(tooltip, storeItem, item) {
+                            renderer: function (tooltip, storeItem, item) {
                                 var title = item.series.getTitle();
-                                tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get("salesFormatted"));
+                                tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get('salesFormatted'));
                             }
                         }
                     }
@@ -110,12 +108,11 @@ pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets
             }
         });
 
-
         this.layout = Ext.create('Portal.view.Portlet', Object.extend(this.getDefaultConfig(), {
             title: this.getName(),
             iconCls: this.getIcon(),
             height: 275,
-            layout: "fit",
+            layout: 'fit',
             items: [panel]
         }));
 

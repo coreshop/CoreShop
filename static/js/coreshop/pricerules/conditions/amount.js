@@ -11,25 +11,25 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions.amount");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions.amount');
 
 pimcore.plugin.coreshop.pricerules.conditions.amount = Class.create(pimcore.plugin.coreshop.pricerules.conditions.abstract, {
 
     type : 'amount',
 
-    getForm : function() {
+    getForm : function () {
 
         var minAmountValue = 0;
         var currencyValue = null;
         var me = this;
 
-        if(this.data && this.data.minAmount) {
+        if (this.data && this.data.minAmount) {
             minAmountValue = this.data.minAmount;
             currencyValue = this.data.currency;
         }
 
         var minAmount = new Ext.form.NumberField({
-            fieldLabel:t("coreshop_condition_amount_minAmount"),
+            fieldLabel:t('coreshop_condition_amount_minAmount'),
             name:'minAmount',
             value : minAmountValue,
             minValue : 0,
@@ -44,7 +44,7 @@ pimcore.plugin.coreshop.pricerules.conditions.amount = Class.create(pimcore.plug
             mode: 'local',
             listWidth: 100,
             width : 200,
-            store: pimcore.globalmanager.get("coreshop_currencies"),
+            store: pimcore.globalmanager.get('coreshop_currencies'),
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -59,12 +59,11 @@ pimcore.plugin.coreshop.pricerules.conditions.amount = Class.create(pimcore.plug
             }
         };
 
-        if(this.data && this.data.currency) {
+        if (this.data && this.data.currency) {
             currency.value = this.data.currency;
         }
 
-
-        this.form = Ext.create("Ext.form.FieldSet", {
+        this.form = Ext.create('Ext.form.FieldSet', {
             items : [
                 minAmount, currency
             ]

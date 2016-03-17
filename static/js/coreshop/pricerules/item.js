@@ -11,7 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.item");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.item');
 
 pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
@@ -21,7 +21,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
         save : '/plugin/CoreShop/admin_PriceRules/save'
     },
 
-    getPanel: function() {
+    getPanel: function () {
         panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -30,8 +30,8 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
             forceLayout: true,
             iconCls : this.iconCls,
             buttons: [{
-                text: t("save"),
-                iconCls: "pimcore_icon_apply",
+                text: t('save'),
+                iconCls: 'pimcore_icon_apply',
                 handler: this.save.bind(this)
             }],
             items: this.getItems()
@@ -40,7 +40,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
         return panel;
     },
 
-    getItems : function() {
+    getItems : function () {
         this.actions = new pimcore.plugin.coreshop.pricerules.action(this.parentPanel.actions);
         this.conditions = new pimcore.plugin.coreshop.pricerules.condition(this.parentPanel.conditions);
 
@@ -51,17 +51,17 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
         ];
 
         // add saved conditions
-        if(this.data.conditions)
+        if (this.data.conditions)
         {
-            Ext.each(this.data.conditions, function(condition) {
+            Ext.each(this.data.conditions, function (condition) {
                 this.conditions.addCondition(condition.type, condition);
             }.bind(this));
         }
 
         // add saved actions
-        if(this.data.actions)
+        if (this.data.actions)
         {
-            Ext.each(this.data.actions, function(action) {
+            Ext.each(this.data.actions, function (action) {
                 this.actions.addAction(action.type, action);
             }.bind(this));
         }
@@ -73,53 +73,53 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
         var data = this.data;
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: "coreshop_price_rule_settings",
-            title: t("settings"),
-            bodyStyle: "padding:10px;",
+            iconCls: 'coreshop_price_rule_settings',
+            title: t('settings'),
+            bodyStyle: 'padding:10px;',
             autoScroll: true,
             border:false,
             items: [{
-                xtype: "textfield",
-                name: "label",
-                fieldLabel: t("label"),
+                xtype: 'textfield',
+                name: 'label',
+                fieldLabel: t('label'),
                 width: 250,
                 value: data.label
             }, {
-                xtype: "textfield",
-                name: "code",
-                fieldLabel: t("code"),
+                xtype: 'textfield',
+                name: 'code',
+                fieldLabel: t('code'),
                 width: 250,
                 value: data.code
             }, {
-                xtype: "textarea",
-                name: "description",
-                fieldLabel: t("description"),
+                xtype: 'textarea',
+                name: 'description',
+                fieldLabel: t('description'),
                 width: 400,
                 height: 100,
                 value: data.description
             }, {
-                xtype: "checkbox",
-                name: "active",
-                fieldLabel: t("active"),
-                checked: this.data.active == "1"
+                xtype: 'checkbox',
+                name: 'active',
+                fieldLabel: t('active'),
+                checked: this.data.active == '1'
             }, {
-                xtype: "checkbox",
-                name: "highlight",
-                fieldLabel: t("highlight"),
-                checked: this.data.highlight == "1"
+                xtype: 'checkbox',
+                name: 'highlight',
+                fieldLabel: t('highlight'),
+                checked: this.data.highlight == '1'
             }]
         });
 
         return this.settingsForm;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         var saveData = {};
 
         // general settings
-        saveData["settings"] = this.settingsForm.getForm().getFieldValues();
-        saveData["conditions"] = this.conditions.getConditionsData();
-        saveData["actions"] = this.actions.getActionsData();
+        saveData['settings'] = this.settingsForm.getForm().getFieldValues();
+        saveData['conditions'] = this.conditions.getConditionsData();
+        saveData['actions'] = this.actions.getActionsData();
 
         return {
             data : Ext.encode(saveData)

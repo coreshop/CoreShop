@@ -11,8 +11,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.customergroups.item");
+pimcore.registerNS('pimcore.plugin.coreshop.customergroups.item');
 pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
     iconCls : 'coreshop_icon_customer_groups',
@@ -21,22 +20,22 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
         save : '/plugin/CoreShop/admin_Customergroup/save'
     },
 
-    getItems : function() {
+    getItems : function () {
         return [this.getFormPanel()];
     },
 
-    getTitleName : function() {
+    getTitleName : function () {
         return this.data.name;
     },
 
-    getFormPanel : function()
+    getFormPanel : function ()
     {
         var data = this.data;
 
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
-            region : "center",
+            region : 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -44,9 +43,9 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
             },
             buttons: [
                 {
-                    text: t("save"),
+                    text: t('save'),
                     handler: this.save.bind(this),
-                    iconCls: "pimcore_icon_apply"
+                    iconCls: 'pimcore_icon_apply'
                 }
             ],
             items: [
@@ -55,18 +54,18 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
                     autoHeight:true,
                     labelWidth: 350,
                     defaultType: 'textfield',
-                    defaults: {width: '100%'},
+                    defaults: { width: '100%' },
                     items :[
                         {
-                            name: "name",
-                            fieldLabel: t("name"),
+                            name: 'name',
+                            fieldLabel: t('name'),
                             width: 400,
                             value: data.name
                         },
                         {
-                            xtype: "numberfield",
-                            name: "discount",
-                            fieldLabel: t("coreshop_customer_group_discount"),
+                            xtype: 'numberfield',
+                            name: 'discount',
+                            fieldLabel: t('coreshop_customer_group_discount'),
                             width: 400,
                             value: data.discount,
                             decimalPrecision : 2,
@@ -80,7 +79,7 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
         return this.formPanel;
     },
 
-    getSaveData : function() {
+    getSaveData : function () {
         return {
             data: Ext.encode(this.formPanel.getForm().getFieldValues())
         };

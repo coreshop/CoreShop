@@ -11,44 +11,46 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.pricerules.conditions.category");
+pimcore.registerNS('pimcore.plugin.coreshop.pricerules.conditions.category');
 
 pimcore.plugin.coreshop.pricerules.conditions.category = Class.create(pimcore.plugin.coreshop.pricerules.conditions.abstract, {
 
     type : 'category',
 
-    getForm : function() {
+    getForm : function () {
         var category = {
-            fieldLabel: t("coreshop_condition_category_category"),
-            name: "category",
-            cls: "input_drop_target",
+            fieldLabel: t('coreshop_condition_category_category'),
+            name: 'category',
+            cls: 'input_drop_target',
             width: 300,
-            xtype: "textfield",
+            xtype: 'textfield',
             listeners: {
-                "render": function (el) {
+                render: function (el) {
                     new Ext.dd.DropZone(el.getEl(), {
                         reference: this,
-                        ddGroup: "element",
-                        getTargetFromEvent: function(e) {
+                        ddGroup: 'element',
+                        getTargetFromEvent: function (e) {
                             return this.getEl();
                         }.bind(el),
 
-                        onNodeOver : function(target, dd, e, data) {
+                        onNodeOver : function (target, dd, e, data) {
                             data = data.records[0].data;
 
-                            if (data.elementType == "object" && data.className == "CoreShopCategory") {
+                            if (data.elementType == 'object' && data.className == 'CoreShopCategory') {
                                 return Ext.dd.DropZone.prototype.dropAllowed;
                             }
+
                             return Ext.dd.DropZone.prototype.dropNotAllowed;
                         },
 
                         onNodeDrop : function (target, dd, e, data) {
                             data = data.records[0].data;
 
-                            if (data.elementType == "object" && data.className == "CoreShopCategory") {
+                            if (data.elementType == 'object' && data.className == 'CoreShopCategory') {
                                 this.setValue(data.path);
                                 return true;
                             }
+
                             return false;
                         }.bind(el)
                     });
@@ -56,7 +58,7 @@ pimcore.plugin.coreshop.pricerules.conditions.category = Class.create(pimcore.pl
             }
         };
 
-        if(this.data && this.data.category) {
+        if (this.data && this.data.category) {
             category.value = this.data.category;
         }
 

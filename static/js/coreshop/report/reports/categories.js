@@ -11,20 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.plugin.coreshop.report.reports.categories");
+pimcore.registerNS('pimcore.plugin.coreshop.report.reports.categories');
 pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
     url : '/plugin/CoreShop/admin_reports/get-categories-report',
 
     getName: function () {
-        return t("coreshop_report_categories");
+        return t('coreshop_report_categories');
     },
 
     getIconCls: function () {
-        return "coreshop_icon_category";
+        return 'coreshop_icon_category';
     },
 
-    getGrid : function() {
+    getGrid : function () {
         return new Ext.Panel({
             layout:'fit',
             height: 275,

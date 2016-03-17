@@ -11,24 +11,23 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-pimcore.registerNS("pimcore.plugin.coreshop.abstract.panel");
+pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
 
 pimcore.plugin.coreshop.abstract.panel = Class.create({
 
-    layoutId: "abstract_layout",
-    storeId : "abstract_store",
-    iconCls : "coreshop_abstract_icon",
-    type : "abstract",
+    layoutId: 'abstract_layout',
+    storeId : 'abstract_store',
+    iconCls : 'coreshop_abstract_icon',
+    type : 'abstract',
 
     url : {
-        add : "",
-        delete : "",
-        get : "",
-        list : ""
+        add : '',
+        delete : '',
+        get : '',
+        list : ''
     },
 
-    initialize: function() {
+    initialize: function () {
         // create layout
         this.getLayout();
 
@@ -36,8 +35,8 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
     },
 
     activate: function () {
-        var tabPanel = Ext.getCmp("pimcore_panel_tabs");
-        tabPanel.setActiveItem( this.layoutId );
+        var tabPanel = Ext.getCmp('pimcore_panel_tabs');
+        tabPanel.setActiveItem(this.layoutId);
     },
 
     getLayout: function () {
@@ -46,22 +45,22 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
             // create new panel
             this.layout = new Ext.Panel({
                 id: this.layoutId,
-                title: t("coreshop_" + this.type),
+                title: t('coreshop_' + this.type),
                 iconCls: this.iconCls,
                 border: false,
-                layout: "border",
+                layout: 'border',
                 closable: true,
                 items: this.getItems()
             });
 
             // add event listener
             var layoutId = this.layoutId;
-            this.layout.on("destroy", function () {
+            this.layout.on('destroy', function () {
                 pimcore.globalmanager.remove(layoutId);
             }.bind(this));
 
             // add panel to pimcore panel tabs
-            var tabPanel = Ext.getCmp("pimcore_panel_tabs");
+            var tabPanel = Ext.getCmp('pimcore_panel_tabs');
             tabPanel.add(this.layout);
             tabPanel.setActiveItem(this.layoutId);
 
@@ -72,13 +71,13 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         return this.layout;
     },
 
-    refresh : function() {
-        if(pimcore.globalmanager.exists(this.storeId)) {
+    refresh : function () {
+        if (pimcore.globalmanager.exists(this.storeId)) {
             pimcore.globalmanager.get(this.storeId).load();
         }
     },
 
-    getItems : function() {
+    getItems : function () {
         return [this.getNavigation(), this.getTabPanel()];
     },
 
@@ -86,16 +85,16 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         if (!this.grid) {
 
             this.grid = Ext.create('Ext.grid.Panel', {
-                region: "west",
+                region: 'west',
                 store: pimcore.globalmanager.get(this.storeId),
                 columns: [
                     {
                         text: '',
                         dataIndex: 'text',
                         flex : 1,
-                        renderer: function( value, metadata, record )
+                        renderer: function (value, metadata, record)
                         {
-                            metadata.tdCls = record.get("iconCls") + " td-icon";
+                            metadata.tdCls = record.get('iconCls') + ' td-icon';
 
                             return value;
                         }
@@ -112,8 +111,8 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                     items: [
                         {
                             // add button
-                            text: t("coreshop_"+this.type+"_add"),
-                            iconCls: "pimcore_icon_add",
+                            text: t('coreshop_' + this.type + '_add'),
+                            iconCls: 'pimcore_icon_add',
                             handler: this.addItem.bind(this)
                         }
                     ]
@@ -121,7 +120,7 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                 hideHeaders: true
             });
 
-            this.grid.on("beforerender", function () {
+            this.grid.on('beforerender', function () {
                 this.getStore().load();
             });
 
@@ -133,38 +132,38 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
     getTreeNodeListeners: function () {
 
         return {
-            "itemclick" : this.onTreeNodeClick.bind(this),
-            "itemcontextmenu": this.onTreeNodeContextmenu.bind(this)
+            itemclick : this.onTreeNodeClick.bind(this),
+            itemcontextmenu: this.onTreeNodeContextmenu.bind(this)
         };
     },
 
-    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts ) {
+    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts) {
         e.stopEvent();
         tree.select();
 
         var menu = new Ext.menu.Menu();
         menu.add(new Ext.menu.Item({
             text: t('delete'),
-            iconCls: "pimcore_icon_delete",
+            iconCls: 'pimcore_icon_delete',
             handler: this.deleteItem.bind(this, record)
         }));
 
         menu.showAt(e.pageX, e.pageY);
     },
 
-    onTreeNodeClick: function (tree, record, item, index, e, eOpts ) {
+    onTreeNodeClick: function (tree, record, item, index, e, eOpts) {
         this.openItem(record.data);
     },
 
     addItem: function () {
-        Ext.MessageBox.prompt(t('coreshop_' + this.type + '_add'), t('coreshop_'+this.type+'_enter_the_name'),
-            this.addItemComplete.bind(this), null, null, "");
+        Ext.MessageBox.prompt(t('coreshop_' + this.type + '_add'), t('coreshop_' + this.type + '_enter_the_name'),
+            this.addItemComplete.bind(this), null, null, '');
     },
 
     addItemComplete: function (button, value, object) {
 
         var regresult = value.match(/[a-zA-Z0-9_\-]+/);
-        if (button == "ok" && value.length > 2 && regresult == value) {
+        if (button == 'ok' && value.length > 2 && regresult == value) {
             Ext.Ajax.request({
                 url: this.url.add,
                 params: {
@@ -175,21 +174,20 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
 
                     this.grid.getStore().reload();
 
-                    if(pimcore.globalmanager.exists("coreshop_" + this.type)) {
-                        pimcore.globalmanager.get("coreshop_" + this.type).load();
+                    if (pimcore.globalmanager.exists('coreshop_' + this.type)) {
+                        pimcore.globalmanager.get('coreshop_' + this.type).load();
                     }
 
-                    if(!data || !data.success) {
+                    if (!data || !data.success) {
                         Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
                     } else {
                         this.openItem(data.data);
                     }
                 }.bind(this)
             });
-        } else if (button == "cancel") {
+        } else if (button == 'cancel') {
             return;
-        }
-        else {
+        } else {
             Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
         }
     },
@@ -203,30 +201,29 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
             success: function () {
                 this.grid.getStore().reload();
 
-                if(pimcore.globalmanager.exists("coreshop_" + this.type)) {
-                    pimcore.globalmanager.get("coreshop_" + this.type).load();
+                if (pimcore.globalmanager.exists('coreshop_' + this.type)) {
+                    pimcore.globalmanager.get('coreshop_' + this.type).load();
                 }
 
-                if(this.panels[this.getPanelKey(record)]) {
+                if (this.panels[this.getPanelKey(record)]) {
                     this.panels[this.getPanelKey(record)].destroy();
                 }
-                
+
             }.bind(this)
         });
     },
 
-    getPanelKey : function(record) {
+    getPanelKey : function (record) {
         return this.layoutId + record.id;
     },
 
     openItem: function (record) {
         var panelKey = this.getPanelKey(record);
 
-        if(this.panels[panelKey])
+        if (this.panels[panelKey])
         {
             this.panels[panelKey].activate();
-        }
-        else
+        } else
         {
             Ext.Ajax.request({
                 url: this.url.get,
@@ -236,10 +233,9 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                 success: function (response) {
                     var res = Ext.decode(response.responseText);
 
-                    if(res.success) {
+                    if (res.success) {
                         this.panels[panelKey] = new pimcore.plugin.coreshop[this.type].item(this, res.data, panelKey, this.type, this.storeId);
-                    }
-                    else {
+                    } else {
                         //TODO: Show messagebox
                         Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
                     }
@@ -252,7 +248,7 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
     getTabPanel: function () {
         if (!this.panel) {
             this.panel = new Ext.TabPanel({
-                region: "center",
+                region: 'center',
                 border: false
             });
         }
