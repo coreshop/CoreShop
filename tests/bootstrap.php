@@ -106,7 +106,6 @@ $setup->contents(array(
     "password" => microtime()
 ));
 
-echo "\nSetup done...\n";
 
 // to be sure => reset the database
 \Pimcore\Db::reset();
@@ -173,6 +172,8 @@ $install->createCustomView($coreShopFolder, array(
 \CoreShop\Plugin::getEventManager()->trigger('install.post', null, array("installer" => $install));
 
 $install->setConfigInstalled();
+
+echo "\nSetup done...\n";
 
 Zend_Session::$_unitTestEnabled = true;
 \Zend_Registry::set("Zend_Locale", new \Zend_Locale("en"));
