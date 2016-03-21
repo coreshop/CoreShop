@@ -7,11 +7,13 @@
 }
 
 #coreshop_status {
-    background-image: url(/plugins/CoreShop/static/img/48/coreshop.png)
+    background-image: url(/plugins/CoreShop/static/img/logo-fill.svg)
 }
 
 #pimcore_menu_coreshop {
-    background-image: url(/plugins/CoreShop/static/img/48/coreshop.png) !important;
+    background-image: url(/plugins/CoreShop/static/img/logo-fill.svg) !important;
+    width:100%;
+    height:100%;
 }
 
 .icon-coreshop-shop:before { content: '\e800'; } /* '' */

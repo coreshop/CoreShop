@@ -1,34 +1,31 @@
+# CoreShop - Pimcore Onlineshop System
+
 [![Join the chat at https://gitter.im/dpfaffenbauer/pimcore-coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dpfaffenbauer/pimcore-coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/coreshop/CoreShop.svg?branch=master)](https://travis-ci.org/coreshop/CoreShop)
+[![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 
-# CoreShop
+![CoreShop Interface](docs/img/screenshot.png)
 
-CoreShop is the first OpenSource Onlineshop plugin for Pimcore.
+* [Getting started](https://github.com/dpfaffenbauer/pimcore-coreshop/wiki/Getting-Started)
+* [Documentation](https://github.com/dpfaffenbauer/pimcore-coreshop/wiki)
+* Website: [www.coreshop.org](http://www.coreshop.org/) - Learn more about CoreShop
+* Demo: [coreshop.lineofcode.ats](http://coreshop.lineofcode.at/) - See CoreShop in Action
 
-# Demo
-Take a look at [coreshop.lineofcode.at](http://coreshop.lineofcode.at) (Stil under Development)
+## Getting started
 
-[Getting started] (https://github.com/dpfaffenbauer/pimcore-coreshop/wiki/Getting-Started)
+* Download Plugin and place it in your plugins directory
+* Download Example Template and place it in your website folder (https://github.com/coreshop/website-example)
+* Open Extension Manager in Pimcore and enable/install Plugin
+* After Installation within Pimcore Extension Manager, you have to reload Pimcore
+* Now the CoreShop Icon will appear in the Menu
+* You now have to let CoreShop install itself
+* finished
+* Go To http://yourdomain/en/shop
 
-# Features
-* Product Management
-* Variants of Products
-* Countries with Currencies
-* Currency conversion
-* Category Management
-* Abstract Payment
-* Price Rules for Vouchers/Discounts
-* Carrier Management
-* Extensible Carriers
-* Different Payment Providers
-* Multiple Themes supported
-* PDF-Invoice Generation
-* Different Order Steps
-* Overwrite CoreShop Classes
-* Overwrite CoreShop Controllers
-* Catalog-Mode (No Cart, Checkout and Customers)
-* Guest Checkout
-* Tax Manager (Custom Taxes for Products and Countries)
-* Specific Price Rules based on Conditions
-* Index Services: create custom indexes for your searches, with different index providers (eg Mysql)
-* Filter Service: create custom filter service so your customers can find your products
+## Copyright and license 
+Copyright: [Dominik Pfaffenbauer](http://dominik.pfaffenbauer.at)  
+For licensing details please visit [LICENSE.md](LICENSE.md) 
+
+## Screenshots
+![CoreShop Interface](docs/img/screenshot2.png)
+![CoreShop Interface](docs/img/screenshot3.png)
