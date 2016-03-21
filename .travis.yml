@@ -22,6 +22,7 @@ before_install:
  - mv $TRAVIS_BUILD_DIR/plugin $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop
 
 install:
+  - composer self-update
   - cd $TRAVIS_BUILD_DIR/pimcore
   - composer install
   - cd $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop
