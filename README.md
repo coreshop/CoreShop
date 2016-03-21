@@ -9,7 +9,7 @@
 * [Getting started](https://github.com/dpfaffenbauer/pimcore-coreshop/wiki/Getting-Started)
 * [Documentation](https://github.com/dpfaffenbauer/pimcore-coreshop/wiki)
 * Website: [www.coreshop.org](http://www.coreshop.org/) - Learn more about CoreShop
-* Demo: [coreshop.lineofcode.ats](http://coreshop.lineofcode.at/) - See CoreShop in Action
+* Demo: [coreshop.lineofcode.at](http://coreshop.lineofcode.at/) - See CoreShop in Action
 
 ## Getting started
 
