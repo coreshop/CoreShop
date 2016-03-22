@@ -102,7 +102,7 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      * @param null|Model\Object\AbstractObject $object
      * @return AbstractModel
      */
-    public function getDataFromEditmode($data, $object = null)
+    public function getDataFromEditmode($data, $object = null, $params = array())
     {
         return $this->getDataFromResource($data);
     }
