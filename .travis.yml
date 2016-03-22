@@ -19,7 +19,7 @@ before_install:
  - mv !(plugin) plugin
  - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/pimcore
  - cd $TRAVIS_BUILD_DIR/pimcore
- - git checkout 4.0.0-RC1
+# - git checkout 4.0.0-RC1
  - cd $TRAVIS_BUILD_DIR
  - mkdir $TRAVIS_BUILD_DIR/pimcore/plugins
  - mv $TRAVIS_BUILD_DIR/plugin $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop
