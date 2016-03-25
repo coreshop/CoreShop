@@ -70,3 +70,26 @@ coreshop.util.format.currency = function (currency, v) {
 
     return currency +  v;
 };
+
+coreshop.helpers.showAbout = function () {
+
+    var html = '<div class="pimcore_about_window">';
+    html += '<br><img src="/plugins/CoreShop/static/img/logo.svg" style="width: 60px;"><br>';
+    html += '<br><b>Version: ' + coreshop.settings.plugin.pluginVersion + '</b>';
+    html += '<br><b>Build: ' + coreshop.settings.plugin.pluginRevision + '</b>';
+    html += '<br><br>&copy; by Dominik Pfaffenbauer, Wels, Austria (<a href="http://www.coreshop.org/" target="_blank">coreshop.org</a>)';
+    html += '<br><br><a href="https://github.com/coreshop/coreshop/blob/master/LICENSE.md" target="_blank">License</a> | ';
+    html += '<a href="http://www.coreshop.org/contact.html" target="_blank">Contact</a>';
+    html += '</div>';
+
+    var win = new Ext.Window({
+        title: t("about"),
+        width:500,
+        height: 300,
+        bodyStyle: "padding: 10px;",
+        modal: true,
+        html: html
+    });
+
+    win.show();
+};

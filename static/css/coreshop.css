@@ -18,6 +18,13 @@
 
 .icon-coreshop-shop:before { content: '\e800'; } /* '' */
 
+.coreshop_icon_logo {
+    background-image: url(/plugins/CoreShop/static/img/logo-fill.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
+
 .coreshop_icon_settings {
     background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important;
 }

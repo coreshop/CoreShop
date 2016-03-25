@@ -12,6 +12,7 @@
  */
 
 pimcore.registerNS('pimcore.plugin.coreshop');
+pimcore.registerNS('coreshop.settings');
 
 pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
@@ -46,6 +47,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                 var user = pimcore.globalmanager.get('user');
 
                 this.settings = resp;
+                coreshop.settings = this.settings;
 
                 if (intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
 
@@ -225,6 +227,14 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                             handler: this.openUpdate
                         });
                     }
+
+                    coreShopMenuItems.push({
+                        text: "ABOUT CoreShop &reg;",
+                        iconCls: "coreshop_icon_logo",
+                        handler: function () {
+                            coreshop.helpers.showAbout();
+                        }
+                    });
 
                 } else {
                     if (user.admin) {
