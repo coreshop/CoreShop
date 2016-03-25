@@ -18,11 +18,15 @@ pimcore.plugin.coreshop.install = Class.create({
         Ext.MessageBox.confirm(t('info'), t('coreshop_install_confirm'), function (buttonValue) {
             if (buttonValue == 'yes')
             {
+                pimcore.helpers.loadingShow();
+
                 Ext.Ajax.request({
                     url: '/plugin/CoreShop/admin_install/install',
                     method: 'post',
                     success: function (response) {
                         var data = Ext.decode(response.responseText);
+
+                        pimcore.helpers.loadingHide();
 
                         if (data.success) {
                             Ext.MessageBox.alert(t('info'), t('coreshop_installed_successfully'), function () {
