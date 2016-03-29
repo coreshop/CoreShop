@@ -148,7 +148,7 @@ class PriceRule extends AbstractModel
         $availablePriceRules = array();
 
         foreach ($priceRules as $priceRule) {
-            if ($priceRule->checkValidity(false, true)) {
+            if ($priceRule->checkValidity($cart, false, true)) {
                 if ($cart->getPriceRule() instanceof PriceRule && $priceRule->getId() == $cart->getPriceRule()->getId()) {
                     continue;
                 }
