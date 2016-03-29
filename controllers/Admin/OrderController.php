@@ -65,7 +65,7 @@ class CoreShop_Admin_OrderController extends Admin
             "orderDate" => $order->getOrderDate() instanceof \Pimcore\Date ? intval($order->getOrderDate()->get(\Zend_Date::TIMESTAMP)) : null,
             "orderNumber" => $order->getOrderNumber(),
             "lang" => $order->getLang(),
-            "carrier" => $order->getCarrier()->getId(),
+            "carrier" => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getId() : null,
             "priceRule" => $order->getPriceRule() instanceof \CoreShop\Model\PriceRule ? $order->getPriceRule()->getId() : null,
             "discount" => $order->getDiscount(),
             "subtotal" => $order->getSubtotal(),

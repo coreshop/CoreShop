@@ -283,6 +283,29 @@
 								"invisible":false,
 								"visibleGridView":false,
 								"visibleSearch":false
+							},
+							{
+								"fieldtype":"coreShopManufacturer",
+								"phpdocType":"CoreShop\\Model\\Manufacturer",
+								"queryColumnType":"int(11)",
+								"columnType":"int(11)",
+								"options":null,
+								"width":"",
+								"defaultValue":null,
+								"name":"manufacturer",
+								"title":"Manufacturer",
+								"tooltip":"",
+								"mandatory":false,
+								"noteditable":false,
+								"index":false,
+								"locked":false,
+								"style":"",
+								"permissions":null,
+								"datatype":"data",
+								"relationType":false,
+								"invisible":false,
+								"visibleGridView":false,
+								"visibleSearch":false
 							}
 						],
 						"locked":false
@@ -313,9 +336,7 @@
 								"relationType":true,
 								"lazyLoading":false,
 								"classes":[
-									{
-										"classes":"CoreShopCategory"
-									}
+									"CoreShopCategory"
 								],
 								"name":"categories",
 								"title":"Categories",
@@ -660,12 +681,12 @@
 						"fieldtype":"panel",
 						"labelWidth":100,
 						"layout":"",
-						"name":"Ma\u00dfe",
+						"name":"Dimensions",
 						"type":null,
 						"region":"",
-						"title":"Ma\u00dfe",
-						"width":"",
-						"height":"",
+						"title":"Dimensions",
+						"width":null,
+						"height":null,
 						"collapsible":false,
 						"collapsed":false,
 						"bodyStyle":"",
@@ -811,9 +832,7 @@
 								"objectsAllowed":false,
 								"assetsAllowed":true,
 								"assetTypes":[
-									{
-										"assetTypes":"[object Object]"
-									}
+
 								],
 								"documentsAllowed":false,
 								"documentTypes":[

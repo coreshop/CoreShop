@@ -1,3 +1,4 @@
+<?php
 /**
  * CoreShop
  *
@@ -11,20 +12,11 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.object.classes.data.coreShopOrderState');
-pimcore.object.classes.data.coreShopOrderState = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
+namespace CoreShop\Model\Manufacturer;
 
-    type: 'coreShopOrderState',
+use CoreShop\Model\Dao\AbstractDao;
 
-    getTypeName: function () {
-        return t('coreshop_order_state');
-    },
-
-    getGroup: function () {
-        return 'coreshop';
-    },
-
-    getIconClass: function () {
-        return 'coreshop_icon_order_states';
-    }
-});
+class Dao extends AbstractDao
+{
+    protected $tableName = 'coreshop_manufacturers';
+}

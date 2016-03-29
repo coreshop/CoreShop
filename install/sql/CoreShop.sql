@@ -513,3 +513,13 @@ CREATE TABLE `coreshop_product_filters` (
   `filters` text NOT NULL,
   `index` int(11) NULL
 );
+
+CREATE TABLE `coreshop_manufacturers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(255) NOT NULL,
+  `image` int(11) NULL
+);
+
+INSERT INTO `users_permission_definitions` (`key`)
+VALUES
+  ('coreshop_permission_manufacturers');

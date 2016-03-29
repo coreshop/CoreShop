@@ -207,6 +207,14 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
+                    if (user.isAllowed('coreshop_permission_manufacturers')) {
+                        productsMenu.push({
+                            text: t('coreshop_manufacturers'),
+                            iconCls: 'coreshop_icon_manufacturers',
+                            handler: this.openManufacturers
+                        });
+                    }
+
                     if (productsMenu.length > 0) {
                         coreShopMenuItems.push({
                             text: t('coreshop_product'),
@@ -577,6 +585,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_product_filters_panel', new pimcore.plugin.coreshop.filters.panel());
+        }
+    },
+
+    openManufacturers : function () {
+        try {
+            pimcore.globalmanager.get('coreshop_manufacturers_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_manufacturers_panel', new pimcore.plugin.coreshop.manufacturers.panel());
         }
     }
 });

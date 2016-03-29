@@ -1,3 +1,4 @@
+<?php
 /**
  * CoreShop
  *
@@ -11,20 +12,18 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.object.classes.data.coreShopOrderState');
-pimcore.object.classes.data.coreShopOrderState = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
+namespace Pimcore\Model\Object\ClassDefinition\Data;
 
-    type: 'coreShopOrderState',
+use Pimcore\Model;
+use CoreShop\Model\CustomerGroup;
 
-    getTypeName: function () {
-        return t('coreshop_order_state');
-    },
+class CoreShopManufacturerMultiselect extends Model\Object\ClassDefinition\Data\Multiselect
+{
 
-    getGroup: function () {
-        return 'coreshop';
-    },
-
-    getIconClass: function () {
-        return 'coreshop_icon_order_states';
-    }
-});
+    /**
+     * Static type of this element
+     *
+     * @var string
+     */
+    public $fieldtype = "coreShopManufacturerMultiselect";
+}

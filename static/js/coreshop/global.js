@@ -45,6 +45,7 @@ pimcore.plugin.coreshop.global = {
         this._createStore('coreshop_pricerules', 'PriceRules');
         this._createStore('coreshop_indexes', 'Indexes');
         this._createStore('coreshop_product_filters', 'Filter');
+        this._createStore('coreshop_manufacturers', 'Manufacturers');
 
         pimcore.globalmanager.get('coreshop_taxes').load();
         pimcore.globalmanager.get('coreshop_countries').load();

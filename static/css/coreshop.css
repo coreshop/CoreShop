@@ -268,3 +268,7 @@
 .coreshop_icon_monitoring {
     background: url(/plugins/CoreShop/static/img/24/monitor.png) no-repeat scroll left center transparent !important;
 }
+
+.coreshop_icon_manufacturers, .pimcore_icon_coreShopManufacturer, .pimcore_icon_coreShopManufacturerMultiselect {
+    background: url(/plugins/CoreShop/static/img/24/manufacturer.png) no-repeat scroll left center transparent !important;
+}

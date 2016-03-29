@@ -135,6 +135,12 @@
       <path>/plugins/CoreShop/static/js/coreshop/report/monitoring/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/report/monitoring/reports/emptyCategories.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/report/monitoring/reports/disabledProducts.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/manufacturers/panel.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/manufacturers/item.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopManufacturer.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopManufacturer.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopManufacturerMultiselect.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopManufacturerMultiselect.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>
