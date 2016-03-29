@@ -381,7 +381,7 @@ class Update
     public static function getScriptForBuild($build, $name)
     {
         try {
-            $updateScript = @file_get_contents(self::getRepoUrl() . "" . $build . "/scripts/" . $name . ".php");
+            $updateScript = @file_get_contents(self::getRepoUrl() . "/" . $build . "/scripts/" . $name . ".php");
 
             if ($updateScript) {
                 return $updateScript;
