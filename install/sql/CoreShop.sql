@@ -433,7 +433,6 @@ ALTER TABLE coreshop_numberranges ADD UNIQUE (`type`);
 DROP TABLE IF EXISTS `coreshop_orderstates`;
 CREATE TABLE `coreshop_orderstates` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(255) NOT NULL,
   `accepted` tinyint(1) NOT NULL DEFAULT '0',
   `shipped` tinyint(1) NOT NULL DEFAULT '0',
   `paid` tinyint(1) NOT NULL DEFAULT '0',

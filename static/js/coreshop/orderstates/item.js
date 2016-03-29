@@ -25,6 +25,10 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
         return [this.getFormPanel()];
     },
 
+    getTitleText : function () {
+        return this.data.localizedFields.items[pimcore.settings.language].name;
+    },
+    
     getFormPanel : function ()
     {
         var data = this.data;
@@ -35,46 +39,55 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
                 title: pimcore.available_languages[lang],
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout:'form',
-                items: [{
-                    fieldLabel: t('coreshop_order_state_emailDocument'),
-                    labelWidth: 350,
-                    name: 'emailDocument.' + lang,
-                    fieldCls: 'pimcore_droptarget_input',
-                    value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].emailDocument : '',
-                    xtype: 'textfield',
-                    listeners: {
-                        render: function (el) {
-                            new Ext.dd.DropZone(el.getEl(), {
-                                reference: this,
-                                ddGroup: 'element',
-                                getTargetFromEvent: function (e) {
-                                    return this.getEl();
-                                }.bind(el),
+                items: [
+                    {
+                        xtype: 'textfield',
+                        name: 'name.' + lang,
+                        fieldLabel: t('name'),
+                        width: 400,
+                        value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].name : ''
+                    },
+                    {
+                        fieldLabel: t('coreshop_order_state_emailDocument'),
+                        labelWidth: 350,
+                        name: 'emailDocument.' + lang,
+                        fieldCls: 'pimcore_droptarget_input',
+                        value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].emailDocument : '',
+                        xtype: 'textfield',
+                        listeners: {
+                            render: function (el) {
+                                new Ext.dd.DropZone(el.getEl(), {
+                                    reference: this,
+                                    ddGroup: 'element',
+                                    getTargetFromEvent: function (e) {
+                                        return this.getEl();
+                                    }.bind(el),
 
-                                onNodeOver : function (target, dd, e, data) {
-                                    data = data.records[0].data;
+                                    onNodeOver : function (target, dd, e, data) {
+                                        data = data.records[0].data;
 
-                                    if (data.elementType == 'document') {
-                                        return Ext.dd.DropZone.prototype.dropAllowed;
-                                    }
+                                        if (data.elementType == 'document') {
+                                            return Ext.dd.DropZone.prototype.dropAllowed;
+                                        }
 
-                                    return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                },
+                                        return Ext.dd.DropZone.prototype.dropNotAllowed;
+                                    },
 
-                                onNodeDrop : function (target, dd, e, data) {
-                                    data = data.records[0].data;
+                                    onNodeDrop : function (target, dd, e, data) {
+                                        data = data.records[0].data;
 
-                                    if (data.elementType == 'document') {
-                                        this.setValue(data.path);
-                                        return true;
-                                    }
+                                        if (data.elementType == 'document') {
+                                            this.setValue(data.path);
+                                            return true;
+                                        }
 
-                                    return false;
-                                }.bind(el)
-                            });
+                                        return false;
+                                    }.bind(el)
+                                });
+                            }
                         }
                     }
-                }]
+                ]
             };
 
             langTabs.push(tab);
@@ -105,12 +118,6 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
                     defaults: { width: '100%' },
                     items :[
                         {
-                            xtype: 'textfield',
-                            name: 'name',
-                            fieldLabel: t('name'),
-                            width: 400,
-                            value: data.name
-                        }, {
                             xtype: 'checkbox',
                             name: 'accepted',
                             fieldLabel: t('coreshop_order_state_accepted'),

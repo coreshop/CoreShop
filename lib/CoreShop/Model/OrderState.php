@@ -23,7 +23,7 @@ use Pimcore\Tool\Authentication;
 
 class OrderState extends AbstractModel
 {
-    protected $localizedValues = array("emailDocument");
+    protected $localizedValues = array("emailDocument", "name");
 
     /**
      * @var int
@@ -201,19 +201,21 @@ class OrderState extends AbstractModel
     }
 
     /**
+     * @param string $language language
      * @return string
      */
-    public function getName()
+    public function getName($language = null)
     {
-        return $this->name;
+        return $this->getLocalizedFields()->getLocalizedValue("name", $language);
     }
 
     /**
      * @param string $name
+     * @param string $language language
      */
-    public function setName($name)
+    public function setName($name, $language = null)
     {
-        $this->name = $name;
+        $this->getLocalizedFields()->setLocalizedValue("name", $name, $language);
     }
 
     /**

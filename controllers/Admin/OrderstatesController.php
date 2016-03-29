@@ -107,7 +107,7 @@ class CoreShop_Admin_OrderstatesController extends Admin
             $oderState->setValues($data);
             $oderState->save();
 
-            $this->_helper->json(array("success" => true, "data" => $oderState));
+            $this->_helper->json(array("success" => true, "data" => $oderState->getObjectVars()));
         } else {
             $this->_helper->json(array("success" => false));
         }

@@ -218,6 +218,7 @@ class AbstractModel extends Model\AbstractModel
     {
         if ($this->getLocalizedFields()) {
             $this->getLocalizedFields()->setObject($this);
+            $this->getLocalizedFields()->setFields($this->localizedValues);
         }
     }
 }
