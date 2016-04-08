@@ -523,3 +523,17 @@ CREATE TABLE `coreshop_manufacturers` (
 INSERT INTO `users_permission_definitions` (`key`)
 VALUES
   ('coreshop_permission_manufacturers');
+
+  DROP TABLE IF EXISTS `coreshop_states`;
+CREATE TABLE `coreshop_states` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `isoCode` varchar(2) NULL,
+  `active` tinyint(1) DEFAULT 0,
+  `countryId` int,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+INSERT INTO `users_permission_definitions` (`key`)
+VALUES
+  ('coreshop_permission_states');

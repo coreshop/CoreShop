@@ -36,6 +36,7 @@ class CoreShop_Admin_InstallController extends Admin
             Plugin::getEventManager()->trigger('install.pre', null, array("installer" => $install));
 
             $install->executeSQL("CoreShop");
+            $install->executeSQL("CoreShop-States");
 
             //install Data
             $install->installObjectData("orderStates");

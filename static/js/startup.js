@@ -83,6 +83,14 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
+                    if (user.isAllowed('coreshop_permission_states')) {
+                        localizationMenu.push({
+                            text: t('coreshop_states'),
+                            iconCls: 'coreshop_icon_state',
+                            handler: this.openStateList
+                        });
+                    }
+
                     if (user.isAllowed('coreshop_permission_currencies')) {
                         localizationMenu.push({
                             text: t('coreshop_currencies'),
@@ -594,6 +602,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_manufacturers_panel', new pimcore.plugin.coreshop.manufacturers.panel());
+        }
+    },
+
+    openStateList : function () {
+        try {
+            pimcore.globalmanager.get('coreshop_states_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_states_panel', new pimcore.plugin.coreshop.states.panel());
         }
     }
 });
