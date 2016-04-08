@@ -372,14 +372,15 @@ class Product extends Base
     /**
      * Get Product Tax Amount
      *
+     * @param boolean $asArray
      * @return float
      */
-    public function getTaxAmount()
+    public function getTaxAmount($asArray = false)
     {
         $calculator = $this->getTaxCalculator();
 
         if ($calculator) {
-            return $calculator->getTaxesAmount($this->getPriceWithoutTax());
+            return $calculator->getTaxesAmount($this->getPriceWithoutTax(), $asArray);
         }
 
         return 0;

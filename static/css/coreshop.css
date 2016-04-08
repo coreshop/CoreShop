@@ -273,6 +273,6 @@
     background: url(/plugins/CoreShop/static/img/24/manufacturer.png) no-repeat scroll left center transparent !important;
 }
 
-.coreshop_icon_state {
+.coreshop_icon_state, .pimcore_icon_coreShopState {
     background: url(/plugins/CoreShop/static/img/24/state.png) no-repeat scroll left center transparent !important;
 }

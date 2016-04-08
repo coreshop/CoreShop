@@ -22,7 +22,6 @@ use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class TaxManagerFactory
 {
-
     /**
      * get CacheKey for Address
      *
@@ -32,6 +31,7 @@ class TaxManagerFactory
     private static function getCacheKey(CoreShopUserAddress $address)
     {
         return md5($address->getCountry()->getId() .
+            ($address->getState() instanceof State ? $address->getState()->getId() : "") .
             ($address->getName() ? $address->getName() : "") .
             ($address->getVatNumber() ? $address->getVatNumber() : "") .
             ($address->getStreet() ? $address->getStreet() : "") .

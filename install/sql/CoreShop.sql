@@ -459,6 +459,7 @@ CREATE TABLE `coreshop_tax_rules` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `taxRuleGroupId` int(11) NOT NULL,
   `countryId` int(11) NOT NULL,
+  `stateId` int(11) NOT NULL,
   `taxId` int(11) NOT NULL,
   `behavior` tinyint NOT NULL
 );

@@ -48,6 +48,16 @@ class TaxRule extends AbstractModel
     /**
      * @var int
      */
+    public $stateId;
+
+    /**
+     * @var State
+     */
+    public $state;
+
+    /**
+     * @var int
+     */
     public $taxId;
 
     /**
@@ -187,6 +197,49 @@ class TaxRule extends AbstractModel
 
         $this->country = $country;
         $this->countryId = $country->getId();
+    }
+
+    /**
+     * @return int
+     */
+    public function getStateId()
+    {
+        return $this->stateId;
+    }
+
+    /**
+     * @param int $stateId
+     * @throws \Exception
+     */
+    public function setStateId($stateId)
+    {
+        $this->stateId = $stateId;
+    }
+
+    /**
+     * @return State
+     */
+    public function getState()
+    {
+        if (!$this->state instanceof State) {
+            $this->state = State::getById($this->stateId);
+        }
+
+        return $this->state;
+    }
+
+    /**
+     * @param int|State $state
+     * @throws \Exception
+     */
+    public function setState($state)
+    {
+        if (!$state instanceof State) {
+            throw new \Exception("\$state must be instance of State");
+        }
+
+        $this->state = $state;
+        $this->stateId = $state->getId();
     }
 
     /**

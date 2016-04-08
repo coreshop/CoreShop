@@ -83,16 +83,16 @@ class TaxCalculator
     public function getTotalRate()
     {
         $taxes = 0;
-        if ($this->computation_method == TaxCalculator::ONE_AFTER_ANOTHER_METHOD) {
+        if ($this->getComputationMethod() == TaxCalculator::ONE_AFTER_ANOTHER_METHOD) {
             $taxes = 1;
-            foreach ($this->taxes as $tax) {
+            foreach ($this->getTaxes() as $tax) {
                 $taxes *= (1 + (abs($tax->getRate()) / 100));
             }
 
             $taxes = $taxes - 1;
             $taxes = $taxes * 100;
         } else {
-            foreach ($this->taxes as $tax) {
+            foreach ($this->getTaxes() as $tax) {
                 $taxes += abs($tax->getRate());
             }
         }
@@ -100,10 +100,14 @@ class TaxCalculator
         return (float)$taxes;
     }
 
+    /**
+     * @param null $language
+     * @return string
+     */
     public function getTaxesName($language = null)
     {
         $name = '';
-        foreach ($this->taxes as $tax) {
+        foreach ($this->getTaxes() as $tax) {
             $name .= $tax->getName($language) . ' - ';
         }
 
@@ -116,20 +120,25 @@ class TaxCalculator
      * Return the tax amount associated to each taxes of the TaxCalculator
      *
      * @param float $price
+     * @param bool $asArray
      * @return array $taxes_amount
      */
-    public function getTaxesAmount($price)
+    public function getTaxesAmount($price, $asArray = false)
     {
         $taxes_amounts = array();
         $taxAmount = 0;
 
-        foreach ($this->taxes as $tax) {
-            if ($this->computation_method == TaxCalculator::ONE_AFTER_ANOTHER_METHOD) {
-                $taxes_amounts += $price * (abs($tax->getRate()) / 100);
+        foreach ($this->getTaxes() as $tax) {
+            if ($this->getComputationMethod() == TaxCalculator::ONE_AFTER_ANOTHER_METHOD) {
+                $taxes_amounts[$tax->id] = $price * (abs($tax->getRate()) / 100);
                 $price = $price + $taxes_amounts[$tax->id];
             } else {
                 $taxes_amounts[$tax->id] = ($price * (abs($tax->getRate()) / 100));
             }
+        }
+
+        if($asArray) {
+            return $taxes_amounts;
         }
 
         foreach ($taxes_amounts as $t) {
@@ -137,5 +146,21 @@ class TaxCalculator
         }
 
         return $taxAmount;
+    }
+
+    /**
+     * Get taxes
+     *
+     * @return Tax[]
+     */
+    public function getTaxes() {
+        return $this->taxes;
+    }
+
+    /**
+     *  return computation mode
+     */
+    public function getComputationMethod() {
+        return $this->computation_method;
     }
 }

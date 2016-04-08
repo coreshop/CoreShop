@@ -30,6 +30,22 @@ class CoreShop_Admin_StateController extends Admin
         }
     }
 
+    public function countryAction() {
+        $list = new State\Listing();
+        $list->setOrder("ASC");
+        $list->setOrderKey("name");
+        $list->setCondition("countryId=?", array($this->getParam("countryId")));
+        $list->load();
+
+        $states = array();
+        if (is_array($list->getData())) {
+            foreach ($list->getData() as $state) {
+                $states[] = $this->getTreeNodeConfig($state);
+            }
+        }
+        $this->_helper->json($states);
+    }
+
     public function listAction()
     {
         $list = new State\Listing();
@@ -55,7 +71,8 @@ class CoreShop_Admin_StateController extends Admin
             "qtipCfg" => array(
                 "title" => "ID: " . $state->getId()
             ),
-            "name" => $state->getName()
+            "name" => $state->getName(),
+            "country" => $state->getCountry()->getName()
         );
 
         $tmpState["leaf"] = true;

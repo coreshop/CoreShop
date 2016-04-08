@@ -73,12 +73,22 @@ class TaxRuleGroup extends AbstractModel
      * Return all TaxRules for a Country
      *
      * @param Country $country
+     * @param State $state|null
      * @return TaxRule[]
      */
-    public function getCountries(Country $country)
+    public function getForCountryAndState(Country $country, $state)
     {
+        $queryParams = array($this->getId(), $country->getId(), 0);
+
+        if($state instanceof State) {
+            $queryParams[] = intval($state->getId());
+        }
+        else {
+            $queryParams[] = 0;
+        }
+
         $listing = new TaxRule\Listing();
-        $listing->setCondition("taxRuleGroupId = ? AND countryId = ?", array($this->getId(), $country->getId()));
+        $listing->setCondition("taxRuleGroupId = ? AND countryId = ? AND stateId IN(?, ?)", $queryParams);
 
         return $listing->getData();
     }

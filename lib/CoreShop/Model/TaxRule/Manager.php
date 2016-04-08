@@ -17,6 +17,7 @@ namespace CoreShop\Model\TaxRule;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Country;
 use CoreShop\Model\Plugin\TaxManager;
+use CoreShop\Model\State;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
 use Pimcore\Model\Object\CoreShopUser;
@@ -24,7 +25,6 @@ use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class Manager implements TaxManager
 {
-
     /**
      * @var TaxCalculator
      */
@@ -74,11 +74,11 @@ class Manager implements TaxManager
 
         //Todo:: Configure if taxes are enabled
 
-        $cacheKey = "coreshop_tax_calculator_" . $this->address->getCountry()->getId() . '_' . (int)$this->type;
+        $cacheKey = $this->getCacheKey();
 
         if (!\Zend_Registry::isRegistered($cacheKey)) {
             $taxRuleGroup = TaxRuleGroup::getById($this->type);
-            $taxRules = $taxRuleGroup->getCountries($this->address->getCountry());
+            $taxRules = $taxRuleGroup->getForCountryAndState($this->address->getCountry(), $this->address->getState());
             $taxes = array();
             $firstRow = true;
             $behavior = false;
@@ -103,5 +103,17 @@ class Manager implements TaxManager
         }
 
         return \Zend_Registry::get($cacheKey);
+    }
+
+    /**
+     * get CacheKey for Address
+     *
+     * @return string
+     */
+    private function getCacheKey()
+    {
+        return 'coreshop_tax_calculator_' . $this->address->getCountry()->getId() .
+            ($this->address->getState() instanceof State ? $this->address->getState()->getId() : "") . '_' .
+            (int)$this->type;
     }
 }

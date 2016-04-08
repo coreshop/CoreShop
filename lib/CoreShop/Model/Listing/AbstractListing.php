@@ -181,7 +181,7 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     public function next()
     {
         $this->getData();
-        $var = next($this->date);
+        $var = next($this->data);
         return $var;
     }
 

@@ -19,6 +19,8 @@ use CoreShop\Model\Carrier;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\OrderState;
+use CoreShop\Model\Tax;
+use CoreShop\Model\TaxCalculator;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Date;
@@ -42,11 +44,26 @@ abstract class Payment implements AbstractPlugin
      * Get Payment Fee
      *
      * @param Cart $cart
-     * @param boolean $useTaxes Use Taxes?
-     * @return float
+     * @return int
      */
     public function getPaymentFee(Cart $cart, $useTaxes = true)
     {
+        return 0;
+    }
+
+    /**
+     * get payment fee tax
+     *
+     * @param Cart $cart
+     * @return float
+     */
+    public function getPaymentFeeTax(Cart $cart) {
+        $taxCalculator = $this->getPaymentTaxCalculator($cart);
+
+        if ($taxCalculator) {
+            return $taxCalculator->getTaxesAmount($this->getPaymentFee($cart, false));
+        }
+
         return 0;
     }
 
@@ -58,29 +75,42 @@ abstract class Payment implements AbstractPlugin
      */
     public function getPaymentFeeTaxRate(Cart $cart)
     {
+        $taxCalculator = $this->getPaymentTaxCalculator($cart);
+
+        if ($taxCalculator) {
+            return $taxCalculator->getTotalRate();
+        }
+
         return 0;
     }
 
     /**
-     * Get Payment Fee without Tax
+     * get payment taxes
      *
      * @param Cart $cart
      * @return float
      */
-    public function getPaymentFeeWithoutTax(Cart $cart)
+    public function getPaymentFeeTaxesAmount(Cart $cart)
     {
-        return $this->getPaymentFee($cart) - $this->getPaymentFeeTaxes($cart);
+        $fee = $this->getPaymentFee($cart, false);
+
+        $taxCalculator = $this->getPaymentTaxCalculator($cart);
+
+        if ($taxCalculator) {
+            return $taxCalculator->getTaxesAmount($fee);
+        }
+
+        return 0;
     }
 
     /**
-     * Get Taxes for payment fee
+     * get tax calculator for this payment provider
      *
      * @param Cart $cart
-     * @return float
+     * @return null|TaxCalculator
      */
-    public function getPaymentFeeTaxes(Cart $cart)
-    {
-        return 0;
+    public function getPaymentTaxCalculator(Cart $cart) {
+        return null;
     }
 
     /**

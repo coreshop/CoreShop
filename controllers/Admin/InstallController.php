@@ -42,7 +42,8 @@ class CoreShop_Admin_InstallController extends Admin
             $install->installObjectData("orderStates");
             $install->installDocuments("documents");
 
-            $fcUserAddress = $install->createFieldcollection('CoreShopUserAddress');
+            $install->createFieldCollection('CoreShopUserAddress');
+            $install->createFieldCollection('CoreShopOrderTax');
 
             // create object classes
             $categoryClass = $install->createClass('CoreShopCategory');

@@ -356,7 +356,7 @@
                 "mandatory":false,
                 "noteditable":true,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",
@@ -410,7 +410,7 @@
                 "mandatory":false,
                 "noteditable":true,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",
@@ -525,6 +525,54 @@
               }
             ],
             "locked":false
+          },
+          {
+            "fieldtype":"panel",
+            "labelWidth":100,
+            "layout":null,
+            "name":"Taxes",
+            "type":null,
+            "region":null,
+            "title":"Taxes",
+            "width":null,
+            "height":null,
+            "collapsible":false,
+            "collapsed":false,
+            "bodyStyle":"",
+            "datatype":"layout",
+            "permissions":null,
+            "childs":[
+              {
+                "fieldtype":"fieldcollections",
+                "phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
+                "allowedTypes":[
+                  "CoreShopOrderTax"
+                ],
+                "lazyLoading":true,
+                "maxItems":"",
+                "disallowAddRemove":false,
+                "disallowReorder":false,
+                "collapsed":false,
+                "collapsible":false,
+                "name":"taxes",
+                "title":"Taxes",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":true,
+                "index":false,
+                "locked":null,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "columnType":null,
+                "queryColumnType":null,
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              }
+            ],
+            "locked":null
           },
           {
             "fieldtype":"panel",

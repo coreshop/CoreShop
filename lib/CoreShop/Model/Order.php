@@ -82,16 +82,34 @@ class Order extends Base
             $item->setPublished(true);
 
             $item->setProduct($cartItem->getProduct());
-            $item->setTaxRate($cartItem->getProduct()->getTaxRate());
             $item->setWholesalePrice($cartItem->getProduct()->getWholesalePrice());
             $item->setRetailPrice($cartItem->getProduct()->getRetailPrice());
-            $item->setTax($cartItem->getProduct()->getTaxAmount());
             $item->setPrice($cartItem->getProduct()->getPrice());
             $item->setAmount($cartItem->getAmount());
             $item->setExtraInformation($cartItem->getExtraInformation());
             $item->setIsGiftItem($cartItem->getIsGiftItem());
             $item->setTotal(Tool::roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getPrice()));
             $item->setTotalTax(Tool::roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getTaxAmount()));
+
+            $productTaxes = $cartItem->getProduct()->getTaxCalculator();
+
+            if($productTaxes instanceof TaxCalculator) {
+                $productTaxes = $productTaxes->getTaxes();
+                $itemTaxes = new Object\Fieldcollection();
+                $itemTaxAmounts = $cartItem->getProduct()->getTaxAmount(true);
+
+                foreach ($productTaxes as $tax) {
+                    $itemTax = new Object\Fieldcollection\Data\CoreShopOrderTax();
+
+                    $itemTax->setName($tax->getName());
+                    $itemTax->setRate($tax->getRate());
+                    $itemTax->setAmount(Tool::roundPrice($itemTaxAmounts[$tax->getId()]));
+
+                    $itemTaxes->add($itemTax);
+                }
+
+                $item->setTaxes($itemTaxes);
+            }
             $item->save();
 
             //Stock Management
@@ -102,6 +120,21 @@ class Order extends Base
             $i++;
         }
 
+        $taxes = new Object\Fieldcollection();
+
+        foreach($cart->getTaxes() as $tax) {
+            $taxObject = $tax['tax'];
+            $taxAmount = $tax['amount'];
+
+            $tax = new Object\Fieldcollection\Data\CoreShopOrderTax();
+            $tax->setName($taxObject->getName());
+            $tax->setRate($taxObject->getRate());
+            $tax->setAmount(Tool::roundPrice($taxAmount));
+
+            $taxes->add($tax);
+        }
+
+        $this->setTaxes($taxes);
         $this->setDiscount($cart->getDiscount());
         $this->setPriceRule($cart->getPriceRule());
         $this->setItems($items);
@@ -403,33 +436,20 @@ class Order extends Base
 
         $taxValues = array();
 
-        foreach ($this->getItems() as $item) {
+        foreach($this->getTaxes() as $tax) {
             $taxValues[] = array(
-                "rate" => $item->getTaxRate(),
-                "value" => $item->getTotalTax()
-            );
-        }
-
-        if ($this->getShipping() > 0) {
-            $taxValues[] = array(
-                "rate" => $this->getShippingTaxRate(),
-                "value" => $this->getShipping() - $this->getShippingWithoutTax()
-            );
-        }
-
-        if ($this->getPaymentFee() > 0) {
-            $taxValues[] = array(
-                "rate" => $this->getPaymentFeeTaxRate(),
-                "value" => $this->getPaymentFee() - $this->getPaymentFeeWithoutTax()
+                "rate" => $tax->getRate(),
+                "name" => $tax->getName(),
+                "value" => $tax->getAmount()
             );
         }
 
         foreach ($taxValues as $tax) {
-            if (!array_key_exists((string)$tax['rate'], $taxes)) {
-                $taxes[$tax['rate']] = 0;
+            if (!array_key_exists($tax['name'], $taxes)) {
+                $taxes[$tax['name']] = 0;
             }
 
-            $taxes[(string)$tax['rate']] += $tax['value'];
+            $taxes[(string)$tax['name']] += $tax['value'];
         }
 
         return $taxes;
@@ -609,5 +629,16 @@ class Order extends Base
     public function getOrderState()
     {
         throw new UnsupportedException("getOrderStates is not supported for " . get_class($this));
+    }
+
+    /**
+     * Get Taxes
+     *
+     * @throws UnsupportedException
+     * @return Object\Fieldcollection
+     */
+    public function getTaxes()
+    {
+        throw new UnsupportedException("getTaxes is not supported for " . get_class($this));
     }
 }

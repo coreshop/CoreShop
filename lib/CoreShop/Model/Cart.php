@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
+use CoreShop\Model\Plugin\Payment;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
@@ -162,6 +163,77 @@ class Cart extends Base
     }
 
     /**
+     * Returns array with key=>value for tax and value
+     *
+     * @return array
+     */
+    public function getTaxes()
+    {
+        $usedTaxes = array();
+
+        $addTax = function(Tax $tax) use (&$usedTaxes) {
+            if(!array_key_exists($tax->getId(), $usedTaxes)) {
+                $usedTaxes[$tax->getId()] = array(
+                    "tax" => $tax,
+                    "amount" => 0
+                );
+            }
+        };
+
+        foreach ($this->getItems() as $item) {
+            $taxCalculator = $item->getProduct()->getTaxCalculator();
+
+            $taxes = $taxCalculator->getTaxes();
+
+            foreach($taxes as $tax) {
+                $addTax($tax);
+            }
+
+            $taxesAmount = $taxCalculator->getTaxesAmount($item->getProduct()->getPriceWithoutTax() * $item->getAmount(), true);
+
+            foreach($taxesAmount as $id=>$amount) {
+                $usedTaxes[$id]['amount'] += $amount;
+            }
+        }
+
+        $shippingProvider = $this->getShippingProvider();
+
+        if($shippingProvider instanceof Carrier) {
+            $shippingTax = $this->getShippingProvider()->getTaxCalculator();
+
+            if ($shippingTax instanceof TaxCalculator) {
+                foreach ($shippingTax->getTaxes() as $tax) {
+                    $addTax($tax);
+                }
+
+                $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
+
+                foreach($taxesAmount as $id=>$amount) {
+                    $usedTaxes[$id]['amount'] += $amount;
+                }
+            }
+        }
+
+        $paymentProvider = $this->getPaymentProvider();
+
+        if($paymentProvider instanceof PaymentPlugin) {
+            if($paymentProvider->getPaymentTaxCalculator($this) instanceof TaxCalculator) {
+                foreach($paymentProvider->getPaymentTaxCalculator($this) as $tax) {
+                    $addTax($tax);
+                }
+
+                $taxesAmount = $paymentProvider->getPaymentTaxCalculator($this)->getTaxesAmount($paymentProvider->getPaymentFee($this, false), true);
+
+                foreach($taxesAmount as $id=>$amount) {
+                    $usedTaxes[$id]['amount'] += $amount;
+                }
+            }
+        }
+
+        return $usedTaxes;
+    }
+
+    /**
      * get shipping carrier for cart (if non selected, get cheapest)
      *
      * @return null|Carrier
@@ -275,6 +347,15 @@ class Cart extends Base
     }
 
     /**
+     * @return PaymentPlugin
+     */
+    public function getPaymentProvider() {
+        $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
+
+        return $paymentProvider;
+    }
+
+    /**
      * Calculate the payment fee
      *
      * @param $useTaxes boolean use taxes
@@ -282,7 +363,7 @@ class Cart extends Base
      */
     public function getPaymentFee($useTaxes = true)
     {
-        $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
+        $paymentProvider = $this->getPaymentProvider();
 
         if ($paymentProvider instanceof PaymentPlugin) {
             return Tool::roundPrice($paymentProvider->getPaymentFee($this, $useTaxes));
@@ -298,7 +379,7 @@ class Cart extends Base
      */
     public function getPaymentFeeTaxRate()
     {
-        $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
+        $paymentProvider = $this->getPaymentProvider();
 
         if ($paymentProvider instanceof PaymentPlugin) {
             return $paymentProvider->getPaymentFeeTaxRate($this);
@@ -308,16 +389,16 @@ class Cart extends Base
     }
 
     /**
-     * Calculate the payment fee
+     * Calculate the payment fee tax
      *
      * @return float
      */
-    public function getPaymentFeeTaxes()
+    public function getPaymentFeeTax()
     {
-        $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
+        $paymentProvider = $this->getPaymentProvider();
 
         if ($paymentProvider instanceof PaymentPlugin) {
-            return $paymentProvider->getPaymentFeeTaxes($this);
+            return $paymentProvider->getPaymentFeeTax($this);
         }
 
         return 0;
@@ -332,7 +413,7 @@ class Cart extends Base
     {
         $subtotalTax = $this->getSubtotalTax();
         $shippingTax = $this->getShippingTax();
-        $paymentTax = $this->getPaymentFeeTaxes();
+        $paymentTax = $this->getPaymentFeeTax();
 
         return Tool::roundPrice($subtotalTax + $shippingTax + $paymentTax);
     }
