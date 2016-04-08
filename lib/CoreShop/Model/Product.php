@@ -185,6 +185,12 @@ class Product extends Base
      */
     public function getVariantDifferences($language = null)
     {
+        $cacheKey = "coreshop_variant_differences" . $this->getId();
+
+        if($differences = Cache::load($cacheKey)) {
+            return $differences;
+        }
+
         if ($language) {
             $language = \Zend_Registry::get("Zend_Locale")->getLanguage();
         }
@@ -195,7 +201,11 @@ class Product extends Base
             $master = $master->getParent();
         }
         if ($master instanceof Product) {
-            return Service::getProductVariations($master, $this, $language);
+            $differences = Service::getProductVariations($master, $this, $language);
+
+            Cache::save($differences, $cacheKey);
+
+            return $differences;
         }
         return false;
     }
