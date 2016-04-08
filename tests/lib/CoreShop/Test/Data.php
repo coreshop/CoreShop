@@ -19,6 +19,7 @@ use CoreShop\Model\Configuration;
 use CoreShop\Model\Country;
 use CoreShop\Model\CustomerGroup;
 use CoreShop\Model\Product;
+use CoreShop\Model\State;
 use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRule;
@@ -86,6 +87,8 @@ class Data
         $session = \CoreShop\Tool::getSession();
         $session->countryId = Country::getById(2)->getId();
 
+        $session->stateId = State::getById(23)->getId();
+
         self::createTaxRule();
         self::createTestCarrierPrice();
         self::createTestCarrierWeight();
@@ -114,7 +117,8 @@ class Data
             $taxRule->setTaxRuleGroup($taxRuleGroup);
             $taxRule->setTax($tax);
             $taxRule->setBehavior(TaxCalculator::DISABLE_METHOD);
-            $taxRule->setCountry(Country::getById(2));
+            $taxRule->setCountry(Country::getById(2)); //Austria
+            $taxRule->setStateId(0); //Upper Austria
             $taxRule->save();
 
             self::$taxRuleGroup = $taxRuleGroup;

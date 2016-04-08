@@ -138,6 +138,7 @@ $install->createConfig();
 \CoreShop\Plugin::getEventManager()->trigger('install.pre', null, array("installer" => $install));
 
 $install->executeSQL("CoreShop");
+$install->executeSQL("CoreShop-States");
 
 //install Data
 //$install->installObjectData("orderStates");
