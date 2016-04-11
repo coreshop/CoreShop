@@ -66,8 +66,10 @@ class AbstractRange extends AbstractModel
     {
         $prices = $this->getPrices();
 
-        foreach ($prices as $price) {
-            $price->delete();
+        if(is_array($prices)) {
+            foreach ($prices as $price) {
+                $price->delete();
+            }
         }
 
         return $this->getDao()->delete();

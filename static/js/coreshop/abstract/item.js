@@ -87,8 +87,6 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
             params: saveData,
             success: function (response) {
                 try {
-                    this.postSave();
-
                     if (this.parentPanel.store) {
                         this.parentPanel.store.load();
                     }
@@ -96,6 +94,9 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
                     this.parentPanel.refresh();
 
                     var res = Ext.decode(response.responseText);
+
+                    this.postSave(res);
+
                     if (res.success) {
                         pimcore.helpers.showNotification(t('success'), t('coreshop_save_success'), 'success');
 
@@ -113,7 +114,7 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         });
     },
 
-    postSave : function () {
+    postSave : function (result) {
 
     }
 });

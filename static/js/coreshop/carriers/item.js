@@ -25,9 +25,20 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         this.data = data;
         this.panelKey = panelKey;
         this.type = type;
+        this.ranges = [];
 
         pimcore.globalmanager.get('coreshop_zones').load(function () {
-            this.initPanel();
+            Ext.Ajax.request({
+                url: '/plugin/CoreShop/admin_Carrier/get-range',
+                params : {
+                    carrier : this.data.id
+                },
+                success: function (response) {
+                    this.ranges = Ext.decode(response.responseText).data;
+
+                    this.initPanel();
+                }.bind(this)
+            });
         }.bind(this));
     },
 
@@ -195,192 +206,147 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 editable: false,
                 forceSelection: true,
                 mode: 'local'
-            }, this.getRangeGrid(), { height:40 }, this.getZonesGrid()]
+            }, this.getGrid()]
         });
 
         return this.shippingLocationAndCosts;
     },
 
-    getRangeGrid : function () {
-        var listeners = {};
+    getGrid : function() {
+        if(!this.shippingCostRangesGrid) {
 
-        var modelName = 'coreshop.model.carrier.ranges';
-        if (!Ext.ClassManager.get(modelName)) {
-            Ext.define(modelName, {
-                    extend: 'Ext.data.Model',
-                    fields: ['id', 'delimiter1', 'delimiter2', 'price']
+
+            this.shippingCostRangesStore = new Ext.data.Store({
+                restful: false,
+                idProperty: 'id',
+                proxy: {
+                    type: 'ajax',
+                    url: '/plugin/CoreShop/admin_Carrier/get-range-zone',
+                    reader: {
+                        type: 'json',
+                        rootProperty: 'data'
+                    },
+                    extraParams: {
+                        carrier: this.data.id
+                    }
                 }
-            );
+            });
+            this.shippingCostRangesStore.load();
+
+            this.shippingCostRangesGrid = Ext.create('Ext.grid.Panel', {
+                store: this.shippingCostRangesStore,
+                columns: [
+                    {
+                        width: 200,
+                        dataIndex: 'name',
+                        items: [
+                            {
+                                xtype: 'textfield',
+                                value: t('coreshop_carrier_delimeter1'),
+                                disabled: true,
+                                width: 200,
+                                style: 'margin-bottom:0'
+                            },
+                            {
+                                xtype: 'textfield',
+                                value: t('coreshop_carrier_delimeter2'),
+                                disabled: true,
+                                width: 200
+                            }
+                        ]
+                    }
+                ],
+
+                dockedItems: [{
+                    xtype: 'toolbar',
+                    items: [
+                        {
+                            text: t('add'),
+                            handler: function () {
+                                var range = {
+                                    id: Ext.id(),
+                                    delimiter1: this.ranges.length > 0 ? parseInt(this.ranges[this.ranges.length - 1].delimiter2) : 0,
+                                    delimiter2: this.ranges.length > 0 ? parseInt(this.ranges[this.ranges.length - 1].delimiter2) + 1 : 0
+                                };
+
+                                this.addRangeColumn(range);
+                                this.ranges.push(range);
+                            }.bind(this)
+                        }
+                    ]
+                }],
+
+                plugins: Ext.create('Ext.grid.plugin.CellEditing', {
+                    clicksToEdit: 1,
+                    listeners: {}
+                })
+            });
+
+            this.ranges.forEach(this.addRangeColumn.bind(this));
         }
 
-        this.store = new Ext.data.Store({
-            restful: false,
-            idProperty: 'id',
-            remoteSort: true,
-            model : modelName,
-            listeners: listeners,
-            proxy: {
-                type: 'ajax',
-                url: '/plugin/CoreShop/admin_Carrier/get-range',
-                reader: {
-                    type: 'json',
-                    rootProperty : 'data'
-                },
-                extraParams : {
-                    carrier : this.data.id
-                }
-            }
-        });
-
-        var gridColumns = [
-            {
-                header: t('coreshop_carrier_delimeter1'),
-                width: 200,
-                dataIndex: 'delimiter1',
-                editor: new Ext.form.TextField({})
-            },
-            {
-                header: t('coreshop_carrier_delimeter2'),
-                width: 200,
-                dataIndex: 'delimiter2',
-                editor: new Ext.form.TextField({})
-            },
-            {
-                xtype:'actioncolumn',
-                width:40,
-                tooltip:t('delete'),
-                icon:'/pimcore/static6/img/icon/cross.png',
-                handler:function (grid, rowIndex) {
-                    grid.getStore().removeAt(rowIndex);
-                }.bind(this)
-            }
-            /*{
-             header: t("coreshop_carrier_price"),
-             width: 200,
-             dataIndex: 'price',
-             editor: new Ext.form.TextField({})
-             }*/
-        ];
-
-        this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1,
-            listeners: {}
-        });
-
-        var gridConfig = {
-            frame: false,
-            store: this.store,
-            border: true,
-            columns: gridColumns,
-            loadMask: true,
-            columnLines: true,
-            stripeRows: true,
-            trackMouseOver: true,
-            viewConfig: {
-                forceFit: false
-            },
-            selModel: Ext.create('Ext.selection.RowModel', {}),
-            tbar: [
-
-                {
-                    text: t('add'),
-                    handler: this.addRangeRow.bind(this),
-                    iconCls: 'pimcore_icon_add'
-                }
-            ],
-            plugins: [
-                this.cellEditing
-            ]
-        };
-
-        this.grid = Ext.create('Ext.grid.Panel', gridConfig);
-
-        this.store.load();
-
-        return this.grid;
+        return this.shippingCostRangesGrid;
     },
 
-    getZonesGrid : function () {
-        var listeners = {};
-        var modelFields = [
-            'range', 'rangeId'
-        ];
+    addRangeColumn : function(range) {
+        if(this.shippingCostRangesGrid) {
 
-        var gridColumns = [{
-            header : t('coreshop_carrier_range'),
-            width : 200,
-            dataIndex : 'range'
-        }];
+            var itemId = Ext.id();
+            var item = {
+                width : 200,
+                dataIndex: 'range_' + range.id,
+                editor: new Ext.form.TextField({}),
+                id : itemId,
+                menuDisabled : true,
+                items : [
+                    {
+                        xtype : 'numberfield',
+                        width: 200,
+                        style : 'margin-bottom:0',
+                        value : range.delimiter1,
+                        listeners : {
+                            change : function(txtField, newValue) {
+                                range.delimiter1 = newValue;
+                            }
+                        },
+                        mouseWheelEnabled: false,
+                        allowDecimals : false
+                    },
+                    {
+                        xtype : 'numberfield',
+                        width: 200,
+                        value : range.delimiter2,
+                        listeners : {
+                            change : function(txtField, newValue) {
+                                range.delimiter2 = newValue;
+                            }
+                        },
+                        mouseWheelEnabled: false,
+                        allowDecimals : false
+                    },
+                    {
+                        xtype : 'button',
+                        iconCls: 'pimcore_icon_delete',
+                        cls : 'coreshop_carrier_delete',
+                        handler : function() {
+                            var column = this.shippingCostRangesGrid.headerCt.getComponent(itemId);
+                            this.shippingCostRangesGrid.headerCt.remove(column);
+                            this.shippingCostRangesGrid.getView().refresh();
 
-        pimcore.globalmanager.get('coreshop_zones').getRange().forEach(function (item) {
-            var fieldName = 'zone_' + item.get('id');
+                            for(var i = 0; i < this.ranges.length; i++) {
+                                if(this.ranges[i].id === range.id) {
+                                    this.ranges.splice(i, 1);
+                                }
+                            }
+                        }.bind(this)
+                    }
+                ]
+            };
 
-            modelFields.push(fieldName);
-            gridColumns.push({
-                header: item.get('name'),
-                width: 200,
-                dataIndex: fieldName,
-                editor: item.get('active') ? new Ext.form.TextField({}) : false,
-                disabled: !item.get('active')
-            });
-        });
-
-        var modelName = 'coreshop.model.carrier.zones';
-        if (!Ext.ClassManager.get(modelName)) {
-            Ext.define(modelName, {
-                    extend: 'Ext.data.Model',
-                    fields: modelFields
-                }
-            );
+            this.shippingCostRangesGrid.headerCt.insert(this.shippingCostRangesGrid.columns.length, item);
+            this.shippingCostRangesGrid.columns.push(item);
+            this.shippingCostRangesGrid.getView().refresh();
         }
-
-        this.zonesStore = new Ext.data.Store({
-            restful: false,
-            idProperty: 'id',
-            remoteSort: true,
-            model : modelName,
-            listeners: listeners,
-            proxy: {
-                type: 'ajax',
-                url: '/plugin/CoreShop/admin_Carrier/get-prices',
-                reader: {
-                    type: 'json',
-                    rootProperty : 'data'
-                },
-                extraParams : {
-                    carrier : this.data.id
-                }
-            }
-        });
-
-        this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1,
-            listeners: {}
-        });
-
-        var gridConfig = {
-            frame: false,
-            store: this.zonesStore,
-            border: true,
-            columns: gridColumns,
-            loadMask: true,
-            columnLines: true,
-            stripeRows: true,
-            trackMouseOver: true,
-            viewConfig: {
-                forceFit: false
-            },
-            selModel: Ext.create('Ext.selection.RowModel', {}),
-            plugins: [
-                this.cellEditing
-            ]
-        };
-
-        this.zonesGrid = Ext.create('Ext.grid.Panel', gridConfig);
-
-        this.zonesStore.load();
-
-        return this.zonesGrid;
     },
 
     addRangeRow : function () {
@@ -443,18 +409,37 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         Ext.apply(data.settings, this.shippingLocationAndCosts.getForm().getFieldValues());
         Ext.apply(data.settings, this.dimensionsForm.getForm().getFieldValues());
 
-        data['range'] = Ext.pluck(this.store.getRange(), 'data');
-        data['deliveryPrices'] = Ext.pluck(this.zonesStore.getRange(), 'data');
+        data['range'] = Ext.clone(this.ranges);
+
+        var zonePrices = this.shippingCostRangesStore.getRange();
+
+        //data['range'] = Ext.pluck(this.store.getRange(), 'data');
+        //data['deliveryPrices'] = Ext.pluck(this.zonesStore.getRange(), 'data');
+
+        data.range.forEach(function(range) {
+            range.zones = [];
+
+            zonePrices.forEach(function(zone) {
+                if(zone.data.hasOwnProperty("range_" + range.id)) {
+                    range.zones[zone.data.zone] = zone.data["range_" + range.id];
+                }
+                else {
+                    range.zones[zone.data.zone] = 0;
+                }
+            });
+        });
 
         return {
             data : Ext.encode(data)
         };
     },
 
-    postSave: function () {
-        this.zonesGrid.setDisabled(false);
-        this.zonesStore.load();
+    postSave : function(result) {
+        this.shippingCostRangesGrid.destroy();
+        this.shippingCostRangesGrid = null;
 
-        this.store.load();
+        this.ranges = result.ranges;
+
+        this.shippingLocationAndCosts.add(this.getGrid());
     }
 });

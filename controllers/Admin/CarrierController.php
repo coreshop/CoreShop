@@ -84,17 +84,17 @@ class CoreShop_Admin_CarrierController extends Admin
     {
         $id = $this->getParam("carrier");
         $carrier = Carrier::getById($id);
-        $ranges = $carrier->getRanges();
 
         if ($carrier instanceof Carrier) {
+            $ranges = $carrier->getRanges();
+
             $this->_helper->json(array("success" => true, "total" => count($ranges), "data" => $ranges));
         } else {
             $this->_helper->json(array("success" => false));
         }
     }
 
-    public function getPricesAction()
-    {
+    public function getRangeZoneAction() {
         $id = $this->getParam("carrier");
         $carrier = Carrier::getById($id);
 
@@ -103,16 +103,17 @@ class CoreShop_Admin_CarrierController extends Admin
             $ranges = $carrier->getRanges();
             $prices = array();
 
-            foreach ($ranges as $range) {
+            foreach($zones as $zone) {
+
                 $price = array(
-                    "range" => $range->getDelimiter1() . " - " . $range->getDelimiter2(),
-                    "rangeId" => $range->getId()
+                    "name" => $zone->getName(),
+                    "zone" => $zone->getId()
                 );
 
-                foreach ($zones as $zone) {
+                foreach($ranges as $range) {
                     $deliveryPrice = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $range, $zone);
 
-                    $price['zone_' . $zone->getId()] = $deliveryPrice instanceof Carrier\DeliveryPrice ? $deliveryPrice->getPrice() : "";
+                    $price["range_" . $range->getId()] = $deliveryPrice instanceof Carrier\DeliveryPrice ? $deliveryPrice->getPrice() : 0;
                 }
 
                 $prices[] = $price;
@@ -186,7 +187,7 @@ class CoreShop_Admin_CarrierController extends Admin
             $ranges = $data['range'];
             $rangesToKeep = array();
             if (is_array($ranges)) {
-                foreach ($ranges as $range) {
+                foreach ($ranges as &$range) {
                     $rangeObject = null;
                     $deliveryPriceObject = null;
 
@@ -204,37 +205,19 @@ class CoreShop_Admin_CarrierController extends Admin
                     $rangeObject->save();
 
                     $rangesToKeep[] = $rangeObject->getId();
-                }
-            }
 
-            if (count($rangesToKeep) > 0) {
-                $carrier->setNeedsRange(true);
-            } else {
-                $carrier->setNeedsRange(false);
-            }
+                    foreach($range['zones'] as $zoneId => $price) {
+                        $zone = \CoreShop\Model\Zone::getById($zoneId);
 
-            $carrier->save();
-
-            $deliveryPrices = $data['deliveryPrices'];
-
-            if (is_array($deliveryPrices)) {
-                $zones = \CoreShop\Model\Zone::getAll();
-
-                foreach ($deliveryPrices as $deliveryPrice) {
-                    $range = Carrier\AbstractRange::getById($deliveryPrice['rangeId'], $carrier->getShippingMethod());
-
-                    foreach ($zones as $zone) {
-                        if (array_key_exists('zone_' . $zone->getId(), $deliveryPrice)) {
-                            $price = $deliveryPrice['zone_' . $zone->getId()];
-
-                            $deliveryPriceObject = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $range, $zone);
+                        if($zone instanceof \CoreShop\Model\Zone) {
+                            $deliveryPriceObject = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $rangeObject, $zone);
 
                             if (is_null($deliveryPriceObject)) {
                                 $deliveryPriceObject = new Carrier\DeliveryPrice();
 
                                 $deliveryPriceObject->setZone($zone);
                                 $deliveryPriceObject->setCarrier($carrier);
-                                $deliveryPriceObject->setRange($range);
+                                $deliveryPriceObject->setRange($rangeObject);
                                 $deliveryPriceObject->setRangeType($carrier->getShippingMethod());
                             }
 
@@ -250,6 +233,14 @@ class CoreShop_Admin_CarrierController extends Admin
                 }
             }
 
+            if (count($rangesToKeep) > 0) {
+                $carrier->setNeedsRange(true);
+            } else {
+                $carrier->setNeedsRange(false);
+            }
+
+            $carrier->save();
+
             $ranges = $carrier->getRanges();
 
             foreach ($ranges as $range) {
@@ -258,7 +249,7 @@ class CoreShop_Admin_CarrierController extends Admin
                 }
             }
 
-            $this->_helper->json(array("success" => true, "data" => $carrier));
+            $this->_helper->json(array("success" => true, "data" => $carrier, "ranges" => $carrier->getRanges()));
         } else {
             $this->_helper->json(array("success" => false));
         }

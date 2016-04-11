@@ -276,3 +276,19 @@
 .coreshop_icon_state, .pimcore_icon_coreShopState {
     background: url(/plugins/CoreShop/static/img/24/state.png) no-repeat scroll left center transparent !important;
 }
+
+.coreshop_carrier_delete {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    height: 16px;
+    width: 16px!important;
+    border-width: 0;
+}
+
+.coreshop_carrier_delete.x-btn-over {
+    background:transparent!important;
+}
