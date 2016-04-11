@@ -94,7 +94,7 @@
 "coreshop_carrier_delay","Liegerzeit"
 "coreshop_carrier_grade","Liefergeschwindigkeit"
 "coreshop_carrier_image","Bild"
-"coreshop_carrier_trackingCode","Tracking Code"
+"coreshop_carrier_trackingUrl","Tracking Url"
 "coreshop_carrier_shipping_locations_and_costs", "Versand-Gebiete und Kosten"
 "coreshop_carrier_isFree","Gratis Versand"
 "coreshop_carrier_shippingMethod","Versandmethode"

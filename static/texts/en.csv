@@ -94,7 +94,7 @@
 "coreshop_carrier_delay","Delay"
 "coreshop_carrier_grade","Grade"
 "coreshop_carrier_image","Image"
-"coreshop_carrier_trackingCode","Tracking Code"
+"coreshop_carrier_trackingUrl","Tracking Url"
 "coreshop_carrier_shipping_locations_and_costs", "Shipping locations and costs"
 "coreshop_carrier_isFree","Free Shipping"
 "coreshop_carrier_shippingMethod","Shipping Method"

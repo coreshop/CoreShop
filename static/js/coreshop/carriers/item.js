@@ -128,10 +128,10 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 }
             }, {
                 xtype: 'textfield',
-                name: 'trackingCode',
-                fieldLabel: t('coreshop_carrier_trackingCode'),
+                name: 'trackingUrl',
+                fieldLabel: t('coreshop_carrier_trackingUrl'),
                 width: 250,
-                value: this.data.trackingCode
+                value: this.data.trackingUrl
             }]
         });
 

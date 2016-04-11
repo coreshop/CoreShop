@@ -125,6 +125,29 @@
                 "visibleSearch":false
               },
               {
+                "fieldtype":"input",
+                "width":null,
+                "queryColumnType":"varchar",
+                "columnType":"varchar",
+                "columnLength":255,
+                "phpdocType":"string",
+                "regex":"",
+                "name":"trackingCode",
+                "title":"Tracking Code",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":null,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
                 "fieldtype":"coreShopLanguage",
                 "queryColumnType":"varchar(255)",
                 "columnType":"varchar(255)",
@@ -560,7 +583,7 @@
                 "mandatory":false,
                 "noteditable":true,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",
@@ -572,7 +595,7 @@
                 "visibleSearch":false
               }
             ],
-            "locked":null
+            "locked":false
           },
           {
             "fieldtype":"panel",

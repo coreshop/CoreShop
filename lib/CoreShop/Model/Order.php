@@ -456,6 +456,21 @@ class Order extends Base
     }
 
     /**
+     * Create Shipping Tracking Url
+     *
+     * @return string|null
+     */
+    public function getShippingTrackingUrl() {
+        if($this->getCarrier() instanceof Carrier) {
+            if($trackingUrl = $this->getCarrier()->getTrackingUrl()) {
+                return sprintf($trackingUrl, $this->getTrackingCode());
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * set discount for order
      * this method has to be overwritten in Pimcore Object
      *
@@ -640,5 +655,27 @@ class Order extends Base
     public function getTaxes()
     {
         throw new UnsupportedException("getTaxes is not supported for " . get_class($this));
+    }
+
+    /**
+     * Get TrackingCode
+     *
+     * @throws UnsupportedException
+     * @return string
+     */
+    public function getTrackingCode()
+    {
+        throw new UnsupportedException("getTrackingCode is not supported for " . get_class($this));
+    }
+
+    /**
+     * Get Carrier
+     *
+     * @throws UnsupportedException
+     * @return Carrier|null
+     */
+    public function getCarrier()
+    {
+        throw new UnsupportedException("getCarrier is not supported for " . get_class($this));
     }
 }
