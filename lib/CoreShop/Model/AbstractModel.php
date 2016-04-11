@@ -122,6 +122,7 @@ class AbstractModel extends Model\AbstractModel
 
     /**
      * @param $className
+     * @param $append string
      * @return string
      */
     protected static function getCacheKey($className, $append)
