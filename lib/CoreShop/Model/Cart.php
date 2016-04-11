@@ -16,7 +16,6 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
-use CoreShop\Model\Plugin\Payment;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
