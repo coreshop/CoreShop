@@ -538,3 +538,15 @@ CREATE TABLE `coreshop_states` (
 INSERT INTO `users_permission_definitions` (`key`)
 VALUES
   ('coreshop_permission_states');
+
+  DROP TABLE IF EXISTS `coreshop_manufacturers`;
+CREATE TABLE `coreshop_manufacturers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `image` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `users_permission_definitions` (`key`)
+VALUES
+  ('coreshop_permission_manufacturers');
