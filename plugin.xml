@@ -145,6 +145,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/states/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopState.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopState.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/report/monitoring/reports/outOfStockProducts.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

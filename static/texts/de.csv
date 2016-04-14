@@ -320,3 +320,6 @@
 "coreshop_state_country", "Land"
 "coreshop_state_creation_error","Fehler beim erstellen des Staates"
 "coreshop_all","Alle"
+"coreshop_monitoring_outOfStockProducts","Ausverkaufte Produkte"
+"coreshop_monitoring_outOfStockProducts_quantity","Lagerstand"
+"coreshop_monitoring_outOfStockProducts_out_of_stock_behaviour","Verhalten"

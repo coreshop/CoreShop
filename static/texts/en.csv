@@ -321,3 +321,6 @@
 "coreshop_state_country", "Country"
 "coreshop_state_creation_error","Error creating State"
 "coreshop_all","All"
+"coreshop_monitoring_outOfStockProducts","Out of Stock Products"
+"coreshop_monitoring_outOfStockProducts_quantity","Quantity"
+"coreshop_monitoring_outOfStockProducts_out_of_stock_behaviour","Behaviour"

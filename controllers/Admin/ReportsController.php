@@ -344,4 +344,41 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $this->_helper->json(array("data" => $result));
     }
+
+    public function getOutOfStockProductsMonitoringAction() {
+        $query = "((quantity <= 0 OR quantity IS NULL) AND outOfStockBehaviour=0)";
+
+        $defaultOutOfStockBehaviour = Model\Configuration::get("SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR");
+
+        if($defaultOutOfStockBehaviour === \Pimcore\Model\Object\CoreShopProduct::OUT_OF_STOCK_DENY) {
+            $query .= " OR ((quantity <= 0 OR quantity IS NULL) AND (outOfStockBehaviour=".\Pimcore\Model\Object\CoreShopProduct::OUT_OF_STOCK_DENY.") OR outOfStockBehaviour IS NULL)";
+        }
+        
+        $products = new \Pimcore\Model\Object\CoreShopProduct\Listing();
+        $products->setCondition($query);
+
+        $result = array();
+
+        $behaviour = array(
+            0 => "deny",
+            1 => "allow"
+        );
+
+        foreach ($products as $product) {
+            $productBehaviour = $product->getOutOfStockBehaviour();
+
+            if($productBehaviour === null || $productBehaviour === \Pimcore\Model\Object\CoreShopProduct::OUT_OF_STOCK_DEFAULT) {
+                $productBehaviour = $defaultOutOfStockBehaviour;
+            }
+
+            $result[] = array(
+                "id" => $product->getId(),
+                "name" => $product->getName(),
+                "quantity" => $product->getQuantity(),
+                "outOfStockBehaviour" => $behaviour[$productBehaviour]
+            );
+        }
+
+        $this->_helper->json(array("data" => $result));
+    }
 }
