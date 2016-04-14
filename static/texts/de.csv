@@ -201,7 +201,7 @@
 "coreshop_stock_defaultoutofstock_behavior","Standard 'Wenn nicht auf Lager' verhalten"
 "coreshop_stock","Lager"
 "coreshop_stock_deny_order","Bestellung ablehnen"
-coreshop_stock_allow_order","Bestellung erlauben"
+"coreshop_stock_allow_order","Bestellung erlauben"
 "coreshop_country_use_default_store_currency","Benutze Standard Währung"
 "coreshop_orders","Bestellungen"
 "coreshop_orders_id","ID"

@@ -202,7 +202,7 @@
 "coreshop_stock_defaultoutofstock_behavior","Default out of stock behaviour"
 "coreshop_stock","Stock"
 "coreshop_stock_deny_order","Deny Order"
-coreshop_stock_allow_order","Allow Order"
+"coreshop_stock_allow_order","Allow Order"
 "coreshop_country_use_default_store_currency","Use Store default Currency"
 "coreshop_orders","Orders"
 "coreshop_orders_id","ID"
