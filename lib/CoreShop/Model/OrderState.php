@@ -92,6 +92,7 @@ class OrderState extends AbstractModel
      */
     public function processStep(Order $order)
     {
+        $previousState = $order->getOrderState();
         //Check if new OrderState is the same as the current one
         if ($order->getOrderState() instanceof OrderState) {
             if ($order->getOrderState()->getId() === $this->getId()) {
@@ -171,8 +172,8 @@ class OrderState extends AbstractModel
         $note->setTitle(sprintf($translate->translate("coreshop_note_orderstate_change"), $this->getName()));
         $note->setDescription(sprintf($translate->translate("coreshop_note_orderstate_change_description"), $this->getName()));
 
-        if ($order->getOrderState() instanceof OrderState) {
-            $note->addData("fromState", "text", $order->getOrderState()->getName());
+        if ($previousState instanceof OrderState) {
+            $note->addData("fromState", "text", $previousState->getName());
         }
 
         $note->addData("toState", "text", $this->getName());
