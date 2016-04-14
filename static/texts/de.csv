@@ -137,6 +137,7 @@
 "coreshop_order_state_invoice","Rechnung"
 "coreshop_order_state_email","Email"
 "coreshop_order_state_emailDocument","Email Dokument"
+"coreshop_order_state_color","Farbe"
 "coreshop_update","Update"
 "coreshop_latest_version_already_installed","Letzte CoreShop Version bereits installiert."
 "coreshop_server_is_currently_offline","CoreShop Update Server derzeit offline."

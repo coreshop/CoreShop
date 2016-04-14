@@ -61,6 +61,11 @@ class OrderState extends AbstractModel
     public $email;
 
     /**
+     * @var string
+     */
+    public $color;
+
+    /**
      * get OrderState by ID
      *
      * @param $id
@@ -297,6 +302,22 @@ class OrderState extends AbstractModel
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string $color
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
     }
 
     /**

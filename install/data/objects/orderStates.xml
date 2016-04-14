@@ -2,7 +2,10 @@
 <zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
     <objects>
         <OrderState>
-            <name>Awaiting check payment</name>
+            <name>
+                <en>Awaiting check payment</en>
+                <de>Warten auf Check-Zahlung</de>
+            </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
             <paid>0</paid>
@@ -12,9 +15,13 @@
                 <de>/de/shop/email/awaiting-check-payment</de>
                 <en>/en/shop/email/awaiting-check-payment</en>
             </emailDocument>
+            <color>#4169E1</color>
         </OrderState>
         <OrderState>
-            <name>Payment accepted</name>
+            <name>
+                <en>Payment accepted</en>
+                <de>Bezahlung angenommen</de>
+            </name>
             <accepted>1</accepted>
             <shipped>0</shipped>
             <paid>1</paid>
@@ -24,9 +31,13 @@
                 <de>/de/shop/email/payment-accepted</de>
                 <en>/en/shop/email/payment-accepted</en>
             </emailDocument>
+            <color>#32CD32</color>
         </OrderState>
         <OrderState>
-            <name>Preparation in progress</name>
+            <name>
+                <en>Preparation in progress</en>
+                <de>Vorbereitung</de>
+            </name>
             <accepted>1</accepted>
             <shipped>0</shipped>
             <paid>1</paid>
@@ -36,9 +47,13 @@
                 <de>/de/shop/email/preparation-in-progress</de>
                 <en>/en/shop/email/preparation-in-progress</en>
             </emailDocument>
+            <color>#FF8C00</color>
         </OrderState>
         <OrderState>
-            <name>Shipped</name>
+            <name>
+                <en>Shipped</en>
+                <de>Versendet</de>
+            </name>
             <accepted>1</accepted>
             <shipped>0</shipped>
             <paid>1</paid>
@@ -48,9 +63,13 @@
                 <de>/de/shop/email/shipped</de>
                 <en>/en/shop/email/shipped</en>
             </emailDocument>
+            <color>#8A2BE2</color>
         </OrderState>
         <OrderState>
-            <name>Delivered</name>
+            <name>
+                <en>Delivered</en>
+                <de>Zugestellt</de>
+            </name>
             <accepted>1</accepted>
             <shipped>1</shipped>
             <paid>1</paid>
@@ -60,9 +79,13 @@
                 <de>/de/shop/email/delivered</de>
                 <en>/en/shop/email/delivered</en>
             </emailDocument>
+            <color>#108510</color>
         </OrderState>
         <OrderState>
-            <name>Canceled</name>
+            <name>
+                <en>Canceled</en>
+                <de>Storniert</de>
+            </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
             <paid>0</paid>
@@ -72,9 +95,13 @@
                 <de>/de/shop/email/canceled</de>
                 <en>/en/shop/email/canceled</en>
             </emailDocument>
+            <color>#DC143C</color>
         </OrderState>
         <OrderState>
-            <name>Refunded</name>
+            <name>
+                <en>Refunded</en>
+                <de>Erstattet</de>
+            </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
             <paid>0</paid>
@@ -84,9 +111,13 @@
                 <de>/de/shop/email/refunded</de>
                 <en>/en/shop/email/refunded</en>
             </emailDocument>
+            <color>#EC2E15</color>
         </OrderState>
         <OrderState>
-            <name>Payment error</name>
+            <name>
+                <en>Payment error</en>
+                <de>Fehler bei der Bezahlung</de>
+            </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
             <paid>0</paid>
@@ -96,9 +127,13 @@
                 <de>/de/shop/email/payment-error</de>
                 <en>/en/shop/email/payment-error</en>
             </emailDocument>
+            <color>#8F0621</color>
         </OrderState>
         <OrderState>
-            <name>On backorder (paid)</name>
+            <name>
+                <en>On backorder (paid)</en>
+                <de>Nachbestellt (Kunde hat bezahlt)</de>
+            </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
             <paid>1</paid>
@@ -108,9 +143,13 @@
                 <de>/de/shop/email/out-of-stock</de>
                 <en>/en/shop/email/out-of-stock</en>
             </emailDocument>
+            <color>#FF69B4</color>
         </OrderState>
         <OrderState>
-            <name>Awaiting bank wire payment</name>
+            <name>
+                <en>Awaiting bank wire payment</en>
+                <de>Warten auf Überweißung</de>
+            </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
             <paid>0</paid>
@@ -120,9 +159,13 @@
                 <de>/de/shop/email/bankwire</de>
                 <en>/en/shop/email/bankwire</en>
             </emailDocument>
+            <color>#4169E1</color>
         </OrderState>
         <OrderState>
-            <name>On backorder (not paid)</name>
+            <name>
+                <en>On backorder (not paid)</en>
+                <de>Nachbestellt (Kunde hat NICHT bezahlt)</de>
+            </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
             <paid>0</paid>
@@ -132,14 +175,19 @@
                 <de>/de/shop/email/out-of-stock</de>
                 <en>/en/shop/email/out-of-stock</en>
             </emailDocument>
+            <color>#4169E1</color>
         </OrderState>
         <OrderState>
-            <name>Awaiting Cash On Delivery validation</name>
+            <name>
+                <en>Awaiting Cash On Delivery validation</en>
+                <de>Warte auf Bezahlung per Nachname</de>
+            </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
             <paid>0</paid>
             <invoice>0</invoice>
             <email>0</email>
+            <color>#4169E1</color>
         </OrderState>
     </objects>
 </zend-config>

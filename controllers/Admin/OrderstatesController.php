@@ -53,7 +53,8 @@ class CoreShop_Admin_OrderstatesController extends Admin
             "qtipCfg" => array(
                 "title" => "ID: " . $orderState->getId()
             ),
-            "name" => $orderState->getName()
+            "name" => $orderState->getName(),
+            "color" => $orderState->getColor()
         );
 
         $tmp["leaf"] = true;

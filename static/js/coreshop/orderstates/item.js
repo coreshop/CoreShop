@@ -148,6 +148,22 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
                             width: 250,
                             checked: parseInt(data.email)
                         }, {
+                            xtype: 'textfield',
+                            name : 'color',
+                            fieldLabel: t('coreshop_order_state_color'),
+                            width : 250,
+                            value : data.color ? data.color : '#000000',
+                            style : {
+                                backgroundColor : data.color
+                            },
+                            listeners : {
+                                change : function(txtfield, newValue) {
+                                    if(/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/.test(newValue)) {
+                                        txtfield.setStyle('background-color', newValue);
+                                    }
+                                }
+                            }
+                        }, {
                             xtype: 'tabpanel',
                             activeTab: 0,
                             defaults: {

@@ -437,7 +437,8 @@ CREATE TABLE `coreshop_orderstates` (
   `shipped` tinyint(1) NOT NULL DEFAULT '0',
   `paid` tinyint(1) NOT NULL DEFAULT '0',
   `invoice` tinyint(1) NOT NULL DEFAULT '0',
-  `email` tinyint(1) NOT NULL DEFAULT '0'
+  `email` tinyint(1) NOT NULL DEFAULT '0',
+  `color` varchar(7) NOT NULL DEFAULT '#000000'
 );
 
 DROP TABLE IF EXISTS `coreshop_taxes`;
