@@ -120,7 +120,7 @@ class CoreShop_Admin_TaxrulegroupController extends Admin
                     $taxRuleObject = new \CoreShop\Model\TaxRule();
                 }
 
-                $taxRuleObject->setStateId($taxRule['stateId']);
+                $taxRuleObject->setStateId($taxRule['stateId'] ? $taxRule['stateId'] : 0);
                 $taxRuleObject->setCountryId($taxRule['countryId']);
                 $taxRuleObject->setTaxId($taxRule['taxId']);
                 $taxRuleObject->setBehavior($taxRule['behavior']);
