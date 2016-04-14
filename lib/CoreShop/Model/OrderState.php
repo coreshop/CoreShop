@@ -166,8 +166,7 @@ class OrderState extends AbstractModel
         $order->setOrderState($this);
         $order->save();
 
-        $translate = Plugin::getTranslate(\Pimcore\Tool::getDefaultLanguage())->getAdapter();
-
+        $translate = Tool::getTranslate();
         $note = $order->createNote("coreshop-orderstate");
         $note->setTitle(sprintf($translate->translate("coreshop_note_orderstate_change"), $this->getName()));
         $note->setDescription(sprintf($translate->translate("coreshop_note_orderstate_change_description"), $this->getName()));

@@ -25,6 +25,7 @@ use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopPayment;
 use Pimcore\Model\User as PimcoreUser;
 use Pimcore\Model\Version;
+use Pimcore\Tool\Admin;
 use Pimcore\Tool\Authentication;
 
 class Order extends Base
@@ -152,6 +153,7 @@ class Order extends Base
      *
      * @param CorePayment $provider
      * @param $amount
+     * @param boolean $paid
      * @return Object\CoreShopPayment
      * @throws \Exception
      */
@@ -168,6 +170,15 @@ class Order extends Base
         $payment->save();
 
         $this->addPayment($payment);
+
+        $translate = Tool::getTranslate();
+        
+        $note = $this->createNote("coreshop-order-payment");
+        $note->setTitle(sprintf($translate->translate("coreshop_note_order_payment"), $provider->getName(), Tool::formatPrice($amount)));
+        $note->setDescription(sprintf($translate->translate("coreshop_note_order_payment_description"), $provider->getName(), Tool::formatPrice(($amount))));
+        $note->addData("provider", "text", $provider->getName());
+        $note->addData("amount", "text", Tool::formatPrice($amount));
+        $note->save();
 
         return $payment;
     }

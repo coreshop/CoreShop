@@ -324,3 +324,5 @@
 "coreshop_monitoring_outOfStockProducts","Out of Stock Products"
 "coreshop_monitoring_outOfStockProducts_quantity","Quantity"
 "coreshop_monitoring_outOfStockProducts_out_of_stock_behaviour","Behaviour"
+"coreshop_note_order_payment","Payment from '%s' ('%s')."
+"coreshop_note_order_payment_description","New Payment from '%s' with total amount '%s' has been made"

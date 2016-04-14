@@ -130,6 +130,7 @@ abstract class Payment implements AbstractPlugin
      * @param Cart $cart
      * @param OrderState $state
      * @param $totalPayed
+     * @param $language
      * @return Order
      */
     public function createOrder(Cart $cart, OrderState $state, $totalPayed = 0, $language = null)
@@ -177,7 +178,9 @@ abstract class Payment implements AbstractPlugin
         $order->save();
         $order->importCart($cart);
 
-        $order->createPayment($this, $totalPayed, true);
+        if($totalPayed > 0) {
+            $order->createPayment($this, $totalPayed, true);
+        }
 
         $state->processStep($order);
 

@@ -323,3 +323,5 @@
 "coreshop_monitoring_outOfStockProducts","Ausverkaufte Produkte"
 "coreshop_monitoring_outOfStockProducts_quantity","Lagerstand"
 "coreshop_monitoring_outOfStockProducts_out_of_stock_behaviour","Verhalten"
+"coreshop_note_order_payment","Zahlungseingang von '%s' ('%s')."
+"coreshop_note_order_payment_description","Neuer Zahlungseingang von '%s' mit Betrag von '%s' wurde gemacht."

@@ -528,4 +528,24 @@ class Tool
         $collection['key'] = $object->o_key;
         return $collection;
     }
+
+    /**
+     * @return \Zend_Translate_Adapter
+     */
+    public static function getTranslate() {
+        $lang = null;
+        $user = \Pimcore\Tool\Admin::getCurrentUser();
+
+        if($user instanceof User) {
+            $lang = $user->getLanguage();
+        }
+        else {
+            $lang = \Zend_Registry::get("Zend_Locale");
+        }
+
+        if(!$lang)
+            $lang = \Pimcore\Tool::getDefaultLanguage();
+
+        return Plugin::getTranslate($lang);
+    }
 }

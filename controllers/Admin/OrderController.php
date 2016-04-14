@@ -138,7 +138,7 @@ class CoreShop_Admin_OrderController extends Admin
             if ($payedTotal > $order->getTotal()) {
                 $this->_helper->json(array("success" => false, "message" => "Payed Amount is greater than order amount"));
             } else {
-                $order->createPayment($paymentProvider, $amount, $payedTotal === $order->getTotal());
+                $order->createPayment($paymentProvider, $amount, true);
 
                 $this->_helper->json(array("success" => true));
             }
