@@ -65,7 +65,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
     },
 
     getGrid : function () {
-        var itemsPerPage = 15;
+        var itemsPerPage = 30;
 
         this.store = new Ext.data.JsonStore({
             remoteSort: true,
