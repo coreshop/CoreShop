@@ -23,6 +23,12 @@
 * finished
 * Go To http://yourdomain/en/shop
 
+or install it via composer on an existing pimcore installation
+
+```
+composer require coreshop/core-shop dev-master
+```
+
 ## Copyright and license 
 Copyright: [Dominik Pfaffenbauer](http://dominik.pfaffenbauer.at)  
 For licensing details please visit [LICENSE.md](LICENSE.md) 
