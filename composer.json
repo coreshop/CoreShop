@@ -1,5 +1,5 @@
 {
-    "name": "coreshop/coreshop",
+    "name": "coreshop/core-shop",
     "type": "pimcore-plugin",
     "license": "GPLv3",
     "description": "CoreShop is the first OpenSource Onlineshop System for Pimcore!",
