@@ -100,7 +100,7 @@ class Currency extends AbstractModel
     /**
      * Checks if currency is available
      *
-     * @return array
+     * @return Currency[]
      */
     public static function getAvailable()
     {

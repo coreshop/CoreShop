@@ -123,4 +123,14 @@ class CoreShop_Admin_CurrencyController extends Admin
 
         $this->_helper->json(array("success" => false));
     }
+
+    public function getExchangeRateProvidersAction() {
+        $providersList = array();
+
+        foreach(Currency\ExchangeRates::$providerList as $name=>$class) {
+            $providersList[] = array("name" => $name);
+        }
+
+        $this->_helper->json(array("success" => true, "data" => $providersList));
+    }
 }

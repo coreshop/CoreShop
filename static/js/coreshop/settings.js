@@ -65,6 +65,18 @@ pimcore.plugin.coreshop.settings = Class.create({
                 pimcore.globalmanager.remove('coreshop_settings');
             }.bind(this));
 
+            var exchangeRatesStore = new Ext.data.Store({
+                proxy: {
+                    type: 'ajax',
+                    url : '/plugin/CoreShop/admin_Currency/get-exchange-rate-providers',
+                    reader: {
+                        type: 'json',
+                        rootProperty : 'data'
+                    }
+                }
+            });
+            exchangeRatesStore.load();
+
             this.layout = Ext.create('Ext.form.Panel', {
                 bodyStyle:'padding:20px 5px 20px 5px;',
                 border: false,
@@ -94,28 +106,6 @@ pimcore.plugin.coreshop.settings = Class.create({
                         defaultType: 'textfield',
                         defaults: { width: 600 },
                         items :[
-                            {
-                                xtype:'combo',
-                                fieldLabel:t('coreshop_base_currency'),
-                                typeAhead:true,
-                                value:this.getValue('SYSTEM.BASE.CURRENCY'),
-                                mode:'local',
-                                listWidth:100,
-                                store:pimcore.globalmanager.get('coreshop_currencies'),
-                                displayField:'name',
-                                valueField:'id',
-                                forceSelection:true,
-                                triggerAction:'all',
-                                name:'SYSTEM.BASE.CURRENCY',
-                                listeners: {
-                                    change: function () {
-                                        this.forceReloadOnSave = true;
-                                    }.bind(this),
-                                    select: function () {
-                                        this.forceReloadOnSave = true;
-                                    }.bind(this)
-                                }
-                            },
                             {
                                 xtype:'combo',
                                 fieldLabel:t('coreshop_base_country'),
@@ -186,6 +176,76 @@ pimcore.plugin.coreshop.settings = Class.create({
                                 editable: false,
                                 forceSelection: true,
                                 queryMode: 'local'
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: t('coreshop_currency'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight:true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: { width: 600 },
+                        items : [
+                            {
+                                xtype:'combo',
+                                fieldLabel:t('coreshop_base_currency'),
+                                typeAhead:true,
+                                value:this.getValue('SYSTEM.BASE.CURRENCY'),
+                                mode:'local',
+                                listWidth:100,
+                                store:pimcore.globalmanager.get('coreshop_currencies'),
+                                displayField:'name',
+                                valueField:'id',
+                                forceSelection:true,
+                                triggerAction:'all',
+                                name:'SYSTEM.BASE.CURRENCY',
+                                listeners: {
+                                    change: function () {
+                                        this.forceReloadOnSave = true;
+                                    }.bind(this),
+                                    select: function () {
+                                        this.forceReloadOnSave = true;
+                                    }.bind(this)
+                                }
+                            },
+                            {
+                                fieldLabel: t('coreshop_currency_automatic_exchange_rates'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES',
+                                checked: this.getValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
+                                listeners : {
+                                    change : function(checkbox, newValue) {
+                                        checkbox.up("fieldset").down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setHidden(!newValue);
+                                        checkbox.up("fieldset").down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setDisabled(!newValue);
+
+                                        checkbox.up("fieldset").down('label').setHidden(!newValue);
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'combo',
+                                fieldLabel: t('coreshop_currency_exchange_rate_provider'),
+                                name: 'SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER',
+                                value: this.getValue('SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER'),
+                                width: 500,
+                                hidden : !this.getValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
+                                disabled : !this.getValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
+                                store: exchangeRatesStore,
+                                triggerAction: 'all',
+                                typeAhead: false,
+                                editable: false,
+                                forceSelection: true,
+                                queryMode: 'local',
+                                displayField:'name',
+                                valueField:'name'
+                            },
+                            {
+                                xtype : 'label',
+                                text : t('coreshop_currency_exchange_rate_last_update') + ': ' + Ext.Date.format(new Date(this.getValue('SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE') * 1000), Ext.Date.defaultFormat),
+                                hidden : !this.getValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
                             }
                         ]
                     },

@@ -326,3 +326,6 @@
 "coreshop_monitoring_outOfStockProducts_out_of_stock_behaviour","Verhalten"
 "coreshop_note_order_payment","Zahlungseingang von '%s' ('%s')."
 "coreshop_note_order_payment_description","Neuer Zahlungseingang von '%s' mit Betrag von '%s' wurde gemacht."
+"coreshop_currency_automatic_exchange_rates","Automatische Währungsumrechnung"
+"coreshop_currency_exchange_rate_provider","Währungsumrechnungsprovider"
+"coreshop_currency_exchange_rate_last_update","Letztes Update"

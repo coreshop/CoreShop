@@ -30,7 +30,7 @@ class UpdateCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('coreshop-update')
+            ->setName('coreshop:update')
             ->setDescription('Update CoreShop to the desired version/build')
             ->addOption(
                 'list', 'l',

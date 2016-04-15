@@ -28,7 +28,7 @@ class IndexCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('coreshop-index')
+            ->setName('coreshop:index')
             ->setDescription('Reindex all Products');
     }
 

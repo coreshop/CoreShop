@@ -28,6 +28,8 @@ use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\Plugin\Hook;
 use CoreShop\Model\Plugin\InstallPlugin;
 use CoreShop\Plugin\Install;
+use Pimcore\Model\Schedule\Maintenance\Job;
+use Pimcore\Model\Schedule\Manager\Procedural;
 
 class Plugin extends AbstractPlugin implements PluginInterface
 {
@@ -58,9 +60,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             // add a namespace to autoload commands from
             $application->addAutoloadNamespace('CoreShop\\Console', CORESHOP_PATH . '/lib/CoreShop/Console');
-
-            // add a single command
-            $application->add(new \CoreShop\Console\Command\UpdateCommand());
         });
 
         \Pimcore::getEventManager()->attach("system.startup", function (\Zend_EventManager_Event $e) {
@@ -97,6 +96,15 @@ class Plugin extends AbstractPlugin implements PluginInterface
             );
             set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
 
+        });
+
+        \Pimcore::getEventManager()->attach("system.maintenance", function (\Zend_EventManager_Event $e) {
+            $manager = $e->getTarget();
+            
+            if($manager instanceof Procedural) {
+                if(Configuration::get("SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES"))
+                    $manager->registerJob(new Job("coreshop_exchangerates", "\\CoreShop\\Model\\Currency\\ExchangeRates", "maintenance"));
+            }
         });
 
 

@@ -12,6 +12,7 @@
         "role": "Developer"
     }],
     "require": {
-        "pimcore/installer-plugin": ">=1"
+        "pimcore/installer-plugin": ">=1",
+        "florianv/swap": "^2.4"
     }
 }

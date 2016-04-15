@@ -24,7 +24,7 @@ class BuildCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('coreshop-build')
+            ->setName('coreshop:build')
             ->setDescription('Build a CoreShop version')
             ->addOption(
                 'build', 'b',
