@@ -133,7 +133,11 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                         var store = pimcore.globalmanager.get('coreshop_orderstates');
                         var pos = store.findExact('id', val);
                         if (pos >= 0) {
-                            return store.getAt(pos).get('name');
+                            var orderState = store.getAt(pos);
+                            var bgColor = orderState.get('color');
+                            var textColor = (parseInt(bgColor.replace('#', ''), 16) > 0xffffff/2) ? 'black' : 'white';
+
+                            return '<span class="rounded-color" style="background-color:'+bgColor+'; color: ' + textColor + '">' + orderState.get('name') + '</span>';
                         }
 
                         return null;
@@ -159,40 +163,6 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store, itemsPerPage),
             listeners : {
                 itemclick : this.openOrder
-            },
-            viewConfig: {
-                listeners: {
-                    refresh: function(view) {
-
-                        // get all grid view nodes
-                        var nodes = view.getNodes();
-
-                        for (var i = 0; i < nodes.length; i++) {
-
-                            var node = nodes[i];
-
-                            // get node record
-                            var record = view.getRecord(node);
-
-                            var orderState = pimcore.globalmanager.get("coreshop_orderstates").getById(record.get("orderState"));
-
-                            if(orderState) {
-                                // get color from record data
-                                var color = orderState.get('color');
-                                var textColor = (parseInt(color.replace('#', ''), 16) > 0xffffff/2) ? 'black' : 'white';
-
-                                // get all td elements
-                                var cells = Ext.get(node).query('td');
-
-                                // set bacground color to all row td elements
-                                for (var j = 0; j < cells.length; j++) {
-                                    Ext.fly(cells[j]).setStyle('background-color', color);
-                                    Ext.fly(cells[j]).setStyle('color', textColor);
-                                }
-                            }
-                        }
-                    }
-                }
             }
         });
 

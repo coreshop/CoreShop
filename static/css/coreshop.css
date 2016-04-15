@@ -292,3 +292,8 @@
 .coreshop_carrier_delete.x-btn-over {
     background:transparent!important;
 }
+
+.rounded-color {
+    border-radius: 20px;
+    padding: 0px 10px;
+}
