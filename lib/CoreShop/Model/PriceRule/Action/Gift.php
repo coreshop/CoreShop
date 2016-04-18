@@ -14,10 +14,10 @@
 
 namespace CoreShop\Model\PriceRule\Action;
 
+use CoreShop\Model\Cart;
+use CoreShop\Model\Product;
 use CoreShop\Model\PriceRule;
 use CoreShop\Tool;
-use Pimcore\Model\Object\CoreShopProduct;
-use Pimcore\Model\Object\CoreShopCart;
 
 class Gift extends AbstractAction
 {
@@ -33,12 +33,12 @@ class Gift extends AbstractAction
     public $type = "gift";
 
     /**
-     * @return \Pimcore\Model\Object\CoreShopProduct
+     * @return Product
      */
     public function getGift()
     {
-        if (!$this->gift instanceof CoreShopProduct) {
-            $this->gift = CoreShopProduct::getByPath($this->gift);
+        if (!$this->gift instanceof Product) {
+            $this->gift = Product::getByPath($this->gift);
         }
 
         return $this->gift;
@@ -55,10 +55,10 @@ class Gift extends AbstractAction
     /**
      * Calculate discount
      *
-     * @param CoreShopCart $cart
+     * @param Cart $cart
      * @return int
      */
-    public function getDiscount(CoreShopCart $cart)
+    public function getDiscount(Cart $cart)
     {
         $discount = Tool::convertToCurrency($this->getGift()->getPrice(), Tool::getCurrency());
 
@@ -68,12 +68,12 @@ class Gift extends AbstractAction
     /**
      * Apply Rule to Cart
      *
-     * @param CoreShopCart $cart
+     * @param Cart $cart
      * @return bool
      */
-    public function applyRule(CoreShopCart $cart)
+    public function applyRule(Cart $cart)
     {
-        if ($this->getGift() instanceof CoreShopProduct) {
+        if ($this->getGift() instanceof Product) {
             $item = $cart->updateQuantity($this->getGift(), 1, false, false);
             $item->setIsGiftItem(true);
             $item->save();
@@ -85,12 +85,12 @@ class Gift extends AbstractAction
     /**
      * Remove Rule from Cart
      *
-     * @param CoreShopCart $cart
+     * @param Cart $cart
      * @return bool
      */
-    public function unApplyRule(CoreShopCart $cart)
+    public function unApplyRule(Cart $cart)
     {
-        if ($this->getGift() instanceof CoreShopProduct) {
+        if ($this->getGift() instanceof Product) {
             $cart->updateQuantity($this->getGift(), 0, false, false);
         }
 

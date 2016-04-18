@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\PriceRule\Action;
 
+use CoreShop\Model\Cart;
 use Pimcore\Model;
 
 class DiscountPercent extends AbstractAction
@@ -69,10 +70,10 @@ class DiscountPercent extends AbstractAction
     /**
      * Calculate discount
      *
-     * @param Model\Object\CoreShopCart $cart
+     * @param Cart $cart
      * @return int
      */
-    public function getDiscount(Model\Object\CoreShopCart $cart)
+    public function getDiscount(Cart $cart)
     {
         return $cart->getSubtotal() * ($this->getPercent() / 100);
     }
@@ -80,10 +81,10 @@ class DiscountPercent extends AbstractAction
     /**
      * Apply Rule to Cart
      *
-     * @param Model\Object\CoreShopCart $cart
+     * @param Cart $cart
      * @return bool
      */
-    public function applyRule(Model\Object\CoreShopCart $cart)
+    public function applyRule(Cart $cart)
     {
         return true;
     }
@@ -91,10 +92,10 @@ class DiscountPercent extends AbstractAction
     /**
      * Remove Rule from Cart
      *
-     * @param Model\Object\CoreShopCart $cart
+     * @param Cart $cart
      * @return bool
      */
-    public function unApplyRule(Model\Object\CoreShopCart $cart)
+    public function unApplyRule(Cart $cart)
     {
         return true;
     }

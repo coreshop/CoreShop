@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\PriceRule\Action;
 
+use CoreShop\Model\Cart;
 use Pimcore\Model;
 
 class FreeShipping extends AbstractAction
@@ -26,10 +27,10 @@ class FreeShipping extends AbstractAction
     /**
      * Calculate discount
      *
-     * @param Model\Object\CoreShopCart $cart
+     * @param Cart $cart
      * @return int
      */
-    public function getDiscount(Model\Object\CoreShopCart $cart)
+    public function getDiscount(Cart $cart)
     {
         return 0;
     }
@@ -37,10 +38,10 @@ class FreeShipping extends AbstractAction
     /**
      * Apply Rule to Cart
      *
-     * @param Model\Object\CoreShopCart $cart
+     * @param Cart $cart
      * @return bool
      */
-    public function applyRule(Model\Object\CoreShopCart $cart)
+    public function applyRule(Cart $cart)
     {
         return true;
     }
@@ -48,10 +49,10 @@ class FreeShipping extends AbstractAction
     /**
      * Remove Rule from Cart
      *
-     * @param Model\Object\CoreShopCart $cart
+     * @param Cart $cart
      * @return bool
      */
-    public function unApplyRule(Model\Object\CoreShopCart $cart)
+    public function unApplyRule(Cart $cart)
     {
         return true;
     }
