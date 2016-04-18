@@ -337,6 +337,8 @@ class Order extends Base
     }
 
     /**
+     * Get Payment Provider Object
+     *
      * @return bool|\CoreShop\Model\Plugin\Payment
      * @throws UnsupportedException
      */

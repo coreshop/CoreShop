@@ -156,6 +156,8 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
+     * Handles Exceptions
+     *
      * @param $e
      * @return array
      * @throws
@@ -187,6 +189,8 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
+     * Get Count
+     *
      * @return int
      * @throws \Exception
      */
@@ -197,6 +201,8 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
+     * Get Total Count
+     *
      * @return int
      * @throws \Exception
      */

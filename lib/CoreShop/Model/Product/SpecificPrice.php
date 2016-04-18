@@ -36,6 +36,8 @@ class SpecificPrice extends AbstractModel
     public static $availableActions = array("discountAmount", "discountPercent", "newPrice");
 
     /**
+     * Add Condition Type
+     *
      * @param $condition
      */
     public static function addCondition($condition)
@@ -46,6 +48,8 @@ class SpecificPrice extends AbstractModel
     }
 
     /**
+     * Add Action Type
+     *
      * @param $action
      */
     public static function addAction($action)
@@ -92,7 +96,7 @@ class SpecificPrice extends AbstractModel
     }
 
     /**
-     * Get al PriceRules
+     * Get all PriceRules
      *
      * @param Product $product
      * @return array

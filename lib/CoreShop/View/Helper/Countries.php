@@ -21,6 +21,8 @@ class Countries
     public $view;
 
     /**
+     * Set View
+     *
      * @param \Zend_View_Interface $view
      */
     public function setView(\Zend_View_Interface $view)
@@ -29,6 +31,8 @@ class Countries
     }
 
     /**
+     * get active countries
+     *
      * @return array
      */
     public function countries()

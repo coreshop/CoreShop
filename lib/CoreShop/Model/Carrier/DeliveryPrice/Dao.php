@@ -18,10 +18,16 @@ use CoreShop\Model\Dao\AbstractDao;
 
 class Dao extends AbstractDao
 {
-
+    /**
+     * Mysql table name
+     *
+     * @var string
+     */
     protected $tableName = 'coreshop_carriers_delivery_price';
 
     /**
+     * Get Delivery Price by Carrier and Range
+     *
      * @param $carrier
      * @param $range
      * @throws \Exception
@@ -38,6 +44,8 @@ class Dao extends AbstractDao
     }
 
     /**
+     * Get Delivery Price by Carrier, Range and Zone
+     *
      * @param $carrier
      * @param $range
      * @param $zone

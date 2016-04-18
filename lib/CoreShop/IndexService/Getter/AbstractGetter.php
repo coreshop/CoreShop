@@ -28,6 +28,8 @@ class AbstractGetter
     protected static $getter = array("Brick", "Classificationstore", "Localizedfield");
 
     /**
+     * Add Getter Class
+     *
      * @param string $getter
      */
     public static function addGetter($getter)
@@ -38,6 +40,8 @@ class AbstractGetter
     }
 
     /**
+     * Get all Getter Classes
+     *
      * @return array
      */
     public static function getGetters()
@@ -46,6 +50,8 @@ class AbstractGetter
     }
 
     /**
+     * get value
+     *
      * @param $object
      * @param array $config
      * @return mixed

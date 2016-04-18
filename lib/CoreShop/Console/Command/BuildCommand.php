@@ -21,6 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class BuildCommand extends AbstractCommand
 {
+    /**
+     * Configure Command
+     */
     protected function configure()
     {
         $this
@@ -41,6 +44,14 @@ class BuildCommand extends AbstractCommand
             );
     }
 
+    /**
+     * Execute Command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         //include(__DIR__ . "/../config/startup.php");
@@ -149,6 +160,7 @@ class BuildCommand extends AbstractCommand
     /**
      * Update Plugin XML File
      *
+     * @param $dryRun
      * @param $buildNumber
      * @param $version
      * @param $timestamp
@@ -185,6 +197,8 @@ class BuildCommand extends AbstractCommand
     }
 
     /**
+     * Return current GIT-Revision
+     *
      * @return string
      */
     private function getGitRevision()
@@ -193,6 +207,8 @@ class BuildCommand extends AbstractCommand
     }
 
     /**
+     * get all changed files
+     *
      * @return array
      */
     private function getChangedFiles()
@@ -210,6 +226,8 @@ class BuildCommand extends AbstractCommand
     }
 
     /**
+     * get all deleted files
+     *
      * @return array
      */
     private function getDeletedFiles()
@@ -229,7 +247,9 @@ class BuildCommand extends AbstractCommand
     /**
      * add files to git and make a commit
      *
+     * @param $dryRun
      * @param $buildNumber
+     * @param $disableCommit
      */
     private function gitAddAndCommit($dryRun, $buildNumber, $disableCommit = false)
     {
@@ -264,6 +284,7 @@ class BuildCommand extends AbstractCommand
     /**
      * write build to build file
      *
+     * @param $dryRun
      * @param $buildNumber
      * @param $version
      * @param $timestamp

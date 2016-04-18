@@ -20,8 +20,9 @@ use CoreShop\Model\Product;
 
 class Classificationstore extends AbstractGetter
 {
-
     /**
+     * get value
+     *
      * @param $object
      * @param Config $config
      * @return mixed

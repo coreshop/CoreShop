@@ -24,6 +24,8 @@ class Objectbrick extends AbstractData
     protected $view;
 
     /**
+     * get View
+     *
      * @param $language
      * @return \Zend_View
      */
@@ -50,6 +52,8 @@ class Objectbrick extends AbstractData
     }
 
     /**
+     * Render Cart
+     *
      * @return string|boolean
      */
     public function renderCart()
@@ -58,6 +62,8 @@ class Objectbrick extends AbstractData
     }
 
     /**
+     * Render Invoice
+     * 
      * @return string|bool
      */
     public function renderInvoice()

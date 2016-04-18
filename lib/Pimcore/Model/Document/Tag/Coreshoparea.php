@@ -22,6 +22,8 @@ use Pimcore\Model\Document;
 class Coreshoparea extends Area
 {
     /**
+     * get area dirs
+     *
      * @return array
      */
     public function getAreaDirs()
@@ -29,11 +31,21 @@ class Coreshoparea extends Area
         return ExtensionManager::getBrickDirectories($this->getThemeAreaDir());
     }
 
+    /**
+     * get bricks config
+     *
+     * @return array|mixed
+     */
     public function getBrickConfigs()
     {
         return ExtensionManager::getBrickConfigs($this->getThemeAreaDir());
     }
 
+    /**
+     * get theme area dir
+     *
+     * @return string
+     */
     protected function getThemeAreaDir()
     {
         return CORESHOP_TEMPLATE_PATH . "/areas";

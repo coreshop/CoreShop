@@ -20,6 +20,8 @@ use Pimcore\Model\Object\Concrete;
 class Base extends Concrete
 {
     /**
+     * Object to Array
+     * 
      * @return array
      */
     public function toArray()
@@ -28,6 +30,8 @@ class Base extends Concrete
     }
 
     /**
+     * Admin Element Style
+     *
      * @return \Pimcore\Model\Element\AdminStyle
      */
     public function getElementAdminStyle()

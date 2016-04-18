@@ -20,6 +20,8 @@ use CoreShop\Model\Product;
 class RelationInterpreter extends AbstractInterpreter
 {
     /**
+     * interpret value
+     *
      * @param mixed $value
      * @param array $config
      * @return mixed

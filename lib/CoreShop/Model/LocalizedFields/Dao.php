@@ -28,6 +28,8 @@ class Dao extends AbstractDao
     protected $tableDefinitions = null;
 
     /**
+     * Get Table Name
+     *
      * @return string
      */
     public function getTableName()
@@ -36,6 +38,8 @@ class Dao extends AbstractDao
     }
 
     /**
+     * Get Query Table Name
+     *
      * @return string
      */
     public function getQueryTableName()
@@ -44,7 +48,7 @@ class Dao extends AbstractDao
     }
 
     /**
-     *
+     * Save Localized Fields
      */
     public function save()
     {
@@ -122,6 +126,8 @@ class Dao extends AbstractDao
     }
 
     /**
+     * Delete Localized Fields
+     *
      * @param boolean $deleteQuery
      */
     public function delete($deleteQuery = true)
@@ -163,7 +169,7 @@ class Dao extends AbstractDao
 
 
     /**
-     *
+     * Create Localized Views
      */
     public function createLocalizedViews()
     {
@@ -263,7 +269,7 @@ QUERY;
 
 
     /**
-     *
+     * Create or Update Localized Table
      */
     public function createUpdateTable()
     {
@@ -323,6 +329,8 @@ QUERY;
     }
 
     /**
+     * Add/Modify Column
+     *
      * @param $table
      * @param $colName
      * @param $type
@@ -351,6 +359,8 @@ QUERY;
     }
 
     /**
+     * Remove Unused Column
+     *
      * @param $table
      * @param $columnsToRemove
      * @param $protectedColumns

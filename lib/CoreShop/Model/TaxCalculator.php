@@ -45,6 +45,8 @@ class TaxCalculator
 
 
     /**
+     * Constructor
+     *
      * @param array $taxes
      * @param int $computation_method (COMBINE_METHOD | ONE_AFTER_ANOTHER_METHOD)
      */
@@ -78,6 +80,8 @@ class TaxCalculator
     }
 
     /**
+     * get Total Rate
+     *
      * @return float total taxes rate
      */
     public function getTotalRate()
@@ -101,6 +105,8 @@ class TaxCalculator
     }
 
     /**
+     * get Tax Names
+     *
      * @param null $language
      * @return string
      */

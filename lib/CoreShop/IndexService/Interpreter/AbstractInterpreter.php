@@ -28,6 +28,8 @@ class AbstractInterpreter
     protected static $interpreters = array("Object");
 
     /**
+     * Add Interpreter Class
+     *
      * @param string $interpreter
      */
     public static function addInterpreter($interpreter)
@@ -38,6 +40,8 @@ class AbstractInterpreter
     }
 
     /**
+     * Get all Interpreter Classes
+     *
      * @return array
      */
     public static function getInterpreters()
@@ -46,6 +50,8 @@ class AbstractInterpreter
     }
 
     /**
+     * interpret value
+     *
      * @param mixed $value
      * @param array $config
      * @return mixed

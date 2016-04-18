@@ -23,6 +23,8 @@ class Coreshopareablock extends Areablock
 {
 
     /**
+     * get type
+     *
      * @see Document\Tag\TagInterface::getType
      * @return string
      */
@@ -32,6 +34,8 @@ class Coreshopareablock extends Areablock
     }
 
     /**
+     * is custom are path
+     *
      * @return bool
      */
     public function isCustomAreaPath()
@@ -40,6 +44,8 @@ class Coreshopareablock extends Areablock
     }
 
     /**
+     * get area directory
+     *
      * @return string
      */
     public function getAreaDirectory()

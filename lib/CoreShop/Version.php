@@ -18,13 +18,16 @@ use CoreShop\Model\Configuration;
 
 class Version
 {
-
     /**
+     * CoreShop Config File
+     *
      * @var array $config
      */
     protected static $config = null;
 
     /**
+     * Get CoreShop Plugin Config
+     *
      * @return array
      */
     protected static function getPluginConfig()
@@ -33,6 +36,8 @@ class Version
     }
 
     /**
+     * Get CoreShop Version
+     *
      * @return string
      */
     public static function getVersion()
@@ -41,6 +46,8 @@ class Version
     }
 
     /**
+     * Get CoreShop Build
+     *
      * @return int
      */
     public static function getBuildNumber()
@@ -49,6 +56,8 @@ class Version
     }
 
     /**
+     * Get CoreShop Git Revision
+     *
      * @return string
      */
     public static function getGitRevision()
@@ -57,6 +66,8 @@ class Version
     }
 
     /**
+     * Get CoreShop Build Timestamp
+     *
      * @return int
      */
     public static function getPluginTimestamp()

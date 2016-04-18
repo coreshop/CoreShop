@@ -27,6 +27,8 @@ class Filter extends AbstractModel
     public static $availableConditions = array("select", "multiselect", "range", "boolean");
 
     /**
+     * Add Condition Type
+     *
      * @param $condition
      */
     public static function addCondition($condition)
@@ -37,6 +39,8 @@ class Filter extends AbstractModel
     }
 
     /**
+     * Get Condition Types
+     *
      * @return array
      */
     public static function getConditions()
@@ -101,6 +105,8 @@ class Filter extends AbstractModel
     }
 
     /**
+     * Get all filters
+     *
      * @return mixed
      */
     public static function getAll()

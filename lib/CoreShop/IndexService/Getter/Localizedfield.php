@@ -20,8 +20,9 @@ use CoreShop\Model\Product;
 
 class Localizedfield extends AbstractGetter
 {
-
     /**
+     * get value
+     *
      * @param $object
      * @param AbstractColumn $config
      * @return mixed

@@ -44,6 +44,8 @@ abstract class Payment implements AbstractPlugin
      * Get Payment Fee
      *
      * @param Cart $cart
+     * @param boolean $useTaxes
+     *
      * @return int
      */
     public function getPaymentFee(Cart $cart, $useTaxes = true)
@@ -193,7 +195,8 @@ abstract class Payment implements AbstractPlugin
      * assemble route with zend router
      *
      * @param $module string module name
-     * @action $action string action name
+     * @param $action string action name
+     * 
      * @return string
      */
     public function url($module, $action)

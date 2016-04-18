@@ -21,6 +21,8 @@ class Dao extends AbstractDao
     protected $tableName = 'coreshop_product_filters';
 
     /**
+     * Assign variables to model
+     *
      * @param array $data
      */
     protected function assignVariablesToModel($data)

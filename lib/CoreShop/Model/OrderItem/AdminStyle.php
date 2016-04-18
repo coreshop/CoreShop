@@ -8,6 +8,10 @@ use Pimcore\Model\Object\AbstractObject;
 class AdminStyle extends \Pimcore\Model\Element\AdminStyle
 {
 
+    /**
+     * AdminStyle constructor.
+     * @param $element
+     */
     public function __construct($element)
     {
         parent::__construct($element);

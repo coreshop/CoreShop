@@ -24,18 +24,16 @@ use Pimcore\Tool\Session;
 
 class Action extends \Website\Controller\Action
 {
-
     /**
-     * @var \Zend_Session_Namespace
-     */
-    protected $cartSession;
-
-    /**
+     * Cart
+     *
      * @var Cart
      */
     protected $cart;
 
     /**
+     * Session
+     *
      * @var Session
      */
     protected $session;

@@ -13,6 +13,11 @@ use Swap\Swap;
 
 class ExchangeRates {
 
+    /**
+     * List of supported providers
+     *
+     * @var array
+     */
     public static $providerList = array(
         "CentralBankOfRepulicTurkey" => "CentralBankOfRepublicTurkeyProvider",
         "EuropeanCentralBank" => "EuropeanCentralBankProvider",
@@ -60,6 +65,8 @@ class ExchangeRates {
     }
 
     /**
+     * update exchange rate for currency
+     *
      * @param $provider
      * @param Currency $toCurrency
      * @throws Exception
@@ -93,6 +100,8 @@ class ExchangeRates {
     }
 
     /**
+     * get provider class object
+     *
      * @param $providerName string
      * @return AbstractProvider
      * @throws Exception
@@ -108,6 +117,8 @@ class ExchangeRates {
     }
 
     /**
+     * check if provider exists
+     *
      * @param $providerName
      * @return bool
      */

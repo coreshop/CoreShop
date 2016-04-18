@@ -21,6 +21,9 @@ use CoreShop\Update;
 
 class InternalUpdateProcessorCommand extends AbstractCommand
 {
+    /**
+     * configure command
+     */
     protected function configure()
     {
         $this
@@ -29,6 +32,14 @@ class InternalUpdateProcessorCommand extends AbstractCommand
             ->addArgument("config");
     }
 
+    /**
+     * Execute command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $status = ["success" => true];

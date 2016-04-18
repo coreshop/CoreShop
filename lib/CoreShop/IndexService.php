@@ -24,21 +24,28 @@ class IndexService
 {
     /**
      * possible types of an index
+     *
      * @var array
      */
     public static $types = array("mysql");
 
     /**
+     * IndexService
+     *
      * @var IndexService
      */
     protected static $indexService;
 
     /**
+     * Workers
+     *
      * @var AbstractWorker[]
      */
     protected $worker;
 
     /**
+     * Add new Index Tpye
+     *
      * @param $type
      */
     public static function addIndexType($type)
@@ -58,6 +65,8 @@ class IndexService
     }
 
     /**
+     * Get Index Service Singleton
+     *
      * @return IndexService
      */
     public static function getIndexService()
@@ -87,6 +96,8 @@ class IndexService
     }
 
     /**
+     * Get Worker by Name
+     *
      * @param $name
      * @return AbstractWorker|null
      */
@@ -102,6 +113,8 @@ class IndexService
     }
 
     /**
+     * Delete Product From Index
+     *
      * @param Product $product
      */
     public function deleteFromIndex(Product $product)
@@ -112,6 +125,8 @@ class IndexService
     }
 
     /**
+     * Update Product in Index
+     *
      * @param Product $product
      */
     public function updateIndex(Product $product)

@@ -19,7 +19,6 @@ use Pimcore\Model\Object\CoreShopCart;
 
 class PriceRule extends AbstractModel
 {
-
     /**
      * possible types of a condition
      * @var array
@@ -33,6 +32,8 @@ class PriceRule extends AbstractModel
     public static $availableActions = array("freeShipping", "discountAmount", "discountPercent", "gift");
 
     /**
+     * Add Condition Type
+     *
      * @param $condition
      */
     public static function addCondition($condition)
@@ -43,6 +44,8 @@ class PriceRule extends AbstractModel
     }
 
     /**
+     * Add Action Type
+     *
      * @param $action
      */
     public static function addAction($action)

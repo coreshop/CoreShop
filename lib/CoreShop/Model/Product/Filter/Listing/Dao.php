@@ -19,6 +19,17 @@ use CoreShop\Model;
 
 class Dao extends Listing\Dao\AbstractDao
 {
+    /**
+     * Mysql table name
+     *
+     * @var string
+     */
     protected $tableName = 'coreshop_product_filters';
+
+    /**
+     * Object class name
+     *
+     * @var string
+     */
     protected $modelClass = '\\CoreShop\\Model\\Product\\Filter';
 }

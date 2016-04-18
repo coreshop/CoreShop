@@ -45,6 +45,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
+     * get data for resource
+     *
      * @see Object\ClassDefinition\Data::getDataForResource
      * @param AbstractModel $data
      * @param null|Model\Object\AbstractObject $object
@@ -59,6 +61,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
+     * get data from resource
+     *
      * @see Object\ClassDefinition\Data::getDataFromResource
      * @param integer $data
      * @return AbstractModel
@@ -72,6 +76,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
+     * get data for query resource
+     *
      * @see Object\ClassDefinition\Data::getDataForQueryResource
      * @param AbstractModel $data
      * @param null|Model\Object\AbstractObject $object
@@ -86,28 +92,34 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
+     * get data for editmode
+     *
      * @see Object\ClassDefinition\Data::getDataForEditmode
      * @param AbstractModel $data
      * @param null|Model\Object\AbstractObject $object
+     * @param $objectFromVersion
      * @return integer
      */
     public function getDataForEditmode($data, $object = null, $objectFromVersion = null)
     {
-        return $this->getDataForResource($data, $object);
+        return $this->getDataForResource($data, $object, $objectFromVersion);
     }
 
     /**
      * @see Model\Object\ClassDefinition\Data::getDataFromEditmode
      * @param integer $data
      * @param null|Model\Object\AbstractObject $object
+     * @param array $params
      * @return AbstractModel
      */
     public function getDataFromEditmode($data, $object = null, $params = array())
     {
-        return $this->getDataFromResource($data);
+        return $this->getDataFromResource($data, $object, $params);
     }
 
     /**
+     * is empty
+     *
      * @param Model\Object\Concrete $data
      * @return bool
      */
@@ -117,6 +129,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
+     * get data for search index
+     *
      * @param $object
      * @return int|string
      */

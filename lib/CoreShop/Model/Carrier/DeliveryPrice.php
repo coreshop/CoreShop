@@ -66,6 +66,11 @@ class DeliveryPrice extends AbstractModel
      */
     public $price;
 
+    /**
+     * Save DeliveryPrice
+     * 
+     * @return mixed
+     */
     public function save()
     {
         return $this->getDao()->save();

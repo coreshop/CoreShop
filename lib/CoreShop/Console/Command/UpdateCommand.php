@@ -27,6 +27,9 @@ use CoreShop\Update;
 
 class UpdateCommand extends AbstractCommand
 {
+    /**
+     * configure command
+     */
     protected function configure()
     {
         $this
@@ -54,6 +57,14 @@ class UpdateCommand extends AbstractCommand
         ;
     }
 
+    /**
+     * execute command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \Exception
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dryRun = $input->getOption("dry-run");

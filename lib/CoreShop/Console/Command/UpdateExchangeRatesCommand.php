@@ -26,6 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateExchangeRatesCommand extends AbstractCommand
 {
+    /**
+     * configure command
+     */
     protected function configure()
     {
         $this
@@ -44,6 +47,15 @@ class UpdateExchangeRatesCommand extends AbstractCommand
         ;
     }
 
+    /**
+     * execute command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws Exception
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $provider = $input->getOption("provider");

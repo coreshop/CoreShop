@@ -52,6 +52,8 @@ class Configuration extends AbstractModel
     protected static $nameIdMappingCache = array();
 
     /**
+     * Get By Id
+     *
      * @param integer $id
      * @return Configuration
      */
@@ -80,6 +82,8 @@ class Configuration extends AbstractModel
     }
 
     /**
+     * Get by Key
+     *
      * @param string $key
      * @param boolean $returnObject
      * @return mixed|null
@@ -143,6 +147,8 @@ class Configuration extends AbstractModel
     }
 
     /**
+     * get Plugin Config
+     *
      * @return mixed|null|\Zend_Config_Xml
      * @throws \Zend_Exception
      */
@@ -168,6 +174,8 @@ class Configuration extends AbstractModel
     }
 
     /**
+     * Set Plugin Config to \Zend_Registry
+     *
      * @static
      * @param \Zend_Config $config
      * @return void

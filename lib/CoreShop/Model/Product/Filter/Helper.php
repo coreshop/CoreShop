@@ -23,9 +23,11 @@ class Helper
 {
 
     /**
-     * @param Filter $filter
+     * Setup Product List
+     *
      * @param Listing $list
      * @param $params
+     * @param Filter $filter
      * @param Service $filterService
      *
      * @return array()

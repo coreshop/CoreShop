@@ -24,6 +24,8 @@ use CoreShop\Model\Index\Config\Column\Mysql as Column;
 class Mysql extends AbstractWorker
 {
     /**
+     * Database
+     *
      * @var \Zend_Db_Adapter_Abstract
      */
     protected $db;
@@ -167,6 +169,8 @@ class Mysql extends AbstractWorker
     }
 
     /**
+     * Insert data into mysql-table
+     *
      * @param $data
      */
     protected function doInsertData($data)
@@ -191,15 +195,8 @@ class Mysql extends AbstractWorker
     }
 
     /**
-     * @return array
-     */
-    public function getFulltextSearchColumns()
-    {
-        //TODO: Load from configurations (eg configfile or database)
-        return array("name");
-    }
-
-    /**
+     * Return Productlist
+     *
      * @return Product\Listing\Mysql
      */
     public function getProductList()
@@ -228,6 +225,8 @@ class Mysql extends AbstractWorker
     }
 
     /**
+     * Get System Attributes
+     *
      * @return array
      */
     protected function getSystemAttributes()

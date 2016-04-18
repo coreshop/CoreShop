@@ -18,5 +18,10 @@ use CoreShop\Model\Dao\AbstractDao;
 
 class Dao extends AbstractDao
 {
+    /**
+     * Mysql table name
+     *
+     * @var string
+     */
     protected $tableName = 'coreshop_manufacturers';
 }

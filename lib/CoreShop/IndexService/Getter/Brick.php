@@ -22,6 +22,8 @@ class Brick extends AbstractGetter
 {
 
     /**
+     * get value
+     *
      * @param $object
      * @param Objectbricks $config
      * @return mixed

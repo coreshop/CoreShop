@@ -25,6 +25,8 @@ use Pimcore\Tool;
 abstract class AbstractWorker
 {
     /**
+     * Index Configuration
+     *
      * @var Index
      */
     protected $index = null;
@@ -228,6 +230,8 @@ abstract class AbstractWorker
     abstract public function getProductList();
 
     /**
+     * get index
+     *
      * @return Index
      */
     public function getIndex()
@@ -236,6 +240,8 @@ abstract class AbstractWorker
     }
 
     /**
+     * set index
+     *
      * @param Index $index
      */
     public function setIndex($index)

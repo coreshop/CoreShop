@@ -20,16 +20,23 @@ class Compare extends Deposit
 {
 
     /**
+     * Limit for how many elements are allowed
+     *
      * @var int
      */
     protected $maxCompareElements = 3;
 
+    /**
+     * Compare constructor.
+     */
     public function __construct()
     {
         $this->setNamespace('compare')->setLimit($this->maxCompareElements);
     }
 
     /**
+     * set limit how many elements are allowed
+     *
      * @param int $maxElements
      */
     public function setMaxCompareElements($maxElements = 3)

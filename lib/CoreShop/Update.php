@@ -22,8 +22,9 @@ use Pimcore\Tool;
 
 class Update
 {
-
     /**
+     * Temp Table Name
+     *
      * @var string
      */
     public static $tmpTable = "_coreshop_tmp_update";
@@ -36,13 +37,15 @@ class Update
     public static $updateServer = "http://update.coreshop.org";
 
     /**
+     * Dry run
+     *
      * @var bool
      */
     public static $dryRun = false;
 
 
     /**
-     *
+     *  Check for Updates
      */
     public static function getAvailableUpdates($currentBuild = null)
     {
@@ -56,6 +59,8 @@ class Update
     }
 
     /**
+     * Check if CoreShop Path is writeable
+     *
      * @return bool
      */
     public static function isWriteable()
@@ -78,6 +83,8 @@ class Update
     }
 
     /**
+     * get jobs to build
+     *
      * @param $toBuild
      * @return array
      */
@@ -229,6 +236,8 @@ class Update
     }
 
     /**
+     * download a file
+     *
      * @param $revision
      * @param $url
      * @throws \Zend_Db_Adapter_Exception
@@ -284,6 +293,8 @@ class Update
     }
 
     /**
+     * install data
+     *
      * @param $revision
      */
     public static function installData($revision)
@@ -310,6 +321,8 @@ class Update
     }
 
     /**
+     * execute script
+     *
      * @param $revision
      * @param $type
      * @return array
@@ -344,6 +357,8 @@ class Update
     }
 
     /**
+     * install class
+     *
      * @param $class
      * @return boolean
      */
@@ -361,7 +376,7 @@ class Update
     }
 
     /**
-     *
+     * make some cleanup
      */
     public static function cleanup()
     {
@@ -375,6 +390,8 @@ class Update
     }
 
     /**
+     * get scripts for build
+     *
      * @param $build
      * @return null|string
      */
@@ -392,6 +409,8 @@ class Update
     }
 
     /**
+     * get changed files for build
+     *
      * @param $build
      * @return array|null
      */
@@ -409,6 +428,8 @@ class Update
     }
 
     /**
+     * get deleted files for build
+     *
      * @param $build
      * @return array|null
      */
@@ -426,7 +447,11 @@ class Update
     }
 
     /**
+     * get newer builds
      *
+     * @param null $currentBuild
+     * @param null $to
+     * @return array|bool
      */
     public static function getNewerBuilds($currentBuild = null, $to = null)
     {
@@ -461,6 +486,8 @@ class Update
     }
 
     /**
+     * get changed files for build
+     *
      * @param $build
      * @return string
      */
@@ -470,6 +497,8 @@ class Update
     }
 
     /**
+     * get deleted files for build
+     *
      * @param $build
      * @return string
      */
@@ -499,6 +528,8 @@ class Update
     }
 
     /**
+     * get repo url
+     *
      * @return string
      */
     public static function getRepoUrl()

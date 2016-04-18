@@ -18,7 +18,6 @@ use Pimcore\Model;
 
 class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Paginator_Adapter_Interface, \Zend_Paginator_AdapterAggregate, \Iterator
 {
-
     /**
      * List of PriceRule
      *
@@ -84,6 +83,11 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
      * Methods for \Zend_Paginator_Adapter_Interface
      */
 
+    /**
+     * get total count
+     *
+     * @return mixed
+     */
     public function count()
     {
         return $this->getTotalCount();
@@ -104,6 +108,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * Get Paginator Adapter
+     *
      * @return $this
      */
     public function getPaginatorAdapter()
@@ -112,6 +118,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * Set Locale
+     *
      * @param mixed $locale
      * @return void
      */
@@ -121,6 +129,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * Get Locale
+     *
      * @return string|\Zend_Locale
      */
     public function getLocale()
@@ -129,6 +139,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * Set ignored localized fields
+     *
      * @param bool $ignoreLocalizedFields
      * @return void
      */
@@ -138,6 +150,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * Get Ignored Localized Fields
+     *
      * @return bool
      */
     public function getIgnoreLocalizedFields()
@@ -149,6 +163,9 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
      * Methods for Iterator
      */
 
+    /**
+     * Rewind
+     */
     public function rewind()
     {
         $this->getData();
@@ -156,6 +173,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * current
+     *
      * @return mixed
      */
     public function current()
@@ -166,6 +185,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * key
+     *
      * @return mixed
      */
     public function key()
@@ -176,6 +197,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * next
+     *
      * @return mixed
      */
     public function next()
@@ -186,6 +209,8 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
+     * valid
+     *
      * @return bool
      */
     public function valid()

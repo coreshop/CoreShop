@@ -19,11 +19,15 @@ class Deposit
 {
 
     /**
+     * Deposit Namespace
+     *
      * @var null
      */
     public $depositNamespace = null;
 
     /**
+     * Deposit Data
+     *
      * @var array
      */
     public $depositData = array();
@@ -36,11 +40,17 @@ class Deposit
      */
     public $maxElements = 0;
 
+    /**
+     * Limit Reached identifier
+     */
     const LIMIT_REACHED = 'limit_reached';
+
+    /**
+     * Already added identifer
+     */
     const ALREADY_ADDED = 'already_added';
 
     /**
-     *
      * Set Deposit Namespace
      * @param null $namespace
      *
@@ -65,6 +75,12 @@ class Deposit
         return $this;
     }
 
+    /**
+     * set Limit
+     *
+     * @param int $limit
+     * @return $this
+     */
     protected function setLimit($limit = 0)
     {
         $this->maxElements = $limit;
@@ -74,6 +90,7 @@ class Deposit
 
     /**
      * Get formatted deposit
+     *
      * @return array
      */
     protected function toArray()
@@ -91,8 +108,8 @@ class Deposit
     }
 
     /**
-     *
      * Add a Element to Deposit
+     *
      * @param      $id
      * @param bool $value
      *
@@ -127,6 +144,9 @@ class Deposit
 
     /**
      * Check if element is allowed to add
+     *
+     * @param $id
+     * @return boolean
      */
     public function allowedToAdd($id)
     {
@@ -139,11 +159,19 @@ class Deposit
         return true;
     }
 
+    /**
+     * get Session
+     *
+     * @return \Pimcore\Tool\Session
+     */
     protected function getSession()
     {
         return \CoreShop\Tool::getSession();
     }
 
+    /**
+     * Save to session
+     */
     protected function save()
     {
         $session = $this->getSession();

@@ -20,7 +20,7 @@ class Dao extends Model\Dao\PhpArrayTable
 {
 
     /**
-     *
+     * Configure Configuration File
      */
     public function configure()
     {
@@ -29,6 +29,8 @@ class Dao extends Model\Dao\PhpArrayTable
     }
 
     /**
+     * Get Configuration By Id
+     *
      * @param null $id
      * @throws \Exception
      */
@@ -48,8 +50,9 @@ class Dao extends Model\Dao\PhpArrayTable
     }
 
     /**
+     * Get Configuration by key
+     *
      * @param null $key
-
      * @throws \Exception
      */
     public function getByKey($key = null)
@@ -75,6 +78,8 @@ class Dao extends Model\Dao\PhpArrayTable
     }
 
     /**
+     * save configuration
+     *
      * @throws \Exception
      */
     public function save()

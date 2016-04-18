@@ -146,6 +146,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * Add Relation Condition
+     *
      * @param string $fieldname
      * @param string $condition
      */
@@ -211,6 +213,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * Add Price Condition
+     *
      * @param null|float $from
      * @param null|float $to
      */
@@ -243,6 +247,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * set Order Key
+     *
      * @param $orderKey string | array  - either single field name, or array of field names or array of arrays (field name, direction)
      */
     public function setOrderKey($orderKey)
@@ -258,6 +264,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * get Order Key
+     *
      * @return array|string
      */
     public function getOrderKey()
@@ -266,6 +274,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * set limit
+     *
      * @param int $limit
      */
     public function setLimit($limit)
@@ -277,6 +287,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * get limit
+     *
      * @return int
      */
     public function getLimit()
@@ -286,6 +298,8 @@ class Mysql extends AbstractListing
 
 
     /**
+     * set offset
+     *
      * @param int $offset
      */
     public function setOffset($offset)
@@ -297,6 +311,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * get offset
+     *
      * @return int
      */
     public function getOffset()
@@ -315,6 +331,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * get category
+     *
      * @return Category
      */
     public function getCategory()
@@ -323,6 +341,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * set variant mode
+     *
      * @param $variantMode
      */
     public function setVariantMode($variantMode)
@@ -332,6 +352,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * get variant mode
+     *
      * @return string
      */
     public function getVariantMode()
@@ -340,12 +362,13 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * load
+     *
      * @return array|\CoreShop\Model\Product[]|null
      * @throws \Exception
      */
     public function load()
     {
-
         //TODO: Load with price filter?!
 
         $objectRaws = $this->resource->load($this->buildQueryFromConditions(), $this->buildOrderBy(), $this->getLimit(), $this->getOffset());
@@ -374,6 +397,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * get group by values
+     *
      * @param $fieldname
      * @param bool $countValues
      * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
@@ -394,6 +419,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * get group by relation values
+     *
      * @param      $fieldname
      * @param bool $countValues
      * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
@@ -422,7 +449,7 @@ class Mysql extends AbstractListing
      * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
     {
@@ -430,6 +457,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * build query from conditions
+     *
      * @param bool $excludeConditions
      * @param null $excludedFieldname
      * @param null $variantMode
@@ -487,6 +516,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * build user specific conditions
+     *
      * @param null $excludedFieldname
      * @return string
      */
@@ -524,6 +555,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * build order by
+     *
      * @return null|string
      */
     protected function buildOrderBy()
@@ -586,6 +619,8 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * quote value
+     *
      * @param $value
      * @return mixed
      */
@@ -596,6 +631,8 @@ class Mysql extends AbstractListing
 
 
     /**
+     * get joins
+     *
      * @return string
      */
     public function getJoins()

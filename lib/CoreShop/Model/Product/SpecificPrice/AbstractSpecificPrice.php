@@ -18,7 +18,6 @@ use Pimcore\Model;
 
 class AbstractSpecificPrice
 {
-
     /**
      * @var string
      */

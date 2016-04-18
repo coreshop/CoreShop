@@ -46,6 +46,11 @@ class Manufacturer extends AbstractModel
         return parent::getById($id);
     }
 
+    /**
+     * Get all Manufacturers
+     *
+     * @return mixed
+     */
     public static function getAll()
     {
         $list = new CustomerGroup\Listing();

@@ -19,7 +19,16 @@ use CoreShop\Model;
 
 class Dao extends Listing\Dao\AbstractDao
 {
-
+    /**
+     * Mysql table name
+     * @var string
+     */
     protected $tableName = 'coreshop_currencies';
+
+    /**
+     * Object class name
+     *
+     * @var string
+     */
     protected $modelClass = '\\CoreShop\\Model\\Currency';
 }

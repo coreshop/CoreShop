@@ -53,6 +53,8 @@ class Index extends AbstractModel
     }
 
     /**
+     * Get all indexes
+     *
      * @return Index[]
      */
     public static function getAll()

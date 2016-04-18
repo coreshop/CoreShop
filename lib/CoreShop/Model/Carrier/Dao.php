@@ -19,9 +19,16 @@ use Pimcore\Model\Asset;
 
 class Dao extends AbstractDao
 {
+    /**
+     * Mysql table name
+     *
+     * @var string
+     */
     protected $tableName = 'coreshop_carriers';
 
     /**
+     * Assign Variables to Model
+     *
      * @param array $data
      */
     protected function assignVariablesToModel($data)

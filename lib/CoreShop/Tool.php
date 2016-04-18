@@ -169,7 +169,8 @@ class Tool
      * Prepare Cart
      *
      * @param $resetCart bool create a new cart
-     * @return CoreShopCart|static
+     * 
+     * @return Cart
      */
     public static function prepareCart($resetCart = false)
     {
@@ -530,6 +531,8 @@ class Tool
     }
 
     /**
+     * get CoreShop Translate
+     *
      * @return \Zend_Translate_Adapter
      */
     public static function getTranslate() {

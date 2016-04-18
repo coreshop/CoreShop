@@ -25,6 +25,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class IndexCommand extends AbstractCommand
 {
+    /**
+     * configure command
+     */
     protected function configure()
     {
         $this
@@ -32,6 +35,14 @@ class IndexCommand extends AbstractCommand
             ->setDescription('Reindex all Products');
     }
 
+    /**
+     * Execute command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $allProducts = new CoreShopProduct\Listing();

@@ -20,12 +20,19 @@ use CoreShop\Model\Configuration;
 
 class Update
 {
-
     /**
+     * Dry Run
+     *
      * @var bool
      */
     private $dryRun = false;
 
+    /**
+     * set Dry run
+     *
+     * @param bool $mode
+     * @return $this
+     */
     public function setDryRun($mode = true)
     {
         $this->dryRun = $mode;
@@ -50,6 +57,8 @@ class Update
     }
 
     /**
+     * update core data
+     *
      * @Todo: Check if in Backend && logged in user?
      * @return bool
      */
@@ -81,6 +90,11 @@ class Update
         return array('success' => true, 'log' => $log);
     }
 
+    /**
+     * get build status
+     *
+     * @return array|bool
+     */
     private function getBuildStatus()
     {
         $currentBuild = (int) Version::getBuildNumber();
@@ -96,11 +110,23 @@ class Update
         );
     }
 
+    /**
+     * update core shop build
+     *
+     * @param int $toBuild
+     */
     private function updateCoreShopBuild($toBuild = 0)
     {
         return Configuration::set("SYSTEM.BASE.BUILD", $toBuild);
     }
 
+    /**
+     * get available builds
+     *
+     * @param int $fromBuild
+     * @param int $toBuild
+     * @return array|bool
+     */
     private function getBuilds($fromBuild = 0, $toBuild = 0)
     {
         if ($toBuild < $fromBuild) {
@@ -137,6 +163,12 @@ class Update
         return $builds;
     }
 
+    /**
+     * Execute build updates
+     *
+     * @param $builds
+     * @return array|bool
+     */
     private function executeBuildUpdates($builds)
     {
         if (!is_array($builds) || empty($builds)) {
@@ -183,6 +215,12 @@ class Update
         );
     }
 
+    /**
+     * execute sql
+     *
+     * @param $fileName
+     * @return bool
+     */
     private function executeSQL($fileName)
     {
         if ($fileName === false || !is_file($fileName)) {
@@ -197,6 +235,9 @@ class Update
         return true;
     }
 
+    /**
+     * Clean up
+     */
     private function cleanUp()
     {
         \Pimcore\Cache::clearAll();
@@ -241,6 +282,8 @@ class Update
     }
 
     /**
+     * Check if CoreShop Path is writeable
+     *
      * @return bool
      */
     public function isWriteable()
@@ -262,6 +305,8 @@ class Update
     }
 
     /**
+     * get git tags
+     *
      * https://api.github.com/repos/coreshop/CoreShop
      * @return mixed
      */
@@ -296,6 +341,11 @@ class Update
         return $releasesInfo;
     }
 
+    /**
+     * get git master commit
+     *
+     * @return array|bool
+     */
     public function getGitMasterCommit()
     {
         $master = $this->gitRequest("https://api.github.com/repos/coreshop/CoreShop/commits/master");
@@ -322,6 +372,13 @@ class Update
         return $masterInfo;
     }
 
+    /**
+     * install release version
+     *
+     * @param $type
+     * @param $release
+     * @return array
+     */
     public function installRelease($type, $release)
     {
         $coreShopPluginFolderName = 'CoreShop';
@@ -414,6 +471,8 @@ class Update
     }
 
     /**
+     *
+     *
      * @param $url
      *
      * @return bool|array

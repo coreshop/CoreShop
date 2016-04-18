@@ -195,6 +195,8 @@ class LocalizedFields extends Model\AbstractModel
     }
 
     /**
+     * Get Localized Value
+     *
      * @param $name
      * @param null $language
      * @param bool $ignoreFallbackLanguage
@@ -226,6 +228,8 @@ class LocalizedFields extends Model\AbstractModel
     }
 
     /**
+     * Set Localized Value
+     *
      * @param $name
      * @param $value
      * @param null $language

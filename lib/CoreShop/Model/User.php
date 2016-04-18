@@ -25,7 +25,9 @@ class User extends Base
     /**
      * Get User by E-Mail
      *
-     * @param $email
+     * @param $email string
+     * @param $isGuest boolean
+     *
      * @return bool
      */
     public static function getUniqueByEmail($email, $isGuest = false)
@@ -54,6 +56,8 @@ class User extends Base
     }
 
     /**
+     * Get Guest by email
+     *
      * @param $email
      * @return CoreShopUser|bool
      */
@@ -63,6 +67,8 @@ class User extends Base
     }
 
     /**
+     * Get User by email
+     *
      * @param $email
      * @return CoreShopUser|bool
      */
@@ -191,5 +197,17 @@ class User extends Base
     public function getLastname()
     {
         throw new UnsupportedException("getLastname is not supported for " . get_class($this));
+    }
+
+    /**
+     * returns password
+     * this method has to be overwritten in Pimcore Object
+     *
+     * @throws UnsupportedException
+     * @return string
+     */
+    public function getPassword()
+    {
+        throw new UnsupportedException("getPassword is not supported for " . get_class($this));
     }
 }

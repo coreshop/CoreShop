@@ -33,7 +33,6 @@ use Pimcore\Model\Schedule\Manager\Procedural;
 
 class Plugin extends AbstractPlugin implements PluginInterface
 {
-
     /**
      * @var \Zend_Translate
      */
@@ -52,6 +51,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
         parent::__construct($jsPaths, $cssPaths);
     }
 
+    /**
+     * Init Plugin
+     *
+     * @throws \Zend_EventManager_Exception_InvalidArgumentException
+     */
     public function init()
     {
         \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
@@ -127,6 +131,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
+     * Post add Object
+     *
      * @param \Zend_EventManager_Event $e
      */
     public function postAddObject(\Zend_EventManager_Event $e)
@@ -139,6 +145,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
+     * Post Update Object
+     *
      * @param \Zend_EventManager_Event $e
      */
     public function postUpdateObject(\Zend_EventManager_Event $e)
@@ -151,6 +159,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
+     * Pre Delete Object
+     *
      * @param \Zend_EventManager_Event $e
      */
     public function preDeleteObject(\Zend_EventManager_Event $e)
@@ -206,6 +216,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
+     * Uninstall CoreShop
+     *
      * @return string $statusMessage
      */
     public static function uninstall()
@@ -272,6 +284,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
+     * Check if CoreShop is installed
+     *
      * @return boolean $isInstalled
      */
     public static function isInstalled()
@@ -286,6 +300,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
+     * get translation directory
+     *
      * @return string
      */
     public static function getTranslationFileDirectory()
@@ -294,6 +310,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
+     * get translation file
+     *
      * @param string $language
      * @return string path to the translation file relative to plugin directory
      */
@@ -306,8 +324,9 @@ class Plugin extends AbstractPlugin implements PluginInterface
         }
     }
 
-
     /**
+     * get translate
+     *
      * @return \Zend_Translate
      */
     public static function getTranslate($lang = null)
@@ -385,9 +404,16 @@ class Plugin extends AbstractPlugin implements PluginInterface
      */
     private static $eventManager;
 
+    /**
+     * Default Layout
+     *
+     * @var string
+     */
     private static $layout = "shop";
 
     /**
+     * get event manager
+     *
      * @return \Zend_EventManager_EventManager
      */
     public static function getEventManager()

@@ -18,7 +18,17 @@ use CoreShop\Model\Listing;
 
 class Dao extends Listing\Dao\AbstractDao
 {
-
+    /**
+     * Mysql table name
+     *
+     * @var string
+     */
     protected $tableName = 'coreshop_pricerules';
+
+    /**
+     * Object class name
+     *
+     * @var string
+     */
     protected $modelClass = '\\CoreShop\\Model\\PriceRule';
 }

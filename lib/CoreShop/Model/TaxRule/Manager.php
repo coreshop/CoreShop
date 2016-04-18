@@ -52,6 +52,8 @@ class Manager implements TaxManager
     }
 
     /**
+     * Check if Manager is available for specific address
+     *
      * @param CoreShopUserAddress $address
      * @param string $type
      * @return bool

@@ -346,6 +346,8 @@ class Cart extends Base
     }
 
     /**
+     * Get Payment Provider
+     *
      * @return PaymentPlugin
      */
     public function getPaymentProvider() {
@@ -704,6 +706,8 @@ class Cart extends Base
     }
 
     /**
+     * Prepare to sleep
+     *
      * @return array
      */
     public function __sleep()

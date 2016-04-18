@@ -30,6 +30,8 @@ use Pimcore\Tool;
 class Install
 {
     /**
+     * Admin User
+     *
      * @var User
      */
     protected $_user;
@@ -41,8 +43,7 @@ class Install
      */
     public function executeSQL($fileName)
     {
-        $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/sql/$fileName.sql";
-        ;
+        $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/sql/$fileName.sql";;
 
         $setup = new Setup();
         $setup->insertDump($file);
@@ -728,6 +729,8 @@ class Install
     }
 */
     /**
+     * get admin user
+     *
      * @return User
      */
     protected function _getUser()

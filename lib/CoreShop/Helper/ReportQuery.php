@@ -19,6 +19,8 @@ use Pimcore\Db;
 class ReportQuery
 {
     /**
+     * Extract filters from query params
+     *
      * @param $params
      * @returns string
      */

@@ -21,11 +21,15 @@ use Pimcore\Tool;
 class AbstractModel extends Model\AbstractModel
 {
     /**
+     * Array of all localized field names
+     *
      * @var array
      */
     protected $localizedValues = array();
 
     /**
+     * Localized field Provider
+     *
      * @var LocalizedFields
      */
     protected $localizedFields;
@@ -121,6 +125,8 @@ class AbstractModel extends Model\AbstractModel
 
 
     /**
+     * Get cache key for class
+     *
      * @param $className
      * @param $append string
      * @return string
@@ -131,7 +137,7 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     *
+     * save to database
      */
     public function save()
     {
@@ -196,6 +202,8 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
+     * Prepare object to goto sleep
+     *
      * @return array
      */
     public function __sleep()
@@ -215,6 +223,9 @@ class AbstractModel extends Model\AbstractModel
         return $returnVars;
     }
 
+    /**
+     * Prepare object to wakeup
+     */
     public function __wakeup()
     {
         if ($this->getLocalizedFields()) {

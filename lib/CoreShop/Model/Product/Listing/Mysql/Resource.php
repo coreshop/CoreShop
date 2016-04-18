@@ -19,7 +19,6 @@ use CoreShop\Model\Product\Listing as AbstractList;
 
 class Resource
 {
-
     /**
      * @var \Zend_Db_Adapter_Abstract
      */
@@ -36,13 +35,25 @@ class Resource
     private $lastRecordCount;
 
 
+    /**
+     * Resource constructor.
+     * @param Mysql $model
+     */
     public function __construct(Mysql $model)
     {
         $this->model = $model;
         $this->db = \Pimcore\Db::get();
     }
 
-
+    /**
+     * Load products
+     *
+     * @param $condition
+     * @param null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array
+     */
     public function load($condition, $orderBy = null, $limit = null, $offset = null)
     {
         if ($condition) {
@@ -86,6 +97,14 @@ class Resource
         return $result;
     }
 
+    /**
+     * Load Group by values
+     *
+     * @param $fieldname
+     * @param $condition
+     * @param bool $countValues
+     * @return array
+     */
     public function loadGroupByValues($fieldname, $condition, $countValues = false)
     {
         if ($condition) {
@@ -118,6 +137,14 @@ class Resource
         }
     }
 
+    /**
+     * Load Grouo by Relation values
+     *
+     * @param $fieldname
+     * @param $condition
+     * @param bool $countValues
+     * @return array
+     */
     public function loadGroupByRelationValues($fieldname, $condition, $countValues = false)
     {
         if ($condition) {
@@ -160,6 +187,15 @@ class Resource
         }
     }
 
+    /**
+     * Get Count
+     *
+     * @param $condition
+     * @param null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return string
+     */
     public function getCount($condition, $orderBy = null, $limit = null, $offset = null)
     {
         if ($condition) {
@@ -194,6 +230,12 @@ class Resource
         return $result;
     }
 
+    /**
+     * quoute value
+     *
+     * @param $value
+     * @return mixed
+     */
     public function quote($value)
     {
         return $this->db->quote($value);

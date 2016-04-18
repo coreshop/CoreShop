@@ -20,6 +20,8 @@ use Pimcore\Model\Object\CoreShopOrder;
 class TotalPayed
 {
     /**
+     * compute order total payed
+     *
      * @param $object Concrete
      * @param $context \Pimcore\Model\Object\Data\CalculatedValue
      * @return string

@@ -47,6 +47,8 @@ class TaxRuleGroup extends AbstractModel
     }
 
     /**
+     * get all 
+     *
      * @return TaxRuleGroup[]
      */
     public static function getAll()

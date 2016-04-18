@@ -18,10 +18,16 @@ use CoreShop\Model\Dao\AbstractDao;
 
 class Dao extends AbstractDao
 {
-
+    /**
+     * Mysql table name
+     *
+     * @var string
+     */
     protected $tableName = 'coreshop_currencies';
 
     /**
+     * get Currency by name
+     *
      * @param null $name
      * @throws \Exception
      */

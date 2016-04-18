@@ -28,6 +28,8 @@ class Listing extends Model\Listing\JsonListing
     public $configurations = null;
 
     /**
+     * Get Configurations
+     *
      * @return Configuration[]
      */
     public function getConfigurations()
@@ -40,6 +42,8 @@ class Listing extends Model\Listing\JsonListing
     }
 
     /**
+     * Set Configuration
+     *
      * @param array $configurations
      * @return void
      */

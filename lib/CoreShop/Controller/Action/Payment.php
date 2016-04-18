@@ -27,12 +27,16 @@ use CoreShop\Model\Plugin\Payment as CorePayment;
 
 class Payment extends Action
 {
-
-    /**+
+    /**
+     * Payment Module
+     *
      * @var CorePayment
      */
     protected $module;
 
+    /**
+     * Init Controller
+     */
     public function init()
     {
         parent::init();
@@ -52,6 +56,8 @@ class Payment extends Action
     }
 
     /**
+     * get Payment module
+     *
      * @return CorePayment
      */
     public function getModule()
@@ -63,16 +69,27 @@ class Payment extends Action
         return $this->module;
     }
 
+    /**
+     * Payment Action
+     *
+     * @throws UnsupportedException
+     */
     public function paymentAction()
     {
         throw new UnsupportedException("This Method has to implemented by the Plugin Controller");
     }
 
+    /**
+     * Validate Action
+     */
     public function validateAction()
     {
         $this->view->headTitle($this->view->translate("Payment"));
     }
 
+    /**
+     * Confirmation Action
+     */
     public function confirmationAction()
     {
         $this->view->headTitle($this->view->translate("Payment"));

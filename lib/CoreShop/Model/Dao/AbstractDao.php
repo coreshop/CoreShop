@@ -24,6 +24,8 @@ abstract class AbstractDao extends Dao\AbstractDao
     protected $tableName = '';
 
     /**
+     * Get table name
+     *
      * @return string
      */
     public function getTableName()
@@ -32,6 +34,8 @@ abstract class AbstractDao extends Dao\AbstractDao
     }
 
     /**
+     * Get Object by id
+     *
      * @param null $id
      * @throws \Exception
      */
@@ -53,6 +57,8 @@ abstract class AbstractDao extends Dao\AbstractDao
     }
 
     /**
+     * Get Object by field
+     *
      * @param string $field
      * @param string $value
      * @throws \Exception
@@ -83,6 +89,8 @@ abstract class AbstractDao extends Dao\AbstractDao
     }
 
     /**
+     * Save object
+     *
      * @throws \Zend_Db_Adapter_Exception
      */
     public function save()
@@ -146,7 +154,7 @@ abstract class AbstractDao extends Dao\AbstractDao
     }
 
     /**
-     *
+     * Delete Object
      */
     public function delete()
     {

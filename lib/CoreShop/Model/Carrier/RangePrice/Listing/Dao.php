@@ -19,7 +19,17 @@ use CoreShop\Model;
 
 class Dao extends Listing\Dao\AbstractDao
 {
-
+    /**
+     * Mysql table name
+     *
+     * @var string
+     */
     protected $tableName = 'coreshop_carriers_range_price';
+
+    /**
+     * Object class name
+     * 
+     * @var string
+     */
     protected $modelClass = '\\CoreShop\\Model\\Carrier\\RangePrice';
 }

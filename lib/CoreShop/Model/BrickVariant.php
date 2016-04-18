@@ -79,6 +79,13 @@ class BrickVariant extends Objectbrick
         return $fieldInfo['name'];
     }
 
+    /**
+     * Extract Object Data
+     *
+     * @param $object
+     * @param $language
+     * @return bool|mixed
+     */
     private function extractObjectData($object, $language)
     {
         $data = false;

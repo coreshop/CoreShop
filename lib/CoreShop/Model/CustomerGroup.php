@@ -46,6 +46,11 @@ class CustomerGroup extends AbstractModel
         return parent::getById($id);
     }
 
+    /**
+     * get all customer groups
+     *
+     * @return mixed
+     */
     public static function getAll()
     {
         $list = new CustomerGroup\Listing();

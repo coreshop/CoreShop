@@ -89,6 +89,8 @@ class Invoice
     }
 
     /**
+     * Init Translation for view generation
+     *
      * @return null|\Pimcore\Translate|\Pimcore\Translate\Website
      * @throws \Zend_Exception
      */

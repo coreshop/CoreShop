@@ -21,6 +21,8 @@ class TranslateCountry
     public $view;
 
     /**
+     * set view
+     *
      * @param \Zend_View_Interface $view
      */
     public function setView(\Zend_View_Interface $view)
@@ -29,6 +31,8 @@ class TranslateCountry
     }
 
     /**
+     * translate country
+     *
      * @param $countryCode
      * @return bool
      * @throws \Zend_Exception

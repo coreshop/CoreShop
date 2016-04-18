@@ -55,6 +55,8 @@ class Product extends Model\Document\Tag
     public $subtype;
 
     /**
+     * get type
+     *
      * @see Document\Tag\TagInterface::getType
      * @return string
      */
@@ -64,6 +66,8 @@ class Product extends Model\Document\Tag
     }
 
     /**
+     * get data
+     *
      * @see Document\Tag\TagInterface::getData
      * @return mixed
      */
@@ -94,6 +98,8 @@ class Product extends Model\Document\Tag
     }
 
     /**
+     * frontend
+     *
      * @see Document\Tag\TagInterface::frontend
      * @return string
      */
@@ -107,6 +113,8 @@ class Product extends Model\Document\Tag
     }
 
     /**
+     * set data from resource
+     *
      * @see Document\Tag\TagInterface::setDataFromResource
      * @param mixed $data
      * @return void
@@ -124,6 +132,8 @@ class Product extends Model\Document\Tag
     }
 
     /**
+     * set data from editmode
+     *
      * @see Document\Tag\TagInterface::setDataFromEditmode
      * @param mixed $data
      * @return void
@@ -150,6 +160,8 @@ class Product extends Model\Document\Tag
     }
 
     /**
+     * resolve deps
+     *
      * @return array
      */
     public function resolveDependencies()
@@ -173,8 +185,8 @@ class Product extends Model\Document\Tag
 
     /**
      * get correct type of object as string
-     * @param mixed $data
-     * @return void
+     * @param mixed $object
+     * @return string|boolean
      */
     public function getObjectType($object = null)
     {
@@ -192,6 +204,8 @@ class Product extends Model\Document\Tag
 
 
     /**
+     * is empty
+     *
      * @return boolean
      */
     public function isEmpty()
@@ -205,7 +219,9 @@ class Product extends Model\Document\Tag
     }
 
     /**
-     * @param Document\Webservice\Data\Document\Element $wsElement
+     * get data from webservice import
+     *
+     * @param $wsElement
      * @param null $idMapper
      * @throws \Exception
      */
@@ -258,6 +274,8 @@ class Product extends Model\Document\Tag
     }
 
     /**
+     * check valid
+     *
      * @return bool
      */
     public function checkValidity()
@@ -278,6 +296,8 @@ class Product extends Model\Document\Tag
     }
 
     /**
+     * prepare to sleep
+     *
      * @return array
      */
     public function __sleep()

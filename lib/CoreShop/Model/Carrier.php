@@ -208,8 +208,9 @@ class Carrier extends AbstractModel
     /**
      * Get all available Carriers for cart
      *
-     * @param Zone $zone
      * @param Cart|null $cart
+     * @param Zone $zone
+     *
      * @return Carrier[]
      */
     public static function getCarriersForCart(Cart $cart = null, Zone $zone = null)
@@ -454,8 +455,8 @@ class Carrier extends AbstractModel
     /**
      * Get delivery Price for cart
      *
-     * @param Zone $zone
      * @param Cart $cart
+     * @param Zone $zone
      * @return bool|float
      */
     public function getDeliveryPrice(Cart $cart, Zone $zone = null)

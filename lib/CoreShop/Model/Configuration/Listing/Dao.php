@@ -21,7 +21,7 @@ class Dao extends Pimcore\Model\Dao\PhpArrayTable
 {
 
     /**
-     *
+     * configure
      */
     public function configure()
     {
@@ -48,6 +48,8 @@ class Dao extends Pimcore\Model\Dao\PhpArrayTable
     }
 
     /**
+     * get total count
+     *
      * @return int
      */
     public function getTotalCount()
