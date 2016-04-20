@@ -139,18 +139,6 @@ pimcore.plugin.coreshop.settings = Class.create({
                                 xtype: 'checkbox',
                                 name: 'SYSTEM.BASE.GUESTCHECKOUT',
                                 checked: this.getValue('SYSTEM.BASE.GUESTCHECKOUT')
-                            },
-                            {
-                                fieldLabel: t('coreshop_base_checkvat'),
-                                xtype: 'checkbox',
-                                name: 'SYSTEM.BASE.CHECKVAT',
-                                checked: this.getValue('SYSTEM.BASE.CHECKVAT')
-                            },
-                            {
-                                fieldLabel: t('coreshop_base_disablevatforbasecountry'),
-                                xtype: 'checkbox',
-                                name: 'SYSTEM.BASE.DISABLEVATFORBASECOUNTRY',
-                                checked: this.getValue('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')
                             }
                         ]
                     },
@@ -171,6 +159,43 @@ pimcore.plugin.coreshop.settings = Class.create({
                                 width: 500,
                                 xtype: 'combo',
                                 store: [[0, t('coreshop_stock_deny_order')], [1, t('coreshop_stock_allow_order')]],
+                                triggerAction: 'all',
+                                typeAhead: false,
+                                editable: false,
+                                forceSelection: true,
+                                queryMode: 'local'
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: t('coreshop_tax'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight:true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: { width: 600 },
+                        items : [
+                            {
+                                fieldLabel: t('coreshop_base_checkvat'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.BASE.CHECKVAT',
+                                checked: this.getValue('SYSTEM.BASE.CHECKVAT')
+                            },
+                            {
+                                fieldLabel: t('coreshop_base_disablevatforbasecountry'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.BASE.DISABLEVATFORBASECOUNTRY',
+                                checked: this.getValue('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')
+                            },
+                            {
+                                fieldLabel: t('coreshop_taxation_address'),
+                                name: 'SYSTEM.BASE.TAXATION.ADDRESS',
+                                value: this.getValue('SYSTEM.BASE.TAXATION.ADDRESS') ? this.getValue('SYSTEM.BASE.TAXATION.ADDRESS') : 'shipping',
+                                width: 500,
+                                xtype: 'combo',
+                                store: [['shipping', t('coreshop_taxation_address_shipping')], ['billing', t('coreshop_taxation_address_billing')]],
                                 triggerAction: 'all',
                                 typeAhead: false,
                                 editable: false,

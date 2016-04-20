@@ -407,7 +407,7 @@ class Product extends Base
         if (is_null($address)) {
             $cart = Tool::prepareCart();
 
-            $address = $cart->getCustomerShippingAddress();
+            $address = $cart->getCustomerAddressForTaxation();
 
             if (!$address instanceof Object\Fieldcollection\Data\CoreShopUserAddress) {
                 $address = new Object\Fieldcollection\Data\CoreShopUserAddress();

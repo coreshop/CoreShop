@@ -461,7 +461,7 @@ class Carrier extends AbstractModel
      */
     public function getDeliveryPrice(Cart $cart, Zone $zone = null)
     {
-        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
+        $taxCalculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
         $deliveryPrice = $this->getDeliveryPriceWithoutTax($cart, $zone);
 
         if ($taxCalculator) {
@@ -481,7 +481,7 @@ class Carrier extends AbstractModel
      */
     public function getTaxAmount(Cart $cart, Zone $zone = null)
     {
-        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
+        $taxCalculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
         $deliveryPrice = $this->getDeliveryPriceWithoutTax($cart, $zone);
 
         if ($taxCalculator) {
@@ -500,7 +500,7 @@ class Carrier extends AbstractModel
      */
     public function getTaxRate(Cart $cart)
     {
-        $taxCalculator = $this->getTaxCalculator($cart->getCustomerShippingAddress() ? $cart->getCustomerShippingAddress() : null);
+        $taxCalculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
 
         if ($taxCalculator) {
             return $taxCalculator->getTotalRate();

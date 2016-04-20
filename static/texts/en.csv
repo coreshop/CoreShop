@@ -330,3 +330,7 @@
 "coreshop_currency_automatic_exchange_rates","Automatic Exchange Rates"
 "coreshop_currency_exchange_rate_provider","Exchange Rate Provider"
 "coreshop_currency_exchange_rate_last_update","Last Update"
+"coreshop_tax","Tax"
+"coreshop_taxation_address","Taxation Address"
+"coreshop_taxation_address_shipping","Shipping"
+"coreshop_taxation_address_billing","Billing"

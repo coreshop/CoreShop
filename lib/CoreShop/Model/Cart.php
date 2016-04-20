@@ -645,6 +645,24 @@ class Cart extends Base
     }
 
     /**
+     * get customers taxation address
+     *
+     * @return bool|CoreShopUserAddress
+     */
+    public function getCustomerAddressForTaxation() {
+        $taxationAddress = Configuration::get("SYSTEM.BASE.TAXATION.ADDRESS");
+
+        if(!$taxationAddress) {
+            $taxationAddress = "shipping";
+        }
+
+        if($taxationAddress === "shipping")
+            return $this->getCustomerShippingAddress();
+
+        return $this->getCustomerBillingAddress();
+    }
+
+    /**
      * returns array cart items
      * this method has to be overwritten in Pimcore Object
      *
