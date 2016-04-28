@@ -23,7 +23,7 @@ class Gift extends AbstractAction
 {
 
     /**
-     * @var int
+     * @var Product
      */
     public $gift;
 
@@ -45,7 +45,7 @@ class Gift extends AbstractAction
     }
 
     /**
-     * @param int $gift
+     * @param Product $gift
      */
     public function setGift($gift)
     {

@@ -89,12 +89,9 @@ class Cart extends Base
         }
 
         if( $createNew ) {
-            $cartsFolder = Service::createFolderByPath("/coreshop/carts/" . date("Y/m/d"));
-            
             $cart = CoreShopCart::create();
             $cart->setKey(uniqid());
             $cart->setPublished(true);
-            $cart->setParent($cartsFolder);
         }
 
         if (Tool::getUser() instanceof User) {
@@ -102,6 +99,8 @@ class Cart extends Base
         }
 
         if( $persist ) {
+            $cartsFolder = Service::createFolderByPath("/coreshop/carts/" . date("Y/m/d"));
+            $cart->setParent($cartsFolder);
             $cart->save();
         }
 
@@ -620,7 +619,7 @@ class Cart extends Base
     {
         $this->removePriceRule();
         $this->setPriceRule($priceRule);
-        $this->getPriceRule()->applyRules();
+        $this->getPriceRule()->applyRules($this);
 
         if ($this->getId()) {
             $this->save();

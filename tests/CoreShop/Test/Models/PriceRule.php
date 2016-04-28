@@ -189,7 +189,7 @@ class PriceRule extends Base
 
         $cart->addPriceRule($this->priceRule);
 
-        $this->assertEquals(156, $cart->getTotal());
+        $this->assertEquals(150 + 24, $cart->getTotal());
         $this->assertEquals(Data::$product1->getPrice(), $cart->getDiscount());
     }
 

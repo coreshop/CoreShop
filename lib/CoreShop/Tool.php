@@ -169,7 +169,7 @@ class Tool
      * Prepare Cart
      *
      * @param $resetCart bool create a new cart
-     * @return CoreShopCart|static
+     * @return Cart
      */
     public static function prepareCart($resetCart = false)
     {

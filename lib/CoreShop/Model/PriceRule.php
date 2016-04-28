@@ -247,10 +247,13 @@ class PriceRule extends AbstractModel
 
     /**
      * Applies Rules to Cart
+     * 
+     * @param Cart $cart
      */
-    public function applyRules()
+    public function applyRules(Cart $cart)
     {
-        $cart = Tool::prepareCart();
+        if(is_null($cart))
+            $cart = Tool::prepareCart();
 
         foreach ($this->getActions() as $action) {
             if ($action instanceof PriceRule\Action\AbstractAction) {

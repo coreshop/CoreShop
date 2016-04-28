@@ -247,7 +247,7 @@ class Data
 
     public static function createCart()
     {
-        return CoreShopCart::prepare();
+        return CoreShopCart::prepare(true);
     }
 
     public static function createCartWithProducts()
