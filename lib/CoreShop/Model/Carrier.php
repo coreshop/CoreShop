@@ -488,7 +488,7 @@ class Carrier extends AbstractModel
             return $taxCalculator->getTaxesAmount($deliveryPrice);
         }
 
-        return $deliveryPrice;
+        return 0;
     }
 
     /**

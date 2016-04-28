@@ -182,16 +182,18 @@ class Cart extends Base
         foreach ($this->getItems() as $item) {
             $taxCalculator = $item->getProduct()->getTaxCalculator();
 
-            $taxes = $taxCalculator->getTaxes();
+            if($taxCalculator instanceof TaxCalculator) {
+                $taxes = $taxCalculator->getTaxes();
 
-            foreach($taxes as $tax) {
-                $addTax($tax);
-            }
+                foreach ($taxes as $tax) {
+                    $addTax($tax);
+                }
 
-            $taxesAmount = $taxCalculator->getTaxesAmount($item->getProduct()->getPriceWithoutTax() * $item->getAmount(), true);
+                $taxesAmount = $taxCalculator->getTaxesAmount($item->getProduct()->getPriceWithoutTax() * $item->getAmount(), true);
 
-            foreach($taxesAmount as $id=>$amount) {
-                $usedTaxes[$id]['amount'] += $amount;
+                foreach ($taxesAmount as $id => $amount) {
+                    $usedTaxes[$id]['amount'] += $amount;
+                }
             }
         }
 
