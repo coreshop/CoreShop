@@ -178,12 +178,12 @@ class Tool
         $cart = NULL;
 
         if (!$resetCart) {
-
-            if (isset($cartSession->cartId)) {
+            if (isset($cartSession->cartId) && $cartSession->cartId !== 0) {
                 $cart = CoreShopCart::getById($cartSession->cartId);
             } else if(isset($cartSession->cartObj)) {
                 if ($cartSession->cartObj instanceof CoreShopCart) {
                     $cart = $cartSession->cartObj;
+
                     if( $cart->getId() !== 0) {
                         unset( $cartSession->cartObj );
                         $cartSession->cartId = $cart->getId();

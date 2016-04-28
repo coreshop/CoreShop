@@ -72,7 +72,7 @@ class Cart extends Base
      * Prepare a Cart
      * @param bool $persist
      *
-     * @return \Pimcore\Model\Object\CoreShopCart
+     * @return CoreShopCart
      * @throws \Exception
      */
     public static function prepare( $persist = FALSE )
@@ -89,7 +89,6 @@ class Cart extends Base
         }
 
         if( $createNew ) {
-
             $cart = CoreShopCart::create();
             $cart->setKey(uniqid());
             $cart->setPublished(true);
