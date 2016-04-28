@@ -70,24 +70,40 @@ class Cart extends Base
 
     /**
      * Prepare a Cart
+     * @param bool $persist
      *
-     * @return CoreShopCart
+     * @return \Pimcore\Model\Object\CoreShopCart
      * @throws \Exception
      */
-    public static function prepare()
+    public static function prepare( $persist = FALSE )
     {
-        $cartsFolder = Service::createFolderByPath("/coreshop/carts/" . date("Y/m/d"));
-        
-        $cart = CoreShopCart::create();
-        $cart->setKey(uniqid());
-        $cart->setParent($cartsFolder);
-        $cart->setPublished(true);
+        $createNew = TRUE;
+
+        $cartSession = Tool::getSession();
+
+        if( $cartSession->cartObj) {
+            if ($cartSession->cartObj instanceof CoreShopCart) {
+                $createNew = FALSE;
+                $cart = $cartSession->cartObj;
+            }
+        }
+
+        if( $createNew ) {
+
+            $cart = CoreShopCart::create();
+            $cart->setKey(uniqid());
+            $cart->setPublished(true);
+        }
 
         if (Tool::getUser() instanceof User) {
             $cart->setUser(Tool::getUser());
         }
 
-        $cart->save();
+        if( $persist ) {
+            $cartsFolder = Service::createFolderByPath("/coreshop/carts/" . date("Y/m/d"));
+            $cart->setParent($cartsFolder);
+            $cart->save();
+        }
 
         return $cart;
     }
@@ -549,6 +565,7 @@ class Cart extends Base
      */
     public function addItem(Product $product, $amount = 1)
     {
+        $this->prepare(TRUE);
         return $this->updateQuantity($product, $amount, true);
     }
 

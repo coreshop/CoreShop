@@ -84,11 +84,6 @@ class Action extends \Website\Controller\Action
     {
         $this->cart = $this->view->cart = Tool::prepareCart();
 
-        if ($this->session->user instanceof CoreShopUser && !$this->cart->getUser() instanceof CoreShopUser) {
-            $this->cart->setUser($this->session->user);
-            $this->cart->save();
-        }
-
         PriceRule::autoRemoveFromCart($this->cart);
         PriceRule::autoAddToCart($this->cart);
     }

@@ -169,25 +169,36 @@ class Tool
      * Prepare Cart
      *
      * @param $resetCart bool create a new cart
-     * 
-     * @return Cart
+     * @return CoreShopCart|static
      */
     public static function prepareCart($resetCart = false)
     {
         $cartSession = self::getSession();
 
-        if (!$resetCart) {
-            if ($cartSession->cartId) {
-                $cart = CoreShopCart::getById($cartSession->cartId);
+        $cart = NULL;
 
-                if ($cart instanceof CoreShopCart) {
-                    return $cart;
+        if (!$resetCart) {
+
+            if (isset($cartSession->cartId)) {
+                $cart = CoreShopCart::getById($cartSession->cartId);
+            } else if(isset($cartSession->cartObj)) {
+                if ($cartSession->cartObj instanceof CoreShopCart) {
+                    $cart = $cartSession->cartObj;
+                    if( $cart->getId() !== 0) {
+                        unset( $cartSession->cartObj );
+                        $cartSession->cartId = $cart->getId();
+                    }
+
                 }
             }
         }
 
+        if ($cart instanceof CoreShopCart) {
+            return $cart;
+        }
+
         $cart = CoreShopCart::prepare();
-        $cartSession->cartId = $cart->getId();
+        $cartSession->cartObj = $cart;
 
         return $cart;
     }
