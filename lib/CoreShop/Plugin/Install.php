@@ -77,7 +77,7 @@ class Install
             }
 
             $class->setName($className);
-            $class->setUserOwner($this->_getUser()->getId());
+            $class->setUserOwner($this->_getUserId());
 
             $result = Plugin::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function ($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
@@ -248,8 +248,8 @@ class Install
             $root = Folder::create(array(
                 'o_parentId' => 1,
                 'o_creationDate' => time(),
-                'o_userOwner' => $this->_getUser()->getId(),
-                'o_userModification' => $this->_getUser()->getId(),
+                'o_userOwner' => $this->_getUserId(),
+                'o_userModification' => $this->_getUserId(),
                 'o_key' => 'coreshop',
                 'o_published' => true,
             ));
@@ -259,8 +259,8 @@ class Install
             Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
-                'o_userOwner' => $this->_getUser()->getId(),
-                'o_userModification' => $this->_getUser()->getId(),
+                'o_userOwner' => $this->_getUserId(),
+                'o_userModification' => $this->_getUserId(),
                 'o_key' => 'products',
                 'o_published' => true,
             ));
@@ -270,8 +270,8 @@ class Install
             Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
-                'o_userOwner' => $this->_getUser()->getId(),
-                'o_userModification' => $this->_getUser()->getId(),
+                'o_userOwner' => $this->_getUserId(),
+                'o_userModification' => $this->_getUserId(),
                 'o_key' => 'categories',
                 'o_published' => true,
             ));
@@ -281,8 +281,8 @@ class Install
             Folder::create(array(
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
-                'o_userOwner' => $this->_getUser()->getId(),
-                'o_userModification' => $this->_getUser()->getId(),
+                'o_userOwner' => $this->_getUserId(),
+                'o_userModification' => $this->_getUserId(),
                 'o_key' => 'carts',
                 'o_published' => true,
             ));
@@ -729,15 +729,15 @@ class Install
     }
 */
     /**
-     * get admin user
-     *
-     * @return User
+     * @return \Int User Id
      */
-    protected function _getUser()
+    protected function _getUserId()
     {
-        if (!$this->_user) {
-            $this->_user = \Zend_Registry::get('pimcore_admin_user');
+        $userId = 0;
+        $user = Tool\Admin::getCurrentUser();
+        if ($user) {
+            $userId = $user->getId();
         }
-        return $this->_user;
+        return $userId;
     }
 }
