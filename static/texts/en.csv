@@ -334,3 +334,8 @@
 "coreshop_taxation_address","Taxation Address"
 "coreshop_taxation_address_shipping","Shipping"
 "coreshop_taxation_address_billing","Billing"
+"coreshop_cart_activate_auto_cleanup","Activate automatic cart cleanup"
+"coreshop_cart_activate_auto_cleanup_settings","Automatic cart cleanup settings"
+"coreshop_cart_cleanup_older_than_days","Remove carts older than (in days)"
+"coreshop_cart_cleanup_delete_anonymous_carts","Remove anonymous carts"
+"coreshop_cart_cleanup_delete_user_carts","Remove user carts"

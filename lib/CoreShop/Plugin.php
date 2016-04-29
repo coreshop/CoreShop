@@ -108,6 +108,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
             if($manager instanceof Procedural) {
                 if(Configuration::get("SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES"))
                     $manager->registerJob(new Job("coreshop_exchangerates", "\\CoreShop\\Model\\Currency\\ExchangeRates", "maintenance"));
+                if(Configuration::get("SYSTEM.CART.AUTO_CLEANUP"))
+                    $manager->registerJob(new Job("coreshop_cart_cleanup", "\\CoreShop\\Model\\Cart", "maintenance"));
             }
         });
 

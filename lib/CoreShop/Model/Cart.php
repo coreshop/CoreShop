@@ -685,7 +685,7 @@ class Cart extends Base
      * maintenance job
      */
     public static function maintenance() {
-        $lastMaintenance = Configuration::get("SYSTEM.CART.AUTO_REMOVE");
+        $lastMaintenance = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.LAST_RUN");
 
         if(!$lastMaintenance)
             $lastMaintenance = 0;
@@ -694,55 +694,42 @@ class Cart extends Base
 
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
         if($timeDiff > 24 * 60 * 60) {
-            
-        }
 
-        Configuration::set("SYSTEM.CART.AUTO_REMOVE", time());
-    }
+            \Logger::log('CoreShop cart cleanup: start');
 
-    /**
-     * Deletes Carts older than x days
-     *
-     * @param int $olderThanDays
-     * @param bool $deleteAnonymousCarts
-     * @param bool $deleteUserCarts
-     *
-     * @throws Exception
-     */
-    public static function deleteCarts($olderThanDays = 7, $deleteAnonymousCarts = true, $deleteUserCarts = false) {
-        $list = new CoreShopCart\Listing();
+            $cleanUpParams = array();
 
-        $conditions = array();
-        $params = array();
+            $days = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.OLDER_THAN_DAYS");
+            $anonCart = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.DELETE_ANONYMOUS");
+            $userCart = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.DELETE_USER");
 
-        $daysTimestamp = new \Pimcore\Date();
-        $daysTimestamp->subDay($olderThanDays);
+            if(!is_null($days)) {
+                $cleanUpParams["olderThanDays"] = (int) $days;
+            }
+            if($anonCart) {
+                $cleanUpParams["deleteAnonymousCart"] = TRUE;
+            }
+            if($userCart) {
+                $cleanUpParams["deleteUserCart"] = TRUE;
+            }
 
-        $conditions[] = "o_creationDate < ?";
-        $params[] = $daysTimestamp->getTimestamp();
+            $cleanUpCart = new CleanUpCart();
+            $cleanUpCart->setOptions( $cleanUpParams );
 
-        if($deleteAnonymousCarts && $deleteUserCarts) {
+            if( !$cleanUpCart->hasErrors() ) {
+                $elements = $cleanUpCart->getCartElements();
 
-        }
-        else if($deleteAnonymousCarts) {
-            $conditions[] = "user__id IS NULL";
-        }
-        else if($deleteUserCarts) {
-            $conditions[] = "user__id IS NOT NULL";
-        }
-        else {
-            throw new Exception("Either Anonymous, User or both types needs to be set");
-        }
+                if(count($elements) > 0) {
+                    foreach ($elements as $cart) {
+                        $cleanUpCart->deleteCart( $cart );
+                        \Logger::log("CoreShop cart cleanup: remove cart (" . $cart->getId() . ")");
+                    }
+                }
 
-        $list->setCondition(implode(" AND ", $conditions), $params);
-
-        $carts = $list->load();
-
-        if(count($carts) > 0) {
-            foreach($carts as $cart) {
-                $cart->delete();
+                Configuration::set("SYSTEM.CART.AUTO_CLEANUP.LAST_RUN", time());
             }
         }
+
     }
 
     /**

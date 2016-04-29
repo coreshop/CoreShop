@@ -502,6 +502,69 @@ pimcore.plugin.coreshop.settings = Class.create({
 
                             }
                         ]
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: t('coreshop_cart'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight: true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: { width: 600 },
+                        items: [
+                            {
+                                fieldLabel: t('coreshop_cart_activate_auto_cleanup'),
+                                name: 'SYSTEM.CART.AUTO_CLEANUP',
+                                xtype: 'checkbox',
+                                checked: this.getValue('SYSTEM.CART.AUTO_CLEANUP'),
+                                listeners:{
+                                    change: function(checkbox, checked) {
+                                        if (checked) {
+                                            Ext.getCmp('coreshop_cart_activate_auto_cleanup_settings').show();
+                                        } else {
+                                            Ext.getCmp('coreshop_cart_activate_auto_cleanup_settings').hide();
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'fieldset',
+                                title: t('coreshop_cart_activate_auto_cleanup_settings'),
+                                id: 'coreshop_cart_activate_auto_cleanup_settings',
+                                collapsible: false,
+                                collapsed: false,
+                                autoHeight: true,
+                                hidden: !this.getValue('SYSTEM.CART.AUTO_CLEANUP'),
+                                labelWidth: 250,
+                                defaultType: 'textfield',
+                                items: [
+                                    {
+                                        fieldLabel: t('coreshop_cart_cleanup_older_than_days'),
+                                        name: 'SYSTEM.CART.AUTO_CLEANUP.OLDER_THAN_DAYS',
+                                        xtype: 'numberfield',
+                                        minValue: 0,
+                                        value: this.getValue('SYSTEM.CART.AUTO_CLEANUP.OLDER_THAN_DAYS')
+
+                                    },
+                                    {
+                                        fieldLabel: t('coreshop_cart_cleanup_delete_anonymous_carts'),
+                                        name: 'SYSTEM.CART.AUTO_CLEANUP.DELETE_ANONYMOUS',
+                                        xtype: 'checkbox',
+                                        checked: this.getValue('SYSTEM.CART.AUTO_CLEANUP.DELETE_ANONYMOUS')
+
+                                    },
+                                    {
+                                        fieldLabel: t('coreshop_cart_cleanup_delete_user_carts'),
+                                        name: 'SYSTEM.CART.AUTO_CLEANUP.DELETE_USER',
+                                        xtype: 'checkbox',
+                                        checked: this.getValue('SYSTEM.CART.AUTO_CLEANUP.DELETE_USER')
+
+                                    }
+                                ]
+                            }
+
+                        ]
                     }
                 ]
             });

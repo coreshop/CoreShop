@@ -16,15 +16,14 @@ namespace CoreShop\Console\Command;
 
 use Pimcore\Console\AbstractCommand;
 use Pimcore\Model\Object\CoreShopCart;
-use Pimcore\Tool\Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Pimcore\Tool\Admin;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use CoreShop\Update;
+
+use CoreShop\Maintenance\CleanUpCart;
 
 class DeleteCartsCommand extends AbstractCommand
 {
@@ -34,8 +33,8 @@ class DeleteCartsCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('coreshop:delete-carts')
-            ->setDescription('Delete Carts')
+            ->setName('coreshop:cleanup:carts')
+            ->setDescription('Cleanup Carts')
             ->addOption(
                 'days', 'days',
                 InputOption::VALUE_OPTIONAL,
@@ -77,51 +76,56 @@ class DeleteCartsCommand extends AbstractCommand
             $output->writeLn("==========================================");
         }
 
-        $conditions = array();
-        $params = array();
+        $cleanUpParams = array();
 
-        $list = new CoreShopCart\Listing();
+        $days = $input->getOption("days");
 
-        if($input->getOption("days")) {
-            $daysTimestamp = new \Pimcore\Date();
-            $daysTimestamp->addDay(-1 * $input->getOption("days"));
-
-            $conditions[] = "o_creationDate < ?";
-            $params[] = $daysTimestamp->getTimestamp();
+        if(isset($days)) {
+            $cleanUpParams["olderThanDays"] = (int) $input->getOption("days");
         }
 
         if($input->getOption("anonymous")) {
-            $conditions[] = "user__id IS NULL";
+            $cleanUpParams["deleteAnonymousCart"] = TRUE;
         }
-        else if($input->getOption("user")) {
-            $conditions[] = "user__id IS NOT NULL";
+        if($input->getOption("user")) {
+            $cleanUpParams["deleteUserCart"] = TRUE;
         }
 
-        $list->setCondition(implode(" AND ", $conditions), $params);
+        $cleanUpCart = new CleanUpCart();
+        $cleanUpCart->setOptions( $cleanUpParams );
 
-        $carts = $list->load();
+        if( $cleanUpCart->hasErrors() )
+        {
+            foreach( $cleanUpCart->getErrors() as $error)
+            {
+                $this->output->writeln("<error>" . $error. "</error>");
+            }
 
-        if(count($carts) > 0) {
-            $output->writeln("found " . count($carts) . " carts to delete");
+            return FALSE;
+        }
 
-            $progress = new ProgressBar($output, count($carts));
+        $elements = $cleanUpCart->getCartElements();
+
+        if(count($elements) > 0) {
+            $output->writeln("found " . count($elements) . " carts to delete.");
+
+            $progress = new ProgressBar($output, count($elements));
             $progress->start();
 
-            foreach ($carts as $cart) {
+            foreach ($elements as $cart) {
                 $progress->advance();
 
                 if (!$dryRun) {
-                    $cart->delete();
+                    $cleanUpCart->deleteCart( $cart );
                 }
             }
 
             $progress->finish();
+            $output->writeLn("\nCleanUp finished.");
         }
         else {
-            $output->writeln("no carts found");
+            $output->writeln("No carts found.");
         }
 
-        $output->writeLn("");
-        $output->writeLn("finished");
     }
 }

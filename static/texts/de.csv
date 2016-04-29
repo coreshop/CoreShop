@@ -333,3 +333,8 @@
 "coreshop_taxation_address","Adresse für Besteuerung"
 "coreshop_taxation_address_shipping","Lieferadresse"
 "coreshop_taxation_address_billing","Rechnungsadresse"
+"coreshop_cart_activate_auto_cleanup","Automatisches Bereinigen der Warenkörbe aktivieren"
+"coreshop_cart_activate_auto_cleanup_settings","Bereinigungs-Einstellungen"
+"coreshop_cart_cleanup_older_than_days","Warenkörbe, die älter als (x) Tage sind, löschen"
+"coreshop_cart_cleanup_delete_anonymous_carts","Lösche anonyme Warenkörbe"
+"coreshop_cart_cleanup_delete_user_carts","Lösche Benutzer-Warenkörbe"
