@@ -487,6 +487,8 @@ VALUES
   ('coreshop_permission_plugins'),
   ('coreshop_permission_countries'),
   ('coreshop_permission_filters'),
+  ('coreshop_permission_states'),
+  ('coreshop_permission_manufacturers'),
   ('coreshop_permission_indexes');
 
 DROP TABLE IF EXISTS `coreshop_product_specificprice`;
@@ -522,11 +524,7 @@ CREATE TABLE `coreshop_manufacturers` (
   `image` int(11) NULL
 );
 
-INSERT INTO `users_permission_definitions` (`key`)
-VALUES
-  ('coreshop_permission_manufacturers');
-
-  DROP TABLE IF EXISTS `coreshop_states`;
+DROP TABLE IF EXISTS `coreshop_states`;
 CREATE TABLE `coreshop_states` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -536,18 +534,10 @@ CREATE TABLE `coreshop_states` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-INSERT INTO `users_permission_definitions` (`key`)
-VALUES
-  ('coreshop_permission_states');
-
-  DROP TABLE IF EXISTS `coreshop_manufacturers`;
+DROP TABLE IF EXISTS `coreshop_manufacturers`;
 CREATE TABLE `coreshop_manufacturers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `image` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO `users_permission_definitions` (`key`)
-VALUES
-  ('coreshop_permission_manufacturers');
