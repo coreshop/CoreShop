@@ -62,24 +62,34 @@ class CleanUpCart {
         $list = new CoreShopCart\Listing();
 
         $conditions = array();
+        $groupCondition = array();
         $params = array();
 
         $daysTimestamp = new \Pimcore\Date();
-
         $daysTimestamp->subDay(self::$params["olderThanDays"]);
 
         $conditions[] = "o_creationDate < ?";
         $params[] = $daysTimestamp->getTimestamp();
 
         if(self::$params["deleteAnonymousCart"]) {
-            $conditions[] = "user__id IS NULL";
+            $groupCondition[] = "user__id IS NULL";
         }
         if(self::$params["deleteUserCart"]) {
-            $conditions[] = "user__id IS NOT NULL";
+            $groupCondition[] = "user__id IS NOT NULL";
         }
 
-        $list->setCondition(implode(" AND ", $conditions), $params);
+        $bind = " AND ";
+        $groupBind = " AND ";
 
+        $sql = implode($bind, $conditions);
+
+        if( count( $groupCondition ) > 1) {
+            $groupBind = " OR ";
+        }
+
+        $sql .= " AND (" . implode( $groupBind, $groupCondition ) . ") ";
+
+        $list->setCondition( $sql, $params);
         $carts = $list->load();
 
         return $carts;

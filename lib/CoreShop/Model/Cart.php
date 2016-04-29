@@ -25,6 +25,8 @@ use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 use Pimcore\Model\Object\Service;
 
+use CoreShop\Maintenance\CleanUpCart;
+
 class Cart extends Base
 {
 
@@ -685,17 +687,19 @@ class Cart extends Base
      * maintenance job
      */
     public static function maintenance() {
+
         $lastMaintenance = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.LAST_RUN");
 
-        if(!$lastMaintenance)
-            $lastMaintenance = 0;
+        //initial.
+        if(is_null($lastMaintenance)) {
+            $lastMaintenance = time() - 90000; //t-25h
+        }
 
         $timeDiff = time() - $lastMaintenance;
 
+        \Logger::log("CoreShop cart cleanup: start");
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
         if($timeDiff > 24 * 60 * 60) {
-
-            \Logger::log('CoreShop cart cleanup: start');
 
             $cleanUpParams = array();
 
@@ -713,21 +717,27 @@ class Cart extends Base
                 $cleanUpParams["deleteUserCart"] = TRUE;
             }
 
-            $cleanUpCart = new CleanUpCart();
-            $cleanUpCart->setOptions( $cleanUpParams );
+            try {
+                $cleanUpCart = new CleanUpCart();
+                $cleanUpCart->setOptions( $cleanUpParams );
 
-            if( !$cleanUpCart->hasErrors() ) {
-                $elements = $cleanUpCart->getCartElements();
+                if( !$cleanUpCart->hasErrors() ) {
+                    $elements = $cleanUpCart->getCartElements();
 
-                if(count($elements) > 0) {
-                    foreach ($elements as $cart) {
-                        $cleanUpCart->deleteCart( $cart );
-                        \Logger::log("CoreShop cart cleanup: remove cart (" . $cart->getId() . ")");
+                    if(count($elements) > 0) {
+                        foreach ($elements as $cart) {
+                            $cleanUpCart->deleteCart( $cart );
+                            \Logger::log("CoreShop cart cleanup: remove cart (" . $cart->getId() . ")");
+                        }
                     }
-                }
 
-                Configuration::set("SYSTEM.CART.AUTO_CLEANUP.LAST_RUN", time());
+                    Configuration::set("SYSTEM.CART.AUTO_CLEANUP.LAST_RUN", time());
+                }
+            } catch( \Exception $e )
+            {
+                \Logger::log("CoreShop cart cleanup error: " . $e->getMessage());
             }
+
         }
 
     }

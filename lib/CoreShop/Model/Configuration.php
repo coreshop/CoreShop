@@ -109,8 +109,7 @@ class Configuration extends AbstractModel
         try {
             $configurationEntry->getDao()->getByKey($key);
         } catch (\Exception $e) {
-            \Logger::warn($e);
-            return null;
+            return null; //return silently.
         }
 
         // to have a singleton in a way. like all instances of Element\ElementInterface do also, like Object\AbstractObject
