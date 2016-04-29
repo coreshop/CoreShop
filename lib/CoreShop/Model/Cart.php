@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
 use CoreShop\Plugin;
@@ -678,6 +679,70 @@ class Cart extends Base
             return $this->getCustomerShippingAddress();
 
         return $this->getCustomerBillingAddress();
+    }
+
+    /**
+     * maintenance job
+     */
+    public static function maintenance() {
+        $lastMaintenance = Configuration::get("SYSTEM.CART.AUTO_REMOVE");
+
+        if(!$lastMaintenance)
+            $lastMaintenance = 0;
+
+        $timeDiff = time() - $lastMaintenance;
+
+        //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
+        if($timeDiff > 24 * 60 * 60) {
+            
+        }
+
+        Configuration::set("SYSTEM.CART.AUTO_REMOVE", time());
+    }
+
+    /**
+     * Deletes Carts older than x days
+     *
+     * @param int $olderThanDays
+     * @param bool $deleteAnonymousCarts
+     * @param bool $deleteUserCarts
+     *
+     * @throws Exception
+     */
+    public static function deleteCarts($olderThanDays = 7, $deleteAnonymousCarts = true, $deleteUserCarts = false) {
+        $list = new CoreShopCart\Listing();
+
+        $conditions = array();
+        $params = array();
+
+        $daysTimestamp = new \Pimcore\Date();
+        $daysTimestamp->subDay($olderThanDays);
+
+        $conditions[] = "o_creationDate < ?";
+        $params[] = $daysTimestamp->getTimestamp();
+
+        if($deleteAnonymousCarts && $deleteUserCarts) {
+
+        }
+        else if($deleteAnonymousCarts) {
+            $conditions[] = "user__id IS NULL";
+        }
+        else if($deleteUserCarts) {
+            $conditions[] = "user__id IS NOT NULL";
+        }
+        else {
+            throw new Exception("Either Anonymous, User or both types needs to be set");
+        }
+
+        $list->setCondition(implode(" AND ", $conditions), $params);
+
+        $carts = $list->load();
+
+        if(count($carts) > 0) {
+            foreach($carts as $cart) {
+                $cart->delete();
+            }
+        }
     }
 
     /**
