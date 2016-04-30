@@ -4,6 +4,7 @@
 "coreshop_install_failed","CoreShop konnte nicht installiert werden. Bitte überprüfen Sie die Logs."
 "coreshop_uninstalled_successfully","CoreShop wurde erfolgreich installiert. Bitte laden Sie Pimcore neu!"
 "coreshop_uninstall_failed","CoreShop konnte nicht deinstalliert werden. Bitte überprüfen Sie die Logs."
+"corehop_latest_version_already_installed","Es ist bereits die aktuellste Version von CoreShop installiert."
 "coreshop_save_success","Element wurde erfolgreich gespeichert."
 "coreshop_save_error","Fehler beim speichern des Elements."
 "coreshop_loading", "CoreShop lädt"

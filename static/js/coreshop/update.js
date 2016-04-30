@@ -111,7 +111,7 @@ pimcore.plugin.coreshop.update = Class.create({
         if (availableUpdates.revisions.length < 1 && availableUpdates.releases.length < 1) {
 
             var panel = new Ext.Panel({
-                html: t('latest_pimcore_version_already_installed'),
+                html: t('corehop_latest_version_already_installed'),
                 bodyStyle: 'padding: 20px;'
             });
 
@@ -181,6 +181,12 @@ pimcore.plugin.coreshop.update = Class.create({
                         idProperty: 'number'
                     }
                 },
+                sorters: [
+                    {
+                        property : 'number',
+                        direction: 'DESC'
+                    }
+                ],
                 autoDestroy: true,
                 data: availableUpdates,
                 fields: ['number', 'timestamp', 'number']
@@ -248,15 +254,113 @@ pimcore.plugin.coreshop.update = Class.create({
         pimcore.helpers.activateMaintenance();
 
         Ext.Ajax.request({
-            url: '/plugin/CoreShop/admin_update/get-jobs',
-            success: this.prepareJobs.bind(this),
+            url: '/plugin/CoreShop/admin_update/get-packages',
+            success: this.preparePackages.bind(this),
             params: { toRevision: this.updateId }
         });
     },
 
+    preparePackages: function (response)  {
+        this.packages = Ext.decode(response.responseText);
+        this.startParallelDownloadPackages();
+    },
+
+    startParallelDownloadPackages: function () {
+
+        this.progressBar = new Ext.ProgressBar({
+            text: t('initializing')
+        });
+
+        this.window.removeAll();
+        this.window.add(new Ext.Panel({
+            title: 'Liveupdate',
+            bodyStyle: 'padding: 20px;',
+            items: [{
+                border:false,
+                html: '<b>Downloading packages, please wait ...<br />',
+                style: 'padding: 0 0 20px 0;'
+            }, this.progressBar]
+        }));
+        this.window.updateLayout();
+
+        this.parallelJobsRunning = 0;
+        this.parallelJobsFinished = 0;
+        this.parallelJobsStarted = 0;
+        this.parallelJobsTotal = this.packages.parallel.length;
+
+        this.parallelJobsInterval = window.setInterval(function () {
+
+            var maxConcurrentJobs = 1;
+
+            if (this.parallelJobsFinished == this.parallelJobsTotal) {
+                clearInterval(this.parallelJobsInterval);
+                this.packages = null;
+
+                Ext.Ajax.request({
+                    url: '/plugin/CoreShop/admin_update/get-jobs',
+                    success: this.prepareJobs.bind(this),
+                    params: { toRevision: this.updateId }
+                });
+
+                return;
+            }
+
+            if (this.parallelJobsRunning < maxConcurrentJobs && this.parallelJobsStarted < this.parallelJobsTotal) {
+
+                this.parallelJobsRunning++;
+
+                Ext.Ajax.request({
+                    url: '/plugin/CoreShop/admin_update/job-parallel',
+                    success: function (response) {
+
+                        try {
+                            response = Ext.decode(response.responseText);
+                            if (!response.success) {
+                                // if the download fails, stop all activity
+                                throw response;
+                            }
+                        } catch (e) {
+                            clearInterval(this.parallelJobsInterval);
+                            if (typeof response.responseText != 'undefined' && !empty(response.responseText)) {
+                                response = response.responseText;
+                            }
+
+                            this.showErrorMessage('Package download fails, see debug.log for more details.<br /><br />'
+                            + 'Error-Message:<br /><hr />' + this.formatError(response));
+                        }
+
+                        this.parallelJobsFinished++;
+                        this.parallelJobsRunning -= 1;
+
+                        // update progress bar
+                        var status = this.parallelJobsFinished / this.parallelJobsTotal;
+                        var percent = Math.ceil(status * 100);
+
+                        try {
+                            this.progressBar.updateProgress(status, percent + '%');
+                        } catch (e2) {}
+
+                    }.bind(this),
+                    failure: function (response) {
+                        clearInterval(this.parallelJobsInterval);
+                        if (typeof response.responseText != 'undefined' && !empty(response.responseText)) {
+                            response = response.responseText;
+                        }
+
+                        this.showErrorMessage('Package download fails, see debug.log for more details.<br /><hr />'
+                        + this.formatError(response));
+                    }.bind(this),
+                    params: this.packages.parallel[this.parallelJobsStarted]
+                });
+
+                this.parallelJobsStarted++;
+            }
+        }.bind(this), 50);
+    },
+
+
     prepareJobs: function (response)  {
         this.jobs = Ext.decode(response.responseText);
-
         this.startParallelJobs();
     },
 
@@ -272,7 +376,7 @@ pimcore.plugin.coreshop.update = Class.create({
             bodyStyle: 'padding: 20px;',
             items: [{
                 border:false,
-                html: '<b>Downloading data, please wait ...<br />',
+                html: '<b>arranging data, please wait ...<br />',
                 style: 'padding: 0 0 20px 0;'
             }, this.progressBar]
         }));
@@ -314,7 +418,7 @@ pimcore.plugin.coreshop.update = Class.create({
                                 response = response.responseText;
                             }
 
-                            this.showErrorMessage('Download fails, see debug.log for more details.<br /><br />'
+                            this.showErrorMessage('setup data fails, see debug.log for more details.<br /><br />'
                                 + 'Error-Message:<br /><hr />' + this.formatError(response));
                         }
 
@@ -336,7 +440,7 @@ pimcore.plugin.coreshop.update = Class.create({
                             response = response.responseText;
                         }
 
-                        this.showErrorMessage('Download fails, see debug.log for more details.<br /><hr />'
+                        this.showErrorMessage('setup data, see debug.log for more details.<br /><hr />'
                             + this.formatError(response));
                     }.bind(this),
                     params: this.jobs.parallel[this.parallelJobsStarted]
