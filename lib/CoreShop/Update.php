@@ -147,8 +147,12 @@ class Update
             $preUpdateScript = self::getScriptForBuild($build['number'], "preupdate");
             $postUpdateScript = self::getScriptForBuild($build['number'], "postupdate");
 
-
             foreach ($changedFiles as $download) {
+
+                if( empty( $download ) ) {
+                    continue;
+                }
+
                 $jobs["parallel"][] = array(
                     "type" => "arrange",
                     "revision" => $buildNumber,
