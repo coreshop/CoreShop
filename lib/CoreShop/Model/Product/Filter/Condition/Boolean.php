@@ -55,11 +55,39 @@ class Boolean extends AbstractCondition
      */
     public function render(Filter $filter, Listing $list, $currentFilter)
     {
+        $rawValues = array();
+        $currentValues = $currentFilter[\Pimcore\File::getValidFilename($this->getLabel())];
+
+        foreach($this->getField() as $field)
+        {
+            $fieldRawValues = $list->getGroupByValues($field, TRUE);
+
+            if (!is_array($fieldRawValues) || !isset($currentValues[ $field ])) {
+                continue;
+            }
+
+            foreach($fieldRawValues as $fieldRawValue) {
+
+                $dbVal = (int) $fieldRawValue["value"];
+
+                if( $dbVal === 1) {
+
+                    $rawValues[] = array(
+                        'value' => $field,
+                        'count' => $fieldRawValue['count']
+                    );
+                    break;
+                }
+            }
+
+        }
+
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
         return $this->getView()->partial($script, array(
             "label" => $this->getLabel(),
-            "currentValues" => $currentFilter[\Pimcore\File::getValidFilename($this->getLabel())],
+            "currentValues" => $currentValues,
+            "values" => $rawValues,
             "fieldname" => $this->getField()
         ));
     }
