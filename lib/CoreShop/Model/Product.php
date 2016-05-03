@@ -15,6 +15,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Model\Product\SpecificPrice;
+use CoreShop\Model\User\Address;
 use Pimcore\Cache;
 use Pimcore\Model\Object;
 use Pimcore\View\Helper\Url;
@@ -399,18 +400,18 @@ class Product extends Base
     /**
      * get TaxCalculator
      *
-     * @param Object\Fieldcollection\Data\CoreShopUserAddress $address
+     * @param Address $address
      * @return bool|TaxCalculator
      */
-    public function getTaxCalculator(Object\Fieldcollection\Data\CoreShopUserAddress $address = null)
+    public function getTaxCalculator(Address $address = null)
     {
         if (is_null($address)) {
             $cart = Tool::prepareCart();
 
             $address = $cart->getCustomerAddressForTaxation();
 
-            if (!$address instanceof Object\Fieldcollection\Data\CoreShopUserAddress) {
-                $address = new Object\Fieldcollection\Data\CoreShopUserAddress();
+            if (!$address instanceof Address) {
+                $address = Address::create();
                 $address->setCountry(Tool::getCountry());
             }
         }

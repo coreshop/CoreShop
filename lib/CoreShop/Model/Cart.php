@@ -17,12 +17,12 @@ namespace CoreShop\Model;
 use CoreShop\Exception;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
+use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\PriceRule;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
-use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 use Pimcore\Model\Object\Service;
 
 use CoreShop\Maintenance\CleanUpCart;
@@ -632,7 +632,7 @@ class Cart extends Base
     /**
      * Returns Customers shipping address
      *
-     * @return CoreShopUserAddress|bool
+     * @return Address|bool
      */
     public function getCustomerShippingAddress()
     {
@@ -650,7 +650,7 @@ class Cart extends Base
     /**
      * Returns Customers billing address
      *
-     * @return CoreShopUserAddress|bool
+     * @return Address|bool
      */
     public function getCustomerBillingAddress()
     {
@@ -668,7 +668,7 @@ class Cart extends Base
     /**
      * get customers taxation address
      *
-     * @return bool|CoreShopUserAddress
+     * @return bool|Address
      */
     public function getCustomerAddressForTaxation() {
         $taxationAddress = Configuration::get("SYSTEM.BASE.TAXATION.ADDRESS");

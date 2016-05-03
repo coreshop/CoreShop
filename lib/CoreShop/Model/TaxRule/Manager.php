@@ -20,8 +20,8 @@ use CoreShop\Model\Plugin\TaxManager;
 use CoreShop\Model\State;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
+use CoreShop\Model\User\Address;
 use Pimcore\Model\Object\CoreShopUser;
-use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class Manager implements TaxManager
 {
@@ -31,7 +31,7 @@ class Manager implements TaxManager
     protected $tax_calculator;
 
     /**
-     * @var CoreShopUserAddress
+     * @var Address
      */
     protected $address;
 
@@ -42,10 +42,10 @@ class Manager implements TaxManager
 
     /**
      * Manager constructor.
-     * @param CoreShopUserAddress $address
+     * @param Address $address
      * @param $type
      */
-    public function __construct(CoreShopUserAddress $address, $type)
+    public function __construct(Address $address, $type)
     {
         $this->address = $address;
         $this->type = $type;
@@ -54,11 +54,11 @@ class Manager implements TaxManager
     /**
      * Check if Manager is available for specific address
      *
-     * @param CoreShopUserAddress $address
+     * @param Address $address
      * @param string $type
      * @return bool
      */
-    public static function isAvailableForThisAddress(CoreShopUserAddress $address, $type)
+    public static function isAvailableForThisAddress(Address $address, $type)
     {
         return true; // default manager, available for all addresses
     }

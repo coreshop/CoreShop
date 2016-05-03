@@ -17,9 +17,9 @@ namespace CoreShop\Model\Product;
 
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Country;
+use CoreShop\Model\User\Address;
 use Pimcore\Model\Object\Concrete;
 use Pimcore\Model\Object\CoreShopProduct;
-use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class CalculatedTax
 {
@@ -33,7 +33,7 @@ class CalculatedTax
         if ($object instanceof CoreShopProduct) {
             $price = $object->getRetailPrice();
 
-            $address = new CoreShopUserAddress();
+            $address = new Address();
             $address->setCountry(Country::getById(Configuration::get("SYSTEM.BASE.COUNTRY")));
 
             $calculator = $object->getTaxCalculator($address);

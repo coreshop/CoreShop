@@ -19,7 +19,6 @@ use CoreShop\Exception;
 use CoreShop\Model\Country;
 use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Model\Object\CoreShopCart;
-use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 use Pimcore\Model\Object;
 
 class CoreShop_UserController extends Action
@@ -187,7 +186,7 @@ class CoreShop_UserController extends Action
 
                 $addresses = new Object\Fieldcollection();
 
-                $address = new CoreShopUserAddress();
+                $address = \CoreShop\Model\User\Address::create();
                 $address->setValues($addressParams);
                 $address->setCountry(Country::getById($addressParams['country']));
 
@@ -244,8 +243,8 @@ class CoreShop_UserController extends Action
             }
         }
 
-        if (!$this->view->address instanceof CoreShopUserAddress) {
-            $this->view->address = new CoreShopUserAddress();
+        if (!$this->view->address instanceof \CoreShop\Model\User\Address) {
+            $this->view->address = \CoreShop\Model\User\Address::create();
             $this->view->isNew = true;
         }
 

@@ -16,12 +16,12 @@ namespace CoreShop\Model;
 
 use CoreShop\Model\Carrier\AbstractRange;
 use CoreShop\Model\Carrier\DeliveryPrice;
+use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Cache;
 use Pimcore\Db;
 use Pimcore\Model\Asset;
-use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class Carrier extends AbstractModel
 {
@@ -512,13 +512,13 @@ class Carrier extends AbstractModel
     /**
      * get TaxCalculator
      *
-     * @param CoreShopUserAddress $address
+     * @param Address $address
      * @return bool|TaxCalculator
      */
-    public function getTaxCalculator(CoreShopUserAddress $address = null)
+    public function getTaxCalculator(Address $address = null)
     {
         if (is_null($address)) {
-            $address = new CoreShopUserAddress();
+            $address = Address::create();
             $address->setCountry(Tool::getCountry());
         }
 

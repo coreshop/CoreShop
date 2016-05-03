@@ -227,7 +227,7 @@ class Tool
             if (count($cart->getBillingAddress()) > 0) {
                 $address = $cart->getBillingAddress()->get(0);
 
-                if ($address instanceof Object\Fieldcollection\Data\CoreShopUserAddress) {
+                if ($address instanceof User\Address) {
                     $country = $address->getCountry();
                 }
             }

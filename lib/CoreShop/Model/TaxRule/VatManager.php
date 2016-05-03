@@ -20,8 +20,8 @@ use CoreShop\Model\Plugin\TaxManager;
 use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
+use CoreShop\Model\User\Address;
 use Pimcore\Model\Object\CoreShopUser;
-use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class VatManager implements TaxManager
 {
@@ -31,11 +31,11 @@ class VatManager implements TaxManager
     protected $tax_calculator;
 
     /**
-     * @param CoreShopUserAddress $address
+     * @param Address $address
      * @param string $type
      * @return bool
      */
-    public static function isAvailableForThisAddress(CoreShopUserAddress $address, $type)
+    public static function isAvailableForThisAddress(Address $address, $type)
     {
         if (Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
             if (empty($address->getVatNumber())) {

@@ -16,19 +16,19 @@ namespace CoreShop\Model;
 
 use CoreShop\Model\Plugin\TaxManager as PluginTaxManager;
 use CoreShop\Model\TaxRule\Manager;
+use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use Pimcore\Cache;
-use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
 
 class TaxManagerFactory
 {
     /**
      * get CacheKey for Address
      *
-     * @param CoreShopUserAddress $address
+     * @param Address $address
      * @return string
      */
-    private static function getCacheKey(CoreShopUserAddress $address)
+    private static function getCacheKey(Address $address)
     {
         return md5($address->getCountry()->getId() .
             ($address->getState() instanceof State ? $address->getState()->getId() : "") .
@@ -40,11 +40,11 @@ class TaxManagerFactory
     }
 
     /**
-     * @param CoreShopUserAddress $address
+     * @param Address $address
      * @param $type
      * @return bool|Manager|mixed|null
      */
-    public static function getTaxManager(CoreShopUserAddress $address, $type)
+    public static function getTaxManager(Address $address, $type)
     {
         $cacheKey = "coreshop_tax_manager_" . self::getCacheKey($address) . "_" . $type;
 
@@ -81,11 +81,11 @@ class TaxManagerFactory
     }
 
     /**
-     * @param CoreShopUserAddress $address
+     * @param Address $address
      * @param $type
      * @return bool
      */
-    protected static function getPluginTaxManager(CoreShopUserAddress $address, $type)
+    protected static function getPluginTaxManager(Address $address, $type)
     {
         $results = Plugin::getEventManager()->trigger("tax.getTaxManager", null, array("address" => $address, "type" => $type));
 
