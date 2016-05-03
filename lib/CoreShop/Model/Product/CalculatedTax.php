@@ -33,7 +33,7 @@ class CalculatedTax
         if ($object instanceof CoreShopProduct) {
             $price = $object->getRetailPrice();
 
-            $address = new Address();
+            $address = Address::create();
             $address->setCountry(Country::getById(Configuration::get("SYSTEM.BASE.COUNTRY")));
 
             $calculator = $object->getTaxCalculator($address);
