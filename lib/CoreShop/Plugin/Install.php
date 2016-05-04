@@ -93,6 +93,23 @@ class Install
 
             Object\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
 
+            //resave related object bricks
+            $list = new Object\Objectbrick\Definition\Listing();
+            $list = $list->load();
+
+            if( !empty( $list ) ) {
+                foreach ($list as $brickDefinition) {
+                    $clsDefs = $brickDefinition->getClassDefinitions();
+                    if (!empty($clsDefs)) {
+                        foreach ($clsDefs as $cd) {
+                            if ($cd["classname"] == $class->getId()) {
+                                $brickDefinition->save();
+                            }
+                        }
+                    }
+                }
+            }
+
             return $class;
         }
 
