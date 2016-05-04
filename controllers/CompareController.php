@@ -26,6 +26,11 @@ class CoreShop_CompareController extends Action
      */
     protected $model;
 
+    /**
+     * @var int
+     */
+    protected $minCompareElements = 2;
+
     public function init()
     {
         parent::init();
@@ -120,9 +125,9 @@ class CoreShop_CompareController extends Action
         $compareValues = array();
 
         if (!empty($productIds)) {
-            if (count($productIds) < 2) {
+            if (count($productIds) < $this->minCompareElements) {
                 $error = true;
-                $message = $this->view->translate("you need at least 2 products to start comparing.");
+                $message = sprintf($this->view->translate("you need at least %d products to start comparing."), $this->minCompareElements);
             }
 
             $list = new Object\CoreShopProduct\Listing();
