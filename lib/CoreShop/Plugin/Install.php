@@ -124,30 +124,32 @@ class Install
         try {
             $objectBrick = Object\Objectbrick\Definition::getByKey($name);
         } catch (\Exception $e) {
-            if ($jsonPath == null) {
-                $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
-            }
-            
+
             $objectBrick = new Object\Objectbrick\Definition();
             $objectBrick->setKey($name);
-            
-            $json = file_get_contents($jsonPath);
-            
-            $result = Plugin::getEventManager()->trigger('install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function ($v) {
-                return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
-            });
-    
-            if ($result->stopped()) {
-                $resultJson = $result->last();
-                
-                if ($resultJson) {
-                    $json = $resultJson;
-                }
-            }
-            
-            Object\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
+
         }
-        
+
+        if ($jsonPath == null) {
+            $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
+        }
+
+        $json = file_get_contents($jsonPath);
+
+        $result = Plugin::getEventManager()->trigger('install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function ($v) {
+            return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
+        });
+
+        if ($result->stopped()) {
+            $resultJson = $result->last();
+
+            if ($resultJson) {
+                $json = $resultJson;
+            }
+        }
+
+        Object\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
+
         return $objectBrick;
     }
 
@@ -168,7 +170,7 @@ class Install
         } catch (\Exception $e) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -184,30 +186,32 @@ class Install
         try {
             $fieldCollection = Object\Fieldcollection\Definition::getByKey($name);
         } catch (\Exception $e) {
-            if ($jsonPath == null) {
-                $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
-            }
-                
+
             $fieldCollection = new Object\Fieldcollection\Definition();
             $fieldCollection->setKey($name);
-            
-            $json = file_get_contents($jsonPath);
 
-            $result = Plugin::getEventManager()->trigger('install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function ($v) {
-                return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
-            });
-    
-            if ($result->stopped()) {
-                $resultJson = $result->last();
-                
-                if ($resultJson) {
-                    $json = $resultJson;
-                }
-            }
-            
-            Object\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
         }
-        
+
+        if ($jsonPath == null) {
+            $jsonPath = PIMCORE_PLUGINS_PATH . "/CoreShop/install/fieldcollection-$name.json";
+        }
+
+        $json = file_get_contents($jsonPath);
+
+        $result = Plugin::getEventManager()->trigger('install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function ($v) {
+            return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
+        });
+
+        if ($result->stopped()) {
+            $resultJson = $result->last();
+
+            if ($resultJson) {
+                $json = $resultJson;
+            }
+        }
+
+        Object\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
+
         return $fieldCollection;
     }
 
@@ -228,7 +232,7 @@ class Install
         } catch (\Exception $e) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -254,7 +258,7 @@ class Install
                 'o_published' => true,
             ));
         }
-        
+
         if (!$products instanceof Folder) {
             Folder::create(array(
                 'o_parentId' => $root->getId(),
@@ -265,7 +269,7 @@ class Install
                 'o_published' => true,
             ));
         }
-        
+
         if (!$categories instanceof Folder) {
             Folder::create(array(
                 'o_parentId' => $root->getId(),
@@ -276,7 +280,7 @@ class Install
                 'o_published' => true,
             ));
         }
-        
+
         if (!$cart instanceof Folder) {
             Folder::create(array(
                 'o_parentId' => $root->getId(),
@@ -568,7 +572,7 @@ class Install
     public function createStaticRoutes()
     {
         $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/CoreShop/install/staticroutes.xml');
-        
+
         foreach ($conf->routes->route as $def) {
             if (!Staticroute::getByName($def->name)) {
                 $route = Staticroute::create();
@@ -698,36 +702,36 @@ class Install
         }
     }
 
-/*
-    public function createDocTypes()
-    {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
-        foreach ($conf->doctypes->doctype as $def) {
-            $docType = Document_DocType::create();
-            $docType->setName($def->name);
-            $docType->setType($def->type);
-            $docType->setModule($def->module);
-            $docType->setController($def->controller);
-            $docType->setAction($def->action);
-            $docType->save();
-        }
-    }
-    public function removeDocTypes()
-    {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
-        $names = array();
-        foreach ($conf->doctypes->doctype as $def) {
-            $names[] = $def->name;
-        }
-        $list = new Document_DocType_List();
-        $list->load();
-        foreach ($list->docTypes as $docType) {
-            if (in_array($docType->name, $names)) {
-                $docType->delete();
+    /*
+        public function createDocTypes()
+        {
+            $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
+            foreach ($conf->doctypes->doctype as $def) {
+                $docType = Document_DocType::create();
+                $docType->setName($def->name);
+                $docType->setType($def->type);
+                $docType->setModule($def->module);
+                $docType->setController($def->controller);
+                $docType->setAction($def->action);
+                $docType->save();
             }
         }
-    }
-*/
+        public function removeDocTypes()
+        {
+            $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
+            $names = array();
+            foreach ($conf->doctypes->doctype as $def) {
+                $names[] = $def->name;
+            }
+            $list = new Document_DocType_List();
+            $list->load();
+            foreach ($list->docTypes as $docType) {
+                if (in_array($docType->name, $names)) {
+                    $docType->delete();
+                }
+            }
+        }
+    */
     /**
      * @return \Int User Id
      */
