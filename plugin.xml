@@ -8,7 +8,6 @@
     <pluginVersion>1.0 RC3</pluginVersion>
     <pluginRevision>64</pluginRevision>
     <pluginBuildTimestamp>1462374312</pluginBuildTimestamp>
-    <pluginGitRevision>f3a00f712c373983619f20bbc36a8797b109f613</pluginGitRevision>
     <pluginClassName>\CoreShop\Plugin</pluginClassName>
     <pluginIncludePaths>
       <path>/CoreShop/lib</path>
