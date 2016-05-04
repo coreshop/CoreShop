@@ -34,7 +34,14 @@ class Update
      *
      * @var string
      */
-    public static $updateServer = "http://update.coreshop.org";
+    public static $buildServerInfo = "http://update.coreshop.org/builder/web/build/info";
+
+    /**
+     * Github Repo
+     *
+     * @var string
+     */
+    public static $buildServerData = "http://update.coreshop.org/builder/web/builds";
 
     /**
      * Dry run
@@ -86,6 +93,41 @@ class Update
      * get jobs to build
      *
      * @param $toBuild
+     * @param $currentBuild
+     * @return array
+     */
+    public static function getPackages($toBuild, $currentBuild = null)
+    {
+        if (!$currentBuild) {
+            $currentBuild = Version::getBuildNumber();
+        }
+
+        $builds = self::getNewerBuilds($currentBuild, $toBuild);
+
+        $jobs = array();
+
+        foreach ($builds as $build) {
+            $buildNumber = (string)$build['number'];
+            $buildPackage = self::$buildServerData . "/".  $buildNumber . ".zip";
+
+            //@fixme: check if package is available!
+            $jobs["parallel"][] = array(
+                "type" => "download",
+                "revision" => $buildNumber,
+                "file" => "file",
+                "url" => $buildPackage
+            );
+
+        }
+
+        return $jobs;
+    }
+
+    /**
+     * get jobs to build
+     *
+     * @param $toBuild
+     * @param $currentBuild
      * @return array
      */
     public static function getJobs($toBuild, $currentBuild = null)
@@ -93,6 +135,12 @@ class Update
         if (!$currentBuild) {
             $currentBuild = Version::getBuildNumber();
         }
+
+        $db = Db::get();
+        $db->query("CREATE TABLE IF NOT EXISTS `" . self::$tmpTable . "` (
+          `revision` int(11) NULL DEFAULT NULL,
+          `path` varchar(255) NULL DEFAULT NULL
+        );");
 
         $builds = self::getNewerBuilds($currentBuild, $toBuild);
 
@@ -106,10 +154,14 @@ class Update
             $preUpdateScript = self::getScriptForBuild($build['number'], "preupdate");
             $postUpdateScript = self::getScriptForBuild($build['number'], "postupdate");
 
-
             foreach ($changedFiles as $download) {
+
+                if( empty( $download ) ) {
+                    continue;
+                }
+
                 $jobs["parallel"][] = array(
-                    "type" => "download",
+                    "type" => "arrange",
                     "revision" => $buildNumber,
                     "file" => "file",
                     "url" => $download . ".build"
@@ -144,7 +196,7 @@ class Update
                 );
 
                 $jobs["parallel"][] = array(
-                    "type" => "download",
+                    "type" => "arrange",
                     "revision" => $buildNumber,
                     "file" => "script",
                     "url" => "preupdate.php"
@@ -160,7 +212,7 @@ class Update
                 );
 
                 $jobs["parallel"][] = array(
-                    "type" => "download",
+                    "type" => "arrange",
                     "revision" => $buildNumber,
                     "file" => "script",
                     "url" => "postupdate.php"
@@ -236,60 +288,103 @@ class Update
     }
 
     /**
-     * download a file
-     *
      * @param $revision
      * @param $url
-     * @throws \Zend_Db_Adapter_Exception
+     *
+     * @throws \Exception
      */
-    public static function downloadData($revision, $url, $fileType)
+    public static function downloadPackage($revision, $url)
     {
         $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision;
-
-        $db = Db::get();
-        $db->query("CREATE TABLE IF NOT EXISTS `" . self::$tmpTable . "` (
-          `revision` int(11) NULL DEFAULT NULL,
-          `path` varchar(255) NULL DEFAULT NULL
-        );");
 
         if (!is_dir($downloadDir)) {
             File::mkdir($downloadDir);
         }
 
-        $filesDir = $downloadDir . "/files/";
-        if (!is_dir($filesDir)) {
-            File::mkdir($filesDir);
+        $zipFile = $downloadDir . basename($url);
+
+        try {
+            $zipResource = fopen($zipFile, 'w');
+        } catch(\Exception $e) {
+            throw new \Exception("Error while downloading package: " . $e->getMessage());
         }
 
-        $scriptsDir = $downloadDir . "/scripts/";
-        if (!is_dir($scriptsDir)) {
-            File::mkdir($scriptsDir);
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
+
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_FILE, $zipResource);
+
+        $content = curl_exec($ch);
+
+        if ($content !== false)
+        {
+            $zip = new \ZipArchive;
+
+            if ($zip->open($zipFile) === TRUE)
+            {
+                $zip->extractTo($downloadDir);
+                $zip->close();
+
+                //delete Zip.
+                unlink($zipFile);
+            }
+            else
+            {
+                throw new \Exception("Error while extracting package: " . $zipFile);
+            }
+        } else
+        {
+            throw new \Exception("Error while downloading package: " . curl_error($ch));
         }
 
-        $baseUrl = self::getRepoUrl();
+        curl_close($ch);
+
+    }
+
+    /**
+     * @param $revision
+     * @param $url
+     * @param $fileType
+     *
+     * @throws \Exception
+     * @throws \Zend_Db_Adapter_Exception
+     */
+    public static function arrangeData($revision, $url, $fileType)
+    {
+        $db = Db::get();
+
+        $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update";
+        $baseDir = $downloadDir;
 
         if ($fileType === "file") {
-            $baseUrl .= "/$revision/files/";
+            $baseDir .= "/$revision/files/";
         } elseif ($fileType === "script") {
-            $baseUrl .= "/$revision/scripts/";
+            $baseDir .= "/$revision/scripts/";
         }
 
-        $file = @file_get_contents($baseUrl . $url);
+        if (file_exists( $baseDir . $url)) {
 
-        if ($file) {
             if ($fileType == "file") {
-                $newFile = $filesDir . $url;
-                File::put($newFile, $file);
-
                 $db->insert(self::$tmpTable, array(
                     "revision" => $revision,
                     "path" => $url
                 ));
-            } elseif ($fileType == "script") {
-                $newScript = $scriptsDir. $url;
-                File::put($newScript, $file);
             }
+        } else {
+
+            throw new \Exception("Install file (ref " . $revision . ") not found: " . $url);
         }
+
     }
 
     /**
@@ -398,7 +493,7 @@ class Update
     public static function getScriptForBuild($build, $name)
     {
         try {
-            $updateScript = @file_get_contents(self::getRepoUrl() . "/" . $build . "/scripts/" . $name . ".php");
+            $updateScript = @file_get_contents(PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $build . "/scripts/" . $name . ".php");
 
             if ($updateScript) {
                 return $updateScript;
@@ -479,7 +574,7 @@ class Update
                 }
             }
 
-            return $newerBuilds;
+            return ($newerBuilds);
         }
 
         return false;
@@ -493,7 +588,7 @@ class Update
      */
     public static function getChangedFilesFileForBuild($build)
     {
-        return self::getRepoUrl() . "/$build/changedFiles.txt";
+        return PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/$build/changedFiles.txt";
     }
 
     /**
@@ -504,7 +599,7 @@ class Update
      */
     public static function getDeletedFilesFileForBuild($build)
     {
-        return self::getRepoUrl() . "/$build/deletedFiles.txt";
+        return PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/$build/deletedFiles.txt";
     }
 
     /**
@@ -515,7 +610,7 @@ class Update
     public static function getBuildsFile()
     {
         try {
-            $builds = @file_get_contents(self::getRepoUrl() . "/builds.json");
+            $builds = @file_get_contents(self::$buildServerInfo);
 
             if ($builds) {
                 $builds = \Zend_Json::decode($builds);
@@ -527,13 +622,4 @@ class Update
         }
     }
 
-    /**
-     * get repo url
-     *
-     * @return string
-     */
-    public static function getRepoUrl()
-    {
-        return self::$updateServer;
-    }
 }

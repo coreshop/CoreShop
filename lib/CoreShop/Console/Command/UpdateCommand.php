@@ -137,21 +137,31 @@ class UpdateCommand extends AbstractCommand
 
             $this->output->writeln("Starting the update process ...");
 
-            $jobs = Update::getJobs($build, $currentRevision);
+            $packages = Update::getPackages($build, $currentRevision);
 
+            $progress = new ProgressBar($output, count($packages));
+            $progress->start();
+
+            foreach ($packages['parallel'] as $package) {
+                Update::downloadPackage($package["revision"], $package["url"], $package["file"]);
+                $progress->advance();
+            }
+
+            $progress->finish();
+
+            $jobs = Update::getJobs($build, $currentRevision);
             $steps = count($jobs["parallel"]) + count($jobs["procedural"]);
 
             $progress = new ProgressBar($output, $steps);
             $progress->start();
 
             foreach ($jobs["parallel"] as $job) {
-                if ($job["type"] == "download") {
-                    Update::downloadData($job["revision"], $job["url"], $job["file"]);
+                if ($job["type"] == "arrange") {
+                    Update::arrangeData($job["revision"], $job["url"], $job["file"]);
                 }
 
                 $progress->advance();
             }
-
 
             $maintenanceModeId = 'cache-warming-dummy-session-id';
             Admin::activateMaintenanceMode($maintenanceModeId);

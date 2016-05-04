@@ -52,17 +52,25 @@ class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
         $this->_helper->json($availableUpdates);
     }
 
+    public function getPackagesAction()
+    {
+        $jobs = \CoreShop\Update::getPackages($this->getParam("toRevision"));
+        $this->_helper->json($jobs);
+    }
+
     public function getJobsAction()
     {
         $jobs = \CoreShop\Update::getJobs($this->getParam("toRevision"));
-
         $this->_helper->json($jobs);
     }
 
     public function jobParallelAction()
     {
         if ($this->getParam("type") == "download") {
-            \CoreShop\Update::downloadData($this->getParam("revision"), $this->getParam("url"), $this->getParam("file"));
+            \CoreShop\Update::downloadPackage($this->getParam("revision"), $this->getParam("url"));
+        }
+        else if ($this->getParam("type") == "arrange") {
+            \CoreShop\Update::arrangeData($this->getParam("revision"), $this->getParam("url"), $this->getParam("file"));
         }
 
         $this->_helper->json(array("success" => true));
