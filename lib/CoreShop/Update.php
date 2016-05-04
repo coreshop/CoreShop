@@ -34,7 +34,14 @@ class Update
      *
      * @var string
      */
-    public static $updateServer = "http://update.coreshop.org";
+    public static $buildServerInfo = "http://update.coreshop.org/builder/web/build/info";
+
+    /**
+     * Github Repo
+     *
+     * @var string
+     */
+    public static $buildServerData = "http://update.coreshop.org/builder/web/builds";
 
     /**
      * Dry run
@@ -101,7 +108,7 @@ class Update
 
         foreach ($builds as $build) {
             $buildNumber = (string)$build['number'];
-            $buildPackage = self::getRepoUrl() . "/".  $buildNumber . ".zip";
+            $buildPackage = self::$buildServerData . "/".  $buildNumber . ".zip";
 
             //@fixme: check if package is available!
             $jobs["parallel"][] = array(
@@ -603,7 +610,7 @@ class Update
     public static function getBuildsFile()
     {
         try {
-            $builds = @file_get_contents(self::getRepoUrl() . "/builds.json");
+            $builds = @file_get_contents(self::$buildServerInfo);
 
             if ($builds) {
                 $builds = \Zend_Json::decode($builds);
@@ -615,13 +622,4 @@ class Update
         }
     }
 
-    /**
-     * get repo url
-     *
-     * @return string
-     */
-    public static function getRepoUrl()
-    {
-        return self::$updateServer;
-    }
 }
