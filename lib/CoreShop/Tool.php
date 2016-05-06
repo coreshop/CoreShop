@@ -113,6 +113,8 @@ class Tool
         }
 
         if (!$currency instanceof Currency) {
+            \Logger::warn("No SYSTEM.BASE.CURRENCY found, so EURO is going to be used! Please set your Default Currency in CoreShop Settings");
+
             $currency = Currency::getById(1); //TODO: Throw Exception because there is no base currency?
         }
 
@@ -277,6 +279,7 @@ class Tool
                 $country = Country::getById(Configuration::get("SYSTEM.BASE.COUNTRY"));
 
                 if (!$country instanceof Country) {
+                    \Logger::warn("No SYSTEM.BASE.COUNTRY found, so AUSTRIA is going to be used! Please set your Default Country in CoreShop Settings");
                     $country = Country::getById(2);
                 }
             }
