@@ -64,7 +64,7 @@ class Install
             $jsonFile = PIMCORE_PLUGINS_PATH . "/CoreShop/install/class-$className.json";
             $json = file_get_contents($jsonFile);
 
-            $result = Plugin::getEventManager()->trigger("install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function ($v) {
+            $result = \Pimcore::getEventManager()->trigger("coreshop.install.class.getClass.$className", $this, array("className" => $className, "json" => $json), function ($v) {
                 return ($v instanceof Object\ClassDefinition);
             });
 
@@ -79,7 +79,7 @@ class Install
             $class->setName($className);
             $class->setUserOwner($this->_getUserId());
 
-            $result = Plugin::getEventManager()->trigger('install.class.preCreate', $this, array("className" => $className, "json" => $json), function ($v) {
+            $result = \Pimcore::getEventManager()->trigger('coreshop.install.class.preCreate', $this, array("className" => $className, "json" => $json), function ($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
 
@@ -153,7 +153,7 @@ class Install
 
         $json = file_get_contents($jsonPath);
 
-        $result = Plugin::getEventManager()->trigger('install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.install.objectbrick.preCreate', $this, array("objectbrickName" => $name, "json" => $json), function ($v) {
             return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
         });
 
@@ -215,7 +215,7 @@ class Install
 
         $json = file_get_contents($jsonPath);
 
-        $result = Plugin::getEventManager()->trigger('install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.install.fieldcollection.preCreate', $this, array("fieldcollectionName" => $name, "json" => $json), function ($v) {
             return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
         });
 

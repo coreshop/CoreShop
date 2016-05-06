@@ -87,7 +87,7 @@ class TaxManagerFactory
      */
     protected static function getPluginTaxManager(Address $address, $type)
     {
-        $results = Plugin::getEventManager()->trigger("tax.getTaxManager", null, array("address" => $address, "type" => $type));
+        $results = \Pimcore::getEventManager()->trigger("coreshop.tax.getTaxManager", null, array("address" => $address, "type" => $type));
 
         foreach ($results as $result) {
             if ($result instanceof PluginTaxManager) {

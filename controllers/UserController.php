@@ -207,7 +207,7 @@ class CoreShop_UserController extends Action
                 $user->setAddresses($addresses);
                 $user->save();
 
-                Plugin::getEventManager()->trigger('user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
+                \Pimcore::getEventManager()->trigger('coreshop.user.postAdd', $this, array("request" => $this->getRequest(), "user" => $user));
 
                 $this->session->user = $user;
 

@@ -45,7 +45,8 @@ class Action extends \Website\Controller\Action
     {
         parent::init();
 
-        Plugin::getEventManager()->trigger('controller.init', $this);
+
+        \Pimcore::getEventManager()->trigger('coreshop.controller.init', $this);
         
         $this->view->setScriptPath(
             array_merge(

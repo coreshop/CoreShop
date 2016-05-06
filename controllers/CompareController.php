@@ -49,7 +49,7 @@ class CoreShop_CompareController extends Action
         $product = CoreShopProduct::getById($product_id);
 
         $isAllowed = true;
-        $result = Plugin::getEventManager()->trigger('compare.preAdd', $this, array("product" => $product, "model" => $this->model, "request" => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.compare.preAdd', $this, array("product" => $product, "model" => $this->model, "request" => $this->getRequest()), function ($v) {
             return is_bool($v);
         });
 
@@ -90,7 +90,7 @@ class CoreShop_CompareController extends Action
         $product = CoreShopProduct::getById($product_id);
 
         $isAllowed = true;
-        $result = Plugin::getEventManager()->trigger('compare.preRemove', $this, array("product" => $product, "model" => $this->model, "request" => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.compare.preRemove', $this, array("product" => $product, "model" => $this->model, "request" => $this->getRequest()), function ($v) {
             return is_bool($v);
         });
 
@@ -136,7 +136,7 @@ class CoreShop_CompareController extends Action
 
             $products = $list->getObjects();
 
-            $dings = Plugin::getEventManager()->trigger('compare.products', $this, array("products" => $products, "language" => $this->language, "request" => $this->getRequest()), function ($v) {
+            $dings = \Pimcore::getEventManager()->trigger('coreshop.compare.products', $this, array("products" => $products, "language" => $this->language, "request" => $this->getRequest()), function ($v) {
                 return $v;
             });
 

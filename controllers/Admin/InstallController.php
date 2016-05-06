@@ -33,7 +33,7 @@ class CoreShop_Admin_InstallController extends Admin
         try {
             $install = new Plugin\Install();
 
-            Plugin::getEventManager()->trigger('install.pre', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, array("installer" => $install));
 
             $install->executeSQL("CoreShop");
             $install->executeSQL("CoreShop-States");
@@ -78,7 +78,7 @@ class CoreShop_Admin_InstallController extends Admin
 
             $install->createImageThumbnails();
 
-            Plugin::getEventManager()->trigger('install.post', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array("installer" => $install));
 
             $install->setConfigInstalled();
 

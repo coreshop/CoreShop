@@ -55,7 +55,7 @@ class CoreShop_CartController extends Action
             $message = $this->view->translate("Product is out of stock");
         }
 
-        $result = Plugin::getEventManager()->trigger('cart.preAdd', $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preAdd', $this, array("product" => $product, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
             return is_bool($v);
         });
 
@@ -66,8 +66,8 @@ class CoreShop_CartController extends Action
         if ($isAllowed) {
             if ($product instanceof CoreShopProduct && $product->getEnabled() && $product->getAvailableForOrder()) {
                 $item = $this->cart->addItem($product, $amount);
-                
-                Plugin::getEventManager()->trigger('cart.postAdd', $this, array("request" => $this->getRequest(), "product" => $product, "cart" => $this->cart, "cartItem" => $item));
+
+                \Pimcore::getEventManager()->trigger('coreshop.cart.postAdd', $this, array("request" => $this->getRequest(), "product" => $product, "cart" => $this->cart, "cartItem" => $item));
                 
                 $this->_helper->json(array("success" => true, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
             }
@@ -84,7 +84,7 @@ class CoreShop_CartController extends Action
         $item = CoreShopCartItem::getById($cartItem);
         
         $isAllowed = true;
-        $result = Plugin::getEventManager()->trigger('cart.preRemove', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preRemove', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
             return is_bool($v);
         });
 
@@ -99,7 +99,7 @@ class CoreShop_CartController extends Action
                 $this->cart->removeItem($item);
                 $this->reloadCart();
 
-                Plugin::getEventManager()->trigger('cart.postRemove', $this, array("item" => $item, "cart" => $this->cart));
+                \Pimcore::getEventManager()->trigger('coreshop.cart.postRemove', $this, array("item" => $item, "cart" => $this->cart));
                 
                 $this->_helper->json(array("success" => true, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
             }
@@ -117,7 +117,7 @@ class CoreShop_CartController extends Action
         $item = CoreShopCartItem::getById($cartItem);
         
         $isAllowed = true;
-        $result = Plugin::getEventManager()->trigger('cart.preModify', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preModify', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
             return is_bool($v);
         });
 
@@ -130,8 +130,8 @@ class CoreShop_CartController extends Action
         if ($isAllowed) {
             if ($item instanceof CoreShopCartItem) {
                 $this->cart->modifyItem($item, $amount);
-                
-                Plugin::getEventManager()->trigger('cart.postModify', $this, array("item" => $item, "cart" => $this->cart));
+
+                \Pimcore::getEventManager()->trigger('coreshop.cart.postModify', $this, array("item" => $item, "cart" => $this->cart));
                 
                 $this->_helper->json(array("success" => true, "cart" => $this->renderCart(), "minicart" => $this->renderMiniCart()));
             }

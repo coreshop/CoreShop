@@ -119,7 +119,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
         \Pimcore::getEventManager()->attach("object.postUpdate", array($this, 'postUpdateObject'));
 
         if (Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
-            self::getEventManager()->attach("tax.getTaxManager", function () {
+            \Pimcore::getEventManager()->attach("coreshop.tax.getTaxManager", function () {
                 return new VatManager();
             });
         }
@@ -208,7 +208,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             $install->createConfig();
 
-            self::getEventManager()->trigger('install.post', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array("installer" => $install));
         } catch (Exception $e) {
             \Logger::crit($e);
             return self::getTranslate()->_('coreshop_install_failed');
@@ -227,7 +227,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
         try {
             $install = new Install();
 
-            self::getEventManager()->trigger('uninstall.pre', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.uninstall.pre', null, array("installer" => $install));
 
             // remove predefined document types
             //$install->removeDocTypes();
@@ -254,7 +254,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $install->removeImageThumbnails();
             $install->removeConfig();
 
-            self::getEventManager()->trigger('uninstall.post', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.uninstall.post', null, array("installer" => $install));
 
             return self::getTranslate()->_('coreshop_uninstalled_successfully');
         } catch (Exception $e) {
@@ -402,29 +402,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * @var \Zend_EventManager_EventManager
-     */
-    private static $eventManager;
-
-    /**
      * Default Layout
      *
      * @var string
      */
     private static $layout = "shop";
-
-    /**
-     * get event manager
-     *
-     * @return \Zend_EventManager_EventManager
-     */
-    public static function getEventManager()
-    {
-        if (!self::$eventManager) {
-            self::$eventManager = new \Zend_EventManager_EventManager();
-        }
-        return self::$eventManager;
-    }
 
     /**
      * Get CoreShop default layout
@@ -454,7 +436,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
      */
     public static function getPaymentProviders(Cart $cart = null)
     {
-        $results = self::getEventManager()->trigger("payment.getProvider");
+        $results = \Pimcore::getEventManager()->trigger("coreshop.payment.getProvider");
         $provider = array();
 
         foreach ($results as $result) {
@@ -501,7 +483,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
      */
     public static function hook($name, $params = array())
     {
-        $results = self::getEventManager()->trigger("hook." . $name, null, array());
+        $results = \Pimcore::getEventManager()->trigger("coreshop.hook." . $name, null, array());
 
         $params['language'] = \Zend_Registry::get("Zend_Locale");
 
@@ -528,7 +510,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
      */
     public static function actionHook($name, $params = array())
     {
-        $results = self::getEventManager()->trigger("actionHook." . $name, null, array(), function ($v) {
+        $results = \Pimcore::getEventManager()->trigger("coreshop.actionHook." . $name, null, array(), function ($v) {
             return (is_callable($v));
         });
 

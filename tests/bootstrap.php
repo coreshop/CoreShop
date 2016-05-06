@@ -135,7 +135,7 @@ $autoloader->registerNamespace('CoreShop');
 $install = new \CoreShop\Plugin\Install();
 
 $install->createConfig();
-\CoreShop\Plugin::getEventManager()->trigger('install.pre', null, array("installer" => $install));
+\Pimcore::getEventManager()->trigger('coreshop.install.pre', null, array("installer" => $install));
 
 $install->executeSQL("CoreShop");
 $install->executeSQL("CoreShop-States");
@@ -171,7 +171,7 @@ $install->createCustomView($coreShopFolder, array(
 //$install->installAdminTranslations(PIMCORE_PLUGINS_PATH . "/CoreShop/install/translations/admin.csv");
 //$install->createImageThumbnails();
 
-\CoreShop\Plugin::getEventManager()->trigger('install.post', null, array("installer" => $install));
+\Pimcore::getEventManager()->trigger('coreshop.install.post', null, array("installer" => $install));
 
 $install->setConfigInstalled();
 
