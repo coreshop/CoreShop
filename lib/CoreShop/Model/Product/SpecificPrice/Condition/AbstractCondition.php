@@ -14,9 +14,9 @@
 
 namespace CoreShop\Model\Product\SpecificPrice\Condition;
 
-use CoreShop\Model\PriceRule\AbstractPriceRule;
+use CoreShop\Model\Cart\PriceRule\AbstractPriceRule;
 use CoreShop\Model;
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 
 abstract class AbstractCondition extends Model\Product\SpecificPrice\AbstractSpecificPrice
 {

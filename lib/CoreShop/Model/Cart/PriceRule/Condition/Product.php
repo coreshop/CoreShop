@@ -12,44 +12,42 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Condition;
+namespace CoreShop\Model\Cart\PriceRule\Condition;
 
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
-use CoreShop\Model\Country as CountryModel;
-use CoreShop\Tool;
+use Pimcore\Model\Object\CoreShopProduct;
 
-class Country extends AbstractCondition
+class Product extends AbstractCondition
 {
-
     /**
      * @var int
      */
-    public $country;
+    public $product;
 
     /**
      * @var string
      */
-    public $type = "country";
+    public $type = "product";
 
     /**
      * @return int
      */
-    public function getCountry()
+    public function getProduct()
     {
-        if (!$this->country instanceof CountryModel) {
-            $this->country = CountryModel::getById($this->country);
+        if (!$this->product instanceof \CoreShop\Model\Product) {
+            $this->product = \CoreShop\Model\Product::getByPath($this->product);
         }
 
-        return $this->country;
+        return $this->product;
     }
 
     /**
-     * @param int $country
+     * @param int $product
      */
-    public function setCountry($country)
+    public function setProduct($product)
     {
-        $this->country = $country;
+        $this->product = $product;
     }
 
     /**
@@ -63,9 +61,19 @@ class Country extends AbstractCondition
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        if ($this->getCountry()->getId() !== Tool::getCountry()->getId()) {
+        $found = false;
+
+        if ($this->getProduct() instanceof \CoreShop\Model\Product) {
+            foreach ($cart->getItems() as $i) {
+                if ($i->getProduct()->getId() == $this->getProduct()->getId()) {
+                    $found = true;
+                }
+            }
+        }
+
+        if (!$found) {
             if ($throwException) {
-                throw new \Exception("You cannot use this voucher in your country of delivery");
+                throw new \Exception("You cannot use this voucher with these products");
             } else {
                 return false;
             }

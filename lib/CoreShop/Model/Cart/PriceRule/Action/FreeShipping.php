@@ -12,60 +12,18 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Action;
+namespace CoreShop\Model\Cart\PriceRule\Action;
 
 use CoreShop\Model\Cart;
+use CoreShop\Model\Cart\PriceRule\Action\AbstractAction;
 use Pimcore\Model;
 
-class DiscountPercent extends AbstractAction
+class FreeShipping extends AbstractAction
 {
-
-    /**
-     * @var int
-     */
-    public $currency_id;
-
-    /**
-     * @var int
-     */
-    public $percent;
-
     /**
      * @var string
      */
-    public $type = "discountPercent";
-
-    /**
-     * @return mixed
-     */
-    public function getCurrencyId()
-    {
-        return $this->currency_id;
-    }
-
-    /**
-     * @param mixed $currency_id
-     */
-    public function setCurrencyId($currency_id)
-    {
-        $this->currency_id = $currency_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPercent()
-    {
-        return $this->percent;
-    }
-
-    /**
-     * @param int $percent
-     */
-    public function setPercent($percent)
-    {
-        $this->percent = $percent;
-    }
+    public $type = "freeShipping";
 
     /**
      * Calculate discount
@@ -75,7 +33,7 @@ class DiscountPercent extends AbstractAction
      */
     public function getDiscount(Cart $cart)
     {
-        return $cart->getSubtotal() * ($this->getPercent() / 100);
+        return 0;
     }
 
     /**

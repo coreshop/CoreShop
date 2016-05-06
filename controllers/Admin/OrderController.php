@@ -66,7 +66,7 @@ class CoreShop_Admin_OrderController extends Admin
             "orderNumber" => $order->getOrderNumber(),
             "lang" => $order->getLang(),
             "carrier" => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getId() : null,
-            "priceRule" => $order->getPriceRule() instanceof \CoreShop\Model\PriceRule ? $order->getPriceRule()->getId() : null,
+            "priceRule" => $order->getPriceRule() instanceof \CoreShop\Model\Cart\PriceRule ? $order->getPriceRule()->getId() : null,
             "discount" => $order->getDiscount(),
             "subtotal" => $order->getSubtotal(),
             "shipping" => $order->getShipping(),

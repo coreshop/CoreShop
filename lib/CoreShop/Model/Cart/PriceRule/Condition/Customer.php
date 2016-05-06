@@ -12,60 +12,40 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Condition;
+namespace CoreShop\Model\Cart\PriceRule\Condition;
 
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
+use CoreShop\Model\User;
 use CoreShop\Tool;
+use Pimcore\Model\Object\CoreShopUser;
 
-class Amount extends AbstractCondition
+class Customer extends AbstractCondition
 {
-
     /**
      * @var int
      */
-    public $currency;
-
-    /**
-     * @var float
-     */
-    public $minAmount;
+    public $customer;
 
     /**
      * @var string
      */
-    public $type = "amount";
+    public $type = "customer";
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getCurrency()
+    public function getCustomer()
     {
-        return $this->currency;
+        return $this->customer;
     }
 
     /**
-     * @param mixed $currency
+     * @param int $customer
      */
-    public function setCurrency($currency)
+    public function setCustomer($customer)
     {
-        $this->currency = $currency;
-    }
-
-    /**
-     * @return float
-     */
-    public function getMinAmount()
-    {
-        return $this->minAmount;
-    }
-
-    /**
-     * @param float $minAmount
-     */
-    public function setMinAmount($minAmount)
-    {
-        $this->minAmount = $minAmount;
+        $this->customer = $customer;
     }
 
     /**
@@ -79,16 +59,12 @@ class Amount extends AbstractCondition
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        //Check Cart Amount
-        if ($this->getMinAmount() > 0) {
-            $minAmount = $this->getMinAmount();
-            $minAmount = Tool::convertToCurrency($minAmount, $this->getCurrency(), Tool::getCurrency());
+        $session = Tool::getSession();
 
-            $cartTotal = $cart->getSubtotal();
-
-            if ($minAmount > $cartTotal) {
+        if ($cart->getUser() instanceof User && $session->user instanceof User) {
+            if (!$cart->getUser()->getId() == $session->user->getId()) {
                 if ($throwException) {
-                    throw new \Exception("You have not reached the minimum amount required to use this voucher");
+                    throw new \Exception("You cannot use this voucher");
                 } else {
                     return false;
                 }

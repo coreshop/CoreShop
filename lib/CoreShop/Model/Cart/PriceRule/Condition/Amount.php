@@ -12,60 +12,59 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Condition;
+namespace CoreShop\Model\Cart\PriceRule\Condition;
 
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
-use Pimcore\Model;
+use CoreShop\Tool;
 
-class TotalAvailable extends AbstractCondition
+class Amount extends AbstractCondition
 {
-
     /**
      * @var int
      */
-    public $totalAvailable;
+    public $currency;
 
     /**
-     * @var int
+     * @var float
      */
-    public $totalUsed;
+    public $minAmount;
 
     /**
      * @var string
      */
-    public $type = "totalAvailable";
+    public $type = "amount";
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getTotalAvailable()
+    public function getCurrency()
     {
-        return $this->totalAvailable;
+        return $this->currency;
     }
 
     /**
-     * @param int $totalAvailable
+     * @param mixed $currency
      */
-    public function setTotalAvailable($totalAvailable)
+    public function setCurrency($currency)
     {
-        $this->totalAvailable = $totalAvailable;
+        $this->currency = $currency;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getTotalUsed()
+    public function getMinAmount()
     {
-        return $this->totalUsed;
+        return $this->minAmount;
     }
 
     /**
-     * @param int $totalUsed
+     * @param float $minAmount
      */
-    public function setTotalUsed($totalUsed)
+    public function setMinAmount($minAmount)
     {
-        $this->totalUsed = $totalUsed;
+        $this->minAmount = $minAmount;
     }
 
     /**
@@ -79,11 +78,16 @@ class TotalAvailable extends AbstractCondition
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        //Check Total Available
-        if ($this->getTotalAvailable() > 0) {
-            if ($this->getTotalUsed() >= $this->getTotalAvailable()) {
+        //Check Cart Amount
+        if ($this->getMinAmount() > 0) {
+            $minAmount = $this->getMinAmount();
+            $minAmount = Tool::convertToCurrency($minAmount, $this->getCurrency(), Tool::getCurrency());
+
+            $cartTotal = $cart->getSubtotal();
+
+            if ($minAmount > $cartTotal) {
                 if ($throwException) {
-                    throw new \Exception("This voucher has already been used");
+                    throw new \Exception("You have not reached the minimum amount required to use this voucher");
                 } else {
                     return false;
                 }

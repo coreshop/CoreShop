@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Product\SpecificPrice;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;

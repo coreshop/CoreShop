@@ -12,43 +12,43 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Condition;
+namespace CoreShop\Model\Cart\PriceRule\Condition;
 
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
-use Pimcore\Model\Object\CoreShopProduct;
+use CoreShop\Model\Zone as ZoneModel;
+use CoreShop\Tool;
 
-class Product extends AbstractCondition
+class Zone extends AbstractCondition
 {
-
     /**
      * @var int
      */
-    public $product;
+    public $zone;
 
     /**
      * @var string
      */
-    public $type = "product";
+    public $type = "zone";
 
     /**
      * @return int
      */
-    public function getProduct()
+    public function getZone()
     {
-        if (!$this->product instanceof CoreShopProduct) {
-            $this->product = CoreShopProduct::getByPath($this->product);
+        if (!$this->zone instanceof ZoneModel) {
+            $this->zone = ZoneModel::getById($this->zone);
         }
 
-        return $this->product;
+        return $this->zone;
     }
 
     /**
-     * @param int $product
+     * @param int $zone
      */
-    public function setProduct($product)
+    public function setZone($zone)
     {
-        $this->product = $product;
+        $this->zone = $zone;
     }
 
     /**
@@ -62,19 +62,9 @@ class Product extends AbstractCondition
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        $found = false;
-
-        if ($this->getProduct() instanceof CoreShopProduct) {
-            foreach ($cart->getItems() as $i) {
-                if ($i->getProduct()->getId() == $this->getProduct()->getId()) {
-                    $found = true;
-                }
-            }
-        }
-
-        if (!$found) {
+        if ($this->getZone()->getId() !== Tool::getCountry()->getZoneId()) {
             if ($throwException) {
-                throw new \Exception("You cannot use this voucher with these products");
+                throw new \Exception("You cannot use this voucher in your zone of delivery");
             } else {
                 return false;
             }

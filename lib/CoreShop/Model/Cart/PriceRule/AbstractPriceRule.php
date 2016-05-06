@@ -12,13 +12,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule;
-
-use Pimcore\Model;
+namespace CoreShop\Model\Cart\PriceRule;
 
 class AbstractPriceRule
 {
-
     /**
      * @var string
      */

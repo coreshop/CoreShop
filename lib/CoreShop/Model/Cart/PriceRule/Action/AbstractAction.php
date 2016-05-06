@@ -12,11 +12,11 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Action;
+namespace CoreShop\Model\Cart\PriceRule\Action;
 
 use CoreShop\Model\Cart;
 use Pimcore\Model;
-use CoreShop\Model\PriceRule\AbstractPriceRule;
+use CoreShop\Model\Cart\PriceRule\AbstractPriceRule;
 
 abstract class AbstractAction extends AbstractPriceRule
 {

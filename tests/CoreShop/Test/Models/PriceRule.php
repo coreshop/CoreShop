@@ -14,20 +14,20 @@
 
 namespace CoreShop\Test\Models;
 
-use CoreShop\Model\PriceRule\Action\DiscountAmount;
-use CoreShop\Model\PriceRule\Action\DiscountPercent;
-use CoreShop\Model\PriceRule\Action\FreeShipping;
-use CoreShop\Model\PriceRule\Action\Gift;
-use CoreShop\Model\PriceRule\Condition\Customer;
-use CoreShop\Model\PriceRule\Condition\TimeSpan;
-use CoreShop\Model\PriceRule\Condition\Amount;
-use CoreShop\Model\PriceRule\Condition\Category as ConditionCategory;
-use CoreShop\Model\PriceRule\Condition\Country as ConditionCountry;
-use CoreShop\Model\PriceRule\Condition\CustomerGroup as ConditionCustomerGroup;
-use CoreShop\Model\PriceRule\Condition\Product as ConditionProduct;
-use CoreShop\Model\PriceRule\Condition\TotalAvailable;
-use CoreShop\Model\PriceRule\Condition\TotalPerCustomer;
-use CoreShop\Model\PriceRule\Condition\Zone as ConditionZone;
+use CoreShop\Model\Cart\PriceRule\Action\DiscountAmount;
+use CoreShop\Model\Cart\PriceRule\Action\DiscountPercent;
+use CoreShop\Model\Cart\PriceRule\Action\FreeShipping;
+use CoreShop\Model\Cart\PriceRule\Action\Gift;
+use CoreShop\Model\Cart\PriceRule\Condition\Customer;
+use CoreShop\Model\Cart\PriceRule\Condition\TimeSpan;
+use CoreShop\Model\Cart\PriceRule\Condition\Amount;
+use CoreShop\Model\Cart\PriceRule\Condition\Category as ConditionCategory;
+use CoreShop\Model\Cart\PriceRule\Condition\Country as ConditionCountry;
+use CoreShop\Model\Cart\PriceRule\Condition\CustomerGroup as ConditionCustomerGroup;
+use CoreShop\Model\Cart\PriceRule\Condition\Product as ConditionProduct;
+use CoreShop\Model\Cart\PriceRule\Condition\TotalAvailable;
+use CoreShop\Model\Cart\PriceRule\Condition\TotalPerCustomer;
+use CoreShop\Model\Cart\PriceRule\Condition\Zone as ConditionZone;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 use CoreShop\Tool;
@@ -35,7 +35,7 @@ use CoreShop\Tool;
 class PriceRule extends Base
 {
     /**
-     * @var \CoreShop\Model\PriceRule
+     * @var \CoreShop\Model\Cart\PriceRule
      */
     protected $priceRule;
 
@@ -43,7 +43,7 @@ class PriceRule extends Base
     {
         parent::setUp();
 
-        $priceRule = new \CoreShop\Model\PriceRule();
+        $priceRule = new \CoreShop\Model\Cart\PriceRule();
         $priceRule->setName("test-rule");
         $priceRule->setActive(true);
         $priceRule->setHighlight(false);

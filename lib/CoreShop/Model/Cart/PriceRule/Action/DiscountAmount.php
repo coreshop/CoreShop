@@ -12,9 +12,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Action;
+namespace CoreShop\Model\Cart\PriceRule\Action;
 
 use CoreShop\Model\Cart;
+use CoreShop\Model\Cart\PriceRule\Action\AbstractAction;
 use CoreShop\Model\Currency;
 use Pimcore\Model;
 use CoreShop\Tool;

@@ -17,7 +17,7 @@ use CoreShop\Controller\Action;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\CoreShopProduct;
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 
 class CoreShop_CartController extends Action
 {

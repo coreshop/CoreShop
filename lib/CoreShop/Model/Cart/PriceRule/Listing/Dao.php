@@ -12,11 +12,11 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule;
+namespace CoreShop\Model\Cart\PriceRule\Listing;
 
-use CoreShop\Model\Dao\AbstractDao;
+use CoreShop\Model\Listing;
 
-class Dao extends AbstractDao
+class Dao extends Listing\Dao\AbstractDao
 {
     /**
      * Mysql table name
@@ -26,18 +26,9 @@ class Dao extends AbstractDao
     protected $tableName = 'coreshop_pricerules';
 
     /**
-     * @param array $data
+     * Object class name
+     *
+     * @var string
      */
-    protected function assignVariablesToModel($data)
-    {
-        parent::assignVariablesToModel($data);
-
-        foreach ($data as $key=>$value) {
-            if ($key == "actions") {
-                $this->model->setActions(unserialize($value));
-            } elseif ($key == "conditions") {
-                $this->model->setConditions(unserialize($value));
-            }
-        }
-    }
+    protected $modelClass = '\\CoreShop\\Model\\Cart\\PriceRule';
 }

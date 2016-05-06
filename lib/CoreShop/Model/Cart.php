@@ -20,7 +20,7 @@ use CoreShop\Model\Plugin\Payment as PaymentPlugin;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use CoreShop\Tool;
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\Service;
@@ -615,7 +615,7 @@ class Cart extends Base
     /**
      * Adds a new PriceRule to the Cart
      *
-     * @param \CoreShop\Model\PriceRule $priceRule
+     * @param \CoreShop\Model\Cart\PriceRule $priceRule
      * @throws \Exception
      */
     public function addPriceRule(PriceRule $priceRule)

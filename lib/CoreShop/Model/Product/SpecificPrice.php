@@ -18,7 +18,7 @@ use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Product;
 use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopCart;
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 
 class SpecificPrice extends AbstractModel
 {

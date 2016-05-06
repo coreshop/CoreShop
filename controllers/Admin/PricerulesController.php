@@ -14,7 +14,7 @@
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Controller\Action\Admin;
 use Pimcore\Tool as PimTool;
 
@@ -116,8 +116,8 @@ class CoreShop_Admin_PricerulesController extends Admin
             $actionInstances = array();
             $conditionInstances = array();
 
-            $actionNamespace = "CoreShop\\Model\\PriceRule\\Action\\";
-            $conditionNamespace = "CoreShop\\Model\\PriceRule\\Condition\\";
+            $actionNamespace = "CoreShop\\Model\\Cart\\PriceRule\\Action\\";
+            $conditionNamespace = "CoreShop\\Model\\Cart\\PriceRule\\Condition\\";
 
             foreach ($conditions as $condition) {
                 $class = $conditionNamespace . ucfirst($condition['type']);
@@ -128,7 +128,7 @@ class CoreShop_Admin_PricerulesController extends Admin
 
                     $conditionInstances[] = $instance;
                 } else {
-                    throw new \Exception(sprintf("Condition with type %s not found"), $condition['type']);
+                    throw new \Exception(sprintf("Condition with type %s not found", $condition['type']));
                 }
             }
 

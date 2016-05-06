@@ -12,8 +12,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model;
+namespace CoreShop\Model\Cart;
 
+use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Cart;
 use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopCart;
 

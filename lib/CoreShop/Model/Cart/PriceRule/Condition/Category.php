@@ -12,15 +12,14 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Condition;
+namespace CoreShop\Model\Cart\PriceRule\Condition;
 
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use Pimcore\Model\Object\CoreShopCategory;
 
 class Category extends AbstractCondition
 {
-
     /**
      * @var int
      */
@@ -36,8 +35,8 @@ class Category extends AbstractCondition
      */
     public function getCategory()
     {
-        if (!$this->category instanceof CoreShopCategory) {
-            $this->category = CoreShopCategory::getByPath($this->category);
+        if (!$this->category instanceof \CoreShop\Model\Category) {
+            $this->category = \CoreShop\Model\Category::getByPath($this->category);
         }
 
         return $this->category;
@@ -64,7 +63,7 @@ class Category extends AbstractCondition
     {
         $found = false;
 
-        if ($this->getCategory() instanceof CoreShopCategory) {
+        if ($this->getCategory() instanceof \CoreShop\Model\Category) {
             foreach ($cart->getItems() as $i) {
                 if ($i->getProduct()->inCategory($this->getCategory())) {
                     $found = true;

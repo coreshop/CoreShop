@@ -130,7 +130,7 @@
                   },
                   {
                     "fieldtype":"coreShopPriceRule",
-                    "phpdocType":"CoreShop\\Model\\PriceRule",
+                    "phpdocType":"CoreShop\\Model\\Cart\\PriceRule",
                     "queryColumnType":"int(11)",
                     "columnType":"int(11)",
                     "options":[

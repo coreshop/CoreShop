@@ -12,16 +12,15 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Condition;
+namespace CoreShop\Model\Cart\PriceRule\Condition;
 
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\CustomerGroup as CustomerGroupModel;
 use CoreShop\Tool;
 
 class CustomerGroup extends AbstractCondition
 {
-
     /**
      * @var int
      */

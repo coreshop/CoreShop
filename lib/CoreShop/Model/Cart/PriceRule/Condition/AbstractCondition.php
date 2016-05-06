@@ -12,11 +12,11 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Condition;
+namespace CoreShop\Model\Cart\PriceRule\Condition;
 
-use CoreShop\Model\PriceRule\AbstractPriceRule;
+use CoreShop\Model\Cart\PriceRule\AbstractPriceRule;
 use CoreShop\Model;
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 
 abstract class AbstractCondition extends AbstractPriceRule
 {

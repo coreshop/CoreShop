@@ -18,7 +18,7 @@ use CoreShop\Model\Cart;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
-use CoreShop\Model\PriceRule;
+use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Tool\Session;
 

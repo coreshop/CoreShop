@@ -12,23 +12,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule\Listing;
+namespace CoreShop\Model\Cart\PriceRule;
 
-use CoreShop\Model\Listing;
+use CoreShop\Model;
 
-class Dao extends Listing\Dao\AbstractDao
+class Listing extends Model\Listing\AbstractListing
 {
-    /**
-     * Mysql table name
-     *
-     * @var string
-     */
-    protected $tableName = 'coreshop_pricerules';
-
-    /**
-     * Object class name
-     *
-     * @var string
-     */
-    protected $modelClass = '\\CoreShop\\Model\\PriceRule';
 }

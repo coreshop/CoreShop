@@ -31,5 +31,5 @@ class CoreShopPriceRule extends CoreShopSelect
      *
      * @var string
      */
-    public $phpdocType = "CoreShop\\Model\\PriceRule";
+    public $phpdocType = "CoreShop\\Model\\Cart\\PriceRule";
 }
