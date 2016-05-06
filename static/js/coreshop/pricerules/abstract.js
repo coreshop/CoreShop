@@ -94,7 +94,7 @@ pimcore.plugin.coreshop.pricerules.abstract = Class.create({
             handler: function (blockId, parent, container, namespace) {
 
                 var blockElement = Ext.getCmp(blockId);
-                var index = pimcore.plugin.coreshop.pricerule[namespace].abstract.prototype.getIndex(blockElement, container);
+                var index = pimcore.plugin.coreshop.pricerules[namespace].abstract.prototype.getIndex(blockElement, container);
                 var tmpContainer = pimcore.viewport;
 
                 var newIndex = index - 1;
@@ -123,7 +123,7 @@ pimcore.plugin.coreshop.pricerules.abstract = Class.create({
 
                 var container = container;
                 var blockElement = Ext.getCmp(blockId);
-                var index = pimcore.plugin.coreshop.pricerule[namespace].abstract.prototype.getIndex(blockElement, container);
+                var index = pimcore.plugin.coreshop.pricerules[namespace].abstract.prototype.getIndex(blockElement, container);
                 var tmpContainer = pimcore.viewport;
 
                 // move this node temorary to an other so ext recognizes a change
