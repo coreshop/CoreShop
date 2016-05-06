@@ -196,6 +196,11 @@ class Tool
         }
 
         if ($cart instanceof CoreShopCart) {
+            if($cart->getUser() === null && count($cart->getItems()) && self::getUser() instanceof User) {
+                $cart->setUser(self::getUser());
+                $cart->save();
+            }
+
             return $cart;
         }
 

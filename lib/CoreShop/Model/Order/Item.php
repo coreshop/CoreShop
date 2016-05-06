@@ -12,13 +12,16 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model;
+namespace CoreShop\Model\Order;
 
-use \Pimcore\Model\Object\CoreShopOrder;
+use CoreShop\Model\Base;
+use CoreShop\Model\Order;
 
-;
-
-class OrderItem extends Base
+/**
+ * Class Item
+ * @package CoreShop\Model\Order
+ */
+class Item extends Base
 {
     /**
      * Calculate Total of OrderItem without tax
@@ -40,7 +43,7 @@ class OrderItem extends Base
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof CoreShopOrder) {
+            if ($parent instanceof Order) {
                 return $parent;
             }
 

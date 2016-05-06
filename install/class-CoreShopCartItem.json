@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":"CoreShop\\Model\\CartItem",
+  "parentClass":"CoreShop\\Model\\Cart\\Item",
   "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,

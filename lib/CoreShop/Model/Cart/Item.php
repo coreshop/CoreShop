@@ -12,13 +12,16 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model;
+namespace CoreShop\Model\Cart;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Base;
+use CoreShop\Model\Cart;
+use CoreShop\Model\Product;
 use CoreShop\Tool;
 use Pimcore\Model\Object\CoreShopCart;
 
-class CartItem extends Base
+class Item extends Base
 {
     /**
      * Calculates the total for the CartItem

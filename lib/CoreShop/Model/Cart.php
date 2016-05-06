@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
@@ -499,7 +500,7 @@ class Cart extends Base
      * @param int $amount
      * @param bool|false $increaseAmount
      * @param bool|true $autoAddPriceRule
-     * @return bool|CoreShopCartItem
+     * @return bool|Item
      * @throws \Exception
      */
     public function updateQuantity(Product $product, $amount = 0, $increaseAmount = false, $autoAddPriceRule = true)
@@ -510,7 +511,7 @@ class Cart extends Base
 
         $item = $this->findItemForProduct($product);
 
-        if ($item instanceof CartItem) {
+        if ($item instanceof Item) {
             if ($amount <= 0) {
                 $this->removeItem($item);
 
@@ -562,7 +563,7 @@ class Cart extends Base
      *
      * @param Product $product
      * @param int $amount
-     * @return bool|CoreShopCartItem
+     * @return bool|Item
      * @throws \Exception
      */
     public function addItem(Product $product, $amount = 1)
@@ -574,9 +575,9 @@ class Cart extends Base
     /**
      * Removes a item from the cart
      *
-     * @param CartItem $item
+     * @param Item $item
      */
-    public function removeItem(CartItem $item)
+    public function removeItem(Item $item)
     {
         $item->delete();
     }
@@ -584,12 +585,12 @@ class Cart extends Base
     /**
      * Modifies the quantity of a CartItem
      *
-     * @param CartItem $item
+     * @param Item $item
      * @param $amount
-     * @return bool|CartItem
+     * @return bool|Item
      * @throws \Exception
      */
-    public function modifyItem(CartItem $item, $amount)
+    public function modifyItem(Item $item, $amount)
     {
         return $this->updateQuantity($item->getProduct(), $amount, false);
     }
@@ -747,7 +748,7 @@ class Cart extends Base
      * this method has to be overwritten in Pimcore Object
      *
      * @throws UnsupportedException
-     * @return CartItem[]
+     * @return Item[]
      */
     public function getItems()
     {

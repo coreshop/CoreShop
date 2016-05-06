@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":"CoreShop\\Model\\OrderItem",
+  "parentClass":"CoreShop\\Model\\Order\\Item",
   "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,

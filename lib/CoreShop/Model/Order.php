@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
+use CoreShop\Model\Order\Item;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
@@ -573,7 +574,7 @@ class Order extends Base
      * set items for order
      * this method has to be overwritten in Pimcore Object
      *
-     * @param OrderItem[] $items
+     * @param Item[] $items
      * @throws UnsupportedException
      */
     public function setItems($items)
@@ -610,7 +611,7 @@ class Order extends Base
      * this method has to be overwritten in Pimcore Object
      *
      * @throws UnsupportedException
-     * @return OrderItem[]
+     * @return Item[]
      */
     public function getItems()
     {
