@@ -637,7 +637,8 @@ class Install
      */
     public function createConfig()
     {
-        Configuration::set("SYSTEM.BASE.CURRENCY", null);
+        Configuration::set("SYSTEM.BASE.CURRENCY", 1); //Euro
+        Configuration::set("SYSTEM.BASE.COUNTRY", 2);  //Austria
         Configuration::set("SYSTEM.BASE.CATALOGMODE", false);
         Configuration::set("SYSTEM.BASE.BUILD", Version::getBuildNumber());
         Configuration::set("SYSTEM.BASE.VERSION", (string) Version::getVersion());
