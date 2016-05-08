@@ -206,6 +206,10 @@
     background: url(/plugins/CoreShop/static/img/24/product.png) no-repeat scroll left center transparent !important;
 }
 
+.coreshop_icon_product_list {
+    background: url(/plugins/CoreShop/static/img/24/product-list.png) no-repeat scroll left center transparent !important;
+}
+
 .coreshop_product_filters_preconditions {
     background: url(/plugins/CoreShop/static/img/24/search.png) no-repeat scroll left center transparent !important;
 }

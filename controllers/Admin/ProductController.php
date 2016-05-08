@@ -31,6 +31,56 @@ class CoreShop_Admin_ProductController extends Admin
         }
     }
 
+    public function getProductsAction()
+    {
+        $list = \Pimcore\Model\Object\CoreShopProduct::getList();
+        $list->setLimit($this->getParam("limit", 30));
+        $list->setOffset($this->getParam("page", 1) - 1);
+
+        if ($this->getParam("filter", null)) {
+            $conditionFilters[] = \Pimcore\Model\Object\Service::getFilterCondition($this->getParam("filter"), \Pimcore\Model\Object\ClassDefinition::getByName("CoreShopProduct"));
+            if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
+                $list->setCondition(implode(" AND ", $conditionFilters));
+            }
+        }
+
+        $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($this->getAllParams());
+
+        $order = "DESC";
+        $orderKey = "o_id";
+
+        if ($sortingSettings['order']) {
+            $order = $sortingSettings['order'];
+        }
+        if (strlen($sortingSettings['orderKey']) > 0) {
+            $orderKey = $sortingSettings['orderKey'];
+        }
+
+        $list->setOrder($order);
+        $list->setOrderKey($orderKey);
+
+        $products = $list->load();
+        $jsonProducts = array();
+
+        foreach ($products as $product) {
+            $jsonProducts[] = $this->prepareProduct($product);
+        }
+
+        $this->_helper->json(array("success" => true, "data" => $jsonProducts, "count" => count($jsonProducts), "total" => $list->getTotalCount()));
+    }
+
+    protected function prepareProduct(\CoreShop\Model\Product $product)
+    {
+        $element = array(
+            "o_id" => $product->getId(),
+            "name" => $product->getName(),
+            "quantity" => $product->getQuantity(),
+            "price" => $product->getPrice()
+        );
+
+        return $element;
+    }
+
     public function listSpecificPricesAction()
     {
         $product = \CoreShop\Model\Product::getById($this->getParam("product"));

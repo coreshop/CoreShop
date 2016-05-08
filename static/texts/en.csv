@@ -340,3 +340,8 @@
 "coreshop_cart_cleanup_older_than_days","Remove carts older than (in days)"
 "coreshop_cart_cleanup_delete_anonymous_carts","Remove anonymous carts"
 "coreshop_cart_cleanup_delete_user_carts","Remove user carts"
+"coreshop_product_list","Productlist"
+"coreshop_product_id","ID"
+"coreshop_product_name","Name"
+"coreshop_product_quantity","Quantity"
+"coreshop_product_price","Price"

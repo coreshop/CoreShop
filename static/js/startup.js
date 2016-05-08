@@ -223,6 +223,12 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
+                    productsMenu.push({
+                        text: t('coreshop_product_list'),
+                        iconCls: 'coreshop_icon_product_list',
+                        handler: this.openProducts
+                    });
+
                     if (productsMenu.length > 0) {
                         coreShopMenuItems.push({
                             text: t('coreshop_product'),
@@ -612,7 +618,16 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         catch (e) {
             pimcore.globalmanager.add('coreshop_states_panel', new pimcore.plugin.coreshop.states.panel());
         }
-    }
+    },
+
+    openProducts : function () {
+        try {
+            pimcore.globalmanager.get('coreshop_products').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_products', new pimcore.plugin.coreshop.product.grid());
+        }
+    },
 });
 
 new pimcore.plugin.coreshop();

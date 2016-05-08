@@ -339,3 +339,8 @@
 "coreshop_cart_cleanup_older_than_days","Warenkörbe, die älter als (x) Tage sind, löschen"
 "coreshop_cart_cleanup_delete_anonymous_carts","Lösche anonyme Warenkörbe"
 "coreshop_cart_cleanup_delete_user_carts","Lösche Benutzer-Warenkörbe"
+"coreshop_product_list","Produktliste"
+"coreshop_product_id","ID"
+"coreshop_product_name","Name"
+"coreshop_product_quantity","Menge"
+"coreshop_product_price","Preis"
