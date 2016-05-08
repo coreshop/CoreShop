@@ -454,6 +454,8 @@ class Install
                 $languagesDone = array();
 
                 foreach ($validLanguages as $language) {
+                    $locale = new \Zend_Locale($language);
+                    $language = $locale->getLanguage();
                     $languageDocument = Document::getByPath("/" . $language);
 
                     if (!$languageDocument instanceof Document) {
