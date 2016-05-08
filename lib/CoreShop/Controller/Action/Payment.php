@@ -17,7 +17,7 @@ namespace CoreShop\Controller\Action;
 use CoreShop\Controller\Action;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Order;
-use CoreShop\Model\OrderState;
+use CoreShop\Model\Order\State;
 use CoreShop\Plugin;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object\CoreShopPayment;

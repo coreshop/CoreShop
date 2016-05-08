@@ -31,5 +31,5 @@ class CoreShopOrderState extends  CoreShopSelect
      *
      * @var string
      */
-    public $phpdocType = "CoreShop\\Model\\OrderState";
+    public $phpdocType = "CoreShop\\Model\\Order\\State";
 }

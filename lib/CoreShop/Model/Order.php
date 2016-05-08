@@ -369,12 +369,12 @@ class Order extends Base
                     Cache::clearTag("object_" . $this->getId());
                     \Zend_Registry::set("object_" . $this->getId(), null);
 
-                    $orderStep = OrderState::getById($data['orderState']);
+                    $orderStep = State::getById($data['orderState']);
                     $originalOrder = Order::getById($this->getId());
 
                     unset($_REQUEST['data']);
 
-                    if ($orderStep instanceof OrderState) {
+                    if ($orderStep instanceof State) {
                         if ($orderStep->getId() !== $originalOrder->getOrderState()->getId()) {
                             $orderStep->processStep($originalOrder);
                         }
@@ -387,7 +387,7 @@ class Order extends Base
 
         $orderState = $this->getOrderState();
 
-        if ($orderState instanceof OrderState) {
+        if ($orderState instanceof State) {
             if ($orderState->getInvoice()) {
                 $this->getInvoice(); //Re-Generate Invoice if it does not exist
             }
@@ -490,7 +490,7 @@ class Order extends Base
      * set discount for order
      * this method has to be overwritten in Pimcore Object
      *
-     * @param OrderState $state
+     * @param State $state
      * @throws UnsupportedException
      */
     public function setOrderState($state)
@@ -655,7 +655,7 @@ class Order extends Base
      * Get OrderState
      *
      * @throws UnsupportedException
-     * @return OrderState
+     * @return State
      */
     public function getOrderState()
     {

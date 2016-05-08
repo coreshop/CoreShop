@@ -12,7 +12,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\OrderState\Listing;
+namespace CoreShop\Model\Order\State\Listing;
 
 use CoreShop\Model\Listing;
 use CoreShop\Model;
@@ -31,5 +31,5 @@ class Dao extends Listing\Dao\AbstractDao
      *
      * @var string
      */
-    protected $modelClass = '\\CoreShop\\Model\\OrderState';
+    protected $modelClass = '\\CoreShop\\Model\\Order\\State';
 }

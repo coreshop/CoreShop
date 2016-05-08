@@ -14,7 +14,8 @@
 
 use CoreShop\Plugin;
 use CoreShop\Tool;
-use CoreShop\Model\OrderState;
+use CoreShop\Model\Order;
+use CoreShop\Model\Order\State;
 use Pimcore\Controller\Action\Admin;
 use Pimcore\Tool as PimTool;
 
@@ -33,7 +34,7 @@ class CoreShop_Admin_OrderstatesController extends Admin
 
     public function listAction()
     {
-        $list = new OrderState\Listing();
+        $list = new State\Listing();
 
         $data = array();
         if (is_array($list->getData())) {
@@ -71,7 +72,7 @@ class CoreShop_Admin_OrderstatesController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
         } else {
-            $orderState = new OrderState();
+            $orderState = new State();
             $orderState->setName($name);
             $orderState->setAccepted(0);
             $orderState->setShipped(0);
@@ -87,9 +88,9 @@ class CoreShop_Admin_OrderstatesController extends Admin
     public function getAction()
     {
         $id = $this->getParam("id");
-        $orderState = OrderState::getById($id);
+        $orderState = State::getById($id);
 
-        if ($orderState instanceof OrderState) {
+        if ($orderState instanceof State) {
             $this->_helper->json(array("success" => true, "data" => $orderState->getObjectVars()));
         } else {
             $this->_helper->json(array("success" => false));
@@ -100,9 +101,9 @@ class CoreShop_Admin_OrderstatesController extends Admin
     {
         $id = $this->getParam("id");
         $data = $this->getParam("data");
-        $oderState = OrderState::getById($id);
+        $oderState = State::getById($id);
 
-        if ($data && $oderState instanceof OrderState) {
+        if ($data && $oderState instanceof State) {
             $data = \Zend_Json::decode($this->getParam("data"));
 
             $oderState->setValues($data);
@@ -117,9 +118,9 @@ class CoreShop_Admin_OrderstatesController extends Admin
     public function deleteAction()
     {
         $id = $this->getParam("id");
-        $oderState = OrderState::getById($id);
+        $oderState = State::getById($id);
 
-        if ($oderState instanceof OrderState) {
+        if ($oderState instanceof State) {
             $oderState->delete();
 
             $this->_helper->json(array("success" => true));

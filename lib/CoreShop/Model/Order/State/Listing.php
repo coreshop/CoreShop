@@ -12,16 +12,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\OrderState;
+namespace CoreShop\Model\Order\State;
 
-use CoreShop\Model\Dao\AbstractDao;
+use CoreShop\Model;
 
-class Dao extends AbstractDao
+class Listing extends Model\Listing\AbstractListing
 {
-    /**
-     * Mysql table name
-     *
-     * @var string
-     */
-    protected $tableName = 'coreshop_orderstates';
 }

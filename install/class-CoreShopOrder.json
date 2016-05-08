@@ -53,7 +53,7 @@
             "childs":[
               {
                 "fieldtype":"coreShopOrderState",
-                "phpdocType":"CoreShop\\Model\\OrderState",
+                "phpdocType":"CoreShop\\Model\\Order\\State",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
                 "options":[

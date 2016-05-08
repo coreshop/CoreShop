@@ -18,7 +18,7 @@ use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
-use CoreShop\Model\OrderState;
+use CoreShop\Model\Order\State;
 use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Plugin;
@@ -130,12 +130,12 @@ abstract class Payment implements AbstractPlugin
      * Creates order after successfull payment
      *
      * @param Cart $cart
-     * @param OrderState $state
+     * @param State $state
      * @param $totalPayed
      * @param $language
      * @return Order
      */
-    public function createOrder(Cart $cart, OrderState $state, $totalPayed = 0, $language = null)
+    public function createOrder(Cart $cart, State $state, $totalPayed = 0, $language = null)
     {
         \Logger::info("Create order for cart " . $cart->getId());
 

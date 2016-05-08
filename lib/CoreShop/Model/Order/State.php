@@ -12,16 +12,18 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model;
+namespace CoreShop\Model\Order;
 
+use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Configuration;
+use CoreShop\Model\Order;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
-use Pimcore\Tool\Authentication;
 
-class OrderState extends AbstractModel
+class State extends AbstractModel
 {
     protected $localizedValues = array("emailDocument", "name");
 
@@ -69,7 +71,7 @@ class OrderState extends AbstractModel
      * get OrderState by ID
      *
      * @param $id
-     * @return OrderState|null
+     * @return State|null
      */
     public static function getById($id)
     {
@@ -79,11 +81,11 @@ class OrderState extends AbstractModel
     /**
      * Get all OrderState
      *
-     * @return OrderState[]
+     * @return State[]
      */
     public static function getOrderStates()
     {
-        $list = new OrderState\Listing();
+        $list = new Order\State\Listing();
 
         return $list->getData();
     }
@@ -99,7 +101,7 @@ class OrderState extends AbstractModel
     {
         $previousState = $order->getOrderState();
         //Check if new OrderState is the same as the current one
-        if ($order->getOrderState() instanceof OrderState) {
+        if ($order->getOrderState() instanceof State) {
             if ($order->getOrderState()->getId() === $this->getId()) {
                 return false;
             }
@@ -176,7 +178,7 @@ class OrderState extends AbstractModel
         $note->setTitle(sprintf($translate->translate("coreshop_note_orderstate_change"), $this->getName()));
         $note->setDescription(sprintf($translate->translate("coreshop_note_orderstate_change_description"), $this->getName()));
 
-        if ($previousState instanceof OrderState) {
+        if ($previousState instanceof State) {
             $note->addData("fromState", "text", $previousState->getName());
         }
 
