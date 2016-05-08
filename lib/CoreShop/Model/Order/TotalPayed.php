@@ -14,8 +14,8 @@
 
 namespace CoreShop\Model\Order;
 
+use CoreShop\Model\Order;
 use Pimcore\Model\Object\Concrete;
-use Pimcore\Model\Object\CoreShopOrder;
 
 class TotalPayed
 {
@@ -28,7 +28,7 @@ class TotalPayed
      */
     public static function compute($object, $context)
     {
-        if ($object instanceof CoreShopOrder) {
+        if ($object instanceof Order) {
             return $object->getPayedTotal();
         }
 

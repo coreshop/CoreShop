@@ -28,11 +28,19 @@ use Pimcore\Model\Object;
 use Pimcore\Model\Object\CoreShopPayment;
 use Pimcore\Model\User as PimcoreUser;
 use Pimcore\Model\Version;
-use Pimcore\Tool\Admin;
 use Pimcore\Tool\Authentication;
 
 class Order extends Base
 {
+    /**
+     * Create a new Order
+     *
+     * @return Object\CoreShopOrder
+     */
+    public static function create() {
+        return new Object\CoreShopOrder();
+    }
+
     /**
      * Creates next OrderNumber
      *
@@ -80,7 +88,7 @@ class Order extends Base
         $i = 1;
 
         foreach ($cart->getItems() as $cartItem) {
-            $item = new Object\CoreShopOrderItem();
+            $item = Item::create();
             $item->setKey($i);
             $item->setParent(Object\Service::createFolderByPath($this->getFullPath() . "/items/"));
             $item->setPublished(true);

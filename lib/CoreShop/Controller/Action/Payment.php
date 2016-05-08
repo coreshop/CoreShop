@@ -21,7 +21,6 @@ use CoreShop\Model\Order\State;
 use CoreShop\Plugin;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object\CoreShopPayment;
-use Pimcore\Model\Object\CoreShopOrder;
 use Pimcore\Model\Object\CoreShopUser;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 

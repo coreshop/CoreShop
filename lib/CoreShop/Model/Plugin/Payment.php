@@ -24,7 +24,6 @@ use CoreShop\Model\TaxCalculator;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Date;
-use Pimcore\Model\Object\CoreShopOrder;
 use Pimcore\Model\Object\Service;
 
 abstract class Payment implements AbstractPlugin
@@ -145,7 +144,7 @@ abstract class Payment implements AbstractPlugin
             $language = \Zend_Registry::get("Zend_Locale");
         }
 
-        $order = new CoreShopOrder();
+        $order = Order::create();
         $order->setKey(\Pimcore\File::getValidFilename($orderNumber));
         $order->setOrderNumber($orderNumber);
         $order->setParent(Service::createFolderByPath('/coreshop/orders/' . date('Y/m/d')));

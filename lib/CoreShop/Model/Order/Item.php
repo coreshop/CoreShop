@@ -16,6 +16,7 @@ namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Base;
 use CoreShop\Model\Order;
+use Pimcore\Model\Object\CoreShopOrderItem;
 
 /**
  * Class Item
@@ -23,6 +24,15 @@ use CoreShop\Model\Order;
  */
 class Item extends Base
 {
+    /**
+     * Create new CoreShopOrderItem
+     *
+     * @return CoreShopOrderItem
+     */
+    public static function create() {
+        return new CoreShopOrderItem();
+    }
+    
     /**
      * Calculate Total of OrderItem without tax
      *

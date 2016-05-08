@@ -48,7 +48,7 @@ class Payment extends Base
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof Object\CoreShopOrder) {
+            if ($parent instanceof Order) {
                 return $parent;
             }
 
