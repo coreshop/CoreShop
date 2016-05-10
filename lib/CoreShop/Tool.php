@@ -66,9 +66,9 @@ class Tool
      * @param $number
      * @return string
      */
-    public static function numberFormat($number)
+    public static function numberFormat($number, $decimalPrecision = 2)
     {
-        return number_format($number, 2, ',', '');
+        return number_format($number, $decimalPrecision, ',', '');
     }
 
     /**
