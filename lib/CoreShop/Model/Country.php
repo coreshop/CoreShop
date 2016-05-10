@@ -65,16 +65,6 @@ class Country extends AbstractModel
     public $zone;
 
     /**
-     * save currency
-     *
-     * @return mixed
-     */
-    public function save()
-    {
-        return $this->getDao()->save();
-    }
-
-    /**
      * Get Currency by ID
      *
      * @param $id

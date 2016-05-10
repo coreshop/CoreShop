@@ -32,16 +32,6 @@ class NumberRange extends AbstractModel
     public $number;
 
     /**
-     * Save NumberRange
-     *
-     * @return mixed
-     */
-    public function save()
-    {
-        return $this->getDao()->save();
-    }
-
-    /**
      * get NumberRange by id
      *
      * @param $id

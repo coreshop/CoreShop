@@ -48,16 +48,6 @@ class AbstractRange extends AbstractModel
     public $delimiter2;
 
     /**
-     * Save AbstractRange
-     *
-     * @return mixed
-     */
-    public function save()
-    {
-        return $this->getDao()->save();
-    }
-
-    /**
      * Delete AbstractRange
      *
      * @return mixed
@@ -72,7 +62,7 @@ class AbstractRange extends AbstractModel
             }
         }
 
-        return $this->getDao()->delete();
+        return parent::delete();
     }
 
     /**

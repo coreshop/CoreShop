@@ -125,16 +125,6 @@ class Carrier extends AbstractModel
     public $class;
 
     /**
-     * Save carrier
-     *
-     * @return mixed
-     */
-    public function save()
-    {
-        return $this->getDao()->save();
-    }
-
-    /**
      * get Carrier by ID
      *
      * @param $id

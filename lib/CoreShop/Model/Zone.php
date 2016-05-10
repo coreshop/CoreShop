@@ -33,16 +33,6 @@ class Zone extends AbstractModel
     public $active;
 
     /**
-     * save currency
-     *
-     * @return mixed
-     */
-    public function save()
-    {
-        return $this->getDao()->save();
-    }
-
-    /**
      * Get Zone by ID
      *
      * @param $id

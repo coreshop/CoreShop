@@ -75,7 +75,7 @@ class Index extends AbstractModel
             $worker->deleteIndexStructures();
         }
 
-        $this->getDao()->delete();
+        parent::delete();
     }
 
     /**

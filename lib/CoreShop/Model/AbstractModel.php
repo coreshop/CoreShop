@@ -137,7 +137,7 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     * save to database
+     * save model to database
      */
     public function save()
     {
@@ -148,6 +148,22 @@ class AbstractModel extends Model\AbstractModel
         //unset object in cache
         Cache::clearTag($cacheKey);
         \Zend_Registry::set($cacheKey, null);
+    }
+
+    /**
+     * delete model
+     *
+     * @return bool
+     */
+    public function delete()
+    {
+        $cacheKey = self::getCacheKey(get_called_class(), $this->getId());
+
+        //unset object in cache
+        Cache::clearTag($cacheKey);
+        \Zend_Registry::set($cacheKey, null);
+        
+        return $this->getDao()->delete();
     }
 
     /**

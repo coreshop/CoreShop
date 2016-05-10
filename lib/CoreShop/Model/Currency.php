@@ -48,26 +48,6 @@ class Currency extends AbstractModel
     public $exchangeRate;
 
     /**
-     * Save Currency
-     *
-     * @return mixed
-     */
-    public function save()
-    {
-        return $this->getDao()->save();
-    }
-
-    /**
-     * Delete Currency
-     *
-     * @return mixed
-     */
-    public function delete()
-    {
-        return $this->getDao()->delete();
-    }
-
-    /**
      * Get Currency by name
      *
      * @param $name
