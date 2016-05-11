@@ -78,6 +78,16 @@ class User extends Base
     }
 
     /**
+     * Create new User instacne
+     * 
+     * @return User
+     */
+    public static function create()
+    {
+        return new CoreShopUser();
+    }
+    
+    /**
      * Auth User
      *
      * @param $password

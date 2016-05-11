@@ -26,7 +26,7 @@ class CoreShop_CheckoutController extends Action
         parent::preDispatch();
 
         //Checkout is not allowed in CatalogMode
-        if (\CoreShop\Config::isCatalogMode()) {
+        if (\CoreShop\Model\Configuration::isCatalogMode()) {
             $this->redirect($this->view->url(array(), "coreshop_index"));
         }
         
@@ -43,7 +43,7 @@ class CoreShop_CheckoutController extends Action
     
     public function indexAction()
     {
-        if ($this->session->user instanceof CoreShopUser) {
+        if ($this->session->user instanceof \CoreShop\Model\User) {
             $this->_redirect($this->view->url(array("act" => "address"), "coreshop_checkout"));
         }
 
@@ -167,15 +167,15 @@ class CoreShop_CheckoutController extends Action
 
     public function thankyouAction()
     {
-        if (!$this->session->user instanceof CoreShopUser) {
+        if (!$this->session->user instanceof \CoreShop\Model\User) {
             $this->_redirect($this->view->url(array("act" => "index"), "coreshop_checkout"));
             exit;
         }
 
-        $this->view->order = CoreShopOrder::getById($this->session->orderId);
+        $this->view->order = \CoreShop\Model\Order::getById($this->session->orderId);
 
 
-        if (!$this->view->order instanceof CoreShopOrder) {
+        if (!$this->view->order instanceof \CoreShop\Model\Order) {
             $this->_redirect("/" . $this->language . "/shop");
         }
 
@@ -198,7 +198,7 @@ class CoreShop_CheckoutController extends Action
     
     protected function checkIsAllowed()
     {
-        if (!$this->session->user instanceof CoreShopUser) {
+        if (!$this->session->user instanceof \CoreShop\Model\User) {
             $this->_redirect($this->view->url(array("act" => "index"), "coreshop_checkout"));
             exit;
         }

@@ -22,9 +22,9 @@ class CoreShop_ProductController extends Action
     public function detailAction()
     {
         $id = $this->getParam("product");
-        $product = CoreShopProduct::getById($id);
+        $product = \CoreShop\Model\Product::getById($id);
         
-        if ($product instanceof CoreShopProduct) {
+        if ($product instanceof \CoreShop\Model\Product) {
             $this->view->product = $product;
             
             $this->view->seo = array(
@@ -46,11 +46,11 @@ class CoreShop_ProductController extends Action
     public function previewAction()
     {
         $id = $this->getParam("id");
-        $product = CoreShopProduct::getById($id);
+        $product = \CoreShop\Model\Product::getById($id);
 
         $this->disableLayout();
 
-        if ($product instanceof $product) {
+        if ($product instanceof \CoreShop\Model\Product) {
             $this->view->product = $product;
         } else {
             throw new \Exception(sprintf("Product with id %s not found", $id));
@@ -65,9 +65,9 @@ class CoreShop_ProductController extends Action
         $perPage = $this->getParam("perPage", 12);
         $type = $this->getParam("type", "list");
 
-        $category = CoreShopCategory::getById($id);
+        $category = \CoreShop\Model\Category::getById($id);
 
-        if ($category instanceof CoreShopCategory) {
+        if ($category instanceof \CoreShop\Model\Category) {
             if ($category->getFilterDefinition() instanceof \CoreShop\Model\Product\Filter) {
                 $index = $category->getFilterDefinition()->getIndex();
                 $indexService = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());

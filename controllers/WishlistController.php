@@ -42,9 +42,9 @@ class CoreShop_WishlistController extends Action
     public function addAction()
     {
         $product_id = $this->getParam("product", null);
-        $product = CoreShopProduct::getById($product_id);
+        $product = \CoreShop\Model\Product::getById($product_id);
 
-        if ($product instanceof CoreShopProduct && $product->getEnabled() && $product->getAvailableForOrder()) {
+        if ($product instanceof \CoreShop\Model\Product && $product->getEnabled() && $product->getAvailableForOrder()) {
             $checkAvailability = $this->model->allowedToAdd($product->getId());
 
             if ($checkAvailability === true) {
@@ -70,9 +70,9 @@ class CoreShop_WishlistController extends Action
     public function removeAction()
     {
         $product_id = $this->getParam("product", null);
-        $product = CoreShopProduct::getById($product_id);
+        $product = \CoreShop\Model\Product::getById($product_id);
 
-        if ($product instanceof CoreShopProduct) {
+        if ($product instanceof \CoreShop\Model\Product) {
             $this->model->remove($product->getId());
 
             $this->_helper->json(array("success" => true, "wishlist" => $this->model->getWishlist()));

@@ -34,7 +34,7 @@ class CoreShop_CartController extends Action
         parent::preDispatch();
 
         //Cart is not allowed in CatalogMode
-        if (\CoreShop\Config::isCatalogMode()) {
+        if (\CoreShop\Model\Configuration::isCatalogMode()) {
             $this->redirect($this->view->url(array(), "coreshop_index"));
         }
 
@@ -45,7 +45,7 @@ class CoreShop_CartController extends Action
     {
         $product_id = $this->getParam("product", null);
         $amount = $this->getParam("amount", 1);
-        $product = CoreShopProduct::getById($product_id);
+        $product = \CoreShop\Model\Product::getById($product_id);
         $isAllowed = true;
         $message = "is not allowed";
 
@@ -64,7 +64,7 @@ class CoreShop_CartController extends Action
         }
 
         if ($isAllowed) {
-            if ($product instanceof CoreShopProduct && $product->getEnabled() && $product->getAvailableForOrder()) {
+            if ($product instanceof \CoreShop\Model\Product && $product->getEnabled() && $product->getAvailableForOrder()) {
                 $item = $this->cart->addItem($product, $amount);
 
                 \Pimcore::getEventManager()->trigger('coreshop.cart.postAdd', $this, array("request" => $this->getRequest(), "product" => $product, "cart" => $this->cart, "cartItem" => $item));
@@ -81,7 +81,7 @@ class CoreShop_CartController extends Action
     public function removeAction()
     {
         $cartItem = $this->getParam("cartItem", null);
-        $item = CoreShopCartItem::getById($cartItem);
+        $item = \CoreShop\Model\Cart\Item::getById($cartItem);
         
         $isAllowed = true;
         $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preRemove', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
@@ -95,7 +95,7 @@ class CoreShop_CartController extends Action
         unset($this->session->order);
         
         if ($isAllowed) {
-            if ($item instanceof CoreShopCartItem) {
+            if ($item instanceof \CoreShop\Model\Cart\Item) {
                 $this->cart->removeItem($item);
                 $this->reloadCart();
 
@@ -114,7 +114,7 @@ class CoreShop_CartController extends Action
     {
         $cartItem = $this->getParam("cartItem", null);
         $amount = $this->getParam("amount");
-        $item = CoreShopCartItem::getById($cartItem);
+        $item = \CoreShop\Model\Cart\Item::getById($cartItem);
         
         $isAllowed = true;
         $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preModify', $this, array("cartItem" => $item, "cart" => $this->cart, "request" => $this->getRequest()), function ($v) {
@@ -128,7 +128,7 @@ class CoreShop_CartController extends Action
         unset($this->session->order);
         
         if ($isAllowed) {
-            if ($item instanceof CoreShopCartItem) {
+            if ($item instanceof \CoreShop\Model\Cart\Item) {
                 $this->cart->modifyItem($item, $amount);
 
                 \Pimcore::getEventManager()->trigger('coreshop.cart.postModify', $this, array("item" => $item, "cart" => $this->cart));

@@ -105,6 +105,15 @@ class Product extends Base
     }
 
     /**
+     * Create new Product instance
+     *
+     * @return Product
+     */
+    public static function create() {
+        return new Object\CoreShopProduct();
+    }
+
+    /**
      * Get Image for Product
      *
      * @return bool|\Pimcore\Model\Asset

@@ -17,8 +17,6 @@ use CoreShop\Tool;
 use CoreShop\Plugin;
 use CoreShop\Exception;
 use CoreShop\Model\Country;
-use Pimcore\Model\Object\CoreShopUser;
-use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object;
 
 class CoreShop_UserController extends Action
@@ -28,12 +26,12 @@ class CoreShop_UserController extends Action
         parent::preDispatch();
 
         //Users are not allowed in CatalogMode
-        if (\CoreShop\Config::isCatalogMode()) {
+        if (\CoreShop\Model\Configuration::isCatalogMode()) {
             $this->redirect($this->view->url(array(), "coreshop_index"));
         }
 
         if ($this->getParam("action") != "login" && $this->getParam("action") != "register") {
-            if (!$this->session->user instanceof CoreShopUser) {
+            if (!$this->session->user instanceof \CoreShop\Model\User) {
                 $this->_redirect($this->view->url(array("lang" => $this->language), "coreshop_index"));
                 exit;
             }
@@ -98,9 +96,9 @@ class CoreShop_UserController extends Action
         $base = $this->getParam("_base");
 
         if ($this->getRequest()->isPost()) {
-            $user = CoreShopUser::getUniqueByEmail($this->getParam("email"));
+            $user = \CoreShop\Model\User::getUniqueByEmail($this->getParam("email"));
 
-            if ($user instanceof CoreShopUser) {
+            if ($user instanceof \CoreShop\Model\User) {
                 try {
                     $isAuthenticated = $user->authenticate($this->getParam("password"));
 
@@ -113,7 +111,7 @@ class CoreShop_UserController extends Action
                         if (count($this->cart->getItems()) <= 0) {
                             $cart = $user->getLatestCart();
 
-                            if ($cart instanceof CoreShopCart) {
+                            if ($cart instanceof \CoreShop\Model\Cart) {
                                 $this->session->cartId = $cart->getId();
                             }
                         }
@@ -158,12 +156,12 @@ class CoreShop_UserController extends Action
             try {
                 $isGuest = intval($this->getParam("isGuest", 0)) === 1;
 
-                if ($isGuest && !\CoreShop\Config::isGuestCheckoutActivated()) {
+                if ($isGuest && !\CoreShop\Model\Configuration::isGuestCheckoutActivated()) {
                     throw new Exception\UnsupportedException("Guest checkout is disabled");
                 }
 
                 //Check User exists
-                if (CoreShopUser::getUserByEmail($userParams['email']) instanceof CoreShopUser) {
+                if (\CoreShop\Model\User::getUserByEmail($userParams['email']) instanceof \CoreShop\Model\User) {
                     throw new \Exception("E-Mail already exists");
                 }
 
@@ -199,7 +197,7 @@ class CoreShop_UserController extends Action
                     $this->cart->save();
                 }
 
-                $user = new CoreShopUser();
+                $user = \CoreShop\Model\User::create();
                 $user->setKey($key);
                 $user->setPublished(true);
                 $user->setParent(Pimcore\Model\Object\Service::createFolderByPath($folder));
