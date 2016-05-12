@@ -101,5 +101,15 @@
             <variables>lang,act</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>coreshop_message</name>
+            <pattern>#(\w+)/message/#</pattern>
+            <reverse>/%lang/message</reverse>
+            <module>CoreShop</module>
+            <controller>message</controller>
+            <action>index</action>
+            <variables>lang,act</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>

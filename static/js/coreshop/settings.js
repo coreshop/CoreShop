@@ -48,6 +48,8 @@ pimcore.plugin.coreshop.settings = Class.create({
 
     getTabPanel: function () {
         if (!this.panel) {
+            var me = this;
+
             this.panel = Ext.create('Ext.panel.Panel', {
                 id: 'coreshop_settings',
                 title: t('coreshop_settings'),
@@ -76,6 +78,107 @@ pimcore.plugin.coreshop.settings = Class.create({
                 }
             });
             exchangeRatesStore.load();
+
+            var messagingLangTabs = [];
+
+            Ext.each(pimcore.settings.websiteLanguages, function (lang) {
+                var shortLang = lang.toUpperCase();
+
+                if(shortLang.indexOf('-') > 0) {
+                    shortLang = shortLang.split('-');
+                    shortLang = shortLang[0];
+                }
+
+                var tab = {
+                    title: pimcore.available_languages[lang],
+                    iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
+                    layout:'form',
+                    items: [
+                        {
+                            name: 'SYSTEM.MESSAGING.MAIL.CUSTOMER.' + shortLang,
+                            value:me.getValue('SYSTEM.MESSAGING.MAIL.CUSTOMER.' + shortLang),
+                            fieldLabel: t('coreshop_messaging_customer_email'),
+                            labelWidth: 350,
+                            fieldCls: 'pimcore_droptarget_input',
+                            xtype: 'textfield',
+                            listeners: {
+                                render: function (el) {
+                                    new Ext.dd.DropZone(el.getEl(), {
+                                        reference: this,
+                                        ddGroup: 'element',
+                                        getTargetFromEvent: function (e) {
+                                            return this.getEl();
+                                        }.bind(el),
+
+                                        onNodeOver : function (target, dd, e, data) {
+                                            data = data.records[0].data;
+
+                                            if (data.elementType == 'document') {
+                                                return Ext.dd.DropZone.prototype.dropAllowed;
+                                            }
+
+                                            return Ext.dd.DropZone.prototype.dropNotAllowed;
+                                        },
+
+                                        onNodeDrop : function (target, dd, e, data) {
+                                            data = data.records[0].data;
+
+                                            if (data.elementType == 'document') {
+                                                this.setValue(data.id);
+                                                return true;
+                                            }
+
+                                            return false;
+                                        }.bind(el)
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            name: 'SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang,
+                            value:me.getValue('SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang),
+                            fieldLabel: t('coreshop_messaging_contact_email'),
+                            labelWidth: 350,
+                            fieldCls: 'pimcore_droptarget_input',
+                            xtype: 'textfield',
+                            listeners: {
+                                render: function (el) {
+                                    new Ext.dd.DropZone(el.getEl(), {
+                                        reference: this,
+                                        ddGroup: 'element',
+                                        getTargetFromEvent: function (e) {
+                                            return this.getEl();
+                                        }.bind(el),
+
+                                        onNodeOver : function (target, dd, e, data) {
+                                            data = data.records[0].data;
+
+                                            if (data.elementType == 'document') {
+                                                return Ext.dd.DropZone.prototype.dropAllowed;
+                                            }
+
+                                            return Ext.dd.DropZone.prototype.dropNotAllowed;
+                                        },
+
+                                        onNodeDrop : function (target, dd, e, data) {
+                                            data = data.records[0].data;
+
+                                            if (data.elementType == 'document') {
+                                                this.setValue(data.id);
+                                                return true;
+                                            }
+
+                                            return false;
+                                        }.bind(el)
+                                    });
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                messagingLangTabs.push(tab);
+            });
 
             this.layout = Ext.create('Ext.form.Panel', {
                 bodyStyle:'padding:20px 5px 20px 5px;',
@@ -157,6 +260,28 @@ pimcore.plugin.coreshop.settings = Class.create({
                                 xtype: 'checkbox',
                                 name: 'SYSTEM.BASE.GUESTCHECKOUT',
                                 checked: this.getValue('SYSTEM.BASE.GUESTCHECKOUT')
+                            }
+                        ]
+                    },
+                    {
+                        xtype:'fieldset',
+                        title: t('coreshop_messaging'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight:true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: { width: 600 },
+                        items :[
+                            {
+                                xtype: 'tabpanel',
+                                activeTab: 0,
+                                width : '100%',
+                                defaults: {
+                                    autoHeight:true,
+                                    bodyStyle:'padding:10px;'
+                                },
+                                items: messagingLangTabs
                             }
                         ]
                     },

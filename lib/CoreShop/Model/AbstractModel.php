@@ -14,6 +14,8 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
+use CoreShop\Model\Listing\AbstractListing;
 use Pimcore\Cache;
 use Pimcore\Model;
 use Pimcore\Tool;
@@ -134,6 +136,22 @@ class AbstractModel extends Model\AbstractModel
     protected static function getCacheKey($className, $append)
     {
         return "coreshop_" . str_replace("\\", "_", $className) . "_" . $append;
+    }
+
+    /**
+     * get listing class
+     *
+     * @return AbstractListing
+     * @throws Exception
+     */
+    public static function getList() {
+        $listClass = get_called_class() . "\\Listing";
+
+        if(!Tool::classExists($listClass)) {
+            throw new Exception("Listing Class $listClass not found!");
+        }
+
+        return new $listClass();
     }
 
     /**

@@ -45,7 +45,7 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
             // create new panel
             this.layout = new Ext.Panel({
                 id: this.layoutId,
-                title: t('coreshop_' + this.type),
+                title: this.getTitle(),
                 iconCls: this.iconCls,
                 border: false,
                 layout: 'border',
@@ -69,6 +69,10 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
         }
 
         return this.layout;
+    },
+
+    getTitle : function() {
+        return t('coreshop_' + this.type);
     },
 
     refresh : function () {
@@ -111,7 +115,7 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                     items: [
                         {
                             // add button
-                            text: t('coreshop_' + this.type + '_add'),
+                            text: t('add'),
                             iconCls: 'pimcore_icon_add',
                             handler: this.addItem.bind(this)
                         }
@@ -156,14 +160,12 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
     },
 
     addItem: function () {
-        Ext.MessageBox.prompt(t('coreshop_' + this.type + '_add'), t('coreshop_' + this.type + '_enter_the_name'),
+        Ext.MessageBox.prompt(t('add'), t('coreshop_enter_the_name'),
             this.addItemComplete.bind(this), null, null, '');
     },
 
     addItemComplete: function (button, value, object) {
-
-        var regresult = value.match(/[a-zA-Z0-9_\-]+/);
-        if (button == 'ok' && value.length > 2 && regresult == value) {
+        if (button == 'ok' && value.length > 2) {
             Ext.Ajax.request({
                 url: this.url.add,
                 params: {
@@ -234,7 +236,9 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                     var res = Ext.decode(response.responseText);
 
                     if (res.success) {
-                        this.panels[panelKey] = new pimcore.plugin.coreshop[this.type].item(this, res.data, panelKey, this.type, this.storeId);
+                        var itemClass = this.getItemClass();
+
+                        this.panels[panelKey] = new itemClass(this, res.data, panelKey, this.type, this.storeId);
                     } else {
                         //TODO: Show messagebox
                         Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
@@ -243,6 +247,10 @@ pimcore.plugin.coreshop.abstract.panel = Class.create({
                 }.bind(this)
             });
         }
+    },
+
+    getItemClass : function() {
+        return pimcore.plugin.coreshop[this.type].item;
     },
 
     getTabPanel: function () {

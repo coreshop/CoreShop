@@ -553,6 +553,31 @@ class Install
     }
 
     /**
+     * Installs the Messaging Mails
+     */
+    public function installMessagingMails() {
+        $this->installDocuments("messaging");
+
+        $validLanguages = explode(",", \Pimcore\Config::getSystemConfig()->general->validLanguages);
+
+        foreach ($validLanguages as $language) {
+            $locale = new \Zend_Locale($language);
+            $language = $locale->getLanguage();
+
+            $custEmail = Document::getByPath("/" . $language . "/shop/email/message-customer");
+            $contEmail = Document::getByPath("/" . $language . "/shop/email/message-contact");
+
+            if($custEmail instanceof Document) {
+                Configuration::set("SYSTEM.MESSAGING.MAIL.CUSTOMER." . strtoupper($language), $custEmail->getId());
+            }
+
+            if($contEmail instanceof Document) {
+                Configuration::set("SYSTEM.MESSAGING.MAIL.CONTACT." . strtoupper($language), $contEmail->getId());
+            }
+        }
+    }
+    
+    /**
      * Removes CoreShop CustomView
      *
      * @throws \Zend_Config_Exception

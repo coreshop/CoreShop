@@ -242,6 +242,38 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
+
+                    var messagingMenu = [];
+
+                    if (user.isAllowed('coreshop_permission_messaging_contact')) {
+                        messagingMenu.push({
+                            text: t('coreshop_messaging_contact'),
+                            iconCls: 'coreshop_icon_messaging_contact',
+                            handler: this.openMessagingContact
+                        });
+                    }
+
+                    if (user.isAllowed('coreshop_permission_messaging_thread_state')) {
+                        messagingMenu.push({
+                            text: t('coreshop_messaging_threadstate'),
+                            iconCls: 'coreshop_icon_messaging_thread_state',
+                            handler: this.openMessagingThreadState
+                        });
+                    }
+
+                    if (messagingMenu.length > 0) {
+                        coreShopMenuItems.push({
+                            text: t('coreshop_messaging'),
+                            iconCls: 'coreshop_icon_messaging',
+                            hideOnClick: false,
+                            menu: {
+                                cls: 'pimcore_navigation_flyout',
+                                shadow: false,
+                                items: messagingMenu
+                            }
+                        });
+                    }
+
                     if (user.admin) {
                         coreShopMenuItems.push({
                             text: t('coreshop_update'),
@@ -628,6 +660,24 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
             pimcore.globalmanager.add('coreshop_products', new pimcore.plugin.coreshop.product.grid());
         }
     },
+
+    openMessagingContact : function() {
+        try {
+            pimcore.globalmanager.get('coreshop_messaging_contacts_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_messaging_contacts_panel', new pimcore.plugin.coreshop.messaging.contact.panel());
+        }
+    },
+
+    openMessagingThreadState : function() {
+        try {
+            pimcore.globalmanager.get('coreshop_messaging_thread_state_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_messaging_thread_state_panel', new pimcore.plugin.coreshop.messaging.threadstate.panel());
+        }
+    }
 });
 
 new pimcore.plugin.coreshop();

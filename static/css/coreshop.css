@@ -281,6 +281,18 @@
     background: url(/plugins/CoreShop/static/img/24/state.png) no-repeat scroll left center transparent !important;
 }
 
+.coreshop_icon_messaging {
+    background: url(/plugins/CoreShop/static/img/24/messaging.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_icon_messaging_contact {
+    background: url(/plugins/CoreShop/static/img/24/messaging_contact.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_icon_messaging_thread_state {
+    background: url(/plugins/CoreShop/static/img/24/messaging_thread_state.png) no-repeat scroll left center transparent !important;
+}
+
 .coreshop_carrier_delete {
     position: absolute;
     top: 0px;

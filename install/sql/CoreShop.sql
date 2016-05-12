@@ -489,7 +489,9 @@ VALUES
   ('coreshop_permission_filters'),
   ('coreshop_permission_states'),
   ('coreshop_permission_manufacturers'),
-  ('coreshop_permission_indexes');
+  ('coreshop_permission_indexes'),
+  ('coreshop_permission_messaging_contact'),
+  ('coreshop_permission_messaging_thread_state');
 
 DROP TABLE IF EXISTS `coreshop_product_specificprice`;
 CREATE TABLE `coreshop_product_specificprice` (
@@ -540,4 +542,37 @@ CREATE TABLE `coreshop_manufacturers` (
   `name` varchar(255) NOT NULL,
   `image` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `coreshop_messaging_contact` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `email` varchar(255) NULL,
+  `description` varchar(1000) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `coreshop_messaging_thread_state` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `color` varchar(255) NULL,
+  `finished` TINYINT(1) NOT NULL;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `coreshop_messaging_thread` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `userId` int NULL,
+  `orderId` int NULL,
+  `statusId` int NULL,
+  `token` varchar(255) NOT NULL,
+  `contactId` int NOT NULL,
+  `language` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `coreshop_messaging_message` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `threadId` int NOT NULL,
+  `adminUserId` int(11) unsigned NULL,
+  `message` text NOT NULL,
+  `read` tinyint(1)  NOT NULL DEFAULT '1',
+  FOREIGN KEY (`adminUserId`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
