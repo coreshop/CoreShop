@@ -344,3 +344,5 @@
 "coreshop_product_name","Name"
 "coreshop_product_quantity","Menge"
 "coreshop_product_price","Preis"
+"coreshop_debug","Debug"
+"coreshop_show_debug","Debug Helfer anzeigen"

@@ -1,0 +1,57 @@
+#coreshop-debug {
+    .coreshop-debug-clickable{
+        cursor: pointer;
+        float:right;
+    }
+
+    .coreshop-debug-panel-heading span {
+        margin-top: -20px;
+        font-size: 15px;
+        color:white;
+    }
+
+    .coreshop-debug-panel {
+        position: fixed;
+        bottom: 0;
+        right: 100px;
+        width: 300px;
+        margin-bottom: 0;
+    }
+
+    // Contextual variations
+
+    .coreshop-debug-panel {
+        background: white;
+
+        > .coreshop-debug-panel-heading {
+            color: white;
+            background-color: #36D672;
+            border-color: transparent;
+            padding: 10px 15px;
+
+            + .coreshop-debug-panel-collapse > .coreshop-debug-panel-body {
+                border-top-color: transparent;
+            }
+        }
+
+        .coreshop-debug-panel-title {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 16px;
+            color: inherit;
+        }
+    }
+
+    .coreshop-debug-table {
+        background-color: transparent;
+        width: 100%;
+        max-width: 100%;
+
+        td {
+            padding: 8px;
+            line-height: 1.42857;
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+        }
+    }
+}

@@ -84,6 +84,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             if ($frontController instanceof \Zend_Controller_Front) {
                 $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
+                $frontController->registerPlugin(new Controller\Plugin\Debug());
             }
         });
 

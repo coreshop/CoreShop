@@ -98,6 +98,24 @@ pimcore.plugin.coreshop.settings = Class.create({
                 items: [
                     {
                         xtype:'fieldset',
+                        title: t('coreshop_debug'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight:true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: { width: 600 },
+                        items :[
+                            {
+                                fieldLabel: t('coreshop_show_debug'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.BASE.SHOWDEBUG',
+                                checked: this.getValue('SYSTEM.BASE.SHOWDEBUG')
+                            }
+                        ]
+                    },
+                    {
+                        xtype:'fieldset',
                         title: t('coreshop_base'),
                         collapsible: true,
                         collapsed: true,
