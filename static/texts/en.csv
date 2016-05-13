@@ -333,3 +333,4 @@
 "coreshop_messaging_message","Message"
 "coreshop_messaging_message_send","Send Message"
 "coreshop_messaging_new_message_error","Error sending new Message"
+"coreshop_token","Token"
