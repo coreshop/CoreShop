@@ -42,6 +42,25 @@ class Contact extends AbstractModel {
     public $description;
 
     /**
+     * Return Threads
+     *
+     * @return Thread[]
+     */
+    public function getThreads() {
+        $list = Thread::getList();
+        $list->setCondition("contactId = ?", array($this->getId()));
+        $threads = [];
+
+        foreach($list->load() as $thread) {
+            if(!$thread->getStatus()->getFinished()) {
+                $threads[] = $thread;
+            }
+        }
+
+        return $threads;
+    }
+
+    /**
      * @return int
      */
     public function getId()

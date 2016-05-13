@@ -65,14 +65,12 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
     },
 
     getGrid : function () {
-        var itemsPerPage = 30;
-
         this.store = new Ext.data.JsonStore({
             remoteSort: true,
             remoteFilter: true,
             autoDestroy: true,
             autoSync: true,
-            pageSize: itemsPerPage,
+            pageSize: pimcore.helpers.grid.getDefaultPageSize(),
             proxy: {
                 type: 'ajax',
                 url: '/plugin/CoreShop/admin_Order/get-orders',
@@ -160,7 +158,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             region: 'center',
 
             // paging bar on the bottom
-            bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store, itemsPerPage),
+            bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
             listeners : {
                 itemclick : this.openOrder
             }

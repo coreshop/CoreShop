@@ -16,6 +16,7 @@
 namespace CoreShop\Model\Messaging\Thread;
 
 use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Messaging\Thread;
 
 class State extends AbstractModel {
 
@@ -40,6 +41,19 @@ class State extends AbstractModel {
      * @var boolean
      */
     public $finished;
+
+    /**
+     * Return Threads List
+     *
+     * @return \CoreShop\Model\Listing\AbstractListing
+     * @throws \CoreShop\Exception
+     */
+    public function getThreadsList() {
+        $list = Thread::getList();
+        $list->setCondition("statusId = ?", array($this->getId()));
+
+        return $list;
+    }
 
     /**
      * @return int

@@ -574,5 +574,6 @@ CREATE TABLE `coreshop_messaging_message` (
   `adminUserId` int(11) unsigned NULL,
   `message` text NOT NULL,
   `read` tinyint(1)  NOT NULL DEFAULT '1',
+  `creationDate` bigint NOT NULL,
   FOREIGN KEY (`adminUserId`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

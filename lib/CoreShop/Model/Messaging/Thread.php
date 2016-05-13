@@ -104,6 +104,23 @@ class Thread extends AbstractModel {
     }
 
     /**
+     * Create a new message for thread
+     *
+     * @param $messageText string
+     * @return Message
+     * @throws \Exception
+     */
+    public function createMessage($messageText) {
+        $message = new Message();
+        $message->setThread($this);
+        $message->setMessage($messageText);
+        $message->setRead(false);
+        $message->save();
+
+        return $message;
+    }
+
+    /**
      * Get all messages
      *
      * @return Message[]

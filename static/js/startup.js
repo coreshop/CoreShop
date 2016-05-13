@@ -245,6 +245,16 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
                     var messagingMenu = [];
 
+
+
+                    if (user.isAllowed('coreshop_permission_messaging_thread')) {
+                        messagingMenu.push({
+                            text: t('coreshop_messaging_thread'),
+                            iconCls: 'coreshop_icon_messaging_thread',
+                            handler: this.openMessagingThread
+                        });
+                    }
+
                     if (user.isAllowed('coreshop_permission_messaging_contact')) {
                         messagingMenu.push({
                             text: t('coreshop_messaging_contact'),
@@ -676,6 +686,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_messaging_thread_state_panel', new pimcore.plugin.coreshop.messaging.threadstate.panel());
+        }
+    },
+
+    openMessagingThread : function() {
+        try {
+            pimcore.globalmanager.get('coreshop_messaging_thread_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_messaging_thread_panel', new pimcore.plugin.coreshop.messaging.thread.panel());
         }
     }
 });

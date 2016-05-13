@@ -73,12 +73,7 @@ class CoreShop_MessageController extends Action
                     $thread->save();
                 }
 
-                $message = new \CoreShop\Model\Messaging\Message();
-                $message->setThread($thread);
-                $message->setMessage($params['message']);
-                $message->setRead(false);
-                $message->save();
-
+                $message = $thread->createMessage($params['message']);
                 $message->sendCustomerEmail();
                 $message->sendContactEmail();
             }

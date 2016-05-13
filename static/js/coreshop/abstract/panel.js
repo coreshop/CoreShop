@@ -13,7 +13,7 @@
 
 pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
 
-pimcore.plugin.coreshop.abstract.panel = Class.create({
+    pimcore.plugin.coreshop.abstract.panel = Class.create({
 
     layoutId: 'abstract_layout',
     storeId : 'abstract_store',

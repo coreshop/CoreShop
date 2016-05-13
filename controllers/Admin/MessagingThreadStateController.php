@@ -54,7 +54,9 @@ class CoreShop_Admin_MessagingThreadStateController extends Admin
             "qtipCfg" => array(
                 "title" => "ID: " . $state->getId()
             ),
-            "name" => $state->getName()
+            "name" => $state->getName(),
+            "color" => $state->getColor(),
+            "count" => $state->getThreadsList()->count()
         );
 
         $tmp["leaf"] = true;
@@ -72,6 +74,7 @@ class CoreShop_Admin_MessagingThreadStateController extends Admin
             $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
         } else {
             $state = new State();
+            $state->setFinished(false);
             $state->setName($name);
             $state->save();
 

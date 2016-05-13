@@ -293,6 +293,22 @@
     background: url(/plugins/CoreShop/static/img/24/messaging_thread_state.png) no-repeat scroll left center transparent !important;
 }
 
+.coreshop_icon_messaging_thread {
+    background: url(/plugins/CoreShop/static/img/24/messaging_thread.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_inline_icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.coreshop_messaging_message {
+    border: solid 1px #ccc!important;
+    border-radius: 4px;
+    padding: 0 5px!important;
+}
+
 .coreshop_carrier_delete {
     position: absolute;
     top: 0px;
@@ -312,4 +328,23 @@
 .rounded-color {
     border-radius: 20px;
     padding: 0px 10px;
+}
+
+.badge-container {
+    padding:5px 0;
+}
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #777;
+    border-radius: 10px;
 }

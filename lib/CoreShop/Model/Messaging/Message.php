@@ -39,7 +39,7 @@ class Message extends AbstractModel {
     public $thread;
 
     /**
-     * @var User
+     * @var int
      */
     public $adminUserId;
 
@@ -54,10 +54,15 @@ class Message extends AbstractModel {
     public $read;
 
     /**
+     * @var \DateTime
+     */
+    public $creationDate;
+
+    /**
      * Sends the User the message as email
      */
     public function sendCustomerEmail() {
-        $emailDocument = Email::getById(Configuration::get("SYSTEM.MESSAGING.MAIL.CUSTOMER." . $this->getThread()->getLanguage()));
+        $emailDocument = Email::getById(Configuration::get("SYSTEM.MESSAGING.MAIL.CUSTOMER." . strtoupper($this->getThread()->getLanguage())));
         
         if($emailDocument instanceof Email) {
             $mail = new Mail();
@@ -76,7 +81,7 @@ class Message extends AbstractModel {
      * Sends the User the message as email
      */
     public function sendContactEmail() {
-        $emailDocument = Email::getById(Configuration::get("SYSTEM.MESSAGING.MAIL.CONTACT." . $this->getThread()->getLanguage()));
+        $emailDocument = Email::getById(Configuration::get("SYSTEM.MESSAGING.MAIL.CONTACT." . strtoupper($this->getThread()->getLanguage())));
 
         if($emailDocument instanceof Email) {
             $mail = new Mail();
@@ -90,7 +95,20 @@ class Message extends AbstractModel {
             \Logger::warn("Email Document for Messages not found!");
         }
     }
-    
+
+    /**
+     * Save Message
+     */
+    public function save() {
+        if(!$this->getId()) {
+            if(!$this->getCreationDate()) {
+                $this->setCreationDate(time());
+            }
+        }
+
+        parent::save();
+    }
+
     /**
      * @return int
      */
@@ -150,7 +168,7 @@ class Message extends AbstractModel {
     }
 
     /**
-     * @return User
+     * @return int
      */
     public function getAdminUserId()
     {
@@ -158,7 +176,7 @@ class Message extends AbstractModel {
     }
 
     /**
-     * @param User $adminUserId
+     * @param int $adminUserId
      */
     public function setAdminUserId($adminUserId)
     {
@@ -195,5 +213,21 @@ class Message extends AbstractModel {
     public function setRead($read)
     {
         $this->read = $read;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param \DateTime $creationDate
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creationDate = $creationDate;
     }
 }
