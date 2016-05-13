@@ -71,12 +71,19 @@ class CoreShop_Admin_MessagingThreadController extends Admin
                     "admin" => null,
                     "messages" => "",
                     "token" => $thread->getToken(),
-                    "orderId" => $thread->getOrderId()
+                    "reference" => null
                 );
 
                 if($thread->getUser() instanceof \CoreShop\Model\User) {
                     $entry['user'] = $thread->getUser()->getFirstname() . " " . $thread->getUser()->getLastname();
                     $entry['userId'] = $thread->getUserId();
+                }
+
+                if($thread->getProduct() instanceof \CoreShop\Model\Product) {
+                    $entry['reference'] = $thread->getProduct()->getName() . " (" . $thread->getProduct()->getId() . ")";
+                }
+                else if($thread->getOrder() instanceof \CoreShop\Model\Order) {
+                    $entry['reference'] = $thread->getOrder()->getOrderNumber() . " (" . $thread->getOrder()->getId() . ")";
                 }
 
                 $messages = $thread->getMessages();

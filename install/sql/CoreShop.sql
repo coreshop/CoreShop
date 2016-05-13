@@ -561,6 +561,7 @@ CREATE TABLE `coreshop_messaging_thread` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `userId` int NULL,
   `orderId` int NULL,
+  `productId` int NULL,
   `statusId` int NULL,
   `token` varchar(255) NOT NULL,
   `contactId` int NOT NULL,

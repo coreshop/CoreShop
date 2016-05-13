@@ -130,7 +130,13 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                     {
                         text: t("coreshop_token"),
                         dataIndex : 'token',
+                        width : 120,
                         filter : 'string'
+                    },
+                    {
+                        text: t("reference"),
+                        dataIndex : 'reference',
+                        width : 150
                     },
                     {
                         text: t('user'),

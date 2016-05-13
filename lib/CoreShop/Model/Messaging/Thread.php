@@ -18,6 +18,7 @@ namespace CoreShop\Model\Messaging;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Messaging\Thread\State;
 use CoreShop\Model\Order;
+use CoreShop\Model\Product;
 use CoreShop\Model\User;
 
 class Thread extends AbstractModel {
@@ -46,6 +47,16 @@ class Thread extends AbstractModel {
      * @var Order
      */
     public $order;
+
+    /**
+     * @var int
+     */
+    public $productId;
+
+    /**
+     * @var Product
+     */
+    public $product;
 
     /**
      * @var int
@@ -87,13 +98,36 @@ class Thread extends AbstractModel {
      *
      * @param $email string
      * @param $contactId int
+     * @param $orderId int|null
+     * @param $productId int|null
      *
      * @return Thread|null
      */
-    public static function getOpenByEmailAndContact($email, $contactId) {
+    public static function searchThread($email, $contactId, $orderId = null, $productId = null) {
         $list = self::getList();
-        $list->setCondition("email = ? AND contactId = ?", array($email, $contactId));
+
+        $params = array(
+            "email" => $email,
+            "contactId" => $contactId,
+            "orderId" => $orderId,
+            "productId" => $productId
+        );
+        $query = array();
+        $queryParams = array();
+
+        foreach($params as $p=>$v) {
+            if(is_null($v)) {
+                $query[] = "$p is null";
+            }
+            else {
+                $query[] = "$p = ?";
+                $queryParams[] = $v;
+
+            }
+        }
+        $list->setCondition(implode(" AND ", $query), $queryParams);
         $list = $list->load();
+
 
         foreach($list as $thread) {
             if(!$thread->getStatus()->getFinished()) {
@@ -231,6 +265,48 @@ class Thread extends AbstractModel {
 
         $this->order = $order;
         $this->orderId = $order->getId();
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    /**
+     * @param int $productId
+     */
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        if(!$this->product instanceof Product) {
+            $this->product = Product::getById($this->productId);
+        }
+
+        return $this->product;
+    }
+
+    /**
+     * @param Product $product
+     * @throws \Exception
+     */
+    public function setProduct($product)
+    {
+        if(!$product instanceof Product) {
+            throw new \Exception("\$product must be instance of Product");
+        }
+
+        $this->product = $product;
+        $this->productId = $product->getId();
     }
 
     /**

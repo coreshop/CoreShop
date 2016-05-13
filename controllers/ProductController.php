@@ -23,7 +23,8 @@ class CoreShop_ProductController extends Action
     {
         $id = $this->getParam("product");
         $product = \CoreShop\Model\Product::getById($id);
-        
+        $this->view->contacts = \CoreShop\Model\Messaging\Contact::getList()->load();
+
         if ($product instanceof \CoreShop\Model\Product) {
             $this->view->product = $product;
             
@@ -31,7 +32,22 @@ class CoreShop_ProductController extends Action
                 "image" => $product->getImage(),
                 "description" => $product->getMetaDescription() ? $product->getMetaDescription() : $product->getShortDescription()
             );
-            
+
+            if($this->getRequest()->isPost()) {
+                $params = $this->getAllParams();
+
+                $result = \CoreShop\Model\Messaging\Service::handleRequestAndCreateThread($params, $this->language);
+
+                if($result['success']) {
+                    $this->view->success = true;
+                }
+                else {
+                    $this->view->success = false;
+                    $this->view->error = $this->view->translate($result['message']);
+                }
+            }
+
+
             $this->view->headTitle($product->getMetaTitle() ? $product->getMetaTitle() : $product->getName());
         } else {
             throw new CoreShop\Exception(sprintf('Product with id "%s" not found', $id));

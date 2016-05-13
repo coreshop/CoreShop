@@ -35,79 +35,15 @@ class CoreShop_MessageController extends Action
         }
 
         if($this->getRequest()->isPost()) {
-            $params = $this->getAllParams();
-            $success = true;
+            $result = \CoreShop\Model\Messaging\Service::handleRequestAndCreateThread($this->getAllParams(), $this->language);
 
-            if(!$params['contact']) {
-                $this->view->error = $this->view->translate("Subject is not set");
-
-                $success = false;
+            if($result['success']) {
+                $this->view->success = true;
             }
-
-            if(!$params['message']) {
-                $this->view->error = $this->view->translate("Message is not set");
-
-                $success = false;
+            else {
+                $this->view->success = false;
+                $this->view->error = $this->view->translate($result['message']);
             }
-
-            if(!$params['email']) {
-                $this->view->error = $this->view->translate("E-Mail is not set");
-
-                $success = false;
-            }
-
-            if($success) {
-                //Check if there is already an open thread for the email address
-                if(!$thread instanceof CoreShop\Model\Messaging\Thread)
-                    $thread = \CoreShop\Model\Messaging\Thread::getOpenByEmailAndContact($params['email'], $params['contact']);
-
-                if(!$thread instanceof \CoreShop\Model\Messaging\Thread) {
-                    $thread = new \CoreShop\Model\Messaging\Thread();
-                    $thread->setEmail($params['email']);
-                    $thread->setStatusId(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.THREAD.STATE.NEW"));
-
-                    if(\CoreShop\Tool::getUser() instanceof CoreShop\Model\User) {
-                        $thread->setUser(\CoreShop\Tool::getUser());
-                    }
-
-                    if($params['orderNumber']) {
-                        //Check Order Reference
-                        $order = \CoreShop\Model\Order::getByOrderNumber($params['orderNumber'], 1);
-
-                        if ($order instanceof \CoreShop\Model\Order) {
-                            if ($order->getCustomer() instanceof \CoreShop\Model\User) {
-                                if ($order->getCustomer()->getEmail() === $params['email']) {
-                                    $thread->setOrder($order);
-                                }
-                            }
-                        }
-                    }
-
-                    $customer = \CoreShop\Model\User::getUserByEmail($params['email']);
-
-                    if($customer instanceof \CoreShop\Model\User) {
-                        $thread->setUser($customer);
-                    }
-
-                    $thread->setContact(\CoreShop\Model\Messaging\Contact::getById($params['contact']));
-                    $thread->setToken(uniqid());
-                    $thread->setLanguage($this->language);
-                    $thread->save();
-                }
-
-                $message = $thread->createMessage($params['message']);
-
-                
-                //Send Contact
-                $contactEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.MAIL.CONTACT." . strtoupper($thread->getLanguage())));
-                $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
-
-                //Send Customer Info Mail
-                $customerInfoMail = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.MAIL.CUSTOMER." . strtoupper($thread->getLanguage())));
-                $message->sendNotification($customerInfoMail, $thread->getEmail());
-            }
-
-            $this->view->success = $success;
         }
     }
 }
