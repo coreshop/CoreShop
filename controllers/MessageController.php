@@ -70,14 +70,15 @@ class CoreShop_MessageController extends Action
                         $thread->setUser(\CoreShop\Tool::getUser());
                     }
 
-                    if($params['orderNumber'])
-                    //Check Order Reference
-                    $order = \CoreShop\Model\Order::getByOrderNumber($params['orderNumber']);
+                    if($params['orderNumber']) {
+                        //Check Order Reference
+                        $order = \CoreShop\Model\Order::getByOrderNumber($params['orderNumber'], 1);
 
-                    if($order instanceof \CoreShop\Model\Order) {
-                        if($order->getCustomer() instanceof \CoreShop\Model\User) {
-                            if($order->getCustomer()->getEmail() === $params['email']) {
-                                $thread->setOrder($order);
+                        if ($order instanceof \CoreShop\Model\Order) {
+                            if ($order->getCustomer() instanceof \CoreShop\Model\User) {
+                                if ($order->getCustomer()->getEmail() === $params['email']) {
+                                    $thread->setOrder($order);
+                                }
                             }
                         }
                     }

@@ -99,6 +99,29 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
                 }
             );
         }
+        
+        if(this.data.thread.orderId) {
+            items.push("->");
+            items.push({
+                xtype: 'button',
+                iconCls: 'coreshop_icon_order',
+                text : t('coreshop_order'),
+                handler : function() {
+                    pimcore.helpers.openObject(me.data.thread.orderId, "object");
+                }
+            });
+        }
+        else if(this.data.thread.productId) {
+            items.push("->");
+            items.push({
+                xtype: 'button',
+                iconCls: 'coreshop_icon_product',
+                text : t('coreshop_product'),
+                handler : function() {
+                    pimcore.helpers.openObject(me.data.thread.productId, "object");
+                }
+            });
+        }
 
         return items;
     },
