@@ -20,6 +20,19 @@ class CoreShop_MessageController extends Action
     {
         $this->view->contacts = \CoreShop\Model\Messaging\Contact::getList()->load();
         $this->view->params = $this->getAllParams();
+        $thread = null;
+
+        if($this->view->params['token']) {
+            $thread = \CoreShop\Model\Messaging\Thread::getByField("token", $this->view->params['token']);
+
+            if($thread instanceof \CoreShop\Model\Messaging\Thread) {
+                $this->view->params['contactId'] = $thread->getContactId();
+                $this->view->params['email'] = $thread->getEmail();
+
+                if($thread->getOrder() instanceof \CoreShop\Model\Order)
+                    $this->view->params['orderNumber'] = $thread->getOrder()->getOrderNumber();
+            }
+        }
 
         if($this->getRequest()->isPost()) {
             $params = $this->getAllParams();
@@ -45,7 +58,8 @@ class CoreShop_MessageController extends Action
 
             if($success) {
                 //Check if there is already an open thread for the email address
-                $thread = \CoreShop\Model\Messaging\Thread::getOpenByEmailAndContact($params['email'], $params['contact']);
+                if(!$thread instanceof CoreShop\Model\Messaging\Thread)
+                    $thread = \CoreShop\Model\Messaging\Thread::getOpenByEmailAndContact($params['email'], $params['contact']);
 
                 if(!$thread instanceof \CoreShop\Model\Messaging\Thread) {
                     $thread = new \CoreShop\Model\Messaging\Thread();
@@ -81,8 +95,15 @@ class CoreShop_MessageController extends Action
                 }
 
                 $message = $thread->createMessage($params['message']);
-                $message->sendCustomerEmail();
-                $message->sendContactEmail();
+
+                
+                //Send Contact
+                $contactEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.MAIL.CONTACT." . strtoupper($thread->getLanguage())));
+                $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
+
+                //Send Customer Info Mail
+                $customerInfoMail = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.MAIL.CUSTOMER." . strtoupper($thread->getLanguage())));
+                $message->sendNotification($customerInfoMail, $thread->getEmail());
             }
 
             $this->view->success = $success;

@@ -135,6 +135,46 @@ pimcore.plugin.coreshop.settings = Class.create({
                             }
                         },
                         {
+                            name: 'SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang,
+                            value:me.getValue('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang),
+                            fieldLabel: t('coreshop_messaging_customer_email'),
+                            labelWidth: 350,
+                            fieldCls: 'pimcore_droptarget_input',
+                            xtype: 'textfield',
+                            listeners: {
+                                render: function (el) {
+                                    new Ext.dd.DropZone(el.getEl(), {
+                                        reference: this,
+                                        ddGroup: 'element',
+                                        getTargetFromEvent: function (e) {
+                                            return this.getEl();
+                                        }.bind(el),
+
+                                        onNodeOver : function (target, dd, e, data) {
+                                            data = data.records[0].data;
+
+                                            if (data.elementType == 'document') {
+                                                return Ext.dd.DropZone.prototype.dropAllowed;
+                                            }
+
+                                            return Ext.dd.DropZone.prototype.dropNotAllowed;
+                                        },
+
+                                        onNodeDrop : function (target, dd, e, data) {
+                                            data = data.records[0].data;
+
+                                            if (data.elementType == 'document') {
+                                                this.setValue(data.id);
+                                                return true;
+                                            }
+
+                                            return false;
+                                        }.bind(el)
+                                    });
+                                }
+                            }
+                        },
+                        {
                             name: 'SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang,
                             value:me.getValue('SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang),
                             fieldLabel: t('coreshop_messaging_contact_email'),

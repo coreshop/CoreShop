@@ -565,10 +565,15 @@ class Install
             $language = $locale->getLanguage();
 
             $custEmail = Document::getByPath("/" . $language . "/shop/email/message-customer");
+            $custReplyEmail = Document::getByPath("/" . $language . "/shop/email/message-customer-reply");
             $contEmail = Document::getByPath("/" . $language . "/shop/email/message-contact");
 
             if($custEmail instanceof Document) {
                 Configuration::set("SYSTEM.MESSAGING.MAIL.CUSTOMER." . strtoupper($language), $custEmail->getId());
+            }
+
+            if($custReplyEmail instanceof Document) {
+                Configuration::set("SYSTEM.MESSAGING.MAIL.CUSTOMER.RE." . strtoupper($language), $custReplyEmail->getId());
             }
 
             if($contEmail instanceof Document) {

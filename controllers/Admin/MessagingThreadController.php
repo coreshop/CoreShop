@@ -69,7 +69,8 @@ class CoreShop_Admin_MessagingThreadController extends Admin
                     "user" => null,
                     "adminId" => null,
                     "admin" => null,
-                    "messages" => ""
+                    "messages" => "",
+                    "token" => $thread->getToken()
                 );
 
                 if($thread->getUser() instanceof \CoreShop\Model\User) {
@@ -178,7 +179,9 @@ class CoreShop_Admin_MessagingThreadController extends Admin
             $message = $thread->createMessage($this->getParam("message"));
             $message->setAdminUserId($this->getUser()->getId());
             $message->save();
-            $message->sendCustomerEmail();
+
+            $customerEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.MAIL.CUSTOMER.RE." . strtoupper($thread->getLanguage())));
+            $message->sendNotification($customerEmailDocument, $thread->getEmail());
 
             $this->_helper->json(array("success" => true, "data" => ["thread" => $thread->getObjectVars(), "newMessage" => $this->getMessageForAjax($message)]));
         } else {

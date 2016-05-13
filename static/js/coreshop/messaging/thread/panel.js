@@ -128,6 +128,11 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                         filter : 'numeric'
                     },
                     {
+                        text: t("token"),
+                        dataIndex : 'token',
+                        filter : 'string'
+                    },
+                    {
                         text: t('user'),
                         dataIndex : 'user',
                         width: 200

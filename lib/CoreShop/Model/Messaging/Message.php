@@ -18,6 +18,7 @@ namespace CoreShop\Model\Messaging;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Configuration;
 use Pimcore\Mail;
+use Pimcore\Model\Document;
 use Pimcore\Model\Document\Email;
 use Pimcore\Model\User;
 
@@ -59,36 +60,19 @@ class Message extends AbstractModel {
     public $creationDate;
 
     /**
-     * Sends the User the message as email
+     * Send email to recipient with Message
+     *
+     * @param Document $mailDocument
+     * @param string $recipient
+     * @throws \Exception
      */
-    public function sendCustomerEmail() {
-        $emailDocument = Email::getById(Configuration::get("SYSTEM.MESSAGING.MAIL.CUSTOMER." . strtoupper($this->getThread()->getLanguage())));
-        
-        if($emailDocument instanceof Email) {
+    public function sendNotification(Document $mailDocument, $recipient) {
+        if($mailDocument instanceof Email) {
             $mail = new Mail();
-            $mail->setDocument($emailDocument);
+            $mail->setDocument($mailDocument);
             $mail->setParams(array("message" => $this->getMessage(), "messageObject" => $this));
             $mail->setEnableLayoutOnPlaceholderRendering(false);
-            $mail->addTo($this->getThread()->getEmail());
-            $mail->send();
-        }
-        else {
-            \Logger::warn("Email Document for Messages not found!");
-        }
-    }
-
-    /**
-     * Sends the User the message as email
-     */
-    public function sendContactEmail() {
-        $emailDocument = Email::getById(Configuration::get("SYSTEM.MESSAGING.MAIL.CONTACT." . strtoupper($this->getThread()->getLanguage())));
-
-        if($emailDocument instanceof Email) {
-            $mail = new Mail();
-            $mail->setDocument($emailDocument);
-            $mail->setParams(array("message" => $this->getMessage(), "messageObject" => $this));
-            $mail->setEnableLayoutOnPlaceholderRendering(false);
-            $mail->addTo($this->getThread()->getContact()->getEmail());
+            $mail->addTo($recipient);
             $mail->send();
         }
         else {

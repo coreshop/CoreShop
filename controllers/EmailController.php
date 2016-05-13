@@ -38,4 +38,12 @@ class CoreShop_EmailController extends Action
     {
         $this->view->params = $this->getAllParams();
     }
+
+    public function messageCustomerReplyAction() {
+        $this->view->message = $this->getParam("messageObject");
+        
+        if($this->view->message instanceof \CoreShop\Model\Messaging\Message) {
+            $this->view->thread = $this->view->message->getThread();
+        }
+    }
 }

@@ -409,13 +409,13 @@
             <controller>email</controller>
             <module>CoreShop</module>
             <path>shop/email</path>
-            <key>message</key>
+            <key>message-customer</key>
             <content>
                 <de>
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>de/message.html</file>
+                        <file>de/message-customer.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -432,7 +432,97 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>en/message.html</file>
+                        <file>en/message-customer.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Message</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Message</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>message-customer-reply</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>message-customer-reply</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/message-customer-reply.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Nachricht</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Nachricht</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/message-customer-reply.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Message</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Message</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>message-contact</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/message-contact.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Nachricht</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Nachricht</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/message-contact.html</file>
                     </field>
                     <field>
                         <key>head</key>
