@@ -114,11 +114,18 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
             this.grid = Ext.create('Ext.grid.Panel', {
                 store: this.store,
                 listeners : this.getTreeNodeListeners(),
+                plugins: {
+                    ptype : 'pimcore.gridfilters',
+                    pluginId : 'filter',
+                    encode: true,
+                    local: false
+                },
                 columns: [
                     {
                         text: t('id'),
                         dataIndex: 'id',
-                        width : 60
+                        width : 60,
+                        filter : 'numeric'
                     },
                     {
                         text: t('user'),
@@ -128,12 +135,17 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                     {
                         text: t('email'),
                         dataIndex : 'email',
-                        width: 200
+                        width: 200,
+                        filter : 'string'
                     },
                     {
                         text: t('coreshop_messaging_contact'),
-                        dataIndex : 'contact',
+                        dataIndex : 'contactId',
                         width: 200,
+                        filter: {
+                            type : 'list',
+                            store : pimcore.globalmanager.get('coreshop_messaging_contacts')
+                        },
                         renderer: function (value, metadata, record)
                         {
                             var contact = pimcore.globalmanager.get("coreshop_messaging_contacts").getById(value);
@@ -148,11 +160,12 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                     {
                         text: t('language'),
                         dataIndex : 'language',
-                        width: 100
+                        width: 100,
+                        filter : 'string'
                     },
                     {
                         text: t('coreshop_messaging_threadstate'),
-                        dataIndex : 'status',
+                        dataIndex : 'statusId',
                         width: 200,
                         renderer: function (value, metadata, record)
                         {
@@ -171,6 +184,10 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                             }
 
                             return value;
+                        },
+                        filter: {
+                            type : 'list',
+                            store : pimcore.globalmanager.get('coreshop_messaging_thread_states')
                         }
                     },
                     {
@@ -197,7 +214,20 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
         return this.grid;
     },
 
+    filterGrid : function(field, value, clearFilter) {
+        if(clearFilter === undefined)
+            clearFilter = false;
+
+        if(clearFilter) {
+            this.grid.getPlugin("filter").clearFilters();
+        }
+
+        this.grid.getPlugin("filter").addFilter({dataIndex : field, value : value});
+    },
+
     renderContacts : function() {
+        var me = this;
+
         Ext.Ajax.request({
             url: '/plugin/CoreShop/admin_MessagingThread/get-contacts-with-message-count',
             success: function (response) {
@@ -218,7 +248,11 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                                 },
                                 {
                                     xtype : 'button',
-                                    text : record.count + ' ' + t('coreshop_messaging_new_messages')
+                                    text : record.count + ' ' + t('coreshop_messaging_new_messages'),
+                                    record : record,
+                                    handler : function() {
+                                        me.filterGrid("contactId", this.config.record.id, true);
+                                    }
                                 }
                             ]
                         });

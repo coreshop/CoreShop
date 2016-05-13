@@ -107,7 +107,9 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                 {
                     text: t('coreshop_orders_id'),
                     dataIndex: 'o_id',
-                    filter: 'number'
+                    filter: {
+                        type : 'number'
+                    }
                 },
                 {
                     text: t('coreshop_orders_orderNumber'),
@@ -122,7 +124,9 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                     text: t('coreshop_orders_total'),
                     dataIndex: 'total',
                     renderer: coreshop.util.format.currency.bind(this, '€'),
-                    filter: 'number'
+                    filter: {
+                        type : 'number'
+                    }
                 },
                 {
                     text: t('coreshop_orders_orderState'),
@@ -152,7 +156,9 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                     text: t('coreshop_orders_orderDate'),
                     dataIndex: 'orderDate',
                     format:'d.m.Y',
-                    filter: true
+                    filter: {
+                        type : 'date'
+                    }
                 }
             ],
             region: 'center',

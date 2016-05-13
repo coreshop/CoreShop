@@ -45,7 +45,7 @@ class CoreShop_MessageController extends Action
 
             if($success) {
                 //Check if there is already an open thread for the email address
-                $thread = \CoreShop\Model\Messaging\Thread::getOpenByEmail($params['email']);
+                $thread = \CoreShop\Model\Messaging\Thread::getOpenByEmailAndContact($params['email'], $params['contact']);
 
                 if(!$thread instanceof \CoreShop\Model\Messaging\Thread) {
                     $thread = new \CoreShop\Model\Messaging\Thread();

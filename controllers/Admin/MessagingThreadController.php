@@ -33,6 +33,13 @@ class CoreShop_Admin_MessagingThreadController extends Admin
         $list->setLimit($this->getParam("limit", 30));
         $list->setOffset($this->getParam("page", 1) - 1);
 
+        if ($this->getParam("filter", null)) {
+            $conditionFilters[] = \CoreShop\Model\Service::getFilterCondition($this->getParam("filter"), "\\CoreShop\\Model\\Messaging\\Thread");
+            if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
+                $list->setCondition(implode(" AND ", $conditionFilters));
+            }
+        }
+
         $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($this->getAllParams());
 
         $order = "DESC";
@@ -55,16 +62,19 @@ class CoreShop_Admin_MessagingThreadController extends Admin
                 $entry = array(
                     "id" => $thread->getId(),
                     "email" => $thread->getEmail(),
-                    "contact" => $thread->getContactId(),
+                    "contactId" => $thread->getContactId(),
                     "language" => $thread->getLanguage(),
-                    "status" => $thread->getStatusId(),
+                    "statusId" => $thread->getStatusId(),
+                    "userId" => null,
                     "user" => null,
+                    "adminId" => null,
                     "admin" => null,
                     "messages" => ""
                 );
 
                 if($thread->getUser() instanceof \CoreShop\Model\User) {
                     $entry['user'] = $thread->getUser()->getFirstname() . " " . $thread->getUser()->getLastname();
+                    $entry['userId'] = $thread->getUserId();
                 }
 
                 $messages = $thread->getMessages();
@@ -79,6 +89,7 @@ class CoreShop_Admin_MessagingThreadController extends Admin
 
                             if ($adminUser instanceof \Pimcore\Model\User) {
                                 $entry['admin'] = $adminUser->getName();
+                                $entry['adminId'] = $adminUser->getId();
                             }
                         }
                     }

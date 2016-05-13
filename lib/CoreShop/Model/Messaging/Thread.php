@@ -85,13 +85,14 @@ class Thread extends AbstractModel {
     /**
      * Get Open threads by email
      *
-     * @param $email
+     * @param $email string
+     * @param $contactId int
      *
      * @return Thread|null
      */
-    public static function getOpenByEmail($email) {
+    public static function getOpenByEmailAndContact($email, $contactId) {
         $list = self::getList();
-        $list->setCondition("email = ?", array($email));
+        $list->setCondition("email = ? AND contactId = ?", array($email, $contactId));
         $list = $list->load();
 
         foreach($list as $thread) {
