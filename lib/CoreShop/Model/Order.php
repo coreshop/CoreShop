@@ -33,13 +33,11 @@ use Pimcore\Tool\Authentication;
 class Order extends Base
 {
     /**
-     * Create a new Order
+     * Pimcore Object Class
      *
-     * @return Object\CoreShopOrder
+     * @var string
      */
-    public static function create() {
-        return new Object\CoreShopOrder();
-    }
+    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopOrder";
 
     /**
      * Creates next OrderNumber

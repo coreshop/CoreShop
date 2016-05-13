@@ -14,11 +14,46 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use CoreShop\Tool;
+use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Concrete;
 
 class Base extends Concrete
 {
+    /**
+     * Pimcore Object Class
+     *
+     * @var string
+     */
+    public static $pimcoreClass = null;
+
+    /**
+     * get Pimcore implementation class
+     *
+     * @throws Exception
+     * @return string
+     */
+    public static function getPimcoreObjectClass() {
+        return static::$pimcoreClass;
+    }
+
+    /**
+     * Create new instance of Pimcore Object
+     *
+     * @throws Exception
+     * @return AbstractObject
+     */
+    public static function create() {
+        $pimcoreClass = self::getPimcoreObjectClass();
+
+        if(\Pimcore\Tool::classExists($pimcoreClass)) {
+            return new $pimcoreClass();
+        }
+
+        throw new Exception("Class $pimcoreClass not found");
+    }
+    
     /**
      * Object to Array
      * 
@@ -48,5 +83,26 @@ class Base extends Concrete
         }
 
         return $this->o_elementAdminStyle;
+    }
+
+    /**
+     * @param $method
+     * @param $arguments
+     * @return mixed|null
+     * @throws \Exception
+     */
+    public static function __callStatic($method, $arguments)
+    {
+        $pimcoreClass = self::getPimcoreObjectClass();
+
+        if(get_called_class() === $pimcoreClass) {
+            return parent::__callStatic($method, $arguments);
+        }
+        
+        if(!\Pimcore\Tool::classExists($pimcoreClass)) {
+            throw new Exception("Calling to unkown class " . $pimcoreClass);
+        }
+
+        return call_user_func_array(array($pimcoreClass, $method), $arguments);
     }
 }

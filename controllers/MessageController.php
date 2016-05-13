@@ -72,7 +72,7 @@ class CoreShop_MessageController extends Action
 
                     if($params['orderNumber'])
                     //Check Order Reference
-                    $order = \CoreShop\Model\Order::create()->getByOrderNumber($params['orderNumber']);
+                    $order = \CoreShop\Model\Order::getByOrderNumber($params['orderNumber']);
 
                     if($order instanceof \CoreShop\Model\Order) {
                         if($order->getCustomer() instanceof \CoreShop\Model\User) {

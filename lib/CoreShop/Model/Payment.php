@@ -18,6 +18,12 @@ use Pimcore\Model\Object;
 
 class Payment extends Base
 {
+    /**
+     * Pimcore Object Class
+     *
+     * @var string
+     */
+    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopPayment";
 
     /**
      * Return Payment by transaction identifier

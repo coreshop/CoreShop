@@ -23,6 +23,13 @@ use Pimcore\Model\Object\CoreShopUser;
 class User extends Base
 {
     /**
+     * Pimcore Object Class
+     *
+     * @var string
+     */
+    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopUser";
+
+    /**
      * Get User by E-Mail
      *
      * @param $email string
@@ -75,16 +82,6 @@ class User extends Base
     public static function getUserByEmail($email)
     {
         return self::getUniqueByEmail($email, false);
-    }
-
-    /**
-     * Create new User instacne
-     * 
-     * @return User
-     */
-    public static function create()
-    {
-        return new CoreShopUser();
     }
     
     /**

@@ -25,14 +25,12 @@ use Pimcore\Model\Object\CoreShopOrderItem;
 class Item extends Base
 {
     /**
-     * Create new CoreShopOrderItem
+     * Pimcore Object Class
      *
-     * @return CoreShopOrderItem
+     * @var string
      */
-    public static function create() {
-        return new CoreShopOrderItem();
-    }
-    
+    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopOrderItem";
+
     /**
      * Calculate Total of OrderItem without tax
      *

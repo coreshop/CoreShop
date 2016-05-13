@@ -24,6 +24,13 @@ use Pimcore\Model\Object\CoreShopCart;
 class Item extends Base
 {
     /**
+     * Pimcore Object Class
+     *
+     * @var string
+     */
+    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopCartItem";
+
+    /**
      * Calculates the total for the CartItem
      *
      * @return mixed

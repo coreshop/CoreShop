@@ -20,6 +20,12 @@ use Pimcore\Model\Asset\Image;
 
 class Category extends Base
 {
+    /**
+     * Pimcore Object Class
+     *
+     * @var string
+     */
+    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopCategory";
 
     /**
      * Get all Categories

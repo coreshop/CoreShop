@@ -28,6 +28,12 @@ use CoreShop\Tool\Service;
 
 class Product extends Base
 {
+    /**
+     * Pimcore Object Class
+     *
+     * @var string
+     */
+    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopProduct";
 
     /**
      * OUT_OF_STOCK_DENY denies order of product if out-of-stock
@@ -102,15 +108,6 @@ class Product extends Base
         }
 
         return $objects;
-    }
-
-    /**
-     * Create new Product instance
-     *
-     * @return Product
-     */
-    public static function create() {
-        return new Object\CoreShopProduct();
     }
 
     /**

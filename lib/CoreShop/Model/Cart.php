@@ -30,6 +30,12 @@ use CoreShop\Maintenance\CleanUpCart;
 
 class Cart extends Base
 {
+    /**
+     * Pimcore Object Class
+     *
+     * @var string
+     */
+    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopCart";
 
     /**
      * @var float shipping costs
