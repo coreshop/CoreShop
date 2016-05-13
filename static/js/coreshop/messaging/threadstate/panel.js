@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.messaging.threadstate.panel = Class.create(pimcore.plugi
     /**
      * @var string
      */
-    layoutId: 'coreshop_thread_state_panel',
+    layoutId: 'coreshop_messaging_thread_state_panel',
     storeId : 'coreshop_messaging_thread_states',
     iconCls : 'coreshop_icon_messaging_thread_state',
     type : 'threadstate',
