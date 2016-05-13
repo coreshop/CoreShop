@@ -398,14 +398,14 @@ class Install
      *
      * @param $xml
      */
-    public function installObjectData($xml)
+    public function installObjectData($xml, $namespace = "")
     {
         $file = PIMCORE_PLUGINS_PATH . "/CoreShop/install/data/objects/$xml.xml";
 
         if (file_exists($file)) {
             $config = new \Zend_Config_Xml($file);
             $config = $config->toArray();
-            $coreShopNamespace = "\\CoreShop\\Model\\";
+            $coreShopNamespace = "\\CoreShop\\Model\\" . $namespace;
 
             foreach ($config['objects'] as $class=>$amounts) {
                 $class = $coreShopNamespace . $class;
@@ -677,6 +677,7 @@ class Install
         Configuration::set("SYSTEM.INVOICE.SUFFIX", "");
         Configuration::set("SYSTEM.MAIL.ORDER.NOTIFICATION", "");
         Configuration::set("SYSTEM.MAIL.ORDER.NOTIFICATION", true);
+        Configuration::set("SYSTEM.MESSAGING.THREAD.STATE.NEW", 1);
         Configuration::set("SYSTEM.ORDERSTATE.QUEUE", 1);
         Configuration::set("SYSTEM.ORDERSTATE.PAYMENT", 2);
         Configuration::set("SYSTEM.ORDERSTATE.PREPERATION", 3);

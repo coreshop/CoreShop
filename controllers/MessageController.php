@@ -16,7 +16,7 @@ use CoreShop\Controller\Action;
 
 class CoreShop_MessageController extends Action
 {
-    public function indexAction()
+    public function contactAction()
     {
         $this->view->contacts = \CoreShop\Model\Messaging\Contact::getList()->load();
         $this->view->params = $this->getAllParams();
@@ -50,6 +50,7 @@ class CoreShop_MessageController extends Action
                 if(!$thread instanceof \CoreShop\Model\Messaging\Thread) {
                     $thread = new \CoreShop\Model\Messaging\Thread();
                     $thread->setEmail($params['email']);
+                    $thread->setStatusId(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.THREAD.STATE.NEW"));
 
                     if(\CoreShop\Tool::getUser() instanceof CoreShop\Model\User) {
                         $thread->setUser(\CoreShop\Tool::getUser());
@@ -65,6 +66,12 @@ class CoreShop_MessageController extends Action
                                 $thread->setOrder($order);
                             }
                         }
+                    }
+
+                    $customer = \CoreShop\Model\User::getUserByEmail($params['email']);
+
+                    if($customer instanceof \CoreShop\Model\User) {
+                        $thread->setUser($customer);
                     }
 
                     $thread->setContact(\CoreShop\Model\Messaging\Contact::getById($params['contact']));

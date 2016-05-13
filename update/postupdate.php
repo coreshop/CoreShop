@@ -43,3 +43,6 @@ VALUES
 
 $install = new \CoreShop\Plugin\Install();
 $install->installMessagingMails();
+$install->installObjectData("threadStates", "Messaging\\Thread\\");
+
+\CoreShop\Model\Configuration::set("SYSTEM.MESSAGING.THREAD.STATE.NEW", 1);

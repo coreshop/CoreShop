@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
     <objects>
-        <OrderState>
+        <State>
             <name>
                 <en>Awaiting check payment</en>
                 <de>Warten auf Check-Zahlung</de>
@@ -16,8 +16,8 @@
                 <en>/en/shop/email/awaiting-check-payment</en>
             </emailDocument>
             <color>#4169E1</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Payment accepted</en>
                 <de>Bezahlung angenommen</de>
@@ -32,8 +32,8 @@
                 <en>/en/shop/email/payment-accepted</en>
             </emailDocument>
             <color>#32CD32</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Preparation in progress</en>
                 <de>Vorbereitung</de>
@@ -48,8 +48,8 @@
                 <en>/en/shop/email/preparation-in-progress</en>
             </emailDocument>
             <color>#FF8C00</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Shipped</en>
                 <de>Versendet</de>
@@ -64,8 +64,8 @@
                 <en>/en/shop/email/shipped</en>
             </emailDocument>
             <color>#8A2BE2</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Delivered</en>
                 <de>Zugestellt</de>
@@ -80,8 +80,8 @@
                 <en>/en/shop/email/delivered</en>
             </emailDocument>
             <color>#108510</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Canceled</en>
                 <de>Storniert</de>
@@ -96,8 +96,8 @@
                 <en>/en/shop/email/canceled</en>
             </emailDocument>
             <color>#DC143C</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Refunded</en>
                 <de>Erstattet</de>
@@ -112,8 +112,8 @@
                 <en>/en/shop/email/refunded</en>
             </emailDocument>
             <color>#EC2E15</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Payment error</en>
                 <de>Fehler bei der Bezahlung</de>
@@ -128,8 +128,8 @@
                 <en>/en/shop/email/payment-error</en>
             </emailDocument>
             <color>#8F0621</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>On backorder (paid)</en>
                 <de>Nachbestellt (Kunde hat bezahlt)</de>
@@ -144,8 +144,8 @@
                 <en>/en/shop/email/out-of-stock</en>
             </emailDocument>
             <color>#FF69B4</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Awaiting bank wire payment</en>
                 <de>Warten auf Überweißung</de>
@@ -160,8 +160,8 @@
                 <en>/en/shop/email/bankwire</en>
             </emailDocument>
             <color>#4169E1</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>On backorder (not paid)</en>
                 <de>Nachbestellt (Kunde hat NICHT bezahlt)</de>
@@ -176,8 +176,8 @@
                 <en>/en/shop/email/out-of-stock</en>
             </emailDocument>
             <color>#4169E1</color>
-        </OrderState>
-        <OrderState>
+        </State>
+        <State>
             <name>
                 <en>Awaiting Cash On Delivery validation</en>
                 <de>Warte auf Bezahlung per Nachname</de>
@@ -188,6 +188,6 @@
             <invoice>0</invoice>
             <email>0</email>
             <color>#4169E1</color>
-        </OrderState>
+        </State>
     </objects>
 </zend-config>

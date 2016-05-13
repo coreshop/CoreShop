@@ -73,7 +73,7 @@ class CoreShop_Admin_MessagingThreadController extends Admin
                 foreach($messages as $message) {
                     $messagesShort[] = substr(strip_tags($message->getMessage()), 0, 50);
 
-                    if(!array_key_exists("admin", $entry)) {
+                    if(!$entry['admin']) {
                         if ($message->getAdminUserId()) {
                             $adminUser = \Pimcore\Model\User::getById($message->getAdminUserId());
 

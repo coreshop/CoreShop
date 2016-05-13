@@ -39,7 +39,8 @@ class CoreShop_Admin_InstallController extends Admin
             $install->executeSQL("CoreShop-States");
 
             //install Data
-            $install->installObjectData("orderStates");
+            $install->installObjectData("orderStates", "Order\\");
+            $install->installObjectData("threadStates", "Messaging\\Thread\\");
             $install->installDocuments("documents");
             $install->installMessagingMails();
 
