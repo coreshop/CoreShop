@@ -17,6 +17,7 @@ namespace CoreShop\Model;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Order\Item;
+use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
@@ -25,7 +26,6 @@ use Pimcore\Cache;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Object;
-use Pimcore\Model\Object\CoreShopPayment;
 use Pimcore\Model\User as PimcoreUser;
 use Pimcore\Model\Version;
 use Pimcore\Tool\Authentication;
@@ -163,12 +163,12 @@ class Order extends Base
      * @param CorePayment $provider
      * @param $amount
      * @param boolean $paid
-     * @return Object\CoreShopPayment
+     * @return Payment
      * @throws \Exception
      */
     public function createPayment(CorePayment $provider, $amount, $paid = false)
     {
-        $payment = new Object\CoreShopPayment();
+        $payment = Payment::create();
         $payment->setKey(uniqid());
         $payment->setPublished(true);
         $payment->setParent(Object\Service::createFolderByPath($this->getFullPath() . "/payments/"));
@@ -195,9 +195,9 @@ class Order extends Base
     /**
      * Add a new Payment
      *
-     * @param CoreShopPayment $payment
+     * @param Payment $payment
      */
-    public function addPayment(CoreShopPayment $payment)
+    public function addPayment(Payment $payment)
     {
         $payments = $this->getPayments();
 
@@ -593,7 +593,7 @@ class Order extends Base
      * this method has to be overwritten in Pimcore Object
      *
      * @throws UnsupportedException
-     * @return CoreShopPayment[]
+     * @return Payment[]
      */
     public function getPayments()
     {
@@ -604,7 +604,7 @@ class Order extends Base
      * sets payments
      * this method has to be overwritten in Pimcore Object
      *
-     * @param CoreShopPayment[] $payments
+     * @param Payment[] $payments
      * @throws UnsupportedException
      */
     public function setPayments($payments)

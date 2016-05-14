@@ -16,7 +16,6 @@ use CoreShop\Plugin;
 use CoreShop\Model\Wishlist;
 use CoreShop\Controller\Action;
 use Pimcore\Model\Object;
-use Pimcore\Model\Object\CoreShopProduct;
 
 class CoreShop_WishlistController extends Action
 {
@@ -91,7 +90,7 @@ class CoreShop_WishlistController extends Action
         $products = array();
 
         if (!empty($productIds)) {
-            $list = new Object\CoreShopProduct\Listing();
+            $list = \CoreShop\Model\Product::getList();
             $list->setCondition("oo_id IN (" . rtrim(str_repeat('?,', count($productIds)), ',').")", $productIds);
 
             $products = $list->getObjects();

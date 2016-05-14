@@ -16,8 +16,8 @@ namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
+use CoreShop\Model\User;
 use CoreShop\Tool;
-use Pimcore\Model\Object\CoreShopUser;
 
 class TotalPerCustomer extends AbstractCondition
 {
@@ -61,7 +61,7 @@ class TotalPerCustomer extends AbstractCondition
         $session = Tool::getSession();
 
         //Check Total For Customer
-        if ($session->user instanceof CoreShopUser) {
+        if ($session->user instanceof User) {
             $orders = $session->user->getOrders();
             $priceRulesUsed = 0;
 

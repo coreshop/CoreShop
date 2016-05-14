@@ -24,29 +24,28 @@ use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRule;
 use CoreShop\Model\TaxRuleGroup;
+use CoreShop\Model\User;
 use CoreShop\Model\Zone;
+use CoreShop\Model\Cart;
 use Pimcore\File;
 use Pimcore\Model\Object\ClassDefinition;
-use Pimcore\Model\Object\CoreShopCart;
-use Pimcore\Model\Object\CoreShopProduct;
-use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Model\Object\Service;
 
 class Data
 {
 
     /**
-     * @var CoreShopProduct
+     * @var Product
      */
     public static $product1;
 
     /**
-     * @var CoreShopProduct
+     * @var Product
      */
     public static $product2;
 
     /**
-     * @var CoreShopProduct
+     * @var Product
      */
     public static $product3;
 
@@ -66,7 +65,7 @@ class Data
     public static $taxRuleGroup;
 
     /**
-     * @var CoreShopUser
+     * @var User
      */
     public static $customer1;
 
@@ -199,8 +198,8 @@ class Data
 
     public static function createTestProduct()
     {
-        if (!self::$product1 instanceof CoreShopProduct) {
-            self::$product1 = new CoreShopProduct();
+        if (!self::$product1 instanceof Product) {
+            self::$product1 = Product::create();
             self::$product1->setName("test1");
             self::$product1->setWholesalePrice(10);
             self::$product1->setRetailPrice(15);
@@ -214,8 +213,8 @@ class Data
             self::$product1->save();
         }
 
-        if (!self::$product2 instanceof CoreShopProduct) {
-            self::$product2 = new CoreShopProduct();
+        if (!self::$product2 instanceof Product) {
+            self::$product2 = Product::create();
             self::$product2->setName("test2");
             self::$product2->setWholesalePrice(100);
             self::$product2->setRetailPrice(150);
@@ -229,8 +228,8 @@ class Data
             self::$product2->save();
         }
 
-        if (!self::$product3 instanceof CoreShopProduct) {
-            self::$product3 = new CoreShopProduct();
+        if (!self::$product3 instanceof Product) {
+            self::$product3 = Product::create();
             self::$product3->setName("test3");
             self::$product3->setWholesalePrice(50);
             self::$product3->setRetailPrice(75);
@@ -247,7 +246,7 @@ class Data
 
     public static function createCart()
     {
-        return CoreShopCart::prepare(true);
+        return Cart::prepare(true);
     }
 
     public static function createCartWithProducts()
@@ -280,8 +279,8 @@ class Data
 
     public static function createCustomer()
     {
-        if (!self::$customer1 instanceof CoreShopUser) {
-            $customer = new CoreShopUser();
+        if (!self::$customer1 instanceof User) {
+            $customer = User::create();
             $customer->setKey("customer1");
             $customer->setParent(Service::createFolderByPath("/users"));
             $customer->setFirstname("customer");

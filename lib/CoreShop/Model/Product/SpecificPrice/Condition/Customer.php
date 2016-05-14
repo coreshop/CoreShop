@@ -16,7 +16,6 @@ namespace CoreShop\Model\Product\SpecificPrice\Condition;
 
 use CoreShop\Model;
 use CoreShop\Tool;
-use Pimcore\Model\Object\CoreShopUser;
 
 class Customer extends AbstractCondition
 {
@@ -60,7 +59,7 @@ class Customer extends AbstractCondition
         $cart = Tool::prepareCart();
 
         if ($cart instanceof Model\Cart) {
-            if ($cart->getUser() instanceof CoreShopUser && $session->user instanceof CoreShopUser) {
+            if ($cart->getUser() instanceof Model\User && $session->user instanceof Model\User) {
                 if ($cart->getUser()->getId() === $session->user->getId()) {
                     return true;
                 }

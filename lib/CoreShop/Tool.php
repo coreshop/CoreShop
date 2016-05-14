@@ -19,9 +19,7 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
 use Pimcore\Date;
 use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Model\Object\CoreShopCart;
 use Pimcore\Model\Object;
-use Pimcore\Mail;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
 use CoreShop\Model\User;
@@ -181,9 +179,9 @@ class Tool
 
         if (!$resetCart) {
             if (isset($cartSession->cartId) && $cartSession->cartId !== 0) {
-                $cart = CoreShopCart::getById($cartSession->cartId);
+                $cart = Cart::getById($cartSession->cartId);
             } else if(isset($cartSession->cartObj)) {
-                if ($cartSession->cartObj instanceof CoreShopCart) {
+                if ($cartSession->cartObj instanceof Cart) {
                     $cart = $cartSession->cartObj;
 
                     if( $cart->getId() !== 0) {
@@ -195,7 +193,7 @@ class Tool
             }
         }
 
-        if ($cart instanceof CoreShopCart) {
+        if ($cart instanceof Cart) {
             if($cart->getUser() === null && count($cart->getItems()) && self::getUser() instanceof User) {
                 $cart->setUser(self::getUser());
                 $cart->save();
@@ -204,7 +202,7 @@ class Tool
             return $cart;
         }
 
-        $cart = CoreShopCart::prepare();
+        $cart = Cart::prepare();
         $cartSession->cartObj = $cart;
 
         return $cart;

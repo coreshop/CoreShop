@@ -21,7 +21,7 @@ class CoreShop_Admin_OrderController extends Admin
 {
     public function getOrdersAction()
     {
-        $list = new \Pimcore\Model\Object\CoreShopOrder\Listing();
+        $list = \CoreShop\Model\Order::getList();
         $list->setLimit($this->getParam("limit", 30));
         $list->setOffset($this->getParam("page", 1) - 1);
 

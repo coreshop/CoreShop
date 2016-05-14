@@ -2,7 +2,7 @@
 
 namespace CoreShop\Maintenance;
 
-use Pimcore\Model\Object\CoreShopCart;
+use CoreShop\Model\Cart;
 
 class CleanUpCart {
 
@@ -59,7 +59,7 @@ class CleanUpCart {
             throw new \Exception("Some options are missing, please check errors.");
         }
 
-        $list = new CoreShopCart\Listing();
+        $list = Cart::getList();
 
         $conditions = array();
         $groupCondition = array();
@@ -97,11 +97,11 @@ class CleanUpCart {
     }
 
     /**
-     * @param \Pimcore\Model\Object\CoreShopCart $cart
+     * @param Cart $cart
      *
      * @return bool
      */
-    public function deleteCart( CoreShopCart $cart ) {
+    public function deleteCart(Cart $cart) {
 
         $cart->delete();
 

@@ -12,8 +12,10 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model;
+namespace CoreShop\Model\Order;
 
+use CoreShop\Model\Base;
+use CoreShop\Model\Order;
 use Pimcore\Model\Object;
 
 class Payment extends Base

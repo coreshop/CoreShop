@@ -19,7 +19,6 @@ use Pimcore\Model\Document;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Element;
-use Pimcore\Model\Object\CoreShopProduct;
 
 class Product extends Model\Document\Tag
 {
@@ -105,7 +104,7 @@ class Product extends Model\Document\Tag
      */
     public function frontend()
     {
-        if ($this->o instanceof CoreShopProduct) {
+        if ($this->o instanceof \CoreShop\Model\Product) {
             if ($this->getView()) {
                 return $this->getView()->template("coreshop/product/preview.php", array("product" => $this->o));
             }

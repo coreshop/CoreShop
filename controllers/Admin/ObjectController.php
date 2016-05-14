@@ -35,8 +35,8 @@ class CoreShop_Admin_ObjectController extends Admin
 
         $object = \Pimcore\Model\Object\AbstractObject::getById($objectId);
 
-        if (!$object instanceof \Pimcore\Model\Object\CoreShopProduct) {
-            $this->_helper->json(array("success" => false, "message" => "only CoreShopProduct is allowed"));
+        if (!$object instanceof \CoreShop\Model\Product) {
+            $this->_helper->json(array("success" => false, "message" => "only Product is allowed"));
         }
 
         $field = $object->getClass()->getFieldDefinition($this->variantsBrick);
@@ -95,8 +95,8 @@ class CoreShop_Admin_ObjectController extends Admin
 
         $object = \Pimcore\Model\Object\AbstractObject::getById($id);
 
-        if (!$object instanceof \Pimcore\Model\Object\CoreShopProduct) {
-            $this->_helper->json(array("success" => false, "message" => "only CoreShopProduct is allowed"));
+        if (!$object instanceof \CoreShop\Model\Product) {
+            $this->_helper->json(array("success" => false, "message" => "only Product is allowed"));
         }
 
         $field = $object->getClass()->getFieldDefinition($this->variantsBrick);

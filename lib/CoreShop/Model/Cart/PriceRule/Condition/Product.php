@@ -16,7 +16,6 @@ namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
-use Pimcore\Model\Object\CoreShopProduct;
 
 class Product extends AbstractCondition
 {

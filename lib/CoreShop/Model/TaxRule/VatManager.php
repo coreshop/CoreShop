@@ -21,7 +21,6 @@ use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
 use CoreShop\Model\User\Address;
-use Pimcore\Model\Object\CoreShopUser;
 
 class VatManager implements TaxManager
 {

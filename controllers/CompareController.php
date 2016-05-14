@@ -16,7 +16,6 @@ use CoreShop\Plugin;
 use CoreShop\Model\Compare;
 use CoreShop\Controller\Action;
 use Pimcore\Model\Object;
-use Pimcore\Model\Object\CoreShopProduct;
 
 class CoreShop_CompareController extends Action
 {
@@ -130,8 +129,7 @@ class CoreShop_CompareController extends Action
                 $message = sprintf($this->view->translate("you need at least %d products to start comparing."), $this->minCompareElements);
             }
 
-            $list = new Object\CoreShopProduct\Listing();
-
+            $list = \CoreShop\Model\Product::getList();
             $list->setCondition("oo_id IN (" . rtrim(str_repeat('?,', count($productIds)), ',').")", $productIds);
 
             $products = $list->getObjects();

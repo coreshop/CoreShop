@@ -16,8 +16,6 @@ use CoreShop\Controller\Action;
 use CoreShop\Plugin;
 use CoreShop\Model\Plugin\Payment;
 use CoreShop\Tool;
-use Pimcore\Model\Object\CoreShopOrder;
-use Pimcore\Model\Object\CoreShopUser;
 
 class CoreShop_CheckoutController extends Action
 {

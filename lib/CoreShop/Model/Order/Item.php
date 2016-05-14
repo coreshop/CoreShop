@@ -16,7 +16,6 @@ namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Base;
 use CoreShop\Model\Order;
-use Pimcore\Model\Object\CoreShopOrderItem;
 
 /**
  * Class Item

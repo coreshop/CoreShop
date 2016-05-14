@@ -24,7 +24,7 @@ class CoreShop_Admin_ReportsController extends Admin
     {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
-        $listOrders = new \Pimcore\Model\Object\CoreShopOrderItem\Listing();
+        $listOrders = Model\Order\Item::getList();
         $listOrders->setCondition($filter);
         $listOrders = $listOrders->getObjects();
 
@@ -71,7 +71,7 @@ class CoreShop_Admin_ReportsController extends Admin
     {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
-        $listOrders = new \Pimcore\Model\Object\CoreShopOrderItem\Listing();
+        $listOrders = Model\Order\Item::getList();
         $listOrders->setCondition($filter);
         $listOrders = $listOrders->getObjects();
 
@@ -121,7 +121,7 @@ class CoreShop_Admin_ReportsController extends Admin
     {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
-        $listOrders = new \Pimcore\Model\Object\CoreShopOrder\Listing();
+        $listOrders = Model\Order::getList();
         $listOrders->setCondition($filter);
         $listOrders = $listOrders->getObjects();
 
@@ -162,7 +162,7 @@ class CoreShop_Admin_ReportsController extends Admin
     {
         $filter = ReportQuery::extractFilterDefinition($this->getParam("filters"));
 
-        $list = new \Pimcore\Model\Object\CoreShopProduct\Listing();
+        $list = Model\Product::getList();
         $list->setCondition($filter);
         $list = $list->getObjects();
 
@@ -202,10 +202,10 @@ class CoreShop_Admin_ReportsController extends Admin
             $start = $end - 86399;
             $date = new \Zend_Date($start);
 
-            $listOrders = new \Pimcore\Model\Object\CoreShopOrder\Listing();
+            $listOrders = Model\Order::getList();
             $listOrders->setCondition("o_creationDate > ? AND o_creationDate < ?", array($start, $end));
 
-            $listCarts = new \Pimcore\Model\Object\CoreShopCart\Listing();
+            $listCarts = Model\Cart::getList();
             $listCarts->setCondition("o_creationDate > ? AND o_creationDate < ?", array($start, $end));
 
 
@@ -242,7 +242,7 @@ class CoreShop_Admin_ReportsController extends Admin
             $start = $end - 86399;
             $date = new \Zend_Date($start);
 
-            $listOrders = new \Pimcore\Model\Object\CoreShopOrder\Listing();
+            $listOrders = Model\Order::getList();
             $listOrders->setCondition("o_creationDate > ? AND o_creationDate < ?", array($start, $end));
             $total = 0;
 
@@ -307,7 +307,7 @@ class CoreShop_Admin_ReportsController extends Admin
 
     public function getEmptyCategoriesMonitoringAction()
     {
-        $cats = new \Pimcore\Model\Object\CoreShopCategory\Listing();
+        $cats = Model\Category::getList();
         $cats = $cats->getObjects();
 
         $emptyCategories = array();
@@ -328,7 +328,7 @@ class CoreShop_Admin_ReportsController extends Admin
 
     public function getDisabledProductsMonitoringAction()
     {
-        $products = new \Pimcore\Model\Object\CoreShopProduct\Listing();
+        $products = Model\Product::getList();
         $products->setCondition("enabled=? OR availableForOrder=?", array(0, 0));
 
         $result = array();
@@ -350,11 +350,11 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $defaultOutOfStockBehaviour = Model\Configuration::get("SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR");
 
-        if($defaultOutOfStockBehaviour === \Pimcore\Model\Object\CoreShopProduct::OUT_OF_STOCK_DENY) {
-            $query .= " OR ((quantity <= 0 OR quantity IS NULL) AND (outOfStockBehaviour=".\Pimcore\Model\Object\CoreShopProduct::OUT_OF_STOCK_DENY.") OR outOfStockBehaviour IS NULL)";
+        if($defaultOutOfStockBehaviour === Model\Product::OUT_OF_STOCK_DENY) {
+            $query .= " OR ((quantity <= 0 OR quantity IS NULL) AND (outOfStockBehaviour=".Model\Product::OUT_OF_STOCK_DENY.") OR outOfStockBehaviour IS NULL)";
         }
         
-        $products = new \Pimcore\Model\Object\CoreShopProduct\Listing();
+        $products = Model\Product::getList();
         $products->setCondition($query);
 
         $result = array();
@@ -367,7 +367,7 @@ class CoreShop_Admin_ReportsController extends Admin
         foreach ($products as $product) {
             $productBehaviour = $product->getOutOfStockBehaviour();
 
-            if($productBehaviour === null || $productBehaviour === \Pimcore\Model\Object\CoreShopProduct::OUT_OF_STOCK_DEFAULT) {
+            if($productBehaviour === null || $productBehaviour === Model\Product::OUT_OF_STOCK_DEFAULT) {
                 $productBehaviour = $defaultOutOfStockBehaviour;
             }
 

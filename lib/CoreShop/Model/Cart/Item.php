@@ -19,7 +19,6 @@ use CoreShop\Model\Base;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
 use CoreShop\Tool;
-use Pimcore\Model\Object\CoreShopCart;
 
 class Item extends Base
 {

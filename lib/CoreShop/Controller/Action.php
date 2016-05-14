@@ -19,7 +19,6 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Cart\PriceRule;
-use Pimcore\Model\Object\CoreShopUser;
 use Pimcore\Tool\Session;
 
 class Action extends \Website\Controller\Action

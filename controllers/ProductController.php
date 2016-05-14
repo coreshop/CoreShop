@@ -13,8 +13,6 @@
  */
 
 use CoreShop\Controller\Action;
-use Pimcore\Model\Object\CoreShopProduct;
-use Pimcore\Model\Object\CoreShopCategory;
 
 class CoreShop_ProductController extends Action
 {

@@ -17,7 +17,6 @@ namespace CoreShop\Console\Command;
 use CoreShop\IndexService;
 use CoreShop\Model\Product;
 use Pimcore\Console\AbstractCommand;
-use Pimcore\Model\Object\CoreShopProduct;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -45,8 +44,8 @@ class IndexCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $allProducts = new CoreShopProduct\Listing();
-        $allProducts->setObjectTypes(array(CoreShopProduct::OBJECT_TYPE_OBJECT, CoreShopProduct::OBJECT_TYPE_VARIANT));
+        $allProducts = Product::getList();
+        $allProducts->setObjectTypes(array(Product::OBJECT_TYPE_OBJECT, Product::OBJECT_TYPE_VARIANT));
         $allProducts = $allProducts->load();
 
         $steps = count($allProducts);

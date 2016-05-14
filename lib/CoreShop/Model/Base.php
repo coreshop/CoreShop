@@ -42,7 +42,7 @@ class Base extends Concrete
      * Create new instance of Pimcore Object
      *
      * @throws Exception
-     * @return AbstractObject
+     * @return static
      */
     public static function create() {
         $pimcoreClass = self::getPimcoreObjectClass();
@@ -52,6 +52,16 @@ class Base extends Concrete
         }
 
         throw new Exception("Class $pimcoreClass not found");
+    }
+
+    /**
+     * returns the class ID of the current object class
+     * @return int
+     */
+    public static function classId()
+    {
+        $v = get_class_vars(self::getPimcoreObjectClass());
+        return $v["o_classId"];
     }
     
     /**

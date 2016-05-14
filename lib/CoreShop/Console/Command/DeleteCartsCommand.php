@@ -15,7 +15,6 @@
 namespace CoreShop\Console\Command;
 
 use Pimcore\Console\AbstractCommand;
-use Pimcore\Model\Object\CoreShopCart;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -17,8 +17,6 @@ namespace CoreShop\Model;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Tool;
 use Pimcore\Model\Object;
-use Pimcore\Model\Object\CoreShopCart;
-use Pimcore\Model\Object\CoreShopUser;
 
 class User extends Base
 {
@@ -39,7 +37,7 @@ class User extends Base
      */
     public static function getUniqueByEmail($email, $isGuest = false)
     {
-        $list = new CoreShopUser\Listing();
+        $list = User::getList();
 
         $conditions = array("email = ?");
         $conditionsValues = array($email);
@@ -66,7 +64,7 @@ class User extends Base
      * Get Guest by email
      *
      * @param $email
-     * @return CoreShopUser|bool
+     * @return User|bool
      */
     public static function getGuestByEmail($email)
     {
@@ -77,7 +75,7 @@ class User extends Base
      * Get User by email
      *
      * @param $email
-     * @return CoreShopUser|bool
+     * @return User|bool
      */
     public static function getUserByEmail($email)
     {
@@ -139,7 +137,7 @@ class User extends Base
      */
     public function getLatestCart()
     {
-        $list = new CoreShopCart\Listing();
+        $list = Cart::getList();
         $list->setCondition("user__id = ?", array($this->getId()));
         $list->setOrderKey("o_creationDate");
         $list->setOrder("DESC");

@@ -88,7 +88,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
         if ($group instanceof Index) {
             $data = get_object_vars($group);
-            $data['classId'] = \Pimcore\Model\Object\CoreShopProduct::classId();
+            $data['classId'] = \CoreShop\Model\Product::classId();
 
             $this->_helper->json(array("success" => true, "data" => $data));
         } else {

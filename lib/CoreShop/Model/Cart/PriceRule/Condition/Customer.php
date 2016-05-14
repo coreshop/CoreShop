@@ -18,7 +18,6 @@ use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\User;
 use CoreShop\Tool;
-use Pimcore\Model\Object\CoreShopUser;
 
 class Customer extends AbstractCondition
 {

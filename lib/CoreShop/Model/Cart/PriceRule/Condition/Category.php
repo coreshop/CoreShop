@@ -16,7 +16,6 @@ namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
-use Pimcore\Model\Object\CoreShopCategory;
 
 class Category extends AbstractCondition
 {
@@ -31,7 +30,7 @@ class Category extends AbstractCondition
     public $type = "category";
 
     /**
-     * @return CoreShopCategory
+     * @return Category
      */
     public function getCategory()
     {

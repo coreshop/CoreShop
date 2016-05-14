@@ -24,7 +24,7 @@ class CoreShop_Admin_HelperController extends Admin
         $orderNumber = $this->getParam("orderNumber");
 
         if ($orderNumber) {
-            $list = new \Pimcore\Model\Object\CoreShopOrder\Listing();
+            $list = \CoreShop\Model\Order::getList();
             $list->setCondition("orderNumber = ? OR orderNumber = ?", array($orderNumber, \CoreShop\Model\Order::getValidOrderNumber($orderNumber)));
 
             $orders = $list->getObjects();

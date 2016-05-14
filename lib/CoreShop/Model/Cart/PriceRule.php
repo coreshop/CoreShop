@@ -17,7 +17,6 @@ namespace CoreShop\Model\Cart;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Tool;
-use Pimcore\Model\Object\CoreShopCart;
 
 class PriceRule extends AbstractModel
 {
@@ -168,9 +167,9 @@ class PriceRule extends AbstractModel
     /**
      * Remove default PriceRule from Cart
      *
-     * @param CoreShopCart|null $cart
+     * @param Cart|null $cart
      */
-    public static function autoRemoveFromCart(CoreShopCart $cart = null)
+    public static function autoRemoveFromCart(Cart $cart = null)
     {
         if ($cart == null) {
             $cart = Tool::prepareCart();

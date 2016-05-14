@@ -22,8 +22,6 @@ use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
-use Pimcore\Model\Object\CoreShopCart;
-use Pimcore\Model\Object\CoreShopCartItem;
 use Pimcore\Model\Object\Service;
 
 use CoreShop\Maintenance\CleanUpCart;
@@ -55,7 +53,7 @@ class Cart extends Base
      */
     public static function findByCustomIdentifier($transactionIdentification)
     {
-        $list = CoreShopCart::getByCustomIdentifier($transactionIdentification);
+        $list = Cart::getByCustomIdentifier($transactionIdentification);
 
         $carts = $list->getObjects();
 
@@ -69,11 +67,11 @@ class Cart extends Base
     /**
      * Get all existing Carts
      *
-     * @return array CoreShopCart
+     * @return array Cart
      */
     public static function getAll()
     {
-        $list = new CoreShopCart\Listing();
+        $list = Cart::getList();
         
         return $list->getObjects();
     }
@@ -82,7 +80,7 @@ class Cart extends Base
      * Prepare a Cart
      * @param bool $persist
      *
-     * @return CoreShopCart
+     * @return Cart
      * @throws \Exception
      */
     public static function prepare( $persist = FALSE )
@@ -92,14 +90,14 @@ class Cart extends Base
         $cartSession = Tool::getSession();
 
         if( $cartSession->cartObj) {
-            if ($cartSession->cartObj instanceof CoreShopCart) {
+            if ($cartSession->cartObj instanceof Cart) {
                 $createNew = FALSE;
                 $cart = $cartSession->cartObj;
             }
         }
 
         if( $createNew ) {
-            $cart = CoreShopCart::create();
+            $cart = Cart::create();
             $cart->setKey(uniqid());
             $cart->setPublished(true);
         }
@@ -543,7 +541,7 @@ class Cart extends Base
                 $items = array();
             }
 
-            $item = new CoreShopCartItem();
+            $item = Item::create();
             $item->setKey(uniqid());
             $item->setParent($this);
             $item->setAmount($amount);

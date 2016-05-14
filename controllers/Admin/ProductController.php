@@ -33,7 +33,7 @@ class CoreShop_Admin_ProductController extends Admin
 
     public function getProductsAction()
     {
-        $list = \Pimcore\Model\Object\CoreShopProduct::getList();
+        $list = \CoreShop\Model\Product::getList();
         $list->setLimit($this->getParam("limit", 30));
         $list->setOffset($this->getParam("page", 1) - 1);
 

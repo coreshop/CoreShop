@@ -13,7 +13,6 @@
  */
 
 use CoreShop\Controller\Action;
-use Pimcore\Model\Object\CoreShopProduct;
 
 class CoreShop_SearchController extends Action
 {
@@ -38,7 +37,7 @@ class CoreShop_SearchController extends Action
             '%' . $text . '%'
         );
 
-        $list = new CoreShopProduct\Listing();
+        $list = \CoreShop\Model\Product::getList();
         $list->setCondition(implode(' OR ', $query), $queryParams);
 
         $paginator = \Zend_Paginator::factory($list);
