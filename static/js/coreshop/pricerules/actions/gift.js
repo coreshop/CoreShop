@@ -36,7 +36,7 @@ pimcore.plugin.coreshop.pricerules.actions.gift = Class.create(pimcore.plugin.co
                         onNodeOver : function (target, dd, e, data) {
                             data = data.records[0].data;
 
-                            if (data.elementType == 'object' && data.className == 'CoreShopProduct') {
+                            if (data.elementType == 'object' && data.className == coreshop.settings.classMapping.product) {
                                 return Ext.dd.DropZone.prototype.dropAllowed;
                             }
 
@@ -46,7 +46,7 @@ pimcore.plugin.coreshop.pricerules.actions.gift = Class.create(pimcore.plugin.co
                         onNodeDrop : function (target, dd, e, data) {
                             data = data.records[0].data;
 
-                            if (data.elementType == 'object' && data.className == 'CoreShopProduct') {
+                            if (data.elementType == 'object' && data.className == coreshop.settings.classMapping.product) {
                                 this.setValue(data.path);
                                 return true;
                             }

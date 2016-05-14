@@ -403,7 +403,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
     postOpenObject : function (tab, type)
     {
         if (intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
-            if (tab.data.general.o_className == 'CoreShopCart')
+            if (tab.data.general.o_className == coreshop.settings.classMapping.cart)
             {
                 tab.toolbar.insert(tab.toolbar.items.length,
                     '-'
@@ -418,7 +418,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         }
                     }
                 );
-            } else if (tab.data.general.o_className == 'CoreShopProduct') {
+            } else if (tab.data.general.o_className == coreshop.settings.classMapping.product) {
 
                 tab.toolbar.insert(tab.toolbar.items.length,
                     '-'
@@ -444,7 +444,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         //new pimcore.plugin.VariantGenerator.VariantGeneratorDialog(obj);
                     }.bind(this, tab)
                 });*/
-            } else if (tab.data.general.o_className === 'CoreShopOrder') {
+            } else if (tab.data.general.o_className === coreshop.settings.classMapping.order) {
                 var orderMoreButtons = [];
 
                 if (this.settings.coreshop['SYSTEM.INVOICE.CREATE']) {

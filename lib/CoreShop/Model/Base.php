@@ -96,6 +96,38 @@ class Base extends Concrete
     }
 
     /**
+     * @param array $config
+     * @return mixed
+     * @throws \Exception
+     *
+     */
+    public static function getList($config = array())
+    {
+        //We need to re-write this method, since pimcore uses the called_class method
+        
+        $className = self::getPimcoreObjectClass();
+
+        if (is_array($config)) {
+            if ($className) {
+                $listClass = $className . "\\Listing";
+
+                // check for a mapped class
+                $listClass = \Pimcore\Tool::getModelClassMapping($listClass);
+
+                if (\Pimcore\Tool::classExists($listClass)) {
+                    $list = new $listClass();
+                    $list->setValues($config);
+                    $list->load();
+
+                    return $list;
+                }
+            }
+        }
+
+        throw new \Exception("Unable to initiate list class - class not found or invalid configuration");
+    }
+
+    /**
      * @param $method
      * @param $arguments
      * @return mixed|null

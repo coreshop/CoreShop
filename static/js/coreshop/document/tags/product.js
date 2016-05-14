@@ -91,7 +91,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
     },
 
     dndAllowed: function (data) {
-        return data.records[0].get('className') === 'CoreShopProduct';
+        return data.records[0].get('className') === coreshop.settings.classMapping.product;
     },
 
     onNodeOver: function (target, dd, e, data)

@@ -50,7 +50,22 @@ class CoreShop_Admin_SettingsController extends Admin
 
         $pluginConfig = \Pimcore\ExtensionManager::getPluginConfig("CoreShop");
 
-        $this->_helper->json(array("coreshop" => $valueArray, "plugin" => $pluginConfig['plugin']));
+        $classMapping = array(
+            "product" => \CoreShop\Model\Product::getPimcoreObjectClass(),
+            "category" => \CoreShop\Model\Category::getPimcoreObjectClass(),
+            "order" => \CoreShop\Model\Order::getPimcoreObjectClass(),
+            "orderItem" => \CoreShop\Model\Order\Item::getPimcoreObjectClass(),
+            "cart" => \CoreShop\Model\Cart::getPimcoreObjectClass(),
+            "cartItem" => \CoreShop\Model\Cart\Item::getPimcoreObjectClass(),
+            "payment" => \CoreShop\Model\Order\Payment::getPimcoreObjectClass(),
+            "user" => \CoreShop\Model\User::getPimcoreObjectClass()
+        );
+
+        foreach($classMapping as $key=>&$class) {
+            $class = str_replace("Pimcore\\Model\\Object\\", "", $class);
+        }
+
+        $this->_helper->json(array("coreshop" => $valueArray, "plugin" => $pluginConfig['plugin'], "classMapping" => $classMapping));
     }
 
     public function getAction()

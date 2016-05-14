@@ -39,7 +39,7 @@ coreshop.helpers.openOrderByNumber = function (orderNumber) {
         success: function (response) {
             var res = Ext.decode(response.responseText);
             if (res.success) {
-                pimcore.helpers.openElement(res.id, 'object', 'CoreShopOrder');
+                pimcore.helpers.openElement(res.id, 'object', coreshop.settings.classMapping.order);
             } else {
                 Ext.MessageBox.alert(t('error'), t('element_not_found'));
             }
