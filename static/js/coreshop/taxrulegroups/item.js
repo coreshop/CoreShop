@@ -107,7 +107,6 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             }
         });
 
-
         var statesStore = new Ext.data.Store({
             restful:    false,
             proxy:       new Ext.data.HttpProxy({
@@ -120,7 +119,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 { name:'name' }
             ]),
             listeners: {
-                load: function(store){
+                load: function (store) {
                     var rec = { id: 0, name: t('coreshop_all') };
                     store.insert(0, rec);
                 }
@@ -146,7 +145,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                     displayField: 'name',
                     queryMode : 'local',
                     listeners : {
-                        change : function(cmb, newValue) {
+                        change : function (cmb, newValue) {
                             stateEditor.enable();
                             stateEditor.getStore().load({
                                 params : {
@@ -241,13 +240,13 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1,
             listeners: {
-                beforeedit : function(editor, context) {
-                    if(context.record) {
-                        if(context.record.get("countryId")) {
+                beforeedit : function (editor, context) {
+                    if (context.record) {
+                        if (context.record.get('countryId')) {
                             stateEditor.enable();
                             stateEditor.getStore().load({
                                 params : {
-                                    countryId : context.record.get("countryId")
+                                    countryId : context.record.get('countryId')
                                 }
                             });
                         }

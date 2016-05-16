@@ -83,10 +83,10 @@ coreshop.helpers.showAbout = function () {
     html += '</div>';
 
     var win = new Ext.Window({
-        title: t("about"),
+        title: t('about'),
         width:500,
         height: 300,
-        bodyStyle: "padding: 10px;",
+        bodyStyle: 'padding: 10px;',
         modal: true,
         html: html
     });

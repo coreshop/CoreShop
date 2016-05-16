@@ -212,9 +212,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.shippingLocationAndCosts;
     },
 
-    getGrid : function() {
-        if(!this.shippingCostRangesGrid) {
-
+    getGrid : function () {
+        if (!this.shippingCostRangesGrid) {
 
             this.shippingCostRangesStore = new Ext.data.Store({
                 restful: false,
@@ -288,8 +287,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.shippingCostRangesGrid;
     },
 
-    addRangeColumn : function(range) {
-        if(this.shippingCostRangesGrid) {
+    addRangeColumn : function (range) {
+        if (this.shippingCostRangesGrid) {
 
             var itemId = Ext.id();
             var item = {
@@ -305,7 +304,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                         style : 'margin-bottom:0',
                         value : range.delimiter1,
                         listeners : {
-                            change : function(txtField, newValue) {
+                            change : function (txtField, newValue) {
                                 range.delimiter1 = newValue;
                             }
                         },
@@ -317,7 +316,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                         width: 200,
                         value : range.delimiter2,
                         listeners : {
-                            change : function(txtField, newValue) {
+                            change : function (txtField, newValue) {
                                 range.delimiter2 = newValue;
                             }
                         },
@@ -328,13 +327,13 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                         xtype : 'button',
                         iconCls: 'pimcore_icon_delete',
                         cls : 'coreshop_carrier_delete',
-                        handler : function() {
+                        handler : function () {
                             var column = this.shippingCostRangesGrid.headerCt.getComponent(itemId);
                             this.shippingCostRangesGrid.headerCt.remove(column);
                             this.shippingCostRangesGrid.getView().refresh();
 
-                            for(var i = 0; i < this.ranges.length; i++) {
-                                if(this.ranges[i].id === range.id) {
+                            for (var i = 0; i < this.ranges.length; i++) {
+                                if (this.ranges[i].id === range.id) {
                                     this.ranges.splice(i, 1);
                                 }
                             }
@@ -416,14 +415,13 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         //data['range'] = Ext.pluck(this.store.getRange(), 'data');
         //data['deliveryPrices'] = Ext.pluck(this.zonesStore.getRange(), 'data');
 
-        data.range.forEach(function(range) {
+        data.range.forEach(function (range) {
             range.zones = [];
 
-            zonePrices.forEach(function(zone) {
-                if(zone.data.hasOwnProperty("range_" + range.id)) {
-                    range.zones[zone.data.zone] = zone.data["range_" + range.id];
-                }
-                else {
+            zonePrices.forEach(function (zone) {
+                if (zone.data.hasOwnProperty('range_' + range.id)) {
+                    range.zones[zone.data.zone] = zone.data['range_' + range.id];
+                } else {
                     range.zones[zone.data.zone] = 0;
                 }
             });
@@ -434,7 +432,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         };
     },
 
-    postSave : function(result) {
+    postSave : function (result) {
         this.shippingCostRangesGrid.destroy();
         this.shippingCostRangesGrid = null;
 

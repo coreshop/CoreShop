@@ -358,7 +358,6 @@ pimcore.plugin.coreshop.update = Class.create({
         }.bind(this), 50);
     },
 
-
     prepareJobs: function (response)  {
         this.jobs = Ext.decode(response.responseText);
         this.startParallelJobs();

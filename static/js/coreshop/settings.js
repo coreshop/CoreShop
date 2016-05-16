@@ -84,7 +84,7 @@ pimcore.plugin.coreshop.settings = Class.create({
             Ext.each(pimcore.settings.websiteLanguages, function (lang) {
                 var shortLang = lang.toUpperCase();
 
-                if(shortLang.indexOf('-') > 0) {
+                if (shortLang.indexOf('-') > 0) {
                     shortLang = shortLang.split('-');
                     shortLang = shortLang[0];
                 }
@@ -425,11 +425,11 @@ pimcore.plugin.coreshop.settings = Class.create({
                                 name: 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES',
                                 checked: this.getValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
                                 listeners : {
-                                    change : function(checkbox, newValue) {
-                                        checkbox.up("fieldset").down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setHidden(!newValue);
-                                        checkbox.up("fieldset").down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setDisabled(!newValue);
+                                    change : function (checkbox, newValue) {
+                                        checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setHidden(!newValue);
+                                        checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setDisabled(!newValue);
 
-                                        checkbox.up("fieldset").down('label').setHidden(!newValue);
+                                        checkbox.up('fieldset').down('label').setHidden(!newValue);
                                     }
                                 }
                             },
@@ -702,7 +702,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                                 xtype: 'checkbox',
                                 checked: this.getValue('SYSTEM.CART.AUTO_CLEANUP'),
                                 listeners:{
-                                    change: function(checkbox, checked) {
+                                    change: function (checkbox, checked) {
                                         if (checked) {
                                             Ext.getCmp('coreshop_cart_activate_auto_cleanup_settings').show();
                                         } else {

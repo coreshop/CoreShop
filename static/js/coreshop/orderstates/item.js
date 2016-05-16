@@ -28,7 +28,7 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
     getTitleText : function () {
         return this.data.localizedFields.items[pimcore.settings.language].name;
     },
-    
+
     getFormPanel : function ()
     {
         var data = this.data;
@@ -157,8 +157,8 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
                                 backgroundColor : data.color
                             },
                             listeners : {
-                                change : function(txtfield, newValue) {
-                                    if(/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/.test(newValue)) {
+                                change : function (txtfield, newValue) {
+                                    if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/.test(newValue)) {
                                         txtfield.setStyle('background-color', newValue);
                                     }
                                 }

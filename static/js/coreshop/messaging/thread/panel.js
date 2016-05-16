@@ -28,9 +28,9 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
         list : '/plugin/CoreShop/admin_MessagingThread/list'
     },
 
-    initialize : function() {
-        pimcore.globalmanager.get("coreshop_messaging_contacts").load();
-        pimcore.globalmanager.get("coreshop_messaging_thread_states").load();
+    initialize : function () {
+        pimcore.globalmanager.get('coreshop_messaging_contacts').load();
+        pimcore.globalmanager.get('coreshop_messaging_thread_states').load();
 
         this.getLayout();
 
@@ -78,7 +78,7 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
         };
     },
 
-    getGrid : function() {
+    getGrid : function () {
         if (!this.grid) {
             //var store = pimcore.globalmanager.get(this.storeId);
             this.store = new Ext.data.JsonStore({
@@ -110,7 +110,6 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                 ]
             });
 
-
             this.grid = Ext.create('Ext.grid.Panel', {
                 store: this.store,
                 listeners : this.getTreeNodeListeners(),
@@ -128,13 +127,13 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                         filter : 'numeric'
                     },
                     {
-                        text: t("coreshop_token"),
+                        text: t('coreshop_token'),
                         dataIndex : 'token',
                         width : 120,
                         filter : 'string'
                     },
                     {
-                        text: t("reference"),
+                        text: t('reference'),
                         dataIndex : 'reference',
                         width : 150
                     },
@@ -159,10 +158,10 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                         },
                         renderer: function (value, metadata, record)
                         {
-                            var contact = pimcore.globalmanager.get("coreshop_messaging_contacts").getById(value);
+                            var contact = pimcore.globalmanager.get('coreshop_messaging_contacts').getById(value);
 
-                            if(contact) {
-                                return contact.get("name");
+                            if (contact) {
+                                return contact.get('name');
                             }
 
                             return value;
@@ -180,22 +179,23 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                         width: 200,
                         renderer: function (value, metadata, record)
                         {
-                            var state = pimcore.globalmanager.get("coreshop_messaging_thread_states").getById(value);
+                            var state = pimcore.globalmanager.get('coreshop_messaging_thread_states').getById(value);
 
-                            if(state) {
+                            if (state) {
                                 var bgColor = state.get('color');
 
-                                if(bgColor) {
+                                if (bgColor) {
                                     var textColor = (parseInt(bgColor.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
 
                                     return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + state.get('name') + '</span>';
                                 }
 
-                                return state.get("name");
+                                return state.get('name');
                             }
 
                             return value;
                         },
+
                         filter: {
                             type : 'list',
                             store : pimcore.globalmanager.get('coreshop_messaging_thread_states')
@@ -225,18 +225,18 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
         return this.grid;
     },
 
-    filterGrid : function(field, value, clearFilter) {
-        if(clearFilter === undefined)
+    filterGrid : function (field, value, clearFilter) {
+        if (clearFilter === undefined)
             clearFilter = false;
 
-        if(clearFilter) {
-            this.grid.getPlugin("filter").clearFilters();
+        if (clearFilter) {
+            this.grid.getPlugin('filter').clearFilters();
         }
 
-        this.grid.getPlugin("filter").addFilter({dataIndex : field, value : value});
+        this.grid.getPlugin('filter').addFilter({ dataIndex : field, value : value });
     },
 
-    renderContacts : function() {
+    renderContacts : function () {
         var me = this;
 
         Ext.Ajax.request({
@@ -244,7 +244,7 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
             success: function (response) {
                 var res = Ext.decode(response.responseText);
                 if (res.success) {
-                    for(var i = 0; i < res.data.length; i++) {
+                    for (var i = 0; i < res.data.length; i++) {
                         var record = res.data[i];
 
                         this.contactsPanel.add({
@@ -261,8 +261,8 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                                     xtype : 'button',
                                     text : record.count + ' ' + t('coreshop_messaging_new_messages'),
                                     record : record,
-                                    handler : function() {
-                                        me.filterGrid("contactId", this.config.record.id, true);
+                                    handler : function () {
+                                        me.filterGrid('contactId', this.config.record.id, true);
                                     }
                                 }
                             ]
@@ -275,7 +275,7 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
         });
     },
 
-    renderStatesStats : function() {
+    renderStatesStats : function () {
         var panel = {
             padding : 5,
             xtype : 'panel',
@@ -286,12 +286,12 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
 
         var panelEntries = [];
 
-        for(var i = 0; i < pimcore.globalmanager.get("coreshop_messaging_thread_states").count(); i++) {
-            var record = pimcore.globalmanager.get("coreshop_messaging_thread_states").getAt(i);
+        for (var i = 0; i < pimcore.globalmanager.get('coreshop_messaging_thread_states').count(); i++) {
+            var record = pimcore.globalmanager.get('coreshop_messaging_thread_states').getAt(i);
 
             panelEntries.push({
                 bodyCls : 'badge-container',
-                html : record.get("name") + ' <span class="badge">' + record.get("count") + '</span>'
+                html : record.get('name') + ' <span class="badge">' + record.get('count') + '</span>'
             });
         }
 

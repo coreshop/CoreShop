@@ -13,12 +13,12 @@
 
 pimcore.registerNS('pimcore.plugin.coreshop.messaging.abstractItem');
 pimcore.plugin.coreshop.messaging.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
-    
-    getItemClass : function() {
+
+    getItemClass : function () {
         return pimcore.plugin.coreshop.messaging[this.type].item;
     },
 
-    getTitle : function() {
+    getTitle : function () {
         return t('coreshop_messaging_' + this.type);
     },
 });

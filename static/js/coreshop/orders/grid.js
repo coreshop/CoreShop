@@ -137,9 +137,9 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                         if (pos >= 0) {
                             var orderState = store.getAt(pos);
                             var bgColor = orderState.get('color');
-                            var textColor = (parseInt(bgColor.replace('#', ''), 16) > 0xffffff/2) ? 'black' : 'white';
+                            var textColor = (parseInt(bgColor.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
 
-                            return '<span class="rounded-color" style="background-color:'+bgColor+'; color: ' + textColor + '">' + orderState.get('name') + '</span>';
+                            return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderState.get('name') + '</span>';
                         }
 
                         return null;

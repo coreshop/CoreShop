@@ -39,7 +39,7 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
                 reader:     new Ext.data.JsonReader({}, [
                     { name:'id' },
                     { name:'name' },
-                    { name:'country'}
+                    { name:'country' }
                 ]),
                 autoload:   true,
                 groupField: 'country',
@@ -73,6 +73,7 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
                 groupDir: 'ASC',
                 features: [{
                     ftype: 'grouping',
+
                     // You can customize the group's header.
                     groupHeaderTpl: '{name} ({children.length})',
                     enableNoGroups:true,

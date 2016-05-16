@@ -21,8 +21,8 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
     },
 
     initPanel: function () {
-        if(!pimcore.globalmanager.get("coreshop_messaging_thread_states").isLoaded()) {
-            pimcore.globalmanager.get("coreshop_messaging_thread_states").load();
+        if (!pimcore.globalmanager.get('coreshop_messaging_thread_states').isLoaded()) {
+            pimcore.globalmanager.get('coreshop_messaging_thread_states').load();
         }
 
         this.panel = this.getPanel();
@@ -41,11 +41,11 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
     },
 
     getTitleText : function () {
-        return t("coreshop_messaging_thread") + " #" + this.data.thread.id;
+        return t('coreshop_messaging_thread') + ' #' + this.data.thread.id;
     },
 
-    getThreadPanel : function() {
-        if(!this.threadPanel) {
+    getThreadPanel : function () {
+        if (!this.threadPanel) {
             this.threadToolbar = Ext.create({
                 xtype: 'toolbar',
                 dock: 'top',
@@ -74,17 +74,17 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
         return this.threadPanel;
     },
 
-    getThreadStatusToolbar : function() {
+    getThreadStatusToolbar : function () {
         var items = [],
             me = this;
 
-        for(var i = 0; i < pimcore.globalmanager.get("coreshop_messaging_thread_states").count(); i++) {
-            var state = pimcore.globalmanager.get("coreshop_messaging_thread_states").getAt(i);
+        for (var i = 0; i < pimcore.globalmanager.get('coreshop_messaging_thread_states').count(); i++) {
+            var state = pimcore.globalmanager.get('coreshop_messaging_thread_states').getAt(i);
 
-            var text = t("coreshop_messaging_thread_set_state") + ": " + state.get("name");
+            var text = t('coreshop_messaging_thread_set_state') + ': ' + state.get('name');
 
-            if(this.data.thread.statusId === state.getId()) {
-                text = t("coreshop_messaging_thread_current_state") + ": " + state.get("name");
+            if (this.data.thread.statusId === state.getId()) {
+                text = t('coreshop_messaging_thread_current_state') + ': ' + state.get('name');
             }
 
             items.push(
@@ -93,32 +93,31 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
                     text : text,
                     disabled : this.data.thread.statusId === state.getId(),
                     state : state,
-                    handler : function() {
+                    handler : function () {
                         me.changeStatus(this.config.state.getId());
                     }
                 }
             );
         }
-        
-        if(this.data.thread.orderId) {
-            items.push("->");
+
+        if (this.data.thread.orderId) {
+            items.push('->');
             items.push({
                 xtype: 'button',
                 iconCls: 'coreshop_icon_order',
                 text : t('coreshop_order'),
-                handler : function() {
-                    pimcore.helpers.openObject(me.data.thread.orderId, "object");
+                handler : function () {
+                    pimcore.helpers.openObject(me.data.thread.orderId, 'object');
                 }
             });
-        }
-        else if(this.data.thread.productId) {
-            items.push("->");
+        } else if (this.data.thread.productId) {
+            items.push('->');
             items.push({
                 xtype: 'button',
                 iconCls: 'coreshop_icon_product',
                 text : t('coreshop_product'),
-                handler : function() {
-                    pimcore.helpers.openObject(me.data.thread.productId, "object");
+                handler : function () {
+                    pimcore.helpers.openObject(me.data.thread.productId, 'object');
                 }
             });
         }
@@ -126,8 +125,8 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
         return items;
     },
 
-    changeStatus : function(newStatus) {
-        this.panel.mask(t("loading"));
+    changeStatus : function (newStatus) {
+        this.panel.mask(t('loading'));
 
         Ext.Ajax.request({
             url: '/plugin/CoreShop/admin_MessagingThread/change-status',
@@ -139,26 +138,25 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
                 var res = Ext.decode(response.responseText);
                 this.panel.unmask();
 
-                if(res.success) {
+                if (res.success) {
                     this.data.thread = res.data.thread;
 
                     pimcore.helpers.showNotification(t('success'), t('coreshop_save_success'), 'success');
 
                     this.threadToolbar.removeAll();
                     this.threadToolbar.add(this.getThreadStatusToolbar());
-                }
-                else {
+                } else {
                     pimcore.helpers.showNotification(t('error'), t('coreshop_messaging_new_message_error'), 'error');
                 }
             }.bind(this)
         });
     },
 
-    getMessagesPanel : function() {
-        if(!this.messagesPanel) {
+    getMessagesPanel : function () {
+        if (!this.messagesPanel) {
             var messages = [];
 
-            for(var i = 0; i < this.data.messages.length; i++) {
+            for (var i = 0; i < this.data.messages.length; i++) {
                 messages.push(this.getPanelForMessage(this.data.messages[i]));
             }
 
@@ -172,7 +170,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
         return this.messagesPanel;
     },
 
-    getPanelForMessage : function(message) {
+    getPanelForMessage : function (message) {
         var panel = new Ext.Panel({
             layout : {
                 type : 'hbox',
@@ -184,7 +182,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
                 {
                     bodyPadding : 10,
                     width: 100,
-                    html : '<img src="/plugins/CoreShop/static/img/48/messaging_' + (message.adminUserId ? "admin" : "user") + '.png" />'
+                    html : '<img src="/plugins/CoreShop/static/img/48/messaging_' + (message.adminUserId ? 'admin' : 'user') + '.png" />'
                 },
                 {
                     flex : 1,
@@ -193,7 +191,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
                             html : '<strong>' + (message.adminUserId ? this.getAdminUsername(message.admin) : message.user.email) + '</strong>'
                         },
                         {
-                            html : '<i class="pimcore_icon_schedule coreshop_inline_icon"></i> ' + Ext.Date.format(new Date(message.creationDate*1000), "Y-m-d H:i:s")
+                            html : '<i class="pimcore_icon_schedule coreshop_inline_icon"></i> ' + Ext.Date.format(new Date(message.creationDate * 1000), 'Y-m-d H:i:s')
                         },
                         {
                             bodyPadding : '10px 0',
@@ -208,38 +206,38 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
         return panel;
     },
 
-    getAdminUsername : function(admin) {
+    getAdminUsername : function (admin) {
         var name = admin.name;
 
-        if(admin.firstname || admin.lastname || admin.email) {
-            var addonName = "";
+        if (admin.firstname || admin.lastname || admin.email) {
+            var addonName = '';
 
-            if(admin.firstname) {
-                addonName += admin.firstname + " ";
+            if (admin.firstname) {
+                addonName += admin.firstname + ' ';
             }
 
-            if(admin.lastname) {
-                addonName += admin.lastname + " ";
+            if (admin.lastname) {
+                addonName += admin.lastname + ' ';
             }
 
-            if(admin.email) {
-                if(addonName.length > 0) {
-                    addonName += "- ";
+            if (admin.email) {
+                if (addonName.length > 0) {
+                    addonName += '- ';
                 }
 
-                addonName += admin.email + " ";
+                addonName += admin.email + ' ';
             }
 
-            name += " (" + trim(addonName) + ")";
+            name += ' (' + trim(addonName) + ')';
         }
 
         return name;
     },
 
-    getNewMessagePanel : function() {
-        if(!this.newMessagePanel) {
+    getNewMessagePanel : function () {
+        if (!this.newMessagePanel) {
 
-            var wysiwyg = new pimcore.object.tags.wysiwyg("", {
+            var wysiwyg = new pimcore.object.tags.wysiwyg('', {
                 height : 300,
                 title :  t('coreshop_messaging_message')
             });
@@ -258,7 +256,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
                         {
                             xtype : 'button',
                             text : t('coreshop_messaging_message_send'),
-                            handler : function() {
+                            handler : function () {
                                 this.sendNewMessage(wysiwyg.getValue());
                             }.bind(this)
                         }
@@ -270,8 +268,8 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
         return this.newMessagePanel;
     },
 
-    sendNewMessage : function(content) {
-        if(!content)
+    sendNewMessage : function (content) {
+        if (!content)
             return;
 
         Ext.Ajax.request({
@@ -283,10 +281,9 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
             success: function (response) {
                 var res = Ext.decode(response.responseText);
 
-                if(res.success) {
+                if (res.success) {
                     this.messagesPanel.add(this.getPanelForMessage(res.data.newMessage));
-                }
-                else {
+                } else {
                     pimcore.helpers.showNotification(t('error'), t('coreshop_messaging_new_message_error'), 'error');
                 }
             }.bind(this)

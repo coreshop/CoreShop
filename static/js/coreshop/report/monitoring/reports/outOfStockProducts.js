@@ -51,8 +51,8 @@ pimcore.plugin.coreshop.report.monitoring.reports.outOfStockProducts = Class.cre
                         text: t('coreshop_monitoring_outOfStockProducts_out_of_stock_behaviour'),
                         dataIndex : 'outOfStockBehaviour',
                         width : 100,
-                        renderer : function(value) {
-                            return t('coreshop_stock_'+value+'_order');
+                        renderer : function (value) {
+                            return t('coreshop_stock_' + value + '_order');
                         }
                     }
                 ],

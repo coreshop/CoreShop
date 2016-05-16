@@ -71,7 +71,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
         return this.layout;
     },
 
-    getTitle : function() {
+    getTitle : function () {
         return t('coreshop_' + this.type);
     },
 
@@ -249,7 +249,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
         }
     },
 
-    getItemClass : function() {
+    getItemClass : function () {
         return pimcore.plugin.coreshop[this.type].item;
     },
 

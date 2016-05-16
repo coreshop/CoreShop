@@ -242,10 +242,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
-
                     var messagingMenu = [];
-
-
 
                     if (user.isAllowed('coreshop_permission_messaging_thread')) {
                         messagingMenu.push({
@@ -293,8 +290,8 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                     }
 
                     coreShopMenuItems.push({
-                        text: "ABOUT CoreShop &reg;",
-                        iconCls: "coreshop_icon_logo",
+                        text: 'ABOUT CoreShop &reg;',
+                        iconCls: 'coreshop_icon_logo',
                         handler: function () {
                             coreshop.helpers.showAbout();
                         }
@@ -671,7 +668,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openMessagingContact : function() {
+    openMessagingContact : function () {
         try {
             pimcore.globalmanager.get('coreshop_messaging_contacts_panel').activate();
         }
@@ -680,7 +677,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openMessagingThreadState : function() {
+    openMessagingThreadState : function () {
         try {
             pimcore.globalmanager.get('coreshop_messaging_thread_state_panel').activate();
         }
@@ -689,7 +686,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openMessagingThread : function() {
+    openMessagingThread : function () {
         try {
             pimcore.globalmanager.get('coreshop_messaging_thread_panel').activate();
         }
