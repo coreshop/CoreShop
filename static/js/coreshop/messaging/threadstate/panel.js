@@ -23,9 +23,9 @@ pimcore.plugin.coreshop.messaging.threadstate.panel = Class.create(pimcore.plugi
     type : 'threadstate',
 
     url : {
-        add : '/plugin/CoreShop/admin_MessagingThreadState/add',
-        delete : '/plugin/CoreShop/admin_MessagingThreadState/delete',
-        get : '/plugin/CoreShop/admin_MessagingThreadState/get',
-        list : '/plugin/CoreShop/admin_MessagingThreadState/list'
+        add : '/plugin/CoreShop/admin_messaging-thread-state/add',
+        delete : '/plugin/CoreShop/admin_messaging-thread-state/delete',
+        get : '/plugin/CoreShop/admin_messaging-thread-state/get',
+        list : '/plugin/CoreShop/admin_messaging-thread-state/list'
     }
 });

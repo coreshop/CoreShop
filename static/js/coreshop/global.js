@@ -33,22 +33,22 @@ pimcore.plugin.coreshop.global = {
             { name:'active' }
         ]);
         this._createStore('coreshop_countries', 'Country');
-        this._createStore('coreshop_orderstates', 'OrderStates');
+        this._createStore('coreshop_orderstates', 'order-state');
         this._createStore('coreshop_taxes', 'Tax', [
             { name:'id' },
             { name:'name' },
             { name:'rate' }
         ]);
-        this._createStore('coreshop_taxrulegroups', 'TaxRuleGroup');
-        this._createStore('coreshop_customergroups', 'CustomerGroup');
+        this._createStore('coreshop_taxrulegroups', 'tax-rule-group');
+        this._createStore('coreshop_customergroups', 'customer-group');
         this._createStore('coreshop_carriers', 'Carrier');
-        this._createStore('coreshop_pricerules', 'PriceRules');
+        this._createStore('coreshop_pricerules', 'price-rule');
         this._createStore('coreshop_indexes', 'Indexes');
         this._createStore('coreshop_product_filters', 'Filter');
-        this._createStore('coreshop_manufacturers', 'Manufacturers');
+        this._createStore('coreshop_manufacturers', 'manufacturer');
         this._createStore('coreshop_states', 'State');
-        this._createStore('coreshop_messaging_contacts', 'MessagingContact');
-        this._createStore('coreshop_messaging_thread_states', 'MessagingThreadState');
+        this._createStore('coreshop_messaging_contacts', 'messaging-contact');
+        this._createStore('coreshop_messaging_thread_states', 'messaging-thread-state');
 
         pimcore.globalmanager.get('coreshop_taxes').load();
         pimcore.globalmanager.get('coreshop_countries').load();

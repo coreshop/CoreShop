@@ -24,10 +24,10 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
     type : 'pricerules',
 
     url : {
-        add : '/plugin/CoreShop/admin_PriceRules/add',
-        delete : '/plugin/CoreShop/admin_PriceRules/delete',
-        get : '/plugin/CoreShop/admin_PriceRules/get',
-        list : '/plugin/CoreShop/admin_PriceRules/list'
+        add : '/plugin/CoreShop/admin_price-rule/add',
+        delete : '/plugin/CoreShop/admin_price-rule/delete',
+        get : '/plugin/CoreShop/admin_price-rule/get',
+        list : '/plugin/CoreShop/admin_price-rule/list'
     },
 
     /**
@@ -47,7 +47,7 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
         var me = this;
 
         Ext.Ajax.request({
-            url: '/plugin/CoreShop/admin_PriceRules/get-config',
+            url: '/plugin/CoreShop/admin_price-rule/get-config',
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);

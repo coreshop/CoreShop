@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
     iconCls : 'coreshop_icon_tax_rule_groups',
 
     url : {
-        save : '/plugin/CoreShop/admin_Taxrulegroup/save'
+        save : '/plugin/CoreShop/admin_tax-rule-group/save'
     },
 
     getItems : function () {
@@ -96,7 +96,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             listeners: listeners,
             proxy: {
                 type: 'ajax',
-                url: '/plugin/CoreShop/admin_Taxrulegroup/list-rules',
+                url: '/plugin/CoreShop/admin_tax-rule-group/list-rules',
                 reader: {
                     type: 'json',
                     rootProperty : 'data'

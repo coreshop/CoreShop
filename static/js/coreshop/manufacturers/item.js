@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.manufacturers.item = Class.create(pimcore.plugin.coresho
     iconCls : 'coreshop_icon_manufacturers',
 
     url : {
-        save : '/plugin/CoreShop/admin_Manufacturers/save'
+        save : '/plugin/CoreShop/admin_manufacturer/save'
     },
 
     getItems : function () {

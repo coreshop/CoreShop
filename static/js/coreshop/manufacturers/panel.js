@@ -24,9 +24,9 @@ pimcore.plugin.coreshop.manufacturers.panel = Class.create(pimcore.plugin.coresh
     type : 'manufacturers',
 
     url : {
-        add : '/plugin/CoreShop/admin_Manufacturers/add',
-        delete : '/plugin/CoreShop/admin_Manufacturers/delete',
-        get : '/plugin/CoreShop/admin_Manufacturers/get',
-        list : '/plugin/CoreShop/admin_Manufacturers/list'
+        add : '/plugin/CoreShop/admin_manufacturer/add',
+        delete : '/plugin/CoreShop/admin_manufacturer/delete',
+        get : '/plugin/CoreShop/admin_manufacturer/get',
+        list : '/plugin/CoreShop/admin_manufacturer/list'
     }
 });

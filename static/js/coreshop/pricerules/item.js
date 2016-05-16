@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
     iconCls : 'coreshop_icon_price_rule',
 
     url : {
-        save : '/plugin/CoreShop/admin_PriceRules/save'
+        save : '/plugin/CoreShop/admin_price-rule/save'
     },
 
     getPanel: function () {

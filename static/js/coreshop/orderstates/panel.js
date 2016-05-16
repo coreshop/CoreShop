@@ -21,9 +21,9 @@ pimcore.plugin.coreshop.orderstates.panel = Class.create(pimcore.plugin.coreshop
     type : 'orderstates',
 
     url : {
-        add : '/plugin/CoreShop/admin_OrderStates/add',
-        delete : '/plugin/CoreShop/admin_OrderStates/delete',
-        get : '/plugin/CoreShop/admin_OrderStates/get',
-        list : '/plugin/CoreShop/admin_OrderStates/list'
+        add : '/plugin/CoreShop/admin_order-state/add',
+        delete : '/plugin/CoreShop/admin_order-state/delete',
+        get : '/plugin/CoreShop/admin_order-state/get',
+        list : '/plugin/CoreShop/admin_order-state/list'
     }
 });

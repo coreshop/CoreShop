@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
     iconCls : 'coreshop_icon_customer_groups',
 
     url : {
-        save : '/plugin/CoreShop/admin_Customergroup/save'
+        save : '/plugin/CoreShop/admin_customer-group/save'
     },
 
     getItems : function () {

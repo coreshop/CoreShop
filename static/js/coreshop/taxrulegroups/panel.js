@@ -24,9 +24,9 @@ pimcore.plugin.coreshop.taxrulegroups.panel = Class.create(pimcore.plugin.coresh
     type : 'taxrulegroups',
 
     url : {
-        add : '/plugin/CoreShop/admin_TaxRuleGroup/add',
-        delete : '/plugin/CoreShop/admin_TaxRuleGroup/delete',
-        get : '/plugin/CoreShop/admin_TaxRuleGroup/get',
-        list : '/plugin/CoreShop/admin_TaxRuleGroup/list'
+        add : '/plugin/CoreShop/admin_tax-rule-group/add',
+        delete : '/plugin/CoreShop/admin_tax-rule-group/delete',
+        get : '/plugin/CoreShop/admin_tax-rule-group/get',
+        list : '/plugin/CoreShop/admin_tax-rule-group/list'
     }
 });

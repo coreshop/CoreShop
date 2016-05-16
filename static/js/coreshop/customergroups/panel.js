@@ -24,9 +24,9 @@ pimcore.plugin.coreshop.customergroups.panel = Class.create(pimcore.plugin.cores
     type : 'customergroups',
 
     url : {
-        add : '/plugin/CoreShop/admin_Customergroup/add',
-        delete : '/plugin/CoreShop/admin_Customergroup/delete',
-        get : '/plugin/CoreShop/admin_Customergroup/get',
-        list : '/plugin/CoreShop/admin_Customergroup/list'
+        add : '/plugin/CoreShop/admin_customer-group/add',
+        delete : '/plugin/CoreShop/admin_customer-group/delete',
+        get : '/plugin/CoreShop/admin_customer-group/get',
+        list : '/plugin/CoreShop/admin_customer-group/list'
     }
 });
