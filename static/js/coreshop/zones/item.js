@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
     iconCls : 'coreshop_icon_zone',
 
     url : {
-        save : '/plugin/CoreShop/admin_Zone/save'
+        save : '/plugin/CoreShop/admin_zone/save'
     },
 
     getItems : function () {

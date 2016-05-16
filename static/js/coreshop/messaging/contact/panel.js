@@ -23,9 +23,9 @@ pimcore.plugin.coreshop.messaging.contact.panel = Class.create(pimcore.plugin.co
     type : 'contact',
 
     url : {
-        add : '/plugin/CoreShop/admin_Messaging-Contact/add',
-        delete : '/plugin/CoreShop/admin_Messaging-Contact/delete',
-        get : '/plugin/CoreShop/admin_Messaging-Contact/get',
-        list : '/plugin/CoreShop/admin_Messaging-Contact/list'
+        add : '/plugin/CoreShop/admin_messaging-contact/add',
+        delete : '/plugin/CoreShop/admin_messaging-contact/delete',
+        get : '/plugin/CoreShop/admin_messaging-contact/get',
+        list : '/plugin/CoreShop/admin_messaging-contact/list'
     }
 });

@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
     iconCls : 'coreshop_icon_currency',
 
     url : {
-        save : '/plugin/CoreShop/admin_Currency/save'
+        save : '/plugin/CoreShop/admin_currency/save'
     },
 
     getItems : function () {

@@ -23,10 +23,10 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
     type : 'states',
 
     url : {
-        add : '/plugin/CoreShop/admin_State/add',
-        delete : '/plugin/CoreShop/admin_State/delete',
-        get : '/plugin/CoreShop/admin_State/get',
-        list : '/plugin/CoreShop/admin_State/list'
+        add : '/plugin/CoreShop/admin_state/add',
+        delete : '/plugin/CoreShop/admin_state/delete',
+        get : '/plugin/CoreShop/admin_state/get',
+        list : '/plugin/CoreShop/admin_state/list'
     },
 
     getNavigation: function () {
@@ -34,7 +34,7 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
             this.store = new Ext.data.Store({
                 restful:    false,
                 proxy:      new Ext.data.HttpProxy({
-                    url : '/plugin/CoreShop/admin_State/list'
+                    url : '/plugin/CoreShop/admin_state/list'
                 }),
                 reader:     new Ext.data.JsonReader({}, [
                     { name:'id' },

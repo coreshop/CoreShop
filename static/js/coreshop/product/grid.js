@@ -75,7 +75,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
             pageSize: itemsPerPage,
             proxy: {
                 type: 'ajax',
-                url: '/plugin/CoreShop/admin_Product/get-products',
+                url: '/plugin/CoreShop/admin_product/get-products',
                 reader: {
                     type: 'json',
                     rootProperty: 'data',

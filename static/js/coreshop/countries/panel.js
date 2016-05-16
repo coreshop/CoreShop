@@ -23,9 +23,9 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
     type : 'countries',
 
     url : {
-        add : '/plugin/CoreShop/admin_Country/add',
-        delete : '/plugin/CoreShop/admin_Country/delete',
-        get : '/plugin/CoreShop/admin_Country/get',
-        list : '/plugin/CoreShop/admin_Country/list'
+        add : '/plugin/CoreShop/admin_country/add',
+        delete : '/plugin/CoreShop/admin_country/delete',
+        get : '/plugin/CoreShop/admin_country/get',
+        list : '/plugin/CoreShop/admin_country/list'
     }
 });

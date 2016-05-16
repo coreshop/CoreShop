@@ -21,10 +21,10 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
     type : 'indexes',
 
     url : {
-        add : '/plugin/CoreShop/admin_Indexes/add',
-        delete : '/plugin/CoreShop/admin_Indexes/delete',
-        get : '/plugin/CoreShop/admin_Indexes/get',
-        list : '/plugin/CoreShop/admin_Indexes/list'
+        add : '/plugin/CoreShop/admin_indexes/add',
+        delete : '/plugin/CoreShop/admin_indexes/delete',
+        get : '/plugin/CoreShop/admin_indexes/get',
+        list : '/plugin/CoreShop/admin_indexes/list'
     },
 
     typesStore : null,
@@ -34,7 +34,7 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
      */
     initialize: function () {
         var proxy = new Ext.data.HttpProxy({
-            url : '/plugin/CoreShop/admin_Indexes/get-types'
+            url : '/plugin/CoreShop/admin_indexes/get-types'
         });
 
         var reader = new Ext.data.JsonReader({}, [

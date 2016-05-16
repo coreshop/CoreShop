@@ -24,9 +24,9 @@ pimcore.plugin.coreshop.taxes.panel = Class.create(pimcore.plugin.coreshop.abstr
     type : 'taxes',
 
     url : {
-        add : '/plugin/CoreShop/admin_Tax/add',
-        delete : '/plugin/CoreShop/admin_Tax/delete',
-        get : '/plugin/CoreShop/admin_Tax/get',
-        list : '/plugin/CoreShop/admin_Tax/list'
+        add : '/plugin/CoreShop/admin_tax/add',
+        delete : '/plugin/CoreShop/admin_tax/delete',
+        get : '/plugin/CoreShop/admin_tax/get',
+        list : '/plugin/CoreShop/admin_tax/list'
     }
 });

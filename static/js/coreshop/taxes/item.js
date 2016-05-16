@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
     iconCls : 'coreshop_icon_taxes',
 
     url : {
-        save : '/plugin/CoreShop/admin_Tax/save'
+        save : '/plugin/CoreShop/admin_tax/save'
     },
 
     getItems : function () {
@@ -118,7 +118,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
         var values = this.formPanel.getForm().getFieldValues();
 
         Ext.Ajax.request({
-            url: '/plugin/CoreShop/admin_Tax/save',
+            url: '/plugin/CoreShop/admin_tax/save',
             method: 'post',
             params: {
                 data: Ext.encode(values),

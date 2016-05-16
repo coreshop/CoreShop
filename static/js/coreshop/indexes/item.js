@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
     iconCls : 'coreshop_icon_indexes',
 
     url : {
-        save : '/plugin/CoreShop/admin_Indexes/save'
+        save : '/plugin/CoreShop/admin_indexes/save'
     },
 
     getPanel: function () {

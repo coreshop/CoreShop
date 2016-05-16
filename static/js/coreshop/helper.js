@@ -32,7 +32,7 @@ coreshop.helpers.openOrderByNumberDialog = function (keyCode, e) {
 
 coreshop.helpers.openOrderByNumber = function (orderNumber) {
     Ext.Ajax.request({
-        url: '/plugin/CoreShop/admin_Helper/get-order',
+        url: '/plugin/CoreShop/admin_helper/get-order',
         params: {
             orderNumber: orderNumber
         },

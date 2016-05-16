@@ -26,13 +26,13 @@ pimcore.plugin.coreshop.global = {
     },
 
     _initStores : function () {
-        this._createStore('coreshop_currencies', 'Currency');
-        this._createStore('coreshop_zones', 'Zone', [
+        this._createStore('coreshop_currencies', 'currency');
+        this._createStore('coreshop_zones', 'zone', [
             { name:'id' },
             { name:'name' },
             { name:'active' }
         ]);
-        this._createStore('coreshop_countries', 'Country');
+        this._createStore('coreshop_countries', 'country');
         this._createStore('coreshop_orderstates', 'order-state');
         this._createStore('coreshop_taxes', 'Tax', [
             { name:'id' },
@@ -41,12 +41,12 @@ pimcore.plugin.coreshop.global = {
         ]);
         this._createStore('coreshop_taxrulegroups', 'tax-rule-group');
         this._createStore('coreshop_customergroups', 'customer-group');
-        this._createStore('coreshop_carriers', 'Carrier');
+        this._createStore('coreshop_carriers', 'carrier');
         this._createStore('coreshop_pricerules', 'price-rule');
-        this._createStore('coreshop_indexes', 'Indexes');
-        this._createStore('coreshop_product_filters', 'Filter');
+        this._createStore('coreshop_indexes', 'indexes');
+        this._createStore('coreshop_product_filters', 'filter');
         this._createStore('coreshop_manufacturers', 'manufacturer');
-        this._createStore('coreshop_states', 'State');
+        this._createStore('coreshop_states', 'state');
         this._createStore('coreshop_messaging_contacts', 'messaging-contact');
         this._createStore('coreshop_messaging_thread_states', 'messaging-thread-state');
 

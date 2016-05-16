@@ -110,7 +110,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         var statesStore = new Ext.data.Store({
             restful:    false,
             proxy:       new Ext.data.HttpProxy({
-                url : '/plugin/CoreShop/admin_State/country'
+                url : '/plugin/CoreShop/admin_state/country'
             }),
             reader:     new Ext.data.JsonReader({
 

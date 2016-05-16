@@ -24,9 +24,9 @@ pimcore.plugin.coreshop.zones.panel = Class.create(pimcore.plugin.coreshop.abstr
     type : 'zones',
 
     url : {
-        add : '/plugin/CoreShop/admin_Zone/add',
-        delete : '/plugin/CoreShop/admin_Zone/delete',
-        get : '/plugin/CoreShop/admin_Zone/get',
-        list : '/plugin/CoreShop/admin_Zone/list'
+        add : '/plugin/CoreShop/admin_zone/add',
+        delete : '/plugin/CoreShop/admin_zone/delete',
+        get : '/plugin/CoreShop/admin_zone/get',
+        list : '/plugin/CoreShop/admin_zone/list'
     }
 });

@@ -20,7 +20,7 @@ pimcore.plugin.coreshop.orders.createPayment = {
         var paymentProvidersStore = new Ext.data.Store({
             proxy : {
                 type : 'ajax',
-                url : '/plugin/CoreShop/admin_Order/get-payment-providers',
+                url : '/plugin/CoreShop/admin_order/get-payment-providers',
                 reader : {
                     type : 'json',
                     rootProperty : 'data'

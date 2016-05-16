@@ -42,7 +42,7 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
         this.element = element;
 
         Ext.Ajax.request({
-            url: '/plugin/CoreShop/admin_Product/get-specific-price-config',
+            url: '/plugin/CoreShop/admin_product/get-specific-price-config',
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);
@@ -52,10 +52,10 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
         });
 
         this.url = {
-            add : '/plugin/CoreShop/admin_Product/add-specific-price?product=' + element.id,
-            delete : '/plugin/CoreShop/admin_Product/delete-specific-price',
-            get : '/plugin/CoreShop/admin_Product/get-specific-price',
-            list : '/plugin/CoreShop/admin_Product/list?product=' + element.id
+            add : '/plugin/CoreShop/admin_product/add-specific-price?product=' + element.id,
+            delete : '/plugin/CoreShop/admin_product/delete-specific-price',
+            get : '/plugin/CoreShop/admin_product/get-specific-price',
+            list : '/plugin/CoreShop/admin_product/list?product=' + element.id
         };
 
         this.panels = [];
@@ -89,7 +89,7 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
                 ],
                 proxy: {
                     type: 'ajax',
-                    url: '/plugin/CoreShop/admin_Product/list-specific-prices',
+                    url: '/plugin/CoreShop/admin_product/list-specific-prices',
                     reader: {
                         type: 'json',
                         rootProperty : 'data'

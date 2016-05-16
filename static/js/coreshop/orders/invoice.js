@@ -36,7 +36,7 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
 
     reload : function () {
         Ext.Ajax.request({
-            url: '/plugin/CoreShop/admin_Order/get-invoice-for-order',
+            url: '/plugin/CoreShop/admin_order/get-invoice-for-order',
             params : { id : this.element.id },
             method: 'GET',
             success: function (result)

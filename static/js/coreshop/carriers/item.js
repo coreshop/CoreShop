@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
     iconCls : 'coreshop_icon_carrier',
 
     url : {
-        save : '/plugin/CoreShop/admin_Carrier/save'
+        save : '/plugin/CoreShop/admin_carrier/save'
     },
 
     initialize: function (parentPanel, data, panelKey, type) {
@@ -29,7 +29,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
 
         pimcore.globalmanager.get('coreshop_zones').load(function () {
             Ext.Ajax.request({
-                url: '/plugin/CoreShop/admin_Carrier/get-range',
+                url: '/plugin/CoreShop/admin_carrier/get-range',
                 params : {
                     carrier : this.data.id
                 },
@@ -220,7 +220,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 idProperty: 'id',
                 proxy: {
                     type: 'ajax',
-                    url: '/plugin/CoreShop/admin_Carrier/get-range-zone',
+                    url: '/plugin/CoreShop/admin_carrier/get-range-zone',
                     reader: {
                         type: 'json',
                         rootProperty: 'data'

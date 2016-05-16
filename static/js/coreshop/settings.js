@@ -70,7 +70,7 @@ pimcore.plugin.coreshop.settings = Class.create({
             var exchangeRatesStore = new Ext.data.Store({
                 proxy: {
                     type: 'ajax',
-                    url : '/plugin/CoreShop/admin_Currency/get-exchange-rate-providers',
+                    url : '/plugin/CoreShop/admin_currency/get-exchange-rate-providers',
                     reader: {
                         type: 'json',
                         rootProperty : 'data'

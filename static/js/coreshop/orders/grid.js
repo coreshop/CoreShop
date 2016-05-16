@@ -73,7 +73,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             pageSize: pimcore.helpers.grid.getDefaultPageSize(),
             proxy: {
                 type: 'ajax',
-                url: '/plugin/CoreShop/admin_Order/get-orders',
+                url: '/plugin/CoreShop/admin_order/get-orders',
                 reader: {
                     type: 'json',
                     rootProperty: 'data',

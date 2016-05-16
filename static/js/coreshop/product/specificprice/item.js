@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.productSpecificPrice.item = Class.create(pimcore.plugin.
     iconCls : 'coreshop_icon_price_rule',
 
     url : {
-        save : '/plugin/CoreShop/admin_Product/save-specific-price'
+        save : '/plugin/CoreShop/admin_product/save-specific-price'
     },
 
     getSettings: function () {

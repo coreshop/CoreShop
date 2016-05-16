@@ -174,7 +174,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
-            this.classDefinitionTreePanel = this.getClassTree('/plugin/CoreShop/admin_Indexes/get-class-definition-for-field-selection', this.data.classId);
+            this.classDefinitionTreePanel = this.getClassTree('/plugin/CoreShop/admin_indexes/get-class-definition-for-field-selection', this.data.classId);
         }
 
         return this.classDefinitionTreePanel;
