@@ -264,18 +264,10 @@ class Update
     }
 
     /**
-     * In ci-mode, we can't add the classes, because of the missing root user.
-     *
-     * @fixme
-     *
      * @return bool
      */
     private function updateClasses()
     {
-        if (!\Zend_Registry::isRegistered('pimcore_admin_user')) {
-            return false;
-        }
-
         $classes = glob(PIMCORE_PLUGINS_PATH.'/CoreShop/install/class-*.json');
 
         if (!$this->dryRun && !empty($classes) && is_array($classes)) {
