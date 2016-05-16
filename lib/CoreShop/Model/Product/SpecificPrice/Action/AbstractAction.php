@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,32 +11,32 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\SpecificPrice\Action;
 
 use CoreShop\Model\Product;
-use Pimcore\Model;
 
 abstract class AbstractAction extends Product\SpecificPrice\AbstractSpecificPrice
 {
     /**
      * @var string
      */
-    public $elementType = "action";
+    public $elementType = 'action';
 
     /**
-     * Calculate discount
+     * Calculate discount.
      *
-     * @param float $basePrice
+     * @param float   $basePrice
      * @param Product $product
+     *
      * @return float
      */
     abstract public function getDiscount($basePrice, Product $product);
 
     /**
-     * get new price for product
+     * get new price for product.
      *
      * @param Product $product
+     *
      * @return float $price
      */
     abstract public function getPrice(Product $product);

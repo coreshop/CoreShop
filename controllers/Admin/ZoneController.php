@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,9 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Zone;
 use Pimcore\Controller\Action\Admin;
 
@@ -25,15 +22,15 @@ class CoreShop_Admin_ZoneController extends Admin
 
         // check permissions
         $notRestrictedActions = array('list');
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_zones");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_zones');
         }
     }
 
     public function listAction()
     {
         $list = new Zone\Listing();
-        $list->setOrder("ASC");
+        $list->setOrder('ASC');
         $list->load();
 
         $zones = array();
@@ -47,82 +44,81 @@ class CoreShop_Admin_ZoneController extends Admin
 
     protected function getTreeNodeConfig($zone)
     {
-        $tmpZone= array(
-            "id" => $zone->getId(),
-            "text" => $zone->getName(),
-            "elementType" => "zone",
-            "qtipCfg" => array(
-                "title" => "ID: " . $zone->getId()
+        $tmpZone = array(
+            'id' => $zone->getId(),
+            'text' => $zone->getName(),
+            'elementType' => 'zone',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$zone->getId(),
             ),
-            "name" => $zone->getName(),
-            "active" => intval($zone->getActive())
+            'name' => $zone->getName(),
+            'active' => intval($zone->getActive()),
         );
 
-        $tmpZone["leaf"] = true;
-        $tmpZone["iconCls"] = "coreshop_icon_zone";
-        $tmpZone["allowChildren"] = false;
+        $tmpZone['leaf'] = true;
+        $tmpZone['iconCls'] = 'coreshop_icon_zone';
+        $tmpZone['allowChildren'] = false;
 
         return $tmpZone;
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $zone = Zone::getById($id);
 
         if ($zone instanceof Zone) {
-            $this->_helper->json(array("success" => true, "data" => $zone));
+            $this->_helper->json(array('success' => true, 'data' => $zone));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $zone = Zone::getById($id);
 
-
         if ($data && $zone instanceof Zone) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $zone->setValues($data);
             $zone->save();
 
-            $this->_helper->json(array("success" => true, "data" => $zone));
+            $this->_helper->json(array('success' => true, 'data' => $zone));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $zone = new Zone();
             $zone->setName($name);
             $zone->setActive(1);
             $zone->save();
 
-            $this->_helper->json(array("success" => true, "data" => $zone));
+            $this->_helper->json(array('success' => true, 'data' => $zone));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $zone = Zone::getById($id);
 
         if ($zone instanceof Zone) {
             $zone->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

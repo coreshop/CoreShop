@@ -11,44 +11,47 @@ use Swap\Model\CurrencyPair;
 use Swap\Provider\AbstractProvider;
 use Swap\Swap;
 
-class ExchangeRates {
-
+class ExchangeRates
+{
     /**
-     * List of supported providers
+     * List of supported providers.
      *
      * @var array
      */
     public static $providerList = array(
-        "CentralBankOfRepulicTurkey" => "CentralBankOfRepublicTurkeyProvider",
-        "EuropeanCentralBank" => "EuropeanCentralBankProvider",
-        "GoogleFinance" => "GoogleFinanceProvider",
-        "NationalBankOfRomania" => "NationalBankOfRomaniaProvider",
-        "YahooFinance" => "YahooFinanceProvider",
-        "WebserviceX" => "WebserviceXProvider"
+        'CentralBankOfRepulicTurkey' => 'CentralBankOfRepublicTurkeyProvider',
+        'EuropeanCentralBank' => 'EuropeanCentralBankProvider',
+        'GoogleFinance' => 'GoogleFinanceProvider',
+        'NationalBankOfRomania' => 'NationalBankOfRomaniaProvider',
+        'YahooFinance' => 'YahooFinanceProvider',
+        'WebserviceX' => 'WebserviceXProvider',
     );
 
     /**
-     * get configured provider
+     * get configured provider.
      *
      * @return mixed|null
      */
-    public static function getSystemProvider() {
-        return Configuration::get("SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER");
+    public static function getSystemProvider()
+    {
+        return Configuration::get('SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER');
     }
 
     /**
-     * maintenance job
+     * maintenance job.
      */
-    public static function maintenance() {
-        $lastUpdate = Configuration::get("SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE");
+    public static function maintenance()
+    {
+        $lastUpdate = Configuration::get('SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE');
 
-        if(!$lastUpdate)
+        if (!$lastUpdate) {
             $lastUpdate = 0;
+        }
 
         $timeDiff = time() - $lastUpdate;
 
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
-        if($timeDiff > 24 * 60 * 60) {
+        if ($timeDiff > 24 * 60 * 60) {
             $provider = self::getSystemProvider();
             $currencies = Currency::getAvailable();
 
@@ -61,19 +64,21 @@ class ExchangeRates {
             }
         }
 
-        Configuration::set("SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE", time());
+        Configuration::set('SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE', time());
     }
 
     /**
-     * update exchange rate for currency
+     * update exchange rate for currency.
      *
      * @param $provider
      * @param Currency $toCurrency
+     *
      * @throws Exception
      *
      * @return float
      */
-    public static function updateExchangeRateForCurrency($provider, Currency $toCurrency) {
+    public static function updateExchangeRateForCurrency($provider, Currency $toCurrency)
+    {
         $provider = self::getProvider($provider);
 
         $swap = new Swap($provider);
@@ -86,46 +91,50 @@ class ExchangeRates {
             $rate = $swap->quote($currencyPair);
             $rate = floatval($rate->getValue());
 
-            if($rate < 0) {
-                throw new \Exception("rate is smaller than 0");
+            if ($rate < 0) {
+                throw new \Exception('rate is smaller than 0');
             }
 
             $toCurrency->setExchangeRate($rate);
 
             return $rate;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             throw new Exception($ex->getMessage());
         }
     }
 
     /**
-     * get provider class object
+     * get provider class object.
      *
      * @param $providerName string
+     *
      * @return AbstractProvider
+     *
      * @throws Exception
      */
-    public static function getProvider($providerName) {
-        $providerClass = "\\Swap\\Provider\\" . self::$providerList[$providerName];
+    public static function getProvider($providerName)
+    {
+        $providerClass = '\\Swap\\Provider\\'.self::$providerList[$providerName];
 
-        if(!self::providerExists($providerName)) {
-            throw new Exception("Provider with class " . $providerClass . " not found");
+        if (!self::providerExists($providerName)) {
+            throw new Exception('Provider with class '.$providerClass.' not found');
         }
 
         return new $providerClass(new FileGetContentsHttpAdapter());
     }
 
     /**
-     * check if provider exists
+     * check if provider exists.
      *
      * @param $providerName
+     *
      * @return bool
      */
-    public static function providerExists($providerName) {
-        $providerClass = "\\Swap\\Provider\\" . self::$providerList[$providerName];
+    public static function providerExists($providerName)
+    {
+        $providerClass = '\\Swap\\Provider\\'.self::$providerList[$providerName];
 
-        if(\Pimcore\Tool::classExists($providerClass)) {
+        if (\Pimcore\Tool::classExists($providerClass)) {
             return true;
         }
 

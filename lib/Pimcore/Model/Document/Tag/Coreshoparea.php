@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,18 +11,14 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace Pimcore\Model\Document\Tag;
 
-use Pimcore\Tool;
-use Pimcore\Model;
 use Pimcore\ExtensionManager;
-use Pimcore\Model\Document;
 
 class Coreshoparea extends Area
 {
     /**
-     * get area dirs
+     * get area dirs.
      *
      * @return array
      */
@@ -32,7 +28,7 @@ class Coreshoparea extends Area
     }
 
     /**
-     * get bricks config
+     * get bricks config.
      *
      * @return array|mixed
      */
@@ -42,12 +38,12 @@ class Coreshoparea extends Area
     }
 
     /**
-     * get theme area dir
+     * get theme area dir.
      *
      * @return string
      */
     protected function getThemeAreaDir()
     {
-        return CORESHOP_TEMPLATE_PATH . "/areas";
+        return CORESHOP_TEMPLATE_PATH.'/areas';
     }
 }

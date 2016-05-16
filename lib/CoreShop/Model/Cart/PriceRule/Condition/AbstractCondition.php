@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule\AbstractPriceRule;
@@ -23,14 +22,15 @@ abstract class AbstractCondition extends AbstractPriceRule
     /**
      * @var string
      */
-    public $elementType = "condition";
+    public $elementType = 'condition';
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
      * @param Model\Cart $cart
-     * @param PriceRule $priceRule
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return mixed
      */
     abstract public function checkCondition(Model\Cart $cart, PriceRule $priceRule, $throwException = false);

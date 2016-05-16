@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,26 +11,24 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
-use CoreShop\Tool;
 
 class Item extends Base
 {
     /**
-     * Pimcore Object Class
+     * Pimcore Object Class.
      *
      * @var string
      */
-    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopCartItem";
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopCartItem';
 
     /**
-     * Calculates the total for the CartItem
+     * Calculates the total for the CartItem.
      *
      * @return mixed
      */
@@ -40,7 +38,7 @@ class Item extends Base
     }
 
     /**
-     * Get the Cart for this CartItem
+     * Get the Cart for this CartItem.
      *
      * @return \Pimcore\Model\Object\AbstractObject|void|null
      */
@@ -56,42 +54,45 @@ class Item extends Base
             $parent = $parent->getParent();
         } while ($parent != null);
 
-        return null;
+        return;
     }
 
     /**
      * returns amount for item
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return int
      */
     public function getAmount()
     {
-        throw new UnsupportedException("getAmount is not supported for " . get_class($this));
+        throw new UnsupportedException('getAmount is not supported for '.get_class($this));
     }
 
     /**
      * sets amount for item
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @param $amount
+     *
      * @throws UnsupportedException
      */
     public function setAmount($amount)
     {
-        throw new UnsupportedException("setAmount is not supported for " . get_class($this));
+        throw new UnsupportedException('setAmount is not supported for '.get_class($this));
     }
 
     /**
      * returns product for item
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return Product
      */
     public function getProduct()
     {
-        throw new UnsupportedException("getProduct is not supported for " . get_class($this));
+        throw new UnsupportedException('getProduct is not supported for '.get_class($this));
     }
 }

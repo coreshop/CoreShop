@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,16 +11,13 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Model\Objectbrick\Data\Objectbrick;
-use CoreShop\Tool;
 use Pimcore\Model\Object;
 
 /**
- * Class BrickVariant
- * @package CoreShop\Model
+ * Class BrickVariant.
  */
 class BrickVariant extends Objectbrick
 {
@@ -37,10 +34,10 @@ class BrickVariant extends Objectbrick
      */
     public function getValueForVariant($fieldInfo = array(), $language = 'en')
     {
-        $methodName = 'get' . $fieldInfo['name'];
+        $methodName = 'get'.$fieldInfo['name'];
 
         if (!method_exists($this, $methodName)) {
-            return $methodName . ' not implemented';
+            return $methodName.' not implemented';
         }
 
         $output = $this->{$methodName}();
@@ -69,9 +66,10 @@ class BrickVariant extends Objectbrick
     }
 
     /**
-     * Get Name for Variant Value
+     * Get Name for Variant Value.
      *
      * @param $fieldInfo
+     *
      * @return mixed
      */
     public function getNameForVariant($fieldInfo)
@@ -80,10 +78,11 @@ class BrickVariant extends Objectbrick
     }
 
     /**
-     * Extract Object Data
+     * Extract Object Data.
      *
      * @param $object
      * @param $language
+     *
      * @return bool|mixed
      */
     private function extractObjectData($object, $language)
@@ -91,7 +90,7 @@ class BrickVariant extends Objectbrick
         $data = false;
 
         //check if there are some localize fields?
-        if (isset($object->localizedfields) && $object->localizedfields instanceof Object\LocalizedField) {
+        if (isset($object->localizedfields) && $object->localizedfields instanceof Object\Localizedfield) {
             $items = $object->getLocalizedFields()->getItems();
 
             if (isset($items[$language])) {

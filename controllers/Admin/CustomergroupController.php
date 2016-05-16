@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\CustomerGroup;
 use Pimcore\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_CustomergroupController extends Admin
 {
@@ -25,10 +21,10 @@ class CoreShop_Admin_CustomergroupController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
+        $notRestrictedActions = array('list');
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_customer_groups");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_customer_groups');
         }
     }
 
@@ -48,79 +44,79 @@ class CoreShop_Admin_CustomergroupController extends Admin
     protected function getTreeNodeConfig(CustomerGroup $group)
     {
         $tmp = array(
-            "id" => $group->getId(),
-            "text" => $group->getName(),
-            "elementType" => "group",
-            "qtipCfg" => array(
-                "title" => "ID: " . $group->getId()
+            'id' => $group->getId(),
+            'text' => $group->getName(),
+            'elementType' => 'group',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$group->getId(),
             ),
-            "name" => $group->getName()
+            'name' => $group->getName(),
         );
 
-        $tmp["leaf"] = true;
-        $tmp["iconCls"] = "coreshop_icon_customer_groups";
-        $tmp["allowChildren"] = false;
+        $tmp['leaf'] = true;
+        $tmp['iconCls'] = 'coreshop_icon_customer_groups';
+        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $group = new CustomerGroup();
             $group->setName($name);
             $group->setDiscount(0);
             $group->save();
 
-            $this->_helper->json(array("success" => true, "data" => $group));
+            $this->_helper->json(array('success' => true, 'data' => $group));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $group = CustomerGroup::getById($id);
 
         if ($group instanceof CustomerGroup) {
-            $this->_helper->json(array("success" => true, "data" => $group));
+            $this->_helper->json(array('success' => true, 'data' => $group));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $group = CustomerGroup::getById($id);
 
         if ($data && $group instanceof CustomerGroup) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $group->setValues($data);
             $group->save();
 
-            $this->_helper->json(array("success" => true, "data" => $group));
+            $this->_helper->json(array('success' => true, 'data' => $group));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $group = CustomerGroup::getById($id);
 
         if ($group instanceof CustomerGroup) {
             $group->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

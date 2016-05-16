@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\SpecificPrice\Condition;
 
 use CoreShop\Model;
@@ -19,7 +18,6 @@ use CoreShop\Tool;
 
 class Customer extends AbstractCondition
 {
-
     /**
      * @var int
      */
@@ -28,7 +26,7 @@ class Customer extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "customer";
+    public $type = 'customer';
 
     /**
      * @return int
@@ -47,20 +45,21 @@ class Customer extends AbstractCondition
     }
 
     /**
-     * Check if Product is Valid for Condition
+     * Check if Product is Valid for Condition.
      *
-     * @param Model\Product $product
+     * @param Model\Product               $product
      * @param Model\Product\SpecificPrice $specificPrice
-     * @return boolean
+     *
+     * @return bool
      */
     public function checkCondition(Model\Product $product, Model\Product\SpecificPrice $specificPrice)
     {
-        $session = Tool::getSession();
+        $user = Tool::getUser();
         $cart = Tool::prepareCart();
 
         if ($cart instanceof Model\Cart) {
-            if ($cart->getUser() instanceof Model\User && $session->user instanceof Model\User) {
-                if ($cart->getUser()->getId() === $session->user->getId()) {
+            if ($cart->getUser() instanceof Model\User && $user instanceof Model\User) {
+                if ($cart->getUser()->getId() === $this->getCustomer()) {
                     return true;
                 }
             }

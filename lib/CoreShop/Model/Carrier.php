@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,13 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Model\Carrier\AbstractRange;
 use CoreShop\Model\Carrier\DeliveryPrice;
 use CoreShop\Model\User\Address;
-use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Cache;
 use Pimcore\Db;
@@ -25,11 +23,11 @@ use Pimcore\Model\Asset;
 
 class Carrier extends AbstractModel
 {
-    const SHIPPING_METHOD_WEIGHT = "weight";
-    const SHIPPING_METHOD_PRICE = "price";
+    const SHIPPING_METHOD_WEIGHT = 'weight';
+    const SHIPPING_METHOD_PRICE = 'price';
 
-    const RANGE_BEHAVIOUR_DEACTIVATE = "deactivate";
-    const RANGE_BEHAVIOUR_LARGEST = "largest";
+    const RANGE_BEHAVIOUR_DEACTIVATE = 'deactivate';
+    const RANGE_BEHAVIOUR_LARGEST = 'largest';
 
     public static $shippingMethods = array(self::SHIPPING_METHOD_PRICE, self::SHIPPING_METHOD_WEIGHT);
     public static $rangeBehaviours = array(self::RANGE_BEHAVIOUR_LARGEST, self::RANGE_BEHAVIOUR_DEACTIVATE);
@@ -55,7 +53,7 @@ class Carrier extends AbstractModel
     public $delay;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $needsRange;
 
@@ -125,9 +123,10 @@ class Carrier extends AbstractModel
     public $class;
 
     /**
-     * get Carrier by ID
+     * get Carrier by ID.
      *
      * @param $id
+     *
      * @return Carrier|null
      */
     public static function getById($id)
@@ -138,12 +137,12 @@ class Carrier extends AbstractModel
             return null;
         }
 
-        $cacheKey = "coreshop_carrier_" . $id;
+        $cacheKey = 'coreshop_carrier_'.$id;
 
         try {
             $carrier = \Zend_Registry::get($cacheKey);
             if (!$carrier) {
-                throw new \Exception("Carrier in registry is null");
+                throw new \Exception('Carrier in registry is null');
             }
 
             return $carrier;
@@ -182,24 +181,24 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * get all carriers
+     * get all carriers.
      *
      * @return Carrier[]
      */
     public static function getAll()
     {
         $list = new Carrier\Listing();
-        $list->setOrder("ASC");
-        $list->setOrderKey("grade");
+        $list->setOrder('ASC');
+        $list->setOrderKey('grade');
 
         return $list->getData();
     }
 
     /**
-     * Get all available Carriers for cart
+     * Get all available Carriers for cart.
      *
      * @param Cart|null $cart
-     * @param Zone $zone
+     * @param Zone      $zone
      *
      * @return Carrier[]
      */
@@ -222,10 +221,10 @@ class Carrier extends AbstractModel
             }
         }
 
-        $sortField = Configuration::get("SYSTEM.SHIPPING.CARRIER_SORT") ? Configuration::get("SYSTEM.SHIPPING.CARRIER_SORT") : "price";
+        $sortField = Configuration::get('SYSTEM.SHIPPING.CARRIER_SORT') ? Configuration::get('SYSTEM.SHIPPING.CARRIER_SORT') : 'price';
 
         usort($availableCarriers, function ($carrier1, $carrier2) use ($sortField, $cart, $zone) {
-            if ($sortField === "price") {
+            if ($sortField === 'price') {
                 $deliveryPriceCarrier1 = $carrier1->getDeliveryPrice($cart, $zone);
                 $deliveryPriceCarrier2 = $carrier2->getDeliveryPrice($cart, $zone);
 
@@ -247,20 +246,21 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * Get cheapest carrier for cart
+     * Get cheapest carrier for cart.
      *
      * @param Cart $cart
      * @param Zone $zone
+     *
      * @return Carrier|null
      */
     public static function getCheapestCarrierForCart(Cart $cart, Zone $zone = null)
     {
-        $cacheKey = "cheapest_carrier_" - $cart->getId();
+        $cacheKey = 'cheapest_carrier_' - $cart->getId();
 
         try {
             $cheapestProvider = \Zend_Registry::get($cacheKey);
             if (!$cheapestProvider) {
-                throw new \Exception($cacheKey . " in registry is null");
+                throw new \Exception($cacheKey.' in registry is null');
             }
 
             return $cheapestProvider;
@@ -278,7 +278,7 @@ class Carrier extends AbstractModel
                         }
                     }
 
-                    if ($cheapestProvider instanceof Carrier) {
+                    if ($cheapestProvider instanceof self) {
                         return $cheapestProvider;
                     }
 
@@ -294,15 +294,17 @@ class Carrier extends AbstractModel
             }
         }
 
-        return null;
+        return nul;
     }
 
     /**
-     * Check if carrier is allowed for cart and zone
+     * Check if carrier is allowed for cart and zone.
      *
      * @param Cart|null $cart
      * @param Zone|null $zone
+     *
      * @return bool
+     *
      * @throws \CoreShop\Exception\UnsupportedException
      */
     public function checkCarrierForCart(Cart $cart = null, Zone $zone = null)
@@ -349,28 +351,29 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * Get the Ranges for this carrier
+     * Get the Ranges for this carrier.
      *
      * @return AbstractRange[]
      */
     public function getRanges()
     {
-        if ($this->getShippingMethod() == "weight") {
+        if ($this->getShippingMethod() == 'weight') {
             $list = new Carrier\RangeWeight\Listing();
         } else {
             $list = new Carrier\RangePrice\Listing();
         }
 
-        $list->setCondition("carrierId=?", array($this->getId()));
+        $list->setCondition('carrierId=?', array($this->getId()));
         $list->load();
 
         return $list->getData();
     }
 
     /**
-     * Get max possible delivery price for this carrier
+     * Get max possible delivery price for this carrier.
      *
      * @param Zone $zone
+     *
      * @return float|bool
      */
     public function getMaxDeliveryPrice(Zone $zone = null)
@@ -401,10 +404,11 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * Get DeliveryPrice without Tax
+     * Get DeliveryPrice without Tax.
      *
-     * @param Cart $cart
+     * @param Cart      $cart
      * @param Zone|null $zone
+     *
      * @return bool|float
      */
     public function getDeliveryPriceWithoutTax(Cart $cart, Zone $zone = null)
@@ -443,10 +447,11 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * Get delivery Price for cart
+     * Get delivery Price for cart.
      *
      * @param Cart $cart
      * @param Zone $zone
+     *
      * @return bool|float
      */
     public function getDeliveryPrice(Cart $cart, Zone $zone = null)
@@ -462,9 +467,9 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * get delivery Tax for cart
+     * get delivery Tax for cart.
      *
-     * @param Cart $cart
+     * @param Cart      $cart
      * @param Zone|null $zone
      *
      * @return float
@@ -482,11 +487,11 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * get delivery Tax rate for cart
+     * get delivery Tax rate for cart.
      *
      * @param Cart $cart
      *
-     * @return integer
+     * @return int
      */
     public function getTaxRate(Cart $cart)
     {
@@ -500,9 +505,10 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * get TaxCalculator
+     * get TaxCalculator.
      *
      * @param Address $address
+     *
      * @return bool|TaxCalculator
      */
     public function getTaxCalculator(Address $address = null)
@@ -525,10 +531,11 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * Check if carrier is available for zone and value
+     * Check if carrier is available for zone and value.
      *
      * @param Zone $zone
      * @param $value
+     *
      * @return bool
      */
     public function checkDeliveryPriceByValue(Zone $zone, $value)
@@ -640,6 +647,7 @@ class Carrier extends AbstractModel
                 $this->image = $asset;
             }
         }
+
         return $this->image;
     }
 
@@ -668,7 +676,7 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsFree()
     {
@@ -676,7 +684,7 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * @param boolean $isFree
+     * @param bool $isFree
      */
     public function setIsFree($isFree)
     {
@@ -709,6 +717,7 @@ class Carrier extends AbstractModel
 
     /**
      * @param int $taxRuleGroupId
+     *
      * @throws \Exception
      */
     public function setTaxRuleGroupId($taxRuleGroupId)
@@ -730,12 +739,13 @@ class Carrier extends AbstractModel
 
     /**
      * @param int|TaxRuleGroup $taxRuleGroup
+     *
      * @throws \Exception
      */
     public function setTaxRuleGroup($taxRuleGroup)
     {
         if (!$taxRuleGroup instanceof TaxRuleGroup) {
-            throw new \Exception("\$taxRuleGroup must be instance of TaxRuleGroup");
+            throw new \Exception('$taxRuleGroup must be instance of TaxRuleGroup');
         }
 
         $this->taxRuleGroup = $taxRuleGroup;
@@ -823,7 +833,7 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getNeedsRange()
     {
@@ -831,7 +841,7 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * @param boolean $needsRange
+     * @param bool $needsRange
      */
     public function setNeedsRange($needsRange)
     {

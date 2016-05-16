@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,55 +11,51 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 use CoreShop\Controller\Action;
 
 class CoreShop_ProductController extends Action
 {
-    
     public function detailAction()
     {
-        $id = $this->getParam("product");
+        $id = $this->getParam('product');
         $product = \CoreShop\Model\Product::getById($id);
         $this->view->contacts = \CoreShop\Model\Messaging\Contact::getList()->load();
 
         if ($product instanceof \CoreShop\Model\Product) {
             $this->view->product = $product;
-            
+
             $this->view->seo = array(
-                "image" => $product->getImage(),
-                "description" => $product->getMetaDescription() ? $product->getMetaDescription() : $product->getShortDescription()
+                'image' => $product->getImage(),
+                'description' => $product->getMetaDescription() ? $product->getMetaDescription() : $product->getShortDescription(),
             );
 
-            if($this->getRequest()->isPost()) {
+            if ($this->getRequest()->isPost()) {
                 $params = $this->getAllParams();
 
                 $result = \CoreShop\Model\Messaging\Service::handleRequestAndCreateThread($params, $this->language);
 
-                if($result['success']) {
+                if ($result['success']) {
                     $this->view->success = true;
-                }
-                else {
+                } else {
                     $this->view->success = false;
                     $this->view->error = $this->view->translate($result['message']);
                 }
             }
-
 
             $this->view->headTitle($product->getMetaTitle() ? $product->getMetaTitle() : $product->getName());
         } else {
             throw new CoreShop\Exception(sprintf('Product with id "%s" not found', $id));
         }
     }
-    
+
     public function indexAction()
     {
-        $this->view->headTitle("Home");
+        $this->view->headTitle('Home');
     }
 
     public function previewAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $product = \CoreShop\Model\Product::getById($id);
 
         $this->disableLayout();
@@ -67,17 +63,17 @@ class CoreShop_ProductController extends Action
         if ($product instanceof \CoreShop\Model\Product) {
             $this->view->product = $product;
         } else {
-            throw new \Exception(sprintf("Product with id %s not found", $id));
+            throw new \Exception(sprintf('Product with id %s not found', $id));
         }
     }
 
     public function listAction()
     {
-        $id = $this->getParam("category");
-        $page = $this->getParam("page", 0);
-        $sort = $this->getParam("sort", "NAMEA");
-        $perPage = $this->getParam("perPage", 12);
-        $type = $this->getParam("type", "list");
+        $id = $this->getParam('category');
+        $page = $this->getParam('page', 0);
+        $sort = $this->getParam('sort', 'NAMEA');
+        $perPage = $this->getParam('perPage', 12);
+        $type = $this->getParam('type', 'list');
 
         $category = \CoreShop\Model\Category::getById($id);
 
@@ -91,7 +87,7 @@ class CoreShop_ProductController extends Action
 
                 $this->view->currentFilter = \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
 
-                $list->addCondition("parentCategoryIds LIKE '%,".$category->getId().",%'", "categoryIds");
+                $list->addCondition("parentCategoryIds LIKE '%,".$category->getId().",%'", 'categoryIds');
 
                 $this->view->filter = $category->getFilterDefinition();
                 $this->view->list = $list;
@@ -114,8 +110,8 @@ class CoreShop_ProductController extends Action
             $this->view->type = $type;
 
             $this->view->seo = array(
-                "image" => $category->getImage(),
-                "description" => $category->getMetaDescription() ? $category->getMetaDescription() : $category->getDescription()
+                'image' => $category->getImage(),
+                'description' => $category->getMetaDescription() ? $category->getMetaDescription() : $category->getDescription(),
             );
 
             $this->view->headTitle($category->getMetaTitle() ? $category->getMetaTitle() : $category->getName());
@@ -126,13 +122,13 @@ class CoreShop_ProductController extends Action
 
     protected function parseSorting($sortString)
     {
-        $allowed = array("name", "price");
+        $allowed = array('name', 'price');
         $sort = array(
-            "name" => "name",
-            "direction" => "asc"
+            'name' => 'name',
+            'direction' => 'asc',
         );
 
-        $sortString = explode("_", $sortString);
+        $sortString = explode('_', $sortString);
 
         if (count($sortString) < 2) {
             return $sort;
@@ -141,10 +137,10 @@ class CoreShop_ProductController extends Action
         $name = strtolower($sortString[0]);
         $direction = strtolower($sortString[1]);
 
-        if (in_array($name, $allowed) && in_array($direction, array("desc", "asc"))) {
+        if (in_array($name, $allowed) && in_array($direction, array('desc', 'asc'))) {
             return array(
-                "name" => $name,
-                "direction" => $direction
+                'name' => $name,
+                'direction' => $direction,
             );
         }
 

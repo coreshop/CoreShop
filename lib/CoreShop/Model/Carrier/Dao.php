@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Carrier;
 
 use CoreShop\Model\Dao\AbstractDao;
@@ -20,14 +19,14 @@ use Pimcore\Model\Asset;
 class Dao extends AbstractDao
 {
     /**
-     * Mysql table name
+     * Mysql table name.
      *
      * @var string
      */
     protected $tableName = 'coreshop_carriers';
 
     /**
-     * Assign Variables to Model
+     * Assign Variables to Model.
      *
      * @param array $data
      */
@@ -35,8 +34,8 @@ class Dao extends AbstractDao
     {
         parent::assignVariablesToModel($data);
 
-        foreach ($data as $key=>$value) {
-            if ($key == "image") {
+        foreach ($data as $key => $value) {
+            if ($key == 'image') {
                 $asset = Asset::getById($value);
 
                 if ($asset instanceof Asset) {

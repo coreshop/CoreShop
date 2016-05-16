@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,13 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Carrier;
 
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Zone;
-use CoreShop\Tool;
 use Pimcore\Cache;
 
 class AbstractRange extends AbstractModel
@@ -48,7 +46,7 @@ class AbstractRange extends AbstractModel
     public $delimiter2;
 
     /**
-     * Delete AbstractRange
+     * Delete AbstractRange.
      *
      * @return mixed
      */
@@ -56,7 +54,7 @@ class AbstractRange extends AbstractModel
     {
         $prices = $this->getPrices();
 
-        if(is_array($prices)) {
+        if (is_array($prices)) {
             foreach ($prices as $price) {
                 $price->delete();
             }
@@ -67,21 +65,23 @@ class AbstractRange extends AbstractModel
 
     /**
      * @param $rangeType
+     *
      * @return AbstractRange
      */
     public static function create($rangeType)
     {
-        $className = "CoreShop\\Model\\Carrier\\" . ($rangeType == "weight" ? "RangeWeight" : "RangePrice");
+        $className = 'CoreShop\\Model\\Carrier\\'.($rangeType == 'weight' ? 'RangeWeight' : 'RangePrice');
 
         return new $className();
     }
 
     /**
-     * Get Range by id
+     * Get Range by id.
      *
      * @param $id
      * @param $rangeType
-     * @return null
+     *
+     * @return static|null
      */
     public static function getById($id, $rangeType)
     {
@@ -91,21 +91,22 @@ class AbstractRange extends AbstractModel
             return null;
         }
 
-        $cacheKey = "coreshop_" . $rangeType . "_" . $id;
+        $cacheKey = 'coreshop_'.$rangeType.'_'.$id;
 
         try {
             $range = \Zend_Registry::get($cacheKey);
             if (!$range) {
-                throw new \Exception("RangeType in registry is null");
+                throw new \Exception('RangeType in registry is null');
             }
+
             return $range;
         } catch (\Exception $e) {
             try {
                 if (!$range = Cache::load($cacheKey)) {
-                    $className = "CoreShop\\Model\\Carrier\\" . ($rangeType == "weight" ? "RangeWeight" : "RangePrice");
+                    $className = 'CoreShop\\Model\\Carrier\\'.($rangeType == 'weight' ? 'RangeWeight' : 'RangePrice');
 
                     $range = new $className();
-                    $range ->getDao()->getById($id);
+                    $range->getDao()->getById($id);
 
                     \Zend_Registry::set($cacheKey, $range);
                     Cache::save($range, $cacheKey);
@@ -123,9 +124,10 @@ class AbstractRange extends AbstractModel
     }
 
     /**
-     * Get price for Zone
+     * Get price for Zone.
      *
      * @param Zone $zone
+     *
      * @return DeliveryPrice|null
      */
     public function getPriceForZone(Zone $zone)
@@ -134,7 +136,7 @@ class AbstractRange extends AbstractModel
     }
 
     /**
-     * Get price for Zone
+     * Get price for Zone.
      *
      * @return DeliveryPrice|null
      */
@@ -189,12 +191,13 @@ class AbstractRange extends AbstractModel
 
     /**
      * @param $carrier
+     *
      * @throws \Exception
      */
     public function setCarrier($carrier)
     {
         if (!$carrier instanceof Carrier) {
-            throw new \Exception("\$carrier must be instance of Carrier");
+            throw new \Exception('$carrier must be instance of Carrier');
         }
 
         $this->carrier = $carrier;
@@ -211,6 +214,7 @@ class AbstractRange extends AbstractModel
 
     /**
      * @param $carrierId
+     *
      * @throws \Exception
      */
     public function setCarrierID($carrierId)

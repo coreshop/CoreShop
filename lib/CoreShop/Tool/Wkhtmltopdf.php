@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,7 +12,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Tool;
 
 use CoreShop\Exception;
@@ -22,12 +21,12 @@ use Pimcore\Tool\Console;
 
 class Wkhtmltopdf
 {
-
     /**
-     * Converts HTML from url to PDF
+     * Converts HTML from url to PDF.
      *
      * @param $url
      * @param array $config
+     *
      * @return string PDF-Content
      *
      * @throws Exception
@@ -38,17 +37,18 @@ class Wkhtmltopdf
     }
 
     /**
-     * Converts HTML from String to pdf
+     * Converts HTML from String to pdf.
      *
      * @param $string
      * @param $header
      * @param $footer
      * @param array $config
+     *
      * @return string PDF-Content
      *
      * @throws Exception
      */
-    public static function fromString($string, $header = "", $footer = "", $config = array())
+    public static function fromString($string, $header = '', $footer = '', $config = array())
     {
         $bodyHtml = self::createHtmlFile($string);
         $headerHtml = self::createHtmlFile($header);
@@ -71,56 +71,58 @@ class Wkhtmltopdf
     }
 
     /**
-     * Creates an Temporary HTML File
+     * Creates an Temporary HTML File.
      *
      * @param $string
+     *
      * @return array( absolutePath, relativePath )
      */
     protected static function createHtmlFile($string)
     {
-        $tmpHtmlFile = PIMCORE_TEMPORARY_DIRECTORY . "/" . uniqid() . ".htm";
+        $tmpHtmlFile = PIMCORE_TEMPORARY_DIRECTORY.'/'.uniqid().'.htm';
         file_put_contents($tmpHtmlFile, $string);
-        $httpSource = Tool::getHostUrl() . str_replace($_SERVER["DOCUMENT_ROOT"], "", $tmpHtmlFile);
+        $httpSource = Tool::getHostUrl().str_replace($_SERVER['DOCUMENT_ROOT'], '', $tmpHtmlFile);
 
         return array('absolutePath' => $httpSource, 'relativePath' => $tmpHtmlFile);
     }
 
     /**
-     * Converts URL to pdf
+     * Converts URL to pdf.
      *
      * @param $httpSource
      * @param array $config
+     *
      * @return string PDF-Content
      *
      * @throws Exception
      */
     protected static function convert($httpSource, $config = array())
     {
-        $tmpPdfFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/" . uniqid() . ".pdf";
-        $options = " ";
+        $tmpPdfFile = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/'.uniqid().'.pdf';
+        $options = ' ';
         $optionConfig = array();
 
-        if (is_array($config["options"])) {
-            foreach ($config["options"] as $argument => $value) {
+        if (is_array($config['options'])) {
+            foreach ($config['options'] as $argument => $value) {
                 // there is no value only the option
                 if (is_numeric($argument)) {
                     $optionConfig[] = $value;
                 } else {
-                    $optionConfig[] = $argument . " " . $value;
+                    $optionConfig[] = $argument.' '.$value;
                 }
             }
 
-            $options .= implode(" ", $optionConfig);
+            $options .= implode(' ', $optionConfig);
         }
 
         $wkhtmltopdfBinary = self::getWkhtmltodfBinary();
 
-        if ($config["bin"]) {
-            $wkhtmltopdfBinary = $config["bin"];
+        if ($config['bin']) {
+            $wkhtmltopdfBinary = $config['bin'];
         }
 
         if ($wkhtmltopdfBinary) {
-            Console::exec($wkhtmltopdfBinary . $options . " " . $httpSource . " " . $tmpPdfFile);
+            Console::exec($wkhtmltopdfBinary.$options.' '.$httpSource.' '.$tmpPdfFile);
 
             $pdfContent = file_get_contents($tmpPdfFile);
 
@@ -130,11 +132,11 @@ class Wkhtmltopdf
             return $pdfContent;
         }
 
-        throw new Exception("wkhtmltopdf not found");
+        throw new Exception('wkhtmltopdf not found');
     }
 
     /**
-     * Find the wkhtmltopdf library
+     * Find the wkhtmltopdf library.
      *
      * @return bool|string
      */
@@ -144,18 +146,18 @@ class Wkhtmltopdf
             if (@is_executable(Config::getSystemConfig()->documents->wkhtmltopdf)) {
                 return (string) Config::getSystemConfig()->documents->wkhtmltopdf;
             } else {
-                \Logger::critical("wkhtmltopdf binary: " . Config::getSystemConfig()->documents->wkhtmltopdf . " is not executable");
+                \Logger::critical('wkhtmltopdf binary: '.Config::getSystemConfig()->documents->wkhtmltopdf.' is not executable');
             }
         }
 
         $paths = array(
-            "/usr/bin/wkhtmltopdf-amd64",
-            "/usr/local/bin/wkhtmltopdf-amd64",
-            "/bin/wkhtmltopdf-amd64",
-            "/usr/bin/wkhtmltopdf",
-            "/usr/local/bin/wkhtmltopdf",
-            "/bin/wkhtmltopdf",
-            realpath(PIMCORE_DOCUMENT_ROOT . "/../wkhtmltox/wkhtmltopdf.exe") // for windows sample package (XAMPP)
+            '/usr/bin/wkhtmltopdf-amd64',
+            '/usr/local/bin/wkhtmltopdf-amd64',
+            '/bin/wkhtmltopdf-amd64',
+            '/usr/bin/wkhtmltopdf',
+            '/usr/local/bin/wkhtmltopdf',
+            '/bin/wkhtmltopdf',
+            realpath(PIMCORE_DOCUMENT_ROOT.'/../wkhtmltox/wkhtmltopdf.exe'), // for windows sample package (XAMPP)
         );
 
         foreach ($paths as $path) {

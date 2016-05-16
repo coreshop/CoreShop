@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,10 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
-use Pimcore\Model;
 
 class TimeSpan extends AbstractCondition
 {
@@ -33,10 +31,10 @@ class TimeSpan extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "timeSpan";
+    public $type = 'timeSpan';
 
     /**
-     * @return int
+     * @return \Zend_Date
      */
     public function getDateFrom()
     {
@@ -56,7 +54,7 @@ class TimeSpan extends AbstractCondition
     }
 
     /**
-     * @return float
+     * @return \Zend_Date
      */
     public function getDateTo()
     {
@@ -76,12 +74,14 @@ class TimeSpan extends AbstractCondition
     }
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
-     * @param Cart $cart
-     * @param PriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
@@ -92,7 +92,7 @@ class TimeSpan extends AbstractCondition
         if ($this->getDateFrom() instanceof \Zend_Date) {
             if ($date->get(\Zend_Date::TIMESTAMP) < $this->getDateFrom()->get(\Zend_Date::TIMESTAMP)) {
                 if ($throwException) {
-                    throw new \Exception("This voucher has expired");
+                    throw new \Exception('This voucher has expired');
                 } else {
                     return false;
                 }
@@ -102,7 +102,7 @@ class TimeSpan extends AbstractCondition
         if ($this->getDateTo() instanceof \Zend_Date) {
             if ($date->get(\Zend_Date::TIMESTAMP) > $this->getDateTo()->get(\Zend_Date::TIMESTAMP)) {
                 if ($throwException) {
-                    throw new \Exception("This voucher has expired");
+                    throw new \Exception('This voucher has expired');
                 } else {
                     return false;
                 }

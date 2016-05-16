@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,13 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\CustomerGroup as CustomerGroupModel;
-use CoreShop\Tool;
 
 class CustomerGroup extends AbstractCondition
 {
@@ -29,7 +27,7 @@ class CustomerGroup extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "customerGroup";
+    public $type = 'customerGroup';
 
     /**
      * @return int
@@ -52,12 +50,14 @@ class CustomerGroup extends AbstractCondition
     }
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
-     * @param Cart $cart
-     * @param PriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
@@ -66,7 +66,7 @@ class CustomerGroup extends AbstractCondition
 
         if (!$customer) {
             if ($throwException) {
-                throw new \Exception("Customer in cart is emtpy!");
+                throw new \Exception('Customer in cart is emtpy!');
             } else {
                 return false;
             }
@@ -76,7 +76,7 @@ class CustomerGroup extends AbstractCondition
 
         if ($this->getCustomerGroup() instanceof CustomerGroupModel) {
             foreach ($customer->getGroups() as $customerGroup) {
-                $customerGroup = CustomerGroupModel::getByField("name", $customerGroup);
+                $customerGroup = CustomerGroupModel::getByField('name', $customerGroup);
 
                 if ($customerGroup instanceof CustomerGroupModel) {
                     if ($this->getCustomerGroup()->getId() === $customerGroup->getId()) {
@@ -89,7 +89,7 @@ class CustomerGroup extends AbstractCondition
 
         if (!$validCustomerGroupFound) {
             if ($throwException) {
-                throw new \Exception("You cannot use this voucher.");
+                throw new \Exception('You cannot use this voucher.');
             }
 
             return false;

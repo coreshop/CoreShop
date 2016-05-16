@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Carrier;
 use Pimcore\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_CarrierController extends Admin
 {
@@ -26,8 +22,8 @@ class CoreShop_Admin_CarrierController extends Admin
 
         // check permissions
         $notRestrictedActions = array('list');
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_carriers");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_carriers');
         }
     }
 
@@ -47,8 +43,8 @@ class CoreShop_Admin_CarrierController extends Admin
     public function getCarriersAction()
     {
         $list = new Carrier\Listing();
-        $list->setOrder("ASC");
-        $list->setOrderKey("name");
+        $list->setOrder('ASC');
+        $list->setOrderKey('name');
         $list->load();
 
         $carriers = array();
@@ -64,38 +60,39 @@ class CoreShop_Admin_CarrierController extends Admin
     protected function getTreeNodeConfig($carrier)
     {
         $tmpCarrier = array(
-            "id" => $carrier->getId(),
-            "text" => $carrier->getName(),
-            "elementType" => "carrier",
-            "qtipCfg" => array(
-                "title" => "ID: " . $carrier->getId()
+            'id' => $carrier->getId(),
+            'text' => $carrier->getName(),
+            'elementType' => 'carrier',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$carrier->getId(),
             ),
-            "name" => $carrier->getName()
+            'name' => $carrier->getName(),
         );
 
-        $tmpCarrier["leaf"] = true;
-        $tmpCarrier["iconCls"] = "coreshop_icon_carrier";
-        $tmpCarrier["allowChildren"] = false;
+        $tmpCarrier['leaf'] = true;
+        $tmpCarrier['iconCls'] = 'coreshop_icon_carrier';
+        $tmpCarrier['allowChildren'] = false;
 
         return $tmpCarrier;
     }
 
     public function getRangeAction()
     {
-        $id = $this->getParam("carrier");
+        $id = $this->getParam('carrier');
         $carrier = Carrier::getById($id);
 
         if ($carrier instanceof Carrier) {
             $ranges = $carrier->getRanges();
 
-            $this->_helper->json(array("success" => true, "total" => count($ranges), "data" => $ranges));
+            $this->_helper->json(array('success' => true, 'total' => count($ranges), 'data' => $ranges));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
-    public function getRangeZoneAction() {
-        $id = $this->getParam("carrier");
+    public function getRangeZoneAction()
+    {
+        $id = $this->getParam('carrier');
         $carrier = Carrier::getById($id);
 
         if ($carrier instanceof Carrier) {
@@ -103,42 +100,41 @@ class CoreShop_Admin_CarrierController extends Admin
             $ranges = $carrier->getRanges();
             $prices = array();
 
-            foreach($zones as $zone) {
-
+            foreach ($zones as $zone) {
                 $price = array(
-                    "name" => $zone->getName(),
-                    "zone" => $zone->getId()
+                    'name' => $zone->getName(),
+                    'zone' => $zone->getId(),
                 );
 
-                foreach($ranges as $range) {
+                foreach ($ranges as $range) {
                     $deliveryPrice = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $range, $zone);
 
-                    $price["range_" . $range->getId()] = $deliveryPrice instanceof Carrier\DeliveryPrice ? $deliveryPrice->getPrice() : 0;
+                    $price['range_'.$range->getId()] = $deliveryPrice instanceof Carrier\DeliveryPrice ? $deliveryPrice->getPrice() : 0;
                 }
 
                 $prices[] = $price;
             }
 
-            $this->_helper->json(array("success" => true, "count" => count($prices), "data" => $prices));
+            $this->_helper->json(array('success' => true, 'count' => count($prices), 'data' => $prices));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $carrier = new Carrier();
             $carrier->setName($name);
             $carrier->setLabel($name);
             $carrier->setGrade(1);
             $carrier->setIsFree(0);
-            $carrier->setShippingMethod("weight");
-            $carrier->setRangeBehaviour("largest");
+            $carrier->setShippingMethod('weight');
+            $carrier->setRangeBehaviour('largest');
             $carrier->setMaxDepth(0);
             $carrier->setMaxHeight(0);
             $carrier->setMaxWeight(0);
@@ -149,30 +145,30 @@ class CoreShop_Admin_CarrierController extends Admin
             $config = $this->getTreeNodeConfig($carrier);
             $config['success'] = true;
 
-            $this->_helper->json(array("success" => true, "data" => $carrier));
+            $this->_helper->json(array('success' => true, 'data' => $carrier));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $carrier = Carrier::getById($id);
 
         if ($carrier instanceof Carrier) {
-            $this->_helper->json(array("success" => true, "data" => $carrier));
+            $this->_helper->json(array('success' => true, 'data' => $carrier));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $carrier = Carrier::getById($id);
 
         if ($data && $carrier instanceof Carrier) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             if ($data['settings']['image']) {
                 $asset = \Pimcore\Model\Asset::getById($data['settings']['image']);
@@ -206,10 +202,10 @@ class CoreShop_Admin_CarrierController extends Admin
 
                     $rangesToKeep[] = $rangeObject->getId();
 
-                    foreach($range['zones'] as $zoneId => $price) {
+                    foreach ($range['zones'] as $zoneId => $price) {
                         $zone = \CoreShop\Model\Zone::getById($zoneId);
 
-                        if($zone instanceof \CoreShop\Model\Zone) {
+                        if ($zone instanceof \CoreShop\Model\Zone) {
                             $deliveryPriceObject = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $rangeObject, $zone);
 
                             if (is_null($deliveryPriceObject)) {
@@ -249,23 +245,23 @@ class CoreShop_Admin_CarrierController extends Admin
                 }
             }
 
-            $this->_helper->json(array("success" => true, "data" => $carrier, "ranges" => $carrier->getRanges()));
+            $this->_helper->json(array('success' => true, 'data' => $carrier, 'ranges' => $carrier->getRanges()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $carrier = Carrier::getById($id);
 
         if ($carrier instanceof Carrier) {
             $carrier->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

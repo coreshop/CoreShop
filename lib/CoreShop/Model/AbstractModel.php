@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
@@ -23,24 +22,25 @@ use Pimcore\Tool;
 class AbstractModel extends Model\AbstractModel
 {
     /**
-     * Array of all localized field names
+     * Array of all localized field names.
      *
      * @var array
      */
     protected $localizedValues = array();
 
     /**
-     * Localized field Provider
+     * Localized field Provider.
      *
      * @var LocalizedFields
      */
     protected $localizedFields;
 
     /**
-     * Get Range by id
+     * Get Range by id.
      *
      * @param $id
-     * @return null|AbstractModel
+     *
+     * @return null|static
      */
     public static function getById($id)
     {
@@ -56,7 +56,7 @@ class AbstractModel extends Model\AbstractModel
         try {
             $object = \Zend_Registry::get($cacheKey);
             if (!$object) {
-                throw new \Exception($className . " in registry is null");
+                throw new \Exception($className.' in registry is null');
             }
 
             return $object;
@@ -66,7 +66,7 @@ class AbstractModel extends Model\AbstractModel
                     $className = Tool::getModelClassMapping($className);
 
                     $object = new $className();
-                    $object ->getDao()->getById($id);
+                    $object->getDao()->getById($id);
 
                     \Zend_Registry::set($cacheKey, $object);
                     Cache::save($object, $cacheKey);
@@ -84,10 +84,11 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     * Get Range by id
+     * Get Range by id.
      *
      * @param string $field
      * @param string $value
+     *
      * @return null|AbstractModel
      */
     public static function getByField($field, $value)
@@ -95,12 +96,12 @@ class AbstractModel extends Model\AbstractModel
         //Todo: what if a object changes and is still in cache?
 
         $className = get_called_class();
-        $cacheKey = self::getCacheKey($className, $field . "_" . $value);
+        $cacheKey = self::getCacheKey($className, $field.'_'.$value);
 
         try {
             $object = \Zend_Registry::get($cacheKey);
             if (!$object) {
-                throw new \Exception($className . " in registry is null");
+                throw new \Exception($className.' in registry is null');
             }
 
             return $object;
@@ -108,7 +109,7 @@ class AbstractModel extends Model\AbstractModel
             try {
                 if (!$object = Cache::load($cacheKey)) {
                     $object = new $className();
-                    $object ->getDao()->getByField($field, $value);
+                    $object->getDao()->getByField($field, $value);
 
                     \Zend_Registry::set($cacheKey, $object);
                     Cache::save($object, $cacheKey);
@@ -125,29 +126,31 @@ class AbstractModel extends Model\AbstractModel
         return null;
     }
 
-
     /**
-     * Get cache key for class
+     * Get cache key for class.
      *
      * @param $className
      * @param $append string
+     *
      * @return string
      */
     protected static function getCacheKey($className, $append)
     {
-        return "coreshop_" . str_replace("\\", "_", $className) . "_" . $append;
+        return 'coreshop_'.str_replace('\\', '_', $className).'_'.$append;
     }
 
     /**
-     * get listing class
+     * get listing class.
      *
      * @return AbstractListing
+     *
      * @throws Exception
      */
-    public static function getList() {
-        $listClass = get_called_class() . "\\Listing";
+    public static function getList()
+    {
+        $listClass = get_called_class().'\\Listing';
 
-        if(!Tool::classExists($listClass)) {
+        if (!Tool::classExists($listClass)) {
             throw new Exception("Listing Class $listClass not found!");
         }
 
@@ -155,7 +158,19 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     * save model to database
+     * Get all objects form this type.
+     *
+     * @return static[]
+     */
+    public static function getAll()
+    {
+        $list = self::getList();
+
+        return $list->getData();
+    }
+
+    /**
+     * save model to database.
      */
     public function save()
     {
@@ -169,7 +184,7 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     * delete model
+     * delete model.
      *
      * @return bool
      */
@@ -180,12 +195,12 @@ class AbstractModel extends Model\AbstractModel
         //unset object in cache
         Cache::clearTag($cacheKey);
         \Zend_Registry::set($cacheKey, null);
-        
+
         return $this->getDao()->delete();
     }
 
     /**
-     * Get LocalizedFields Provider
+     * Get LocalizedFields Provider.
      *
      * @return LocalizedFields|null
      */
@@ -204,7 +219,7 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     * Get LocalizedFields Provider
+     * Get LocalizedFields Provider.
      *
      * @return LocalizedFields|null
      */
@@ -214,16 +229,17 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     * Override setValue function to support localized fields
+     * Override setValue function to support localized fields.
      *
      * @param $key
      * @param $value
+     *
      * @return $this
      */
     public function setValue($key, $value)
     {
         if ($this->getLocalizedFields()) {
-            $mykey = explode(".", $key); //0 => key, 1 => language
+            $mykey = explode('.', $key); //0 => key, 1 => language
 
             if (in_array($mykey [0], $this->localizedValues)) {
                 $this->getLocalizedFields()->setLocalizedValue($mykey [0], $value, $mykey [1]);
@@ -236,7 +252,7 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     * Prepare object to goto sleep
+     * Prepare object to goto sleep.
      *
      * @return array
      */
@@ -249,7 +265,7 @@ class AbstractModel extends Model\AbstractModel
         foreach ($vars as $key) {
             $value = $values[$key];
 
-            if (!$value instanceof AbstractModel) {
+            if (!$value instanceof self) {
                 $returnVars[] = $key;
             }
         }
@@ -258,7 +274,7 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
-     * Prepare object to wakeup
+     * Prepare object to wakeup.
      */
     public function __wakeup()
     {

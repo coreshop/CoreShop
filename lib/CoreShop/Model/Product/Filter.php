@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product;
 
 use CoreShop\Model\AbstractModel;
@@ -21,13 +20,14 @@ use CoreShop\Model\Product\Filter\Condition\AbstractCondition;
 class Filter extends AbstractModel
 {
     /**
-     * possible types of a condition
+     * possible types of a condition.
+     *
      * @var array
      */
-    public static $availableConditions = array("select", "multiselect", "range", "boolean");
+    public static $availableConditions = array('select', 'multiselect', 'range', 'boolean');
 
     /**
-     * Add Condition Type
+     * Add Condition Type.
      *
      * @param $condition
      */
@@ -39,7 +39,7 @@ class Filter extends AbstractModel
     }
 
     /**
-     * Get Condition Types
+     * Get Condition Types.
      *
      * @return array
      */
@@ -84,37 +84,14 @@ class Filter extends AbstractModel
     public $filters;
 
     /**
-     * @var int $index
+     * @var int
      */
     public $index;
 
     /**
-     * @var Index $indexObject
+     * @var Index
      */
     public $indexObject;
-
-    /**
-     * get Filter by ID
-     *
-     * @param $id
-     * @return Filter|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get all filters
-     *
-     * @return mixed
-     */
-    public static function getAll()
-    {
-        $list = new Filter\Listing();
-
-        return $list->load();
-    }
 
     /**
      * @return int

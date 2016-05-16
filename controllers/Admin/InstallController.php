@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,10 +11,7 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 use CoreShop\Plugin;
-use CoreShop\Tool;
-use CoreShop\Model\Currency;
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_InstallController extends Admin
@@ -25,7 +22,7 @@ class CoreShop_Admin_InstallController extends Admin
 
         $install->installTheme();
 
-        $this->_helper->json(array("success" => true));
+        $this->_helper->json(array('success' => true));
     }
 
     public function installAction()
@@ -33,15 +30,15 @@ class CoreShop_Admin_InstallController extends Admin
         try {
             $install = new Plugin\Install();
 
-            \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, array('installer' => $install));
 
-            $install->executeSQL("CoreShop");
-            $install->executeSQL("CoreShop-States");
+            $install->executeSQL('CoreShop');
+            $install->executeSQL('CoreShop-States');
 
             //install Data
-            $install->installObjectData("orderStates", "Order\\");
-            $install->installObjectData("threadStates", "Messaging\\Thread\\");
-            $install->installDocuments("documents");
+            $install->installObjectData('orderStates', 'Order\\');
+            $install->installObjectData('threadStates', 'Messaging\\Thread\\');
+            $install->installDocuments('documents');
             $install->installMessagingMails();
 
             $install->createFieldCollection('CoreShopUserAddress');
@@ -52,11 +49,11 @@ class CoreShop_Admin_InstallController extends Admin
             $productClass = $install->createClass('CoreShopProduct');
             $cartClass = $install->createClass('CoreShopCart');
             $cartItemClass = $install->createClass('CoreShopCartItem');
-            $userClass = $install->createClass("CoreShopUser");
+            $userClass = $install->createClass('CoreShopUser');
 
-            $orderItemClass = $install->createClass("CoreShopOrderItem");
-            $paymentClass = $install->createClass("CoreShopPayment");
-            $orderClass = $install->createClass("CoreShopOrder");
+            $orderItemClass = $install->createClass('CoreShopOrderItem');
+            $paymentClass = $install->createClass('CoreShopPayment');
+            $orderClass = $install->createClass('CoreShopOrder');
 
             // create root object folder with subfolders
             $coreShopFolder = $install->createFolders();
@@ -69,18 +66,18 @@ class CoreShop_Admin_InstallController extends Admin
                 $userClass->getId(),
                 $orderItemClass->getId(),
                 $orderClass->getId(),
-                $paymentClass->getId()
+                $paymentClass->getId(),
             ));
             // create static routes
             $install->createStaticRoutes();
             // create predefined document types
             //$install->createDocTypes();
 
-            $install->installAdminTranslations(PIMCORE_PLUGINS_PATH . "/CoreShop/install/translations/admin.csv");
+            $install->installAdminTranslations(PIMCORE_PLUGINS_PATH.'/CoreShop/install/translations/admin.csv');
 
             $install->createImageThumbnails();
 
-            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array('installer' => $install));
 
             $install->setConfigInstalled();
 
@@ -91,6 +88,6 @@ class CoreShop_Admin_InstallController extends Admin
             $success = false;
         }
 
-        $this->_helper->json(array("success" => $success));
+        $this->_helper->json(array('success' => $success));
     }
 }

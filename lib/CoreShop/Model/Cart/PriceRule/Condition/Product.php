@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
@@ -27,10 +26,10 @@ class Product extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "product";
+    public $type = 'product';
 
     /**
-     * @return int
+     * @return \CoreShop\Model\Product
      */
     public function getProduct()
     {
@@ -50,12 +49,14 @@ class Product extends AbstractCondition
     }
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
-     * @param Cart $cart
-     * @param PriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
@@ -72,7 +73,7 @@ class Product extends AbstractCondition
 
         if (!$found) {
             if ($throwException) {
-                throw new \Exception("You cannot use this voucher with these products");
+                throw new \Exception('You cannot use this voucher with these products');
             } else {
                 return false;
             }

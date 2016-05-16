@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\View\Helper;
 
 use CoreShop\Model\Country;
@@ -21,7 +20,7 @@ class Countries
     public $view;
 
     /**
-     * Set View
+     * Set View.
      *
      * @param \Zend_View_Interface $view
      */
@@ -31,7 +30,7 @@ class Countries
     }
 
     /**
-     * get active countries
+     * get active countries.
      *
      * @return array
      */

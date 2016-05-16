@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\View\Helper;
 
 use CoreShop\Model\Country;
@@ -21,7 +20,7 @@ class TranslateCountry
     public $view;
 
     /**
-     * set view
+     * set view.
      *
      * @param \Zend_View_Interface $view
      */
@@ -31,10 +30,12 @@ class TranslateCountry
     }
 
     /**
-     * translate country
+     * translate country.
      *
      * @param $countryCode
+     *
      * @return bool
+     *
      * @throws \Zend_Exception
      */
     public function translateCountry($countryCode)
@@ -43,7 +44,7 @@ class TranslateCountry
             $countryCode = $countryCode->getIsoCode();
         }
 
-        $locale = \Zend_Registry::get("Zend_Locale");
+        $locale = \Zend_Registry::get('Zend_Locale');
         $countries = $locale->getTranslationList('Territory', $locale, 2);
 
         if (array_key_exists($countryCode, $countries)) {

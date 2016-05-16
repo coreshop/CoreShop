@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,19 +11,21 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Plugin\Controller;
 
 class Admin extends \CoreShop\Controller\Action\Admin
 {
+    /**
+     * @throws \Exception
+     */
     public function init()
     {
         parent::init();
 
         $notRestrictedActions = array();
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_extensions");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_extensions');
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,10 +11,7 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 use CoreShop\Plugin;
-use CoreShop\Tool;
-use CoreShop\Model;
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_ThemeController extends Admin
@@ -22,11 +19,11 @@ class CoreShop_Admin_ThemeController extends Admin
     public function enableAction()
     {
         try {
-            Plugin::enableTheme($this->getParam("theme"));
+            Plugin::enableTheme($this->getParam('theme'));
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         } catch (\Exception $ex) {
-            $this->_helper->json(array("success" => false, "message" => $ex->getMessage()));
+            $this->_helper->json(array('success' => false, 'message' => $ex->getMessage()));
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,14 +12,13 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Messaging;
 
 use CoreShop\Model\AbstractModel;
 
-class Contact extends AbstractModel {
-
-    protected $localizedValues = array("name");
+class Contact extends AbstractModel
+{
+    protected $localizedValues = array('name');
 
     /**
      * @var int
@@ -42,17 +41,18 @@ class Contact extends AbstractModel {
     public $description;
 
     /**
-     * Return Threads
+     * Return Threads.
      *
      * @return Thread[]
      */
-    public function getThreads() {
-        $list = Thread::getList();
-        $list->setCondition("contactId = ?", array($this->getId()));
+    public function getThreads()
+    {
+        $list = new Thread\Listing();
+        $list->setCondition('contactId = ?', array($this->getId()));
         $threads = [];
 
-        foreach($list->load() as $thread) {
-            if(!$thread->getStatus()->getFinished()) {
+        foreach ($list->load() as $thread) {
+            if (!$thread->getStatus()->getFinished()) {
                 $threads[] = $thread;
             }
         }
@@ -78,11 +78,12 @@ class Contact extends AbstractModel {
 
     /**
      * @param string $language language
+     *
      * @return string
      */
     public function getName($language = null)
     {
-        return $this->getLocalizedFields()->getLocalizedValue("name", $language);
+        return $this->getLocalizedFields()->getLocalizedValue('name', $language);
     }
 
     /**
@@ -91,7 +92,7 @@ class Contact extends AbstractModel {
      */
     public function setName($name, $language = null)
     {
-        $this->getLocalizedFields()->setLocalizedValue("name", $name, $language);
+        $this->getLocalizedFields()->setLocalizedValue('name', $name, $language);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\Filter;
 
 use CoreShop\Model\Dao\AbstractDao;
@@ -21,7 +20,7 @@ class Dao extends AbstractDao
     protected $tableName = 'coreshop_product_filters';
 
     /**
-     * Assign variables to model
+     * Assign variables to model.
      *
      * @param array $data
      */
@@ -29,10 +28,10 @@ class Dao extends AbstractDao
     {
         parent::assignVariablesToModel($data);
 
-        foreach ($data as $key=>$value) {
-            if ($key == "filters") {
+        foreach ($data as $key => $value) {
+            if ($key == 'filters') {
                 $this->model->setFilters(unserialize($value));
-            } elseif ($key == "preConditions") {
+            } elseif ($key == 'preConditions') {
                 $this->model->setPreConditions(unserialize($value));
             }
         }

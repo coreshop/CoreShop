@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,13 +11,9 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\IndexService;
-use CoreShop\Plugin;
-use CoreShop\Tool;
-use Pimcore\Model\Document;
 
 class Index extends AbstractModel
 {
@@ -42,30 +38,7 @@ class Index extends AbstractModel
     public $config;
 
     /**
-     * get Tax by ID
-     *
-     * @param $id
-     * @return Index|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get all indexes
-     *
-     * @return Index[]
-     */
-    public static function getAll()
-    {
-        $list = new Index\Listing();
-
-        return $list->load();
-    }
-
-    /**
-     * delete index and workers index structures
+     * delete index and workers index structures.
      */
     public function delete()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,10 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Plugin;
 
-use CoreShop\Model\Country;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\User\Address;
 
@@ -24,14 +22,14 @@ interface TaxManager
      * This method determine if the tax manager is available for the specified address.
      *
      * @param Address $address
-     * @param string $type
+     * @param string  $type
      *
-     * @return boolean
+     * @return bool
      */
     public static function isAvailableForThisAddress(Address $address, $type);
 
     /**
-     * Return the tax calculator associated to this address
+     * Return the tax calculator associated to this address.
      *
      * @return TaxCalculator
      */

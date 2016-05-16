@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,10 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
-use Pimcore\Model;
 
 class TotalAvailable extends AbstractCondition
 {
@@ -33,7 +31,7 @@ class TotalAvailable extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "totalAvailable";
+    public $type = 'totalAvailable';
 
     /**
      * @return int
@@ -68,12 +66,14 @@ class TotalAvailable extends AbstractCondition
     }
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
-     * @param Cart $cart
-     * @param PriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
@@ -82,7 +82,7 @@ class TotalAvailable extends AbstractCondition
         if ($this->getTotalAvailable() > 0) {
             if ($this->getTotalUsed() >= $this->getTotalAvailable()) {
                 if ($throwException) {
-                    throw new \Exception("This voucher has already been used");
+                    throw new \Exception('This voucher has already been used');
                 } else {
                     return false;
                 }

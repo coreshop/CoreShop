@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,24 +11,22 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Tool;
 use Pimcore\Model\Object;
 
 class User extends Base
 {
     /**
-     * Pimcore Object Class
+     * Pimcore Object Class.
      *
      * @var string
      */
-    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopUser";
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopUser';
 
     /**
-     * Get User by E-Mail
+     * Get User by E-Mail.
      *
      * @param $email string
      * @param $isGuest boolean
@@ -37,19 +35,19 @@ class User extends Base
      */
     public static function getUniqueByEmail($email, $isGuest = false)
     {
-        $list = User::getList();
+        $list = self::getList();
 
-        $conditions = array("email = ?");
+        $conditions = array('email = ?');
         $conditionsValues = array($email);
         $conditionsValues[] = $isGuest ? 1 : 0;
 
         if (!$isGuest) {
-            $conditions[] = "(isGuest = ? OR isGuest IS NULL)";
+            $conditions[] = '(isGuest = ? OR isGuest IS NULL)';
         } else {
-            $conditions[] = "isGuest = ?";
+            $conditions[] = 'isGuest = ?';
         }
 
-        $list->setCondition(implode(" AND ", $conditions), $conditionsValues);
+        $list->setCondition(implode(' AND ', $conditions), $conditionsValues);
 
         $users = $list->getObjects();
 
@@ -61,9 +59,10 @@ class User extends Base
     }
 
     /**
-     * Get Guest by email
+     * Get Guest by email.
      *
      * @param $email
+     *
      * @return User|bool
      */
     public static function getGuestByEmail($email)
@@ -72,26 +71,29 @@ class User extends Base
     }
 
     /**
-     * Get User by email
+     * Get User by email.
      *
      * @param $email
+     *
      * @return User|bool
      */
     public static function getUserByEmail($email)
     {
         return self::getUniqueByEmail($email, false);
     }
-    
+
     /**
-     * Auth User
+     * Auth User.
      *
      * @param $password
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function authenticate($password)
     {
-        if ($this->getPassword() == hash("md5", $password)) {
+        if ($this->getPassword() == hash('md5', $password)) {
             return true;
         } else {
             throw new \Exception("User and Password doesn't match", 0);
@@ -99,9 +101,10 @@ class User extends Base
     }
 
     /**
-     * Get User address by Name
+     * Get User address by Name.
      *
      * @param $name
+     *
      * @return bool
      */
     public function findAddressByName($name)
@@ -116,31 +119,31 @@ class User extends Base
     }
 
     /**
-     * Get User Orders
+     * Get User Orders.
      *
      * @return array
      */
     public function getOrders()
     {
-        $list = new Object\CoreShopOrder\Listing();
-        $list->setCondition("customer__id = ?", array($this->getId()));
-        $list->setOrderKey("orderDate");
-        $list->setOrder("DESC");
-        
+        $list = Order::getList();
+        $list->setCondition('customer__id = ?', array($this->getId()));
+        $list->setOrderKey('orderDate');
+        $list->setOrder('DESC');
+
         return $list->getObjects();
     }
 
     /**
-     * Get Users latest Cart
+     * Get Users latest Cart.
      *
      * @return bool
      */
     public function getLatestCart()
     {
         $list = Cart::getList();
-        $list->setCondition("user__id = ?", array($this->getId()));
-        $list->setOrderKey("o_creationDate");
-        $list->setOrder("DESC");
+        $list->setCondition('user__id = ?', array($this->getId()));
+        $list->setOrderKey('o_creationDate');
+        $list->setOrder('DESC');
 
         $carts = $list->getObjects();
 
@@ -152,9 +155,10 @@ class User extends Base
     }
 
     /**
-     * Check if user is in group
+     * Check if user is in group.
      *
      * @param CustomerGroup $group
+     *
      * @return bool
      */
     public function isInGroup(CustomerGroup $group)
@@ -170,49 +174,53 @@ class User extends Base
 
     /**
      * returns email
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return string
      */
     public function getEmail()
     {
-        throw new UnsupportedException("getEmail is not supported for " . get_class($this));
+        throw new UnsupportedException('getEmail is not supported for '.get_class($this));
     }
 
     /**
      * returns firstname
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return string
      */
     public function getFirstname()
     {
-        throw new UnsupportedException("getFirstname is not supported for " . get_class($this));
+        throw new UnsupportedException('getFirstname is not supported for '.get_class($this));
     }
 
     /**
      * returns lastname
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return string
      */
     public function getLastname()
     {
-        throw new UnsupportedException("getLastname is not supported for " . get_class($this));
+        throw new UnsupportedException('getLastname is not supported for '.get_class($this));
     }
 
     /**
      * returns password
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return string
      */
     public function getPassword()
     {
-        throw new UnsupportedException("getPassword is not supported for " . get_class($this));
+        throw new UnsupportedException('getPassword is not supported for '.get_class($this));
     }
 }

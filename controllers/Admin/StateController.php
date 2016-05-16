@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,9 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\State;
 use Pimcore\Controller\Action\Admin;
 
@@ -24,17 +21,18 @@ class CoreShop_Admin_StateController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_states");
+        $notRestrictedActions = array('list');
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_states');
         }
     }
 
-    public function countryAction() {
+    public function countryAction()
+    {
         $list = new State\Listing();
-        $list->setOrder("ASC");
-        $list->setOrderKey("name");
-        $list->setCondition("countryId=?", array($this->getParam("countryId")));
+        $list->setOrder('ASC');
+        $list->setOrderKey('name');
+        $list->setCondition('countryId=?', array($this->getParam('countryId')));
         $list->load();
 
         $states = array();
@@ -49,8 +47,8 @@ class CoreShop_Admin_StateController extends Admin
     public function listAction()
     {
         $list = new State\Listing();
-        $list->setOrder("ASC");
-        $list->setOrderKey("name");
+        $list->setOrder('ASC');
+        $list->setOrderKey('name');
         $list->load();
 
         $states = array();
@@ -65,80 +63,80 @@ class CoreShop_Admin_StateController extends Admin
     protected function getTreeNodeConfig($state)
     {
         $tmpState = array(
-            "id" => $state->getId(),
-            "text" => $state->getName(),
-            "elementType" => "state",
-            "qtipCfg" => array(
-                "title" => "ID: " . $state->getId()
+            'id' => $state->getId(),
+            'text' => $state->getName(),
+            'elementType' => 'state',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$state->getId(),
             ),
-            "name" => $state->getName(),
-            "country" => $state->getCountry()->getName()
+            'name' => $state->getName(),
+            'country' => $state->getCountry()->getName(),
         );
 
-        $tmpState["leaf"] = true;
-        $tmpState["iconCls"] = "coreshop_icon_state";
-        $tmpState["allowChildren"] = false;
+        $tmpState['leaf'] = true;
+        $tmpState['iconCls'] = 'coreshop_icon_state';
+        $tmpState['allowChildren'] = false;
 
         return $tmpState;
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $state = State::getById($id);
 
         if ($state instanceof State) {
-            $this->_helper->json(array("success" => true, "data" => $state));
+            $this->_helper->json(array('success' => true, 'data' => $state));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $state = State::getById($id);
 
         if ($data && $state instanceof State) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $state->setValues($data);
             $state->save();
 
-            $this->_helper->json(array("success" => true, "data" => $state));
+            $this->_helper->json(array('success' => true, 'data' => $state));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $state = new State();
             $state->setName($name);
             $state->setActive(1);
             $state->save();
 
-            $this->_helper->json(array("success" => true, "data" => $state));
+            $this->_helper->json(array('success' => true, 'data' => $state));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $state = State::getById($id);
 
         if ($state instanceof State) {
             $state->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

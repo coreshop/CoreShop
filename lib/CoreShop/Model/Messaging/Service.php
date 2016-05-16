@@ -9,56 +9,58 @@ use CoreShop\Model\User;
 use CoreShop\Tool;
 use Pimcore\Model\Document\Email;
 
-class Service {
-
+class Service
+{
     /**
-     * Handles the Request and creates Thread/Message
+     * Handles the Request and creates Thread/Message.
      *
-     * @param $param
+     * @param $params
      * @param $language
      * @param $sendContact
      * @param $sendCustomer
      *
      * @return array
      */
-    public static function handleRequestAndCreateThread($params, $language, $sendContact = true, $sendCustomer = true) {
-        if(!$params['contact']) {
+    public static function handleRequestAndCreateThread($params, $language, $sendContact = true, $sendCustomer = true)
+    {
+        if (!$params['contact']) {
             return array(
-                "success" => false,
-                "message" => "Subject is not set"
+                'success' => false,
+                'message' => 'Subject is not set',
             );
         }
 
-        if(!$params['message']) {
+        if (!$params['message']) {
             return array(
-                "success" => false,
-                "message" => "Message is not set"
+                'success' => false,
+                'message' => 'Message is not set',
             );
         }
 
-        if(!$params['email']) {
+        if (!$params['email']) {
             return array(
-                "success" => false,
-                "message" => "E-Mail is not set"
+                'success' => false,
+                'message' => 'E-Mail is not set',
             );
         }
 
-        $thread = Thread::getByField("token", $params['token']);
+        $thread = Thread::getByField('token', $params['token']);
 
         //Check if there is already an open thread for the email address
-        if(!$thread instanceof Thread)
+        if (!$thread instanceof Thread) {
             $thread = Thread::searchThread($params['email'], $params['contact'], $params['order'], $params['product']);
+        }
 
-        if(!$thread instanceof Thread) {
+        if (!$thread instanceof Thread) {
             $thread = new Thread();
             $thread->setEmail($params['email']);
-            $thread->setStatusId(Configuration::get("SYSTEM.MESSAGING.THREAD.STATE.NEW"));
+            $thread->setStatusId(Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
 
-            if(Tool::getUser() instanceof User) {
+            if (Tool::getUser() instanceof User) {
                 $thread->setUser(Tool::getUser());
             }
 
-            if($params['orderNumber']) {
+            if ($params['orderNumber']) {
                 //Check Order Reference
                 $order = Order::getByOrderNumber($params['orderNumber'], 1);
 
@@ -71,17 +73,17 @@ class Service {
                 }
             }
 
-            if($params['product']) {
+            if ($params['product']) {
                 $product = Product::getById($params['product']);
 
-                if($product instanceof Product) {
+                if ($product instanceof Product) {
                     $thread->setProduct($product);
                 }
             }
 
             $customer = User::getUserByEmail($params['email']);
 
-            if($customer instanceof User) {
+            if ($customer instanceof User) {
                 $thread->setUser($customer);
             }
 
@@ -93,23 +95,22 @@ class Service {
 
         $message = $thread->createMessage($params['message']);
 
-
-        if($sendContact) {
+        if ($sendContact) {
             //Send Contact
-            $contactEmailDocument = Email::getById(Configuration::get("SYSTEM.MESSAGING.MAIL.CONTACT." . strtoupper($thread->getLanguage())));
+            $contactEmailDocument = Email::getById(Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
             $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
         }
 
-        if($sendCustomer) {
+        if ($sendCustomer) {
             //Send Customer Info Mail
-            $customerInfoMail = Email::getById(Configuration::get("SYSTEM.MESSAGING.MAIL.CUSTOMER." . strtoupper($thread->getLanguage())));
+            $customerInfoMail = Email::getById(Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.'.strtoupper($thread->getLanguage())));
             $message->sendNotification($customerInfoMail, $thread->getEmail());
         }
 
         return array(
-            "success" => true,
-            "message" => $message,
-            "thread" => $thread
+            'success' => true,
+            'message' => $message,
+            'thread' => $thread,
         );
     }
 }

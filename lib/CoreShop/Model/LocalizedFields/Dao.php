@@ -1,17 +1,16 @@
 <?php
 /**
- * Pimcore
+ * Pimcore.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
  * @category   Pimcore
- * @package    Object
+ *
  * @copyright  Copyright (c) 2009-2015 pimcore GmbH (http://www.pimcore.org)
  * @license    http://www.pimcore.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\LocalizedFields;
 
 use CoreShop\Model\Dao\AbstractDao;
@@ -21,34 +20,33 @@ use Pimcore\Tool;
 
 class Dao extends AbstractDao
 {
-
     /**
      * @var null
      */
     protected $tableDefinitions = null;
 
     /**
-     * Get Table Name
+     * Get Table Name.
      *
      * @return string
      */
     public function getTableName()
     {
-        return $this->model->getObject()->getTableName() . "_data";
+        return $this->model->getObject()->getTableName().'_data';
     }
 
     /**
-     * Get Query Table Name
+     * Get Query Table Name.
      *
      * @return string
      */
     public function getQueryTableName()
     {
-        return $this->model->getObject()->getTableName() . "_query";
+        return $this->model->getObject()->getTableName().'_query';
     }
 
     /**
-     * Save Localized Fields
+     * Save Localized Fields.
      */
     public function save()
     {
@@ -59,14 +57,14 @@ class Dao extends AbstractDao
         $localizedFields = $this->model->getFields();
 
         foreach ($validLanguages as $language) {
-            $queryTable = $this->getQueryTableName() . "_" . $language;
-            $sql = "SELECT * FROM " . $queryTable . " WHERE ooo_id = " . $object->getId() . " AND language = '" . $language . "'";
+            $queryTable = $this->getQueryTableName().'_'.$language;
+            $sql = 'SELECT * FROM '.$queryTable.' WHERE ooo_id = '.$object->getId()." AND language = '".$language."'";
 
             try {
                 $this->db->fetchRow($sql);
             } catch (\Exception $e) {
                 // if the table doesn't exist -> create it!
-                if (strpos($e->getMessage(), "exist")) {
+                if (strpos($e->getMessage(), 'exist')) {
 
                     // the following is to ensure consistent data and atomic transactions, while having the flexibility
                     // to add new languages on the fly without saving all classes having localized fields
@@ -86,21 +84,20 @@ class Dao extends AbstractDao
             }
 
             $insertData = array(
-                "ooo_id" => $this->model->getObject()->getId(),
-                "language" => $language
+                'ooo_id' => $this->model->getObject()->getId(),
+                'language' => $language,
             );
 
             foreach ($localizedFields as $field) {
                 $insertData[$field] = $this->model->getLocalizedValue($field, $language, true);
             }
 
-
             $this->db->insertOrUpdate($this->getTableName(), $insertData);
 
             // query table
             $data = array();
-            $data["ooo_id"] = $this->model->getObject()->getId();
-            $data["language"] = $language;
+            $data['ooo_id'] = $this->model->getObject()->getId();
+            $data['language'] = $language;
 
             // get fields which shouldn't be updated
             $untouchable = array();
@@ -116,30 +113,30 @@ class Dao extends AbstractDao
                         $data[$key] = $insertData;
                     }
                 } else {
-                    \Logger::debug("Excluding untouchable query value for object [ " . $this->model->getId() . " ]  key [ $key ] because it has not been loaded");
+                    \Logger::debug('Excluding untouchable query value for object [ '.$this->model->getId()." ]  key [ $key ] because it has not been loaded");
                 }
             }
 
-            $queryTable = $this->getQueryTableName() . "_" . $language;
+            $queryTable = $this->getQueryTableName().'_'.$language;
             $this->db->insertOrUpdate($queryTable, $data);
         } // foreach language
     }
 
     /**
-     * Delete Localized Fields
+     * Delete Localized Fields.
      *
-     * @param boolean $deleteQuery
+     * @param bool $deleteQuery
      */
     public function delete($deleteQuery = true)
     {
         try {
             if ($deleteQuery) {
-                $this->db->delete($this->getTableName(), $this->db->quoteInto("ooo_id = ?", $this->model->getObject()->getId()));
+                $this->db->delete($this->getTableName(), $this->db->quoteInto('ooo_id = ?', $this->model->getObject()->getId()));
 
                 $validLanguages = Tool::getValidLanguages();
                 foreach ($validLanguages as $language) {
-                    $queryTable = $this->getQueryTableName() . "_" . $language;
-                    $this->db->delete($queryTable, $this->db->quoteInto("ooo_id = ?", $this->model->getObject()->getId()));
+                    $queryTable = $this->getQueryTableName().'_'.$language;
+                    $this->db->delete($queryTable, $this->db->quoteInto('ooo_id = ?', $this->model->getObject()->getId()));
                 }
             }
         } catch (\Exception $e) {
@@ -158,7 +155,7 @@ class Dao extends AbstractDao
             $language = $this->db->quote($language);
         }
 
-        $data = $this->db->fetchAll("SELECT * FROM " . $this->getTableName() . " WHERE ooo_id = ? AND language IN (" . implode(",", $validLanguages) . ")", $this->model->getObject()->getId());
+        $data = $this->db->fetchAll('SELECT * FROM '.$this->getTableName().' WHERE ooo_id = ? AND language IN ('.implode(',', $validLanguages).')', $this->model->getObject()->getId());
 
         foreach ($data as $row) {
             foreach ($this->model->getFields() as $field) {
@@ -167,9 +164,8 @@ class Dao extends AbstractDao
         }
     }
 
-
     /**
-     * Create Localized Views
+     * Create Localized Views.
      */
     public function createLocalizedViews()
     {
@@ -179,7 +175,7 @@ class Dao extends AbstractDao
 
         $db = $this->db;
 
-        /**
+        /*
          * macro for creating ifnull statement
          * @param string $field
          * @param array  $languages
@@ -203,22 +199,19 @@ class Dao extends AbstractDao
 
             return $fallback !== 'null'
                 ? $sql
-                : $db->quoteIdentifier($lang) . '.' . $db->quoteIdentifier($field)
+                : $db->quoteIdentifier($lang).'.'.$db->quoteIdentifier($field)
                 ;
         };
 
-
         foreach ($languages as $language) {
             try {
-                $tablename = $this->getQueryTableName() . "_" . $language;
-
+                $tablename = $this->getQueryTableName().'_'.$language;
 
                 // get available columns
                 $viewColumns = array_merge(
                     $this->db->fetchAll('SHOW COLUMNS FROM `'.$this->model->getObject()->getTableName().'`')
                 );
-                $localizedColumns = $this->db->fetchAll('SHOW COLUMNS FROM `' . $tablename . '`');
-
+                $localizedColumns = $this->db->fetchAll('SHOW COLUMNS FROM `'.$tablename.'`');
 
                 // get view fields
                 $viewFields = [];
@@ -226,19 +219,17 @@ class Dao extends AbstractDao
                     $viewFields[] = $this->db->quoteIdentifier($row['Field']);
                 }
 
-
                 // create fallback select
                 $localizedFields = [];
                 $fallbackLanguages = array_unique(Tool::getFallbackLanguagesFor($language));
                 array_unshift($fallbackLanguages, $language);
                 foreach ($localizedColumns as $row) {
-                    $localizedFields[] = $getFallbackValue($row['Field'], $fallbackLanguages) . sprintf(' as "%s"', $row['Field']);
+                    $localizedFields[] = $getFallbackValue($row['Field'], $fallbackLanguages).sprintf(' as "%s"', $row['Field']);
                 }
-
 
                 // create view select fields
                 $selectViewFields = implode(',', array_merge($viewFields, $localizedFields));
-                $localizedTable = $this->getTableName() . "_localized";
+                $localizedTable = $this->getTableName().'_localized';
 
                 // create view
                 $viewQuery = <<<QUERY
@@ -247,7 +238,6 @@ CREATE OR REPLACE VIEW `{$localizedTable}_{$language}` AS
 SELECT {$selectViewFields}
 FROM `{$this->model->getObject()->getTableName()}`
 QUERY;
-
 
                 // join fallback languages
                 foreach ($fallbackLanguages as $lang) {
@@ -267,15 +257,14 @@ QUERY;
         }
     }
 
-
     /**
-     * Create or Update Localized Table
+     * Create or Update Localized Table.
      */
     public function createUpdateTable()
     {
         $table = $this->getTableName();
 
-        $this->db->query("CREATE TABLE IF NOT EXISTS `" . $table . "` (
+        $this->db->query('CREATE TABLE IF NOT EXISTS `'.$table."` (
 		  `ooo_id` int(11) NOT NULL default '0',
 		  `language` varchar(10) NOT NULL DEFAULT '',
 		  PRIMARY KEY (`ooo_id`,`language`),
@@ -285,10 +274,10 @@ QUERY;
 
         $existingColumns = $this->getValidTableColumns($table, false); // no caching of table definition
         $columnsToRemove = $existingColumns;
-        $protectedColumns = array("ooo_id", "language");
+        $protectedColumns = array('ooo_id', 'language');
 
         foreach ($this->model->getFields() as $field) {
-            $this->addModifyColumn($table, $field, "varchar(255)", "", "NULL");
+            $this->addModifyColumn($table, $field, 'varchar(255)', '', 'NULL');
             $protectedColumns[] = $field;
         }
 
@@ -298,9 +287,9 @@ QUERY;
 
         foreach ($validLanguages as &$language) {
             $queryTable = $this->getQueryTableName();
-            $queryTable .= "_" . $language;
+            $queryTable .= '_'.$language;
 
-            $this->db->query("CREATE TABLE IF NOT EXISTS `" . $queryTable . "` (
+            $this->db->query('CREATE TABLE IF NOT EXISTS `'.$queryTable."` (
                   `ooo_id` int(11) NOT NULL default '0',
                   `language` varchar(10) NOT NULL DEFAULT '',
                   PRIMARY KEY (`ooo_id`,`language`),
@@ -309,13 +298,13 @@ QUERY;
                 ) DEFAULT CHARSET=utf8;");
 
             // create object table if not exists
-            $protectedColumns = array("ooo_id", "language");
+            $protectedColumns = array('ooo_id', 'language');
 
             $existingColumns = $this->getValidTableColumns($queryTable, false); // no caching of table definition
             $columnsToRemove = $existingColumns;
 
             foreach ($this->model->getFields() as $field) {
-                $this->addModifyColumn($queryTable, $field, "varchar(255)", "", "NULL");
+                $this->addModifyColumn($queryTable, $field, 'varchar(255)', '', 'NULL');
                 $protectedColumns[] = $field;
             }
 
@@ -329,7 +318,7 @@ QUERY;
     }
 
     /**
-     * Add/Modify Column
+     * Add/Modify Column.
      *
      * @param $table
      * @param $colName
@@ -343,23 +332,23 @@ QUERY;
         $existingColName = null;
 
         // check for existing column case insensitive eg a rename from myInput to myinput
-        $matchingExisting = preg_grep('/^' . preg_quote($colName, '/') . '$/i', $existingColumns);
+        $matchingExisting = preg_grep('/^'.preg_quote($colName, '/').'$/i', $existingColumns);
         if (is_array($matchingExisting) && !empty($matchingExisting)) {
             $existingColName = current($matchingExisting);
         }
 
         if ($existingColName === null) {
-            $this->db->query('ALTER TABLE `' . $table . '` ADD COLUMN `' . $colName . '` ' . $type . $default . ' ' . $null . ';');
+            $this->db->query('ALTER TABLE `'.$table.'` ADD COLUMN `'.$colName.'` '.$type.$default.' '.$null.';');
             $this->resetValidTableColumnsCache($table);
         } else {
             if (!Object\ClassDefinition\Service::skipColumn($this->tableDefinitions, $table, $colName, $type, $default, $null)) {
-                $this->db->query('ALTER TABLE `' . $table . '` CHANGE COLUMN `' . $existingColName . '` `' . $colName . '` ' . $type . $default . ' ' . $null . ';');
+                $this->db->query('ALTER TABLE `'.$table.'` CHANGE COLUMN `'.$existingColName.'` `'.$colName.'` '.$type.$default.' '.$null.';');
             }
         }
     }
 
     /**
-     * Remove Unused Column
+     * Remove Unused Column.
      *
      * @param $table
      * @param $columnsToRemove
@@ -371,7 +360,7 @@ QUERY;
             foreach ($columnsToRemove as $value) {
                 //if (!in_array($value, $protectedColumns)) {
                 if (!in_array(strtolower($value), array_map('strtolower', $protectedColumns))) {
-                    $this->db->query('ALTER TABLE `' . $table . '` DROP COLUMN `' . $value . '`;');
+                    $this->db->query('ALTER TABLE `'.$table.'` DROP COLUMN `'.$value.'`;');
                 }
             }
         }

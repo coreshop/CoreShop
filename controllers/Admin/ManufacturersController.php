@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Manufacturer;
 use Pimcore\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_ManufacturersController extends Admin
 {
@@ -25,10 +21,10 @@ class CoreShop_Admin_ManufacturersController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
+        $notRestrictedActions = array('list');
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_manufacturers");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_manufacturers');
         }
     }
 
@@ -48,78 +44,78 @@ class CoreShop_Admin_ManufacturersController extends Admin
     protected function getTreeNodeConfig(Manufacturer $manufacturer)
     {
         $tmp = array(
-            "id" => $manufacturer->getId(),
-            "text" => $manufacturer->getName(),
-            "elementType" => "group",
-            "qtipCfg" => array(
-                "title" => "ID: " . $manufacturer->getId()
+            'id' => $manufacturer->getId(),
+            'text' => $manufacturer->getName(),
+            'elementType' => 'group',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$manufacturer->getId(),
             ),
-            "name" => $manufacturer->getName()
+            'name' => $manufacturer->getName(),
         );
 
-        $tmp["leaf"] = true;
-        $tmp["iconCls"] = "coreshop_icon_manufacturer";
-        $tmp["allowChildren"] = false;
+        $tmp['leaf'] = true;
+        $tmp['iconCls'] = 'coreshop_icon_manufacturer';
+        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $manufacturer = new Manufacturer();
             $manufacturer->setName($name);
             $manufacturer->save();
 
-            $this->_helper->json(array("success" => true, "data" => $manufacturer));
+            $this->_helper->json(array('success' => true, 'data' => $manufacturer));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $manufacturer = Manufacturer::getById($id);
 
         if ($manufacturer instanceof Manufacturer) {
-            $this->_helper->json(array("success" => true, "data" => $manufacturer->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $manufacturer->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $manufacturer = Manufacturer::getById($id);
 
         if ($data && $manufacturer instanceof Manufacturer) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $manufacturer->setValues($data);
             $manufacturer->save();
 
-            $this->_helper->json(array("success" => true, "data" => $manufacturer->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $manufacturer->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $manufacturer = Manufacturer::getById($id);
 
         if ($manufacturer instanceof Manufacturer) {
             $manufacturer->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Order;
 
 use CoreShop\Model\AbstractModel;
@@ -21,11 +20,10 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
-use Pimcore\Model\Element\Note;
 
 class State extends AbstractModel
 {
-    protected $localizedValues = array("emailDocument", "name");
+    protected $localizedValues = array('emailDocument', 'name');
 
     /**
      * @var int
@@ -38,27 +36,27 @@ class State extends AbstractModel
     public $name;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $accepted;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $shipped;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $paid;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $invoice;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $email;
 
@@ -68,40 +66,19 @@ class State extends AbstractModel
     public $color;
 
     /**
-     * get OrderState by ID
-     *
-     * @param $id
-     * @return State|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get all OrderState
-     *
-     * @return State[]
-     */
-    public static function getOrderStates()
-    {
-        $list = new Order\State\Listing();
-
-        return $list->getData();
-    }
-
-    /**
-     * Process OrderState for Order
+     * Process OrderState for Order.
      *
      * @param Order $order
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function processStep(Order $order)
     {
         $previousState = $order->getOrderState();
         //Check if new OrderState is the same as the current one
-        if ($order->getOrderState() instanceof State) {
+        if ($order->getOrderState() instanceof self) {
             if ($order->getOrderState()->getId() === $this->getId()) {
                 return false;
             }
@@ -118,12 +95,11 @@ class State extends AbstractModel
         }
 
         if ($this->getInvoice()) {
-            if ((bool)Configuration::get("SYSTEM.INVOICE.CREATE")) {
+            if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE')) {
                 //Generates the invoice, force re-generation cause of state change
                 $order->getInvoice(true);
             }
         }
-
 
         if ($this->getEmail()) {
             $emailDocument = $this->getEmailDocument();
@@ -133,16 +109,16 @@ class State extends AbstractModel
                 $emailParameters = array_merge($order->getObjectVars(), $this->getObjectVars(), $order->getCustomer()->getObjectVars());
                 $emailParameters['orderTotal'] = Tool::formatPrice($order->getTotal());
                 $emailParameters['order'] = $order;
-                
+
                 unset($emailParameters['____pimcore_cache_item__']);
 
                 $mail = new Mail();
                 $mail->setDocument($emailDocument);
                 $mail->setParams($emailParameters);
                 $mail->setEnableLayoutOnPlaceholderRendering(false);
-                $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . " " . $order->getCustomer()->getLastname());
+                $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname());
 
-                if ((bool)Configuration::get("SYSTEM.INVOICE.CREATE")) {
+                if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE')) {
                     if ($this->getInvoice()) {
                         $invoice = $order->getInvoice();
 
@@ -159,8 +135,8 @@ class State extends AbstractModel
                 }
 
                 //check if admin copy mail address has been set. if => send him a lovely copy!
-                $sendBccToUser = Configuration::get("SYSTEM.MAIL.ORDER.BCC");
-                $adminMailAddress = Configuration::get("SYSTEM.MAIL.ORDER.NOTIFICATION");
+                $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');
+                $adminMailAddress = Configuration::get('SYSTEM.MAIL.ORDER.NOTIFICATION');
 
                 if ($sendBccToUser === true && !empty($adminMailAddress)) {
                     $mail->addBcc(explode(',', $adminMailAddress));
@@ -174,18 +150,18 @@ class State extends AbstractModel
         $order->save();
 
         $translate = Tool::getTranslate();
-        $note = $order->createNote("coreshop-orderstate");
-        $note->setTitle(sprintf($translate->translate("coreshop_note_orderstate_change"), $this->getName()));
-        $note->setDescription(sprintf($translate->translate("coreshop_note_orderstate_change_description"), $this->getName()));
+        $note = $order->createNote('coreshop-orderstate');
+        $note->setTitle(sprintf($translate->translate('coreshop_note_orderstate_change'), $this->getName()));
+        $note->setDescription(sprintf($translate->translate('coreshop_note_orderstate_change_description'), $this->getName()));
 
-        if ($previousState instanceof State) {
-            $note->addData("fromState", "text", $previousState->getName());
+        if ($previousState instanceof self) {
+            $note->addData('fromState', 'text', $previousState->getName());
         }
 
-        $note->addData("toState", "text", $this->getName());
+        $note->addData('toState', 'text', $this->getName());
         $note->save();
 
-        Plugin::actionHook("orderstate.process.post", array("newOrderStatus" => $this, "order" => $order));
+        Plugin::actionHook('orderstate.process.post', array('newOrderStatus' => $this, 'order' => $order));
 
         //@TODO: Stock Management
 
@@ -210,11 +186,12 @@ class State extends AbstractModel
 
     /**
      * @param string $language language
+     *
      * @return string
      */
     public function getName($language = null)
     {
-        return $this->getLocalizedFields()->getLocalizedValue("name", $language);
+        return $this->getLocalizedFields()->getLocalizedValue('name', $language);
     }
 
     /**
@@ -223,11 +200,11 @@ class State extends AbstractModel
      */
     public function setName($name, $language = null)
     {
-        $this->getLocalizedFields()->setLocalizedValue("name", $name, $language);
+        $this->getLocalizedFields()->setLocalizedValue('name', $name, $language);
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getAccepted()
     {
@@ -235,7 +212,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @param boolean $accepted
+     * @param bool $accepted
      */
     public function setAccepted($accepted)
     {
@@ -243,7 +220,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getShipped()
     {
@@ -251,7 +228,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @param boolean $shipped
+     * @param bool $shipped
      */
     public function setShipped($shipped)
     {
@@ -259,7 +236,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPaid()
     {
@@ -267,7 +244,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @param boolean $paid
+     * @param bool $paid
      */
     public function setPaid($paid)
     {
@@ -275,7 +252,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getInvoice()
     {
@@ -283,7 +260,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @param boolean $invoice
+     * @param bool $invoice
      */
     public function setInvoice($invoice)
     {
@@ -291,7 +268,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getEmail()
     {
@@ -299,7 +276,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @param boolean $email
+     * @param bool $email
      */
     public function setEmail($email)
     {
@@ -324,19 +301,20 @@ class State extends AbstractModel
 
     /**
      * @param string $language language
+     *
      * @return string
      */
     public function getEmailDocument($language = null)
     {
-        return $this->getLocalizedFields()->getLocalizedValue("emailDocument", $language);
+        return $this->getLocalizedFields()->getLocalizedValue('emailDocument', $language);
     }
 
     /**
      * @param string $emailDocument
-     * @param string $language language
+     * @param string $language      language
      */
     public function setEmailDocument($emailDocument, $language = null)
     {
-        $this->getLocalizedFields()->setLocalizedValue("emailDocument", $emailDocument, $language);
+        $this->getLocalizedFields()->setLocalizedValue('emailDocument', $emailDocument, $language);
     }
 }

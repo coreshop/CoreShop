@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,55 +11,54 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 class TaxCalculator
 {
     /**
-     * DISABLE_METHOD only use this tax
+     * DISABLE_METHOD only use this tax.
      */
     const DISABLE_METHOD = 0;
 
     /**
      * COMBINE_METHOD sum taxes
-     * eg: 100€ * (10% + 15%)
+     * eg: 100€ * (10% + 15%).
      */
     const COMBINE_METHOD = 1;
 
     /**
      * ONE_AFTER_ANOTHER_METHOD apply taxes one after another
-     * eg: (100€ * 10%) * 15%
+     * eg: (100€ * 10%) * 15%.
      */
     const ONE_AFTER_ANOTHER_METHOD = 2;
 
     /**
-     * @var array $taxes
+     * @var array
      */
     public $taxes;
 
     /**
-     * @var int $computation_method (COMBINE_METHOD | ONE_AFTER_ANOTHER_METHOD)
+     * @var int (COMBINE_METHOD | ONE_AFTER_ANOTHER_METHOD)
      */
     public $computation_method;
 
-
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $taxes
-     * @param int $computation_method (COMBINE_METHOD | ONE_AFTER_ANOTHER_METHOD)
+     * @param int   $computation_method (COMBINE_METHOD | ONE_AFTER_ANOTHER_METHOD)
      */
-    public function __construct(array $taxes = array(), $computation_method = TaxCalculator::COMBINE_METHOD)
+    public function __construct(array $taxes = array(), $computation_method = self::COMBINE_METHOD)
     {
         $this->taxes = $taxes;
-        $this->computation_method = (int)$computation_method;
+        $this->computation_method = (int) $computation_method;
     }
 
     /**
-     * Compute and add the taxes to the specified price
+     * Compute and add the taxes to the specified price.
      *
      * @param float $price price tax excluded
+     *
      * @return float price with taxes
      */
     public function addTaxes($price)
@@ -67,11 +66,11 @@ class TaxCalculator
         return $price * (1 + ($this->getTotalRate() / 100));
     }
 
-
     /**
-     * Compute and remove the taxes to the specified price
+     * Compute and remove the taxes to the specified price.
      *
      * @param float $price price tax inclusive
+     *
      * @return float price without taxes
      */
     public function removeTaxes($price)
@@ -80,14 +79,14 @@ class TaxCalculator
     }
 
     /**
-     * get Total Rate
+     * get Total Rate.
      *
      * @return float total taxes rate
      */
     public function getTotalRate()
     {
         $taxes = 0;
-        if ($this->getComputationMethod() == TaxCalculator::ONE_AFTER_ANOTHER_METHOD) {
+        if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
             $taxes = 1;
             foreach ($this->getTaxes() as $tax) {
                 $taxes *= (1 + (abs($tax->getRate()) / 100));
@@ -101,20 +100,21 @@ class TaxCalculator
             }
         }
 
-        return (float)$taxes;
+        return (float) $taxes;
     }
 
     /**
-     * get Tax Names
+     * get Tax Names.
      *
      * @param null $language
+     *
      * @return string
      */
     public function getTaxesName($language = null)
     {
         $name = '';
         foreach ($this->getTaxes() as $tax) {
-            $name .= $tax->getName($language) . ' - ';
+            $name .= $tax->getName($language).' - ';
         }
 
         $name = rtrim($name, ' - ');
@@ -123,10 +123,11 @@ class TaxCalculator
     }
 
     /**
-     * Return the tax amount associated to each taxes of the TaxCalculator
+     * Return the tax amount associated to each taxes of the TaxCalculator.
      *
      * @param float $price
-     * @param bool $asArray
+     * @param bool  $asArray
+     *
      * @return array $taxes_amount
      */
     public function getTaxesAmount($price, $asArray = false)
@@ -135,7 +136,7 @@ class TaxCalculator
         $taxAmount = 0;
 
         foreach ($this->getTaxes() as $tax) {
-            if ($this->getComputationMethod() == TaxCalculator::ONE_AFTER_ANOTHER_METHOD) {
+            if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
                 $taxes_amounts[$tax->id] = $price * (abs($tax->getRate()) / 100);
                 $price = $price + $taxes_amounts[$tax->id];
             } else {
@@ -143,7 +144,7 @@ class TaxCalculator
             }
         }
 
-        if($asArray) {
+        if ($asArray) {
             return $taxes_amounts;
         }
 
@@ -155,18 +156,20 @@ class TaxCalculator
     }
 
     /**
-     * Get taxes
+     * Get taxes.
      *
      * @return Tax[]
      */
-    public function getTaxes() {
+    public function getTaxes()
+    {
         return $this->taxes;
     }
 
     /**
-     *  return computation mode
+     *  return computation mode.
      */
-    public function getComputationMethod() {
+    public function getComputationMethod()
+    {
         return $this->computation_method;
     }
 }

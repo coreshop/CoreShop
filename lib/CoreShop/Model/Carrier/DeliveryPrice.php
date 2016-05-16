@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,13 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Carrier;
 
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Zone;
 use CoreShop\Model\AbstractModel;
-use CoreShop\Tool;
 
 class DeliveryPrice extends AbstractModel
 {
@@ -67,27 +65,17 @@ class DeliveryPrice extends AbstractModel
     public $price;
 
     /**
-     * Get DeliveryPrice by id
+     * Get all prices for this carrier in this range.
      *
-     * @param $id
-     * @return DeliveryPrice|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get all prices for this carrier in this range
-     *
-     * @param Carrier $carrier
+     * @param Carrier       $carrier
      * @param AbstractRange $range
+     *
      * @return DeliveryPrice|null
      */
     public static function getByCarrierAndRange(Carrier $carrier, AbstractRange $range)
     {
         try {
-            $obj = new self;
+            $obj = new self();
             $obj->getDao()->getByCarrierAndRange($carrier->getId(), $range->getId());
 
             return $obj;
@@ -98,18 +86,18 @@ class DeliveryPrice extends AbstractModel
     }
 
     /**
-     * Get price for carrier in range in zone
+     * Get price for carrier in range in zone.
      *
-     * @param Carrier $carrier
+     * @param Carrier       $carrier
      * @param AbstractRange $range
-     * @param Zone $zone
+     * @param Zone          $zone
      *
      * @return DeliveryPrice|null
      */
     public static function getForCarrierInZone(Carrier $carrier, AbstractRange $range, Zone $zone)
     {
         try {
-            $obj = new self;
+            $obj = new self();
             $obj->getDao()->getForCarrierInZone($carrier->getId(), $range->getId(), $zone->getId());
 
             return $obj;
@@ -151,7 +139,6 @@ class DeliveryPrice extends AbstractModel
         $this->rangeId = $rangeId;
     }
 
-
     /**
      * @return AbstractRange
      */
@@ -166,12 +153,13 @@ class DeliveryPrice extends AbstractModel
 
     /**
      * @param $range
+     *
      * @throws \Exception
      */
     public function setRange($range)
     {
         if (!$range instanceof AbstractRange) {
-            throw new \Exception("\$zone must be instance of Zone");
+            throw new \Exception('$zone must be instance of Zone');
         }
 
         $this->range = $range;
@@ -210,7 +198,6 @@ class DeliveryPrice extends AbstractModel
         $this->price = $price;
     }
 
-
     /**
      * @return Zone
      */
@@ -225,12 +212,13 @@ class DeliveryPrice extends AbstractModel
 
     /**
      * @param $zone
+     *
      * @throws \Exception
      */
     public function setZone($zone)
     {
         if (!$zone instanceof Zone) {
-            throw new \Exception("\$zone must be instance of Zone");
+            throw new \Exception('$zone must be instance of Zone');
         }
 
         $this->zone = $zone;
@@ -247,6 +235,7 @@ class DeliveryPrice extends AbstractModel
 
     /**
      * @param $zoneId
+     *
      * @throws \Exception
      */
     public function setZoneId($zoneId)
@@ -268,12 +257,13 @@ class DeliveryPrice extends AbstractModel
 
     /**
      * @param $carrier
+     *
      * @throws \Exception
      */
     public function setCarrier($carrier)
     {
         if (!$carrier instanceof Carrier) {
-            throw new \Exception("\$carrier must be instance of Carrier");
+            throw new \Exception('$carrier must be instance of Carrier');
         }
 
         $this->carrier = $carrier;
@@ -290,6 +280,7 @@ class DeliveryPrice extends AbstractModel
 
     /**
      * @param $carrierId
+     *
      * @throws \Exception
      */
     public function setCarrierId($carrierId)

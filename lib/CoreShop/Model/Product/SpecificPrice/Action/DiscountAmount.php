@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,21 +11,17 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\SpecificPrice\Action;
 
 use CoreShop\Model\Currency;
 use CoreShop\Model\Product;
-use Pimcore\Model;
 use CoreShop\Tool;
 
 /**
- * Class DiscountAmount
- * @package CoreShop\Model\PriceRule\Action
+ * Class DiscountAmount.
  */
 class DiscountAmount extends AbstractAction
 {
-
     /**
      * @var int
      */
@@ -39,7 +35,7 @@ class DiscountAmount extends AbstractAction
     /**
      * @var string
      */
-    public $type = "discountAmount";
+    public $type = 'discountAmount';
 
     /**
      * @return mixed
@@ -74,10 +70,11 @@ class DiscountAmount extends AbstractAction
     }
 
     /**
-     * Calculate discount
+     * Calculate discount.
      *
-     * @param float $basePrice
+     * @param float   $basePrice
      * @param Product $product
+     *
      * @return float
      */
     public function getDiscount($basePrice, Product $product)
@@ -86,10 +83,11 @@ class DiscountAmount extends AbstractAction
     }
 
     /**
-     * get new price for product
+     * get new price for product.
      *
      * @param Product $product
-     * @return float|boolean $price
+     *
+     * @return float|bool $price
      */
     public function getPrice(Product $product)
     {

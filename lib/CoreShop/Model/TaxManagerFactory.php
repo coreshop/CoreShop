@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,48 +11,48 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Model\Plugin\TaxManager as PluginTaxManager;
 use CoreShop\Model\TaxRule\Manager;
 use CoreShop\Model\User\Address;
-use CoreShop\Plugin;
 use Pimcore\Cache;
 
 class TaxManagerFactory
 {
     /**
-     * get CacheKey for Address
+     * get CacheKey for Address.
      *
      * @param Address $address
+     *
      * @return string
      */
     private static function getCacheKey(Address $address)
     {
-        return md5($address->getCountry()->getId() .
-            ($address->getState() instanceof State ? $address->getState()->getId() : "") .
-            ($address->getName() ? $address->getName() : "") .
-            ($address->getVatNumber() ? $address->getVatNumber() : "") .
-            ($address->getStreet() ? $address->getStreet() : "") .
-            ($address->getCity() ? $address->getCity() : "") .
-            ($address->getCompany() ? $address->getCompany() : ""));
+        return md5($address->getCountry()->getId().
+            ($address->getState() instanceof State ? $address->getState()->getId() : '').
+            ($address->getName() ? $address->getName() : '').
+            ($address->getVatNumber() ? $address->getVatNumber() : '').
+            ($address->getStreet() ? $address->getStreet() : '').
+            ($address->getCity() ? $address->getCity() : '').
+            ($address->getCompany() ? $address->getCompany() : ''));
     }
 
     /**
      * @param Address $address
      * @param $type
+     *
      * @return bool|Manager|mixed|null
      */
     public static function getTaxManager(Address $address, $type)
     {
-        $cacheKey = "coreshop_tax_manager_" . self::getCacheKey($address) . "_" . $type;
+        $cacheKey = 'coreshop_tax_manager_'.self::getCacheKey($address).'_'.$type;
 
         try {
             $taxManager = \Zend_Registry::get($cacheKey);
 
             if (!$taxManager) {
-                throw new \Exception("TaxManager in registry is null");
+                throw new \Exception('TaxManager in registry is null');
             }
 
             return $taxManager;
@@ -66,7 +66,7 @@ class TaxManagerFactory
                     }
 
                     \Zend_Registry::set($cacheKey, $taxManager);
-                    Cache::save($taxManager, $cacheKey, array("coreshop_tax_manager"));
+                    Cache::save($taxManager, $cacheKey, array('coreshop_tax_manager'));
                 } else {
                     \Zend_Registry::set($cacheKey, $taxManager);
                 }
@@ -83,11 +83,12 @@ class TaxManagerFactory
     /**
      * @param Address $address
      * @param $type
+     *
      * @return bool
      */
     protected static function getPluginTaxManager(Address $address, $type)
     {
-        $results = \Pimcore::getEventManager()->trigger("coreshop.tax.getTaxManager", null, array("address" => $address, "type" => $type));
+        $results = \Pimcore::getEventManager()->trigger('coreshop.tax.getTaxManager', null, array('address' => $address, 'type' => $type));
 
         foreach ($results as $result) {
             if ($result instanceof PluginTaxManager) {

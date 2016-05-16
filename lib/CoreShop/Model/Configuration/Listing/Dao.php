@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Configuration\Listing;
 
 use Pimcore;
@@ -19,18 +18,17 @@ use CoreShop\Model;
 
 class Dao extends Pimcore\Model\Dao\PhpArrayTable
 {
-
     /**
-     * configure
+     * configure.
      */
     public function configure()
     {
         parent::configure();
-        $this->setFile("coreshop_configurations");
+        $this->setFile('coreshop_configurations');
     }
 
     /**
-     * Loads a list of Configurations for the specicifies parameters, returns an array of Configuration elements
+     * Loads a list of Configurations for the specicifies parameters, returns an array of Configuration elements.
      *
      * @return array
      */
@@ -40,15 +38,16 @@ class Dao extends Pimcore\Model\Dao\PhpArrayTable
 
         $routes = array();
         foreach ($routesData as $routeData) {
-            $routes[] = Model\Configuration::getById($routeData["id"]);
+            $routes[] = Model\Configuration::getById($routeData['id']);
         }
 
         $this->model->setConfigurations($routes);
+
         return $routes;
     }
 
     /**
-     * get total count
+     * get total count.
      *
      * @return int
      */

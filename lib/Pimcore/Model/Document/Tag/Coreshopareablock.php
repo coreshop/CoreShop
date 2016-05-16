@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,30 +11,26 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace Pimcore\Model\Document\Tag;
 
-use Pimcore\Model;
-use Pimcore\ExtensionManager;
-use Pimcore\Tool;
 use Pimcore\Model\Document;
 
 class Coreshopareablock extends Areablock
 {
-
     /**
-     * get type
+     * get type.
      *
      * @see Document\Tag\TagInterface::getType
+     *
      * @return string
      */
     public function getType()
     {
-        return "coreshopareablock";
+        return 'coreshopareablock';
     }
 
     /**
-     * is custom are path
+     * is custom are path.
      *
      * @return bool
      */
@@ -44,12 +40,12 @@ class Coreshopareablock extends Areablock
     }
 
     /**
-     * get area directory
+     * get area directory.
      *
      * @return string
      */
     public function getAreaDirectory()
     {
-        return CORESHOP_TEMPLATE_PATH . "/areas";
+        return CORESHOP_TEMPLATE_PATH.'/areas';
     }
 }

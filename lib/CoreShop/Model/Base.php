@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,43 +11,45 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Tool;
-use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Concrete;
 
 class Base extends Concrete
 {
     /**
-     * Pimcore Object Class
+     * Pimcore Object Class.
      *
      * @var string
      */
     public static $pimcoreClass = null;
 
     /**
-     * get Pimcore implementation class
+     * get Pimcore implementation class.
      *
      * @throws Exception
+     *
      * @return string
      */
-    public static function getPimcoreObjectClass() {
+    public static function getPimcoreObjectClass()
+    {
         return static::$pimcoreClass;
     }
 
     /**
-     * Create new instance of Pimcore Object
+     * Create new instance of Pimcore Object.
      *
      * @throws Exception
+     *
      * @return static
      */
-    public static function create() {
+    public static function create()
+    {
         $pimcoreClass = self::getPimcoreObjectClass();
 
-        if(\Pimcore\Tool::classExists($pimcoreClass)) {
+        if (\Pimcore\Tool::classExists($pimcoreClass)) {
             return new $pimcoreClass();
         }
 
@@ -55,17 +57,19 @@ class Base extends Concrete
     }
 
     /**
-     * returns the class ID of the current object class
+     * returns the class ID of the current object class.
+     *
      * @return int
      */
     public static function classId()
     {
         $v = get_class_vars(self::getPimcoreObjectClass());
-        return $v["o_classId"];
+
+        return $v['o_classId'];
     }
-    
+
     /**
-     * Object to Array
+     * Object to Array.
      * 
      * @return array
      */
@@ -75,7 +79,7 @@ class Base extends Concrete
     }
 
     /**
-     * Admin Element Style
+     * Admin Element Style.
      *
      * @return \Pimcore\Model\Element\AdminStyle
      */
@@ -83,7 +87,7 @@ class Base extends Concrete
     {
         if (!$this->o_elementAdminStyle) {
             $class = get_parent_class(get_called_class());
-            $class .= "\\AdminStyle";
+            $class .= '\\AdminStyle';
 
             if (\Pimcore\Tool::classExists($class)) {
                 $this->o_elementAdminStyle = new $class($this);
@@ -97,19 +101,20 @@ class Base extends Concrete
 
     /**
      * @param array $config
-     * @return mixed
-     * @throws \Exception
      *
+     * @return mixed
+     *
+     * @throws \Exception
      */
     public static function getList($config = array())
     {
         //We need to re-write this method, since pimcore uses the called_class method
-        
+
         $className = self::getPimcoreObjectClass();
 
         if (is_array($config)) {
             if ($className) {
-                $listClass = $className . "\\Listing";
+                $listClass = $className.'\\Listing';
 
                 // check for a mapped class
                 $listClass = \Pimcore\Tool::getModelClassMapping($listClass);
@@ -117,32 +122,33 @@ class Base extends Concrete
                 if (\Pimcore\Tool::classExists($listClass)) {
                     $list = new $listClass();
                     $list->setValues($config);
-                    $list->load();
 
                     return $list;
                 }
             }
         }
 
-        throw new \Exception("Unable to initiate list class - class not found or invalid configuration");
+        throw new \Exception('Unable to initiate list class - class not found or invalid configuration');
     }
 
     /**
      * @param $method
      * @param $arguments
+     *
      * @return mixed|null
+     *
      * @throws \Exception
      */
     public static function __callStatic($method, $arguments)
     {
         $pimcoreClass = self::getPimcoreObjectClass();
 
-        if(get_called_class() === $pimcoreClass) {
+        if (get_called_class() === $pimcoreClass) {
             return parent::__callStatic($method, $arguments);
         }
-        
-        if(!\Pimcore\Tool::classExists($pimcoreClass)) {
-            throw new Exception("Calling to unkown class " . $pimcoreClass);
+
+        if (!\Pimcore\Tool::classExists($pimcoreClass)) {
+            throw new Exception('Calling to unkown class '.$pimcoreClass);
         }
 
         return call_user_func_array(array($pimcoreClass, $method), $arguments);

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Console\Command;
 
 use Pimcore\Console\AbstractCommand;
@@ -28,7 +27,7 @@ use CoreShop\Update;
 class UpdateCommand extends AbstractCommand
 {
     /**
-     * configure command
+     * configure command.
      */
     protected function configure()
     {
@@ -38,7 +37,7 @@ class UpdateCommand extends AbstractCommand
             ->addOption(
                 'list', 'l',
                 InputOption::VALUE_NONE,
-                "List available updates"
+                'List available updates'
             )
             ->addOption(
                 'update', 'u',
@@ -54,39 +53,40 @@ class UpdateCommand extends AbstractCommand
                 InputOption::VALUE_NONE,
                 'Dry-run'
             );
-        ;
     }
 
     /**
-     * execute command
+     * execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @throws \Exception
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dryRun = $input->getOption("dry-run");
+        $dryRun = $input->getOption('dry-run');
         $currentRevision = null;
 
         if ($dryRun) {
-            $this->output->writeln("<info>---------- DRY-RUN ----------</info>");
+            $this->output->writeln('<info>---------- DRY-RUN ----------</info>');
         }
 
-        if ($input->getOption("source-build")) {
-            $currentRevision = $input->getOption("source-build");
+        if ($input->getOption('source-build')) {
+            $currentRevision = $input->getOption('source-build');
         }
 
         Update::$dryRun = $dryRun;
 
         $availableUpdates = Update::getAvailableUpdates($currentRevision);
 
-        if ($input->getOption("list")) {
-            if (count($availableUpdates["releases"])) {
+        if ($input->getOption('list')) {
+            if (count($availableUpdates['releases'])) {
                 $rows = [];
-                foreach ($availableUpdates["releases"] as $release) {
-                    $rows[] = [$release["version"], date("Y-m-d", $release["date"]), $release["id"]];
+                foreach ($availableUpdates['releases'] as $release) {
+                    $rows[] = [$release['version'], date('Y-m-d', $release['date']), $release['id']];
                 }
 
                 $table = new Table($output);
@@ -96,35 +96,35 @@ class UpdateCommand extends AbstractCommand
                 $table->render();
             }
 
-            if (count($availableUpdates["revisions"])) {
+            if (count($availableUpdates['revisions'])) {
                 $latest = count($availableUpdates['revisions']) - 1;
 
-                $this->output->writeln("The latest available build is: <comment>" . $availableUpdates["revisions"][$latest]["number"] . "</comment> (" . date("Y-m-d", $availableUpdates["revisions"][$latest]["timestamp"]) . ")");
+                $this->output->writeln('The latest available build is: <comment>'.$availableUpdates['revisions'][$latest]['number'].'</comment> ('.date('Y-m-d', $availableUpdates['revisions'][$latest]['timestamp']).')');
             }
 
-            if (!count($availableUpdates["releases"]) && !count($availableUpdates["revisions"])) {
-                $this->output->writeln("<info>No updates available</info>");
+            if (!count($availableUpdates['releases']) && !count($availableUpdates['revisions'])) {
+                $this->output->writeln('<info>No updates available</info>');
             }
         }
 
-        if ($input->getOption("update")) {
+        if ($input->getOption('update')) {
             $returnMessages = [];
             $build = null;
-            $updateInfo = trim($input->getOption("update"));
+            $updateInfo = trim($input->getOption('update'));
             if (is_numeric($updateInfo)) {
                 $build = $updateInfo;
             } else {
                 // get build nr. by version number
-                foreach ($availableUpdates["releases"] as $release) {
-                    if ($release["version"] == $updateInfo) {
-                        $build = $release["id"];
+                foreach ($availableUpdates['releases'] as $release) {
+                    if ($release['version'] == $updateInfo) {
+                        $build = $release['id'];
                         break;
                     }
                 }
             }
 
             if (!$build) {
-                $this->writeError("Update with build / version " . $updateInfo . " not found.");
+                $this->writeError('Update with build / version '.$updateInfo.' not found.');
                 exit;
             }
 
@@ -135,7 +135,7 @@ class UpdateCommand extends AbstractCommand
                 return;
             }
 
-            $this->output->writeln("Starting the update process ...");
+            $this->output->writeln('Starting the update process ...');
 
             $packages = Update::getPackages($build, $currentRevision);
 
@@ -143,21 +143,21 @@ class UpdateCommand extends AbstractCommand
             $progress->start();
 
             foreach ($packages['parallel'] as $package) {
-                Update::downloadPackage($package["revision"], $package["url"], $package["file"]);
+                Update::downloadPackage($package['revision'], $package['url'], $package['file']);
                 $progress->advance();
             }
 
             $progress->finish();
 
             $jobs = Update::getJobs($build, $currentRevision);
-            $steps = count($jobs["parallel"]) + count($jobs["procedural"]);
+            $steps = count($jobs['parallel']) + count($jobs['procedural']);
 
             $progress = new ProgressBar($output, $steps);
             $progress->start();
 
-            foreach ($jobs["parallel"] as $job) {
-                if ($job["type"] == "arrange") {
-                    Update::arrangeData($job["revision"], $job["url"], $job["file"]);
+            foreach ($jobs['parallel'] as $job) {
+                if ($job['type'] == 'arrange') {
+                    Update::arrangeData($job['revision'], $job['url'], $job['file']);
                 }
 
                 $progress->advance();
@@ -167,25 +167,25 @@ class UpdateCommand extends AbstractCommand
             Admin::activateMaintenanceMode($maintenanceModeId);
 
             $stoppedByError = false;
-            foreach ($jobs["procedural"] as $job) {
+            foreach ($jobs['procedural'] as $job) {
                 $phpCli = Console::getPhpCli();
 
                 if ($dryRun) {
-                    $job["dry-run"] = true;
+                    $job['dry-run'] = true;
                 }
 
-                $cmd = $phpCli . " " . realpath(PIMCORE_PATH . DIRECTORY_SEPARATOR . "cli" . DIRECTORY_SEPARATOR . "console.php"). " coreshop:internal:update-processor " . escapeshellarg(json_encode($job));
+                $cmd = $phpCli.' '.realpath(PIMCORE_PATH.DIRECTORY_SEPARATOR.'cli'.DIRECTORY_SEPARATOR.'console.php').' coreshop:internal:update-processor '.escapeshellarg(json_encode($job));
                 $return = Console::exec($cmd);
 
                 $return = trim($return);
 
                 $returnData = @json_decode($return, true);
                 if (is_array($returnData)) {
-                    if (trim($returnData["message"])) {
-                        $returnMessages[] = [$job["revision"], strip_tags($returnData["message"])];
+                    if (trim($returnData['message'])) {
+                        $returnMessages[] = [$job['revision'], strip_tags($returnData['message'])];
                     }
 
-                    if (!$returnData["success"]) {
+                    if (!$returnData['success']) {
                         $stoppedByError = true;
                         break;
                     }
@@ -204,10 +204,10 @@ class UpdateCommand extends AbstractCommand
             $this->output->writeln("\n");
 
             if ($stoppedByError) {
-                $this->output->writeln("<error>Update stopped by error! Please check your logs</error>");
-                $this->output->writeln("Last return value was: " . $return);
+                $this->output->writeln('<error>Update stopped by error! Please check your logs</error>');
+                $this->output->writeln('Last return value was: '.$return);
             } else {
-                $this->output->writeln("<info>Update done!</info>");
+                $this->output->writeln('<info>Update done!</info>');
 
                 if (count($returnMessages)) {
                     $table = new Table($output);

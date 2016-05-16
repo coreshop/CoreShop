@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,11 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
 use CoreShop\Model\Wishlist;
 use CoreShop\Controller\Action;
-use Pimcore\Model\Object;
 
 class CoreShop_WishlistController extends Action
 {
@@ -40,7 +37,7 @@ class CoreShop_WishlistController extends Action
 
     public function addAction()
     {
-        $product_id = $this->getParam("product", null);
+        $product_id = $this->getParam('product', null);
         $product = \CoreShop\Model\Product::getById($product_id);
 
         if ($product instanceof \CoreShop\Model\Product && $product->getEnabled() && $product->getAvailableForOrder()) {
@@ -49,49 +46,49 @@ class CoreShop_WishlistController extends Action
             if ($checkAvailability === true) {
                 $this->model->add($product->getId());
 
-                $this->_helper->json(array("success" => true, "wishlist" => $this->model->getWishlist()));
+                $this->_helper->json(array('success' => true, 'wishlist' => $this->model->getWishlist()));
             } else {
                 if ($checkAvailability == 'limit_reached') {
                     $message = $this->view->translate('You reached the limit of products to your wishlist.');
                 } elseif ($checkAvailability == 'already_added') {
                     $message = $this->view->translate('This product is already in your wishlist list.');
                 } else {
-                    $message = 'Error: ' . $checkAvailability;
+                    $message = 'Error: '.$checkAvailability;
                 }
 
-                $this->_helper->json(array("success" => false, "message" => $message));
+                $this->_helper->json(array('success' => false, 'message' => $message));
             }
         }
 
-        $this->_helper->json(array("success" => false, "wishlist" => $this->model->getWishlist()));
+        $this->_helper->json(array('success' => false, 'wishlist' => $this->model->getWishlist()));
     }
 
     public function removeAction()
     {
-        $product_id = $this->getParam("product", null);
+        $product_id = $this->getParam('product', null);
         $product = \CoreShop\Model\Product::getById($product_id);
 
         if ($product instanceof \CoreShop\Model\Product) {
             $this->model->remove($product->getId());
 
-            $this->_helper->json(array("success" => true, "wishlist" => $this->model->getWishlist()));
+            $this->_helper->json(array('success' => true, 'wishlist' => $this->model->getWishlist()));
         }
 
-        $this->_helper->json(array("success" => false, "wishlist" => $this->model->getWishlist()));
+        $this->_helper->json(array('success' => false, 'wishlist' => $this->model->getWishlist()));
     }
 
     public function listAction()
     {
         $this->enableLayout();
 
-        $this->view->headTitle($this->view->translate("Wishlist"));
+        $this->view->headTitle($this->view->translate('Wishlist'));
 
         $productIds = $this->model->getWishlist();
         $products = array();
 
         if (!empty($productIds)) {
             $list = \CoreShop\Model\Product::getList();
-            $list->setCondition("oo_id IN (" . rtrim(str_repeat('?,', count($productIds)), ',').")", $productIds);
+            $list->setCondition('oo_id IN ('.rtrim(str_repeat('?,', count($productIds)), ',').')', $productIds);
 
             $products = $list->getObjects();
         }

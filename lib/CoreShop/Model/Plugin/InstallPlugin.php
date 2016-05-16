@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Plugin;
 
 use CoreShop\Plugin\Install;
@@ -19,14 +18,14 @@ use CoreShop\Plugin\Install;
 interface InstallPlugin
 {
     /**
-     * Install Plugin
+     * Install Plugin.
      *
      * @param Install $installer
      */
     public function install(Install $installer);
 
     /**
-     * Uninstall Plugin
+     * Uninstall Plugin.
      *
      * @param Install $installer
      */

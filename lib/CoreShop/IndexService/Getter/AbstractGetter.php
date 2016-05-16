@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
@@ -19,16 +18,15 @@ use CoreShop\Model\Product;
 
 class AbstractGetter
 {
-
     /**
-     * defined getters
+     * defined getters.
      *
      * @var array
      */
-    protected static $getter = array("Brick", "Classificationstore", "Localizedfield");
+    protected static $getter = array('Brick', 'Classificationstore', 'Localizedfield');
 
     /**
-     * Add Getter Class
+     * Add Getter Class.
      *
      * @param string $getter
      */
@@ -40,7 +38,7 @@ class AbstractGetter
     }
 
     /**
-     * Get all Getter Classes
+     * Get all Getter Classes.
      *
      * @return array
      */
@@ -50,15 +48,17 @@ class AbstractGetter
     }
 
     /**
-     * get value
+     * get value.
      *
      * @param $object
      * @param array $config
+     *
      * @return mixed
+     *
      * @throws UnsupportedException
      */
     public function get(Product $object, $config = null)
     {
-        throw new UnsupportedException("Not implemented in abstract");
+        throw new UnsupportedException('Not implemented in abstract');
     }
 }

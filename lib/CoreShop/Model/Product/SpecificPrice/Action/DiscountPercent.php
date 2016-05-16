@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,15 +11,12 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\SpecificPrice\Action;
 
 use CoreShop\Model\Product;
-use Pimcore\Model;
 
 class DiscountPercent extends AbstractAction
 {
-
     /**
      * @var int
      */
@@ -33,7 +30,7 @@ class DiscountPercent extends AbstractAction
     /**
      * @var string
      */
-    public $type = "discountPercent";
+    public $type = 'discountPercent';
 
     /**
      * @return mixed
@@ -68,10 +65,11 @@ class DiscountPercent extends AbstractAction
     }
 
     /**
-     * Calculate discount
+     * Calculate discount.
      *
-     * @param float $basePrice
+     * @param float   $basePrice
      * @param Product $product
+     *
      * @return float
      */
     public function getDiscount($basePrice, Product $product)
@@ -79,12 +77,12 @@ class DiscountPercent extends AbstractAction
         return $basePrice * ($this->getPercent() / 100);
     }
 
-
     /**
-     * get new price for product
+     * get new price for product.
      *
      * @param Product $product
-     * @return float|boolean $price
+     *
+     * @return float|bool $price
      */
     public function getPrice(Product $product)
     {

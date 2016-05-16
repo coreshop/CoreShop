@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Listing\Dao;
 
 use Pimcore\Model\Listing;
@@ -36,9 +35,10 @@ class AbstractDao extends Listing\Dao\AbstractDao
     protected $modelClass;
 
     /**
-     * Get tableName, either for localized or non-localized data
+     * Get tableName, either for localized or non-localized data.
      *
      * @return string
+     *
      * @throws \Exception
      * @throws \Zend_Exception
      */
@@ -56,8 +56,8 @@ class AbstractDao extends Listing\Dao\AbstractDao
                     }
                 }
 
-                if (!$language && \Zend_Registry::isRegistered("Zend_Locale")) {
-                    $locale = \Zend_Registry::get("Zend_Locale");
+                if (!$language && \Zend_Registry::isRegistered('Zend_Locale')) {
+                    $locale = \Zend_Registry::get('Zend_Locale');
                     if (Tool::isValidLanguage((string) $locale)) {
                         $language = (string) $locale;
                     }
@@ -68,10 +68,10 @@ class AbstractDao extends Listing\Dao\AbstractDao
                 }
 
                 if (!$language) {
-                    throw new \Exception("No valid language/locale set. Use \$list->setLocale() to add a language to the listing, or register a global locale");
+                    throw new \Exception('No valid language/locale set. Use $list->setLocale() to add a language to the listing, or register a global locale');
                 }
 
-                return $this->tableName . "_data_localized_" . $language;
+                return $this->tableName.'_data_localized_'.$language;
             }
         }
 
@@ -79,9 +79,10 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
-     * get select query
+     * get select query.
      *
      * @return \Zend_Db_Select
+     *
      * @throws \Exception
      */
     public function getQuery()
@@ -91,10 +92,10 @@ class AbstractDao extends Listing\Dao\AbstractDao
         $select = $this->db->select();
 
         // create base
-        $field = $this->getTableName() . ".id";
+        $field = $this->getTableName().'.id';
         $select->from(
-            [ $this->getTableName() ], [
-                new \Zend_Db_Expr(sprintf('SQL_CALC_FOUND_ROWS %s as id', $field, 'o_type'))
+            [$this->getTableName()], [
+                new \Zend_Db_Expr(sprintf('SQL_CALC_FOUND_ROWS %s as id', $field, 'o_type')),
             ]
         );
 
@@ -114,7 +115,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
-     * Loads objects from the database
+     * Loads objects from the database.
      *
      * @return Model\AbstractModel[]
      */
@@ -125,7 +126,6 @@ class AbstractDao extends Listing\Dao\AbstractDao
         // load id's
         $list = $this->loadIdList();
 
-
         $objects = array();
         foreach ($list as $o_id) {
             if ($object = $modelClass::getById($o_id)) {
@@ -134,11 +134,12 @@ class AbstractDao extends Listing\Dao\AbstractDao
         }
 
         $this->model->setData($objects);
+
         return $objects;
     }
 
     /**
-     * Loads a list for the specicifies parameters, returns an array of ids
+     * Loads a list for the specicifies parameters, returns an array of ids.
      *
      * @return array
      */
@@ -147,7 +148,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
         try {
             $query = $this->getQuery();
             $objectIds = $this->db->fetchCol($query, $this->model->getConditionVariables());
-            $this->totalCount = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+            $this->totalCount = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
             return $objectIds;
         } catch (\Exception $e) {
@@ -156,10 +157,12 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
-     * Handles Exceptions
+     * Handles Exceptions.
      *
      * @param $e
+     *
      * @return array
+     *
      * @throws
      * @throws \Exception
      */
@@ -167,7 +170,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
     {
 
         // create view if it doesn't exist already // HACK
-        $pdoMySQL = preg_match("/Base table or view not found/", $e->getMessage());
+        $pdoMySQL = preg_match('/Base table or view not found/', $e->getMessage());
         $Mysqli = preg_match("/Table (.*) doesn't exist/", $e->getMessage());
 
         if (($Mysqli || $pdoMySQL) && $this->firstException) {
@@ -189,26 +192,30 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
-     * Get Count
+     * Get Count.
      *
      * @return int
+     *
      * @throws \Exception
      */
     public function getCount()
     {
-        $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->getTableName() . $this->getCondition() . $this->getOffsetLimit(), $this->model->getConditionVariables());
+        $amount = (int) $this->db->fetchOne('SELECT COUNT(*) as amount FROM '.$this->getTableName().$this->getCondition().$this->getOffsetLimit(), $this->model->getConditionVariables());
+
         return $amount;
     }
 
     /**
-     * Get Total Count
+     * Get Total Count.
      *
      * @return int
+     *
      * @throws \Exception
      */
     public function getTotalCount()
     {
-        $amount = (int) $this->db->fetchOne("SELECT COUNT(*) as amount FROM " . $this->getTableName() . $this->getCondition(), $this->model->getConditionVariables());
+        $amount = (int) $this->db->fetchOne('SELECT COUNT(*) as amount FROM '.$this->getTableName().$this->getCondition(), $this->model->getConditionVariables());
+
         return $amount;
     }
 }

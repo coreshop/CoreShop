@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Currency;
 
 use CoreShop\Model\Dao\AbstractDao;
@@ -19,24 +18,25 @@ use CoreShop\Model\Dao\AbstractDao;
 class Dao extends AbstractDao
 {
     /**
-     * Mysql table name
+     * Mysql table name.
      *
      * @var string
      */
     protected $tableName = 'coreshop_currencies';
 
     /**
-     * get Currency by name
+     * get Currency by name.
      *
      * @param null $name
+     *
      * @throws \Exception
      */
     public function getByName($name = null)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE name = ?', $name);
 
-        if (!$data["id"]) {
-            throw new \Exception("Object with the name " . $name . " doesn't exists");
+        if (!$data['id']) {
+            throw new \Exception('Object with the name '.$name." doesn't exists");
         }
 
         $this->assignVariablesToModel($data);

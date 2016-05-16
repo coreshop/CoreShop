@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,25 +11,23 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace Pimcore\Model\Object\ClassDefinition\Data;
 
 use CoreShop\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
 
 class CoreShopPriceRule extends CoreShopSelect
 {
-
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopPriceRule";
+    public $fieldtype = 'coreShopPriceRule';
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
-    public $phpdocType = "CoreShop\\Model\\Cart\\PriceRule";
+    public $phpdocType = 'CoreShop\\Model\\Cart\\PriceRule';
 }

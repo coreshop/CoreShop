@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,23 +11,19 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\Filter;
 
-use CoreShop\Model\AbstractModel;
-use CoreShop\Model\Index;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
 class Helper
 {
-
     /**
-     * Setup Product List
+     * Setup Product List.
      *
      * @param Listing $list
      * @param $params
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Service $filterService
      *
      * @return array()

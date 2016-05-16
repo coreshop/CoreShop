@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\TaxRule;
 
 use CoreShop\Model\Configuration;
@@ -19,7 +18,6 @@ use CoreShop\Model\Country;
 use CoreShop\Model\Plugin\TaxManager;
 use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
-use CoreShop\Model\TaxRuleGroup;
 use CoreShop\Model\User\Address;
 
 class VatManager implements TaxManager
@@ -31,17 +29,18 @@ class VatManager implements TaxManager
 
     /**
      * @param Address $address
-     * @param string $type
+     * @param string  $type
+     *
      * @return bool
      */
     public static function isAvailableForThisAddress(Address $address, $type)
     {
-        if (Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
+        if (Configuration::get('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')) {
             if (empty($address->getVatNumber())) {
                 return false;
             }
 
-            if ($countryId = Configuration::get("SYSTEM.BASE.COUNTRY")) {
+            if ($countryId = Configuration::get('SYSTEM.BASE.COUNTRY')) {
                 if (($country = Country::getById($countryId)) instanceof Country) {
                     if ($country->getId() !== $address->getCountry()->getId()) {
                         return true;
@@ -54,7 +53,7 @@ class VatManager implements TaxManager
     }
 
     /**
-     * Return the tax calculator associated to this address
+     * Return the tax calculator associated to this address.
      *
      * @return TaxCalculator
      */
@@ -64,7 +63,7 @@ class VatManager implements TaxManager
             return $this->tax_calculator;
         }
 
-        $cacheKey = "coreshop_vattax_calculator";
+        $cacheKey = 'coreshop_vattax_calculator';
 
         if (!\Zend_Registry::isRegistered($cacheKey)) {
             $tax = new Tax();

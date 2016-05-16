@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Tax;
 use Pimcore\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_TaxController extends Admin
 {
@@ -25,9 +21,9 @@ class CoreShop_Admin_TaxController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_taxes");
+        $notRestrictedActions = array('list');
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_taxes');
         }
     }
 
@@ -47,29 +43,29 @@ class CoreShop_Admin_TaxController extends Admin
     protected function getTreeNodeConfig(Tax $tax)
     {
         $tmp = array(
-            "id" => $tax->getId(),
-            "text" => $tax->getName(),
-            "elementType" => "tax",
-            "qtipCfg" => array(
-                "title" => "ID: " . $tax->getId()
+            'id' => $tax->getId(),
+            'text' => $tax->getName(),
+            'elementType' => 'tax',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$tax->getId(),
             ),
-            "name" => $tax->getName(),
-            "rate" => $tax->getRate()
+            'name' => $tax->getName(),
+            'rate' => $tax->getRate(),
         );
 
-        $tmp["leaf"] = true;
-        $tmp["iconCls"] = "coreshop_icon_taxes";
-        $tmp["allowChildren"] = false;
+        $tmp['leaf'] = true;
+        $tmp['iconCls'] = 'coreshop_icon_taxes';
+        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $tax = new Tax();
             $tax->setName($name);
@@ -77,51 +73,51 @@ class CoreShop_Admin_TaxController extends Admin
             $tax->setActive(1);
             $tax->save();
 
-            $this->_helper->json(array("success" => true, "data" => $tax));
+            $this->_helper->json(array('success' => true, 'data' => $tax));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $tax = Tax::getById($id);
 
         if ($tax instanceof Tax) {
-            $this->_helper->json(array("success" => true, "data" => $tax->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $tax->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $tax = Tax::getById($id);
 
         if ($data && $tax instanceof Tax) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $tax->setValues($data);
             $tax->save();
 
-            $this->_helper->json(array("success" => true, "data" => $tax));
+            $this->_helper->json(array('success' => true, 'data' => $tax));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $tax = Tax::getById($id);
 
         if ($tax instanceof Tax) {
             $tax->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

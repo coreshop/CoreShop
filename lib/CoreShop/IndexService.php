@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop;
 
 use CoreShop\IndexService\AbstractWorker;
@@ -23,28 +22,28 @@ use Pimcore\Tool as PimTool;
 class IndexService
 {
     /**
-     * possible types of an index
+     * possible types of an index.
      *
      * @var array
      */
-    public static $types = array("mysql");
+    public static $types = array('mysql');
 
     /**
-     * IndexService
+     * IndexService.
      *
      * @var IndexService
      */
     protected static $indexService;
 
     /**
-     * Workers
+     * Workers.
      *
      * @var AbstractWorker[]
      */
     protected $worker;
 
     /**
-     * Add new Index Tpye
+     * Add new Index Tpye.
      *
      * @param $type
      */
@@ -56,7 +55,8 @@ class IndexService
     }
 
     /**
-     * get possible types
+     * get possible types.
+     *
      * @return array
      */
     public static function getTypes()
@@ -65,14 +65,14 @@ class IndexService
     }
 
     /**
-     * Get Index Service Singleton
+     * Get Index Service Singleton.
      *
      * @return IndexService
      */
     public static function getIndexService()
     {
         if (is_null(self::$indexService)) {
-            self::$indexService = new IndexService();
+            self::$indexService = new self();
         }
 
         return self::$indexService;
@@ -87,7 +87,7 @@ class IndexService
         $this->worker = array();
 
         foreach ($indexes as $index) {
-            $class = "\\CoreShop\\IndexService\\" . ucfirst($index->getType());
+            $class = '\\CoreShop\\IndexService\\'.ucfirst($index->getType());
 
             if (PimTool::classExists($class)) {
                 $this->worker[] = new $class($index);
@@ -96,9 +96,10 @@ class IndexService
     }
 
     /**
-     * Get Worker by Name
+     * Get Worker by Name.
      *
      * @param $name
+     *
      * @return AbstractWorker|null
      */
     public function getWorker($name)
@@ -113,7 +114,7 @@ class IndexService
     }
 
     /**
-     * Delete Product From Index
+     * Delete Product From Index.
      *
      * @param Product $product
      */
@@ -125,7 +126,7 @@ class IndexService
     }
 
     /**
-     * Update Product in Index
+     * Update Product in Index.
      *
      * @param Product $product
      */

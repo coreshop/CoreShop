@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 class NumberRange extends AbstractModel
@@ -32,25 +31,15 @@ class NumberRange extends AbstractModel
     public $number;
 
     /**
-     * get NumberRange by id
-     *
-     * @param $id
-     * @return Carrier|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get NumberRange by type
+     * Get NumberRange by type.
      *
      * @param $type
+     *
      * @return NumberRange
      */
     public static function getByType($type)
     {
-        $numberRange = parent::getByField("type", $type);
+        $numberRange = parent::getByField('type', $type);
 
         if (!$numberRange) {
             $numberRange = new self();
@@ -63,9 +52,10 @@ class NumberRange extends AbstractModel
     }
 
     /**
-     * Returns the next number for a type
+     * Returns the next number for a type.
      *
      * @param $type
+     *
      * @return int
      */
     public static function getNextNumberForType($type)
@@ -77,11 +67,11 @@ class NumberRange extends AbstractModel
     }
 
     /**
-     * Increase number for this NumberRange
+     * Increase number for this NumberRange.
      */
     public function increaseNumber()
     {
-        $this->number++;
+        ++$this->number;
         $this->save();
     }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -13,25 +13,22 @@
  */
 namespace CoreShop\Controller\Plugin;
 
-use Pimcore\Tool;
-
 class TemplateRouter extends \Zend_Controller_Plugin_Abstract
 {
-
     /**
-     * Checks if Controller is available in Template and use it
+     * Checks if Controller is available in Template and use it.
      *
      * @param \Zend_Controller_Request_Abstract $request
      */
     public function routeShutdown(\Zend_Controller_Request_Abstract $request)
     {
         $coreShopRequest = clone $request;
-        if ($request->getModuleName() === "CoreShop") {
+        if ($request->getModuleName() === 'CoreShop') {
             $frontController = \Zend_Controller_Front::getInstance();
-            $coreShopRequest->setModuleName("Default");
+            $coreShopRequest->setModuleName('Default');
 
             if ($frontController->getDispatcher()->isDispatchable($coreShopRequest)) {
-                $request->setModuleName("Default");
+                $request->setModuleName('Default');
             }
         }
     }

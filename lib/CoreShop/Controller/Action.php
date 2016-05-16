@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,58 +11,55 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Controller;
 
 use CoreShop\Model\Cart;
 use CoreShop\Plugin;
 use CoreShop\Tool;
-use CoreShop\Model\Currency;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Tool\Session;
 
 class Action extends \Website\Controller\Action
 {
     /**
-     * Cart
+     * Cart.
      *
      * @var Cart
      */
     protected $cart;
 
     /**
-     * Session
+     * Session.
      *
      * @var Session
      */
     protected $session;
 
     /**
-     * Init CoreShop Controller
+     * Init CoreShop Controller.
      */
     public function init()
     {
         parent::init();
 
-
         \Pimcore::getEventManager()->trigger('coreshop.controller.init', $this);
-        
+
         $this->view->setScriptPath(
             array_merge(
                 $this->view->getScriptPaths(),
                 array(
-                    CORESHOP_TEMPLATE_PATH . '/scripts',
-                    CORESHOP_TEMPLATE_PATH . '/scripts/coreshop',
-                    CORESHOP_TEMPLATE_PATH . '/layouts',
-                    PIMCORE_WEBSITE_PATH . '/views/scripts'
+                    CORESHOP_TEMPLATE_PATH.'/scripts',
+                    CORESHOP_TEMPLATE_PATH.'/scripts/coreshop',
+                    CORESHOP_TEMPLATE_PATH.'/layouts',
+                    PIMCORE_WEBSITE_PATH.'/views/scripts',
                 )
             )
         );
 
-        $this->view->addHelperPath(CORESHOP_PATH . '/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
+        $this->view->addHelperPath(CORESHOP_PATH.'/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
 
         $this->session = $this->view->session = Tool::getSession();
-        
+
         $this->view->country = Tool::getCountry();
 
         $this->prepareCart();
@@ -74,7 +71,7 @@ class Action extends \Website\Controller\Action
     }
 
     /**
-     * Prepare Cart
+     * Prepare Cart.
      *
      * If a user is available in session, set the user to the cart
      *

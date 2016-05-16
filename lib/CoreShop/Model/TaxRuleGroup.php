@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,7 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
-use Pimcore\Model\Document;
 
 class TaxRuleGroup extends AbstractModel
 {
@@ -36,61 +31,38 @@ class TaxRuleGroup extends AbstractModel
     public $active;
 
     /**
-     * get Tax by ID
-     *
-     * @param $id
-     * @return TaxRuleGroup|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * get all 
-     *
-     * @return TaxRuleGroup[]
-     */
-    public static function getAll()
-    {
-        $list = new TaxRuleGroup\Listing();
-
-        return $list->getData();
-    }
-
-    /**
-     * Return all TaxRules
+     * Return all TaxRules.
      *
      * @return TaxRule[]
      */
     public function getRules()
     {
         $listing = new TaxRule\Listing();
-        $listing->setCondition("taxRuleGroupId = ?", array($this->getId()));
+        $listing->setCondition('taxRuleGroupId = ?', array($this->getId()));
 
         return $listing->getData();
     }
 
     /**
-     * Return all TaxRules for a Country
+     * Return all TaxRules for a Country.
      *
      * @param Country $country
-     * @param State $state|null
+     * @param State   $state|null
+     *
      * @return TaxRule[]
      */
     public function getForCountryAndState(Country $country, $state)
     {
         $queryParams = array($this->getId(), $country->getId(), 0);
 
-        if($state instanceof State) {
+        if ($state instanceof State) {
             $queryParams[] = intval($state->getId());
-        }
-        else {
+        } else {
             $queryParams[] = 0;
         }
 
         $listing = new TaxRule\Listing();
-        $listing->setCondition("taxRuleGroupId = ? AND countryId = ? AND stateId IN(?, ?)", $queryParams);
+        $listing->setCondition('taxRuleGroupId = ? AND countryId = ? AND stateId IN(?, ?)', $queryParams);
 
         return $listing->getData();
     }
@@ -128,7 +100,7 @@ class TaxRuleGroup extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getActive()
     {
@@ -136,7 +108,7 @@ class TaxRuleGroup extends AbstractModel
     }
 
     /**
-     * @param boolean $active
+     * @param bool $active
      */
     public function setActive($active)
     {

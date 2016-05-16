@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,29 +11,25 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\Filter;
 
 use CoreShop\Model\AbstractModel;
-use CoreShop\Model\Index;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
 /**
- * Class Service
- * @package CoreShop\Model\Product\Filter
+ * Class Service.
  *
  * @todo: Make override able
  */
 class Service extends AbstractModel
 {
-
-    const EMPTY_STRING = "##EMPTY##";
+    const EMPTY_STRING = '##EMPTY##';
 
     /**
-     * @param Filter $filterObject
+     * @param Filter  $filterObject
      * @param Listing $list
-     * @param array $params
+     * @param array   $params
      *
      * @return array $currentFilter
      */

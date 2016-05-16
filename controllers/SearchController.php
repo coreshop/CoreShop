@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,30 +11,29 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 use CoreShop\Controller\Action;
 
 class CoreShop_SearchController extends Action
 {
     public function searchAction()
     {
-        $text = $this->view->searchText = $this->getParam("text");
-        $page = $this->getParam("page", 1);
-        $itemsPerPage = $this->getParam("perPage", 10);
+        $text = $this->view->searchText = $this->getParam('text');
+        $page = $this->getParam('page', 1);
+        $itemsPerPage = $this->getParam('perPage', 10);
 
         $query = array(
-            "name LIKE ?",
-            "description LIKE ?",
-            "shortDescription LIKE ?",
-            "metaTitle LIKE ?",
-            "metaDescription LIKE ?"
+            'name LIKE ?',
+            'description LIKE ?',
+            'shortDescription LIKE ?',
+            'metaTitle LIKE ?',
+            'metaDescription LIKE ?',
         );
         $queryParams = array(
-            '%' . $text . '%',
-            '%' . $text . '%',
-            '%' . $text . '%',
-            '%' . $text . '%',
-            '%' . $text . '%'
+            '%'.$text.'%',
+            '%'.$text.'%',
+            '%'.$text.'%',
+            '%'.$text.'%',
+            '%'.$text.'%',
         );
 
         $list = \CoreShop\Model\Product::getList();

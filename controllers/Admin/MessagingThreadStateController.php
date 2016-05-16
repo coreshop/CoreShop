@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Messaging\Thread\State;
 use Pimcore\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_MessagingThreadStateController extends Admin
 {
@@ -25,10 +21,10 @@ class CoreShop_Admin_MessagingThreadStateController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
+        $notRestrictedActions = array('list');
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_messaging_thread_state");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_messaging_thread_state');
         }
     }
 
@@ -48,81 +44,81 @@ class CoreShop_Admin_MessagingThreadStateController extends Admin
     protected function getTreeNodeConfig(State $state)
     {
         $tmp = array(
-            "id" => $state->getId(),
-            "text" => $state->getName(),
-            "elementType" => "group",
-            "qtipCfg" => array(
-                "title" => "ID: " . $state->getId()
+            'id' => $state->getId(),
+            'text' => $state->getName(),
+            'elementType' => 'group',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$state->getId(),
             ),
-            "name" => $state->getName(),
-            "color" => $state->getColor(),
-            "count" => $state->getThreadsList()->count()
+            'name' => $state->getName(),
+            'color' => $state->getColor(),
+            'count' => $state->getThreadsList()->count(),
         );
 
-        $tmp["leaf"] = true;
-        $tmp["iconCls"] = "coreshop_icon_messaging_state";
-        $tmp["allowChildren"] = false;
+        $tmp['leaf'] = true;
+        $tmp['iconCls'] = 'coreshop_icon_messaging_state';
+        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $state = new State();
             $state->setFinished(false);
             $state->setName($name);
             $state->save();
 
-            $this->_helper->json(array("success" => true, "data" => $state));
+            $this->_helper->json(array('success' => true, 'data' => $state));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $state = State::getById($id);
 
         if ($state instanceof State) {
-            $this->_helper->json(array("success" => true, "data" => $state->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $state->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $state = State::getById($id);
 
         if ($data && $state instanceof State) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $state->setValues($data);
             $state->save();
 
-            $this->_helper->json(array("success" => true, "data" => $state->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $state->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $state = State::getById($id);
 
         if ($state instanceof State) {
             $state->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

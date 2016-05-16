@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,11 +11,9 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Console\Command;
 
 use CoreShop\Exception;
-use CoreShop\Model\Configuration;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Currency\ExchangeRates;
 use CoreShop\Tool;
@@ -27,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateExchangeRatesCommand extends AbstractCommand
 {
     /**
-     * configure command
+     * configure command.
      */
     protected function configure()
     {
@@ -44,60 +42,59 @@ class UpdateExchangeRatesCommand extends AbstractCommand
                 InputOption::VALUE_OPTIONAL,
                 'Currency which should be fetched. '
             );
-        ;
     }
 
     /**
-     * execute command
+     * execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @throws Exception
      *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $provider = $input->getOption("provider");
-        $currencyId = $input->getOption("currency");
+        $provider = $input->getOption('provider');
+        $currencyId = $input->getOption('currency');
         $currency = null;
         $baseCurrency = Tool::getBaseCurrency();
 
-        if(!$provider) {
+        if (!$provider) {
             $provider = ExchangeRates::getSystemProvider();
         }
-        
-        if(is_null($provider) || !ExchangeRates::providerExists($provider)) {
+
+        if (is_null($provider) || !ExchangeRates::providerExists($provider)) {
             throw new Exception("Provider $provider not found");
         }
 
-        if($currencyId) {
+        if ($currencyId) {
             $currency = Currency::getById($currencyId);
 
-            if(!$currency instanceof Currency) {
+            if (!$currency instanceof Currency) {
                 throw new Exception("Currency $currencyId not found");
             }
         }
-        
-        if($currency instanceof Currency) {
+
+        if ($currency instanceof Currency) {
             $currencies = array($currency);
-        }
-        else {
+        } else {
             //Do all activated currencies
             $currencies = Currency::getAvailable();
         }
 
-        foreach($currencies as $currency) {
-            if($currency->getId() === $baseCurrency->getId())
+        foreach ($currencies as $currency) {
+            if ($currency->getId() === $baseCurrency->getId()) {
                 continue;
+            }
 
             try {
                 $rate = ExchangeRates::updateExchangeRateForCurrency($provider, $currency);
 
-                $output->writeLn("Update Exchange Rate for Currency " . $currency->getName() . " (".$currency->getIsoCode().") to: " . $rate);
-            }
-            catch(Exception $ex) {
-                $output->writeln('<error>' . $ex->getMessage() . '</error>');
+                $output->writeLn('Update Exchange Rate for Currency '.$currency->getName().' ('.$currency->getIsoCode().') to: '.$rate);
+            } catch (Exception $ex) {
+                $output->writeln('<error>'.$ex->getMessage().'</error>');
             }
         }
     }

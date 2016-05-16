@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
@@ -22,8 +21,7 @@ class Range extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "range";
-
+    public $type = 'range';
 
     /**
      * @var mixed
@@ -51,7 +49,6 @@ class Range extends AbstractCondition
         return $this->preSelectMin;
     }
 
-
     /**
      * @param mixed $preSelectMax
      */
@@ -69,11 +66,12 @@ class Range extends AbstractCondition
     }
 
     /**
-     * render HTML for filter
+     * render HTML for filter.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
+     *
      * @return mixed
      */
     public function render(Filter $filter, Listing $list, $currentFilter)
@@ -82,28 +80,29 @@ class Range extends AbstractCondition
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
         return $this->getView()->partial($script, array(
-            "label" => $this->getLabel(),
-            "currentValueMin" => $currentFilter[$this->getField() . '-min'],
-            "currentValueMax" => $currentFilter[$this->getField() . '-max'],
-            "values" => array_values($rawValues),
-            "fieldname" => $this->getField()
+            'label' => $this->getLabel(),
+            'currentValueMin' => $currentFilter[$this->getField().'-min'],
+            'currentValueMax' => $currentFilter[$this->getField().'-max'],
+            'values' => array_values($rawValues),
+            'fieldname' => $this->getField(),
         ));
     }
 
     /**
-     * add Condition to Product list
+     * add Condition to Product list.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
+     *
      * @return array $currentFilter
      */
     public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
     {
-        $valueMin = $params[$this->getField() . '-min'];
-        $valueMax = $params[$this->getField() . '-max'];
+        $valueMin = $params[$this->getField().'-min'];
+        $valueMax = $params[$this->getField().'-max'];
 
         if (empty($valueMax)) {
             $valueMax = $this->getPreSelect();
@@ -120,14 +119,14 @@ class Range extends AbstractCondition
             $valueMin = null;
         }
 
-        $currentFilter[$this->getField() . "-min"] = $valueMin;
-        $currentFilter[$this->getField() . "-max"] = $valueMax;
+        $currentFilter[$this->getField().'-min'] = $valueMin;
+        $currentFilter[$this->getField().'-max'] = $valueMax;
 
         if (!empty($valueMin) && !empty($valueMax)) {
             if ($isPrecondition) {
-                $list->addCondition("TRIM(`" . $this->getField() . "`) >= " . $valueMin . " AND TRIM(`" . $this->getField() . "`) <= " . $valueMax, "PRECONDITION_" . $this->getField());
+                $list->addCondition('TRIM(`'.$this->getField().'`) >= '.$valueMin.' AND TRIM(`'.$this->getField().'`) <= '.$valueMax, 'PRECONDITION_'.$this->getField());
             } else {
-                $list->addCondition("TRIM(`" . $this->getField() . "`) >= " . $valueMin . " AND TRIM(`" . $this->getField() . "`) <= " . $valueMax, $this->getField());
+                $list->addCondition('TRIM(`'.$this->getField().'`) >= '.$valueMin.' AND TRIM(`'.$this->getField().'`) <= '.$valueMax, $this->getField());
             }
         }
 

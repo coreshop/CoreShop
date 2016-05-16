@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,48 +11,49 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop;
 
 use CoreShop\Plugin\Install;
 use Pimcore\Cache;
 use Pimcore\Db;
 use Pimcore\File;
-use Pimcore\Tool;
 
 class Update
 {
     /**
-     * Temp Table Name
+     * Temp Table Name.
      *
      * @var string
      */
-    public static $tmpTable = "_coreshop_tmp_update";
+    public static $tmpTable = '_coreshop_tmp_update';
 
     /**
-     * Github Repo
+     * Github Repo.
      *
      * @var string
      */
-    public static $buildServerInfo = "http://update.coreshop.org/builder/web/build/info";
+    public static $buildServerInfo = 'http://update.coreshop.org/builder/web/build/info';
 
     /**
-     * Github Repo
+     * Github Repo.
      *
      * @var string
      */
-    public static $buildServerData = "http://update.coreshop.org/builder/web/builds";
+    public static $buildServerData = 'http://update.coreshop.org/builder/web/builds';
 
     /**
-     * Dry run
+     * Dry run.
      *
      * @var bool
      */
     public static $dryRun = false;
 
-
     /**
-     *  Check for Updates
+     *  Check for Updates.
+     *
+     * @param $currentBuild
+     *
+     * @return array
      */
     public static function getAvailableUpdates($currentBuild = null)
     {
@@ -62,11 +63,11 @@ class Update
 
         $newerBuilds = self::getNewerBuilds($currentBuild);
 
-        return array("revisions" => $newerBuilds, "releases" => array());
+        return array('revisions' => $newerBuilds, 'releases' => array());
     }
 
     /**
-     * Check if CoreShop Path is writeable
+     * Check if CoreShop Path is writeable.
      *
      * @return bool
      */
@@ -76,10 +77,10 @@ class Update
             return true;
         }
         // check permissions
-        $files = rscandir(CORESHOP_PATH . "/");
+        $files = rscandir(CORESHOP_PATH.'/');
 
         foreach ($files as $file) {
-            if (strpos($file, ".git") === false) {
+            if (strpos($file, '.git') === false) {
                 if (!is_writable($file)) {
                     return false;
                 }
@@ -90,10 +91,11 @@ class Update
     }
 
     /**
-     * get jobs to build
+     * get jobs to build.
      *
      * @param $toBuild
      * @param $currentBuild
+     *
      * @return array
      */
     public static function getPackages($toBuild, $currentBuild = null)
@@ -107,27 +109,27 @@ class Update
         $jobs = array();
 
         foreach ($builds as $build) {
-            $buildNumber = (string)$build['number'];
-            $buildPackage = self::$buildServerData . "/".  $buildNumber . ".zip";
+            $buildNumber = (string) $build['number'];
+            $buildPackage = self::$buildServerData.'/'.$buildNumber.'.zip';
 
             //@fixme: check if package is available!
-            $jobs["parallel"][] = array(
-                "type" => "download",
-                "revision" => $buildNumber,
-                "file" => "file",
-                "url" => $buildPackage
+            $jobs['parallel'][] = array(
+                'type' => 'download',
+                'revision' => $buildNumber,
+                'file' => 'file',
+                'url' => $buildPackage,
             );
-
         }
 
         return $jobs;
     }
 
     /**
-     * get jobs to build
+     * get jobs to build.
      *
      * @param $toBuild
      * @param $currentBuild
+     *
      * @return array
      */
     public static function getJobs($toBuild, $currentBuild = null)
@@ -137,10 +139,10 @@ class Update
         }
 
         $db = Db::get();
-        $db->query("CREATE TABLE IF NOT EXISTS `" . self::$tmpTable . "` (
+        $db->query('CREATE TABLE IF NOT EXISTS `'.self::$tmpTable.'` (
           `revision` int(11) NULL DEFAULT NULL,
           `path` varchar(255) NULL DEFAULT NULL
-        );");
+        );');
 
         $builds = self::getNewerBuilds($currentBuild, $toBuild);
 
@@ -148,85 +150,84 @@ class Update
         $revisions = array();
 
         foreach ($builds as $build) {
-            $buildNumber = (string)$build['number'];
+            $buildNumber = (string) $build['number'];
 
             $changedFiles = self::getChangedFilesForBuild($build['number']);
-            $preUpdateScript = self::getScriptForBuild($build['number'], "preupdate");
-            $postUpdateScript = self::getScriptForBuild($build['number'], "postupdate");
+            $preUpdateScript = self::getScriptForBuild($build['number'], 'preupdate');
+            $postUpdateScript = self::getScriptForBuild($build['number'], 'postupdate');
 
             foreach ($changedFiles as $download) {
-
-                if( empty( $download ) ) {
+                if (empty($download)) {
                     continue;
                 }
 
-                $jobs["parallel"][] = array(
-                    "type" => "arrange",
-                    "revision" => $buildNumber,
-                    "file" => "file",
-                    "url" => $download . ".build"
+                $jobs['parallel'][] = array(
+                    'type' => 'arrange',
+                    'revision' => $buildNumber,
+                    'file' => 'file',
+                    'url' => $download.'.build',
                 );
 
-                if (strpos($download, "install/class-") === 0) {
-                    if (!is_array($updateScripts[$buildNumber]["installClass"])) {
-                        $updateScripts[$buildNumber]["installClass"] = array();
+                if (strpos($download, 'install/class-') === 0) {
+                    if (!is_array($updateScripts[$buildNumber]['installClass'])) {
+                        $updateScripts[$buildNumber]['installClass'] = array();
                     }
 
-                    $updateScripts[$buildNumber]["installClass"][] = array(
-                        "type" => "installClass",
-                        "revision" => $buildNumber,
-                        "class" => str_replace(".json", "", str_replace("install/class-", "", $download))
+                    $updateScripts[$buildNumber]['installClass'][] = array(
+                        'type' => 'installClass',
+                        'revision' => $buildNumber,
+                        'class' => str_replace('.json', '', str_replace('install/class-', '', $download)),
                     );
                 }
 
-                if (strpos($download, "install/translations/admin.csv") === 0) {
-                    $updateScripts[$buildNumber]["importTranslation"] = array(
-                        "type" => "importTranslations",
-                        "revision" => $buildNumber
+                if (strpos($download, 'install/translations/admin.csv') === 0) {
+                    $updateScripts[$buildNumber]['importTranslation'] = array(
+                        'type' => 'importTranslations',
+                        'revision' => $buildNumber,
                     );
                 }
 
-                $revisions[] = (int)$buildNumber;
+                $revisions[] = (int) $buildNumber;
             }
 
             if ($preUpdateScript) {
-                $updateScripts[$buildNumber]["preupdate"] = array(
-                    "type" => "preupdate",
-                    "revision" => $buildNumber
+                $updateScripts[$buildNumber]['preupdate'] = array(
+                    'type' => 'preupdate',
+                    'revision' => $buildNumber,
                 );
 
-                $jobs["parallel"][] = array(
-                    "type" => "arrange",
-                    "revision" => $buildNumber,
-                    "file" => "script",
-                    "url" => "preupdate.php"
+                $jobs['parallel'][] = array(
+                    'type' => 'arrange',
+                    'revision' => $buildNumber,
+                    'file' => 'script',
+                    'url' => 'preupdate.php',
                 );
 
-                $revisions[] = (int)$buildNumber;
+                $revisions[] = (int) $buildNumber;
             }
 
             if ($postUpdateScript) {
-                $updateScripts[$buildNumber]["postupdate"] = array(
-                    "type" => "postupdate",
-                    "revision" => $buildNumber
+                $updateScripts[$buildNumber]['postupdate'] = array(
+                    'type' => 'postupdate',
+                    'revision' => $buildNumber,
                 );
 
-                $jobs["parallel"][] = array(
-                    "type" => "arrange",
-                    "revision" => $buildNumber,
-                    "file" => "script",
-                    "url" => "postupdate.php"
+                $jobs['parallel'][] = array(
+                    'type' => 'arrange',
+                    'revision' => $buildNumber,
+                    'file' => 'script',
+                    'url' => 'postupdate.php',
                 );
 
-                $revisions[] = (int)$buildNumber;
+                $revisions[] = (int) $buildNumber;
             }
         }
 
         $revisions = array_unique($revisions);
 
         foreach ($revisions as $revision) {
-            if ($updateScripts[$revision]["preupdate"]) {
-                $jobs["procedural"][] = $updateScripts[$revision]["preupdate"];
+            if ($updateScripts[$revision]['preupdate']) {
+                $jobs['procedural'][] = $updateScripts[$revision]['preupdate'];
             }
 
             $deletedFiles = self::getDeletedFilesForBuild($revision);
@@ -235,52 +236,52 @@ class Update
                 foreach ($deletedFiles as $toDelete) {
                     if ($toDelete) {
                         $jobs['procedural'][] = array(
-                            "type" => "deleteFile",
-                            "url" => $toDelete
+                            'type' => 'deleteFile',
+                            'url' => $toDelete,
                         );
                     }
                 }
             }
 
-            $jobs["procedural"][] = array(
-                "type" => "files",
-                "revision" => (string)$revision
+            $jobs['procedural'][] = array(
+                'type' => 'files',
+                'revision' => (string) $revision,
             );
 
-            if (is_array($updateScripts[$revision]["installClass"])) {
-                foreach ($updateScripts[$revision]["installClass"] as $installClass) {
-                    $jobs["procedural"][] = $installClass;
+            if (is_array($updateScripts[$revision]['installClass'])) {
+                foreach ($updateScripts[$revision]['installClass'] as $installClass) {
+                    $jobs['procedural'][] = $installClass;
                 }
             }
 
-            if ($updateScripts[$revision]["importTranslation"]) {
-                $jobs["procedural"][] = $updateScripts[$revision]["importTranslation"];
+            if ($updateScripts[$revision]['importTranslation']) {
+                $jobs['procedural'][] = $updateScripts[$revision]['importTranslation'];
             }
 
-            if ($updateScripts[$revision]["postupdate"]) {
-                $jobs["procedural"][] = $updateScripts[$revision]["postupdate"];
+            if ($updateScripts[$revision]['postupdate']) {
+                $jobs['procedural'][] = $updateScripts[$revision]['postupdate'];
             }
         }
 
-        $jobs["procedural"][] = array(
-            "type" => "clearcache"
+        $jobs['procedural'][] = array(
+            'type' => 'clearcache',
         );
 
-        $jobs["procedural"][] = array(
-            "type" => "cleanup"
+        $jobs['procedural'][] = array(
+            'type' => 'cleanup',
         );
 
         return $jobs;
     }
 
     /**
-     * Delete file
+     * Delete file.
      *
      * @param $file
      */
     public static function deleteData($file)
     {
-        $file = CORESHOP_PATH . "/" . $file;
+        $file = CORESHOP_PATH.'/'.$file;
 
         if (file_exists($file)) {
             unlink($file);
@@ -295,24 +296,24 @@ class Update
      */
     public static function downloadPackage($revision, $url)
     {
-        $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision;
+        $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update/'.$revision;
 
         if (!is_dir($downloadDir)) {
             File::mkdir($downloadDir);
         }
 
-        $zipFile = $downloadDir . basename($url);
+        $zipFile = $downloadDir.basename($url);
 
         try {
             $zipResource = fopen($zipFile, 'w');
-        } catch(\Exception $e) {
-            throw new \Exception("Error while downloading package: " . $e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error while downloading package: '.$e->getMessage());
         }
 
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15'));
 
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -326,29 +327,23 @@ class Update
 
         $content = curl_exec($ch);
 
-        if ($content !== false)
-        {
-            $zip = new \ZipArchive;
+        if ($content !== false) {
+            $zip = new \ZipArchive();
 
-            if ($zip->open($zipFile) === TRUE)
-            {
+            if ($zip->open($zipFile) === true) {
                 $zip->extractTo($downloadDir);
                 $zip->close();
 
                 //delete Zip.
                 unlink($zipFile);
+            } else {
+                throw new \Exception('Error while extracting package: '.$zipFile);
             }
-            else
-            {
-                throw new \Exception("Error while extracting package: " . $zipFile);
-            }
-        } else
-        {
-            throw new \Exception("Error while downloading package: " . curl_error($ch));
+        } else {
+            throw new \Exception('Error while downloading package: '.curl_error($ch));
         }
 
         curl_close($ch);
-
     }
 
     /**
@@ -363,51 +358,48 @@ class Update
     {
         $db = Db::get();
 
-        $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update";
+        $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update';
         $baseDir = $downloadDir;
 
-        if ($fileType === "file") {
+        if ($fileType === 'file') {
             $baseDir .= "/$revision/files/";
-        } elseif ($fileType === "script") {
+        } elseif ($fileType === 'script') {
             $baseDir .= "/$revision/scripts/";
         }
 
-        if (file_exists( $baseDir . $url)) {
-
-            if ($fileType == "file") {
+        if (file_exists($baseDir.$url)) {
+            if ($fileType == 'file') {
                 $db->insert(self::$tmpTable, array(
-                    "revision" => $revision,
-                    "path" => $url
+                    'revision' => $revision,
+                    'path' => $url,
                 ));
             }
         } else {
-
-            throw new \Exception("Install file (ref " . $revision . ") not found: " . $url);
+            throw new \Exception('Install file (ref '.$revision.') not found: '.$url);
         }
-
     }
 
     /**
-     * install data
+     * install data.
      *
      * @param $revision
      */
     public static function installData($revision)
     {
         $db = Db::get();
-        $files = $db->fetchAll("SELECT * FROM `" . self::$tmpTable . "` WHERE revision = ?", $revision);
+        $files = $db->fetchAll('SELECT * FROM `'.self::$tmpTable.'` WHERE revision = ?', $revision);
 
         foreach ($files as $file) {
             $path = pathinfo($file['path']);
 
             if (!self::$dryRun) {
-                if (!is_dir(CORESHOP_PATH . "/" . $path["dirname"])) {
-                    File::mkdir(CORESHOP_PATH . "/" . $path["dirname"]);
+                if (!is_dir(CORESHOP_PATH.'/'.$path['dirname'])) {
+                    File::mkdir(CORESHOP_PATH.'/'.$path['dirname']);
                 }
             }
 
-            $srcFile = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision . "/files/" . $file['path'];
-            $destFile = CORESHOP_PATH . "/" . substr($file["path"], 0, -1 * strlen(".build"));
+            $srcFile = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update/'.$revision.'/files/'.$file['path'];
+            $destFile = CORESHOP_PATH.'/'.substr($file['path'], 0, -1 * strlen('.build'));
 
             if (!self::$dryRun) {
                 copy($srcFile, $destFile);
@@ -416,19 +408,20 @@ class Update
     }
 
     /**
-     * execute script
+     * execute script.
      *
      * @param $revision
      * @param $type
+     *
      * @return array
      */
     public static function executeScript($revision, $type)
     {
-        $script = PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $revision . "/scripts/" . $type . ".php";
-        $outputMessage = "";
+        $script = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update/'.$revision.'/scripts/'.$type.'.php';
+        $outputMessage = '';
 
         $maxExecutionTime = 900;
-        @ini_set("max_execution_time", $maxExecutionTime);
+        @ini_set('max_execution_time', $maxExecutionTime);
         set_time_limit($maxExecutionTime);
 
         Cache::disable();
@@ -437,7 +430,7 @@ class Update
             ob_start();
             try {
                 if (!self::$dryRun) {
-                    include($script);
+                    include $script;
                 }
             } catch (\Exception $e) {
                 \Logger::error($e);
@@ -446,16 +439,17 @@ class Update
         }
 
         return array(
-            "message" => $outputMessage,
-            "success" => true
+            'message' => $outputMessage,
+            'success' => true,
         );
     }
 
     /**
-     * install class
+     * install class.
      *
      * @param $class
-     * @return boolean
+     *
+     * @return bool
      */
     public static function installClass($class)
     {
@@ -465,48 +459,50 @@ class Update
         }
 
         return array(
-            "message" => "Installed Class " . $class,
-            "success" => true
+            'message' => 'Installed Class '.$class,
+            'success' => true,
         );
     }
 
     /**
-     * make some cleanup
+     * make some cleanup.
      */
     public static function cleanup()
     {
 
         // remove database tmp table
         $db = Db::get();
-        $db->query("DROP TABLE IF EXISTS `" . self::$tmpTable . "`");
+        $db->query('DROP TABLE IF EXISTS `'.self::$tmpTable.'`');
 
         //delete tmp data
-        recursiveDelete(PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update", true);
+        recursiveDelete(PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update', true);
     }
 
     /**
-     * get scripts for build
+     * get scripts for build.
      *
      * @param $build
+     *
      * @return null|string
      */
     public static function getScriptForBuild($build, $name)
     {
         try {
-            $updateScript = @file_get_contents(PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/" . $build . "/scripts/" . $name . ".php");
+            $updateScript = @file_get_contents(PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update/'.$build.'/scripts/'.$name.'.php');
 
             if ($updateScript) {
                 return $updateScript;
             }
         } catch (\Exception $ex) {
-            return null;
+            return;
         }
     }
 
     /**
-     * get changed files for build
+     * get changed files for build.
      *
      * @param $build
+     *
      * @return array|null
      */
     public static function getChangedFilesForBuild($build)
@@ -518,14 +514,15 @@ class Update
                 return explode(PHP_EOL, $changedFiles);
             }
         } catch (\Exception $ex) {
-            return null;
+            return;
         }
     }
 
     /**
-     * get deleted files for build
+     * get deleted files for build.
      *
      * @param $build
+     *
      * @return array|null
      */
     public static function getDeletedFilesForBuild($build)
@@ -537,15 +534,16 @@ class Update
                 return explode(PHP_EOL, $changedFiles);
             }
         } catch (\Exception $ex) {
-            return null;
+            return;
         }
     }
 
     /**
-     * get newer builds
+     * get newer builds.
      *
      * @param null $currentBuild
      * @param null $to
+     *
      * @return array|bool
      */
     public static function getNewerBuilds($currentBuild = null, $to = null)
@@ -560,7 +558,7 @@ class Update
             $pluginVersion = intval($currentBuild);
             $newerBuilds = array();
 
-            if (array_key_exists("builds", $builds)) {
+            if (array_key_exists('builds', $builds)) {
                 foreach ($builds['builds'] as $build) {
                     if ($build['number'] > $pluginVersion) {
                         if (!is_null($to)) {
@@ -574,36 +572,38 @@ class Update
                 }
             }
 
-            return ($newerBuilds);
+            return $newerBuilds;
         }
 
         return false;
     }
 
     /**
-     * get changed files for build
+     * get changed files for build.
      *
      * @param $build
+     *
      * @return string
      */
     public static function getChangedFilesFileForBuild($build)
     {
-        return PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/$build/changedFiles.txt";
+        return PIMCORE_SYSTEM_TEMP_DIRECTORY."/coreshop_update/$build/changedFiles.txt";
     }
 
     /**
-     * get deleted files for build
+     * get deleted files for build.
      *
      * @param $build
+     *
      * @return string
      */
     public static function getDeletedFilesFileForBuild($build)
     {
-        return PIMCORE_SYSTEM_TEMP_DIRECTORY . "/coreshop_update/$build/deletedFiles.txt";
+        return PIMCORE_SYSTEM_TEMP_DIRECTORY."/coreshop_update/$build/deletedFiles.txt";
     }
 
     /**
-     * Get Build File from Repo
+     * Get Build File from Repo.
      *
      * @return null|array
      */
@@ -618,8 +618,7 @@ class Update
                 return $builds;
             }
         } catch (\Exception $ex) {
-            return null;
+            return;
         }
     }
-
 }

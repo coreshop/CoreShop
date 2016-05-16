@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,8 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-
 namespace CoreShop\Model\Product;
 
 use CoreShop\Model\Configuration;
@@ -26,6 +24,7 @@ class CalculatedTax
     /**
      * @param $object Concrete
      * @param $context \Pimcore\Model\Object\Data\CalculatedValue
+     *
      * @return string
      */
     public static function compute($object, $context)
@@ -34,7 +33,7 @@ class CalculatedTax
             $price = $object->getRetailPrice();
 
             $address = Address::create();
-            $address->setCountry(Country::getById(Configuration::get("SYSTEM.BASE.COUNTRY")));
+            $address->setCountry(Country::getById(Configuration::get('SYSTEM.BASE.COUNTRY')));
 
             $calculator = $object->getTaxCalculator($address);
 

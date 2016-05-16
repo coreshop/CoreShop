@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,13 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
-use CoreShop\Model\Order;
 use CoreShop\Model\Order\State;
 use Pimcore\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_OrderstatesController extends Admin
 {
@@ -26,9 +21,9 @@ class CoreShop_Admin_OrderstatesController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_orderStates");
+        $notRestrictedActions = array('list');
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_orderStates');
         }
     }
 
@@ -48,29 +43,29 @@ class CoreShop_Admin_OrderstatesController extends Admin
     protected function getTreeNodeConfig($orderState)
     {
         $tmp = array(
-            "id" => $orderState->getId(),
-            "text" => $orderState->getName(),
-            "elementType" => "orderstate",
-            "qtipCfg" => array(
-                "title" => "ID: " . $orderState->getId()
+            'id' => $orderState->getId(),
+            'text' => $orderState->getName(),
+            'elementType' => 'orderstate',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$orderState->getId(),
             ),
-            "name" => $orderState->getName(),
-            "color" => $orderState->getColor()
+            'name' => $orderState->getName(),
+            'color' => $orderState->getColor(),
         );
 
-        $tmp["leaf"] = true;
-        $tmp["iconCls"] = "coreshop_icon_order_states";
-        $tmp["allowChildren"] = false;
+        $tmp['leaf'] = true;
+        $tmp['iconCls'] = 'coreshop_icon_order_states';
+        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $orderState = new State();
             $orderState->setName($name);
@@ -81,51 +76,51 @@ class CoreShop_Admin_OrderstatesController extends Admin
             $orderState->setInvoice(0);
             $orderState->save();
 
-            $this->_helper->json(array("success" => true, "data" => $orderState));
+            $this->_helper->json(array('success' => true, 'data' => $orderState));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $orderState = State::getById($id);
 
         if ($orderState instanceof State) {
-            $this->_helper->json(array("success" => true, "data" => $orderState->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $orderState->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $oderState = State::getById($id);
 
         if ($data && $oderState instanceof State) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $oderState->setValues($data);
             $oderState->save();
 
-            $this->_helper->json(array("success" => true, "data" => $oderState->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $oderState->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $oderState = State::getById($id);
 
         if ($oderState instanceof State) {
             $oderState->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

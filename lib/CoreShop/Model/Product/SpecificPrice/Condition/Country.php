@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\SpecificPrice\Condition;
 
 use CoreShop\Model;
@@ -20,7 +19,6 @@ use CoreShop\Tool;
 
 class Country extends AbstractCondition
 {
-
     /**
      * @var int
      */
@@ -29,10 +27,10 @@ class Country extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "country";
+    public $type = 'country';
 
     /**
-     * @return int
+     * @return CountryModel
      */
     public function getCountry()
     {
@@ -52,11 +50,12 @@ class Country extends AbstractCondition
     }
 
     /**
-     * Check if Product is Valid for Condition
+     * Check if Product is Valid for Condition.
      *
-     * @param Model\Product $product
+     * @param Model\Product               $product
      * @param Model\Product\SpecificPrice $specificPrice
-     * @return boolean
+     *
+     * @return bool
      */
     public function checkCondition(Model\Product $product, Model\Product\SpecificPrice $specificPrice)
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Base;
@@ -21,21 +20,22 @@ use Pimcore\Model\Object;
 class Payment extends Base
 {
     /**
-     * Pimcore Object Class
+     * Pimcore Object Class.
      *
      * @var string
      */
-    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopPayment";
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopPayment';
 
     /**
-     * Return Payment by transaction identifier
+     * Return Payment by transaction identifier.
      *
      * @param $transactionIdentification
+     *
      * @return bool|Payment
      */
     public static function findByTransactionIdentifier($transactionIdentification)
     {
-        $list = Object\CoreShopPayment::getByTransactionIdentifier($transactionIdentification);
+        $list = Payment::getByTransactionIdentifier($transactionIdentification);
 
         $users = $list->getObjects();
 
@@ -47,7 +47,7 @@ class Payment extends Base
     }
 
     /**
-     * Get Order for Payment
+     * Get Order for Payment.
      *
      * @return bool|Object\AbstractObject
      */

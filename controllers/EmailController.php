@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 use CoreShop\Controller\Action;
 
 class CoreShop_EmailController extends Action
@@ -19,7 +18,7 @@ class CoreShop_EmailController extends Action
     public function init()
     {
         parent::init();
-        
+
         if ($this->view->editmode) {
             $this->disableLayout();
         }
@@ -39,10 +38,11 @@ class CoreShop_EmailController extends Action
         $this->view->params = $this->getAllParams();
     }
 
-    public function messageCustomerReplyAction() {
-        $this->view->message = $this->getParam("messageObject");
-        
-        if($this->view->message instanceof \CoreShop\Model\Messaging\Message) {
+    public function messageCustomerReplyAction()
+    {
+        $this->view->message = $this->getParam('messageObject');
+
+        if ($this->view->message instanceof \CoreShop\Model\Messaging\Message) {
             $this->view->thread = $this->view->message->getThread();
         }
     }

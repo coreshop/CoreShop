@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,21 +11,21 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Model\Product;
 use Pimcore\Model\Object\AbstractObject;
 
 class Object extends RelationInterpreter
 {
     /**
-     * interpret value
+     * interpret value.
      *
      * @param mixed $value
      * @param array $config
+     *
      * @return mixed
+     *
      * @throws UnsupportedException
      */
     public function interpret($value, $config = null)
@@ -36,15 +36,15 @@ class Object extends RelationInterpreter
             foreach ($value as $v) {
                 if ($v instanceof AbstractObject) {
                     $result[] = array(
-                        "dest" => $v->getId(),
-                        "type" => "object"
+                        'dest' => $v->getId(),
+                        'type' => 'object',
                     );
                 }
             }
         } elseif ($value instanceof AbstractObject) {
             $result[] = array(
-                "dest" => $value->getId(),
-                "type" => "object"
+                'dest' => $value->getId(),
+                'type' => 'object',
             );
         }
 

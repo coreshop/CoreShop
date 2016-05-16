@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Order;
@@ -20,10 +19,11 @@ use Pimcore\Model\Object\Concrete;
 class TotalPayed
 {
     /**
-     * compute order total payed
+     * compute order total payed.
      *
      * @param $object Concrete
      * @param $context \Pimcore\Model\Object\Data\CalculatedValue
+     *
      * @return string
      */
     public static function compute($object, $context)

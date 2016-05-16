@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,16 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
-use Pimcore\Model\Document;
 
 class Tax extends AbstractModel
 {
-    protected $localizedValues = array("name");
+    protected $localizedValues = array('name');
 
     /**
      * @var int
@@ -36,17 +31,6 @@ class Tax extends AbstractModel
      * @var bool
      */
     public $active;
-
-    /**
-     * get Tax by ID
-     *
-     * @param $id
-     * @return Tax|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
 
     /**
      * @return int
@@ -66,11 +50,12 @@ class Tax extends AbstractModel
 
     /**
      * @param string $language language
+     *
      * @return string
      */
     public function getName($language = null)
     {
-        return $this->getLocalizedFields()->getLocalizedValue("name", $language);
+        return $this->getLocalizedFields()->getLocalizedValue('name', $language);
     }
 
     /**
@@ -79,7 +64,7 @@ class Tax extends AbstractModel
      */
     public function setName($name, $language = null)
     {
-        $this->getLocalizedFields()->setLocalizedValue("name", $name, $language);
+        $this->getLocalizedFields()->setLocalizedValue('name', $name, $language);
     }
 
     /**
@@ -99,7 +84,7 @@ class Tax extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getActive()
     {
@@ -107,7 +92,7 @@ class Tax extends AbstractModel
     }
 
     /**
-     * @param boolean $active
+     * @param bool $active
      */
     public function setActive($active)
     {

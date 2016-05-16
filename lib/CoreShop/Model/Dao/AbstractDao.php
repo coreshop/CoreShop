@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Dao;
 
 use CoreShop\Model\AbstractModel;
@@ -20,11 +19,10 @@ use Pimcore\Model\Dao;
 
 abstract class AbstractDao extends Dao\AbstractDao
 {
-
     protected $tableName = '';
 
     /**
-     * Get table name
+     * Get table name.
      *
      * @return string
      */
@@ -34,9 +32,10 @@ abstract class AbstractDao extends Dao\AbstractDao
     }
 
     /**
-     * Get Object by id
+     * Get Object by id.
      *
      * @param null $id
+     *
      * @throws \Exception
      */
     public function getById($id = null)
@@ -47,39 +46,36 @@ abstract class AbstractDao extends Dao\AbstractDao
 
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE id = ?', $this->model->getId());
 
-        if (!$data["id"]) {
-            throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
+        if (!$data['id']) {
+            throw new \Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
         }
-
 
         $this->assignVariablesToModel($data);
         $this->getData();
     }
 
     /**
-     * Get Object by field
+     * Get Object by field.
      *
      * @param string $field
      * @param string $value
+     *
      * @throws \Exception
      */
     public function getByField($field, $value)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName()." WHERE $field = ?", $value);
 
-        if (!$data["id"]) {
-            throw new \Exception(get_class($this->model) . " with the field/value " . $field . '-' . $value . " doesn't exists");
+        if (!$data['id']) {
+            throw new \Exception(get_class($this->model).' with the field/value '.$field.'-'.$value." doesn't exists");
         }
-
 
         $this->assignVariablesToModel($data);
         $this->getData();
     }
 
     /**
-     * Get the data-elements for the object from database for the given path
-     *
-     * @return void
+     * Get the data-elements for the object from database for the given path.
      */
     public function getData()
     {
@@ -89,7 +85,7 @@ abstract class AbstractDao extends Dao\AbstractDao
     }
 
     /**
-     * Save object
+     * Save object.
      *
      * @throws \Zend_Db_Adapter_Exception
      */
@@ -107,7 +103,7 @@ abstract class AbstractDao extends Dao\AbstractDao
                     continue;
                 }
 
-                $getter = "get" . ucfirst($k);
+                $getter = 'get'.ucfirst($k);
 
                 if (!is_callable(array($this->model, $getter))) {
                     continue;
@@ -116,7 +112,7 @@ abstract class AbstractDao extends Dao\AbstractDao
                 $value = $this->model->$getter();
 
                 if (is_bool($value)) {
-                    $value = (int)$value;
+                    $value = (int) $value;
                 }
                 if (is_array($value)) {
                     $value = serialize($value);
@@ -136,7 +132,7 @@ abstract class AbstractDao extends Dao\AbstractDao
         }
 
         if ($this->model->getId() !== null) {
-            $this->db->update($this->getTableName(), $buffer, $this->db->quoteInto("id = ?", $this->model->getId()));
+            $this->db->update($this->getTableName(), $buffer, $this->db->quoteInto('id = ?', $this->model->getId()));
 
             if ($this->model->getLocalizedFields()) {
                 $this->model->getLocalizedFields()->save();
@@ -154,10 +150,10 @@ abstract class AbstractDao extends Dao\AbstractDao
     }
 
     /**
-     * Delete Object
+     * Delete Object.
      */
     public function delete()
     {
-        $this->db->delete($this->getTableName(), $this->db->quoteInto("id = ?", $this->model->getId()));
+        $this->db->delete($this->getTableName(), $this->db->quoteInto('id = ?', $this->model->getId()));
     }
 }

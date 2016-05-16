@@ -5,32 +5,32 @@
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
+ *
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Plugin;
 
 use Pimcore\Model\Tool\Setup;
 use Pimcore\Cache;
 use Pimcore\File;
-use CoreShop\Tool;
 use CoreShop\Version;
 use CoreShop\Model\Configuration;
 
 class Update
 {
     /**
-     * Dry Run
+     * Dry Run.
      *
      * @var bool
      */
     private $dryRun = false;
 
     /**
-     * set Dry run
+     * set Dry run.
      *
      * @param bool $mode
+     *
      * @return $this
      */
     public function setDryRun($mode = true)
@@ -43,6 +43,7 @@ class Update
     /**
      * Get available builds to install.
      * Mostly used by console command.
+     *
      * @return bool
      */
     public function getAvailableBuildList()
@@ -57,9 +58,10 @@ class Update
     }
 
     /**
-     * update core data
+     * update core data.
      *
      * @Todo: Check if in Backend && logged in user?
+     *
      * @return bool
      */
     public function updateCoreData()
@@ -91,14 +93,14 @@ class Update
     }
 
     /**
-     * get build status
+     * get build status.
      *
      * @return array|bool
      */
     private function getBuildStatus()
     {
         $currentBuild = (int) Version::getBuildNumber();
-        $installedBuild = Configuration::get("SYSTEM.BASE.BUILD");
+        $installedBuild = Configuration::get('SYSTEM.BASE.BUILD');
 
         if ($currentBuild <= $installedBuild) {
             return false;
@@ -106,25 +108,26 @@ class Update
 
         return array(
             'newest' => (int) $currentBuild,
-            'installed' => (int) $installedBuild
+            'installed' => (int) $installedBuild,
         );
     }
 
     /**
-     * update core shop build
+     * update core shop build.
      *
      * @param int $toBuild
      */
     private function updateCoreShopBuild($toBuild = 0)
     {
-        return Configuration::set("SYSTEM.BASE.BUILD", $toBuild);
+        return Configuration::set('SYSTEM.BASE.BUILD', $toBuild);
     }
 
     /**
-     * get available builds
+     * get available builds.
      *
      * @param int $fromBuild
      * @param int $toBuild
+     *
      * @return array|bool
      */
     private function getBuilds($fromBuild = 0, $toBuild = 0)
@@ -138,16 +141,16 @@ class Update
         $newBuild = $fromBuild;
 
         while ($newBuild < $toBuild) {
-            $newBuild++;
+            ++$newBuild;
 
-            $buildDir = CORESHOP_UPDATE_DIRECTORY . "/" . $newBuild;
+            $buildDir = CORESHOP_UPDATE_DIRECTORY.'/'.$newBuild;
 
             if (!is_dir($buildDir)) {
                 continue;
             }
 
-            $scriptFile = $buildDir . "/postupdate.php";
-            $QueryFile = $buildDir . "/query.sql";
+            $scriptFile = $buildDir.'/postupdate.php';
+            $QueryFile = $buildDir.'/query.sql';
 
             if (!is_file($scriptFile)) {
                 continue;
@@ -164,9 +167,10 @@ class Update
     }
 
     /**
-     * Execute build updates
+     * Execute build updates.
      *
      * @param $builds
+     *
      * @return array|bool
      */
     private function executeBuildUpdates($builds)
@@ -178,7 +182,7 @@ class Update
         $logs = array();
 
         $maxExecutionTime = 900;
-        @ini_set("max_execution_time", $maxExecutionTime);
+        @ini_set('max_execution_time', $maxExecutionTime);
         set_time_limit($maxExecutionTime);
 
         Cache::disable();
@@ -189,7 +193,7 @@ class Update
             try {
                 if (!$this->dryRun) {
                     //trigger script
-                    include($build['script']);
+                    include $build['script'];
 
                     //trigger sql update
                     $this->executeSQL($build['query']);
@@ -203,22 +207,23 @@ class Update
 
             $logs[] = array(
                 $build['build'],
-                $this->dryRun ? '- dry run, no message - ' : ob_get_clean()
+                $this->dryRun ? '- dry run, no message - ' : ob_get_clean(),
             );
 
-            \Logger::info('CoreShop System Build implemented: ' . $build['build']);
+            \Logger::info('CoreShop System Build implemented: '.$build['build']);
         }
 
         return array(
-            "log" => $logs,
-            "success" => true
+            'log' => $logs,
+            'success' => true,
         );
     }
 
     /**
-     * execute sql
+     * execute sql.
      *
      * @param $fileName
+     *
      * @return bool
      */
     private function executeSQL($fileName)
@@ -236,7 +241,7 @@ class Update
     }
 
     /**
-     * Clean up
+     * Clean up.
      */
     private function cleanUp()
     {
@@ -247,6 +252,7 @@ class Update
 
     /**
      * Remove Update Folder after Update.
+     *
      * @fixme: ugly idea, can we do that better?
      */
     public function removeUpdateFolder()
@@ -259,16 +265,18 @@ class Update
 
     /**
      * In ci-mode, we can't add the classes, because of the missing root user.
+     *
      * @fixme
+     *
      * @return bool
      */
     private function updateClasses()
     {
-        if (!\Zend_Registry::isRegistered("pimcore_admin_user")) {
+        if (!\Zend_Registry::isRegistered('pimcore_admin_user')) {
             return false;
         }
 
-        $classes = glob(PIMCORE_PLUGINS_PATH . '/CoreShop/install/class-*.json');
+        $classes = glob(PIMCORE_PLUGINS_PATH.'/CoreShop/install/class-*.json');
 
         if (!$this->dryRun && !empty($classes) && is_array($classes)) {
             $install = new Install();
@@ -282,7 +290,7 @@ class Update
     }
 
     /**
-     * Check if CoreShop Path is writeable
+     * Check if CoreShop Path is writeable.
      *
      * @return bool
      */
@@ -293,26 +301,28 @@ class Update
         }
 
         // check permissions
-        $files = rscandir(CORESHOP_PATH . "/");
+        $files = rscandir(CORESHOP_PATH.'/');
         foreach ($files as $file) {
-            if (strpos($file, ".git") === false) {
+            if (strpos($file, '.git') === false) {
                 if (!is_writable($file)) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
     /**
-     * get git tags
+     * get git tags.
      *
      * https://api.github.com/repos/coreshop/CoreShop
+     *
      * @return mixed
      */
     public function getGitTagReleases()
     {
-        $tagReleases = $this->gitRequest("https://api.github.com/repos/coreshop/CoreShop/tags");
+        $tagReleases = $this->gitRequest('https://api.github.com/repos/coreshop/CoreShop/tags');
 
         $releasesInfo = array();
 
@@ -322,7 +332,7 @@ class Update
                 //check if version is already installed?
                 $versionName = floatval(ltrim($release->name, 'v'));
 
-                $installedBuild = floatval(Configuration::get("SYSTEM.BASE.VERSION"));
+                $installedBuild = floatval(Configuration::get('SYSTEM.BASE.VERSION'));
 
                 if ($installedBuild >= $versionName) {
                     continue;
@@ -331,7 +341,7 @@ class Update
                 $releaseInfo = array(
                     'sha' => $release->name,
                     'date' => '',
-                    'message' => $release->commit->sha
+                    'message' => $release->commit->sha,
                 );
 
                 $releasesInfo[] = $releaseInfo;
@@ -342,13 +352,13 @@ class Update
     }
 
     /**
-     * get git master commit
+     * get git master commit.
      *
      * @return array|bool
      */
     public function getGitMasterCommit()
     {
-        $master = $this->gitRequest("https://api.github.com/repos/coreshop/CoreShop/commits/master");
+        $master = $this->gitRequest('https://api.github.com/repos/coreshop/CoreShop/commits/master');
 
         if ($master === false) {
             return false;
@@ -357,14 +367,14 @@ class Update
         $masterInfo = array();
 
         if (!empty($master)) {
-            $installedSha = Configuration::get("SYSTEM.BASE.COMMITSHA");
+            $installedSha = Configuration::get('SYSTEM.BASE.COMMITSHA');
 
             //master is head.
             if (is_null($installedSha) || $installedSha !== $master->sha) {
                 $masterInfo[] = array(
                     'sha' => $master->sha,
                     'date' => $master->commit->committer->date,
-                    'message' => $master->commit->message . ' (#' . substr($master->sha, 0, 7) . ')'
+                    'message' => $master->commit->message.' (#'.substr($master->sha, 0, 7).')',
                 );
             }
         }
@@ -373,10 +383,11 @@ class Update
     }
 
     /**
-     * install release version
+     * install release version.
      *
      * @param $type
      * @param $release
+     *
      * @return array
      */
     public function installRelease($type, $release)
@@ -390,23 +401,23 @@ class Update
             $url = 'https://api.github.com/repos/coreshop/CoreShop/zipball/master';
         } else {
             if ($type == 'update_releases') {
-                $url = 'https://api.github.com/repos/coreshop/CoreShop/zipball/' . $release;
+                $url = 'https://api.github.com/repos/coreshop/CoreShop/zipball/'.$release;
             }
         }
 
-        $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY . '/coreshop_update/';
+        $downloadDir = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update/';
 
         if (!is_dir($downloadDir)) {
             File::mkdir($downloadDir);
         }
 
-        $zipFile = $downloadDir . 'release.zip';
+        $zipFile = $downloadDir.'release.zip';
         $zipResource = fopen($zipFile, 'w');
 
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15'));
 
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -421,7 +432,7 @@ class Update
         $content = curl_exec($ch);
 
         if ($content !== false) {
-            $zip = new \ZipArchive;
+            $zip = new \ZipArchive();
 
             if ($zip->open($zipFile) === true) {
                 $zip->extractTo($downloadDir);
@@ -430,19 +441,19 @@ class Update
                 //delete Zip.
                 unlink($zipFile);
 
-                $coreShopFolder = glob($downloadDir . 'coreshop-CoreShop*', GLOB_ONLYDIR);
+                $coreShopFolder = glob($downloadDir.'coreshop-CoreShop*', GLOB_ONLYDIR);
 
                 //all done. move folder!
                 if (!empty($coreShopFolder) && isset($coreShopFolder[0])) {
                     $hasGit = false;
 
                     //delete old CoreShop Plugin!
-                    if (is_dir(PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName)) {
-                        $hasGit = is_dir(PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName . '/.git');
-                        recursiveDelete(PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName, true);
+                    if (is_dir(PIMCORE_PLUGINS_PATH.'/'.$coreShopPluginFolderName)) {
+                        $hasGit = is_dir(PIMCORE_PLUGINS_PATH.'/'.$coreShopPluginFolderName.'/.git');
+                        recursiveDelete(PIMCORE_PLUGINS_PATH.'/'.$coreShopPluginFolderName, true);
                     }
 
-                    rename($coreShopFolder[0], PIMCORE_PLUGINS_PATH . '/' . $coreShopPluginFolderName);
+                    rename($coreShopFolder[0], PIMCORE_PLUGINS_PATH.'/'.$coreShopPluginFolderName);
 
                     //now start default system update scripts!
                     $this->updateCoreData();
@@ -451,15 +462,15 @@ class Update
 
                     //if type is master, save commitsha in config
                     if ($type == 'update_master') {
-                        Configuration::set("SYSTEM.BASE.COMMITSHA", $release);
+                        Configuration::set('SYSTEM.BASE.COMMITSHA', $release);
                     }
 
                     $success = true;
                 } else {
-                    $message = 'No valid CoreShop Plugin Repo found in ' . $downloadDir;
+                    $message = 'No valid CoreShop Plugin Repo found in '.$downloadDir;
                 }
             } else {
-                $message = 'Error while unpacking zip in ' . $downloadDir;
+                $message = 'Error while unpacking zip in '.$downloadDir;
             }
         } else {
             $message = curl_error($ch);
@@ -471,8 +482,6 @@ class Update
     }
 
     /**
-     *
-     *
      * @param $url
      *
      * @return bool|array
@@ -482,7 +491,7 @@ class Update
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15'));
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,7 +12,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Messaging;
 
 use CoreShop\Model\AbstractModel;
@@ -21,8 +20,8 @@ use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use CoreShop\Model\User;
 
-class Thread extends AbstractModel {
-
+class Thread extends AbstractModel
+{
     /**
      * @var int
      */
@@ -94,7 +93,7 @@ class Thread extends AbstractModel {
     public $email;
 
     /**
-     * Get Open threads by email
+     * Get Open threads by email.
      *
      * @param $email string
      * @param $contactId int
@@ -103,34 +102,32 @@ class Thread extends AbstractModel {
      *
      * @return Thread|null
      */
-    public static function searchThread($email, $contactId, $orderId = null, $productId = null) {
-        $list = self::getList();
+    public static function searchThread($email, $contactId, $orderId = null, $productId = null)
+    {
+        $list = new Thread\Listing();
 
         $params = array(
-            "email" => $email,
-            "contactId" => $contactId,
-            "orderId" => $orderId,
-            "productId" => $productId
+            'email' => $email,
+            'contactId' => $contactId,
+            'orderId' => $orderId,
+            'productId' => $productId,
         );
         $query = array();
         $queryParams = array();
 
-        foreach($params as $p=>$v) {
-            if(is_null($v)) {
+        foreach ($params as $p => $v) {
+            if (is_null($v)) {
                 $query[] = "$p is null";
-            }
-            else {
+            } else {
                 $query[] = "$p = ?";
                 $queryParams[] = $v;
-
             }
         }
-        $list->setCondition(implode(" AND ", $query), $queryParams);
+        $list->setCondition(implode(' AND ', $query), $queryParams);
         $list = $list->load();
 
-
-        foreach($list as $thread) {
-            if(!$thread->getStatus()->getFinished()) {
+        foreach ($list as $thread) {
+            if (!$thread->getStatus()->getFinished()) {
                 return $thread;
             }
         }
@@ -139,13 +136,16 @@ class Thread extends AbstractModel {
     }
 
     /**
-     * Create a new message for thread
+     * Create a new message for thread.
      *
      * @param $messageText string
+     *
      * @return Message
+     *
      * @throws \Exception
      */
-    public function createMessage($messageText) {
+    public function createMessage($messageText)
+    {
         $message = new Message();
         $message->setThread($this);
         $message->setMessage($messageText);
@@ -156,13 +156,14 @@ class Thread extends AbstractModel {
     }
 
     /**
-     * Get all messages
+     * Get all messages.
      *
      * @return Message[]
      */
-    public function getMessages() {
+    public function getMessages()
+    {
         $list = new Message\Listing();
-        $list->setCondition("threadId = ?", array($this->getId()));
+        $list->setCondition('threadId = ?', array($this->getId()));
 
         return $list->load();
     }
@@ -204,7 +205,7 @@ class Thread extends AbstractModel {
      */
     public function getUser()
     {
-        if(!$this->user instanceof User) {
+        if (!$this->user instanceof User) {
             $this->user = User::getById($this->userId);
         }
 
@@ -213,12 +214,13 @@ class Thread extends AbstractModel {
 
     /**
      * @param User $user
+     *
      * @throws \Exception
      */
     public function setUser($user)
     {
-        if(!$user instanceof User) {
-            throw new \Exception("\$user must be instance of User");
+        if (!$user instanceof User) {
+            throw new \Exception('$user must be instance of User');
         }
 
         $this->user = $user;
@@ -246,7 +248,7 @@ class Thread extends AbstractModel {
      */
     public function getOrder()
     {
-        if(!$this->order instanceof Order) {
+        if (!$this->order instanceof Order) {
             $this->order = Order::getById($this->orderId);
         }
 
@@ -255,12 +257,13 @@ class Thread extends AbstractModel {
 
     /**
      * @param Order $order
+     *
      * @throws \Exception
      */
     public function setOrder($order)
     {
-        if(!$order instanceof Order) {
-            throw new \Exception("\$order must be instance of Order");
+        if (!$order instanceof Order) {
+            throw new \Exception('$order must be instance of Order');
         }
 
         $this->order = $order;
@@ -288,7 +291,7 @@ class Thread extends AbstractModel {
      */
     public function getProduct()
     {
-        if(!$this->product instanceof Product) {
+        if (!$this->product instanceof Product) {
             $this->product = Product::getById($this->productId);
         }
 
@@ -297,12 +300,13 @@ class Thread extends AbstractModel {
 
     /**
      * @param Product $product
+     *
      * @throws \Exception
      */
     public function setProduct($product)
     {
-        if(!$product instanceof Product) {
-            throw new \Exception("\$product must be instance of Product");
+        if (!$product instanceof Product) {
+            throw new \Exception('$product must be instance of Product');
         }
 
         $this->product = $product;
@@ -330,7 +334,7 @@ class Thread extends AbstractModel {
      */
     public function getStatus()
     {
-        if(!$this->status instanceof State) {
+        if (!$this->status instanceof State) {
             $this->status = State::getById($this->statusId);
         }
 
@@ -339,12 +343,13 @@ class Thread extends AbstractModel {
 
     /**
      * @param State $status
+     *
      * @throws \Exception
      */
     public function setStatus($status)
     {
         if (!$status instanceof State) {
-            throw new \Exception("\$status must be instance of State");
+            throw new \Exception('$status must be instance of State');
         }
 
         $this->status = $status;
@@ -388,7 +393,7 @@ class Thread extends AbstractModel {
      */
     public function getContact()
     {
-        if(!$this->contact instanceof Contact) {
+        if (!$this->contact instanceof Contact) {
             $this->contact = Contact::getById($this->contactId);
         }
 
@@ -397,12 +402,13 @@ class Thread extends AbstractModel {
 
     /**
      * @param Contact $contact
+     *
      * @throws \Exception
      */
     public function setContact($contact)
     {
         if (!$contact instanceof Contact) {
-            throw new \Exception("\$contact must be instance of Contact");
+            throw new \Exception('$contact must be instance of Contact');
         }
 
         $this->contact = $contact;

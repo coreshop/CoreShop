@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,23 +11,21 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Carrier\RangeWeight\Listing;
 
 use CoreShop\Model\Listing;
-use CoreShop\Model;
 
 class Dao extends Listing\Dao\AbstractDao
 {
-
     /**
-     * Mysql table name
+     * Mysql table name.
+     *
      * @var string
      */
     protected $tableName = 'coreshop_carriers_range_weight';
 
     /**
-     * Object class name
+     * Object class name.
      *
      * @var string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,22 +11,17 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Action;
 
 use CoreShop\Model\Cart;
-use CoreShop\Model\Cart\PriceRule\Action\AbstractAction;
 use CoreShop\Model\Currency;
-use Pimcore\Model;
 use CoreShop\Tool;
 
 /**
- * Class DiscountAmount
- * @package CoreShop\Model\PriceRule\Action
+ * Class DiscountAmount.
  */
 class DiscountAmount extends AbstractAction
 {
-
     /**
      * @var int
      */
@@ -40,7 +35,7 @@ class DiscountAmount extends AbstractAction
     /**
      * @var string
      */
-    public $type = "discountAmount";
+    public $type = 'discountAmount';
 
     /**
      * @return mixed
@@ -75,9 +70,10 @@ class DiscountAmount extends AbstractAction
     }
 
     /**
-     * Apply Rule to Cart
+     * Apply Rule to Cart.
      *
      * @param Cart $cart
+     *
      * @return bool
      */
     public function applyRule(Cart $cart)
@@ -86,9 +82,10 @@ class DiscountAmount extends AbstractAction
     }
 
     /**
-     * Remove Rule from Cart
+     * Remove Rule from Cart.
      *
      * @param Cart $cart
+     *
      * @return bool
      */
     public function unApplyRule(Cart $cart)
@@ -97,9 +94,10 @@ class DiscountAmount extends AbstractAction
     }
 
     /**
-     * Calculate discount
+     * Calculate discount.
      *
      * @param Cart $cart
+     *
      * @return int
      */
     public function getDiscount(Cart $cart)

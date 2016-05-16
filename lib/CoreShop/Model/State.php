@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,10 +11,7 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
-
-use CoreShop\Tool;
 
 class State extends AbstractModel
 {
@@ -49,42 +46,34 @@ class State extends AbstractModel
     public $countryId;
 
     /**
-     * Get Currency by ID
-     *
-     * @param $id
-     * @return Country|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get Currency by ISO-Code
+     * Get State by ISO-Code.
      *
      * @param $isoCode
+     *
      * @return Country|null
      */
     public static function getByIsoCode($isoCode)
     {
-        return parent::getByField("isoCode", $isoCode);
+        return parent::getByField('isoCode', $isoCode);
     }
 
     /**
-     * Get all states for a country
+     * Get all states for a country.
      *
      * @param int|Country $country
+     *
      * @return State[]
      */
-    public static function getForCountry($country) {
+    public static function getForCountry($country)
+    {
         $countryId = $country;
 
-        if($country instanceof Country) {
+        if ($country instanceof Country) {
             $countryId = $country->getId();
         }
 
         $list = new State\Listing();
-        $list->setCondition("countryId = ?", array($countryId));
+        $list->setCondition('countryId = ?', array($countryId));
 
         return $list->getData();
     }
@@ -174,12 +163,13 @@ class State extends AbstractModel
 
     /**
      * @param $country
+     *
      * @throws \Exception
      */
     public function setCountry($country)
     {
         if (!$country instanceof Country) {
-            throw new \Exception("\$country must be instance of Country");
+            throw new \Exception('$country must be instance of Country');
         }
 
         $this->country = $country;
@@ -196,6 +186,7 @@ class State extends AbstractModel
 
     /**
      * @param $countryId
+     *
      * @throws \Exception
      */
     public function setCountryId($countryId)

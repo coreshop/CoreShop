@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
@@ -29,10 +28,10 @@ class Country extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "country";
+    public $type = 'country';
 
     /**
-     * @return int
+     * @return CountryModel
      */
     public function getCountry()
     {
@@ -52,19 +51,21 @@ class Country extends AbstractCondition
     }
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
-     * @param Cart $cart
-     * @param PriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
         if ($this->getCountry()->getId() !== Tool::getCountry()->getId()) {
             if ($throwException) {
-                throw new \Exception("You cannot use this voucher in your country of delivery");
+                throw new \Exception('You cannot use this voucher in your country of delivery');
             } else {
                 return false;
             }

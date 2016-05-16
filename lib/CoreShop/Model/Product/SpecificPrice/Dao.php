@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\SpecificPrice;
 
 use CoreShop\Model\Dao\AbstractDao;
@@ -19,7 +18,7 @@ use CoreShop\Model\Dao\AbstractDao;
 class Dao extends AbstractDao
 {
     /**
-     * Mysql table name
+     * Mysql table name.
      *
      * @var string
      */
@@ -32,10 +31,10 @@ class Dao extends AbstractDao
     {
         parent::assignVariablesToModel($data);
 
-        foreach ($data as $key=>$value) {
-            if ($key == "actions") {
+        foreach ($data as $key => $value) {
+            if ($key == 'actions') {
                 $this->model->setActions(unserialize($value));
-            } elseif ($key == "conditions") {
+            } elseif ($key == 'conditions') {
                 $this->model->setConditions(unserialize($value));
             }
         }

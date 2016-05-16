@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,20 +11,17 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
 use CoreShop\Controller\Action;
-use CoreShop\Model\Cart\PriceRule;
 
 class CoreShop_HelperController extends Action
 {
     public function changeCurrencyAction()
     {
-        if (\CoreShop\Model\Currency::getById($this->getParam("currency")) instanceof \CoreShop\Model\Currency) {
-            $this->session->currencyId = $this->getParam("currency");
+        if (\CoreShop\Model\Currency::getById($this->getParam('currency')) instanceof \CoreShop\Model\Currency) {
+            $this->session->currencyId = $this->getParam('currency');
         }
 
-        $redirect = $this->getParam("redirect", $this->view->url(array("language" => $this->lang), "coreshop_index"));
+        $redirect = $this->getParam('redirect', $this->view->url(array('language' => $this->lang), 'coreshop_index'));
 
         $this->redirect($redirect);
     }

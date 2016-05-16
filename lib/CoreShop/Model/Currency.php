@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,10 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 class Currency extends AbstractModel
 {
-
     /**
      * @var int
      */
@@ -43,42 +41,24 @@ class Currency extends AbstractModel
     public $symbol;
 
     /**
-     * @var double
+     * @var float
      */
     public $exchangeRate;
 
     /**
-     * Get Currency by name
+     * Get Currency by name.
      *
      * @param $name
+     *
      * @return Currency|null
      */
     public static function getByName($name)
     {
-        try {
-            //TODO: add some caching
-            $obj = new self;
-            $obj->getDao()->getByName($name);
-            return $obj;
-        } catch (\Exception $ex) {
-        }
-
-        return null;
+        return self::getByField("name", $name);
     }
 
     /**
-     * Get Currency by ID
-     *
-     * @param $id
-     * @return Currency|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Checks if currency is available
+     * Checks if currency is available.
      *
      * @return Currency[]
      */

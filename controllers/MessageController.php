@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 use CoreShop\Controller\Action;
 
 class CoreShop_MessageController extends Action
@@ -22,25 +21,25 @@ class CoreShop_MessageController extends Action
         $this->view->params = $this->getAllParams();
         $thread = null;
 
-        if($this->view->params['token']) {
-            $thread = \CoreShop\Model\Messaging\Thread::getByField("token", $this->view->params['token']);
+        if ($this->view->params['token']) {
+            $thread = \CoreShop\Model\Messaging\Thread::getByField('token', $this->view->params['token']);
 
-            if($thread instanceof \CoreShop\Model\Messaging\Thread) {
+            if ($thread instanceof \CoreShop\Model\Messaging\Thread) {
                 $this->view->params['contactId'] = $thread->getContactId();
                 $this->view->params['email'] = $thread->getEmail();
 
-                if($thread->getOrder() instanceof \CoreShop\Model\Order)
+                if ($thread->getOrder() instanceof \CoreShop\Model\Order) {
                     $this->view->params['orderNumber'] = $thread->getOrder()->getOrderNumber();
+                }
             }
         }
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $result = \CoreShop\Model\Messaging\Service::handleRequestAndCreateThread($this->getAllParams(), $this->language);
 
-            if($result['success']) {
+            if ($result['success']) {
                 $this->view->success = true;
-            }
-            else {
+            } else {
                 $this->view->success = false;
                 $this->view->error = $this->view->translate($result['message']);
             }

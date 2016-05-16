@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Carrier\DeliveryPrice;
 
 use CoreShop\Model\Dao\AbstractDao;
@@ -19,44 +18,46 @@ use CoreShop\Model\Dao\AbstractDao;
 class Dao extends AbstractDao
 {
     /**
-     * Mysql table name
+     * Mysql table name.
      *
      * @var string
      */
     protected $tableName = 'coreshop_carriers_delivery_price';
 
     /**
-     * Get Delivery Price by Carrier and Range
+     * Get Delivery Price by Carrier and Range.
      *
      * @param $carrier
      * @param $range
+     *
      * @throws \Exception
      */
     public function getByCarrierAndRange($carrier, $range)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE `carrier` = ? AND `range` = ?', [$carrier, $range]);
 
-        if (!$data["id"]) {
-            throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
+        if (!$data['id']) {
+            throw new \Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
         }
 
         $this->assignVariablesToModel($data);
     }
 
     /**
-     * Get Delivery Price by Carrier, Range and Zone
+     * Get Delivery Price by Carrier, Range and Zone.
      *
      * @param $carrier
      * @param $range
      * @param $zone
+     *
      * @throws \Exception
      */
     public function getForCarrierInZone($carrier, $range, $zone)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE `carrierId` = ? AND `rangeId` = ? AND zoneId = ?', [$carrier, $range, $zone]);
 
-        if (!$data["id"]) {
-            throw new \Exception(get_class($this->model) . " with the ID " . $this->model->getId() . " doesn't exists");
+        if (!$data['id']) {
+            throw new \Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
         }
 
         $this->assignVariablesToModel($data);

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Objectbrick\Data;
 
 use Pimcore\Model\Object\Objectbrick\Data\AbstractData;
@@ -19,20 +18,21 @@ use Pimcore\Model\Object\Objectbrick\Data\AbstractData;
 class Objectbrick extends AbstractData
 {
     /**
-     *  Zend_View
+     *  Zend_View.
      */
     protected $view;
 
     /**
-     * get View
+     * get View.
      *
      * @param $language
+     *
      * @return \Zend_View
      */
     public function getView($language = null)
     {
         if (!$language) {
-            $language = \Zend_Registry::get("Zend_Locale");
+            $language = \Zend_Registry::get('Zend_Locale');
         }
 
         if (!$this->view) {
@@ -44,7 +44,7 @@ class Objectbrick extends AbstractData
 
         $this->view->setScriptPath(
             array(
-                CORESHOP_TEMPLATE_PATH . '/scripts/' . strtolower(array_pop(explode('\\', get_class($this))))
+                CORESHOP_TEMPLATE_PATH.'/scripts/'.strtolower(array_pop(explode('\\', get_class($this)))),
             )
         );
 
@@ -52,9 +52,9 @@ class Objectbrick extends AbstractData
     }
 
     /**
-     * Render Cart
+     * Render Cart.
      *
-     * @return string|boolean
+     * @return string|bool
      */
     public function renderCart()
     {
@@ -62,7 +62,7 @@ class Objectbrick extends AbstractData
     }
 
     /**
-     * Render Invoice
+     * Render Invoice.
      * 
      * @return string|bool
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,8 +11,7 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop;
 
 // this is just an alias ;-)
-class_alias("CoreShop\\Model\\Configuration", "CoreShop\\Config");
+class_alias('CoreShop\\Model\\Configuration', 'CoreShop\\Config');

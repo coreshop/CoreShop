@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
@@ -21,17 +20,19 @@ use CoreShop\Model\Product;
 class Classificationstore extends AbstractGetter
 {
     /**
-     * get value
+     * get value.
      *
      * @param $object
      * @param Config $config
+     *
      * @return mixed
+     *
      * @throws UnsupportedException
      */
     public function get(Product $object, Config $config = null)
     {
         $classificationStore = $config->getGetterConfig()['classificationStoreField'];
-        $classificationStoreGetter = "get" . ucfirst($classificationStore);
+        $classificationStoreGetter = 'get'.ucfirst($classificationStore);
 
         if (method_exists($object, $classificationStoreGetter)) {
             $classificationStore = $object->$classificationStoreGetter();

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,14 +11,12 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop;
 
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
 use Pimcore\Date;
-use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
@@ -28,29 +26,30 @@ use GeoIp2\Database\Reader;
 
 class Tool
 {
-
     /**
-     * Format Price to locale
+     * Format Price to locale.
      *
      * @param $price
+     *
      * @return string
      */
     public static function formatPrice($price)
     {
         try {
-            $zCurrency = new \Zend_Currency("de_DE"); //TODO: fix to use Zend_Locale
-            return $zCurrency->toCurrency($price, array('symbol' => Tool::getCurrency()->getSymbol()));
+            $zCurrency = new \Zend_Currency('de_DE'); //TODO: fix to use Zend_Locale
+            return $zCurrency->toCurrency($price, array('symbol' => self::getCurrency()->getSymbol()));
         } catch (\Exception $ex) {
             echo $ex;
         }
-        
+
         return $price;
     }
-    
+
     /**
-     * Round Price
+     * Round Price.
      *
      * @param $price
+     *
      * @return float
      */
     public static function roundPrice($price)
@@ -59,9 +58,11 @@ class Tool
     }
 
     /**
-     * Format Number without thousands seperator (eg 1540,32)
+     * Format Number without thousands seperator (eg 1540,32).
      *
-     * @param $number
+     * @param $number float
+     * @param $decimalPrecision int
+     *
      * @return string
      */
     public static function numberFormat($number, $decimalPrecision = 2)
@@ -70,11 +71,12 @@ class Tool
     }
 
     /**
-     * Converts value from currency to currency
+     * Converts value from currency to currency.
      *
      * @param $value
      * @param Currency|null $toCurrency
      * @param Currency|null $fromCurrency
+     *
      * @return mixed
      */
     public static function convertToCurrency($value, $toCurrency = null, $fromCurrency = null)
@@ -84,7 +86,7 @@ class Tool
         }
 
         if (!$toCurrency instanceof Currency) {
-            $toCurrency = Tool::getCurrency();
+            $toCurrency = self::getCurrency();
         }
 
         if ($fromCurrency instanceof Currency) {
@@ -97,13 +99,13 @@ class Tool
     }
 
     /**
-     * get base Currency
+     * get base Currency.
      *
      * @return Currency
      */
     public static function getBaseCurrency()
     {
-        $baseCurrency = Configuration::get("SYSTEM.BASE.CURRENCY");
+        $baseCurrency = Configuration::get('SYSTEM.BASE.CURRENCY');
         $currency = null;
 
         if ($baseCurrency) {
@@ -111,7 +113,7 @@ class Tool
         }
 
         if (!$currency instanceof Currency) {
-            \Logger::warn("No SYSTEM.BASE.CURRENCY found, so EURO is going to be used! Please set your Default Currency in CoreShop Settings");
+            \Logger::warn('No SYSTEM.BASE.CURRENCY found, so EURO is going to be used! Please set your Default Currency in CoreShop Settings');
 
             $currency = Currency::getById(1); //TODO: Throw Exception because there is no base currency?
         }
@@ -120,7 +122,7 @@ class Tool
     }
 
     /**
-     * Get CoreShop Session
+     * Get CoreShop Session.
      *
      * @return Session
      */
@@ -130,7 +132,7 @@ class Tool
     }
 
     /**
-     * Get current User
+     * Get current User.
      *
      * @return null|User
      */
@@ -142,59 +144,61 @@ class Tool
     }
 
     /**
-     * Load Controller from CoreShop
+     * Load Controller from CoreShop.
+     *
      * @param string $controllerName
      */
     public static function loadController($controllerName = '')
     {
-        if (file_exists(CORESHOP_PATH . "/controllers/" . $controllerName . "Controller.php")) {
-            require(CORESHOP_PATH . "/controllers/" . $controllerName . "Controller.php");
+        if (file_exists(CORESHOP_PATH.'/controllers/'.$controllerName.'Controller.php')) {
+            require CORESHOP_PATH.'/controllers/'.$controllerName.'Controller.php';
         }
     }
 
     /**
-     * Format Tax
+     * Format Tax.
      *
      * TODO: Localization
      *
      * @param $tax
+     *
      * @return string
      */
     public static function formatTax($tax)
     {
-        return ($tax * 100) . "%";
+        return ($tax * 100).'%';
     }
 
     /**
-     * Prepare Cart
+     * Prepare Cart.
      *
      * @param $resetCart bool create a new cart
+     *
      * @return Cart
      */
     public static function prepareCart($resetCart = false)
     {
         $cartSession = self::getSession();
 
-        $cart = NULL;
+        $cart = null;
 
         if (!$resetCart) {
             if (isset($cartSession->cartId) && $cartSession->cartId !== 0) {
                 $cart = Cart::getById($cartSession->cartId);
-            } else if(isset($cartSession->cartObj)) {
+            } elseif (isset($cartSession->cartObj)) {
                 if ($cartSession->cartObj instanceof Cart) {
                     $cart = $cartSession->cartObj;
 
-                    if( $cart->getId() !== 0) {
-                        unset( $cartSession->cartObj );
+                    if ($cart->getId() !== 0) {
+                        unset($cartSession->cartObj);
                         $cartSession->cartId = $cart->getId();
                     }
-
                 }
             }
         }
 
         if ($cart instanceof Cart) {
-            if($cart->getUser() === null && count($cart->getItems()) && self::getUser() instanceof User) {
+            if ($cart->getUser() === null && count($cart->getItems()) && self::getUser() instanceof User) {
                 $cart->setUser(self::getUser());
                 $cart->save();
             }
@@ -209,9 +213,10 @@ class Tool
     }
 
     /**
-     * Get current Users Country
+     * Get current Users Country.
      *
      * @return Country|null
+     *
      * @throws \Exception
      */
     public static function getCountry()
@@ -249,7 +254,7 @@ class Tool
         }
 
         if (!$country instanceof Country) {
-            $geoDbFile = realpath(PIMCORE_WEBSITE_VAR . "/config/GeoLite2-City.mmdb");
+            $geoDbFile = realpath(PIMCORE_WEBSITE_VAR.'/config/GeoLite2-City.mmdb');
             $record = null;
 
             if (file_exists($geoDbFile)) {
@@ -274,15 +279,14 @@ class Tool
             }
         }
 
-
         if (!$country instanceof Country) {
-            $country = Plugin::actionHook("country");
+            $country = Plugin::actionHook('country');
 
             if (!$country instanceof Country) {
-                $country = Country::getById(Configuration::get("SYSTEM.BASE.COUNTRY"));
+                $country = Country::getById(Configuration::get('SYSTEM.BASE.COUNTRY'));
 
                 if (!$country instanceof Country) {
-                    \Logger::warn("No SYSTEM.BASE.COUNTRY found, so AUSTRIA is going to be used! Please set your Default Country in CoreShop Settings");
+                    \Logger::warn('No SYSTEM.BASE.COUNTRY found, so AUSTRIA is going to be used! Please set your Default Country in CoreShop Settings');
                     $country = Country::getById(2);
                 }
             }
@@ -294,9 +298,10 @@ class Tool
     }
 
     /**
-     * Check if ip is private
+     * Check if ip is private.
      *
      * @param $ip
+     *
      * @return bool
      */
     private static function checkIfIpIsPrivate($ip)
@@ -306,7 +311,7 @@ class Tool
             '172.16.0.0|172.31.255.255', // 16 contiguous class B network
             '192.168.0.0|192.168.255.255', // 256 contiguous class C network
             '169.254.0.0|169.254.255.255', // Link-local address also refered to as Automatic Private IP Addressing
-            '127.0.0.0|127.255.255.255' // localhost
+            '127.0.0.0|127.255.255.255', // localhost
         );
 
         $long_ip = ip2long($ip);
@@ -324,11 +329,11 @@ class Tool
         return false;
     }
 
-
     /**
-     * Get current Currency by Country
+     * Get current Currency by Country.
      *
      * @return Currency|null
+     *
      * @throws \Exception
      */
     public static function getCurrency()
@@ -351,10 +356,11 @@ class Tool
     }
 
     /**
-     * Validate VAT for address
+     * Validate VAT for address.
      *
-     * @param string $vatNubmer
-     * @return boolean
+     * @param $vatNumber string
+     *
+     * @return bool
      */
     public static function validateVatNumber($vatNumber)
     {
@@ -429,14 +435,14 @@ class Tool
         $vat = substr($vatNumber, 2);
         $url = 'http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms='.urlencode($prefix).'&iso='.urlencode($prefix).'&vat='.urlencode($vat);
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; ++$i) {
             if ($page_res = @file_get_contents($url)) {
                 if (preg_match('/invalid VAT number/i', $page_res)) {
                     return false;
                 } elseif (preg_match('/valid VAT number/i', $page_res)) {
                     return true;
                 } else {
-                    $i++;
+                    ++$i;
                 }
             } else {
                 sleep(1);
@@ -447,10 +453,11 @@ class Tool
     }
 
     /**
-     * Check if Object $object in array $objectList
+     * Check if Object $object in array $objectList.
      *
      * @param AbstractModel $object
-     * @param array $objectList
+     * @param array         $objectList
+     *
      * @return bool
      */
     public static function objectInList(AbstractModel $object, array $objectList)
@@ -463,11 +470,12 @@ class Tool
 
         return false;
     }
-    
+
     /**
-     * Retreive the values in an array
+     * Retreive the values in an array.
      *
      * @param $object
+     *
      * @return array
      */
     public static function objectToArray(Object\Concrete $object)
@@ -476,9 +484,10 @@ class Tool
     }
 
     /**
-     * Retreive the values in json format
+     * Retreive the values in json format.
      *
      * @param $object
+     *
      * @return string
      */
     public static function objectToJson(Object\Concrete $object)
@@ -487,15 +496,18 @@ class Tool
     }
 
     /**
-     * Re-usable helper method
+     * Re-usable helper method.
+     *
      * @todo move to the library helpers
      *
      * @static
+     *
      * @param $object
      * @param null $fieldDefintions
+     *
      * @return array
      */
-    protected static function _objectToArray($object, $fieldDefintions=null)
+    protected static function _objectToArray($object, $fieldDefintions = null)
     {
         //if the given object is an array then loop through each element
         if (is_array($object)) {
@@ -503,6 +515,7 @@ class Tool
             foreach ($object as $o) {
                 $collections[] = self::_objectToArray($o, $fieldDefintions);
             }
+
             return $collections;
         }
         if (!is_object($object)) {
@@ -517,13 +530,13 @@ class Tool
         $collection = array();
         foreach ($fieldDefintions as $fd) {
             $fieldName = $fd->getName();
-            $getter    = "get" . ucfirst($fieldName);
-            $value     = $object->$getter();
+            $getter = 'get'.ucfirst($fieldName);
+            $value = $object->$getter();
 
             switch ($fd->getFieldtype()) {
                 case 'fieldcollections':
                     if (($value instanceof Object\Fieldcollection) && is_array($value->getItems())) {
-                        /** @var $value Object\Fieldcollection */
+                        /* @var $value Object\Fieldcollection */
                         $def = $value->getItemDefinitions();
                         if (method_exists($def['children'], 'getFieldDefinitions')) {
                             $collection[$fieldName] = self::_objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
@@ -532,39 +545,41 @@ class Tool
                     break;
 
                 case 'date':
-                    /** @var $value \Pimcore\Date */
+                    /* @var $value \Pimcore\Date */
                     $collection[$fieldName] = ($value instanceof Date) ? $value->getTimestamp() : 0;
                     break;
                 default:
-                    /** @var $value string */
+                    /* @var $value string */
                     $collection[$fieldName] = $value;
             }
         }
 
         //Parent class properties
-        $collection['id']  = $object->o_id;
+        $collection['id'] = $object->o_id;
         $collection['key'] = $object->o_key;
+
         return $collection;
     }
 
     /**
-     * get CoreShop Translate
+     * get CoreShop Translate.
      *
      * @return \Zend_Translate_Adapter
      */
-    public static function getTranslate() {
+    public static function getTranslate()
+    {
         $lang = null;
         $user = \Pimcore\Tool\Admin::getCurrentUser();
 
-        if($user instanceof User) {
+        if ($user instanceof User) {
             $lang = $user->getLanguage();
-        }
-        else {
-            $lang = \Zend_Registry::get("Zend_Locale");
+        } else {
+            $lang = \Zend_Registry::get('Zend_Locale');
         }
 
-        if(!$lang)
+        if (!$lang) {
             $lang = \Pimcore\Tool::getDefaultLanguage();
+        }
 
         return Plugin::getTranslate($lang);
     }

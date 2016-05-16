@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,25 +11,23 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace Pimcore\Model\Object\ClassDefinition\Data;
 
 use CoreShop\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
 
 class CoreShopOrderState extends  CoreShopSelect
 {
-
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopOrderState";
+    public $fieldtype = 'coreShopOrderState';
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
-    public $phpdocType = "CoreShop\\Model\\Order\\State";
+    public $phpdocType = 'CoreShop\\Model\\Order\\State';
 }

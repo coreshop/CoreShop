@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,31 +11,30 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product;
 
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Product;
-use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
 
 class SpecificPrice extends AbstractModel
 {
-
     /**
-     * possible types of a condition
+     * possible types of a condition.
+     *
      * @var array
      */
-    public static $availableConditions = array("customer", "timeSpan", "country", "customerGroup", "zone");
+    public static $availableConditions = array('customer', 'timeSpan', 'country', 'customerGroup', 'zone');
 
     /**
-     * possible types of a action
+     * possible types of a action.
+     *
      * @var array
      */
-    public static $availableActions = array("discountAmount", "discountPercent", "newPrice");
+    public static $availableActions = array('discountAmount', 'discountPercent', 'newPrice');
 
     /**
-     * Add Condition Type
+     * Add Condition Type.
      *
      * @param $condition
      */
@@ -47,7 +46,7 @@ class SpecificPrice extends AbstractModel
     }
 
     /**
-     * Add Action Type
+     * Add Action Type.
      *
      * @param $action
      */
@@ -84,26 +83,16 @@ class SpecificPrice extends AbstractModel
     public $actions;
 
     /**
-     * Get PriceRule by ID
-     *
-     * @param $id
-     * @return SpecificPrice|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get all PriceRules
+     * Get all PriceRules.
      *
      * @param Product $product
+     *
      * @return array
      */
     public static function getSpecificPrices(Product $product)
     {
         $list = new SpecificPrice\Listing();
-        $list->setCondition("o_id = ?", array($product->getId()));
+        $list->setCondition('o_id = ?', array($product->getId()));
 
         return $list->getData();
     }

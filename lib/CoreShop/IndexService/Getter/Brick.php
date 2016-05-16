@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
@@ -20,27 +19,29 @@ use CoreShop\Model\Product;
 
 class Brick extends AbstractGetter
 {
-
     /**
-     * get value
+     * get value.
      *
      * @param $object
      * @param Objectbricks $config
+     *
      * @return mixed
+     *
      * @throws UnsupportedException
      */
     public function get(Product $object, Objectbricks $config = null)
     {
         $brickField = $config->getGetterConfig()['brickField'];
 
-        $brickContainerGetter = "get" . ucfirst($brickField);
+        $brickContainerGetter = 'get'.ucfirst($brickField);
         $brickContainer = $object->$brickContainerGetter();
 
-        $brickGetter = "get" . ucfirst($config->getClassName());
+        $brickGetter = 'get'.ucfirst($config->getClassName());
         $brick = $brickContainer->$brickGetter();
 
         if ($brick) {
-            $fieldGetter = "get" . ucfirst($config->getKey());
+            $fieldGetter = 'get'.ucfirst($config->getKey());
+
             return $brick->$fieldGetter();
         }
 

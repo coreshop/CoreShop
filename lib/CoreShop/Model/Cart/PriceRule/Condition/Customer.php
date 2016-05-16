@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
@@ -29,7 +28,7 @@ class Customer extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "customer";
+    public $type = 'customer';
 
     /**
      * @return int
@@ -48,22 +47,24 @@ class Customer extends AbstractCondition
     }
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
-     * @param Cart $cart
-     * @param PriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        $session = Tool::getSession();
+        $user = Tool::getUser();
 
-        if ($cart->getUser() instanceof User && $session->user instanceof User) {
-            if (!$cart->getUser()->getId() == $session->user->getId()) {
+        if ($cart->getUser() instanceof User && $user instanceof User) {
+            if (!$cart->getUser()->getId() == $user->getId()) {
                 if ($throwException) {
-                    throw new \Exception("You cannot use this voucher");
+                    throw new \Exception('You cannot use this voucher');
                 } else {
                     return false;
                 }

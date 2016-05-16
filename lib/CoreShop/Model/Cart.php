@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,10 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
-use CoreShop\Exception;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
@@ -23,17 +21,16 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Model\Object\Service;
-
 use CoreShop\Maintenance\CleanUpCart;
 
 class Cart extends Base
 {
     /**
-     * Pimcore Object Class
+     * Pimcore Object Class.
      *
      * @var string
      */
-    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopCart";
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopCart';
 
     /**
      * @var float shipping costs
@@ -46,14 +43,15 @@ class Cart extends Base
     protected $shippingWithoutTax;
 
     /**
-     * Return Cart by custom identifier
+     * Return Cart by custom identifier.
      *
      * @param $transactionIdentification
+     *
      * @return bool|Cart
      */
     public static function findByCustomIdentifier($transactionIdentification)
     {
-        $list = Cart::getByCustomIdentifier($transactionIdentification);
+        $list = self::getByCustomIdentifier($transactionIdentification);
 
         $carts = $list->getObjects();
 
@@ -65,74 +63,78 @@ class Cart extends Base
     }
 
     /**
-     * Get all existing Carts
+     * Get all existing Carts.
      *
      * @return array Cart
      */
     public static function getAll()
     {
-        $list = Cart::getList();
-        
+        $list = self::getList();
+
         return $list->getObjects();
     }
 
     /**
-     * Prepare a Cart
+     * Prepare a Cart.
+     *
      * @param bool $persist
      *
      * @return Cart
+     *
      * @throws \Exception
      */
-    public static function prepare( $persist = FALSE )
+    public static function prepare($persist = false)
     {
-        $createNew = TRUE;
-
+        $createNew = true;
         $cartSession = Tool::getSession();
+        $cart = null;
 
-        if( $cartSession->cartObj) {
-            if ($cartSession->cartObj instanceof Cart) {
-                $createNew = FALSE;
+        if ($cartSession->cartObj) {
+            if ($cartSession->cartObj instanceof self) {
+                $createNew = false;
                 $cart = $cartSession->cartObj;
             }
         }
 
-        if( $createNew ) {
-            $cart = Cart::create();
+        if ($createNew) {
+            $cart = self::create();
             $cart->setKey(uniqid());
             $cart->setPublished(true);
         }
 
-        if (Tool::getUser() instanceof User) {
-            $cart->setUser(Tool::getUser());
-        }
+        if($cart instanceof Cart) {
+            if (Tool::getUser() instanceof User) {
+                $cart->setUser(Tool::getUser());
+            }
 
-        if( $persist ) {
-            $cartsFolder = Service::createFolderByPath("/coreshop/carts/" . date("Y/m/d"));
-            $cart->setParent($cartsFolder);
-            $cart->save();
+            if ($persist) {
+                $cartsFolder = Service::createFolderByPath('/coreshop/carts/' . date('Y/m/d'));
+                $cart->setParent($cartsFolder);
+                $cart->save();
+            }
         }
 
         return $cart;
     }
 
     /**
-     * Check if Cart has any physical items
+     * Check if Cart has any physical items.
      *
      * @return bool
      */
     public function hasPhysicalItems()
     {
         foreach ($this->getItems() as $item) {
-            if ($item->getProduct()->getIsDownloadProduct() !== "yes") {
+            if ($item->getProduct()->getIsDownloadProduct() !== 'yes') {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     /**
-     * calculates discount for the cart
+     * calculates discount for the cart.
      *
      * @return int
      */
@@ -148,15 +150,16 @@ class Cart extends Base
     }
 
     /**
-     * calculates the subtotal for the cart
+     * calculates the subtotal for the cart.
      *
-     * @param boolean $useTaxes use taxes
+     * @param bool $useTaxes use taxes
+     *
      * @return float
      */
     public function getSubtotal($useTaxes = true)
     {
         $subtotal = 0;
-        
+
         foreach ($this->getItems() as $item) {
             if ($useTaxes) {
                 $subtotal += ($item->getAmount() * $item->getProduct()->getPrice());
@@ -169,7 +172,7 @@ class Cart extends Base
     }
 
     /**
-     * calculates the subtotal tax for the cart
+     * calculates the subtotal tax for the cart.
      *
      * @return float
      */
@@ -185,7 +188,7 @@ class Cart extends Base
     }
 
     /**
-     * Returns array with key=>value for tax and value
+     * Returns array with key=>value for tax and value.
      *
      * @return array
      */
@@ -193,11 +196,11 @@ class Cart extends Base
     {
         $usedTaxes = array();
 
-        $addTax = function(Tax $tax) use (&$usedTaxes) {
-            if(!array_key_exists($tax->getId(), $usedTaxes)) {
+        $addTax = function (Tax $tax) use (&$usedTaxes) {
+            if (!array_key_exists($tax->getId(), $usedTaxes)) {
                 $usedTaxes[$tax->getId()] = array(
-                    "tax" => $tax,
-                    "amount" => 0
+                    'tax' => $tax,
+                    'amount' => 0,
                 );
             }
         };
@@ -205,7 +208,7 @@ class Cart extends Base
         foreach ($this->getItems() as $item) {
             $taxCalculator = $item->getProduct()->getTaxCalculator();
 
-            if($taxCalculator instanceof TaxCalculator) {
+            if ($taxCalculator instanceof TaxCalculator) {
                 $taxes = $taxCalculator->getTaxes();
 
                 foreach ($taxes as $tax) {
@@ -222,7 +225,7 @@ class Cart extends Base
 
         $shippingProvider = $this->getShippingProvider();
 
-        if($shippingProvider instanceof Carrier) {
+        if ($shippingProvider instanceof Carrier) {
             $shippingTax = $this->getShippingProvider()->getTaxCalculator();
 
             if ($shippingTax instanceof TaxCalculator) {
@@ -232,7 +235,7 @@ class Cart extends Base
 
                 $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
 
-                foreach($taxesAmount as $id=>$amount) {
+                foreach ($taxesAmount as $id => $amount) {
                     $usedTaxes[$id]['amount'] += $amount;
                 }
             }
@@ -240,15 +243,15 @@ class Cart extends Base
 
         $paymentProvider = $this->getPaymentProvider();
 
-        if($paymentProvider instanceof PaymentPlugin) {
-            if($paymentProvider->getPaymentTaxCalculator($this) instanceof TaxCalculator) {
-                foreach($paymentProvider->getPaymentTaxCalculator($this) as $tax) {
+        if ($paymentProvider instanceof PaymentPlugin) {
+            if ($paymentProvider->getPaymentTaxCalculator($this) instanceof TaxCalculator) {
+                foreach ($paymentProvider->getPaymentTaxCalculator($this) as $tax) {
                     $addTax($tax);
                 }
 
                 $taxesAmount = $paymentProvider->getPaymentTaxCalculator($this)->getTaxesAmount($paymentProvider->getPaymentFee($this, false), true);
 
-                foreach($taxesAmount as $id=>$amount) {
+                foreach ($taxesAmount as $id => $amount) {
                     $usedTaxes[$id]['amount'] += $amount;
                 }
             }
@@ -258,9 +261,10 @@ class Cart extends Base
     }
 
     /**
-     * get shipping carrier for cart (if non selected, get cheapest)
+     * get shipping carrier for cart (if non selected, get cheapest).
      *
      * @return null|Carrier
+     *
      * @throws UnsupportedException
      */
     public function getShippingProvider()
@@ -284,17 +288,17 @@ class Cart extends Base
     }
 
     /**
-     * get Shipping costs for specific carrier
+     * get Shipping costs for specific carrier.
      *
      * @param Carrier $carrier
-     * @param boolean $useTax
+     * @param bool    $useTax
      *
      * @return float
      */
     public function getShippingCostsForCarrier(Carrier $carrier, $useTax = true)
     {
-        $freeShippingCurrency = floatval(Configuration::get("SYSTEM.SHIPPING.FREESHIPPING_PRICE"));
-        $freeShippingWeight = floatval(Configuration::get("SYSTEM.SHIPPING.FREESHIPPING_WEIGHT"));
+        $freeShippingCurrency = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_PRICE'));
+        $freeShippingWeight = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_WEIGHT'));
 
         if (isset($freeShippingCurrency) && $freeShippingCurrency > 0) {
             $freeShippingCurrency = Tool::convertToCurrency($freeShippingCurrency, Tool::getCurrency());
@@ -314,14 +318,15 @@ class Cart extends Base
     }
 
     /**
-     * calculates shipping costs for the cart
+     * calculates shipping costs for the cart.
      *
      * @param $useTax boolean include taxes
+     *
      * @return float
      */
     public function getShipping($useTax = true)
     {
-        $cacheKey = $useTax ? "shipping" : "shippingWithoutTax";
+        $cacheKey = $useTax ? 'shipping' : 'shippingWithoutTax';
 
         if (is_null($this->$cacheKey)) {
             $this->$cacheKey = 0;
@@ -343,9 +348,9 @@ class Cart extends Base
     }
 
     /**
-     * get shipping tax rate
+     * get shipping tax rate.
      *
-     * @return integer
+     * @return int
      */
     public function getShippingTaxRate()
     {
@@ -357,7 +362,7 @@ class Cart extends Base
     }
 
     /**
-     * calculates shipping tax for the cart
+     * calculates shipping tax for the cart.
      *
      * @return float
      */
@@ -371,20 +376,22 @@ class Cart extends Base
     }
 
     /**
-     * Get Payment Provider
+     * Get Payment Provider.
      *
      * @return PaymentPlugin
      */
-    public function getPaymentProvider() {
+    public function getPaymentProvider()
+    {
         $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
 
         return $paymentProvider;
     }
 
     /**
-     * Calculate the payment fee
+     * Calculate the payment fee.
      *
      * @param $useTaxes boolean use taxes
+     *
      * @return float
      */
     public function getPaymentFee($useTaxes = true)
@@ -399,7 +406,7 @@ class Cart extends Base
     }
 
     /**
-     * get payment fee tax rate
+     * get payment fee tax rate.
      *
      * @return float
      */
@@ -415,7 +422,7 @@ class Cart extends Base
     }
 
     /**
-     * Calculate the payment fee tax
+     * Calculate the payment fee tax.
      *
      * @return float
      */
@@ -431,7 +438,7 @@ class Cart extends Base
     }
 
     /**
-     * get all taxes
+     * get all taxes.
      *
      * @return float
      */
@@ -445,7 +452,7 @@ class Cart extends Base
     }
 
     /**
-     * calculates the total of the cart
+     * calculates the total of the cart.
      *
      * @return float
      */
@@ -460,7 +467,7 @@ class Cart extends Base
     }
 
     /**
-     * calculates the total weight of the cart
+     * calculates the total weight of the cart.
      *
      * @return int
      */
@@ -476,16 +483,18 @@ class Cart extends Base
     }
 
     /**
-     * finds the CartItem for a Product
+     * finds the CartItem for a Product.
      *
      * @param Product $product
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function findItemForProduct(Product $product)
     {
         if (!$product instanceof Product) {
-            throw new \Exception("\$product must be instance of Product");
+            throw new \Exception('$product must be instance of Product');
         }
 
         foreach ($this->getItems() as $item) {
@@ -498,19 +507,21 @@ class Cart extends Base
     }
 
     /**
-     * Changes the quantity of a Product in the Cart
+     * Changes the quantity of a Product in the Cart.
      *
-     * @param Product $product
-     * @param int $amount
+     * @param Product    $product
+     * @param int        $amount
      * @param bool|false $increaseAmount
-     * @param bool|true $autoAddPriceRule
+     * @param bool|true  $autoAddPriceRule
+     *
      * @return bool|Item
+     *
      * @throws \Exception
      */
     public function updateQuantity(Product $product, $amount = 0, $increaseAmount = false, $autoAddPriceRule = true)
     {
         if (!$product instanceof Product) {
-            throw new \Exception("\$product must be instance of Product");
+            throw new \Exception('$product must be instance of Product');
         }
 
         $item = $this->findItemForProduct($product);
@@ -563,21 +574,24 @@ class Cart extends Base
     }
 
     /**
-     * Adds a new item to the cart
+     * Adds a new item to the cart.
      *
      * @param Product $product
-     * @param int $amount
+     * @param int     $amount
+     *
      * @return bool|Item
+     *
      * @throws \Exception
      */
     public function addItem(Product $product, $amount = 1)
     {
-        $this->prepare(TRUE);
+        $this->prepare(true);
+
         return $this->updateQuantity($product, $amount, true);
     }
 
     /**
-     * Removes a item from the cart
+     * Removes a item from the cart.
      *
      * @param Item $item
      */
@@ -587,11 +601,13 @@ class Cart extends Base
     }
 
     /**
-     * Modifies the quantity of a CartItem
+     * Modifies the quantity of a CartItem.
      *
      * @param Item $item
      * @param $amount
+     *
      * @return bool|Item
+     *
      * @throws \Exception
      */
     public function modifyItem(Item $item, $amount)
@@ -600,9 +616,10 @@ class Cart extends Base
     }
 
     /**
-     * Removes an existing PriceRule from the cart
+     * Removes an existing PriceRule from the cart.
      *
      * @return bool
+     *
      * @throws \Exception
      */
     public function removePriceRule()
@@ -618,9 +635,10 @@ class Cart extends Base
     }
 
     /**
-     * Adds a new PriceRule to the Cart
+     * Adds a new PriceRule to the Cart.
      *
      * @param \CoreShop\Model\Cart\PriceRule $priceRule
+     *
      * @throws \Exception
      */
     public function addPriceRule(PriceRule $priceRule)
@@ -635,7 +653,7 @@ class Cart extends Base
     }
 
     /**
-     * Returns Customers shipping address
+     * Returns Customers shipping address.
      *
      * @return Address|bool
      */
@@ -653,7 +671,7 @@ class Cart extends Base
     }
 
     /**
-     * Returns Customers billing address
+     * Returns Customers billing address.
      *
      * @return Address|bool
      */
@@ -671,145 +689,149 @@ class Cart extends Base
     }
 
     /**
-     * get customers taxation address
+     * get customers taxation address.
      *
      * @return bool|Address
      */
-    public function getCustomerAddressForTaxation() {
-        $taxationAddress = Configuration::get("SYSTEM.BASE.TAXATION.ADDRESS");
+    public function getCustomerAddressForTaxation()
+    {
+        $taxationAddress = Configuration::get('SYSTEM.BASE.TAXATION.ADDRESS');
 
-        if(!$taxationAddress) {
-            $taxationAddress = "shipping";
+        if (!$taxationAddress) {
+            $taxationAddress = 'shipping';
         }
 
-        if($taxationAddress === "shipping")
+        if ($taxationAddress === 'shipping') {
             return $this->getCustomerShippingAddress();
+        }
 
         return $this->getCustomerBillingAddress();
     }
 
     /**
-     * maintenance job
+     * maintenance job.
      */
-    public static function maintenance() {
-
-        $lastMaintenance = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.LAST_RUN");
+    public static function maintenance()
+    {
+        $lastMaintenance = Configuration::get('SYSTEM.CART.AUTO_CLEANUP.LAST_RUN');
 
         //initial.
-        if(is_null($lastMaintenance)) {
+        if (is_null($lastMaintenance)) {
             $lastMaintenance = time() - 90000; //t-25h
         }
 
         $timeDiff = time() - $lastMaintenance;
 
-        \Logger::log("CoreShop cart cleanup: start");
+        \Logger::log('CoreShop cart cleanup: start');
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
-        if($timeDiff > 24 * 60 * 60) {
-
+        if ($timeDiff > 24 * 60 * 60) {
             $cleanUpParams = array();
 
-            $days = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.OLDER_THAN_DAYS");
-            $anonCart = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.DELETE_ANONYMOUS");
-            $userCart = Configuration::get("SYSTEM.CART.AUTO_CLEANUP.DELETE_USER");
+            $days = Configuration::get('SYSTEM.CART.AUTO_CLEANUP.OLDER_THAN_DAYS');
+            $anonCart = Configuration::get('SYSTEM.CART.AUTO_CLEANUP.DELETE_ANONYMOUS');
+            $userCart = Configuration::get('SYSTEM.CART.AUTO_CLEANUP.DELETE_USER');
 
-            if(!is_null($days)) {
-                $cleanUpParams["olderThanDays"] = (int) $days;
+            if (!is_null($days)) {
+                $cleanUpParams['olderThanDays'] = (int) $days;
             }
-            if($anonCart) {
-                $cleanUpParams["deleteAnonymousCart"] = TRUE;
+            if ($anonCart) {
+                $cleanUpParams['deleteAnonymousCart'] = true;
             }
-            if($userCart) {
-                $cleanUpParams["deleteUserCart"] = TRUE;
+            if ($userCart) {
+                $cleanUpParams['deleteUserCart'] = true;
             }
 
             try {
                 $cleanUpCart = new CleanUpCart();
-                $cleanUpCart->setOptions( $cleanUpParams );
+                $cleanUpCart->setOptions($cleanUpParams);
 
-                if( !$cleanUpCart->hasErrors() ) {
+                if (!$cleanUpCart->hasErrors()) {
                     $elements = $cleanUpCart->getCartElements();
 
-                    if(count($elements) > 0) {
+                    if (count($elements) > 0) {
                         foreach ($elements as $cart) {
-                            $cleanUpCart->deleteCart( $cart );
-                            \Logger::log("CoreShop cart cleanup: remove cart (" . $cart->getId() . ")");
+                            $cleanUpCart->deleteCart($cart);
+                            \Logger::log('CoreShop cart cleanup: remove cart ('.$cart->getId().')');
                         }
                     }
 
-                    Configuration::set("SYSTEM.CART.AUTO_CLEANUP.LAST_RUN", time());
+                    Configuration::set('SYSTEM.CART.AUTO_CLEANUP.LAST_RUN', time());
                 }
-            } catch( \Exception $e )
-            {
-                \Logger::log("CoreShop cart cleanup error: " . $e->getMessage());
+            } catch (\Exception $e) {
+                \Logger::log('CoreShop cart cleanup error: '.$e->getMessage());
             }
-
         }
-
     }
 
     /**
      * returns array cart items
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return Item[]
      */
     public function getItems()
     {
-        throw new UnsupportedException("getItems is not supported for " . get_class($this));
+        throw new UnsupportedException('getItems is not supported for '.get_class($this));
     }
 
     /**
      * returns active price rule for cart
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return PriceRule
      */
     public function getPriceRule()
     {
-        throw new UnsupportedException("getPriceRule is not supported for " . get_class($this));
+        throw new UnsupportedException('getPriceRule is not supported for '.get_class($this));
     }
 
     /**
      * sets price rule for this cart
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @param $priceRule
+     *
      * @throws UnsupportedException
+     *
      * @return PriceRule
      */
     public function setPriceRule($priceRule)
     {
-        throw new UnsupportedException("setPriceRule is not supported for " . get_class($this));
+        throw new UnsupportedException('setPriceRule is not supported for '.get_class($this));
     }
 
     /**
      * returns user for this cart
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return User
      */
     public function getUser()
     {
-        throw new UnsupportedException("getUser is not supported for " . get_class($this));
+        throw new UnsupportedException('getUser is not supported for '.get_class($this));
     }
 
     /**
      * returns carrier for this cart
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return null|Carrier
      */
     public function getCarrier()
     {
-        throw new UnsupportedException("getCarrier is not supported for " . get_class($this));
+        throw new UnsupportedException('getCarrier is not supported for '.get_class($this));
     }
 
     /**
-     * Prepare to sleep
+     * Prepare to sleep.
      *
      * @return array
      */

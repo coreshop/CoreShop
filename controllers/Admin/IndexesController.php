@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,9 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Index;
 use Pimcore\Controller\Action\Admin;
 use Pimcore\Model\Object;
@@ -25,10 +22,10 @@ class CoreShop_Admin_IndexesController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
+        $notRestrictedActions = array('list');
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_indexes");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_indexes');
         }
     }
 
@@ -48,66 +45,66 @@ class CoreShop_Admin_IndexesController extends Admin
     protected function getTreeNodeConfig(Index $index)
     {
         $tmp = array(
-            "id" => $index->getId(),
-            "text" => $index->getName(),
-            "elementType" => "group",
-            "qtipCfg" => array(
-                "title" => "ID: " . $index->getId()
+            'id' => $index->getId(),
+            'text' => $index->getName(),
+            'elementType' => 'group',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$index->getId(),
             ),
-            "name" => $index->getName()
+            'name' => $index->getName(),
         );
 
-        $tmp["leaf"] = true;
-        $tmp["iconCls"] = "coreshop_icon_indexes";
-        $tmp["allowChildren"] = false;
+        $tmp['leaf'] = true;
+        $tmp['iconCls'] = 'coreshop_icon_indexes';
+        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $group = new Index();
             $group->setName($name);
-            $group->setType("mysql");
+            $group->setType('mysql');
             $group->setConfig(array());
             $group->save();
 
-            $this->_helper->json(array("success" => true, "data" => $group));
+            $this->_helper->json(array('success' => true, 'data' => $group));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $group = Index::getById($id);
 
         if ($group instanceof Index) {
             $data = get_object_vars($group);
             $data['classId'] = \CoreShop\Model\Product::classId();
 
-            $this->_helper->json(array("success" => true, "data" => $data));
+            $this->_helper->json(array('success' => true, 'data' => $data));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $index = Index::getById($id);
 
         if ($data && $index instanceof Index) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $indexType = ucfirst($data['type']);
 
-            $configClass = "\\CoreShop\\Model\\Index\\Config\\" . ucfirst($indexType);
+            $configClass = '\\CoreShop\\Model\\Index\\Config\\'.ucfirst($indexType);
 
             if (\Pimcore\Tool::classExists($configClass)) {
                 $config = new $configClass();
@@ -125,8 +122,8 @@ class CoreShop_Admin_IndexesController extends Admin
                         $class = null;
 
                         //Allow Column-Types to be declared in Template and/or Website
-                        $columnNamespace = "\\CoreShop\\Model\\Index\\Config\\Column\\";
-                        $columnClass = $columnNamespace . $indexType . "\\" . $objectType;
+                        $columnNamespace = '\\CoreShop\\Model\\Index\\Config\\Column\\';
+                        $columnClass = $columnNamespace.$indexType.'\\'.$objectType;
 
                         if (\Pimcore\Tool::classExists($columnClass)) {
                             $class = $columnClass;
@@ -134,7 +131,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
                         if (!$class) {
                             //Use fallback column
-                            throw new \Exception("No config implementation for column with type " . $objectType . " found");
+                            throw new \Exception('No config implementation for column with type '.$objectType.' found');
                         }
 
                         $columnObject = new $class();
@@ -153,11 +150,11 @@ class CoreShop_Admin_IndexesController extends Admin
 
                     $index->setConfig($config);
                 } else {
-                    throw new \Exception("Config class for type " . $data['type'] . ' not instanceof \CoreShop\Model\Index\Config');
+                    throw new \Exception('Config class for type '.$data['type'].' not instanceof \CoreShop\Model\Index\Config');
                 }
                 unset($data['config']);
             } else {
-                throw new \Exception("Config class for type " . $data['type'] . ' not found');
+                throw new \Exception('Config class for type '.$data['type'].' not found');
             }
 
             //Check for unique fieldnames
@@ -166,8 +163,8 @@ class CoreShop_Admin_IndexesController extends Admin
             foreach ($config->getColumns() as $col) {
                 if (in_array($col->getName(), $fieldNames)) {
                     $this->_helper->json(array(
-                        "success" => false,
-                        "message" => sprintf($this->view->translate("Duplicate fieldname '%s' found."), $col->getName())
+                        'success' => false,
+                        'message' => sprintf($this->view->translate("Duplicate fieldname '%s' found."), $col->getName()),
                     ));
                 }
 
@@ -179,24 +176,24 @@ class CoreShop_Admin_IndexesController extends Admin
 
             \CoreShop\IndexService::getIndexService()->getWorker($index->getName())->createOrUpdateIndexStructures();
 
-            $this->_helper->json(array("success" => true, "data" => $index));
+            $this->_helper->json(array('success' => true, 'data' => $index));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $group = Index::getById($id);
 
         if ($group instanceof Index) {
             $group->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 
     public function getTypesAction()
@@ -206,7 +203,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
         foreach ($types as $type) {
             $typesObject[] = array(
-                "name" => $type
+                'name' => $type,
             );
         }
 
@@ -215,31 +212,31 @@ class CoreShop_Admin_IndexesController extends Admin
 
     public function getClassDefinitionForFieldSelectionAction()
     {
-        $class = Object\ClassDefinition::getById(intval($this->getParam("id")));
+        $class = Object\ClassDefinition::getById(intval($this->getParam('id')));
         $fields = $class->getFieldDefinitions();
 
         $result = array(
-            "fields" => array(
-                "nodeLabel" => "fields",
-                "nodeType" => "object",
-                "childs" => array()
-            )
+            'fields' => array(
+                'nodeLabel' => 'fields',
+                'nodeType' => 'object',
+                'childs' => array(),
+            ),
         );
 
         foreach ($fields as $field) {
             if ($field instanceof Object\ClassDefinition\Data\Localizedfields) {
                 if (!is_array($result['localizedfields'])) {
                     $result['localizedfields'] = array(
-                        "nodeLabel" => "localizedfields",
-                        "nodeType" => "localizedfields",
-                        "childs" => array()
+                        'nodeLabel' => 'localizedfields',
+                        'nodeType' => 'localizedfields',
+                        'childs' => array(),
                     );
                 }
 
                 $localizedFields = $field->getFieldDefinitions();
 
                 foreach ($localizedFields as $localizedField) {
-                    $result['localizedfields']["childs"][] = $this->getFieldConfiguration($localizedField);
+                    $result['localizedfields']['childs'][] = $this->getFieldConfiguration($localizedField);
                 }
             } elseif ($field instanceof Object\ClassDefinition\Data\Objectbricks) {
                 $list = new Object\Objectbrick\Definition\Listing();
@@ -257,7 +254,7 @@ class CoreShop_Admin_IndexesController extends Admin
                                 $result[$key] = array();
                                 $result[$key]['nodeLabel'] = $key;
                                 $result[$key]['className'] = $key;
-                                $result[$key]['nodeType'] = "objectbricks";
+                                $result[$key]['nodeType'] = 'objectbricks';
                                 $result[$key]['childs'] = array();
 
                                 foreach ($fields as $field) {
@@ -277,7 +274,7 @@ class CoreShop_Admin_IndexesController extends Admin
                 $allowedGroupIds = $field->getAllowedGroupIds();
 
                 if ($allowedGroupIds) {
-                    $list->setCondition("ID in (" . implode(",", $allowedGroupIds) . ")");
+                    $list->setCondition('ID in ('.implode(',', $allowedGroupIds).')');
                 }
 
                 $list->load();
@@ -285,12 +282,12 @@ class CoreShop_Admin_IndexesController extends Admin
                 $groupConfigList = $list->getList();
 
                 foreach ($groupConfigList as $config) {
-                    $key = $config->getId() . ($config->getName() ? $config->getName() : "EMPTY");
+                    $key = $config->getId().($config->getName() ? $config->getName() : 'EMPTY');
 
                     $result[$key] = $this->getClassificationStoreGroupConfiguration($config);
                 }
             } else {
-                $result['fields']["childs"][] = $this->getFieldConfiguration($field);
+                $result['fields']['childs'][] = $this->getFieldConfiguration($field);
             }
         }
 
@@ -301,7 +298,7 @@ class CoreShop_Admin_IndexesController extends Admin
     {
         $result = array();
         $result['nodeLabel'] = $config->getName();
-        $result['nodeType'] = "classificationstore";
+        $result['nodeType'] = 'classificationstore';
         $result['childs'] = array();
 
         foreach ($config->getRelations() as $relation) {
@@ -320,22 +317,22 @@ class CoreShop_Admin_IndexesController extends Admin
     protected function getFieldConfiguration(Object\ClassDefinition\Data $field)
     {
         return array(
-            "name" => $field->getName(),
-            "fieldtype" => $field->getFieldtype(),
-            "title" => $field->getTitle(),
-            "tooltip" => $field->getTooltip()
+            'name' => $field->getName(),
+            'fieldtype' => $field->getFieldtype(),
+            'title' => $field->getTitle(),
+            'tooltip' => $field->getTooltip(),
         );
     }
 
     protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig)
     {
         return array(
-            "name" => $field->getName(),
-            "fieldtype" => $field->getType(),
-            "title" => $field->getName(),
-            "tooltip" => $field->getDescription(),
-            "keyConfigId" => $field->getId(),
-            "groupConfigId" => $groupConfig->getId()
+            'name' => $field->getName(),
+            'fieldtype' => $field->getType(),
+            'title' => $field->getName(),
+            'tooltip' => $field->getDescription(),
+            'keyConfigId' => $field->getId(),
+            'groupConfigId' => $groupConfig->getId(),
         );
     }
 
@@ -346,14 +343,14 @@ class CoreShop_Admin_IndexesController extends Admin
 
         foreach ($getters as $getter) {
             $result[] = array(
-                "type" => $getter,
-                "name" => $getter
+                'type' => $getter,
+                'name' => $getter,
             );
         }
 
         $this->_helper->json(array(
-            "success" => true,
-            "data" => $result
+            'success' => true,
+            'data' => $result,
         ));
     }
 
@@ -364,14 +361,14 @@ class CoreShop_Admin_IndexesController extends Admin
 
         foreach ($interpreters as $interpreter) {
             $result[] = array(
-                "type" => $interpreter,
-                "name" => $interpreter
+                'type' => $interpreter,
+                'name' => $interpreter,
             );
         }
 
         $this->_helper->json(array(
-            "success" => true,
-            "data" => $result
+            'success' => true,
+            'data' => $result,
         ));
     }
 }

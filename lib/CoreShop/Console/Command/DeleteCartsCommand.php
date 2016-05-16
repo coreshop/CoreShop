@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Console\Command;
 
 use Pimcore\Console\AbstractCommand;
@@ -19,15 +18,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-
 use CoreShop\Maintenance\CleanUpCart;
 
 class DeleteCartsCommand extends AbstractCommand
 {
     /**
-     * configure command
+     * configure command.
      */
     protected function configure()
     {
@@ -37,7 +33,7 @@ class DeleteCartsCommand extends AbstractCommand
             ->addOption(
                 'days', 'days',
                 InputOption::VALUE_OPTIONAL,
-                "Older than"
+                'Older than'
             )
             ->addOption(
                 'anonymous', 'a',
@@ -54,59 +50,58 @@ class DeleteCartsCommand extends AbstractCommand
                 InputOption::VALUE_NONE,
                 'Dry-run'
             );
-        ;
     }
 
     /**
-     * execute command
+     * execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @throws \Exception
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dryRun = $input->getOption("dry-run");
+        $dryRun = $input->getOption('dry-run');
 
-        if($dryRun) {
-            $output->writeLn("==========================================");
-            $output->writeLn("DRY RUN");
-            $output->writeLn("==========================================");
+        if ($dryRun) {
+            $output->writeLn('==========================================');
+            $output->writeLn('DRY RUN');
+            $output->writeLn('==========================================');
         }
 
         $cleanUpParams = array();
 
-        $days = $input->getOption("days");
+        $days = $input->getOption('days');
 
-        if(isset($days)) {
-            $cleanUpParams["olderThanDays"] = (int) $input->getOption("days");
+        if (isset($days)) {
+            $cleanUpParams['olderThanDays'] = (int) $input->getOption('days');
         }
 
-        if($input->getOption("anonymous")) {
-            $cleanUpParams["deleteAnonymousCart"] = TRUE;
+        if ($input->getOption('anonymous')) {
+            $cleanUpParams['deleteAnonymousCart'] = true;
         }
-        if($input->getOption("user")) {
-            $cleanUpParams["deleteUserCart"] = TRUE;
+        if ($input->getOption('user')) {
+            $cleanUpParams['deleteUserCart'] = true;
         }
 
         $cleanUpCart = new CleanUpCart();
-        $cleanUpCart->setOptions( $cleanUpParams );
+        $cleanUpCart->setOptions($cleanUpParams);
 
-        if( $cleanUpCart->hasErrors() )
-        {
-            foreach( $cleanUpCart->getErrors() as $error)
-            {
-                $this->output->writeln("<error>" . $error. "</error>");
+        if ($cleanUpCart->hasErrors()) {
+            foreach ($cleanUpCart->getErrors() as $error) {
+                $this->output->writeln('<error>'.$error.'</error>');
             }
 
-            return FALSE;
+            return false;
         }
 
         $elements = $cleanUpCart->getCartElements();
 
-        if(count($elements) > 0) {
-            $output->writeln("found " . count($elements) . " carts to delete.");
+        if (count($elements) > 0) {
+            $output->writeln('found '.count($elements).' carts to delete.');
 
             $progress = new ProgressBar($output, count($elements));
             $progress->start();
@@ -115,16 +110,14 @@ class DeleteCartsCommand extends AbstractCommand
                 $progress->advance();
 
                 if (!$dryRun) {
-                    $cleanUpCart->deleteCart( $cart );
+                    $cleanUpCart->deleteCart($cart);
                 }
             }
 
             $progress->finish();
             $output->writeLn("\nCleanUp finished.");
+        } else {
+            $output->writeln('No carts found.');
         }
-        else {
-            $output->writeln("No carts found.");
-        }
-
     }
 }

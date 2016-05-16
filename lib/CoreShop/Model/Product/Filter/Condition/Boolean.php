@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
@@ -22,7 +21,7 @@ class Boolean extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "boolean";
+    public $type = 'boolean';
 
     /**
      * @var mixed
@@ -46,11 +45,12 @@ class Boolean extends AbstractCondition
     }
 
     /**
-     * render HTML for filter
+     * render HTML for filter.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
+     *
      * @return mixed
      */
     public function render(Filter $filter, Listing $list, $currentFilter)
@@ -58,48 +58,45 @@ class Boolean extends AbstractCondition
         $rawValues = array();
         $currentValues = $currentFilter[\Pimcore\File::getValidFilename($this->getLabel())];
 
-        foreach($this->getField() as $field)
-        {
-            $fieldRawValues = $list->getGroupByValues($field, TRUE);
+        foreach ($this->getField() as $field) {
+            $fieldRawValues = $list->getGroupByValues($field, true);
 
             if (!is_array($fieldRawValues) || !isset($currentValues[ $field ])) {
                 continue;
             }
 
-            foreach($fieldRawValues as $fieldRawValue) {
+            foreach ($fieldRawValues as $fieldRawValue) {
+                $dbVal = (int) $fieldRawValue['value'];
 
-                $dbVal = (int) $fieldRawValue["value"];
-
-                if( $dbVal === 1) {
-
+                if ($dbVal === 1) {
                     $rawValues[] = array(
                         'value' => $field,
-                        'count' => $fieldRawValue['count']
+                        'count' => $fieldRawValue['count'],
                     );
                     break;
                 }
             }
-
         }
 
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
         return $this->getView()->partial($script, array(
-            "label" => $this->getLabel(),
-            "currentValues" => $currentValues,
-            "values" => $rawValues,
-            "fieldname" => $this->getField()
+            'label' => $this->getLabel(),
+            'currentValues' => $currentValues,
+            'values' => $rawValues,
+            'fieldname' => $this->getField(),
         ));
     }
 
     /**
-     * add Condition to Productlist
+     * add Condition to Productlist.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
+     *
      * @return array $currentFilter
      */
     public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
@@ -136,22 +133,22 @@ class Boolean extends AbstractCondition
         }
 
         if (!empty($sqlFilter)) {
-            $fieldName = $isPrecondition ? "PRECONDITION_" . $name : $name;
+            $fieldName = $isPrecondition ? 'PRECONDITION_'.$name : $name;
 
-            $condition = "(";
+            $condition = '(';
 
             $c = 0;
 
             foreach ($sqlFilter as $valName => $boolVal) {
-                $condition .= "TRIM(`" . $valName . "`) = " . (int) $boolVal;
-                if ($c < count($sqlFilter)-1) {
-                    $condition .= " AND ";
+                $condition .= 'TRIM(`'.$valName.'`) = '.(int) $boolVal;
+                if ($c < count($sqlFilter) - 1) {
+                    $condition .= ' AND ';
                 }
 
-                $c++;
+                ++$c;
             }
 
-            $condition .= ")";
+            $condition .= ')';
 
             if (!empty($condition)) {
                 $list->addCondition($condition, $fieldName);

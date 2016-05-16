@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,7 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
-use Pimcore\Model\Document;
 
 class TaxRule extends AbstractModel
 {
@@ -71,17 +66,6 @@ class TaxRule extends AbstractModel
     public $behavior;
 
     /**
-     * get TaxRule by ID
-     *
-     * @param $id
-     * @return TaxRule|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
      * @return int
      */
     public function getId()
@@ -123,6 +107,7 @@ class TaxRule extends AbstractModel
 
     /**
      * @param int $taxRuleGroupId
+     *
      * @throws \Exception
      */
     public function setTaxRuleGroupId($taxRuleGroupId)
@@ -144,12 +129,13 @@ class TaxRule extends AbstractModel
 
     /**
      * @param int|TaxRuleGroup $taxRuleGroup
+     *
      * @throws \Exception
      */
     public function setTaxRuleGroup($taxRuleGroup)
     {
         if (!$taxRuleGroup instanceof TaxRuleGroup) {
-            throw new \Exception("\$taxRuleGroup must be instance of TaxRuleGroup");
+            throw new \Exception('$taxRuleGroup must be instance of TaxRuleGroup');
         }
 
         $this->taxRuleGroup = $taxRuleGroup;
@@ -166,6 +152,7 @@ class TaxRule extends AbstractModel
 
     /**
      * @param int $countryId
+     *
      * @throws \Exception
      */
     public function setCountryId($countryId)
@@ -187,12 +174,13 @@ class TaxRule extends AbstractModel
 
     /**
      * @param int|Country $country
+     *
      * @throws \Exception
      */
     public function setCountry($country)
     {
         if (!$country instanceof Country) {
-            throw new \Exception("\$country must be instance of Country");
+            throw new \Exception('$country must be instance of Country');
         }
 
         $this->country = $country;
@@ -209,6 +197,7 @@ class TaxRule extends AbstractModel
 
     /**
      * @param int $stateId
+     *
      * @throws \Exception
      */
     public function setStateId($stateId)
@@ -230,12 +219,13 @@ class TaxRule extends AbstractModel
 
     /**
      * @param int|State $state
+     *
      * @throws \Exception
      */
     public function setState($state)
     {
         if (!$state instanceof State) {
-            throw new \Exception("\$state must be instance of State");
+            throw new \Exception('$state must be instance of State');
         }
 
         $this->state = $state;
@@ -252,6 +242,7 @@ class TaxRule extends AbstractModel
 
     /**
      * @param int $taxId
+     *
      * @throws \Exception
      */
     public function setTaxId($taxId)
@@ -273,12 +264,13 @@ class TaxRule extends AbstractModel
 
     /**
      * @param int|Tax $tax
+     *
      * @throws \Exception
      */
     public function setTax($tax)
     {
         if (!$tax instanceof Tax) {
-            throw new \Exception("\$tax must be instance of Tax");
+            throw new \Exception('$tax must be instance of Tax');
         }
 
         $this->tax = $tax;

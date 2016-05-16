@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
@@ -33,7 +32,7 @@ class Amount extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "amount";
+    public $type = 'amount';
 
     /**
      * @return mixed
@@ -68,12 +67,14 @@ class Amount extends AbstractCondition
     }
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
-     * @param Cart $cart
-     * @param PriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
@@ -87,7 +88,7 @@ class Amount extends AbstractCondition
 
             if ($minAmount > $cartTotal) {
                 if ($throwException) {
-                    throw new \Exception("You have not reached the minimum amount required to use this voucher");
+                    throw new \Exception('You have not reached the minimum amount required to use this voucher');
                 } else {
                     return false;
                 }

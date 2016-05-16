@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,16 +11,14 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Library\Deposit;
 
 class Compare extends Deposit
 {
-
     /**
-     * Limit for how many elements are allowed
+     * Limit for how many elements are allowed.
      *
      * @var int
      */
@@ -35,7 +33,7 @@ class Compare extends Deposit
     }
 
     /**
-     * set limit how many elements are allowed
+     * set limit how many elements are allowed.
      *
      * @param int $maxElements
      */
@@ -44,7 +42,7 @@ class Compare extends Deposit
         $this->setLimit($maxElements);
     }
     /**
-     * Calculates the total for the CartItem
+     * Calculates the total for the CartItem.
      *
      * @return mixed
      */

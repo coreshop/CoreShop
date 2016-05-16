@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 use CoreShop\Controller\Action;
 
 class CoreShop_ContentController extends Action
@@ -23,10 +22,10 @@ class CoreShop_ContentController extends Action
     public function contactAction()
     {
         if ($this->getRequest()->isPost()) {
-            $name = "";
-            $mail = "";
-            $subject = "";
-            $message = "";
+            $name = '';
+            $mail = '';
+            $subject = '';
+            $message = '';
         }
     }
 }

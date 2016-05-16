@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
@@ -22,16 +21,17 @@ class Select extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "select";
+    public $type = 'select';
 
     /**
-     * add Condition to Product list
+     * add Condition to Product list.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
+     *
      * @return array $currentFilter
      */
     public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
@@ -52,9 +52,9 @@ class Select extends AbstractCondition
 
         if (!empty($value)) {
             if ($isPrecondition) {
-                $list->addCondition("TRIM(`" . $this->getField() . "`) = " . $list->quote($value), "PRECONDITION_" . $this->getField());
+                $list->addCondition('TRIM(`'.$this->getField().'`) = '.$list->quote($value), 'PRECONDITION_'.$this->getField());
             } else {
-                $list->addCondition("TRIM(`" . $this->getField() . "`) = " . $list->quote($value), $this->getField());
+                $list->addCondition('TRIM(`'.$this->getField().'`) = '.$list->quote($value), $this->getField());
             }
         }
 

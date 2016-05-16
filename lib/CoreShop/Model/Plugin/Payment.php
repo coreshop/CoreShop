@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Plugin;
 
 use CoreShop\Exception\UnsupportedException;
@@ -22,14 +21,13 @@ use CoreShop\Model\Order\State;
 use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Plugin;
-use CoreShop\Tool;
 use Pimcore\Date;
 use Pimcore\Model\Object\Service;
 
 abstract class Payment implements AbstractPlugin
 {
     /**
-     * Check if available for cart
+     * Check if available for cart.
      *
      * @param Cart $cart
      * @returns boolean if available
@@ -40,10 +38,10 @@ abstract class Payment implements AbstractPlugin
     }
 
     /**
-     * Get Payment Fee
+     * Get Payment Fee.
      *
      * @param Cart $cart
-     * @param boolean $useTaxes
+     * @param bool $useTaxes
      *
      * @return int
      */
@@ -53,12 +51,14 @@ abstract class Payment implements AbstractPlugin
     }
 
     /**
-     * get payment fee tax
+     * get payment fee tax.
      *
      * @param Cart $cart
+     *
      * @return float
      */
-    public function getPaymentFeeTax(Cart $cart) {
+    public function getPaymentFeeTax(Cart $cart)
+    {
         $taxCalculator = $this->getPaymentTaxCalculator($cart);
 
         if ($taxCalculator) {
@@ -69,9 +69,10 @@ abstract class Payment implements AbstractPlugin
     }
 
     /**
-     * Get Payment Fee Tax Rate
+     * Get Payment Fee Tax Rate.
      *
      * @param Cart $cart
+     *
      * @return float
      */
     public function getPaymentFeeTaxRate(Cart $cart)
@@ -86,9 +87,10 @@ abstract class Payment implements AbstractPlugin
     }
 
     /**
-     * get payment taxes
+     * get payment taxes.
      *
      * @param Cart $cart
+     *
      * @return float
      */
     public function getPaymentFeeTaxesAmount(Cart $cart)
@@ -105,49 +107,53 @@ abstract class Payment implements AbstractPlugin
     }
 
     /**
-     * get tax calculator for this payment provider
+     * get tax calculator for this payment provider.
      *
      * @param Cart $cart
+     *
      * @return null|TaxCalculator
      */
-    public function getPaymentTaxCalculator(Cart $cart) {
-        return null;
+    public function getPaymentTaxCalculator(Cart $cart)
+    {
+        return;
     }
 
     /**
-     * Process Payment
+     * Process Payment.
      *
      * @param Order $order
+     *
      * @throws UnsupportedException
      */
     public function process(Order $order)
     {
-        throw new UnsupportedException("");
+        throw new UnsupportedException('');
     }
 
     /**
-     * Creates order after successfull payment
+     * Creates order after successfull payment.
      *
-     * @param Cart $cart
+     * @param Cart  $cart
      * @param State $state
      * @param $totalPayed
      * @param $language
+     *
      * @return Order
      */
     public function createOrder(Cart $cart, State $state, $totalPayed = 0, $language = null)
     {
-        \Logger::info("Create order for cart " . $cart->getId());
+        \Logger::info('Create order for cart '.$cart->getId());
 
         $orderNumber = Order::getNextOrderNumber();
 
         if (is_null($language)) {
-            $language = \Zend_Registry::get("Zend_Locale");
+            $language = \Zend_Registry::get('Zend_Locale');
         }
 
         $order = Order::create();
         $order->setKey(\Pimcore\File::getValidFilename($orderNumber));
         $order->setOrderNumber($orderNumber);
-        $order->setParent(Service::createFolderByPath('/coreshop/orders/' . date('Y/m/d')));
+        $order->setParent(Service::createFolderByPath('/coreshop/orders/'.date('Y/m/d')));
         $order->setPublished(true);
         $order->setLang($language);
         $order->setCustomer($cart->getUser());
@@ -179,19 +185,19 @@ abstract class Payment implements AbstractPlugin
         $order->save();
         $order->importCart($cart);
 
-        if($totalPayed > 0) {
+        if ($totalPayed > 0) {
             $order->createPayment($this, $totalPayed, true);
         }
 
         $state->processStep($order);
 
-        Plugin::actionHook("order.created", array("order" => $order));
+        Plugin::actionHook('order.created', array('order' => $order));
 
         return $order;
     }
 
     /**
-     * assemble route with zend router
+     * assemble route with zend router.
      *
      * @param $module string module name
      * @param $action string action name
@@ -203,6 +209,6 @@ abstract class Payment implements AbstractPlugin
         $controller = \Zend_Controller_Front::getInstance();
         $router = $controller->getRouter();
 
-        return $router->assemble(array("module" => $module, "action" => $action, "lang" => (string)\Zend_Registry::get("Zend_Locale")), "coreshop_payment");
+        return $router->assemble(array('module' => $module, 'action' => $action, 'lang' => (string) \Zend_Registry::get('Zend_Locale')), 'coreshop_payment');
     }
 }

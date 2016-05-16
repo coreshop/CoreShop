@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,15 +12,14 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Messaging\Thread;
 
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Messaging\Thread;
 
-class State extends AbstractModel {
-
-    protected $localizedValues = array("name");
+class State extends AbstractModel
+{
+    protected $localizedValues = array('name');
 
     /**
      * @var int
@@ -38,19 +37,21 @@ class State extends AbstractModel {
     public $color;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $finished;
 
     /**
-     * Return Threads List
+     * Return Threads List.
      *
      * @return \CoreShop\Model\Listing\AbstractListing
+     *
      * @throws \CoreShop\Exception
      */
-    public function getThreadsList() {
-        $list = Thread::getList();
-        $list->setCondition("statusId = ?", array($this->getId()));
+    public function getThreadsList()
+    {
+        $list = new Thread\Listing();
+        $list->setCondition('statusId = ?', array($this->getId()));
 
         return $list;
     }
@@ -73,11 +74,12 @@ class State extends AbstractModel {
 
     /**
      * @param string $language language
+     *
      * @return string
      */
     public function getName($language = null)
     {
-        return $this->getLocalizedFields()->getLocalizedValue("name", $language);
+        return $this->getLocalizedFields()->getLocalizedValue('name', $language);
     }
 
     /**
@@ -86,7 +88,7 @@ class State extends AbstractModel {
      */
     public function setName($name, $language = null)
     {
-        $this->getLocalizedFields()->setLocalizedValue("name", $name, $language);
+        $this->getLocalizedFields()->setLocalizedValue('name', $name, $language);
     }
 
     /**
@@ -106,7 +108,7 @@ class State extends AbstractModel {
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getFinished()
     {
@@ -114,7 +116,7 @@ class State extends AbstractModel {
     }
 
     /**
-     * @param boolean $finished
+     * @param bool $finished
      */
     public function setFinished($finished)
     {

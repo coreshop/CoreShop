@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart;
 
 use CoreShop\Model\AbstractModel;
@@ -21,19 +20,21 @@ use CoreShop\Tool;
 class PriceRule extends AbstractModel
 {
     /**
-     * possible types of a condition
+     * possible types of a condition.
+     *
      * @var array
      */
-    public static $availableConditions = array("customer", "timeSpan", "amount", "totalAvailable", "totalPerCustomer", "country", "product", "category", "customerGroup", "zone");
+    public static $availableConditions = array('customer', 'timeSpan', 'amount', 'totalAvailable', 'totalPerCustomer', 'country', 'product', 'category', 'customerGroup', 'zone');
 
     /**
-     * possible types of a action
+     * possible types of a action.
+     *
      * @var array
      */
-    public static $availableActions = array("freeShipping", "discountAmount", "discountPercent", "gift");
+    public static $availableActions = array('freeShipping', 'discountAmount', 'discountPercent', 'gift');
 
     /**
-     * Add Condition Type
+     * Add Condition Type.
      *
      * @param $condition
      */
@@ -45,7 +46,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * Add Action Type
+     * Add Action Type.
      *
      * @param $action
      */
@@ -82,12 +83,12 @@ class PriceRule extends AbstractModel
     public $description;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $active;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $highlight;
 
@@ -102,29 +103,19 @@ class PriceRule extends AbstractModel
     public $actions;
 
     /**
-     * Get PriceRule by ID
-     *
-     * @param $id
-     * @return PriceRule|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get PriceRule by Code
+     * Get PriceRule by Code.
      *
      * @param $code
+     *
      * @return PriceRule|null
      */
     public static function getByCode($code)
     {
-        return parent::getByField("code", $code);
+        return parent::getByField('code', $code);
     }
 
     /**
-     * Get al PriceRules
+     * Get al PriceRules.
      *
      * @return array
      */
@@ -136,7 +127,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * Get public PriceRules
+     * Get public PriceRules.
      *
      * @return array
      */
@@ -153,7 +144,7 @@ class PriceRule extends AbstractModel
 
         foreach ($priceRules as $priceRule) {
             if ($priceRule->checkValidity($cart, false, true)) {
-                if ($cart->getPriceRule() instanceof PriceRule && $priceRule->getId() == $cart->getPriceRule()->getId()) {
+                if ($cart->getPriceRule() instanceof self && $priceRule->getId() == $cart->getPriceRule()->getId()) {
                     continue;
                 }
 
@@ -165,7 +156,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * Remove default PriceRule from Cart
+     * Remove default PriceRule from Cart.
      *
      * @param Cart|null $cart
      */
@@ -175,7 +166,7 @@ class PriceRule extends AbstractModel
             $cart = Tool::prepareCart();
         }
 
-        if ($cart->getPriceRule() instanceof PriceRule) {
+        if ($cart->getPriceRule() instanceof self) {
             if (!$cart->getPriceRule()->checkValidity($cart, false, true)) {
                 $cart->removePriceRule();
             }
@@ -183,9 +174,10 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * Add default PriceRule to Cart
+     * Add default PriceRule to Cart.
      *
      * @param Cart|null $cart
+     *
      * @return bool
      */
     public static function autoAddToCart(Cart $cart = null)
@@ -201,7 +193,7 @@ class PriceRule extends AbstractModel
             $priceRules = $priceRules->getData();
 
             foreach ($priceRules as $priceRule) {
-                if ($priceRule instanceof PriceRule) {
+                if ($priceRule instanceof self) {
                     if ($priceRule->checkValidity($cart, false)) {
                         $cart->addPriceRule($priceRule);
                     }
@@ -215,11 +207,12 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * Check if PriceRule is Valid for Cart
+     * Check if PriceRule is Valid for Cart.
      *
-     * @param Cart $cart
+     * @param Cart       $cart
      * @param bool|false $throwException
      * @param bool|false $alreadyInCart
+     *
      * @return bool
      */
     public function checkValidity(Cart $cart = null, $throwException = false, $alreadyInCart = false)
@@ -247,14 +240,15 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * Applies Rules to Cart
+     * Applies Rules to Cart.
      * 
      * @param Cart $cart
      */
     public function applyRules(Cart $cart)
     {
-        if(is_null($cart))
+        if (is_null($cart)) {
             $cart = Tool::prepareCart();
+        }
 
         foreach ($this->getActions() as $action) {
             if ($action instanceof PriceRule\Action\AbstractAction) {
@@ -264,7 +258,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * Removes Rules from Cart
+     * Removes Rules from Cart.
      */
     public function unApplyRules()
     {
@@ -278,7 +272,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * Get Discount for PriceRule
+     * Get Discount for PriceRule.
      *
      * @return int
      */
@@ -298,7 +292,7 @@ class PriceRule extends AbstractModel
         return $discount;
     }
 
-        /**
+    /**
      * @return mixed
      */
     public function getId()
@@ -363,7 +357,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getActive()
     {
@@ -371,7 +365,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * @param boolean $active
+     * @param bool $active
      */
     public function setActive($active)
     {
@@ -435,7 +429,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getHighlight()
     {
@@ -443,7 +437,7 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * @param boolean $highlight
+     * @param bool $highlight
      */
     public function setHighlight($highlight)
     {

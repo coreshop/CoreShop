@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,27 +11,25 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Base;
 use CoreShop\Model\Order;
 
 /**
- * Class Item
- * @package CoreShop\Model\Order
+ * Class Item.
  */
 class Item extends Base
 {
     /**
-     * Pimcore Object Class
+     * Pimcore Object Class.
      *
      * @var string
      */
-    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopOrderItem";
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopOrderItem';
 
     /**
-     * Calculate Total of OrderItem without tax
+     * Calculate Total of OrderItem without tax.
      *
      * @return float
      */
@@ -39,9 +37,9 @@ class Item extends Base
     {
         return $this->getAmount() * $this->getRetailPrice();
     }
-    
+
     /**
-     * Get Order for OrderItem
+     * Get Order for OrderItem.
      *
      * @return null|\Pimcore\Model\Object\AbstractObject
      */

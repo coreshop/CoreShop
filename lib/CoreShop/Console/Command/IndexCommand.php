@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Console\Command;
 
 use CoreShop\IndexService;
@@ -19,13 +18,12 @@ use CoreShop\Model\Product;
 use Pimcore\Console\AbstractCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class IndexCommand extends AbstractCommand
 {
     /**
-     * configure command
+     * configure command.
      */
     protected function configure()
     {
@@ -35,9 +33,9 @@ class IndexCommand extends AbstractCommand
     }
 
     /**
-     * Execute command
+     * Execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int
@@ -50,7 +48,7 @@ class IndexCommand extends AbstractCommand
 
         $steps = count($allProducts);
 
-        $this->output->writeln("<info>Found ".count($allProducts)." Products to index</info>");
+        $this->output->writeln('<info>Found '.count($allProducts).' Products to index</info>');
 
         $progress = new ProgressBar($output, $steps);
         $progress->start();
@@ -59,7 +57,7 @@ class IndexCommand extends AbstractCommand
             IndexService::getIndexService()->updateIndex($product);
             $progress->advance();
         }
-        $this->output->writeln("");
-        $this->output->writeln("<info>Done</info>");
+        $this->output->writeln('');
+        $this->output->writeln('<info>Done</info>');
     }
 }

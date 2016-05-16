@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Listing;
 
 use Pimcore\Model;
@@ -19,7 +18,7 @@ use Pimcore\Model;
 class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Paginator_Adapter_Interface, \Zend_Paginator_AdapterAggregate, \Iterator
 {
     /**
-     * List of PriceRule
+     * List of PriceRule.
      *
      * @var array
      */
@@ -32,26 +31,28 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
 
     /**
      * do not use the localized views for this list (in the case the class contains localized fields),
-     * conditions on localized fields are not possible
+     * conditions on localized fields are not possible.
+     *
      * @var bool
      */
     public $ignoreLocalizedFields = false;
 
     /**
-     * List of valid order keys
+     * List of valid order keys.
      *
      * @var array
      */
     public $validOrderKeys = array(
-        "id",
-        "active"
+        'id',
+        'active',
     );
 
     /**
-     * Test if the passed key is valid
+     * Test if the passed key is valid.
      *
      * @param string $key
-     * @return boolean
+     *
+     * @return bool
      */
     public function isValidOrderKey($key)
     {
@@ -66,12 +67,12 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
         if ($this->data === null) {
             $this->load();
         }
+
         return $this->data;
     }
 
     /**
      * @param array $data
-     * @return void
      */
     public function setData($data)
     {
@@ -79,12 +80,11 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     *
-     * Methods for \Zend_Paginator_Adapter_Interface
+     * Methods for \Zend_Paginator_Adapter_Interface.
      */
 
     /**
-     * get total count
+     * get total count.
      *
      * @return mixed
      */
@@ -94,21 +94,23 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * get all items
+     * get all items.
      *
      * @param int $offset
      * @param int $itemCountPerPage
+     *
      * @return mixed
      */
     public function getItems($offset, $itemCountPerPage)
     {
         $this->setOffset($offset);
         $this->setLimit($itemCountPerPage);
+
         return $this->load();
     }
 
     /**
-     * Get Paginator Adapter
+     * Get Paginator Adapter.
      *
      * @return $this
      */
@@ -118,10 +120,9 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * Set Locale
+     * Set Locale.
      *
      * @param mixed $locale
-     * @return void
      */
     public function setLocale($locale)
     {
@@ -129,7 +130,7 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * Get Locale
+     * Get Locale.
      *
      * @return string|\Zend_Locale
      */
@@ -139,10 +140,9 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * Set ignored localized fields
+     * Set ignored localized fields.
      *
      * @param bool $ignoreLocalizedFields
-     * @return void
      */
     public function setIgnoreLocalizedFields($ignoreLocalizedFields)
     {
@@ -150,7 +150,7 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * Get Ignored Localized Fields
+     * Get Ignored Localized Fields.
      *
      * @return bool
      */
@@ -160,11 +160,11 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * Methods for Iterator
+     * Methods for Iterator.
      */
 
     /**
-     * Rewind
+     * Rewind.
      */
     public function rewind()
     {
@@ -173,7 +173,7 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     }
 
     /**
-     * current
+     * current.
      *
      * @return mixed
      */
@@ -181,11 +181,12 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     {
         $this->getData();
         $var = current($this->data);
+
         return $var;
     }
 
     /**
-     * key
+     * key.
      *
      * @return mixed
      */
@@ -193,11 +194,12 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     {
         $this->getData();
         $var = key($this->data);
+
         return $var;
     }
 
     /**
-     * next
+     * next.
      *
      * @return mixed
      */
@@ -205,11 +207,12 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     {
         $this->getData();
         $var = next($this->data);
+
         return $var;
     }
 
     /**
-     * valid
+     * valid.
      *
      * @return bool
      */
@@ -217,6 +220,7 @@ class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Pag
     {
         $this->getData();
         $var = $this->current() !== false;
+
         return $var;
     }
 }

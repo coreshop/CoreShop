@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,24 +11,21 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Model\Product;
 
 class AbstractInterpreter
 {
-
     /**
-     * defined getters
+     * defined getters.
      *
      * @var array
      */
-    protected static $interpreters = array("Object");
+    protected static $interpreters = array('Object');
 
     /**
-     * Add Interpreter Class
+     * Add Interpreter Class.
      *
      * @param string $interpreter
      */
@@ -40,7 +37,7 @@ class AbstractInterpreter
     }
 
     /**
-     * Get all Interpreter Classes
+     * Get all Interpreter Classes.
      *
      * @return array
      */
@@ -50,15 +47,17 @@ class AbstractInterpreter
     }
 
     /**
-     * interpret value
+     * interpret value.
      *
      * @param mixed $value
      * @param array $config
+     *
      * @return mixed
+     *
      * @throws UnsupportedException
      */
     public function interpret($value, $config = null)
     {
-        throw new UnsupportedException("Not implemented in abstract");
+        throw new UnsupportedException('Not implemented in abstract');
     }
 }

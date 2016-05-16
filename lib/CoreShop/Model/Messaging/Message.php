@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,25 +12,22 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Messaging;
 
 use CoreShop\Model\AbstractModel;
-use CoreShop\Model\Configuration;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 use Pimcore\Model\Document\Email;
-use Pimcore\Model\User;
 
-class Message extends AbstractModel {
-
+class Message extends AbstractModel
+{
     /**
      * @var int
      */
     public $id;
 
     /**
-     * @var $id
+     * @var
      */
     public $threadId;
 
@@ -48,9 +45,9 @@ class Message extends AbstractModel {
      * @var string
      */
     public $message;
-    
+
     /**
-     * @var boolean
+     * @var bool
      */
     public $read;
 
@@ -60,32 +57,34 @@ class Message extends AbstractModel {
     public $creationDate;
 
     /**
-     * Send email to recipient with Message
+     * Send email to recipient with Message.
      *
      * @param Document $mailDocument
-     * @param string $recipient
+     * @param string   $recipient
+     *
      * @throws \Exception
      */
-    public function sendNotification(Document $mailDocument, $recipient) {
-        if($mailDocument instanceof Email) {
+    public function sendNotification(Document $mailDocument, $recipient)
+    {
+        if ($mailDocument instanceof Email) {
             $mail = new Mail();
             $mail->setDocument($mailDocument);
-            $mail->setParams(array("message" => $this->getMessage(), "messageObject" => $this));
+            $mail->setParams(array('message' => $this->getMessage(), 'messageObject' => $this));
             $mail->setEnableLayoutOnPlaceholderRendering(false);
             $mail->addTo($recipient);
             $mail->send();
-        }
-        else {
-            \Logger::warn("Email Document for Messages not found!");
+        } else {
+            \Logger::warn('Email Document for Messages not found!');
         }
     }
 
     /**
-     * Save Message
+     * Save Message.
      */
-    public function save() {
-        if(!$this->getId()) {
-            if(!$this->getCreationDate()) {
+    public function save()
+    {
+        if (!$this->getId()) {
+            if (!$this->getCreationDate()) {
                 $this->setCreationDate(time());
             }
         }
@@ -130,7 +129,7 @@ class Message extends AbstractModel {
      */
     public function getThread()
     {
-        if(!$this->thread instanceof Thread) {
+        if (!$this->thread instanceof Thread) {
             $this->thread = Thread::getById($this->threadId);
         }
 
@@ -139,11 +138,12 @@ class Message extends AbstractModel {
 
     /**
      * @param Thread $thread
+     *
      * @throws \Exception
      */
     public function setThread($thread)
     {
-        if(!$thread instanceof Thread) {
+        if (!$thread instanceof Thread) {
             throw new \Exception("$thread must be instance of Thread");
         }
 
@@ -184,7 +184,7 @@ class Message extends AbstractModel {
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getRead()
     {
@@ -192,7 +192,7 @@ class Message extends AbstractModel {
     }
 
     /**
-     * @param boolean $read
+     * @param bool $read
      */
     public function setRead($read)
     {

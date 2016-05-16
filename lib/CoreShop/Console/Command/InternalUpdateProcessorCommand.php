@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Console\Command;
 
 use Pimcore\Console\AbstractCommand;
@@ -22,49 +21,49 @@ use CoreShop\Update;
 class InternalUpdateProcessorCommand extends AbstractCommand
 {
     /**
-     * configure command
+     * configure command.
      */
     protected function configure()
     {
         $this
             ->setName('coreshop:internal:update-processor')
             ->setDescription('For internal use only')
-            ->addArgument("config");
+            ->addArgument('config');
     }
 
     /**
-     * Execute command
+     * Execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $status = ["success" => true];
-        $config = $input->getArgument("config");
+        $status = ['success' => true];
+        $config = $input->getArgument('config');
 
         if ($config) {
             $job = json_decode($config, true);
 
             if (is_array($job)) {
-                if (isset($job["dry-run"])) {
+                if (isset($job['dry-run'])) {
                     // do not do anything here
-                    \Logger::info("skipped update job because it is in dry-run mode", $job);
-                } elseif ($job["type"] == "deleteFile") {
-                    Update::deleteData($job["url"]);
-                } elseif ($job["type"] == "files") {
-                    Update::installData($job["revision"]);
-                } elseif ($job["type"] == "clearcache") {
+                    \Logger::info('skipped update job because it is in dry-run mode', $job);
+                } elseif ($job['type'] == 'deleteFile') {
+                    Update::deleteData($job['url']);
+                } elseif ($job['type'] == 'files') {
+                    Update::installData($job['revision']);
+                } elseif ($job['type'] == 'clearcache') {
                     \Pimcore\Cache::clearAll();
-                } elseif ($job["type"] == "preupdate") {
-                    $status = Update::executeScript($job["revision"], "preupdate");
-                } elseif ($job["type"] == "postupdate") {
-                    $status = Update::executeScript($job["revision"], "postupdate");
-                } elseif ($job["type"] == "installClass") {
-                    $status = Update::installClass($job["class"]);
-                } elseif ($job["type"] == "cleanup") {
+                } elseif ($job['type'] == 'preupdate') {
+                    $status = Update::executeScript($job['revision'], 'preupdate');
+                } elseif ($job['type'] == 'postupdate') {
+                    $status = Update::executeScript($job['revision'], 'postupdate');
+                } elseif ($job['type'] == 'installClass') {
+                    $status = Update::installClass($job['class']);
+                } elseif ($job['type'] == 'cleanup') {
                     Update::cleanup();
                 }
             }

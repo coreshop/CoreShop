@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
@@ -19,7 +18,6 @@ use CoreShop\Model\Product\Listing;
 
 abstract class AbstractCondition
 {
-
     /**
      * @var string
      */
@@ -41,18 +39,19 @@ abstract class AbstractCondition
     public $preSelect;
 
     /**
-     *  Zend_View
+     *  Zend_View.
      */
     protected $view;
 
     /**
      * @param $language
+     *
      * @return \Zend_View
      */
     public function getView($language = null)
     {
         if (!$language) {
-            $language = \Zend_Registry::get("Zend_Locale");
+            $language = \Zend_Registry::get('Zend_Locale');
         }
 
         if (!$this->view) {
@@ -64,8 +63,8 @@ abstract class AbstractCondition
 
         $this->view->setScriptPath(
             array(
-                CORESHOP_TEMPLATE_PATH . '/scripts/coreshop/product/filter',
-                CORESHOP_TEMPLATE_PATH . '/scripts/coreshop/product/filter/' . strtolower(array_pop(explode('\\', get_class($this))))
+                CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter',
+                CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter/'.strtolower(array_pop(explode('\\', get_class($this)))),
             )
         );
 
@@ -73,23 +72,25 @@ abstract class AbstractCondition
     }
 
     /**
-     * add Condition to Productlist
+     * add Condition to Productlist.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
+     *
      * @return array $currentFilter
      */
     abstract public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false);
 
     /**
-     * render HTML for filter
+     * render HTML for filter.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
+     *
      * @return mixed
      */
     public function render(Filter $filter, Listing $list, $currentFilter)
@@ -98,15 +99,15 @@ abstract class AbstractCondition
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
         return $this->getView()->partial($script, array(
-            "label" => $this->getLabel(),
-            "currentValue" => $currentFilter[$this->getField()],
-            "values" => array_values($rawValues),
-            "fieldname" => $this->getField()
+            'label' => $this->getLabel(),
+            'currentValue' => $currentFilter[$this->getField()],
+            'values' => array_values($rawValues),
+            'fieldname' => $this->getField(),
         ));
     }
 
     /**
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
      *
@@ -114,10 +115,10 @@ abstract class AbstractCondition
      */
     protected function getViewScript(Filter $filter, Listing $list, $currentFilter)
     {
-        $script = $this->getType() . ".php";
+        $script = $this->getType().'.php';
 
-        if ($this->getView()->getScriptPath($this->getField() . ".php")) {
-            $script = $this->getField() . ".php";
+        if ($this->getView()->getScriptPath($this->getField().'.php')) {
+            $script = $this->getField().'.php';
         }
 
         return $script;
@@ -128,12 +129,12 @@ abstract class AbstractCondition
      */
     public function setValues(array $values)
     {
-        foreach ($values as $key=>$value) {
-            if ($key == "type") {
+        foreach ($values as $key => $value) {
+            if ($key == 'type') {
                 continue;
             }
 
-            $setter = "set" . ucfirst($key);
+            $setter = 'set'.ucfirst($key);
 
             if (method_exists($this, $setter)) {
                 $this->$setter($value);

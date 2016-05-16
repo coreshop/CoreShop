@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,10 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 class Zone extends AbstractModel
 {
-
     /**
      * @var int
      */
@@ -31,29 +29,6 @@ class Zone extends AbstractModel
      * @var int
      */
     public $active;
-
-    /**
-     * Get Zone by ID
-     *
-     * @param $id
-     * @return Country|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Gets all Zones
-     *
-     * @return array
-     */
-    public static function getAll()
-    {
-        $list = new Zone\Listing();
-
-        return $list->getData();
-    }
 
     /**
      * @return int

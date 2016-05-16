@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,11 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\TaxRule;
 
-use CoreShop\Model\Configuration;
-use CoreShop\Model\Country;
 use CoreShop\Model\Plugin\TaxManager;
 use CoreShop\Model\State;
 use CoreShop\Model\TaxCalculator;
@@ -41,6 +38,7 @@ class Manager implements TaxManager
 
     /**
      * Manager constructor.
+     *
      * @param Address $address
      * @param $type
      */
@@ -51,10 +49,11 @@ class Manager implements TaxManager
     }
 
     /**
-     * Check if Manager is available for specific address
+     * Check if Manager is available for specific address.
      *
      * @param Address $address
-     * @param string $type
+     * @param string  $type
+     *
      * @return bool
      */
     public static function isAvailableForThisAddress(Address $address, $type)
@@ -63,7 +62,7 @@ class Manager implements TaxManager
     }
 
     /**
-     * Return the tax calculator associated to this address
+     * Return the tax calculator associated to this address.
      *
      * @return TaxCalculator
      */
@@ -107,14 +106,14 @@ class Manager implements TaxManager
     }
 
     /**
-     * get CacheKey for Address
+     * get CacheKey for Address.
      *
      * @return string
      */
     private function getCacheKey()
     {
-        return 'coreshop_tax_calculator_' . $this->address->getCountry()->getId() .
-            ($this->address->getState() instanceof State ? $this->address->getState()->getId() : "") . '_' .
-            (int)$this->type;
+        return 'coreshop_tax_calculator_'.$this->address->getCountry()->getId().
+            ($this->address->getState() instanceof State ? $this->address->getState()->getId() : '').'_'.
+            (int) $this->type;
     }
 }

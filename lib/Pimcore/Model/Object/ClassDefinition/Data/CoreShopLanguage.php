@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,36 +11,33 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace Pimcore\Model\Object\ClassDefinition\Data;
 
 use CoreShop\Model\AbstractModel;
 use Pimcore\Model;
-use CoreShop\Model\Country;
 
 class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopLanguage";
+    public $fieldtype = 'coreShopLanguage';
 
     /**
-     * Type for the column to query
+     * Type for the column to query.
      *
      * @var string
      */
-    public $queryColumnType = "varchar(255)";
+    public $queryColumnType = 'varchar(255)';
 
     /**
-     * Type for the column
+     * Type for the column.
      *
      * @var string
      */
-    public $columnType = "varchar(255)";
-
+    public $columnType = 'varchar(255)';
 
     /** True if change is allowed in edit mode.
      * @return bool
@@ -51,12 +48,14 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data for resource
+     * get data for resource.
      *
      * @see Object\ClassDefinition\Data::getDataForResource
-     * @param AbstractModel $data
+     *
+     * @param AbstractModel                    $data
      * @param null|Model\Object\AbstractObject $object
-     * @return integer|null
+     *
+     * @return int|null
      */
     public function getDataForResource($data, $object = null)
     {
@@ -64,10 +63,12 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data from resource
+     * get data from resource.
      *
      * @see Object\ClassDefinition\Data::getDataFromResource
-     * @param integer $data
+     *
+     * @param int $data
+     *
      * @return AbstractModel
      */
     public function getDataFromResource($data)
@@ -76,12 +77,14 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data for query resource
+     * get data for query resource.
      *
      * @see Object\ClassDefinition\Data::getDataForQueryResource
-     * @param AbstractModel $data
+     *
+     * @param AbstractModel                    $data
      * @param null|Model\Object\AbstractObject $object
-     * @return integer|null
+     *
+     * @return int|null
      */
     public function getDataForQueryResource($data, $object = null)
     {
@@ -89,13 +92,15 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data for editmode
+     * get data for editmode.
      *
      * @see Object\ClassDefinition\Data::getDataForEditmode
-     * @param AbstractModel $data
+     *
+     * @param AbstractModel                    $data
      * @param null|Model\Object\AbstractObject $object
      * @param $objectFromVersion
-     * @return integer
+     *
+     * @return int
      */
     public function getDataForEditmode($data, $object = null, $objectFromVersion = null)
     {
@@ -103,11 +108,13 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data from editmode
+     * get data from editmode.
      *
      * @see Model\Object\ClassDefinition\Data::getDataFromEditmode
-     * @param integer $data
+     *
+     * @param int                              $data
      * @param null|Model\Object\AbstractObject $object
+     *
      * @return AbstractModel
      */
     public function getDataFromEditmode($data, $object = null, $params = array())
@@ -116,9 +123,10 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * is empty
+     * is empty.
      *
      * @param Model\Object\Concrete $data
+     *
      * @return bool
      */
     public function isEmpty($data)
@@ -127,9 +135,10 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data for search index
+     * get data for search index.
      *
      * @param $object
+     *
      * @return int|string
      */
     public function getDataForSearchIndex($object)

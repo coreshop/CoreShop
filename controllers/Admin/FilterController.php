@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,9 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Product\Filter;
 use Pimcore\Controller\Action\Admin;
 
@@ -24,10 +21,10 @@ class CoreShop_Admin_FilterController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
+        $notRestrictedActions = array('list');
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_filters");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_filters');
         }
     }
 
@@ -47,73 +44,73 @@ class CoreShop_Admin_FilterController extends Admin
     protected function getTreeNodeConfig(Filter $filter)
     {
         $tmp = array(
-            "id" => $filter->getId(),
-            "text" => $filter->getName(),
-            "elementType" => "group",
-            "qtipCfg" => array(
-                "title" => "ID: " . $filter->getId()
+            'id' => $filter->getId(),
+            'text' => $filter->getName(),
+            'elementType' => 'group',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$filter->getId(),
             ),
-            "name" => $filter->getName()
+            'name' => $filter->getName(),
         );
 
-        $tmp["leaf"] = true;
-        $tmp["iconCls"] = "coreshop_icon_filters";
-        $tmp["allowChildren"] = false;
+        $tmp['leaf'] = true;
+        $tmp['iconCls'] = 'coreshop_icon_filters';
+        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $filter = new Filter();
             $filter->setName($name);
             $filter->setResultsPerPage(20);
-            $filter->setOrder("desc");
-            $filter->setOrderKey("name");
+            $filter->setOrder('desc');
+            $filter->setOrderKey('name');
             $filter->setPreConditions(array());
             $filter->setFilters(array());
             $filter->save();
 
-            $this->_helper->json(array("success" => true, "data" => $filter));
+            $this->_helper->json(array('success' => true, 'data' => $filter));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $filter = Filter::getById($id);
 
         if ($filter instanceof Filter) {
             $data = get_object_vars($filter);
             $data['index'] = $filter->getIndex() instanceof \CoreShop\Model\Index ? $filter->getIndex()->getId() : null;
 
-            $this->_helper->json(array("success" => true, "data" => $data));
+            $this->_helper->json(array('success' => true, 'data' => $data));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $filter = Filter::getById($id);
 
         if ($data && $filter instanceof Filter) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $preConditions = $data['conditions'];
             $preConditionInstances = array();
 
-            $conditionNamespace = "CoreShop\\Model\\Product\\Filter\\Condition\\";
+            $conditionNamespace = 'CoreShop\\Model\\Product\\Filter\\Condition\\';
 
             foreach ($preConditions as $condition) {
-                $class = $conditionNamespace . ucfirst($condition['type']);
+                $class = $conditionNamespace.ucfirst($condition['type']);
 
                 if (\Pimcore\Tool::classExists($class)) {
                     $instance = new $class();
@@ -121,7 +118,7 @@ class CoreShop_Admin_FilterController extends Admin
 
                     $preConditionInstances[] = $instance;
                 } else {
-                    throw new \Exception(sprintf("Condition with type %s not found"), $condition['type']);
+                    throw new \Exception(sprintf('Condition with type %s not found'), $condition['type']);
                 }
             }
 
@@ -129,7 +126,7 @@ class CoreShop_Admin_FilterController extends Admin
             $filtersInstances = array();
 
             foreach ($filters as $filterCondition) {
-                $class = $conditionNamespace . ucfirst($filterCondition['type']);
+                $class = $conditionNamespace.ucfirst($filterCondition['type']);
 
                 if (\Pimcore\Tool::classExists($class)) {
                     $instance = new $class();
@@ -137,7 +134,7 @@ class CoreShop_Admin_FilterController extends Admin
 
                     $filtersInstances[] = $instance;
                 } else {
-                    throw new \Exception(sprintf("Condition with type %s not found"), $filterCondition['type']);
+                    throw new \Exception(sprintf('Condition with type %s not found'), $filterCondition['type']);
                 }
             }
 
@@ -146,37 +143,37 @@ class CoreShop_Admin_FilterController extends Admin
             $filter->setFilters($filtersInstances);
             $filter->save();
 
-            $this->_helper->json(array("success" => true, "data" => $filter));
+            $this->_helper->json(array('success' => true, 'data' => $filter));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $filter = Filter::getById($id);
 
         if ($filter instanceof Filter) {
             $filter->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 
     public function getConfigAction()
     {
         $this->_helper->json(array(
-            "success" => true,
-            "conditions" => Filter::getConditions()
+            'success' => true,
+            'conditions' => Filter::getConditions(),
         ));
     }
 
     public function getFieldsForIndexAction()
     {
-        $index = \CoreShop\Model\Index::getById($this->getParam("index"));
+        $index = \CoreShop\Model\Index::getById($this->getParam('index'));
 
         if ($index instanceof \CoreShop\Model\Index) {
             $columns = array();
@@ -185,7 +182,7 @@ class CoreShop_Admin_FilterController extends Admin
             if ($config->columns) {
                 foreach ($config->columns as $col) {
                     $columns[] = array(
-                        "name" => $col->name
+                        'name' => $col->name,
                     );
                 }
             }
@@ -198,25 +195,25 @@ class CoreShop_Admin_FilterController extends Admin
 
     public function getValuesForFilterFieldAction()
     {
-        $index = \CoreShop\Model\Index::getById($this->getParam("index"));
+        $index = \CoreShop\Model\Index::getById($this->getParam('index'));
 
         if ($index instanceof \CoreShop\Model\Index) {
             $list = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
             $productList = $list->getProductList();
 
-            $values = $productList->getGroupByValues($this->getParam("field"));
+            $values = $productList->getGroupByValues($this->getParam('field'));
             $returnValues = array();
 
             foreach ($values as $value) {
                 if ($value) {
                     $returnValues[] = array(
-                        "value" => $value,
-                        "key" => $value
+                        'value' => $value,
+                        'key' => $value,
                     );
                 } else {
                     $returnValues[] = array(
-                        "value" => Filter\Service::EMPTY_STRING,
-                        "key" => "empty"
+                        'value' => Filter\Service::EMPTY_STRING,
+                        'key' => 'empty',
                     );
                 }
             }

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,20 +11,19 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Carrier;
-
-use CoreShop\Tool;
 
 class RangeWeight extends AbstractRange
 {
     /**
-     * Get RangeWeight by id
+     * Get RangeWeight by id.
+     *
      * @param $id
+     *
      * @return null|static
      */
     public static function getById($id)
     {
-        return parent::getById($id, "weight");
+        return parent::getById($id, 'weight');
     }
 }

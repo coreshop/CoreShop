@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,7 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
-use Pimcore\Model\Document;
 
 class CustomerGroup extends AbstractModel
 {
@@ -34,29 +29,6 @@ class CustomerGroup extends AbstractModel
      * @var string
      */
     public $name;
-
-    /**
-     * get Tax by ID
-     *
-     * @param $id
-     * @return Tax|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * get all customer groups
-     *
-     * @return mixed
-     */
-    public static function getAll()
-    {
-        $list = new CustomerGroup\Listing();
-
-        return $list->load();
-    }
 
     /**
      * @return int

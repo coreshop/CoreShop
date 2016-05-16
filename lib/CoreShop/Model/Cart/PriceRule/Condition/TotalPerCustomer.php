@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
@@ -29,7 +28,7 @@ class TotalPerCustomer extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "totalPerCustomer";
+    public $type = 'totalPerCustomer';
 
     /**
      * @return int
@@ -48,32 +47,34 @@ class TotalPerCustomer extends AbstractCondition
     }
 
     /**
-     * Check if Cart is Valid for Condition
+     * Check if Cart is Valid for Condition.
      *
-     * @param Cart $cart
-     * @param PriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
      * @param bool|false $throwException
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        $session = Tool::getSession();
+        $user = Tool::getUser();
 
         //Check Total For Customer
-        if ($session->user instanceof User) {
-            $orders = $session->user->getOrders();
+        if ($user instanceof User) {
+            $orders = $user->getOrders();
             $priceRulesUsed = 0;
 
             foreach ($orders as $order) {
                 if ($order->getPriceRule() instanceof PriceRule && $order->getPriceRule()->getId() == $priceRule->getId()) {
-                    $priceRulesUsed++;
+                    ++$priceRulesUsed;
                 }
             }
 
             if ($priceRulesUsed >= $this->getTotal()) {
                 if ($throwException) {
-                    throw new \Exception("You cannot use this voucher anymore (usage limit reached)");
+                    throw new \Exception('You cannot use this voucher anymore (usage limit reached)');
                 } else {
                     return false;
                 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 use Pimcore\Controller\Action\Admin;
 
 class CoreShop_Admin_MessagingThreadController extends Admin
@@ -23,27 +22,28 @@ class CoreShop_Admin_MessagingThreadController extends Admin
         // check permissions
         $notRestrictedActions = array();
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_messaging_thread");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_messaging_thread');
         }
     }
 
-    public function listAction() {
+    public function listAction()
+    {
         $list = \CoreShop\Model\Messaging\Thread::getList();
-        $list->setLimit($this->getParam("limit", 30));
-        $list->setOffset($this->getParam("page", 1) - 1);
+        $list->setLimit($this->getParam('limit', 30));
+        $list->setOffset($this->getParam('page', 1) - 1);
 
-        if ($this->getParam("filter", null)) {
-            $conditionFilters[] = \CoreShop\Model\Service::getFilterCondition($this->getParam("filter"), "\\CoreShop\\Model\\Messaging\\Thread");
+        if ($this->getParam('filter', null)) {
+            $conditionFilters[] = \CoreShop\Model\Service::getFilterCondition($this->getParam('filter'), '\\CoreShop\\Model\\Messaging\\Thread');
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
-                $list->setCondition(implode(" AND ", $conditionFilters));
+                $list->setCondition(implode(' AND ', $conditionFilters));
             }
         }
 
         $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($this->getAllParams());
 
-        $order = "DESC";
-        $orderKey = "id";
+        $order = 'DESC';
+        $orderKey = 'id';
 
         if ($sortingSettings['order']) {
             $order = $sortingSettings['order'];
@@ -57,42 +57,41 @@ class CoreShop_Admin_MessagingThreadController extends Admin
 
         $data = array();
 
-        foreach($list->load() as $thread) {
-            if($thread instanceof CoreShop\Model\Messaging\Thread) {
+        foreach ($list->load() as $thread) {
+            if ($thread instanceof CoreShop\Model\Messaging\Thread) {
                 $entry = array(
-                    "id" => $thread->getId(),
-                    "email" => $thread->getEmail(),
-                    "contactId" => $thread->getContactId(),
-                    "language" => $thread->getLanguage(),
-                    "statusId" => $thread->getStatusId(),
-                    "userId" => null,
-                    "user" => null,
-                    "adminId" => null,
-                    "admin" => null,
-                    "messages" => "",
-                    "token" => $thread->getToken(),
-                    "reference" => null
+                    'id' => $thread->getId(),
+                    'email' => $thread->getEmail(),
+                    'contactId' => $thread->getContactId(),
+                    'language' => $thread->getLanguage(),
+                    'statusId' => $thread->getStatusId(),
+                    'userId' => null,
+                    'user' => null,
+                    'adminId' => null,
+                    'admin' => null,
+                    'messages' => '',
+                    'token' => $thread->getToken(),
+                    'reference' => null,
                 );
 
-                if($thread->getUser() instanceof \CoreShop\Model\User) {
-                    $entry['user'] = $thread->getUser()->getFirstname() . " " . $thread->getUser()->getLastname();
+                if ($thread->getUser() instanceof \CoreShop\Model\User) {
+                    $entry['user'] = $thread->getUser()->getFirstname().' '.$thread->getUser()->getLastname();
                     $entry['userId'] = $thread->getUserId();
                 }
 
-                if($thread->getProduct() instanceof \CoreShop\Model\Product) {
-                    $entry['reference'] = $thread->getProduct()->getName() . " (" . $thread->getProduct()->getId() . ")";
-                }
-                else if($thread->getOrder() instanceof \CoreShop\Model\Order) {
-                    $entry['reference'] = $thread->getOrder()->getOrderNumber() . " (" . $thread->getOrder()->getId() . ")";
+                if ($thread->getProduct() instanceof \CoreShop\Model\Product) {
+                    $entry['reference'] = $thread->getProduct()->getName().' ('.$thread->getProduct()->getId().')';
+                } elseif ($thread->getOrder() instanceof \CoreShop\Model\Order) {
+                    $entry['reference'] = $thread->getOrder()->getOrderNumber().' ('.$thread->getOrder()->getId().')';
                 }
 
                 $messages = $thread->getMessages();
                 $messagesShort = [];
 
-                foreach($messages as $message) {
+                foreach ($messages as $message) {
                     $messagesShort[] = substr(strip_tags($message->getMessage()), 0, 50);
 
-                    if(!$entry['admin']) {
+                    if (!$entry['admin']) {
                         if ($message->getAdminUserId()) {
                             $adminUser = \Pimcore\Model\User::getById($message->getAdminUserId());
 
@@ -104,111 +103,117 @@ class CoreShop_Admin_MessagingThreadController extends Admin
                     }
                 }
 
-                $entry['messages'] = implode(",", $messagesShort);
+                $entry['messages'] = implode(',', $messagesShort);
 
                 $data[] = $entry;
             }
         }
 
-        $this->_helper->json(array("success" => true, "data" => $data, "count" => count($data), "total" => $list->getTotalCount()));
+        $this->_helper->json(array('success' => true, 'data' => $data, 'count' => count($data), 'total' => $list->getTotalCount()));
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $thread = \CoreShop\Model\Messaging\Thread::getById($id);
 
         if ($thread instanceof \CoreShop\Model\Messaging\Thread) {
-            $this->_helper->json(array("success" => true, "data" => ["thread" => $thread->getObjectVars(), "messages" => $this->getMessagesForAjax($thread)]));
+            $this->_helper->json(array('success' => true, 'data' => ['thread' => $thread->getObjectVars(), 'messages' => $this->getMessagesForAjax($thread)]));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
-    public function getStatesAction() {
+    public function getStatesAction()
+    {
         $stats = array();
 
         $list = CoreShop\Model\Messaging\Thread\State::getList();
 
-        foreach($list->load() as $state) {
-            if($state instanceof \CoreShop\Model\Messaging\Thread\State) {
+        foreach ($list->load() as $state) {
+            if ($state instanceof \CoreShop\Model\Messaging\Thread\State) {
                 $stats[] = array(
-                    "id" => $state->getId(),
-                    "name" => $state->getName(),
-                    "color" => $state->getColor(),
-                    "count" => $state->getThreadsList()->count()
+                    'id' => $state->getId(),
+                    'name' => $state->getName(),
+                    'color' => $state->getColor(),
+                    'count' => $state->getThreadsList()->count(),
                 );
             }
         }
 
-        $this->_helper->json(array("success" => true, "data" => $stats));
+        $this->_helper->json(array('success' => true, 'data' => $stats));
     }
 
-    public function getContactsWithMessageCountAction() {
+    public function getContactsWithMessageCountAction()
+    {
         $list = \CoreShop\Model\Messaging\Contact::getList();
         $contacts = array();
 
-        foreach($list->load() as $contact) {
-            if($contact instanceof \CoreShop\Model\Messaging\Contact) {
+        foreach ($list->load() as $contact) {
+            if ($contact instanceof \CoreShop\Model\Messaging\Contact) {
                 $contacts[] = array(
-                    "id" => $contact->getId(),
-                    "name" => $contact->getName(),
-                    "description" => $contact->getDescription(),
-                    "count" => count($contact->getThreads())
+                    'id' => $contact->getId(),
+                    'name' => $contact->getName(),
+                    'description' => $contact->getDescription(),
+                    'count' => count($contact->getThreads()),
                 );
             }
         }
 
-        $this->_helper->json(array("success" => true, "data" => $contacts));
+        $this->_helper->json(array('success' => true, 'data' => $contacts));
     }
 
-    public function changeStatusAction() {
-        $id = $this->getParam("thread");
+    public function changeStatusAction()
+    {
+        $id = $this->getParam('thread');
         $thread = \CoreShop\Model\Messaging\Thread::getById($id);
-        $status = \CoreShop\Model\Messaging\Thread\State::getById($this->getParam("status"));
+        $status = \CoreShop\Model\Messaging\Thread\State::getById($this->getParam('status'));
 
         if ($thread instanceof \CoreShop\Model\Messaging\Thread && $status instanceof \CoreShop\Model\Messaging\Thread\State) {
-            if($thread->getStatusId() !== $status->getId()) {
+            if ($thread->getStatusId() !== $status->getId()) {
                 $thread->setStatusId($status->getId());
                 $thread->save();
             }
 
-            $this->_helper->json(array("success" => true, "data" => ["thread" => $thread->getObjectVars()]));
+            $this->_helper->json(array('success' => true, 'data' => ['thread' => $thread->getObjectVars()]));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
-    public function sendMessageAction() {
-        $id = $this->getParam("thread");
+    public function sendMessageAction()
+    {
+        $id = $this->getParam('thread');
         $thread = \CoreShop\Model\Messaging\Thread::getById($id);
 
         if ($thread instanceof \CoreShop\Model\Messaging\Thread) {
-            $message = $thread->createMessage($this->getParam("message"));
+            $message = $thread->createMessage($this->getParam('message'));
             $message->setAdminUserId($this->getUser()->getId());
             $message->save();
 
-            $customerEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.MAIL.CUSTOMER.RE." . strtoupper($thread->getLanguage())));
+            $customerEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
             $message->sendNotification($customerEmailDocument, $thread->getEmail());
 
-            $this->_helper->json(array("success" => true, "data" => ["thread" => $thread->getObjectVars(), "newMessage" => $this->getMessageForAjax($message)]));
+            $this->_helper->json(array('success' => true, 'data' => ['thread' => $thread->getObjectVars(), 'newMessage' => $this->getMessageForAjax($message)]));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     /**
-     * prepare thread-messages for ajax request
+     * prepare thread-messages for ajax request.
      *
      * @param \CoreShop\Model\Messaging\Thread $thread
+     *
      * @return array
      */
-    protected function getMessagesForAjax(\CoreShop\Model\Messaging\Thread $thread) {
+    protected function getMessagesForAjax(\CoreShop\Model\Messaging\Thread $thread)
+    {
         $messages = $thread->getMessages();
         $messagesData = array();
 
-        foreach($messages as $message) {
-            if($message instanceof CoreShop\Model\Messaging\Message) {
+        foreach ($messages as $message) {
+            if ($message instanceof CoreShop\Model\Messaging\Message) {
                 $messagesData[] = $this->getMessageForAjax($message);
             }
         }
@@ -217,24 +222,25 @@ class CoreShop_Admin_MessagingThreadController extends Admin
     }
 
     /**
-     * Prepare message for ajax request
+     * Prepare message for ajax request.
      *
      * @param \CoreShop\Model\Messaging\Message $message
+     *
      * @return array
      */
-    protected function getMessageForAjax(\CoreShop\Model\Messaging\Message $message) {
+    protected function getMessageForAjax(\CoreShop\Model\Messaging\Message $message)
+    {
         $data = $message->getObjectVars();
 
         if ($message->getAdminUserId()) {
-            $adminUser =  \Pimcore\Model\User::getById($message->getAdminUserId());
+            $adminUser = \Pimcore\Model\User::getById($message->getAdminUserId());
 
-            if($adminUser instanceof \Pimcore\Model\User) {
+            if ($adminUser instanceof \Pimcore\Model\User) {
                 $data['admin'] = $adminUser->getObjectVars();
             }
-        }
-        else {
+        } else {
             $data['user'] = array(
-                "email" => $message->getThread()->getEmail()
+                'email' => $message->getThread()->getEmail(),
             );
         }
 

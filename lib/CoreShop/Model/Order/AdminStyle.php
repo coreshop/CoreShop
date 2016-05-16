@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,17 +11,15 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Order;
-use Pimcore\Model\Object\AbstractObject;
 
 class AdminStyle extends \Pimcore\Model\Element\AdminStyle
 {
-
     /**
      * AdminStyle constructor.
+     *
      * @param $element
      */
     public function __construct($element)

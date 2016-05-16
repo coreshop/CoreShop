@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop;
 
 use CoreShop\Model\Configuration;
@@ -19,14 +18,14 @@ use CoreShop\Model\Configuration;
 class Version
 {
     /**
-     * CoreShop Config File
+     * CoreShop Config File.
      *
-     * @var array $config
+     * @var array
      */
     protected static $config = null;
 
     /**
-     * Get CoreShop Plugin Config
+     * Get CoreShop Plugin Config.
      *
      * @return array
      */
@@ -36,7 +35,7 @@ class Version
     }
 
     /**
-     * Get CoreShop Version
+     * Get CoreShop Version.
      *
      * @return string
      */
@@ -46,7 +45,7 @@ class Version
     }
 
     /**
-     * Get CoreShop Build
+     * Get CoreShop Build.
      *
      * @return int
      */
@@ -56,7 +55,7 @@ class Version
     }
 
     /**
-     * Get CoreShop Git Revision
+     * Get CoreShop Git Revision.
      *
      * @return string
      */
@@ -66,7 +65,7 @@ class Version
     }
 
     /**
-     * Get CoreShop Build Timestamp
+     * Get CoreShop Build Timestamp.
      *
      * @return int
      */

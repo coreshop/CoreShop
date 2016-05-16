@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,11 +11,9 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule\Action;
 
 use CoreShop\Model\Cart;
-use Pimcore\Model;
 use CoreShop\Model\Cart\PriceRule\AbstractPriceRule;
 
 abstract class AbstractAction extends AbstractPriceRule
@@ -23,28 +21,31 @@ abstract class AbstractAction extends AbstractPriceRule
     /**
      * @var string
      */
-    public $elementType = "action";
+    public $elementType = 'action';
 
     /**
-     * Apply Rule to Cart
+     * Apply Rule to Cart.
      *
      * @param Cart $cart
+     *
      * @return bool
      */
     abstract public function applyRule(Cart $cart);
 
     /**
-     * Remove Rule from Cart
+     * Remove Rule from Cart.
      *
      * @param Cart $cart
+     *
      * @return bool
      */
     abstract public function unApplyRule(Cart $cart);
 
     /**
-     * Calculate discount
+     * Calculate discount.
      *
      * @param Cart $cart
+     *
      * @return int
      */
     abstract public function getDiscount(Cart $cart);

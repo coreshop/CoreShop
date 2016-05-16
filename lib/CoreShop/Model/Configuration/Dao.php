@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,27 +11,26 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Configuration;
 
 use Pimcore\Model;
 
 class Dao extends Model\Dao\PhpArrayTable
 {
-
     /**
-     * Configure Configuration File
+     * Configure Configuration File.
      */
     public function configure()
     {
         parent::configure();
-        $this->setFile("coreshop_configurations");
+        $this->setFile('coreshop_configurations');
     }
 
     /**
-     * Get Configuration By Id
+     * Get Configuration By Id.
      *
      * @param null $id
+     *
      * @throws \Exception
      */
     public function getById($id = null)
@@ -42,17 +41,18 @@ class Dao extends Model\Dao\PhpArrayTable
 
         $data = $this->db->getById($this->model->getId());
 
-        if (isset($data["id"])) {
+        if (isset($data['id'])) {
             $this->assignVariablesToModel($data);
         } else {
-            throw new \Exception("Configuration with id: " . $this->model->getId() . " does not exist");
+            throw new \Exception('Configuration with id: '.$this->model->getId().' does not exist');
         }
     }
 
     /**
-     * Get Configuration by key
+     * Get Configuration by key.
      *
      * @param null $key
+     *
      * @throws \Exception
      */
     public function getByKey($key = null)
@@ -64,21 +64,22 @@ class Dao extends Model\Dao\PhpArrayTable
         $key = $this->model->getKey();
 
         $data = $this->db->fetchAll(function ($row) use ($key) {
-            if ($row["key"] == $key) {
+            if ($row['key'] == $key) {
                 return true;
             }
+
             return false;
         });
 
-        if (count($data) && $data[0]["id"]) {
+        if (count($data) && $data[0]['id']) {
             $this->assignVariablesToModel($data[0]);
         } else {
-            throw new \Exception("Configuration with key: " . $this->model->getKey() . " does not exist");
+            throw new \Exception('Configuration with key: '.$this->model->getKey().' does not exist');
         }
     }
 
     /**
-     * save configuration
+     * save configuration.
      *
      * @throws \Exception
      */
@@ -93,7 +94,7 @@ class Dao extends Model\Dao\PhpArrayTable
         try {
             $dataRaw = get_object_vars($this->model);
             $data = [];
-            $allowedProperties = ["id","key","data","creationDate","modificationDate"];
+            $allowedProperties = ['id', 'key', 'data', 'creationDate', 'modificationDate'];
 
             foreach ($dataRaw as $key => $value) {
                 if (in_array($key, $allowedProperties)) {
@@ -111,9 +112,7 @@ class Dao extends Model\Dao\PhpArrayTable
     }
 
     /**
-     * Deletes object from database
-     *
-     * @return void
+     * Deletes object from database.
      */
     public function delete()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop;
 
 use CoreShop\Exception\ThemeNotFoundException;
@@ -19,11 +18,9 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Product;
 use CoreShop\Model\TaxRule\VatManager;
-use CoreShop\Model\Zone;
 use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
 use Pimcore\Model\Object;
-use CoreShop\Model\Plugin\Shipping;
 use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\Plugin\Hook;
 use CoreShop\Model\Plugin\InstallPlugin;
@@ -40,19 +37,20 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
     /**
      * Plugin constructor.
+     *
      * @param null $jsPaths
      * @param null $cssPaths
      */
     public function __construct($jsPaths = null, $cssPaths = null)
     {
-        require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/startup.php");
-        require_once(PIMCORE_PLUGINS_PATH . "/CoreShop/config/helper.php");
+        require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
+        require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
 
         parent::__construct($jsPaths, $cssPaths);
     }
 
     /**
-     * Init Plugin
+     * Init Plugin.
      *
      * @throws \Zend_EventManager_Exception_InvalidArgumentException
      */
@@ -63,10 +61,10 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $application = $e->getTarget();
 
             // add a namespace to autoload commands from
-            $application->addAutoloadNamespace('CoreShop\\Console', CORESHOP_PATH . '/lib/CoreShop/Console');
+            $application->addAutoloadNamespace('CoreShop\\Console', CORESHOP_PATH.'/lib/CoreShop/Console');
         });
 
-        \Pimcore::getEventManager()->attach("system.startup", function (\Zend_EventManager_Event $e) {
+        \Pimcore::getEventManager()->attach('system.startup', function (\Zend_EventManager_Event $e) {
             $autoloader = \Zend_Loader_Autoloader::getInstance();
             $frontController = $e->getTarget();
 
@@ -75,12 +73,12 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $routePluginPayment = new \Zend_Controller_Router_Route(
                 '/:lang/shop/payment/:action/*',
                 array(
-                    "controller" => "payment",
-                    "action" => "index"
+                    'controller' => 'payment',
+                    'action' => 'index',
                 )
             );
 
-            $router->addRoute("coreshop_payment", $routePluginPayment);
+            $router->addRoute('coreshop_payment', $routePluginPayment);
 
             if ($frontController instanceof \Zend_Controller_Front) {
                 $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
@@ -88,39 +86,40 @@ class Plugin extends AbstractPlugin implements PluginInterface
             }
         });
 
-        \Pimcore::getEventManager()->attach("system.console.init", function (\Zend_EventManager_Event $e) {
+        \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
 
             $autoloader = \Zend_Loader_Autoloader::getInstance();
 
-            $autoloader->registerNamespace("CoreShopTemplate");
+            $autoloader->registerNamespace('CoreShopTemplate');
 
             $includePaths = array(
                 get_include_path(),
-                CORESHOP_TEMPLATE_PATH . "/controllers",
-                CORESHOP_TEMPLATE_PATH . "/lib"
+                CORESHOP_TEMPLATE_PATH.'/controllers',
+                CORESHOP_TEMPLATE_PATH.'/lib',
             );
-            set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
+            set_include_path(implode(PATH_SEPARATOR, $includePaths).PATH_SEPARATOR);
 
         });
 
-        \Pimcore::getEventManager()->attach("system.maintenance", function (\Zend_EventManager_Event $e) {
+        \Pimcore::getEventManager()->attach('system.maintenance', function (\Zend_EventManager_Event $e) {
             $manager = $e->getTarget();
-            
-            if($manager instanceof Procedural) {
-                if(Configuration::get("SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES"))
-                    $manager->registerJob(new Job("coreshop_exchangerates", "\\CoreShop\\Model\\Currency\\ExchangeRates", "maintenance"));
-                if(Configuration::get("SYSTEM.CART.AUTO_CLEANUP"))
-                    $manager->registerJob(new Job("coreshop_cart_cleanup", "\\CoreShop\\Model\\Cart", "maintenance"));
+
+            if ($manager instanceof Procedural) {
+                if (Configuration::get('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES')) {
+                    $manager->registerJob(new Job('coreshop_exchangerates', '\\CoreShop\\Model\\Currency\\ExchangeRates', 'maintenance'));
+                }
+                if (Configuration::get('SYSTEM.CART.AUTO_CLEANUP')) {
+                    $manager->registerJob(new Job('coreshop_cart_cleanup', '\\CoreShop\\Model\\Cart', 'maintenance'));
+                }
             }
         });
 
+        \Pimcore::getEventManager()->attach('object.postAdd', array($this, 'postAddObject'));
+        \Pimcore::getEventManager()->attach('object.postAdd', array($this, 'postAddObject'));
+        \Pimcore::getEventManager()->attach('object.postUpdate', array($this, 'postUpdateObject'));
 
-        \Pimcore::getEventManager()->attach("object.postAdd", array($this, 'postAddObject'));
-        \Pimcore::getEventManager()->attach("object.postAdd", array($this, 'postAddObject'));
-        \Pimcore::getEventManager()->attach("object.postUpdate", array($this, 'postUpdateObject'));
-
-        if (Configuration::get("SYSTEM.BASE.DISABLEVATFORBASECOUNTRY")) {
-            \Pimcore::getEventManager()->attach("coreshop.tax.getTaxManager", function () {
+        if (Configuration::get('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')) {
+            \Pimcore::getEventManager()->attach('coreshop.tax.getTaxManager', function () {
                 return new VatManager();
             });
         }
@@ -128,13 +127,13 @@ class Plugin extends AbstractPlugin implements PluginInterface
         //Allows to load classes with CoreShop namespace from Website (eg. for overriding classes)
         $includePaths = array(
             get_include_path(),
-            PIMCORE_WEBSITE_PATH . "/lib/CoreShop"
+            PIMCORE_WEBSITE_PATH.'/lib/CoreShop',
         );
         set_include_path(implode(PATH_SEPARATOR, $includePaths));
     }
 
     /**
-     * Post add Object
+     * Post add Object.
      *
      * @param \Zend_EventManager_Event $e
      */
@@ -148,7 +147,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Post Update Object
+     * Post Update Object.
      *
      * @param \Zend_EventManager_Event $e
      */
@@ -162,7 +161,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Pre Delete Object
+     * Pre Delete Object.
      *
      * @param \Zend_EventManager_Event $e
      */
@@ -176,7 +175,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Install Plugin
+     * Install Plugin.
      *
      * @param InstallPlugin $installPlugin
      */
@@ -187,7 +186,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Uninstall Plugin
+     * Uninstall Plugin.
      *
      * @param InstallPlugin $installPlugin
      */
@@ -198,7 +197,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Install Pimcore CoreShop Plugin
+     * Install Pimcore CoreShop Plugin.
      *
      * @return mixed
      */
@@ -209,9 +208,10 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             $install->createConfig();
 
-            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array('installer' => $install));
         } catch (Exception $e) {
             \Logger::crit($e);
+
             return self::getTranslate()->_('coreshop_install_failed');
         }
 
@@ -219,7 +219,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Uninstall CoreShop
+     * Uninstall CoreShop.
      *
      * @return string $statusMessage
      */
@@ -228,7 +228,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
         try {
             $install = new Install();
 
-            \Pimcore::getEventManager()->trigger('coreshop.uninstall.pre', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.uninstall.pre', null, array('installer' => $install));
 
             // remove predefined document types
             //$install->removeDocTypes();
@@ -246,26 +246,27 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $install->removeClass('CoreShopCategory');
             $install->removeClass('CoreShopCart');
             $install->removeClass('CoreShopCartItem');
-            $install->removeClass("CoreShopUser");
-            $install->removeClass("CoreShopOrder");
-            $install->removeClass("CoreShopPayment");
-            $install->removeClass("CoreShopOrderItem");
+            $install->removeClass('CoreShopUser');
+            $install->removeClass('CoreShopOrder');
+            $install->removeClass('CoreShopPayment');
+            $install->removeClass('CoreShopOrderItem');
 
             $install->removeFieldcollection('CoreShopUserAddress');
             $install->removeImageThumbnails();
             $install->removeConfig();
 
-            \Pimcore::getEventManager()->trigger('coreshop.uninstall.post', null, array("installer" => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.uninstall.post', null, array('installer' => $install));
 
             return self::getTranslate()->_('coreshop_uninstalled_successfully');
         } catch (Exception $e) {
             \Logger::crit($e);
+
             return self::getTranslate()->_('coreshop_uninstall_failed');
         }
     }
 
     /**
-     * Check if CoreShop is installed
+     * Check if CoreShop is installed.
      *
      * @return bool
      */
@@ -287,13 +288,13 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Check if CoreShop is installed
+     * Check if CoreShop is installed.
      *
-     * @return boolean $isInstalled
+     * @return bool $isInstalled
      */
     public static function isInstalled()
     {
-        $config = Configuration::get("SYSTEM.ISINSTALLED");
+        $config = Configuration::get('SYSTEM.ISINSTALLED');
 
         if (!is_null($config)) {
             return true;
@@ -303,24 +304,25 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * get translation directory
+     * get translation directory.
      *
      * @return string
      */
     public static function getTranslationFileDirectory()
     {
-        return PIMCORE_PLUGINS_PATH . '/CoreShop/static/texts';
+        return PIMCORE_PLUGINS_PATH.'/CoreShop/static/texts';
     }
 
     /**
-     * get translation file
+     * get translation file.
      *
      * @param string $language
+     *
      * @return string path to the translation file relative to plugin directory
      */
     public static function getTranslationFile($language)
     {
-        if (is_file(self::getTranslationFileDirectory() . "/$language.csv")) {
+        if (is_file(self::getTranslationFileDirectory()."/$language.csv")) {
             return "/CoreShop/static/texts/$language.csv";
         } else {
             return '/CoreShop/static/texts/en.csv';
@@ -328,7 +330,9 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * get translate
+     * get translate.
+     *
+     * @param $lang
      *
      * @return \Zend_Translate
      */
@@ -347,38 +351,40 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
         self::$_translate = new \Zend_Translate(
             'csv',
-            PIMCORE_PLUGINS_PATH . self::getTranslationFile($lang),
+            PIMCORE_PLUGINS_PATH.self::getTranslationFile($lang),
             $lang,
             array('delimiter' => ',')
         );
+
         return self::$_translate;
     }
 
     /**
-     * Enables a theme
+     * Enables a theme.
      *
      * @param $name
+     *
      * @throws ThemeNotFoundException
      */
     public static function enableTheme($name)
     {
         if ($themeDir = self::getThemeDirectory($name)) {
             //disable current template
-            $currentTemplate = Configuration::get("SYSTEM.TEMPLATE.NAME");
+            $currentTemplate = Configuration::get('SYSTEM.TEMPLATE.NAME');
 
             if ($oldThemeDir = self::getThemeDirectory($currentTemplate)) {
-                $disableScript = $themeDir . "/disable.php";
+                $disableScript = $themeDir.'/disable.php';
 
                 if (is_file($disableScript)) {
-                    include($disableScript);
+                    include $disableScript;
                 }
             }
 
             //enable new template
-            $enableScript = $themeDir . "/enable.php";
+            $enableScript = $themeDir.'/enable.php';
 
             if (is_file($enableScript)) {
-                include($enableScript);
+                include $enableScript;
             }
         } else {
             throw new ThemeNotFoundException();
@@ -386,31 +392,32 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Returns theme directory
+     * Returns theme directory.
      *
      * @param $name
+     *
      * @return bool|string
      */
     public static function getThemeDirectory($name)
     {
-        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $name)) {
-            return PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $name;
-        } elseif (is_dir(CORESHOP_PATH . "/views/template/" . $name)) {
-            return CORESHOP_PATH . "/views/template/" . $name;
+        if (is_dir(PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/template/'.$name)) {
+            return PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/template/'.$name;
+        } elseif (is_dir(CORESHOP_PATH.'/views/template/'.$name)) {
+            return CORESHOP_PATH.'/views/template/'.$name;
         }
 
         return false;
     }
 
     /**
-     * Default Layout
+     * Default Layout.
      *
      * @var string
      */
-    private static $layout = "shop";
+    private static $layout = 'shop';
 
     /**
-     * Get CoreShop default layout
+     * Get CoreShop default layout.
      *
      * @return string
      */
@@ -420,7 +427,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Set CoreShop default layout
+     * Set CoreShop default layout.
      *
      * @param $layout
      */
@@ -430,14 +437,15 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Get PaymentProviders
+     * Get PaymentProviders.
      *
      * @param Cart $cart
+     *
      * @return array
      */
     public static function getPaymentProviders(Cart $cart = null)
     {
-        $results = \Pimcore::getEventManager()->trigger("coreshop.payment.getProvider");
+        $results = \Pimcore::getEventManager()->trigger('coreshop.payment.getProvider');
         $provider = array();
 
         foreach ($results as $result) {
@@ -456,9 +464,10 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Get PaymentProvider by identifier
+     * Get PaymentProvider by identifier.
      *
      * @param $identifier
+     *
      * @return bool
      */
     public static function getPaymentProvider($identifier)
@@ -475,18 +484,20 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Call a CoreShop hook
+     * Call a CoreShop hook.
      *
      * @param $name
      * @param array $params
+     *
      * @return string
+     *
      * @throws \Zend_Exception
      */
     public static function hook($name, $params = array())
     {
-        $results = \Pimcore::getEventManager()->trigger("coreshop.hook." . $name, null, array());
+        $results = \Pimcore::getEventManager()->trigger('coreshop.hook.'.$name, null, array());
 
-        $params['language'] = \Zend_Registry::get("Zend_Locale");
+        $params['language'] = \Zend_Registry::get('Zend_Locale');
 
         if (count($results) > 0) {
             $return = array();
@@ -502,20 +513,22 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Call an action hook
+     * Call an action hook.
      *
      * @param $name
      * @param array $params
+     *
      * @return mixed
+     *
      * @throws \Zend_Exception
      */
     public static function actionHook($name, $params = array())
     {
-        $results = \Pimcore::getEventManager()->trigger("coreshop.actionHook." . $name, null, array(), function ($v) {
-            return (is_callable($v));
+        $results = \Pimcore::getEventManager()->trigger('coreshop.actionHook.'.$name, null, array(), function ($v) {
+            return is_callable($v);
         });
 
-        $params['language'] = \Zend_Registry::get("Zend_Locale");
+        $params['language'] = \Zend_Registry::get('Zend_Locale');
 
         if ($results->stopped()) {
             foreach ($results as $result) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\IndexService;
 
 use CoreShop\IndexService\Getter\AbstractGetter;
@@ -25,7 +24,7 @@ use Pimcore\Tool;
 abstract class AbstractWorker
 {
     /**
-     * Index Configuration
+     * Index Configuration.
      *
      * @var Index
      */
@@ -33,6 +32,7 @@ abstract class AbstractWorker
 
     /**
      * AbstractWorker constructor.
+     *
      * @param Index $index
      */
     public function __construct(Index $index)
@@ -41,10 +41,12 @@ abstract class AbstractWorker
     }
 
     /**
-     * prepares Data for index
+     * prepares Data for index.
      *
      * @param Product $object
+     *
      * @return array("data", "relation")
+     *
      * @throws \CoreShop\Exception\UnsupportedException
      */
     protected function prepareData(Product $object)
@@ -90,14 +92,14 @@ abstract class AbstractWorker
         }
 
         $data = array(
-            "o_id" => $object->getId(),
-            "o_classId" => $object->getClassId(),
-            "o_virtualProductId" => $virtualProductId,
-            "o_virtualProductActive" => $virtualProductActive,
-            "o_type" => $object->getType(),
-            "categoryIds" => ',' . implode(",", $categoryIds) . ",",
-            "parentCategoryIds" => ',' . implode(",", $parentCategoryIds) . ",",
-            "active" => $object->getEnabled()
+            'o_id' => $object->getId(),
+            'o_classId' => $object->getClassId(),
+            'o_virtualProductId' => $virtualProductId,
+            'o_virtualProductActive' => $virtualProductActive,
+            'o_type' => $object->getType(),
+            'categoryIds' => ','.implode(',', $categoryIds).',',
+            'parentCategoryIds' => ','.implode(',', $parentCategoryIds).',',
+            'active' => $object->getEnabled(),
         );
 
         $relationData = array();
@@ -111,7 +113,7 @@ abstract class AbstractWorker
                     $interpreter = $column->getInterpreter();
 
                     if (!empty($getter)) {
-                        $getterClass = "\\CoreShop\\IndexService\\Getter\\" . $getter;
+                        $getterClass = '\\CoreShop\\IndexService\\Getter\\'.$getter;
 
                         if (Tool::classExists($getterClass)) {
                             $getterObject = new $getterClass();
@@ -119,11 +121,11 @@ abstract class AbstractWorker
                             if ($getterObject instanceof AbstractGetter) {
                                 $value = $getterObject->get($object, $column);
                             } else {
-                                throw new \Exception("Getter class must inherit from AbstractGetter");
+                                throw new \Exception('Getter class must inherit from AbstractGetter');
                             }
                         }
                     } else {
-                        $getter = "get" . ucfirst($column->getKey());
+                        $getter = 'get'.ucfirst($column->getKey());
 
                         if (method_exists($object, $getter)) {
                             $value = $object->$getter();
@@ -131,7 +133,7 @@ abstract class AbstractWorker
                     }
 
                     if (!empty($interpreter)) {
-                        $interpreterClass = "\\CoreShop\\IndexService\\Interpreter\\" . $interpreter;
+                        $interpreterClass = '\\CoreShop\\IndexService\\Interpreter\\'.$interpreter;
 
                         if (Tool::classExists($interpreterClass)) {
                             $interpreterObject = new $interpreterClass();
@@ -153,7 +155,7 @@ abstract class AbstractWorker
                                     $data[$column->getName()] = $value;
                                 }
                             } else {
-                                throw new \Exception("Interpreter class must inherit form AbstractInterpreter");
+                                throw new \Exception('Interpreter class must inherit form AbstractInterpreter');
                             }
                         } else {
                             $data[$column->getName()] = $value;
@@ -163,10 +165,10 @@ abstract class AbstractWorker
                     }
 
                     if (is_array($data[$column->getName()])) {
-                        $data[$column->getName()] = "," . implode($data[$column->getName()], ",") . ",";
+                        $data[$column->getName()] = ','.implode($data[$column->getName()], ',').',';
                     }
                 } catch (\Exception $e) {
-                    \Logger::err("Exception in CoreShopIndexService: " . $e->getMessage(), $e);
+                    \Logger::err('Exception in CoreShopIndexService: '.$e->getMessage(), $e);
                 }
             }
         }
@@ -179,8 +181,8 @@ abstract class AbstractWorker
         AbstractObject::setHideUnpublished($hidePublishedMemory);
 
         return array(
-            "data" => $data,
-            "relation" => $relationData
+            'data' => $data,
+            'relation' => $relationData,
         );
     }
 
@@ -193,44 +195,40 @@ abstract class AbstractWorker
     }
 
     /**
-     * creates or updates necessary index structures (like database tables and so on)
-     *
-     * @return void
+     * creates or updates necessary index structures (like database tables and so on).
      */
     abstract public function createOrUpdateIndexStructures();
 
     /**
-     * deletes necessary index structuers (like database tables)
+     * deletes necessary index structuers (like database tables).
      *
      * @return mixed
      */
     abstract public function deleteIndexStructures();
 
-    /**
-     * deletes given element from index
-     *
-     * @param Product $object
-     * @return void
-     */
+   /**
+    * deletes given element from index.
+    *
+    * @param Product $object
+    */
    abstract public function deleteFromIndex(Product $object);
 
     /**
-     * updates given element in index
+     * updates given element in index.
      *
      * @param Product $object
-     * @return void
      */
     abstract public function updateIndex(Product $object);
 
     /**
-     * returns product list implementation valid and configured for this worker/tenant
+     * returns product list implementation valid and configured for this worker/tenant.
      *
      * @return Product\Listing
      */
     abstract public function getProductList();
 
     /**
-     * get index
+     * get index.
      *
      * @return Index
      */
@@ -240,7 +238,7 @@ abstract class AbstractWorker
     }
 
     /**
-     * set index
+     * set index.
      *
      * @param Index $index
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,12 +11,8 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
-use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Messaging\Contact;
 use Pimcore\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 class CoreShop_Admin_MessagingContactController extends Admin
 {
@@ -25,10 +21,10 @@ class CoreShop_Admin_MessagingContactController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array("list");
+        $notRestrictedActions = array('list');
 
-        if (!in_array($this->getParam("action"), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_messaging_contact");
+        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
+            $this->checkPermission('coreshop_permission_messaging_contact');
         }
     }
 
@@ -48,78 +44,78 @@ class CoreShop_Admin_MessagingContactController extends Admin
     protected function getTreeNodeConfig(Contact $contact)
     {
         $tmp = array(
-            "id" => $contact->getId(),
-            "text" => $contact->getName(),
-            "elementType" => "group",
-            "qtipCfg" => array(
-                "title" => "ID: " . $contact->getId()
+            'id' => $contact->getId(),
+            'text' => $contact->getName(),
+            'elementType' => 'group',
+            'qtipCfg' => array(
+                'title' => 'ID: '.$contact->getId(),
             ),
-            "name" => $contact->getName()
+            'name' => $contact->getName(),
         );
 
-        $tmp["leaf"] = true;
-        $tmp["iconCls"] = "coreshop_icon_messaging_contact";
-        $tmp["allowChildren"] = false;
+        $tmp['leaf'] = true;
+        $tmp['iconCls'] = 'coreshop_icon_messaging_contact';
+        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
 
     public function addAction()
     {
-        $name = $this->getParam("name");
+        $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array("success" => false, "message" => $this->getTranslator()->translate("Name must be set")));
+            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
             $contact = new Contact();
             $contact->setName($name);
             $contact->save();
 
-            $this->_helper->json(array("success" => true, "data" => $contact));
+            $this->_helper->json(array('success' => true, 'data' => $contact));
         }
     }
 
     public function getAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $contact = Contact::getById($id);
 
         if ($contact instanceof Contact) {
-            $this->_helper->json(array("success" => true, "data" => $contact->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $contact->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function saveAction()
     {
-        $id = $this->getParam("id");
-        $data = $this->getParam("data");
+        $id = $this->getParam('id');
+        $data = $this->getParam('data');
         $contact = Contact::getById($id);
 
         if ($data && $contact instanceof Contact) {
-            $data = \Zend_Json::decode($this->getParam("data"));
+            $data = \Zend_Json::decode($this->getParam('data'));
 
             $contact->setValues($data);
             $contact->save();
 
-            $this->_helper->json(array("success" => true, "data" => $contact->getObjectVars()));
+            $this->_helper->json(array('success' => true, 'data' => $contact->getObjectVars()));
         } else {
-            $this->_helper->json(array("success" => false));
+            $this->_helper->json(array('success' => false));
         }
     }
 
     public function deleteAction()
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam('id');
         $contact = Contact::getById($id);
 
         if ($contact instanceof Contact) {
             $contact->delete();
 
-            $this->_helper->json(array("success" => true));
+            $this->_helper->json(array('success' => true));
         }
 
-        $this->_helper->json(array("success" => false));
+        $this->_helper->json(array('success' => false));
     }
 }

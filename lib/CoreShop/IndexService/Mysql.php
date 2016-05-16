@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,20 +11,17 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\IndexService;
 
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
-use CoreShop\Plugin;
-use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Tool;
 use CoreShop\Model\Index\Config\Column\Mysql as Column;
+use Pimcore\Db;
 
 class Mysql extends AbstractWorker
 {
     /**
-     * Database
+     * Database.
      *
      * @var \Zend_Db_Adapter_Abstract
      */
@@ -39,15 +36,15 @@ class Mysql extends AbstractWorker
     {
         parent::__construct($index);
 
-        $this->db = \Pimcore\Db::get();
+        $this->db = Db::get();
     }
 
     /**
-     * Create Database index table
+     * Create Database index table.
      */
     public function createOrUpdateIndexStructures()
     {
-        $this->db->query("CREATE TABLE IF NOT EXISTS `" . $this->getTablename() . "` (
+        $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename()."` (
           `o_id` int(11) NOT NULL default '0',
           `o_virtualProductId` int(11) NOT NULL,
           `o_virtualProductActive` TINYINT(1) NOT NULL,
@@ -59,11 +56,11 @@ class Mysql extends AbstractWorker
           PRIMARY KEY  (`o_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-        $data = $this->db->fetchAll("SHOW COLUMNS FROM " . $this->getTablename());
+        $data = $this->db->fetchAll('SHOW COLUMNS FROM '.$this->getTablename());
         $columns = array();
 
         foreach ($data as $d) {
-            $columns[$d["Field"]] = $d["Field"];
+            $columns[$d['Field']] = $d['Field'];
         }
 
         $systemColumns = $this->getSystemAttributes();
@@ -86,16 +83,15 @@ class Mysql extends AbstractWorker
 
         foreach ($columnsToDelete as $c) {
             if (!in_array($c, $systemColumns)) {
-                $this->db->query('ALTER TABLE `' . $this->getTablename() . '` DROP COLUMN `' . $c . '`;');
+                $this->db->query('ALTER TABLE `'.$this->getTablename().'` DROP COLUMN `'.$c.'`;');
             }
         }
 
-
         foreach ($columnsToAdd as $c => $type) {
-            $this->db->query('ALTER TABLE `' . $this->getTablename() . '` ADD `' . $c . '` ' . $type . ';');
+            $this->db->query('ALTER TABLE `'.$this->getTablename().'` ADD `'.$c.'` '.$type.';');
         }
 
-        $this->db->query("CREATE TABLE IF NOT EXISTS `" . $this->getRelationTablename() . "` (
+        $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getRelationTablename()."` (
           `src` int(11) NOT NULL default '0',
           `src_virtualProductId` int(11) NOT NULL,
           `dest` int(11) NOT NULL,
@@ -106,29 +102,29 @@ class Mysql extends AbstractWorker
     }
 
     /**
-     * deletes necessary index structuers (like database tables)
+     * deletes necessary index structuers (like database tables).
      *
      * @return mixed
      */
     public function deleteIndexStructures()
     {
-        $this->db->query("DROP TABLE IF EXISTS `" . $this->getTablename() . "`");
-        $this->db->query("DROP TABLE IF EXISTS `" . $this->getRelationTablename() . "`");
+        $this->db->query('DROP TABLE IF EXISTS `'.$this->getTablename().'`');
+        $this->db->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename().'`');
     }
 
     /**
-     * Delete Product from index
+     * Delete Product from index.
      *
      * @param Product $object
      */
     public function deleteFromIndex(Product $object)
     {
-        $this->db->delete($this->getTablename(), "o_id = " . $this->db->quote($object->getId()));
-        $this->db->delete($this->getRelationTablename(), "src = " . $this->db->quote($object->getId()));
+        $this->db->delete($this->getTablename(), 'o_id = '.$this->db->quote($object->getId()));
+        $this->db->delete($this->getRelationTablename(), 'src = '.$this->db->quote($object->getId()));
     }
 
     /**
-     * Update or create product in index
+     * Update or create product in index.
      *
      * @param Product $object
      */
@@ -140,36 +136,36 @@ class Mysql extends AbstractWorker
             try {
                 $this->doInsertData($preparedData['data']);
             } catch (\Exception $e) {
-                \Logger::warn("Error during updating index table: " . $e);
+                \Logger::warn('Error during updating index table: '.$e);
             }
 
             try {
-                $this->db->delete($this->getRelationTablename(), "src = " . $this->db->quote($object->getId()));
+                $this->db->delete($this->getRelationTablename(), 'src = '.$this->db->quote($object->getId()));
                 foreach ($preparedData['relation'] as $rd) {
                     $this->db->insert($this->getRelationTablename(), $rd);
                 }
             } catch (\Exception $e) {
-                \Logger::warn("Error during updating index relation table: " . $e->getMessage(), $e);
+                \Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
             }
         } else {
-            \Logger::info("Don't adding product " . $object->getId() . " to index.");
+            \Logger::info("Don't adding product ".$object->getId().' to index.');
 
             try {
-                $this->db->delete($this->getTablename(), "o_id = " . $this->db->quote($object->getId()));
+                $this->db->delete($this->getTablename(), 'o_id = '.$this->db->quote($object->getId()));
             } catch (\Exception $e) {
-                \Logger::warn("Error during updating index table: " . $e->getMessage(), $e);
+                \Logger::warn('Error during updating index table: '.$e->getMessage(), $e);
             }
 
             try {
-                $this->db->delete($this->getRelationTablename(), "src = " . $this->db->quote($object->getId()));
+                $this->db->delete($this->getRelationTablename(), 'src = '.$this->db->quote($object->getId()));
             } catch (\Exception $e) {
-                \Logger::warn("Error during updating index relation table: " . $e->getMessage(), $e);
+                \Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
             }
         }
     }
 
     /**
-     * Insert data into mysql-table
+     * Insert data into mysql-table.
      *
      * @param $data
      */
@@ -184,18 +180,18 @@ class Mysql extends AbstractWorker
         foreach ($data as $key => $d) {
             $dataKeys[$this->db->quoteIdentifier($key)] = '?';
             $updateData[] = $d;
-            $insertStatement[] = $this->db->quoteIdentifier($key) . " = ?";
+            $insertStatement[] = $this->db->quoteIdentifier($key).' = ?';
             $insertData[] = $d;
         }
 
-        $insert = "INSERT INTO " . $this->getTablename() . " (" . implode(",", array_keys($dataKeys)) . ") VALUES (" . implode(",", $dataKeys) . ")"
-            . " ON DUPLICATE KEY UPDATE " . implode(",", $insertStatement);
+        $insert = 'INSERT INTO '.$this->getTablename().' ('.implode(',', array_keys($dataKeys)).') VALUES ('.implode(',', $dataKeys).')'
+            .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
 
         $this->db->query($insert, array_merge($updateData, $insertData));
     }
 
     /**
-     * Return Productlist
+     * Return Productlist.
      *
      * @return Product\Listing\Mysql
      */
@@ -205,32 +201,32 @@ class Mysql extends AbstractWorker
     }
 
     /**
-     * get table name
+     * get table name.
      *
      * @return string
      */
     protected function getTablename()
     {
-        return "coreshop_index_mysql_" . $this->getIndex()->getName();
+        return 'coreshop_index_mysql_'.$this->getIndex()->getName();
     }
 
     /**
-     * get tablename for relations
+     * get tablename for relations.
      *
      * @return string
      */
     protected function getRelationTablename()
     {
-        return "coreshop_index_mysql_relations_" . $this->getIndex()->getName();
+        return 'coreshop_index_mysql_relations_'.$this->getIndex()->getName();
     }
 
     /**
-     * Get System Attributes
+     * Get System Attributes.
      *
      * @return array
      */
     protected function getSystemAttributes()
     {
-        return array("o_id", "o_classId", "o_virtualProductId", "o_virtualProductActive", "o_type", "categoryIds", "parentCategoryIds", "active");
+        return array('o_id', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active');
     }
 }

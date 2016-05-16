@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,21 +11,19 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Carrier;
-
-use CoreShop\Tool;
 
 class RangePrice extends AbstractRange
 {
     /**
-     * Get RangePrice by id
+     * Get RangePrice by id.
      *
      * @param $id
+     *
      * @return null|static
      */
     public static function getById($id)
     {
-        parent::getById($id, "price");
+        parent::getById($id, 'price');
     }
 }

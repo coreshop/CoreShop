@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,14 +11,12 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Tool;
 
 class Country extends AbstractModel
 {
-
     /**
      * @var int
      */
@@ -65,36 +63,26 @@ class Country extends AbstractModel
     public $zone;
 
     /**
-     * Get Currency by ID
-     *
-     * @param $id
-     * @return Country|null
-     */
-    public static function getById($id)
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * Get Currency by ISO-Code
+     * Get Currency by ISO-Code.
      *
      * @param $isoCode
+     *
      * @return Country|null
      */
     public static function getByIsoCode($isoCode)
     {
-        return parent::getByField("isoCode", $isoCode);
+        return parent::getByField('isoCode', $isoCode);
     }
 
     /**
-     * Gets all active Countries
+     * Gets all active Countries.
      *
      * @return array
      */
     public static function getActiveCountries()
     {
         $list = new Country\Listing();
-        $list->setCondition("active = 1");
+        $list->setCondition('active = 1');
 
         return $list->getData();
     }
@@ -188,12 +176,13 @@ class Country extends AbstractModel
 
     /**
      * @param $currency
+     *
      * @throws \Exception
      */
     public function setCurrency($currency)
     {
         if (!$currency instanceof Currency) {
-            throw new \Exception("\$currency must be instance of Currency");
+            throw new \Exception('$currency must be instance of Currency');
         }
 
         $this->currency = $currency;
@@ -210,6 +199,7 @@ class Country extends AbstractModel
 
     /**
      * @param $currencyId
+     *
      * @throws \Exception
      */
     public function setCurrencyId($currencyId)
@@ -231,12 +221,13 @@ class Country extends AbstractModel
 
     /**
      * @param $zone
+     *
      * @throws \Exception
      */
     public function setZone($zone)
     {
         if (!$zone instanceof Zone) {
-            throw new \Exception("\$zone must be instance of Zone");
+            throw new \Exception('$zone must be instance of Zone');
         }
 
         $this->zone = $zone;
@@ -253,6 +244,7 @@ class Country extends AbstractModel
 
     /**
      * @param $zoneId
+     *
      * @throws \Exception
      */
     public function setZoneId($zoneId)
@@ -261,7 +253,7 @@ class Country extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getUseStoreCurrency()
     {
@@ -269,7 +261,7 @@ class Country extends AbstractModel
     }
 
     /**
-     * @param boolean $useStoreCurrency
+     * @param bool $useStoreCurrency
      */
     public function setUseStoreCurrency($useStoreCurrency)
     {

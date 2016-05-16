@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
@@ -22,7 +21,7 @@ class Multiselect extends AbstractCondition
     /**
      * @var string
      */
-    public $type = "multiselect";
+    public $type = 'multiselect';
 
     /**
      * @var mixed
@@ -46,11 +45,12 @@ class Multiselect extends AbstractCondition
     }
 
     /**
-     * render HTML for filter
+     * render HTML for filter.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
+     *
      * @return mixed
      */
     public function render(Filter $filter, Listing $list, $currentFilter)
@@ -59,21 +59,22 @@ class Multiselect extends AbstractCondition
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
         return $this->getView()->partial($script, array(
-            "label" => $this->getLabel(),
-            "currentValues" => $currentFilter[$this->getField()],
-            "values" => array_values($rawValues),
-            "fieldname" => $this->getField()
+            'label' => $this->getLabel(),
+            'currentValues' => $currentFilter[$this->getField()],
+            'values' => array_values($rawValues),
+            'fieldname' => $this->getField(),
         ));
     }
 
     /**
-     * add Condition to Productlist
+     * add Condition to Productlist.
      *
-     * @param Filter $filter
+     * @param Filter  $filter
      * @param Listing $list
      * @param $currentFilter
      * @param $params
      * @param bool $isPrecondition
+     *
      * @return array $currentFilter
      */
     public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
@@ -91,7 +92,7 @@ class Multiselect extends AbstractCondition
         }
 
         if (!empty($values)) {
-            $fieldName = $isPrecondition ? "PRECONDITION_" . $this->getField() : $this->getField();
+            $fieldName = $isPrecondition ? 'PRECONDITION_'.$this->getField() : $this->getField();
 
             $inValues = array();
 
@@ -100,7 +101,7 @@ class Multiselect extends AbstractCondition
             }
 
             if (!empty($inValues)) {
-                $list->addCondition("TRIM(`" . $this->getField() . "`) IN (" . implode(',', $inValues) . ")", $fieldName);
+                $list->addCondition('TRIM(`'.$this->getField().'`) IN ('.implode(',', $inValues).')', $fieldName);
             }
         }
 

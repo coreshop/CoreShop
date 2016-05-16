@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,21 +12,19 @@
  * @author Stefan Hagspiel <shagspiel@dachcom.ch>
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Library;
 
 class Deposit
 {
-
     /**
-     * Deposit Namespace
+     * Deposit Namespace.
      *
      * @var null
      */
     public $depositNamespace = null;
 
     /**
-     * Deposit Data
+     * Deposit Data.
      *
      * @var array
      */
@@ -34,24 +32,25 @@ class Deposit
 
     /**
      * set max elements per deposit
-     * set 0 for no limit
+     * set 0 for no limit.
      *
      * @var array
      */
     public $maxElements = 0;
 
     /**
-     * Limit Reached identifier
+     * Limit Reached identifier.
      */
     const LIMIT_REACHED = 'limit_reached';
 
     /**
-     * Already added identifer
+     * Already added identifer.
      */
     const ALREADY_ADDED = 'already_added';
 
     /**
-     * Set Deposit Namespace
+     * Set Deposit Namespace.
+     *
      * @param null $namespace
      *
      * @return $this
@@ -76,9 +75,10 @@ class Deposit
     }
 
     /**
-     * set Limit
+     * set Limit.
      *
      * @param int $limit
+     *
      * @return $this
      */
     protected function setLimit($limit = 0)
@@ -89,7 +89,7 @@ class Deposit
     }
 
     /**
-     * Get formatted deposit
+     * Get formatted deposit.
      *
      * @return array
      */
@@ -102,13 +102,14 @@ class Deposit
         $data = array();
 
         foreach ($this->depositData as $id => $val) {
-            $data[]= $id;
+            $data[] = $id;
         }
+
         return $data;
     }
 
     /**
-     * Add a Element to Deposit
+     * Add a Element to Deposit.
      *
      * @param      $id
      * @param bool $value
@@ -127,9 +128,9 @@ class Deposit
         return false;
     }
 
-
     /**
-     * Remove a Element from Deposit
+     * Remove a Element from Deposit.
+     *
      * @param $id
      */
     public function remove($id)
@@ -141,12 +142,12 @@ class Deposit
         $this->save();
     }
 
-
     /**
-     * Check if element is allowed to add
+     * Check if element is allowed to add.
      *
      * @param $id
-     * @return boolean
+     *
+     * @return bool
      */
     public function allowedToAdd($id)
     {
@@ -160,7 +161,7 @@ class Deposit
     }
 
     /**
-     * get Session
+     * get Session.
      *
      * @return \Pimcore\Tool\Session
      */
@@ -170,7 +171,7 @@ class Deposit
     }
 
     /**
-     * Save to session
+     * Save to session.
      */
     protected function save()
     {

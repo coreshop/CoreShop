@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model;
 
 use CoreShop\Exception\UnsupportedException;
@@ -33,51 +32,54 @@ use Pimcore\Tool\Authentication;
 class Order extends Base
 {
     /**
-     * Pimcore Object Class
+     * Pimcore Object Class.
      *
      * @var string
      */
-    public static $pimcoreClass = "Pimcore\\Model\\Object\\CoreShopOrder";
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopOrder';
 
     /**
-     * Creates next OrderNumber
+     * Creates next OrderNumber.
      *
      * @return int|string
      */
     public static function getNextOrderNumber()
     {
-        $number = NumberRange::getNextNumberForType("order");
+        $number = NumberRange::getNextNumberForType('order');
 
         return self::getValidOrderNumber($number);
     }
 
     /**
-     * Converts any Number to a valid OrderNumber with Suffix and Prefix
+     * Converts any Number to a valid OrderNumber with Suffix and Prefix.
      *
      * @param $number
+     *
      * @return string
      */
     public static function getValidOrderNumber($number)
     {
-        $prefix = Configuration::get("SYSTEM.INVOICE.PREFIX");
-        $suffix = Configuration::get("SYSTEM.INVOICE.SUFFIX");
+        $prefix = Configuration::get('SYSTEM.INVOICE.PREFIX');
+        $suffix = Configuration::get('SYSTEM.INVOICE.SUFFIX');
 
         if ($prefix) {
-            $number = $prefix . $number;
+            $number = $prefix.$number;
         }
 
         if ($suffix) {
-            $number = $number . $suffix;
+            $number = $number.$suffix;
         }
 
         return $number;
     }
 
     /**
-     * Import a Cart to the Order
+     * Import a Cart to the Order.
      *
      * @param Cart $cart
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function importCart(Cart $cart)
@@ -88,7 +90,7 @@ class Order extends Base
         foreach ($cart->getItems() as $cartItem) {
             $item = Item::create();
             $item->setKey($i);
-            $item->setParent(Object\Service::createFolderByPath($this->getFullPath() . "/items/"));
+            $item->setParent(Object\Service::createFolderByPath($this->getFullPath().'/items/'));
             $item->setPublished(true);
 
             $item->setProduct($cartItem->getProduct());
@@ -103,7 +105,7 @@ class Order extends Base
 
             $productTaxes = $cartItem->getProduct()->getTaxCalculator();
 
-            if($productTaxes instanceof TaxCalculator) {
+            if ($productTaxes instanceof TaxCalculator) {
                 $productTaxes = $productTaxes->getTaxes();
                 $itemTaxes = new Object\Fieldcollection();
                 $itemTaxAmounts = $cartItem->getProduct()->getTaxAmount(true);
@@ -127,12 +129,12 @@ class Order extends Base
 
             $items[] = $item;
 
-            $i++;
+            ++$i;
         }
 
         $taxes = new Object\Fieldcollection();
 
-        foreach($cart->getTaxes() as $tax) {
+        foreach ($cart->getTaxes() as $tax) {
             $taxObject = $tax['tax'];
             $taxAmount = $tax['amount'];
 
@@ -158,12 +160,14 @@ class Order extends Base
     }
 
     /**
-     * Create a new Payment
+     * Create a new Payment.
      *
      * @param CorePayment $provider
      * @param $amount
-     * @param boolean $paid
+     * @param bool $paid
+     *
      * @return Payment
+     *
      * @throws \Exception
      */
     public function createPayment(CorePayment $provider, $amount, $paid = false)
@@ -171,7 +175,7 @@ class Order extends Base
         $payment = Payment::create();
         $payment->setKey(uniqid());
         $payment->setPublished(true);
-        $payment->setParent(Object\Service::createFolderByPath($this->getFullPath() . "/payments/"));
+        $payment->setParent(Object\Service::createFolderByPath($this->getFullPath().'/payments/'));
         $payment->setAmount($amount);
         $payment->setTransactionIdentifier(uniqid());
         $payment->setProvider($provider->getIdentifier());
@@ -181,19 +185,19 @@ class Order extends Base
         $this->addPayment($payment);
 
         $translate = Tool::getTranslate();
-        
-        $note = $this->createNote("coreshop-order-payment");
-        $note->setTitle(sprintf($translate->translate("coreshop_note_order_payment"), $provider->getName(), Tool::formatPrice($amount)));
-        $note->setDescription(sprintf($translate->translate("coreshop_note_order_payment_description"), $provider->getName(), Tool::formatPrice(($amount))));
-        $note->addData("provider", "text", $provider->getName());
-        $note->addData("amount", "text", Tool::formatPrice($amount));
+
+        $note = $this->createNote('coreshop-order-payment');
+        $note->setTitle(sprintf($translate->translate('coreshop_note_order_payment'), $provider->getName(), Tool::formatPrice($amount)));
+        $note->setDescription(sprintf($translate->translate('coreshop_note_order_payment_description'), $provider->getName(), Tool::formatPrice(($amount))));
+        $note->addData('provider', 'text', $provider->getName());
+        $note->addData('amount', 'text', Tool::formatPrice($amount));
         $note->save();
 
         return $payment;
     }
 
     /**
-     * Add a new Payment
+     * Add a new Payment.
      *
      * @param Payment $payment
      */
@@ -212,7 +216,7 @@ class Order extends Base
     }
 
     /**
-     * Calculates the subtotal of the Order
+     * Calculates the subtotal of the Order.
      *
      * @return float
      */
@@ -228,7 +232,7 @@ class Order extends Base
     }
 
     /**
-     * Calculates the subtotal of the Order
+     * Calculates the subtotal of the Order.
      *
      * @return float
      */
@@ -244,7 +248,7 @@ class Order extends Base
     }
 
     /**
-     * Calculates the total of the Order
+     * Calculates the total of the Order.
      *
      * @return int
      */
@@ -259,9 +263,10 @@ class Order extends Base
     }
 
     /**
-     * Returns the total payed amount for the Order
+     * Returns the total payed amount for the Order.
      *
      * @return float|int
+     *
      * @throws UnsupportedException
      */
     public function getPayedTotal()
@@ -278,7 +283,7 @@ class Order extends Base
     }
 
     /**
-     * Returns Customers shipping address
+     * Returns Customers shipping address.
      *
      * @return Address|bool
      */
@@ -294,7 +299,7 @@ class Order extends Base
     }
 
     /**
-     * Returns Customers billing address
+     * Returns Customers billing address.
      *
      * @return Address|bool
      */
@@ -310,7 +315,7 @@ class Order extends Base
     }
 
     /**
-     * checks if shipping and billing addresses are the same
+     * checks if shipping and billing addresses are the same.
      *
      * @returns boolean
      */
@@ -323,7 +328,7 @@ class Order extends Base
         $shippingVars = $shipping->getObjectVars();
 
         foreach ($shippingVars as $key => $value) {
-            if ($key === "fieldname") {
+            if ($key === 'fieldname') {
                 continue;
             }
 
@@ -346,9 +351,10 @@ class Order extends Base
     }
 
     /**
-     * Get Payment Provider Object
+     * Get Payment Provider Object.
      *
      * @return bool|\CoreShop\Model\Plugin\Payment
+     *
      * @throws UnsupportedException
      */
     public function getPaymentProviderObject()
@@ -359,7 +365,7 @@ class Order extends Base
     }
 
     /**
-     * Pimcore: When save is called from Pimcore, check for changes of the OrderState
+     * Pimcore: When save is called from Pimcore, check for changes of the OrderState.
      *
      * @return int
      */
@@ -372,11 +378,11 @@ class Order extends Base
                 $data = \Zend_Json::decode($_REQUEST['data']);
 
                 if (isset($data['orderState'])) {
-                    Cache::clearTag("object_" . $this->getId());
-                    \Zend_Registry::set("object_" . $this->getId(), null);
+                    Cache::clearTag('object_'.$this->getId());
+                    \Zend_Registry::set('object_'.$this->getId(), null);
 
                     $orderStep = State::getById($data['orderState']);
-                    $originalOrder = Order::getById($this->getId());
+                    $originalOrder = self::getById($this->getId());
 
                     unset($_REQUEST['data']);
 
@@ -405,16 +411,16 @@ class Order extends Base
     }
 
     /**
-     * Get Invoice for Order
+     * Get Invoice for Order.
      *
-     * @param boolean $renewInvoice Recreate Invoice?
+     * @param bool $renewInvoice Recreate Invoice?
      *
      * @return bool|mixed|Document
      */
     public function getInvoice($renewInvoice = false)
     {
         //Check if invoice has already been generated
-        $document = $this->getProperty("invoice");
+        $document = $this->getProperty('invoice');
 
         if ($document instanceof Document && !$renewInvoice) {
             return $document;
@@ -424,7 +430,7 @@ class Order extends Base
     }
 
     /**
-     * Create a note for this order
+     * Create a note for this order.
      *
      * @param $type string
      *
@@ -448,7 +454,7 @@ class Order extends Base
     }
 
     /**
-     * Returns array with key=>value for tax and value
+     * Returns array with key=>value for tax and value.
      *
      * @return array
      */
@@ -458,11 +464,11 @@ class Order extends Base
 
         $taxValues = array();
 
-        foreach($this->getTaxes() as $tax) {
+        foreach ($this->getTaxes() as $tax) {
             $taxValues[] = array(
-                "rate" => $tax->getRate(),
-                "name" => $tax->getName(),
-                "value" => $tax->getAmount()
+                'rate' => $tax->getRate(),
+                'name' => $tax->getName(),
+                'value' => $tax->getAmount(),
             );
         }
 
@@ -471,20 +477,21 @@ class Order extends Base
                 $taxes[$tax['name']] = 0;
             }
 
-            $taxes[(string)$tax['name']] += $tax['value'];
+            $taxes[(string) $tax['name']] += $tax['value'];
         }
 
         return $taxes;
     }
 
     /**
-     * Create Shipping Tracking Url
+     * Create Shipping Tracking Url.
      *
      * @return string|null
      */
-    public function getShippingTrackingUrl() {
-        if($this->getCarrier() instanceof Carrier) {
-            if($trackingUrl = $this->getCarrier()->getTrackingUrl()) {
+    public function getShippingTrackingUrl()
+    {
+        if ($this->getCarrier() instanceof Carrier) {
+            if ($trackingUrl = $this->getCarrier()->getTrackingUrl()) {
                 return sprintf($trackingUrl, $this->getTrackingCode());
             }
         }
@@ -494,210 +501,228 @@ class Order extends Base
 
     /**
      * set discount for order
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @param State $state
+     *
      * @throws UnsupportedException
      */
     public function setOrderState($state)
     {
-        throw new UnsupportedException("setOrderState is not supported for " . get_class($this));
+        throw new UnsupportedException('setOrderState is not supported for '.get_class($this));
     }
 
     /**
      * set discount for order
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @param float $discount
+     *
      * @throws UnsupportedException
      */
     public function setDiscount($discount)
     {
-        throw new UnsupportedException("setDiscount is not supported for " . get_class($this));
+        throw new UnsupportedException('setDiscount is not supported for '.get_class($this));
     }
 
     /**
      * returns discount for order
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return float
      */
     public function getDiscount()
     {
-        throw new UnsupportedException("getDiscount is not supported for " . get_class($this));
+        throw new UnsupportedException('getDiscount is not supported for '.get_class($this));
     }
 
     /**
      * returns customer for order
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return User
      */
     public function getCustomer()
     {
-        throw new UnsupportedException("getCustomer is not supported for " . get_class($this));
+        throw new UnsupportedException('getCustomer is not supported for '.get_class($this));
     }
 
     /**
      * returns shipping for order
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return float
      */
     public function getShipping()
     {
-        throw new UnsupportedException("getShipping is not supported for " . get_class($this));
+        throw new UnsupportedException('getShipping is not supported for '.get_class($this));
     }
 
     /**
      * returns paymentFee for order
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return float
      */
     public function getPaymentFee()
     {
-        throw new UnsupportedException("getPaymentFee is not supported for " . get_class($this));
+        throw new UnsupportedException('getPaymentFee is not supported for '.get_class($this));
     }
 
     /**
      * set PriceRule for order
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @param PriceRule $priceRule
+     *
      * @throws UnsupportedException
      */
     public function setPriceRule($priceRule)
     {
-        throw new UnsupportedException("setPriceRule is not supported for " . get_class($this));
+        throw new UnsupportedException('setPriceRule is not supported for '.get_class($this));
     }
 
     /**
      * set items for order
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @param Item[] $items
+     *
      * @throws UnsupportedException
      */
     public function setItems($items)
     {
-        throw new UnsupportedException("setItems is not supported for " . get_class($this));
+        throw new UnsupportedException('setItems is not supported for '.get_class($this));
     }
 
     /**
      * returns payments
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return Payment[]
      */
     public function getPayments()
     {
-        throw new UnsupportedException("getPayments is not supported for " . get_class($this));
+        throw new UnsupportedException('getPayments is not supported for '.get_class($this));
     }
 
     /**
      * sets payments
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @param Payment[] $payments
+     *
      * @throws UnsupportedException
      */
     public function setPayments($payments)
     {
-        throw new UnsupportedException("setPayments is not supported for " . get_class($this));
+        throw new UnsupportedException('setPayments is not supported for '.get_class($this));
     }
 
     /**
      * returns orderitems
-     * this method has to be overwritten in Pimcore Object
+     * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
+     *
      * @return Item[]
      */
     public function getItems()
     {
-        throw new UnsupportedException("getItems is not supported for " . get_class($this));
+        throw new UnsupportedException('getItems is not supported for '.get_class($this));
     }
 
     /**
-     * shipping address
+     * shipping address.
      *
      * @throws UnsupportedException
+     *
      * @return \Pimcore\Model\Object\Fieldcollection
      */
     public function getShippingAddress()
     {
-        throw new UnsupportedException("getShippingAddress is not supported for " . get_class($this));
+        throw new UnsupportedException('getShippingAddress is not supported for '.get_class($this));
     }
 
     /**
-     * billing address
+     * billing address.
      *
      * @throws UnsupportedException
+     *
      * @return \Pimcore\Model\Object\Fieldcollection
      */
     public function getBillingAddress()
     {
-        throw new UnsupportedException("getBillingAddress is not supported for " . get_class($this));
+        throw new UnsupportedException('getBillingAddress is not supported for '.get_class($this));
     }
 
     /**
-     * payment provider Token
+     * payment provider Token.
      *
      * @throws UnsupportedException
+     *
      * @return string
      */
     public function getPaymentProvider()
     {
-        throw new UnsupportedException("getPaymentProvider is not supported for " . get_class($this));
+        throw new UnsupportedException('getPaymentProvider is not supported for '.get_class($this));
     }
 
     /**
-     * Get OrderState
+     * Get OrderState.
      *
      * @throws UnsupportedException
+     *
      * @return State
      */
     public function getOrderState()
     {
-        throw new UnsupportedException("getOrderStates is not supported for " . get_class($this));
+        throw new UnsupportedException('getOrderStates is not supported for '.get_class($this));
     }
 
     /**
-     * Get Taxes
+     * Get Taxes.
      *
      * @throws UnsupportedException
+     *
      * @return Object\Fieldcollection
      */
     public function getTaxes()
     {
-        throw new UnsupportedException("getTaxes is not supported for " . get_class($this));
+        throw new UnsupportedException('getTaxes is not supported for '.get_class($this));
     }
 
     /**
-     * Get TrackingCode
+     * Get TrackingCode.
      *
      * @throws UnsupportedException
+     *
      * @return string
      */
     public function getTrackingCode()
     {
-        throw new UnsupportedException("getTrackingCode is not supported for " . get_class($this));
+        throw new UnsupportedException('getTrackingCode is not supported for '.get_class($this));
     }
 
     /**
-     * Get Carrier
+     * Get Carrier.
      *
      * @throws UnsupportedException
+     *
      * @return Carrier|null
      */
     public function getCarrier()
     {
-        throw new UnsupportedException("getCarrier is not supported for " . get_class($this));
+        throw new UnsupportedException('getCarrier is not supported for '.get_class($this));
     }
 }

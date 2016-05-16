@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Helper;
 
 use Pimcore\Db;
@@ -19,14 +18,14 @@ use Pimcore\Db;
 class ReportQuery
 {
     /**
-     * Extract filters from query params
+     * Extract filters from query params.
      *
      * @param $params
      * @returns string
      */
     public static function extractFilterDefinition($params = array())
     {
-        $allowedFields = array("from", "to");
+        $allowedFields = array('from', 'to');
         $conditions = [];
         $db = Db::get();
 
@@ -34,12 +33,12 @@ class ReportQuery
             foreach ($params as $param => $value) {
                 if (in_array($param, $allowedFields)) {
                     switch ($param) {
-                        case "from":
-                            $conditions[] = "o_creationDate >= " . $db->quote($value);
+                        case 'from':
+                            $conditions[] = 'o_creationDate >= '.$db->quote($value);
                             break;
 
-                        case "to":
-                            $conditions[] = "o_creationDate <= " . $db->quote($value);
+                        case 'to':
+                            $conditions[] = 'o_creationDate <= '.$db->quote($value);
                             break;
                     }
                 }
@@ -47,9 +46,9 @@ class ReportQuery
         }
 
         if (count($conditions) === 0) {
-            $conditions[] = "1=1";
+            $conditions[] = '1=1';
         }
 
-        return implode(" AND ", $conditions);
+        return implode(' AND ', $conditions);
     }
 }

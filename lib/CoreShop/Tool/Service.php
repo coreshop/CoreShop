@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,23 +11,21 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Tool;
 
 use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Model\Object\Objectbrick\Definition;
 use CoreShop\Model\Product;
 use CoreShop\Model\BrickVariant;
 use TijsVerkoyen\CssToInlineStyles\Exception;
 
 class Service
 {
-
     /**
-     * allowed elements to display in variants
+     * allowed elements to display in variants.
+     *
      * @var array
      */
-    private static $allowedVariationTypes = array("input","numeric","checkbox","select","slider", "href", "objects");
+    private static $allowedVariationTypes = array('input', 'numeric', 'checkbox', 'select', 'slider', 'href', 'objects');
 
     /**
      * @param \CoreShop\Model\Product $master
@@ -35,6 +33,7 @@ class Service
      * @param string                  $language
      *
      * @return array
+     *
      * @throws \Exception
      */
     public static function getProductVariations(Product $master, Product $currentProduct, $language = 'en')
@@ -81,7 +80,7 @@ class Service
 
                     //Getter must be an instance of Variant Model
                     if (!$getter instanceof BrickVariant) {
-                        throw new Exception('Objectbrick "' . $dimensionGetter . '" needs to be a instance of \CoreShop\Model\BrickVariant"');
+                        throw new Exception('Objectbrick "'.$dimensionGetter.'" needs to be a instance of \CoreShop\Model\BrickVariant"');
                     } elseif (!method_exists($getter, 'getValueForVariant')) {
                         throw new Exception('Variant Class needs a implemented "getValueForVariant" Method.');
                     } else {
@@ -94,13 +93,13 @@ class Service
                             }
 
                             if (!is_string($variantValue) && !is_numeric($variantValue)) {
-                                throw new Exception('Variant return value needs to be string or numeric, ' . gettype($variantValue) . ' given.');
+                                throw new Exception('Variant return value needs to be string or numeric, '.gettype($variantValue).' given.');
                             }
 
                             //Add a namespace, so fields from different blocks can have same name!
-                            $secureNameSpace = '__' . $getter->getType() . '__';
+                            $secureNameSpace = '__'.$getter->getType().'__';
 
-                            $compareValues[ $secureNameSpace . $variantName ][ $productId ] = $variantValue;
+                            $compareValues[ $secureNameSpace.$variantName ][ $productId ] = $variantValue;
                             $variantUrls[ $productVariant->getId() ] = $productVariant->getName();
                         }
                     }
@@ -133,8 +132,8 @@ class Service
 
                 $variantSelections = array(
 
-                    'variantName' =>  preg_replace("/__(.*?)__/", "", $variantName),
-                    'variantValues' => array()
+                    'variantName' => preg_replace('/__(.*?)__/', '', $variantName),
+                    'variantValues' => array(),
 
                 );
 
@@ -147,7 +146,7 @@ class Service
                             'productId' => $pid,
                             'productName' => isset($variantUrls[ $pid ]) ?  $variantUrls[ $pid ] : null,
                             'selected' => $currentVariantName === $variantValue,
-                            'variantName' => $variantValue
+                            'variantName' => $variantValue,
 
                         );
                     }
@@ -234,7 +233,7 @@ class Service
                 $validValues[] = array(
                     'name' => $field->getName(),
                     'type' => $field->getPhpdocType(),
-                    'title' => $field->getTitle()
+                    'title' => $field->getTitle(),
                 );
             }
         }
@@ -251,9 +250,9 @@ class Service
     {
         $list = new \Pimcore\Model\Object\Listing();
 
-        $list->setCondition("o_path LIKE ?", $object->getFullPath() . "/%");
-        $list->setOrderKey("o_key");
-        $list->setOrder("asc");
+        $list->setCondition('o_path LIKE ?', $object->getFullPath().'/%');
+        $list->setOrderKey('o_key');
+        $list->setOrder('asc');
         $list->setObjectTypes(array(AbstractObject::OBJECT_TYPE_VARIANT));
 
         return $list->load();

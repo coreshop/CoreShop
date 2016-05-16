@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -11,7 +11,6 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Cart\PriceRule;
 
 class AbstractPriceRule
@@ -31,12 +30,12 @@ class AbstractPriceRule
      */
     public function setValues(array $values)
     {
-        foreach ($values as $key=>$value) {
-            if ($key == "type") {
+        foreach ($values as $key => $value) {
+            if ($key == 'type') {
                 continue;
             }
 
-            $setter = "set" . ucfirst($key);
+            $setter = 'set'.ucfirst($key);
 
             if (method_exists($this, $setter)) {
                 $this->$setter($value);
