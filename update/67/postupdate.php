@@ -3,19 +3,19 @@
 $db = \Pimcore\Db::get();
 
 $db->query("
-CREATE TABLE `coreshop_messaging_contact` (
+CREATE TABLE IF NOT EXISTS `coreshop_messaging_contact` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `email` varchar(255) NULL,
   `description` varchar(1000) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `coreshop_messaging_thread_state` (
+CREATE TABLE IF NOT EXISTS `coreshop_messaging_thread_state` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `color` varchar(255) NULL,
-  `finished` TINYINT(1) NOT NULL;
+  `finished` TINYINT(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `coreshop_messaging_thread` (
+CREATE TABLE IF NOT EXISTS `coreshop_messaging_thread` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `userId` int NULL,
   `orderId` int NULL,
@@ -27,7 +27,7 @@ CREATE TABLE `coreshop_messaging_thread` (
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `coreshop_messaging_message` (
+CREATE TABLE IF NOT EXISTS `coreshop_messaging_message` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `threadId` int NOT NULL,
   `adminUserId` int(11) unsigned NULL,
