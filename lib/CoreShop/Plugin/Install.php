@@ -587,6 +587,14 @@ class Install
     }
 
     /**
+     * Install Default Messaging Contacts
+     */
+    public function installMessagingContacts() {
+        Configuration::set("SYSTEM.MESSAGING.CONTACT.SALES", 1);
+        Configuration::set("SYSTEM.MESSAGING.CONTACT.TECHNOLOGY", 2);
+    }
+
+    /**
      * Removes CoreShop CustomView.
      *
      * @throws \Zend_Config_Exception

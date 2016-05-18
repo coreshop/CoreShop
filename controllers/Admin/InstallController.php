@@ -38,8 +38,10 @@ class CoreShop_Admin_InstallController extends Admin
             //install Data
             $install->installObjectData('orderStates', 'Order\\');
             $install->installObjectData('threadStates', 'Messaging\\Thread\\');
+            $install->installObjectData('threadContacts', 'Messaging\\');
             $install->installDocuments('documents');
             $install->installMessagingMails();
+            $install->installMessagingContacts();
 
             $install->createFieldCollection('CoreShopUserAddress');
             $install->createFieldCollection('CoreShopOrderTax');

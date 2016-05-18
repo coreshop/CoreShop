@@ -481,6 +481,17 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                     }
                 );
 
+                orderMoreButtons.push(
+                    {
+                        text: t('coreshop_send_message'),
+                        scale: 'medium',
+                        iconCls: 'coreshop_icon_messaging_thread',
+                        handler: function () {
+                            pimcore.plugin.coreshop.orders.message.showWindow(tab);
+                        }.bind(this, tab)
+                    }
+                );
+
                 if (orderMoreButtons.length > 0) {
                     tab.toolbar.insert(tab.toolbar.items.length,
                         '-'
@@ -490,7 +501,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         {
                             text: t('coreshop_more'),
                             scale: 'medium',
-                            iconCls: 'coreshop_icon_more',
+                            iconCls: 'coreshop_icon_logo',
                             menu : orderMoreButtons
                         }
                     );

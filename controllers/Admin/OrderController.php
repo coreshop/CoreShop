@@ -143,4 +143,40 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "Payment Provider '$paymentProviderName' not found"));
         }
     }
+
+    public function sendMessageAction() {
+        $orderId = $this->getParam('o_id');
+        $order = \CoreShop\Model\Order::getById($orderId);
+        $messageText = $this->getParam('message', '');
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+        }
+
+        if (strlen($messageText) <= 0) {
+            $this->_helper->json(array('success' => false, 'message' => 'No Message text set'));
+        }
+
+        $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
+        $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), $orderId);
+
+        if(!$thread instanceof \CoreShop\Model\Messaging\Thread) {
+            $thread = new CoreShop\Model\Messaging\Thread();
+            $thread->setLanguage($order->getLang());
+            $thread->setStatusId(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
+            $thread->setEmail($order->getCustomer()->getEmail());
+            $thread->setUser($order->getCustomer());
+            $thread->setContact($salesContact);
+            $thread->setToken(uniqid());
+            $thread->setOrder($order);
+            $thread->save();
+        }
+
+        $message = $thread->createMessage($messageText);
+
+        $customerInfoMail = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
+        $message->sendNotification($customerInfoMail, $thread->getEmail());
+
+        $this->_helper->json(array('success' => true));
+    }
 }

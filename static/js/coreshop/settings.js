@@ -80,6 +80,8 @@ pimcore.plugin.coreshop.settings = Class.create({
             exchangeRatesStore.load();
 
             var messagingLangTabs = [];
+            var messagingContactStore = pimcore.globalmanager.get("coreshop_messaging_contacts");
+            messagingContactStore.load();
 
             Ext.each(pimcore.settings.websiteLanguages, function (lang) {
                 var shortLang = lang.toUpperCase();
@@ -322,6 +324,37 @@ pimcore.plugin.coreshop.settings = Class.create({
                                     bodyStyle:'padding:10px;'
                                 },
                                 items: messagingLangTabs
+
+                            },
+                            {
+                                xtype: 'combo',
+                                fieldLabel: t('coreshop_messaging_contact_sales'),
+                                name: 'SYSTEM.MESSAGING.CONTACT.SALES',
+                                value: this.getValue('SYSTEM.MESSAGING.CONTACT.SALES'),
+                                width: 500,
+                                store: messagingContactStore,
+                                triggerAction: 'all',
+                                typeAhead: false,
+                                editable: false,
+                                forceSelection: true,
+                                queryMode: 'local',
+                                displayField:'text',
+                                valueField:'id'
+                            },
+                            {
+                                xtype: 'combo',
+                                fieldLabel: t('coreshop_messaging_contact_technology'),
+                                name: 'SYSTEM.MESSAGING.CONTACT.TECHNOLOGY',
+                                value: this.getValue('SYSTEM.MESSAGING.CONTACT.TECHNOLOGY'),
+                                width: 500,
+                                store: messagingContactStore,
+                                triggerAction: 'all',
+                                typeAhead: false,
+                                editable: false,
+                                forceSelection: true,
+                                queryMode: 'local',
+                                displayField:'text',
+                                valueField:'id'
                             }
                         ]
                     },

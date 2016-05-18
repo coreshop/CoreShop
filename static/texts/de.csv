@@ -334,3 +334,7 @@
 "coreshop_messaging_message_send","Nachricht senden"
 "coreshop_messaging_new_message_error","Fehler beim senden der Nachricht"
 "coreshop_token","Token"
+"coreshop_messaging_contact_sales","Kontakt Verkauf"
+"coreshop_messaging_contact_technology","Kontakt Technik"
+"coreshop_send_message","Nachricht schreiben"
+"coreshop_order_new_message","Neue Nachricht"
