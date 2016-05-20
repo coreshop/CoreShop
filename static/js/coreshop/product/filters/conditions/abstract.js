@@ -15,5 +15,18 @@ pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions');
 pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.abstract');
 
 pimcore.plugin.coreshop.filters.conditions.abstract = Class.create(pimcore.plugin.coreshop.filters.abstract, {
+    elementType : 'conditions',
 
+    getDefaultItems : function () {
+        return [
+            {
+                xtype : 'textfield',
+                name : 'label',
+                width : 400,
+                fieldLabel : t('label'),
+                value : this.data.label
+            },
+            this.getFieldsComboBox()
+        ];
+    }
 });

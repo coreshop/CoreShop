@@ -14,38 +14,11 @@
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
+use Pimcore\Model\Element\ElementInterface;
+use Pimcore\Model\Object\AbstractObject;
 
-class AbstractInterpreter
+class ObjectIdSum extends AbstractInterpreter
 {
-    /**
-     * defined getters.
-     *
-     * @var array
-     */
-    protected static $interpreters = array('Object', 'Soundex', 'ObjectIdSum');
-
-    /**
-     * Add Interpreter Class.
-     *
-     * @param string $interpreter
-     */
-    public static function addInterpreter($interpreter)
-    {
-        if (!in_array($interpreter, self::$interpreters)) {
-            self::$interpreters[] = $interpreter;
-        }
-    }
-
-    /**
-     * Get all Interpreter Classes.
-     *
-     * @return array
-     */
-    public static function getInterpreters()
-    {
-        return self::$interpreters;
-    }
-
     /**
      * interpret value.
      *
@@ -58,6 +31,14 @@ class AbstractInterpreter
      */
     public function interpret($value, $config = null)
     {
-        throw new UnsupportedException('Not implemented in abstract');
+        $sum = 0;
+        if(is_array($value)) {
+            foreach($value as $object) {
+                if($object instanceof ElementInterface) {
+                    $sum += $object->getId();
+                }
+            }
+        }
+        return $sum;
     }
 }

@@ -23,11 +23,20 @@ class CoreShop_ProductController extends Action
 
         if ($product instanceof \CoreShop\Model\Product) {
             $this->view->product = $product;
-
+            $this->view->similarProducts = array();
+            
             $this->view->seo = array(
                 'image' => $product->getImage(),
                 'description' => $product->getMetaDescription() ? $product->getMetaDescription() : $product->getShortDescription(),
             );
+
+            if(count($product->getCategories()) > 0) {
+                $mainCategory = $product->getCategories()[0];
+
+                if ($mainCategory->getFilterDefinition() instanceof \CoreShop\Model\Product\Filter) {
+                    $this->view->similarProducts = $this->getSimilarProducts($product, $mainCategory->getFilterDefinition());
+                }
+            }
 
             if ($this->getRequest()->isPost()) {
                 $params = $this->getAllParams();
@@ -145,5 +154,41 @@ class CoreShop_ProductController extends Action
         }
 
         return $sort;
+    }
+
+    /**
+     * get similar products based on filter
+     *
+     * @param \CoreShop\Model\Product $product
+     * @param \CoreShop\Model\Product\Filter $filter
+     * @return array|\CoreShop\Model\Product[]
+     */
+    protected function getSimilarProducts(\CoreShop\Model\Product $product, \CoreShop\Model\Product\Filter $filter)
+    {
+        $index = $filter->getIndex();
+        $indexService = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
+
+        $productList = $indexService->getProductList();
+        $productList->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_INCLUDE_PARENT_OBJECT);
+        $similarityFields = $filter->getSimilarities();
+
+        if(is_array($similarityFields) && count($similarityFields) > 0) {
+            $statement = $productList->buildSimilarityOrderBy($filter->getSimilarities(), $product->getId());
+        }
+
+        if(!empty($statement)) {
+            $productList->setLimit(2);
+            $productList->setOrder("ASC");
+            $productList->addCondition("o_virtualProductId != " . $product->getId(), "o_id");
+            
+            /*if($filterDefinition->getCrossSellingCategory()) {
+                $productList->setCategory($filterDefinition->getCrossSellingCategory());
+            }*/
+            $productList->setOrderKey($statement);
+
+            return $productList->load();
+        }
+
+        return array();
     }
 }

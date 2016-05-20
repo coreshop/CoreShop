@@ -23,6 +23,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
     data : {},
 
     type : 'abstract',
+    elementType : 'abstract',
 
     form : null,
 
@@ -42,7 +43,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
             xparent : this,
             id : myId,
             style: 'margin: 10px 0 0 0',
-            tbar : this.getTopBar(t('coreshop_product_filters_' + this.type), myId, this.parent, this.data, 'coreshop_product_filters_icon_condition_' + this.type),
+            tbar : this.getTopBar(t('coreshop_product_filters_' + this.type), myId, this.parent, this.data, 'coreshop_product_filters_icon_'+this.elementType+'_' + this.type),
             items : [
                 {
                     xtype : 'fieldset',
@@ -54,51 +55,45 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         return this.form;
     },
 
-    getDefaultItems : function () {
-        this.valueStore = new Ext.data.ArrayStore({
-            proxy: new Ext.data.HttpProxy({
-                url : '/plugin/CoreShop/admin_filter/get-values-for-filter-field'
-            }),
-            reader: new Ext.data.JsonReader({}, [
-                { name:'value' }
-            ])
-        });
+    getFieldsComboBox : function() {
+        if(!this.fieldsCombo) {
 
-        this.fieldsCombo = Ext.create({
-            xtype: 'combo',
-            fieldLabel: t('coreshop_product_filters_field'),
-            name: 'field',
-            width: 400,
-            store: this.parent.getFieldsStore(),
-            displayField : 'name',
-            valueField : 'name',
-            triggerAction: 'all',
-            typeAhead: false,
-            editable: false,
-            forceSelection: true,
-            queryMode: 'local',
-            value : this.data.field,
-            listeners : {
-                change : function (combo, newValue) {
-                    this.onFieldChange.call(this, combo, newValue);
-                }.bind(this)
+            this.valueStore = new Ext.data.ArrayStore({
+                proxy: new Ext.data.HttpProxy({
+                    url: '/plugin/CoreShop/admin_filter/get-values-for-filter-field'
+                }),
+                reader: new Ext.data.JsonReader({}, [
+                    {name: 'value'}
+                ])
+            });
+
+            this.fieldsCombo = Ext.create({
+                xtype: 'combo',
+                fieldLabel: t('coreshop_product_filters_field'),
+                name: 'field',
+                width: 400,
+                store: this.parent.getFieldsStore(),
+                displayField: 'name',
+                valueField: 'name',
+                triggerAction: 'all',
+                typeAhead: false,
+                editable: false,
+                forceSelection: true,
+                queryMode: 'local',
+                value: this.data.field,
+                listeners: {
+                    change: function (combo, newValue) {
+                        this.onFieldChange.call(this, combo, newValue);
+                    }.bind(this)
+                }
+            });
+
+            if (this.data.field) {
+                this.onFieldChange(this.fieldsCombo, this.data.field);
             }
-        });
-
-        if (this.data.field) {
-            this.onFieldChange(this.fieldsCombo, this.data.field);
         }
 
-        return [
-            {
-                xtype : 'textfield',
-                name : 'label',
-                width : 400,
-                fieldLabel : t('label'),
-                value : this.data.label
-            },
-            this.fieldsCombo
-        ];
+        return this.fieldsCombo;
     },
 
     onFieldChange : function (combo, newValue) {
@@ -135,7 +130,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
      * @returns {Array}
      */
     getTopBar: function (name, index, parent, data, iconCls) {
-        var container = parent.conditionsContainer;
+        var container = parent.fieldsContainer;
 
         return [{
             iconCls: iconCls,
@@ -149,7 +144,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
             handler: function (blockId, parent, container) {
 
                 var blockElement = Ext.getCmp(blockId);
-                var index = pimcore.plugin.coreshop.filters.conditions.abstract.prototype.getIndex(blockElement, container);
+                var index = pimcore.plugin.coreshop.filters[this.elementType].abstract.prototype.getIndex(blockElement, container);
                 var tmpContainer = pimcore.viewport;
 
                 var newIndex = index - 1;
@@ -178,7 +173,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
 
                 var container = container;
                 var blockElement = Ext.getCmp(blockId);
-                var index = pimcore.plugin.coreshop.filters.conditions.abstract.prototype.getIndex(blockElement, container);
+                var index = pimcore.plugin.coreshop.filters[this.elementType].abstract.prototype.getIndex(blockElement, container);
                 var tmpContainer = pimcore.viewport;
 
                 // move this node temorary to an other so ext recognizes a change

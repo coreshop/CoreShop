@@ -14,38 +14,10 @@
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
+use Pimcore\Model\Object\AbstractObject;
 
-class AbstractInterpreter
+class Soundex extends AbstractInterpreter
 {
-    /**
-     * defined getters.
-     *
-     * @var array
-     */
-    protected static $interpreters = array('Object', 'Soundex', 'ObjectIdSum');
-
-    /**
-     * Add Interpreter Class.
-     *
-     * @param string $interpreter
-     */
-    public static function addInterpreter($interpreter)
-    {
-        if (!in_array($interpreter, self::$interpreters)) {
-            self::$interpreters[] = $interpreter;
-        }
-    }
-
-    /**
-     * Get all Interpreter Classes.
-     *
-     * @return array
-     */
-    public static function getInterpreters()
-    {
-        return self::$interpreters;
-    }
-
     /**
      * interpret value.
      *
@@ -58,6 +30,18 @@ class AbstractInterpreter
      */
     public function interpret($value, $config = null)
     {
-        throw new UnsupportedException('Not implemented in abstract');
+        if(is_null($value))
+            return null;
+
+        if (is_array($value)) {
+            sort($value);
+            $string = implode(" ", $value);
+        } else {
+            $string = (string)$value;
+        }
+
+        $soundEx = soundex($string);
+
+        return intval(ord(substr($soundEx, 0, 1)) . substr($soundEx, 1));
     }
 }

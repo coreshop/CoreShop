@@ -13,6 +13,7 @@
  */
 namespace CoreShop\Model\Product\Listing\Mysql;
 
+use CoreShop\Model\Product\Filter\Similarity\AbstractSimilarity;
 use CoreShop\Model\Product\Listing\Mysql;
 use CoreShop\Model\Product\Listing as AbstractList;
 use Pimcore\Db;
@@ -251,25 +252,30 @@ class Resource
     }
 
     /**
-     * returns order by statement for simularity calculations based on given fields and object ids.
+     * returns order by statement for similarity calculations based on given fields and object ids.
      *
      * @param $fields
      * @param $objectId
      *
      * @return mixed;
      */
-    public function buildSimularityOrderBy($fields, $objectId)
+    public function buildSimilarityOrderBy($fields, $objectId)
     {
         try {
             $fieldString = '';
             $maxFieldString = '';
-            foreach ($fields as $f) {
-                if (!empty($fieldString)) {
-                    $fieldString .= ',';
-                    $maxFieldString .= ',';
+
+            foreach ($fields as $field) {
+                if($field instanceof AbstractSimilarity) {
+                    if (!empty($fieldString)) {
+                        $fieldString .= ',';
+                        $maxFieldString .= ',';
+                    }
+
+
+                    $fieldString .= $this->db->quoteIdentifier($field->getField());
+                    $maxFieldString .= 'MAX('.$this->db->quoteIdentifier($field->getField()).') as '.$this->db->quoteIdentifier($field->getField());
                 }
-                $fieldString .= $this->db->quoteIdentifier($f->getField());
-                $maxFieldString .= 'MAX('.$this->db->quoteIdentifier($f->getField()).') as '.$this->db->quoteIdentifier($f->getField());
             }
 
             $query = 'SELECT '.$fieldString.' FROM '.$this->model->getTablename().' a WHERE a.o_id = ?;';
@@ -278,26 +284,37 @@ class Resource
             $query = 'SELECT '.$maxFieldString.' FROM '.$this->model->getTablename().' a';
             $maxObjectValues = $this->db->fetchRow($query);
 
-            if (!empty($objectValues)) {
+            if (!empty($objectValues))
+            {
                 $subStatement = array();
-                foreach ($fields as $f) {
-                    $subStatement[] =
-                        '('.
-                        $this->db->quoteIdentifier($f->getField()).'/'.$maxObjectValues[$f->getField()].
-                        ' - '.
-                        $objectValues[$f->getField()] / $maxObjectValues[$f->getField()].
-                        ') * '.$f->getWeight();
+
+                foreach ($fields as $field) {
+                    if($field instanceof AbstractSimilarity) {
+                        if($objectValues[$field->getField()]) {
+                            $subStatement[] =
+                                '(' .
+                                $this->db->quoteIdentifier($field->getField()) . '/' . $maxObjectValues[$field->getField()] .
+                                ' - ' .
+                                $objectValues[$field->getField()] / $maxObjectValues[$field->getField()] .
+                                ') * ' . $field->getWeight();
+                        }
+                    }
                 }
 
-                $statement = 'ABS('.implode(' + ', $subStatement).')';
+                if(count($subStatement) > 0) {
+                    $statement = 'ABS(' . implode(' + ', $subStatement) . ')';
 
-                return $statement;
+                    return $statement;
+                }
+
             } else {
                 throw new \Exception('Field array for given object id is empty');
             }
         } catch (\Exception $e) {
-            return '';
+            
         }
+
+        return '';
     }
 
     /**

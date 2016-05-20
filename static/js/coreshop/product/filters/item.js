@@ -45,11 +45,13 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     getItems : function () {
         this.conditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'preconditions');
         this.filters = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'filters');
+        this.similarities = new pimcore.plugin.coreshop.filters.similarity(this, this.parentPanel.similarities);
 
         var items = [
             this.getSettings(),
             this.conditions.getLayout(),
-            this.filters.getLayout()
+            this.filters.getLayout(),
+            this.similarities.getLayout()
         ];
 
         // add saved conditions
@@ -63,6 +65,12 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
         if (this.data.filters) {
             Ext.each(this.data.filters, function (condition) {
                 this.filters.addCondition(condition.type, condition);
+            }.bind(this));
+        }
+
+        if (this.data.similarities) {
+            Ext.each(this.data.similarities, function (similarity) {
+                this.similarities.addSimilarity(similarity.type, similarity);
             }.bind(this));
         }
 
@@ -188,6 +196,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
         saveData['settings'] = this.settingsForm.getForm().getFieldValues();
         saveData['conditions'] = this.conditions.getData();
         saveData['filters'] = this.filters.getData();
+        saveData['similarities'] = this.similarities.getData();
 
         return {
             data : Ext.encode(saveData)

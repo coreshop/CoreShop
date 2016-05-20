@@ -50,6 +50,7 @@ pimcore.plugin.coreshop.filters.panel = Class.create(pimcore.plugin.coreshop.abs
                 var config = Ext.decode(result.responseText);
 
                 me.conditions = config.conditions;
+                me.similarities = config.similarities;
             }
         });
 

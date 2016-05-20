@@ -604,6 +604,19 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * returns order by statement for similarity calculations based on given fields and object ids
+     * returns cosine similarity calculation
+     *
+     * @param $fields
+     * @param $objectId
+     *
+     * @return Product[]
+     */
+    public function buildSimilarityOrderBy($fields, $objectId) {
+        return $this->resource->buildSimilarityOrderBy($fields, $objectId);
+    }
+
+    /**
      * return tablename.
      *
      * @return string

@@ -95,11 +95,11 @@ abstract class AbstractWorker
             'o_id' => $object->getId(),
             'o_classId' => $object->getClassId(),
             'o_virtualProductId' => $virtualProductId,
-            'o_virtualProductActive' => $virtualProductActive,
+            'o_virtualProductActive' => $virtualProductActive === null ? false : $virtualProductActive,
             'o_type' => $object->getType(),
             'categoryIds' => ','.implode(',', $categoryIds).',',
             'parentCategoryIds' => ','.implode(',', $parentCategoryIds).',',
-            'active' => $object->getEnabled(),
+            'active' => $object->getEnabled() === null ? false : $object->getEnabled(),
         );
 
         $relationData = array();

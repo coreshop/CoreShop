@@ -33,7 +33,10 @@ class Dao extends AbstractDao
                 $this->model->setFilters(unserialize($value));
             } elseif ($key == 'preConditions') {
                 $this->model->setPreConditions(unserialize($value));
+            } elseif ($key == 'similarities') {
+                $this->model->setSimilarities(unserialize($value));
             }
+
         }
     }
 }

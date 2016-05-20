@@ -338,3 +338,5 @@
 "coreshop_messaging_contact_technology","Contact Technology"
 "coreshop_send_message","Send Message"
 "coreshop_order_new_message","New Message"
+"coreshop_product_similarity","Similar Products"
+"coreshop_product_filters_similarity_weight","Weight"

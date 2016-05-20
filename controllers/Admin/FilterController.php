@@ -108,6 +108,7 @@ class CoreShop_Admin_FilterController extends Admin
             $preConditionInstances = array();
 
             $conditionNamespace = 'CoreShop\\Model\\Product\\Filter\\Condition\\';
+            $similarityNamespace = 'CoreShop\\Model\\Product\\Filter\\Similarity\\';
 
             foreach ($preConditions as $condition) {
                 $class = $conditionNamespace.ucfirst($condition['type']);
@@ -138,9 +139,26 @@ class CoreShop_Admin_FilterController extends Admin
                 }
             }
 
+            $similarities = $data['similarities'];
+            $similaritiesInstances = array();
+
+            foreach ($similarities as $similarity) {
+                $class = $similarityNamespace.ucfirst($similarity['type']);
+
+                if (\Pimcore\Tool::classExists($class)) {
+                    $instance = new $class();
+                    $instance->setValues($similarity);
+
+                    $similaritiesInstances[] = $instance;
+                } else {
+                    throw new \Exception(sprintf('Condition with type %s not found', $similarity['type']));
+                }
+            }
+
             $filter->setValues($data['settings']);
             $filter->setPreConditions($preConditionInstances);
             $filter->setFilters($filtersInstances);
+            $filter->setSimilarities($similaritiesInstances);
             $filter->save();
 
             $this->_helper->json(array('success' => true, 'data' => $filter));
@@ -168,6 +186,7 @@ class CoreShop_Admin_FilterController extends Admin
         $this->_helper->json(array(
             'success' => true,
             'conditions' => Filter::getConditions(),
+            'similarities' => Filter::getSimilarityTypes()
         ));
     }
 

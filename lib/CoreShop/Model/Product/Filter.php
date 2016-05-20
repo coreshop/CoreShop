@@ -16,6 +16,7 @@ namespace CoreShop\Model\Product;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product\Filter\Condition\AbstractCondition;
+use CoreShop\Model\Product\Filter\Similarity\AbstractSimilarity;
 
 class Filter extends AbstractModel
 {
@@ -25,6 +26,14 @@ class Filter extends AbstractModel
      * @var array
      */
     public static $availableConditions = array('select', 'multiselect', 'range', 'boolean');
+
+    /**
+     * possible types of a condition.
+     *
+     * @var array
+     */
+    public static $availableSimilarities = array('field');
+
 
     /**
      * Add Condition Type.
@@ -46,6 +55,28 @@ class Filter extends AbstractModel
     public static function getConditions()
     {
         return self::$availableConditions;
+    }
+
+    /**
+     * Add Similarity Type.
+     *
+     * @param $similarity
+     */
+    public static function addSimilarityType($similarity)
+    {
+        if (!in_array($similarity, self::$availableSimilarities)) {
+            self::$availableSimilarities[] = $similarity;
+        }
+    }
+
+    /**
+     * Get Similarity Types.
+     *
+     * @return array
+     */
+    public static function getSimilarityTypes()
+    {
+        return self::$availableSimilarities;
     }
 
     /**
@@ -82,6 +113,11 @@ class Filter extends AbstractModel
      * @var AbstractCondition[]
      */
     public $filters;
+
+    /**
+     * @var AbstractSimilarity[]
+     */
+    public $similarities;
 
     /**
      * @var int
@@ -203,6 +239,22 @@ class Filter extends AbstractModel
     public function setFilters($filters)
     {
         $this->filters = $filters;
+    }
+
+    /**
+     * @return Filter\Similarity\AbstractSimilarity[]
+     */
+    public function getSimilarities()
+    {
+        return $this->similarities;
+    }
+
+    /**
+     * @param Filter\Similarity\AbstractSimilarity[] $similarities
+     */
+    public function setSimilarities($similarities)
+    {
+        $this->similarities = $similarities;
     }
 
     /**

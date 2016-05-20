@@ -31,13 +31,18 @@ class Localizedfield extends AbstractGetter
      */
     public function get(Product $object, AbstractColumn $config = null)
     {
-        $language = \Zend_Registry::get('Zend_Locale');
+        $language = null;
+        
+        if(\Zend_Registry::isRegistered("Zend_Locale")) {
+            $language = \Zend_Registry::get('Zend_Locale');
+        }
 
         if ($config->getGetterConfig()['locale']) {
             $language = $config->getGetterConfig()['locale'];
         }
 
         $getter = 'get'.ucfirst($config->getKey());
+
 
         return $object->$getter($language);
     }

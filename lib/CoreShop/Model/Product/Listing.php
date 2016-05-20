@@ -241,6 +241,17 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
     abstract public function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
 
     /**
+     * returns order by statement for similarity calculations based on given fields and object ids
+     * returns cosine similarity calculation
+     *
+     * @param $fields
+     * @param $objectId
+     *
+     * @return Product[]
+     */
+    abstract public function buildSimilarityOrderBy($fields, $objectId);
+
+    /**
      * @return Index|null
      */
     public function getIndex()

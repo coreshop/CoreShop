@@ -46,10 +46,6 @@
     background: url(/plugins/CoreShop/static/img/24/cart.png) no-repeat scroll left center transparent !important;
 }
 
-.pimcore_icon_objectSelect {
-    background: url(/plugins/CoreShop/static/img/24/select.png) no-repeat scroll left center transparent !important;
-}
-
 .coreshop_icon_create_order {
     background: url(/plugins/CoreShop/static/img/24/orders.png) no-repeat scroll left center transparent !important;
 }
@@ -218,19 +214,19 @@
     background: url(/plugins/CoreShop/static/img/24/filter-empty.png) no-repeat scroll left center transparent !important;
 }
 
-.coreshop_product_filters_icon_condition_select {
-    background: url(/plugins/CoreShop/static/img/24/select.png) no-repeat scroll left center transparent !important;
+.coreshop_product_filters_icon_conditions_select {
+    background: url(/plugins/CoreShop/static/img/24/filter_select.png) no-repeat scroll left center transparent !important;
 }
 
-.coreshop_product_filters_icon_condition_multiselect {
-    background: url(/plugins/CoreShop/static/img/24/multiselect.png) no-repeat scroll left center transparent !important;
+.coreshop_product_filters_icon_conditions_multiselect {
+    background: url(/plugins/CoreShop/static/img/24/filter_multiselect.png) no-repeat scroll left center transparent !important;
 }
 
-.coreshop_product_filters_icon_condition_range {
-    background: url(/plugins/CoreShop/static/img/24/range.png) no-repeat scroll left center transparent !important;
+.coreshop_product_filters_icon_conditions_range {
+    background: url(/plugins/CoreShop/static/img/24/filter_range.png) no-repeat scroll left center transparent !important;
 }
-.coreshop_product_filters_icon_condition_boolean {
-    background: url(/plugins/CoreShop/static/img/24/range.png) no-repeat scroll left center transparent !important;
+.coreshop_product_filters_icon_conditions_boolean {
+    background: url(/plugins/CoreShop/static/img/24/filter_boolean.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_icon_language, .pimcore_icon_coreShopLanguage {
@@ -295,6 +291,14 @@
 
 .coreshop_icon_messaging_thread {
     background: url(/plugins/CoreShop/static/img/24/messaging_thread.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_product_similarity {
+    background: url(/plugins/CoreShop/static/img/24/similarity.png) no-repeat scroll left center transparent !important;
+}
+
+.coreshop_product_filters_icon_similarities_field {
+    background: url(/plugins/CoreShop/static/img/24/similarities_field.png) no-repeat scroll left center transparent !important;
 }
 
 .coreshop_inline_icon {
