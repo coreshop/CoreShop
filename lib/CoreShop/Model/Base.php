@@ -35,7 +35,9 @@ class Base extends Concrete
      */
     public static function getPimcoreObjectClass()
     {
-        return static::$pimcoreClass;
+        $classFile = \Pimcore\Tool::getModelClassMapping(get_called_class());
+        
+        return $classFile::$pimcoreClass;
     }
 
     /**
