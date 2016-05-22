@@ -134,32 +134,47 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             disabled : true
         });
 
+        var countryStore = new Ext.data.Store({
+            restful:    false,
+            proxy:       new Ext.data.HttpProxy({
+                url : '/plugin/CoreShop/admin_country/list'
+            }),
+            reader:     new Ext.data.JsonReader({
+
+            }, [
+                { name:'id' },
+                { name:'text' }
+            ])
+        });
+
+        var countryEditor = new Ext.form.ComboBox({
+            store: countryStore,
+            valueField: 'id',
+            displayField: 'text',
+            queryMode : 'local',
+            disabled : false
+        });
+
+        countryStore.load({
+            callback : function() {
+                var rec = { id: 0, text: t('coreshop_all') };
+                countryStore.insert(0, rec);
+
+                this.grid.store.load();
+            }.bind(this)
+        });
+
         var gridColumns = [
             {
                 header: t('coreshop_tax_rule_country'),
                 width: 200,
                 dataIndex: 'countryId',
-                editor: new Ext.form.ComboBox({
-                    store: pimcore.globalmanager.get('coreshop_countries'),
-                    valueField: 'id',
-                    displayField: 'name',
-                    queryMode : 'local',
-                    listeners : {
-                        change : function (cmb, newValue) {
-                            stateEditor.enable();
-                            stateEditor.getStore().load({
-                                params : {
-                                    countryId : newValue
-                                }
-                            });
-                        }
-                    }
-                }),
+                editor: countryEditor,
                 renderer: function (countryId) {
-                    var store = pimcore.globalmanager.get('coreshop_countries');
-                    var pos = store.findExact('id', countryId);
-                    if (pos >= 0) {
-                        return store.getAt(pos).get('name');
+                    var store = countryStore;
+                    var record = store.getById(countryId);
+                    if (record) {
+                        return record.get('text');
                     }
 
                     return null;
@@ -171,7 +186,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 dataIndex: 'stateId',
                 editor: stateEditor,
                 renderer: function (stateId) {
-                    var store = pimcore.globalmanager.get('coreshop_states');
+                    var store = statesStore;
                     var pos = store.findExact('id', stateId);
                     if (pos >= 0) {
                         return store.getAt(pos).get('name');
@@ -289,8 +304,6 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         };
 
         this.grid = Ext.create('Ext.grid.Panel', gridConfig);
-
-        this.store.load();
 
         return this.grid;
     },
