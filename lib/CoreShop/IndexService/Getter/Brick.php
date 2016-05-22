@@ -37,12 +37,15 @@ class Brick extends AbstractGetter
         $brickContainer = $object->$brickContainerGetter();
 
         $brickGetter = 'get'.ucfirst($config->getClassName());
-        $brick = $brickContainer->$brickGetter();
 
-        if ($brick) {
-            $fieldGetter = 'get'.ucfirst($config->getKey());
+        if($brickContainer) {
+            $brick = $brickContainer->$brickGetter();
 
-            return $brick->$fieldGetter();
+            if ($brick) {
+                $fieldGetter = 'get' . ucfirst($config->getKey());
+
+                return $brick->$fieldGetter();
+            }
         }
 
         return null;
