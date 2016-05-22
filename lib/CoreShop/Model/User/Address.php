@@ -3,20 +3,16 @@
 namespace CoreShop\Model\User;
 
 use CoreShop\Exception\UnsupportedException;
-use Pimcore\Model\Object\Fieldcollection\Data\AbstractData;
-use Pimcore\Model\Object\Fieldcollection\Data\CoreShopUserAddress;
+use CoreShop\Model\Object\Fieldcollection\Data\AbstractData;
 
 class Address extends AbstractData
 {
     /**
-     * Create a new Instance.
+     * Pimcore Object Class.
      *
-     * @return CoreShopUserAddress
+     * @var string
      */
-    public static function create()
-    {
-        return new CoreShopUserAddress();
-    }
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\Fieldcollection\\Data\\CoreShopUserAddress';
 
     /**
      * Get Firstname.
