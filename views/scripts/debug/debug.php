@@ -11,6 +11,12 @@
         </div>
         <div class="coreshop-debug-panel-body" style="display:none">
             <table class="coreshop-debug-table">
+                <?php if(\Pimcore\Model\Staticroute::getCurrentRoute() instanceof \Pimcore\Model\Staticroute) { ?>
+                <tr>
+                    <td>Staticroute</td>
+                    <td><?=\Pimcore\Model\Staticroute::getCurrentRoute()->getName()?></td>
+                </tr>
+                <?php } ?>
                 <tr>
                     <td><?=$this->translate("coreshop_country")?></td>
                     <td><?=\CoreShop\Tool::getCountry()->getName() ?> (<?=\CoreShop\Tool::getCountry()->getId()?>)</td>
@@ -19,6 +25,24 @@
                     <td><?=$this->translate("coreshop_currency")?></td>
                     <td><?=\CoreShop\Tool::getCurrency()->getName() ?> (<?=\CoreShop\Tool::getCurrency()->getId()?>)</td>
                 </tr>
+
+                <?php if($this->product instanceof \CoreShop\Model\Product) {
+                    ?>
+                    <tr>
+                        <td><?=$this->translate("coreshop_product")?></td>
+                        <td><?=$this->product->getName()?> (<?=$this->product->getId()?>)</td>
+                    </tr>
+                    <?php if($this->product->getTaxRule() instanceof \CoreShop\Model\TaxRuleGroup) { ?>
+                    <tr>
+                        <td><?=$this->translate("coreshop_taxrulegroups")?></td>
+                        <td><?=$this->product->getTaxRule()->getName()?> (<?=$this->product->getTaxRule()->getId()?>)</td>
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                        <td><?=$this->translate("coreshop_tax_rate")?></td>
+                        <td><?=\CoreShop\Tool::formatTax($this->product->getTaxRate()/100)?></td>
+                    </tr>
+                <?php } ?>
             </table>
         </div>
     </div>

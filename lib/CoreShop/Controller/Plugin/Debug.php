@@ -44,10 +44,15 @@ class Debug extends \Zend_Controller_Plugin_Abstract
             if ($user instanceof User) {
                 $body = $this->getResponse()->getBody();
 
-                $view = new \Zend_View();
+                $viewRenderer = \Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+                $view = $viewRenderer->view;
+
                 $view->setScriptPath(
-                    array(
-                        CORESHOP_PATH.'/views/scripts/debug',
+                    array_merge(
+                        $view->getScriptPaths(),
+                        array(
+                            CORESHOP_PATH.'/views/scripts/debug',
+                        )
                     )
                 );
                 $view->getHelper('Translate')->setTranslator(Plugin::getTranslate($user->getLanguage()));

@@ -225,6 +225,17 @@ class Tool
         $country = null;
         $cart = self::prepareCart();
 
+        if(\Pimcore::inDebugMode()) {
+            if (!empty($_REQUEST["coreshop_country"])) {
+                $country = Country::getById($_REQUEST["coreshop_country"]);
+
+                if ($country instanceof Country) {
+                    return $country;
+                }
+
+            }
+        }
+
         if ($session->countryId) {
             $country = Country::getById($session->countryId);
 
@@ -339,6 +350,17 @@ class Tool
     public static function getCurrency()
     {
         $session = self::getSession();
+
+        if(\Pimcore::inDebugMode()) {
+            if (!empty($_REQUEST["coreshop_currency"])) {
+                $currency = Currency::getById($_REQUEST["coreshop_currency"]);
+
+                if ($currency instanceof Currency) {
+                    return $currency;
+                }
+
+            }
+        }
 
         if ($session->currencyId) {
             $currency = Currency::getById($session->currencyId);
