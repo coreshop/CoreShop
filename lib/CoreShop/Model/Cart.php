@@ -165,13 +165,13 @@ class Cart extends Base
 
         foreach ($this->getItems() as $item) {
             if ($useTaxes) {
-                $subtotal += ($item->getAmount() * $item->getProduct()->getPrice());
+                $subtotal += $item->getAmount() * Tool::roundPrice($item->getProduct()->getPrice());
             } else {
-                $subtotal += ($item->getAmount() * $item->getProduct()->getPriceWithoutTax());
+                $subtotal += $item->getAmount() * Tool::roundPrice($item->getProduct()->getPriceWithoutTax());
             }
         }
 
-        return Tool::roundPrice($subtotal);
+        return $subtotal;
     }
 
     /**
@@ -461,12 +461,13 @@ class Cart extends Base
      */
     public function getTotal()
     {
-        $subtotal = $this->getSubtotal();
+        $subtotal = $this->getSubtotal(false);
         $discount = $this->getDiscount();
-        $shipping = $this->getShipping();
+        $shipping = $this->getShipping(false);
+        $totalTax = $this->getTotalTax();
         $payment = $this->getPaymentFee();
 
-        return Tool::roundPrice(($subtotal + $shipping + $payment) - $discount);
+        return ($subtotal + $shipping + $payment + $totalTax) - $discount;
     }
 
     /**
