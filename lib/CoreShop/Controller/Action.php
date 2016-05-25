@@ -94,13 +94,15 @@ class Action extends \Website\Controller\Action
     public function coreShopForward($action, $controller = null, $module = null, array $params = null) {
         $this->forward($action, $controller, $module, $params);
 
-        $request = $this->getRequest();
+        $request = clone $this->getRequest();
 
         if ($request->getModuleName() === 'CoreShop') {
             $frontController = \Zend_Controller_Front::getInstance();
 
+            $request->setModuleName('Default');
+
             if ($frontController->getDispatcher()->isDispatchable($request)) {
-                $request->setModuleName('Default');
+                $this->getRequest()->setModuleName('Default');
             }
         }
     }
