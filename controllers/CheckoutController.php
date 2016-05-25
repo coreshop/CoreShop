@@ -161,34 +161,35 @@ class CoreShop_CheckoutController extends Action
         $this->view->headTitle($this->view->translate('Payment'));
     }
 
-    public function thankyouAction()
+    public function confirmationAction()
     {
-        if (!$this->session->user instanceof \CoreShop\Model\User) {
-            $this->_redirect($this->view->url(array('act' => 'index'), 'coreshop_checkout'));
-            exit;
-        }
+        $this->view->headTitle($this->view->translate('Confirmation'));
 
-        $this->view->order = \CoreShop\Model\Order::getById($this->session->orderId);
+        $order = $this->getParam("order");
+        $paymentViewScript = $this->getParam("paymentViewScript");
 
-        if (!$this->view->order instanceof \CoreShop\Model\Order) {
-            $this->_redirect('/'.$this->language.'/shop');
-        }
-
-        $this->cart->delete();
         $this->prepareCart();
+        //$this->cart->delete(); //Keep Cart for Statistics Purpose
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->redirect('/'.$this->view->language);
+        }
+
+        $this->view->order = $order;
+        $this->view->paymentViewScript = $paymentViewScript;
 
         unset($this->session->order);
         unset($this->session->cart);
+        unset($this->session->cartId);
 
         if ($this->session->user->getIsGuest()) {
             unset($this->session->user);
         }
-
-        $this->view->headTitle($this->view->translate('Thank you'));
     }
 
     public function errorAction()
     {
+        $this->view->headTitle("Payment Error");
     }
 
     protected function checkIsAllowed()

@@ -87,23 +87,20 @@ class Payment extends Action
      */
     public function confirmationAction()
     {
-        $this->view->headTitle($this->view->translate('Payment'));
-
-        $this->prepareCart();
-        //$this->cart->delete(); //Keep Cart for Statistics Purpose
-
-        if (!$this->session->order instanceof Order) {
-            $this->redirect('/'.$this->view->language);
-        }
-
         $this->view->order = $this->session->order;
 
-        unset($this->session->order);
-        unset($this->session->cart);
-        unset($this->session->cartId);
+        $forwardParams = array(
+            "module" => $this->getModule()
+        );
 
-        if ($this->session->user->getIsGuest()) {
-            unset($this->session->user);
+        if($this->view->order instanceof Order) {
+            $forwardParams['order'] = $this->view->order;
+            $forwardParams['paymentViewScript'] = $this->getViewScript();
+
+            $this->coreShopForward("confirmation", "checkout", "CoreShop", $forwardParams);
+        }
+        else {
+            $this->coreShopForward("error", "checkout", "CoreShop", $forwardParams);
         }
     }
 }

@@ -84,4 +84,24 @@ class Action extends \Website\Controller\Action
         PriceRule::autoRemoveFromCart($this->cart);
         PriceRule::autoAddToCart($this->cart);
     }
+
+    /**
+     * @param $action
+     * @param null $controller
+     * @param null $module
+     * @param array|null $params
+     */
+    public function coreShopForward($action, $controller = null, $module = null, array $params = null) {
+        $this->forward($action, $controller, $module, $params);
+
+        $request = $this->getRequest();
+
+        if ($request->getModuleName() === 'CoreShop') {
+            $frontController = \Zend_Controller_Front::getInstance();
+
+            if ($frontController->getDispatcher()->isDispatchable($request)) {
+                $request->setModuleName('Default');
+            }
+        }
+    }
 }
