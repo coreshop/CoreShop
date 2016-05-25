@@ -161,6 +161,14 @@ class CoreShop_CheckoutController extends Action
         $this->view->headTitle($this->view->translate('Payment'));
     }
 
+    public function validateAction() {
+        $this->view->headTitle($this->view->translate('Validate'));
+
+        $paymentViewScript = $this->getParam("paymentViewScript");
+
+        $this->view->paymentViewScript = $paymentViewScript;
+    }
+
     public function confirmationAction()
     {
         $this->view->headTitle($this->view->translate('Confirmation'));

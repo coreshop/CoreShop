@@ -79,7 +79,7 @@ class Payment extends Action
      */
     public function validateAction()
     {
-        $this->view->headTitle($this->view->translate('Payment'));
+        $this->coreShopForward("validate", "checkout", "CoreShop", array("paymentViewScript" => $this->getViewScript()));
     }
 
     /**
