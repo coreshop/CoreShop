@@ -13,13 +13,16 @@
  */
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
+use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
+use Pimcore\Date;
 use Pimcore\Model\Object\Service;
 use CoreShop\Maintenance\CleanUpCart;
 
@@ -708,6 +711,81 @@ class Cart extends Base
         return $this->getCustomerBillingAddress();
     }
 
+    /**
+     * Creates order for cart
+     *
+     * @param Order\State $state
+     * @param Payment $paymentModule
+     * @param $totalPayed
+     * @param $language
+     *
+     * @return Order
+     *
+     * @throws Exception
+     */
+    public function createOrder(Order\State $state, Payment $paymentModule, $totalPayed = 0, $language = null)
+    {
+        \Logger::info('Create order for cart '.$this->getId());
+
+        $orderNumber = Order::getNextOrderNumber();
+
+        if (is_null($language)) {
+            if(\Zend_Registry::isRegistered("Zend_Locale")) {
+                $language = \Zend_Registry::get('Zend_Locale');
+            }
+            else {
+                throw new Exception("language not found in registry and not set as param");
+            }
+        }
+
+        $orderClass = Order::getPimcoreObjectClass();
+        $parentFolder = $orderClass::getPathForNewOrder();
+
+        $order = Order::create();
+        $order->setKey(\Pimcore\File::getValidFilename($orderNumber));
+        $order->setOrderNumber($orderNumber);
+        $order->setParent($parentFolder);
+        $order->setPublished(true);
+        $order->setLang($language);
+        $order->setCustomer($this->getUser());
+        $order->setShippingAddress($this->getShippingAddress());
+        $order->setBillingAddress($this->getBillingAddress());
+        $order->setPaymentProviderToken($paymentModule->getIdentifier());
+        $order->setPaymentProvider($paymentModule->getName());
+        $order->setPaymentProviderDescription($paymentModule->getDescription());
+        $order->setOrderDate(new Date());
+
+        if ($this->getCarrier() instanceof Carrier) {
+            $order->setCarrier($this->getCarrier());
+            $order->setShipping($this->getShipping());
+            $order->setShippingWithoutTax($this->getShipping(false));
+            $order->setShippingTaxRate($this->getShippingTaxRate());
+        } else {
+            $order->setShipping(0);
+            $order->setShippingTaxRate(0);
+            $order->setShippingWithoutTax(0);
+        }
+
+        $order->setPaymentFee($this->getPaymentFee());
+        $order->setPaymentFeeWithoutTax($this->getPaymentFee(false));
+        $order->setPaymentFeeTaxRate($this->getPaymentFeeTaxRate());
+        $order->setTotalTax($this->getTotalTax());
+        $order->setTotal($this->getTotal());
+        $order->setSubtotal($this->getSubtotal());
+        $order->setSubtotalWithoutTax($this->getSubtotal(false));
+        $order->save();
+        $order->importCart($this);
+
+        if ($totalPayed > 0) {
+            $order->createPayment($paymentModule, $totalPayed, true);
+        }
+
+        $state->processStep($order);
+
+        Plugin::actionHook('order.created', array('order' => $order));
+
+        return $order;
+    }
     /**
      * maintenance job.
      */

@@ -74,6 +74,16 @@ class Order extends Base
     }
 
     /**
+     * get folder for order
+     *
+     * @return Object\Folder
+     * @throws \Exception
+     */
+    public static function getPathForNewOrder() {
+        return Object\Service::createFolderByPath('/coreshop/orders/'.date('Y/m/d'));
+    }
+
+    /**
      * Import a Cart to the Order.
      *
      * @param Cart $cart
@@ -386,7 +396,7 @@ class Order extends Base
 
                     unset($_REQUEST['data']);
 
-                    if ($orderStep instanceof State) {
+                    if ($orderStep instanceof Order\State) {
                         if ($orderStep->getId() !== $originalOrder->getOrderState()->getId()) {
                             $orderStep->processStep($originalOrder);
                         }
@@ -399,7 +409,7 @@ class Order extends Base
 
         $orderState = $this->getOrderState();
 
-        if ($orderState instanceof State) {
+        if ($orderState instanceof Order\State) {
             if ($orderState->getInvoice()) {
                 $this->getInvoice(); //Re-Generate Invoice if it does not exist
             }
