@@ -157,6 +157,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/messaging/thread/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/messaging/thread/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/message.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/orders/order.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

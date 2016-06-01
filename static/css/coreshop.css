@@ -352,3 +352,33 @@
     background-color: #777;
     border-radius: 10px;
 }
+
+.coreshop_order_big {
+    font-size:18px;
+    font-weight:bold;
+}
+
+.x-panel.coreshop-order > .x-panel-default-outer-border-trl,
+.x-panel.coreshop-order > .x-panel-default-outer-border-rbl {
+    border:0;
+}
+
+.x-panel.coreshop-order .x-panel-header-default {
+    background: white;
+    border-bottom: #ccc solid 1px!important;
+    font-weight:bold;
+    padding:5px;
+}
+
+.x-panel.coreshop-order .x-title-text {
+    font-weight: bold;
+    font-size: 12px
+}
+
+.coreshop-state-grid .x-grid-row .x-grid-cell:first-child .x-grid-cell-inner{
+    padding: 5px 0 0 0;
+}
+
+.coreshop-state-grid .x-grid-row .x-grid-cell-inner {
+    height: 32px;
+}

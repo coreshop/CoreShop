@@ -391,7 +391,7 @@ class Order extends Base
                     Cache::clearTag('object_'.$this->getId());
                     \Zend_Registry::set('object_'.$this->getId(), null);
 
-                    $orderStep = State::getById($data['orderState']);
+                    $orderStep = Order\State::getById($data['orderState']);
                     $originalOrder = self::getById($this->getId());
 
                     unset($_REQUEST['data']);
@@ -507,6 +507,24 @@ class Order extends Base
         }
 
         return null;
+    }
+
+    /**
+     * get all order-state changes
+     *
+     * @return Note[]
+     */
+    public function getOrderStateHistory() {
+        $noteList = new Note\Listing();
+        /* @var \Pimcore\Model\Element\Note\Listing $noteList */
+
+        $noteList->addConditionParam('type = ?', 'coreshop-orderstate');
+        $noteList->addConditionParam('cid = ?', $this->getId());
+
+        $noteList->setOrderKey('date');
+        $noteList->setOrder('desc');
+
+        return $noteList->load();
     }
 
     /**

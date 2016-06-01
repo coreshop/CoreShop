@@ -40,7 +40,7 @@ class CoreShop_Admin_OrderStateController extends Admin
         $this->_helper->json($data);
     }
 
-    protected function getTreeNodeConfig($orderState)
+    protected function getTreeNodeConfig(State $orderState)
     {
         $tmp = array(
             'id' => $orderState->getId(),
@@ -51,6 +51,7 @@ class CoreShop_Admin_OrderStateController extends Admin
             ),
             'name' => $orderState->getName(),
             'color' => $orderState->getColor(),
+            'email' => $orderState->getEmail()
         );
 
         $tmp['leaf'] = true;

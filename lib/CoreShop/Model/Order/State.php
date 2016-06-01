@@ -155,10 +155,11 @@ class State extends AbstractModel
         $note->setDescription(sprintf($translate->translate('coreshop_note_orderstate_change_description'), $this->getName()));
 
         if ($previousState instanceof self) {
-            $note->addData('fromState', 'text', $previousState->getName());
+            $note->addData('fromState', 'text', $previousState->getId());
         }
+        
+        $note->addData('toState', 'text', $this->getId());
 
-        $note->addData('toState', 'text', $this->getName());
         $note->save();
 
         Plugin::actionHook('orderstate.process.post', array('newOrderStatus' => $this, 'order' => $order));

@@ -179,4 +179,73 @@ class CoreShop_Admin_OrderController extends Admin
 
         $this->_helper->json(array('success' => true));
     }
+
+    public function changeOrderStateAction() {
+        $orderId = $this->getParam('id');
+        $orderStateId = $this->getParam('orderStateId');
+        $order = \CoreShop\Model\Order::getById($orderId);
+        $orderState = \CoreShop\Model\Order\State::getById($orderStateId);
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+        }
+
+        if (!$orderState instanceof \CoreShop\Model\Order\State) {
+            $this->_helper->json(array('success' => false, 'message' => "OrderState with ID '$orderStateId' not found"));
+        }
+
+        $orderState->processStep($order);
+
+        $this->_helper->json(array("success" => true, "statesHistory" => $this->getStatesHistory($order)));
+    }
+
+    public function detailAction() {
+        $orderId = $this->getParam('id');
+        $order = \CoreShop\Model\Order::getById($orderId);
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+        }
+
+        $jsonOrder = $order->getObjectVars();
+        $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
+        $jsonOrder['invoice'] = $order->getProperty("invoice");
+        $jsonOrder['address'] = [
+            'shipping' => $order->getCustomerShippingAddress()->getObjectVars(),
+            'billing' => $order->getCustomerBillingAddress()->getObjectVars()
+        ];
+
+        $this->_helper->json(array("success" => true, "order" => $jsonOrder));
+    }
+
+    protected function getStatesHistory(\CoreShop\Model\Order $order) {
+        //Get History
+        $history = $order->getOrderStateHistory();
+
+        // create timeline
+        $statesHistory = array();
+
+        $date = new \Pimcore\Date();
+        foreach($history as $note) {
+            $user = $user = \Pimcore\Model\User::getById($note->getUser());
+            $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
+
+            $fromState = $note->getData()['fromState']['data'];
+            $toState = $note->getData()['toState']['data'];
+
+            $statesHistory[] = [
+                'icon' => 'coreshop_icon_orderstates',
+                'type' => $note->getType(),
+                'date' => $date->setTimestamp($note->getDate())->get(\Pimcore\Date::DATETIME_MEDIUM),
+                'avatar' => $avatar,
+                'user' => $user ? $user->getName() : null,
+                'description' => $note->getDescription(),
+                'title' => $note->getTitle(),
+                'toState' => $toState,
+                'fromState' => $fromState
+            ];
+        }
+
+        return $statesHistory;
+    }
 }

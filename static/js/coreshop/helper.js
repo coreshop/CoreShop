@@ -93,3 +93,33 @@ coreshop.helpers.showAbout = function () {
 
     win.show();
 };
+
+coreshop.helpers.constrastColor = function(color) {
+    return (parseInt(color.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
+};
+
+coreshop.helpers.openOrder = function (id) {
+    if (pimcore.globalmanager.exists("coreshop_order_" + id) == false) {
+        Ext.Ajax.request({
+            url: "/plugin/CoreShop/admin_order/detail",
+            params: {
+                id: id
+            },
+            success: function (response) {
+                var res = Ext.decode(response.responseText);
+
+                if (res.success) {
+                    pimcore.globalmanager.add("coreshop_order_" + id, new pimcore.plugin.coreshop.orders.order(res.order));
+                } else {
+                    //TODO: Show messagebox
+                    Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
+                }
+
+            }.bind(this)
+        });
+    }
+    else {
+        var tab = pimcore.globalmanager.get("coreshop_order_" + id);
+        tab.activate();
+    }
+};
