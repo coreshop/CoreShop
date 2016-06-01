@@ -148,7 +148,7 @@
         <State>
             <name>
                 <en>Awaiting bank wire payment</en>
-                <de>Warten auf Überweißung</de>
+                <de>Warten auf Überweisung</de>
             </name>
             <accepted>0</accepted>
             <shipped>0</shipped>
