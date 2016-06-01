@@ -20,6 +20,7 @@ use CoreShop\Model\Product;
 use CoreShop\Model\TaxRule\VatManager;
 use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
+use Pimcore\Cache;
 use Pimcore\Model\Object;
 use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\Plugin\Hook;
@@ -157,6 +158,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
         if ($object instanceof Product) {
             $indexService = IndexService::getIndexService();
             $indexService->updateIndex($object);
+
+            Cache::clearTag('coreshop_product_' . $object->getId() . '_price');
         }
     }
 
