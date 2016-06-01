@@ -339,3 +339,11 @@
 "coreshop_messaging_contact_technology","Kontakt Technik"
 "coreshop_send_message","Nachricht schreiben"
 "coreshop_order_new_message","Neue Nachricht"
+
+"coreshop_address_shipping","Lieferaddresse"
+"coreshop_address_billing","Rechnungsaddresse"
+"coreshop_order_resend_email","Email erneut versenden"
+"coreshop_orderstate","Bestellstatus"
+"coreshop_orderstate_change","Status aktualisieren"
+"coreshop_payments","Zahlungsart(en)"
+"coreshop_products","Produkte"

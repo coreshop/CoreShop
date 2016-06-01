@@ -81,7 +81,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
         var leftItems = [
             this.getOrderInfo(),
-            this.getShippingInfo()
+            this.getShippingInfo(),
+            this.getPaymentInfo()
         ];
 
         var rightItems = [
@@ -194,6 +195,15 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 border : true,
                 flex : 8,
                 iconCls : 'coreshop_icon_orders',
+                tools : [
+                    {
+                        type: 'coreshop-open',
+                        tooltip: t('open'),
+                        handler : function() {
+                            pimcore.helpers.openObject(this.order.o_id);
+                        }.bind(this)
+                    }
+                ],
                 items : [
                     {
                         xtype : 'panel',
@@ -201,8 +211,9 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         bodyPadding : 5,
                         margin: '0 0 15 0',
                         items : [{
-                            xtype: this.order.invoice ? 'button' : 'label',
+                            xtype: 'button',
                             text : this.order.invoice ? t('coreshop_invoice') : t('coreshop_invoice_not_generated'),
+                            disabled : !this.order.invoice,
                             handler : function() {
                                 pimcore.helpers.openAsset(this.order.invoice.id, this.order.invoice.type);
                             }.bind(this)
@@ -213,6 +224,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         margin: '0 0 15 0',
                         cls : 'coreshop-state-grid',
                         store : this.orderStatesStore,
+                        title : t('coreshop_orderstates'),
                         hideHeaders: true,
                         columns : [
                             {
@@ -288,7 +300,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             },
                             {
                                 xtype : 'button',
-                                text : t('coreshop_change'),
+                                text : t('coreshop_orderstate_change'),
                                 handler : function(button) {
                                     var comboBox = button.previousSibling();
 
@@ -329,6 +341,15 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 border : true,
                 flex : 6,
                 iconCls : 'coreshop_icon_customer',
+                tools : [
+                    {
+                        type: 'coreshop-open',
+                        tooltip: t('open'),
+                        handler : function() {
+                            pimcore.helpers.openObject(this.order.customer.o_id);
+                        }.bind(this)
+                    }
+                ],
                 items : [
                     {
                         xtype : 'tabpanel',
@@ -389,6 +410,20 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         }
 
         return this.shippingInfo;
+    },
+
+    getPaymentInfo : function() {
+        if(!this.paymentInfo) {
+            this.paymentInfo = Ext.create('Ext.panel.Panel', {
+                title : t('coreshop_payments'),
+                border : true,
+                margin : '0 20 20 0',
+                iconCls : 'coreshop_icon_payment'
+
+            });
+        }
+
+        return this.paymentInfo;
     },
 
     getMessagesInfo : function() {

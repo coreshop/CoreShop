@@ -261,7 +261,7 @@
     background: url(/plugins/CoreShop/static/img/flat/stock.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_report_payments {
+.coreshop_icon_report_payments, .coreshop_icon_payment {
     background: url(/plugins/CoreShop/static/img/flat/payments.svg) center center no-repeat !important;
 }
 
@@ -299,6 +299,10 @@
 
 .coreshop_product_filters_icon_similarities_field {
     background: url(/plugins/CoreShop/static/img/flat/similarities-field.svg) center center no-repeat !important;
+}
+
+.x-tool-coreshop-open {
+    background: url(/pimcore/static6/img/flat-color-icons/cursor.svg) center center no-repeat !important;
 }
 
 .coreshop_inline_icon {
