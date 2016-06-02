@@ -43,7 +43,7 @@ coreshop.plugin.broker = {
     executePlugin: function (plugin, event, params) {
         if (typeof plugin[event] == 'function') {
             params.push(this);
-            plugin[event].apply(plugin, params);
+            return plugin[event].apply(plugin, params);
         }
     },
 
@@ -51,15 +51,22 @@ coreshop.plugin.broker = {
         var plugin;
         var size = this.pluginsAvailable();
         var args = $A(arguments);
+        var results = [];
         args.splice(0, 1);
 
         for (var i = 0; i < size; i++) {
             plugin = this.plugins[i];
             try {
-                this.executePlugin(plugin, e, args);
+                var result = this.executePlugin(plugin, e, args);
+
+                if(result != undefined) {
+                    results.push(result);
+                }
             } catch (e) {
                 console.error(e);
             }
         }
+
+        return results;
     }
 };

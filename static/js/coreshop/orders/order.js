@@ -90,6 +90,29 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             this.getMessagesInfo(),
         ];
 
+        var contentItems = [
+            {
+                xtype : 'container',
+                border : 0,
+                style : {
+                    border : 0
+                },
+                flex : 7,
+                defaults : defaults,
+                items : leftItems
+            },
+            {
+                xtype : 'container',
+                border : 0,
+                style : {
+                    border : 0
+                },
+                flex : 5,
+                defaults : defaults,
+                items : rightItems
+            }
+        ];
+
         var items = [
             this.getHeader(),
             {
@@ -100,39 +123,23 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 style: {
                     border : 0
                 },
-                items : [
-                    {
-                        xtype : 'container',
-                        border : 0,
-                        style : {
-                            border : 0
-                        },
-                        flex : 7,
-                        defaults : defaults,
-                        items : leftItems
-                    },
-                    {
-                        xtype : 'container',
-                        border : 0,
-                        style : {
-                            border : 0
-                        },
-                        flex : 5,
-                        defaults : defaults,
-                        items : rightItems
-                    }
-                ]
-            },
-
-            this.getDetailInfo()
+                items : contentItems
+            }
         ];
 
 
+        var paymentPluginPanel = this.getPaymentPluginInfo();
         var pluginPanel = this.getPluginInfo();
 
         if(pluginPanel) {
-            this.items.push(pluginPanel);
+            items.push(pluginPanel);
         }
+
+        if(paymentPluginPanel) {
+            items.push(paymentPluginPanel);
+        }
+
+        items.push(this.getDetailInfo());
 
         this.panel = Ext.create('Ext.container.Container', {
             border : false,
@@ -645,10 +652,39 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     },
 
     getPluginInfo : function() {
-        var pluginInfo = coreshop.plugin.broker.fireEvent(this.order.paymentProvider + '.order', this);
+        var pluginInfo = coreshop.plugin.broker.fireEvent('orderDetail', this);
+
+        if(pluginInfo.length > 0) {
+
+            return {
+                xtype: 'container',
+                layout: 'hbox',
+                margin: '0 0 20 0',
+                border: 0,
+                style: {
+                    border: 0
+                },
+                items: pluginInfo
+            };
+        }
+
+        return null;
+    },
+
+    getPaymentPluginInfo : function() {
+        var pluginInfo = coreshop.plugin.broker.fireEvent('orderDetailPayment' + this.order.paymentProvider.ucfirst(), this);
 
         if(pluginInfo) {
-            return pluginInfo
+            return {
+                xtype: 'container',
+                layout: 'hbox',
+                margin: '0 0 20 0',
+                border: 0,
+                style: {
+                    border: 0
+                },
+                items: pluginInfo
+            };
         }
 
         return null;
