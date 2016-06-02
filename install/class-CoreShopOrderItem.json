@@ -65,27 +65,22 @@
                 "assetsAllowed":false,
                 "assetTypes":[
                   {
-                    "assetTypes":{
-                      "assetTypes":{
-                        "assetTypes":""
-                      }
-                    }
+                    "assetTypes":""
                   }
                 ],
                 "documentsAllowed":false,
                 "documentTypes":[
                   {
-                    "documentTypes":{
-                      "documentTypes":{
-                        "documentTypes":""
-                      }
-                    }
+                    "documentTypes":""
                   }
                 ],
                 "lazyLoading":false,
                 "classes":[
                   {
                     "classes":"CoreShopProduct"
+                  },
+                  {
+                    "classes":"TestProduct"
                   }
                 ],
                 "name":"product",
@@ -171,6 +166,33 @@
                 "decimalPrecision":null,
                 "name":"price",
                 "title":"Price",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":true,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
+                "fieldtype":"numeric",
+                "width":"",
+                "defaultValue":null,
+                "queryColumnType":"double",
+                "columnType":"double",
+                "phpdocType":"float",
+                "integer":false,
+                "unsigned":false,
+                "minValue":null,
+                "maxValue":null,
+                "decimalPrecision":null,
+                "name":"priceWithoutTax",
+                "title":"Price (without Tax)",
                 "tooltip":"",
                 "mandatory":false,
                 "noteditable":true,

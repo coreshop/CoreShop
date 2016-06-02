@@ -138,7 +138,7 @@
                 "mandatory":false,
                 "noteditable":false,
                 "index":false,
-                "locked":null,
+                "locked":false,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",
@@ -218,6 +218,29 @@
                 "noteditable":true,
                 "index":false,
                 "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
+                "fieldtype":"coreShopCurrency",
+                "phpdocType":"\\CoreShop\\Model\\Currency",
+                "queryColumnType":"int(11)",
+                "columnType":"int(11)",
+                "options":null,
+                "width":null,
+                "defaultValue":null,
+                "name":"currency",
+                "title":"Currency",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":true,
+                "index":false,
+                "locked":null,
                 "style":"",
                 "permissions":null,
                 "datatype":"data",
@@ -785,9 +808,13 @@
                 "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
                 "objectsAllowed":true,
                 "assetsAllowed":false,
-                "assetTypes":"",
+                "assetTypes":[
+
+                ],
                 "documentsAllowed":false,
-                "documentTypes":"",
+                "documentTypes":[
+
+                ],
                 "lazyLoading":false,
                 "classes":[
 

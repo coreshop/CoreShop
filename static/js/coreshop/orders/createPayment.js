@@ -14,8 +14,8 @@
 pimcore.registerNS('pimcore.plugin.coreshop.orders.createPayment');
 pimcore.plugin.coreshop.orders.createPayment = {
 
-    showWindow : function (tab) {
-        var orderId = tab.id;
+    showWindow : function (id, order, callback) {
+        var orderId = id;
 
         var paymentProvidersStore = new Ext.data.Store({
             proxy : {
@@ -77,13 +77,16 @@ pimcore.plugin.coreshop.orders.createPayment = {
                                                 window.close();
                                                 window.destroy();
 
-                                                tab.reload(tab.data.currentLayoutId);
+                                                if(callback) {
+                                                    callback(response);
+                                                }
+                                                //tab.reload(tab.data.currentLayoutId);
                                             } else {
                                                 Ext.Msg.alert(t('error'), response.message);
                                             }
                                         }
                                         catch (e) {
-                                            //TODO: Something went wrong dialog
+                                            Ext.Msg.alert(t('error'), e);
                                         }
                                     }
                                 });
@@ -132,7 +135,7 @@ pimcore.plugin.coreshop.orders.createPayment = {
                         fieldLabel : t('coreshop_amount'),
                         minValue: 0,
                         decimalPrecision : 4,
-                        value : tab.data.data.total - tab.data.data.totalPayed,
+                        value : order.total - order.totalPayed,
                         afterLabelTextTpl: [
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],

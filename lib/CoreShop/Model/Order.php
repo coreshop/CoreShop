@@ -22,6 +22,7 @@ use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use Pimcore\Cache;
+use Pimcore\Date;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Object;
@@ -107,6 +108,7 @@ class Order extends Base
             $item->setWholesalePrice($cartItem->getProduct()->getWholesalePrice());
             $item->setRetailPrice($cartItem->getProduct()->getRetailPrice());
             $item->setPrice($cartItem->getProduct()->getPrice());
+            $item->setPriceWithoutTax($cartItem->getProduct()->getPriceWithoutTax());
             $item->setAmount($cartItem->getAmount());
             $item->setExtraInformation($cartItem->getExtraInformation());
             $item->setIsGiftItem($cartItem->getIsGiftItem());
@@ -189,6 +191,7 @@ class Order extends Base
         $payment->setAmount($amount);
         $payment->setTransactionIdentifier(uniqid());
         $payment->setProvider($provider->getIdentifier());
+        $payment->setDatePayment(Date::now());
         $payment->setPayed($paid);
         $payment->save();
 
@@ -290,6 +293,22 @@ class Order extends Base
         }
 
         return $totalPayed;
+    }
+
+    /**
+     * calculates the total weight of the cart.
+     *
+     * @return int
+     */
+    public function getTotalWeight()
+    {
+        $weight = 0;
+
+        foreach ($this->getItems() as $item) {
+            $weight += ($item->getAmount() * $item->getProduct()->getWeight());
+        }
+
+        return $weight;
     }
 
     /**

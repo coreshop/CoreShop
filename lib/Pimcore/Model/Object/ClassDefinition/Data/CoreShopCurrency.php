@@ -22,12 +22,12 @@ class CoreShopCurrency extends CoreShopSelect
      *
      * @var string
      */
-    public $fieldtype = 'coreShopCountry';
+    public $fieldtype = 'coreShopCurrency';
 
     /**
      * Type for the generated phpdoc.
      *
      * @var string
      */
-    public $phpdocType = '\\CoreShop\\Model\\Country';
+    public $phpdocType = '\\CoreShop\\Model\\Currency';
 }

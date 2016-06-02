@@ -160,7 +160,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     },
                     {
                         xtype : 'panel',
-                        html : t('coreshop_orders_total') + '<br/><span class="coreshop_order_big">' + this.order.total + "</span>",
+                        html : t('coreshop_orders_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.order.currency.symbol, this.order.total) + "</span>",
                         bodyPadding : 20,
                         flex : 1
                     },
@@ -222,14 +222,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     {
                         xtype : 'grid',
                         margin: '0 0 15 0',
-                        cls : 'coreshop-state-grid',
+                        cls : 'coreshop-order-detail-grid',
                         store : this.orderStatesStore,
-                        title : t('coreshop_orderstates'),
-                        hideHeaders: true,
                         columns : [
                             {
                                 xtype : 'gridcolumn',
                                 dataIndex : 'toState',
+                                text : t('coreshop_orderstate'),
                                 flex : 1,
                                 renderer : function(value, metaData) {
                                     var store = pimcore.globalmanager.get("coreshop_orderstates");
@@ -248,7 +247,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             {
                                 xtype : 'gridcolumn',
                                 flex : 1,
-                                dataIndex : 'date'
+                                dataIndex : 'date',
+                                text : t('date')
                             },
                             {
                                 xtype : 'gridcolumn',
@@ -355,7 +355,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         xtype : 'tabpanel',
                         items: [
                             this.getAddressPanelForAddress(this.order.address.shipping, t("coreshop_address_shipping")),
-                            this.getAddressPanelForAddress(this.order.address.billing, t("coreshop_address_shipping"))
+                            this.getAddressPanelForAddress(this.order.address.billing, t("coreshop_address_billing"))
                         ]
                     }
                 ]
@@ -400,12 +400,98 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
     getShippingInfo : function() {
         if(!this.shippingInfo) {
+            var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+                listeners : {
+                    edit : function(editor, context, eOpts) {
+                        var trackingCode = context.record.get("tracking");
+
+                        Ext.Ajax.request({
+                            url: "/plugin/CoreShop/admin_order/change-tracking-code",
+                            params: {
+                                id: this.order.o_id,
+                                trackingCode : trackingCode
+                            },
+                            success: function (response) {
+                                context.record.commit();
+
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                }
+            });
+
             this.shippingInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_carrier'),
                 border : true,
                 margin : '0 20 20 0',
-                iconCls : 'coreshop_icon_carriers'
-
+                iconCls : 'coreshop_icon_carriers',
+                items : [
+                    {
+                        xtype : 'grid',
+                        margin: '0 0 15 0',
+                        cls : 'coreshop-order-detail-grid',
+                        store :  new Ext.data.JsonStore({
+                            data : [this.order.shipping]
+                        }),
+                        plugins: [
+                            cellEditing
+                        ],
+                        columns : [
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'carrier',
+                                text : t('coreshop_carrier'),
+                                flex : 1
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                flex : 1,
+                                dataIndex : 'weight',
+                                text : t('coreshop_carrier_shippingMethod_weight')
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'cost',
+                                text : t('coreshop_shipping_cost'),
+                                flex : 1,
+                                align : 'right',
+                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'tracking',
+                                text : t('coreshop_carrier_tracking_code'),
+                                flex : 1,
+                                field: {
+                                    xtype: 'textfield'
+                                }
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'carrier',
+                                width : 100,
+                                align : 'right',
+                                renderer : function(value, metaData, record, rowIndex, colIndex) {
+                                    var id = Ext.id();
+                                    Ext.defer(function () {
+                                        Ext.widget('button', {
+                                            renderTo: id,
+                                            text: t('edit'),
+                                            width : '100%',
+                                            handler: function () {
+                                                cellEditing.startEditByPosition({
+                                                    row: rowIndex,
+                                                    column : colIndex - 1
+                                                });
+                                            }.bind(this)
+                                        });
+                                    }, 50);
+                                    return Ext.String.format('<div id="{0}"></div>', id);
+                                }
+                            }
+                        ]
+                    }
+                ]
             });
         }
 
@@ -414,11 +500,71 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
     getPaymentInfo : function() {
         if(!this.paymentInfo) {
+            this.paymentsStore = new Ext.data.JsonStore({
+                data : this.order.payments
+            });
+
             this.paymentInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_payments'),
                 border : true,
                 margin : '0 20 20 0',
-                iconCls : 'coreshop_icon_payment'
+                iconCls : 'coreshop_icon_payment',
+                tools : [
+                    {
+                        type: 'coreshop-add',
+                        tooltip: t('add'),
+                        handler : function() {
+                            pimcore.plugin.coreshop.orders.createPayment.showWindow(this.order.o_id, this.order, function(result) {
+                                if(result.success) {
+                                    this.paymentsStore.loadData(result.payments);
+                                }
+                            }.bind(this));
+                        }.bind(this)
+                    }
+                ],
+                items : [
+                    {
+                        xtype : 'grid',
+                        margin: '0 0 15 0',
+                        cls : 'coreshop-order-detail-grid',
+                        store :  this.paymentsStore,
+                        columns : [
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'datePayment',
+                                text : t('date'),
+                                flex : 1,
+                                renderer : function(val) {
+                                    if(val) {
+                                        return Ext.Date.format(new Date(val * 1000), 'Y-m-d H:i:s')
+                                    }
+
+                                    return '';
+                                }
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                flex : 1,
+                                dataIndex : 'provider',
+                                text : t('coreshop_paymentProvider')
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'transactionIdentifier',
+                                text : t('coreshop_transactionNumber'),
+                                flex : 1,
+                                align : 'right'
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'amount',
+                                text : t('coreshop_amount'),
+                                flex : 1,
+                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                            }
+                        ]
+                    }
+                ]
 
             });
         }
@@ -451,11 +597,121 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
     getDetailInfo : function() {
         if(!this.detailsInfo) {
+            this.detailsStore = new Ext.data.JsonStore({
+                data : this.order.details
+            });
+
+            this.summaryStore = new Ext.data.JsonStore({
+                data : this.order.summary
+            });
+
             this.detailsInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_products'),
                 border : true,
                 margin : '0 0 20 0',
-                iconCls : 'coreshop_icon_product'
+                iconCls : 'coreshop_icon_product',
+                items : [
+                    {
+                        xtype : 'grid',
+                        margin: '0 0 15 0',
+                        cls : 'coreshop-order-detail-grid',
+                        store :  this.detailsStore,
+                        columns : [
+                            {
+                                xtype : 'gridcolumn',
+                                flex : 1,
+                                dataIndex : 'product_name',
+                                text : t('coreshop_product')
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'price_without_tax',
+                                text : t('coreshop_price_without_tax'),
+                                width : 150,
+                                align : 'right',
+                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'price',
+                                text : t('coreshop_price_with_tax'),
+                                width : 150,
+                                align : 'right',
+                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'amount',
+                                text : t('coreshop_amount'),
+                                width : 150,
+                                align : 'right'
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'total_tax',
+                                text : t('coreshop_total_tax'),
+                                width : 150,
+                                align : 'right',
+                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'total',
+                                text : t('coreshop_total'),
+                                width : 150,
+                                align : 'right',
+                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                            },
+                            /*{
+                                xtype : 'gridcolumn',
+                                dataIndex : 'productName',
+                                width : 100,
+                                align : 'right',
+                                renderer : function(value, metaData, record, rowIndex, colIndex) {
+                                    var id = Ext.id();
+                                    Ext.defer(function () {
+                                        Ext.widget('button', {
+                                            renderTo: id,
+                                            text: t('edit'),
+                                            width : '100%',
+                                            handler: function () {
+
+                                            }.bind(this)
+                                        });
+                                    }, 50);
+                                    return Ext.String.format('<div id="{0}"></div>', id);
+                                }
+                            }*/
+                        ]
+                    },
+                    {
+                        xtype : 'grid',
+                        margin: '0 0 15 0',
+                        cls : 'coreshop-order-detail-grid',
+                        store :  this.summaryStore,
+                        hideHeaders : true,
+                        columns : [
+                            {
+                                xtype : 'gridcolumn',
+                                flex : 1,
+                                align: 'right',
+                                dataIndex : 'key',
+                                renderer : function(value, metaData, record) {
+                                    return '<span style="font-weight:bold">' + t('coreshop_' + value) + '</span>';
+                                }
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'value',
+                                width : 150,
+                                align : 'right',
+                                renderer : function(value, metaData, record) {
+                                    return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.order.currency.symbol, value) + '</span>';
+                                }.bind(this)
+                            }
+                        ]
+                    }
+                ]
             });
         }
 

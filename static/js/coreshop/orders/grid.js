@@ -123,7 +123,11 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                     align : 'right',
                     text: t('coreshop_orders_total'),
                     dataIndex: 'total',
-                    renderer: coreshop.util.format.currency.bind(this, '€'),
+                    renderer: function(value, metaData, record) {
+                        var currency = record.get("currency").symbol;
+
+                        return coreshop.util.format.currency(currency, value);
+                    },
                     filter: {
                         type : 'number'
                     }

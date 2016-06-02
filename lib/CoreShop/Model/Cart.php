@@ -755,6 +755,7 @@ class Cart extends Base
         $order->setPaymentProvider($paymentModule->getName());
         $order->setPaymentProviderDescription($paymentModule->getDescription());
         $order->setOrderDate(new Date());
+        $order->setCurrency(Tool::getCurrency());
 
         if ($this->getCarrier() instanceof Carrier) {
             $order->setCarrier($this->getCarrier());

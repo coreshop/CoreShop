@@ -476,7 +476,9 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         scale: 'medium',
                         iconCls: 'coreshop_icon_currency',
                         handler: function () {
-                            pimcore.plugin.coreshop.orders.createPayment.showWindow(tab);
+                            pimcore.plugin.coreshop.orders.createPayment.showWindow(tab.id, tab.data.data, function() {
+                                tab.reload(tab.data.currentLayoutId);
+                            });
                         }.bind(this, tab)
                     }
                 );

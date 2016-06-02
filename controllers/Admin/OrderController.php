@@ -70,6 +70,7 @@ class CoreShop_Admin_OrderController extends Admin
             'paymentFee' => $order->getPaymentFee(),
             'totalTax' => $order->getTotalTax(),
             'total' => $order->getTotal(),
+            'currency' => $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop\Tool::getCurrency())
         );
 
         return $element;
@@ -137,7 +138,7 @@ class CoreShop_Admin_OrderController extends Admin
             } else {
                 $order->createPayment($paymentProvider, $amount, true);
 
-                $this->_helper->json(array('success' => true));
+                $this->_helper->json(array('success' => true, "payments" => $this->getPayments($order)));
             }
         } else {
             $this->_helper->json(array('success' => false, 'message' => "Payment Provider '$paymentProviderName' not found"));
@@ -199,6 +200,26 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array("success" => true, "statesHistory" => $this->getStatesHistory($order)));
     }
 
+    public function changeTrackingCodeAction() {
+        $orderId = $this->getParam('id');
+        $trackingCode = $this->getParam("trackingCode");
+
+        $order = \CoreShop\Model\Order::getById($orderId);
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+        }
+
+        if(!$trackingCode || $order->getTrackingCode() === $trackingCode) {
+            $this->_helper->json(array('success' => false, 'message' => "Tracking code did not change or is empty"));
+        }
+
+        $order->setTrackingCode($trackingCode);
+        $order->save();
+
+        $this->_helper->json(array('success' => true));
+    }
+
     public function detailAction() {
         $orderId = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($orderId);
@@ -214,6 +235,17 @@ class CoreShop_Admin_OrderController extends Admin
             'shipping' => $order->getCustomerShippingAddress()->getObjectVars(),
             'billing' => $order->getCustomerBillingAddress()->getObjectVars()
         ];
+        $jsonOrder['shipping'] = [
+            'carrier' => $order->getCarrier()->getName(),
+            'weight' => $order->getTotalWeight(),
+            'cost' => $order->getShipping(),
+            'tracking' => $order->getTrackingCode()
+        ];
+        $jsonOrder['payments'] = $this->getPayments($order);
+        $jsonOrder['totalPayed'] = $order->getPayedTotal();
+        $jsonOrder['details'] = $this->getDetails($order);
+        $jsonOrder['summary'] = $this->getSummary($order);
+        $jsonOrder['currency'] = $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop\Tool::getCurrency());
 
         $this->_helper->json(array("success" => true, "order" => $jsonOrder));
     }
@@ -247,5 +279,86 @@ class CoreShop_Admin_OrderController extends Admin
         }
 
         return $statesHistory;
+    }
+
+    protected function getPayments(\CoreShop\Model\Order $order) {
+        $payments = $order->getPayments();
+        $return = [];
+
+        foreach($payments as $payment) {
+            $return[] = [
+                "datePayment" => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : "",
+                "provider" => $payment->getProvider(),
+                "transactionIdentifier" => $payment->getTransactionIdentifier(),
+                "amount" => $payment->getAmount()
+            ];
+        }
+
+        return $return;
+    }
+
+    protected function getDetails(\CoreShop\Model\Order $order) {
+        $details = $order->getItems();
+        $items = [];
+
+        foreach($details as $detail) {
+            if($detail instanceof \Pimcore\Model\Object\CoreShopOrderItem) {
+                $items[] = [
+                    "product" => $detail->getProduct()->getId(),
+                    "product_name" => $detail->getProduct()->getName(),
+                    "product_image" => $detail->getProduct()->getImage()->getPath(),
+                    "price_without_tax" => $detail->getPriceWithoutTax(),
+                    "price" => $detail->getPrice(),
+                    "amount" => $detail->getAmount(),
+                    "total" => $detail->getTotal(),
+                    "total_tax" => $detail->getTotalTax()
+                ];
+            }
+        }
+
+        return $items;
+    }
+
+    protected function getSummary(\CoreShop\Model\Order $order) {
+        $summary = [];
+
+        if($order->getDiscount() > 0) {
+            $summary[] = [
+                "key" => "discount",
+                "value" => $order->getDiscount()
+            ];
+        }
+
+        if($order->getShipping() > 0) {
+            $summary[] = [
+                "key" => "shipping",
+                "value" => $order->getShipping()
+            ];
+        }
+
+        if($order->getPaymentFee() > 0) {
+            $summary[] = [
+                "key" => "payment",
+                "value" => $order->getPaymentFee()
+            ];
+        }
+
+        $summary[] = [
+            "key" => "total_tax",
+            "value" => $order->getTotalTax()
+        ];
+        $summary[] = [
+            "key" => "total",
+            "value" => $order->getTotal()
+        ];
+
+        return $summary;
+    }
+
+    protected function getCurrency(CoreShop\Model\Currency $currency) {
+        return [
+            "name" => $currency->getName(),
+            "symbol" => $currency->getSymbol()
+        ];
     }
 }

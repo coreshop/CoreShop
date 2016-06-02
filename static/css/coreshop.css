@@ -305,6 +305,10 @@
     background: url(/pimcore/static6/img/flat-color-icons/cursor.svg) center center no-repeat !important;
 }
 
+.x-tool-coreshop-add {
+    background: url(/plugins/CoreShop/static/img/flat/add.svg) center center no-repeat !important;
+}
+
 .coreshop_inline_icon {
     width: 16px;
     height: 16px;
@@ -379,10 +383,20 @@
     font-size: 12px
 }
 
-.coreshop-state-grid .x-grid-row .x-grid-cell:first-child .x-grid-cell-inner{
+.coreshop-order-detail-grid .x-grid-row .x-grid-cell:first-child .x-grid-cell-inner{
     padding: 5px 0 0 0;
 }
 
-.coreshop-state-grid .x-grid-row .x-grid-cell-inner {
+.coreshop-order-detail-grid .x-grid-row .x-grid-cell-inner {
     height: 32px;
+}
+
+.coreshop-order-detail-grid .x-column-header {
+    background:white;
+    border-right-color:white;
+    font-size:13px;
+}
+
+.coreshop-order-detail-grid .x-grid-body {
+    border-color: #36d672;
 }
