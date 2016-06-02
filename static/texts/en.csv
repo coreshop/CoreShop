@@ -354,3 +354,5 @@
 "coreshop_price_with_tax","Price (incl.)"
 "coreshop_total_tax","Total Tax"
 "coreshop_total","Total"
+"coreshop_message_send","Send"
+"coreshop_message_send_success","Message has been successfully sent"
