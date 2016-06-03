@@ -710,6 +710,7 @@ class Install
         Configuration::set('SYSTEM.ORDERSTATE.COD', 12);
         Configuration::set('SYSTEM.ISINSTALLED', false);
         Configuration::set('SYSTEM.INVOICE.WKHTML', '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5');
+        Configuration::set("SYSTEM.MAIL.CONFIRMATION", "/shop/email/order-confirmation");
     }
 
     /**

@@ -730,7 +730,7 @@ class Order extends Base
      *
      * @throws UnsupportedException
      *
-     * @return State
+     * @return Order\State
      */
     public function getOrderState()
     {

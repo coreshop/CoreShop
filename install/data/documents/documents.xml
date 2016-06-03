@@ -538,5 +538,50 @@
             </content>
         </document>
 
+        <document>
+            <type>email</type>
+            <action>order-confirmation</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>order-confirmation</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/order-confirmation.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Bestellbestätigung</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Bestellbestätigung</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/order-confirmation.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Order Confirmation</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Order Confirmation</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
     </documents>
 </zend-config>

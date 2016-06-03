@@ -46,4 +46,8 @@ class CoreShop_EmailController extends Action
             $this->view->thread = $this->view->message->getThread();
         }
     }
+
+    public function orderConfirmationAction() {
+        $this->view->order = $this->getParam("order");
+    }
 }

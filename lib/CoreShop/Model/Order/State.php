@@ -18,7 +18,7 @@ use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Plugin;
 use CoreShop\Tool;
-use Pimcore\Mail;
+use CoreShop\Mail;
 use Pimcore\Model\Document;
 
 class State extends AbstractModel
@@ -132,14 +132,6 @@ class State extends AbstractModel
                             $mail->addAttachment($attachment);
                         }
                     }
-                }
-
-                //check if admin copy mail address has been set. if => send him a lovely copy!
-                $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');
-                $adminMailAddress = Configuration::get('SYSTEM.MAIL.ORDER.NOTIFICATION');
-
-                if ($sendBccToUser === true && !empty($adminMailAddress)) {
-                    $mail->addBcc(explode(',', $adminMailAddress));
                 }
 
                 $mail->send();

@@ -15,6 +15,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Mail;
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
 use CoreShop\Model\Plugin\Payment;
@@ -23,6 +24,7 @@ use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Date;
+use Pimcore\Model\Document;
 use Pimcore\Model\Object\Service;
 use CoreShop\Maintenance\CleanUpCart;
 
@@ -783,6 +785,42 @@ class Cart extends Base
         }
 
         $state->processStep($order);
+        
+        //Send Confirmation to customer
+        $emailDocument = "/" . $order->getLang() . Configuration::get("SYSTEM.MAIL.CONFIRMATION");
+        $emailDocument = Document::getByPath($emailDocument);
+
+        if ($emailDocument instanceof Document\Email) {
+            $emailParameters = array_merge($order->getObjectVars(), $order->getOrderState()->getObjectVars(), $order->getCustomer()->getObjectVars());
+            $emailParameters['orderTotal'] = Tool::formatPrice($order->getTotal());
+            $emailParameters['order'] = $order;
+
+            unset($emailParameters['____pimcore_cache_item__']);
+
+            $mail = new Mail();
+            $mail->setDocument($emailDocument);
+            $mail->setParams($emailParameters);
+            $mail->setEnableLayoutOnPlaceholderRendering(false);
+            $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname());
+
+            if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE')) {
+                if ($order->getOrderState()->getInvoice()) {
+                    $invoice = $order->getInvoice();
+
+                    if ($invoice instanceof \Pimcore\Model\Asset\Document) {
+                        $attachment = new \Zend_Mime_Part($invoice->getData());
+                        $attachment->type = $invoice->getMimetype();
+                        $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
+                        $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
+                        $attachment->filename = $invoice->getFilename();
+
+                        $mail->addAttachment($attachment);
+                    }
+                }
+            }
+
+            $mail->send();
+        }
 
         Plugin::actionHook('order.created', array('order' => $order));
 
