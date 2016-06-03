@@ -3,7 +3,7 @@
     <routes>
         <route>
             <name>coreshop_list</name>
-            <pattern>/(.*?)\/shop\/(.*?)\~c([0-9]+)/</pattern>
+            <pattern>/(\w+)\/shop\/(.*?)\~c([0-9]+)/</pattern>
             <reverse>/%lang/shop/%name~c%category</reverse>
             <module>CoreShop</module>
             <controller>product</controller>
@@ -13,7 +13,7 @@
         </route>
         <route>
             <name>coreshop_index</name>
-            <pattern>/(.*?)\/shop/</pattern>
+            <pattern>/(\w+)\/shop(\/?)\$/</pattern>
             <reverse>/%lang/shop</reverse>
             <module>CoreShop</module>
             <controller>index</controller>
@@ -23,7 +23,7 @@
         </route>
         <route>
             <name>coreshop_detail</name>
-            <pattern>/(.*?)\/shop\/(.*?)\~p([0-9]+)/</pattern>
+            <pattern>/(\w+)\/shop\/(.*?)\~p([0-9]+)/</pattern>
             <reverse>/%lang/shop/%name~p%product</reverse>
             <module>CoreShop</module>
             <controller>product</controller>
@@ -33,7 +33,7 @@
         </route>
         <route>
             <name>coreshop_cart</name>
-            <pattern>#(\w+)/shop/cart/(\w+)#</pattern>
+            <pattern>/(\w+)\/shop\/cart\/(\w+)/</pattern>
             <reverse>/%lang/shop/cart/%act</reverse>
             <module>CoreShop</module>
             <controller>cart</controller>
@@ -43,7 +43,7 @@
         </route>
         <route>
             <name>coreshop_checkout</name>
-            <pattern>#(\w+)/shop/checkout/(\w+)#</pattern>
+            <pattern>/(\w+)\/shop\/checkout\/(\w+)/</pattern>
             <reverse>/%lang/shop/checkout/%act</reverse>
             <module>CoreShop</module>
             <controller>checkout</controller>
@@ -53,7 +53,7 @@
         </route>
         <route>
             <name>coreshop_user</name>
-            <pattern>#(\w+)/shop/user/(\w+)#</pattern>
+            <pattern>/(\w+)\/shop\/user\/(\w+)/</pattern>
             <reverse>/%lang/shop/user/%act</reverse>
             <module>CoreShop</module>
             <controller>user</controller>
@@ -63,7 +63,7 @@
         </route>
         <route>
             <name>coreshop_search</name>
-            <pattern>/(.*?)\/shop\/search/</pattern>
+            <pattern>/(\w+)\/shop\/search/</pattern>
             <reverse>/%lang/shop/search</reverse>
             <module>CoreShop</module>
             <controller>search</controller>
@@ -73,7 +73,7 @@
         </route>
         <route>
             <name>coreshop_compare</name>
-            <pattern>#(\w+)/shop/compare/(\w+)#</pattern>
+            <pattern>/(\w+)\/shop\/compare\/(\w+)/</pattern>
             <reverse>/%lang/shop/compare/%act</reverse>
             <module>CoreShop</module>
             <controller>compare</controller>
@@ -83,7 +83,7 @@
         </route>
         <route>
             <name>coreshop_change_currency</name>
-            <pattern>#(\w+)/shop/currency/change~c([0-9]+)#</pattern>
+            <pattern>/(\w+)\/shop\/currency\/change~c([0-9]+)/</pattern>
             <reverse>/%lang/shop/currency/change~c%currency</reverse>
             <module>CoreShop</module>
             <controller>helper</controller>
@@ -93,7 +93,7 @@
         </route>
         <route>
             <name>coreshop_wishlist</name>
-            <pattern>#(\w+)/shop/wishlist/(\w+)#</pattern>
+            <pattern>/(\w+)\/shop\/wishlist\/(\w+)/</pattern>
             <reverse>/%lang/shop/wishlist/%act</reverse>
             <module>CoreShop</module>
             <controller>wishlist</controller>
@@ -103,7 +103,7 @@
         </route>
         <route>
             <name>coreshop_message</name>
-            <pattern>#(\w+)/shop/message/#</pattern>
+            <pattern>/(\w+)\/shop\/message/</pattern>
             <reverse>/%lang/shop/message</reverse>
             <module>CoreShop</module>
             <controller>message</controller>
