@@ -17,7 +17,6 @@ use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Order\Item;
 use CoreShop\Model\Order\Payment;
-use CoreShop\Model\Order\Tax;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
@@ -124,7 +123,7 @@ class Order extends Base
                 $itemTaxAmounts = $cartItem->getProduct()->getTaxAmount(true);
 
                 foreach ($productTaxes as $tax) {
-                    $itemTax = Tax::create();
+                    $itemTax = Order\Tax::create();
 
                     $itemTax->setName($tax->getName());
                     $itemTax->setRate($tax->getRate());
@@ -151,7 +150,7 @@ class Order extends Base
             $taxObject = $tax['tax'];
             $taxAmount = $tax['amount'];
 
-            $tax = Tax::create();
+            $tax = Order\Tax::create();
             $tax->setName($taxObject->getName());
             $tax->setRate($taxObject->getRate());
             $tax->setAmount(Tool::roundPrice($taxAmount));
