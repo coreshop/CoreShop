@@ -138,7 +138,7 @@ class CoreShop_Admin_OrderController extends Admin
             } else {
                 $order->createPayment($paymentProvider, $amount, true);
 
-                $this->_helper->json(array('success' => true, "payments" => $this->getPayments($order)));
+                $this->_helper->json(array('success' => true, "payments" => $this->getPayments($order), "totalPayed" => $order->getPayedTotal()));
             }
         } else {
             $this->_helper->json(array('success' => false, 'message' => "Payment Provider '$paymentProviderName' not found"));
@@ -218,6 +218,28 @@ class CoreShop_Admin_OrderController extends Admin
         $order->save();
 
         $this->_helper->json(array('success' => true));
+    }
+
+    public function changeOrderItemAction() {
+        $orderId = $this->getParam('id');
+        $orderItemId = $this->getParam("orderItemId");
+        $amount = $this->getParam("amount");
+        $price = $this->getParam("price");
+
+        $order = \CoreShop\Model\Order::getById($orderId);
+        $orderItem = \CoreShop\Model\Order\Item::getById($orderItemId);
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+        }
+
+        if (!$orderItem instanceof \CoreShop\Model\Order\Item) {
+            $this->_helper->json(array('success' => false, 'message' => "OrderItem with ID '$orderItemId' not found"));
+        }
+
+        $order->updateOrderItem($orderItem, $amount, $price);
+
+        $this->_helper->json(array('success' => true, "summary" => $this->getSummary($order), "details" => $this->getDetails($order), "total" => $order->getTotal()));
     }
 
     public function detailAction() {
@@ -302,18 +324,18 @@ class CoreShop_Admin_OrderController extends Admin
         $items = [];
 
         foreach($details as $detail) {
-            if($detail instanceof \Pimcore\Model\Object\CoreShopOrderItem) {
-                $items[] = [
-                    "product" => $detail->getProduct()->getId(),
-                    "product_name" => $detail->getProduct()->getName(),
-                    "product_image" => $detail->getProduct()->getImage()->getPath(),
-                    "price_without_tax" => $detail->getPriceWithoutTax(),
-                    "price" => $detail->getPrice(),
-                    "amount" => $detail->getAmount(),
-                    "total" => $detail->getTotal(),
-                    "total_tax" => $detail->getTotalTax()
-                ];
-            }
+            $items[] = [
+                "o_id" => $detail->getId(),
+                "product" => $detail->getProduct()->getId(),
+                "product_name" => $detail->getProduct()->getName(),
+                "product_image" => $detail->getProduct()->getImage()->getPath(),
+                "wholesale_price" => $detail->getWholesalePrice(),
+                "price_without_tax" => $detail->getPriceWithoutTax(),
+                "price" => $detail->getPrice(),
+                "amount" => $detail->getAmount(),
+                "total" => $detail->getTotal(),
+                "total_tax" => $detail->getTotalTax()
+            ];
         }
 
         return $items;
@@ -333,6 +355,11 @@ class CoreShop_Admin_OrderController extends Admin
             $summary[] = [
                 "key" => "shipping",
                 "value" => $order->getShipping()
+            ];
+
+            $summary[] = [
+                "key" => "shipping_tax",
+                "value" => $order->getShippingTax()
             ];
         }
 

@@ -350,6 +350,8 @@
 "coreshop_payments","Payment(s)"
 "coreshop_products","Products"
 "coreshop_shipping_cost","Shipping Costs"
+"coreshop_shipping_tax","Shipping Tax"
+"coreshop_wholesale_price","Wholesale Price"
 "coreshop_price_without_tax","Price (excl.)"
 "coreshop_price_with_tax","Price (incl.)"
 "coreshop_total_tax","Total Tax"

@@ -172,6 +172,104 @@ class Order extends Base
     }
 
     /**
+     * Update Order Item and recalc total and taxes
+     *
+     * @param Item $item
+     * @param $amount
+     * @param $priceWithoutTax
+     * @throws \Exception
+     * @throws \Pimcore\Model\Element\ValidationException
+     */
+    public function updateOrderItem(Item $item, $amount, $priceWithoutTax) {
+        $item->setAmount($amount);
+        $item->setPriceWithoutTax($priceWithoutTax);
+
+        //Recalc Tax
+        $totalTax = 0;
+        $taxes = new Object\Fieldcollection();
+        foreach($item->getTaxes() as $tax) {
+            $taxValue = (($tax->getRate() / 100) * $item->getPriceWithoutTax());
+            $totalTax += $taxValue;
+
+            $tax->setAmount($taxValue * $item->getAmount());
+        }
+
+        //$item->setTaxes($taxes);
+        $item->setTotalTax($totalTax * $item->getAmount());
+        $item->setPrice($priceWithoutTax + $totalTax);
+        $item->setTotal($item->getAmount() * $item->getPrice());
+        $item->save();
+
+        $allItems = $this->getItems();
+
+        foreach($allItems as &$oldItem) {
+            if($item->getId() === $oldItem->getId()) {
+                $oldItem = $item;
+            }
+        }
+
+        $this->setItems($allItems);
+
+        $this->updateOrderSummary();
+    }
+
+    /**
+     * Update Order Summary and Taxes
+     */
+    public function updateOrderSummary() {
+        $totalTax = 0;
+        $subTotalTax = 0;
+        $subTotal = 0;
+        $taxRateValues = [];
+
+        $addTax = function ($rate, $amount) use (&$taxRateValues) {
+            if (!array_key_exists((string)$rate, $taxRateValues)) {
+                $taxRateValues[(string)$rate] = 0;
+            }
+
+            $taxRateValues[(string)$rate] += $amount;
+        };
+
+        //Recaluclate Subtotal and taxes
+        foreach($this->getItems() as $item) {
+            $subTotalTax += $item->getTotalTax();
+            $subTotal += $item->getTotal();
+
+            foreach($item->getTaxes() as $tax) {
+                $addTax($tax->getRate(), $tax->getAmount());
+            }
+        }
+
+        //Recalculate Total and TotalTax
+        $total = ($subTotal + $this->getShipping() + $this->getPaymentFee() + $totalTax) - $this->getDiscount();
+        $totalTax = $subTotalTax + $this->getShippingTax() + $this->getPaymentFeeTax();
+
+        $this->setSubtotal($subTotal);
+        $this->setSubtotalTax($subTotalTax);
+        $this->setTotal($total);
+        $this->setTotalTax($totalTax);
+
+        //Recalculate detailed Taxes
+        if($this instanceof Object\CoreShopOrder) {
+            if($this->getPaymentFeeTaxRate() > 0) {
+                $addTax($this->getPaymentFeeTaxRate(), $this->getPaymentFeeTax());
+            }
+
+            if($this->getShippingTaxRate()) {
+                $addTax($this->getShippingTaxRate(), $this->getShippingTax());
+            }
+        }
+
+        foreach($this->getTaxes() as $tax) {
+            if(array_key_exists((string)$tax->getRate(), $taxRateValues)) {
+                $tax->setAmount($taxRateValues[(string)$tax->getRate()]);
+            }
+        }
+
+        $this->save();
+    }
+
+    /**
      * Create a new Payment.
      *
      * @param CorePayment $provider

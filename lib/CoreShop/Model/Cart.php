@@ -764,19 +764,23 @@ class Cart extends Base
             $order->setShipping($this->getShipping());
             $order->setShippingWithoutTax($this->getShipping(false));
             $order->setShippingTaxRate($this->getShippingTaxRate());
+            $order->setShippingTax($this->getShippingTax());
         } else {
             $order->setShipping(0);
             $order->setShippingTaxRate(0);
             $order->setShippingWithoutTax(0);
+            $order->setShippingTax(0);
         }
 
         $order->setPaymentFee($this->getPaymentFee());
+        $order->setPaymentFeeTax($this->getPaymentFeeTax());
         $order->setPaymentFeeWithoutTax($this->getPaymentFee(false));
         $order->setPaymentFeeTaxRate($this->getPaymentFeeTaxRate());
         $order->setTotalTax($this->getTotalTax());
         $order->setTotal($this->getTotal());
         $order->setSubtotal($this->getSubtotal());
         $order->setSubtotalWithoutTax($this->getSubtotal(false));
+        $order->setSubtotalTax($this->getSubtotalTax());
         $order->save();
         $order->importCart($this);
 
