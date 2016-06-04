@@ -202,6 +202,7 @@ class Order extends Base
 
         $allItems = $this->getItems();
 
+        //Replace existing item with new item to be able to update summary right
         foreach($allItems as &$oldItem) {
             if($item->getId() === $oldItem->getId()) {
                 $oldItem = $item;
