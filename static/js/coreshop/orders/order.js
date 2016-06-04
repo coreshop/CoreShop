@@ -511,6 +511,63 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 data : this.order.payments
             });
 
+            var items = [
+
+            ];
+
+            if(this.order.totalPayed < this.order.total) {
+                items.push(
+                    {
+                        xtype : 'panel',
+                        cls : 'x-coreshop-alert',
+                        bodyPadding : 5,
+                        html : t('coreshop_order_payment_paid_warning').format(coreshop.util.format.currency(this.order.currency.symbol, this.order.totalPayed), coreshop.util.format.currency(this.order.currency.symbol, this.order.total))
+                    }
+                );
+            }
+
+            items.push({
+                xtype : 'grid',
+                margin: '0 0 15 0',
+                cls : 'coreshop-order-detail-grid',
+                store :  this.paymentsStore,
+                columns : [
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'datePayment',
+                        text : t('date'),
+                        flex : 1,
+                        renderer : function(val) {
+                            if(val) {
+                                return Ext.Date.format(new Date(val * 1000), 'Y-m-d H:i:s')
+                            }
+
+                            return '';
+                        }
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        flex : 1,
+                        dataIndex : 'provider',
+                        text : t('coreshop_paymentProvider')
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'transactionIdentifier',
+                        text : t('coreshop_transactionNumber'),
+                        flex : 1,
+                        align : 'right'
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'amount',
+                        text : t('coreshop_amount'),
+                        flex : 1,
+                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                    }
+                ]
+            });
+
             this.paymentInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_payments'),
                 border : true,
@@ -529,50 +586,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         }.bind(this)
                     }
                 ],
-                items : [
-                    {
-                        xtype : 'grid',
-                        margin: '0 0 15 0',
-                        cls : 'coreshop-order-detail-grid',
-                        store :  this.paymentsStore,
-                        columns : [
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'datePayment',
-                                text : t('date'),
-                                flex : 1,
-                                renderer : function(val) {
-                                    if(val) {
-                                        return Ext.Date.format(new Date(val * 1000), 'Y-m-d H:i:s')
-                                    }
-
-                                    return '';
-                                }
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                flex : 1,
-                                dataIndex : 'provider',
-                                text : t('coreshop_paymentProvider')
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'transactionIdentifier',
-                                text : t('coreshop_transactionNumber'),
-                                flex : 1,
-                                align : 'right'
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'amount',
-                                text : t('coreshop_amount'),
-                                flex : 1,
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
-                            }
-                        ]
-                    }
-                ]
-
+                items : items
             });
         }
 

@@ -400,3 +400,15 @@
 .coreshop-order-detail-grid .x-grid-body {
     border-color: #36d672;
 }
+
+.x-panel.x-coreshop-alert {
+    margin: 10px 0;
+}
+
+.x-panel.x-coreshop-alert .x-panel-body {
+    border-left: solid 3px #eab3b7;
+    padding: 15px;
+    background: #FFE2E4;
+    color: #D27C82;
+    border-radius: 5px;
+}
