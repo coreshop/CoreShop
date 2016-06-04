@@ -515,7 +515,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
             ];
 
-            if(this.order.totalPayed < this.order.total) {
+            if(this.order.totalPayed < this.order.total || this.order.totalPayed > this.order.total) {
                 items.push(
                     {
                         xtype : 'panel',
