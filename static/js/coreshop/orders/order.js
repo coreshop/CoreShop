@@ -46,7 +46,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         if (!this.layout) {
 
             // create new panel
-            this.layout = new Ext.Container({
+            this.layout = new Ext.panel.Panel({
                 id: this.layoutId,
                 title: t('coreshop_order') + ': ' + this.order.orderNumber,
                 iconCls: 'coreshop_icon_orders',
@@ -54,7 +54,20 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 layout: 'border',
                 autoScroll: true,
                 closable: true,
-                items: this.getItems()
+                items: this.getItems(),
+                dockedItems: [{
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
+                        {
+                            iconCls : 'pimcore_icon_reload',
+                            text : t('reload'),
+                            handler : function() {
+                                this.reload();
+                            }.bind(this)
+                        }
+                    ]
+                }]
             });
 
             // add event listener
