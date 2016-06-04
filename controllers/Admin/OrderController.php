@@ -122,10 +122,6 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
         }
 
-        if ($amount <= 0) {
-            $this->_helper->json(array('success' => false, 'message' => 'Amount must be greater 0'));
-        }
-
         $paymentProvider = Plugin::getPaymentProvider($paymentProviderName);
 
         if ($paymentProvider instanceof \CoreShop\Model\Plugin\Payment) {

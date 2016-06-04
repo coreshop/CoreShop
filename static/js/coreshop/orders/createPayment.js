@@ -133,7 +133,6 @@ pimcore.plugin.coreshop.orders.createPayment = {
                         xtype : 'numberfield',
                         name : 'amount',
                         fieldLabel : t('coreshop_amount'),
-                        minValue: 0,
                         decimalPrecision : 4,
                         value : order.total - order.totalPayed,
                         afterLabelTextTpl: [
