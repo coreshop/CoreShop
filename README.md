@@ -27,6 +27,12 @@
 or install it via composer on an existing pimcore installation
 
 ```
+composer require coreshop/core-shop 1.0
+```
+
+or for the dev-master
+
+```
 composer require coreshop/core-shop dev-master
 ```
 
