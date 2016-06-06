@@ -15,7 +15,10 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Tool;
+use Pimcore\Model\Element\Note;
 use Pimcore\Model\Object\Concrete;
+use Pimcore\Model\User;
+use Pimcore\Tool\Authentication;
 
 class Base extends Concrete
 {
@@ -154,5 +157,30 @@ class Base extends Concrete
         }
 
         return call_user_func_array(array($pimcoreClass, $method), $arguments);
+    }
+
+
+    /**
+     * Create a note for this object.
+     *
+     * @param $type string
+     *
+     * @return Note $note
+     */
+    public function createNote($type)
+    {
+        $note = new Note();
+        $note->setElement($this);
+        $note->setDate(time());
+        $note->setType($type);
+
+        if (\Pimcore::inAdmin()) {
+            $user = Authentication::authenticateSession();
+            if ($user instanceof User) {
+                $note->setUser($user->getId());
+            }
+        }
+
+        return $note;
     }
 }

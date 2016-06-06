@@ -181,12 +181,15 @@ class Order extends Base
      * @throws \Pimcore\Model\Element\ValidationException
      */
     public function updateOrderItem(Item $item, $amount, $priceWithoutTax) {
+        $currentPrice = $item->getPriceWithoutTax();
+        $currentAmount = $item->getAmount();
+
         $item->setAmount($amount);
         $item->setPriceWithoutTax($priceWithoutTax);
 
         //Recalc Tax
         $totalTax = 0;
-        $taxes = new Object\Fieldcollection();
+
         foreach($item->getTaxes() as $tax) {
             $taxValue = (($tax->getRate() / 100) * $item->getPriceWithoutTax());
             $totalTax += $taxValue;
@@ -209,8 +212,24 @@ class Order extends Base
             }
         }
 
-        $this->setItems($allItems);
+        $translate = Tool::getTranslate();
+        $note = $item->createNote('coreshop-updateOrderItem');
+        $note->setTitle($translate->translate('coreshop_note_updateOrderItem'));
+        $note->setDescription($translate->translate('coreshop_note_updateOrderItem_description'));
 
+        if ($currentAmount != $amount) {
+            $note->addData('fromAmount', 'text', $currentAmount);
+            $note->addData('toAmount', 'text', $amount);
+        }
+
+        if($currentPrice != $priceWithoutTax) {
+            $note->addData('fromPrice', 'text', $currentPrice);
+            $note->addData('toPrice', 'text', $priceWithoutTax);
+        }
+
+        $note->save();
+
+        $this->setItems($allItems);
         $this->updateOrderSummary();
     }
 
@@ -222,6 +241,8 @@ class Order extends Base
         $subTotalTax = 0;
         $subTotal = 0;
         $taxRateValues = [];
+
+        $currentTotal = $this->getTotal();
 
         $addTax = function ($rate, $amount) use (&$taxRateValues) {
             if (!array_key_exists((string)$rate, $taxRateValues)) {
@@ -268,6 +289,20 @@ class Order extends Base
         }
 
         $this->save();
+
+
+        $translate = Tool::getTranslate();
+
+        $note = $this->createNote("coreshop-updateOrderSummary");
+        $note->setTitle($translate->translate('coreshop_note_updateOrderSummary'));
+        $note->setDescription($translate->translate('coreshop_note_updateOrderSummary_description'));
+
+        if ($currentTotal != $this->getTotal()) {
+            $note->addData('fromTotal', 'text', $currentTotal);
+            $note->addData('toTotal', 'text', $this->getTotal());
+        }
+
+        $note->save();
     }
 
     /**

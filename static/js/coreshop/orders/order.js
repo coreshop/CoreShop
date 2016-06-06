@@ -900,13 +900,21 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 width: 50,
                                 items: [{
                                     iconCls: 'pimcore_icon_edit',
-                                    tooltip: t('Edit'),
+                                    tooltip: t('edit'),
                                     handler: function(grid, rowIndex, colIndex) {
                                         cellEditing.startEditByPosition({
                                             row: rowIndex,
                                             column : 3
                                         });
                                     }.bind(this)
+                                }, {
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip : t('open'),
+                                    handler : function(grid, rowIndex) {
+                                        var record = grid.getStore().getAt(rowIndex);
+
+                                        pimcore.helpers.openObject(record.get("o_id"));
+                                    }
                                 }]
                             }
                         ]

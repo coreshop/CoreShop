@@ -359,3 +359,7 @@
 "coreshop_order_payment_paid_warning","Warnung! Es wurden nur {0} von {1} bezahlt!"
 "coreshop_customer_created","Kundenkonto angelegt am"
 "coreshop_date_format","d.m.Y H:i"
+"coreshop_note_updateOrderSummary","Bestellung wurde geändert"
+"coreshop_note_updateOrderSummary_description","Bestellungszusammenfassung wurde neu berechnet"
+"coreshop_note_updateOrderItem","Bestellungsitem wurde geändert"
+"coreshop_note_updateOrderItem_description","Bestellungsitem wurde geändert"
