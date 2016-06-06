@@ -67,12 +67,7 @@ class Message extends AbstractModel
     public function sendNotification(Document $mailDocument, $recipient)
     {
         if ($mailDocument instanceof Email) {
-            $mail = new Mail();
-            $mail->setDocument($mailDocument);
-            $mail->setParams(array('message' => $this->getMessage(), 'messageObject' => $this));
-            $mail->setEnableLayoutOnPlaceholderRendering(false);
-            $mail->addTo($recipient);
-            $mail->send();
+            Mail::sendMessagingMail($mailDocument, $this, $recipient);
         } else {
             \Logger::warn('Email Document for Messages not found!');
         }

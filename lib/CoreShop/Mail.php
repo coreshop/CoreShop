@@ -3,12 +3,28 @@
 namespace CoreShop;
 
 use CoreShop\Model\Configuration;
+use CoreShop\Model\Messaging\Message;
 use CoreShop\Model\Order;
 use Pimcore\Mail as PimcoreMail;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Document;
 
 class Mail extends PimcoreMail {
+
+    /**
+     * Sends Messaging Mail
+     *
+     * @param $emailDocument
+     * @param Message $message
+     */
+    public static function sendMessagingMail($emailDocument, Message $message, $recipient) {
+        $mail = new self();
+        $mail->setDocument($emailDocument);
+        $mail->setParams(array('message' => $message->getMessage(), 'messageObject' => $message));
+        $mail->setEnableLayoutOnPlaceholderRendering(false);
+        $mail->addTo($recipient);
+        $mail->send();
+    }
 
     /**
      * Send email which belongs to an order
