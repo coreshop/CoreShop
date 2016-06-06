@@ -180,7 +180,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 items : [
                     {
                         xtype : 'panel',
-                        html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.o_creationDate * 1000), 'Y-m-d H:i:s') + "</span>",
+                        html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.o_creationDate * 1000), t('coreshop_date_format')) + "</span>",
                         bodyPadding : 20,
                         flex : 1
                     },
@@ -396,7 +396,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         {
                             xtype : 'label',
                             style : 'display:block',
-                            text : Ext.Date.format(new Date(this.order.customer.o_creationDate * 1000), 'Y-m-d H:i:s')
+                            text : Ext.Date.format(new Date(this.order.customer.o_creationDate * 1000), t('coreshop_date_format'))
                         }
                     ]
                 });
@@ -602,7 +602,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         flex : 1,
                         renderer : function(val) {
                             if(val) {
-                                return Ext.Date.format(new Date(val * 1000), 'Y-m-d H:i:s')
+                                return Ext.Date.format(new Date(val * 1000), t('coreshop_date_format'))
                             }
 
                             return '';

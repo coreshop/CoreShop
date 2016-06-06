@@ -360,3 +360,4 @@
 "coreshop_message_send_success","Message has been successfully sent"
 "coreshop_order_payment_paid_warning","Warning {0} paid instead of {1}"
 "coreshop_customer_created","Customer created at"
+"coreshop_date_format","Y-m-d H:i:s"

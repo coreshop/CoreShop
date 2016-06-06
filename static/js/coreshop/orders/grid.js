@@ -159,10 +159,11 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                     xtype : 'datecolumn',
                     text: t('coreshop_orders_orderDate'),
                     dataIndex: 'orderDate',
-                    format:'d.m.Y',
+                    format: t('coreshop_date_format'),
                     filter: {
                         type : 'date'
-                    }
+                    },
+                    width : 150
                 }
             ],
             region: 'center',
