@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Messaging;
 
 use CoreShop\Model\AbstractModel;
-use Pimcore\Mail;
+use CoreShop\Mail;
 use Pimcore\Model\Document;
 use Pimcore\Model\Document\Email;
 
