@@ -361,6 +361,55 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
     getCustomerInfo : function() {
         if(!this.customerInfo) {
+            var items = [
+
+            ];
+
+            if(this.order.customer.isGuest) {
+                items.push({
+                    xtype : 'label',
+                    text : t('coreshop_order_is_guest')
+                });
+            }
+            else {
+                items.push({
+                    xtype : 'panel',
+                    bodyPadding: 10,
+                    margin: '0 0 10px 0',
+                    style: this.borderStyle,
+                    items : [
+                        {
+                            xtype : 'label',
+                            style : 'font-weight:bold;display:block',
+                            text : t('email')
+                        },
+                        {
+                            xtype : 'label',
+                            style : 'display:block',
+                            text : this.order.customer.email
+                        },
+                        {
+                            xtype : 'label',
+                            style : 'font-weight:bold;display:block',
+                            text : t('coreshop_customer_created')
+                        },
+                        {
+                            xtype : 'label',
+                            style : 'display:block',
+                            text : Ext.Date.format(new Date(this.order.customer.o_creationDate * 1000), 'Y-m-d H:i:s')
+                        }
+                    ]
+                });
+            }
+
+            items.push({
+                xtype : 'tabpanel',
+                items: [
+                    this.getAddressPanelForAddress(this.order.address.shipping, t("coreshop_address_shipping")),
+                    this.getAddressPanelForAddress(this.order.address.billing, t("coreshop_address_billing"))
+                ]
+            });
+
             this.customerInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_customer') + ": " + this.order.customer.firstname + " (" + this.order.customer.o_id + ")",
                 margin : '0 0 20 0',
@@ -376,15 +425,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         }.bind(this)
                     }
                 ],
-                items : [
-                    {
-                        xtype : 'tabpanel',
-                        items: [
-                            this.getAddressPanelForAddress(this.order.address.shipping, t("coreshop_address_shipping")),
-                            this.getAddressPanelForAddress(this.order.address.billing, t("coreshop_address_billing"))
-                        ]
-                    }
-                ]
+                items : items
             });
         }
 

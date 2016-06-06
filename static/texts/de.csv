@@ -357,3 +357,4 @@
 "coreshop_message_send","Senden"
 "coreshop_message_send_success","Nachricht wurde erfolgreich gesendet"
 "coreshop_order_payment_paid_warning","Warnung! Es wurden nur {0} von {1} bezahlt!"
+"coreshop_customer_created","Kundenkonto angelegt am"
