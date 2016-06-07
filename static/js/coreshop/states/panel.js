@@ -83,7 +83,7 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
                     items: [
                         {
                             // add button
-                            text: t('coreshop_' + this.type + '_add'),
+                            text: t('add'),
                             iconCls: 'pimcore_icon_add',
                             handler: this.addItem.bind(this)
                         }
