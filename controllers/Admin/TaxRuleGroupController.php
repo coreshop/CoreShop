@@ -45,16 +45,11 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
         $tmp = array(
             'id' => $group->getId(),
             'text' => $group->getName(),
-            'elementType' => 'tax',
             'qtipCfg' => array(
                 'title' => 'ID: '.$group->getId(),
             ),
             'name' => $group->getName(),
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_tax_rule_groups';
-        $tmp['allowChildren'] = false;
 
         return $tmp;
     }

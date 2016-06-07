@@ -101,16 +101,11 @@ class CoreShop_Admin_ProductController extends Admin
         $tmpPriceRule = array(
             'id' => $price->getId(),
             'text' => $price->getName(),
-            'elementType' => 'specificprice',
             'qtipCfg' => array(
                 'title' => 'ID: '.$price->getId(),
             ),
             'name' => $price->getName(),
         );
-
-        $tmpPriceRule['leaf'] = true;
-        $tmpPriceRule['iconCls'] = 'coreshop_icon_price_rule'; //TODO: change icon
-        $tmpPriceRule['allowChildren'] = false;
 
         return $tmpPriceRule;
     }

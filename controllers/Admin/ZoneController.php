@@ -47,17 +47,12 @@ class CoreShop_Admin_ZoneController extends Admin
         $tmpZone = array(
             'id' => $zone->getId(),
             'text' => $zone->getName(),
-            'elementType' => 'zone',
             'qtipCfg' => array(
                 'title' => 'ID: '.$zone->getId(),
             ),
             'name' => $zone->getName(),
             'active' => intval($zone->getActive()),
         );
-
-        $tmpZone['leaf'] = true;
-        $tmpZone['iconCls'] = 'coreshop_icon_zone';
-        $tmpZone['allowChildren'] = false;
 
         return $tmpZone;
     }

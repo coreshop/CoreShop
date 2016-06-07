@@ -45,17 +45,12 @@ class CoreShop_Admin_TaxController extends Admin
         $tmp = array(
             'id' => $tax->getId(),
             'text' => $tax->getName(),
-            'elementType' => 'tax',
             'qtipCfg' => array(
                 'title' => 'ID: '.$tax->getId(),
             ),
             'name' => $tax->getName(),
             'rate' => $tax->getRate(),
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_taxes';
-        $tmp['allowChildren'] = false;
 
         return $tmp;
     }

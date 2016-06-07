@@ -46,16 +46,11 @@ class CoreShop_Admin_PriceRuleController extends Admin
         $tmpPriceRule = array(
             'id' => $priceRule->getId(),
             'text' => $priceRule->getName(),
-            'elementType' => 'pricerule',
             'qtipCfg' => array(
                 'title' => 'ID: '.$priceRule->getId(),
             ),
             'name' => $priceRule->getName(),
         );
-
-        $tmpPriceRule['leaf'] = true;
-        $tmpPriceRule['iconCls'] = 'coreshop_icon_price_rule';
-        $tmpPriceRule['allowChildren'] = false;
 
         return $tmpPriceRule;
     }

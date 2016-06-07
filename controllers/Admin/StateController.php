@@ -65,17 +65,12 @@ class CoreShop_Admin_StateController extends Admin
         $tmpState = array(
             'id' => $state->getId(),
             'text' => $state->getName(),
-            'elementType' => 'state',
             'qtipCfg' => array(
                 'title' => 'ID: '.$state->getId(),
             ),
             'name' => $state->getName(),
             'country' => $state->getCountry()->getName(),
         );
-
-        $tmpState['leaf'] = true;
-        $tmpState['iconCls'] = 'coreshop_icon_state';
-        $tmpState['allowChildren'] = false;
 
         return $tmpState;
     }

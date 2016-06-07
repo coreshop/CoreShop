@@ -46,16 +46,11 @@ class CoreShop_Admin_CustomerGroupController extends Admin
         $tmp = array(
             'id' => $group->getId(),
             'text' => $group->getName(),
-            'elementType' => 'group',
             'qtipCfg' => array(
                 'title' => 'ID: '.$group->getId(),
             ),
             'name' => $group->getName(),
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_customer_groups';
-        $tmp['allowChildren'] = false;
 
         return $tmp;
     }

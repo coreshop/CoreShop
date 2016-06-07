@@ -47,17 +47,12 @@ class CoreShop_Admin_IndexesController extends Admin
         $tmp = array(
             'id' => $index->getId(),
             'text' => $index->getName(),
-            'elementType' => 'group',
             'qtipCfg' => array(
                 'title' => 'ID: '.$index->getId(),
             ),
             'name' => $index->getName(),
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_indexes';
-        $tmp['allowChildren'] = false;
-
+        
         return $tmp;
     }
 

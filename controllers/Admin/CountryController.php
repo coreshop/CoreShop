@@ -48,16 +48,11 @@ class CoreShop_Admin_CountryController extends Admin
         $tmpCountry = array(
             'id' => $country->getId(),
             'text' => $country->getName(),
-            'elementType' => 'country',
             'qtipCfg' => array(
                 'title' => 'ID: '.$country->getId(),
             ),
             'name' => $country->getName(),
         );
-
-        $tmpCountry['leaf'] = true;
-        $tmpCountry['iconCls'] = 'coreshop_icon_country';
-        $tmpCountry['allowChildren'] = false;
 
         return $tmpCountry;
     }

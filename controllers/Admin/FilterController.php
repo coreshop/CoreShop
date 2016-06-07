@@ -46,17 +46,12 @@ class CoreShop_Admin_FilterController extends Admin
         $tmp = array(
             'id' => $filter->getId(),
             'text' => $filter->getName(),
-            'elementType' => 'group',
             'qtipCfg' => array(
                 'title' => 'ID: '.$filter->getId(),
             ),
             'name' => $filter->getName(),
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_filters';
-        $tmp['allowChildren'] = false;
-
+        
         return $tmp;
     }
 

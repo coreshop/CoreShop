@@ -45,7 +45,6 @@ class CoreShop_Admin_OrderStateController extends Admin
         $tmp = array(
             'id' => $orderState->getId(),
             'text' => $orderState->getName(),
-            'elementType' => 'orderstate',
             'qtipCfg' => array(
                 'title' => 'ID: '.$orderState->getId(),
             ),
@@ -53,10 +52,6 @@ class CoreShop_Admin_OrderStateController extends Admin
             'color' => $orderState->getColor(),
             'email' => $orderState->getEmail()
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_order_states';
-        $tmp['allowChildren'] = false;
 
         return $tmp;
     }

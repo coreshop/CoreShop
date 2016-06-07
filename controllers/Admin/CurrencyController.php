@@ -47,16 +47,11 @@ class CoreShop_Admin_CurrencyController extends Admin
         $tmpCurrency = array(
             'id' => $currency->getId(),
             'text' => $currency->getName(),
-            'elementType' => 'currency',
             'qtipCfg' => array(
                 'title' => 'ID: '.$currency->getId(),
             ),
             'name' => $currency->getName(),
         );
-
-        $tmpCurrency['leaf'] = true;
-        $tmpCurrency['iconCls'] = 'coreshop_icon_currency';
-        $tmpCurrency['allowChildren'] = false;
 
         return $tmpCurrency;
     }

@@ -62,16 +62,11 @@ class CoreShop_Admin_CarrierController extends Admin
         $tmpCarrier = array(
             'id' => $carrier->getId(),
             'text' => $carrier->getName(),
-            'elementType' => 'carrier',
             'qtipCfg' => array(
                 'title' => 'ID: '.$carrier->getId(),
             ),
             'name' => $carrier->getName(),
         );
-
-        $tmpCarrier['leaf'] = true;
-        $tmpCarrier['iconCls'] = 'coreshop_icon_carrier';
-        $tmpCarrier['allowChildren'] = false;
 
         return $tmpCarrier;
     }

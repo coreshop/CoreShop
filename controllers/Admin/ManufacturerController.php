@@ -46,16 +46,11 @@ class CoreShop_Admin_ManufacturerController extends Admin
         $tmp = array(
             'id' => $manufacturer->getId(),
             'text' => $manufacturer->getName(),
-            'elementType' => 'group',
             'qtipCfg' => array(
                 'title' => 'ID: '.$manufacturer->getId(),
             ),
             'name' => $manufacturer->getName(),
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_manufacturer';
-        $tmp['allowChildren'] = false;
 
         return $tmp;
     }

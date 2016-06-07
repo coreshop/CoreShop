@@ -46,7 +46,6 @@ class CoreShop_Admin_MessagingThreadStateController extends Admin
         $tmp = array(
             'id' => $state->getId(),
             'text' => $state->getName(),
-            'elementType' => 'group',
             'qtipCfg' => array(
                 'title' => 'ID: '.$state->getId(),
             ),
@@ -54,10 +53,6 @@ class CoreShop_Admin_MessagingThreadStateController extends Admin
             'color' => $state->getColor(),
             'count' => $state->getThreadsList()->count(),
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_messaging_state';
-        $tmp['allowChildren'] = false;
 
         return $tmp;
     }

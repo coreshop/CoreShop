@@ -46,16 +46,11 @@ class CoreShop_Admin_MessagingContactController extends Admin
         $tmp = array(
             'id' => $contact->getId(),
             'text' => $contact->getName(),
-            'elementType' => 'group',
             'qtipCfg' => array(
                 'title' => 'ID: '.$contact->getId(),
             ),
             'name' => $contact->getName(),
         );
-
-        $tmp['leaf'] = true;
-        $tmp['iconCls'] = 'coreshop_icon_messaging_contact';
-        $tmp['allowChildren'] = false;
 
         return $tmp;
     }
