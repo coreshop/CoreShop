@@ -375,12 +375,12 @@
                     <field>
                         <key>head</key>
                         <type>input</type>
-                        <value>Bezahlung per Überweißung %Text(orderNumber);</value>
+                        <value>Bezahlung per Überweisung %Text(orderNumber);</value>
                     </field>
                     <field>
                         <key>subject</key>
                         <type>objectProperty</type>
-                        <value>Bezahlung per Überweißung %Text(orderNumber);</value>
+                        <value>Bezahlung per Überweisung %Text(orderNumber);</value>
                     </field>
                 </de>
                 <en>
