@@ -63,7 +63,6 @@
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customerGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/product.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/timeSpan.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/totalAvailable.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/totalPerCustomer.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/zone.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/actions/freeShipping.js</path>
