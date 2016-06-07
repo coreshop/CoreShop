@@ -60,5 +60,9 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
         this.getLayout();
 
         this.panels = [];
+    },
+
+    getItemClass : function () {
+        return pimcore.plugin.coreshop.pricerules.item;
     }
 });

@@ -25,7 +25,6 @@ use CoreShop\Model\Cart\PriceRule\Condition\Category as ConditionCategory;
 use CoreShop\Model\Cart\PriceRule\Condition\Country as ConditionCountry;
 use CoreShop\Model\Cart\PriceRule\Condition\CustomerGroup as ConditionCustomerGroup;
 use CoreShop\Model\Cart\PriceRule\Condition\Product as ConditionProduct;
-use CoreShop\Model\Cart\PriceRule\Condition\TotalAvailable;
 use CoreShop\Model\Cart\PriceRule\Condition\TotalPerCustomer;
 use CoreShop\Model\Cart\PriceRule\Condition\Zone as ConditionZone;
 use CoreShop\Test\Base;
@@ -102,22 +101,7 @@ class PriceRule extends Base
 
         $this->assertFalse($amount->checkCondition($cart, $this->priceRule));
     }
-
-    public function testPriceRuleCondTotalAvailable()
-    {
-        $total = new TotalAvailable();
-        $total->setTotalAvailable(10);
-        $total->setTotalUsed(1);
-
-        $cart = Data::createCartWithProducts();
-
-        $this->assertTrue($total->checkCondition($cart, $this->priceRule));
-
-        $total->setTotalUsed(11);
-
-        $this->assertFalse($total->checkCondition($cart, $this->priceRule));
-    }
-
+    
     public function testPriceRuleCondTotalPerCustomer()
     {
         $total = new TotalPerCustomer();
