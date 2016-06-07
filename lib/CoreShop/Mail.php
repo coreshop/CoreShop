@@ -32,10 +32,11 @@ class Mail extends PimcoreMail {
      * @param $emailDocument
      * @param Order $order
      * @param Order\State $orderState
+     * @param bool $allowBcc
      * @throws Exception\UnsupportedException
      * @throws \Exception
      */
-    public static function sendOrderMail($emailDocument, Order $order, Order\State $orderState = null) {
+    public static function sendOrderMail($emailDocument, Order $order, Order\State $orderState = null, $allowBcc = FALSE) {
         if ($emailDocument instanceof Document\Email) {
             $emailParameters = array_merge($order->getObjectVars(), $orderState instanceof Order\State ? $orderState->getObjectVars() : [], $order->getCustomer()->getObjectVars());
             $emailParameters['orderTotal'] = Tool::formatPrice($order->getTotal());
@@ -67,11 +68,13 @@ class Mail extends PimcoreMail {
                 }
             }
 
-            $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');
-            $adminMailAddress = Configuration::get('SYSTEM.MAIL.ORDER.NOTIFICATION');
+            if( $allowBcc === TRUE) {
+                $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');
+                $adminMailAddress = Configuration::get('SYSTEM.MAIL.ORDER.NOTIFICATION');
 
-            if ($sendBccToUser === true && !empty($adminMailAddress)) {
-                $mail->addBcc(explode(',', $adminMailAddress));
+                if ($sendBccToUser === true && !empty($adminMailAddress)) {
+                    $mail->addBcc(explode(',', $adminMailAddress));
+                }
             }
 
             $mail->send();

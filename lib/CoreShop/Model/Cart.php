@@ -794,7 +794,7 @@ class Cart extends Base
         $emailDocument = "/" . $order->getLang() . Configuration::get("SYSTEM.MAIL.CONFIRMATION");
         $emailDocument = Document::getByPath($emailDocument);
         
-        Mail::sendOrderMail($emailDocument, $order, $order->getOrderState());
+        Mail::sendOrderMail($emailDocument, $order, $order->getOrderState(), TRUE);
 
         Plugin::actionHook('order.created', array('order' => $order));
 
