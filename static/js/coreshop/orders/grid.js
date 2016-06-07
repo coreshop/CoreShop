@@ -164,6 +164,19 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                         type : 'date'
                     },
                     width : 150
+                },
+                {
+                    menuDisabled: true,
+                    sortable: false,
+                    xtype: 'actioncolumn',
+                    width: 50,
+                    items: [{
+                        iconCls: 'pimcore_icon_open',
+                        tooltip: t('open'),
+                        handler: function(grid, rowIndex, colIndex) {
+                            this.openOrder(grid.getStore().getAt(rowIndex));
+                        }.bind(this)
+                    }]
                 }
             ],
             region: 'center',
@@ -171,7 +184,9 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             // paging bar on the bottom
             bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
             listeners : {
-                itemclick : this.openOrder.bind(this)
+                select : function(grid, record) {
+                    this.openOrder(record);
+                }.bind(this)
             }
         });
 
@@ -180,7 +195,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         return this.grid;
     },
 
-    openOrder : function (grid, record, item, index, e, eOpts) {
+    openOrder : function (record) {
         coreshop.helpers.openOrder(record.get("o_id"))
     }
 });
