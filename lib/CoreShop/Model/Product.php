@@ -245,17 +245,15 @@ class Product extends Base
     }
 
     /**
-     * Get Specific Price.
+     * get all valid specific price riles
      *
-     * @return float
+     * @return SpecificPrice[]
      */
-    public function getSpecificPrice()
-    {
+    public function getValidSpecificPriceRules() {
         $specificPrices = $this->getSpecificPrices();
-        $price = $this->getRetailPrice();
+        $rules = [];
 
         foreach ($specificPrices as $specificPrice) {
-            $actions = $specificPrice->getActions();
             $conditions = $specificPrice->getConditions();
 
             $isValid = true;
@@ -271,6 +269,25 @@ class Product extends Base
             if (!$isValid) {
                 continue;
             }
+
+            $rules[] = $specificPrice;
+        }
+
+        return $rules;
+    }
+
+    /**
+     * Get Specific Price.
+     *
+     * @return float
+     */
+    public function getSpecificPrice()
+    {
+        $specificPrices = $this->getValidSpecificPriceRules();
+        $price = $this->getRetailPrice();
+
+        foreach ($specificPrices as $specificPrice) {
+            $actions = $specificPrice->getActions();
 
             foreach ($actions as $action) {
                 $actionsPrice = $action->getPrice($this);
@@ -293,26 +310,11 @@ class Product extends Base
      */
     public function getSpecificPriceDiscount($price)
     {
-        $specificPrices = $this->getSpecificPrices();
+        $specificPrices = $this->getValidSpecificPriceRules();
         $discount = 0;
 
         foreach ($specificPrices as $specificPrice) {
-            $conditions = $specificPrice->getConditions();
             $actions = $specificPrice->getActions();
-
-            $isValid = true;
-
-            foreach ($conditions as $condition) {
-                if (!$condition->checkCondition($this, $specificPrice)) {
-                    $isValid = false;
-                    break;
-                }
-            }
-
-            //Conditions are not valid, so continue with next rule
-            if (!$isValid) {
-                continue;
-            }
 
             foreach ($actions as $action) {
                 $discount += $action->getDiscount($price, $this);
@@ -320,6 +322,22 @@ class Product extends Base
         }
 
         return $discount;
+    }
+
+    /**
+     * Get Retail Price With Tax
+     *
+     * @return float
+     */
+    public function getRetailPriceWithTax() {
+        $price = $this->getRetailPrice();
+        $calculator = $this->getTaxCalculator();
+
+        if ($calculator) {
+            $price = $calculator->addTaxes($price);
+        }
+
+        return Tool::convertToCurrency($price);
     }
 
     /**
@@ -483,7 +501,7 @@ class Product extends Base
      */
     public function getSpecificPrices()
     {
-        return SpecificPrice::getSpecificPrices($this);
+        return array_merge(SpecificPrice::getSpecificPrices($this), Product\PriceRule::getPriceRules());
     }
 
     /**

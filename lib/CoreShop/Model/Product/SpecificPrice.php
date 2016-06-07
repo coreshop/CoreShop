@@ -11,13 +11,13 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
 namespace CoreShop\Model\Product;
 
-use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Product;
 use CoreShop\Model\Cart\PriceRule;
 
-class SpecificPrice extends AbstractModel
+class SpecificPrice extends AbstractProductPriceRule
 {
     /**
      * possible types of a condition.
@@ -34,53 +34,14 @@ class SpecificPrice extends AbstractModel
     public static $availableActions = array('discountAmount', 'discountPercent', 'newPrice');
 
     /**
-     * Add Condition Type.
-     *
-     * @param $condition
-     */
-    public static function addCondition($condition)
-    {
-        if (!in_array($condition, self::$availableConditions)) {
-            self::$availableConditions[] = $condition;
-        }
-    }
-
-    /**
-     * Add Action Type.
-     *
-     * @param $action
-     */
-    public static function addAction($action)
-    {
-        if (!in_array($action, self::$availableActions)) {
-            self::$availableActions[] = $action;
-        }
-    }
-
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
-    public $name;
+    public static $type = "specificprice";
 
     /**
      * @var int
      */
     public $o_id;
-
-    /**
-     * @var array
-     */
-    public $conditions;
-
-    /**
-     * @var array
-     */
-    public $actions;
 
     /**
      * Get all PriceRules.
@@ -98,22 +59,6 @@ class SpecificPrice extends AbstractModel
     }
 
     /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return int
      */
     public function getO_Id()
@@ -127,69 +72,5 @@ class SpecificPrice extends AbstractModel
     public function setO_Id($o_id)
     {
         $this->o_id = $o_id;
-    }
-
-    /**
-     * @return Product\SpecificPrice\Condition\AbstractCondition[]
-     */
-    public function getConditions()
-    {
-        if (!is_array($this->conditions)) {
-            $this->conditions = array();
-        }
-
-        return $this->conditions;
-    }
-
-    /**
-     * @param array $conditions
-     */
-    public function setConditions($conditions)
-    {
-        $this->conditions = $conditions;
-    }
-
-    /**
-     * @return Product\SpecificPrice\Action\AbstractAction[]
-     */
-    public function getActions()
-    {
-        if (!is_array($this->actions)) {
-            $this->actions = array();
-        }
-
-        return $this->actions;
-    }
-
-    /**
-     * @param array $actions
-     */
-    public function setActions($actions)
-    {
-        $this->actions = $actions;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return strval($this->getName());
     }
 }

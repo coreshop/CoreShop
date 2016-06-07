@@ -14,9 +14,9 @@
 namespace CoreShop\Model\Cart\PriceRule\Action;
 
 use CoreShop\Model\Cart;
-use CoreShop\Model\Cart\PriceRule\AbstractPriceRule;
+use CoreShop\Model\PriceRule\AbstractActionCondition;
 
-abstract class AbstractAction extends AbstractPriceRule
+abstract class AbstractAction extends AbstractActionCondition
 {
     /**
      * @var string

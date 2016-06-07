@@ -42,7 +42,7 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
         this.element = element;
 
         Ext.Ajax.request({
-            url: '/plugin/CoreShop/admin_product/get-specific-price-config',
+            url: '/plugin/CoreShop/admin_product-specific-price/get-config',
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);
@@ -52,10 +52,10 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
         });
 
         this.url = {
-            add : '/plugin/CoreShop/admin_product/add-specific-price?product=' + element.id,
-            delete : '/plugin/CoreShop/admin_product/delete-specific-price',
-            get : '/plugin/CoreShop/admin_product/get-specific-price',
-            list : '/plugin/CoreShop/admin_product/list?product=' + element.id
+            add : '/plugin/CoreShop/admin_product-specific-price/add?product=' + element.id,
+            delete : '/plugin/CoreShop/admin_product-specific-price/delete',
+            get : '/plugin/CoreShop/admin_product-specific-price/get',
+            list : '/plugin/CoreShop/admin_product-specific-price/list?product=' + element.id
         };
 
         this.panels = [];
@@ -89,7 +89,7 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
                 ],
                 proxy: {
                     type: 'ajax',
-                    url: '/plugin/CoreShop/admin_product/list-specific-prices',
+                    url: '/plugin/CoreShop/admin_product-specific-price/list',
                     reader: {
                         type: 'json',
                         rootProperty : 'data'
@@ -97,7 +97,15 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
                     extraParams : {
                         product : this.element.id
                     }
-                }
+                },
+                reader:     new Ext.data.JsonReader({}, [
+                    { name:'id' },
+                    { name:'name' },
+                    { name:'type' }
+                ]),
+                autoload:   true,
+                groupField: 'type',
+                groupDir: 'DESC'
             });
 
             this.grid = Ext.create('Ext.grid.Panel', {
@@ -107,16 +115,27 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
                     {
                         text: '',
                         dataIndex: 'text',
-                        flex : 1,
-                        renderer: function (value, metadata, record)
-                        {
-                            metadata.tdCls = record.get('iconCls') + ' td-icon';
-
-                            return value;
-                        }
+                        flex : 1
                     }
                 ],
-                listeners : this.getTreeNodeListeners(),
+                groupField: 'type',
+                groupDir: 'DESC',
+                features: [{
+                    ftype: 'grouping',
+
+                    // You can customize the group's header.
+                    groupHeaderTpl: Ext.create('Ext.XTemplate',
+                        '<div>{name:this.translateName} ({children.length})</div>',
+                        {
+                            translateName: function (name) {
+                                return t('coreshop_product_' + name + 's');
+                            }
+                        }
+                    ),
+                    enableNoGroups:true,
+                    startCollapsed : false
+                }],
+                listeners : this.getListeners(),
                 useArrows: true,
                 autoScroll: true,
                 animate: true,
@@ -127,7 +146,7 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
                     items: [
                         {
                             // add button
-                            text: t('coreshop_' + this.type + '_add'),
+                            text: t('add'),
                             iconCls: 'pimcore_icon_add',
                             handler: this.addItem.bind(this)
                         }
@@ -143,5 +162,22 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
         }
 
         return this.grid;
+    },
+
+    getListeners: function () {
+        var listeners = this.getTreeNodeListeners();
+
+        listeners['itemclick'] = this.openPriceRule.bind(this);
+
+        return listeners;
+    },
+
+    openPriceRule : function(grid, record) {
+        if(record.get("type") == "pricerule") {
+            Ext.Msg.alert(t('open_target'), t('coreshop_pricerules_open_in_product_rules'));
+            return;
+        }
+
+        this.openItem(record.data);
     }
 });

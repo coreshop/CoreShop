@@ -11,9 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Product\SpecificPrice\Condition;
 
-use CoreShop\Model;
+namespace CoreShop\Model\Product\PriceRule\Condition;
+
+use CoreShop\Model\Product\PriceRule;
+use CoreShop\Model\Product;
 
 class TimeSpan extends AbstractCondition
 {
@@ -75,14 +77,15 @@ class TimeSpan extends AbstractCondition
     /**
      * Check if Product is Valid for Condition.
      *
-     * @param Model\Product               $product
-     * @param Model\Product\SpecificPrice $specificPrice
+     * @param Product $product
+     * @param Product\AbstractProductPriceRule $priceRule
      *
      * @return bool
+     *
+     * @throws \Exception
      */
-    public function checkCondition(Model\Product $product, Model\Product\SpecificPrice $specificPrice)
+    public function checkCondition(Product $product, Product\AbstractProductPriceRule $priceRule)
     {
-        //Check Availability
         $date = \Zend_Date::now();
 
         if ($this->getDateFrom() instanceof \Zend_Date) {

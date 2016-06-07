@@ -491,7 +491,9 @@ VALUES
   ('coreshop_permission_manufacturers'),
   ('coreshop_permission_indexes'),
   ('coreshop_permission_messaging_contact'),
-  ('coreshop_permission_messaging_thread_state');
+  ('coreshop_permission_messaging_thread_state'),
+  ('coreshop_permission_productSpecificPrices'),
+  ('coreshop_permission_productPriceRules');
 
 DROP TABLE IF EXISTS `coreshop_product_specificprice`;
 CREATE TABLE `coreshop_product_specificprice` (
@@ -583,4 +585,15 @@ CREATE TABLE `coreshop_messaging_message` (
   `read` tinyint(1)  NOT NULL DEFAULT '1',
   `creationDate` bigint NOT NULL,
   FOREIGN KEY (`adminUserId`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_product_pricerules`;
+CREATE TABLE `coreshop_product_pricerules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `description` text,
+  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `conditions` text,
+  `actions` text,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

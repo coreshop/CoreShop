@@ -11,24 +11,23 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Product\SpecificPrice\Condition;
+namespace CoreShop\Model\Product\PriceRule\Listing;
 
-use CoreShop\Model;
+use CoreShop\Model\Listing;
 
-abstract class AbstractCondition extends Model\Product\SpecificPrice\AbstractSpecificPrice
+class Dao extends Listing\Dao\AbstractDao
 {
     /**
+     * Mysql table name.
+     *
      * @var string
      */
-    public $elementType = 'condition';
+    protected $tableName = 'coreshop_product_pricerules';
 
     /**
-     * Check if Product is Valid for Condition.
+     * Object class name.
      *
-     * @param Model\Product               $product
-     * @param Model\Product\SpecificPrice $specificPrice
-     *
-     * @return bool
+     * @var string
      */
-    abstract public function checkCondition(Model\Product $product, Model\Product\SpecificPrice $specificPrice);
+    protected $modelClass = '\\CoreShop\\Model\\Product\\PriceRule';
 }

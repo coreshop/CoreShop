@@ -65,11 +65,35 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
+
+                    var priceRulesMenu = [];
+
                     if (user.isAllowed('coreshop_permission_priceRules')) {
+                        priceRulesMenu.push({
+                            text: t('coreshop_cart_pricerules'),
+                            iconCls: 'coreshop_icon_price_rule',
+                            handler: this.openPriceRules
+                        });
+                    }
+
+                    if (user.isAllowed('coreshop_permission_productPriceRules')) {
+                        priceRulesMenu.push({
+                            text: t('coreshop_product_pricerules'),
+                            iconCls: 'coreshop_icon_price_rule',
+                            handler: this.openProductPriceRules
+                        });
+                    }
+
+                    if(priceRulesMenu.length > 0) {
                         coreShopMenuItems.push({
                             text: t('coreshop_pricerules'),
                             iconCls: 'coreshop_icon_price_rule',
-                            handler: this.openPriceRules
+                            hideOnClick: false,
+                            menu: {
+                                cls: 'pimcore_navigation_flyout',
+                                shadow: false,
+                                items: priceRulesMenu
+                            }
                         });
                     }
 
@@ -705,6 +729,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_messaging_thread_panel', new pimcore.plugin.coreshop.messaging.thread.panel());
+        }
+    },
+
+    openProductPriceRules : function() {
+        try {
+            pimcore.globalmanager.get('coreshop_product_price_rule_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_product_price_rule_panel', new pimcore.plugin.coreshop.product.pricerule.panel());
         }
     }
 });

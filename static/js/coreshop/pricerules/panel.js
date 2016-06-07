@@ -21,7 +21,7 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
     layoutId: 'coreshop_price_rules_panel',
     storeId : 'coreshop_pricerules',
     iconCls : 'coreshop_icon_price_rule',
-    type : 'pricerules',
+    type : 'cart_pricerules',
 
     url : {
         add : '/plugin/CoreShop/admin_price-rule/add',

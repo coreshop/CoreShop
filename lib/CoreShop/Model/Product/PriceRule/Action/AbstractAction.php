@@ -11,11 +11,13 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Product\SpecificPrice\Action;
 
+namespace CoreShop\Model\Product\PriceRule\Action;
+
+use CoreShop\Model\PriceRule\AbstractActionCondition;
 use CoreShop\Model\Product;
 
-abstract class AbstractAction extends Product\SpecificPrice\AbstractSpecificPrice
+abstract class AbstractAction extends AbstractActionCondition
 {
     /**
      * @var string
@@ -37,7 +39,9 @@ abstract class AbstractAction extends Product\SpecificPrice\AbstractSpecificPric
      *
      * @param Product $product
      *
-     * @return float $price
+     * @return float|boolean $price
      */
-    abstract public function getPrice(Product $product);
+    public function getPrice(Product $product) {
+        return false;
+    }
 }

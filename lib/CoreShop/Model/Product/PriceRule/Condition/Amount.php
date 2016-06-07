@@ -11,16 +11,12 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Product\SpecificPrice\Action;
+namespace CoreShop\Model\Product\PriceRule\Condition;
 
-use CoreShop\Model\Currency;
-use CoreShop\Model\Product;
+use CoreShop\Model;
 use CoreShop\Tool;
 
-/**
- * Class DiscountAmount.
- */
-class DiscountAmount extends AbstractAction
+class Amount extends AbstractCondition
 {
     /**
      * @var int
@@ -30,12 +26,12 @@ class DiscountAmount extends AbstractAction
     /**
      * @var float
      */
-    public $amount;
+    public $minAmount;
 
     /**
      * @var string
      */
-    public $type = 'discountAmount';
+    public $type = 'amount';
 
     /**
      * @return mixed
@@ -46,7 +42,7 @@ class DiscountAmount extends AbstractAction
     }
 
     /**
-     * @param Currency|int $currency
+     * @param mixed $currency
      */
     public function setCurrency($currency)
     {
@@ -56,41 +52,33 @@ class DiscountAmount extends AbstractAction
     /**
      * @return float
      */
-    public function getAmount()
+    public function getMinAmount()
     {
-        return $this->amount;
+        return $this->minAmount;
     }
 
     /**
-     * @param float $amount
+     * @param float $minAmount
      */
-    public function setAmount($amount)
+    public function setMinAmount($minAmount)
     {
-        $this->amount = $amount;
+        $this->minAmount = $minAmount;
     }
 
     /**
-     * Calculate discount.
+     * Check if Product is Valid for Condition.
      *
-     * @param float   $basePrice
-     * @param Product $product
+     * @param Model\Product $product
+     * @param Model\Product\AbstractProductPriceRule $priceRule
      *
-     * @return float
+     * @return bool
      */
-    public function getDiscount($basePrice, Product $product)
+    public function checkCondition(Model\Product $product, Model\Product\AbstractProductPriceRule $priceRule)
     {
-        return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
-    }
+        if($this->getMinAmount() > 1) {
+            return false;
+        }
 
-    /**
-     * get new price for product.
-     *
-     * @param Product $product
-     *
-     * @return float|bool $price
-     */
-    public function getPrice(Product $product)
-    {
-        return false;
+        return true;
     }
 }

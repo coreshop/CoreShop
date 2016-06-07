@@ -11,9 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Product\SpecificPrice\Condition;
 
-use CoreShop\Model;
+namespace CoreShop\Model\Product\PriceRule\Condition;
+
+use CoreShop\Model\Product\PriceRule;
+use CoreShop\Model\Product;
 use CoreShop\Model\CustomerGroup as CustomerGroupModel;
 use CoreShop\Tool;
 
@@ -30,7 +32,7 @@ class CustomerGroup extends AbstractCondition
     public $type = 'customerGroup';
 
     /**
-     * @return CustomerGroupModel
+     * @return int
      */
     public function getCustomerGroup()
     {
@@ -52,22 +54,40 @@ class CustomerGroup extends AbstractCondition
     /**
      * Check if Product is Valid for Condition.
      *
-     * @param Model\Product               $product
-     * @param Model\Product\SpecificPrice $specificPrice
+     * @param Product $product
+     * @param Product\AbstractProductPriceRule $priceRule
      *
      * @return bool
+     *
+     * @throws \Exception
      */
-    public function checkCondition(Model\Product $product, Model\Product\SpecificPrice $specificPrice)
+    public function checkCondition(Product $product, Product\AbstractProductPriceRule $priceRule)
     {
-        $cart = Tool::prepareCart();
-        $customer = $cart->getUser();
+        $customer = Tool::getUser();
 
-        if ($customer) {
-            if ($customer->isInGroup($this->getCustomerGroup())) {
-                return true;
+        if (!$customer) {
+            return false;
+        }
+
+        $validCustomerGroupFound = false;
+
+        if ($this->getCustomerGroup() instanceof CustomerGroupModel) {
+            foreach ($customer->getGroups() as $customerGroup) {
+                $customerGroup = CustomerGroupModel::getByField('name', $customerGroup);
+
+                if ($customerGroup instanceof CustomerGroupModel) {
+                    if ($this->getCustomerGroup()->getId() === $customerGroup->getId()) {
+                        $validCustomerGroupFound = true;
+                        break;
+                    }
+                }
             }
         }
 
-        return false;
+        if (!$validCustomerGroupFound) {
+            return false;
+        }
+
+        return true;
     }
 }

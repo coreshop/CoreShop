@@ -11,57 +11,63 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Product\SpecificPrice\Action;
 
+namespace CoreShop\Model\Product\PriceRule\Action;
+
+use CoreShop\Model\Currency;
 use CoreShop\Model\Product;
+use CoreShop\Tool;
 
-class DiscountPercent extends AbstractAction
+/**
+ * Class DiscountAmount.
+ */
+class DiscountAmount extends AbstractAction
 {
     /**
      * @var int
      */
-    public $currency_id;
+    public $currency;
 
     /**
-     * @var int
+     * @var float
      */
-    public $percent;
+    public $amount;
 
     /**
      * @var string
      */
-    public $type = 'discountPercent';
+    public $type = 'discountAmount';
 
     /**
      * @return mixed
      */
-    public function getCurrencyId()
+    public function getCurrency()
     {
-        return $this->currency_id;
+        return $this->currency;
     }
 
     /**
-     * @param mixed $currency_id
+     * @param Currency|int $currency
      */
-    public function setCurrencyId($currency_id)
+    public function setCurrency($currency)
     {
-        $this->currency_id = $currency_id;
+        $this->currency = $currency;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getPercent()
+    public function getAmount()
     {
-        return $this->percent;
+        return $this->amount;
     }
 
     /**
-     * @param int $percent
+     * @param float $amount
      */
-    public function setPercent($percent)
+    public function setAmount($amount)
     {
-        $this->percent = $percent;
+        $this->amount = $amount;
     }
 
     /**
@@ -74,18 +80,6 @@ class DiscountPercent extends AbstractAction
      */
     public function getDiscount($basePrice, Product $product)
     {
-        return $basePrice * ($this->getPercent() / 100);
-    }
-
-    /**
-     * get new price for product.
-     *
-     * @param Product $product
-     *
-     * @return float|bool $price
-     */
-    public function getPrice(Product $product)
-    {
-        return false;
+        return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
     }
 }
