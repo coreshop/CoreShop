@@ -68,7 +68,7 @@ coreshop.util.format.currency = function (currency, v) {
         return '-' + currency + v.substr(1);
     }
 
-    return currency +  v;
+    return currency + ' ' + v;
 };
 
 coreshop.helpers.showAbout = function () {
