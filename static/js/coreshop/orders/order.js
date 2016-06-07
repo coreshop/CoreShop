@@ -292,14 +292,31 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                                 renderTo: id,
                                                 text: t('coreshop_order_resend_email'),
                                                 flex : 1,
-                                                handler: function () { Ext.Msg.alert('Info', orderState.get('name')) }
+                                                handler: function () {
+                                                    Ext.Ajax.request({
+                                                        url: "/plugin/CoreShop/admin_order/resend-order-state-mail",
+                                                        params: {
+                                                            id: this.order.o_id,
+                                                            orderStateId : orderState.get('id')
+                                                        },
+                                                        success: function (response) {
+                                                            var res = Ext.decode(response.responseText);
+
+                                                            if (res.success) {
+                                                                pimcore.helpers.showNotification(t('success'), t('success'), 'success');
+                                                            } else {
+                                                                pimcore.helpers.showNotification(t('error'), t(res.message), 'error');
+                                                            }
+                                                        }.bind(this)
+                                                    });
+                                                }.bind(this)
                                             });
-                                        }, 50);
+                                        }.bind(this), 50);
                                         return Ext.String.format('<div id="{0}"></div>', id);
                                     }
 
                                     return '';
-                                }
+                                }.bind(this)
                             }
                         ]
                     },

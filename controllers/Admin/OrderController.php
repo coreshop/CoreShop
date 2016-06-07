@@ -238,6 +238,38 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array('success' => true, "summary" => $this->getSummary($order), "details" => $this->getDetails($order), "total" => $order->getTotal()));
     }
 
+    public function resendOrderStateMailAction() {
+        $orderId = $this->getParam('id');
+        $orderStateId = $this->getParam('orderStateId');
+        $order = \CoreShop\Model\Order::getById($orderId);
+        $orderState = \CoreShop\Model\Order\State::getById($orderStateId);
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+        }
+
+        if (!$orderState instanceof \CoreShop\Model\Order\State) {
+            $this->_helper->json(array('success' => false, 'message' => "OrderState with ID '$orderStateId' not found"));
+        }
+
+        if($orderState->getEmail()) {
+
+            $orderStateMailDocument = \Pimcore\Model\Document::getByPath($orderState->getEmailDocument($order->getLang()));
+
+            if ($orderStateMailDocument instanceof \Pimcore\Model\Document\Email) {
+                $mail = new \CoreShop\Mail();
+                $mail->sendOrderMail($orderStateMailDocument, $order, $orderState);
+
+                $this->_helper->json(array('success' => true));
+            }
+            else {
+                $this->_helper->json(array('success' => false, 'message' => 'coreshop_order_state_document_not_found'));
+            }
+        }
+
+        $this->_helper->json(array('success' => false, 'message' => 'coreshop_order_state_has_no_email'));
+    }
+
     public function detailAction() {
         $orderId = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($orderId);
