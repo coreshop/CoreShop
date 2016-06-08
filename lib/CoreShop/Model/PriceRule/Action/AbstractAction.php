@@ -11,10 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Action;
+namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
 use CoreShop\Model\PriceRule\AbstractActionCondition;
+use CoreShop\Model\Product;
 
 abstract class AbstractAction extends AbstractActionCondition
 {
@@ -48,5 +49,26 @@ abstract class AbstractAction extends AbstractActionCondition
      *
      * @return int
      */
-    abstract public function getDiscount(Cart $cart);
+    abstract public function getDiscountCart(Cart $cart);
+
+    /**
+     * Calculate discount.
+     *
+     * @param float   $basePrice
+     * @param Product $product
+     *
+     * @return float
+     */
+    abstract public function getDiscountProduct($basePrice, Product $product);
+
+    /**
+     * get new price for product.
+     *
+     * @param Product $product
+     *
+     * @return float|boolean $price
+     */
+    public function getPrice(Product $product) {
+        return false;
+    }
 }

@@ -259,7 +259,7 @@ class Product extends Base
             $isValid = true;
 
             foreach ($conditions as $condition) {
-                if (!$condition->checkCondition($this, $specificPrice)) {
+                if (!$condition->checkConditionProduct($this, $specificPrice)) {
                     $isValid = false;
                     break;
                 }
@@ -317,7 +317,7 @@ class Product extends Base
             $actions = $specificPrice->getActions();
 
             foreach ($actions as $action) {
-                $discount += $action->getDiscount($price, $this);
+                $discount += $action->getDiscountProduct($price, $this);
             }
         }
 

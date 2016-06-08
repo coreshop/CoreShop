@@ -11,11 +11,12 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Condition;
+namespace CoreShop\Model\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\User;
+use CoreShop\Model\Product as ProductModel;
 use CoreShop\Tool;
 
 class TotalPerCustomer extends AbstractCondition
@@ -57,7 +58,7 @@ class TotalPerCustomer extends AbstractCondition
      *
      * @throws \Exception
      */
-    public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
+    public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
         $user = Tool::getUser();
 
@@ -82,5 +83,20 @@ class TotalPerCustomer extends AbstractCondition
         }
 
         return true;
+    }
+
+    /**
+     * Check if Product is Valid for Condition.
+     *
+     * @param ProductModel $product
+     * @param ProductModel\AbstractProductPriceRule $priceRule
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
+    {
+        return false;
     }
 }

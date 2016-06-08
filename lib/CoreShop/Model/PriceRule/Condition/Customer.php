@@ -11,11 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+namespace CoreShop\Model\PriceRule\Condition;
 
-namespace CoreShop\Model\Product\PriceRule\Condition;
-
-use CoreShop\Model\Product\PriceRule;
-use CoreShop\Model\Product;
+use CoreShop\Model\Cart\PriceRule;
+use CoreShop\Model\Cart;
+use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\User;
 use CoreShop\Tool;
 
@@ -48,22 +48,51 @@ class Customer extends AbstractCondition
     }
 
     /**
-     * Check if Product is Valid for Condition.
+     * Check if Cart is Valid for Condition.
      *
-     * @param Product $product
-     * @param Product\AbstractProductPriceRule $priceRule
+     * @param Cart       $cart
+     * @param PriceRule  $priceRule
+     * @param bool|false $throwException
      *
      * @return bool
      *
      * @throws \Exception
      */
-    public function checkCondition(Product $product, Product\AbstractProductPriceRule $priceRule)
+    public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
+        return $this->check($throwException);
+    }
+
+    /**
+     * Check if Product is Valid for Condition.
+     *
+     * @param ProductModel $product
+     * @param ProductModel\AbstractProductPriceRule $priceRule
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
+    {
+        return $this->check();
+    }
+
+    /**
+     * @param bool $throwException
+     * @return bool
+     * @throws \Exception
+     */
+    protected function check($throwException = false) {
         $user = Tool::getUser();
 
         if ($user instanceof User) {
             if (!$user->getId() == $this->getCustomer()) {
-                return false;
+                if ($throwException) {
+                    throw new \Exception('You cannot use this voucher');
+                } else {
+                    return false;
+                }
             }
         }
 

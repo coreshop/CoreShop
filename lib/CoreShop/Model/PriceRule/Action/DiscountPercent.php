@@ -11,9 +11,10 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Action;
+namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
+use CoreShop\Model\Product;
 
 
 class DiscountPercent extends AbstractAction
@@ -66,18 +67,6 @@ class DiscountPercent extends AbstractAction
     }
 
     /**
-     * Calculate discount.
-     *
-     * @param Cart $cart
-     *
-     * @return int
-     */
-    public function getDiscount(Cart $cart)
-    {
-        return $cart->getSubtotal() * ($this->getPercent() / 100);
-    }
-
-    /**
      * Apply Rule to Cart.
      *
      * @param Cart $cart
@@ -99,5 +88,30 @@ class DiscountPercent extends AbstractAction
     public function unApplyRule(Cart $cart)
     {
         return true;
+    }
+
+    /**
+     * Calculate discount.
+     *
+     * @param Cart $cart
+     *
+     * @return int
+     */
+    public function getDiscountCart(Cart $cart)
+    {
+        return $cart->getSubtotal() * ($this->getPercent() / 100);
+    }
+
+    /**
+     * Calculate discount.
+     *
+     * @param float   $basePrice
+     * @param Product $product
+     *
+     * @return float
+     */
+    public function getDiscountProduct($basePrice, Product $product)
+    {
+        return $basePrice * ($this->getPercent() / 100);
     }
 }

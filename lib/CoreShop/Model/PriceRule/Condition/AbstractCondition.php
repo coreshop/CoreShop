@@ -11,7 +11,7 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Condition;
+namespace CoreShop\Model\PriceRule\Condition;
 
 use CoreShop\Model;
 use CoreShop\Model\Cart\PriceRule;
@@ -21,7 +21,7 @@ abstract class AbstractCondition extends Model\PriceRule\AbstractActionCondition
     /**
      * @var string
      */
-    public $elementType = 'condition';
+    public $elementType = '';
 
     /**
      * Check if Cart is Valid for Condition.
@@ -32,5 +32,15 @@ abstract class AbstractCondition extends Model\PriceRule\AbstractActionCondition
      *
      * @return mixed
      */
-    abstract public function checkCondition(Model\Cart $cart, PriceRule $priceRule, $throwException = false);
+    abstract public function checkConditionCart(Model\Cart $cart, PriceRule $priceRule, $throwException = false);
+
+    /**
+     * Check if Product is Valid for Condition.
+     *
+     * @param Model\Product $product
+     * @param Model\Product\AbstractProductPriceRule $priceRule
+     *
+     * @return bool
+     */
+    abstract public function checkConditionProduct(Model\Product $product, Model\Product\AbstractProductPriceRule $priceRule);
 }

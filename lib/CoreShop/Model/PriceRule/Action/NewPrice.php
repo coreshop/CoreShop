@@ -11,62 +11,37 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Action;
+namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
-use CoreShop\Model\Currency;
-use CoreShop\Tool;
+use CoreShop\Model\Product;
 
-/**
- * Class DiscountAmount.
- */
-class DiscountAmount extends AbstractAction
+class NewPrice extends AbstractAction
 {
-    /**
-     * @var int
-     */
-    public $currency;
-
     /**
      * @var float
      */
-    public $amount;
+    public $newPrice;
 
     /**
      * @var string
      */
-    public $type = 'discountAmount';
-
-    /**
-     * @return mixed
-     */
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @param Currency|int $currency
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
-    }
+    public $type = 'newPrice';
 
     /**
      * @return float
      */
-    public function getAmount()
+    public function getNewPrice()
     {
-        return $this->amount;
+        return $this->newPrice;
     }
 
     /**
-     * @param float $amount
+     * @param float $newPrice
      */
-    public function setAmount($amount)
+    public function setNewPrice($newPrice)
     {
-        $this->amount = $amount;
+        $this->newPrice = $newPrice;
     }
 
     /**
@@ -92,16 +67,41 @@ class DiscountAmount extends AbstractAction
     {
         return true;
     }
+    
+    /**
+     * Calculate discount.
+     *
+     * @param float   $basePrice
+     * @param Product $product
+     *
+     * @return float
+     */
+    public function getDiscountProduct($basePrice, Product $product)
+    {
+        return 0;
+    }
 
     /**
      * Calculate discount.
      *
      * @param Cart $cart
      *
-     * @return int
+     * @return float
      */
-    public function getDiscount(Cart $cart)
+    public function getDiscountCart(Cart $cart)
     {
-        return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
+        return 0;
+    }
+
+    /**
+     * get new price for product.
+     *
+     * @param Product $product
+     *
+     * @return float $price
+     */
+    public function getPrice(Product $product)
+    {
+        return $this->getNewPrice();
     }
 }

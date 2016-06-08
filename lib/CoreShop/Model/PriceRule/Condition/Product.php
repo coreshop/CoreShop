@@ -11,41 +11,42 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Condition;
+namespace CoreShop\Model\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Product as ProductModel;
 
-class Category extends AbstractCondition
+class Product extends AbstractCondition
 {
     /**
      * @var int
      */
-    public $category;
+    public $product;
 
     /**
      * @var string
      */
-    public $type = 'category';
+    public $type = 'product';
 
     /**
-     * @return \CoreShop\Model\Category
+     * @return \CoreShop\Model\Product
      */
-    public function getCategory()
+    public function getProduct()
     {
-        if (!$this->category instanceof \CoreShop\Model\Category) {
-            $this->category = \CoreShop\Model\Category::getByPath($this->category);
+        if (!$this->product instanceof ProductModel) {
+            $this->product = ProductModel::getByPath($this->product);
         }
 
-        return $this->category;
+        return $this->product;
     }
 
     /**
-     * @param int $category
+     * @param int $product
      */
-    public function setCategory($category)
+    public function setProduct($product)
     {
-        $this->category = $category;
+        $this->product = $product;
     }
 
     /**
@@ -59,13 +60,13 @@ class Category extends AbstractCondition
      *
      * @throws \Exception
      */
-    public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
+    public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
         $found = false;
 
-        if ($this->getCategory() instanceof \CoreShop\Model\Category) {
+        if ($this->getProduct() instanceof \CoreShop\Model\Product) {
             foreach ($cart->getItems() as $i) {
-                if ($i->getProduct()->inCategory($this->getCategory())) {
+                if ($i->getProduct()->getId() == $this->getProduct()->getId()) {
                     $found = true;
                 }
             }
@@ -80,5 +81,20 @@ class Category extends AbstractCondition
         }
 
         return true;
+    }
+
+    /**
+     * Check if Product is Valid for Condition.
+     *
+     * @param ProductModel    $product
+     * @param ProductModel\AbstractProductPriceRule $priceRule
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
+    {
+        return $this->getProduct() instanceof ProductModel ? $product->getId() === $this->getProduct()->getId() : false;
     }
 }

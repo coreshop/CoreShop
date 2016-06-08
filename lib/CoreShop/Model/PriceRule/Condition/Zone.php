@@ -11,10 +11,12 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Condition;
+
+namespace CoreShop\Model\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\Zone as ZoneModel;
 use CoreShop\Tool;
 
@@ -61,8 +63,32 @@ class Zone extends AbstractCondition
      *
      * @throws \Exception
      */
-    public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
+    public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
+        return $this->check($throwException);
+    }
+
+    /**
+     * Check if Product is Valid for Condition.
+     *
+     * @param ProductModel $product
+     * @param ProductModel\AbstractProductPriceRule $priceRule
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
+    {
+        return $this->check();
+    }
+
+    /**
+     * @param $throwException
+     * @return bool
+     * @throws \Exception
+     */
+    protected function check($throwException = false) {
         if ($this->getZone()->getId() !== Tool::getCountry()->getZoneId()) {
             if ($throwException) {
                 throw new \Exception('You cannot use this voucher in your zone of delivery');

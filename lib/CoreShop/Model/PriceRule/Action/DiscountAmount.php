@@ -11,9 +11,9 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+namespace CoreShop\Model\PriceRule\Action;
 
-namespace CoreShop\Model\Product\PriceRule\Action;
-
+use CoreShop\Model\Cart;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Product;
 use CoreShop\Tool;
@@ -71,6 +71,42 @@ class DiscountAmount extends AbstractAction
     }
 
     /**
+     * Apply Rule to Cart.
+     *
+     * @param Cart $cart
+     *
+     * @return bool
+     */
+    public function applyRule(Cart $cart)
+    {
+        return true;
+    }
+
+    /**
+     * Remove Rule from Cart.
+     *
+     * @param Cart $cart
+     *
+     * @return bool
+     */
+    public function unApplyRule(Cart $cart)
+    {
+        return true;
+    }
+
+    /**
+     * Calculate discount.
+     *
+     * @param Cart $cart
+     *
+     * @return int
+     */
+    public function getDiscountCart(Cart $cart)
+    {
+        return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
+    }
+
+    /**
      * Calculate discount.
      *
      * @param float   $basePrice
@@ -78,7 +114,7 @@ class DiscountAmount extends AbstractAction
      *
      * @return float
      */
-    public function getDiscount($basePrice, Product $product)
+    public function getDiscountProduct($basePrice, Product $product)
     {
         return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
     }

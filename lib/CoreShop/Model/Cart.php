@@ -19,6 +19,7 @@ use CoreShop\Mail;
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
 use CoreShop\Model\Plugin\Payment;
+use CoreShop\Model\PriceRule\Action\FreeShipping;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use CoreShop\Tool;
@@ -338,7 +339,7 @@ class Cart extends Base
 
             if ($this->getPriceRule() instanceof PriceRule) {
                 foreach ($this->getPriceRule()->getActions() as $action) {
-                    if ($action instanceof PriceRule\Action\FreeShipping) {
+                    if ($action instanceof FreeShipping) {
                         return $this->$cacheKey = 0;
                     }
                 }

@@ -15,6 +15,8 @@ namespace CoreShop\Model\Cart;
 
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
+use CoreShop\Model\PriceRule\Action\AbstractAction;
+use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Tool;
 
 class PriceRule extends AbstractModel
@@ -228,8 +230,8 @@ class PriceRule extends AbstractModel
 
         if ($this->getConditions()) {
             foreach ($this->getConditions() as $condition) {
-                if ($condition instanceof PriceRule\Condition\AbstractCondition) {
-                    if (!$condition->checkCondition($cart, $this, $throwException)) {
+                if ($condition instanceof AbstractCondition) {
+                    if (!$condition->checkConditionCart($cart, $this, $throwException)) {
                         return false;
                     }
                 }
@@ -251,7 +253,7 @@ class PriceRule extends AbstractModel
         }
 
         foreach ($this->getActions() as $action) {
-            if ($action instanceof PriceRule\Action\AbstractAction) {
+            if ($action instanceof AbstractAction) {
                 $action->applyRule($cart);
             }
         }
@@ -265,7 +267,7 @@ class PriceRule extends AbstractModel
         $cart = Tool::prepareCart();
 
         foreach ($this->getActions() as $action) {
-            if ($action instanceof PriceRule\Action\AbstractAction) {
+            if ($action instanceof AbstractAction) {
                 $action->unApplyRule($cart);
             }
         }
@@ -283,8 +285,8 @@ class PriceRule extends AbstractModel
 
         if ($this->getActions()) {
             foreach ($this->getActions() as $action) {
-                if ($action instanceof PriceRule\Action\AbstractAction) {
-                    $discount += $action->getDiscount($cart);
+                if ($action instanceof AbstractAction) {
+                    $discount += $action->getDiscountCart($cart);
                 }
             }
         }

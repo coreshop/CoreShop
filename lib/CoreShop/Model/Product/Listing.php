@@ -180,7 +180,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
     abstract public function setCategory(Category $category);
 
     /**
-     * @return \CoreShop\Model\Cart\PriceRule\Condition\Category
+     * @return \CoreShop\Model\Category
      */
     abstract public function getCategory();
 

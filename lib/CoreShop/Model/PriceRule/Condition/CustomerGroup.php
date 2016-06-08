@@ -11,11 +11,14 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Condition;
+namespace CoreShop\Model\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\CustomerGroup as CustomerGroupModel;
+use CoreShop\Model\User;
+use CoreShop\Tool;
 
 class CustomerGroup extends AbstractCondition
 {
@@ -60,10 +63,29 @@ class CustomerGroup extends AbstractCondition
      *
      * @throws \Exception
      */
-    public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
+    public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        $customer = $cart->getUser();
+        $customer = $cart->getUser() ? $cart->getUser() : Tool::getUser();
 
+        return $this->check($customer);
+    }
+
+    /**
+     * Check if Product is Valid for Condition.
+     *
+     * @param ProductModel $product
+     * @param ProductModel\AbstractProductPriceRule $priceRule
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
+    {
+        return $this->check(Tool::getUser());
+    }
+
+    private function check(User $customer, $throwException = false) {
         if (!$customer) {
             if ($throwException) {
                 throw new \Exception('Customer in cart is emtpy!');

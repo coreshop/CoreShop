@@ -11,10 +11,11 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Condition;
+namespace CoreShop\Model\PriceRule\Condition;
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
+use CoreShop\Model;
 use CoreShop\Tool;
 
 class Amount extends AbstractCondition
@@ -77,7 +78,7 @@ class Amount extends AbstractCondition
      *
      * @throws \Exception
      */
-    public function checkCondition(Cart $cart, PriceRule $priceRule, $throwException = false)
+    public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
         //Check Cart Amount
         if ($this->getMinAmount() > 0) {
@@ -93,6 +94,23 @@ class Amount extends AbstractCondition
                     return false;
                 }
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if Product is Valid for Condition.
+     *
+     * @param Model\Product $product
+     * @param Model\Product\AbstractProductPriceRule $priceRule
+     *
+     * @return bool
+     */
+    public function checkConditionProduct(Model\Product $product, Model\Product\AbstractProductPriceRule $priceRule)
+    {
+        if($this->getMinAmount() > 1) {
+            return false;
         }
 
         return true;

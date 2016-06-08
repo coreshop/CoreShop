@@ -14,19 +14,19 @@
 
 namespace CoreShop\Test\Models;
 
-use CoreShop\Model\Cart\PriceRule\Action\DiscountAmount;
-use CoreShop\Model\Cart\PriceRule\Action\DiscountPercent;
-use CoreShop\Model\Cart\PriceRule\Action\FreeShipping;
-use CoreShop\Model\Cart\PriceRule\Action\Gift;
-use CoreShop\Model\Cart\PriceRule\Condition\Customer;
-use CoreShop\Model\Cart\PriceRule\Condition\TimeSpan;
-use CoreShop\Model\Cart\PriceRule\Condition\Amount;
-use CoreShop\Model\Cart\PriceRule\Condition\Category as ConditionCategory;
-use CoreShop\Model\Cart\PriceRule\Condition\Country as ConditionCountry;
-use CoreShop\Model\Cart\PriceRule\Condition\CustomerGroup as ConditionCustomerGroup;
-use CoreShop\Model\Cart\PriceRule\Condition\Product as ConditionProduct;
-use CoreShop\Model\Cart\PriceRule\Condition\TotalPerCustomer;
-use CoreShop\Model\Cart\PriceRule\Condition\Zone as ConditionZone;
+use CoreShop\Model\PriceRule\Action\DiscountAmount;
+use CoreShop\Model\PriceRule\Action\DiscountPercent;
+use CoreShop\Model\PriceRule\Action\FreeShipping;
+use CoreShop\Model\PriceRule\Action\Gift;
+use CoreShop\Model\PriceRule\Condition\Customer;
+use CoreShop\Model\PriceRule\Condition\TimeSpan;
+use CoreShop\Model\PriceRule\Condition\Amount;
+use CoreShop\Model\PriceRule\Condition\Category as ConditionCategory;
+use CoreShop\Model\PriceRule\Condition\Country as ConditionCountry;
+use CoreShop\Model\PriceRule\Condition\CustomerGroup as ConditionCustomerGroup;
+use CoreShop\Model\PriceRule\Condition\Product as ConditionProduct;
+use CoreShop\Model\PriceRule\Condition\TotalPerCustomer;
+use CoreShop\Model\PriceRule\Condition\Zone as ConditionZone;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 use CoreShop\Tool;
@@ -65,7 +65,7 @@ class PriceRule extends Base
         $cart = Data::createCartWithProducts();
         $cart->setUser(Data::$customer1);
 
-        $this->assertTrue($customerConditon->checkCondition($cart, $this->priceRule));
+        $this->assertTrue($customerConditon->checkConditionCart($cart, $this->priceRule));
     }
 
     public function testPriceRuleCondTimeSpan()
@@ -80,12 +80,12 @@ class PriceRule extends Base
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($timeSpan->checkCondition($cart, $this->priceRule));
+        $this->assertTrue($timeSpan->checkConditionCart($cart, $this->priceRule));
 
         $timeSpan->setDateFrom($yesterday);
         $timeSpan->setDateTo($yesterday);
 
-        $this->assertFalse($timeSpan->checkCondition($cart, $this->priceRule));
+        $this->assertFalse($timeSpan->checkConditionCart($cart, $this->priceRule));
     }
 
     public function testPriceRuleCondAmount()
@@ -95,11 +95,11 @@ class PriceRule extends Base
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($amount->checkCondition($cart, $this->priceRule));
+        $this->assertTrue($amount->checkConditionCart($cart, $this->priceRule));
 
         $amount->setMinAmount(10000);
 
-        $this->assertFalse($amount->checkCondition($cart, $this->priceRule));
+        $this->assertFalse($amount->checkConditionCart($cart, $this->priceRule));
     }
     
     public function testPriceRuleCondTotalPerCustomer()
@@ -109,7 +109,7 @@ class PriceRule extends Base
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($total->checkCondition($cart, $this->priceRule));
+        $this->assertTrue($total->checkConditionCart($cart, $this->priceRule));
 
         //@todo: create order an test pricerule again with assertFalse result
     }
@@ -121,11 +121,11 @@ class PriceRule extends Base
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($country->checkCondition($cart, $this->priceRule));
+        $this->assertTrue($country->checkConditionCart($cart, $this->priceRule));
 
         $country->setCountry(\CoreShop\Model\Country::getById(1));
 
-        $this->assertFalse($country->checkCondition($cart, $this->priceRule));
+        $this->assertFalse($country->checkConditionCart($cart, $this->priceRule));
     }
 
     public function testPriceRuleCondZone()
@@ -135,11 +135,11 @@ class PriceRule extends Base
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($zone->checkCondition($cart, $this->priceRule));
+        $this->assertTrue($zone->checkConditionCart($cart, $this->priceRule));
 
         $zone->setZone(\CoreShop\Model\Zone::getById(2));
 
-        $this->assertFalse($zone->checkCondition($cart, $this->priceRule));
+        $this->assertFalse($zone->checkConditionCart($cart, $this->priceRule));
     }
 
     public function testPriceRuleCondCategory()
@@ -154,11 +154,11 @@ class PriceRule extends Base
         $cart = Data::createCartWithProducts();
         $cart->setUser(Data::$customer1);
 
-        $this->assertTrue($customer->checkCondition($cart, $this->priceRule));
+        $this->assertTrue($customer->checkConditionCart($cart, $this->priceRule));
 
         $customer->setCustomerGroup(Data::$customerGroup2);
 
-        $this->assertFalse($customer->checkCondition($cart, $this->priceRule));
+        $this->assertFalse($customer->checkConditionCart($cart, $this->priceRule));
     }
 
     public function testPriceRuleActionGift()

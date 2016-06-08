@@ -11,9 +11,10 @@
  * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-namespace CoreShop\Model\Cart\PriceRule\Action;
+namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
+use CoreShop\Model\Product;
 
 
 class FreeShipping extends AbstractAction
@@ -22,18 +23,6 @@ class FreeShipping extends AbstractAction
      * @var string
      */
     public $type = 'freeShipping';
-
-    /**
-     * Calculate discount.
-     *
-     * @param Cart $cart
-     *
-     * @return int
-     */
-    public function getDiscount(Cart $cart)
-    {
-        return 0;
-    }
 
     /**
      * Apply Rule to Cart.
@@ -57,5 +46,30 @@ class FreeShipping extends AbstractAction
     public function unApplyRule(Cart $cart)
     {
         return true;
+    }
+
+    /**
+     * Calculate discount.
+     *
+     * @param Cart $cart
+     *
+     * @return int
+     */
+    public function getDiscountCart(Cart $cart)
+    {
+        return 0;
+    }
+
+    /**
+     * Calculate discount.
+     *
+     * @param float   $basePrice
+     * @param Product $product
+     *
+     * @return float
+     */
+    public function getDiscountProduct($basePrice, Product $product)
+    {
+        return 0;
     }
 }

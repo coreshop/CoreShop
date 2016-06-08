@@ -15,6 +15,8 @@
 namespace CoreShop\Model\Product;
 
 use CoreShop\Model\PriceRule\AbstractPriceRule;
+use CoreShop\Model\PriceRule\Action\AbstractAction;
+use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Model\Product;
 
 abstract class AbstractProductPriceRule extends AbstractPriceRule {
@@ -101,8 +103,8 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule {
 
         if ($this->getConditions()) {
             foreach ($this->getConditions() as $condition) {
-                if ($condition instanceof PriceRule\Condition\AbstractCondition) {
-                    if (!$condition->checkCondition($product, $this)) {
+                if ($condition instanceof AbstractCondition) {
+                    if (!$condition->checkConditionProduct($product, $this)) {
                         return false;
                     }
                 }
@@ -126,8 +128,8 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule {
 
         if ($this->getActions()) {
             foreach ($this->getActions() as $action) {
-                if ($action instanceof PriceRule\Action\AbstractAction) {
-                    $discount += $action->getDiscount($basePrice, $product);
+                if ($action instanceof AbstractAction) {
+                    $discount += $action->getDiscountProduct($basePrice, $product);
                 }
             }
         }
