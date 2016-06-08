@@ -17,3 +17,6 @@ $db->query("INSERT INTO `users_permission_definitions` (`key`)
 VALUES
   ('coreshop_permission_productSpecificPrices'),
   ('coreshop_permission_productPriceRules');");
+
+$db->query("ALTER TABLE `coreshop_product_specificprice`
+ADD `inherit` tinyint(5) NOT NULL DEFAULT '1' AFTER `o_id`;");

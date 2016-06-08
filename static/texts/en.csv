@@ -371,3 +371,4 @@
 "coreshop_pricerules_open_in_product_rules","Product Price Rules needs to be edited in Price Rules -> Product"
 "coreshop_order_state_document_not_found","Orderstates E-Mail document could not be found"
 "coreshop_order_state_has_no_email","Orderstate has no email configured"
+"coreshop_inherit","Inherit"

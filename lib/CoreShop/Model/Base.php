@@ -183,4 +183,19 @@ class Base extends Concrete
 
         return $note;
     }
+
+    /**
+     * Return Topmost Master if Object is Variant
+     *
+     * @return AbstractModel
+     */
+    public function getVariantMaster() {
+        $master = $this;
+
+        while ($master->getType() === 'variant') {
+            $master = $master->getParent();
+        }
+
+        return $master;
+    }
 }

@@ -11,14 +11,13 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.productSpecificPrice.item');
-
-pimcore.plugin.coreshop.productSpecificPrice.item = Class.create(pimcore.plugin.coreshop.pricerules.item, {
+pimcore.registerNS('pimcore.plugin.coreshop.product.specificprice.item');
+pimcore.plugin.coreshop.product.specificprice.item = Class.create(pimcore.plugin.coreshop.pricerules.item, {
 
     iconCls : 'coreshop_icon_price_rule',
 
     url : {
-        save : '/plugin/CoreShop/admin_product/save-specific-price'
+        save : '/plugin/CoreShop/admin_product-specific-price/save'
     },
 
     getSettings: function () {
@@ -36,6 +35,11 @@ pimcore.plugin.coreshop.productSpecificPrice.item = Class.create(pimcore.plugin.
                 fieldLabel: t('name'),
                 width: 250,
                 value: data.name
+            }, {
+                xtype: 'checkbox',
+                name: 'inherit',
+                fieldLabel: t('coreshop_inherit'),
+                checked: this.data.inherit == '1'
             }]
         });
 

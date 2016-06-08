@@ -369,3 +369,4 @@
 "coreshop_pricerules_open_in_product_rules","Produtpreisregeln müssen in Preisregeln -> Produkt geändert werden"
 "coreshop_order_state_document_not_found","Bestellstatus E-Mail Dokument konnte nicht gefunden werden"
 "coreshop_order_state_has_no_email","Bestellstatus hat keine E-Mail konfiguriert"
+"coreshop_inherit","Vererben"

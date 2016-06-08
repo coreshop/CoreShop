@@ -11,8 +11,8 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.product.specificprice');
-pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.coreshop.pricerules.panel, {
+pimcore.registerNS('pimcore.plugin.coreshop.product.specificprice.panel');
+pimcore.plugin.coreshop.product.specificprice.panel = Class.create(pimcore.plugin.coreshop.pricerules.panel, {
     /**
      * @var string
      */
@@ -170,6 +170,10 @@ pimcore.plugin.coreshop.product.specificprice = Class.create(pimcore.plugin.core
         listeners['itemclick'] = this.openPriceRule.bind(this);
 
         return listeners;
+    },
+
+    getItemClass : function() {
+        return pimcore.plugin.coreshop.product.specificprice.item;
     },
 
     openPriceRule : function(grid, record) {

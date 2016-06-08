@@ -206,11 +206,8 @@ class Product extends Base
             $language = \Zend_Registry::get('Zend_Locale')->getLanguage();
         }
 
-        $master = $this;
-        //Find master object
-        while ($master->getType() === 'variant') {
-            $master = $master->getParent();
-        }
+        $master = $this->getVariantMaster();
+        
         if ($master instanceof self) {
             $differences = Service::getProductVariations($master, $this, $language);
 

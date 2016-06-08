@@ -44,6 +44,11 @@ class SpecificPrice extends AbstractProductPriceRule
     public $o_id;
 
     /**
+     * @var boolean
+     */
+    public $inherit;
+
+    /**
      * Get all PriceRules.
      *
      * @param Product $product
@@ -53,7 +58,24 @@ class SpecificPrice extends AbstractProductPriceRule
     public static function getSpecificPrices(Product $product)
     {
         $list = new SpecificPrice\Listing();
-        $list->setCondition('o_id = ?', array($product->getId()));
+
+        $query = [];
+        $queryParams = [
+            $product->getId()
+        ];
+
+        if ($product->getType() === Product::OBJECT_TYPE_VARIANT) {
+            $master = $product->getVariantMaster();
+
+            if($master instanceof Product) {
+                $query[] = 'o_id = ?';
+                $query[] = 'inherit = 1';
+
+                $queryParams[] = $master->getId();
+            }
+        }
+
+        $list->setCondition("o_id = ? " . (count($query) > 0 ? "OR (" . implode(" AND ", $query) . ")" : ""), $queryParams);
 
         return $list->getData();
     }
@@ -72,5 +94,21 @@ class SpecificPrice extends AbstractProductPriceRule
     public function setO_Id($o_id)
     {
         $this->o_id = $o_id;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getInherit()
+    {
+        return $this->inherit;
+    }
+
+    /**
+     * @param boolean $inherit
+     */
+    public function setInherit($inherit)
+    {
+        $this->inherit = $inherit;
     }
 }

@@ -92,7 +92,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroupMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroupMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/variantGenerator.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/product/specificprice.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/actions/newPrice.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/grid.js</path>
