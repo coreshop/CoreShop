@@ -25,6 +25,10 @@ pimcore.plugin.coreshop.messaging.contact.item = Class.create(pimcore.plugin.cor
     },
 
     getTitleText : function () {
+        if(!this.data.localizedFields.items[pimcore.settings.language]) {
+            return this.data.localizedFields.items[pimcore.settings.websiteLanguages[0]].name;
+        }
+
         return this.data.localizedFields.items[pimcore.settings.language].name;
     },
 
