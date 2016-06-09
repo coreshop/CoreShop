@@ -200,4 +200,11 @@ class AbstractColumn
             }
         }
     }
+
+    /**
+     * @return bool
+     */
+    public function validate() {
+        return true;
+    }
 }

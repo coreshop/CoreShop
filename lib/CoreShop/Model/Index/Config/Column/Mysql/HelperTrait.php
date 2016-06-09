@@ -13,6 +13,8 @@
  */
 namespace CoreShop\Model\Index\Config\Column\Mysql;
 
+use CoreShop\Exception;
+
 trait HelperTrait
 {
     /**
@@ -34,5 +36,16 @@ trait HelperTrait
     public function setColumnType($columnType)
     {
         $this->columnType = $columnType;
+    }
+
+    /**
+     *
+     * @throws Exception
+     * @return boolean
+     */
+    public function validate() {
+        if(empty($this->getColumnType())) {
+            throw new Exception(sprintf('Column Type for field "%s" is empty!', $this->getName()));
+        }
     }
 }

@@ -94,84 +94,97 @@ class CoreShop_Admin_IndexesController extends Admin
         $data = $this->getParam('data');
         $index = Index::getById($id);
 
+        $prohibitedFieldNames = ["name", "id"];
+
         if ($data && $index instanceof Index) {
-            $data = \Zend_Json::decode($this->getParam('data'));
+            try {
+                $data = \Zend_Json::decode($this->getParam('data'));
 
-            $indexType = ucfirst($data['type']);
+                $indexType = ucfirst($data['type']);
 
-            $configClass = '\\CoreShop\\Model\\Index\\Config\\'.ucfirst($indexType);
+                $configClass = '\\CoreShop\\Model\\Index\\Config\\' . ucfirst($indexType);
 
-            if (\Pimcore\Tool::classExists($configClass)) {
-                $config = new $configClass();
+                if (\Pimcore\Tool::classExists($configClass)) {
+                    $config = new $configClass();
 
-                if ($config instanceof \CoreShop\Model\Index\Config) {
-                    $columns = array();
+                    if ($config instanceof \CoreShop\Model\Index\Config) {
+                        $columns = array();
 
-                    foreach ($data['config']['columns'] as $col) {
-                        $objectType = ucfirst($col['objectType']);
+                        foreach ($data['config']['columns'] as $col) {
+                            $objectType = ucfirst($col['objectType']);
 
-                        if (!$col['key']) {
-                            continue;
+                            if (!$col['key']) {
+                                continue;
+                            }
+
+                            $class = null;
+
+                            //Allow Column-Types to be declared in Template and/or Website
+                            $columnNamespace = '\\CoreShop\\Model\\Index\\Config\\Column\\';
+                            $columnClass = $columnNamespace . $indexType . '\\' . $objectType;
+
+                            if (\Pimcore\Tool::classExists($columnClass)) {
+                                $class = $columnClass;
+                            }
+
+                            if (!$class) {
+                                //Use fallback column
+                                throw new \Exception('No config implementation for column with type ' . $objectType . ' found');
+                            }
+
+                            $columnObject = new $class();
+
+                            if ($columnObject instanceof \CoreShop\Model\Index\Config\Column\AbstractColumn) {
+                                $columnObject->setValues($col);
+
+                                if (in_array($columnObject->getName(), $prohibitedFieldNames)) {
+                                    throw new \CoreShop\Exception(sprintf('Field Name "%s" is prohibited for indexes', $columnObject->getName()));
+                                }
+
+                                $columnObject->validate();
+
+                                $columns[] = $columnObject;
+                            }
                         }
 
-                        $class = null;
+                        unset($data['config']['columns']);
 
-                        //Allow Column-Types to be declared in Template and/or Website
-                        $columnNamespace = '\\CoreShop\\Model\\Index\\Config\\Column\\';
-                        $columnClass = $columnNamespace.$indexType.'\\'.$objectType;
+                        $config->setValues($data['config']);
+                        $config->setColumns($columns);
 
-                        if (\Pimcore\Tool::classExists($columnClass)) {
-                            $class = $columnClass;
-                        }
+                        $index->setConfig($config);
+                    } else {
+                        throw new \Exception('Config class for type ' . $data['type'] . ' not instanceof \CoreShop\Model\Index\Config');
+                    }
+                    unset($data['config']);
+                } else {
+                    throw new \Exception('Config class for type ' . $data['type'] . ' not found');
+                }
 
-                        if (!$class) {
-                            //Use fallback column
-                            throw new \Exception('No config implementation for column with type '.$objectType.' found');
-                        }
+                //Check for unique fieldnames
+                $fieldNames = array();
 
-                        $columnObject = new $class();
-
-                        if ($columnObject instanceof \CoreShop\Model\Index\Config\Column\AbstractColumn) {
-                            $columnObject->setValues($col);
-
-                            $columns[] = $columnObject;
-                        }
+                foreach ($config->getColumns() as $col) {
+                    if (in_array($col->getName(), $fieldNames)) {
+                        $this->_helper->json(array(
+                            'success' => false,
+                            'message' => sprintf($this->view->translate("Duplicate fieldname '%s' found."), $col->getName()),
+                        ));
                     }
 
-                    unset($data['config']['columns']);
-
-                    $config->setValues($data['config']);
-                    $config->setColumns($columns);
-
-                    $index->setConfig($config);
-                } else {
-                    throw new \Exception('Config class for type '.$data['type'].' not instanceof \CoreShop\Model\Index\Config');
-                }
-                unset($data['config']);
-            } else {
-                throw new \Exception('Config class for type '.$data['type'].' not found');
-            }
-
-            //Check for unique fieldnames
-            $fieldNames = array();
-
-            foreach ($config->getColumns() as $col) {
-                if (in_array($col->getName(), $fieldNames)) {
-                    $this->_helper->json(array(
-                        'success' => false,
-                        'message' => sprintf($this->view->translate("Duplicate fieldname '%s' found."), $col->getName()),
-                    ));
+                    $fieldNames[] = $col->getName();
                 }
 
-                $fieldNames[] = $col->getName();
+                $index->setValues($data);
+                $index->save();
+
+                \CoreShop\IndexService::getIndexService()->getWorker($index->getName())->createOrUpdateIndexStructures();
+
+                $this->_helper->json(array('success' => true, 'data' => $index));
             }
-
-            $index->setValues($data);
-            $index->save();
-
-            \CoreShop\IndexService::getIndexService()->getWorker($index->getName())->createOrUpdateIndexStructures();
-
-            $this->_helper->json(array('success' => true, 'data' => $index));
+            catch(Exception $ex) {
+                $this->_helper->json(array('success' => false, 'message' => $ex->getMessage()));
+            }
         } else {
             $this->_helper->json(array('success' => false));
         }
