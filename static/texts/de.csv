@@ -45,6 +45,7 @@
 "coreshop_cart_pricerules","Warenkorb Preisregeln"
 "coreshop_condition_amount","Anzahl"
 "coreshop_condition_amount_minAmount","Min Anzahl"
+"coreshop_condition_amount_maxAmount","Max Anzahl"
 "coreshop_condition_amount_currency","Währung"
 "coreshop_condition_category","Kategorie"
 "coreshop_condition_category_category","Kategorie"

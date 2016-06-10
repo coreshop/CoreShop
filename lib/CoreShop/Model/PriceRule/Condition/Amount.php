@@ -31,6 +31,11 @@ class Amount extends AbstractCondition
     public $minAmount;
 
     /**
+     * @var float
+     */
+    public $maxAmount;
+
+    /**
      * @var string
      */
     public $type = 'amount';
@@ -65,6 +70,22 @@ class Amount extends AbstractCondition
     public function setMinAmount($minAmount)
     {
         $this->minAmount = $minAmount;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMaxAmount()
+    {
+        return $this->maxAmount;
+    }
+
+    /**
+     * @param float $maxAmount
+     */
+    public function setMaxAmount($maxAmount)
+    {
+        $this->maxAmount = $maxAmount;
     }
 
     /**
@@ -114,8 +135,15 @@ class Amount extends AbstractCondition
 
         if($cart instanceof Cart) {
             foreach($cart->getItems() as $item) {
-                if($item->getProduct()->getId() === $product->getId() && $item->getAmount() == $this->getMinAmount()) {
-                    return true;
+                if($item->getProduct()->getId() === $product->getId() && $item->getAmount() >= $this->getMinAmount()) {
+                    if($this->getMaxAmount() > 0) {
+                        if($item->getAmount() <= $this->getMaxAmount()) {
+                            return true;
+                        }
+                    }
+                    else {
+                        return true;
+                    }
                 }
             }
         }

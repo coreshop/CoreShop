@@ -19,7 +19,8 @@ pimcore.plugin.coreshop.pricerules.conditions.amount = Class.create(pimcore.plug
 
     getForm : function () {
 
-        var minAmountValue = 0;
+        var minAmountValue = null;
+        var maxAmountValue = 0;
         var currencyValue = null;
         var me = this;
 
@@ -28,10 +29,23 @@ pimcore.plugin.coreshop.pricerules.conditions.amount = Class.create(pimcore.plug
             currencyValue = this.data.currency;
         }
 
+        if(this.data && this.data.maxAmount) {
+            maxAmountValue = this.data.maxAmount;
+        }
+
         var minAmount = new Ext.form.NumberField({
             fieldLabel:t('coreshop_condition_amount_minAmount'),
             name:'minAmount',
             value : minAmountValue,
+            minValue : 0,
+            decimalPrecision : 0,
+            step : 1
+        });
+
+        var maxAmount = new Ext.form.NumberField({
+            fieldLabel:t('coreshop_condition_amount_maxAmount'),
+            name:'maxAmount',
+            value : maxAmountValue,
             minValue : 0,
             decimalPrecision : 0,
             step : 1
@@ -50,6 +64,7 @@ pimcore.plugin.coreshop.pricerules.conditions.amount = Class.create(pimcore.plug
             forceSelection: true,
             triggerAction: 'all',
             hiddenName:'currency',
+            value : currencyValue,
             listeners: {
                 listeners: {
                     beforerender: function () {
@@ -65,7 +80,7 @@ pimcore.plugin.coreshop.pricerules.conditions.amount = Class.create(pimcore.plug
 
         this.form = Ext.create('Ext.form.FieldSet', {
             items : [
-                minAmount, currency
+                minAmount, maxAmount, currency
             ]
         });
 
