@@ -577,6 +577,9 @@ class Cart extends Base
             PriceRule::autoAddToCart();
         }
 
+        //Clear Cache of Product Price, cause a PriceRule could change the price
+        $product->clearPriceCache();
+
         return $item;
     }
 
@@ -604,6 +607,8 @@ class Cart extends Base
      */
     public function removeItem(Item $item)
     {
+        $item->getProduct()->clearPriceCache();
+        
         $item->delete();
     }
 

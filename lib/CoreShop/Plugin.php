@@ -159,7 +159,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $indexService = IndexService::getIndexService();
             $indexService->updateIndex($object);
 
-            Cache::clearTag('coreshop_product_' . $object->getId() . '_price');
+            Cache::clearTag(Product::getPriceCacheTag($object->getId()));
         }
     }
 

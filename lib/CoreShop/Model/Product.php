@@ -112,6 +112,16 @@ class Product extends Base
     }
 
     /**
+     * get price cache tag for product-id
+     *
+     * @param $id
+     * @return string
+     */
+    public static function getPriceCacheTag($id) {
+        return 'coreshop_product_'.$id.'_price';
+    }
+
+    /**
      * Get Image for Product.
      *
      * @return bool|\Pimcore\Model\Asset
@@ -220,6 +230,13 @@ class Product extends Base
     }
 
     /**
+     * Clear Cache for this Product Price
+     */
+    public function clearPriceCache() {
+        Cache::clearTag(self::getPriceCacheTag($this->getId()));
+    }
+
+    /**
      * get price without tax.
      *
      * @return float|mixed
@@ -236,7 +253,7 @@ class Product extends Base
 
         $price = $this->getSpecificPrice();
 
-        Cache::save($price, $cacheKey, array('coreshop_product_price', 'coreshop_product_'.$this->getId().'_price'));
+        Cache::save($price, $cacheKey, array('coreshop_product_price', self::getPriceCacheTag($this->getId())));
 
         return $price;
     }
