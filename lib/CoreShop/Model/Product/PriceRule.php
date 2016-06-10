@@ -24,7 +24,7 @@ class PriceRule extends AbstractProductPriceRule
  *
  * @var array
  */
-    public static $availableConditions = array('customer', 'timeSpan', 'quantity', 'totalPerCustomer', 'country', 'product', 'category', 'customerGroup', 'zone');
+    public static $availableConditions = array('customer', 'timeSpan', 'quantity', 'country', 'product', 'category', 'customerGroup', 'zone');
 
     /**
      * possible types of a action.

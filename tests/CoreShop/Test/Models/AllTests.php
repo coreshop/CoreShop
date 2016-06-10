@@ -32,14 +32,15 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\Models\\CustomerGroup',
             //'\\CoreShop\\Test\\Models\\Order',
             //'\\CoreShop\\Test\\Models\\OrderState',
-            '\\CoreShop\\Test\\Models\\PriceRule',
+            '\\CoreShop\\Test\\Models\\CartPriceRule',
             '\\CoreShop\\Test\\Models\\Tax',
             '\\CoreShop\\Test\\Models\\TaxRule',
             //'\\CoreShop\\Test\\Models\\User',
             '\\CoreShop\\Test\\Models\\Zone',
             //'\\CoreShop\\Test\\Models\\Product\\Filter',
             //'\\CoreShop\\Test\\Models\\Product\\Index',
-            //'\\CoreShop\\Test\\Models\\Product\\SpecificPrice'
+            '\\CoreShop\\Test\\Models\\Product\\SpecificPrice',
+            '\\CoreShop\\Test\\Models\\Product\\PriceRule'
         );
 
         shuffle($tests);

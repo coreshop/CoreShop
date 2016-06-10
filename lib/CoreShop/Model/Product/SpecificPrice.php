@@ -15,7 +15,6 @@
 namespace CoreShop\Model\Product;
 
 use CoreShop\Model\Product;
-use CoreShop\Model\Cart\PriceRule;
 
 class SpecificPrice extends AbstractProductPriceRule
 {

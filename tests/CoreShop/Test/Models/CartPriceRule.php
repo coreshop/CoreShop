@@ -31,7 +31,7 @@ use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 use CoreShop\Tool;
 
-class PriceRule extends Base
+class CartPriceRule extends Base
 {
     /**
      * @var \CoreShop\Model\Cart\PriceRule
