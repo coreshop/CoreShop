@@ -104,4 +104,22 @@ class NewPrice extends AbstractAction
     {
         return $this->getNewPrice();
     }
+
+    /**
+     * get new price with tax for product
+     *
+     * @param Product $product
+     *
+     * @returns float
+     */
+    public function getPriceWithTax(Product $product) {
+        $taxCalculator = $product->getTaxCalculator();
+        $price = $this->getNewPrice();
+
+        if($taxCalculator) {
+            $price = $taxCalculator->addTaxes($price);
+        }
+
+        return $price;
+    }
 }

@@ -130,24 +130,7 @@ class Amount extends AbstractCondition
      */
     public function checkConditionProduct(Model\Product $product, Model\Product\AbstractProductPriceRule $priceRule)
     {
-        //Check for Amount in Cart
-        $cart = Tool::prepareCart();
-
-        if($cart instanceof Cart) {
-            foreach($cart->getItems() as $item) {
-                if($item->getProduct()->getId() === $product->getId() && $item->getAmount() >= $this->getMinAmount()) {
-                    if($this->getMaxAmount() > 0) {
-                        if($item->getAmount() <= $this->getMaxAmount()) {
-                            return true;
-                        }
-                    }
-                    else {
-                        return true;
-                    }
-                }
-            }
-        }
-
+        //Amount is not available for product rules
         return false;
     }
 }

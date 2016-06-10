@@ -57,6 +57,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/actions/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/amount.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/quantity.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/category.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/country.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customer.js</path>

@@ -67,6 +67,10 @@
 }
 
 .coreshop_price_rule_icon_condition_amount {
+    background: url(/plugins/CoreShop/static/img/flat/currencies.svg) center center no-repeat !important;
+}
+
+.coreshop_price_rule_icon_condition_quantity {
     background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
 }
 
