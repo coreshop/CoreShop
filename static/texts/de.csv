@@ -345,6 +345,8 @@
 "coreshop_messaging_contact_technology","Kontakt Technik"
 "coreshop_send_message","Nachricht schreiben"
 "coreshop_order_new_message","Neue Nachricht"
+"coreshop_product_similarity","Ähnliche Produkte"
+"coreshop_product_filters_similarity_weight","Gewichtung"
 "coreshop_address_shipping","Lieferaddresse"
 "coreshop_address_billing","Rechnungsaddresse"
 "coreshop_order_resend_email","Email erneut versenden"
