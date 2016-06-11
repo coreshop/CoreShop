@@ -58,23 +58,18 @@ class SpecificPrice extends AbstractProductPriceRule
     {
         $list = new SpecificPrice\Listing();
 
-        $query = [];
+        $query = "";
         $queryParams = [
             $product->getId()
         ];
 
         if ($product->getType() === Product::OBJECT_TYPE_VARIANT) {
-            $master = $product->getVariantMaster();
+            $parentIds = $product->getParentIds();
 
-            if($master instanceof Product) {
-                $query[] = 'o_id = ?';
-                $query[] = 'inherit = 1';
-
-                $queryParams[] = $master->getId();
-            }
+            $query = "OR (o_id in (" . implode(",", $parentIds) . ") AND inherit = 1)";
         }
 
-        $list->setCondition("o_id = ? " . (count($query) > 0 ? "OR (" . implode(" AND ", $query) . ")" : ""), $queryParams);
+        $list->setCondition("o_id = ? " . $query, $queryParams);
 
         return $list->getData();
     }
