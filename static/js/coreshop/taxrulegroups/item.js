@@ -156,7 +156,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         });
 
         countryStore.load({
-            callback : function() {
+            callback : function () {
                 var rec = { id: 0, text: t('coreshop_all') };
                 countryStore.insert(0, rec);
 

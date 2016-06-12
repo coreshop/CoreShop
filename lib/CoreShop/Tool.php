@@ -225,14 +225,13 @@ class Tool
         $country = null;
         $cart = self::prepareCart();
 
-        if(\Pimcore::inDebugMode()) {
+        if (\Pimcore::inDebugMode()) {
             if (!empty($_REQUEST["coreshop_country"])) {
                 $country = Country::getById($_REQUEST["coreshop_country"]);
 
                 if ($country instanceof Country) {
                     return $country;
                 }
-
             }
         }
 
@@ -351,14 +350,13 @@ class Tool
     {
         $session = self::getSession();
 
-        if(\Pimcore::inDebugMode()) {
+        if (\Pimcore::inDebugMode()) {
             if (!empty($_REQUEST["coreshop_currency"])) {
                 $currency = Currency::getById($_REQUEST["coreshop_currency"]);
 
                 if ($currency instanceof Currency) {
                     return $currency;
                 }
-
             }
         }
 

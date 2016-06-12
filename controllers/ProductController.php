@@ -30,7 +30,7 @@ class CoreShop_ProductController extends Action
                 'description' => $product->getMetaDescription() ? $product->getMetaDescription() : $product->getShortDescription(),
             );
 
-            if(count($product->getCategories()) > 0) {
+            if (count($product->getCategories()) > 0) {
                 $mainCategory = $product->getCategories()[0];
 
                 if ($mainCategory->getFilterDefinition() instanceof \CoreShop\Model\Product\Filter) {
@@ -172,11 +172,11 @@ class CoreShop_ProductController extends Action
         $productList->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_INCLUDE_PARENT_OBJECT);
         $similarityFields = $filter->getSimilarities();
 
-        if(is_array($similarityFields) && count($similarityFields) > 0) {
+        if (is_array($similarityFields) && count($similarityFields) > 0) {
             $statement = $productList->buildSimilarityOrderBy($filter->getSimilarities(), $product->getId());
         }
 
-        if(!empty($statement)) {
+        if (!empty($statement)) {
             $productList->setLimit(2);
             $productList->setOrder("ASC");
             $productList->addCondition("o_virtualProductId != " . $product->getId(), "o_id");

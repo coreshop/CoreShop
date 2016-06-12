@@ -85,7 +85,8 @@ class CustomerGroup extends AbstractCondition
         return $this->check(Tool::getUser());
     }
 
-    private function check(User $customer, $throwException = false) {
+    private function check(User $customer, $throwException = false)
+    {
         if (!$customer) {
             if ($throwException) {
                 throw new \Exception('Customer in cart is emtpy!');

@@ -43,8 +43,9 @@ trait HelperTrait
      * @throws Exception
      * @return boolean
      */
-    public function validate() {
-        if(empty($this->getColumnType())) {
+    public function validate()
+    {
+        if (empty($this->getColumnType())) {
             throw new Exception(sprintf('Column Type for field "%s" is empty!', $this->getName()));
         }
     }

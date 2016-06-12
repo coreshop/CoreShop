@@ -112,11 +112,12 @@ class NewPrice extends AbstractAction
      *
      * @returns float
      */
-    public function getPriceWithTax(Product $product) {
+    public function getPriceWithTax(Product $product)
+    {
         $taxCalculator = $product->getTaxCalculator();
         $price = $this->getNewPrice();
 
-        if($taxCalculator) {
+        if ($taxCalculator) {
             $price = $taxCalculator->addTaxes($price);
         }
 

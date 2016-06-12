@@ -117,7 +117,8 @@ class Product extends Base
      * @param $id
      * @return string
      */
-    public static function getPriceCacheTag($id) {
+    public static function getPriceCacheTag($id)
+    {
         return 'coreshop_product_'.$id.'_price';
     }
 
@@ -232,7 +233,8 @@ class Product extends Base
     /**
      * Clear Cache for this Product Price
      */
-    public function clearPriceCache() {
+    public function clearPriceCache()
+    {
         Cache::clearTag(self::getPriceCacheTag($this->getId()));
     }
 
@@ -263,7 +265,8 @@ class Product extends Base
      *
      * @return SpecificPrice[]
      */
-    public function getValidSpecificPriceRules() {
+    public function getValidSpecificPriceRules()
+    {
         $specificPrices = $this->getSpecificPrices();
         $rules = [];
 
@@ -343,7 +346,8 @@ class Product extends Base
      *
      * @return float
      */
-    public function getRetailPriceWithTax() {
+    public function getRetailPriceWithTax()
+    {
         $price = $this->getRetailPrice();
         $calculator = $this->getTaxCalculator();
 

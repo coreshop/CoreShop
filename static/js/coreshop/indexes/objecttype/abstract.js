@@ -35,7 +35,6 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
             disabled : true
         }));
 
-
         fieldSetItems.push(new Ext.form.TextField({
             fieldLabel : t('coreshop_index_field_name'),
             name : 'name',

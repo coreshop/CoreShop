@@ -93,13 +93,12 @@ class Payment extends Action
             "module" => $this->getModule()
         );
 
-        if($this->view->order instanceof Order) {
+        if ($this->view->order instanceof Order) {
             $forwardParams['order'] = $this->view->order;
             $forwardParams['paymentViewScript'] = $this->getViewScript();
 
             $this->coreShopForward("confirmation", "checkout", "CoreShop", $forwardParams);
-        }
-        else {
+        } else {
             $this->coreShopForward("error", "checkout", "CoreShop", $forwardParams);
         }
     }

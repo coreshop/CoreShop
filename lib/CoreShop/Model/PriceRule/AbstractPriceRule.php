@@ -16,6 +16,6 @@ namespace CoreShop\Model\PriceRule;
 
 use CoreShop\Model\AbstractModel;
 
-abstract class AbstractPriceRule extends AbstractModel {
-    
+abstract class AbstractPriceRule extends AbstractModel
+{
 }

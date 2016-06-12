@@ -65,7 +65,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
-
                     var priceRulesMenu = [];
 
                     if (user.isAllowed('coreshop_permission_priceRules')) {
@@ -84,7 +83,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
-                    if(priceRulesMenu.length > 0) {
+                    if (priceRulesMenu.length > 0) {
                         coreShopMenuItems.push({
                             text: t('coreshop_pricerules'),
                             iconCls: 'coreshop_icon_price_rule',
@@ -500,7 +499,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         scale: 'medium',
                         iconCls: 'coreshop_icon_currency',
                         handler: function () {
-                            pimcore.plugin.coreshop.orders.createPayment.showWindow(tab.id, tab.data.data, function() {
+                            pimcore.plugin.coreshop.orders.createPayment.showWindow(tab.id, tab.data.data, function () {
                                 tab.reload(tab.data.currentLayoutId);
                             });
                         }.bind(this, tab)
@@ -732,7 +731,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openProductPriceRules : function() {
+    openProductPriceRules : function () {
         try {
             pimcore.globalmanager.get('coreshop_product_price_rule_panel').activate();
         }

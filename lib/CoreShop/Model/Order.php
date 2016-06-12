@@ -80,7 +80,8 @@ class Order extends Base
      * @return Object\Folder
      * @throws \Exception
      */
-    public static function getPathForNewOrder() {
+    public static function getPathForNewOrder()
+    {
         return Object\Service::createFolderByPath('/coreshop/orders/'.date('Y/m/d'));
     }
 
@@ -180,7 +181,8 @@ class Order extends Base
      * @throws \Exception
      * @throws \Pimcore\Model\Element\ValidationException
      */
-    public function updateOrderItem(Item $item, $amount, $priceWithoutTax) {
+    public function updateOrderItem(Item $item, $amount, $priceWithoutTax)
+    {
         $currentPrice = $item->getPriceWithoutTax();
         $currentAmount = $item->getAmount();
 
@@ -190,7 +192,7 @@ class Order extends Base
         //Recalc Tax
         $totalTax = 0;
 
-        foreach($item->getTaxes() as $tax) {
+        foreach ($item->getTaxes() as $tax) {
             $taxValue = (($tax->getRate() / 100) * $item->getPriceWithoutTax());
             $totalTax += $taxValue;
 
@@ -206,8 +208,8 @@ class Order extends Base
         $allItems = $this->getItems();
 
         //Replace existing item with new item to be able to update summary right
-        foreach($allItems as &$oldItem) {
-            if($item->getId() === $oldItem->getId()) {
+        foreach ($allItems as &$oldItem) {
+            if ($item->getId() === $oldItem->getId()) {
                 $oldItem = $item;
             }
         }
@@ -222,7 +224,7 @@ class Order extends Base
             $note->addData('toAmount', 'text', $amount);
         }
 
-        if($currentPrice != $priceWithoutTax) {
+        if ($currentPrice != $priceWithoutTax) {
             $note->addData('fromPrice', 'text', $currentPrice);
             $note->addData('toPrice', 'text', $priceWithoutTax);
         }
@@ -236,7 +238,8 @@ class Order extends Base
     /**
      * Update Order Summary and Taxes
      */
-    public function updateOrderSummary() {
+    public function updateOrderSummary()
+    {
         $totalTax = 0;
         $subTotalTax = 0;
         $subTotal = 0;
@@ -253,11 +256,11 @@ class Order extends Base
         };
 
         //Recaluclate Subtotal and taxes
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $subTotalTax += $item->getTotalTax();
             $subTotal += $item->getTotal();
 
-            foreach($item->getTaxes() as $tax) {
+            foreach ($item->getTaxes() as $tax) {
                 $addTax($tax->getRate(), $tax->getAmount());
             }
         }
@@ -272,18 +275,18 @@ class Order extends Base
         $this->setTotalTax($totalTax);
 
         //Recalculate detailed Taxes
-        if($this instanceof Object\CoreShopOrder) {
-            if($this->getPaymentFeeTaxRate() > 0) {
+        if ($this instanceof Object\CoreShopOrder) {
+            if ($this->getPaymentFeeTaxRate() > 0) {
                 $addTax($this->getPaymentFeeTaxRate(), $this->getPaymentFeeTax());
             }
 
-            if($this->getShippingTaxRate()) {
+            if ($this->getShippingTaxRate()) {
                 $addTax($this->getShippingTaxRate(), $this->getShippingTax());
             }
         }
 
-        foreach($this->getTaxes() as $tax) {
-            if(array_key_exists((string)$tax->getRate(), $taxRateValues)) {
+        foreach ($this->getTaxes() as $tax) {
+            if (array_key_exists((string)$tax->getRate(), $taxRateValues)) {
                 $tax->setAmount($taxRateValues[(string)$tax->getRate()]);
             }
         }
@@ -667,7 +670,8 @@ class Order extends Base
      *
      * @return Note[]
      */
-    public function getOrderStateHistory() {
+    public function getOrderStateHistory()
+    {
         $noteList = new Note\Listing();
         /* @var \Pimcore\Model\Element\Note\Listing $noteList */
 

@@ -141,7 +141,8 @@ class CoreShop_Admin_OrderController extends Admin
         }
     }
 
-    public function sendMessageAction() {
+    public function sendMessageAction()
+    {
         $orderId = $this->getParam('o_id');
         $order = \CoreShop\Model\Order::getById($orderId);
         $messageText = $this->getParam('message', '');
@@ -157,7 +158,7 @@ class CoreShop_Admin_OrderController extends Admin
         $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
         $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), $orderId);
 
-        if(!$thread instanceof \CoreShop\Model\Messaging\Thread) {
+        if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
             $thread = new CoreShop\Model\Messaging\Thread();
             $thread->setLanguage($order->getLang());
             $thread->setStatusId(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
@@ -177,7 +178,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array('success' => true));
     }
 
-    public function changeOrderStateAction() {
+    public function changeOrderStateAction()
+    {
         $orderId = $this->getParam('id');
         $orderStateId = $this->getParam('orderStateId');
         $order = \CoreShop\Model\Order::getById($orderId);
@@ -196,7 +198,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array("success" => true, "statesHistory" => $this->getStatesHistory($order)));
     }
 
-    public function changeTrackingCodeAction() {
+    public function changeTrackingCodeAction()
+    {
         $orderId = $this->getParam('id');
         $trackingCode = $this->getParam("trackingCode");
 
@@ -206,7 +209,7 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
         }
 
-        if(!$trackingCode || $order->getTrackingCode() === $trackingCode) {
+        if (!$trackingCode || $order->getTrackingCode() === $trackingCode) {
             $this->_helper->json(array('success' => false, 'message' => "Tracking code did not change or is empty"));
         }
 
@@ -216,7 +219,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array('success' => true));
     }
 
-    public function changeOrderItemAction() {
+    public function changeOrderItemAction()
+    {
         $orderId = $this->getParam('id');
         $orderItemId = $this->getParam("orderItemId");
         $amount = $this->getParam("amount");
@@ -238,7 +242,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array('success' => true, "summary" => $this->getSummary($order), "details" => $this->getDetails($order), "total" => $order->getTotal()));
     }
 
-    public function resendOrderStateMailAction() {
+    public function resendOrderStateMailAction()
+    {
         $orderId = $this->getParam('id');
         $orderStateId = $this->getParam('orderStateId');
         $order = \CoreShop\Model\Order::getById($orderId);
@@ -252,8 +257,7 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "OrderState with ID '$orderStateId' not found"));
         }
 
-        if($orderState->getEmail()) {
-
+        if ($orderState->getEmail()) {
             $orderStateMailDocument = \Pimcore\Model\Document::getByPath($orderState->getEmailDocument($order->getLang()));
 
             if ($orderStateMailDocument instanceof \Pimcore\Model\Document\Email) {
@@ -261,8 +265,7 @@ class CoreShop_Admin_OrderController extends Admin
                 $mail->sendOrderMail($orderStateMailDocument, $order, $orderState);
 
                 $this->_helper->json(array('success' => true));
-            }
-            else {
+            } else {
                 $this->_helper->json(array('success' => false, 'message' => 'coreshop_order_state_document_not_found'));
             }
         }
@@ -270,7 +273,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array('success' => false, 'message' => 'coreshop_order_state_has_no_email'));
     }
 
-    public function detailAction() {
+    public function detailAction()
+    {
         $orderId = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($orderId);
 
@@ -300,7 +304,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array("success" => true, "order" => $jsonOrder));
     }
 
-    protected function getStatesHistory(\CoreShop\Model\Order $order) {
+    protected function getStatesHistory(\CoreShop\Model\Order $order)
+    {
         //Get History
         $history = $order->getOrderStateHistory();
 
@@ -308,7 +313,7 @@ class CoreShop_Admin_OrderController extends Admin
         $statesHistory = array();
 
         $date = new \Pimcore\Date();
-        foreach($history as $note) {
+        foreach ($history as $note) {
             $user = $user = \Pimcore\Model\User::getById($note->getUser());
             $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
 
@@ -331,11 +336,12 @@ class CoreShop_Admin_OrderController extends Admin
         return $statesHistory;
     }
 
-    protected function getPayments(\CoreShop\Model\Order $order) {
+    protected function getPayments(\CoreShop\Model\Order $order)
+    {
         $payments = $order->getPayments();
         $return = [];
 
-        foreach($payments as $payment) {
+        foreach ($payments as $payment) {
             $return[] = [
                 "datePayment" => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : "",
                 "provider" => $payment->getProvider(),
@@ -347,11 +353,12 @@ class CoreShop_Admin_OrderController extends Admin
         return $return;
     }
 
-    protected function getDetails(\CoreShop\Model\Order $order) {
+    protected function getDetails(\CoreShop\Model\Order $order)
+    {
         $details = $order->getItems();
         $items = [];
 
-        foreach($details as $detail) {
+        foreach ($details as $detail) {
             $items[] = [
                 "o_id" => $detail->getId(),
                 "product" => $detail->getProduct()->getId(),
@@ -369,17 +376,18 @@ class CoreShop_Admin_OrderController extends Admin
         return $items;
     }
 
-    protected function getSummary(\CoreShop\Model\Order $order) {
+    protected function getSummary(\CoreShop\Model\Order $order)
+    {
         $summary = [];
 
-        if($order->getDiscount() > 0) {
+        if ($order->getDiscount() > 0) {
             $summary[] = [
                 "key" => "discount",
                 "value" => $order->getDiscount()
             ];
         }
 
-        if($order->getShipping() > 0) {
+        if ($order->getShipping() > 0) {
             $summary[] = [
                 "key" => "shipping",
                 "value" => $order->getShipping()
@@ -391,7 +399,7 @@ class CoreShop_Admin_OrderController extends Admin
             ];
         }
 
-        if($order->getPaymentFee() > 0) {
+        if ($order->getPaymentFee() > 0) {
             $summary[] = [
                 "key" => "payment",
                 "value" => $order->getPaymentFee()
@@ -410,7 +418,8 @@ class CoreShop_Admin_OrderController extends Admin
         return $summary;
     }
 
-    protected function getCurrency(CoreShop\Model\Currency $currency) {
+    protected function getCurrency(CoreShop\Model\Currency $currency)
+    {
         return [
             "name" => $currency->getName(),
             "symbol" => $currency->getSymbol()

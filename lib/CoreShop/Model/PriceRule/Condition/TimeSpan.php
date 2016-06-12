@@ -110,7 +110,8 @@ class TimeSpan extends AbstractCondition
      * @return bool
      * @throws \Exception
      */
-    protected function check($throwException = false) {
+    protected function check($throwException = false)
+    {
         //Check Availability
         $date = \Zend_Date::now();
 

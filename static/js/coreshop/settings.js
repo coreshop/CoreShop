@@ -80,7 +80,7 @@ pimcore.plugin.coreshop.settings = Class.create({
             exchangeRatesStore.load();
 
             var messagingLangTabs = [];
-            var messagingContactStore = pimcore.globalmanager.get("coreshop_messaging_contacts");
+            var messagingContactStore = pimcore.globalmanager.get('coreshop_messaging_contacts');
             messagingContactStore.load();
 
             Ext.each(pimcore.settings.websiteLanguages, function (lang) {

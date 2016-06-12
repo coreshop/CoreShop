@@ -88,7 +88,8 @@ class Zone extends AbstractCondition
      * @return bool
      * @throws \Exception
      */
-    protected function check($throwException = false) {
+    protected function check($throwException = false)
+    {
         if ($this->getZone()->getId() !== Tool::getCountry()->getZoneId()) {
             if ($throwException) {
                 throw new \Exception('You cannot use this voucher in your zone of delivery');

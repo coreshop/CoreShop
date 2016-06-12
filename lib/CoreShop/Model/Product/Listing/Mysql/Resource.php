@@ -266,7 +266,7 @@ class Resource
             $maxFieldString = '';
 
             foreach ($fields as $field) {
-                if($field instanceof AbstractSimilarity) {
+                if ($field instanceof AbstractSimilarity) {
                     if (!empty($fieldString)) {
                         $fieldString .= ',';
                         $maxFieldString .= ',';
@@ -284,13 +284,12 @@ class Resource
             $query = 'SELECT '.$maxFieldString.' FROM '.$this->model->getTablename().' a';
             $maxObjectValues = $this->db->fetchRow($query);
 
-            if (!empty($objectValues))
-            {
+            if (!empty($objectValues)) {
                 $subStatement = array();
 
                 foreach ($fields as $field) {
-                    if($field instanceof AbstractSimilarity) {
-                        if($objectValues[$field->getField()]) {
+                    if ($field instanceof AbstractSimilarity) {
+                        if ($objectValues[$field->getField()]) {
                             $subStatement[] =
                                 '(' .
                                 $this->db->quoteIdentifier($field->getField()) . '/' . $maxObjectValues[$field->getField()] .
@@ -301,17 +300,15 @@ class Resource
                     }
                 }
 
-                if(count($subStatement) > 0) {
+                if (count($subStatement) > 0) {
                     $statement = 'ABS(' . implode(' + ', $subStatement) . ')';
 
                     return $statement;
                 }
-
             } else {
                 throw new \Exception('Field array for given object id is empty');
             }
         } catch (\Exception $e) {
-            
         }
 
         return '';

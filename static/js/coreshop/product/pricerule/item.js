@@ -36,7 +36,7 @@ pimcore.plugin.coreshop.product.pricerule.item = Class.create(pimcore.plugin.cor
                 fieldLabel: t('name'),
                 width: 250,
                 value: data.name
-            },{
+            }, {
                 xtype: 'checkbox',
                 name: 'active',
                 fieldLabel: t('active'),

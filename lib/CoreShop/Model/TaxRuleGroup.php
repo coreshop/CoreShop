@@ -55,10 +55,9 @@ class TaxRuleGroup extends AbstractModel
     {
         $queryParams = array($this->getId());
 
-        if($country instanceof Country) {
+        if ($country instanceof Country) {
             $queryParams[] = intval($country->getId());
-        }
-        else {
+        } else {
             $queryParams[] = 0;
         }
 

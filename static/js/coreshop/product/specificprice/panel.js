@@ -172,12 +172,12 @@ pimcore.plugin.coreshop.product.specificprice.panel = Class.create(pimcore.plugi
         return listeners;
     },
 
-    getItemClass : function() {
+    getItemClass : function () {
         return pimcore.plugin.coreshop.product.specificprice.item;
     },
 
-    openPriceRule : function(grid, record) {
-        if(record.get("type") == "pricerule") {
+    openPriceRule : function (grid, record) {
+        if (record.get('type') == 'pricerule') {
             Ext.Msg.alert(t('open_target'), t('coreshop_pricerules_open_in_product_rules'));
             return;
         }

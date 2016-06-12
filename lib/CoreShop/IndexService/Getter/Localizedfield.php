@@ -33,7 +33,7 @@ class Localizedfield extends AbstractGetter
     {
         $language = null;
         
-        if(\Zend_Registry::isRegistered("Zend_Locale")) {
+        if (\Zend_Registry::isRegistered("Zend_Locale")) {
             $language = \Zend_Registry::get('Zend_Locale');
         }
 

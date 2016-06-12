@@ -19,7 +19,8 @@ use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Model\Product;
 
-abstract class AbstractProductPriceRule extends AbstractPriceRule {
+abstract class AbstractProductPriceRule extends AbstractPriceRule
+{
     /**
      * possible types of a condition.
      *

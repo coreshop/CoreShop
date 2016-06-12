@@ -181,8 +181,7 @@ class CoreShop_Admin_IndexesController extends Admin
                 \CoreShop\IndexService::getIndexService()->getWorker($index->getName())->createOrUpdateIndexStructures();
 
                 $this->_helper->json(array('success' => true, 'data' => $index));
-            }
-            catch(Exception $ex) {
+            } catch (Exception $ex) {
                 $this->_helper->json(array('success' => false, 'message' => $ex->getMessage()));
             }
         } else {

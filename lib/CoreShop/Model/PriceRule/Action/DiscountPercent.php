@@ -16,7 +16,6 @@ namespace CoreShop\Model\PriceRule\Action;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
 
-
 class DiscountPercent extends AbstractAction
 {
     /**

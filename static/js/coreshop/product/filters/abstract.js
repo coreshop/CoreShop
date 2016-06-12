@@ -43,7 +43,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
             xparent : this,
             id : myId,
             style: 'margin: 10px 0 0 0',
-            tbar : this.getTopBar(t('coreshop_product_filters_' + this.type), myId, this.parent, this.data, 'coreshop_product_filters_icon_'+this.elementType+'_' + this.type),
+            tbar : this.getTopBar(t('coreshop_product_filters_' + this.type), myId, this.parent, this.data, 'coreshop_product_filters_icon_' + this.elementType + '_' + this.type),
             items : [
                 {
                     xtype : 'fieldset',
@@ -55,15 +55,15 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         return this.form;
     },
 
-    getFieldsComboBox : function() {
-        if(!this.fieldsCombo) {
+    getFieldsComboBox : function () {
+        if (!this.fieldsCombo) {
 
             this.valueStore = new Ext.data.ArrayStore({
                 proxy: new Ext.data.HttpProxy({
                     url: '/plugin/CoreShop/admin_filter/get-values-for-filter-field'
                 }),
                 reader: new Ext.data.JsonReader({}, [
-                    {name: 'value'}
+                    { name: 'value' }
                 ])
             });
 

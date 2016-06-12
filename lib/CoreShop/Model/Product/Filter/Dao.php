@@ -36,7 +36,6 @@ class Dao extends AbstractDao
             } elseif ($key == 'similarities') {
                 $this->model->setSimilarities(unserialize($value));
             }
-
         }
     }
 }

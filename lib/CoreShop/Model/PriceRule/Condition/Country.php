@@ -87,7 +87,8 @@ class Country extends AbstractCondition
      * @return bool
      * @throws \Exception
      */
-    protected function check($throwException = false) {
+    protected function check($throwException = false)
+    {
         if ($this->getCountry()->getId() !== Tool::getCountry()->getId()) {
             if ($throwException) {
                 throw new \Exception('You cannot use this voucher in your country of delivery');

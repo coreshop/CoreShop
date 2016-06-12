@@ -17,7 +17,8 @@ namespace CoreShop\Model\Object\Fieldcollection\Data;
 use CoreShop\Exception;
 use Pimcore\Tool;
 
-class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractData {
+class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractData
+{
     /**
      * Pimcore Object Class.
      *

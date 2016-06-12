@@ -123,11 +123,12 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                     align : 'right',
                     text: t('coreshop_orders_total'),
                     dataIndex: 'total',
-                    renderer: function(value, metaData, record) {
-                        var currency = record.get("currency").symbol;
+                    renderer: function (value, metaData, record) {
+                        var currency = record.get('currency').symbol;
 
                         return coreshop.util.format.currency(currency, value);
                     },
+
                     filter: {
                         type : 'number'
                     }
@@ -173,7 +174,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                     items: [{
                         iconCls: 'pimcore_icon_open',
                         tooltip: t('open'),
-                        handler: function(grid, rowIndex, colIndex) {
+                        handler: function (grid, rowIndex, colIndex) {
                             this.openOrder(grid.getStore().getAt(rowIndex));
                         }.bind(this)
                     }]
@@ -184,7 +185,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             // paging bar on the bottom
             bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
             listeners : {
-                select : function(grid, record) {
+                select : function (grid, record) {
                     this.openOrder(record);
                 }.bind(this)
             }
@@ -196,6 +197,6 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
     },
 
     openOrder : function (record) {
-        coreshop.helpers.openOrder(record.get("o_id"))
+        coreshop.helpers.openOrder(record.get('o_id'));
     }
 });

@@ -32,9 +32,9 @@ class ObjectIdSum extends AbstractInterpreter
     public function interpret($value, $config = null)
     {
         $sum = 0;
-        if(is_array($value)) {
-            foreach($value as $object) {
-                if($object instanceof ElementInterface) {
+        if (is_array($value)) {
+            foreach ($value as $object) {
+                if ($object instanceof ElementInterface) {
                     $sum += $object->getId();
                 }
             }

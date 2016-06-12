@@ -9,7 +9,8 @@ use Pimcore\Mail as PimcoreMail;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Document;
 
-class Mail extends PimcoreMail {
+class Mail extends PimcoreMail
+{
 
     /**
      * Sends Messaging Mail
@@ -17,7 +18,8 @@ class Mail extends PimcoreMail {
      * @param $emailDocument
      * @param Message $message
      */
-    public static function sendMessagingMail($emailDocument, Message $message, $recipient) {
+    public static function sendMessagingMail($emailDocument, Message $message, $recipient)
+    {
         $mail = new self();
         $mail->setDocument($emailDocument);
         $mail->setParams(array('message' => $message->getMessage(), 'messageObject' => $message));
@@ -36,7 +38,8 @@ class Mail extends PimcoreMail {
      * @throws Exception\UnsupportedException
      * @throws \Exception
      */
-    public static function sendOrderMail($emailDocument, Order $order, Order\State $orderState = null, $allowBcc = FALSE) {
+    public static function sendOrderMail($emailDocument, Order $order, Order\State $orderState = null, $allowBcc = false)
+    {
         if ($emailDocument instanceof Document\Email) {
             $emailParameters = array_merge($order->getObjectVars(), $orderState instanceof Order\State ? $orderState->getObjectVars() : [], $order->getCustomer()->getObjectVars());
             $emailParameters['orderTotal'] = Tool::formatPrice($order->getTotal());
@@ -50,7 +53,7 @@ class Mail extends PimcoreMail {
             $mail->setEnableLayoutOnPlaceholderRendering(false);
             $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname());
 
-            if($orderState instanceof Order\State) {
+            if ($orderState instanceof Order\State) {
                 if ((bool)Configuration::get('SYSTEM.INVOICE.CREATE')) {
                     if ($orderState->getInvoice()) {
                         $invoice = $order->getInvoice();
@@ -68,7 +71,7 @@ class Mail extends PimcoreMail {
                 }
             }
 
-            if( $allowBcc === TRUE) {
+            if ($allowBcc === true) {
                 $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');
                 $adminMailAddress = Configuration::get('SYSTEM.MAIL.ORDER.NOTIFICATION');
 

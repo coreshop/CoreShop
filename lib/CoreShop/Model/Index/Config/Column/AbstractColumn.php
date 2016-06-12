@@ -204,7 +204,8 @@ class AbstractColumn
     /**
      * @return bool
      */
-    public function validate() {
+    public function validate()
+    {
         return true;
     }
 }

@@ -29,7 +29,7 @@ pimcore.plugin.coreshop.pricerules.conditions.amount = Class.create(pimcore.plug
             currencyValue = this.data.currency;
         }
 
-        if(this.data && this.data.maxAmount) {
+        if (this.data && this.data.maxAmount) {
             maxAmountValue = this.data.maxAmount;
         }
 

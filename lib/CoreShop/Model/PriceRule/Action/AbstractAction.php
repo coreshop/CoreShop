@@ -68,7 +68,8 @@ abstract class AbstractAction extends AbstractActionCondition
      *
      * @return float|boolean $price
      */
-    public function getPrice(Product $product) {
+    public function getPrice(Product $product)
+    {
         return false;
     }
 }

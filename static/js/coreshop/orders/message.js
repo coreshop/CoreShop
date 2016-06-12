@@ -18,8 +18,8 @@ pimcore.plugin.coreshop.orders.message = {
         var orderId = tab.id;
 
         var message = new Ext.form.TextArea({
-            xtype: "textarea",
-            name: "message",
+            xtype: 'textarea',
+            name: 'message',
             style: "font-family: 'Courier New', Courier, monospace;",
             width : '100%',
             height : '100%'

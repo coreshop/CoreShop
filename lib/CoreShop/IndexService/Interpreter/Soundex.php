@@ -30,8 +30,9 @@ class Soundex extends AbstractInterpreter
      */
     public function interpret($value, $config = null)
     {
-        if(is_null($value))
+        if (is_null($value)) {
             return null;
+        }
 
         if (is_array($value)) {
             sort($value);

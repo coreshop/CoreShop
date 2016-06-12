@@ -189,7 +189,8 @@ class Base extends Concrete
      *
      * @return AbstractModel
      */
-    public function getVariantMaster() {
+    public function getVariantMaster()
+    {
         $master = $this;
 
         while ($master->getType() === 'variant') {

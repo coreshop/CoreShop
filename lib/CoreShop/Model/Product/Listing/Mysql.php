@@ -612,7 +612,8 @@ class Mysql extends AbstractListing
      *
      * @return Product[]
      */
-    public function buildSimilarityOrderBy($fields, $objectId) {
+    public function buildSimilarityOrderBy($fields, $objectId)
+    {
         return $this->resource->buildSimilarityOrderBy($fields, $objectId);
     }
 

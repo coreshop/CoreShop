@@ -59,7 +59,7 @@ coreshop.plugin.broker = {
             try {
                 var result = this.executePlugin(plugin, e, args);
 
-                if(result != undefined) {
+                if (result != undefined) {
                     results.push(result);
                 }
             } catch (e) {

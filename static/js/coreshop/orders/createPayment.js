@@ -77,9 +77,10 @@ pimcore.plugin.coreshop.orders.createPayment = {
                                                 window.close();
                                                 window.destroy();
 
-                                                if(callback) {
+                                                if (callback) {
                                                     callback(response);
                                                 }
+
                                                 //tab.reload(tab.data.currentLayoutId);
                                             } else {
                                                 Ext.Msg.alert(t('error'), response.message);

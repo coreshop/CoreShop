@@ -91,7 +91,8 @@ class Action extends \Website\Controller\Action
      * @param null $module
      * @param array|null $params
      */
-    public function coreShopForward($action, $controller = null, $module = null, array $params = null) {
+    public function coreShopForward($action, $controller = null, $module = null, array $params = null)
+    {
         $this->forward($action, $controller, $module, $params);
 
         $request = clone $this->getRequest();

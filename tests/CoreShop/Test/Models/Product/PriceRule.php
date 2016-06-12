@@ -140,7 +140,7 @@ class PriceRule extends Base
 
         $taxCalculator = $this->product->getTaxCalculator();
 
-        if($taxCalculator) {
+        if ($taxCalculator) {
             $retailPriceWithoutTax = $taxCalculator->addTaxes($retailPriceWithoutTax);
         }
 
@@ -164,7 +164,7 @@ class PriceRule extends Base
 
         $taxCalculator = $this->product->getTaxCalculator();
 
-        if($taxCalculator) {
+        if ($taxCalculator) {
             $retailPriceWithoutTax = $taxCalculator->addTaxes($retailPriceWithoutTax);
         }
 
@@ -174,7 +174,8 @@ class PriceRule extends Base
         $this->priceRule->save();
     }
 
-    public function testPriceRuleActionNewPrice() {
+    public function testPriceRuleActionNewPrice()
+    {
         $newPrice = new NewPrice();
         $newPrice->setNewPrice(150);
 
@@ -187,7 +188,7 @@ class PriceRule extends Base
 
         $taxCalculator = $this->product->getTaxCalculator();
 
-        if($taxCalculator) {
+        if ($taxCalculator) {
             $retailPriceWithoutTax = $taxCalculator->addTaxes($retailPriceWithoutTax);
         }
 

@@ -28,7 +28,7 @@ pimcore.plugin.coreshop.pricerules.conditions.quantity = Class.create(pimcore.pl
             minQuantityValue = this.data.minQuantity;
         }
 
-        if(this.data && this.data.maxQuantity) {
+        if (this.data && this.data.maxQuantity) {
             maxQuantityValue = this.data.maxQuantity;
         }
 
@@ -49,7 +49,6 @@ pimcore.plugin.coreshop.pricerules.conditions.quantity = Class.create(pimcore.pl
             decimalPrecision : 0,
             step : 1
         });
-
 
         this.form = Ext.create('Ext.form.FieldSet', {
             items : [

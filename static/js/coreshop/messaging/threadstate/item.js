@@ -25,7 +25,7 @@ pimcore.plugin.coreshop.messaging.threadstate.item = Class.create(pimcore.plugin
     },
 
     getTitleText : function () {
-        if(!this.data.localizedFields.items[pimcore.settings.language]) {
+        if (!this.data.localizedFields.items[pimcore.settings.language]) {
             return this.data.localizedFields.items[pimcore.settings.websiteLanguages[0]].name;
         }
 

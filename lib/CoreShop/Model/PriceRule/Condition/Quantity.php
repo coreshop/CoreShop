@@ -84,11 +84,11 @@ class Quantity extends AbstractCondition
         if ($this->getMinQuantity() > 0) {
             $itemQuantityAmount = 0;
 
-            foreach($cart->getItems() as $item) {
+            foreach ($cart->getItems() as $item) {
                 $itemQuantityAmount += $item->getAmount();
             }
 
-            if($itemQuantityAmount < $this->getMinQuantity()) {
+            if ($itemQuantityAmount < $this->getMinQuantity()) {
                 if ($throwException) {
                     throw new \Exception('You have not reached the minimum quantity required to use this voucher');
                 } else {
@@ -96,8 +96,8 @@ class Quantity extends AbstractCondition
                 }
             }
 
-            if($itemQuantityAmount >= $this->getMinQuantity()) {
-                if($itemQuantityAmount > $this->getMaxQuantity()) {
+            if ($itemQuantityAmount >= $this->getMinQuantity()) {
+                if ($itemQuantityAmount > $this->getMaxQuantity()) {
                     if ($throwException) {
                         throw new \Exception('You have reached the maximum quantity required to use this voucher');
                     } else {
@@ -123,15 +123,14 @@ class Quantity extends AbstractCondition
         //Check for Quantity in Cart
         $cart = Tool::prepareCart();
 
-        if($cart instanceof Cart) {
-            foreach($cart->getItems() as $item) {
-                if($item->getProduct()->getId() === $product->getId() && $item->getAmount() >= $this->getMinQuantity()) {
-                    if($this->getMaxQuantity() > 0) {
-                        if($item->getAmount() <= $this->getMaxQuantity()) {
+        if ($cart instanceof Cart) {
+            foreach ($cart->getItems() as $item) {
+                if ($item->getProduct()->getId() === $product->getId() && $item->getAmount() >= $this->getMinQuantity()) {
+                    if ($this->getMaxQuantity() > 0) {
+                        if ($item->getAmount() <= $this->getMaxQuantity()) {
                             return true;
                         }
-                    }
-                    else {
+                    } else {
                         return true;
                     }
                 }

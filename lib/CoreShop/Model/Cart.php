@@ -108,7 +108,7 @@ class Cart extends Base
             $cart->setPublished(true);
         }
 
-        if($cart instanceof Cart) {
+        if ($cart instanceof Cart) {
             if (Tool::getUser() instanceof User) {
                 $cart->setUser(Tool::getUser());
             }
@@ -739,10 +739,9 @@ class Cart extends Base
         $orderNumber = Order::getNextOrderNumber();
 
         if (is_null($language)) {
-            if(\Zend_Registry::isRegistered("Zend_Locale")) {
+            if (\Zend_Registry::isRegistered("Zend_Locale")) {
                 $language = \Zend_Registry::get('Zend_Locale');
-            }
-            else {
+            } else {
                 throw new Exception("language not found in registry and not set as param");
             }
         }
@@ -800,7 +799,7 @@ class Cart extends Base
         $emailDocument = "/" . $order->getLang() . Configuration::get("SYSTEM.MAIL.CONFIRMATION");
         $emailDocument = Document::getByPath($emailDocument);
         
-        Mail::sendOrderMail($emailDocument, $order, $order->getOrderState(), TRUE);
+        Mail::sendOrderMail($emailDocument, $order, $order->getOrderState(), true);
 
         Plugin::actionHook('order.created', array('order' => $order));
 

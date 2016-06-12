@@ -83,7 +83,8 @@ class Customer extends AbstractCondition
      * @return bool
      * @throws \Exception
      */
-    protected function check($throwException = false) {
+    protected function check($throwException = false)
+    {
         $user = Tool::getUser();
 
         if ($user instanceof User) {
