@@ -139,7 +139,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         {
                             name: 'SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang,
                             value:me.getValue('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang),
-                            fieldLabel: t('coreshop_messaging_customer_email'),
+                            fieldLabel: t('coreshop_messaging_customer_re_email'),
                             labelWidth: 350,
                             fieldCls: 'pimcore_droptarget_input',
                             xtype: 'textfield',
