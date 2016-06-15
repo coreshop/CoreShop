@@ -32,49 +32,36 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      */
     public $columnType = 'int(11)';
 
-    /** True if change is allowed in edit mode.
-     * @return bool
-     */
-    public function isDiffChangeAllowed()
-    {
-        return true;
-    }
-
     /**
-     * get data for resource.
-     *
      * @see Object\ClassDefinition\Data::getDataForResource
-     *
-     * @param AbstractModel                    $data
+     * @param string $data
      * @param null|Model\Object\AbstractObject $object
-     *
-     * @return int|null
+     * @param mixed $params
+     * @return string
      */
-    public function getDataForResource($data, $object = null)
+    public function getDataForResource($data, $object = null, $params = [])
     {
         if (is_a($data, $this->getPhpdocType())) {
             return $data->getId();
         }
 
-        return;
+        return null;
     }
 
     /**
-     * get data from resource.
-     *
      * @see Object\ClassDefinition\Data::getDataFromResource
-     *
-     * @param int $data
-     *
-     * @return AbstractModel
+     * @param string $data
+     * @param null|Model\Object\AbstractObject $object
+     * @param mixed $params
+     * @return string
      */
-    public function getDataFromResource($data)
+    public function getDataFromResource($data, $object = null, $params = [])
     {
         if (intval($data) > 0) {
             return call_user_func($this->getPhpdocType().'::getById', $data);
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -84,16 +71,17 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      *
      * @param AbstractModel                    $data
      * @param null|Model\Object\AbstractObject $object
+     * @param mixed $params
      *
      * @return int|null
      */
-    public function getDataForQueryResource($data, $object = null)
+    public function getDataForQueryResource($data, $object = null, $params = [])
     {
         if (is_a($data, $this->getPhpdocType())) {
             return $data->getId();
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -103,13 +91,13 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      *
      * @param AbstractModel                    $data
      * @param null|Model\Object\AbstractObject $object
-     * @param $objectFromVersion
+     * @param mixed $params
      *
      * @return int
      */
-    public function getDataForEditmode($data, $object = null, $objectFromVersion = null)
+    public function getDataForEditmode($data, $object = null, $params = [])
     {
-        return $this->getDataForResource($data, $object, $objectFromVersion);
+        return $this->getDataForResource($data, $object, $params);
     }
 
     /**
@@ -142,15 +130,16 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      * get data for search index.
      *
      * @param $object
+     * @param mixed $params
      *
      * @return int|string
      */
-    public function getDataForSearchIndex($object)
+    public function getDataForSearchIndex($object, $params = [])
     {
         if ($object instanceof Model\Object\AbstractObject) {
             return $object->getId();
         }
 
-        return parent::getDataForSearchIndex($object);
+        return parent::getDataForSearchIndex($object, $params);
     }
 }

@@ -40,53 +40,47 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     public $columnType = 'varchar(255)';
 
     /** True if change is allowed in edit mode.
+     * @param string $object
+     * @param mixed $params
      * @return bool
      */
-    public function isDiffChangeAllowed()
+    public function isDiffChangeAllowed($object, $params = [])
     {
         return true;
     }
 
     /**
-     * get data for resource.
-     *
      * @see Object\ClassDefinition\Data::getDataForResource
-     *
-     * @param AbstractModel                    $data
+     * @param string $data
      * @param null|Model\Object\AbstractObject $object
-     *
-     * @return int|null
+     * @param mixed $params
+     * @return string
      */
-    public function getDataForResource($data, $object = null)
+    public function getDataForResource($data, $object = null, $params = [])
     {
         return $data;
     }
 
     /**
-     * get data from resource.
-     *
      * @see Object\ClassDefinition\Data::getDataFromResource
-     *
-     * @param int $data
-     *
-     * @return AbstractModel
+     * @param string $data
+     * @param null|Model\Object\AbstractObject $object
+     * @param mixed $params
+     * @return string
      */
-    public function getDataFromResource($data)
+    public function getDataFromResource($data, $object = null, $params = [])
     {
         return $data;
     }
 
     /**
-     * get data for query resource.
-     *
      * @see Object\ClassDefinition\Data::getDataForQueryResource
-     *
-     * @param AbstractModel                    $data
+     * @param string $data
      * @param null|Model\Object\AbstractObject $object
-     *
-     * @return int|null
+     * @param mixed $params
+     * @return string
      */
-    public function getDataForQueryResource($data, $object = null)
+    public function getDataForQueryResource($data, $object = null, $params = [])
     {
         return $data;
     }
@@ -108,18 +102,15 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data from editmode.
-     *
      * @see Model\Object\ClassDefinition\Data::getDataFromEditmode
-     *
-     * @param int                              $data
+     * @param string $data
      * @param null|Model\Object\AbstractObject $object
-     *
-     * @return AbstractModel
+     * @param mixed $params
+     * @return string
      */
-    public function getDataFromEditmode($data, $object = null, $params = array())
+    public function getDataFromEditmode($data, $object = null, $params = [])
     {
-        return $this->getDataFromResource($data);
+        return $this->getDataFromResource($data, $object, $params);
     }
 
     /**
@@ -138,11 +129,12 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
      * get data for search index.
      *
      * @param $object
+     * @param mixed $params
      *
      * @return int|string
      */
-    public function getDataForSearchIndex($object)
+    public function getDataForSearchIndex($object, $params = [])
     {
-        return parent::getDataForSearchIndex($object);
+        return parent::getDataForSearchIndex($object, $params);
     }
 }
