@@ -121,11 +121,11 @@ abstract class Payment implements AbstractPlugin
     /**
      * Process Payment.
      *
-     * @param Order $order
+     * @param Cart $cart
      *
      * @throws UnsupportedException
      */
-    public function process(Order $order)
+    public function process(Cart $cart)
     {
         throw new UnsupportedException('');
     }
