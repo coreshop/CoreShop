@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
+use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Model\Product\SpecificPrice;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
@@ -203,7 +204,7 @@ class Product extends Base
      * Returns yes if retail price is gross price
      */
     public function getRetailPriceIsGross() {
-        return true;
+        return false;
     }
 
     /**
@@ -262,9 +263,11 @@ class Product extends Base
             $isValid = true;
 
             foreach ($conditions as $condition) {
-                if (!$condition->checkConditionProduct($this, $specificPrice)) {
-                    $isValid = false;
-                    break;
+                if($condition instanceof AbstractCondition) {
+                    if (!$condition->checkConditionProduct($this, $specificPrice)) {
+                        $isValid = false;
+                        break;
+                    }
                 }
             }
 
@@ -330,7 +333,7 @@ class Product extends Base
             $taxCalculator = $this->getTaxCalculator();
 
             if($taxCalculator) {
-                $discount = $taxCalculator->removeTaxes($discount);
+                //$discount = $taxCalculator->removeTaxes($discount);
             }
         }
 
@@ -378,7 +381,7 @@ class Product extends Base
     {
         $cacheKey = self::getPriceCacheTag($this);
 
-        if (!$price = Cache::load($cacheKey)) {
+        if ((!$price = Cache::load($cacheKey)) || true) {
             $price = $this->getSpecificPrice();
 
             Cache::save($price, $cacheKey, array('coreshop_product_price', $cacheKey));
