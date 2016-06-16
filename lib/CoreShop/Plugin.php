@@ -159,9 +159,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $indexService = IndexService::getIndexService();
             $indexService->updateIndex($object);
 
-            $object->clearPriceCache();
-
-            //TODO: Delete Specific Price Rules
+            Cache::clearTag(Product::getPriceCacheTag($object->getId()));
         }
     }
 

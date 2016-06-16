@@ -15,7 +15,6 @@ namespace CoreShop\Model;
 
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Cart\PriceRule;
-use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\Product\SpecificPrice;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
@@ -115,12 +114,12 @@ class Product extends Base
     /**
      * get price cache tag for product-id
      *
-     * @param Product $product
+     * @param $id
      * @return string
      */
-    public static function getPriceCacheTag($product)
+    public static function getPriceCacheTag($id)
     {
-        return 'coreshop_product_'.$product->getId().'_price_' . $product->getTaxRate();
+        return 'coreshop_product_'.$id.'_price';
     }
 
     /**
@@ -200,13 +199,6 @@ class Product extends Base
     }
 
     /**
-     * Returns yes if retail price is gross price
-     */
-    public function getRetailPriceIsGross() {
-        return true;
-    }
-
-    /**
      * Get all Variants Differences.
      *
      * @param $language
@@ -243,7 +235,29 @@ class Product extends Base
      */
     public function clearPriceCache()
     {
-        Cache::clearTag(self::getPriceCacheTag($this));
+        Cache::clearTag(self::getPriceCacheTag($this->getId()));
+    }
+
+    /**
+     * get price without tax.
+     *
+     * @return float|mixed
+     *
+     * @throws UnsupportedException
+     */
+    public function getPriceWithoutTax()
+    {
+        $cacheKey = 'coreshop_product_price_'.$this->getId();
+
+        if ($price = Cache::load($cacheKey)) {
+            return $price;
+        }
+
+        $price = $this->getSpecificPrice();
+
+        Cache::save($price, $cacheKey, array('coreshop_product_price', self::getPriceCacheTag($this->getId())));
+
+        return $price;
     }
 
     /**
@@ -287,18 +301,16 @@ class Product extends Base
     public function getSpecificPrice()
     {
         $specificPrices = $this->getValidSpecificPriceRules();
-        $price = $this->getSalesPrice(false);
+        $price = $this->getRetailPrice();
 
         foreach ($specificPrices as $specificPrice) {
             $actions = $specificPrice->getActions();
 
             foreach ($actions as $action) {
-                if($action instanceof AbstractAction) {
-                    $actionsPrice = $action->getPrice($this);
+                $actionsPrice = $action->getPrice($this);
 
-                    if ($actionsPrice !== false) {
-                        $price = $actionsPrice;
-                    }
+                if ($actionsPrice !== false) {
+                    $price = $actionsPrice;
                 }
             }
         }
@@ -326,70 +338,40 @@ class Product extends Base
             }
         }
 
-        if($this->getRetailPriceIsGross()) {
-            $taxCalculator = $this->getTaxCalculator();
-
-            if($taxCalculator) {
-                $discount = $taxCalculator->removeTaxes($discount);
-            }
-        }
-
         return $discount;
     }
 
     /**
-     * Get Sales Price, with or without taxes
+     * Get Retail Price With Tax
      *
-     * @param bool $withTax
      * @return float
      */
-    public function getSalesPrice($withTax = true) {
+    public function getRetailPriceWithTax()
+    {
         $price = $this->getRetailPrice();
         $calculator = $this->getTaxCalculator();
 
-        if($withTax) {
-            if(!$this->getRetailPriceIsGross()) {
-                if ($calculator) {
-                    $price = $calculator->addTaxes($price);
-                }
-            }
-        }
-        else {
-            if($this->getRetailPriceIsGross()) {
-                if ($calculator) {
-                    $price = $calculator->removeTaxes($price);
-                }
-            }
+        if ($calculator) {
+            $price = $calculator->addTaxes($price);
         }
 
-        return $price;
+        return Tool::convertToCurrency($price);
     }
 
     /**
      * Get Product Price with Tax.
      *
-     * @param boolean $withTax
-     *
      * @return float|mixed
      *
      * @throws \Exception
      */
-    public function getPrice($withTax = true)
+    public function getPrice()
     {
-        $cacheKey = self::getPriceCacheTag($this);
+        $price = $this->getPriceWithoutTax();
+        $calculator = $this->getTaxCalculator();
 
-        if (!$price = Cache::load($cacheKey)) {
-            $price = $this->getSpecificPrice();
-
-            Cache::save($price, $cacheKey, array('coreshop_product_price', $cacheKey));
-        }
-        
-        if($withTax) {
-            $calculator = $this->getTaxCalculator();
-
-            if ($calculator) {
-                $price = $calculator->addTaxes($price);
-            }
+        if ($calculator) {
+            $price = $calculator->addTaxes($price);
         }
 
         return Tool::convertToCurrency($price);
@@ -459,7 +441,7 @@ class Product extends Base
         $calculator = $this->getTaxCalculator();
 
         if ($calculator) {
-            return $calculator->getTaxesAmount($this->getPrice(false), $asArray);
+            return $calculator->getTaxesAmount($this->getPriceWithoutTax(), $asArray);
         }
 
         return 0;
@@ -600,7 +582,7 @@ class Product extends Base
     }
 
     /**
-     * returns sales price
+     * returns retail price
      * this method has to be overwritten in Pimcore Object.
      *
      * @throws UnsupportedException
@@ -609,7 +591,7 @@ class Product extends Base
      */
     public function getRetailPrice()
     {
-        throw new UnsupportedException('getSalesPrice is not supported for '.get_class($this));
+        throw new UnsupportedException('getRetailPrice is not supported for '.get_class($this));
     }
 
     /**
