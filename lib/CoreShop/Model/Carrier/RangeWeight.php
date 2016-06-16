@@ -24,6 +24,6 @@ class RangeWeight extends AbstractRange
      */
     public static function getById($id)
     {
-        return parent::getById($id, 'weight');
+        return parent::getRangeById($id, 'weight');
     }
 }

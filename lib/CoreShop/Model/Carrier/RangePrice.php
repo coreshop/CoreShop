@@ -24,6 +24,6 @@ class RangePrice extends AbstractRange
      */
     public static function getById($id)
     {
-        parent::getById($id, 'price');
+        parent::getRangeById($id, 'price');
     }
 }

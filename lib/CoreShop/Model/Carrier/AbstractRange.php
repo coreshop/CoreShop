@@ -83,7 +83,7 @@ class AbstractRange extends AbstractModel
      *
      * @return static|null
      */
-    public static function getById($id, $rangeType)
+    public static function getRangeById($id, $rangeType)
     {
         $id = intval($id);
 
