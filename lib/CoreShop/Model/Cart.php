@@ -170,7 +170,7 @@ class Cart extends Base
             if ($useTaxes) {
                 $subtotal += $item->getAmount() * Tool::roundPrice($item->getProduct()->getPrice());
             } else {
-                $subtotal += $item->getAmount() * Tool::roundPrice($item->getProduct()->getPriceWithoutTax());
+                $subtotal += $item->getAmount() * Tool::roundPrice($item->getProduct()->getPrice(false));
             }
         }
 
@@ -221,7 +221,7 @@ class Cart extends Base
                     $addTax($tax);
                 }
 
-                $taxesAmount = $taxCalculator->getTaxesAmount($item->getProduct()->getPriceWithoutTax() * $item->getAmount(), true);
+                $taxesAmount = $taxCalculator->getTaxesAmount($item->getProduct()->getPrice(false) * $item->getAmount(), true);
 
                 foreach ($taxesAmount as $id => $amount) {
                     $usedTaxes[$id]['amount'] += $amount;

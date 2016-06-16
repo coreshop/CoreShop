@@ -146,7 +146,11 @@ class CoreShop_Admin_ProductSpecificPriceController extends Admin
             $specificPrice->setConditions($conditionInstances);
             $specificPrice->save();
 
-            \Pimcore\Cache::clearTag(\CoreShop\Model\Product::getPriceCacheTag($specificPrice->getO_Id()));
+            $product = \CoreShop\Model\Product::getById($specificPrice->getO_Id());
+
+            if($product instanceof \CoreShop\Model\Product) {
+                $product->clearPriceCache();
+            }
 
             $this->_helper->json(array('success' => true, 'data' => $specificPrice));
         } else {
@@ -160,7 +164,11 @@ class CoreShop_Admin_ProductSpecificPriceController extends Admin
         $specificPrice = \CoreShop\Model\Product\SpecificPrice::getById($id);
 
         if ($specificPrice instanceof \CoreShop\Model\Product\SpecificPrice) {
-            \Pimcore\Cache::clearTag(\CoreShop\Model\Product::getPriceCacheTag($specificPrice->getO_Id()));
+            $product = \CoreShop\Model\Product::getById($specificPrice->getO_Id());
+
+            if($product instanceof \CoreShop\Model\Product) {
+                $product->clearPriceCache();
+            }
 
             $specificPrice->delete();
 
