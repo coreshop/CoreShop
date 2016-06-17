@@ -492,6 +492,24 @@ pimcore.plugin.coreshop.settings = Class.create({
                     },
                     {
                         xtype: 'fieldset',
+                        title: t('coreshop_prices'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight: true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: {width: 600},
+                        items : [
+                            {
+                                fieldLabel: t('coreshop_prices_are_gross'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.BASE.PRICES.GROSS',
+                                checked: this.getValue('SYSTEM.BASE.PRICES.GROSS')
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'fieldset',
                         title: t('coreshop_shipping'),
                         collapsible: true,
                         collapsed: true,

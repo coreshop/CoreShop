@@ -201,13 +201,6 @@ class Product extends Base
     }
 
     /**
-     * Returns yes if retail price is gross price
-     */
-    public function getRetailPriceIsGross() {
-        return false;
-    }
-
-    /**
      * Get all Variants Differences.
      *
      * @param $language
@@ -285,12 +278,12 @@ class Product extends Base
     /**
      * Get Specific Price.
      *
-     * @return float
+     * @return float|boolean
      */
     public function getSpecificPrice()
     {
         $specificPrices = $this->getValidSpecificPriceRules();
-        $price = $this->getSalesPrice(false);
+        $price = false;
 
         foreach ($specificPrices as $specificPrice) {
             $actions = $specificPrice->getActions();
@@ -306,18 +299,19 @@ class Product extends Base
             }
         }
 
-        return $price - $this->getSpecificPriceDiscount($price);
+        return $price;
     }
 
     /**
      * Get Discount from Specific Prices.
      *
-     * @param $price float Base Price for Discounts
+     * @todo: add some caching?!
      *
      * @return float
      */
-    public function getSpecificPriceDiscount($price)
+    public function getDiscount()
     {
+        $price = $this->getSalesPrice(false);
         $specificPrices = $this->getValidSpecificPriceRules();
         $discount = 0;
 
@@ -329,36 +323,50 @@ class Product extends Base
             }
         }
 
-        if($this->getRetailPriceIsGross()) {
+        //TODO: With this, we can apply post-tax discounts, but this needs to be more tested
+        /*if(Tool::getPricesAreGross()) {
             $taxCalculator = $this->getTaxCalculator();
 
             if($taxCalculator) {
-                //$discount = $taxCalculator->removeTaxes($discount);
+                $discount = $taxCalculator->removeTaxes($discount);
             }
-        }
+        }*/
 
         return $discount;
     }
 
     /**
-     * Get Sales Price, with or without taxes
+     * Get Sales Price (without discounts), with or without taxes
      *
      * @param bool $withTax
      * @return float
      */
     public function getSalesPrice($withTax = true) {
-        $price = $this->getRetailPrice();
+
+        $cacheKey = self::getPriceCacheTag($this);
+
+        if ((!$price = Cache::load($cacheKey)) || true) {
+            $price = $this->getRetailPrice();
+            $specificPrice = $this->getSpecificPrice();
+
+            if($specificPrice) {
+                $price = $specificPrice;
+            }
+
+            Cache::save($price, $cacheKey, array('coreshop_product_price', $cacheKey));
+        }
+
         $calculator = $this->getTaxCalculator();
 
         if($withTax) {
-            if(!$this->getRetailPriceIsGross()) {
+            if(!Tool::getPricesAreGross()) {
                 if ($calculator) {
                     $price = $calculator->addTaxes($price);
                 }
             }
         }
         else {
-            if($this->getRetailPriceIsGross()) {
+            if(Tool::getPricesAreGross()) {
                 if ($calculator) {
                     $price = $calculator->removeTaxes($price);
                 }
@@ -379,23 +387,20 @@ class Product extends Base
      */
     public function getPrice($withTax = true)
     {
-        $cacheKey = self::getPriceCacheTag($this);
+        $netPrice = $this->getSalesPrice(false);
 
-        if ((!$price = Cache::load($cacheKey)) || true) {
-            $price = $this->getSpecificPrice();
+        //Apply Discounts on Price, currently, only net-discounts are supported
+        $netPrice = $netPrice - $this->getDiscount();
 
-            Cache::save($price, $cacheKey, array('coreshop_product_price', $cacheKey));
-        }
-        
         if($withTax) {
             $calculator = $this->getTaxCalculator();
 
             if ($calculator) {
-                $price = $calculator->addTaxes($price);
+                $netPrice = $calculator->addTaxes($netPrice);
             }
         }
 
-        return Tool::convertToCurrency($price);
+        return Tool::convertToCurrency($netPrice);
     }
 
     /**

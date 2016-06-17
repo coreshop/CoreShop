@@ -41,8 +41,8 @@ class Carrier extends Base
 
         $cart = Data::createCartWithProducts();
 
-        $price1 = Data::$carrier1->getDeliveryPrice($cart);
-        $price2 = Data::$carrier2->getDeliveryPrice($cart);
+        $price1 = Data::$carrier1->getDeliveryPrice($cart, true);
+        $price2 = Data::$carrier2->getDeliveryPrice($cart, true);
 
         $this->assertEquals(12, $price1);
         $this->assertEquals(24, $price2);

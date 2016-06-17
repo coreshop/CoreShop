@@ -71,6 +71,15 @@ class Tool
     }
 
     /**
+     * Determines if configured prices are gross or net prices
+     *
+     * @return bool
+     */
+    public static function getPricesAreGross() {
+        return Configuration::get("SYSTEM.BASE.PRICES.GROSS");
+    }
+
+    /**
      * Converts value from currency to currency.
      *
      * @param $value

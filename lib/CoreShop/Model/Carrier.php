@@ -216,7 +216,7 @@ class Carrier extends AbstractModel
 
         foreach ($carriers as $carrier) {
             if ($carrier->checkCarrierForCart($cart, $zone)) {
-                $carrier->getDeliveryPrice($cart, $zone); //Cache Delivery Price
+                $carrier->getDeliveryPrice($cart, true, $zone); //Cache Delivery Price
                 $availableCarriers[] = $carrier;
             }
         }
@@ -273,7 +273,7 @@ class Carrier extends AbstractModel
                     foreach ($providers as $p) {
                         if ($cheapestProvider === null) {
                             $cheapestProvider = $p;
-                        } elseif ($cheapestProvider->getDeliveryPrice($cart) > $p->getDeliveryPrice($cart)) {
+                        } elseif ($cheapestProvider->getDeliveryPrice($cart, true) > $p->getDeliveryPrice($cart, true)) {
                             $cheapestProvider = $p;
                         }
                     }
@@ -404,15 +404,16 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * Get DeliveryPrice without Tax.
-     *
-     * @param Cart      $cart
+     * get delivery price for carrier
+     * 
+     * @param Cart $cart
+     * @param bool $withTax
      * @param Zone|null $zone
-     *
-     * @return bool|float
+     * @return bool|DeliveryPrice|float|null
      */
-    public function getDeliveryPriceWithoutTax(Cart $cart, Zone $zone = null)
-    {
+    public function getDeliveryPrice(Cart $cart, $withTax = true, Zone $zone = null) {
+        $price = false;
+        
         if (is_null($zone)) {
             $zone = Tool::getCountry()->getZone();
         }
@@ -432,38 +433,40 @@ class Carrier extends AbstractModel
                 if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
                     $deliveryPrice = $price->getPrice();
 
-                    return $deliveryPrice;
+                    $price = $deliveryPrice;
+                    break;
                 }
             }
         }
 
-        if ($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
-            $deliveryPrice = $this->getMaxDeliveryPrice($zone);
+        if($price === false) {
+            if ($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
+                $deliveryPrice = $this->getMaxDeliveryPrice($zone);
 
-            return $deliveryPrice;
+                $price = $deliveryPrice;
+            }
         }
 
-        return false;
-    }
-
-    /**
-     * Get delivery Price for cart.
-     *
-     * @param Cart $cart
-     * @param Zone $zone
-     *
-     * @return bool|float
-     */
-    public function getDeliveryPrice(Cart $cart, Zone $zone = null)
-    {
-        $taxCalculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
-        $deliveryPrice = $this->getDeliveryPriceWithoutTax($cart, $zone);
-
-        if ($taxCalculator) {
-            return $taxCalculator->addTaxes($deliveryPrice);
+        if($price) {
+            $calculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
+            
+            if($withTax) {
+                if(!Tool::getPricesAreGross()) {
+                    if ($calculator) {
+                        $price = $calculator->addTaxes($price);
+                    }
+                }
+            }
+            else {
+                if(Tool::getPricesAreGross()) {
+                    if ($calculator) {
+                        $price = $calculator->removeTaxes($price);
+                    }
+                }
+            }
         }
-
-        return $deliveryPrice;
+        
+        return $price;
     }
 
     /**
@@ -477,7 +480,7 @@ class Carrier extends AbstractModel
     public function getTaxAmount(Cart $cart, Zone $zone = null)
     {
         $taxCalculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
-        $deliveryPrice = $this->getDeliveryPriceWithoutTax($cart, $zone);
+        $deliveryPrice = $this->getDeliveryPrice($cart, false, $zone);
 
         if ($taxCalculator) {
             return $taxCalculator->getTaxesAmount($deliveryPrice);

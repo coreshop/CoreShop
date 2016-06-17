@@ -168,9 +168,9 @@ class Cart extends Base
 
         foreach ($this->getItems() as $item) {
             if ($useTaxes) {
-                $subtotal += $item->getAmount() * Tool::roundPrice($item->getProduct()->getPrice());
+                $subtotal += $item->getAmount() * ($item->getProduct()->getPrice());
             } else {
-                $subtotal += $item->getAmount() * Tool::roundPrice($item->getProduct()->getPrice(false));
+                $subtotal += $item->getAmount() * ($item->getProduct()->getPrice(false));
             }
         }
 
@@ -320,7 +320,7 @@ class Cart extends Base
             }
         }
 
-        return $useTax ? $carrier->getDeliveryPrice($this) : $carrier->getDeliveryPriceWithoutTax($this);
+        return $carrier->getDeliveryPrice($this, $useTax);
     }
 
     /**
@@ -350,7 +350,7 @@ class Cart extends Base
             }
         }
 
-        return Tool::roundPrice($this->$cacheKey);
+        return $this->$cacheKey;
     }
 
     /**
@@ -405,7 +405,7 @@ class Cart extends Base
         $paymentProvider = $this->getPaymentProvider();
 
         if ($paymentProvider instanceof PaymentPlugin) {
-            return Tool::roundPrice($paymentProvider->getPaymentFee($this, $useTaxes));
+            return $paymentProvider->getPaymentFee($this, $useTaxes);
         }
 
         return 0;
@@ -454,7 +454,7 @@ class Cart extends Base
         $shippingTax = $this->getShippingTax();
         $paymentTax = $this->getPaymentFeeTax();
 
-        return Tool::roundPrice($subtotalTax + $shippingTax + $paymentTax);
+        return $subtotalTax + $shippingTax + $paymentTax;
     }
 
     /**

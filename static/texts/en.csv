@@ -377,3 +377,5 @@
 "coreshop_order_state_document_not_found","Orderstates E-Mail document could not be found"
 "coreshop_order_state_has_no_email","Orderstate has no email configured"
 "coreshop_inherit","Inherit"
+"coreshop_prices","Prices"
+"coreshop_prices_are_gross","Prices are gross prices"
