@@ -61,10 +61,14 @@ abstract class AbstractCondition
         $this->view->language = (string) $language;
         $this->view->brick = $this;
 
+        $class = get_class($this);
+        $class = explode('\\', $class);
+        $class = array_pop($class);
+
         $this->view->setScriptPath(
             array(
                 CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter',
-                CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter/'.strtolower(array_pop(explode('\\', get_class($this)))),
+                CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter/'.strtolower($class),
             )
         );
 
