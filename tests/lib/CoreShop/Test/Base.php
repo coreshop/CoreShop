@@ -15,6 +15,7 @@
 namespace CoreShop\Test;
 
 use CoreShop\Model\Carrier;
+use CoreShop\Model\Configuration;
 use Pimcore\Model\Object\ClassDefinition;
 
 class Base extends \PHPUnit_Framework_TestCase
@@ -34,5 +35,6 @@ class Base extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);
     }
 }
