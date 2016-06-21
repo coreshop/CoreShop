@@ -224,62 +224,6 @@ class Product extends Model\Document\Tag
     }
 
     /**
-     * get data from webservice import.
-     *
-     * @param $wsElement
-     * @param null $idMapper
-     *
-     * @throws \Exception
-     */
-    public function getFromWebserviceImport($wsElement, $idMapper = null)
-    {
-        $data = $wsElement->value;
-        if ($data->id !== null) {
-            $this->type = $data->type;
-            $this->subtype = $data->subtype;
-            if (is_numeric($this->id)) {
-                if ($idMapper) {
-                    $id = $idMapper->getMappedId($this->type, $this->id);
-                }
-
-                if ($this->type == 'asset') {
-                    $this->o = Asset::getById($id);
-                    if (!$this->o instanceof Asset) {
-                        if ($idMapper && $idMapper->ignoreMappingFailures()) {
-                            $idMapper->recordMappingFailure($this->getDocumentId(), $this->type, $this->id);
-                        } else {
-                            throw new \Exception('cannot get values from web service import - referenced asset with id [ '.$this->id.' ] is unknown');
-                        }
-                    }
-                } elseif ($this->type == 'document') {
-                    $this->o = Document::getById($id);
-                    if (!$this->o instanceof Document) {
-                        if ($idMapper && $idMapper->ignoreMappingFailures()) {
-                            $idMapper->recordMappingFailure($this->getDocumentId(), $this->type, $this->id);
-                        } else {
-                            throw new \Exception('cannot get values from web service import - referenced document with id [ '.$this->id.' ] is unknown');
-                        }
-                    }
-                } elseif ($this->type == 'object') {
-                    $this->o = Object::getById($id);
-                    if (!$this->o instanceof Object\AbstractObject) {
-                        if ($idMapper && $idMapper->ignoreMappingFailures()) {
-                            $idMapper->recordMappingFailure($this->getDocumentId(), $this->type, $this->id);
-                        } else {
-                            throw new \Exception('cannot get values from web service import - referenced object with id [ '.$this->id.' ] is unknown');
-                        }
-                    }
-                } else {
-                    p_r($this);
-                    throw new \Exception('cannot get values from web service import - type is not valid');
-                }
-            } else {
-                throw new \Exception('cannot get values from web service import - id is not valid');
-            }
-        }
-    }
-
-    /**
      * check valid.
      *
      * @return bool
