@@ -29,7 +29,7 @@ class CoreShop_Admin_OrderStateController extends Admin
 
     public function listAction()
     {
-        $list = new State\Listing();
+        $list = State::getList();
 
         $data = array();
         if (is_array($list->getData())) {

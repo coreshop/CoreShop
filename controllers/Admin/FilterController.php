@@ -30,7 +30,7 @@ class CoreShop_Admin_FilterController extends Admin
 
     public function listAction()
     {
-        $list = new Filter\Listing();
+        $list = Filter::getList();
 
         $data = array();
         if (is_array($list->getData())) {

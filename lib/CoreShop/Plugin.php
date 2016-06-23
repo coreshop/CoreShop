@@ -18,6 +18,7 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Product;
 use CoreShop\Model\TaxRule\VatManager;
+use DI\ContainerBuilder;
 use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
 use Pimcore\Cache;
@@ -46,6 +47,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
     {
         require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
         require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
+
+        /*\Pimcore::getDiContainer()->set('CoreShop\Model\*\*\Listing', \DI\object('CoreShop\Model\*\*\Listing'));
+        \Pimcore::getDiContainer()->set('CoreShop\Model\*\*', \DI\object('CoreShop\Model\*\*'));
+        \Pimcore::getDiContainer()->set('CoreShop\Model\*\Listing', \DI\object('CoreShop\Model\*\Listing'));
+        \Pimcore::getDiContainer()->set('CoreShop\Model\*', \DI\object('CoreShop\Model\*'));*/
 
         parent::__construct($jsPaths, $cssPaths);
     }
@@ -124,6 +130,14 @@ class Plugin extends AbstractPlugin implements PluginInterface
                 return new VatManager();
             });
         }
+
+        \Pimcore::getEventManager()->attach("system.di.init", function(\Zend_EventManager_Event $e) {
+            $diBuilder = $e->getTarget();
+            
+            if($diBuilder instanceof ContainerBuilder) {
+                $diBuilder->addDefinitions(CORESHOP_PATH . "/config/di.php");
+            }
+        });
 
         //Allows to load classes with CoreShop namespace from Website (eg. for overriding classes)
         $includePaths = array(

@@ -37,7 +37,7 @@ class TaxRuleGroup extends AbstractModel
      */
     public function getRules()
     {
-        $listing = new TaxRule\Listing();
+        $listing = TaxRule::getList();
         $listing->setCondition('taxRuleGroupId = ?', array($this->getId()));
 
         return $listing->getData();
@@ -73,7 +73,7 @@ class TaxRuleGroup extends AbstractModel
         //Add All for State
         $queryParams[] = 0;
 
-        $listing = new TaxRule\Listing();
+        $listing = TaxRule::getList();
         $listing->setCondition('taxRuleGroupId = ? AND countryId IN(?, ?) AND stateId IN(?, ?)', $queryParams);
 
         return $listing->getData();

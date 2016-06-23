@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 use CoreShop\Exception;
 use CoreShop\Tool;
 use Pimcore\Model\Element\Note;
+use Pimcore\Model\Listing\AbstractListing;
 use Pimcore\Model\Object\Concrete;
 use Pimcore\Model\User;
 use Pimcore\Tool\Authentication;
@@ -38,9 +39,13 @@ class Base extends Concrete
      */
     public static function getPimcoreObjectClass()
     {
-        $classFile = \Pimcore\Tool::getModelClassMapping(get_called_class());
-        
-        return $classFile::$pimcoreClass;
+        $class = get_called_class();
+
+        if(\Pimcore::getDiContainer()->has($class)) {
+            $class = \Pimcore::getDiContainer()->get($class);
+        }
+
+        return $class::$pimcoreClass;
     }
 
     /**
@@ -114,18 +119,21 @@ class Base extends Concrete
     public static function getList($config = array())
     {
         //We need to re-write this method, since pimcore uses the called_class method
-
         $className = self::getPimcoreObjectClass();
 
         if (is_array($config)) {
             if ($className) {
                 $listClass = $className.'\\Listing';
+                $list = null;
 
-                // check for a mapped class
-                $listClass = \Pimcore\Tool::getModelClassMapping($listClass);
-
-                if (\Pimcore\Tool::classExists($listClass)) {
+                if(\Pimcore::getDiContainer()->has($listClass)) {
                     $list = new $listClass();
+                }
+                else if (\Pimcore\Tool::classExists($listClass)) {
+                    $list = new $listClass();
+                }
+
+                if($list instanceof AbstractListing) {
                     $list->setValues($config);
 
                     return $list;

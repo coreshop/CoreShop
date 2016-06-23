@@ -50,7 +50,7 @@ class State extends AbstractModel
      */
     public function getThreadsList()
     {
-        $list = new Thread\Listing();
+        $list = Thread::getList();
         $list->setCondition('statusId = ?', array($this->getId()));
 
         return $list;

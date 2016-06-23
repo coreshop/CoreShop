@@ -29,7 +29,7 @@ class CoreShop_Admin_TaxController extends Admin
 
     public function listAction()
     {
-        $list = new Tax\Listing();
+        $list = Tax::getList();
 
         $data = array();
         if (is_array($list->getData())) {

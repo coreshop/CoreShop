@@ -81,7 +81,7 @@ class Country extends AbstractModel
      */
     public static function getActiveCountries()
     {
-        $list = new Country\Listing();
+        $list = Country::getList();
         $list->setCondition('active = 1');
 
         return $list->getData();

@@ -30,7 +30,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
 
     public function listAction()
     {
-        $list = new PriceRule\Listing();
+        $list = PriceRule::getList();
 
         $data = array();
         if (is_array($list->getData())) {

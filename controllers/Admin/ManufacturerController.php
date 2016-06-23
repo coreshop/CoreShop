@@ -30,7 +30,7 @@ class CoreShop_Admin_ManufacturerController extends Admin
 
     public function listAction()
     {
-        $list = new Manufacturer\Listing();
+        $list = Manufacturer::getList();
 
         $data = array();
         if (is_array($list->getData())) {

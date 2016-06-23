@@ -123,7 +123,7 @@ class PriceRule extends AbstractModel
      */
     public static function getPricingRules()
     {
-        $list = new PriceRule\Listing();
+        $list = PriceRule::getList();
 
         return $list->getData();
     }
@@ -137,7 +137,7 @@ class PriceRule extends AbstractModel
     {
         $cart = Tool::prepareCart();
 
-        $priceRules = new PriceRule\Listing();
+        $priceRules = PriceRule::getList();
         $priceRules->setCondition("(code IS NOT NULL AND code <> '') AND highlight = 1");
 
         $priceRules = $priceRules->getData();
@@ -189,7 +189,7 @@ class PriceRule extends AbstractModel
         }
 
         if ($cart->getPriceRule() == null) {
-            $priceRules = new PriceRule\Listing();
+            $priceRules = PriceRule::getList();
             $priceRules->setCondition("code IS NULL OR code = ''");
 
             $priceRules = $priceRules->getData();

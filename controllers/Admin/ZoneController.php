@@ -29,7 +29,7 @@ class CoreShop_Admin_ZoneController extends Admin
 
     public function listAction()
     {
-        $list = new Zone\Listing();
+        $list = Zone::getList();
         $list->setOrder('ASC');
         $list->load();
 

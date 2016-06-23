@@ -57,7 +57,7 @@ class PriceRule extends AbstractProductPriceRule
      */
     public static function getPriceRules($active = true)
     {
-        $list = new PriceRule\Listing();
+        $list = PriceRule::getList();
         $list->setCondition("active = ?", array($active));
 
         return $list->getData();

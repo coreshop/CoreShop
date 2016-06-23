@@ -56,7 +56,7 @@ class SpecificPrice extends AbstractProductPriceRule
      */
     public static function getSpecificPrices(Product $product)
     {
-        $list = new SpecificPrice\Listing();
+        $list = SpecificPrice::getList();
 
         $query = "";
         $queryParams = [

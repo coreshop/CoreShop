@@ -29,7 +29,7 @@ class CoreShop_Admin_CarrierController extends Admin
 
     public function listAction()
     {
-        $list = new Carrier\Listing();
+        $list = Carrier::getList();
 
         $data = array();
         if (is_array($list->getData())) {
@@ -42,7 +42,7 @@ class CoreShop_Admin_CarrierController extends Admin
 
     public function getCarriersAction()
     {
-        $list = new Carrier\Listing();
+        $list = Carrier::getList();
         $list->setOrder('ASC');
         $list->setOrderKey('name');
         $list->load();

@@ -29,7 +29,7 @@ class CoreShop_Admin_StateController extends Admin
 
     public function countryAction()
     {
-        $list = new State\Listing();
+        $list = State::getList();
         $list->setOrder('ASC');
         $list->setOrderKey('name');
         $list->setCondition('countryId=?', array($this->getParam('countryId')));
@@ -46,7 +46,7 @@ class CoreShop_Admin_StateController extends Admin
 
     public function listAction()
     {
-        $list = new State\Listing();
+        $list = State::getList();
         $list->setOrder('ASC');
         $list->setOrderKey('name');
         $list->load();

@@ -104,7 +104,7 @@ class Thread extends AbstractModel
      */
     public static function searchThread($email, $contactId, $orderId = null, $productId = null)
     {
-        $list = new Thread\Listing();
+        $list = Thread::getList();
 
         $params = array(
             'email' => $email,
@@ -162,7 +162,7 @@ class Thread extends AbstractModel
      */
     public function getMessages()
     {
-        $list = new Message\Listing();
+        $list = Message::getList();
         $list->setCondition('threadId = ?', array($this->getId()));
 
         return $list->load();

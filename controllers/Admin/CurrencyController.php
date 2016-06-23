@@ -29,7 +29,7 @@ class CoreShop_Admin_CurrencyController extends Admin
 
     public function listAction()
     {
-        $list = new Currency\Listing();
+        $list = Currency::getList();
         $list->setOrder('ASC');
         $list->load();
 

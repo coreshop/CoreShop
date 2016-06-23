@@ -63,9 +63,11 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    $className = Tool::getModelClassMapping($className);
+                    //$className = Tool::getModelClassMapping($className);
 
-                    $object = new $className();
+                    $object = \Pimcore::getDiContainer()->make($className);
+
+                    //$object = new $className();
                     $object->getDao()->getById($id);
 
                     \Zend_Registry::set($cacheKey, $object);
@@ -108,7 +110,8 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    $object = new $className();
+                    
+                    $object = \Pimcore::getDiContainer()->make($className);
                     $object->getDao()->getByField($field, $value);
 
                     \Zend_Registry::set($cacheKey, $object);
@@ -149,6 +152,10 @@ class AbstractModel extends Model\AbstractModel
     public static function getList()
     {
         $listClass = get_called_class().'\\Listing';
+
+        if(\Pimcore::getDiContainer()->has($listClass)) {
+            return \Pimcore::getDiContainer()->make($listClass);
+        }
 
         if (!Tool::classExists($listClass)) {
             throw new Exception("Listing Class $listClass not found!");
@@ -221,7 +228,7 @@ class AbstractModel extends Model\AbstractModel
     /**
      * Get LocalizedFields Provider.
      *
-     * @return LocalizedFields|null
+     * @param $localizedFields
      */
     public function setLocalizedFields($localizedFields)
     {

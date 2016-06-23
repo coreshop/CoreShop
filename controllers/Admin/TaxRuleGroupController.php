@@ -29,7 +29,7 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
 
     public function listAction()
     {
-        $list = new TaxRuleGroup\Listing();
+        $list = TaxRuleGroup::getList();
 
         $data = array();
         if (is_array($list->getData())) {

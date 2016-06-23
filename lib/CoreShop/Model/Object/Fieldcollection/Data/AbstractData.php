@@ -33,9 +33,13 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
      */
     public static function getPimcoreObjectClass()
     {
-        $classFile = Tool::getModelClassMapping(get_called_class());
+        $class = get_called_class();
 
-        return $classFile::$pimcoreClass;
+        if(\Pimcore::getDiContainer()->has($class)) {
+            $class = \Pimcore::getDiContainer()->get($class);
+        }
+
+        return $class::$pimcoreClass;
     }
 
     /**

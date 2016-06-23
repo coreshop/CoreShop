@@ -31,7 +31,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
     public function listAction()
     {
-        $list = new Index\Listing();
+        $list = Index::getList();
 
         $data = array();
         if (is_array($list->getData())) {

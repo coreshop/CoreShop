@@ -30,7 +30,7 @@ class CoreShop_Admin_MessagingContactController extends Admin
 
     public function listAction()
     {
-        $list = new Contact\Listing();
+        $list = Contact::getList();
 
         $data = array();
         if (is_array($list->getData())) {

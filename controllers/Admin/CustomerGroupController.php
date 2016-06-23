@@ -30,7 +30,7 @@ class CoreShop_Admin_CustomerGroupController extends Admin
 
     public function listAction()
     {
-        $list = new CustomerGroup\Listing();
+        $list = CustomerGroup::getList();
 
         $data = array();
         if (is_array($list->getData())) {

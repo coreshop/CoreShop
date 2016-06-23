@@ -30,7 +30,7 @@ class CoreShop_Admin_MessagingThreadStateController extends Admin
 
     public function listAction()
     {
-        $list = new State\Listing();
+        $list = State::getList();
 
         $data = array();
         if (is_array($list->getData())) {

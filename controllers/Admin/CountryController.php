@@ -29,7 +29,7 @@ class CoreShop_Admin_CountryController extends Admin
 
     public function listAction()
     {
-        $list = new Country\Listing();
+        $list = CoreShop\Model\Country::getList();
         $list->setOrder('ASC');
         $list->setOrderKey('name');
         $list->load();

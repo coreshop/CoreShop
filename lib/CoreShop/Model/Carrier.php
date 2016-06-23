@@ -187,7 +187,7 @@ class Carrier extends AbstractModel
      */
     public static function getAll()
     {
-        $list = new Carrier\Listing();
+        $list = Carrier::getList();
         $list->setOrder('ASC');
         $list->setOrderKey('grade');
 
@@ -358,9 +358,9 @@ class Carrier extends AbstractModel
     public function getRanges()
     {
         if ($this->getShippingMethod() == 'weight') {
-            $list = new Carrier\RangeWeight\Listing();
+            $list = Carrier\RangeWeight::getList();
         } else {
-            $list = new Carrier\RangePrice\Listing();
+            $list = Carrier\RangePrice::getList();
         }
 
         $list->setCondition('carrierId=?', array($this->getId()));
