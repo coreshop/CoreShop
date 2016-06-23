@@ -18,8 +18,6 @@ define("PIMCORE_WEBSITE_VAR",  CORESHOP_TESTS_PATH . "/tmp/var");
 
 @mkdir(CORESHOP_TESTS_PATH . "/output", 0777, true);
 
-copy(CORESHOP_TESTS_PATH . "/config/extensions.php", PIMCORE_WEBSITE_VAR . "/config/extensions.php");
-
 // include pimcore bootstrap
 include_once(realpath(dirname(__FILE__)) . "/../../../pimcore/cli/startup.php");
 
@@ -176,6 +174,9 @@ $install->createCustomView($coreShopFolder, array(
 \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array("installer" => $install));
 
 $install->setConfigInstalled();
+
+\Pimcore\ExtensionManager::enable("plugin", "CoreShop");
+\Pimcore\API\Plugin\Broker::getInstance()->registerPlugin(new \CoreShop\Plugin());
 
 Zend_Session::$_unitTestEnabled = true;
 \Zend_Registry::set("Zend_Locale", new \Zend_Locale("en"));
