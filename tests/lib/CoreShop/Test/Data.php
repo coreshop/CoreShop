@@ -81,7 +81,7 @@ class Data
 
     public static function createData()
     {
-        Configuration::set("SYSTEM.BASE.COUNTRY", Country::getById(2));
+        Configuration::set("SYSTEM.BASE.COUNTRY", Country::getById(2)->getId());
 
         $session = \CoreShop\Tool::getSession();
         $session->countryId = Country::getById(2)->getId();

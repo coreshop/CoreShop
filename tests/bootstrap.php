@@ -18,6 +18,8 @@ define("PIMCORE_WEBSITE_VAR",  CORESHOP_TESTS_PATH . "/tmp/var");
 
 @mkdir(CORESHOP_TESTS_PATH . "/output", 0777, true);
 
+copy(CORESHOP_TESTS_PATH . "/config/extensions.php", PIMCORE_WEBSITE_VAR . "/config/extensions.php");
+
 // include pimcore bootstrap
 include_once(realpath(dirname(__FILE__)) . "/../../../pimcore/cli/startup.php");
 

@@ -713,6 +713,7 @@ class Install
         Configuration::set('SYSTEM.INVOICE.WKHTML', '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5');
         Configuration::set("SYSTEM.MAIL.CONFIRMATION", "/shop/email/order-confirmation");
         Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);
+        Configuration::set("SYSTEM.SHIPPING.CARRIER_SORT", "grade");
     }
 
     /**
