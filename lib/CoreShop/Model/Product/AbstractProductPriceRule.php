@@ -68,7 +68,8 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
     public static function addCondition($condition)
     {
         if (!in_array($condition, self::$availableConditions)) {
-            self::$availableConditions[] = $condition;
+            $class = get_called_class();
+            $class::$availableConditions[] = $condition;
         }
     }
 
@@ -80,7 +81,8 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
     public static function addAction($action)
     {
         if (!in_array($action, self::$availableActions)) {
-            self::$availableActions[] = $action;
+            $class = get_called_class();
+            $class::$availableActions[] = $action;
         }
     }
 
