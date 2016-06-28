@@ -142,30 +142,6 @@ class Wkhtmltopdf
      */
     protected static function getWkhtmltodfBinary()
     {
-        if (Config::getSystemConfig()->documents->wkhtmltopdf) {
-            if (@is_executable(Config::getSystemConfig()->documents->wkhtmltopdf)) {
-                return (string) Config::getSystemConfig()->documents->wkhtmltopdf;
-            } else {
-                \Logger::critical('wkhtmltopdf binary: '.Config::getSystemConfig()->documents->wkhtmltopdf.' is not executable');
-            }
-        }
-
-        $paths = array(
-            '/usr/bin/wkhtmltopdf-amd64',
-            '/usr/local/bin/wkhtmltopdf-amd64',
-            '/bin/wkhtmltopdf-amd64',
-            '/usr/bin/wkhtmltopdf',
-            '/usr/local/bin/wkhtmltopdf',
-            '/bin/wkhtmltopdf',
-            realpath(PIMCORE_DOCUMENT_ROOT.'/../wkhtmltox/wkhtmltopdf.exe'), // for windows sample package (XAMPP)
-        );
-
-        foreach ($paths as $path) {
-            if (@is_executable($path)) {
-                return $path;
-            }
-        }
-
-        return false;
+        return Console::getExecutable("wkhtmltopdf");
     }
 }
