@@ -363,7 +363,7 @@ class CoreShop_Admin_OrderController extends Admin
                 "o_id" => $detail->getId(),
                 "product" => $detail->getProduct()->getId(),
                 "product_name" => $detail->getProduct()->getName(),
-                "product_image" => $detail->getProduct()->getImage()->getPath(),
+                "product_image" => ($detail->getProduct()->getImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProduct()->getImage()->getPath() : null,
                 "wholesale_price" => $detail->getWholesalePrice(),
                 "price_without_tax" => $detail->getPriceWithoutTax(),
                 "price" => $detail->getPrice(),
