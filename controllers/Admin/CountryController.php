@@ -43,7 +43,7 @@ class CoreShop_Admin_CountryController extends Admin
         $this->_helper->json($countries);
     }
 
-    protected function getTreeNodeConfig($country)
+    protected function getTreeNodeConfig(Country $country)
     {
         $tmpCountry = array(
             'id' => $country->getId(),
@@ -52,6 +52,7 @@ class CoreShop_Admin_CountryController extends Admin
                 'title' => 'ID: '.$country->getId(),
             ),
             'name' => $country->getName(),
+            'zone' => $country->getZone() instanceof \CoreShop\Model\Zone ? $country->getZone()->getName() : ''
         );
 
         return $tmpCountry;

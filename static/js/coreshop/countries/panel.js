@@ -27,5 +27,77 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
         delete : '/plugin/CoreShop/admin_country/delete',
         get : '/plugin/CoreShop/admin_country/get',
         list : '/plugin/CoreShop/admin_country/list'
+    },
+
+    getNavigation: function () {
+        if (!this.grid) {
+            this.store = new Ext.data.Store({
+                restful:    false,
+                proxy:      new Ext.data.HttpProxy({
+                    url : '/plugin/CoreShop/admin_country/list'
+                }),
+                reader:     new Ext.data.JsonReader({}, [
+                    { name:'id' },
+                    { name:'name' },
+                    { name:'zone' }
+                ]),
+                autoload:   true,
+                groupField: 'zone',
+                groupDir: 'ASC'
+            });
+
+            this.grid = Ext.create('Ext.grid.Panel', {
+                region: 'west',
+                store: this.store,
+                columns: [
+                    {
+                        text: '',
+                        dataIndex: 'text',
+                        flex : 1,
+                        renderer: function (value, metadata, record)
+                        {
+                            metadata.tdCls = record.get('iconCls') + ' td-icon';
+
+                            return value;
+                        }
+                    }
+                ],
+                listeners : this.getTreeNodeListeners(),
+                useArrows: true,
+                autoScroll: true,
+                animate: true,
+                containerScroll: true,
+                width: 200,
+                split: true,
+                groupField: 'zone',
+                groupDir: 'ASC',
+                features: [{
+                    ftype: 'grouping',
+
+                    // You can customize the group's header.
+                    groupHeaderTpl: '{name} ({children.length})',
+                    enableNoGroups:true,
+                    startCollapsed : true
+                }],
+                tbar: {
+                    items: [
+                        {
+                            // add button
+                            text: t('add'),
+                            iconCls: 'pimcore_icon_add',
+                            handler: this.addItem.bind(this)
+                        }
+                    ]
+                },
+                hideHeaders: true
+            });
+
+            this.grid.on('beforerender', function () {
+                this.getStore().load();
+            });
+
+        }
+
+        return this.grid;
     }
 });
