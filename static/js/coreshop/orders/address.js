@@ -114,8 +114,6 @@ pimcore.plugin.coreshop.orders.address = Class.create({
 
     getMetaDataForField: function (fieldConfig) {
         return false;
-        var name = fieldConfig.name;
-        return this.metaData[name];
     },
 
     addToDataFields: function (field, name) {
