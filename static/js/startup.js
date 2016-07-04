@@ -222,6 +222,12 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
                     var productsMenu = [];
 
+                    productsMenu.push({
+                        text: t('coreshop_product_list'),
+                        iconCls: 'coreshop_icon_product_list',
+                        handler: this.openProducts
+                    });
+
                     if (user.isAllowed('coreshop_permission_filters')) {
                         productsMenu.push({
                             text: t('coreshop_product_filters'),
@@ -245,12 +251,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                             handler: this.openManufacturers
                         });
                     }
-
-                    productsMenu.push({
-                        text: t('coreshop_product_list'),
-                        iconCls: 'coreshop_icon_product_list',
-                        handler: this.openProducts
-                    });
 
                     if (productsMenu.length > 0) {
                         coreShopMenuItems.push({
