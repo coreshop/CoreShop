@@ -13,6 +13,7 @@
  */
 namespace CoreShop\Model\TaxRule;
 
+use CoreShop\Model\Configuration;
 use CoreShop\Model\Plugin\TaxManager;
 use CoreShop\Model\State;
 use CoreShop\Model\TaxCalculator;
@@ -72,7 +73,9 @@ class Manager implements TaxManager
             return $this->tax_calculator;
         }
 
-        //Todo:: Configure if taxes are enabled
+        if(!Configuration::get('SYSTEM.BASE.TAX.ENABLED')) {
+            return new TaxCalculator();
+        }
 
         $cacheKey = $this->getCacheKey();
 

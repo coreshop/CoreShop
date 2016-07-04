@@ -714,6 +714,7 @@ class Install
         Configuration::set("SYSTEM.MAIL.CONFIRMATION", "/shop/email/order-confirmation");
         Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);
         Configuration::set("SYSTEM.SHIPPING.CARRIER_SORT", "grade");
+        Configuration::set("SYSTEM.BASE.TAX.ENABLED", true);
     }
 
     /**

@@ -95,8 +95,6 @@ class AbstractModel extends Model\AbstractModel
      */
     public static function getByField($field, $value)
     {
-        //Todo: what if a object changes and is still in cache?
-
         $className = get_called_class();
         $cacheKey = self::getCacheKey($className, $field.'_'.$value);
 

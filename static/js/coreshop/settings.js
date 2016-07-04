@@ -394,6 +394,12 @@ pimcore.plugin.coreshop.settings = Class.create({
                         defaults: { width: 600 },
                         items : [
                             {
+                                fieldLabel: t('coreshop_base_tax_enabled'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.BASE.TAX.ENABLED',
+                                checked: this.getValue('SYSTEM.BASE.TAX.ENABLED')
+                            },
+                            {
                                 fieldLabel: t('coreshop_base_checkvat'),
                                 xtype: 'checkbox',
                                 name: 'SYSTEM.BASE.CHECKVAT',
