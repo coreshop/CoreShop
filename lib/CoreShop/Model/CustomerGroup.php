@@ -19,12 +19,7 @@ class CustomerGroup extends AbstractModel
      * @var int
      */
     public $id;
-
-    /**
-     * @var float
-     */
-    public $discount;
-
+    
     /**
      * @var string
      */
@@ -44,22 +39,6 @@ class CustomerGroup extends AbstractModel
     public function setId($id)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDiscount()
-    {
-        return $this->discount;
-    }
-
-    /**
-     * @param float $discount
-     */
-    public function setDiscount($discount)
-    {
-        $this->discount = $discount;
     }
 
     /**

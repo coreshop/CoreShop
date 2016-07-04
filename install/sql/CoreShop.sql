@@ -468,8 +468,7 @@ CREATE TABLE `coreshop_tax_rules` (
 DROP TABLE IF EXISTS `coreshop_customer_groups`;
 CREATE TABLE `coreshop_customer_groups` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(255) NOT NULL,
-  `discount` double NOT NULL
+  `name` varchar(255) NOT NULL
 );
 
 

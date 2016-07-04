@@ -61,15 +61,6 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
                             fieldLabel: t('name'),
                             width: 400,
                             value: data.name
-                        },
-                        {
-                            xtype: 'numberfield',
-                            name: 'discount',
-                            fieldLabel: t('coreshop_customer_group_discount'),
-                            width: 400,
-                            value: data.discount,
-                            decimalPrecision : 2,
-                            step : 1
                         }
                     ]
                 }
