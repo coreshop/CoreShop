@@ -56,7 +56,7 @@ pimcore.plugin.coreshop.orders.createPayment = {
                 },
                 buttons: [
                     {
-                        text: 'Save',
+                        text: t('save'),
                         handler: function (btn) {
                             var form = btn.up('window').down('form').getForm();
 

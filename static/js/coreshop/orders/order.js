@@ -419,8 +419,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             items.push({
                 xtype : 'tabpanel',
                 items: [
-                    this.getAddressPanelForAddress(this.order.address.shipping, t('coreshop_address_shipping')),
-                    this.getAddressPanelForAddress(this.order.address.billing, t('coreshop_address_billing'))
+                    this.getAddressPanelForAddress(this.order.address.shipping, t('coreshop_address_shipping'), 'shipping'),
+                    this.getAddressPanelForAddress(this.order.address.billing, t('coreshop_address_billing'), 'billing')
                 ]
             });
 
@@ -446,9 +446,39 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.customerInfo;
     },
 
-    getAddressPanelForAddress : function (address, title) {
+    getAddressPanelForAddress : function (address, title, type) {
         return {
             xtype: 'panel',
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'top',
+                items: [
+                    {
+                        iconCls : 'pimcore_icon_edit',
+                        text : t('edit'),
+                        scale : 'small',
+                        handler : function () {
+                            Ext.Ajax.request({
+                                url: '/plugin/CoreShop/admin_order/get-address-fields',
+                                params: {
+                                    id: this.order.o_id,
+                                    type : type
+                                },
+                                success: function (response) {
+                                    var res = Ext.decode(response.responseText);
+
+                                    var addressWindow = new pimcore.plugin.coreshop.orders.address(res.data, res.layout, this.order.o_id, type, function(success) {
+                                        addressWindow.close();
+                                        if(success) {
+                                            this.reload();
+                                        }
+                                    }.bind(this)).show();
+                                }.bind(this)
+                            });
+                        }.bind(this)
+                    }
+                ]
+            }],
             title: title,
             layout: {
                 type : 'hbox',

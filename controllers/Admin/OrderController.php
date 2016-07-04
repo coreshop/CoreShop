@@ -13,6 +13,7 @@
  */
 use CoreShop\Plugin;
 use Pimcore\Controller\Action\Admin;
+use Pimcore\Model\Object;
 
 class CoreShop_Admin_OrderController extends Admin
 {
@@ -304,6 +305,94 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array("success" => true, "order" => $jsonOrder));
     }
 
+    public function getAddressFieldsAction() {
+        $orderId = $this->getParam('id');
+        $order = \CoreShop\Model\Order::getById($orderId);
+        $addressType = $this->getParam('type');
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+        }
+
+        $fieldCollectionClass = \CoreShop\Model\User\Address::getPimcoreObjectClass();
+        $fieldCollectionType = new $fieldCollectionClass();
+        $fieldCollectionType = $fieldCollectionType->getType();
+
+        $fieldCollection = \Pimcore\Model\Object\Fieldcollection\Definition::getByKey($fieldCollectionType);
+
+        if($fieldCollection instanceof \Pimcore\Model\Object\Fieldcollection\Definition) {
+            $this->_helper->json([
+                'success' => true,
+                'data' => $addressType == 'shipping' ? $this->getDataForObject($order->getCustomerShippingAddress()) : $this->getDataForObject($order->getCustomerBillingAddress()),
+                'layout' => $fieldCollection->getLayoutDefinitions()
+            ]);
+        }
+
+        $this->_helper->json(['success' => true]);
+    }
+
+    public function changeAddressAction() {
+        $orderId = $this->getParam('id');
+        $order = \CoreShop\Model\Order::getById($orderId);
+        $addressType = $this->getParam('type');
+        $data = $this->getAllParams();
+
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+        }
+
+        $address = $addressType == 'shipping' ? $order->getCustomerShippingAddress() : $order->getCustomerBillingAddress();
+
+        if($address instanceof \CoreShop\Model\User\Address) {
+            $address->setValues($data);
+
+            $fieldCollection = new \Pimcore\Model\Object\Fieldcollection();
+            $fieldCollection->add($address);
+
+            if($addressType == 'shipping') {
+                $order->setShippingAddress($fieldCollection);
+            }
+            else {
+                $order->setBillingAddress($fieldCollection);
+            }
+
+            $order->save();
+
+            $this->_helper->json(array('success' => true));
+        }
+
+        $this->_helper->json(array('success' => false));
+    }
+
+    /**
+     * @param Object\Fieldcollection\Data\AbstractData $data
+     * @return array
+     */
+    private function getDataForObject(Pimcore\Model\Object\Fieldcollection\Data\AbstractData $data)
+    {
+        $objectData = [];
+
+        foreach ($data->getDefinition()->getFieldDefinitions() as $key => $def) {
+            $getter = "get" . ucfirst($key);
+            $fieldData = $data->$getter();
+
+            if($def instanceof Object\ClassDefinition\Data) {
+                $value = $def->getDataForEditmode($fieldData, $data, false);
+
+                $objectData[$key] = $value;
+            }
+            else {
+                $objectData[$key] = null;
+            }
+        }
+
+        return $objectData;
+    }
+
+    /**
+     * @param \CoreShop\Model\Order $order
+     * @return array
+     */
     protected function getStatesHistory(\CoreShop\Model\Order $order)
     {
         //Get History
@@ -336,6 +425,11 @@ class CoreShop_Admin_OrderController extends Admin
         return $statesHistory;
     }
 
+    /**
+     * @param \CoreShop\Model\Order $order
+     * @return array
+     * @throws \CoreShop\Exception\UnsupportedException
+     */
     protected function getPayments(\CoreShop\Model\Order $order)
     {
         $payments = $order->getPayments();
@@ -353,6 +447,11 @@ class CoreShop_Admin_OrderController extends Admin
         return $return;
     }
 
+    /**
+     * @param \CoreShop\Model\Order $order
+     * @return array
+     * @throws \CoreShop\Exception\UnsupportedException
+     */
     protected function getDetails(\CoreShop\Model\Order $order)
     {
         $details = $order->getItems();
@@ -376,6 +475,11 @@ class CoreShop_Admin_OrderController extends Admin
         return $items;
     }
 
+    /**
+     * @param \CoreShop\Model\Order $order
+     * @return array
+     * @throws \CoreShop\Exception\UnsupportedException
+     */
     protected function getSummary(\CoreShop\Model\Order $order)
     {
         $summary = [];
@@ -418,6 +522,10 @@ class CoreShop_Admin_OrderController extends Admin
         return $summary;
     }
 
+    /**
+     * @param \CoreShop\Model\Currency $currency
+     * @return array
+     */
     protected function getCurrency(CoreShop\Model\Currency $currency)
     {
         return [
