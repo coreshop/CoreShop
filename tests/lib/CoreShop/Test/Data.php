@@ -265,14 +265,12 @@ class Data
         if (!self::$customerGroup1 instanceof CustomerGroup) {
             self::$customerGroup1 = new CustomerGroup();
             self::$customerGroup1->setName("Group1");
-            self::$customerGroup1->setDiscount(0);
             self::$customerGroup1->save();
         }
 
         if (!self::$customerGroup2 instanceof CustomerGroup) {
             self::$customerGroup2 = new CustomerGroup();
             self::$customerGroup2->setName("Group2");
-            self::$customerGroup2->setDiscount(0);
             self::$customerGroup2->save();
         }
     }

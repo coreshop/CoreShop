@@ -29,14 +29,8 @@ class CustomerGroup extends Base
 
         $group = new \CoreShop\Model\CustomerGroup();
         $group->setName("test");
-        $group->setDiscount(0);
         $group->save();
 
         $this->assertNotNull(\CoreShop\Model\CustomerGroup::getById($group->getId()));
-    }
-
-    public function testCustomerGroupDiscount()
-    {
-        //@TODO: Customer Group Discount needs to be implemented first?
     }
 }
