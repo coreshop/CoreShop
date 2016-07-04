@@ -19,14 +19,16 @@ pimcore.plugin.coreshop.orders.address = Class.create({
     orderId : null,
     type : null,
     cb : null,
+    title : null,
 
-    initialize: function(data, layout, orderId, type, cb) {
+    initialize: function(data, layout, orderId, type, title, cb) {
         this.data = data;
         this.objectLayout = layout;
         this.orderId = orderId;
         this.type = type;
         this.cb = cb;
         this.dataFields = {};
+        this.title = title;
     },
 
     show : function() {
@@ -39,7 +41,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
             resizeable: true,
             modal : true,
             layout: 'border',
-            title : t('coreshop_edit_address'),
+            title : t('coreshop_edit_address') + ': ' + this.title,
             items : layout,
             buttons: [
                 {
@@ -50,6 +52,8 @@ pimcore.plugin.coreshop.orders.address = Class.create({
                         if(params) {
                             params['id'] = this.orderId;
                             params['type'] = this.type;
+
+                            window.setLoading(t('loading'));
 
                             Ext.Ajax.request({
                                 url: '/plugin/CoreShop/admin_order/change-address',
@@ -66,6 +70,8 @@ pimcore.plugin.coreshop.orders.address = Class.create({
                                     if(Ext.isFunction(this.cb)) {
                                         this.cb(res.success);
                                     }
+
+                                    window.setLoading(false);
                                 }.bind(this)
                             });
                         }

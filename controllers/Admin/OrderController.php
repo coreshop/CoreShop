@@ -358,6 +358,10 @@ class CoreShop_Admin_OrderController extends Admin
 
             $order->save();
 
+            if($order->getProperty('invoice') instanceof \Pimcore\Model\Asset) {
+                $order->getInvoice(true);
+            }
+
             $this->_helper->json(array('success' => true));
         }
 

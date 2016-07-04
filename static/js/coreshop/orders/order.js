@@ -467,7 +467,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 success: function (response) {
                                     var res = Ext.decode(response.responseText);
 
-                                    var addressWindow = new pimcore.plugin.coreshop.orders.address(res.data, res.layout, this.order.o_id, type, function(success) {
+                                    var addressWindow = new pimcore.plugin.coreshop.orders.address(res.data, res.layout, this.order.o_id, type, title, function(success) {
                                         addressWindow.close();
                                         if(success) {
                                             this.reload();
