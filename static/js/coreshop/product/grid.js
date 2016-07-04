@@ -65,14 +65,12 @@ pimcore.plugin.coreshop.product.grid = Class.create({
     },
 
     getGrid : function () {
-        var itemsPerPage = 30;
-
         this.store = new Ext.data.JsonStore({
             remoteSort: true,
             remoteFilter: true,
             autoDestroy: true,
             autoSync: true,
-            pageSize: itemsPerPage,
+            pageSize: pimcore.helpers.grid.getDefaultPageSize(),
             proxy: {
                 type: 'ajax',
                 url: '/plugin/CoreShop/admin_product/get-products',
@@ -92,8 +90,10 @@ pimcore.plugin.coreshop.product.grid = Class.create({
             ]
         });
 
+        this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store);
+
         this.grid = Ext.create('Ext.grid.Panel', {
-            title: t('coreshop_orders'),
+            title: t('coreshop_product_list'),
             store: this.store,
             plugins: 'gridfilters',
             columns: [
@@ -127,7 +127,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
             region: 'center',
 
             // paging bar on the bottom
-            bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store, itemsPerPage),
+            bbar: this.pagingtoolbar,
             listeners : {
                 itemclick : this.openProduct
             }
