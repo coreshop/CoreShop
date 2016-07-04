@@ -47,7 +47,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
                 {
                     text: t('save'),
                     handler: function (btn) {
-                        var params = this.getValues(true);
+                        var params = this.getValues(false);
 
                         if(params) {
                             params['id'] = this.orderId;
