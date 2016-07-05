@@ -39,8 +39,10 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      * @return string
      */
     public function preSetData($object, $data, $params = []) {
-        if(intval($data)) {
-            return $this->getDataFromResource($data, $object, $params);
+        if(is_int($data)) {
+            if(intval($data)) {
+                return $this->getDataFromResource($data, $object, $params);
+            }
         }
 
         return $data;
