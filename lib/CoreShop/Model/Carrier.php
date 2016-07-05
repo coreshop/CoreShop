@@ -8,9 +8,10 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2016 Dominik Pfaffenbauer (http://www.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
 namespace CoreShop\Model;
 
 use CoreShop\Model\Carrier\AbstractRange;
@@ -21,6 +22,10 @@ use Pimcore\Cache;
 use Pimcore\Db;
 use Pimcore\Model\Asset;
 
+/**
+ * Class Carrier
+ * @package CoreShop\Model
+ */
 class Carrier extends AbstractModel
 {
     const SHIPPING_METHOD_WEIGHT = 'weight';
@@ -29,7 +34,14 @@ class Carrier extends AbstractModel
     const RANGE_BEHAVIOUR_DEACTIVATE = 'deactivate';
     const RANGE_BEHAVIOUR_LARGEST = 'largest';
 
+    /**
+     * @var array
+     */
     public static $shippingMethods = array(self::SHIPPING_METHOD_PRICE, self::SHIPPING_METHOD_WEIGHT);
+
+    /**
+     * @var array
+     */
     public static $rangeBehaviours = array(self::RANGE_BEHAVIOUR_LARGEST, self::RANGE_BEHAVIOUR_DEACTIVATE);
 
     /**

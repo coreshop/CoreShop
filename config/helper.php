@@ -8,43 +8,48 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2016 Dominik Pfaffenbauer (http://www.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
-
-/**
- * Recursive copy entire Directory
- *
- * @param string $src
- * @param string $dst
- * @param boolean $overwrite
- */
-function recurse_copy($src, $dst, $overwrite = false)
-{
-    $dir = opendir($src);
-    @mkdir($dst);
-    while (false !== ($file = readdir($dir))) {
-        if (($file != '.') && ($file != '..')) {
-            if (is_dir($src . '/' . $file)) {
-                recurse_copy($src . '/' . $file, $dst . '/' . $file);
-            } else {
-                if (is_file($dst . "/" . $file) && $overwrite) {
-                    if ($overwrite) {
-                        unlink($dst . "/" . $file);
+if(!function_exists("recurse_copy")) {
+    /**
+     * Recursive copy entire Directory
+     *
+     * @param string $src
+     * @param string $dst
+     * @param boolean $overwrite
+     */
+    function recurse_copy($src, $dst, $overwrite = false)
+    {
+        $dir = opendir($src);
+        @mkdir($dst);
+        while (false !== ($file = readdir($dir))) {
+            if (($file != '.') && ($file != '..')) {
+                if (is_dir($src . '/' . $file)) {
+                    recurse_copy($src . '/' . $file, $dst . '/' . $file);
+                } else {
+                    if (is_file($dst . "/" . $file) && $overwrite) {
+                        if ($overwrite) {
+                            unlink($dst . "/" . $file);
+                            copy($src . '/' . $file, $dst . '/' . $file);
+                        }
+                    } else {
                         copy($src . '/' . $file, $dst . '/' . $file);
                     }
-                } else {
-                    copy($src . '/' . $file, $dst . '/' . $file);
                 }
             }
         }
+        closedir($dir);
     }
-    closedir($dir);
 }
 
 if (!function_exists("startsWith")) {
+    /**
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
     function startsWith($haystack, $needle)
     {
         // search backwards starting from haystack length characters from the end
@@ -53,6 +58,11 @@ if (!function_exists("startsWith")) {
 }
 
 if (!function_exists("endsWith")) {
+    /**
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
     function endsWith($haystack, $needle)
     {
         // search forward starting from end minus needle length characters

@@ -8,9 +8,10 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2016 Dominik Pfaffenbauer (http://www.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
 namespace CoreShop;
 
 use CoreShop\Exception\ThemeNotFoundException;
@@ -30,6 +31,10 @@ use CoreShop\Plugin\Install;
 use Pimcore\Model\Schedule\Maintenance\Job;
 use Pimcore\Model\Schedule\Manager\Procedural;
 
+/**
+ * Class Plugin
+ * @package CoreShop
+ */
 class Plugin extends AbstractPlugin implements PluginInterface
 {
     /**
@@ -47,11 +52,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
     {
         require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
         require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
-
-        /*\Pimcore::getDiContainer()->set('CoreShop\Model\*\*\Listing', \DI\object('CoreShop\Model\*\*\Listing'));
-        \Pimcore::getDiContainer()->set('CoreShop\Model\*\*', \DI\object('CoreShop\Model\*\*'));
-        \Pimcore::getDiContainer()->set('CoreShop\Model\*\Listing', \DI\object('CoreShop\Model\*\Listing'));
-        \Pimcore::getDiContainer()->set('CoreShop\Model\*', \DI\object('CoreShop\Model\*'));*/
 
         parent::__construct($jsPaths, $cssPaths);
     }
@@ -72,7 +72,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
         });
 
         \Pimcore::getEventManager()->attach('system.startup', function (\Zend_EventManager_Event $e) {
-            $autoloader = \Zend_Loader_Autoloader::getInstance();
             $frontController = $e->getTarget();
 
             $router = $frontController->getRouter();
@@ -96,7 +95,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
         \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
 
             $autoloader = \Zend_Loader_Autoloader::getInstance();
-
             $autoloader->registerNamespace('CoreShopTemplate');
 
             $includePaths = array(

@@ -11,6 +11,7 @@
  * @copyright  Copyright (c) 2009-2015 pimcore GmbH (http://www.pimcore.org)
  * @license    http://www.pimcore.org/license     GNU General Public License version 3 (GPLv3)
  */
+
 namespace CoreShop\Model\LocalizedFields;
 
 use CoreShop\Model\Dao\AbstractDao;
@@ -18,6 +19,10 @@ use Pimcore\Model;
 use Pimcore\Model\Object;
 use Pimcore\Tool;
 
+/**
+ * Class Dao
+ * @package CoreShop\Model\LocalizedFields
+ */
 class Dao extends AbstractDao
 {
     /**

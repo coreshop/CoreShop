@@ -11,16 +11,24 @@
  * @copyright  Copyright (c) 2009-2015 pimcore GmbH (http://www.pimcore.org)
  * @license    http://www.pimcore.org/license     GNU General Public License version 3 (GPLv3)
  */
+
 namespace CoreShop\Model;
 
 use Pimcore\Model;
 use Pimcore\Tool;
 
+/**
+ * Class LocalizedFields
+ * @package CoreShop\Model
+ */
 class LocalizedFields extends Model\AbstractModel
 {
     const STRICT_DISABLED = 0;
     const STRICT_ENABLED = 1;
 
+    /**
+     * @var bool
+     */
     private static $getFallbackValues = false;
 
     /**
