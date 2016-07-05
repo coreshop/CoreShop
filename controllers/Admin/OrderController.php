@@ -309,7 +309,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array("success" => true, "order" => $jsonOrder));
     }
 
-    public function getAddressFieldsAction() {
+    public function getAddressFieldsAction()
+    {
         $orderId = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($orderId);
         $addressType = $this->getParam('type');
@@ -324,7 +325,7 @@ class CoreShop_Admin_OrderController extends Admin
 
         $fieldCollection = \Pimcore\Model\Object\Fieldcollection\Definition::getByKey($fieldCollectionType);
 
-        if($fieldCollection instanceof \Pimcore\Model\Object\Fieldcollection\Definition) {
+        if ($fieldCollection instanceof \Pimcore\Model\Object\Fieldcollection\Definition) {
             $this->_helper->json([
                 'success' => true,
                 'data' => $addressType == 'shipping' ? $this->getDataForObject($order->getCustomerShippingAddress()) : $this->getDataForObject($order->getCustomerBillingAddress()),
@@ -335,7 +336,8 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(['success' => true]);
     }
 
-    public function changeAddressAction() {
+    public function changeAddressAction()
+    {
         $orderId = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($orderId);
         $addressType = $this->getParam('type');
@@ -347,22 +349,21 @@ class CoreShop_Admin_OrderController extends Admin
 
         $address = $addressType == 'shipping' ? $order->getCustomerShippingAddress() : $order->getCustomerBillingAddress();
 
-        if($address instanceof \CoreShop\Model\User\Address) {
+        if ($address instanceof \CoreShop\Model\User\Address) {
             $address->setValues($data);
 
             $fieldCollection = new \Pimcore\Model\Object\Fieldcollection();
             $fieldCollection->add($address);
 
-            if($addressType == 'shipping') {
+            if ($addressType == 'shipping') {
                 $order->setShippingAddress($fieldCollection);
-            }
-            else {
+            } else {
                 $order->setBillingAddress($fieldCollection);
             }
 
             $order->save();
 
-            if($order->getProperty('invoice') instanceof \Pimcore\Model\Asset) {
+            if ($order->getProperty('invoice') instanceof \Pimcore\Model\Asset) {
                 $order->getInvoice(true);
             }
 
@@ -384,12 +385,11 @@ class CoreShop_Admin_OrderController extends Admin
             $getter = "get" . ucfirst($key);
             $fieldData = $data->$getter();
 
-            if($def instanceof Object\ClassDefinition\Data) {
+            if ($def instanceof Object\ClassDefinition\Data) {
                 $value = $def->getDataForEditmode($fieldData, $data, false);
 
                 $objectData[$key] = $value;
-            }
-            else {
+            } else {
                 $objectData[$key] = null;
             }
         }

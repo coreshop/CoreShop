@@ -104,7 +104,7 @@ class CoreShop_Admin_SettingsController extends Admin
         foreach ($values as $key => $value) {
             Model\Configuration::set($key, $value);
 
-            if($key === "SYSTEM.BASE.PRICES.GROSS") {
+            if ($key === "SYSTEM.BASE.PRICES.GROSS") {
                 \Pimcore\Cache::clearAll();
             }
         }

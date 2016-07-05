@@ -12,7 +12,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-if(!function_exists("recurse_copy")) {
+if (!function_exists("recurse_copy")) {
     /**
      * Recursive copy entire Directory
      *

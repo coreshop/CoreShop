@@ -424,7 +424,8 @@ class Carrier extends AbstractModel
      * @param Zone|null $zone
      * @return bool|DeliveryPrice|float|null
      */
-    public function getDeliveryPrice(Cart $cart, $withTax = true, Zone $zone = null) {
+    public function getDeliveryPrice(Cart $cart, $withTax = true, Zone $zone = null)
+    {
         $price = false;
         
         if (is_null($zone)) {
@@ -452,7 +453,7 @@ class Carrier extends AbstractModel
             }
         }
 
-        if($price === false) {
+        if ($price === false) {
             if ($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
                 $deliveryPrice = $this->getMaxDeliveryPrice($zone);
 
@@ -460,18 +461,17 @@ class Carrier extends AbstractModel
             }
         }
 
-        if($price) {
+        if ($price) {
             $calculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
             
-            if($withTax) {
-                if(!Tool::getPricesAreGross()) {
+            if ($withTax) {
+                if (!Tool::getPricesAreGross()) {
                     if ($calculator) {
                         $price = $calculator->addTaxes($price);
                     }
                 }
-            }
-            else {
-                if(Tool::getPricesAreGross()) {
+            } else {
+                if (Tool::getPricesAreGross()) {
                     if ($calculator) {
                         $price = $calculator->removeTaxes($price);
                     }

@@ -43,9 +43,10 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      * @param array $params
      * @return string
      */
-    public function preSetData($object, $data, $params = []) {
-        if(is_int($data) || is_string($data)) {
-            if(intval($data)) {
+    public function preSetData($object, $data, $params = [])
+    {
+        if (is_int($data) || is_string($data)) {
+            if (intval($data)) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }

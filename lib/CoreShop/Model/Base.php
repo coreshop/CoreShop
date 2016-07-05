@@ -46,7 +46,7 @@ class Base extends Concrete
     {
         $class = get_called_class();
 
-        if(\Pimcore::getDiContainer()->has($class)) {
+        if (\Pimcore::getDiContainer()->has($class)) {
             $class = \Pimcore::getDiContainer()->get($class);
         }
 
@@ -131,14 +131,13 @@ class Base extends Concrete
                 $listClass = $className.'\\Listing';
                 $list = null;
 
-                if(\Pimcore::getDiContainer()->has($listClass)) {
+                if (\Pimcore::getDiContainer()->has($listClass)) {
                     $list = new $listClass();
-                }
-                else if (\Pimcore\Tool::classExists($listClass)) {
+                } elseif (\Pimcore\Tool::classExists($listClass)) {
                     $list = new $listClass();
                 }
 
-                if($list instanceof AbstractListing) {
+                if ($list instanceof AbstractListing) {
                     $list->setValues($config);
 
                     return $list;

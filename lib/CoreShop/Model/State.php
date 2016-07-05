@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Model;
+
 use CoreShop\Exception;
 
 /**

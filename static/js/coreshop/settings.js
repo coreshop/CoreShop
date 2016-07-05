@@ -504,7 +504,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         autoHeight: true,
                         labelWidth: 250,
                         defaultType: 'textfield',
-                        defaults: {width: 600},
+                        defaults: { width: 600 },
                         items : [
                             {
                                 fieldLabel: t('coreshop_prices_are_gross'),

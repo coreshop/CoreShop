@@ -21,7 +21,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
     cb : null,
     title : null,
 
-    initialize: function(data, layout, orderId, type, title, cb) {
+    initialize: function (data, layout, orderId, type, title, cb) {
         this.data = data;
         this.objectLayout = layout;
         this.orderId = orderId;
@@ -31,7 +31,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
         this.title = title;
     },
 
-    show : function() {
+    show : function () {
         var layout = this.getLayout(this.objectLayout);
         layout.region = 'center';
 
@@ -49,7 +49,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
                     handler: function (btn) {
                         var params = this.getValues(false);
 
-                        if(params) {
+                        if (params) {
                             params['id'] = this.orderId;
                             params['type'] = this.type;
 
@@ -67,7 +67,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
                                         pimcore.helpers.showNotification(t('error'), t(res.message), 'error');
                                     }
 
-                                    if(Ext.isFunction(this.cb)) {
+                                    if (Ext.isFunction(this.cb)) {
                                         this.cb(res.success);
                                     }
 
@@ -117,11 +117,11 @@ pimcore.plugin.coreshop.orders.address = Class.create({
     },
 
     addToDataFields: function (field, name) {
-        if(this.dataFields[name]) {
+        if (this.dataFields[name]) {
             // this is especially for localized fields which get aggregated here into one field definition
             // in the case that there are more than one localized fields in the class definition
             // see also Object_Class::extractDataDefinitions();
-            if(typeof this.dataFields[name]["addReferencedField"]){
+            if (typeof this.dataFields[name]['addReferencedField']) {
                 this.dataFields[name].addReferencedField(field);
             }
         } else {
@@ -132,7 +132,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
     getValues: function (omitMandatoryCheck) {
 
         if (!this.layout.rendered) {
-            throw "edit not available";
+            throw 'edit not available';
         }
 
         var dataKeys = Object.keys(this.dataFields);
@@ -144,43 +144,42 @@ pimcore.plugin.coreshop.orders.address = Class.create({
         for (var i = 0; i < dataKeys.length; i++) {
 
             try {
-                if (this.dataFields[dataKeys[i]] && typeof this.dataFields[dataKeys[i]] == "object") {
+                if (this.dataFields[dataKeys[i]] && typeof this.dataFields[dataKeys[i]] == 'object') {
                     currentField = this.dataFields[dataKeys[i]];
-                    if(currentField.isMandatory() == true) {
+                    if (currentField.isMandatory() == true) {
                         isInvalidMandatory = currentField.isInvalidMandatory();
                         if (isInvalidMandatory != false) {
 
                             // some fields can return their own error messages like fieldcollections, ...
-                            if(typeof isInvalidMandatory == "object") {
+                            if (typeof isInvalidMandatory == 'object') {
                                 invalidMandatoryFields = array_merge(isInvalidMandatory, invalidMandatoryFields);
                             } else {
-                                invalidMandatoryFields.push(currentField.getTitle() + " ("
-                                    + currentField.getName() + ")");
+                                invalidMandatoryFields.push(currentField.getTitle() + ' ('
+                                    + currentField.getName() + ')');
                             }
                         }
                     }
 
                     //only include changed values in save response.
-                    if(currentField.isDirty()) {
+                    if (currentField.isDirty()) {
                         values[currentField.getName()] =  currentField.getValue();
                     }
                 }
             }
             catch (e) {
                 console.log(e);
-                values[currentField.getName()] = "";
+                values[currentField.getName()] = '';
             }
         }
 
         if (invalidMandatoryFields.length > 0 && !omitMandatoryCheck) {
-            Ext.MessageBox.alert(t("error"), t("mandatory_field_empty") + "<br />- "
-                + invalidMandatoryFields.join("<br />- "));
+            Ext.MessageBox.alert(t('error'), t('mandatory_field_empty') + '<br />- '
+                + invalidMandatoryFields.join('<br />- '));
             return false;
         }
 
         return values;
     }
 });
-
 
 pimcore.plugin.coreshop.orders.address.addMethods(pimcore.object.helpers.edit);

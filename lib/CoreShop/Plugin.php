@@ -129,10 +129,10 @@ class Plugin extends AbstractPlugin implements PluginInterface
             });
         }
 
-        \Pimcore::getEventManager()->attach("system.di.init", function(\Zend_EventManager_Event $e) {
+        \Pimcore::getEventManager()->attach("system.di.init", function (\Zend_EventManager_Event $e) {
             $diBuilder = $e->getTarget();
             
-            if($diBuilder instanceof ContainerBuilder) {
+            if ($diBuilder instanceof ContainerBuilder) {
                 $diBuilder->addDefinitions(CORESHOP_PATH . "/config/di.php");
             }
         });

@@ -39,7 +39,7 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
     {
         $class = get_called_class();
 
-        if(\Pimcore::getDiContainer()->has($class)) {
+        if (\Pimcore::getDiContainer()->has($class)) {
             $class = \Pimcore::getDiContainer()->get($class);
         }
 

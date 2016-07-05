@@ -113,7 +113,6 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    
                     $object = \Pimcore::getDiContainer()->make($className);
                     $object->getDao()->getByField($field, $value);
 
@@ -156,7 +155,7 @@ class AbstractModel extends Model\AbstractModel
     {
         $listClass = get_called_class().'\\Listing';
 
-        if(\Pimcore::getDiContainer()->has($listClass)) {
+        if (\Pimcore::getDiContainer()->has($listClass)) {
             return \Pimcore::getDiContainer()->make($listClass);
         }
 

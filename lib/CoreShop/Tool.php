@@ -80,7 +80,8 @@ class Tool
      *
      * @return bool
      */
-    public static function getPricesAreGross() {
+    public static function getPricesAreGross()
+    {
         return Configuration::get("SYSTEM.BASE.PRICES.GROSS");
     }
 

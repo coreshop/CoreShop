@@ -261,7 +261,7 @@ class Product extends Base
             $isValid = true;
 
             foreach ($conditions as $condition) {
-                if($condition instanceof AbstractCondition) {
+                if ($condition instanceof AbstractCondition) {
                     if (!$condition->checkConditionProduct($this, $specificPrice)) {
                         $isValid = false;
                         break;
@@ -294,7 +294,7 @@ class Product extends Base
             $actions = $specificPrice->getActions();
 
             foreach ($actions as $action) {
-                if($action instanceof AbstractAction) {
+                if ($action instanceof AbstractAction) {
                     $actionsPrice = $action->getPrice($this);
 
                     if ($actionsPrice !== false) {
@@ -346,15 +346,15 @@ class Product extends Base
      * @param bool $withTax
      * @return float
      */
-    public function getSalesPrice($withTax = true) {
-
+    public function getSalesPrice($withTax = true)
+    {
         $cacheKey = self::getPriceCacheTag($this);
 
         if ((!$price = Cache::load($cacheKey)) || true) {
             $price = $this->getRetailPrice();
             $specificPrice = $this->getSpecificPrice();
 
-            if($specificPrice) {
+            if ($specificPrice) {
                 $price = $specificPrice;
             }
 
@@ -363,15 +363,14 @@ class Product extends Base
 
         $calculator = $this->getTaxCalculator();
 
-        if($withTax) {
-            if(!Tool::getPricesAreGross()) {
+        if ($withTax) {
+            if (!Tool::getPricesAreGross()) {
                 if ($calculator) {
                     $price = $calculator->addTaxes($price);
                 }
             }
-        }
-        else {
-            if(Tool::getPricesAreGross()) {
+        } else {
+            if (Tool::getPricesAreGross()) {
                 if ($calculator) {
                     $price = $calculator->removeTaxes($price);
                 }
@@ -397,7 +396,7 @@ class Product extends Base
         //Apply Discounts on Price, currently, only net-discounts are supported
         $netPrice = $netPrice - $this->getDiscount();
 
-        if($withTax) {
+        if ($withTax) {
             $calculator = $this->getTaxCalculator();
 
             if ($calculator) {

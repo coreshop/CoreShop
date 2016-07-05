@@ -152,7 +152,7 @@ class CoreShop_Admin_ProductSpecificPriceController extends Admin
 
             $product = \CoreShop\Model\Product::getById($specificPrice->getO_Id());
 
-            if($product instanceof \CoreShop\Model\Product) {
+            if ($product instanceof \CoreShop\Model\Product) {
                 $product->clearPriceCache();
             }
 
@@ -170,7 +170,7 @@ class CoreShop_Admin_ProductSpecificPriceController extends Admin
         if ($specificPrice instanceof \CoreShop\Model\Product\SpecificPrice) {
             $product = \CoreShop\Model\Product::getById($specificPrice->getO_Id());
 
-            if($product instanceof \CoreShop\Model\Product) {
+            if ($product instanceof \CoreShop\Model\Product) {
                 $product->clearPriceCache();
             }
 

@@ -78,7 +78,7 @@ class Manager implements TaxManager
             return $this->tax_calculator;
         }
 
-        if(!Configuration::get('SYSTEM.BASE.TAX.ENABLED')) {
+        if (!Configuration::get('SYSTEM.BASE.TAX.ENABLED')) {
             return new TaxCalculator();
         }
 
