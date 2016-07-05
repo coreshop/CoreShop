@@ -8,9 +8,10 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015 Dominik Pfaffenbauer (http://dominik.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2016 Dominik Pfaffenbauer (http://www.pfaffenbauer.at)
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
 namespace CoreShop;
 
 use CoreShop\Model\AbstractModel;
@@ -24,6 +25,10 @@ use CoreShop\Model\User;
 use Pimcore\Tool\Session;
 use GeoIp2\Database\Reader;
 
+/**
+ * Class Tool
+ * @package CoreShop
+ */
 class Tool
 {
     /**
@@ -482,25 +487,6 @@ class Tool
     }
 
     /**
-     * Check if Object $object in array $objectList.
-     *
-     * @param AbstractModel $object
-     * @param array         $objectList
-     *
-     * @return bool
-     */
-    public static function objectInList(AbstractModel $object, array $objectList)
-    {
-        foreach ($objectList as $o) {
-            if ($o->getId() == $object->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Retreive the values in an array.
      *
      * @param $object
@@ -510,18 +496,6 @@ class Tool
     public static function objectToArray(Object\Concrete $object)
     {
         return self::_objectToArray($object);
-    }
-
-    /**
-     * Retreive the values in json format.
-     *
-     * @param $object
-     *
-     * @return string
-     */
-    public static function objectToJson(Object\Concrete $object)
-    {
-        return \Zend_Json::encode(self::_objectToArray($object));
     }
 
     /**
