@@ -33,6 +33,20 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     public $columnType = 'int(11)';
 
     /**
+     * @param $object
+     * @param $data
+     * @param array $params
+     * @return string
+     */
+    public function preSetData($object, $data, $params = []) {
+        if(intval($data)) {
+            return $this->getDataFromResource($data, $object, $params);
+        }
+
+        return $data;
+    }
+
+    /**
      * @see Object\ClassDefinition\Data::getDataForResource
      * @param string $data
      * @param null|Model\Object\AbstractObject $object
