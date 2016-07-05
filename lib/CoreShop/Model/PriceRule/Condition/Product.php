@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\PriceRule\Condition;
 
+use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
@@ -63,7 +64,7 @@ class Product extends AbstractCondition
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
@@ -79,7 +80,7 @@ class Product extends AbstractCondition
 
         if (!$found) {
             if ($throwException) {
-                throw new \Exception('You cannot use this voucher with these products');
+                throw new Exception('You cannot use this voucher with these products');
             } else {
                 return false;
             }
@@ -95,8 +96,6 @@ class Product extends AbstractCondition
      * @param ProductModel\AbstractProductPriceRule $priceRule
      *
      * @return bool
-     *
-     * @throws \Exception
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {

@@ -61,7 +61,7 @@ class AbstractModel extends Model\AbstractModel
         try {
             $object = \Zend_Registry::get($cacheKey);
             if (!$object) {
-                throw new \Exception($className.' in registry is null');
+                throw new Exception($className.' in registry is null');
             }
 
             return $object;
@@ -106,7 +106,7 @@ class AbstractModel extends Model\AbstractModel
         try {
             $object = \Zend_Registry::get($cacheKey);
             if (!$object) {
-                throw new \Exception($className.' in registry is null');
+                throw new Exception($className.' in registry is null');
             }
 
             return $object;

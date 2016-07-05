@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Currency;
 
+use CoreShop\Exception;
 use CoreShop\Model\Dao\AbstractDao;
 
 /**
@@ -34,14 +35,14 @@ class Dao extends AbstractDao
      *
      * @param null $name
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByName($name = null)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE name = ?', $name);
 
         if (!$data['id']) {
-            throw new \Exception('Object with the name '.$name." doesn't exists");
+            throw new Exception('Object with the name '.$name." doesn't exists");
         }
 
         $this->assignVariablesToModel($data);

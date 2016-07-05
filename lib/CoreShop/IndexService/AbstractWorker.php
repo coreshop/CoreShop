@@ -14,6 +14,7 @@
 
 namespace CoreShop\IndexService;
 
+use CoreShop\Exception;
 use CoreShop\IndexService\Getter\AbstractGetter;
 use CoreShop\IndexService\Interpreter\AbstractInterpreter;
 use CoreShop\IndexService\Interpreter\RelationInterpreter;
@@ -126,7 +127,7 @@ abstract class AbstractWorker
                             if ($getterObject instanceof AbstractGetter) {
                                 $value = $getterObject->get($object, $column);
                             } else {
-                                throw new \Exception('Getter class must inherit from AbstractGetter');
+                                throw new Exception('Getter class must inherit from AbstractGetter');
                             }
                         }
                     } else {

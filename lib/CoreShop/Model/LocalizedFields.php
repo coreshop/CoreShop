@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use Pimcore\Model;
 use Pimcore\Tool;
 
@@ -163,7 +164,7 @@ class LocalizedFields extends Model\AbstractModel
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
      * @param null $language
      *
@@ -181,7 +182,7 @@ class LocalizedFields extends Model\AbstractModel
             if (Tool::isValidLanguage((string) $locale)) {
                 return (string) $locale;
             }
-            throw new \Exception('Not supported language');
+            throw new Exception('Not supported language');
         } catch (\Exception $e) {
             return Tool::getDefaultLanguage();
         }
@@ -238,13 +239,13 @@ class LocalizedFields extends Model\AbstractModel
      * @param $value
      * @param null $language
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setLocalizedValue($name, $value, $language = null)
     {
         if (self::$strictMode) {
             if (!$language || !in_array($language, Tool::getValidLanguages())) {
-                throw new \Exception('Language '.$language.' not accepted in strict mode');
+                throw new Exception('Language '.$language.' not accepted in strict mode');
             }
         }
 

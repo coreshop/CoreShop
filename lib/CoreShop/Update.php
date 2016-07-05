@@ -297,7 +297,7 @@ class Update
      * @param $revision
      * @param $url
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function downloadPackage($revision, $url)
     {
@@ -312,7 +312,7 @@ class Update
         try {
             $zipResource = fopen($zipFile, 'w');
         } catch (\Exception $e) {
-            throw new \Exception('Error while downloading package: '.$e->getMessage());
+            throw new Exception('Error while downloading package: '.$e->getMessage());
         }
 
         $ch = curl_init();
@@ -342,10 +342,10 @@ class Update
                 //delete Zip.
                 unlink($zipFile);
             } else {
-                throw new \Exception('Error while extracting package: '.$zipFile);
+                throw new Exception('Error while extracting package: '.$zipFile);
             }
         } else {
-            throw new \Exception('Error while downloading package: '.curl_error($ch));
+            throw new Exception('Error while downloading package: '.curl_error($ch));
         }
 
         curl_close($ch);
@@ -356,7 +356,7 @@ class Update
      * @param $url
      * @param $fileType
      *
-     * @throws \Exception
+     * @throws Exception
      * @throws \Zend_Db_Adapter_Exception
      */
     public static function arrangeData($revision, $url, $fileType)
@@ -380,7 +380,7 @@ class Update
                 ));
             }
         } else {
-            throw new \Exception('Install file (ref '.$revision.') not found: '.$url);
+            throw new Exception('Install file (ref '.$revision.') not found: '.$url);
         }
     }
 

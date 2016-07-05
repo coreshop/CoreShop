@@ -26,7 +26,7 @@ class CoreShop_Admin_ThemeController extends Admin
             Plugin::enableTheme($this->getParam('theme'));
 
             $this->_helper->json(array('success' => true));
-        } catch (\Exception $ex) {
+        } catch (\CoreShop\Exception $ex) {
             $this->_helper->json(array('success' => false, 'message' => $ex->getMessage()));
         }
     }

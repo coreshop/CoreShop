@@ -388,7 +388,7 @@ class Product extends Base
      *
      * @return float|mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getPrice($withTax = true)
     {

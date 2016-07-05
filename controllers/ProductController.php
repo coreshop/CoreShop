@@ -76,7 +76,7 @@ class CoreShop_ProductController extends Action
         if ($product instanceof \CoreShop\Model\Product) {
             $this->view->product = $product;
         } else {
-            throw new \Exception(sprintf('Product with id %s not found', $id));
+            throw new \CoreShop\Exception(sprintf('Product with id %s not found', $id));
         }
     }
 

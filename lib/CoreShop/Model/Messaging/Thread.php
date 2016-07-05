@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Messaging;
 
+use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Messaging\Thread\State;
 use CoreShop\Model\Order;
@@ -219,12 +220,12 @@ class Thread extends AbstractModel
     /**
      * @param User $user
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setUser($user)
     {
         if (!$user instanceof User) {
-            throw new \Exception('$user must be instance of User');
+            throw new Exception('$user must be instance of User');
         }
 
         $this->user = $user;
@@ -262,12 +263,12 @@ class Thread extends AbstractModel
     /**
      * @param Order $order
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setOrder($order)
     {
         if (!$order instanceof Order) {
-            throw new \Exception('$order must be instance of Order');
+            throw new Exception('$order must be instance of Order');
         }
 
         $this->order = $order;
@@ -305,12 +306,12 @@ class Thread extends AbstractModel
     /**
      * @param Product $product
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setProduct($product)
     {
         if (!$product instanceof Product) {
-            throw new \Exception('$product must be instance of Product');
+            throw new Exception('$product must be instance of Product');
         }
 
         $this->product = $product;
@@ -348,12 +349,12 @@ class Thread extends AbstractModel
     /**
      * @param State $status
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setStatus($status)
     {
         if (!$status instanceof State) {
-            throw new \Exception('$status must be instance of State');
+            throw new Exception('$status must be instance of State');
         }
 
         $this->status = $status;
@@ -407,12 +408,12 @@ class Thread extends AbstractModel
     /**
      * @param Contact $contact
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setContact($contact)
     {
         if (!$contact instanceof Contact) {
-            throw new \Exception('$contact must be instance of Contact');
+            throw new Exception('$contact must be instance of Contact');
         }
 
         $this->contact = $contact;

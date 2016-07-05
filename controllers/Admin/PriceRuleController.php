@@ -123,7 +123,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
 
                     $conditionInstances[] = $instance;
                 } else {
-                    throw new \Exception(sprintf('Condition with type %s not found', $condition['type']));
+                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found', $condition['type']));
                 }
             }
 
@@ -136,7 +136,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
 
                     $actionInstances[] = $instance;
                 } else {
-                    throw new \Exception(sprintf('Action with type %s not found'), $action['type']);
+                    throw new \CoreShop\Exception(sprintf('Action with type %s not found'), $action['type']);
                 }
             }
 

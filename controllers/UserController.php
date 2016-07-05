@@ -120,7 +120,7 @@ class CoreShop_UserController extends Action
 
                         $this->_redirect($redirect);
                     }
-                } catch (\Exception $ex) {
+                } catch (Exception $ex) {
                     $this->view->message = $this->view->translate($ex->getMessage());
                 }
             } else {
@@ -164,7 +164,7 @@ class CoreShop_UserController extends Action
 
                 //Check User exists
                 if (\CoreShop\Model\User::getUserByEmail($userParams['email']) instanceof \CoreShop\Model\User) {
-                    throw new \Exception('E-Mail already exists');
+                    throw new Exception('E-Mail already exists');
                 }
 
                 $folder = '/users/'.strtolower(substr($userParams['lastname'], 0, 1));
@@ -179,7 +179,7 @@ class CoreShop_UserController extends Action
                 if (\CoreShop\Model\Configuration::get('SYSTEM.BASE.CHECKVAT')) {
                     if ($addressParams['vatNumber']) {
                         if (!Tool::validateVatNumber($addressParams['vatNumber'])) {
-                            throw new \Exception($this->view->translate('Invalid VAT Number'));
+                            throw new Exception($this->view->translate('Invalid VAT Number'));
                         }
                     }
                 }
@@ -216,7 +216,7 @@ class CoreShop_UserController extends Action
                 } else {
                     $this->redirect($this->view->url(array('lang' => $this->view->language, 'act' => 'profile'), 'coreshop_user'));
                 }
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 if (array_key_exists('_error', $params)) {
                     $this->redirect($params['_error'].'?error='.$ex->getMessage());
                 }
@@ -265,7 +265,7 @@ class CoreShop_UserController extends Action
                 if (\CoreShop\Model\Configuration::get('SYSTEM.BASE.CHECKVAT')) {
                     if ($addressParams['vatNumber']) {
                         if (!Tool::validateVatNumber($addressParams['vatNumber'])) {
-                            throw new \Exception($this->view->translate('Invalid VAT Number'));
+                            throw new Exception($this->view->translate('Invalid VAT Number'));
                         }
                     }
                 }
@@ -300,7 +300,7 @@ class CoreShop_UserController extends Action
                 } else {
                     $this->redirect('/de/shop');
                 }
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 $this->view->error = $ex->getMessage();
             }
         }

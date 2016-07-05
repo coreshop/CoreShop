@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use CoreShop\Model\Plugin\TaxManager as PluginTaxManager;
 use CoreShop\Model\TaxRule\Manager;
 use CoreShop\Model\User\Address;
@@ -57,7 +58,7 @@ class TaxManagerFactory
             $taxManager = \Zend_Registry::get($cacheKey);
 
             if (!$taxManager) {
-                throw new \Exception('TaxManager in registry is null');
+                throw new Exception('TaxManager in registry is null');
             }
 
             return $taxManager;

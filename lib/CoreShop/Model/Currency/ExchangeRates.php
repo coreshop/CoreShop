@@ -108,7 +108,7 @@ class ExchangeRates
             $rate = floatval($rate->getValue());
 
             if ($rate < 0) {
-                throw new \Exception('rate is smaller than 0');
+                throw new Exception('rate is smaller than 0');
             }
 
             $toCurrency->setExchangeRate($rate);

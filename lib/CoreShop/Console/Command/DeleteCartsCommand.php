@@ -28,42 +28,10 @@ use CoreShop\Maintenance\CleanUpCart;
 class DeleteCartsCommand extends AbstractCommand
 {
     /**
-     * configure command.
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('coreshop:cleanup:carts')
-            ->setDescription('Cleanup Carts')
-            ->addOption(
-                'days', 'days',
-                InputOption::VALUE_OPTIONAL,
-                'Older than'
-            )
-            ->addOption(
-                'anonymous', 'a',
-                InputOption::VALUE_NONE,
-                'Delete only anonymous carts'
-            )
-            ->addOption(
-                'user', 'u',
-                InputOption::VALUE_NONE,
-                'Delete only user carts'
-            )
-            ->addOption(
-                'dry-run', 'd',
-                InputOption::VALUE_NONE,
-                'Dry-run'
-            );
-    }
-
-    /**
      * execute command.
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
-     *
-     * @throws \Exception
      *
      * @return int
      */
@@ -124,5 +92,35 @@ class DeleteCartsCommand extends AbstractCommand
         } else {
             $output->writeln('No carts found.');
         }
+    }
+
+    /**
+     * configure command.
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('coreshop:cleanup:carts')
+            ->setDescription('Cleanup Carts')
+            ->addOption(
+                'days', 'days',
+                InputOption::VALUE_OPTIONAL,
+                'Older than'
+            )
+            ->addOption(
+                'anonymous', 'a',
+                InputOption::VALUE_NONE,
+                'Delete only anonymous carts'
+            )
+            ->addOption(
+                'user', 'u',
+                InputOption::VALUE_NONE,
+                'Delete only user carts'
+            )
+            ->addOption(
+                'dry-run', 'd',
+                InputOption::VALUE_NONE,
+                'Dry-run'
+            );
     }
 }

@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\PriceRule\Condition;
 
+use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
@@ -88,7 +89,7 @@ class TimeSpan extends AbstractCondition
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
@@ -102,8 +103,6 @@ class TimeSpan extends AbstractCondition
      * @param ProductModel\AbstractProductPriceRule $priceRule
      *
      * @return bool
-     *
-     * @throws \Exception
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
@@ -113,7 +112,7 @@ class TimeSpan extends AbstractCondition
     /**
      * @param bool $throwException
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     protected function check($throwException = false)
     {
@@ -123,7 +122,7 @@ class TimeSpan extends AbstractCondition
         if ($this->getDateFrom() instanceof \Zend_Date) {
             if ($date->get(\Zend_Date::TIMESTAMP) < $this->getDateFrom()->get(\Zend_Date::TIMESTAMP)) {
                 if ($throwException) {
-                    throw new \Exception('This voucher has expired');
+                    throw new Exception('This voucher has expired');
                 } else {
                     return false;
                 }
@@ -133,7 +132,7 @@ class TimeSpan extends AbstractCondition
         if ($this->getDateTo() instanceof \Zend_Date) {
             if ($date->get(\Zend_Date::TIMESTAMP) > $this->getDateTo()->get(\Zend_Date::TIMESTAMP)) {
                 if ($throwException) {
-                    throw new \Exception('This voucher has expired');
+                    throw new Exception('This voucher has expired');
                 } else {
                     return false;
                 }

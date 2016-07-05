@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\PriceRule\Condition;
 
+use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
@@ -65,7 +66,7 @@ class Country extends AbstractCondition
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
@@ -79,8 +80,6 @@ class Country extends AbstractCondition
      * @param ProductModel\AbstractProductPriceRule $priceRule
      *
      * @return bool
-     *
-     * @throws \Exception
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
@@ -90,13 +89,13 @@ class Country extends AbstractCondition
     /**
      * @param bool $throwException
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     protected function check($throwException = false)
     {
         if ($this->getCountry()->getId() !== Tool::getCountry()->getId()) {
             if ($throwException) {
-                throw new \Exception('You cannot use this voucher in your country of delivery');
+                throw new Exception('You cannot use this voucher in your country of delivery');
             } else {
                 return false;
             }

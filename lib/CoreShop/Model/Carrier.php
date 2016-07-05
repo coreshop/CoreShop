@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use CoreShop\Model\Carrier\AbstractRange;
 use CoreShop\Model\Carrier\DeliveryPrice;
 use CoreShop\Model\User\Address;
@@ -154,7 +155,7 @@ class Carrier extends AbstractModel
         try {
             $carrier = \Zend_Registry::get($cacheKey);
             if (!$carrier) {
-                throw new \Exception('Carrier in registry is null');
+                throw new Exception('Carrier in registry is null');
             }
 
             return $carrier;
@@ -272,7 +273,7 @@ class Carrier extends AbstractModel
         try {
             $cheapestProvider = \Zend_Registry::get($cacheKey);
             if (!$cheapestProvider) {
-                throw new \Exception($cacheKey.' in registry is null');
+                throw new Exception($cacheKey.' in registry is null');
             }
 
             return $cheapestProvider;
@@ -733,7 +734,7 @@ class Carrier extends AbstractModel
     /**
      * @param int $taxRuleGroupId
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setTaxRuleGroupId($taxRuleGroupId)
     {
@@ -755,12 +756,12 @@ class Carrier extends AbstractModel
     /**
      * @param int|TaxRuleGroup $taxRuleGroup
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setTaxRuleGroup($taxRuleGroup)
     {
         if (!$taxRuleGroup instanceof TaxRuleGroup) {
-            throw new \Exception('$taxRuleGroup must be instance of TaxRuleGroup');
+            throw new Exception('$taxRuleGroup must be instance of TaxRuleGroup');
         }
 
         $this->taxRuleGroup = $taxRuleGroup;

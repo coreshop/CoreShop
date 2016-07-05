@@ -118,7 +118,7 @@ class CoreShop_Admin_FilterController extends Admin
 
                     $preConditionInstances[] = $instance;
                 } else {
-                    throw new \Exception(sprintf('Condition with type %s not found'), $condition['type']);
+                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $condition['type']);
                 }
             }
 
@@ -134,7 +134,7 @@ class CoreShop_Admin_FilterController extends Admin
 
                     $filtersInstances[] = $instance;
                 } else {
-                    throw new \Exception(sprintf('Condition with type %s not found'), $filterCondition['type']);
+                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $filterCondition['type']);
                 }
             }
 
@@ -150,7 +150,7 @@ class CoreShop_Admin_FilterController extends Admin
 
                     $similaritiesInstances[] = $instance;
                 } else {
-                    throw new \Exception(sprintf('Condition with type %s not found', $similarity['type']));
+                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found', $similarity['type']));
                 }
             }
 

@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use Pimcore\Tool;
 
 /**
@@ -68,7 +69,7 @@ class Configuration extends AbstractModel
         try {
             $configurationEntry = \Zend_Registry::get($cacheKey);
             if (!$configurationEntry) {
-                throw new \Exception('Configuration in registry is null');
+                throw new Exception('Configuration in registry is null');
             }
         } catch (\Exception $e) {
             try {

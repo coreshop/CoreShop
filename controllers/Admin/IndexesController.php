@@ -133,7 +133,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
                             if (!$class) {
                                 //Use fallback column
-                                throw new \Exception('No config implementation for column with type ' . $objectType . ' found');
+                                throw new \CoreShop\Exception('No config implementation for column with type ' . $objectType . ' found');
                             }
 
                             $columnObject = new $class();
@@ -158,11 +158,11 @@ class CoreShop_Admin_IndexesController extends Admin
 
                         $index->setConfig($config);
                     } else {
-                        throw new \Exception('Config class for type ' . $data['type'] . ' not instanceof \CoreShop\Model\Index\Config');
+                        throw new \CoreShop\Exception('Config class for type ' . $data['type'] . ' not instanceof \CoreShop\Model\Index\Config');
                     }
                     unset($data['config']);
                 } else {
-                    throw new \Exception('Config class for type ' . $data['type'] . ' not found');
+                    throw new \CoreShop\Exception('Config class for type ' . $data['type'] . ' not found');
                 }
 
                 //Check for unique fieldnames

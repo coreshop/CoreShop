@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Carrier;
 
+use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Zone;
@@ -101,7 +102,7 @@ class AbstractRange extends AbstractModel
         try {
             $range = \Zend_Registry::get($cacheKey);
             if (!$range) {
-                throw new \Exception('RangeType in registry is null');
+                throw new Exception('RangeType in registry is null');
             }
 
             return $range;
@@ -197,12 +198,12 @@ class AbstractRange extends AbstractModel
     /**
      * @param $carrier
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setCarrier($carrier)
     {
         if (!$carrier instanceof Carrier) {
-            throw new \Exception('$carrier must be instance of Carrier');
+            throw new Exception('$carrier must be instance of Carrier');
         }
 
         $this->carrier = $carrier;
@@ -219,10 +220,8 @@ class AbstractRange extends AbstractModel
 
     /**
      * @param $carrierId
-     *
-     * @throws \Exception
      */
-    public function setCarrierID($carrierId)
+    public function setCarrierId($carrierId)
     {
         $this->carrierId = $carrierId;
     }

@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use Pimcore\Tool;
 
 /**
@@ -26,14 +27,14 @@ class Service
      * @param string $filterJson
      * @param string $class
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */
     public static function getFilterCondition($filterJson, $class)
     {
         if (!Tool::classExists($class)) {
-            throw new \Exception("Class '$class' not found");
+            throw new Exception("Class '$class' not found");
         }
 
         $classFields = get_class_vars($class);

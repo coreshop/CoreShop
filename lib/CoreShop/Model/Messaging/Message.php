@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Messaging;
 
+use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Mail;
 use Pimcore\Model\Document;
@@ -138,12 +139,12 @@ class Message extends AbstractModel
     /**
      * @param Thread $thread
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setThread($thread)
     {
         if (!$thread instanceof Thread) {
-            throw new \Exception("$thread must be instance of Thread");
+            throw new Exception("$thread must be instance of Thread");
         }
 
         $this->thread = $thread;

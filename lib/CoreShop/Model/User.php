@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Object;
 
@@ -94,14 +95,14 @@ class User extends Base
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function authenticate($password)
     {
         if ($this->getPassword() == hash('md5', $password)) {
             return true;
         } else {
-            throw new \Exception("User and Password doesn't match", 0);
+            throw new Exception("User and Password doesn't match", 0);
         }
     }
 

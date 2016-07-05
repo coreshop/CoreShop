@@ -83,7 +83,6 @@ class Order extends Base
      * get folder for order
      *
      * @return Object\Folder
-     * @throws \Exception
      */
     public static function getPathForNewOrder()
     {
@@ -96,8 +95,6 @@ class Order extends Base
      * @param Cart $cart
      *
      * @return bool
-     *
-     * @throws \Exception
      */
     public function importCart(Cart $cart)
     {
@@ -183,7 +180,6 @@ class Order extends Base
      * @param Item $item
      * @param $amount
      * @param $priceWithoutTax
-     * @throws \Exception
      * @throws \Pimcore\Model\Element\ValidationException
      */
     public function updateOrderItem(Item $item, $amount, $priceWithoutTax)
@@ -321,8 +317,6 @@ class Order extends Base
      * @param bool $paid
      *
      * @return Payment
-     *
-     * @throws \Exception
      */
     public function createPayment(CorePayment $provider, $amount, $paid = false)
     {

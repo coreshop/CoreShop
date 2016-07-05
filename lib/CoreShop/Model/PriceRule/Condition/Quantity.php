@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\PriceRule\Condition;
 
+use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model;
@@ -81,7 +82,7 @@ class Quantity extends AbstractCondition
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
@@ -95,7 +96,7 @@ class Quantity extends AbstractCondition
 
             if ($itemQuantityAmount < $this->getMinQuantity()) {
                 if ($throwException) {
-                    throw new \Exception('You have not reached the minimum quantity required to use this voucher');
+                    throw new Exception('You have not reached the minimum quantity required to use this voucher');
                 } else {
                     return false;
                 }
@@ -104,7 +105,7 @@ class Quantity extends AbstractCondition
             if ($itemQuantityAmount >= $this->getMinQuantity()) {
                 if ($itemQuantityAmount > $this->getMaxQuantity()) {
                     if ($throwException) {
-                        throw new \Exception('You have reached the maximum quantity required to use this voucher');
+                        throw new Exception('You have reached the maximum quantity required to use this voucher');
                     } else {
                         return false;
                     }

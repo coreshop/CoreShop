@@ -215,7 +215,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     abstract public function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
 
@@ -228,7 +228,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     abstract public function getGroupByRelationValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
 
@@ -241,7 +241,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     abstract public function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
 

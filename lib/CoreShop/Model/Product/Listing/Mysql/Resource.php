@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Product\Listing\Mysql;
 
+use CoreShop\Exception;
 use CoreShop\Model\Product\Filter\Similarity\AbstractSimilarity;
 use CoreShop\Model\Product\Listing\Mysql;
 use CoreShop\Model\Product\Listing as AbstractList;
@@ -311,7 +312,7 @@ class Resource
                     return $statement;
                 }
             } else {
-                throw new \Exception('Field array for given object id is empty');
+                throw new Exception('Field array for given object id is empty');
             }
         } catch (\Exception $e) {
         }

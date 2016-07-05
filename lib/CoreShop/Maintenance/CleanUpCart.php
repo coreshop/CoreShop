@@ -14,6 +14,7 @@
 
 namespace CoreShop\Maintenance;
 
+use CoreShop\Exception;
 use CoreShop\Model\Cart;
 
 /**
@@ -67,12 +68,12 @@ class CleanUpCart
     /**
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getCartElements()
     {
         if ($this->hasErrors()) {
-            throw new \Exception('Some options are missing, please check errors.');
+            throw new Exception('Some options are missing, please check errors.');
         }
 
         $list = Cart::getList();

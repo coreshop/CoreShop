@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Model;
+use CoreShop\Exception;
 
 /**
  * Class State
@@ -169,12 +170,12 @@ class State extends AbstractModel
     /**
      * @param $country
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setCountry($country)
     {
         if (!$country instanceof Country) {
-            throw new \Exception('$country must be instance of Country');
+            throw new Exception('$country must be instance of Country');
         }
 
         $this->country = $country;
@@ -192,7 +193,7 @@ class State extends AbstractModel
     /**
      * @param $countryId
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setCountryId($countryId)
     {

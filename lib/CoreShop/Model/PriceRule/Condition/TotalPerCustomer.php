@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\PriceRule\Condition;
 
+use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\User;
@@ -61,7 +62,7 @@ class TotalPerCustomer extends AbstractCondition
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
@@ -80,7 +81,7 @@ class TotalPerCustomer extends AbstractCondition
 
             if ($priceRulesUsed >= $this->getTotal()) {
                 if ($throwException) {
-                    throw new \Exception('You cannot use this voucher anymore (usage limit reached)');
+                    throw new Exception('You cannot use this voucher anymore (usage limit reached)');
                 } else {
                     return false;
                 }
@@ -97,8 +98,6 @@ class TotalPerCustomer extends AbstractCondition
      * @param ProductModel\AbstractProductPriceRule $priceRule
      *
      * @return bool
-     *
-     * @throws \Exception
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {

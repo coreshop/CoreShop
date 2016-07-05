@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Product\Listing;
 
+use CoreShop\Exception;
 use CoreShop\Model\Category;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
@@ -410,7 +411,7 @@ class Mysql extends AbstractListing
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
     {
@@ -421,7 +422,7 @@ class Mysql extends AbstractListing
         if ($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
             return $this->resource->loadGroupByValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
         } else {
-            throw new \Exception('Not supported yet');
+            throw new Exception('Not supported yet');
         }
     }
 
@@ -434,7 +435,7 @@ class Mysql extends AbstractListing
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getGroupByRelationValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
     {
@@ -445,7 +446,7 @@ class Mysql extends AbstractListing
         if ($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
             return $this->resource->loadGroupByRelationValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
         } else {
-            throw new \Exception('Not supported yet');
+            throw new Exception('Not supported yet');
         }
     }
 
@@ -458,7 +459,7 @@ class Mysql extends AbstractListing
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
     {

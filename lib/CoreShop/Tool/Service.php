@@ -17,7 +17,7 @@ namespace CoreShop\Tool;
 use Pimcore\Model\Object\AbstractObject;
 use CoreShop\Model\Product;
 use CoreShop\Model\BrickVariant;
-use TijsVerkoyen\CssToInlineStyles\Exception;
+use CoreShop\Exception;
 
 /**
  * Class Service
@@ -39,7 +39,7 @@ class Service
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getProductVariations(Product $master, Product $currentProduct, $language = 'en')
     {

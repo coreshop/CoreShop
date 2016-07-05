@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Listing\Dao;
 
+use CoreShop\Exception;
 use Pimcore\Model\Listing;
 use CoreShop\Model;
 use Pimcore\Tool;
@@ -44,7 +45,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
      *
      * @return string
      *
-     * @throws \Exception
+     * @throws Exception
      * @throws \Zend_Exception
      */
     protected function getTableName()
@@ -73,7 +74,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
                 }
 
                 if (!$language) {
-                    throw new \Exception('No valid language/locale set. Use $list->setLocale() to add a language to the listing, or register a global locale');
+                    throw new Exception('No valid language/locale set. Use $list->setLocale() to add a language to the listing, or register a global locale');
                 }
 
                 return $this->tableName.'_data_localized_'.$language;

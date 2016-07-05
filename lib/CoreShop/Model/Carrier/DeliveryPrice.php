@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Carrier;
 
+use CoreShop\Exception;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Zone;
 use CoreShop\Model\AbstractModel;
@@ -159,12 +160,12 @@ class DeliveryPrice extends AbstractModel
     /**
      * @param $range
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setRange($range)
     {
         if (!$range instanceof AbstractRange) {
-            throw new \Exception('$zone must be instance of Zone');
+            throw new Exception('$zone must be instance of Zone');
         }
 
         $this->range = $range;
@@ -218,12 +219,12 @@ class DeliveryPrice extends AbstractModel
     /**
      * @param $zone
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setZone($zone)
     {
         if (!$zone instanceof Zone) {
-            throw new \Exception('$zone must be instance of Zone');
+            throw new Exception('$zone must be instance of Zone');
         }
 
         $this->zone = $zone;
@@ -240,8 +241,6 @@ class DeliveryPrice extends AbstractModel
 
     /**
      * @param $zoneId
-     *
-     * @throws \Exception
      */
     public function setZoneId($zoneId)
     {
@@ -263,12 +262,12 @@ class DeliveryPrice extends AbstractModel
     /**
      * @param $carrier
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setCarrier($carrier)
     {
         if (!$carrier instanceof Carrier) {
-            throw new \Exception('$carrier must be instance of Carrier');
+            throw new Exception('$carrier must be instance of Carrier');
         }
 
         $this->carrier = $carrier;
@@ -285,8 +284,6 @@ class DeliveryPrice extends AbstractModel
 
     /**
      * @param $carrierId
-     *
-     * @throws \Exception
      */
     public function setCarrierId($carrierId)
     {

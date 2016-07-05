@@ -15,7 +15,6 @@
 namespace CoreShop\Tool;
 
 use CoreShop\Exception;
-use Pimcore\Config;
 use Pimcore\Tool;
 use Pimcore\Tool\Console;
 

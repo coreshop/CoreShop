@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\NumberRange;
 
+use CoreShop\Exception;
 use CoreShop\Model\Dao\AbstractDao;
 
 /**
@@ -34,14 +35,14 @@ class Dao extends AbstractDao
      *
      * @param null $type
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByType($type = null)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE type = ?', $type);
 
         if (!$data['id']) {
-            throw new \Exception('Object with the type '.$type." doesn't exists");
+            throw new Exception('Object with the type '.$type." doesn't exists");
         }
 
         $this->assignVariablesToModel($data);

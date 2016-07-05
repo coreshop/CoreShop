@@ -14,6 +14,7 @@
 
 namespace CoreShop\Test;
 
+use CoreShop\Exception;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Configuration;
 use Pimcore\Model\Object\ClassDefinition;
@@ -23,7 +24,7 @@ class Base extends \PHPUnit_Framework_TestCase
     public function printTestName()
     {
         try {
-            throw new \Exception();
+            throw new Exception();
         } catch (\Exception $e) {
             $trace = $e->getTrace();
             print("### running ...  " . $trace[1]["class"] . "::" . $trace[1]["function"] . " ... good luck!\n");

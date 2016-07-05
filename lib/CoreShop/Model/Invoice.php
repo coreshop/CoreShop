@@ -130,7 +130,7 @@ class Invoice
                         $translate = new \Pimcore\Translate\Website($languages[0]); // reinit with new locale
                         $translate->setLocale($languages[0]);
                     } else {
-                        throw new \Exception('You have not defined a language in the system settings (Website -> Frontend-Languages), please add at least one language.');
+                        throw new Exception('You have not defined a language in the system settings (Website -> Frontend-Languages), please add at least one language.');
                     }
                 }
 

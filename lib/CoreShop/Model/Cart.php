@@ -92,7 +92,7 @@ class Cart extends Base
      *
      * @return Cart
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function prepare($persist = false)
     {
@@ -501,12 +501,12 @@ class Cart extends Base
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function findItemForProduct(Product $product)
     {
         if (!$product instanceof Product) {
-            throw new \Exception('$product must be instance of Product');
+            throw new Exception('$product must be instance of Product');
         }
 
         foreach ($this->getItems() as $item) {
@@ -528,12 +528,12 @@ class Cart extends Base
      *
      * @return bool|Item
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateQuantity(Product $product, $amount = 0, $increaseAmount = false, $autoAddPriceRule = true)
     {
         if (!$product instanceof Product) {
-            throw new \Exception('$product must be instance of Product');
+            throw new Exception('$product must be instance of Product');
         }
 
         $item = $this->findItemForProduct($product);
@@ -596,7 +596,7 @@ class Cart extends Base
      *
      * @return bool|Item
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function addItem(Product $product, $amount = 1)
     {
@@ -625,7 +625,7 @@ class Cart extends Base
      *
      * @return bool|Item
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function modifyItem(Item $item, $amount)
     {
@@ -637,7 +637,7 @@ class Cart extends Base
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function removePriceRule()
     {
@@ -656,7 +656,7 @@ class Cart extends Base
      *
      * @param \CoreShop\Model\Cart\PriceRule $priceRule
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function addPriceRule(PriceRule $priceRule)
     {

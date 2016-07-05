@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Dao;
 
+use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Dao;
@@ -44,7 +45,7 @@ abstract class AbstractDao extends Dao\AbstractDao
      *
      * @param null $id
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getById($id = null)
     {
@@ -55,7 +56,7 @@ abstract class AbstractDao extends Dao\AbstractDao
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE id = ?', $this->model->getId());
 
         if (!$data['id']) {
-            throw new \Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
+            throw new Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
         }
 
         $this->assignVariablesToModel($data);
@@ -68,14 +69,14 @@ abstract class AbstractDao extends Dao\AbstractDao
      * @param string $field
      * @param string $value
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByField($field, $value)
     {
         $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName()." WHERE $field = ?", $value);
 
         if (!$data['id']) {
-            throw new \Exception(get_class($this->model).' with the field/value '.$field.'-'.$value." doesn't exists");
+            throw new Exception(get_class($this->model).' with the field/value '.$field.'-'.$value." doesn't exists");
         }
 
         $this->assignVariablesToModel($data);

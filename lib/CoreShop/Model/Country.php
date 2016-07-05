@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Exception;
 use CoreShop\Tool;
 
 /**
@@ -182,12 +183,12 @@ class Country extends AbstractModel
     /**
      * @param $currency
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setCurrency($currency)
     {
         if (!$currency instanceof Currency) {
-            throw new \Exception('$currency must be instance of Currency');
+            throw new Exception('$currency must be instance of Currency');
         }
 
         $this->currency = $currency;
@@ -205,7 +206,7 @@ class Country extends AbstractModel
     /**
      * @param $currencyId
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setCurrencyId($currencyId)
     {
@@ -227,12 +228,12 @@ class Country extends AbstractModel
     /**
      * @param $zone
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setZone($zone)
     {
         if (!$zone instanceof Zone) {
-            throw new \Exception('$zone must be instance of Zone');
+            throw new Exception('$zone must be instance of Zone');
         }
 
         $this->zone = $zone;
@@ -250,7 +251,7 @@ class Country extends AbstractModel
     /**
      * @param $zoneId
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setZoneId($zoneId)
     {

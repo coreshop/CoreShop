@@ -230,8 +230,6 @@ class Tool
      * Get current Users Country.
      *
      * @return Country|null
-     *
-     * @throws \Exception
      */
     public static function getCountry()
     {

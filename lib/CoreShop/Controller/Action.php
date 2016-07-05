@@ -14,6 +14,7 @@
 
 namespace CoreShop\Controller;
 
+use CoreShop\Exception;
 use CoreShop\Model\Cart;
 use CoreShop\Plugin;
 use CoreShop\Tool;
@@ -80,7 +81,7 @@ class Action extends \Website\Controller\Action
      *
      * If a user is available in session, set the user to the cart
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function prepareCart()
     {

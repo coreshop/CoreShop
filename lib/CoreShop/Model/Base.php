@@ -119,7 +119,7 @@ class Base extends Concrete
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getList($config = array())
     {
@@ -146,7 +146,7 @@ class Base extends Concrete
             }
         }
 
-        throw new \Exception('Unable to initiate list class - class not found or invalid configuration');
+        throw new Exception('Unable to initiate list class - class not found or invalid configuration');
     }
 
     /**
@@ -155,7 +155,7 @@ class Base extends Concrete
      *
      * @return mixed|null
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function __callStatic($method, $arguments)
     {
