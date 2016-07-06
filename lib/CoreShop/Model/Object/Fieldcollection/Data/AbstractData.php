@@ -15,6 +15,8 @@
 namespace CoreShop\Model\Object\Fieldcollection\Data;
 
 use CoreShop\Exception;
+use Pimcore\Model\Object\ClassDefinition\Data;
+use Pimcore\Model\Object\Fieldcollection\Definition;
 use Pimcore\Tool;
 
 /**
@@ -62,5 +64,41 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
         }
 
         throw new Exception("Class $pimcoreClass not found");
+    }
+
+    /**
+     * @return Data[]
+     * @throws \Exception
+     */
+    public static function getMandatoryFields() {
+        $class = self::getPimcoreObjectClass();
+        $key = explode("\\", $class);
+        $key = $key[count($key) - 1];
+
+        $fieldCollectionDefinition = Definition::getByKey($key);
+        $fields = $fieldCollectionDefinition->getFieldDefinitions();
+        $mandatoryFields = [];
+
+        foreach($fields as $field) {
+            if($field instanceof Data) {
+                if($field->getMandatory()) {
+                    $mandatoryFields[] = $field;
+                }
+            }
+        }
+
+        return $mandatoryFields;
+    }
+
+    /**
+     * @param $data
+     * @throws \Pimcore\Model\Element\ValidationException
+     */
+    public static function validate($data) {
+        $mandatoryFields = self::getMandatoryFields();
+
+        foreach($mandatoryFields as $field) {
+            $field->checkValidity($data[$field->getName()]);
+        }
     }
 }

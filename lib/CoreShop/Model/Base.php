@@ -18,6 +18,8 @@ use CoreShop\Exception;
 use CoreShop\Tool;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Listing\AbstractListing;
+use Pimcore\Model\Object\ClassDefinition;
+use Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model\Object\Concrete;
 use Pimcore\Model\User;
 use Pimcore\Tool\Authentication;
@@ -210,5 +212,42 @@ class Base extends Concrete
         }
 
         return $master;
+    }
+
+
+    /**
+     * @return Data[]
+     * @throws \Exception
+     */
+    public static function getMandatoryFields() {
+        $class = self::getPimcoreObjectClass();
+        $key = explode("\\", $class);
+        $key = $key[count($key) - 1];
+
+        $fieldCollectionDefinition = ClassDefinition::getByName($key);
+        $fields = $fieldCollectionDefinition->getFieldDefinitions();
+        $mandatoryFields = [];
+
+        foreach($fields as $field) {
+            if($field instanceof Data) {
+                if($field->getMandatory()) {
+                    $mandatoryFields[] = $field;
+                }
+            }
+        }
+
+        return $mandatoryFields;
+    }
+
+    /**
+     * @param $data
+     * @throws \Pimcore\Model\Element\ValidationException
+     */
+    public static function validate($data) {
+        $mandatoryFields = self::getMandatoryFields();
+
+        foreach($mandatoryFields as $field) {
+            $field->checkValidity($data[$field->getName()]);
+        }
     }
 }

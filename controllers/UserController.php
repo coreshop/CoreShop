@@ -66,6 +66,8 @@ class CoreShop_UserController extends Action
                     }
                 }
 
+                CoreShop\Model\User::validate($params);
+
                 $this->session->user->setValues($params);
                 $this->session->user->save();
 
@@ -74,7 +76,7 @@ class CoreShop_UserController extends Action
                 if (array_key_exists('_redirect', $params)) {
                     $this->_redirect($params['_redirect']);
                 }
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 $this->view->message = $ex->getMessage();
             }
         }
@@ -167,12 +169,12 @@ class CoreShop_UserController extends Action
                     throw new Exception('E-Mail already exists');
                 }
 
-                $folder = '/users/'.strtolower(substr($userParams['lastname'], 0, 1));
+                $folder = '/users/' . strtolower(substr($userParams['lastname'], 0, 1));
                 $key = Pimcore\File::getValidFilename($userParams['email']);
 
                 if ($isGuest) {
-                    $folder = '/guests/'.strtolower(substr($userParams['lastname'], 0, 1));
-                    $key = Pimcore\File::getValidFilename($userParams['email'].' '.time());
+                    $folder = '/guests/' . strtolower(substr($userParams['lastname'], 0, 1));
+                    $key = Pimcore\File::getValidFilename($userParams['email'] . ' ' . time());
                 }
 
                 //Check for European VAT Number
@@ -185,6 +187,9 @@ class CoreShop_UserController extends Action
                 }
 
                 $addresses = new Object\Fieldcollection();
+
+                \CoreShop\Model\User::validate($userParams); //Throws Exception if failing
+                \CoreShop\Model\User\Address::validate($addressParams); //Throws Exception if failing
 
                 $address = \CoreShop\Model\User\Address::create();
                 $address->setValues($addressParams);
@@ -216,7 +221,7 @@ class CoreShop_UserController extends Action
                 } else {
                     $this->redirect($this->view->url(array('lang' => $this->view->language, 'act' => 'profile'), 'coreshop_user'));
                 }
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 if (array_key_exists('_error', $params)) {
                     $this->redirect($params['_error'].'?error='.$ex->getMessage());
                 }
@@ -269,6 +274,8 @@ class CoreShop_UserController extends Action
                         }
                     }
                 }
+
+                \CoreShop\Model\User\Address::validate($addressParams); //Throws Exception if failing
 
                 $adresses = $this->session->user->getAddresses();
 
