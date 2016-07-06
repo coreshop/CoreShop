@@ -170,6 +170,11 @@ class CoreShop_ProductController extends Action
     protected function getSimilarProducts(\CoreShop\Model\Product $product, \CoreShop\Model\Product\Filter $filter)
     {
         $index = $filter->getIndex();
+
+        if(!$index instanceof CoreShop\Model\Index) {
+            return array();
+        }
+
         $indexService = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
 
         $productList = $indexService->getProductList();
