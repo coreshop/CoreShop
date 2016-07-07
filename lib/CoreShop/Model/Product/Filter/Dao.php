@@ -22,7 +22,7 @@ use CoreShop\Model\Dao\AbstractDao;
  */
 class Dao extends AbstractDao
 {
-    protected $tableName = 'coreshop_product_filters';
+    protected static $tableName = 'coreshop_product_filters';
 
     /**
      * Assign variables to model.

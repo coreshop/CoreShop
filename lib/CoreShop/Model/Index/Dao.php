@@ -27,7 +27,7 @@ class Dao extends AbstractDao
      *
      * @var string
      */
-    protected $tableName = 'coreshop_indexes';
+    protected static $tableName = 'coreshop_indexes';
 
     /**
      * @param array $data

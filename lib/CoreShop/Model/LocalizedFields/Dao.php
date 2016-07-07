@@ -35,7 +35,7 @@ class Dao extends AbstractDao
      *
      * @return string
      */
-    public function getTableName()
+    public function getLocalizedTableName()
     {
         return $this->model->getObject()->getTableName().'_data';
     }
@@ -97,7 +97,7 @@ class Dao extends AbstractDao
                 $insertData[$field] = $this->model->getLocalizedValue($field, $language, true);
             }
 
-            $this->db->insertOrUpdate($this->getTableName(), $insertData);
+            $this->db->insertOrUpdate($this->getLocalizedTableName(), $insertData);
 
             // query table
             $data = array();
@@ -136,7 +136,7 @@ class Dao extends AbstractDao
     {
         try {
             if ($deleteQuery) {
-                $this->db->delete($this->getTableName(), $this->db->quoteInto('ooo_id = ?', $this->model->getObject()->getId()));
+                $this->db->delete($this->getLocalizedTableName(), $this->db->quoteInto('ooo_id = ?', $this->model->getObject()->getId()));
 
                 $validLanguages = Tool::getValidLanguages();
                 foreach ($validLanguages as $language) {
@@ -160,7 +160,7 @@ class Dao extends AbstractDao
             $language = $this->db->quote($language);
         }
 
-        $data = $this->db->fetchAll('SELECT * FROM '.$this->getTableName().' WHERE ooo_id = ? AND language IN ('.implode(',', $validLanguages).')', $this->model->getObject()->getId());
+        $data = $this->db->fetchAll('SELECT * FROM '.$this->getLocalizedTableName().' WHERE ooo_id = ? AND language IN ('.implode(',', $validLanguages).')', $this->model->getObject()->getId());
 
         foreach ($data as $row) {
             foreach ($this->model->getFields() as $field) {
@@ -214,7 +214,7 @@ class Dao extends AbstractDao
 
                 // get available columns
                 $viewColumns = array_merge(
-                    $this->db->fetchAll('SHOW COLUMNS FROM `'.$this->model->getObject()->getTableName().'`')
+                    $this->db->fetchAll('SHOW COLUMNS FROM `'.$this->model->getObject()->getLocalizedTableName().'`')
                 );
                 $localizedColumns = $this->db->fetchAll('SHOW COLUMNS FROM `'.$tablename.'`');
 
@@ -234,14 +234,14 @@ class Dao extends AbstractDao
 
                 // create view select fields
                 $selectViewFields = implode(',', array_merge($viewFields, $localizedFields));
-                $localizedTable = $this->getTableName().'_localized';
+                $localizedTable = $this->getLocalizedTableName().'_localized';
 
                 // create view
                 $viewQuery = <<<QUERY
 CREATE OR REPLACE VIEW `{$localizedTable}_{$language}` AS
 
 SELECT {$selectViewFields}
-FROM `{$this->model->getObject()->getTableName()}`
+FROM `{$this->model->getObject()->getLocalizedTableName()}`
 QUERY;
 
                 // join fallback languages
@@ -249,7 +249,7 @@ QUERY;
                     $viewQuery .= <<<QUERY
 LEFT JOIN {$this->getQueryTableName()}_{$lang} as {$lang}
     ON( 1
-        AND {$this->model->getObject()->getTableName()}.id = {$lang}.ooo_id
+        AND {$this->model->getObject()->getLocalizedTableName()}.id = {$lang}.ooo_id
     )
 QUERY;
                 }
@@ -267,7 +267,7 @@ QUERY;
      */
     public function createUpdateTable()
     {
-        $table = $this->getTableName();
+        $table = $this->getLocalizedTableName();
 
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$table."` (
 		  `ooo_id` int(11) NOT NULL default '0',

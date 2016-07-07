@@ -33,11 +33,6 @@ class AbstractDao extends Listing\Dao\AbstractDao
     /**
      * @var string
      */
-    protected $tableName = '';
-
-    /**
-     * @var string
-     */
     protected $modelClass;
 
     /**
@@ -50,10 +45,10 @@ class AbstractDao extends Listing\Dao\AbstractDao
      */
     protected function getTableName()
     {
+        $model = new $this->modelClass();
+
         if (!$this->model->getIgnoreLocalizedFields()) {
             $language = null;
-
-            $model = new $this->modelClass();
 
             if (count($model->getLocalizedFields()) > 0) {
                 if ($this->model->getLocale()) {
@@ -77,11 +72,11 @@ class AbstractDao extends Listing\Dao\AbstractDao
                     throw new Exception('No valid language/locale set. Use $list->setLocale() to add a language to the listing, or register a global locale');
                 }
 
-                return $this->tableName.'_data_localized_'.$language;
+                return $this->getModelTableName().'_data_localized_'.$language;
             }
         }
 
-        return $this->tableName;
+        return $model->getDao()->getTableName();
     }
 
     /**

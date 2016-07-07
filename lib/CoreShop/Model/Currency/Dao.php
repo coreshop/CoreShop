@@ -28,7 +28,7 @@ class Dao extends AbstractDao
      *
      * @var string
      */
-    protected $tableName = 'coreshop_currencies';
+    protected static $tableName = 'coreshop_currencies';
 
     /**
      * get Currency by name.

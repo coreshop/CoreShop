@@ -28,7 +28,7 @@ class Dao extends AbstractDao
      *
      * @var string
      */
-    protected $tableName = 'coreshop_carriers';
+    protected static $tableName = 'coreshop_carriers';
 
     /**
      * Assign Variables to Model.

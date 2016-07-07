@@ -27,5 +27,5 @@ class Dao extends AbstractDao
      *
      * @var string
      */
-    protected $tableName = 'coreshop_carriers_range_weight';
+    protected static $tableName = 'coreshop_carriers_range_weight';
 }

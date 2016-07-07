@@ -28,7 +28,7 @@ class Dao extends AbstractDao
      *
      * @var string
      */
-    protected $tableName = 'coreshop_carriers_delivery_price';
+    protected static $tableName = 'coreshop_carriers_delivery_price';
 
     /**
      * Get Delivery Price by Carrier and Range.

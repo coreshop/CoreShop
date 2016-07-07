@@ -28,16 +28,23 @@ abstract class AbstractDao extends Dao\AbstractDao
     /**
      * @var string
      */
-    protected $tableName = '';
+    protected static $tableName = '';
 
     /**
      * Get table name.
      *
      * @return string
      */
-    public function getTableName()
+    public static function getTableName()
     {
-        return $this->tableName;
+        $class = get_called_class();
+
+        if (\Pimcore::getDiContainer()->has($class)) {
+            $class = \Pimcore::getDiContainer()->get($class);
+        }
+
+        return $class::$tableName;
+
     }
 
     /**
@@ -53,7 +60,7 @@ abstract class AbstractDao extends Dao\AbstractDao
             $this->model->setId($id);
         }
 
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE id = ?', $this->model->getId());
+        $data = $this->db->fetchRow('SELECT * FROM '.self::getTableName().' WHERE id = ?', $this->model->getId());
 
         if (!$data['id']) {
             throw new Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
@@ -73,7 +80,7 @@ abstract class AbstractDao extends Dao\AbstractDao
      */
     public function getByField($field, $value)
     {
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName()." WHERE $field = ?", $value);
+        $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . " WHERE $field = ?", $value);
 
         if (!$data['id']) {
             throw new Exception(get_class($this->model).' with the field/value '.$field.'-'.$value." doesn't exists");
@@ -104,7 +111,7 @@ abstract class AbstractDao extends Dao\AbstractDao
 
         $buffer = array();
 
-        $validColumns = $this->getValidTableColumns($this->getTableName());
+        $validColumns = $this->getValidTableColumns(self::getTableName());
 
         if (count($vars)) {
             foreach ($vars as $k => $v) {
@@ -141,7 +148,7 @@ abstract class AbstractDao extends Dao\AbstractDao
         }
 
         if ($this->model->getId() !== null) {
-            $this->db->update($this->getTableName(), $buffer, $this->db->quoteInto('id = ?', $this->model->getId()));
+            $this->db->update(self::getTableName(), $buffer, $this->db->quoteInto('id = ?', $this->model->getId()));
 
             if ($this->model->getLocalizedFields()) {
                 $this->model->getLocalizedFields()->save();
@@ -150,7 +157,7 @@ abstract class AbstractDao extends Dao\AbstractDao
             return;
         }
 
-        $this->db->insert($this->getTableName(), $buffer);
+        $this->db->insert(self::getTableName(), $buffer);
         $this->model->setId($this->db->lastInsertId());
 
         if ($this->model->getLocalizedFields()) {
@@ -163,6 +170,6 @@ abstract class AbstractDao extends Dao\AbstractDao
      */
     public function delete()
     {
-        $this->db->delete($this->getTableName(), $this->db->quoteInto('id = ?', $this->model->getId()));
+        $this->db->delete(self::getTableName(), $this->db->quoteInto('id = ?', $this->model->getId()));
     }
 }
