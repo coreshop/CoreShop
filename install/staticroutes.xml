@@ -83,8 +83,8 @@
         </route>
         <route>
             <name>coreshop_change_currency</name>
-            <pattern>/(\w+)\/shop\/currency\/change~c([0-9]+)/</pattern>
-            <reverse>/%lang/shop/currency/change~c%currency</reverse>
+            <pattern>/(\w+)\/shop\/currency\/change~cu([0-9]+)/</pattern>
+            <reverse>/%lang/shop/currency/change~cu%currency</reverse>
             <module>CoreShop</module>
             <controller>helper</controller>
             <action>change-currency</action>
