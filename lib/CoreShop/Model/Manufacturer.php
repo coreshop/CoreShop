@@ -21,6 +21,11 @@ namespace CoreShop\Model;
 class Manufacturer extends AbstractModel
 {
     /**
+     * @var bool
+     */
+    protected static $isMultiShop = true;
+    
+    /**
      * @var int
      */
     public $id;
@@ -34,6 +39,11 @@ class Manufacturer extends AbstractModel
      * @var string
      */
     public $image;
+
+    /**
+     * @var int[]
+     */
+    public $shopIds;
 
     /**
      * @return int
@@ -81,5 +91,21 @@ class Manufacturer extends AbstractModel
     public function setImage($image)
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return \int[]
+     */
+    public function getShopIds()
+    {
+        return $this->shopIds;
+    }
+
+    /**
+     * @param \int[] $shopIds
+     */
+    public function setShopIds($shopIds)
+    {
+        $this->shopIds = $shopIds;
     }
 }

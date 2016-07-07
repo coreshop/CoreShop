@@ -23,7 +23,7 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
             width: 400,
             height: 300,
             modal: true,
-            iconCls: 'pimcore_icon_tab_variants',
+            iconCls: 'pimcore_icon_variant',
             title: t('coreshop_variant_generator'),
             layout: 'fit',
             items: [this.getInputPanel()]

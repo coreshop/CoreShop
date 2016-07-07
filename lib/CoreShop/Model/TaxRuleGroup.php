@@ -21,6 +21,11 @@ namespace CoreShop\Model;
 class TaxRuleGroup extends AbstractModel
 {
     /**
+     * @var bool
+     */
+    protected static $isMultiShop = true;
+    
+    /**
      * @var int
      */
     public $id;
@@ -34,6 +39,11 @@ class TaxRuleGroup extends AbstractModel
      * @var bool
      */
     public $active;
+
+    /**
+     * @var int[]
+     */
+    public $shopIds;
 
     /**
      * Return all TaxRules.
@@ -130,5 +140,21 @@ class TaxRuleGroup extends AbstractModel
     public function setActive($active)
     {
         $this->active = $active;
+    }
+
+    /**
+     * @return \int[]
+     */
+    public function getShopIds()
+    {
+        return $this->shopIds;
+    }
+
+    /**
+     * @param \int[] $shopIds
+     */
+    public function setShopIds($shopIds)
+    {
+        $this->shopIds = $shopIds;
     }
 }

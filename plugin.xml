@@ -161,6 +161,12 @@
       <path>/plugins/CoreShop/static/js/coreshop/product/pricerule/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/pricerule/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/address.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/shops/panel.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/shops/item.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopShop.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopShop.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopShopMultiselect.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopShopMultiselect.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

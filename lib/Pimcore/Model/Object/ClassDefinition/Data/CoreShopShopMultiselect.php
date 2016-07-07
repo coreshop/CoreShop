@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,11 +12,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-return [
-    'CoreShop\Model\*\*\*\Listing' => DI\object('CoreShop\Model\*\*\*\Listing'),
-    'CoreShop\Model\*\*\*' => DI\object('CoreShop\Model\*\*\*'),
-    'CoreShop\Model\*\*\Listing' => DI\object('CoreShop\Model\*\*\Listing'),
-    'CoreShop\Model\*\*' => DI\object('CoreShop\Model\*\*'),
-    'CoreShop\Model\*\Listing' => DI\object('CoreShop\Model\*\Listing'),
-    'CoreShop\Model\*' => DI\object('CoreShop\Model\*'),
-];
+namespace Pimcore\Model\Object\ClassDefinition\Data;
+
+use Pimcore\Model;
+
+/**
+ * Class CoreShopShopMultiselect
+ * @package Pimcore\Model\Object\ClassDefinition\Data
+ */
+class CoreShopShopMultiselect extends Model\Object\ClassDefinition\Data\Multiselect
+{
+    /**
+     * Static type of this element.
+     *
+     * @var string
+     */
+    public $fieldtype = 'coreShopShopMultiselect';
+}

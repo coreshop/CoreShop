@@ -34,6 +34,8 @@ pimcore.plugin.coreshop.object.tags.multiselect = Class.create(pimcore.object.ta
             itemCls: 'object_field',
             maxHeight : 400,
             queryMode : 'local',
+            displayField: 'name',
+            valueField: 'id',
             listeners : {
                 beforerender : function () {
                     if (!store.isLoaded() && !store.isLoading())

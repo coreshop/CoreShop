@@ -32,6 +32,59 @@ pimcore.plugin.coreshop.manufacturers.item = Class.create(pimcore.plugin.coresho
     {
         var data = this.data;
 
+        var items = [
+            {
+                name: 'name',
+                fieldLabel: t('name'),
+                width: 400,
+                value: data.name
+            },
+            {
+                fieldLabel: t('coreshop_manufacturer_image'),
+                name: 'image',
+                cls: 'input_drop_target',
+                value: this.data.image ? this.data.image : null,
+                width: 300,
+                xtype: 'textfield',
+                listeners: {
+                    render: function (el) {
+                        new Ext.dd.DropZone(el.getEl(), {
+                            reference: this,
+                            ddGroup: 'element',
+                            getTargetFromEvent: function (e) {
+                                return this.getEl();
+                            }.bind(el),
+
+                            onNodeOver : function (target, dd, e, data) {
+                                data = data.records[0].data;
+
+                                if (data.elementType == 'asset') {
+                                    return Ext.dd.DropZone.prototype.dropAllowed;
+                                }
+
+                                return Ext.dd.DropZone.prototype.dropNotAllowed;
+                            },
+
+                            onNodeDrop : function (target, dd, e, data) {
+                                data = data.records[0].data;
+
+                                if (data.elementType == 'asset') {
+                                    this.setValue(data.id);
+                                    return true;
+                                }
+
+                                return false;
+                            }.bind(el)
+                        });
+                    }
+                }
+            }
+        ];
+
+        if(this.getMultishopSettings()) {
+            items.push(this.getMultishopSettings());
+        }
+
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
@@ -55,54 +108,7 @@ pimcore.plugin.coreshop.manufacturers.item = Class.create(pimcore.plugin.coresho
                     labelWidth: 350,
                     defaultType: 'textfield',
                     defaults: { width: '100%' },
-                    items :[
-                        {
-                            name: 'name',
-                            fieldLabel: t('name'),
-                            width: 400,
-                            value: data.name
-                        },
-                        {
-                            fieldLabel: t('coreshop_manufacturer_image'),
-                            name: 'image',
-                            cls: 'input_drop_target',
-                            value: this.data.image ? this.data.image : null,
-                            width: 300,
-                            xtype: 'textfield',
-                            listeners: {
-                                render: function (el) {
-                                    new Ext.dd.DropZone(el.getEl(), {
-                                        reference: this,
-                                        ddGroup: 'element',
-                                        getTargetFromEvent: function (e) {
-                                            return this.getEl();
-                                        }.bind(el),
-
-                                        onNodeOver : function (target, dd, e, data) {
-                                            data = data.records[0].data;
-
-                                            if (data.elementType == 'asset') {
-                                                return Ext.dd.DropZone.prototype.dropAllowed;
-                                            }
-
-                                            return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                        },
-
-                                        onNodeDrop : function (target, dd, e, data) {
-                                            data = data.records[0].data;
-
-                                            if (data.elementType == 'asset') {
-                                                this.setValue(data.id);
-                                                return true;
-                                            }
-
-                                            return false;
-                                        }.bind(el)
-                                    });
-                                }
-                            }
-                        }
-                    ]
+                    items : items
                 }
             ]
         });

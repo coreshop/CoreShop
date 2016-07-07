@@ -305,6 +305,10 @@
     background: url(/plugins/CoreShop/static/img/flat/similarities-field.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_shop, .pimcore_icon_coreShopShopMultiselect, .pimcore_icon_coreShopShop {
+    background: url(/plugins/CoreShop/static/img/flat/shop.svg) center center no-repeat !important;
+}
+
 .x-tool-coreshop-open {
     background: url(/pimcore/static6/img/flat-color-icons/cursor.svg) center center no-repeat !important;
 }

@@ -21,10 +21,10 @@ use CoreShop\Model\Product\Listing as AbstractList;
 use Pimcore\Db;
 
 /**
- * Class Resource
+ * Class Dao
  * @package CoreShop\Model\Product\Listing\Mysql
  */
-class Resource
+class Dao
 {
     /**
      * @var \Zend_Db_Adapter_Abstract

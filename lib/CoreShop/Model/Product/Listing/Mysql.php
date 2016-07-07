@@ -19,6 +19,7 @@ use CoreShop\Model\Category;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
 use CoreShop\Model\Product\Listing as AbstractListing;
+use CoreShop\Model\Shop;
 use Pimcore\Model\Object\AbstractObject;
 
 /**
@@ -58,9 +59,14 @@ class Mysql extends AbstractListing
     protected $category;
 
     /**
-     * @var Product\Listing\Mysql\Resource
+     * @var Shop
      */
-    protected $resource;
+    protected $shop;
+
+    /**
+     * @var Product\Listing\Mysql\Dao
+     */
+    protected $dao;
 
     /**
      * @var
@@ -116,7 +122,7 @@ class Mysql extends AbstractListing
     {
         parent::__construct($index);
 
-        $this->resource = new Product\Listing\Mysql\Resource($this);
+        $this->dao = new Product\Listing\Mysql\Dao($this);
     }
 
     /**
@@ -345,6 +351,25 @@ class Mysql extends AbstractListing
     }
 
     /**
+     * @param Shop $shop
+     */
+    public function setShop(Shop $shop)
+    {
+        $this->products = null;
+        $this->shop = $shop;
+    }
+
+    /**
+     * get shop.
+     *
+     * @return Shop
+     */
+    public function getShop()
+    {
+        return $this->shop;
+    }
+
+    /**
      * set variant mode.
      *
      * @param $variantMode
@@ -376,8 +401,8 @@ class Mysql extends AbstractListing
     {
         //TODO: Load with price filter?!
 
-        $objectRaws = $this->resource->load($this->buildQueryFromConditions(), $this->buildOrderBy(), $this->getLimit(), $this->getOffset());
-        $this->totalCount = $this->resource->getLastRecordCount();
+        $objectRaws = $this->dao->load($this->buildQueryFromConditions(), $this->buildOrderBy(), $this->getLimit(), $this->getOffset());
+        $this->totalCount = $this->dao->getLastRecordCount();
 
         $this->products = array();
         foreach ($objectRaws as $raw) {
@@ -420,7 +445,7 @@ class Mysql extends AbstractListing
             $excludedFieldName = null;
         }
         if ($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
-            return $this->resource->loadGroupByValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
+            return $this->dao->loadGroupByValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
         } else {
             throw new Exception('Not supported yet');
         }
@@ -444,7 +469,7 @@ class Mysql extends AbstractListing
             $excludedFieldName = null;
         }
         if ($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
-            return $this->resource->loadGroupByRelationValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
+            return $this->dao->loadGroupByRelationValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
         } else {
             throw new Exception('Not supported yet');
         }
@@ -487,6 +512,10 @@ class Mysql extends AbstractListing
             $preCondition .= " AND parentCategoryIds LIKE '%,".$this->getCategory()->getId().",%'";
         }
 
+        if ($this->getShop()) {
+            $preCondition .= " AND shops LIKE '%,".$this->getShop()->getId().",%'";
+        }
+
         $condition = $preCondition;
 
         //variant handling and userspecific conditions
@@ -519,7 +548,7 @@ class Mysql extends AbstractListing
                 }
             }
 
-            $condition .= ' AND '.$this->resource->buildFulltextSearchWhere(array('name'), $searchstring); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
+            $condition .= ' AND '.$this->dao->buildFulltextSearchWhere(array('name'), $searchstring); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
         }
 
         return $condition;
@@ -620,7 +649,7 @@ class Mysql extends AbstractListing
      */
     public function buildSimilarityOrderBy($fields, $objectId)
     {
-        return $this->resource->buildSimilarityOrderBy($fields, $objectId);
+        return $this->dao->buildSimilarityOrderBy($fields, $objectId);
     }
 
     /**
@@ -652,7 +681,7 @@ class Mysql extends AbstractListing
      */
     public function quote($value)
     {
-        return $this->resource->quote($value);
+        return $this->dao->quote($value);
     }
 
     /**
@@ -704,7 +733,7 @@ class Mysql extends AbstractListing
     public function count()
     {
         if ($this->totalCount === null) {
-            $this->totalCount = $this->resource->getCount($this->buildQueryFromConditions());
+            $this->totalCount = $this->dao->getCount($this->buildQueryFromConditions());
         }
 
         return $this->totalCount;

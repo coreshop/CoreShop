@@ -21,6 +21,11 @@ namespace CoreShop\Model;
 class CustomerGroup extends AbstractModel
 {
     /**
+     * @var bool
+     */
+    protected static $isMultiShop = true;
+    
+    /**
      * @var int
      */
     public $id;
@@ -29,6 +34,11 @@ class CustomerGroup extends AbstractModel
      * @var string
      */
     public $name;
+
+    /**
+     * @var int[]
+     */
+    public $shopIds;
 
     /**
      * @return int
@@ -60,5 +70,21 @@ class CustomerGroup extends AbstractModel
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return \int[]
+     */
+    public function getShopIds()
+    {
+        return $this->shopIds;
+    }
+
+    /**
+     * @param \int[] $shopIds
+     */
+    public function setShopIds($shopIds)
+    {
+        $this->shopIds = $shopIds;
     }
 }

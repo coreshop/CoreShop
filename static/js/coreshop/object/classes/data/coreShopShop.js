@@ -1,4 +1,3 @@
-<?php
 /**
  * CoreShop
  *
@@ -12,11 +11,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-return [
-    'CoreShop\Model\*\*\*\Listing' => DI\object('CoreShop\Model\*\*\*\Listing'),
-    'CoreShop\Model\*\*\*' => DI\object('CoreShop\Model\*\*\*'),
-    'CoreShop\Model\*\*\Listing' => DI\object('CoreShop\Model\*\*\Listing'),
-    'CoreShop\Model\*\*' => DI\object('CoreShop\Model\*\*'),
-    'CoreShop\Model\*\Listing' => DI\object('CoreShop\Model\*\Listing'),
-    'CoreShop\Model\*' => DI\object('CoreShop\Model\*'),
-];
+pimcore.registerNS('pimcore.object.classes.data.coreShopShop');
+pimcore.object.classes.data.coreShopShop = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
+
+    type: 'coreShopShop',
+
+    getTypeName: function () {
+        return t('coreshop_shops');
+    },
+
+    getGroup: function () {
+        return 'coreshop';
+    },
+
+    getIconClass: function () {
+        return 'coreshop_icon_shop';
+    }
+});

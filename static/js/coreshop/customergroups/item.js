@@ -32,6 +32,19 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
     {
         var data = this.data;
 
+        var items = [
+            {
+                name: 'name',
+                fieldLabel: t('name'),
+                width: 400,
+                value: data.name
+            }
+        ];
+
+        if(this.getMultishopSettings()) {
+            items.push(this.getMultishopSettings());
+        }
+
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
@@ -55,14 +68,7 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
                     labelWidth: 350,
                     defaultType: 'textfield',
                     defaults: { width: '100%' },
-                    items :[
-                        {
-                            name: 'name',
-                            fieldLabel: t('name'),
-                            width: 400,
-                            value: data.name
-                        }
-                    ]
+                    items : items
                 }
             ]
         });

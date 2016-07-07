@@ -38,16 +38,18 @@ class AbstractDao extends Listing\Dao\AbstractDao
     /**
      * Get tableName, either for localized or non-localized data.
      *
+     * @param boolean $ignoreLocalized
+     *
      * @return string
      *
      * @throws Exception
      * @throws \Zend_Exception
      */
-    protected function getTableName()
+    protected function getTableName($ignoreLocalized = false)
     {
         $model = new $this->modelClass();
 
-        if (!$this->model->getIgnoreLocalizedFields()) {
+        if (!$this->model->getIgnoreLocalizedFields() && !$ignoreLocalized) {
             $language = null;
 
             if (count($model->getLocalizedFields()) > 0) {
@@ -80,6 +82,13 @@ class AbstractDao extends Listing\Dao\AbstractDao
     }
 
     /**
+     * @return string
+     */
+    protected function getShopTableName() {
+        return $this->getTableName(true) . '_shops';
+    }
+
+    /**
      * get select query.
      *
      * @return \Zend_Db_Select
@@ -88,7 +97,6 @@ class AbstractDao extends Listing\Dao\AbstractDao
      */
     public function getQuery()
     {
-
         // init
         $select = $this->db->select();
 
@@ -129,7 +137,16 @@ class AbstractDao extends Listing\Dao\AbstractDao
 
         $objects = array();
         foreach ($list as $o_id) {
-            if ($object = $modelClass::getById($o_id)) {
+            $object = null;
+
+            if($modelClass::isMultiShop() && Tool::isFrontend()) {
+                $object = $modelClass::getByShopId($o_id, Model\Shop::getShop()->getId());
+            }
+            else {
+                $object = $modelClass::getById($o_id);
+            }
+
+            if ($object) {
                 $objects[] = $object;
             }
         }

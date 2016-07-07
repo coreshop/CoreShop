@@ -483,6 +483,8 @@ class Product extends Base
      * @param Address $address
      *
      * @return bool|TaxCalculator
+     *
+     * @todo: Because the TaxRule is connceted via its id -> we need to check if the shop is valid for this rule, maybe there is a better solution?
      */
     public function getTaxCalculator(Address $address = null)
     {
@@ -500,10 +502,14 @@ class Product extends Base
         $taxRule = $this->getTaxRule();
 
         if ($taxRule instanceof TaxRuleGroup) {
-            $taxManager = TaxManagerFactory::getTaxManager($address, $taxRule->getId());
-            $taxCalculator = $taxManager->getTaxCalculator();
+            $currentShopId = Shop::getShop()->getId();
 
-            return $taxCalculator;
+            if(in_array($currentShopId, $taxRule->getShopIds())) {
+                $taxManager = TaxManagerFactory::getTaxManager($address, $taxRule->getId());
+                $taxCalculator = $taxManager->getTaxCalculator();
+
+                return $taxCalculator;
+            }
         }
 
         return false;

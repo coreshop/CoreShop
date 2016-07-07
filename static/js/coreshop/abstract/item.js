@@ -21,6 +21,8 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         save : ''
     },
 
+    multiShopSettings : false,
+
     initialize: function (parentPanel, data, panelKey, type) {
         this.parentPanel = parentPanel;
         this.data = data;
@@ -48,12 +50,14 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
     },
 
     getPanel: function () {
+        var items = this.getItems();
+
         panel = new Ext.panel.Panel({
             title: this.getTitleText(),
             closable: true,
             iconCls: this.iconCls,
             layout: 'border',
-            items : this.getItems()
+            items : items
         });
 
         return panel;
@@ -73,6 +77,33 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
 
     getSaveData : function () {
         return {};
+    },
+
+    getMultishopSettings : function() {
+        if(coreshop.settings.multishop) {
+            if(!this.multiShopSettings) {
+                this.multiShopSettings = Ext.create({
+                    xtype: 'combo',
+                    fieldLabel: t('coreshop_mulitshop_select'),
+                    name: 'shopIds',
+                    width: 400,
+                    store: pimcore.globalmanager.get('coreshop_shops'),
+                    displayField: 'name',
+                    multiSelect: true,
+                    valueField: 'id',
+                    triggerAction: 'all',
+                    typeAhead: false,
+                    editable: false,
+                    forceSelection: true,
+                    queryMode: 'local',
+                    value: this.data.shopIds
+                });
+            }
+
+            return this.multiShopSettings;
+        }
+
+        return false;
     },
 
     save: function ()

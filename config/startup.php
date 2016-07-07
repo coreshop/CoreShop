@@ -37,7 +37,8 @@ if (Pimcore\Tool::classExists("CoreShop\\Plugin")) {
     $plugin = new CoreShop\Plugin();
 
     if ($plugin::isInstalled()) {
-        $template = \CoreShop\Model\Configuration::get("SYSTEM.TEMPLATE.NAME");
+        $shop = \CoreShop\Model\Shop::getShop();
+        $template = $shop->getTemplate();
 
         if (!$template) {
             die("No template configured");

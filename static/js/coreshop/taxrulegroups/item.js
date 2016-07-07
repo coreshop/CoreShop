@@ -29,6 +29,26 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
     {
         var data = this.data;
 
+        var items = [
+            {
+                name: 'name',
+                fieldLabel: t('name'),
+                width: 400,
+                value: data.name
+            },
+            {
+                xtype: 'checkbox',
+                name: 'active',
+                fieldLabel: t('coreshop_tax_rule_group_active'),
+                width: 250,
+                checked: data.active
+            }
+        ];
+
+        if(this.getMultishopSettings()) {
+            items.push(this.getMultishopSettings());
+        }
+
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
@@ -52,21 +72,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                     labelWidth: 350,
                     defaultType: 'textfield',
                     defaults: { width: '100%' },
-                    items :[
-                        {
-                            name: 'name',
-                            fieldLabel: t('name'),
-                            width: 400,
-                            value: data.name
-                        },
-                        {
-                            xtype: 'checkbox',
-                            name: 'active',
-                            fieldLabel: t('coreshop_tax_rule_group_active'),
-                            width: 250,
-                            checked: data.active
-                        }
-                    ]
+                    items : items
                 },
                 this.getGrid()
             ]

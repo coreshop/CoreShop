@@ -310,6 +310,14 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                             iconCls: 'pimcore_icon_update',
                             handler: this.openUpdate
                         });
+
+                        if(coreshop.settings.multishop) {
+                            coreShopMenuItems.push({
+                                text: t('coreshop_shops'),
+                                iconCls: 'coreshop_icon_shop',
+                                handler: this.openShops
+                            });
+                        }
                     }
 
                     coreShopMenuItems.push({
@@ -737,6 +745,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_product_price_rule_panel', new pimcore.plugin.coreshop.product.pricerule.panel());
+        }
+    },
+
+    openShops : function () {
+        try {
+            pimcore.globalmanager.get('coreshop_shops_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_shops_panel', new pimcore.plugin.coreshop.shops.panel());
         }
     }
 });

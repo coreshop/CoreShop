@@ -1,4 +1,3 @@
-<?php
 /**
  * CoreShop
  *
@@ -12,11 +11,17 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-return [
-    'CoreShop\Model\*\*\*\Listing' => DI\object('CoreShop\Model\*\*\*\Listing'),
-    'CoreShop\Model\*\*\*' => DI\object('CoreShop\Model\*\*\*'),
-    'CoreShop\Model\*\*\Listing' => DI\object('CoreShop\Model\*\*\Listing'),
-    'CoreShop\Model\*\*' => DI\object('CoreShop\Model\*\*'),
-    'CoreShop\Model\*\Listing' => DI\object('CoreShop\Model\*\Listing'),
-    'CoreShop\Model\*' => DI\object('CoreShop\Model\*'),
-];
+pimcore.registerNS('pimcore.object.tags.coreShopShopMultiselect');
+pimcore.object.tags.coreShopShopMultiselect = Class.create(pimcore.plugin.coreshop.object.tags.multiselect, {
+
+    type: 'coreShopShopMultiselect',
+    storeName : 'shops',
+
+    getLayoutEdit: function ($super) {
+        if(coreshop.settings.multishop) {
+            return $super();
+        }
+
+        return {};
+    }
+});

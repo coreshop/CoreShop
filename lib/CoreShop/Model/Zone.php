@@ -21,6 +21,11 @@ namespace CoreShop\Model;
 class Zone extends AbstractModel
 {
     /**
+     * @var bool
+     */
+    protected static $isMultiShop = true;
+
+    /**
      * @var int
      */
     public $id;
@@ -34,6 +39,11 @@ class Zone extends AbstractModel
      * @var int
      */
     public $active;
+
+    /**
+     * @var int[]
+     */
+    public $shopIds;
 
     /**
      * @return int
@@ -97,4 +107,21 @@ class Zone extends AbstractModel
     {
         return strval($this->getName());
     }
+
+    /**
+     * @return \int[]
+     */
+    public function getShopIds()
+    {
+        return $this->shopIds;
+    }
+
+    /**
+     * @param \int[] $shopIds
+     */
+    public function setShopIds($shopIds)
+    {
+        $this->shopIds = $shopIds;
+    }
+
 }

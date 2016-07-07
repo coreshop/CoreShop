@@ -58,6 +58,7 @@ class Mysql extends AbstractWorker
           `categoryIds` varchar(255) NOT NULL,
           `parentCategoryIds` varchar(255) NOT NULL,
           `active` TINYINT(1) NOT NULL,
+          `shops` varchar(255) NOT NULL,
           PRIMARY KEY  (`o_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
@@ -232,6 +233,6 @@ class Mysql extends AbstractWorker
      */
     protected function getSystemAttributes()
     {
-        return array('o_id', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active');
+        return array('o_id', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops');
     }
 }

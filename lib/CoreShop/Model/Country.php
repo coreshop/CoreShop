@@ -24,6 +24,11 @@ use CoreShop\Tool;
 class Country extends AbstractModel
 {
     /**
+     * @var bool
+     */
+    protected static $isMultiShop = true;
+
+    /**
      * @var int
      */
     public $id;
@@ -67,6 +72,11 @@ class Country extends AbstractModel
      * @var Zone
      */
     public $zone;
+
+    /**
+     * @var int[]
+     */
+    public $shopIds;
 
     /**
      * Get Currency by ISO-Code.
@@ -272,6 +282,22 @@ class Country extends AbstractModel
     public function setUseStoreCurrency($useStoreCurrency)
     {
         $this->useStoreCurrency = $useStoreCurrency;
+    }
+
+    /**
+     * @return \int[]
+     */
+    public function getShopIds()
+    {
+        return $this->shopIds;
+    }
+
+    /**
+     * @param \int[] $shopIds
+     */
+    public function setShopIds($shopIds)
+    {
+        $this->shopIds = $shopIds;
     }
 
     /**

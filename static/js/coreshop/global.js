@@ -49,6 +49,7 @@ pimcore.plugin.coreshop.global = {
         this._createStore('coreshop_states', 'state');
         this._createStore('coreshop_messaging_contacts', 'messaging-contact');
         this._createStore('coreshop_messaging_thread_states', 'messaging-thread-state');
+        this._createStore('coreshop_shops', 'shop');
 
         pimcore.globalmanager.get('coreshop_taxes').load();
         pimcore.globalmanager.get('coreshop_countries').load();
@@ -56,6 +57,7 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.get('coreshop_zones').load();
         pimcore.globalmanager.get('coreshop_currencies').load();
         pimcore.globalmanager.get('coreshop_orderstates').load();
+        pimcore.globalmanager.get('coreshop_shops').load();
     },
 
     _createStore : function (name, url, fields) {

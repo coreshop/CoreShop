@@ -41,6 +41,11 @@ class AbstractModel extends Model\AbstractModel
     protected $localizedFields;
 
     /**
+     * @var bool
+     */
+    protected static $isMultiShop = false;
+
+    /**
      * Get Range by id.
      *
      * @param $id
@@ -49,6 +54,29 @@ class AbstractModel extends Model\AbstractModel
      */
     public static function getById($id)
     {
+        return self::getByShopId($id, null);
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function isMultiShop()
+    {
+        $class = get_called_class();
+
+        if (\Pimcore::getDiContainer()->has($class)) {
+            $class = \Pimcore::getDiContainer()->get($class);
+        }
+
+        return $class::$isMultiShop && Configuration::get("SYSTEM.MULTISHOP.ENABLED");
+    }
+
+    /**
+     * @param $id
+     * @param null $shopId
+     * @return mixed|null
+     */
+    public static function getByShopId($id, $shopId = null) {
         $id = intval($id);
 
         if ($id < 1) {
@@ -56,7 +84,7 @@ class AbstractModel extends Model\AbstractModel
         }
 
         $className = get_called_class();
-        $cacheKey = self::getCacheKey($className, $id);
+        $cacheKey = self::getCacheKey($className, $id . ($shopId ? '_' . $shopId : ''));
 
         try {
             $object = \Zend_Registry::get($cacheKey);
@@ -68,12 +96,10 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    //$className = Tool::getModelClassMapping($className);
 
                     $object = \Pimcore::getDiContainer()->make($className);
-
-                    //$object = new $className();
-                    $object->getDao()->getById($id);
+                    
+                    $object->getDao()->getById($id, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
                     Cache::save($object, $cacheKey);

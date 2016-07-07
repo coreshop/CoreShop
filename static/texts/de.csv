@@ -380,3 +380,8 @@
 "coreshop_prices_are_gross","Preise sind Bruttopreise"
 "coreshop_edit_address","Adresse bearbeiten"
 "coreshop_base_tax_enabled","Steuern aktiviert"
+"coreshop_mulitshop_select","Shops"
+"coreshop_shop_site","Site"
+"coreshop_shop_template","Template"
+"coreshop_shops","Shops"
+"coreshop_shops_multiselect","Shops Multiselect"

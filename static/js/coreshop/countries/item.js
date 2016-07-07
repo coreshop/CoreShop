@@ -25,6 +25,89 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
     },
 
     getFormPanel : function () {
+        var items = [
+            {
+                fieldLabel: t('coreshop_country_name'),
+                name: 'name',
+                value: this.data.name
+            },
+            {
+                fieldLabel: t('coreshop_country_isoCode'),
+                name: 'isoCode',
+                value: this.data.isoCode
+            },
+            {
+                xtype : 'checkbox',
+                fieldLabel: t('coreshop_country_active'),
+                name: 'active',
+                checked: this.data.active === '1'
+            },
+            {
+                xtype : 'checkbox',
+                fieldLabel: t('coreshop_country_use_default_store_currency'),
+                name: 'useStoreCurrency',
+                checked: parseInt(this.data.useStoreCurrency) === 1,
+                listeners : {
+                    change : function (checkbox, newValue) {
+                        if (newValue) {
+                            this.nextSibling().disable();
+                        } else {
+                            this.nextSibling().enable();
+                        }
+                    }
+                }
+            },
+            {
+                xtype:'combo',
+                fieldLabel:t('coreshop_country_currency'),
+                typeAhead:true,
+                value:this.data.currencyId,
+                mode:'local',
+                listWidth:100,
+                store:pimcore.globalmanager.get('coreshop_currencies'),
+                displayField:'name',
+                valueField:'id',
+                forceSelection:true,
+                triggerAction:'all',
+                name:'currencyId',
+                disabled : parseInt(this.data.useStoreCurrency) === 1,
+                listeners: {
+                    change: function () {
+                        this.forceReloadOnSave = true;
+                    }.bind(this),
+                    select: function () {
+                        this.forceReloadOnSave = true;
+                    }.bind(this)
+                }
+            },
+            {
+                xtype:'combo',
+                fieldLabel:t('coreshop_country_zone'),
+                typeAhead:true,
+                value:this.data.zoneId,
+                mode:'local',
+                listWidth:100,
+                store:pimcore.globalmanager.get('coreshop_zones'),
+                displayField:'name',
+                valueField:'id',
+                forceSelection:true,
+                triggerAction:'all',
+                name:'zoneId',
+                listeners: {
+                    change: function () {
+                        this.forceReloadOnSave = true;
+                    }.bind(this),
+                    select: function () {
+                        this.forceReloadOnSave = true;
+                    }.bind(this)
+                }
+            }
+        ];
+
+        if(this.getMultishopSettings()) {
+            items.push(this.getMultishopSettings());
+        }
+        
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
@@ -48,84 +131,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                     labelWidth: 350,
                     defaultType: 'textfield',
                     defaults: { width: 300 },
-                    items :[
-                        {
-                            fieldLabel: t('coreshop_country_name'),
-                            name: 'name',
-                            value: this.data.name
-                        },
-                        {
-                            fieldLabel: t('coreshop_country_isoCode'),
-                            name: 'isoCode',
-                            value: this.data.isoCode
-                        },
-                        {
-                            xtype : 'checkbox',
-                            fieldLabel: t('coreshop_country_active'),
-                            name: 'active',
-                            checked: this.data.active === '1'
-                        },
-                        {
-                            xtype : 'checkbox',
-                            fieldLabel: t('coreshop_country_use_default_store_currency'),
-                            name: 'useStoreCurrency',
-                            checked: parseInt(this.data.useStoreCurrency) === 1,
-                            listeners : {
-                                change : function (checkbox, newValue) {
-                                    if (newValue) {
-                                        this.nextSibling().disable();
-                                    } else {
-                                        this.nextSibling().enable();
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            xtype:'combo',
-                            fieldLabel:t('coreshop_country_currency'),
-                            typeAhead:true,
-                            value:this.data.currencyId,
-                            mode:'local',
-                            listWidth:100,
-                            store:pimcore.globalmanager.get('coreshop_currencies'),
-                            displayField:'name',
-                            valueField:'id',
-                            forceSelection:true,
-                            triggerAction:'all',
-                            name:'currencyId',
-                            disabled : parseInt(this.data.useStoreCurrency) === 1,
-                            listeners: {
-                                change: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this),
-                                select: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this)
-                            }
-                        },
-                        {
-                            xtype:'combo',
-                            fieldLabel:t('coreshop_country_zone'),
-                            typeAhead:true,
-                            value:this.data.zoneId,
-                            mode:'local',
-                            listWidth:100,
-                            store:pimcore.globalmanager.get('coreshop_zones'),
-                            displayField:'name',
-                            valueField:'id',
-                            forceSelection:true,
-                            triggerAction:'all',
-                            name:'zoneId',
-                            listeners: {
-                                change: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this),
-                                select: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this)
-                            }
-                        }
-                    ]
+                    items : items
                 }
             ]
         });

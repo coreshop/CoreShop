@@ -146,6 +146,10 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             }]
         });
 
+        if(this.getMultishopSettings()) {
+            this.settingsForm.add(this.getMultishopSettings());
+        }
+
         return this.settingsForm;
     },
 

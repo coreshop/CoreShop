@@ -380,3 +380,8 @@
 "coreshop_prices_are_gross","Prices are gross prices"
 "coreshop_edit_address","Edit Address"
 "coreshop_base_tax_enabled","Taxes enabled"
+"coreshop_mulitshop_select","Shops"
+"coreshop_shop_site","Site"
+"coreshop_shop_template","Template"
+"coreshop_shops","Shops"
+"coreshop_shops_multiselect","Shops Multiselect"

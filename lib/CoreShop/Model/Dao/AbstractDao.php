@@ -48,22 +48,51 @@ abstract class AbstractDao extends Dao\AbstractDao
     }
 
     /**
+     * Get Shop table name
+     *
+     * @return string
+     */
+    public function getShopTableName() {
+        return $this->getTableName() . '_shops';
+    }
+
+    /**
      * Get Object by id.
      *
      * @param null $id
+     * @param null $shopId
      *
      * @throws Exception
      */
-    public function getById($id = null)
+    public function getById($id = null, $shopId = null)
     {
         if ($id != null) {
             $this->model->setId($id);
         }
 
-        $data = $this->db->fetchRow('SELECT * FROM '.self::getTableName().' WHERE id = ?', $this->model->getId());
-
+        if($this->model->isMultiShop() && !is_null($shopId)) {
+            $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
+        }
+        else {
+            $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' WHERE id = ?', $this->model->getId());
+        }
+        
         if (!$data['id']) {
             throw new Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
+        }
+
+        if($this->model->isMultiShop()) {
+            $shops = $this->db->fetchAll('SELECT * FROM ' . $this->getShopTableName() . ' WHERE oId = ?', array($this->model->getId()));
+            $shopIds = [];
+
+            if(is_array($shops)) {
+                foreach ($shops as $shop) {
+                    $shopIds[] = $shop['shopId'];
+                }
+            }
+
+            $this->model->setShopIds($shopIds);
+
         }
 
         $this->assignVariablesToModel($data);
@@ -144,6 +173,17 @@ abstract class AbstractDao extends Dao\AbstractDao
                 }
 
                 $buffer[$k] = $value;
+            }
+        }
+
+        if($this->model->isMultiShop()) {
+            $this->db->delete($this->getShopTableName(), $this->db->quoteInto('oId = ?', $this->model->getId()));
+
+            foreach($this->model->getShopIds() as $shopId) {
+                $this->db->insert($this->getShopTableName(), array(
+                    "oId" => $this->model->getId(),
+                    "shopId" => $shopId
+                ));
             }
         }
 

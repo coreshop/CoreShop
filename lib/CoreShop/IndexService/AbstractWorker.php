@@ -106,6 +106,7 @@ abstract class AbstractWorker
             'categoryIds' => ','.implode(',', $categoryIds).',',
             'parentCategoryIds' => ','.implode(',', $parentCategoryIds).',',
             'active' => $object->getEnabled() === null ? false : $object->getEnabled(),
+            'shops' => ','.implode(',', $object->getShops()).','
         );
 
         $relationData = array();

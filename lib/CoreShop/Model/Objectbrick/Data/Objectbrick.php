@@ -19,6 +19,7 @@ use Pimcore\Model\Object\Objectbrick\Data\AbstractData;
 /**
  * Class Objectbrick
  * @package CoreShop\Model\Objectbrick\Data
+ * @todo: Refactor: Move to Object Namespace like Fieldcollection?
  */
 class Objectbrick extends AbstractData
 {

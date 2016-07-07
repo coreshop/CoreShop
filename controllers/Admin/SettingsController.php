@@ -66,7 +66,12 @@ class CoreShop_Admin_SettingsController extends Admin
             $class = str_replace('Pimcore\\Model\\Object\\', '', $class);
         }
 
-        $this->_helper->json(array('coreshop' => $valueArray, 'plugin' => $pluginConfig['plugin'], 'classMapping' => $classMapping));
+        $this->_helper->json([
+            'coreshop' => $valueArray,
+            'plugin' => $pluginConfig['plugin'],
+            'classMapping' => $classMapping,
+            'multishop' => Model\Configuration::get("SYSTEM.MULTISHOP.ENABLED")
+        ]);
     }
 
     public function getAction()

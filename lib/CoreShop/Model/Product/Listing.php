@@ -17,6 +17,7 @@ namespace CoreShop\Model\Product;
 use CoreShop\Model\Category;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
+use CoreShop\Model\Shop;
 
 /**
  * Class Listing
@@ -188,6 +189,16 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @return \CoreShop\Model\Category
      */
     abstract public function getCategory();
+
+    /**
+     * @param $shop
+     */
+    abstract public function setShop(Shop $shop);
+
+    /**
+     * @return \CoreShop\Model\Shop
+     */
+    abstract public function getShop();
 
     /**
      * @param $variantMode

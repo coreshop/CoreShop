@@ -36,6 +36,11 @@ class Carrier extends AbstractModel
     const RANGE_BEHAVIOUR_LARGEST = 'largest';
 
     /**
+     * @var bool
+     */
+    protected static $isMultiShop = true;
+
+    /**
      * @var array
      */
     public static $shippingMethods = array(self::SHIPPING_METHOD_PRICE, self::SHIPPING_METHOD_WEIGHT);
@@ -134,6 +139,11 @@ class Carrier extends AbstractModel
      * @var string
      */
     public $class;
+
+    /**
+     * @var int[]
+     */
+    public $shopIds;
 
     /**
      * get Carrier by ID.
@@ -878,5 +888,21 @@ class Carrier extends AbstractModel
     public function setClass($class)
     {
         $this->class = $class;
+    }
+
+    /**
+     * @return \int[]
+     */
+    public function getShopIds()
+    {
+        return $this->shopIds;
+    }
+
+    /**
+     * @param \int[] $shopIds
+     */
+    public function setShopIds($shopIds)
+    {
+        $this->shopIds = $shopIds;
     }
 }

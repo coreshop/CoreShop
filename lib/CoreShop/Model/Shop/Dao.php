@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,11 +12,21 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-return [
-    'CoreShop\Model\*\*\*\Listing' => DI\object('CoreShop\Model\*\*\*\Listing'),
-    'CoreShop\Model\*\*\*' => DI\object('CoreShop\Model\*\*\*'),
-    'CoreShop\Model\*\*\Listing' => DI\object('CoreShop\Model\*\*\Listing'),
-    'CoreShop\Model\*\*' => DI\object('CoreShop\Model\*\*'),
-    'CoreShop\Model\*\Listing' => DI\object('CoreShop\Model\*\Listing'),
-    'CoreShop\Model\*' => DI\object('CoreShop\Model\*'),
-];
+namespace CoreShop\Model\Shop;
+
+use CoreShop\Model\Dao\AbstractDao;
+use CoreShop\Model;
+
+/**
+ * Class Dao
+ * @package CoreShop\Model\Shop
+ */
+class Dao extends AbstractDao
+{
+    /**
+     * Mysql table name.
+     *
+     * @var string
+     */
+    protected static $tableName = 'coreshop_shops';
+}
