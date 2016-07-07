@@ -607,11 +607,39 @@ CREATE TABLE `coreshop_shops` (
   `isDefault` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `coreshop_shops` (`name`, `defaultCurrency`, `template`, `isDefault`)
+INSERT INTO `coreshop_shops` (`name`, `currencyId`, `template`, `isDefault`)
 VALUES ('Default', '1', 'default', '1');
 
 DROP TABLE IF EXISTS `coreshop_countries_shops`;
 CREATE TABLE `coreshop_countries_shops` (
+  `oId` int(11) NOT NULL,
+  `shopId` int(11) NOT NULL,
+  PRIMARY KEY (`oId`,`shopId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_customer_groups_shops`;
+CREATE TABLE `coreshop_customer_groups_shops` (
+  `oId` int(11) NOT NULL,
+  `shopId` int(11) NOT NULL,
+  PRIMARY KEY (`oId`,`shopId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_manufacturers_shops`;
+CREATE TABLE `coreshop_manufacturers_shops` (
+  `oId` int(11) NOT NULL,
+  `shopId` int(11) NOT NULL,
+  PRIMARY KEY (`oId`,`shopId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_tax_rule_groups_shops`;
+CREATE TABLE `coreshop_tax_rule_groups_shops` (
+  `oId` int(11) NOT NULL,
+  `shopId` int(11) NOT NULL,
+  PRIMARY KEY (`oId`,`shopId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_zones_shops`;
+CREATE TABLE `coreshop_zones_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)

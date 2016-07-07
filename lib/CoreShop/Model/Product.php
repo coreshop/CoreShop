@@ -504,11 +504,13 @@ class Product extends Base
         if ($taxRule instanceof TaxRuleGroup) {
             $currentShopId = Shop::getShop()->getId();
 
-            if(in_array($currentShopId, $taxRule->getShopIds())) {
-                $taxManager = TaxManagerFactory::getTaxManager($address, $taxRule->getId());
-                $taxCalculator = $taxManager->getTaxCalculator();
+            if(is_array($taxRule->getShopIds())) {
+                if (in_array($currentShopId, $taxRule->getShopIds())) {
+                    $taxManager = TaxManagerFactory::getTaxManager($address, $taxRule->getId());
+                    $taxCalculator = $taxManager->getTaxCalculator();
 
-                return $taxCalculator;
+                    return $taxCalculator;
+                }
             }
         }
 

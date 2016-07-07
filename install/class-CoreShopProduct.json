@@ -53,7 +53,7 @@
 						"childs":[
 							{
 								"fieldtype":"localizedfields",
-								"phpdocType":"array",
+								"phpdocType":"\\Pimcore\\Model\\Object\\Localizedfield",
 								"childs":[
 									{
 										"fieldtype":"input",
@@ -82,10 +82,10 @@
 								"name":"localizedfields",
 								"region":null,
 								"layout":null,
-								"title":null,
+								"title":"",
 								"width":"",
 								"height":"",
-								"maxTabs":null,
+								"maxTabs":1,
 								"labelWidth":null,
 								"tooltip":"",
 								"mandatory":false,
@@ -192,7 +192,7 @@
 							},
 							{
 								"fieldtype":"localizedfields",
-								"phpdocType":"array",
+								"phpdocType":"\\Pimcore\\Model\\Object\\Localizedfield",
 								"childs":[
 									{
 										"fieldtype":"textarea",
@@ -306,6 +306,31 @@
 								"invisible":false,
 								"visibleGridView":false,
 								"visibleSearch":false
+							},
+							{
+								"fieldtype":"coreShopShopMultiselect",
+								"options":[
+
+								],
+								"width":null,
+								"height":null,
+								"queryColumnType":"text",
+								"columnType":"text",
+								"phpdocType":"array",
+								"name":"shops",
+								"title":"Shops",
+								"tooltip":"",
+								"mandatory":false,
+								"noteditable":false,
+								"index":false,
+								"locked":null,
+								"style":"",
+								"permissions":null,
+								"datatype":"data",
+								"relationType":false,
+								"invisible":false,
+								"visibleGridView":false,
+								"visibleSearch":false
 							}
 						],
 						"locked":false
@@ -336,7 +361,9 @@
 								"relationType":true,
 								"lazyLoading":false,
 								"classes":[
-									"CoreShopCategory"
+									{
+										"classes":"CoreShopCategory"
+									}
 								],
 								"name":"categories",
 								"title":"Categories",
@@ -412,8 +439,8 @@
 								"maxValue":null,
 								"decimalPrecision":null,
 								"name":"retailPrice",
-								"title":"Pre-tax retail price",
-								"tooltip":"",
+								"title":"Retail Price",
+								"tooltip":"With Tax or without Tax depends on your Settings.",
 								"mandatory":false,
 								"noteditable":false,
 								"index":false,
@@ -580,7 +607,7 @@
 						"childs":[
 							{
 								"fieldtype":"localizedfields",
-								"phpdocType":"array",
+								"phpdocType":"\\Pimcore\\Model\\Object\\Localizedfield",
 								"childs":[
 									{
 										"fieldtype":"input",
@@ -832,15 +859,21 @@
 								"objectsAllowed":false,
 								"assetsAllowed":true,
 								"assetTypes":[
-
+									{
+										"assetTypes":"image"
+									}
 								],
 								"documentsAllowed":false,
 								"documentTypes":[
-
+									{
+										"documentTypes":""
+									}
 								],
 								"lazyLoading":false,
 								"classes":[
-
+									{
+										"classes":""
+									}
 								],
 								"name":"images",
 								"title":"Images",
@@ -981,7 +1014,7 @@
 							},
 							{
 								"fieldtype":"classificationstore",
-								"phpdocType":"\\Pimcore\\Model\\Object\\Data\\ClassificationStore",
+								"phpdocType":"\\Pimcore\\Model\\Object\\Classificationstore",
 								"childs":[
 
 								],
@@ -994,6 +1027,7 @@
 								"maxTabs":null,
 								"labelWidth":0,
 								"localized":true,
+								"storeId":"1",
 								"allowedGroupIds":null,
 								"tooltip":"",
 								"mandatory":false,

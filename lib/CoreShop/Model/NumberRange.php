@@ -17,6 +17,8 @@ namespace CoreShop\Model;
 /**
  * Class NumberRange
  * @package CoreShop\Model
+ *
+ * @todo: FK for multishop
  */
 class NumberRange extends AbstractModel
 {
@@ -39,11 +41,6 @@ class NumberRange extends AbstractModel
      * @var int
      */
     public $number;
-
-    /**
-     * @var int[]
-     */
-    public $shopIds;
 
     /**
      * Get NumberRange by type.
@@ -136,21 +133,5 @@ class NumberRange extends AbstractModel
     public function setNumber($number)
     {
         $this->number = $number;
-    }
-
-    /**
-     * @return \int[]
-     */
-    public function getShopIds()
-    {
-        return $this->shopIds;
-    }
-
-    /**
-     * @param \int[] $shopIds
-     */
-    public function setShopIds($shopIds)
-    {
-        $this->shopIds = $shopIds;
     }
 }

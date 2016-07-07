@@ -19,6 +19,7 @@ use CoreShop\Model\Configuration;
 use CoreShop\Model\Country;
 use CoreShop\Model\CustomerGroup;
 use CoreShop\Model\Product;
+use CoreShop\Model\Shop;
 use CoreShop\Model\State;
 use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
@@ -110,6 +111,7 @@ class Data
             $taxRuleGroup = new TaxRuleGroup();
             $taxRuleGroup->setName("20");
             $taxRuleGroup->setActive(true);
+            $taxRuleGroup->setShopIds(array(Shop::getDefaultShop()->getId()));
             $taxRuleGroup->save();
 
             $taxRule = new TaxRule();
@@ -140,6 +142,7 @@ class Data
             $carrier->setTaxRuleGroup(TaxRuleGroup::getById(1));
             $carrier->setNeedsRange(true);
             $carrier->setIsFree(false);
+            $carrier->setShopIds(array(Shop::getDefaultShop()->getId()));
             $carrier->save();
 
             $range = new Carrier\RangeWeight();
@@ -176,6 +179,7 @@ class Data
             $carrier->setTaxRuleGroup(TaxRuleGroup::getById(1));
             $carrier->setNeedsRange(true);
             $carrier->setIsFree(false);
+            $carrier->setShopIds(array(Shop::getDefaultShop()->getId()));
             $carrier->save();
 
             $range = new Carrier\RangeWeight();
@@ -210,6 +214,7 @@ class Data
             self::$product1->setTaxRule(self::$taxRuleGroup);
             self::$product1->setParent(Service::createFolderByPath("/coreshop/products"));
             self::$product1->setKey(File::getValidFilename("test1"));
+            self::$product1->setShops(array(Shop::getDefaultShop()->getId()));
             self::$product1->save();
         }
 
@@ -225,6 +230,7 @@ class Data
             self::$product1->setTaxRule(self::$taxRuleGroup);
             self::$product2->setParent(Service::createFolderByPath("/coreshop/products"));
             self::$product2->setKey(File::getValidFilename("test2"));
+            self::$product2->setShops(array(Shop::getDefaultShop()->getId()));
             self::$product2->save();
         }
 
@@ -240,6 +246,7 @@ class Data
             self::$product1->setTaxRule(self::$taxRuleGroup);
             self::$product3->setParent(Service::createFolderByPath("/coreshop/products"));
             self::$product3->setKey(File::getValidFilename("test3"));
+            self::$product3->setShops(array(Shop::getDefaultShop()->getId()));
             self::$product3->save();
         }
     }
@@ -265,12 +272,14 @@ class Data
         if (!self::$customerGroup1 instanceof CustomerGroup) {
             self::$customerGroup1 = new CustomerGroup();
             self::$customerGroup1->setName("Group1");
+            self::$customerGroup1->setShopIds(array(Shop::getDefaultShop()->getId()));
             self::$customerGroup1->save();
         }
 
         if (!self::$customerGroup2 instanceof CustomerGroup) {
             self::$customerGroup2 = new CustomerGroup();
             self::$customerGroup2->setName("Group2");
+            self::$customerGroup2->setShopIds(array(Shop::getDefaultShop()->getId()));
             self::$customerGroup2->save();
         }
     }

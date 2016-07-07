@@ -61,9 +61,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
     public function init()
     {
         \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
-            require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
-            require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
-            
             /** @var \Pimcore\Console\Application $application */
             $application = $e->getTarget();
 
@@ -90,9 +87,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
                 $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
                 $frontController->registerPlugin(new Controller\Plugin\Debug());
             }
-
-            require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
-            require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
         });
 
         \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
@@ -146,6 +140,9 @@ class Plugin extends AbstractPlugin implements PluginInterface
             PIMCORE_WEBSITE_PATH.'/lib/CoreShop',
         );
         set_include_path(implode(PATH_SEPARATOR, $includePaths));
+
+        require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
+        require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
     }
 
     /**
