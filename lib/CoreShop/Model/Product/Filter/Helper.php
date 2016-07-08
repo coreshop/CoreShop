@@ -14,8 +14,10 @@
 
 namespace CoreShop\Model\Product\Filter;
 
+use CoreShop\Model\Configuration;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
+use CoreShop\Model\Shop;
 
 /**
  * Class Helper
@@ -58,6 +60,10 @@ class Helper
 
         if ($filterService instanceof Service) {
             return $filterService->initFilterService($filter, $list, $params);
+        }
+
+        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+            $list->setShop(Shop::getShop());
         }
 
         return array();

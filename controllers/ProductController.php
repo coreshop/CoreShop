@@ -101,7 +101,6 @@ class CoreShop_ProductController extends Action
                 $this->view->currentFilter = \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
 
                 $list->setCategory($category);
-                $list->setShop(\CoreShop\Model\Shop::getShop());
 
                 $this->view->filter = $category->getFilterDefinition();
                 $this->view->list = $list;

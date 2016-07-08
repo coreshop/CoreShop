@@ -41,9 +41,18 @@ class AbstractModel extends Model\AbstractModel
     protected $localizedFields;
 
     /**
+     * Determines if the object has a 1:n relation for shops
+     *
      * @var bool
      */
     protected static $isMultiShop = false;
+
+    /**
+     * Determines if the object has a 1:1 relation with shops
+     *
+     * @var bool
+     */
+    protected static $isMultiShopFK = false;
 
     /**
      * Get Range by id.
@@ -62,13 +71,35 @@ class AbstractModel extends Model\AbstractModel
      */
     public static function isMultiShop()
     {
-        $class = get_called_class();
+        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+            $class = get_called_class();
 
-        if (\Pimcore::getDiContainer()->has($class)) {
-            $class = \Pimcore::getDiContainer()->get($class);
+            if (\Pimcore::getDiContainer()->has($class)) {
+                $class = \Pimcore::getDiContainer()->get($class);
+            }
+
+            return $class::$isMultiShop;
         }
 
-        return $class::$isMultiShop && Configuration::get("SYSTEM.MULTISHOP.ENABLED");
+        return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function isMultiShopFK()
+    {
+        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+            $class = get_called_class();
+
+            if (\Pimcore::getDiContainer()->has($class)) {
+                $class = \Pimcore::getDiContainer()->get($class);
+            }
+
+            return $class::$isMultiShopFK;
+        }
+
+        return false;
     }
 
     /**
@@ -121,13 +152,14 @@ class AbstractModel extends Model\AbstractModel
      *
      * @param string $field
      * @param string $value
+     * @param int $shopId
      *
      * @return null|AbstractModel
      */
-    public static function getByField($field, $value)
+    public static function getByField($field, $value, $shopId = null)
     {
         $className = get_called_class();
-        $cacheKey = self::getCacheKey($className, $field.'_'.$value);
+        $cacheKey = self::getCacheKey($className, $field . '_' . $value . ($shopId ? $shopId : ''));
 
         try {
             $object = \Zend_Registry::get($cacheKey);
@@ -140,7 +172,7 @@ class AbstractModel extends Model\AbstractModel
             try {
                 if (!$object = Cache::load($cacheKey)) {
                     $object = \Pimcore::getDiContainer()->make($className);
-                    $object->getDao()->getByField($field, $value);
+                    $object->getDao()->getByField($field, $value, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
                     Cache::save($object, $cacheKey);

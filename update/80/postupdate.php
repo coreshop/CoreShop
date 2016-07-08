@@ -18,7 +18,7 @@ $orderItemClass = $install->createClass('CoreShopOrderItem');
 $paymentClass = $install->createClass('CoreShopPayment');
 $orderClass = $install->createClass('CoreShopOrder');
 
-
+//Migrate to Multishops
 $db = \Pimcore\Db::get();
 
 $db->query("DROP TABLE IF EXISTS `coreshop_shops`;
@@ -59,7 +59,14 @@ foreach($modelsToUpdate as $model) {
     }
 }
 
-//TODO: INDEXES!!
+$indexes = \CoreShop\Model\Index::getAll();
+
+foreach($indexes as $index) {
+    $tableName =  'coreshop_index_mysql_'. $index->getName();
+
+    $db->query("ALTER TABLE `$tableName` ADD `shops` varchar(255) NOT NULL AFTER `active`;");
+    $db->query("UPDATE $tableName SET `shops`=',".\CoreShop\Model\Shop::getDefaultShop()->getId().",'");
+}
 
 $products = \CoreShop\Model\Product::getList();
 
@@ -69,3 +76,12 @@ foreach($products->load() as $pro) {
     ]);
     $pro->save();
 }
+
+$db->query("ALTER TABLE `coreshop_numberranges`
+ADD `shopId` int(11) NOT NULL AFTER `id`;");
+
+$db->query("ALTER TABLE `coreshop_numberranges`
+ADD UNIQUE `type_shopId` (`type`, `shopId`),
+DROP INDEX `type`;");
+
+$db->query("UPDATE `coreshop_numberranges` SET `shopId` = 1;");

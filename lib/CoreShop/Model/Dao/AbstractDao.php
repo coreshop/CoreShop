@@ -70,8 +70,12 @@ abstract class AbstractDao extends Dao\AbstractDao
             $this->model->setId($id);
         }
 
-        if($this->model->isMultiShop() && !is_null($shopId)) {
-            $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
+        $data = null;
+
+        if(!is_null($shopId)) {
+            if ($this->model->isMultiShop()) {
+                $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
+            }
         }
         else {
             $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' WHERE id = ?', $this->model->getId());
@@ -104,12 +108,25 @@ abstract class AbstractDao extends Dao\AbstractDao
      *
      * @param string $field
      * @param string $value
+     * @param int $shopId
      *
      * @throws Exception
      */
-    public function getByField($field, $value)
+    public function getByField($field, $value, $shopId = null)
     {
-        $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . " WHERE $field = ?", $value);
+        $data = null;
+
+        if(!is_null($shopId)) {
+            if ($this->model->isMultiShop()) {
+                $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE ' . $field . ' = ?', [$shopId, $value]);
+            }
+            else if($this->model->isMultiShopFK()) {
+                $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' WHERE shopId = ? AND ' . $field . ' = ?', [$shopId, $value]);
+            }
+        }
+        else {
+            $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . " WHERE $field = ?", $value);
+        }
 
         if (!$data['id']) {
             throw new Exception(get_class($this->model).' with the field/value '.$field.'-'.$value." doesn't exists");

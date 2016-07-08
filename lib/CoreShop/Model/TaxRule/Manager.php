@@ -16,6 +16,7 @@ namespace CoreShop\Model\TaxRule;
 
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Plugin\TaxManager;
+use CoreShop\Model\Shop;
 use CoreShop\Model\State;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
@@ -70,10 +71,16 @@ class Manager implements TaxManager
     /**
      * Return the tax calculator associated to this address.
      *
+     * @param $shopId int
+     *
      * @return TaxCalculator
      */
-    public function getTaxCalculator()
+    public function getTaxCalculator($shopId = null)
     {
+        if(is_null($shopId)) {
+            $shopId = Shop::getShop()->getId();
+        }
+
         if ($this->tax_calculator instanceof TaxCalculator) {
             return $this->tax_calculator;
         }
@@ -86,6 +93,13 @@ class Manager implements TaxManager
 
         if (!\Zend_Registry::isRegistered($cacheKey)) {
             $taxRuleGroup = TaxRuleGroup::getById($this->type);
+
+            if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+                if (!is_array($taxRuleGroup->getShopIds()) || !in_array($shopId, $taxRuleGroup->getShopIds())) {
+                    return new TaxCalculator();
+                }
+            }
+
             $taxRules = $taxRuleGroup->getForCountryAndState($this->address->getCountry(), $this->address->getState());
             $taxes = array();
             $firstRow = true;

@@ -17,15 +17,13 @@ namespace CoreShop\Model;
 /**
  * Class NumberRange
  * @package CoreShop\Model
- *
- * @todo: FK for multishop
  */
 class NumberRange extends AbstractModel
 {
     /**
      * @var bool
      */
-    protected static $isMultiShop = true;
+    protected static $isMultiShopFK = true;
     
     /**
      * @var int
@@ -43,20 +41,30 @@ class NumberRange extends AbstractModel
     public $number;
 
     /**
+     * @var
+     */
+    public $shopId;
+
+    /**
      * Get NumberRange by type.
      *
      * @param $type
      *
      * @return NumberRange
      */
-    public static function getByType($type)
+    public static function getByType($type, $shopId = null)
     {
-        $numberRange = parent::getByField('type', $type);
+        if(is_null($shopId)) {
+            $shopId = Shop::getShop()->getId();
+        }
+
+        $numberRange = parent::getByField('type', $type, $shopId);
 
         if (!$numberRange) {
             $numberRange = new self();
             $numberRange->setType($type);
             $numberRange->setNumber(0);
+            $numberRange->setShopId($shopId);
             $numberRange->save();
         }
 
@@ -70,9 +78,9 @@ class NumberRange extends AbstractModel
      *
      * @return int
      */
-    public static function getNextNumberForType($type)
+    public static function getNextNumberForType($type, $shopId = null)
     {
-        $numberRange = self::getByType($type);
+        $numberRange = self::getByType($type, $shopId);
         $numberRange->increaseNumber();
 
         return $numberRange->getNumber();
@@ -133,5 +141,21 @@ class NumberRange extends AbstractModel
     public function setNumber($number)
     {
         $this->number = $number;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShopId()
+    {
+        return $this->shopId;
+    }
+
+    /**
+     * @param mixed $shopId
+     */
+    public function setShopId($shopId)
+    {
+        $this->shopId = $shopId;
     }
 }

@@ -24,6 +24,7 @@ use CoreShop\Model\TaxCalculator;
 use CoreShop\Plugin;
 use Pimcore\Date;
 use Pimcore\Model\Object\Service;
+use Pimcore\Model\Staticroute;
 
 /**
  * Class Payment
@@ -145,9 +146,8 @@ abstract class Payment implements AbstractPlugin
      */
     public function url($module, $action)
     {
-        $controller = \Zend_Controller_Front::getInstance();
-        $router = $controller->getRouter();
+        $route = Staticroute::getByName("coreshop_payment");
 
-        return $router->assemble(array('module' => $module, 'action' => $action, 'lang' => (string) \Zend_Registry::get('Zend_Locale')), 'coreshop_payment');
+        return $route->assemble(array('mod' => $module, 'act' => $action, 'lang' => (string) \Zend_Registry::get('Zend_Locale')), 'coreshop_payment');
     }
 }

@@ -71,18 +71,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
         \Pimcore::getEventManager()->attach('system.startup', function (\Zend_EventManager_Event $e) {
             $frontController = $e->getTarget();
 
-            $router = $frontController->getRouter();
-
-            $routePluginPayment = new \Zend_Controller_Router_Route(
-                '/:lang/shop/payment/:action/*',
-                array(
-                    'controller' => 'payment',
-                    'action' => 'index',
-                )
-            );
-
-            $router->addRoute('coreshop_payment', $routePluginPayment);
-
             if ($frontController instanceof \Zend_Controller_Front) {
                 $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
                 $frontController->registerPlugin(new Controller\Plugin\Debug());

@@ -111,5 +111,15 @@
             <variables>lang,act</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>coreshop_payment</name>
+            <pattern>/(\w+)\/shop\/payment\/(\w+)\/(\w+)/</pattern>
+            <reverse>/%lang/shop/payment/%act/%mod</reverse>
+            <module>%mod</module>
+            <controller>payment</controller>
+            <action>%act</action>
+            <variables>lang,act,mod</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>
