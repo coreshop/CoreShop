@@ -58,12 +58,12 @@ class Helper
         $list->setOrder($orderDirection);
         $list->setLimit($limit);
 
-        if ($filterService instanceof Service) {
-            return $filterService->initFilterService($filter, $list, $params);
-        }
-
         if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
             $list->setShop(Shop::getShop());
+        }
+
+        if ($filterService instanceof Service) {
+            return $filterService->initFilterService($filter, $list, $params);
         }
 
         return array();

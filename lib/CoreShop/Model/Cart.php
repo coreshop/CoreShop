@@ -111,6 +111,7 @@ class Cart extends Base
             $cart = self::create();
             $cart->setKey(uniqid());
             $cart->setPublished(true);
+            $cart->setShop(Shop::getShop());
         }
 
         if ($cart instanceof Cart) {
@@ -768,6 +769,7 @@ class Cart extends Base
         $order->setPaymentProviderDescription($paymentModule->getDescription());
         $order->setOrderDate(new Date());
         $order->setCurrency(Tool::getCurrency());
+        $order->setShop($this->getShop());
 
         if ($this->getCarrier() instanceof Carrier) {
             $order->setCarrier($this->getCarrier());
@@ -889,6 +891,32 @@ class Cart extends Base
     public function getPriceRule()
     {
         throw new UnsupportedException('getPriceRule is not supported for '.get_class($this));
+    }
+
+    /**
+     * set shop
+     * this method has to be overwritten in Pimcore Object.
+     *
+     * @param $shop
+     *
+     * @throws UnsupportedException
+     */
+    public function setShop($shop)
+    {
+        throw new UnsupportedException('setShop is not supported for '.get_class($this));
+    }
+
+    /**
+     * returns active price rule for cart
+     * this method has to be overwritten in Pimcore Object.
+     *
+     * @throws UnsupportedException
+     *
+     * @return Shop
+     */
+    public function getShop()
+    {
+        throw new UnsupportedException('getShop is not supported for '.get_class($this));
     }
 
     /**

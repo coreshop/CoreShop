@@ -43,6 +43,13 @@
                         <td><?=\CoreShop\Tool::formatTax($this->product->getTaxRate()/100)?></td>
                     </tr>
                 <?php } ?>
+
+                <?php if(\CoreShop\Tool::prepareCart()->getId()) { ?>
+                    <tr>
+                        <td><?=$this->translate("coreshop_cart")?></td>
+                        <td><?=\CoreShop\Tool::prepareCart()->getId()?></td>
+                    </tr>
+                <?php } ?>
             </table>
         </div>
     </div>

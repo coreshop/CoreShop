@@ -86,6 +86,10 @@ class Order extends Base
      */
     public static function getPathForNewOrder()
     {
+        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+            return Object\Service::createFolderByPath('/coreshop/orders/'.Shop::getShop()->getName().'/'.date('Y/m/d'));
+        }
+
         return Object\Service::createFolderByPath('/coreshop/orders/'.date('Y/m/d'));
     }
 
@@ -908,5 +912,31 @@ class Order extends Base
     public function getCarrier()
     {
         throw new UnsupportedException('getCarrier is not supported for '.get_class($this));
+    }
+
+    /**
+     * set shop
+     * this method has to be overwritten in Pimcore Object.
+     *
+     * @param $shop
+     *
+     * @throws UnsupportedException
+     */
+    public function setShop($shop)
+    {
+        throw new UnsupportedException('setShop is not supported for '.get_class($this));
+    }
+
+    /**
+     * returns active price rule for cart
+     * this method has to be overwritten in Pimcore Object.
+     *
+     * @throws UnsupportedException
+     *
+     * @return Shop
+     */
+    public function getShop()
+    {
+        throw new UnsupportedException('getShop is not supported for '.get_class($this));
     }
 }

@@ -172,35 +172,46 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
     getHeader : function () {
         if (!this.headerPanel) {
+            var items = [
+                {
+                    xtype : 'panel',
+                    html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.o_creationDate * 1000), t('coreshop_date_format')) + '</span>',
+                    bodyPadding : 20,
+                    flex : 1
+                },
+                {
+                    xtype : 'panel',
+                    html : t('coreshop_orders_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.order.currency.symbol, this.order.total) + '</span>',
+                    bodyPadding : 20,
+                    flex : 1
+                },
+                {
+                    xtype : 'panel',
+                    html : t('coreshop_messaging_messages') + '<br/><span class="coreshop_order_big">' + 0 + '</span>', //TODO: Add Messages
+                    bodyPadding : 20,
+                    flex : 1
+                },
+                {
+                    xtype : 'panel',
+                    html : t('coreshop_product_count') + '<br/><span class="coreshop_order_big">' + this.order.items.length + '</span>',
+                    bodyPadding : 20,
+                    flex : 1
+                }
+            ];
+
+            if(coreshop.settings.multishop) {
+                items.push({
+                    xtype : 'panel',
+                    html : t('coreshop_shop') + '<br/><span class="coreshop_order_big">' + this.order.shop.name + '</span>',
+                    bodyPadding : 20,
+                    flex : 1
+                });
+            }
+
             this.headerPanel = Ext.create('Ext.panel.Panel', {
                 layout : 'hbox',
                 margin : '0 0 20 0',
-                items : [
-                    {
-                        xtype : 'panel',
-                        html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.o_creationDate * 1000), t('coreshop_date_format')) + '</span>',
-                        bodyPadding : 20,
-                        flex : 1
-                    },
-                    {
-                        xtype : 'panel',
-                        html : t('coreshop_orders_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.order.currency.symbol, this.order.total) + '</span>',
-                        bodyPadding : 20,
-                        flex : 1
-                    },
-                    {
-                        xtype : 'panel',
-                        html : t('coreshop_messaging_messages') + '<br/><span class="coreshop_order_big">' + 0 + '</span>', //TODO: Add Messages
-                        bodyPadding : 20,
-                        flex : 1
-                    },
-                    {
-                        xtype : 'panel',
-                        html : t('coreshop_product_count') + '<br/><span class="coreshop_order_big">' + this.order.items.length + '</span>',
-                        bodyPadding : 20,
-                        flex : 1
-                    }
-                ]
+                items : items
             });
         }
 

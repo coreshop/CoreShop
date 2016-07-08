@@ -95,91 +95,115 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                 { name : 'shipping', type : 'float' },
                 { name : 'paymentFee', type : 'float' },
                 { name : 'totalTax', type : 'float' },
-                { name : 'total', type : 'float' }
+                { name : 'total', type : 'float' },
+                { name : 'shop', type : 'integer' },
             ]
         });
+
+        var columns = [
+            {
+                text: t('coreshop_orders_id'),
+                dataIndex: 'o_id',
+                filter: {
+                    type : 'number'
+                }
+            },
+            {
+                text: t('coreshop_orders_orderNumber'),
+                dataIndex: 'orderNumber',
+                filter: {
+                    type: 'string'
+                }
+            },
+            {
+                xtype : 'numbercolumn',
+                align : 'right',
+                text: t('coreshop_orders_total'),
+                dataIndex: 'total',
+                renderer: function (value, metaData, record) {
+                    var currency = record.get('currency').symbol;
+
+                    return coreshop.util.format.currency(currency, value);
+                },
+
+                filter: {
+                    type : 'number'
+                }
+            },
+            {
+                text: t('coreshop_orders_orderState'),
+                dataIndex: 'orderState',
+                renderer : function (val) {
+                    var store = pimcore.globalmanager.get('coreshop_orderstates');
+                    var pos = store.findExact('id', val);
+                    if (pos >= 0) {
+                        var orderState = store.getAt(pos);
+                        var bgColor = orderState.get('color');
+                        var textColor = coreshop.helpers.constrastColor(bgColor);
+
+                        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderState.get('name') + '</span>';
+                    }
+
+                    return null;
+                },
+
+                flex : 1,
+                filter: {
+                    type : 'list',
+                    store : pimcore.globalmanager.get('coreshop_orderstates')
+                }
+            },
+            {
+                xtype : 'datecolumn',
+                text: t('coreshop_orders_orderDate'),
+                dataIndex: 'orderDate',
+                format: t('coreshop_date_format'),
+                filter: {
+                    type : 'date'
+                },
+                width : 150
+            },
+            {
+                menuDisabled: true,
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                items: [{
+                    iconCls: 'pimcore_icon_open',
+                    tooltip: t('open'),
+                    handler: function (grid, rowIndex, colIndex) {
+                        this.openOrder(grid.getStore().getAt(rowIndex));
+                    }.bind(this)
+                }]
+            }
+        ];
+
+        if(coreshop.settings.multishop) {
+            columns.splice(1, 0, {
+                text: t('coreshop_shop'),
+                dataIndex: 'shop',
+                filter: {
+                    type : 'number'
+                },
+                renderer : function(val) {
+                    var store = pimcore.globalmanager.get('coreshop_shops');
+                    var pos = store.findExact('id', String(val));
+                    if (pos >= 0) {
+                        var shop = store.getAt(pos);
+
+                        return shop.get("name");
+                    }
+
+                    return null;
+                }
+            });
+        }
 
         this.grid = Ext.create('Ext.grid.Panel', {
             title: t('coreshop_orders'),
             store: this.store,
             plugins: 'gridfilters',
-            columns: [
-                {
-                    text: t('coreshop_orders_id'),
-                    dataIndex: 'o_id',
-                    filter: {
-                        type : 'number'
-                    }
-                },
-                {
-                    text: t('coreshop_orders_orderNumber'),
-                    dataIndex: 'orderNumber',
-                    filter: {
-                        type: 'string'
-                    }
-                },
-                {
-                    xtype : 'numbercolumn',
-                    align : 'right',
-                    text: t('coreshop_orders_total'),
-                    dataIndex: 'total',
-                    renderer: function (value, metaData, record) {
-                        var currency = record.get('currency').symbol;
-
-                        return coreshop.util.format.currency(currency, value);
-                    },
-
-                    filter: {
-                        type : 'number'
-                    }
-                },
-                {
-                    text: t('coreshop_orders_orderState'),
-                    dataIndex: 'orderState',
-                    renderer : function (val) {
-                        var store = pimcore.globalmanager.get('coreshop_orderstates');
-                        var pos = store.findExact('id', val);
-                        if (pos >= 0) {
-                            var orderState = store.getAt(pos);
-                            var bgColor = orderState.get('color');
-                            var textColor = coreshop.helpers.constrastColor(bgColor);
-
-                            return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderState.get('name') + '</span>';
-                        }
-
-                        return null;
-                    },
-
-                    flex : 1,
-                    filter: {
-                        type : 'list',
-                        store : pimcore.globalmanager.get('coreshop_orderstates')
-                    }
-                },
-                {
-                    xtype : 'datecolumn',
-                    text: t('coreshop_orders_orderDate'),
-                    dataIndex: 'orderDate',
-                    format: t('coreshop_date_format'),
-                    filter: {
-                        type : 'date'
-                    },
-                    width : 150
-                },
-                {
-                    menuDisabled: true,
-                    sortable: false,
-                    xtype: 'actioncolumn',
-                    width: 50,
-                    items: [{
-                        iconCls: 'pimcore_icon_open',
-                        tooltip: t('open'),
-                        handler: function (grid, rowIndex, colIndex) {
-                            this.openOrder(grid.getStore().getAt(rowIndex));
-                        }.bind(this)
-                    }]
-                }
-            ],
+            columns: columns,
             region: 'center',
 
             // paging bar on the bottom

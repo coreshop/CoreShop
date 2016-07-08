@@ -42,7 +42,7 @@ class CoreShop_Admin_ShopController extends Admin
                 $sites[] = [
                     'id' => $site->getId(),
                     'rootId' => $site->getRootId(),
-                    'name' => \Pimcore\Model\Document::getById($site->getRootId())->getFullPath()
+                    'name' => $site->getMainDomain()
                 ];
             }
         }

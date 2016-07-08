@@ -68,15 +68,36 @@ foreach($indexes as $index) {
     $db->query("UPDATE $tableName SET `shops`=',".\CoreShop\Model\Shop::getDefaultShop()->getId().",'");
 }
 
-$products = \CoreShop\Model\Product::getList();
+//Migrate Object Data
+$objectClassesToUpdate = ['Product'];
 
-foreach($products->load() as $pro) {
-    $pro->setShops([
-        \CoreShop\Model\Shop::getDefaultShop()->getId()
-    ]);
-    $pro->save();
+foreach($objectClassesToUpdate as $class) {
+    $className = '\CoreShop\Model\\' . $class;
+
+    $list = $className::getList();
+
+    foreach($list->load() as $obj) {
+        $obj->setShops([
+            \CoreShop\Model\Shop::getDefaultShop()->getId()
+        ]);
+        $obj->save();
+    }
 }
 
+$objectClassesToUpdateWithFK = ['Order', 'Cart'];
+
+foreach($objectClassesToUpdateWithFK as $class) {
+    $className = '\CoreShop\Model\\' . $class;
+
+    $list = $className::getList();
+
+    foreach($list->load() as $obj) {
+        $obj->setShop(\CoreShop\Model\Shop::getDefaultShop())   ;
+        $obj->save();
+    }
+}
+
+//Migrate NumberRanges
 $db->query("ALTER TABLE `coreshop_numberranges`
 ADD `shopId` int(11) NOT NULL AFTER `id`;");
 

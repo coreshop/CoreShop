@@ -241,6 +241,29 @@
                     "invisible":false,
                     "visibleGridView":false,
                     "visibleSearch":false
+                  },
+                  {
+                    "fieldtype":"coreShopShop",
+                    "phpdocType":"\\CoreShop\\Model\\Shop",
+                    "queryColumnType":"int(11)",
+                    "columnType":"int(11)",
+                    "options":null,
+                    "width":null,
+                    "defaultValue":null,
+                    "name":"shop",
+                    "title":"Shop",
+                    "tooltip":"",
+                    "mandatory":false,
+                    "noteditable":false,
+                    "index":false,
+                    "locked":null,
+                    "style":"",
+                    "permissions":null,
+                    "datatype":"data",
+                    "relationType":false,
+                    "invisible":false,
+                    "visibleGridView":false,
+                    "visibleSearch":false
                   }
                 ],
                 "locked":false
@@ -273,9 +296,13 @@
                     "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
                     "objectsAllowed":true,
                     "assetsAllowed":false,
-                    "assetTypes":"",
+                    "assetTypes":[
+
+                    ],
                     "documentsAllowed":false,
-                    "documentTypes":"",
+                    "documentTypes":[
+
+                    ],
                     "lazyLoading":false,
                     "classes":[
                       {
