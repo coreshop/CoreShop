@@ -125,8 +125,10 @@ class Category extends Base
     {
         $list = Product::getList();
 
+        $condition = "enabled = 1";
+
         if (!$includeChildCategories) {
-            $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
+            $condition .= " AND categories LIKE '%,".$this->getId().",%'";
         } else {
             $categories = $this->getCatChilds();
             $categoriesWhere = array();
@@ -135,9 +137,14 @@ class Category extends Base
                 $categoriesWhere[] = "categories LIKE '%,".$cat.",%'";
             }
 
-            $list->setCondition('enabled = 1 AND ('.implode(' OR ', $categoriesWhere).')');
+            $condition .= ' AND ('.implode(' OR ', $categoriesWhere).')';
         }
 
+        if(Configuration::multiShopEnabled()) {
+            $condition .= " AND shops LIKE '%,".Shop::getShop()->getId().",%'";
+        }
+
+        $list->setCondition($condition);
         $list->setOrderKey($sort['name']);
         $list->setOrder($sort['direction']);
 

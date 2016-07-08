@@ -237,6 +237,28 @@ class Configuration extends AbstractModel
     }
 
     /**
+     * Check if multishop feature is activated
+     *
+     * @return bool|mixed
+     * @throws \Zend_Exception
+     */
+    public static function multiShopEnabled() {
+        if (\Zend_Registry::isRegistered('coreshop_multishop_enabled')) {
+            return \Zend_Registry::get('coreshop_multishop_enabled');
+        } else {
+            $multiShop = intval(self::get('SYSTEM.MULTISHOP.ENABLED')) === 1;
+
+            if (is_bool($multiShop)) {
+                \Zend_Registry::set('coreshop_multishop_enabled', $multiShop);
+
+                return $multiShop;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return int
      */
     public function getId()

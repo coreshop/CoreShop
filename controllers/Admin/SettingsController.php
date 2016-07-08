@@ -70,7 +70,7 @@ class CoreShop_Admin_SettingsController extends Admin
             'coreshop' => $valueArray,
             'plugin' => $pluginConfig['plugin'],
             'classMapping' => $classMapping,
-            'multishop' => Model\Configuration::get("SYSTEM.MULTISHOP.ENABLED")
+            'multishop' => Model\Configuration::multiShopEnabled()
         ]);
     }
 

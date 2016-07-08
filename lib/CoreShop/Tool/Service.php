@@ -14,6 +14,7 @@
 
 namespace CoreShop\Tool;
 
+use CoreShop\Model\Configuration;
 use Pimcore\Model\Object\AbstractObject;
 use CoreShop\Model\Product;
 use CoreShop\Model\BrickVariant;
@@ -247,15 +248,28 @@ class Service
     }
 
     /**
-     * @param \Pimcore\Model\Object\AbstractObject $object
+     * @param Product $object
      *
      * @return mixed
      */
-    private static function getAllChildren(AbstractObject $object)
+    private static function getAllChildren(Product $object)
     {
-        $list = new \Pimcore\Model\Object\Listing();
+        $list = Product::getList();
 
-        $list->setCondition('o_path LIKE ?', $object->getFullPath().'/%');
+        $condition = 'o_path LIKE ?';
+        $conditionParams = [$object->getFullPath() . '/%'];
+        
+        if(Configuration::multiShopEnabled()) {
+            $shopParams = [];
+
+            foreach($object->getShops() as $shop) {
+                $shopParams[] = "shops LIKE '%,".$shop.",%'";
+            }
+
+            $condition .= " AND (" . implode(" OR ", $shopParams) . ")";
+        }
+        
+        $list->setCondition($condition, $conditionParams);
         $list->setOrderKey('o_key');
         $list->setOrder('asc');
         $list->setObjectTypes(array(AbstractObject::OBJECT_TYPE_VARIANT));

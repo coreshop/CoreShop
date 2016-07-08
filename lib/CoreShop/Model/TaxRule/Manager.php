@@ -94,7 +94,7 @@ class Manager implements TaxManager
         if (!\Zend_Registry::isRegistered($cacheKey)) {
             $taxRuleGroup = TaxRuleGroup::getById($this->type);
 
-            if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+            if(Configuration::multiShopEnabled()) {
                 if (!is_array($taxRuleGroup->getShopIds()) || !in_array($shopId, $taxRuleGroup->getShopIds())) {
                     return new TaxCalculator();
                 }

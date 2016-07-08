@@ -86,7 +86,7 @@ class Order extends Base
      */
     public static function getPathForNewOrder()
     {
-        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+        if(Configuration::multiShopEnabled()) {
             return Object\Service::createFolderByPath('/coreshop/orders/'.Shop::getShop()->getName().'/'.date('Y/m/d'));
         }
 

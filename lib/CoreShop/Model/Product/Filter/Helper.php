@@ -58,7 +58,7 @@ class Helper
         $list->setOrder($orderDirection);
         $list->setLimit($limit);
 
-        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+        if(Configuration::multiShopEnabled()) {
             $list->setShop(Shop::getShop());
         }
 
