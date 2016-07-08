@@ -16,6 +16,7 @@ namespace CoreShop\Model\Dao;
 
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Configuration;
 use CoreShop\Model\Shop;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Dao;
@@ -233,6 +234,11 @@ abstract class AbstractDao extends Dao\AbstractDao
             $this->db->delete($this->getShopTableName(), $this->db->quoteInto('oId = ?', $this->model->getId()));
 
             if(is_null($this->model->getShopIds())) {
+                $this->model->setShopIds([Shop::getDefaultShop()->getId()]);
+            }
+
+            if(!Configuration::multiShopEnabled()) {
+                //Multishop is disabled, so we always set the default shop
                 $this->model->setShopIds([Shop::getDefaultShop()->getId()]);
             }
 

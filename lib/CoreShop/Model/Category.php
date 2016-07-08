@@ -140,9 +140,7 @@ class Category extends Base
             $condition .= ' AND ('.implode(' OR ', $categoriesWhere).')';
         }
 
-        if(Configuration::multiShopEnabled()) {
-            $condition .= " AND shops LIKE '%,".Shop::getShop()->getId().",%'";
-        }
+        $condition .= " AND shops LIKE '%,".Shop::getShop()->getId().",%'";
 
         $list->setCondition($condition);
         $list->setOrderKey($sort['name']);

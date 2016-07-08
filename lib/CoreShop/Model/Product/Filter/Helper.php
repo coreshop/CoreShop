@@ -57,10 +57,7 @@ class Helper
         $list->setOrderKey($orderKey);
         $list->setOrder($orderDirection);
         $list->setLimit($limit);
-
-        if(Configuration::multiShopEnabled()) {
-            $list->setShop(Shop::getShop());
-        }
+        $list->setShop(Shop::getShop());
 
         if ($filterService instanceof Service) {
             return $filterService->initFilterService($filter, $list, $params);

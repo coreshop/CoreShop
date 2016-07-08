@@ -117,6 +117,25 @@ class Base extends Concrete
     }
 
     /**
+     * @return $this
+     * @throws Exception
+     * @throws \Exception
+     * @throws \Pimcore\Model\Element\ValidationException
+     */
+    public function save()
+    {
+        if(!Configuration::multiShopEnabled()) {
+            //Multishop is disabled, so we always set the default shop
+
+            if(property_exists($this, "shops")) {
+                $this->setShops([Shop::getDefaultShop()->getId()]);
+            }
+        }
+
+        return parent::save();
+    }
+
+    /**
      * @param array $config
      *
      * @return mixed

@@ -43,36 +43,32 @@ class Debug extends \Zend_Controller_Plugin_Abstract
             return;
         }
 
-        if (isset($_COOKIE['pimcore_admin_sid'])) {
-            $user = Authentication::authenticateSession();
+        if (\Pimcore::inDebugMode() || isset($_COOKIE['pimcore_admin_sid'])) {
+            $body = $this->getResponse()->getBody();
 
-            if ($user instanceof User) {
-                $body = $this->getResponse()->getBody();
+            $viewRenderer = \Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+            $view = $viewRenderer->view;
 
-                $viewRenderer = \Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
-                $view = $viewRenderer->view;
-
-                $view->setScriptPath(
-                    array_merge(
-                        $view->getScriptPaths(),
-                        array(
-                            CORESHOP_PATH.'/views/scripts/debug',
-                        )
+            $view->setScriptPath(
+                array_merge(
+                    $view->getScriptPaths(),
+                    array(
+                        CORESHOP_PATH.'/views/scripts/debug',
                     )
-                );
-                $view->getHelper('Translate')->setTranslator(Plugin::getTranslate($user->getLanguage()));
+                )
+            );
+            $view->getHelper('Translate')->setTranslator(Plugin::getTranslate(\Zend_Registry::get("Zend_Locale")));
 
-                $code = $view->render('debug.php');
+            $code = $view->render('debug.php');
 
-                // search for the end <head> tag, and insert the google analytics code before
-                // this method is much faster than using simple_html_dom and uses less memory
-                $bodyEndPosition = stripos($body, '</body>');
-                if ($bodyEndPosition !== false) {
-                    $body = substr_replace($body, $code."\n\n</body>\n", $bodyEndPosition, 7);
-                }
-
-                $this->getResponse()->setBody($body);
+            // search for the end <head> tag, and insert the google analytics code before
+            // this method is much faster than using simple_html_dom and uses less memory
+            $bodyEndPosition = stripos($body, '</body>');
+            if ($bodyEndPosition !== false) {
+                $body = substr_replace($body, $code."\n\n</body>\n", $bodyEndPosition, 7);
             }
+
+            $this->getResponse()->setBody($body);
         }
     }
 }

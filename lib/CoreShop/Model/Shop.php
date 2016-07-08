@@ -65,10 +65,12 @@ class Shop extends AbstractModel {
      * @returns Shop
      */
     public static function getShop() {
-        if(Site::isSiteRequest()) {
-            $site = Site::getCurrentSite();
+        if(Configuration::multiShopEnabled()) {
+            if (Site::isSiteRequest()) {
+                $site = Site::getCurrentSite();
 
-            return self::getShopForSite($site);
+                return self::getShopForSite($site);
+            }
         }
 
         return self::getDefaultShop();
