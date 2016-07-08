@@ -63,9 +63,13 @@
                 "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
                 "objectsAllowed":true,
                 "assetsAllowed":false,
-                "assetTypes":"",
+                "assetTypes":[
+
+                ],
                 "documentsAllowed":false,
-                "documentTypes":"",
+                "documentTypes":[
+
+                ],
                 "lazyLoading":false,
                 "classes":[
                   {
@@ -89,7 +93,7 @@
               },
               {
                 "fieldtype":"localizedfields",
-                "phpdocType":"array",
+                "phpdocType":"\\Pimcore\\Model\\Object\\Localizedfield",
                 "childs":[
                   {
                     "fieldtype":"input",
@@ -183,6 +187,31 @@
                 "invisible":false,
                 "visibleGridView":false,
                 "visibleSearch":false
+              },
+              {
+                "fieldtype":"coreShopShopMultiselect",
+                "options":[
+
+                ],
+                "width":null,
+                "height":null,
+                "queryColumnType":"text",
+                "columnType":"text",
+                "phpdocType":"array",
+                "name":"shops",
+                "title":"Shops",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":null,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
               }
             ],
             "locked":false
@@ -227,7 +256,7 @@
                 "visibleSearch":false
               }
             ],
-            "locked":null
+            "locked":false
           },
           {
             "fieldtype":"panel",
@@ -247,7 +276,7 @@
             "childs":[
               {
                 "fieldtype":"localizedfields",
-                "phpdocType":"array",
+                "phpdocType":"\\Pimcore\\Model\\Object\\Localizedfield",
                 "childs":[
                   {
                     "fieldtype":"input",

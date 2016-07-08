@@ -69,7 +69,7 @@ foreach($indexes as $index) {
 }
 
 //Migrate Object Data
-$objectClassesToUpdate = ['Product'];
+$objectClassesToUpdate = ['Product', 'Category'];
 
 foreach($objectClassesToUpdate as $class) {
     $className = '\CoreShop\Model\\' . $class;
@@ -92,7 +92,7 @@ foreach($objectClassesToUpdateWithFK as $class) {
     $list = $className::getList();
 
     foreach($list->load() as $obj) {
-        $obj->setShop(\CoreShop\Model\Shop::getDefaultShop())   ;
+        $obj->setShop(\CoreShop\Model\Shop::getDefaultShop());
         $obj->save();
     }
 }

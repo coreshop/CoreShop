@@ -51,7 +51,7 @@ class Category extends Base
     public static function getFirstLevel()
     {
         $list = self::getList();
-        $list->setCondition('parentCategory__id is null');
+        $list->setCondition("parentCategory__id is null AND shops LIKE '%,".Shop::getShop()->getId().",%'");
 
         return $list->getObjects();
     }
@@ -253,7 +253,7 @@ class Category extends Base
     public function getChildCategories()
     {
         $list = Category::getList();
-        $list->setCondition('parentCategory__id = ?', array($this->getId()));
+        $list->setCondition("parentCategory__id = ? AND shops LIKE '%,".Shop::getShop()->getId().",%'", array($this->getId()));
 
         return $list->getObjects();
     }
