@@ -55,6 +55,43 @@ pimcore.plugin.coreshop.messaging.contact.item = Class.create(pimcore.plugin.cor
             langTabs.push(tab);
         });
 
+        var items = [
+            {
+                xtype:'fieldset',
+                autoHeight:true,
+                labelWidth: 350,
+                defaultType: 'textfield',
+                defaults: { width: 300 },
+                items :[
+                    {
+                        xtype: 'tabpanel',
+                        activeTab: 0,
+                        width : '100%',
+                        defaults: {
+                            autoHeight:true,
+                            bodyStyle:'padding:10px;'
+                        },
+                        items: langTabs
+                    },
+                    {
+                        fieldLabel: t('email'),
+                        name: 'email',
+                        value: this.data.email
+                    },
+                    {
+                        fieldLabel: t('description'),
+                        name: 'description',
+                        width : '100%',
+                        checked: this.data.description
+                    }
+                ]
+            }
+        ];
+
+        if(this.getMultishopSettings()) {
+            items.push(this.getMultishopSettings());
+        }
+
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
@@ -71,38 +108,7 @@ pimcore.plugin.coreshop.messaging.contact.item = Class.create(pimcore.plugin.cor
                     iconCls: 'pimcore_icon_apply'
                 }
             ],
-            items: [
-                {
-                    xtype:'fieldset',
-                    autoHeight:true,
-                    labelWidth: 350,
-                    defaultType: 'textfield',
-                    defaults: { width: 300 },
-                    items :[
-                        {
-                            xtype: 'tabpanel',
-                            activeTab: 0,
-                            width : '100%',
-                            defaults: {
-                                autoHeight:true,
-                                bodyStyle:'padding:10px;'
-                            },
-                            items: langTabs
-                        },
-                        {
-                            fieldLabel: t('email'),
-                            name: 'email',
-                            value: this.data.email
-                        },
-                        {
-                            fieldLabel: t('description'),
-                            name: 'description',
-                            width : '100%',
-                            checked: this.data.description
-                        }
-                    ]
-                }
-            ]
+            items: items
         });
 
         return this.formPanel;

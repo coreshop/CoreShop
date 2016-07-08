@@ -565,6 +565,7 @@ CREATE TABLE `coreshop_messaging_thread_state` (
 DROP TABLE IF EXISTS `coreshop_messaging_thread`;
 CREATE TABLE `coreshop_messaging_thread` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `shopId` int NOT NULL,
   `userId` int NULL,
   `orderId` int NULL,
   `productId` int NULL,
@@ -647,6 +648,20 @@ CREATE TABLE `coreshop_tax_rule_groups_shops` (
 
 DROP TABLE IF EXISTS `coreshop_zones_shops`;
 CREATE TABLE `coreshop_zones_shops` (
+  `oId` int(11) NOT NULL,
+  `shopId` int(11) NOT NULL,
+  PRIMARY KEY (`oId`,`shopId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_messaging_contact`;
+CREATE TABLE `coreshop_messaging_contact` (
+  `oId` int(11) NOT NULL,
+  `shopId` int(11) NOT NULL,
+  PRIMARY KEY (`oId`,`shopId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_messaging_thread_state`;
+CREATE TABLE `coreshop_messaging_thread_state` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)

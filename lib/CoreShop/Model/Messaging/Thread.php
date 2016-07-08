@@ -98,16 +98,22 @@ class Thread extends AbstractModel
     public $email;
 
     /**
+     * @var int
+     */
+    public $shopId;
+
+    /**
      * Get Open threads by email.
      *
      * @param $email string
      * @param $contactId int
+     * @param $shopId int
      * @param $orderId int|null
      * @param $productId int|null
      *
      * @return Thread|null
      */
-    public static function searchThread($email, $contactId, $orderId = null, $productId = null)
+    public static function searchThread($email, $contactId, $shopId, $orderId = null, $productId = null)
     {
         $list = Thread::getList();
 
@@ -116,6 +122,7 @@ class Thread extends AbstractModel
             'contactId' => $contactId,
             'orderId' => $orderId,
             'productId' => $productId,
+            'shopId' => $shopId
         );
         $query = array();
         $queryParams = array();
@@ -450,5 +457,21 @@ class Thread extends AbstractModel
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return int
+     */
+    public function getShopId()
+    {
+        return $this->shopId;
+    }
+
+    /**
+     * @param int $shopId
+     */
+    public function setShopId($shopId)
+    {
+        $this->shopId = $shopId;
     }
 }

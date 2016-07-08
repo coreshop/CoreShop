@@ -106,9 +106,126 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                     { name:'contact' },
                     { name:'status' },
                     { name:'admin' },
-                    { name:'messages' }
+                    { name:'messages' },
+                    { name:'shopId' }
                 ]
             });
+
+            var columns = [
+                {
+                    text: t('id'),
+                    dataIndex: 'id',
+                    width : 60,
+                    filter : 'numeric'
+                },
+                {
+                    text: t('coreshop_token'),
+                    dataIndex : 'token',
+                    width : 120,
+                    filter : 'string'
+                },
+                {
+                    text: t('reference'),
+                    dataIndex : 'reference',
+                    width : 150
+                },
+                {
+                    text: t('user'),
+                    dataIndex : 'user',
+                    width: 200
+                },
+                {
+                    text: t('email'),
+                    dataIndex : 'email',
+                    width: 200,
+                    filter : 'string'
+                },
+                {
+                    text: t('coreshop_messaging_contact'),
+                    dataIndex : 'contactId',
+                    width: 200,
+                    filter: {
+                        type : 'list',
+                        store : pimcore.globalmanager.get('coreshop_messaging_contacts')
+                    },
+                    renderer: function (value, metadata, record)
+                    {
+                        var contact = pimcore.globalmanager.get('coreshop_messaging_contacts').getById(value);
+
+                        if (contact) {
+                            return contact.get('name');
+                        }
+
+                        return value;
+                    }
+                },
+                {
+                    text: t('language'),
+                    dataIndex : 'language',
+                    width: 100,
+                    filter : 'string'
+                },
+                {
+                    text: t('coreshop_messaging_threadstate'),
+                    dataIndex : 'statusId',
+                    width: 200,
+                    renderer: function (value, metadata, record)
+                    {
+                        var state = pimcore.globalmanager.get('coreshop_messaging_thread_states').getById(value);
+
+                        if (state) {
+                            var bgColor = state.get('color');
+
+                            if (bgColor) {
+                                var textColor = (parseInt(bgColor.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
+
+                                return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + state.get('name') + '</span>';
+                            }
+
+                            return state.get('name');
+                        }
+
+                        return value;
+                    },
+
+                    filter: {
+                        type : 'list',
+                        store : pimcore.globalmanager.get('coreshop_messaging_thread_states')
+                    }
+                },
+                {
+                    text: t('admin'),
+                    dataIndex : 'admin',
+                    width: 200
+                },
+                {
+                    text: t('coreshop_messaging_messages'),
+                    dataIndex : 'messages',
+                    flex : 1
+                }
+            ];
+
+            if(coreshop.settings.multishop) {
+                columns.splice(1, 0, {
+                    text: t('coreshop_shop'),
+                    dataIndex: 'shopId',
+                    filter: {
+                        type : 'list',
+                        store : pimcore.globalmanager.get('coreshop_messaging_thread_states')
+                    },
+                    renderer : function(val) {
+                        var store = pimcore.globalmanager.get('coreshop_shops');
+                        var pos = store.findExact('id', String(val));
+                        if (pos >= 0) {
+                            var shop = store.getAt(pos);
+
+                            return shop.get("name");
+                        }
+
+                        return null;
+                    }
+                });
+            }
 
             this.grid = Ext.create('Ext.grid.Panel', {
                 store: this.store,
@@ -119,99 +236,7 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                     encode: true,
                     local: false
                 },
-                columns: [
-                    {
-                        text: t('id'),
-                        dataIndex: 'id',
-                        width : 60,
-                        filter : 'numeric'
-                    },
-                    {
-                        text: t('coreshop_token'),
-                        dataIndex : 'token',
-                        width : 120,
-                        filter : 'string'
-                    },
-                    {
-                        text: t('reference'),
-                        dataIndex : 'reference',
-                        width : 150
-                    },
-                    {
-                        text: t('user'),
-                        dataIndex : 'user',
-                        width: 200
-                    },
-                    {
-                        text: t('email'),
-                        dataIndex : 'email',
-                        width: 200,
-                        filter : 'string'
-                    },
-                    {
-                        text: t('coreshop_messaging_contact'),
-                        dataIndex : 'contactId',
-                        width: 200,
-                        filter: {
-                            type : 'list',
-                            store : pimcore.globalmanager.get('coreshop_messaging_contacts')
-                        },
-                        renderer: function (value, metadata, record)
-                        {
-                            var contact = pimcore.globalmanager.get('coreshop_messaging_contacts').getById(value);
-
-                            if (contact) {
-                                return contact.get('name');
-                            }
-
-                            return value;
-                        }
-                    },
-                    {
-                        text: t('language'),
-                        dataIndex : 'language',
-                        width: 100,
-                        filter : 'string'
-                    },
-                    {
-                        text: t('coreshop_messaging_threadstate'),
-                        dataIndex : 'statusId',
-                        width: 200,
-                        renderer: function (value, metadata, record)
-                        {
-                            var state = pimcore.globalmanager.get('coreshop_messaging_thread_states').getById(value);
-
-                            if (state) {
-                                var bgColor = state.get('color');
-
-                                if (bgColor) {
-                                    var textColor = (parseInt(bgColor.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
-
-                                    return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + state.get('name') + '</span>';
-                                }
-
-                                return state.get('name');
-                            }
-
-                            return value;
-                        },
-
-                        filter: {
-                            type : 'list',
-                            store : pimcore.globalmanager.get('coreshop_messaging_thread_states')
-                        }
-                    },
-                    {
-                        text: t('admin'),
-                        dataIndex : 'admin',
-                        width: 200
-                    },
-                    {
-                        text: t('coreshop_messaging_messages'),
-                        dataIndex : 'messages',
-                        flex : 1
-                    }
-                ],
+                columns: columns,
                 flex : 1,
                 bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
             });

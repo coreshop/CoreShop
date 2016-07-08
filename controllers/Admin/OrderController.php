@@ -162,7 +162,7 @@ class CoreShop_Admin_OrderController extends Admin
         }
 
         $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
-        $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), $orderId);
+        $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), \CoreShop\Model\Shop::getShop()->getId(), $orderId);
 
         if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
             $thread = new CoreShop\Model\Messaging\Thread();

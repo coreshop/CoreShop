@@ -23,6 +23,14 @@ use CoreShop\Model\Messaging\Thread;
  */
 class State extends AbstractModel
 {
+    /**
+     * @var bool
+     */
+    protected static $isMultiShop = true;
+
+    /**
+     * @var array
+     */
     protected $localizedValues = array('name');
 
     /**
@@ -44,6 +52,11 @@ class State extends AbstractModel
      * @var bool
      */
     public $finished;
+
+    /**
+     * @var int[]
+     */
+    public $shopIds;
 
     /**
      * Return Threads List.
@@ -125,5 +138,21 @@ class State extends AbstractModel
     public function setFinished($finished)
     {
         $this->finished = $finished;
+    }
+
+    /**
+     * @return \int[]
+     */
+    public function getShopIds()
+    {
+        return $this->shopIds;
+    }
+
+    /**
+     * @param \int[] $shopIds
+     */
+    public function setShopIds($shopIds)
+    {
+        $this->shopIds = $shopIds;
     }
 }

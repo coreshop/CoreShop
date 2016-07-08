@@ -76,6 +76,7 @@ class CoreShop_Admin_MessagingThreadController extends Admin
                     'messages' => '',
                     'token' => $thread->getToken(),
                     'reference' => null,
+                    'shopId' => $thread->getShopId()
                 );
 
                 if ($thread->getUser() instanceof \CoreShop\Model\User) {

@@ -55,6 +55,37 @@ pimcore.plugin.coreshop.messaging.threadstate.item = Class.create(pimcore.plugin
             langTabs.push(tab);
         });
 
+        var items = [
+            {
+                xtype:'fieldset',
+                autoHeight:true,
+                labelWidth: 350,
+                defaultType: 'textfield',
+                defaults: { width: 300 },
+                items :[
+                    {
+                        xtype: 'tabpanel',
+                        activeTab: 0,
+                        width : '100%',
+                        defaults: {
+                            autoHeight:true,
+                            bodyStyle:'padding:10px;'
+                        },
+                        items: langTabs
+                    },
+                    {
+                        fieldLabel: t('color'),
+                        name: 'color',
+                        value: this.data.color
+                    }
+                ]
+            }
+        ];
+
+        if(this.getMultishopSettings()) {
+            items.push(this.getMultishopSettings());
+        }
+
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
@@ -71,32 +102,7 @@ pimcore.plugin.coreshop.messaging.threadstate.item = Class.create(pimcore.plugin
                     iconCls: 'pimcore_icon_apply'
                 }
             ],
-            items: [
-                {
-                    xtype:'fieldset',
-                    autoHeight:true,
-                    labelWidth: 350,
-                    defaultType: 'textfield',
-                    defaults: { width: 300 },
-                    items :[
-                        {
-                            xtype: 'tabpanel',
-                            activeTab: 0,
-                            width : '100%',
-                            defaults: {
-                                autoHeight:true,
-                                bodyStyle:'padding:10px;'
-                            },
-                            items: langTabs
-                        },
-                        {
-                            fieldLabel: t('color'),
-                            name: 'color',
-                            value: this.data.color
-                        }
-                    ]
-                }
-            ]
+            items: items
         });
 
         return this.formPanel;

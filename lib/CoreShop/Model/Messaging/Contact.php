@@ -22,6 +22,14 @@ use CoreShop\Model\AbstractModel;
  */
 class Contact extends AbstractModel
 {
+    /**
+     * @var bool
+     */
+    protected static $isMultiShop = true;
+
+    /**
+     * @var array
+     */
     protected $localizedValues = array('name');
 
     /**
@@ -43,6 +51,11 @@ class Contact extends AbstractModel
      * @var string
      */
     public $description;
+
+    /**
+     * @var int[]
+     */
+    public $shopIds;
 
     /**
      * Return Threads.
@@ -129,5 +142,21 @@ class Contact extends AbstractModel
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return \int[]
+     */
+    public function getShopIds()
+    {
+        return $this->shopIds;
+    }
+
+    /**
+     * @param \int[] $shopIds
+     */
+    public function setShopIds($shopIds)
+    {
+        $this->shopIds = $shopIds;
     }
 }

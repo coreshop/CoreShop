@@ -17,6 +17,7 @@ namespace CoreShop\Model\Messaging;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
+use CoreShop\Model\Shop;
 use CoreShop\Model\User;
 use CoreShop\Tool;
 use Pimcore\Model\Document\Email;
@@ -64,12 +65,13 @@ class Service
 
         //Check if there is already an open thread for the email address
         if (!$thread instanceof Thread) {
-            $thread = Thread::searchThread($params['email'], $params['contact'], $params['order'], $params['product']);
+            $thread = Thread::searchThread($params['email'], $params['contact'], Shop::getShop()->getId(), $params['order'], $params['product']);
         }
 
         if (!$thread instanceof Thread) {
             $thread = new Thread();
             $thread->setEmail($params['email']);
+            $thread->setShopId(Shop::getShop()->getId());
             $thread->setStatusId(Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
 
             if (Tool::getUser() instanceof User) {

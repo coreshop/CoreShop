@@ -34,7 +34,7 @@ CREATE TABLE `coreshop_shops` (
 $db->query("INSERT INTO `coreshop_shops` (`name`, `currencyId`, `template`, `isDefault`)
 VALUES ('Default', '1', '".\CoreShop\Model\Configuration::get("SYSTEM.TEMPLATE.NAME")."', '1');");
 
-$modelsToUpdate = array("Country", "Carrier", "CustomerGroup", "Zone", "TaxRuleGroup", "Manufacturer", "NumberRange");
+$modelsToUpdate = array("Country", "Carrier", "CustomerGroup", "Zone", "TaxRuleGroup", "Manufacturer", "Messaging\\Contact", "Messaging\\Thread\\State");
 
 foreach($modelsToUpdate as $model) {
     $class = 'CoreShop\Model\\' . $model;
@@ -106,3 +106,9 @@ ADD UNIQUE `type_shopId` (`type`, `shopId`),
 DROP INDEX `type`;");
 
 $db->query("UPDATE `coreshop_numberranges` SET `shopId` = 1;");
+
+//Migrate Message Threads
+$db->query("ALTER TABLE `coreshop_messaging_thread`
+ADD `shopId` int(11) NOT NULL AFTER `id`;");
+
+$db->query("UPDATE `coreshop_messaging_thread` SET `shopId` = 1;");

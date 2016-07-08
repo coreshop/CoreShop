@@ -49,6 +49,7 @@ class NumberRange extends AbstractModel
      * Get NumberRange by type.
      *
      * @param $type
+     * @param $shopId
      *
      * @return NumberRange
      */
@@ -75,6 +76,7 @@ class NumberRange extends AbstractModel
      * Returns the next number for a type.
      *
      * @param $type
+     * @param $shopId
      *
      * @return int
      */
