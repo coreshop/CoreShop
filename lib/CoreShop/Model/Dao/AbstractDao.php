@@ -16,6 +16,7 @@ namespace CoreShop\Model\Dao;
 
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Shop;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Dao;
 
@@ -193,23 +194,14 @@ abstract class AbstractDao extends Dao\AbstractDao
             }
         }
 
-        if($this->model->isMultiShop()) {
-            $this->db->delete($this->getShopTableName(), $this->db->quoteInto('oId = ?', $this->model->getId()));
-
-            foreach($this->model->getShopIds() as $shopId) {
-                $this->db->insert($this->getShopTableName(), array(
-                    "oId" => $this->model->getId(),
-                    "shopId" => $shopId
-                ));
-            }
-        }
-
         if ($this->model->getId() !== null) {
             $this->db->update(self::getTableName(), $buffer, $this->db->quoteInto('id = ?', $this->model->getId()));
 
             if ($this->model->getLocalizedFields()) {
                 $this->model->getLocalizedFields()->save();
             }
+
+            $this->saveShopIds();
 
             return;
         }
@@ -220,6 +212,8 @@ abstract class AbstractDao extends Dao\AbstractDao
         if ($this->model->getLocalizedFields()) {
             $this->model->getLocalizedFields()->save();
         }
+
+        $this->saveShopIds();
     }
 
     /**
@@ -228,5 +222,26 @@ abstract class AbstractDao extends Dao\AbstractDao
     public function delete()
     {
         $this->db->delete(self::getTableName(), $this->db->quoteInto('id = ?', $this->model->getId()));
+    }
+
+    /**
+     * @throws \Zend_Db_Adapter_Exception
+     */
+    protected function saveShopIds() {
+
+        if($this->model->isMultiShop()) {
+            $this->db->delete($this->getShopTableName(), $this->db->quoteInto('oId = ?', $this->model->getId()));
+
+            if(is_null($this->model->getShopIds())) {
+                $this->model->setShopIds([Shop::getDefaultShop()->getId()]);
+            }
+
+            foreach($this->model->getShopIds() as $shopId) {
+                $this->db->insert($this->getShopTableName(), array(
+                    "oId" => $this->model->getId(),
+                    "shopId" => $shopId
+                ));
+            }
+        }
     }
 }

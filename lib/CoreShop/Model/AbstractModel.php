@@ -71,17 +71,13 @@ class AbstractModel extends Model\AbstractModel
      */
     public static function isMultiShop()
     {
-        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
-            $class = get_called_class();
+        $class = get_called_class();
 
-            if (\Pimcore::getDiContainer()->has($class)) {
-                $class = \Pimcore::getDiContainer()->get($class);
-            }
-
-            return $class::$isMultiShop;
+        if (\Pimcore::getDiContainer()->has($class)) {
+            $class = \Pimcore::getDiContainer()->get($class);
         }
 
-        return false;
+        return $class::$isMultiShop;
     }
 
     /**
@@ -89,17 +85,13 @@ class AbstractModel extends Model\AbstractModel
      */
     public static function isMultiShopFK()
     {
-        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
-            $class = get_called_class();
+        $class = get_called_class();
 
-            if (\Pimcore::getDiContainer()->has($class)) {
-                $class = \Pimcore::getDiContainer()->get($class);
-            }
-
-            return $class::$isMultiShopFK;
+        if (\Pimcore::getDiContainer()->has($class)) {
+            $class = \Pimcore::getDiContainer()->get($class);
         }
 
-        return false;
+        return $class::$isMultiShopFK;
     }
 
     /**

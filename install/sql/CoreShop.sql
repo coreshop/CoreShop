@@ -617,6 +617,13 @@ CREATE TABLE `coreshop_countries_shops` (
   PRIMARY KEY (`oId`,`shopId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `coreshop_carriers_shops`;
+CREATE TABLE `coreshop_carriers_shops` (
+  `oId` int(11) NOT NULL,
+  `shopId` int(11) NOT NULL,
+  PRIMARY KEY (`oId`,`shopId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `coreshop_customer_groups_shops`;
 CREATE TABLE `coreshop_customer_groups_shops` (
   `oId` int(11) NOT NULL,
