@@ -54,7 +54,7 @@ foreach($modelsToUpdate as $model) {
         $list = $class::getList();
 
         foreach($list as $object) {
-            $db->query("INSERT INTO `" . $tableName . "_shops` VALUES (".$object->getId().", 1)");
+            $db->query("INSERT INTO `" . $tableName . "_shops` VALUES (".$object->getId().", ".\CoreShop\Model\Shop::getDefaultShop()->getId().")");
         }
     }
 }

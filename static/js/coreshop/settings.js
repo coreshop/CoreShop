@@ -668,7 +668,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     },
                     {
                         xtype:'fieldset',
-                        title: t('coreshop_template'),
+                        title: t('coreshop_multishop'),
                         collapsible: true,
                         collapsed: true,
                         autoHeight:true,
@@ -677,10 +677,10 @@ pimcore.plugin.coreshop.settings = Class.create({
                         defaults: { width: 600 },
                         items :[
                             {
-                                fieldLabel: t('coreshop_template_name'),
-                                name: 'SYSTEM.TEMPLATE.NAME',
-                                value: this.getValue('SYSTEM.TEMPLATE.NAME'),
-                                enableKeyEvents: true
+                                fieldLabel: t('coreshop_multishop_enabled'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.MULTISHOP.ENABLED',
+                                checked: this.getValue('SYSTEM.MULTISHOP.ENABLED')
                             }
                         ]
                     },
@@ -836,6 +836,13 @@ pimcore.plugin.coreshop.settings = Class.create({
                     var res = Ext.decode(response.responseText);
                     if (res.success) {
                         pimcore.helpers.showNotification(t('success'), t('coreshop_settings_save_success'), 'success');
+
+                        Ext.MessageBox.confirm(t("info"), t("reload_pimcore_changes"), function (buttonValue) {
+                            if (buttonValue == "yes") {
+                                window.location.reload();
+                            }
+                        }.bind(this));
+
                     } else {
                         pimcore.helpers.showNotification(t('error'), t('coreshop_settings_save_error'),
                             'error', t(res.message));
