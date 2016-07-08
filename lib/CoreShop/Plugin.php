@@ -131,6 +131,11 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
         require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
         require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
+
+        if(Configuration::get("SYSTEM.MULTISHOP.ENABLED")) {
+            Product\PriceRule::addCondition('shop');
+            Cart\PriceRule::addCondition('shop');
+        }
     }
 
     /**

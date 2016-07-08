@@ -305,7 +305,7 @@
     background: url(/plugins/CoreShop/static/img/flat/similarities-field.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_shop, .pimcore_icon_coreShopShopMultiselect, .pimcore_icon_coreShopShop {
+.coreshop_icon_shop, .pimcore_icon_coreShopShopMultiselect, .pimcore_icon_coreShopShop, .coreshop_price_rule_icon_condition_shop {
     background: url(/plugins/CoreShop/static/img/flat/shop.svg) center center no-repeat !important;
 }
 
