@@ -655,19 +655,7 @@ class Install
             }
         }
     }
-
-    /**
-     * enables the Theme.
-     *
-     * @param string $template
-     *
-     * @throws \CoreShop\Exception\ThemeNotFoundException
-     */
-    public function installTheme($template = 'default')
-    {
-        Plugin::enableTheme($template);
-    }
-
+    
     /**
      * Remove CoreShop Static Routes.
      */
@@ -695,7 +683,6 @@ class Install
         Configuration::set('SYSTEM.BASE.VERSION', (string) Version::getVersion());
         Configuration::set('SYSTEM.PRODUCT.DEFAULTIMAGE', null);
         Configuration::set('SYSTEM.CATEGORY.DEFAULTIMAGE', null);
-        Configuration::set('SYSTEM.TEMPLATE.NAME', 'default');
         Configuration::set('SYSTEM.INVOICE.CREATE', true);
         Configuration::set('SYSTEM.INVOICE.PREFIX', 'RE');
         Configuration::set('SYSTEM.INVOICE.SUFFIX', '');

@@ -350,56 +350,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Enables a theme.
-     *
-     * @param $name
-     *
-     * @throws ThemeNotFoundException
-     */
-    public static function enableTheme($name)
-    {
-        if ($themeDir = self::getThemeDirectory($name)) {
-            //disable current template
-            $currentTemplate = Configuration::get('SYSTEM.TEMPLATE.NAME');
-
-            if ($oldThemeDir = self::getThemeDirectory($currentTemplate)) {
-                $disableScript = $themeDir.'/disable.php';
-
-                if (is_file($disableScript)) {
-                    include $disableScript;
-                }
-            }
-
-            //enable new template
-            $enableScript = $themeDir.'/enable.php';
-
-            if (is_file($enableScript)) {
-                include $enableScript;
-            }
-        } else {
-            throw new ThemeNotFoundException();
-        }
-    }
-
-    /**
-     * Returns theme directory.
-     *
-     * @param $name
-     *
-     * @return bool|string
-     */
-    public static function getThemeDirectory($name)
-    {
-        if (is_dir(PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/template/'.$name)) {
-            return PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/template/'.$name;
-        } elseif (is_dir(CORESHOP_PATH.'/views/template/'.$name)) {
-            return CORESHOP_PATH.'/views/template/'.$name;
-        }
-
-        return false;
-    }
-
-    /**
      * Default Layout.
      *
      * @var string

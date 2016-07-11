@@ -219,7 +219,7 @@ pimcore.plugin.coreshop.settings = Class.create({
 
     activate: function () {
         var tabPanel = Ext.getCmp('pimcore_panel_tabs');
-        tabPanel.activate('coreshop_settings');
+        tabPanel.setActiveItem('coreshop_settings');
     },
 
     save: function () {

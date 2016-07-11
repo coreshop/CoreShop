@@ -112,3 +112,9 @@ $db->query("ALTER TABLE `coreshop_messaging_thread`
 ADD `shopId` int(11) NOT NULL AFTER `id`;");
 
 $db->query("UPDATE `coreshop_messaging_thread` SET `shopId` = 1;");
+
+$templateConfig = \CoreShop\Model\Configuration::get("SYSTEM.TEMPLATE.NAME", null, true);
+
+if($templateConfig instanceof \CoreShop\Model\Configuration) {
+    $templateConfig->delete();
+}
