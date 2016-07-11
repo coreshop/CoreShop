@@ -26,6 +26,10 @@ class CoreShop_ProductController extends Action
         $this->view->contacts = \CoreShop\Model\Messaging\Contact::getList()->load();
 
         if ($product instanceof \CoreShop\Model\Product) {
+            if(!in_array(\CoreShop\Model\Shop::getShop()->getId(), $product->getShops())) {
+                throw new CoreShop\Exception(sprintf('Product (%s) not valid for shop (%s)', $id, \CoreShop\Model\Shop::getShop()->getId()));
+            }
+
             $this->view->product = $product;
             $this->view->similarProducts = array();
             
