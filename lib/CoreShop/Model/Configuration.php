@@ -15,6 +15,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
+use CoreShop\Model\Configuration\Listing;
 use Pimcore\Tool;
 
 /**
@@ -23,6 +24,11 @@ use Pimcore\Tool;
  */
 class Configuration extends AbstractModel
 {
+    /**
+     * @var bool
+     */
+    protected static $isMultiShopFK = true;
+
     /**
      * @var int
      */
@@ -47,6 +53,11 @@ class Configuration extends AbstractModel
      * @var int
      */
     public $modificationDate;
+
+    /**
+     * @var int
+     */
+    public $shopId;
 
     /**
      * this is a small per request cache to know which configuration is which is, this info is used in self::getByKey().
@@ -91,13 +102,22 @@ class Configuration extends AbstractModel
      * Get by Key.
      *
      * @param string $key
+     * @param int $shopId
      * @param bool   $returnObject
      *
      * @return mixed|null
      */
-    public static function get($key, $returnObject = false)
+    public static function get($key, $shopId = null, $returnObject = false)
     {
-        $cacheKey = $key.'~~~';
+        $cacheKey = $key . '~~~' . ($shopId ? $shopId : '-');
+
+        if(Tool::isFrontend()) {
+            if($key != "SYSTEM.MULTISHOP.ENABLED") {
+                if (is_null($shopId)) {
+                    $shopId = Shop::getShop()->getId();
+                }
+            }
+        }
 
         // check if pimcore already knows the id for this $name, if yes just return it
         if (array_key_exists($cacheKey, self::$nameIdMappingCache)) {
@@ -114,7 +134,7 @@ class Configuration extends AbstractModel
         $configurationEntry = new self();
 
         try {
-            $configurationEntry->getDao()->getByKey($key);
+            $configurationEntry->getDao()->getByKey($key, $shopId);
         } catch (\Exception $e) {
             return null; //return silently.
         }
@@ -138,18 +158,46 @@ class Configuration extends AbstractModel
      *
      * @param $key
      * @param $data
+     * @param $shopId
      */
-    public static function set($key, $data)
+    public static function set($key, $data, $shopId = null)
     {
-        $configEntry = self::get($key, true);
+        $configEntry = self::get($key, $shopId, true);
 
         if (!$configEntry) {
             $configEntry = new self();
             $configEntry->setKey($key);
         }
 
+        if($shopId) {
+            $configEntry->setShopId($shopId);
+        }
+        else {
+            $configEntry->setShopId(null);
+        }
+
         $configEntry->setData($data);
         $configEntry->save();
+    }
+
+    /**
+     * Remove all values from key
+     *
+     * @param $key
+     */
+    public static function remove($key) {
+        $list = new Listing();
+        $list->setFilter(function ($row) use ($key) {
+            if ($row['key'] == $key) {
+                return true;
+            }
+
+            return false;
+        });
+
+        foreach($list->getConfigurations() as $config) {
+            $config->delete();
+        }
     }
 
     /**
@@ -336,5 +384,21 @@ class Configuration extends AbstractModel
     public function setModificationDate($modificationDate)
     {
         $this->modificationDate = $modificationDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getShopId()
+    {
+        return $this->shopId;
+    }
+
+    /**
+     * @param int $shopId
+     */
+    public function setShopId($shopId)
+    {
+        $this->shopId = $shopId;
     }
 }

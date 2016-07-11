@@ -420,3 +420,9 @@
     color: #D27C82;
     border-radius: 5px;
 }
+
+.coreshop_settings_inherited {
+    background:#dad9d9 !important;
+    filter: Alpha(opacity=60) !important;
+    opacity: 0.6 !important;
+}

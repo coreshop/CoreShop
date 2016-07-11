@@ -34,19 +34,25 @@ class CoreShop_Admin_SettingsController extends Admin
 
     public function getSettingsAction()
     {
-        $config = new Model\Configuration\Listing();
-        $config->setFilter(function ($entry) {
-            if (startsWith($entry['key'], 'SYSTEM.')) {
-                return true;
+        $shops = Model\Shop::getList();
+        $valueArray = [];
+
+        foreach($shops as $shop) {
+            $config = new Model\Configuration\Listing();
+            $config->setFilter(function ($entry) use ($shop) {
+                if (startsWith($entry['key'], 'SYSTEM.') && ($entry['shop'] === null || $entry['shop'] === $shop->getId())) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            foreach ($config->getConfigurations() as $c) {
+                if($c->getShopId()) {
+                    $valueArray[$shop->getId()][$c->getKey()] = $c->getData();
+                }
+                $valueArray[$c->getKey()] = $c->getData();
             }
-
-            return false;
-        });
-
-        $valueArray = array();
-
-        foreach ($config->getConfigurations() as $c) {
-            $valueArray[$c->getKey()] = $c->getData();
         }
 
         $pluginConfig = \Pimcore\ExtensionManager::getPluginConfig('CoreShop');
@@ -76,19 +82,27 @@ class CoreShop_Admin_SettingsController extends Admin
 
     public function getAction()
     {
-        $config = new Model\Configuration\Listing();
-        $config->setFilter(function ($entry) {
-            if (startsWith($entry['key'], 'SYSTEM.')) {
-                return true;
+        $shops = Model\Shop::getList();
+        $valueArray = [];
+
+        foreach($shops as $shop) {
+            $shopValues = [];
+
+            $config = new Model\Configuration\Listing();
+            $config->setFilter(function ($entry) use ($shop) {
+                if (startsWith($entry['key'], 'SYSTEM.') && ($entry['shopId'] === null || $entry['shopId'] === intval($shop->getId()))) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            foreach ($config->getConfigurations() as $c) {
+
+                $shopValues[$c->getKey()] = $c->getData();
             }
 
-            return false;
-        });
-
-        $valueArray = array();
-
-        foreach ($config->getConfigurations() as $c) {
-            $valueArray[$c->getKey()] = $c->getData();
+            $valueArray[$shop->getId()] = $shopValues;
         }
 
         $response = array(
@@ -102,15 +116,26 @@ class CoreShop_Admin_SettingsController extends Admin
     public function setAction()
     {
         $values = \Zend_Json::decode($this->getParam('data'));
-
-        // convert all special characters to their entities so the xml writer can put it into the file
         $values = array_htmlspecialchars($values);
 
-        foreach ($values as $key => $value) {
-            Model\Configuration::set($key, $value);
+        $diff = call_user_func_array("array_diff_assoc", $values);
 
-            if ($key === "SYSTEM.BASE.PRICES.GROSS") {
-                \Pimcore\Cache::clearAll();
+        foreach($values as $shop => $shopValues) {
+            foreach($shopValues as $key => $val) {
+                Model\Configuration::remove($key);
+            }
+
+            break;
+        }
+
+        foreach($values as $shopId => $shopValues) {
+            foreach($shopValues as $key => $value) {
+                if(array_key_exists($key, $diff)) {
+                    Model\Configuration::set($key, $value, $shopId);
+                }
+                else {
+                    Model\Configuration::set($key, $value);
+                }
             }
         }
 

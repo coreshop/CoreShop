@@ -16,6 +16,7 @@ namespace CoreShop\Model\Configuration;
 
 use CoreShop\Exception;
 use Pimcore\Model;
+use Pimcore\Tool;
 
 /**
  * Class Dao
@@ -58,10 +59,11 @@ class Dao extends Model\Dao\PhpArrayTable
      * Get Configuration by key.
      *
      * @param null $key
+     * @param null $shopId
      *
      * @throws Exception
      */
-    public function getByKey($key = null)
+    public function getByKey($key = null, $shopId = null)
     {
         if ($key != null) {
             $this->model->setKey($key);
@@ -69,13 +71,33 @@ class Dao extends Model\Dao\PhpArrayTable
 
         $key = $this->model->getKey();
 
-        $data = $this->db->fetchAll(function ($row) use ($key) {
-            if ($row['key'] == $key) {
-                return true;
+        $data = $this->db->fetchAll(function ($row) use ($key, $shopId) {
+            if($shopId) {
+                if ($row['key'] == $key && $row['shopId'] === intval($shopId)) {
+                    return true;
+                }
+            }
+            else {
+                if ($row['key'] == $key && $row['shopId'] === null) {
+                    return true;
+                }
             }
 
             return false;
         });
+
+        //Fallback for Inherited Configurations
+        if($shopId) {
+            if (!count($data)) {
+                $data = $this->db->fetchAll(function ($row) use ($key, $shopId) {
+                    if ($row['key'] == $key && $row['shopId'] === null) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
+        }
 
         if (count($data) && $data[0]['id']) {
             $this->assignVariablesToModel($data[0]);
@@ -100,7 +122,7 @@ class Dao extends Model\Dao\PhpArrayTable
         try {
             $dataRaw = get_object_vars($this->model);
             $data = [];
-            $allowedProperties = ['id', 'key', 'data', 'creationDate', 'modificationDate'];
+            $allowedProperties = ['id', 'shopId', 'key', 'data', 'creationDate', 'modificationDate'];
 
             foreach ($dataRaw as $key => $value) {
                 if (in_array($key, $allowedProperties)) {
@@ -114,6 +136,14 @@ class Dao extends Model\Dao\PhpArrayTable
 
         if (!$this->model->getId()) {
             $this->model->setId($this->db->getLastInsertId());
+        }
+    }
+
+    public function removeAll($key) {
+        $data = $this->db->fetchAll();
+
+        foreach($data as $d) {
+            $d->delete();
         }
     }
 
