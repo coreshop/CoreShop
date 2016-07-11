@@ -36,6 +36,7 @@ class CoreShop_Admin_SettingsController extends Admin
     {
         $shops = Model\Shop::getList();
         $valueArray = [];
+        $systemSettings = [];
 
         foreach($shops as $shop) {
             $config = new Model\Configuration\Listing();
@@ -48,10 +49,12 @@ class CoreShop_Admin_SettingsController extends Admin
             });
 
             foreach ($config->getConfigurations() as $c) {
-                if($c->getShopId()) {
+                if(in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
+                    $systemSettings[$c->getKey()] = $c->getData();
+                }
+                else {
                     $valueArray[$shop->getId()][$c->getKey()] = $c->getData();
                 }
-                $valueArray[$c->getKey()] = $c->getData();
             }
         }
 
@@ -76,7 +79,9 @@ class CoreShop_Admin_SettingsController extends Admin
             'coreshop' => $valueArray,
             'plugin' => $pluginConfig['plugin'],
             'classMapping' => $classMapping,
-            'multishop' => Model\Configuration::multiShopEnabled()
+            'multishop' => Model\Configuration::multiShopEnabled(),
+            'systemSettings' => $systemSettings,
+            'defaultShop' => Model\Shop::getDefaultShop()->getId()
         ]);
     }
 
@@ -84,7 +89,8 @@ class CoreShop_Admin_SettingsController extends Admin
     {
         $shops = Model\Shop::getList();
         $valueArray = [];
-
+        $systemValues = [];
+            
         foreach($shops as $shop) {
             $shopValues = [];
 
@@ -98,8 +104,12 @@ class CoreShop_Admin_SettingsController extends Admin
             });
 
             foreach ($config->getConfigurations() as $c) {
-
-                $shopValues[$c->getKey()] = $c->getData();
+                if(in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
+                    $systemValues[$c->getKey()] = $c->getData();
+                }
+                else {
+                    $shopValues[$c->getKey()] = $c->getData();
+                }
             }
 
             $valueArray[$shop->getId()] = $shopValues;
@@ -107,6 +117,7 @@ class CoreShop_Admin_SettingsController extends Admin
 
         $response = array(
             'values' => $valueArray,
+            'systemValues' => $systemValues
         );
 
         $this->_helper->json($response);
@@ -115,17 +126,24 @@ class CoreShop_Admin_SettingsController extends Admin
 
     public function setAction()
     {
-        $values = \Zend_Json::decode($this->getParam('data'));
+        $systemValues = \Zend_Json::decode($this->getParam('systemValues'));
+        $values = \Zend_Json::decode($this->getParam('values'));
         $values = array_htmlspecialchars($values);
+        $diff = [];
 
-        $diff = call_user_func_array("array_diff_assoc", $values);
+        if(Model\Configuration::multiShopEnabled()) {
+            $diff = call_user_func_array("array_diff_assoc", $values);
+        }
 
-        foreach($values as $shop => $shopValues) {
-            foreach($shopValues as $key => $val) {
-                Model\Configuration::remove($key);
+
+        if(Model\Configuration::multiShopEnabled()) {
+            foreach ($values as $shop => $shopValues) {
+                foreach ($shopValues as $key => $val) {
+                    Model\Configuration::remove($key);
+                }
+
+                break;
             }
-
-            break;
         }
 
         foreach($values as $shopId => $shopValues) {
@@ -137,6 +155,10 @@ class CoreShop_Admin_SettingsController extends Admin
                     Model\Configuration::set($key, $value);
                 }
             }
+        }
+
+        foreach($systemValues as $key => $value) {
+            Model\Configuration::set($key, $value);
         }
 
         $this->_helper->json(array('success' => true));

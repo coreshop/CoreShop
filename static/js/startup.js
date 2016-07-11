@@ -49,7 +49,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                 this.settings = resp;
                 coreshop.settings = this.settings;
 
-                if (intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
+                if (intval(this.settings.systemSettings['SYSTEM.ISINSTALLED'])) {
 
                     coreShopMenuItems.push({
                         text: t('coreshop_order_by_number'),
@@ -430,7 +430,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
     postOpenObject : function (tab, type)
     {
-        if (intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
+        if (intval(this.settings.systemSettings['SYSTEM.ISINSTALLED'])) {
             if (tab.data.general.o_className == coreshop.settings.classMapping.cart)
             {
                 tab.toolbar.insert(tab.toolbar.items.length,
@@ -475,7 +475,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
             } else if (tab.data.general.o_className === coreshop.settings.classMapping.order) {
                 var orderMoreButtons = [];
 
-                if (this.settings.coreshop['SYSTEM.INVOICE.CREATE']) {
+                if (this.settings.coreshop[this.settings.defaultShop]['SYSTEM.INVOICE.CREATE']) {
                     var resetChangesFunction = tab.resetChanges;
 
                     var invoiceTab = new pimcore.plugin.coreshop.orders.invoice(tab);

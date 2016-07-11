@@ -20,7 +20,7 @@ pimcore.plugin.coreshop.global = {
     {
         this.settings = settings;
 
-        if (intval(this.settings.coreshop['SYSTEM.ISINSTALLED'])) {
+        if (intval(this.settings.systemSettings['SYSTEM.ISINSTALLED'])) {
             this._initStores();
         }
     },

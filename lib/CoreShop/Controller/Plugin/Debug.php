@@ -15,6 +15,7 @@
 namespace CoreShop\Controller\Plugin;
 
 use CoreShop\Model\Configuration;
+use CoreShop\Model\Shop;
 use CoreShop\Plugin;
 use Pimcore\Model\User;
 use Pimcore\Tool;
@@ -39,7 +40,7 @@ class Debug extends \Zend_Controller_Plugin_Abstract
             return;
         }
 
-        if (!Configuration::get('SYSTEM.BASE.SHOWDEBUG')) {
+        if (!Configuration::get('SYSTEM.BASE.SHOWDEBUG', Shop::getShop()->getId())) {
             return;
         }
 

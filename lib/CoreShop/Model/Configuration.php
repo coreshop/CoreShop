@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Model\Configuration\Listing;
+use CoreShop\Model\Index\Config;
 use Pimcore\Tool;
 
 /**
@@ -28,6 +29,14 @@ class Configuration extends AbstractModel
      * @var bool
      */
     protected static $isMultiShopFK = true;
+
+    /**
+     * @var array
+     */
+    protected static $systemKeys = [
+        'SYSTEM.ISINSTALLED',
+        'SYSTEM.MULTISHOP.ENABLED'
+    ];
 
     /**
      * @var int
@@ -112,9 +121,11 @@ class Configuration extends AbstractModel
         $cacheKey = $key . '~~~' . ($shopId ? $shopId : '-');
 
         if(Tool::isFrontend()) {
-            if($key != "SYSTEM.MULTISHOP.ENABLED") {
-                if (is_null($shopId)) {
-                    $shopId = Shop::getShop()->getId();
+            if(!in_array($key, self::$systemKeys)) {
+                if(self::multiShopEnabled()) {
+                    if (is_null($shopId)) {
+                        $shopId = Shop::getShop()->getId();
+                    }
                 }
             }
         }
@@ -168,14 +179,8 @@ class Configuration extends AbstractModel
             $configEntry = new self();
             $configEntry->setKey($key);
         }
-
-        if($shopId) {
-            $configEntry->setShopId($shopId);
-        }
-        else {
-            $configEntry->setShopId(null);
-        }
-
+        
+        $configEntry->setShopId($shopId);
         $configEntry->setData($data);
         $configEntry->save();
     }
@@ -304,6 +309,22 @@ class Configuration extends AbstractModel
         }
 
         return false;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSystemKeys()
+    {
+        return self::$systemKeys;
+    }
+
+    /**
+     * @param array $systemKeys
+     */
+    public static function setSystemKeys($systemKeys)
+    {
+        self::$systemKeys = $systemKeys;
     }
 
     /**
