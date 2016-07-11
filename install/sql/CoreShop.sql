@@ -653,16 +653,18 @@ CREATE TABLE `coreshop_zones_shops` (
   PRIMARY KEY (`oId`,`shopId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `coreshop_messaging_contact`;
-CREATE TABLE `coreshop_messaging_contact` (
+DROP TABLE IF EXISTS `coreshop_messaging_contact_shops`;
+CREATE TABLE `coreshop_messaging_contact_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `coreshop_messaging_thread_state`;
-CREATE TABLE `coreshop_messaging_thread_state` (
+DROP TABLE IF EXISTS `coreshop_messaging_thread_state_shops`;
+CREATE TABLE `coreshop_messaging_thread_state_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+

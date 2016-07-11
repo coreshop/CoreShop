@@ -36,9 +36,6 @@ class CoreShop_Admin_InstallController extends Admin
 
             \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, array('installer' => $install));
 
-            $install->executeSQL('CoreShop');
-            $install->executeSQL('CoreShop-States');
-
             //install Data
             $install->installObjectData('orderStates', 'Order\\');
             $install->installObjectData('threadStates', 'Messaging\\Thread\\');
@@ -90,7 +87,7 @@ class CoreShop_Admin_InstallController extends Admin
             $success = true;
         } catch (Exception $e) {
             \Logger::crit($e);
-
+            throw $e;
             $success = false;
         }
 

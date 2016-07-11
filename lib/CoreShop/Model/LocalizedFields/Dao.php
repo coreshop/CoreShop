@@ -214,7 +214,7 @@ class Dao extends AbstractDao
 
                 // get available columns
                 $viewColumns = array_merge(
-                    $this->db->fetchAll('SHOW COLUMNS FROM `'.$this->model->getObject()->getLocalizedTableName().'`')
+                    $this->db->fetchAll('SHOW COLUMNS FROM `'.$this->model->getObject()->getTableName().'`')
                 );
                 $localizedColumns = $this->db->fetchAll('SHOW COLUMNS FROM `'.$tablename.'`');
 
@@ -241,7 +241,7 @@ class Dao extends AbstractDao
 CREATE OR REPLACE VIEW `{$localizedTable}_{$language}` AS
 
 SELECT {$selectViewFields}
-FROM `{$this->model->getObject()->getLocalizedTableName()}`
+FROM `{$this->model->getObject()->getTableName()}`
 QUERY;
 
                 // join fallback languages
@@ -249,7 +249,7 @@ QUERY;
                     $viewQuery .= <<<QUERY
 LEFT JOIN {$this->getQueryTableName()}_{$lang} as {$lang}
     ON( 1
-        AND {$this->model->getObject()->getLocalizedTableName()}.id = {$lang}.ooo_id
+        AND {$this->model->getObject()->getTableName()}.id = {$lang}.ooo_id
     )
 QUERY;
                 }

@@ -216,6 +216,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
         try {
             $install = new Install();
 
+            $install->executeSQL('CoreShop');
+            $install->executeSQL('CoreShop-States');
             $install->createConfig();
 
             \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array('installer' => $install));
@@ -273,28 +275,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             return self::getTranslate()->_('coreshop_uninstall_failed');
         }
-    }
-
-    /**
-     * Check if CoreShop is installed.
-     *
-     * @return bool
-     */
-    public static function coreShopIsInstalled()
-    {
-        $entry = Object\ClassDefinition::getByName('CoreShopProduct');
-        $category = Object\ClassDefinition::getByName('CoreShopProduct');
-        $cartItem = Object\ClassDefinition::getByName('CoreShopCart');
-        $cart = Object\ClassDefinition::getByName('CoreShopCartItem');
-        $order = Object\ClassDefinition::getByName('CoreShopOrder');
-        $orderItem = Object\ClassDefinition::getByName('CoreShopOrderItem');
-        $orderPayment = Object\ClassDefinition::getByName('CoreShopPayment');
-
-        if ($entry && $category && $cart && $cartItem && $order && $orderItem && $orderPayment) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
