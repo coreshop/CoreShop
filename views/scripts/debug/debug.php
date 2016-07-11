@@ -17,6 +17,12 @@
                     <td><?=\Pimcore\Model\Staticroute::getCurrentRoute()->getName()?></td>
                 </tr>
                 <?php } ?>
+                <?php if(\CoreShop\Model\Configuration::multiShopEnabled()) { ?>
+                    <tr>
+                        <td><?=$this->translate("coreshop_shop")?></td>
+                        <td><?=CoreShop\Model\Shop::getShop()->getName() ?> (<?=\CoreShop\Model\Shop::getShop()->getId()?>)</td>
+                    </tr>
+                <?php } ?>
                 <tr>
                     <td><?=$this->translate("coreshop_country")?></td>
                     <td><?=\CoreShop\Tool::getCountry()->getName() ?> (<?=\CoreShop\Tool::getCountry()->getId()?>)</td>
