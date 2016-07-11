@@ -76,7 +76,6 @@ pimcore.plugin.coreshop.shops.item = Class.create(pimcore.plugin.coreshop.abstra
                             width: 400,
                             store: this.store,
                             displayField: 'name',
-                            multiSelect: true,
                             valueField: 'id',
                             triggerAction: 'all',
                             typeAhead: false,
@@ -84,7 +83,7 @@ pimcore.plugin.coreshop.shops.item = Class.create(pimcore.plugin.coreshop.abstra
                             forceSelection: true,
                             queryMode: 'local',
                             value: this.data.siteId,
-                            disabled : this.data.isDefault
+                            disabled : intval(this.data.isDefault) === 1
                         },
                         {
                             fieldLabel: t('coreshop_shop_template'),

@@ -33,16 +33,6 @@ class Shop extends AbstractModel {
     public $name;
 
     /**
-     * @var int
-     */
-    public $currencyId;
-
-    /**
-     * @var
-     */
-    public $currency;
-
-    /**
      * @var string
      */
     public $template;
@@ -170,7 +160,7 @@ class Shop extends AbstractModel {
     /**
      * @return boolean
      */
-    public function isIsDefault()
+    public function getIsDefault()
     {
         return $this->isDefault;
     }
@@ -181,48 +171,6 @@ class Shop extends AbstractModel {
     public function setIsDefault($isDefault)
     {
         $this->isDefault = $isDefault;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCurrencyId()
-    {
-        return $this->currencyId;
-    }
-
-    /**
-     * @param int $currencyId
-     */
-    public function setCurrencyId($currencyId)
-    {
-        $this->currencyId = $currencyId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCurrency()
-    {
-        if (!$this->currency instanceof Currency) {
-            $this->currency = Currency::getById($this->currencyId);
-        }
-
-        return $this->currency;
-    }
-
-    /**
-     * @param mixed $currency
-     * @throws Exception
-     */
-    public function setCurrency($currency)
-    {
-        if (!$currency instanceof Currency) {
-            throw new Exception('$currency must be instance of Currency');
-        }
-
-        $this->currency = $currency;
-        $this->currencyId = $currency->getId();
     }
 
     /**

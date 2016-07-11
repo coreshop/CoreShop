@@ -117,6 +117,7 @@ class CoreShop_Admin_ShopController extends Admin
         } else {
             $shop = new Shop();
             $shop->setName($name);
+            $shop->setTemplate(Shop::getDefaultShop()->getTemplate());
             $shop->save();
 
             $this->_helper->json(array('success' => true, 'data' => $shop));
