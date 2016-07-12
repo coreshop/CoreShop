@@ -72,9 +72,7 @@
                 ],
                 "lazyLoading":false,
                 "classes":[
-                  {
-                    "classes":"CoreShopCategory"
-                  }
+                    "CoreShopCategory"
                 ],
                 "name":"parentCategory",
                 "title":"Parent Category",

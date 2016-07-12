@@ -77,9 +77,7 @@
                     "relationType":true,
                     "lazyLoading":false,
                     "classes":[
-                      {
-                        "classes":"CoreShopCartItem"
-                      }
+                        "CoreShopCartItem"
                     ],
                     "name":"items",
                     "title":"Items",
@@ -200,9 +198,7 @@
                     ],
                     "lazyLoading":true,
                     "classes":[
-                      {
-                        "classes":"CoreShopOrder"
-                      }
+                        "CoreShopOrder"
                     ],
                     "name":"order",
                     "title":"Order",
@@ -305,9 +301,7 @@
                     ],
                     "lazyLoading":false,
                     "classes":[
-                      {
-                        "classes":"CoreShopUser"
-                      }
+                        "CoreShopUser"
                     ],
                     "name":"user",
                     "title":"User",

@@ -81,9 +81,7 @@
             "documentTypes":"",
             "lazyLoading":false,
             "classes":[
-              {
-                "classes":"CoreShopProduct"
-              }
+                "CoreShopProduct"
             ],
             "name":"product",
             "title":"Product",

@@ -64,24 +64,13 @@
                 "objectsAllowed":true,
                 "assetsAllowed":false,
                 "assetTypes":[
-                  {
-                    "assetTypes":""
-                  }
                 ],
                 "documentsAllowed":false,
                 "documentTypes":[
-                  {
-                    "documentTypes":""
-                  }
                 ],
                 "lazyLoading":false,
                 "classes":[
-                  {
-                    "classes":"CoreShopProduct"
-                  },
-                  {
-                    "classes":"TestProduct"
-                  }
+                    "CoreShopProduct"
                 ],
                 "name":"product",
                 "title":"Product",

@@ -864,9 +864,7 @@
                 "relationType":true,
                 "lazyLoading":false,
                 "classes":[
-                  {
-                    "classes":"CoreShopOrderItem"
-                  }
+                    "CoreShopOrderItem"
                 ],
                 "name":"items",
                 "title":"Items",

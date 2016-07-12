@@ -361,9 +361,7 @@
 								"relationType":true,
 								"lazyLoading":false,
 								"classes":[
-									{
-										"classes":"CoreShopCategory"
-									}
+									"CoreShopCategory"
 								],
 								"name":"categories",
 								"title":"Categories",
@@ -859,21 +857,15 @@
 								"objectsAllowed":false,
 								"assetsAllowed":true,
 								"assetTypes":[
-									{
-										"assetTypes":"image"
-									}
+									"image"
 								],
 								"documentsAllowed":false,
 								"documentTypes":[
-									{
-										"documentTypes":""
-									}
+
 								],
 								"lazyLoading":false,
 								"classes":[
-									{
-										"classes":""
-									}
+
 								],
 								"name":"images",
 								"title":"Images",
