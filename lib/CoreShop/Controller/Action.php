@@ -16,6 +16,7 @@ namespace CoreShop\Controller;
 
 use CoreShop\Exception;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Shop;
 use CoreShop\Plugin;
 use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
@@ -47,6 +48,7 @@ class Action extends \Website\Controller\Action
     public function init()
     {
         parent::init();
+        $this->initTemplate();
 
         \Pimcore::getEventManager()->trigger('coreshop.controller.init', $this);
 
@@ -74,6 +76,44 @@ class Action extends \Website\Controller\Action
 
         $this->enableLayout();
         $this->setLayout(Plugin::getLayout());
+    }
+
+    /**
+     * Init the Template for Shop
+     */
+    protected function initTemplate() {
+        //Throws Exception when Multishop is wrong configured
+        $shop = Shop::getShop();
+        $template = $shop->getTemplate();
+
+        if (!$template) {
+            die("No template configured");
+        }
+
+        $templateBasePath = '';
+        $templateResources = '';
+
+        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $template)) {
+            $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/scripts/coreshop/template";
+            $templateResources = "/website/views/scripts/coreshop/template/" . $template . "/static/";
+        }
+
+        if (!defined("CORESHOP_TEMPLATE_BASE_PATH")) {
+            define("CORESHOP_TEMPLATE_BASE_PATH", $templateBasePath);
+        }
+        if (!defined("CORESHOP_TEMPLATE_NAME")) {
+            define("CORESHOP_TEMPLATE_NAME", $template);
+        }
+        if (!defined("CORESHOP_TEMPLATE_PATH")) {
+            define("CORESHOP_TEMPLATE_PATH", CORESHOP_TEMPLATE_BASE_PATH . "/" . $template);
+        }
+        if (!defined("CORESHOP_TEMPLATE_RESOURCES")) {
+            define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
+        }
+
+        if (!is_dir(CORESHOP_TEMPLATE_PATH)) {
+            \Logger::critical(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
+        }
     }
 
     /**
