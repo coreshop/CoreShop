@@ -129,12 +129,73 @@ class Plugin extends AbstractPlugin implements PluginInterface
         );
         set_include_path(implode(PATH_SEPARATOR, $includePaths));
 
-        require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
-        require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
+        $this->startup();
 
         if(Configuration::multiShopEnabled()) {
             Product\PriceRule::addCondition('shop');
             Cart\PriceRule::addCondition('shop');
+        }
+    }
+
+    /**
+     * Startup CoreShop
+     *
+     * This method initializes the defined Constants for pathes and loads the template paths
+     */
+    protected function startup() {
+        require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
+
+        if (!defined("CORESHOP_PATH")) {
+            define("CORESHOP_PATH", PIMCORE_PLUGINS_PATH . "/CoreShop");
+        }
+        if (!defined("CORESHOP_PLUGIN_CONFIG")) {
+            define("CORESHOP_PLUGIN_CONFIG", CORESHOP_PATH . "/plugin.xml");
+        }
+        if (!defined("CORESHOP_CONFIGURATION_PATH")) {
+            define("CORESHOP_CONFIGURATION_PATH", PIMCORE_CONFIGURATION_DIRECTORY);
+        }
+        if (!defined("CORESHOP_TEMPORARY_DIRECTORY")) {
+            define("CORESHOP_TEMPORARY_DIRECTORY", PIMCORE_TEMPORARY_DIRECTORY);
+        }
+        if (!defined("CORESHOP_UPDATE_DIRECTORY")) {
+            define("CORESHOP_UPDATE_DIRECTORY", CORESHOP_PATH . "/update");
+        }
+
+        if (!defined("CORESHOP_BUILD_DIRECTORY")) {
+            define("CORESHOP_BUILD_DIRECTORY", CORESHOP_PATH . "/build");
+        }
+
+        //Throws Exception when Multishop is wrong configured
+        $shop = Model\Shop::getShop();
+        $template = $shop->getTemplate();
+
+        if (!$template) {
+            die("No template configured");
+        }
+
+        $templateBasePath = '';
+        $templateResources = '';
+
+        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $template)) {
+            $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/scripts/coreshop/template";
+            $templateResources = "/website/views/scripts/coreshop/template/" . $template . "/static/";
+        }
+
+        if (!defined("CORESHOP_TEMPLATE_BASE_PATH")) {
+            define("CORESHOP_TEMPLATE_BASE_PATH", $templateBasePath);
+        }
+        if (!defined("CORESHOP_TEMPLATE_NAME")) {
+            define("CORESHOP_TEMPLATE_NAME", $template);
+        }
+        if (!defined("CORESHOP_TEMPLATE_PATH")) {
+            define("CORESHOP_TEMPLATE_PATH", CORESHOP_TEMPLATE_BASE_PATH . "/" . $template);
+        }
+        if (!defined("CORESHOP_TEMPLATE_RESOURCES")) {
+            define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
+        }
+
+        if (!is_dir(CORESHOP_TEMPLATE_PATH)) {
+            \Logger::critical(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
         }
     }
 
