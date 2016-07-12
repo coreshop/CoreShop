@@ -17,6 +17,7 @@ namespace CoreShop;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
+use CoreShop\Model\Shop;
 use Pimcore\Date;
 use Pimcore\Model\Object;
 use CoreShop\Model\Currency;
@@ -584,5 +585,35 @@ class Tool
         }
 
         return Plugin::getTranslate($lang);
+    }
+
+    /**
+     * Initializes the Template for the give Shop
+     *
+     * @param Shop $shop
+     */
+    public static function initTemplateForShop(Shop $shop) {
+        $template = $shop->getTemplate();
+
+        if (!$template) {
+            die("No template configured");
+        }
+
+        $templateBasePath = '';
+        $templateResources = '';
+
+        if (is_dir(PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $template)) {
+            $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/scripts/coreshop/template";
+            $templateResources = "/website/views/scripts/coreshop/template/" . $template . "/static/";
+        }
+
+        define("CORESHOP_TEMPLATE_BASE_PATH", $templateBasePath);
+        define("CORESHOP_TEMPLATE_NAME", $template);
+        define("CORESHOP_TEMPLATE_PATH", CORESHOP_TEMPLATE_BASE_PATH . "/" . $template);
+        define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
+
+        if (!is_dir(CORESHOP_TEMPLATE_PATH)) {
+            \Logger::critical(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
+        }
     }
 }

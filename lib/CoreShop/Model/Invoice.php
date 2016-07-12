@@ -49,6 +49,8 @@ class Invoice
 
         self::initTranslation();
 
+        \CoreShop\Tool::initTemplateForShop($order->getShop());
+
         $view = new View();
         $view->setScriptPath(CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/invoice/');
         $view->assign('order', $order);
