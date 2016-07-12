@@ -48,9 +48,14 @@ class Objectbrick extends AbstractData
         $this->view->language = (string) $language;
         $this->view->brick = $this;
 
+        $class = get_class($this);
+        $class = explode('\\', $class);
+        $class = array_pop($class);
+        $class = strtolower($class);
+
         $this->view->setScriptPath(
             array(
-                CORESHOP_TEMPLATE_PATH.'/scripts/'.strtolower(array_pop(explode('\\', get_class($this)))),
+                CORESHOP_TEMPLATE_PATH.'/scripts/'.$class,
             )
         );
 
