@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 use CoreShop\Exception;
+use Pimcore\Cache;
 use Pimcore\Model\Site;
 
 /**
@@ -74,17 +75,44 @@ class Shop extends AbstractModel {
      * @returns Shop
      */
     public static function getShopForSite(Site $site) {
-        $data = self::getList()->setCondition("siteId = ?", array($site->getId()))->getData();
+        $cacheKey = "coreshop_shop_site_" . $site->getId();
 
-        if(count($data) > 1) {
-            throw new Exception("More that one shop for this site is configured!");
+        try {
+            $object = \Zend_Registry::get($cacheKey);
+            if (!$object) {
+                throw new Exception($cacheKey.' in registry is null');
+            }
+
+            return $object;
+        } catch (\Exception $e) {
+            try {
+                if (!$object = Cache::load($cacheKey)) {
+
+                    $data = self::getList()->setCondition("siteId = ?", array($site->getId()))->getData();
+
+                    if(count($data) > 1) {
+                        throw new Exception("More that one shop for this site is configured!");
+                    }
+
+                    if(count($data) === 0) {
+                        throw new Exception("No shop for this site is configured!");
+                    }
+
+                    $object = $data[0];
+
+                    \Zend_Registry::set($cacheKey, $object);
+                    Cache::save($object, $cacheKey);
+                } else {
+                    \Zend_Registry::set($cacheKey, $object);
+                }
+
+                return $object;
+            } catch (\Exception $e) {
+                \Logger::warning($e->getMessage());
+            }
         }
 
-        if(count($data) === 0) {
-            throw new Exception("No shop for this site is configured!");
-        }
-
-        return $data[0];
+        throw new Exception("No shop for this site is configured!");
     }
 
     /**
@@ -96,17 +124,44 @@ class Shop extends AbstractModel {
      * @returns Shop
      */
     public static function getDefaultShop() {
-        $data = self::getList()->setCondition("isDefault = 1")->getData();
+        $cacheKey = "coreshop_shop_site_default";
 
-        if(count($data) > 1) {
-            throw new Exception("More that one default shop is configured!");
+        try {
+            $object = \Zend_Registry::get($cacheKey);
+            if (!$object) {
+                throw new Exception($cacheKey.' in registry is null');
+            }
+
+            return $object;
+        } catch (\Exception $e) {
+            try {
+                if (!$object = Cache::load($cacheKey)) {
+
+                    $data = self::getList()->setCondition("isDefault = 1")->getData();
+
+                    if(count($data) > 1) {
+                        throw new Exception("More that one default shop is configured!");
+                    }
+
+                    if(count($data) === 0) {
+                        throw new Exception("No default shop is configured!");
+                    }
+
+                    $object = $data[0];
+
+                    \Zend_Registry::set($cacheKey, $object);
+                    Cache::save($object, $cacheKey);
+                } else {
+                    \Zend_Registry::set($cacheKey, $object);
+                }
+
+                return $object;
+            } catch (\Exception $e) {
+                \Logger::warning($e->getMessage());
+            }
         }
 
-        if(count($data) === 0) {
-            throw new Exception("No default shop is configured!");
-        }
-
-        return $data[0];
+        throw new Exception("No default shop is configured!");
     }
 
     /**
