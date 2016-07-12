@@ -131,9 +131,6 @@ $autoloader->registerNamespace('CoreShop');
 
 \Zend_Registry::set("pimcore_admin_user", \Pimcore\Model\User::getByName("admin"));
 
-require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/startup.php';
-require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
-
 //install CoreShop
 $install = new \CoreShop\Plugin\Install();
 
