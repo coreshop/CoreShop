@@ -17,6 +17,7 @@ namespace CoreShop;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Messaging\Message;
 use CoreShop\Model\Order;
+use CoreShop\Model\Shop;
 use Pimcore\Mail as PimcoreMail;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Document;
@@ -37,6 +38,14 @@ class Mail extends PimcoreMail
      */
     public static function sendMessagingMail($emailDocument, Message $message, $recipient)
     {
+        $thread = $message->getThread();
+        $shopId = $thread->getShopId();
+
+        $shop = Shop::getById($shopId);
+
+        //init Template
+        Tool::initTemplateForShop($shop);
+
         $mail = new self();
         $mail->setDocument($emailDocument);
         $mail->setParams(array('message' => $message->getMessage(), 'messageObject' => $message));
@@ -58,6 +67,9 @@ class Mail extends PimcoreMail
     public static function sendOrderMail($emailDocument, Order $order, Order\State $orderState = null, $allowBcc = false)
     {
         if ($emailDocument instanceof Document\Email) {
+            //init Template
+            Tool::initTemplateForShop($order->getShop());
+
             $emailParameters = array_merge($order->getObjectVars(), $orderState instanceof Order\State ? $orderState->getObjectVars() : [], $order->getCustomer()->getObjectVars());
             $emailParameters['orderTotal'] = Tool::formatPrice($order->getTotal());
             $emailParameters['order'] = $order;
