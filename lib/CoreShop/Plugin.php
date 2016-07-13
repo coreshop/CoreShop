@@ -108,12 +108,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
         \Pimcore::getEventManager()->attach('object.postAdd', array($this, 'postAddObject'));
         \Pimcore::getEventManager()->attach('object.postUpdate', array($this, 'postUpdateObject'));
 
-        if (Configuration::get('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')) {
-            \Pimcore::getEventManager()->attach('coreshop.tax.getTaxManager', function () {
-                return new VatManager();
-            });
-        }
-
         \Pimcore::getEventManager()->attach("system.di.init", function (\Zend_EventManager_Event $e) {
             $diBuilder = $e->getTarget();
             
@@ -134,6 +128,12 @@ class Plugin extends AbstractPlugin implements PluginInterface
         if(Configuration::multiShopEnabled()) {
             Product\PriceRule::addCondition('shop');
             Cart\PriceRule::addCondition('shop');
+        }
+
+        if (Configuration::get('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')) {
+            \Pimcore::getEventManager()->attach('coreshop.tax.getTaxManager', function () {
+                return new VatManager();
+            });
         }
     }
 

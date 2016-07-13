@@ -120,8 +120,12 @@ class AbstractModel extends Model\AbstractModel
             try {
                 if (!$object = Cache::load($cacheKey)) {
 
-                    $object = \Pimcore::getDiContainer()->make($className);
-                    
+                    if(\Pimcore::getDiContainer()->has($className)) {
+                        $object = \Pimcore::getDiContainer()->make($className);
+                    } else {
+                        $object = new $className();
+                    }
+
                     $object->getDao()->getById($id, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
@@ -163,7 +167,13 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    $object = \Pimcore::getDiContainer()->make($className);
+
+                    if(\Pimcore::getDiContainer()->has($className)) {
+                        $object = \Pimcore::getDiContainer()->make($className);
+                    } else {
+                        $object = new $className();
+                    }
+
                     $object->getDao()->getByField($field, $value, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
