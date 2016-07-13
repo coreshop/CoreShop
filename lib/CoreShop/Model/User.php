@@ -55,7 +55,7 @@ class User extends Base
 
         $list->setCondition(implode(' AND ', $conditions), $conditionsValues);
 
-        $users = $list->getObjects();
+        $users = $list->load();
 
         if (count($users) > 0) {
             return $users[0];
@@ -136,7 +136,7 @@ class User extends Base
         $list->setOrderKey('orderDate');
         $list->setOrder('DESC');
 
-        return $list->getObjects();
+        return $list->load();
     }
 
     /**
@@ -151,7 +151,7 @@ class User extends Base
         $list->setOrderKey('o_creationDate');
         $list->setOrder('DESC');
 
-        $carts = $list->getObjects();
+        $carts = $list->load();
 
         if (count($carts) > 0) {
             return $carts[0];

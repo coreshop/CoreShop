@@ -88,7 +88,7 @@ class Product extends Base
         $list = self::getList();
         $list->setCondition('enabled=1');
 
-        return $list->getObjects();
+        return $list->load();
     }
 
     /**
@@ -112,7 +112,7 @@ class Product extends Base
                 $list->setLimit($limit);
             }
 
-            $objects = $list->getObjects();
+            $objects = $list->load();
         }
 
         return $objects;

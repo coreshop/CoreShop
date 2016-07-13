@@ -64,7 +64,7 @@ class Cart extends Base
     {
         $list = self::getByCustomIdentifier($transactionIdentification);
 
-        $carts = $list->getObjects();
+        $carts = $list->load();
 
         if (count($carts) > 0) {
             return $carts[0];
@@ -82,7 +82,7 @@ class Cart extends Base
     {
         $list = self::getList();
 
-        return $list->getObjects();
+        return $list->load();
     }
 
     /**
