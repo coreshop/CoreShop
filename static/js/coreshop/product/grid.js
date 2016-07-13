@@ -90,40 +90,68 @@ pimcore.plugin.coreshop.product.grid = Class.create({
             ]
         });
 
+        var columns = [
+            {
+                text: t('coreshop_product_id'),
+                dataIndex: 'o_id',
+                filter: 'number'
+            },
+            {
+                text: t('coreshop_product_name'),
+                dataIndex: 'name',
+                filter: {
+                    type: 'string'
+                },
+                flex : 1
+            },
+            {
+                text: t('coreshop_product_quantity'),
+                dataIndex: 'quantity',
+                filter: 'number'
+            },
+            {
+                xtype : 'numbercolumn',
+                align : 'right',
+                text: t('coreshop_product_price'),
+                dataIndex: 'price',
+                renderer: coreshop.util.format.currency.bind(this, '€'),
+                filter: 'number'
+            }
+        ];
+
+        if(coreshop.settings.multishop) {
+            columns.splice(1, 0, {
+                text: t('coreshop_shop'),
+                dataIndex: 'shops',
+                filter: {
+                    type : 'list',
+                    store : pimcore.globalmanager.get('coreshop_shops')
+                },
+                renderer : function(val) {
+                    var store = pimcore.globalmanager.get('coreshop_shops');
+                    var storeString = "";
+
+                    Ext.each(val, function(shop) {
+                        var pos = store.findExact('id', String(shop));
+                        if (pos >= 0) {
+                            var shopObj = store.getAt(pos);
+
+                            storeString += shopObj.get("name") + " ";
+                        }
+                    });
+
+                    return storeString;
+                }
+            });
+        }
+
         this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store);
 
         this.grid = Ext.create('Ext.grid.Panel', {
             title: t('coreshop_product_list'),
             store: this.store,
             plugins: 'gridfilters',
-            columns: [
-                {
-                    text: t('coreshop_product_id'),
-                    dataIndex: 'o_id',
-                    filter: 'number'
-                },
-                {
-                    text: t('coreshop_product_name'),
-                    dataIndex: 'name',
-                    filter: {
-                        type: 'string'
-                    },
-                    flex : 1
-                },
-                {
-                    text: t('coreshop_product_quantity'),
-                    dataIndex: 'quantity',
-                    filter: 'number'
-                },
-                {
-                    xtype : 'numbercolumn',
-                    align : 'right',
-                    text: t('coreshop_product_price'),
-                    dataIndex: 'price',
-                    renderer: coreshop.util.format.currency.bind(this, '€'),
-                    filter: 'number'
-                }
-            ],
+            columns: columns,
             region: 'center',
 
             // paging bar on the bottom

@@ -77,6 +77,7 @@ class CoreShop_Admin_ProductController extends Admin
             'name' => $product->getName(),
             'quantity' => $product->getQuantity(),
             'price' => $product->getPrice(),
+            'shops' => $product->getShops()
         );
 
         return $element;
