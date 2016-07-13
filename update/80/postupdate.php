@@ -34,7 +34,7 @@ CREATE TABLE `coreshop_shops` (
 $db->query("INSERT INTO `coreshop_shops` (`name`, `currencyId`, `template`, `isDefault`)
 VALUES ('Default', '1', '".\CoreShop\Model\Configuration::get("SYSTEM.TEMPLATE.NAME")."', '1');");
 
-$modelsToUpdate = array("Country", "Carrier", "CustomerGroup", "Zone", "TaxRuleGroup", "Manufacturer", "Messaging\\Contact", "Messaging\\Thread\\State");
+$modelsToUpdate = array("Country", "Carrier", "CustomerGroup", "TaxRuleGroup", "Manufacturer", "Messaging\\Contact", "Messaging\\Thread\\State");
 
 foreach($modelsToUpdate as $model) {
     $class = 'CoreShop\Model\\' . $model;

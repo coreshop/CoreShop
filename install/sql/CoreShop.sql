@@ -645,13 +645,6 @@ CREATE TABLE `coreshop_tax_rule_groups_shops` (
   PRIMARY KEY (`oId`,`shopId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `coreshop_zones_shops`;
-CREATE TABLE `coreshop_zones_shops` (
-  `oId` int(11) NOT NULL,
-  `shopId` int(11) NOT NULL,
-  PRIMARY KEY (`oId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `coreshop_messaging_contact_shops`;
 CREATE TABLE `coreshop_messaging_contact_shops` (
   `oId` int(11) NOT NULL,
