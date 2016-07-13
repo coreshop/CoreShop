@@ -107,6 +107,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
         \Pimcore::getEventManager()->attach('object.postAdd', array($this, 'postAddObject'));
         \Pimcore::getEventManager()->attach('object.postAdd', array($this, 'postAddObject'));
         \Pimcore::getEventManager()->attach('object.postUpdate', array($this, 'postUpdateObject'));
+        \Pimcore::getEventManager()->attach('object.postDelete', array($this, 'postDeleteObject'));
 
         \Pimcore::getEventManager()->attach("system.di.init", function (\Zend_EventManager_Event $e) {
             $diBuilder = $e->getTarget();
@@ -179,8 +180,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $indexService->updateIndex($object);
 
             $object->clearPriceCache();
-
-            //TODO: Delete Specific Price Rules
         }
     }
 
@@ -195,6 +194,22 @@ class Plugin extends AbstractPlugin implements PluginInterface
         if ($object instanceof Product) {
             $indexService = IndexService::getIndexService();
             $indexService->deleteFromIndex($object);
+        }
+    }
+
+    /**
+     * Post Delete Object
+     *
+     * @param \Zend_EventManager_Event $e
+     */
+    public function postDeleteObject(\Zend_EventManager_Event $e) {
+        $object = $e->getTarget();
+        if ($object instanceof Product) {
+            $prices = Product\SpecificPrice::getSpecificPrices($object);
+
+            foreach ($prices as $pr) {
+                $pr->delete();
+            }
         }
     }
 

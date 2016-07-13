@@ -56,7 +56,7 @@ class SpecificPrice extends AbstractProductPriceRule
      *
      * @param Product $product
      *
-     * @return array
+     * @return self[]
      */
     public static function getSpecificPrices(Product $product)
     {
