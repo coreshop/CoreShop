@@ -609,6 +609,7 @@ class Tool
 
         define("CORESHOP_TEMPLATE_BASE_PATH", $templateBasePath);
         define("CORESHOP_TEMPLATE_NAME", $template);
+        define("CORESHOP_TEMPLATE_BASE", CORESHOP_TEMPLATE_BASE_PATH . "/base");
         define("CORESHOP_TEMPLATE_PATH", CORESHOP_TEMPLATE_BASE_PATH . "/" . $template);
         define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
 

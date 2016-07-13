@@ -72,8 +72,11 @@ abstract class AbstractCondition
 
         $this->view->setScriptPath(
             array(
+                CORESHOP_TEMPLATE_BASE.'/scripts/coreshop/product/filter',
+                CORESHOP_TEMPLATE_BASE.'/scripts/coreshop/product/filter/'.strtolower($class),
                 CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter',
                 CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter/'.strtolower($class),
+                PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/' . strtolower($class),
             )
         );
 

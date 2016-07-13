@@ -52,7 +52,14 @@ class Invoice
         \CoreShop\Tool::initTemplateForShop($order->getShop());
 
         $view = new View();
-        $view->setScriptPath(CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/invoice/');
+        $view->addScriptPath(array_merge(
+            $view->getScriptPaths(),
+            array(
+                CORESHOP_TEMPLATE_BASE.'/scripts/coreshop/invoice/',
+                CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/invoice/',
+                PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/invoice',
+            )
+        ));
         $view->assign('order', $order);
         $view->addHelperPath(PIMCORE_PATH.'/lib/Pimcore/View/Helper', '\\Pimcore\\View\\Helper\\');
         $view->addHelperPath(CORESHOP_PATH.'/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');

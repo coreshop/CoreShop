@@ -55,7 +55,9 @@ class Objectbrick extends AbstractData
 
         $this->view->setScriptPath(
             array(
-                CORESHOP_TEMPLATE_PATH.'/scripts/'.$class,
+                CORESHOP_TEMPLATE_BASE . '/scripts/' . $class,
+                CORESHOP_TEMPLATE_PATH . '/scripts/' . $class,
+                PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/' . $class,
             )
         );
 
@@ -74,7 +76,7 @@ class Objectbrick extends AbstractData
 
     /**
      * Render Invoice.
-     * 
+     *
      * @return string|bool
      */
     public function renderInvoice()

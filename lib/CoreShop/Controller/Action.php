@@ -48,6 +48,7 @@ class Action extends \Website\Controller\Action
     public function init()
     {
         parent::init();
+        //Needs to be done within the controller, otherwise the Site is unkown
         $this->initTemplate();
 
         \Pimcore::getEventManager()->trigger('coreshop.controller.init', $this);
@@ -56,10 +57,14 @@ class Action extends \Website\Controller\Action
             array_merge(
                 $this->view->getScriptPaths(),
                 array(
+                    CORESHOP_TEMPLATE_BASE.'/scripts',
+                    CORESHOP_TEMPLATE_BASE.'/scripts/coreshop',
+                    CORESHOP_TEMPLATE_BASE.'/layouts',
                     CORESHOP_TEMPLATE_PATH.'/scripts',
                     CORESHOP_TEMPLATE_PATH.'/scripts/coreshop',
                     CORESHOP_TEMPLATE_PATH.'/layouts',
                     PIMCORE_WEBSITE_PATH.'/views/scripts',
+                    PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop',
                 )
             )
         );

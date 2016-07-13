@@ -55,6 +55,9 @@ class Debug extends \Zend_Controller_Plugin_Abstract
                     $view->getScriptPaths(),
                     array(
                         CORESHOP_PATH.'/views/scripts/debug',
+                        CORESHOP_TEMPLATE_BASE.'/scripts/coreshop/debug',
+                        CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/debug',
+                        PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/debug',
                     )
                 )
             );
