@@ -134,8 +134,8 @@ class Base extends Concrete
                 $list = null;
 
                 if (\Pimcore::getDiContainer()->has($listClass)) {
-                    $list = new $listClass();
-                } elseif (\Pimcore\Tool::classExists($listClass)) {
+                    $list = \Pimcore::getDiContainer()->get($listClass);
+                } else if (\Pimcore\Tool::classExists($listClass)) {
                     $list = new $listClass();
                 }
 
