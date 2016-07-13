@@ -167,20 +167,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
     }
 
     /**
-     * Post add Object.
-     *
-     * @param \Zend_EventManager_Event $e
-     */
-    public function postAddObject(\Zend_EventManager_Event $e)
-    {
-        $object = $e->getTarget();
-        if ($object instanceof Product) {
-            $indexService = IndexService::getIndexService();
-            $indexService->updateIndex($object);
-        }
-    }
-
-    /**
      * Post Update Object.
      *
      * @param \Zend_EventManager_Event $e
