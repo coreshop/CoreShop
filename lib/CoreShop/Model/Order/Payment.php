@@ -42,10 +42,10 @@ class Payment extends Base
     {
         $list = Payment::getByTransactionIdentifier($transactionIdentification);
 
-        $users = $list->getObjects();
+        $payments = $list->load();
 
-        if (count($users) > 0) {
-            return $users[0];
+        if (count($payments) > 0) {
+            return $payments[0];
         }
 
         return false;

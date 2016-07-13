@@ -40,7 +40,7 @@ class Category extends Base
     {
         $list = self::getList();
 
-        return $list->getObjects();
+        return $list->load();
     }
 
     /**
@@ -53,7 +53,7 @@ class Category extends Base
         $list = self::getList();
         $list->setCondition('parentCategory__id is null');
 
-        return $list->getObjects();
+        return $list->load();
     }
 
     /**
@@ -106,7 +106,7 @@ class Category extends Base
             $list->setCondition('enabled = 1 AND ('.implode(' OR ', $categoriesWhere).')');
         }
 
-        return $list->getObjects();
+        return $list->load();
     }
 
     /**
@@ -250,7 +250,7 @@ class Category extends Base
         $list = Category::getList();
         $list->setCondition('parentCategory__id = ?', array($this->getId()));
 
-        return $list->getObjects();
+        return $list->load();
     }
 
     /**
