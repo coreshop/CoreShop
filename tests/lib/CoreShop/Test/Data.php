@@ -80,6 +80,11 @@ class Data
      */
     public static $customerGroup2;
 
+    /**
+     * @var Shop
+     */
+    public static $shop;
+
     public static function createData()
     {
         Configuration::set("SYSTEM.BASE.COUNTRY", Country::getById(2)->getId());
@@ -95,6 +100,7 @@ class Data
         self::createTestProduct();
         self::createCustomerGroups();
         self::createCustomer();
+        self::createShop();
 
         $session->user = self::$customer1;
     }
@@ -296,6 +302,19 @@ class Data
             $customer->save();
 
             self::$customer1 = $customer;
+        }
+    }
+
+    public static function createShop() {
+        if(!self::$shop instanceof Shop) {
+            $shop = new Shop();
+            $shop->setName("test");
+            $shop->setSiteId(1);
+            $shop->setTemplate("default");
+            $shop->setIsDefault(0);
+            $shop->save();
+
+            self::$shop = $shop;
         }
     }
 }
