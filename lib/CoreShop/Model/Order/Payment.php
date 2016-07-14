@@ -14,13 +14,22 @@
 
 namespace CoreShop\Model\Order;
 
+use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Order;
+use Pimcore\Date;
 use Pimcore\Model\Object;
 
 /**
  * Class Payment
  * @package CoreShop\Model\Order
+ * 
+ * @method static Object\Listing\Concrete getByProvider ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByAmount ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByTransactionIdentifier ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByPayed ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByDatePayment ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByPaymentInformation ($value, $limit = 0)
  */
 class Payment extends Base
 {
@@ -69,5 +78,125 @@ class Payment extends Base
         } while ($parent != null);
 
         return false;
+    }
+
+    /**
+     * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getProvider()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $provider
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setProvider($provider)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getAmount()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param double $amount
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setAmount($amount)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getTransactionIdentifier()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $transactionIdentifier
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setTransactionIdentifier($transactionIdentifier)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getPayed()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $payed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPayed($payed)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Date
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getDatePayment()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Date $datePayment
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setDatePayment($datePayment)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getPaymentInformation()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $paymentInformation
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPaymentInformation($paymentInformation)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 }

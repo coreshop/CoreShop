@@ -14,7 +14,7 @@
 
 namespace CoreShop\Model\User;
 
-use CoreShop\Exception\UnsupportedException;
+use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Object\Fieldcollection\Data\AbstractData;
 
 /**
@@ -31,334 +31,283 @@ class Address extends AbstractData
     public static $pimcoreClass = 'Pimcore\\Model\\Object\\Fieldcollection\\Data\\CoreShopUserAddress';
 
     /**
-     * Get Firstname.
+     * @return mixed
      *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getFirstname()
-    {
-        throw new UnsupportedException('getFirstname is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Firstname.
-     *
-     * @param string $firstname
-     *
-     * @throws UnsupportedException
-     */
-    public function setFirstname($firstname)
-    {
-        throw new UnsupportedException('setFirstname is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Lastname.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getLastname()
-    {
-        throw new UnsupportedException('getLastname is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Lastname.
-     *
-     * @param string $lastname
-     *
-     * @throws UnsupportedException
-     */
-    public function setLastname($lastname)
-    {
-        throw new UnsupportedException('setLastname is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Company.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getCompany()
-    {
-        throw new UnsupportedException('getCompany is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Company.
-     *
-     * @param string $company
-     *
-     * @throws UnsupportedException
-     */
-    public function setCompany($company)
-    {
-        throw new UnsupportedException('setCompany is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Street.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getStreet()
-    {
-        throw new UnsupportedException('getStreet is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Street.
-     *
-     * @param string $street
-     *
-     * @throws UnsupportedException
-     */
-    public function setStreet($street)
-    {
-        throw new UnsupportedException('setStreet is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Number.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getNr()
-    {
-        throw new UnsupportedException('getNr is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Number.
-     *
-     * @param string $nr
-     *
-     * @throws UnsupportedException
-     */
-    public function setNr($nr)
-    {
-        throw new UnsupportedException('setNr is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get ZIP.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getZip()
-    {
-        throw new UnsupportedException('getZip is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set ZIP.
-     *
-     * @param string $zip
-     *
-     * @throws UnsupportedException
-     */
-    public function setZip($zip)
-    {
-        throw new UnsupportedException('setZip is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get City.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getCity()
-    {
-        throw new UnsupportedException('getCity is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set City.
-     *
-     * @param string $city
-     *
-     * @throws UnsupportedException
-     */
-    public function setCity($city)
-    {
-        throw new UnsupportedException('setCity is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Country.
-     *
-     * @throws UnsupportedException
-     */
-    public function getCountry()
-    {
-        throw new UnsupportedException('getCountry is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Country.
-     *
-     * @param Country
-     *
-     * @throws UnsupportedException
-     */
-    public function setCountry($country)
-    {
-        throw new UnsupportedException('setCountry is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get State.
-     *
-     * @throws UnsupportedException
-     */
-    public function getState()
-    {
-        throw new UnsupportedException('getState is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set State.
-     *
-     * @param \CoreShop\Model\State $state
-     *
-     * @throws UnsupportedException
-     */
-    public function setState($state)
-    {
-        throw new UnsupportedException('setState is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Extras.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getExtra()
-    {
-        throw new UnsupportedException('getExtra is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Extras.
-     *
-     * @param string $extra
-     *
-     * @throws UnsupportedException
-     */
-    public function setExtra($extra)
-    {
-        throw new UnsupportedException('setExtra is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Phone.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getPhone()
-    {
-        throw new UnsupportedException('getPhone is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Phone.
-     *
-     * @param string $phone
-     *
-     * @throws UnsupportedException
-     */
-    public function setPhone($phone)
-    {
-        throw new UnsupportedException('setPhone is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Phone Mobile.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getPhone_mobile()
-    {
-        throw new UnsupportedException('getPhone_mobile is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Phone Mobile.
-     *
-     * @param string $phone_mobile
-     *
-     * @throws UnsupportedException
-     */
-    public function setPhone_mobile($phone_mobile)
-    {
-        throw new UnsupportedException('setPhone_mobile is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Name.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
-     */
-    public function getName()
-    {
-        throw new UnsupportedException('getName is not supported for '.get_class($this));
-    }
-
-    /**
-     * Set Name.
-     *
-     * @param string $name
-     *
-     * @throws UnsupportedException
-     */
-    public function setName($name)
-    {
-        throw new UnsupportedException('setName is not supported for '.get_class($this));
-    }
-
-    /**
-     * Get Vat Number.
-     *
-     * @return string
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function getVatNumber()
     {
-        throw new UnsupportedException('getVatNumber is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * Set Vat Number.
+     * @param mixed $vatNumber
      *
-     * @param string $vatNumber
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function setVatNumber($vatNumber)
     {
-        throw new UnsupportedException('setVatNumber is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getFirstname()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $firstname
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setFirstname($firstname)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getLastname()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $lastname
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setLastname($lastname)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCompany()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $company
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCompany($company)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getStreet()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $street
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setStreet($street)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getNr()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $nr
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setNr($nr)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getZip()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $zip
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setZip($zip)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCity()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $city
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCity($city)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCountry()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $country
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCountry($country)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getState()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $state
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setState($state)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getExtra()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $extra
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setExtra($extra)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getPhone()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $phone
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPhone($phone)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getPhoneMobile()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $phone_mobile
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPhoneMobile($phone_mobile)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getName()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $name
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setName($name)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 }

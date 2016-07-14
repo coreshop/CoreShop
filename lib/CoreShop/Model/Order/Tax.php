@@ -14,7 +14,7 @@
 
 namespace CoreShop\Model\Order;
 
-use CoreShop\Exception\UnsupportedException;
+use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Object\Fieldcollection\Data\AbstractData;
 
 /**
@@ -31,74 +31,62 @@ class Tax extends AbstractData
     public static $pimcoreClass = 'Pimcore\\Model\\Object\\Fieldcollection\\Data\\CoreShopOrderTax';
 
     /**
-     * Get Tax Name.
+     * @return mixed
      *
-     * @return string
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function getName()
     {
-        throw new UnsupportedException('getName is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * Set Name.
+     * @param mixed $name
      *
-     * @param string $name
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function setName($name)
     {
-        throw new UnsupportedException('setName is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * Get Rate.
+     * @return mixed
      *
-     * @return float
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function getRate()
     {
-        throw new UnsupportedException('getRate is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * Set Rate.
+     * @param mixed $rate
      *
-     * @param float $rate
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function setRate($rate)
     {
-        throw new UnsupportedException('setRate is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * Get amount.
+     * @return mixed
      *
-     * @return float
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function getAmount()
     {
-        throw new UnsupportedException('getAmount is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * Set Amount.
+     * @param mixed $amount
      *
-     * @param float $amount
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function setAmount($amount)
     {
-        throw new UnsupportedException('setAmount is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 }

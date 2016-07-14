@@ -21,15 +21,40 @@ use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Model\Product\SpecificPrice;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
+use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 use CoreShop\Tool;
-use CoreShop\Exception\UnsupportedException;
+use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Tool\Service;
 
 /**
  * Class Product
  * @package CoreShop\Model
+ * 
+ * @method static Object\Listing\Concrete getByLocalizedfields ($field, $value, $locale = null, $limit = 0)
+ * @method static Object\Listing\Concrete getByEan ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByArticleNumber ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByEnabled ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByAvailableForOrder ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByIsDownloadProduct ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByManufacturer ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByShops ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByCategories ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByWholesalePrice ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByRetailPrice ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByTaxRule ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByPriceWithTax ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByQuantity ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByOutOfStockBehaviour ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByDepth ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByWidth ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByHeight ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByWeight ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByImages ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByCustomProperties ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByVariants ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByClassificationStore ($value, $limit = 0)
  */
 class Product extends Base
 {
@@ -525,7 +550,7 @@ class Product extends Base
      *
      * @return bool
      *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function isAvailableWhenOutOfStock()
     {
@@ -586,186 +611,420 @@ class Product extends Base
     }
 
     /**
-     * returns array of images.
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
-     * @return Image[]
-     */
-    public function getImages()
-    {
-        throw new UnsupportedException('getImages is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns array of categories.
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
-     * @return Category[]
-     */
-    public function getCategories()
-    {
-        throw new UnsupportedException('getCategories is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns sales price
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
-     * @return float
-     */
-    public function getRetailPrice()
-    {
-        throw new UnsupportedException('getSalesPrice is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns name
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
      * @return string
+     *
+     * @throws ObjectUnsupportedException
      */
-    public function getName()
+    public function getEan()
     {
-        throw new UnsupportedException('getName is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns TaxRuleGroup
-     * this method has to be overwritten in Pimcore Object.
+     * @param string $ean
      *
-     * @throws UnsupportedException
-     *
-     * @return TaxRuleGroup
+     * @throws ObjectUnsupportedException
      */
-    public function getTaxRule()
+    public function setEan($ean)
     {
-        throw new UnsupportedException('getTaxRule is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns wholesale price
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
-     * @return float
-     */
-    public function getWholesalePrice()
-    {
-        throw new UnsupportedException('getWholesalePrice is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns is download product
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
      * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getArticleNumber()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $articleNumber
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setArticleNumber($articleNumber)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getEnabled()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $enabled
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setEnabled($enabled)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getAvailableForOrder()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $availableForOrder
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setAvailableForOrder($availableForOrder)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getIsDownloadProduct()
     {
-        throw new UnsupportedException('getIsDownloadProduct is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns is weight of the product
-     * this method has to be overwritten in Pimcore Object.
+     * @param boolean $isDownloadProduct
      *
-     * @throws UnsupportedException
-     *
-     * @return float
+     * @throws ObjectUnsupportedException
      */
-    public function getWeight()
+    public function setIsDownloadProduct($isDownloadProduct)
     {
-        throw new UnsupportedException('getWeight is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns is width of the product
-     * this method has to be overwritten in Pimcore Object.
+     * @return Manufacturer|null
      *
-     * @throws UnsupportedException
-     *
-     * @return float
+     * @throws ObjectUnsupportedException
      */
-    public function getWidth()
+    public function getManufacturer()
     {
-        throw new UnsupportedException('getWidth is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns is height of the product
-     * this method has to be overwritten in Pimcore Object.
+     * @param Manufacturer|int $manufacturer
      *
-     * @throws UnsupportedException
-     *
-     * @return float
+     * @throws ObjectUnsupportedException
      */
-    public function getHeight()
+    public function setManufacturer($manufacturer)
     {
-        throw new UnsupportedException('getHeight is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns is depth of the product
-     * this method has to be overwritten in Pimcore Object.
+     * @return int[]
      *
-     * @throws UnsupportedException
-     *
-     * @return float
+     * @throws ObjectUnsupportedException
      */
-    public function getDepth()
+    public function getShops()
     {
-        throw new UnsupportedException('getDepth is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns current Quantity
-     * this method has to be overwritten in Pimcore Object.
+     * @param int[] $shops
      *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
+     */
+    public function setShops($shops)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Category[]
      *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCategories()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Category[] $categories
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCategories($categories)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getWholesalePrice()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param double $wholesalePrice
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setWholesalePrice($wholesalePrice)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getRetailPrice()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param double $retailPrice
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setRetailPrice($retailPrice)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return TaxRule|null mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getTaxRule()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param TaxRule $taxRule
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setTaxRule($taxRule)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
      * @return int
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getQuantity()
     {
-        throw new UnsupportedException('getQuantity is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * set Quantity
-     * this method has to be overwritten in Pimcore Object.
+     * @param int $quantity
      *
-     * @param $quantity
-     *
-     * @throws UnsupportedException
-     *
-     * @return int
+     * @throws ObjectUnsupportedException
      */
     public function setQuantity($quantity)
     {
-        throw new UnsupportedException('setQuantity is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns out of stock Behaviour
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
      * @return int
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getOutOfStockBehaviour()
     {
-        throw new UnsupportedException('getOutOfStockBehaviour is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param int $outOfStockBehaviour
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setOutOfStockBehaviour($outOfStockBehaviour)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return float
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getDepth()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param float $depth
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setDepth($depth)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWidth()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param float $width
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setWidth($width)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return float
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getHeight()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param float $height
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setHeight($height)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return float
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getWeight()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param float $weight
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setWeight($weight)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Asset[]
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getImages()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Asset[] $images
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setImages($images)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCustomProperties()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $customProperties
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCustomProperties($customProperties)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getVariants()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $variants
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setVariants($variants)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getClassificationStore()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $classificationStore
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setClassificationStore($classificationStore)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 }

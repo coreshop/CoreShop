@@ -15,7 +15,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
-use CoreShop\Exception\UnsupportedException;
+use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Mail;
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
@@ -29,10 +29,22 @@ use Pimcore\Date;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object\Service;
 use CoreShop\Maintenance\CleanUpCart;
+use Pimcore\Model\Object\Listing;
 
 /**
  * Class Cart
  * @package CoreShop\Model
+ *
+ * @method static Listing\Concrete getByItems ($value, $limit = 0)
+ * @method static Listing\Concrete getByCarrier ($value, $limit = 0)
+ * @method static Listing\Concrete getByPriceRule ($value, $limit = 0)
+ * @method static Listing\Concrete getByCustomIdentifier ($value, $limit = 0)
+ * @method static Listing\Concrete getByOrder ($value, $limit = 0)
+ * @method static Listing\Concrete getByPaymentModule ($value, $limit = 0)
+ * @method static Listing\Concrete getByShop ($value, $limit = 0)
+ * @method static Listing\Concrete getByUser ($value, $limit = 0)
+ * @method static Listing\Concrete getByShippingAddress ($value, $limit = 0)
+ * @method static Listing\Concrete getByBillingAddress ($value, $limit = 0)
  */
 class Cart extends Base
 {
@@ -277,7 +289,7 @@ class Cart extends Base
      *
      * @return null|Carrier
      *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function getShippingProvider()
     {
@@ -868,96 +880,203 @@ class Cart extends Base
     }
 
     /**
-     * returns array cart items
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
      * @return Item[]
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getItems()
     {
-        throw new UnsupportedException('getItems is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns active price rule for cart
-     * this method has to be overwritten in Pimcore Object.
+     * @param Item[] $items
      *
-     * @throws UnsupportedException
-     *
-     * @return PriceRule
+     * @throws ObjectUnsupportedException
      */
-    public function getPriceRule()
+    public function setItems($items)
     {
-        throw new UnsupportedException('getPriceRule is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * set shop
-     * this method has to be overwritten in Pimcore Object.
+     * @return Carrier|null
      *
-     * @param $shop
-     *
-     * @throws UnsupportedException
-     */
-    public function setShop($shop)
-    {
-        throw new UnsupportedException('setShop is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns active price rule for cart
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
-     * @return Shop
-     */
-    public function getShop()
-    {
-        throw new UnsupportedException('getShop is not supported for '.get_class($this));
-    }
-
-    /**
-     * sets price rule for this cart
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @param $priceRule
-     *
-     * @throws UnsupportedException
-     *
-     * @return PriceRule
-     */
-    public function setPriceRule($priceRule)
-    {
-        throw new UnsupportedException('setPriceRule is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns user for this cart
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        throw new UnsupportedException('getUser is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns carrier for this cart
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
-     * @return null|Carrier
+     * @throws ObjectUnsupportedException
      */
     public function getCarrier()
     {
-        throw new UnsupportedException('getCarrier is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Carrier $carrier
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCarrier($carrier)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return PriceRule|null
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getPriceRule()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param PriceRule $priceRule
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPriceRule($priceRule)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCustomIdentifier()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $customIdentifier
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCustomIdentifier($customIdentifier)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Order|null
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getOrder()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setOrder($order)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getPaymentModule()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $paymentModule
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPaymentModule($paymentModule)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Shop
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getShop()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Shop $shop
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setShop($shop)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return User|null
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getUser()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param User $user
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setUser($user)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getShippingAddress()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $shippingAddress
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setShippingAddress($shippingAddress)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getBillingAddress()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $billingAddress
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setBillingAddress($billingAddress)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**

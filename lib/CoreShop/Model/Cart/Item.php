@@ -14,14 +14,20 @@
 
 namespace CoreShop\Model\Cart;
 
-use CoreShop\Exception\UnsupportedException;
+use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
+use Pimcore\Model\Object;
 
 /**
  * Class Item
  * @package CoreShop\Model\Cart
+ * 
+ * @method static Object\Listing\Concrete getByAmount ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByProduct ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByExtraInformation ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByIsGiftItem ($value, $limit = 0)
  */
 class Item extends Base
 {
@@ -61,43 +67,83 @@ class Item extends Base
 
         return null;
     }
-
+    
     /**
-     * returns amount for item
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
      * @return int
+     * @throws ObjectUnsupportedException
      */
     public function getAmount()
     {
-        throw new UnsupportedException('getAmount is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * sets amount for item
-     * this method has to be overwritten in Pimcore Object.
+     * @param int $amount
      *
-     * @param $amount
-     *
-     * @throws UnsupportedException
+     * @throws ObjectUnsupportedException
      */
     public function setAmount($amount)
     {
-        throw new UnsupportedException('setAmount is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns product for item
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
      * @return Product
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getProduct()
     {
-        throw new UnsupportedException('getProduct is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setProduct($product)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getExtraInformation()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $extraInformation
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setExtraInformation($extraInformation)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getIsGiftItem()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $isGiftItem
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setIsGiftItem($isGiftItem)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 }

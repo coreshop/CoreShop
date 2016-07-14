@@ -14,13 +14,21 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Exception\UnsupportedException;
+use CoreShop\Exception\ObjectUnsupportedException;
+use CoreShop\Model\Product\Filter;
+use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 
 /**
  * Class Category
  * @package CoreShop\Model
+ * 
+ * @method static Object\Listing\Concrete getByParentCategory ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByLocalizedfields ($field, $value, $locale = null, $limit = 0)
+ * @method static Object\Listing\Concrete getByCategoryImage ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByShops ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByFilterDefinition ($value, $limit = 0)
  */
 class Category extends Base
 {
@@ -259,28 +267,82 @@ class Category extends Base
     }
 
     /**
-     * returns category image
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
-     * @return Image
-     */
-    public function getCategoryImage()
-    {
-        throw new UnsupportedException('getCategoryImage is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns parent category
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
      * @return Category
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getParentCategory()
     {
-        throw new UnsupportedException('getParentCategory is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Category $parentCategory
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setParentCategory($parentCategory)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Asset
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCategoryImage()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Asset $categoryImage
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCategoryImage($categoryImage)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return int[]
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getShops()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param int[] $shops
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setShops($shops)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Filter|null
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getFilterDefinition()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Filter $filterDefinition
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setFilterDefinition($filterDefinition)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 }

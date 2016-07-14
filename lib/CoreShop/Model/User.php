@@ -15,12 +15,23 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
-use CoreShop\Exception\UnsupportedException;
+use CoreShop\Exception\ObjectUnsupportedException;
 use Pimcore\Model\Object;
 
 /**
  * Class User
  * @package CoreShop\Model
+ *
+ * @method static Object\Listing\Concrete getByFirstname ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByLastname ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByGender ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByGroups ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByEmail ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByPassword ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByAddresses ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByNewsletterActive ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByNewsletterConfirmed ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByIsGuest ($value, $limit = 0)
  */
 class User extends Base
 {
@@ -179,54 +190,202 @@ class User extends Base
     }
 
     /**
-     * returns email
-     * this method has to be overwritten in Pimcore Object.
-     *
-     * @throws UnsupportedException
-     *
      * @return string
-     */
-    public function getEmail()
-    {
-        throw new UnsupportedException('getEmail is not supported for '.get_class($this));
-    }
-
-    /**
-     * returns firstname
-     * this method has to be overwritten in Pimcore Object.
      *
-     * @throws UnsupportedException
-     *
-     * @return string
+     * @throws ObjectUnsupportedException
      */
     public function getFirstname()
     {
-        throw new UnsupportedException('getFirstname is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns lastname
-     * this method has to be overwritten in Pimcore Object.
+     * @param string $firstname
      *
-     * @throws UnsupportedException
-     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setFirstname($firstname)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
      * @return string
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getLastname()
     {
-        throw new UnsupportedException('getLastname is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * returns password
-     * this method has to be overwritten in Pimcore Object.
+     * @param string $lastname
      *
-     * @throws UnsupportedException
-     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setLastname($lastname)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
      * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getGender()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $gender
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setGender($gender)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return CustomerGroup[]
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getGroups()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param CustomerGroup[] $groups
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setGroups($groups)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getEmail()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $email
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setEmail($email)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return string
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getPassword()
     {
-        throw new UnsupportedException('getPassword is not supported for '.get_class($this));
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $password
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPassword($password)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getAddresses()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param mixed $addresses
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setAddresses($addresses)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getNewsletterActive()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $newsletterActive
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setNewsletterActive($newsletterActive)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getNewsletterConfirmed()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $newsletterConfirmed
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setNewsletterConfirmed($newsletterConfirmed)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getIsGuest()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $isGuest
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setIsGuest($isGuest)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 }
