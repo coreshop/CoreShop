@@ -43,7 +43,7 @@
 }
 
 .pimcore_icon_data_group_coreshop {
-    background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
+    background: url(/plugins/CoreShop/static/img/logo.svg) center center no-repeat !important;
 }
 
 .coreshop_icon_create_order {
