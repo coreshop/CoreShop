@@ -158,5 +158,27 @@
     "highResolution":0,
     "filenameSuffix":"",
     "id":"coreshop_productList"
+  },
+  "coreshop_productGrid":{
+    "items":[
+      {
+        "method":"cover",
+        "arguments":{
+          "width":"300",
+          "height":"300",
+          "positioning":"center",
+          "doNotScaleUp":"1"
+        }
+      }
+    ],
+    "medias":[
+
+    ],
+    "description":"",
+    "format":"SOURCE",
+    "quality":90,
+    "highResolution":0,
+    "filenameSuffix":"",
+    "id":"coreshop_productGrid"
   }
 }
