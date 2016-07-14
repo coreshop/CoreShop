@@ -235,19 +235,6 @@ class Update
                 $jobs['procedural'][] = $updateScripts[$revision]['preupdate'];
             }
 
-            $deletedFiles = self::getDeletedFilesForBuild($revision);
-
-            if ($deletedFiles) {
-                foreach ($deletedFiles as $toDelete) {
-                    if ($toDelete) {
-                        $jobs['procedural'][] = array(
-                            'type' => 'deleteFile',
-                            'url' => $toDelete,
-                        );
-                    }
-                }
-            }
-
             $jobs['procedural'][] = array(
                 'type' => 'files',
                 'revision' => (string) $revision,
@@ -261,6 +248,19 @@ class Update
 
             if ($updateScripts[$revision]['importTranslation']) {
                 $jobs['procedural'][] = $updateScripts[$revision]['importTranslation'];
+            }
+
+            $deletedFiles = self::getDeletedFilesForBuild($revision);
+
+            if ($deletedFiles) {
+                foreach ($deletedFiles as $toDelete) {
+                    if ($toDelete) {
+                        $jobs['procedural'][] = array(
+                            'type' => 'deleteFile',
+                            'url' => $toDelete,
+                        );
+                    }
+                }
             }
 
             if ($updateScripts[$revision]['postupdate']) {
