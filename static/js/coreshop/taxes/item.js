@@ -26,7 +26,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
     },
 
     getTitleText : function () {
-        return this.data.localizedFields.items[pimcore.settings.language].name;
+        return this.data.title;
     },
 
     getFormPanel : function ()

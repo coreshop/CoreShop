@@ -82,7 +82,10 @@ class CoreShop_Admin_TaxController extends Admin
         $tax = Tax::getById($id);
 
         if ($tax instanceof Tax) {
-            $this->_helper->json(array('success' => true, 'data' => $tax->getObjectVars()));
+            $taxArray = $tax->getObjectVars();
+            $taxArray['title'] = $tax->getName();
+
+            $this->_helper->json(array('success' => true, 'data' => $taxArray));
         } else {
             $this->_helper->json(array('success' => false));
         }
