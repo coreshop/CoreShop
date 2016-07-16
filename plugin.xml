@@ -105,6 +105,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/field.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/brick.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/fieldcollection.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/localizedfield.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/classificationstore.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/interpreters/abstract.js</path>

@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Model\Carrier\AbstractRange;
+use CoreShop\Model\Carrier\Dao;
 use CoreShop\Model\Carrier\DeliveryPrice;
 use CoreShop\Model\User\Address;
 use CoreShop\Tool;
@@ -173,8 +174,9 @@ class Carrier extends AbstractModel
             try {
                 if (!$carrier = Cache::load($cacheKey)) {
                     $db = Db::get();
-                    //Todo: TableName already definied within 2 Dao files
-                    $data = $db->fetchRow('SELECT class FROM coreshop_carriers WHERE id = ?', $id);
+                    $tableName = Dao::getTableName();
+
+                    $data = $db->fetchRow('SELECT class FROM '.$tableName.' WHERE id = ?', $id);
 
                     $class = get_called_class();
                     if (is_array($data) && $data['class']) {

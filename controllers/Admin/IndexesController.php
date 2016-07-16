@@ -279,6 +279,24 @@ class CoreShop_Admin_IndexesController extends Admin
                 }
             } elseif ($field instanceof Object\ClassDefinition\Data\Fieldcollections) {
                 //TODO: implement FieldCollection
+
+                foreach ($field->getAllowedTypes() as $type) {
+                    $definition = Object\Fieldcollection\Definition::getByKey($type);
+
+                    $fieldDefinition = $definition->getFieldDefinitions();
+
+                    $key = $definition->getKey();
+
+                    $result[$key] = array();
+                    $result[$key]["nodeLabel"] = $key;
+                    $result[$key]["className"] = $key;
+                    $result[$key]["nodeType"] = "fieldcollections";
+                    $result[$key]['childs'] = array();
+
+                    foreach ($fieldDefinition as $fieldcollectionField) {
+                        $result[$key]['childs'][] = $this->getFieldConfiguration($fieldcollectionField);
+                    }
+                }
             } elseif ($field instanceof Object\ClassDefinition\Data\Classificationstore) {
                 $list = new Object\Classificationstore\GroupConfig\Listing();
 

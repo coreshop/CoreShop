@@ -251,6 +251,10 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                         text = ts(data[keys[i]].nodeLabel) + ' ' + t('columns');
                     }
 
+                    if (data[keys[i]].nodeType == 'fieldcollections') {
+                        text = ts(data[keys[i]].nodeLabel) + ' ' + t('columns');
+                    }
+
                     var baseNode = {
                         type: 'layout',
                         allowDrag: false,

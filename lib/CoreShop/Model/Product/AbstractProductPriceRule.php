@@ -162,7 +162,7 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
     }
 
     /**
-     * @return array
+     * @return AbstractCondition[]
      */
     public function getConditions()
     {
@@ -182,7 +182,7 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
     }
 
     /**
-     * @return array
+     * @return AbstractAction[]
      */
     public function getActions()
     {

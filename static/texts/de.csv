@@ -206,6 +206,7 @@
 "coreshop_index_field_type","Typ"
 "coreshop_index_field_getter","Getter Klasse"
 "coreshop_index_field_brickfield","Brick Feld"
+"coreshop_index_field_collectionfield","Collection Feld"
 "coreshop_index_field","Feld"
 "coreshop_indexes_selected_fields","Indexed Felder"
 "coreshop_indexes_fields","Felder"
