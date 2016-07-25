@@ -169,6 +169,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopShopMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopShopMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/shop.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/persona.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>
