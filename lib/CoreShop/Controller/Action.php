@@ -104,8 +104,10 @@ class Action extends \Website\Controller\Action
     {
         $this->cart = $this->view->cart = Tool::prepareCart();
 
-        PriceRule::autoRemoveFromCart($this->cart);
-        PriceRule::autoAddToCart($this->cart);
+        if($this->cart->getId()) {
+            PriceRule::autoRemoveFromCart($this->cart);
+            PriceRule::autoAddToCart($this->cart);
+        }
     }
 
     /**
