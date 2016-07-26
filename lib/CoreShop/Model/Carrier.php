@@ -449,7 +449,7 @@ class Carrier extends AbstractModel
         }
 
         if ($this->getShippingMethod() === self::SHIPPING_METHOD_PRICE) {
-            $value = $cart->getTotal();
+            $value = $cart->getSubtotal();
         } else {
             $value = $cart->getTotalWeight();
         }
