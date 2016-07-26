@@ -61,14 +61,17 @@
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/category.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/categories.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/country.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/countries.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customer.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customers.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customerGroup.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customerGroups.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/product.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/products.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/timeSpan.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/totalPerCustomer.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/zone.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/zones.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/actions/freeShipping.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/actions/discountAmount.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/actions/discountPercent.js</path>
@@ -173,7 +176,9 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopShopMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopShopMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/shop.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/shops.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/persona.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/personas.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

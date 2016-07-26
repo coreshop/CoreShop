@@ -128,7 +128,10 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
         if(Configuration::multiShopEnabled()) {
             Product\PriceRule::addCondition('shop');
+            Product\PriceRule::addCondition('shops');
+
             Cart\PriceRule::addCondition('shop');
+            Cart\PriceRule::addCondition('shops');
         }
 
         if (Configuration::get('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')) {
