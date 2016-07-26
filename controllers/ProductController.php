@@ -60,6 +60,8 @@ class CoreShop_ProductController extends Action
             }
 
             $this->view->headTitle($product->getMetaTitle() ? $product->getMetaTitle() : $product->getName());
+
+            \CoreShop\Tracking\TrackingManager::getInstance()->trackProductView($this->view->product);
         } else {
             throw new CoreShop\Exception(sprintf('Product with id "%s" not found', $id));
         }
@@ -79,6 +81,8 @@ class CoreShop_ProductController extends Action
 
         if ($product instanceof \CoreShop\Model\Product) {
             $this->view->product = $product;
+
+            \CoreShop\Tracking\TrackingManager::getInstance()->trackProductView($this->view->product);
         } else {
             throw new \CoreShop\Exception(sprintf('Product with id %s not found', $id));
         }
@@ -118,6 +122,10 @@ class CoreShop_ProductController extends Action
                 $this->view->paginator = $paginator;
             } else {
                 $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort), true);
+            }
+
+            foreach($this->view->paginator as $product) {
+                \CoreShop\Tracking\TrackingManager::getInstance()->trackProductImpression($product);
             }
 
             $this->view->category = $category;

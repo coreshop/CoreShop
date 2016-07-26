@@ -54,6 +54,8 @@ class CoreShop_CheckoutController extends Action
         $this->view->message = $this->getParam('message');
 
         $this->view->headTitle($this->view->translate('Checkout'));
+
+        \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckout($this->cart, 2);
     }
 
     public function registerAction()
@@ -91,6 +93,7 @@ class CoreShop_CheckoutController extends Action
             $this->_redirect($this->view->url(array('act' => 'shipping'), 'coreshop_checkout'));
         }
 
+        \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckout($this->cart, 3);
         $this->view->headTitle($this->view->translate('Address'));
     }
 
@@ -132,6 +135,7 @@ class CoreShop_CheckoutController extends Action
             }
         }
 
+        \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckout($this->cart, 4);
         $this->view->headTitle($this->view->translate('Shipping'));
     }
 
@@ -162,6 +166,7 @@ class CoreShop_CheckoutController extends Action
             }
         }
 
+        \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckout($this->cart, 5);
         $this->view->headTitle($this->view->translate('Payment'));
     }
 
@@ -172,6 +177,8 @@ class CoreShop_CheckoutController extends Action
         $paymentViewScript = $this->getParam("paymentViewScript");
 
         $this->view->paymentViewScript = $paymentViewScript;
+
+        \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckoutAction($this->cart, 6);
     }
 
     public function confirmationAction()
@@ -198,6 +205,8 @@ class CoreShop_CheckoutController extends Action
         if ($this->session->user->getIsGuest()) {
             unset($this->session->user);
         }
+
+        \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckoutComplete($order);
     }
 
     public function errorAction()
