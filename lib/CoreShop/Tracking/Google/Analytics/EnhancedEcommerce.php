@@ -12,20 +12,21 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Tracking\Analytics;
+namespace CoreShop\Tracking\Google\Analytics;
 
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use CoreShop\Tracking\ActionData;
 use CoreShop\Tracking\ClientTracker;
+use CoreShop\Tracking\Google\ItemBuilder;
 use CoreShop\Tracking\ImpressionData;
 use CoreShop\Tracking\ProductData;
 use Pimcore\Google\Analytics;
 
 /**
  * Class EnhancedEcommerce
- * @package CoreShop\Tracking
+ * @package CoreShop\Tracking\Google\Analytics
  */
 class EnhancedEcommerce extends ClientTracker {
 

@@ -43,6 +43,8 @@ class TrackingManager {
 
             foreach ($availableTracker as $tracker) {
                 if ($tracker instanceof Tracker) {
+                    $tracker->init();
+
                     $this->tracker[] = $tracker;
                 }
             }

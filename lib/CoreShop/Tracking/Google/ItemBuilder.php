@@ -12,7 +12,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Tracking\Analytics;
+namespace CoreShop\Tracking\Google;
 
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
@@ -23,8 +23,8 @@ use CoreShop\Tracking\ImpressionData;
 use CoreShop\Tracking\ProductData;
 
 /**
- * Class TrackingItemBuilder
- * @package CoreShop\Tracking
+ * Class ItemBuilder
+ * @package CoreShop\Tracking\Google
  */
 class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
     
