@@ -177,6 +177,12 @@ class CoreShop_Admin_CarrierController extends Admin
                 }
             }
 
+            $oldRanges = $carrier->getRanges();
+
+            foreach($oldRanges as $range) {
+                $range->delete();
+            }
+
             $carrier->setValues($data['settings']);
 
             $ranges = $data['range'];
@@ -186,13 +192,7 @@ class CoreShop_Admin_CarrierController extends Admin
                     $rangeObject = null;
                     $deliveryPriceObject = null;
 
-                    if ($range['id']) {
-                        $rangeObject = Carrier\AbstractRange::getById($range['id'], $carrier->getShippingMethod());
-                    }
-
-                    if (is_null($rangeObject)) {
-                        $rangeObject = Carrier\AbstractRange::create($carrier->getShippingMethod());
-                    }
+                    $rangeObject = Carrier\AbstractRange::create($carrier->getShippingMethod());
 
                     $rangeObject->setCarrier($carrier);
                     $rangeObject->setDelimiter1($range['delimiter1']);
@@ -228,21 +228,13 @@ class CoreShop_Admin_CarrierController extends Admin
                 }
             }
 
-            if (count($rangesToKeep) > 0) {
+            if (is_array($ranges)) {
                 $carrier->setNeedsRange(true);
             } else {
                 $carrier->setNeedsRange(false);
             }
 
             $carrier->save();
-
-            $ranges = $carrier->getRanges();
-
-            foreach ($ranges as $range) {
-                if (!in_array($range->getId(), $rangesToKeep)) {
-                    $range->delete();
-                }
-            }
 
             $this->_helper->json(array('success' => true, 'data' => $carrier, 'ranges' => $carrier->getRanges()));
         } else {
