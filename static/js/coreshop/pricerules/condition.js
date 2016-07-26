@@ -73,20 +73,24 @@ pimcore.plugin.coreshop.pricerules.condition = Class.create({
 
             var conditionItem = conditions[i];
             var conditionClass = conditionItem.xparent;
-            var form = conditionClass.form;
 
-            for (var c = 0; c < form.items.length; c++)
-            {
-                var item = form.items.get(c);
+            if(Ext.isFunction(conditionClass['getValues'])) {
+                condition = conditionClass.getValues();
+            }
+            else {
+                var form = conditionClass.form;
 
-                try {
-                    condition[item.getName()] = item.getValue();
+                for (var c = 0; c < form.items.length; c++) {
+                    var item = form.items.get(c);
+
+                    try {
+                        condition[item.getName()] = item.getValue();
+                    }
+                    catch (e) {
+
+                    }
+
                 }
-                catch (e)
-                {
-
-                }
-
             }
 
             condition['type'] = conditions[i].xparent.type;

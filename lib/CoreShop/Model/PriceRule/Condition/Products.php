@@ -20,39 +20,35 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 
 /**
- * Class Product
+ * Class Products
  * @package CoreShop\Model\PriceRule\Condition
  */
-class Product extends AbstractCondition
+class Products extends AbstractCondition
 {
     /**
-     * @var int
+     * @var int[]
      */
-    public $product;
+    public $products;
 
     /**
      * @var string
      */
-    public $type = 'product';
+    public $type = 'products';
 
     /**
-     * @return \CoreShop\Model\Product
+     * @return []
      */
-    public function getProduct()
+    public function getProducts()
     {
-        if (!$this->product instanceof ProductModel) {
-            $this->product = ProductModel::getById($this->product);
-        }
-
-        return $this->product;
+        return $this->products;
     }
 
     /**
-     * @param int $product
+     * @param int[] $products
      */
-    public function setProduct($product)
+    public function setProducts($products)
     {
-        $this->product = $product;
+        $this->products = $products;
     }
 
     /**
@@ -70,11 +66,12 @@ class Product extends AbstractCondition
     {
         $found = false;
 
-        if ($this->getProduct() instanceof \CoreShop\Model\Product) {
-            foreach ($cart->getItems() as $i) {
-                if ($i->getProduct()->getId() == $this->getProduct()->getId()) {
-                    $found = true;
-                }
+        foreach($this->getProducts() as $productId) {
+            $pr = ProductModel::getById($productId);
+
+            if($pr instanceof ProductModel) {
+                $found = true;
+                break;
             }
         }
 
@@ -99,6 +96,6 @@ class Product extends AbstractCondition
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
-        return $this->getProduct() instanceof ProductModel ? $product->getId() === $this->getProduct()->getId() : false;
+        return in_array($product->getId(), $this->getProducts());
     }
 }

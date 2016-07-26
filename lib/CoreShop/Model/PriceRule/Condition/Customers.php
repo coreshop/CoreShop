@@ -18,41 +18,39 @@ use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
+use CoreShop\Model\User;
+use CoreShop\Tool;
 
 /**
- * Class Product
+ * Class Customers
  * @package CoreShop\Model\PriceRule\Condition
  */
-class Product extends AbstractCondition
+class Customers extends AbstractCondition
 {
     /**
-     * @var int
+     * @var int[]
      */
-    public $product;
+    public $customers;
 
     /**
      * @var string
      */
-    public $type = 'product';
+    public $type = 'customers';
 
     /**
-     * @return \CoreShop\Model\Product
+     * @return int[]
      */
-    public function getProduct()
+    public function getCustomers()
     {
-        if (!$this->product instanceof ProductModel) {
-            $this->product = ProductModel::getById($this->product);
-        }
-
-        return $this->product;
+        return $this->customers;
     }
 
     /**
-     * @param int $product
+     * @param int[] $customers
      */
-    public function setProduct($product)
+    public function setCustomers($customers)
     {
-        $this->product = $product;
+        $this->customers = $customers;
     }
 
     /**
@@ -68,37 +66,51 @@ class Product extends AbstractCondition
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        $found = false;
-
-        if ($this->getProduct() instanceof \CoreShop\Model\Product) {
-            foreach ($cart->getItems() as $i) {
-                if ($i->getProduct()->getId() == $this->getProduct()->getId()) {
-                    $found = true;
-                }
-            }
-        }
-
-        if (!$found) {
-            if ($throwException) {
-                throw new Exception('You cannot use this voucher with these products');
-            } else {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->check($throwException);
     }
 
     /**
      * Check if Product is Valid for Condition.
      *
-     * @param ProductModel    $product
+     * @param ProductModel $product
      * @param ProductModel\AbstractProductPriceRule $priceRule
      *
      * @return bool
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
-        return $this->getProduct() instanceof ProductModel ? $product->getId() === $this->getProduct()->getId() : false;
+        return $this->check();
+    }
+
+    /**
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
+    protected function check($throwException = false)
+    {
+        $user = Tool::getUser();
+        $found = false;
+
+        foreach($this->getCustomers() as $customerId) {
+            $customer = User::getById($customerId);
+
+            if($customer instanceof User) {
+                if($customer->getId() === $user->getId()) {
+                    $found = true;
+                    break;
+                }
+            }
+        }
+
+        if(!$found) {
+            if ($throwException) {
+                throw new Exception('You cannot use this voucher');
+            } else {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

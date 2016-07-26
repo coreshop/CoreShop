@@ -17,42 +17,39 @@ namespace CoreShop\Model\PriceRule\Condition;
 use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Category;
 use CoreShop\Model\Product as ProductModel;
 
 /**
- * Class Product
+ * Class Categories
  * @package CoreShop\Model\PriceRule\Condition
  */
-class Product extends AbstractCondition
+class Categories extends AbstractCondition
 {
     /**
-     * @var int
+     * @var int[]
      */
-    public $product;
+    public $categories;
 
     /**
      * @var string
      */
-    public $type = 'product';
+    public $type = 'categories';
 
     /**
-     * @return \CoreShop\Model\Product
+     * @return int[]
      */
-    public function getProduct()
+    public function getCategories()
     {
-        if (!$this->product instanceof ProductModel) {
-            $this->product = ProductModel::getById($this->product);
-        }
-
-        return $this->product;
+        return $this->categories;
     }
 
     /**
-     * @param int $product
+     * @param int $categories
      */
-    public function setProduct($product)
+    public function setCategories($categories)
     {
-        $this->product = $product;
+        $this->categories = $categories;
     }
 
     /**
@@ -70,10 +67,14 @@ class Product extends AbstractCondition
     {
         $found = false;
 
-        if ($this->getProduct() instanceof \CoreShop\Model\Product) {
-            foreach ($cart->getItems() as $i) {
-                if ($i->getProduct()->getId() == $this->getProduct()->getId()) {
-                    $found = true;
+        foreach($this->getCategories() as $catId) {
+            $cat = Category::getById($catId);
+
+            if($cat instanceof Category) {
+                foreach ($cart->getItems() as $i) {
+                    if ($i->getProduct()->inCategory($cat)) {
+                        $found = true;
+                    }
                 }
             }
         }
@@ -92,13 +93,26 @@ class Product extends AbstractCondition
     /**
      * Check if Product is Valid for Condition.
      *
-     * @param ProductModel    $product
+     * @param ProductModel $product
      * @param ProductModel\AbstractProductPriceRule $priceRule
      *
      * @return bool
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
-        return $this->getProduct() instanceof ProductModel ? $product->getId() === $this->getProduct()->getId() : false;
+        $found = false;
+
+        foreach($this->getCategories() as $catId) {
+            $cat = Category::getById($catId);
+
+            if($cat instanceof Category) {
+                if ($product->inCategory($cat)) {
+                    $found = true;
+                    break;
+                }
+            }
+        }
+
+        return $found;
     }
 }

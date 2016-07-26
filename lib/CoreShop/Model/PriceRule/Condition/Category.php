@@ -41,7 +41,7 @@ class Category extends AbstractCondition
     public function getCategory()
     {
         if (!$this->category instanceof \CoreShop\Model\Category) {
-            $this->category = \CoreShop\Model\Category::getByPath($this->category);
+            $this->category = \CoreShop\Model\Category::getById($this->category);
         }
 
         return $this->category;

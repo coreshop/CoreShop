@@ -47,7 +47,7 @@ pimcore.plugin.coreshop.pricerules.conditions.product = Class.create(pimcore.plu
                             data = data.records[0].data;
 
                             if (data.elementType == 'object' && data.className == coreshop.settings.classMapping.product) {
-                                this.setValue(data.path);
+                                this.setValue(data.id);
                                 return true;
                             }
 

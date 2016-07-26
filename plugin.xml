@@ -59,10 +59,13 @@
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/amount.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/quantity.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/category.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/categories.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/country.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customer.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customers.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/customerGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/product.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/products.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/timeSpan.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/totalPerCustomer.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/conditions/zone.js</path>
@@ -92,6 +95,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroupMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroupMultiselect.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/objectMultihref.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/variantGenerator.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/item.js</path>

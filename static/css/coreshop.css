@@ -74,11 +74,11 @@
     background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_category {
+.coreshop_price_rule_icon_condition_category, .coreshop_price_rule_icon_condition_categories {
     background: url(/plugins/CoreShop/static/img/flat/category.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_customer {
+.coreshop_price_rule_icon_condition_customer, .coreshop_price_rule_icon_condition_customers {
     background: url(/plugins/CoreShop/static/img/flat/customer.svg) center center no-repeat !important;
 }
 
@@ -86,7 +86,7 @@
     background: url(/plugins/CoreShop/static/img/flat/countries.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_product {
+.coreshop_price_rule_icon_condition_product, .coreshop_price_rule_icon_condition_products {
     background: url(/plugins/CoreShop/static/img/flat/product.svg) center center no-repeat !important;
 }
 
