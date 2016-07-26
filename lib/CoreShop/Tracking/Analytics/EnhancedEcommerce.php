@@ -18,16 +18,16 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use CoreShop\Tracking\ActionData;
+use CoreShop\Tracking\ClientTracker;
 use CoreShop\Tracking\ImpressionData;
 use CoreShop\Tracking\ProductData;
-use CoreShop\Tracking\Tracker;
 use Pimcore\Google\Analytics;
 
 /**
  * Class EnhancedEcommerce
  * @package CoreShop\Tracking
  */
-class EnhancedEcommerce extends Tracker {
+class EnhancedEcommerce extends ClientTracker {
 
     /**
      * @var ItemBuilder
@@ -56,9 +56,9 @@ class EnhancedEcommerce extends Tracker {
      *
      * @return string
      */
-    public function render($viewName, $data = [])
+    protected function render($viewName, $data = [])
     {
-        $view = parent::render($viewName, $data);
+        $view = $this->track(array("viewName" => $viewName, "data" => $data));
 
         Analytics::addAdditionalCode($view, 'beforePageview');
 

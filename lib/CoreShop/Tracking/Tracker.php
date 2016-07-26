@@ -58,20 +58,11 @@ abstract class Tracker {
     }
 
     /**
-     * @param $viewName
-     * @param $data
+     * @param array $config
      *
      * @return string
      */
-    public function render($viewName, $data = []) {
-        $view = $this->buildView();
-
-        foreach($data as $key=>$value) {
-            $view->$key = $value;
-        }
-
-        return $view->render($viewName . ".php");
-    }
+    public abstract function track($config);
 
     /**
      */
