@@ -872,136 +872,174 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 }
             });
 
+            var itemsGrid = {
+                xtype : 'grid',
+                margin: '0 0 15 0',
+                cls : 'coreshop-order-detail-grid',
+                store :  this.detailsStore,
+                plugins: [
+                    cellEditing
+                ],
+                columns : [
+                    {
+                        xtype : 'gridcolumn',
+                        flex : 1,
+                        dataIndex : 'product_name',
+                        text : t('coreshop_product')
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'wholesale_price',
+                        text : t('coreshop_wholesale_price'),
+                        width : 150,
+                        align : 'right',
+                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'price_without_tax',
+                        text : t('coreshop_price_without_tax'),
+                        width : 150,
+                        align : 'right',
+                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol),
+                        field : {
+                            xtype: 'numberfield',
+                            decimalPrecision : 4
+                        }
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'price',
+                        text : t('coreshop_price_with_tax'),
+                        width : 150,
+                        align : 'right',
+                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'amount',
+                        text : t('coreshop_amount'),
+                        width : 150,
+                        align : 'right',
+                        field : {
+                            xtype: 'numberfield',
+                            decimalPrecision : 0
+                        }
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'total_tax',
+                        text : t('coreshop_total_tax'),
+                        width : 150,
+                        align : 'right',
+                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'total',
+                        text : t('coreshop_total'),
+                        width : 150,
+                        align : 'right',
+                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                    },
+                    {
+                        menuDisabled: true,
+                        sortable: false,
+                        xtype: 'actioncolumn',
+                        width: 50,
+                        items: [{
+                            iconCls: 'pimcore_icon_edit',
+                            tooltip: t('edit'),
+                            handler: function (grid, rowIndex, colIndex) {
+                                cellEditing.startEditByPosition({
+                                    row: rowIndex,
+                                    column : 3
+                                });
+                            }.bind(this)
+                        }, {
+                            iconCls: 'pimcore_icon_open',
+                            tooltip : t('open'),
+                            handler : function (grid, rowIndex) {
+                                var record = grid.getStore().getAt(rowIndex);
+
+                                pimcore.helpers.openObject(record.get('o_id'));
+                            }
+                        }]
+                    }
+                ]
+            };
+
+            var summaryGrid = {
+                xtype : 'grid',
+                margin: '0 0 15 0',
+                cls : 'coreshop-order-detail-grid',
+                store :  this.summaryStore,
+                hideHeaders : true,
+                columns : [
+                    {
+                        xtype : 'gridcolumn',
+                        flex : 1,
+                        align: 'right',
+                        dataIndex : 'key',
+                        renderer : function (value, metaData, record) {
+                            return '<span style="font-weight:bold">' + t('coreshop_' + value) + '</span>';
+                        }
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        dataIndex : 'value',
+                        width : 150,
+                        align : 'right',
+                        renderer : function (value, metaData, record) {
+                            return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.order.currency.symbol, value) + '</span>';
+                        }.bind(this)
+                    }
+                ]
+            };
+
+            var detailItems = [itemsGrid, summaryGrid];
+
+            if(this.order.priceRule) {
+
+                var priceRuleStore = new Ext.data.JsonStore({
+                    data : [this.order.priceRule]
+                });
+
+                var priceRuleItem =  {
+                    xtype : 'grid',
+                    margin: '0 0 15 0',
+                    cls : 'coreshop-order-detail-grid',
+                    store :  priceRuleStore,
+                    hideHeaders : true,
+                    title : t('coreshop_pricerules'),
+                    columns : [
+                        {
+                            xtype : 'gridcolumn',
+                            flex : 1,
+                            align: 'right',
+                            dataIndex : 'name'
+                        },
+                        {
+                            xtype : 'gridcolumn',
+                            dataIndex : 'discount',
+                            width : 150,
+                            align : 'right',
+                            renderer : function (value, metaData, record) {
+                                return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.order.currency.symbol, value) + '</span>';
+                            }.bind(this)
+                        }
+                    ]
+                };
+
+                detailItems.splice(1, 0, priceRuleItem);
+            }
+
             this.detailsInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_products'),
                 border : true,
                 margin : '0 0 20 0',
                 iconCls : 'coreshop_icon_product',
-                items : [
-                    {
-                        xtype : 'grid',
-                        margin: '0 0 15 0',
-                        cls : 'coreshop-order-detail-grid',
-                        store :  this.detailsStore,
-                        plugins: [
-                            cellEditing
-                        ],
-                        columns : [
-                            {
-                                xtype : 'gridcolumn',
-                                flex : 1,
-                                dataIndex : 'product_name',
-                                text : t('coreshop_product')
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'wholesale_price',
-                                text : t('coreshop_wholesale_price'),
-                                width : 150,
-                                align : 'right',
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'price_without_tax',
-                                text : t('coreshop_price_without_tax'),
-                                width : 150,
-                                align : 'right',
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol),
-                                field : {
-                                    xtype: 'numberfield',
-                                    decimalPrecision : 4
-                                }
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'price',
-                                text : t('coreshop_price_with_tax'),
-                                width : 150,
-                                align : 'right',
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'amount',
-                                text : t('coreshop_amount'),
-                                width : 150,
-                                align : 'right',
-                                field : {
-                                    xtype: 'numberfield',
-                                    decimalPrecision : 0
-                                }
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'total_tax',
-                                text : t('coreshop_total_tax'),
-                                width : 150,
-                                align : 'right',
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'total',
-                                text : t('coreshop_total'),
-                                width : 150,
-                                align : 'right',
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
-                            },
-                            {
-                                menuDisabled: true,
-                                sortable: false,
-                                xtype: 'actioncolumn',
-                                width: 50,
-                                items: [{
-                                    iconCls: 'pimcore_icon_edit',
-                                    tooltip: t('edit'),
-                                    handler: function (grid, rowIndex, colIndex) {
-                                        cellEditing.startEditByPosition({
-                                            row: rowIndex,
-                                            column : 3
-                                        });
-                                    }.bind(this)
-                                }, {
-                                    iconCls: 'pimcore_icon_open',
-                                    tooltip : t('open'),
-                                    handler : function (grid, rowIndex) {
-                                        var record = grid.getStore().getAt(rowIndex);
-
-                                        pimcore.helpers.openObject(record.get('o_id'));
-                                    }
-                                }]
-                            }
-                        ]
-                    },
-                    {
-                        xtype : 'grid',
-                        margin: '0 0 15 0',
-                        cls : 'coreshop-order-detail-grid',
-                        store :  this.summaryStore,
-                        hideHeaders : true,
-                        columns : [
-                            {
-                                xtype : 'gridcolumn',
-                                flex : 1,
-                                align: 'right',
-                                dataIndex : 'key',
-                                renderer : function (value, metaData, record) {
-                                    return '<span style="font-weight:bold">' + t('coreshop_' + value) + '</span>';
-                                }
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'value',
-                                width : 150,
-                                align : 'right',
-                                renderer : function (value, metaData, record) {
-                                    return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.order.currency.symbol, value) + '</span>';
-                                }.bind(this)
-                            }
-                        ]
-                    }
-                ]
+                items : detailItems
             });
         }
 

@@ -308,6 +308,17 @@ class CoreShop_Admin_OrderController extends Admin
         $jsonOrder['currency'] = $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop\Tool::getCurrency());
         $jsonOrder['shop'] = $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getObjectVars() : null;
 
+        $jsonOrder['priceRule'] = false;
+
+        if($order->getPriceRule() instanceof \CoreShop\Model\Cart\PriceRule) {
+            $jsonOrder['priceRule'] = [
+                "id" => $order->getPriceRule()->getId(),
+                "name" => $order->getPriceRule()->getName(),
+                "code" => $order->getVoucher(),
+                "discount" => -1 * $order->getDiscount()
+            ];
+        }
+
         $this->_helper->json(array("success" => true, "order" => $jsonOrder));
     }
 
