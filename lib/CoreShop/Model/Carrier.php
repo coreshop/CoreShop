@@ -257,7 +257,7 @@ class Carrier extends AbstractModel
                 $carriers[$price] = $carrier;
             }
 
-            sort($carriers);
+            ksort($carriers);
 
             $availableCarriers = $carriers;
         }

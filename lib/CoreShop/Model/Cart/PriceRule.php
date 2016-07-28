@@ -14,8 +14,10 @@
 
 namespace CoreShop\Model\Cart;
 
+use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Order;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Tool;
@@ -110,6 +112,16 @@ class PriceRule extends AbstractModel
     public $actions;
 
     /**
+     * @var int
+     */
+    public $usagePerVoucherCode;
+
+    /**
+     * @var boolean
+     */
+    public $useMultipleVoucherCodes;
+
+    /**
      * Get PriceRule by Code.
      *
      * @param $code
@@ -118,7 +130,23 @@ class PriceRule extends AbstractModel
      */
     public static function getByCode($code)
     {
-        return parent::getByField('code', $code);
+        //Search for a PriceRule with a single code
+        $priceRule = parent::getByField('code', $code);
+
+        if($priceRule instanceof PriceRule) {
+            return $priceRule;
+        }
+
+        //Search for a PriceRule with multiple codes
+        $voucherList = PriceRule\VoucherCode::getList();
+        $voucherList->setCondition("code = ?", $code);
+        $voucherData = $voucherList->getData();
+
+        if(count($voucherData) > 0) {
+            return $voucherData[0]->getPriceRule();
+        }
+
+        return null;
     }
 
     /**
@@ -174,7 +202,7 @@ class PriceRule extends AbstractModel
         }
 
         if ($cart->getPriceRule() instanceof self) {
-            if (!$cart->getPriceRule()->checkValidity($cart, false, true)) {
+            if (!$cart->getPriceRule()->checkValidity($cart, null, false, true)) {
                 $cart->removePriceRule();
             }
         }
@@ -195,13 +223,13 @@ class PriceRule extends AbstractModel
 
         if ($cart->getPriceRule() == null) {
             $priceRules = PriceRule::getList();
-            $priceRules->setCondition("code IS NULL OR code = ''");
+            $priceRules->setCondition("(code IS NULL OR code = '') AND useMultipleVoucherCodes = 0");
 
             $priceRules = $priceRules->getData();
 
             foreach ($priceRules as $priceRule) {
                 if ($priceRule instanceof self) {
-                    if ($priceRule->checkValidity($cart, false)) {
+                    if ($priceRule->checkValidity($cart, null, false)) {
                         $cart->addPriceRule($priceRule);
                     }
                 }
@@ -214,23 +242,53 @@ class PriceRule extends AbstractModel
     }
 
     /**
+     * @param $priceRule
+     * @param $voucherCode
+     *
+     * @return int
+     */
+    public static function getTotalUsesForPriceRule($priceRule, $voucherCode) {
+        $list = Order::getList();
+        $list->setCondition("priceRule = ? AND voucher = ?", array($priceRule->getId(), $voucherCode));
+        $list->load();
+
+        return count($list->getObjects());
+    }
+
+    /**
      * Check if PriceRule is Valid for Cart.
      *
      * @param Cart       $cart
+     * @param string     $voucherCode
      * @param bool|false $throwException
      * @param bool|false $alreadyInCart
      *
+     * @throws Exception
+     *
      * @return bool
      */
-    public function checkValidity(Cart $cart = null, $throwException = false, $alreadyInCart = false)
+    public function checkValidity(Cart $cart = null, $voucherCode = null, $throwException = false, $alreadyInCart = false)
     {
         if (is_null($cart)) {
             $cart = Tool::prepareCart();
         }
 
-        //Price Rule without actions doesnt make any sense
+        //Price Rule without actions do not make sense
         if (count($this->getActions()) <= 0) {
             return false;
+        }
+
+        if($this->getUsagePerVoucherCode() > 0 && $voucherCode) {
+            $totalUses = self::getTotalUsesForPriceRule($this, $voucherCode);
+
+            if($totalUses >= intval($this->getUsagePerVoucherCode())) {
+                if($throwException) {
+                    throw new Exception('You cannot use this voucher anymore (usage limit reached)');
+                }
+                else {
+                    return false;
+                }
+            }
         }
 
         if ($this->getConditions()) {
@@ -279,6 +337,36 @@ class PriceRule extends AbstractModel
     }
 
     /**
+     * apply price rule on order
+     *
+     * @param Order $order
+     */
+    public function applyOrder(Order $order) {
+        if($order->getVoucher()) {
+            $voucherCode = Cart\PriceRule\VoucherCode::getByCode($order->getVoucher());
+
+            if($voucherCode instanceof Cart\PriceRule\VoucherCode) {
+                $voucherCode->increaseUsage();
+            }
+        }
+    }
+
+    /**
+     * un apply price rule on order
+     *
+     * @param Order $order
+     */
+    public function unApplyOrder(Order $order) {
+        if($order->getVoucher()) {
+            $voucherCode = Cart\PriceRule\VoucherCode::getByCode($order->getVoucher());
+
+            if($voucherCode instanceof Cart\PriceRule\VoucherCode) {
+                $voucherCode->decreaseUsage();
+            }
+        }
+    }
+
+    /**
      * Get Discount for PriceRule.
      *
      * @return int
@@ -297,6 +385,16 @@ class PriceRule extends AbstractModel
         }
 
         return $discount;
+    }
+
+    /**
+     * @return Cart\PriceRule\VoucherCode[]
+     */
+    public function getVoucherCodes() {
+        $list = Cart\PriceRule\VoucherCode::getList();
+        $list->setCondition("priceRuleId = ?", array($this->getId()));
+
+        return $list->getData();
     }
 
     /**
@@ -449,6 +547,38 @@ class PriceRule extends AbstractModel
     public function setHighlight($highlight)
     {
         $this->highlight = $highlight;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUsagePerVoucherCode()
+    {
+        return $this->usagePerVoucherCode;
+    }
+
+    /**
+     * @param int $usagePerVoucherCode
+     */
+    public function setUsagePerVoucherCode($usagePerVoucherCode)
+    {
+        $this->usagePerVoucherCode = $usagePerVoucherCode;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseMultipleVoucherCodes()
+    {
+        return $this->useMultipleVoucherCodes;
+    }
+
+    /**
+     * @param boolean $useMultipleVoucherCodes
+     */
+    public function setUseMultipleVoucherCodes($useMultipleVoucherCodes)
+    {
+        $this->useMultipleVoucherCodes = $useMultipleVoucherCodes;
     }
 
     /**

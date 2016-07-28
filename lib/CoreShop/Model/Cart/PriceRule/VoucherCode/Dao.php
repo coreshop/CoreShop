@@ -12,13 +12,15 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Cart\PriceRule;
+namespace CoreShop\Model\Cart\PriceRule\VoucherCode;
 
 use CoreShop\Model\Dao\AbstractDao;
+use Pimcore\Date;
+
 
 /**
  * Class Dao
- * @package CoreShop\Model\Cart\PriceRule
+ * @package CoreShop\Model\Cart\PriceRule\VoucherCode
  */
 class Dao extends AbstractDao
 {
@@ -27,9 +29,11 @@ class Dao extends AbstractDao
      *
      * @var string
      */
-    protected static $tableName = 'coreshop_cart_pricerules';
+    protected static $tableName = 'coreshop_voucher_codes';
 
     /**
+     * Assign Variables to Model.
+     *
      * @param array $data
      */
     protected function assignVariablesToModel($data)
@@ -37,10 +41,10 @@ class Dao extends AbstractDao
         parent::assignVariablesToModel($data);
 
         foreach ($data as $key => $value) {
-            if ($key == 'actions') {
-                $this->model->setActions(unserialize($value));
-            } elseif ($key == 'conditions') {
-                $this->model->setConditions(unserialize($value));
+            if ($key == 'creationDate') {
+                $value = new Date($value);
+
+                $this->model->setCreationDate($value);
             }
         }
     }

@@ -668,13 +668,15 @@ class Cart extends Base
      * Adds a new PriceRule to the Cart.
      *
      * @param \CoreShop\Model\Cart\PriceRule $priceRule
+     * @param string $voucher Voucher Token
      *
      * @throws Exception
      */
-    public function addPriceRule(PriceRule $priceRule)
+    public function addPriceRule(PriceRule $priceRule, $voucher)
     {
         $this->removePriceRule();
         $this->setPriceRule($priceRule);
+        $this->setVoucher($voucher);
         $this->getPriceRule()->applyRules($this);
 
         if ($this->getId()) {
@@ -935,6 +937,26 @@ class Cart extends Base
      * @throws ObjectUnsupportedException
      */
     public function setPriceRule($priceRule)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return string|null
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getVoucher()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $voucher
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setVoucher($voucher)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,9 +12,20 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-return [
-    'coreshop.tracker' => [
-        DI\object('CoreShop\Tracking\Google\Analytics\EnhancedEcommerce'),
-        DI\object('CoreShop\Tracking\Google\TagManager\EnhancedEcommerce')
-    ]
-];
+namespace CoreShop\Model\Cart\PriceRule\VoucherCode\Listing;
+
+use CoreShop\Model\Listing;
+
+/**
+ * Class Dao
+ * @package CoreShop\Model\Cart\PriceRule\VoucherCode\Listing
+ */
+class Dao extends Listing\Dao\AbstractDao
+{
+    /**
+     * Object class name.
+     *
+     * @var string
+     */
+    protected $modelClass = '\\CoreShop\\Model\\Cart\\PriceRule\\VoucherCode';
+}

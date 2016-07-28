@@ -18,6 +18,7 @@ use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Shop;
+use Pimcore\Date;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Dao;
 
@@ -186,6 +187,12 @@ abstract class AbstractDao extends Dao\AbstractDao
                 }
                 if ($value instanceof AbstractModel) {
                     $value = $value->getId();
+                }
+                if($value instanceof Date) {
+                    $value = $value->getTimestamp();
+                }
+                if($value instanceof \Zend_Date) {
+                    $value = $value->getTimestamp();
                 }
                 if (is_object($value)) {
                     $value = serialize($value);

@@ -1,6 +1,6 @@
 <?php
 /**
- * CoreShop
+ * CoreShop.
  *
  * LICENSE
  *
@@ -12,9 +12,14 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-return [
-    'coreshop.tracker' => [
-        DI\object('CoreShop\Tracking\Google\Analytics\EnhancedEcommerce'),
-        DI\object('CoreShop\Tracking\Google\TagManager\EnhancedEcommerce')
-    ]
-];
+namespace CoreShop\Model\Cart\PriceRule\VoucherCode;
+
+use CoreShop\Model;
+
+/**
+ * Class Listing
+ * @package CoreShop\Model\Cart\PriceRule\VoucherCode
+ */
+class Listing extends Model\Listing\AbstractListing
+{
+}

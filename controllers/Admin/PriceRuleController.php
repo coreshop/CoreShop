@@ -164,4 +164,101 @@ class CoreShop_Admin_PriceRuleController extends Admin
 
         $this->_helper->json(array('success' => false));
     }
+
+    public function getVoucherCodesAction() {
+        $id = $this->getParam('id');
+        $priceRule = PriceRule::getById($id);
+
+        if ($priceRule instanceof PriceRule) {
+            $list = \CoreShop\Model\Cart\PriceRule\VoucherCode::getList();
+            $list->setLimit($this->getParam('limit', 30));
+            $list->setOffset($this->getParam('page', 1) - 1);
+
+            if ($this->getParam('filter', null)) {
+                $conditionFilters[] = \CoreShop\Model\Service::getFilterCondition($this->getParam('filter'), '\CoreShop\Model\Cart\PriceRule\VoucherCode');
+                if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
+                    $list->setCondition(implode(' AND ', $conditionFilters));
+                }
+            }
+
+            $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($this->getAllParams());
+
+            $order = 'DESC';
+            $orderKey = 'id';
+
+            if ($sortingSettings['order']) {
+                $order = $sortingSettings['order'];
+            }
+            if (strlen($sortingSettings['orderKey']) > 0) {
+                $orderKey = $sortingSettings['orderKey'];
+            }
+
+            $list->setOrder($order);
+            $list->setOrderKey($orderKey);
+
+            $this->_helper->json(array('success' => true, 'data' => $list->getData(), "total" => $list->getTotalCount()));
+        }
+
+        $this->_helper->json(array('success' => false));
+    }
+
+    public function generateVoucherCodesAction() {
+        $amount = $this->getParam("amount");
+        $length = $this->getParam("length");
+        $format = $this->getParam("format");
+        $prefix = $this->getParam("prefix", "");
+        $suffix = $this->getParam("suffix", "");
+        $hyphensOn = $this->getParam("hyphensOn", 0);
+        $id = $this->getParam('id');
+        $priceRule = PriceRule::getById($id);
+
+        if ($priceRule instanceof PriceRule) {
+            PriceRule\VoucherCode\Service::generateCodes($priceRule, $amount, $length, $format, $hyphensOn, $prefix, $suffix);
+
+            $this->_helper->json(array('success' => true));
+        }
+
+        $this->_helper->json(array('success' => false));
+    }
+
+    public function exportVoucherCodesAction() {
+        $id = $this->getParam('id');
+        $priceRule = PriceRule::getById($id);
+
+        if ($priceRule instanceof PriceRule) {
+
+            $fileName = $priceRule->getName() . "_vouchercodes";
+            $csvData = [];
+
+            $csvData[] = implode(",", [
+                "code",
+                "creationDate",
+                "used",
+                "uses"
+            ]);
+
+            foreach($priceRule->getVoucherCodes() as $code) {
+                $data = [
+                    "code" => $code->getCode(),
+                    "creationDate" => $code->getCreationDate(),
+                    "used" => $code->getUsed(),
+                    "uses" => $code->getUses()
+                ];
+
+                $csvData[] = implode(";", $data);
+            }
+
+            $csv = implode(PHP_EOL, $csvData);
+
+            header('Content-Encoding: UTF-8');
+            header('Content-type: text/csv; charset=UTF-8');
+            header("Content-Disposition: attachment; filename=\"$fileName.csv\"");
+            ini_set('display_errors', false); //to prevent warning messages in csv
+            echo "\xEF\xBB\xBF";
+            echo $csv;
+            die();
+        }
+
+        exit;
+    }
 }

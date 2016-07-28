@@ -75,11 +75,31 @@ class TotalPerCustomer extends AbstractCondition
 
             foreach ($orders as $order) {
                 if ($order->getPriceRule() instanceof PriceRule && $order->getPriceRule()->getId() == $priceRule->getId()) {
-                    ++$priceRulesUsed;
+                    if($priceRule->getUseMultipleVoucherCodes()) {
+                        if($cart->getVoucher()) {
+                            $voucher = PriceRule\VoucherCode::getByCode($cart->getVoucher());
+
+                            if($voucher instanceof PriceRule\VoucherCode) {
+                                ++$priceRulesUsed;
+                            }
+                        }
+                    }
+                    else {
+                        ++$priceRulesUsed;
+                    }
                 }
             }
 
-            if ($priceRulesUsed >= $this->getTotal()) {
+            $isValid = true;
+
+            if($priceRule->getUseMultipleVoucherCodes()) {
+                $isValid = $priceRulesUsed < $priceRule->getUsagePerVoucherCode();
+            }
+            else {
+                $isValid = !($priceRulesUsed >= $this->getTotal());
+            }
+
+            if (!$isValid) {
                 if ($throwException) {
                     throw new Exception('You cannot use this voucher anymore (usage limit reached)');
                 } else {

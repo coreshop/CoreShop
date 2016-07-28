@@ -391,8 +391,8 @@ INSERT INTO `coreshop_countries` (`id`, `name`, `isoCode`, `active`, `currencyId
 (243, 'French Southern Territories', 'TF', 0, 1, 1, 5),
 (244, 'Åland Islands', 'AX', 0, NULL, 1, 1);
 
-DROP TABLE IF EXISTS `coreshop_pricerules`;
-CREATE TABLE `coreshop_pricerules` (
+DROP TABLE IF EXISTS `coreshop_cart_pricerules`;
+CREATE TABLE `coreshop_cart_pricerules` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(50) NULL,
   `code` varchar(50) NULL,
@@ -400,6 +400,8 @@ CREATE TABLE `coreshop_pricerules` (
   `description` text NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0',
   `highlight` tinyint(1) NOT NULL DEFAULT '0',
+  `usagePerVoucherCode` int(11) NOT NULL DEFAULT '0',
+  `useMultipleVoucherCodes` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `conditions` text NULL,
   `actions` text NULL
@@ -660,3 +662,11 @@ CREATE TABLE `coreshop_messaging_thread_state_shops` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE `coreshop_voucher_codes` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `code` varchar(255) NOT NULL,
+  `creationDate` int NOT NULL,
+  `used` tinyint(1) NOT NULL,
+  `uses` tinyint(12) NOT NULL,
+  `priceRuleId` int NOT NULL
+);

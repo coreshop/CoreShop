@@ -17,6 +17,7 @@ namespace CoreShop\Model;
 use CoreShop\Exception;
 use CoreShop\Model\Listing\AbstractListing;
 use Pimcore\Cache;
+use Pimcore\File;
 use Pimcore\Model;
 use Pimcore\Tool;
 
@@ -155,7 +156,7 @@ class AbstractModel extends Model\AbstractModel
     public static function getByField($field, $value, $shopId = null)
     {
         $className = get_called_class();
-        $cacheKey = self::getCacheKey($className, $field . '_' . $value . ($shopId ? $shopId : ''));
+        $cacheKey = self::getCacheKey($className, $field . '_' . File::getValidFilename(str_replace('-', '_', $value)) . ($shopId ? $shopId : ''));
 
         try {
             $object = \Zend_Registry::get($cacheKey);

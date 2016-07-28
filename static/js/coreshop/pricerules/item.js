@@ -22,7 +22,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
     },
 
     getPanel: function () {
-        panel = new Ext.TabPanel({
+        this.panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
             closable: true,
@@ -37,7 +37,11 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
             items: this.getItems()
         });
 
-        return panel;
+        if(this.data && this.data.useMultipleVoucherCodes) {
+            this.addVoucherCodes();
+        }
+
+        return this.panel;
     },
 
     getItems : function () {
@@ -89,7 +93,25 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
                 name: 'code',
                 fieldLabel: t('code'),
                 width: 250,
-                value: data.code
+                value: data.code,
+                disabled : this.data.useMultipleVoucherCodes == '1'
+            }, {
+                xtype: 'checkbox',
+                name: 'useMultipleVoucherCodes',
+                fieldLabel: t('coreshop_cart_pricerule_useMultipleVoucherCodes'),
+                checked: this.data.useMultipleVoucherCodes == '1',
+                listeners : {
+                    change : function(cb, newValue, oldValue) {
+                        if(newValue) {
+                            this.addVoucherCodes();
+                            cb.up("form").down('[name="code"]').disable();
+                        }
+                        else {
+                            this.destroyVoucherCodes();
+                            cb.up("form").down('[name="code"]').enable();
+                        }
+                    }.bind(this)
+                }
             }, {
                 xtype: 'textarea',
                 name: 'description',
@@ -97,6 +119,12 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
                 width: 400,
                 height: 100,
                 value: data.description
+            }, {
+                xtype: 'numberfield',
+                name: 'usagePerVoucherCode',
+                fieldLabel: t('coreshop_cart_pricerule_usagePerVoucherCode'),
+                width: 250,
+                value: data.usagePerVoucherCode
             }, {
                 xtype: 'checkbox',
                 name: 'active',
@@ -111,6 +139,203 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
         });
 
         return this.settingsForm;
+    },
+
+    addVoucherCodes : function() {
+        this.panel.add(this.getVoucherCodes());
+    },
+
+    destroyVoucherCodes : function() {
+        if(this.voucherCodesPanel) {
+            this.getVoucherCodes().destroy();
+            this.voucherCodesPanel = null;
+        }
+    },
+
+    getVoucherCodes : function() {
+        if(!this.voucherCodesPanel) {
+            var store = new Ext.data.JsonStore({
+                remoteSort: true,
+                remoteFilter: true,
+                autoDestroy: true,
+                autoSync: true,
+                pageSize: pimcore.helpers.grid.getDefaultPageSize(),
+                proxy: {
+                    type: 'ajax',
+                    url: '/plugin/CoreShop/admin_price-rule/get-voucher-codes',
+                    reader: {
+                        type: 'json',
+                        rootProperty: 'data',
+                        totalProperty : 'total'
+                    },
+                    extraParams : {
+                        id : this.data.id
+                    }
+                },
+                fields: [
+                    { name:'id', type:'int' },
+                    { name:'used', type:'boolean' },
+                    { name:'uses', type:'int' },
+                    { name:'code', type:'string' }
+                ]
+            });
+
+            var grid = new Ext.grid.Panel({
+                store : store,
+                plugins: {
+                    ptype : 'pimcore.gridfilters',
+                    pluginId : 'filter',
+                    encode: true,
+                    local: false
+                },
+                columns: [
+                    {
+                        text: t('code'),
+                        dataIndex : 'code',
+                        flex : 1
+                    },
+                    {
+                        xtype: 'booleancolumn',
+                        text: t('coreshop_cart_pricerule_used'),
+                        dataIndex : 'used',
+                        flex : 1,
+                        trueText: t('yes'),
+                        falseText: t('no')
+                    },
+                    {
+                        text: t('coreshop_cart_pricerule_uses'),
+                        dataIndex : 'uses',
+                        flex : 1
+                    }
+                ],
+                region : 'center',
+                flex : 1,
+                bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store),
+            });
+
+            grid.on('beforerender', function () {
+                this.getStore().load();
+            });
+
+            this.voucherCodesPanel = new Ext.panel.Panel({
+                iconCls: 'coreshop_price_rule_vouchers',
+                title: t('coreshop_cart_pricerule_voucherCodes'),
+                autoScroll: true,
+                forceLayout: true,
+                style : 'padding: 10px',
+                layout : 'border',
+                items : [
+                    grid
+                ],
+                dockedItems: [{
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
+                        {
+                            xtype: 'button',
+                            text: t('coreshop_cart_pricerule_generate_vouchers'),
+                            handler : function() {
+                                this.openVoucherGenerationDialog();
+                            }.bind(this)
+                        },
+                        {
+                            xtype: 'button',
+                            text: t('coreshop_cart_pricerule_vouchers_export'),
+                            handler : function() {
+                                pimcore.helpers.download("/plugin/CoreShop/admin_price-rule/export-voucher-codes?id=" + this.data.id);
+                            }.bind(this)
+                        }
+                    ]
+                }]
+            });
+
+        }
+
+        return this.voucherCodesPanel;
+    },
+
+    openVoucherGenerationDialog : function() {
+        var window = new Ext.Window({
+            width: 330,
+            height: 420,
+            modal: true,
+            iconCls: 'coreshop_price_rule_vouchers',
+            title: t('coreshop_cart_pricerule_generate_vouchers'),
+            layout: 'fit',
+            items: [{
+                xtype : 'form',
+                region: 'center',
+                bodyPadding: 20,
+                items: [
+                    {
+                        xtype : 'numberfield',
+                        name : 'amount',
+                        fieldLabel : t('coreshop_cart_pricerule_amount')
+                    },
+                    {
+                        xtype : 'numberfield',
+                        name : 'length',
+                        fieldLabel : t('coreshop_cart_pricerule_length')
+                    },
+                    {
+                        xtype: 'combo',
+                        store: [['alphanumeric', t('coreshop_cart_pricerule_alphanumeric')], ['alphabetic', t('coreshop_cart_pricerule_alphabetic')], ['numeric', t('coreshop_cart_pricerule_numeric')]],
+                        triggerAction: 'all',
+                        typeAhead: false,
+                        editable: false,
+                        forceSelection: true,
+                        queryMode: 'local',
+                        fieldLabel: t('coreshop_cart_pricerule_format'),
+                        name: 'format',
+                        value : 'alphanumeric'
+                    },
+                    {
+                        xtype : 'textfield',
+                        name : 'prefix',
+                        fieldLabel : t('coreshop_cart_pricerule_prefix')
+                    },
+                    {
+                        xtype : 'textfield',
+                        name : 'suffix',
+                        fieldLabel : t('coreshop_cart_pricerule_suffix')
+                    },
+                    {
+                        xtype : 'numberfield',
+                        name : 'hyphensOn',
+                        fieldLabel : t('coreshop_cart_pricerule_hyphensOn')
+                    }
+                ],
+                buttons: [{
+                    text: t('create'),
+                    iconCls: 'pimcore_icon_apply',
+                    handler: function (btn) {
+                        var params = btn.up("form").getForm().getFieldValues();
+
+                        params['id'] = this.data.id;
+
+                        Ext.Ajax.request({
+                            url: '/plugin/CoreShop/admin_price-rule/generate-voucher-codes',
+                            method: 'post',
+                            params : params,
+                            success: function (response) {
+                                var res = Ext.decode(response.responseText);
+
+                                if (res.success) {
+                                    pimcore.helpers.showNotification(t('success'), t('success'), 'success');
+
+                                    window.close();
+                                    this.getVoucherCodes().down("grid").getStore().load();
+                                } else {
+                                    pimcore.helpers.showNotification(t('error'), 'error', 'error');
+                                }
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                }]
+            }]
+        });
+
+        window.show();
     },
 
     getSaveData : function () {

@@ -138,7 +138,7 @@ class Base extends Concrete
     /**
      * @param array $config
      *
-     * @return mixed
+     * @return AbstractListing
      *
      * @throws Exception
      */

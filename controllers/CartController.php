@@ -156,9 +156,11 @@ class CoreShop_CartController extends Action
         if ($this->getRequest()->isPost()) {
             $priceRule = PriceRule::getByCode($this->getParam('priceRule'));
 
+            $this->cart->removePriceRule();
+
             if ($priceRule instanceof PriceRule) {
-                if ($priceRule->checkValidity()) {
-                    $this->cart->addPriceRule($priceRule);
+                if ($priceRule->checkValidity($this->cart, $this->getParam('priceRule'))) {
+                    $this->cart->addPriceRule($priceRule, $this->getParam('priceRule'));
                 } else {
                     $error = $this->view->translate('Voucher is invalid');
                 }
@@ -167,7 +169,7 @@ class CoreShop_CartController extends Action
             }
         }
 
-        $this->_redirect($this->getParam('redirect') ? $this->getParam('redirect').'?error='.$error : $this->view->url(array('act' => 'list', 'error' => $error), 'coreshop_cart'));
+        $this->_redirect($this->getParam('redirect') ? $this->getParam('redirect').'?error='.$error : $this->view->url(array('act' => 'list', 'error' => $error), 'coreshop_cart', true));
     }
 
     public function removepriceruleAction()
