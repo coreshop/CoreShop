@@ -13,8 +13,5 @@
  */
 
 return [
-    'coreshop.tracker' => [
-        DI\object('CoreShop\Tracking\Google\Analytics\EnhancedEcommerce'),
-        DI\object('CoreShop\Tracking\Google\TagManager\EnhancedEcommerce')
-    ]
+    
 ];
