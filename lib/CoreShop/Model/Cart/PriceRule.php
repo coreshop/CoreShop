@@ -238,6 +238,9 @@ class PriceRule extends AbstractModel
             $cart = Tool::prepareCart();
         }
 
+        if(count($cart->getItems()) <= 0) {
+            return false;
+        }
 
         $priceRules = PriceRule::getList();
         $priceRules->setCondition("(code IS NULL OR code = '') AND useMultipleVoucherCodes = 0");
@@ -285,6 +288,11 @@ class PriceRule extends AbstractModel
     {
         if (is_null($cart)) {
             $cart = Tool::prepareCart();
+        }
+
+        //Carts without any items are invalid
+        if(count($cart->getItems()) <= 0) {
+            return false;
         }
 
         //Price Rule without actions do not make sense

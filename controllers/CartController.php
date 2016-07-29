@@ -105,6 +105,8 @@ class CoreShop_CartController extends Action
             $this->_helper->json(array('success' => false, 'message' => 'not allowed'));
         }
 
+        $this->reloadCart();
+
         $this->_helper->json(array('success' => false, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()));
     }
 
