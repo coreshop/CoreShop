@@ -449,7 +449,7 @@ class Carrier extends AbstractModel
         }
 
         iF($cart->isFreeShipping()) {
-            return 0;s
+            return 0;
         }
 
         if ($this->getShippingMethod() === self::SHIPPING_METHOD_PRICE) {
