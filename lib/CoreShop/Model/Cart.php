@@ -27,6 +27,7 @@ use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Date;
 use Pimcore\Model\Document;
+use Pimcore\Model\Object\Fieldcollection;
 use Pimcore\Model\Object\Service;
 use CoreShop\Maintenance\CleanUpCart;
 use Pimcore\Model\Object\Listing;
@@ -164,13 +165,20 @@ class Cart extends Base
      */
     public function getDiscount()
     {
-        $priceRule = $this->getPriceRule();
+        $priceRule = $this->getPriceRules();
+        $discount = 0;
 
-        if ($priceRule instanceof PriceRule) {
-            return $priceRule->getDiscount();
+        foreach($priceRule as $ruleItem) {
+            if($ruleItem instanceof \CoreShop\Model\PriceRule\Item) {
+                $rule = $ruleItem->getPriceRule();
+
+                if ($rule instanceof PriceRule) {
+                    $discount += $rule->getDiscount();
+                }
+            }
         }
 
-        return 0;
+        return $discount;
     }
 
     /**
@@ -342,6 +350,29 @@ class Cart extends Base
     }
 
     /**
+     * Check if this cart is free shipping
+     *
+     * @return bool
+     */
+    public function isFreeShipping() {
+        $priceRuleCollection = $this->getPriceRules();
+
+        foreach($priceRuleCollection as $ruleItem) {
+            $rule = $ruleItem->getPriceRule();
+
+            if ($rule instanceof PriceRule) {
+                foreach ($rule->getActions() as $action) {
+                    if ($action instanceof FreeShipping) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * calculates shipping costs for the cart.
      *
      * @param $useTax boolean include taxes
@@ -354,14 +385,6 @@ class Cart extends Base
 
         if (is_null($this->$cacheKey)) {
             $this->$cacheKey = 0;
-
-            if ($this->getPriceRule() instanceof PriceRule) {
-                foreach ($this->getPriceRule()->getActions() as $action) {
-                    if ($action instanceof FreeShipping) {
-                        return $this->$cacheKey = 0;
-                    }
-                }
-            }
 
             if ($this->getShippingProvider() instanceof Carrier) {
                 $this->$cacheKey = $this->getShippingCostsForCarrier($this->getShippingProvider(), $useTax);
@@ -648,16 +671,26 @@ class Cart extends Base
     /**
      * Removes an existing PriceRule from the cart.
      *
+     * @param PriceRule $priceRule
+     *
      * @return bool
      *
      * @throws Exception
      */
-    public function removePriceRule()
+    public function removePriceRule($priceRule)
     {
-        if ($this->getPriceRule() instanceof PriceRule) {
-            $this->getPriceRule()->unApplyRules();
+        if ($priceRule instanceof PriceRule) {
+            $priceRule->unApplyRules();
 
-            $this->setPriceRule(null);
+            $priceRules = $this->getPriceRuleFieldCollection();
+
+            foreach($priceRules->getItems() as $index => $rule) {
+                if($rule->getPriceRule()->getId() === $priceRule->getId()) {
+                    $priceRules->remove($index);
+                    break;
+                }
+            }
+            $this->setPriceRules($priceRules->getItems());
             $this->save();
         }
 
@@ -668,20 +701,66 @@ class Cart extends Base
      * Adds a new PriceRule to the Cart.
      *
      * @param \CoreShop\Model\Cart\PriceRule $priceRule
-     * @param string $voucher Voucher Token
+     * @param string $voucherCode Voucher Token
      *
      * @throws Exception
      */
-    public function addPriceRule(PriceRule $priceRule, $voucher)
+    public function addPriceRule(PriceRule $priceRule, $voucherCode)
     {
-        $this->removePriceRule();
-        $this->setPriceRule($priceRule);
-        $this->setVoucher($voucher);
-        $this->getPriceRule()->applyRules($this);
+        $priceRules = $this->getPriceRules();
+        $exists = false;
 
-        if ($this->getId()) {
-            $this->save();
+        foreach($priceRules as $ruleItem) {
+            $rule = $ruleItem->getPriceRule();
+
+            if($rule instanceof PriceRule) {
+                if ($rule->getId() === $priceRule->getId()) {
+                    $exists = true;
+                    break;
+                }
+            }
         }
+
+        if(!$exists) {
+            $priceRuleData = \CoreShop\Model\PriceRule\Item::create();
+
+            $priceRuleData->setPriceRule($priceRule);
+            $priceRuleData->setVoucherCode($voucherCode);
+
+            $fieldCollection = $this->getPriceRuleFieldCollection() instanceof Fieldcollection ? $this->getPriceRuleFieldCollection() : new Fieldcollection();
+            $fieldCollection->add($priceRuleData);
+
+            $this->setPriceRules($fieldCollection->getItems());
+
+            $priceRule->applyRules($this);
+
+            if ($this->getId()) {
+                $this->save();
+            }
+        }
+    }
+
+    /**
+     * @return \CoreShop\Model\PriceRule\Item[]
+     */
+    public function getPriceRules() {
+        $collection = $this->getPriceRuleFieldCollection();
+
+        if($collection instanceof Fieldcollection) {
+            return $collection->getItems();
+        }
+
+        return [];
+    }
+
+    /**
+     * @param \CoreShop\Model\PriceRule\Item[] $priceRules
+     */
+    public function setPriceRules($priceRules) {
+        $fieldCollection = new Fieldcollection();
+        $fieldCollection->setItems($priceRules);
+
+        $this->setPriceRuleFieldCollection($fieldCollection);
     }
 
     /**
@@ -937,6 +1016,26 @@ class Cart extends Base
      * @throws ObjectUnsupportedException
      */
     public function setPriceRule($priceRule)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Fieldcollection|null
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getPriceRuleFieldCollection()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Fieldcollection $priceRules
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPriceRuleFieldCollection($priceRules)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

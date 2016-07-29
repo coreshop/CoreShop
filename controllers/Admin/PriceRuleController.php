@@ -79,6 +79,8 @@ class CoreShop_Admin_PriceRuleController extends Admin
             $priceRule->setName($name);
             $priceRule->setActive(0);
             $priceRule->setHighlight(0);
+            $priceRule->setUsagePerVoucherCode(0);
+            $priceRule->setUseMultipleVoucherCodes(false);
             $priceRule->save();
 
             $this->_helper->json(array('success' => true, 'data' => $priceRule));
@@ -176,9 +178,14 @@ class CoreShop_Admin_PriceRuleController extends Admin
 
             if ($this->getParam('filter', null)) {
                 $conditionFilters[] = \CoreShop\Model\Service::getFilterCondition($this->getParam('filter'), '\CoreShop\Model\Cart\PriceRule\VoucherCode');
+                $conditionFilters[] = "priceRuleId = ?";
+
                 if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
-                    $list->setCondition(implode(' AND ', $conditionFilters));
+                    $list->setCondition(implode(' AND ', $conditionFilters), array($priceRule->getId()));
                 }
+            }
+            else {
+                $list->setCondition("priceRuleId = ?", array($priceRule->getId()));
             }
 
             $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($this->getAllParams());

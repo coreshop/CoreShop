@@ -448,6 +448,10 @@ class Carrier extends AbstractModel
             $zone = Tool::getCountry()->getZone();
         }
 
+        iF($cart->isFreeShipping()) {
+            return 0;s
+        }
+
         if ($this->getShippingMethod() === self::SHIPPING_METHOD_PRICE) {
             $value = $cart->getSubtotal();
         } else {

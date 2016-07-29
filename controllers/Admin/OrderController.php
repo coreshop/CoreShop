@@ -310,13 +310,25 @@ class CoreShop_Admin_OrderController extends Admin
 
         $jsonOrder['priceRule'] = false;
 
-        if($order->getPriceRule() instanceof \CoreShop\Model\Cart\PriceRule) {
-            $jsonOrder['priceRule'] = [
-                "id" => $order->getPriceRule()->getId(),
-                "name" => $order->getPriceRule()->getName(),
-                "code" => $order->getVoucher(),
-                "discount" => -1 * $order->getDiscount()
-            ];
+        if($order->getPriceRuleFieldCollection() instanceof Object\Fieldcollection) {
+            $rules = [];
+
+            foreach($order->getPriceRuleFieldCollection()->getItems() as $ruleItem) {
+                if($ruleItem instanceof \CoreShop\Model\PriceRule\Item) {
+                    $rule = $ruleItem->getPriceRule();
+
+                    if($rule instanceof \CoreShop\Model\Cart\PriceRule) {
+                        $rules[] = [
+                            'id' => $rule->getId(),
+                            'name' => $rule->getName(),
+                            'code' => $ruleItem->getVoucherCode(),
+                            'discount' => $ruleItem->getDiscount()
+                        ];
+                    }
+                }
+            }
+
+            $jsonOrder['priceRule'] = $rules;
         }
 
         $this->_helper->json(array("success" => true, "order" => $jsonOrder));

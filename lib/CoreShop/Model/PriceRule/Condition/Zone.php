@@ -50,7 +50,7 @@ class Zone extends AbstractCondition
     }
 
     /**
-     * @param int $zone
+     * @param int|ZoneModel $zone
      */
     public function setZone($zone)
     {

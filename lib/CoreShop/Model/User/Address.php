@@ -38,7 +38,6 @@ class Address extends AbstractData
     public function getVatNumber()
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**

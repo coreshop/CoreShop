@@ -53,7 +53,7 @@ class TimeSpan extends AbstractCondition
     }
 
     /**
-     * @param int $dateFrom
+     * @param int|\Zend_Date $dateFrom
      */
     public function setDateFrom($dateFrom)
     {
@@ -73,7 +73,7 @@ class TimeSpan extends AbstractCondition
     }
 
     /**
-     * @param float $dateTo
+     * @param int|\Zend_Date $dateTo
      */
     public function setDateTo($dateTo)
     {

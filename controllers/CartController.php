@@ -156,8 +156,6 @@ class CoreShop_CartController extends Action
         if ($this->getRequest()->isPost()) {
             $priceRule = PriceRule::getByCode($this->getParam('priceRule'));
 
-            $this->cart->removePriceRule();
-
             if ($priceRule instanceof PriceRule) {
                 if ($priceRule->checkValidity($this->cart, $this->getParam('priceRule'))) {
                     $this->cart->addPriceRule($priceRule, $this->getParam('priceRule'));
@@ -176,7 +174,13 @@ class CoreShop_CartController extends Action
     {
         $this->enableLayout();
 
-        $this->cart->removePriceRule();
+        $id = $this->getParam("id");
+
+        foreach($this->cart->getPriceRules() as $ruleItem) {
+            if ($ruleItem->getPriceRule() instanceof PriceRule && $ruleItem->getPriceRule()->getId() === $id) {
+                $this->cart->removePriceRule($ruleItem->getPriceRule());
+            }
+        }
 
         $this->_redirect($this->view->url(array('act' => 'list'), 'coreshop_cart'));
     }

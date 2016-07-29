@@ -202,8 +202,20 @@ class Order extends Base
 
         $this->setTaxes($taxes);
         $this->setDiscount($cart->getDiscount());
-        $this->setPriceRule($cart->getPriceRule());
-        $this->setVoucher($cart->getVoucher());
+        $this->setPriceRuleFieldCollection($cart->getPriceRuleFieldCollection());
+
+        if($this->getPriceRuleFieldCollection() instanceof Object\Fieldcollection) {
+            foreach($this->getPriceRuleFieldCollection()->getItems() as $ruleItem) {
+                if($ruleItem instanceof \CoreShop\Model\PriceRule\Item) {
+                    $rule = $ruleItem->getPriceRule();
+
+                    if($rule instanceof PriceRule) {
+                        $ruleItem->setDiscount($rule->getDiscount());
+                    }
+                }
+            }
+        }
+
         $this->setItems($items);
         $this->save();
 
@@ -816,6 +828,26 @@ class Order extends Base
      * @throws ObjectUnsupportedException
      */
     public function setPriceRule($priceRule)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Object\Fieldcollection|null
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getPriceRuleFieldCollection()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Object\Fieldcollection $priceRules
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setPriceRuleFieldCollection($priceRules)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

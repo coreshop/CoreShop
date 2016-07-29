@@ -145,6 +145,8 @@ $install->executeSQL("CoreShop-States");
 //$install->installDocuments("documents");
 
 $fcUserAddress = $install->createFieldcollection('CoreShopUserAddress');
+$fcUserAddress = $install->createFieldcollection('CoreShopOrderTax');
+$fcUserAddress = $install->createFieldcollection('CoreShopPriceRuleItem');
 
 // create object classes
 $categoryClass = $install->createClass('CoreShopCategory');

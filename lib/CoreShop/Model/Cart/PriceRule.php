@@ -178,12 +178,25 @@ class PriceRule extends AbstractModel
         $availablePriceRules = array();
 
         foreach ($priceRules as $priceRule) {
-            if ($priceRule->checkValidity($cart, false, true)) {
-                if ($cart->getPriceRule() instanceof self && $priceRule->getId() == $cart->getPriceRule()->getId()) {
-                    continue;
-                }
+            if($priceRule instanceof PriceRule) {
+                if ($priceRule->checkValidity($cart, false, true)) {
+                    $found = false;
 
-                $availablePriceRules[] = $priceRule;
+                    foreach ($cart->getPriceRuleFieldCollection()->getItems() as $rule) {
+                        if ($rule instanceof PriceRule) {
+                            if ($rule->getId() === $priceRule->getId()) {
+                                $found = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($found) {
+                        continue;
+                    }
+
+                    $availablePriceRules[] = $priceRule;
+                }
             }
         }
 
@@ -201,9 +214,13 @@ class PriceRule extends AbstractModel
             $cart = Tool::prepareCart();
         }
 
-        if ($cart->getPriceRule() instanceof self) {
-            if (!$cart->getPriceRule()->checkValidity($cart, null, false, true)) {
-                $cart->removePriceRule();
+        foreach($cart->getPriceRules() as $priceRuleItem) {
+            $priceRule = $priceRuleItem->getPriceRule();
+
+            if($priceRule instanceof PriceRule) {
+                if (!$priceRule->checkValidity($cart, null, false, true)) {
+                    $cart->removePriceRule($priceRule);
+                }
             }
         }
     }
@@ -221,24 +238,21 @@ class PriceRule extends AbstractModel
             $cart = Tool::prepareCart();
         }
 
-        if ($cart->getPriceRule() == null) {
-            $priceRules = PriceRule::getList();
-            $priceRules->setCondition("(code IS NULL OR code = '') AND useMultipleVoucherCodes = 0");
 
-            $priceRules = $priceRules->getData();
+        $priceRules = PriceRule::getList();
+        $priceRules->setCondition("(code IS NULL OR code = '') AND useMultipleVoucherCodes = 0");
 
-            foreach ($priceRules as $priceRule) {
-                if ($priceRule instanceof self) {
-                    if ($priceRule->checkValidity($cart, null, false)) {
-                        $cart->addPriceRule($priceRule);
-                    }
+        $priceRules = $priceRules->getData();
+
+        foreach ($priceRules as $priceRule) {
+            if ($priceRule instanceof self) {
+                if ($priceRule->checkValidity($cart, null, false)) {
+                    $cart->addPriceRule($priceRule, $priceRule->getCode());
                 }
             }
-
-            return true;
         }
 
-        return false;
+        return true;
     }
 
     /**

@@ -171,7 +171,7 @@ class CartPriceRule extends Base
 
         $this->priceRule->setActions(array($gift));
 
-        $cart->addPriceRule($this->priceRule);
+        $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
 
         $this->assertEquals(150 + 24, $cart->getTotal());
         $this->assertEquals(Data::$product1->getPrice(), $cart->getDiscount());
@@ -186,7 +186,7 @@ class CartPriceRule extends Base
 
         $this->priceRule->setActions(array($freeShipping));
 
-        $cart->addPriceRule($this->priceRule);
+        $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
 
         $this->assertEquals(0, $cart->getShipping());
     }
@@ -200,7 +200,7 @@ class CartPriceRule extends Base
 
         $cart = Data::createCart();
         $cart->addItem(Data::$product2);
-        $cart->addPriceRule($this->priceRule);
+        $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
 
         $cart2 = Data::createCart();
         $cart2->addItem(Data::$product2);
@@ -217,7 +217,7 @@ class CartPriceRule extends Base
 
         $cart = Tool::prepareCart();
         $cart->addItem(Data::$product2);
-        $cart->addPriceRule($this->priceRule);
+        $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
 
         $cart2 = Data::createCart();
         $cart2->addItem(Data::$product2);

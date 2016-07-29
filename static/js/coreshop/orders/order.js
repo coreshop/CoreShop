@@ -1002,7 +1002,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             if(this.order.priceRule) {
 
                 var priceRuleStore = new Ext.data.JsonStore({
-                    data : [this.order.priceRule]
+                    data : this.order.priceRule
                 });
 
                 var priceRuleItem =  {

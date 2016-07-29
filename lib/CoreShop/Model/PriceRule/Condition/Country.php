@@ -50,7 +50,7 @@ class Country extends AbstractCondition
     }
 
     /**
-     * @param int $country
+     * @param int|CountryModel $country
      */
     public function setCountry($country)
     {

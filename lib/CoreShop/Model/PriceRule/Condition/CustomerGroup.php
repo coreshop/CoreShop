@@ -39,7 +39,7 @@ class CustomerGroup extends AbstractCondition
     public $type = 'customerGroup';
 
     /**
-     * @return int
+     * @return int|CustomerGroupModel
      */
     public function getCustomerGroup()
     {
@@ -51,7 +51,7 @@ class CustomerGroup extends AbstractCondition
     }
 
     /**
-     * @param int $customerGroup
+     * @param int|CustomerGroupModel $customerGroup
      */
     public function setCustomerGroup($customerGroup)
     {
