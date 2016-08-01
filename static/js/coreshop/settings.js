@@ -150,7 +150,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                 },
                 buttons: [
                     {
-                        text: 'Save',
+                        text: t('save'),
                         handler: this.save.bind(this),
                         iconCls: 'pimcore_icon_apply'
                     }
