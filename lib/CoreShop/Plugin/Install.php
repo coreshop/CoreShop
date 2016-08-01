@@ -636,21 +636,41 @@ class Install
     /**
      * Creates CoreShop Static Routes.
      */
-    public function createStaticRoutes()
+    public function createStaticRoutes($path = null)
     {
-        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH.'/CoreShop/install/staticroutes.xml');
+        if(is_null($path)) {
+            $path = PIMCORE_PLUGINS_PATH.'/CoreShop/install/staticroutes.xml';
+        }
 
-        foreach ($conf->routes->route as $def) {
-            if (!Staticroute::getByName($def->name)) {
+        $conf = new \Zend_Config_Xml($path);
+
+        if(is_array($conf->routes->route)) {
+            foreach ($conf->routes->route as $def) {
+                if (!Staticroute::getByName($def->name)) {
+                    $route = Staticroute::create();
+                    $route->setName($def->name);
+                    $route->setPattern($def->pattern);
+                    $route->setReverse($def->reverse);
+                    $route->setModule($def->module);
+                    $route->setController($def->controller);
+                    $route->setAction($def->action);
+                    $route->setVariables($def->variables);
+                    $route->setPriority($def->priority);
+                    $route->save();
+                }
+            }
+        }
+        else {
+            if (!Staticroute::getByName($conf->routes->route->name)) {
                 $route = Staticroute::create();
-                $route->setName($def->name);
-                $route->setPattern($def->pattern);
-                $route->setReverse($def->reverse);
-                $route->setModule($def->module);
-                $route->setController($def->controller);
-                $route->setAction($def->action);
-                $route->setVariables($def->variables);
-                $route->setPriority($def->priority);
+                $route->setName($conf->routes->route->name);
+                $route->setPattern($conf->routes->route->pattern);
+                $route->setReverse($conf->routes->route->reverse);
+                $route->setModule($conf->routes->route->module);
+                $route->setController($conf->routes->route->controller);
+                $route->setAction($conf->routes->route->action);
+                $route->setVariables($conf->routes->route->variables);
+                $route->setPriority($conf->routes->route->priority);
                 $route->save();
             }
         }
@@ -659,12 +679,24 @@ class Install
     /**
      * Remove CoreShop Static Routes.
      */
-    public function removeStaticRoutes()
+    public function removeStaticRoutes($path = null)
     {
-        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH.'/CoreShop/install/staticroutes.xml');
+        if(is_null($path)) {
+            $path = PIMCORE_PLUGINS_PATH.'/CoreShop/install/staticroutes.xml';
+        }
 
-        foreach ($conf->routes->route as $def) {
-            $route = Staticroute::getByName($def->name);
+        $conf = new \Zend_Config_Xml($path);
+
+        if(is_array($conf->routes->route)) {
+            foreach ($conf->routes->route as $def) {
+                $route = Staticroute::getByName($def->name);
+                if ($route) {
+                    $route->delete();
+                }
+            }
+        }
+        else {
+            $route = Staticroute::getByName($conf->routes->route->name);
             if ($route) {
                 $route->delete();
             }
