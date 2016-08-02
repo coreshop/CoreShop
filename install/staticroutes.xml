@@ -113,7 +113,7 @@
         </route>
         <route>
             <name>coreshop_payment</name>
-            <pattern>/(\w+)\/shop\/payment\/(\w+)\/(\w+)/</pattern>
+            <pattern>/(\w+)\/shop\/payment\/(.*?)\/(\w+)/</pattern>
             <reverse>/%lang/shop/payment/%act/%mod</reverse>
             <module>%mod</module>
             <controller>payment</controller>
