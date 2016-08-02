@@ -643,34 +643,25 @@ class Install
         }
 
         $conf = new \Zend_Config_Xml($path);
+        $conf = $conf->toArray();
 
-        if(is_array($conf->routes->route)) {
-            foreach ($conf->routes->route as $def) {
-                if (!Staticroute::getByName($def->name)) {
-                    $route = Staticroute::create();
-                    $route->setName($def->name);
-                    $route->setPattern($def->pattern);
-                    $route->setReverse($def->reverse);
-                    $route->setModule($def->module);
-                    $route->setController($def->controller);
-                    $route->setAction($def->action);
-                    $route->setVariables($def->variables);
-                    $route->setPriority($def->priority);
-                    $route->save();
-                }
-            }
+        $routes = $conf['routes']['route'];
+
+        if(!is_array($routes)) {
+            $routes = [$routes];
         }
-        else {
-            if (!Staticroute::getByName($conf->routes->route->name)) {
+
+        foreach ($routes as $def) {
+            if (!Staticroute::getByName($def['name'])) {
                 $route = Staticroute::create();
-                $route->setName($conf->routes->route->name);
-                $route->setPattern($conf->routes->route->pattern);
-                $route->setReverse($conf->routes->route->reverse);
-                $route->setModule($conf->routes->route->module);
-                $route->setController($conf->routes->route->controller);
-                $route->setAction($conf->routes->route->action);
-                $route->setVariables($conf->routes->route->variables);
-                $route->setPriority($conf->routes->route->priority);
+                $route->setName($def['name']);
+                $route->setPattern($def['pattern']);
+                $route->setReverse($def['reverse']);
+                $route->setModule($def['module']);
+                $route->setController($def['controller']);
+                $route->setAction($def['action']);
+                $route->setVariables($def['variables']);
+                $route->setPriority($def['priority']);
                 $route->save();
             }
         }
@@ -686,17 +677,17 @@ class Install
         }
 
         $conf = new \Zend_Config_Xml($path);
+        $conf = $conf->toArray();
 
-        if(is_array($conf->routes->route)) {
-            foreach ($conf->routes->route as $def) {
-                $route = Staticroute::getByName($def->name);
-                if ($route) {
-                    $route->delete();
-                }
-            }
+        $routes = $conf['routes']['route'];
+
+        if(!is_array($routes)) {
+            $routes = [$routes];
         }
-        else {
-            $route = Staticroute::getByName($conf->routes->route->name);
+
+        foreach ($routes as $def) {
+            $route = Staticroute::getByName($def['name']);
+
             if ($route) {
                 $route->delete();
             }
