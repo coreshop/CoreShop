@@ -297,13 +297,9 @@ pimcore.plugin.coreshop.settings = Class.create({
     getConfigFormForShop : function(shopId) {
         var me = this;
         var messagingLangTabs = [];
-        var shop = null;
         var store = pimcore.globalmanager.get('coreshop_shops');
-        var pos = store.findExact('id', String(shopId));
-        if (pos >= 0) {
-            shop = store.getAt(pos);
-        }
-        else {
+        var shop = store.getById(shopId);
+        if (!shop) {
             alert("SHOP NOT FOUND!");
             return;
         }
