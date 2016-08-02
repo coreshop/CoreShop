@@ -141,13 +141,16 @@ abstract class Payment implements AbstractPlugin
      *
      * @param $module string module name
      * @param $action string action name
+     * @param $params array additional params
      * 
      * @return string
      */
-    public function url($module, $action)
+    public function url($module, $action, $params = [])
     {
         $route = Staticroute::getByName("coreshop_payment");
 
-        return $route->assemble(array('mod' => $module, 'act' => $action, 'lang' => (string) \Zend_Registry::get('Zend_Locale')), 'coreshop_payment');
+        $params = array_merge($params, array('mod' => $module, 'act' => $action, 'lang' => (string) \Zend_Registry::get('Zend_Locale')));
+
+        return $route->assemble($params, 'coreshop_payment');
     }
 }
