@@ -647,7 +647,7 @@ class Install
 
         $routes = $conf['routes']['route'];
 
-        if(!is_array($routes)) {
+        if(count($routes) == count($routes, 1)) {
             $routes = [$routes];
         }
 
@@ -681,7 +681,7 @@ class Install
 
         $routes = $conf['routes']['route'];
 
-        if(!is_array($routes)) {
+        if(count($routes) == count($routes, 1)) {
             $routes = [$routes];
         }
 
