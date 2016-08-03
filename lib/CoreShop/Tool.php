@@ -160,14 +160,37 @@ class Tool
     }
 
     /**
+     * @return User\Address
+     */
+    public static function getDeliveryAddress() {
+        $cart = self::prepareCart();
+        $user = self::getUser();
+
+        if($cart->getCustomerShippingAddress()) {
+            return $cart->getCustomerShippingAddress();
+        }
+
+        if($user->getAddresses() instanceof Object\Fieldcollection) {
+            if($user->getAddresses()->get(0) instanceof User\Address) {
+                return $user->getAddresses()->get(0);
+            }
+        }
+
+        $address = User\Address::create();
+        $address->setCountry(Tool::getCountry());
+
+        return $address;
+    }
+
+    /**
      * Load Controller from CoreShop.
      *
      * @param string $controllerName
      */
     public static function loadController($controllerName = '')
     {
-        if (file_exists(CORESHOP_PATH.'/controllers/'.$controllerName.'Controller.php')) {
-            require CORESHOP_PATH.'/controllers/'.$controllerName.'Controller.php';
+        if (file_exists(CORESHOP_PATH . '/controllers/' . $controllerName . 'Controller.php')) {
+            require CORESHOP_PATH . '/controllers/' . $controllerName . 'Controller.php';
         }
     }
 

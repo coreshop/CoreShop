@@ -17,6 +17,7 @@ namespace CoreShop\Model\Carrier;
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Carrier;
+use CoreShop\Model\User\Address;
 use CoreShop\Model\Zone;
 use Pimcore\Cache;
 
@@ -132,13 +133,13 @@ class AbstractRange extends AbstractModel
     /**
      * Get price for Zone.
      *
-     * @param Zone $zone
+     * @param Address $address
      *
      * @return DeliveryPrice|null
      */
-    public function getPriceForZone(Zone $zone)
+    public function getPriceForAddress(Address $address)
     {
-        return DeliveryPrice::getForCarrierInZone($this->getCarrier(), $this, $zone);
+        return DeliveryPrice::getForCarrierInZone($this->getCarrier(), $this, $address->getCountry()->getZone());
     }
 
     /**

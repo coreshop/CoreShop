@@ -223,25 +223,25 @@ class Carrier extends AbstractModel
      * Get all available Carriers for cart.
      *
      * @param Cart|null $cart
-     * @param Zone      $zone
+     * @param Address   $address
      *
      * @return Carrier[]
      */
-    public static function getCarriersForCart(Cart $cart = null, Zone $zone = null)
+    public static function getCarriersForCart(Cart $cart = null, Address $address = null)
     {
         if (is_null($cart)) {
             $cart = Tool::prepareCart();
         }
-        if (is_null($zone)) {
-            $zone = Tool::getCountry()->getZone();
+        if (is_null($address)) {
+            $address = Tool::getDeliveryAddress();
         }
 
         $carriers = self::getAll();
         $availableCarriers = array();
 
         foreach ($carriers as $carrier) {
-            if ($carrier->checkCarrierForCart($cart, $zone)) {
-                $carrier->getDeliveryPrice($cart, true, $zone); //Cache Delivery Price
+            if ($carrier->checkCarrierForCart($cart, $address)) {
+                $carrier->getDeliveryPrice($cart, true, $address); //Cache Delivery Price
                 $availableCarriers[] = $carrier;
             }
         }
@@ -252,7 +252,7 @@ class Carrier extends AbstractModel
             $carriers = [];
 
             foreach ($availableCarriers as $carrier) {
-                $price = $carrier->getDeliveryPrice($cart, $zone);
+                $price = $carrier->getDeliveryPrice($cart, $address);
 
                 $carriers[$price] = $carrier;
             }
@@ -262,7 +262,7 @@ class Carrier extends AbstractModel
             $availableCarriers = $carriers;
         }
         else {
-            usort($availableCarriers, function ($carrier1, $carrier2) use ($sortField, $cart, $zone) {
+            usort($availableCarriers, function ($carrier1, $carrier2) use ($sortField, $cart, $address) {
                 if ($carrier1->getGrade() === $carrier2->getGrade()) {
                     return 0;
                 }
@@ -278,11 +278,11 @@ class Carrier extends AbstractModel
      * Get cheapest carrier for cart.
      *
      * @param Cart $cart
-     * @param Zone $zone
+     * @param Address $address
      *
      * @return Carrier|null
      */
-    public static function getCheapestCarrierForCart(Cart $cart, Zone $zone = null)
+    public static function getCheapestCarrierForCart(Cart $cart, Address $address = null)
     {
         $cacheKey = 'cheapest_carrier_' - $cart->getId();
 
@@ -296,7 +296,7 @@ class Carrier extends AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$cheapestProvider = Cache::load($cacheKey)) {
-                    $providers = self::getCarriersForCart($cart, $zone);
+                    $providers = self::getCarriersForCart($cart, $address);
                     $cheapestProvider = null;
 
                     foreach ($providers as $p) {
@@ -323,20 +323,20 @@ class Carrier extends AbstractModel
             }
         }
 
-        return nul;
+        return null;
     }
 
     /**
-     * Check if carrier is allowed for cart and zone.
+     * Check if carrier is allowed for cart and address.
      *
      * @param Cart|null $cart
-     * @param Zone|null $zone
+     * @param Address|null $address
      *
      * @return bool
      *
      * @throws \CoreShop\Exception\UnsupportedException
      */
-    public function checkCarrierForCart(Cart $cart = null, Zone $zone = null)
+    public function checkCarrierForCart(Cart $cart = null, Address $address = null)
     {
         if (!$this->getMaxDeliveryPrice()) {
             return false;
@@ -345,13 +345,13 @@ class Carrier extends AbstractModel
         //Check for Ranges
         if ($this->getRangeBehaviour() == self::RANGE_BEHAVIOUR_DEACTIVATE) {
             if ($this->getShippingMethod() == self::SHIPPING_METHOD_PRICE) {
-                if (!$this->checkDeliveryPriceByValue($zone, $cart->getTotal())) {
+                if (!$this->checkDeliveryPriceByValue($address, $cart->getTotal())) {
                     return false;
                 }
             }
 
             if ($this->getShippingMethod() == self::SHIPPING_METHOD_WEIGHT) {
-                if (!$this->checkDeliveryPriceByValue($zone, $cart->getTotalWeight())) {
+                if (!$this->checkDeliveryPriceByValue($address, $cart->getTotalWeight())) {
                     return false;
                 }
             }
@@ -401,14 +401,14 @@ class Carrier extends AbstractModel
     /**
      * Get max possible delivery price for this carrier.
      *
-     * @param Zone $zone
+     * @param Address $address
      *
      * @return float|bool
      */
-    public function getMaxDeliveryPrice(Zone $zone = null)
+    public function getMaxDeliveryPrice(Address $address = null)
     {
-        if (is_null($zone)) {
-            $zone = Tool::getCountry()->getZone();
+        if (is_null($address)) {
+            $address = Tool::getDeliveryAddress();
         }
 
         $ranges = $this->getRanges();
@@ -420,7 +420,7 @@ class Carrier extends AbstractModel
         $maxPrice = 0;
 
         foreach ($ranges as $range) {
-            $price = $range->getPriceForZone($zone);
+            $price = $range->getPriceForAddress($address);
 
             if ($price instanceof DeliveryPrice) {
                 if ($price->getPrice() > $maxPrice) {
@@ -437,18 +437,18 @@ class Carrier extends AbstractModel
      * 
      * @param Cart $cart
      * @param bool $withTax
-     * @param Zone|null $zone
+     * @param Address|null $address
      * @return bool|DeliveryPrice|float|null
      */
-    public function getDeliveryPrice(Cart $cart, $withTax = true, Zone $zone = null)
+    public function getDeliveryPrice(Cart $cart, $withTax = true, Address $address = null)
     {
         $price = false;
         
-        if (is_null($zone)) {
-            $zone = Tool::getCountry()->getZone();
+        if (is_null($address)) {
+            $address = Tool::getDeliveryAddress();
         }
 
-        iF($cart->isFreeShipping()) {
+        if($cart->isFreeShipping()) {
             return 0;
         }
 
@@ -461,7 +461,7 @@ class Carrier extends AbstractModel
         $ranges = $this->getRanges();
 
         foreach ($ranges as $range) {
-            $price = $range->getPriceForZone($zone);
+            $price = $range->getPriceForAddress($address);
 
             if ($price instanceof DeliveryPrice) {
                 if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
@@ -475,7 +475,7 @@ class Carrier extends AbstractModel
 
         if ($price === false) {
             if ($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
-                $deliveryPrice = $this->getMaxDeliveryPrice($zone);
+                $deliveryPrice = $this->getMaxDeliveryPrice($address);
 
                 $price = $deliveryPrice;
             }
@@ -506,14 +506,14 @@ class Carrier extends AbstractModel
      * get delivery Tax for cart.
      *
      * @param Cart      $cart
-     * @param Zone|null $zone
+     * @param Address|null $address
      *
      * @return float
      */
-    public function getTaxAmount(Cart $cart, Zone $zone = null)
+    public function getTaxAmount(Cart $cart, Address $address = null)
     {
         $taxCalculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
-        $deliveryPrice = $this->getDeliveryPrice($cart, false, $zone);
+        $deliveryPrice = $this->getDeliveryPrice($cart, false, $address);
 
         if ($taxCalculator) {
             return $taxCalculator->getTaxesAmount($deliveryPrice);
@@ -550,8 +550,7 @@ class Carrier extends AbstractModel
     public function getTaxCalculator(Address $address = null)
     {
         if (is_null($address)) {
-            $address = Address::create();
-            $address->setCountry(Tool::getCountry());
+            $address = Tool::getDeliveryAddress();
         }
 
         $taxRule = $this->getTaxRuleGroup();
@@ -567,19 +566,19 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * Check if carrier is available for zone and value.
+     * Check if carrier is available for address and value.
      *
-     * @param Zone $zone
+     * @param Address $address
      * @param $value
      *
      * @return bool
      */
-    public function checkDeliveryPriceByValue(Zone $zone, $value)
+    public function checkDeliveryPriceByValue(Address $address, $value)
     {
         $ranges = $this->getRanges();
 
         foreach ($ranges as $range) {
-            $price = $range->getPriceForZone($zone);
+            $price = $range->getPriceForAddress($address);
 
             if ($price instanceof DeliveryPrice) {
                 if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
