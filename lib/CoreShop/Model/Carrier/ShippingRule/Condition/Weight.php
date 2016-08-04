@@ -52,13 +52,13 @@ class Weight extends AbstractCondition
         $totalWeight = $cart->getTotalWeight();
 
         if ($this->getMinWeight() > 0) {
-            if($totalWeight <= $this->getMinWeight()) {
+            if($totalWeight < $this->getMinWeight()) {
                 return false;
             }
         }
 
         if($this->getMaxWeight() > 0) {
-            if($totalWeight >= $this->getMaxWeight()) {
+            if($totalWeight > $this->getMaxWeight()) {
                 return false;
             }
         }

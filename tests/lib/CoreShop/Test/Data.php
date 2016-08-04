@@ -95,8 +95,8 @@ class Data
         $session->stateId = State::getById(23)->getId();
 
         self::createTaxRule();
-        self::createTestCarrierPrice();
         self::createTestCarrierWeight();
+        self::createTestCarrierPrice();
         self::createTestProduct();
         self::createCustomerGroups();
         self::createCustomer();
@@ -151,19 +151,36 @@ class Data
             $carrier->setShopIds(array(Shop::getDefaultShop()->getId()));
             $carrier->save();
 
-            $range = new Carrier\RangeWeight();
-            $range->setDelimiter1(0);
-            $range->setDelimiter2(5000);
-            $range->setCarrier($carrier);
-            $range->save();
+            $zoneCond = new Carrier\ShippingRule\Condition\Zones();
+            $zoneCond->setZones([1]);
 
-            $rangePrice = new Carrier\DeliveryPrice();
-            $rangePrice->setRange($range);
-            $rangePrice->setCarrier($carrier);
-            $rangePrice->setPrice(10);
-            $rangePrice->setZone(Zone::getById(1));
-            $rangePrice->setRangeType(Carrier::SHIPPING_METHOD_WEIGHT);
-            $rangePrice->save();
+            $weightCond = new Carrier\ShippingRule\Condition\Weight();
+            $weightCond->setMinWeight(0);
+            $weightCond->setMaxWeight(5000);
+
+            $dimensionCond = new Carrier\ShippingRule\Condition\Dimension();
+            $dimensionCond->setHeight(100);
+            $dimensionCond->setWidth(100);
+            $dimensionCond->setDepth(100);
+
+            $weightCond = new Carrier\ShippingRule\Condition\Weight();
+            $weightCond->setMinWeight(0);
+            $weightCond->setMaxWeight(100);
+
+            $priceAct = new Carrier\ShippingRule\Action\FixedPrice();
+            $priceAct->setFixedPrice(10);
+
+            $rule1 = new Carrier\ShippingRule();
+            $rule1->setName("carrier1-rule");
+            $rule1->setActions([$priceAct]);
+            $rule1->setConditions([$dimensionCond, $weightCond, $zoneCond, $weightCond]);
+            $rule1->save();
+
+            $ruleGroup = new Carrier\ShippingRuleGroup();
+            $ruleGroup->setCarrier($carrier);
+            $ruleGroup->setShippingRule($rule1);
+            $ruleGroup->setPriority(1);
+            $ruleGroup->save();
 
             self::$carrier1 = $carrier;
         }
@@ -188,19 +205,27 @@ class Data
             $carrier->setShopIds(array(Shop::getDefaultShop()->getId()));
             $carrier->save();
 
-            $range = new Carrier\RangeWeight();
-            $range->setDelimiter1(0);
-            $range->setDelimiter2(5000);
-            $range->setCarrier($carrier);
-            $range->save();
+            $weightCond = new Carrier\ShippingRule\Condition\Weight();
+            $weightCond->setMinWeight(0);
+            $weightCond->setMaxWeight(5000);
 
-            $rangePrice = new Carrier\DeliveryPrice();
-            $rangePrice->setRange($range);
-            $rangePrice->setCarrier($carrier);
-            $rangePrice->setPrice(20);
-            $rangePrice->setZone(Zone::getById(1));
-            $rangePrice->setRangeType(Carrier::SHIPPING_METHOD_WEIGHT);
-            $rangePrice->save();
+            $zoneCond = new Carrier\ShippingRule\Condition\Zones();
+            $zoneCond->setZones([1]);
+
+            $priceAct = new Carrier\ShippingRule\Action\FixedPrice();
+            $priceAct->setFixedPrice(20);
+
+            $rule1 = new Carrier\ShippingRule();
+            $rule1->setName("carrier2-rule");
+            $rule1->setActions([$priceAct]);
+            $rule1->setConditions([$zoneCond, $weightCond]);
+            $rule1->save();
+
+            $ruleGroup = new Carrier\ShippingRuleGroup();
+            $ruleGroup->setCarrier($carrier);
+            $ruleGroup->setShippingRule($rule1);
+            $ruleGroup->setPriority(1);
+            $ruleGroup->save();
 
             self::$carrier2 = $carrier;
         }

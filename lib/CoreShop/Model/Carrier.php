@@ -304,7 +304,8 @@ class Carrier extends AbstractModel
                     foreach ($providers as $p) {
                         if ($cheapestProvider === null) {
                             $cheapestProvider = $p;
-                        } elseif ($cheapestProvider->getDeliveryPrice($cart, true) > $p->getDeliveryPrice($cart, true)) {
+                        }
+                        elseif ($cheapestProvider->getDeliveryPrice($cart, true) > $p->getDeliveryPrice($cart, true)) {
                             $cheapestProvider = $p;
                         }
                     }

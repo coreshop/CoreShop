@@ -55,12 +55,12 @@ abstract class AbstractRule extends AbstractModel
     /**
      * @var array
      */
-    public $conditions;
+    public $conditions = [];
 
     /**
      * @var array
      */
-    public $actions;
+    public $actions = [];
 
     /**
      * Add Condition Type.

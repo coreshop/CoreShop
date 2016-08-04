@@ -44,7 +44,7 @@ class Carrier extends Base
         $price1 = Data::$carrier1->getDeliveryPrice($cart, true);
         $price2 = Data::$carrier2->getDeliveryPrice($cart, true);
 
-        $this->assertEquals(12, $price1);
+        $this->assertEquals(false, $price1);
         $this->assertEquals(24, $price2);
     }
 
@@ -54,9 +54,9 @@ class Carrier extends Base
 
         $cart = Data::createCartWithProducts();
 
-        $tax = Data::$carrier1->getTaxAmount($cart);
+        $tax = Data::$carrier2->getTaxAmount($cart);
 
-        $this->assertEquals(2, $tax);
+        $this->assertEquals(4, $tax);
     }
 
     public function testCarriersForCart()

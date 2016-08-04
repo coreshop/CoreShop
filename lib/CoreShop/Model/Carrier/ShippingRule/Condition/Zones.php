@@ -45,7 +45,7 @@ class Zones extends AbstractCondition
      */
     public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule) {
         foreach($this->getZones() as $zone) {
-            if(Tool::getDeliveryAddress()->getCountry()->getZone()->getId() === $zone) {
+            if(intval(Tool::getDeliveryAddress()->getCountry()->getZone()->getId()) === $zone) {
                 return true;
             }
         }
