@@ -393,7 +393,7 @@ class Carrier extends AbstractModel
 
         foreach($rules as $rule) {
             if($rule instanceof ShippingRule) {
-                if($rule->checkValidity($cart, $address)) {
+                if($rule->checkValidity($this, $cart, $address)) {
                     //if one rule is valid, carrier is allowed
                     return true;
                 }
@@ -489,7 +489,7 @@ class Carrier extends AbstractModel
 
         foreach($rules as $rule) {
             if($rule instanceof ShippingRule) {
-                if($rule->checkValidity($cart, $address)) {
+                if($rule->checkValidity($this, $cart, $address)) {
                     $price = $rule->getPrice($cart, $address);
                     break;
                 }

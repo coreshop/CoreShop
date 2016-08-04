@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Carrier;
 
 use CoreShop\Exception;
+use CoreShop\Model\Carrier;
 use CoreShop\Model\Carrier\ShippingRule\Action\AbstractAction;
 use CoreShop\Model\Carrier\ShippingRule\Condition\AbstractCondition;
 use CoreShop\Model\Cart;
@@ -55,14 +56,15 @@ class ShippingRule extends AbstractRule
     /**
      * Check if Shipping Rule is valid
      *
+     * @param Carrier $carrier
      * @param Cart $cart
      * @param Address $address
      *
      * @return bool
      */
-    public function checkValidity(Cart $cart, Address $address)
+    public function checkValidity(Carrier $carrier, Cart $cart, Address $address)
     {
-        $cacheKey = self::getCacheKey(get_called_class(), $this->getId() . "checkValidity");
+        $cacheKey = self::getCacheKey(get_called_class(), $this->getId() . "" . $carrier->getId() . "" . $cart->getId() . "checkValidity");
 
         try {
             $valid = \Zend_Registry::get($cacheKey);
@@ -73,8 +75,12 @@ class ShippingRule extends AbstractRule
             return $valid;
         } catch (\Exception $e) {
             try {
-                $valid = Cache::load($cacheKey);
-                if ($valid === false) {
+                if(Cache::test($cacheKey)) {
+                    $valid = Cache::load($cacheKey);
+
+                    \Zend_Registry::set($cacheKey,  $valid ? 1 : 0);
+                }
+                else {
                     $valid = true;
 
                     foreach($this->getConditions() as $condition) {
@@ -88,8 +94,6 @@ class ShippingRule extends AbstractRule
 
                     \Zend_Registry::set($cacheKey, $valid ? 1 : 0);
                     Cache::save( $valid ? 1 : 0, $cacheKey, array($cacheKey, 'coreshop_carrier_shipping_rule'));
-                } else {
-                    \Zend_Registry::set($cacheKey,  $valid ? 1 : 0);
                 }
 
                 return $valid;
