@@ -75,46 +75,14 @@ class CoreShop_Admin_CarrierController extends Admin
         return $tmpCarrier;
     }
 
-    public function getRangeAction()
-    {
+    public function getShippingRuleGroupsAction() {
         $id = $this->getParam('carrier');
         $carrier = Carrier::getById($id);
 
         if ($carrier instanceof Carrier) {
-            $ranges = $carrier->getRanges();
+            $groups = $carrier->getShippingRuleGroups();
 
-            $this->_helper->json(array('success' => true, 'total' => count($ranges), 'data' => $ranges));
-        } else {
-            $this->_helper->json(array('success' => false));
-        }
-    }
-
-    public function getRangeZoneAction()
-    {
-        $id = $this->getParam('carrier');
-        $carrier = Carrier::getById($id);
-
-        if ($carrier instanceof Carrier) {
-            $zones = \CoreShop\Model\Zone::getAll();
-            $ranges = $carrier->getRanges();
-            $prices = array();
-
-            foreach ($zones as $zone) {
-                $price = array(
-                    'name' => $zone->getName(),
-                    'zone' => $zone->getId(),
-                );
-
-                foreach ($ranges as $range) {
-                    $deliveryPrice = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $range, $zone);
-
-                    $price['range_'.$range->getId()] = $deliveryPrice instanceof Carrier\DeliveryPrice ? $deliveryPrice->getPrice() : 0;
-                }
-
-                $prices[] = $price;
-            }
-
-            $this->_helper->json(array('success' => true, 'count' => count($prices), 'data' => $prices));
+            $this->_helper->json(array('success' => true, 'total' => count($groups), 'data' => $groups));
         } else {
             $this->_helper->json(array('success' => false));
         }
@@ -177,66 +145,25 @@ class CoreShop_Admin_CarrierController extends Admin
                 }
             }
 
-            $oldRanges = $carrier->getRanges();
+            $oldGroups = $carrier->getShippingRuleGroups();
 
-            foreach($oldRanges as $range) {
-                $range->delete();
+            foreach($oldGroups as $group) {
+                $group->delete();
             }
 
             $carrier->setValues($data['settings']);
 
-            $ranges = $data['range'];
-            $rangesToKeep = array();
-            if (is_array($ranges)) {
-                foreach ($ranges as &$range) {
-                    $rangeObject = null;
-                    $deliveryPriceObject = null;
-
-                    $rangeObject = Carrier\AbstractRange::create($carrier->getShippingMethod());
-
-                    $rangeObject->setCarrier($carrier);
-                    $rangeObject->setDelimiter1($range['delimiter1']);
-                    $rangeObject->setDelimiter2($range['delimiter2']);
-                    $rangeObject->save();
-
-                    $rangesToKeep[] = $rangeObject->getId();
-
-                    foreach ($range['zones'] as $zoneId => $price) {
-                        $zone = \CoreShop\Model\Zone::getById($zoneId);
-
-                        if ($zone instanceof \CoreShop\Model\Zone) {
-                            $deliveryPriceObject = Carrier\DeliveryPrice::getForCarrierInZone($carrier, $rangeObject, $zone);
-
-                            if (is_null($deliveryPriceObject)) {
-                                $deliveryPriceObject = new Carrier\DeliveryPrice();
-
-                                $deliveryPriceObject->setZone($zone);
-                                $deliveryPriceObject->setCarrier($carrier);
-                                $deliveryPriceObject->setRange($rangeObject);
-                                $deliveryPriceObject->setRangeType($carrier->getShippingMethod());
-                            }
-
-                            $deliveryPriceObject->setPrice($price);
-
-                            if (is_numeric($price)) {
-                                $deliveryPriceObject->save();
-                            } else {
-                                $deliveryPriceObject->delete();
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (is_array($ranges)) {
-                $carrier->setNeedsRange(true);
-            } else {
-                $carrier->setNeedsRange(false);
+            foreach($data['groups'] as $group) {
+                $obj = new CoreShop\Model\Carrier\ShippingRuleGroup();
+                $obj->setCarrier($carrier);
+                $obj->setPriority($group['priority']);
+                $obj->setShippingRuleId($group['shippingRuleId']);
+                $obj->save();
             }
 
             $carrier->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $carrier, 'ranges' => $carrier->getRanges()));
+            $this->_helper->json(array('success' => true, 'data' => $carrier, 'shippingRuleGroups' => $carrier->getShippingRuleGroups()));
         } else {
             $this->_helper->json(array('success' => false));
         }

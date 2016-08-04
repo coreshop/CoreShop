@@ -50,7 +50,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
     getSettings : function ()
     {
         this.formPanel = new Ext.form.Panel({
-            iconCls: 'coreshop_icon_indexes_settings',
+            iconCls: 'coreshop_icon_settings',
             title: t('settings'),
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,

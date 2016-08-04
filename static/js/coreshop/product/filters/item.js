@@ -146,7 +146,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
         });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: 'coreshop_price_rule_settings',
+            iconCls: 'coreshop_icon_settings',
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,

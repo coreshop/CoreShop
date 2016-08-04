@@ -76,19 +76,14 @@ class DeliveryPrice extends AbstractModel
      * @param Carrier       $carrier
      * @param AbstractRange $range
      *
-     * @return DeliveryPrice|null
+     * @return DeliveryPrice[]
      */
     public static function getByCarrierAndRange(Carrier $carrier, AbstractRange $range)
     {
-        try {
-            $obj = new self();
-            $obj->getDao()->getByCarrierAndRange($carrier->getId(), $range->getId());
+        $list = self::getList();
+        $list->setCondition("carrierId = ? AND rangeId = ?", array($carrier->getId(), $range->getId()));
 
-            return $obj;
-        } catch (\Exception $ex) {
-        }
-
-        return null;
+        return $list->getData();
     }
 
     /**

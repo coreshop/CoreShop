@@ -18,6 +18,7 @@ use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
+use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Tool;
@@ -26,7 +27,7 @@ use CoreShop\Tool;
  * Class PriceRule
  * @package CoreShop\Model\Cart
  */
-class PriceRule extends AbstractModel
+class PriceRule extends AbstractPriceRule
 {
     /**
      * possible types of a condition.
@@ -43,38 +44,9 @@ class PriceRule extends AbstractModel
     public static $availableActions = array('freeShipping', 'discountAmount', 'discountPercent', 'gift');
 
     /**
-     * Add Condition Type.
-     *
-     * @param $condition
-     */
-    public static function addCondition($condition)
-    {
-        if (!in_array($condition, self::$availableConditions)) {
-            self::$availableConditions[] = $condition;
-        }
-    }
-
-    /**
-     * Add Action Type.
-     *
-     * @param $action
-     */
-    public static function addAction($action)
-    {
-        if (!in_array($action, self::$availableActions)) {
-            self::$availableActions[] = $action;
-        }
-    }
-
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
-    public $name;
+    public static $type = "cartRule";
 
     /**
      * @var string
@@ -100,16 +72,6 @@ class PriceRule extends AbstractModel
      * @var bool
      */
     public $highlight;
-
-    /**
-     * @var array
-     */
-    public $conditions;
-
-    /**
-     * @var array
-     */
-    public $actions;
 
     /**
      * @var int
@@ -420,38 +382,6 @@ class PriceRule extends AbstractModel
     }
 
     /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @return string
      */
     public function getLabel()
@@ -497,46 +427,6 @@ class PriceRule extends AbstractModel
     public function setActive($active)
     {
         $this->active = $active;
-    }
-
-    /**
-     * @return array
-     */
-    public function getConditions()
-    {
-        if (!is_array($this->conditions)) {
-            $this->conditions = array();
-        }
-
-        return $this->conditions;
-    }
-
-    /**
-     * @param array $conditions
-     */
-    public function setConditions($conditions)
-    {
-        $this->conditions = $conditions;
-    }
-
-    /**
-     * @return array
-     */
-    public function getActions()
-    {
-        if (!is_array($this->actions)) {
-            $this->actions = array();
-        }
-
-        return $this->actions;
-    }
-
-    /**
-     * @param array $actions
-     */
-    public function setActions($actions)
-    {
-        $this->actions = $actions;
     }
 
     /**

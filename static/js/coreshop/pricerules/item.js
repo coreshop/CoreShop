@@ -13,7 +13,7 @@
 
 pimcore.registerNS('pimcore.plugin.coreshop.pricerules.item');
 
-pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
+pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.rules.item, {
 
     iconCls : 'coreshop_icon_price_rule',
 
@@ -44,40 +44,11 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
         return this.panel;
     },
 
-    getItems : function () {
-        this.actions = new pimcore.plugin.coreshop.pricerules.action(this.parentPanel.actions);
-        this.conditions = new pimcore.plugin.coreshop.pricerules.condition(this.parentPanel.conditions);
-
-        var items = [
-            this.getSettings(),
-            this.conditions.getLayout(),
-            this.actions.getLayout()
-        ];
-
-        // add saved conditions
-        if (this.data.conditions)
-        {
-            Ext.each(this.data.conditions, function (condition) {
-                this.conditions.addCondition(condition.type, condition);
-            }.bind(this));
-        }
-
-        // add saved actions
-        if (this.data.actions)
-        {
-            Ext.each(this.data.actions, function (action) {
-                this.actions.addAction(action.type, action);
-            }.bind(this));
-        }
-
-        return items;
-    },
-
     getSettings: function () {
         var data = this.data;
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: 'coreshop_price_rule_settings',
+            iconCls: 'coreshop_icon_settings',
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
@@ -336,18 +307,5 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.a
         });
 
         window.show();
-    },
-
-    getSaveData : function () {
-        var saveData = {};
-
-        // general settings
-        saveData['settings'] = this.settingsForm.getForm().getFieldValues();
-        saveData['conditions'] = this.conditions.getConditionsData();
-        saveData['actions'] = this.actions.getActionsData();
-
-        return {
-            data : Ext.encode(saveData)
-        };
     }
 });

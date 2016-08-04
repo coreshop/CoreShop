@@ -24,10 +24,10 @@ use CoreShop\Tool;
 class PriceRule extends AbstractProductPriceRule
 {
     /**
- * possible types of a condition.
- *
- * @var array
- */
+     * possible types of a condition.
+     *
+     * @var array
+    */
     public static $availableConditions = array('customer', 'customers', 'timeSpan', 'quantity', 'country', 'countries', 'product', 'products', 'category', 'categories', 'customerGroup', 'customerGroups', 'zone', 'zones', 'persona', 'personas');
 
     /**

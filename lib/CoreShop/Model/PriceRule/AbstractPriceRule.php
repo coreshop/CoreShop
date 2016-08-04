@@ -14,12 +14,12 @@
 
 namespace CoreShop\Model\PriceRule;
 
-use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Rules\AbstractRule;
 
 /**
  * Class AbstractPriceRule
  * @package CoreShop\Model\PriceRule
  */
-abstract class AbstractPriceRule extends AbstractModel
+abstract class AbstractPriceRule extends AbstractRule
 {
 }

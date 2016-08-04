@@ -18,6 +18,8 @@ use CoreShop\Exception;
 use CoreShop\Model\Carrier\AbstractRange;
 use CoreShop\Model\Carrier\Dao;
 use CoreShop\Model\Carrier\DeliveryPrice;
+use CoreShop\Model\Carrier\ShippingRule;
+use CoreShop\Model\Carrier\ShippingRuleGroup;
 use CoreShop\Model\User\Address;
 use CoreShop\Tool;
 use Pimcore\Cache;
@@ -254,7 +256,7 @@ class Carrier extends AbstractModel
             foreach ($availableCarriers as $carrier) {
                 $price = $carrier->getDeliveryPrice($cart, $address);
 
-                $carriers[$price] = $carrier;
+                $carriers[$price . '' . $carrier->getId()] = $carrier;
             }
 
             ksort($carriers);
@@ -327,6 +329,39 @@ class Carrier extends AbstractModel
     }
 
     /**
+     * get shipping rule groups
+     *
+     * @return ShippingRuleGroup[]
+     */
+    public function getShippingRuleGroups() {
+        $list = ShippingRuleGroup::getList();
+        $list->setCondition("carrierId = ?", array($this->getId()));
+        $list->setOrder("ASC");
+        $list->setOrderKey("priority");
+
+        return $list->getData();
+    }
+
+    /**
+     * Get all shipping rules for this carrier
+     *
+     * @return ShippingRule[]
+     */
+    public function getShippingRules() {
+        $groups = $this->getShippingRuleGroups();
+
+        $rules = [];
+
+        foreach($groups as $group) {
+            if($group instanceof ShippingRuleGroup) {
+                $rules[] = $group->getShippingRule();
+            }
+        }
+
+        return $rules;
+    }
+
+    /**
      * Check if carrier is allowed for cart and address.
      *
      * @param Cart|null $cart
@@ -338,45 +373,23 @@ class Carrier extends AbstractModel
      */
     public function checkCarrierForCart(Cart $cart = null, Address $address = null)
     {
+        //Carrier has no price, so its invalid!
         if (!$this->getMaxDeliveryPrice()) {
             return false;
         }
 
-        //Check for Ranges
-        if ($this->getRangeBehaviour() == self::RANGE_BEHAVIOUR_DEACTIVATE) {
-            if ($this->getShippingMethod() == self::SHIPPING_METHOD_PRICE) {
-                if (!$this->checkDeliveryPriceByValue($address, $cart->getTotal())) {
-                    return false;
-                }
-            }
+        $rules = $this->getShippingRules();
 
-            if ($this->getShippingMethod() == self::SHIPPING_METHOD_WEIGHT) {
-                if (!$this->checkDeliveryPriceByValue($address, $cart->getTotalWeight())) {
-                    return false;
+        foreach($rules as $rule) {
+            if($rule instanceof ShippingRule) {
+                if($rule->checkValidity($cart, $address)) {
+                    //if one rule is valid, carrier is allowed
+                    return true;
                 }
             }
         }
 
-        $carrierIsAllowed = true;
-
-        //Check for max-size
-        foreach ($cart->getItems() as $item) {
-            $product = $item->getProduct();
-
-            if (($this->getMaxWidth() > 0 && $product->getWidth() > $this->getMaxWidth())
-                || ($this->getMaxHeight() > 0 && $product->getHeight() > $this->getMaxHeight())
-                || ($this->getMaxDepth() > 0 && $product->getDepth() > $this->getMaxDepth())
-                || ($this->getMaxWeight() > 0 && $product->getWeight() > $this->getMaxWeight())) {
-                $carrierIsAllowed = false;
-                break;
-            }
-        }
-
-        if (!$carrierIsAllowed) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
     /**
@@ -401,30 +414,35 @@ class Carrier extends AbstractModel
     /**
      * Get max possible delivery price for this carrier.
      *
+     * @param Cart $cart
      * @param Address $address
      *
      * @return float|bool
      */
-    public function getMaxDeliveryPrice(Address $address = null)
+    public function getMaxDeliveryPrice(Cart $cart = null, Address $address = null)
     {
+        if(is_null($cart)) {
+            $cart = Tool::prepareCart();
+        }
+
         if (is_null($address)) {
             $address = Tool::getDeliveryAddress();
         }
 
-        $ranges = $this->getRanges();
+        $rules = $this->getShippingRules();
 
-        if (count($ranges) === 0) {
+        if (count($rules) === 0) {
             return false;
         }
 
         $maxPrice = 0;
 
-        foreach ($ranges as $range) {
-            $price = $range->getPriceForAddress($address);
+        foreach ($rules as $rule) {
+            if($rule instanceof ShippingRule) {
+                $price = $rule->getPrice($cart, $address);
 
-            if ($price instanceof DeliveryPrice) {
-                if ($price->getPrice() > $maxPrice) {
-                    $maxPrice = $price->getPrice();
+                if($price > $maxPrice) {
+                    $maxPrice = $price;
                 }
             }
         }
@@ -452,22 +470,16 @@ class Carrier extends AbstractModel
             return 0;
         }
 
-        if ($this->getShippingMethod() === self::SHIPPING_METHOD_PRICE) {
-            $value = $cart->getSubtotal();
-        } else {
-            $value = $cart->getTotalWeight();
+        if($this->getIsFree()) {
+            return 0;
         }
 
-        $ranges = $this->getRanges();
+        $rules = $this->getShippingRules();
 
-        foreach ($ranges as $range) {
-            $price = $range->getPriceForAddress($address);
-
-            if ($price instanceof DeliveryPrice) {
-                if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
-                    $deliveryPrice = $price->getPrice();
-
-                    $price = $deliveryPrice;
+        foreach($rules as $rule) {
+            if($rule instanceof ShippingRule) {
+                if($rule->checkValidity($cart, $address)) {
+                    $price = $rule->getPrice($cart, $address);
                     break;
                 }
             }
@@ -475,9 +487,7 @@ class Carrier extends AbstractModel
 
         if ($price === false) {
             if ($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
-                $deliveryPrice = $this->getMaxDeliveryPrice($address);
-
-                $price = $deliveryPrice;
+                $price = $this->getMaxDeliveryPrice($cart, $address);
             }
         }
 
@@ -560,31 +570,6 @@ class Carrier extends AbstractModel
             $taxCalculator = $taxManager->getTaxCalculator();
 
             return $taxCalculator;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if carrier is available for address and value.
-     *
-     * @param Address $address
-     * @param $value
-     *
-     * @return bool
-     */
-    public function checkDeliveryPriceByValue(Address $address, $value)
-    {
-        $ranges = $this->getRanges();
-
-        foreach ($ranges as $range) {
-            $price = $range->getPriceForAddress($address);
-
-            if ($price instanceof DeliveryPrice) {
-                if ($value >= $range->getDelimiter1() && $value < $range->getDelimiter2()) {
-                    return true;
-                }
-            }
         }
 
         return false;

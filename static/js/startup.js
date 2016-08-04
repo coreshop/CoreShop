@@ -215,6 +215,10 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                                     text: t('coreshop_carriers'),
                                     iconCls: 'coreshop_icon_carriers',
                                     handler: this.openCarriersList
+                                },{
+                                    text: t('coreshop_carriers_shipping_rules'),
+                                    iconCls: 'coreshop_icon_carrier_shipping_rule',
+                                    handler: this.openCarriersShippingRules
                                 }]
                             }
                         });
@@ -755,7 +759,16 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         catch (e) {
             pimcore.globalmanager.add('coreshop_shops_panel', new pimcore.plugin.coreshop.shops.panel());
         }
-    }
+    },
+
+    openCarriersShippingRules : function () {
+        try {
+            pimcore.globalmanager.get('coreshop_carrier_shipping_rule_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_carrier_shipping_rule_panel', new pimcore.plugin.coreshop.carrier.shippingrules.panel());
+        }
+    },
 });
 
 new pimcore.plugin.coreshop();

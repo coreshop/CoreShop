@@ -38,7 +38,7 @@
     background: url(/plugins/CoreShop/static/img/flat/countries.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_zone, .coreshop_price_rule_icon_condition_zone, .coreshop_price_rule_icon_condition_zones {
+.coreshop_icon_zone, .coreshop_rule_icon_condition_zone, .coreshop_rule_icon_condition_zones {
     background: url(/plugins/CoreShop/static/img/flat/zones.svg) center center no-repeat !important;
 }
 
@@ -54,71 +54,68 @@
     background: url(/plugins/CoreShop/static/img/flat/price-rules.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_settings {
-    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important;
-}
-
-.coreshop_price_rule_conditions {
+.coreshop_rule_conditions {
     background: url(/plugins/CoreShop/static/img/flat/search.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_actions {
+.coreshop_rule_actions {
     background: url(/plugins/CoreShop/static/img/flat/lightning.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_amount {
+.coreshop_rule_icon_condition_amount {
     background: url(/plugins/CoreShop/static/img/flat/currencies.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_quantity {
+.coreshop_rule_icon_condition_weight {
+    background: url(/plugins/CoreShop/static/img/flat/weight.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_quantity {
     background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_category, .coreshop_price_rule_icon_condition_categories {
+.coreshop_rule_icon_condition_category, .coreshop_rule_icon_condition_categories {
     background: url(/plugins/CoreShop/static/img/flat/category.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_customer, .coreshop_price_rule_icon_condition_customers {
+.coreshop_rule_icon_condition_customer, .coreshop_rule_icon_condition_customers {
     background: url(/plugins/CoreShop/static/img/flat/customer.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_country, .coreshop_price_rule_icon_condition_countries {
+.coreshop_rule_icon_condition_country, .coreshop_rule_icon_condition_countries {
     background: url(/plugins/CoreShop/static/img/flat/countries.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_product, .coreshop_price_rule_icon_condition_products {
+.coreshop_rule_icon_condition_product, .coreshop_rule_icon_condition_products {
     background: url(/plugins/CoreShop/static/img/flat/product.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_timeSpan {
+.coreshop_rule_icon_condition_timeSpan {
     background: url(/plugins/CoreShop/static/img/flat/time-span.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_totalAvailable {
+.coreshop_rule_icon_condition_totalAvailable {
     background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_totalPerCustomer {
+.coreshop_rule_icon_condition_totalPerCustomer {
     background: url(/plugins/CoreShop/static/img/flat/customer-group.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_action_freeShipping {
+.coreshop_rule_icon_action_freeShipping {
     background: url(/plugins/CoreShop/static/img/flat/free-shipping.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_action_discountAmount {
+.coreshop_rule_icon_action_discountAmount,
+.coreshop_rule_icon_action_discountPercent,
+.coreshop_rule_icon_action_newPrice,
+.coreshop_rule_icon_action_additionAmount,
+.coreshop_rule_icon_action_additionPercent,
+.coreshop_rule_icon_action_fixedPrice{
     background: url(/plugins/CoreShop/static/img/flat/currencies.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_action_discountPercent {
-    background: url(/plugins/CoreShop/static/img/flat/currencies.svg) center center no-repeat !important;
-}
-
-.coreshop_price_rule_icon_action_newPrice {
-    background: url(/plugins/CoreShop/static/img/flat/currencies.svg) center center no-repeat !important;
-}
-
-.coreshop_price_rule_icon_action_gift {
+.coreshop_rule_icon_action_gift {
     background: url(/plugins/CoreShop/static/img/flat/gift.svg) center center no-repeat !important;
 }
 
@@ -128,10 +125,6 @@
 
 .coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier, .coreshop_icon_report_carriers {
     background: url(/plugins/CoreShop/static/img/flat/carriers.svg) center center no-repeat !important;
-}
-
-.coreshop_carrier_settings_icon {
-    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important
 }
 
 .coreshop_icon_shipping {
@@ -178,7 +171,7 @@
     background: url(/plugins/CoreShop/static/img/flat/setup.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_customer_groups, .pimcore_icon_coreShopCustomerGroupMultiselect, .pimcore_icon_coreShopCustomerGroup, .coreshop_price_rule_icon_condition_customerGroup, .coreshop_price_rule_icon_condition_customerGroups {
+.coreshop_icon_customer_groups, .pimcore_icon_coreShopCustomerGroupMultiselect, .pimcore_icon_coreShopCustomerGroup, .coreshop_rule_icon_condition_customerGroup, .coreshop_rule_icon_condition_customerGroups {
     background: url(/plugins/CoreShop/static/img/flat/customer-group.svg) center center no-repeat !important;
 }
 
@@ -188,10 +181,6 @@
 
 .coreshop_icon_orders_invoice {
     background: url(/plugins/CoreShop/static/img/flat/invoice.svg) center center no-repeat !important;
-}
-
-.coreshop_icon_indexes_settings {
-    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important
 }
 
 .coreshop_icon_indexes, .coreshop_icon_indexes_fields {
@@ -305,16 +294,20 @@
     background: url(/plugins/CoreShop/static/img/flat/similarities-field.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_shop, .pimcore_icon_coreShopShopMultiselect, .pimcore_icon_coreShopShop, .coreshop_price_rule_icon_condition_shop, .coreshop_price_rule_icon_condition_shops {
+.coreshop_icon_shop, .pimcore_icon_coreShopShopMultiselect, .pimcore_icon_coreShopShop, .coreshop_rule_icon_condition_shop, .coreshop_rule_icon_condition_shops {
     background: url(/plugins/CoreShop/static/img/flat/shop.svg) center center no-repeat !important;
 }
 
-.coreshop_price_rule_icon_condition_persona, .coreshop_price_rule_icon_condition_personas {
+.coreshop_rule_icon_condition_persona, .coreshop_rule_icon_condition_personas {
     background: url(/pimcore/static6/img/flat-color-icons/businessman.svg) center center no-repeat !important;
 }
 
 .coreshop_price_rule_vouchers {
     background: url(/plugins/CoreShop/static/img/flat/voucher.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_carrier_shipping_rule {
+    background: url(/plugins/CoreShop/static/img/flat/shippingrules.svg) center center no-repeat !important;
 }
 
 .x-tool-coreshop-open {

@@ -40,7 +40,7 @@ class Dao extends AbstractDao
      */
     public function getByCarrierAndRange($carrier, $range)
     {
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE `carrier` = ? AND `range` = ?', [$carrier, $range]);
+        $data = $this->db->fetchRow('SELECT * FROM '.$this->getTableName().' WHERE `carrierId` = ? AND `rangeId` = ?', [$carrier, $range]);
 
         if (!$data['id']) {
             throw new Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");

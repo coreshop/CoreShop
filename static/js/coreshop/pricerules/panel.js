@@ -13,7 +13,7 @@
 
 pimcore.registerNS('pimcore.plugin.coreshop.pricerules.panel');
 
-pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
+pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.rules.panel, {
 
     /**
      * @var string
@@ -27,39 +27,8 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
         add : '/plugin/CoreShop/admin_price-rule/add',
         delete : '/plugin/CoreShop/admin_price-rule/delete',
         get : '/plugin/CoreShop/admin_price-rule/get',
-        list : '/plugin/CoreShop/admin_price-rule/list'
-    },
-
-    /**
-     * @var array
-     */
-    conditions: [],
-
-    /**
-     * @var array
-     */
-    actions: [],
-
-    /**
-     * constructor
-     */
-    initialize: function () {
-        var me = this;
-
-        Ext.Ajax.request({
-            url: '/plugin/CoreShop/admin_price-rule/get-config',
-            method: 'GET',
-            success: function (result) {
-                var config = Ext.decode(result.responseText);
-                me.conditions = config.conditions;
-                me.actions = config.actions;
-            }
-        });
-
-        // create layout
-        this.getLayout();
-
-        this.panels = [];
+        list : '/plugin/CoreShop/admin_price-rule/list',
+        config : '/plugin/CoreShop/admin_price-rule/get-config'
     },
 
     getItemClass : function () {

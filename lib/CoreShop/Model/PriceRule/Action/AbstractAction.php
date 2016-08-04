@@ -15,20 +15,14 @@
 namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
-use CoreShop\Model\PriceRule\AbstractActionCondition;
 use CoreShop\Model\Product;
 
 /**
  * Class AbstractAction
  * @package CoreShop\Model\PriceRule\Action
  */
-abstract class AbstractAction extends AbstractActionCondition
+abstract class AbstractAction extends \CoreShop\Model\Rules\Action\AbstractAction
 {
-    /**
-     * @var string
-     */
-    public $elementType = 'action';
-
     /**
      * Apply Rule to Cart.
      *

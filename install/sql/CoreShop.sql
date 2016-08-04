@@ -670,3 +670,21 @@ CREATE TABLE `coreshop_voucher_codes` (
   `uses` tinyint(12) NOT NULL,
   `priceRuleId` int NOT NULL
 );
+
+DROP TABLE IF EXISTS `coreshop_carrier_shippingrules`;
+CREATE TABLE `coreshop_carrier_shippingrules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `description` text,
+  `conditions` text,
+  `actions` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `coreshop_carrier_shippingrule_groups`;
+CREATE TABLE `coreshop_carrier_shippingrule_groups` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `carrierId` int NOT NULL,
+  `priority` int NOT NULL,
+  `shippingRuleId` int NOT NULL
+);

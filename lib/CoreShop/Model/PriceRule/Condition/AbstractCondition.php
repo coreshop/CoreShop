@@ -21,13 +21,8 @@ use CoreShop\Model\Cart\PriceRule;
  * Class AbstractCondition
  * @package CoreShop\Model\PriceRule\Condition
  */
-abstract class AbstractCondition extends Model\PriceRule\AbstractActionCondition
+abstract class AbstractCondition extends Model\Rules\Condition\AbstractCondition
 {
-    /**
-     * @var string
-     */
-    public $elementType = '';
-
     /**
      * Check if Cart is Valid for Condition.
      *

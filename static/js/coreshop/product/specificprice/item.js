@@ -24,7 +24,7 @@ pimcore.plugin.coreshop.product.specificprice.item = Class.create(pimcore.plugin
         var data = this.data;
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: 'coreshop_price_rule_settings',
+            iconCls: 'coreshop_icon_settings',
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,

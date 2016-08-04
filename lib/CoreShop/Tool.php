@@ -170,9 +170,11 @@ class Tool
             return $cart->getCustomerShippingAddress();
         }
 
-        if($user->getAddresses() instanceof Object\Fieldcollection) {
-            if($user->getAddresses()->get(0) instanceof User\Address) {
-                return $user->getAddresses()->get(0);
+        if($user instanceof User) {
+            if ($user->getAddresses() instanceof Object\Fieldcollection) {
+                if ($user->getAddresses()->get(0) instanceof User\Address) {
+                    return $user->getAddresses()->get(0);
+                }
             }
         }
 

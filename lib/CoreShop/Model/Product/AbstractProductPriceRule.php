@@ -40,11 +40,6 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
     public static $availableActions = array();
 
     /**
-     * @var string
-     */
-    public static $type;
-
-    /**
      * @var int
      */
     public $id;
@@ -53,42 +48,6 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
      * @var string
      */
     public $name;
-
-    /**
-     * @var array
-     */
-    public $conditions;
-
-    /**
-     * @var array
-     */
-    public $actions;
-
-    /**
-     * Add Condition Type.
-     *
-     * @param $condition
-     */
-    public static function addCondition($condition)
-    {
-        if (!in_array($condition, self::$availableConditions)) {
-            $class = get_called_class();
-            $class::$availableConditions[] = $condition;
-        }
-    }
-
-    /**
-     * Add Action Type.
-     *
-     * @param $action
-     */
-    public static function addAction($action)
-    {
-        if (!in_array($action, self::$availableActions)) {
-            $class = get_called_class();
-            $class::$availableActions[] = $action;
-        }
-    }
 
     /**
      * Check if PriceRule is Valid for Cart.
@@ -161,46 +120,6 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
         $this->id = $id;
     }
 
-    /**
-     * @return AbstractCondition[]
-     */
-    public function getConditions()
-    {
-        if (!is_array($this->conditions)) {
-            $this->conditions = array();
-        }
-
-        return $this->conditions;
-    }
-
-    /**
-     * @param array $conditions
-     */
-    public function setConditions($conditions)
-    {
-        $this->conditions = $conditions;
-    }
-
-    /**
-     * @return AbstractAction[]
-     */
-    public function getActions()
-    {
-        if (!is_array($this->actions)) {
-            $this->actions = array();
-        }
-
-        return $this->actions;
-    }
-
-    /**
-     * @param array $actions
-     */
-    public function setActions($actions)
-    {
-        $this->actions = $actions;
-    }
-
 
     /**
      * @return string
@@ -216,16 +135,6 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getType()
-    {
-        $class = get_called_class();
-
-        return $class::$type;
     }
 
     /**
