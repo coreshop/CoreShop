@@ -44,16 +44,6 @@ class ShippingRule extends AbstractRule
     public static $availableActions = array('fixedPrice', 'additionAmount', 'additionPercent', 'discountAmount', 'discountPercent');
 
     /**
-     * save model to database.
-     */
-    public function save()
-    {
-        parent::save();
-
-        Cache::clearTag("coreshop_carrier_shipping_rule");
-    }
-
-    /**
      * Check if Shipping Rule is valid
      *
      * @param Carrier $carrier
@@ -64,45 +54,18 @@ class ShippingRule extends AbstractRule
      */
     public function checkValidity(Carrier $carrier, Cart $cart, Address $address)
     {
-        $cacheKey = self::getCacheKey(get_called_class(), $this->getId() . "" . $carrier->getId() . "" . $cart->getId() . "checkValidity");
+        $valid = true;
 
-        try {
-            $valid = \Zend_Registry::get($cacheKey);
-            if ($valid === false) {
-                throw new Exception('Validation in registry is null');
-            }
-
-            return $valid;
-        } catch (\Exception $e) {
-            try {
-                if(Cache::test($cacheKey)) {
-                    $valid = Cache::load($cacheKey);
-
-                    \Zend_Registry::set($cacheKey,  $valid ? 1 : 0);
+        foreach($this->getConditions() as $condition) {
+            if($condition instanceof AbstractCondition) {
+                if(!$condition->checkCondition($cart, $address, $this)) {
+                    $valid = false;
+                    break;
                 }
-                else {
-                    $valid = true;
-
-                    foreach($this->getConditions() as $condition) {
-                        if($condition instanceof AbstractCondition) {
-                            if(!$condition->checkCondition($cart, $address, $this)) {
-                                $valid = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    \Zend_Registry::set($cacheKey, $valid ? 1 : 0);
-                    Cache::save( $valid ? 1 : 0, $cacheKey, array($cacheKey, 'coreshop_carrier_shipping_rule'));
-                }
-
-                return $valid;
-            } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
             }
         }
 
-        return false;
+        return $valid;
     }
 
     /**

@@ -328,17 +328,7 @@ class Carrier extends AbstractModel
 
         return null;
     }
-
-    /**
-     * save model to database.
-     */
-    public function save()
-    {
-        parent::save();
-
-        Cache::clearTag("coreshop_carrier_shipping_rule");
-    }
-
+    
     /**
      * get shipping rule groups
      *
