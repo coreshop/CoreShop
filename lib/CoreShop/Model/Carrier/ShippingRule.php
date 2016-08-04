@@ -14,11 +14,13 @@
 
 namespace CoreShop\Model\Carrier;
 
+use CoreShop\Exception;
 use CoreShop\Model\Carrier\ShippingRule\Action\AbstractAction;
 use CoreShop\Model\Carrier\ShippingRule\Condition\AbstractCondition;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Rules\AbstractRule;
 use CoreShop\Model\User\Address;
+use Pimcore\Cache;
 
 /**
  * Class ShippingRule
@@ -41,6 +43,16 @@ class ShippingRule extends AbstractRule
     public static $availableActions = array('fixedPrice', 'additionAmount', 'additionPercent', 'discountAmount', 'discountPercent');
 
     /**
+     * save model to database.
+     */
+    public function save()
+    {
+        parent::save();
+
+        Cache::clearTag("coreshop_carrier_shipping_rule");
+    }
+
+    /**
      * Check if Shipping Rule is valid
      *
      * @param Cart $cart
@@ -50,15 +62,43 @@ class ShippingRule extends AbstractRule
      */
     public function checkValidity(Cart $cart, Address $address)
     {
-        foreach($this->getConditions() as $condition) {
-            if($condition instanceof AbstractCondition) {
-                if(!$condition->checkCondition($cart, $address, $this)) {
-                    return false;
+        $cacheKey = self::getCacheKey(get_called_class(), $this->getId() . "checkValidity");
+
+        try {
+            $valid = \Zend_Registry::get($cacheKey);
+            if ($valid === false) {
+                throw new Exception('Validation in registry is null');
+            }
+
+            return $valid;
+        } catch (\Exception $e) {
+            try {
+                $valid = Cache::load($cacheKey);
+                if ($valid === false) {
+                    $valid = true;
+
+                    foreach($this->getConditions() as $condition) {
+                        if($condition instanceof AbstractCondition) {
+                            if(!$condition->checkCondition($cart, $address, $this)) {
+                                $valid = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    \Zend_Registry::set($cacheKey, $valid ? 1 : 0);
+                    Cache::save( $valid ? 1 : 0, $cacheKey, array($cacheKey, 'coreshop_carrier_shipping_rule'));
+                } else {
+                    \Zend_Registry::set($cacheKey,  $valid ? 1 : 0);
                 }
+
+                return $valid;
+            } catch (\Exception $e) {
+                \Logger::warning($e->getMessage());
             }
         }
 
-        return true;
+        return false;
     }
 
     /**
