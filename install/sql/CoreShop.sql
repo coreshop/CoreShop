@@ -10,40 +10,12 @@ CREATE TABLE `coreshop_carriers` (
   `isFree` tinyint NOT NULL DEFAULT '0',
   `shippingMethod` enum('price','weight') NOT NULL,
   `taxRuleGroupId` INT(11) NULL DEFAULT NULL,
-  `needsRange` tinyint(1) NOT NULL DEFAULT '0',
   `rangeBehaviour` enum('largest','deactivate') NOT NULL,
   `maxHeight` double NOT NULL DEFAULT '0',
   `maxWidth` double NOT NULL DEFAULT '0',
   `maxDepth` double NOT NULL DEFAULT '0',
   `maxWeight` double NOT NULL DEFAULT '0',
   `class` varchar(255) NULL
-) COMMENT='';
-
-DROP TABLE IF EXISTS `coreshop_carriers_range_weight`;
-CREATE TABLE `coreshop_carriers_range_weight` (
-  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `carrierId` int NOT NULL,
-  `delimiter1` double NOT NULL,
-  `delimiter2` double NOT NULL
-) COMMENT='';
-
-
-DROP TABLE IF EXISTS `coreshop_carriers_range_price`;
-CREATE TABLE `coreshop_carriers_range_price` (
-  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `carrierId` int NOT NULL,
-  `delimiter1` double NOT NULL,
-  `delimiter2` double NOT NULL
-) COMMENT='';
-
-DROP TABLE IF EXISTS `coreshop_carriers_delivery_price`;
-CREATE TABLE `coreshop_carriers_delivery_price` (
-  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `rangeType` enum('price','weight') NOT NULL,
-  `rangeId` int NOT NULL,
-  `price` double NOT NULL,
-  `zoneId` int,
-  `carrierId` int
 ) COMMENT='';
 
 DROP TABLE IF EXISTS `coreshop_countries`;

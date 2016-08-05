@@ -15,9 +15,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
-use CoreShop\Model\Carrier\AbstractRange;
 use CoreShop\Model\Carrier\Dao;
-use CoreShop\Model\Carrier\DeliveryPrice;
 use CoreShop\Model\Carrier\ShippingRule;
 use CoreShop\Model\Carrier\ShippingRuleGroup;
 use CoreShop\Model\User\Address;
@@ -72,11 +70,6 @@ class Carrier extends AbstractModel
      * @var string
      */
     public $delay;
-
-    /**
-     * @var bool
-     */
-    public $needsRange;
 
     /**
      * @var int
@@ -391,25 +384,6 @@ class Carrier extends AbstractModel
         }
 
         return false;
-    }
-
-    /**
-     * Get the Ranges for this carrier.
-     *
-     * @return AbstractRange[]
-     */
-    public function getRanges()
-    {
-        if ($this->getShippingMethod() == 'weight') {
-            $list = Carrier\RangeWeight::getList();
-        } else {
-            $list = Carrier\RangePrice::getList();
-        }
-
-        $list->setCondition('carrierId=?', array($this->getId()));
-        $list->load();
-
-        return $list->getData();
     }
 
     /**
@@ -851,22 +825,6 @@ class Carrier extends AbstractModel
     public function setMaxWeight($maxWeight)
     {
         $this->maxWeight = $maxWeight;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getNeedsRange()
-    {
-        return $this->needsRange;
-    }
-
-    /**
-     * @param bool $needsRange
-     */
-    public function setNeedsRange($needsRange)
-    {
-        $this->needsRange = $needsRange;
     }
 
     /**

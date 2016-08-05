@@ -146,7 +146,6 @@ class Data
             $carrier->setShippingMethod(Carrier::SHIPPING_METHOD_WEIGHT);
             $carrier->setRangeBehaviour(Carrier::RANGE_BEHAVIOUR_DEACTIVATE);
             $carrier->setTaxRuleGroup(TaxRuleGroup::getById(1));
-            $carrier->setNeedsRange(true);
             $carrier->setIsFree(false);
             $carrier->setShopIds(array(Shop::getDefaultShop()->getId()));
             $carrier->save();
@@ -200,7 +199,6 @@ class Data
             $carrier->setShippingMethod(Carrier::SHIPPING_METHOD_WEIGHT);
             $carrier->setRangeBehaviour(Carrier::RANGE_BEHAVIOUR_LARGEST);
             $carrier->setTaxRuleGroup(TaxRuleGroup::getById(1));
-            $carrier->setNeedsRange(true);
             $carrier->setIsFree(false);
             $carrier->setShopIds(array(Shop::getDefaultShop()->getId()));
             $carrier->save();
