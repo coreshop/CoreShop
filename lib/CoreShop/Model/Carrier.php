@@ -328,7 +328,7 @@ class Carrier extends AbstractModel
 
         return null;
     }
-    
+
     /**
      * get shipping rule groups
      *

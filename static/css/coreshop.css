@@ -70,6 +70,14 @@
     background: url(/plugins/CoreShop/static/img/flat/weight.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_condition_dimension {
+    background: url(/plugins/CoreShop/static/img/flat/dimension.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_postcodes {
+    background: url(/plugins/CoreShop/static/img/flat/postcode.svg) center center no-repeat !important;
+}
+
 .coreshop_rule_icon_condition_quantity {
     background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
 }

@@ -196,6 +196,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/weight.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/zones.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/dimension.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/postcodes.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>
