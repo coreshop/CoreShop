@@ -474,6 +474,8 @@ CREATE TABLE `coreshop_customer_groups` (
 );
 
 
+DELETE FROM `users_permission_definitions` WHERE `key` LIKE 'coreshop_permission%';
+
 INSERT INTO `users_permission_definitions` (`key`)
 VALUES
   ('coreshop_permission_carriers'),
