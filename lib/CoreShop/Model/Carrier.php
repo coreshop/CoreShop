@@ -431,7 +431,7 @@ class Carrier extends AbstractModel
      * @param Cart $cart
      * @param bool $withTax
      * @param Address|null $address
-     * @return bool|DeliveryPrice|float|null
+     * @return bool|float|null
      */
     public function getDeliveryPrice(Cart $cart, $withTax = true, Address $address = null)
     {

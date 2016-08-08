@@ -67,6 +67,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customers.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customerGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customerGroups.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/carriers.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/product.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/products.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/timeSpan.js</path>
@@ -197,6 +198,9 @@
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/zones.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/dimension.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/postcodes.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/products.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/categories.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/customerGroups.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

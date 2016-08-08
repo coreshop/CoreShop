@@ -34,14 +34,14 @@ class PriceRule extends AbstractPriceRule
      *
      * @var array
      */
-    public static $availableConditions = array('customer', 'customers', 'timeSpan', 'amount', 'totalPerCustomer', 'country', 'countries', 'product', 'products', 'category', 'categories', 'customerGroup', 'customerGroups', 'zone', 'zones', 'persona', 'personas');
+    public static $availableConditions = array('customer', 'customers', 'timeSpan', 'amount', 'totalPerCustomer', 'country', 'countries', 'product', 'products', 'category', 'categories', 'customerGroup', 'customerGroups', 'zone', 'zones', 'persona', 'personas', 'carriers');
 
     /**
      * possible types of a action.
      *
      * @var array
      */
-    public static $availableActions = array('freeShipping', 'discountAmount', 'discountPercent', 'gift');
+    public static $availableActions = array('freeShipping', 'discountAmount', 'discountPercent', 'gift', 'shippingPrice');
 
     /**
      * @var string
