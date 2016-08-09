@@ -7,8 +7,8 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2016 Dominik Pfaffenbauer (http://www.pfaffenbauer.at)
- * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ * @copyright  Copyright (c) 2015-2016 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 //pimcore.helpers.openElement = function (id, type, subtype) {
@@ -77,9 +77,9 @@ coreshop.helpers.showAbout = function () {
     html += '<br><img src="/plugins/CoreShop/static/img/logo.svg" style="width: 60px;"><br>';
     html += '<br><b>Version: ' + coreshop.settings.plugin.pluginVersion + '</b>';
     html += '<br><b>Build: ' + coreshop.settings.plugin.pluginRevision + '</b>';
-    html += '<br><br>&copy; by Dominik Pfaffenbauer, Wels, Austria (<a href="http://www.coreshop.org/" target="_blank">coreshop.org</a>)';
+    html += '<br><br>&copy; by Dominik Pfaffenbauer, Wels, Austria (<a href="https://www.coreshop.org/" target="_blank">coreshop.org</a>)';
     html += '<br><br><a href="https://github.com/coreshop/coreshop/blob/master/LICENSE.md" target="_blank">License</a> | ';
-    html += '<a href="http://www.coreshop.org/contact.html" target="_blank">Contact</a>';
+    html += '<a href="https://www.coreshop.org/contact.html" target="_blank">Contact</a>';
     html += '</div>';
 
     var win = new Ext.Window({

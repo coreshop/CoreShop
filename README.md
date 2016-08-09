@@ -9,9 +9,9 @@
 
 * [Getting started](https://github.com/dpfaffenbauer/pimcore-coreshop/wiki/Getting-Started)
 * [Documentation](https://github.com/dpfaffenbauer/pimcore-coreshop/wiki)
-* Website: [www.coreshop.org](http://www.coreshop.org/) - Learn more about CoreShop
-* Demo: [demo.coreshop.org](http://demo.coreshop.org/) - See CoreShop in Action
-* API-Documentation: [api.coreshop.org](http://api.coreshop.org/)
+* Website: [www.coreshop.org](https://www.coreshop.org/) - Learn more about CoreShop
+* Demo: [demo.coreshop.org](https://demo.coreshop.org/) - See CoreShop in Action
+* API-Documentation: [api.coreshop.org](https://api.coreshop.org/)
 
 ## Getting started
 
@@ -37,7 +37,7 @@ composer require coreshop/core-shop dev-master
 ```
 
 ## Copyright and license 
-Copyright: [Dominik Pfaffenbauer](http://dominik.pfaffenbauer.at)  
+Copyright: [Dominik Pfaffenbauer](https://www.pfaffenbauer.at)
 For licensing details please visit [LICENSE.md](LICENSE.md) 
 
 ## Screenshots

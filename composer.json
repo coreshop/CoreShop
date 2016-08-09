@@ -4,11 +4,11 @@
     "license": "GPLv3",
     "description": "CoreShop is the first OpenSource Onlineshop System for Pimcore!",
     "keywords": ["pimcore", "coreshop", "pimcore-onlineshop", "onlineshop", "ecommerce", "pimcore-plugin"],
-    "homepage": "http://www.coreshop.org",
+    "homepage": "https://www.coreshop.org",
     "authors": [{
         "name": "Dominik Pfaffenbauer",
         "email": "dominik@pfaffenbauer.at",
-        "homepage": "http://www.pfaffenbauer.at/",
+        "homepage": "https://www.pfaffenbauer.at/",
         "role": "Developer"
     }],
     "require": {
