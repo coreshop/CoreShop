@@ -13,7 +13,7 @@
  */
 
 use CoreShop\Model\TaxRuleGroup;
-use Pimcore\Controller\Action\Admin;
+use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_TaxRuleGroupController

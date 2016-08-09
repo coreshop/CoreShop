@@ -14,7 +14,7 @@
 
 use CoreShop\Tool;
 use CoreShop\Model;
-use Pimcore\Controller\Action\Admin;
+use CoreShop\Controller\Action\Admin;
 use CoreShop\Helper\ReportQuery;
 
 /**

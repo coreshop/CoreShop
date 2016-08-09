@@ -12,7 +12,7 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use Pimcore\Controller\Action\Admin;
+use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_ObjectController

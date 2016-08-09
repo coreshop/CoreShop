@@ -12,10 +12,12 @@
  * @license    http://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+use CoreShop\Controller\Action\Admin;
+
 /**
  * Class CoreShop_Admin_UpdateController+
  */
-class CoreShop_Admin_UpdateController extends \Pimcore\Controller\Action\Admin
+class CoreShop_Admin_UpdateController extends Admin
 {
     public function init()
     {

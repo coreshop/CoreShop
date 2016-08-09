@@ -20,4 +20,43 @@ namespace CoreShop\Controller\Action;
  */
 class Admin extends \Pimcore\Controller\Action\Admin
 {
+    public function init()
+    {
+        parent::init();
+
+        $this->logCoreShopUsageStatistics();
+    }
+
+    /**
+     * @throws \Zend_Json_Exception
+     */
+    protected function logCoreShopUsageStatistics()
+    {
+        $params = [];
+        $disallowedKeys = ["_dc", "module", "controller", "action", "password"];
+        foreach ($this->getAllParams() as $key => $value) {
+            if (is_json($value)) {
+                $value = \Zend_Json::decode($value);
+                if (is_array($value)) {
+                    array_walk_recursive($value, function (&$item, $key) {
+                        if (strpos($key, "pass") !== false) {
+                            $item = "*************";
+                        }
+                    });
+                }
+                $value = \Zend_Json::encode($value);
+            }
+
+
+            if (!in_array($key, $disallowedKeys) && is_string($value)) {
+                $params[$key] = (strlen($value) > 40) ? substr($value, 0, 40) . "..." : $value;
+            }
+        }
+
+        \Pimcore\Log\Simple::log("coreshop-usagelog",
+            ($this->getUser() ? $this->getUser()->getId() : "0") . "|" .
+            $this->getParam("module") . "|" .
+            $this->getParam("controller") . "|" .
+            $this->getParam("action")."|" . @json_encode($params));
+    }
 }

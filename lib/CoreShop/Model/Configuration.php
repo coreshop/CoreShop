@@ -35,7 +35,9 @@ class Configuration extends AbstractModel
      */
     protected static $systemKeys = [
         'SYSTEM.ISINSTALLED',
-        'SYSTEM.MULTISHOP.ENABLED'
+        'SYSTEM.MULTISHOP.ENABLED',
+        'SYSTEM.LOG.USAGESTATISTICS',
+        'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'
     ];
 
     /**

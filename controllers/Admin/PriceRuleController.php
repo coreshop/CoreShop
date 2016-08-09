@@ -13,7 +13,7 @@
  */
 
 use CoreShop\Model\Cart\PriceRule;
-use Pimcore\Controller\Action\Admin;
+use CoreShop\Controller\Action\Admin;
 use Pimcore\Tool as PimTool;
 
 /**

@@ -730,6 +730,7 @@ class Install
         Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);
         Configuration::set("SYSTEM.SHIPPING.CARRIER_SORT", "grade");
         Configuration::set("SYSTEM.BASE.TAX.ENABLED", true);
+        Configuration::set("SYSTEM.LOG.USAGESTATISTICS", true);
     }
 
     /**

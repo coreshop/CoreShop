@@ -13,7 +13,7 @@
  */
 
 use CoreShop\Plugin;
-use Pimcore\Controller\Action\Admin;
+use CoreShop\Controller\Action\Admin;
 use Pimcore\Model\Object;
 
 /**

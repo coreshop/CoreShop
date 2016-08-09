@@ -13,7 +13,7 @@
  */
 
 use CoreShop\Model\Messaging\Thread\State;
-use Pimcore\Controller\Action\Admin;
+use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_MessagingThreadStateController

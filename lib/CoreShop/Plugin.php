@@ -101,6 +101,9 @@ class Plugin extends AbstractPlugin implements PluginInterface
                 if (Configuration::get('SYSTEM.CART.AUTO_CLEANUP')) {
                     $manager->registerJob(new Job('coreshop_cart_cleanup', '\\CoreShop\\Model\\Cart', 'maintenance'));
                 }
+                if (Configuration::get('SYSTEM.LOG.USAGESTATISTICS')) {
+                    $manager->registerJob(new Job('coreshop_send_usage_statistcs', '\\CoreShop\\Maintenance\\Log', 'maintenance'));
+                }
             }
         });
 

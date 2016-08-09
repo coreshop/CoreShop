@@ -183,7 +183,73 @@ pimcore.plugin.coreshop.settings = Class.create({
                                 checked: this.getSystemValue('SYSTEM.MULTISHOP.ENABLED')
                             }
                         ]
-                    }
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: t('coreshop_system_settings'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight: true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: {width: 600},
+                        items: [
+                            {
+                                fieldLabel: t('coreshop_send_usagelog'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.LOG.USAGESTATISTICS',
+                                checked: this.getSystemValue('SYSTEM.LOG.USAGESTATISTICS')
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: t('coreshop_currency'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight: true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: {width: 600},
+                        items: [
+                            {
+                                fieldLabel: t('coreshop_currency_automatic_exchange_rates'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES',
+                                checked: this.getValue(shopId, 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
+                                listeners: {
+                                    change: function (checkbox, newValue) {
+                                        checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setHidden(!newValue);
+                                        checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setDisabled(!newValue);
+
+                                        checkbox.up('fieldset').down('label').setHidden(!newValue);
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'combo',
+                                fieldLabel: t('coreshop_currency_exchange_rate_provider'),
+                                name: 'SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER',
+                                value: this.getValue(shopId, 'SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER'),
+                                width: 500,
+                                hidden: !this.getValue(shopId, 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
+                                disabled: !this.getValue(shopId, 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
+                                store: this.exchangeRatesStore,
+                                triggerAction: 'all',
+                                typeAhead: false,
+                                editable: false,
+                                forceSelection: true,
+                                queryMode: 'local',
+                                displayField: 'name',
+                                valueField: 'name'
+                            },
+                            {
+                                xtype: 'label',
+                                text: t('coreshop_currency_exchange_rate_last_update') + ': ' + Ext.Date.format(new Date(this.getValue(shopId, 'SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE') * 1000), Ext.Date.defaultFormat),
+                                hidden: !this.getValue(shopId, 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
+                            }
+                        ]
+                    },
                 ]
             });
 
@@ -676,42 +742,6 @@ pimcore.plugin.coreshop.settings = Class.create({
                                     this.forceReloadOnSave = true;
                                 }.bind(this)
                             }
-                        },
-                        {
-                            fieldLabel: t('coreshop_currency_automatic_exchange_rates'),
-                            xtype: 'checkbox',
-                            name: 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES',
-                            checked: this.getValue(shopId, 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
-                            listeners: {
-                                change: function (checkbox, newValue) {
-                                    checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setHidden(!newValue);
-                                    checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setDisabled(!newValue);
-
-                                    checkbox.up('fieldset').down('label').setHidden(!newValue);
-                                }
-                            }
-                        },
-                        {
-                            xtype: 'combo',
-                            fieldLabel: t('coreshop_currency_exchange_rate_provider'),
-                            name: 'SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER',
-                            value: this.getValue(shopId, 'SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER'),
-                            width: 500,
-                            hidden: !this.getValue(shopId, 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
-                            disabled: !this.getValue(shopId, 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
-                            store: this.exchangeRatesStore,
-                            triggerAction: 'all',
-                            typeAhead: false,
-                            editable: false,
-                            forceSelection: true,
-                            queryMode: 'local',
-                            displayField: 'name',
-                            valueField: 'name'
-                        },
-                        {
-                            xtype: 'label',
-                            text: t('coreshop_currency_exchange_rate_last_update') + ': ' + Ext.Date.format(new Date(this.getValue(shopId, 'SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE') * 1000), Ext.Date.defaultFormat),
-                            hidden: !this.getValue(shopId, 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
                         }
                     ]
                 },
