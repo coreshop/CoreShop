@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Model;
+
 use CoreShop\Exception;
 use Pimcore\Cache;
 use Pimcore\Model\Site;
@@ -21,7 +22,8 @@ use Pimcore\Model\Site;
  * Class Shop
  * @package CoreShop\Model
  */
-class Shop extends AbstractModel {
+class Shop extends AbstractModel
+{
 
     /**
      * @var int
@@ -55,8 +57,9 @@ class Shop extends AbstractModel {
      *
      * @returns Shop
      */
-    public static function getShop() {
-        if(Configuration::multiShopEnabled()) {
+    public static function getShop()
+    {
+        if (Configuration::multiShopEnabled()) {
             if (Site::isSiteRequest()) {
                 $site = Site::getCurrentSite();
 
@@ -74,7 +77,8 @@ class Shop extends AbstractModel {
      *
      * @returns Shop
      */
-    public static function getShopForSite(Site $site) {
+    public static function getShopForSite(Site $site)
+    {
         $cacheKey = "coreshop_shop_site_" . $site->getId();
 
         try {
@@ -87,14 +91,13 @@ class Shop extends AbstractModel {
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-
                     $data = self::getList()->setCondition("siteId = ?", array($site->getId()))->getData();
 
-                    if(count($data) > 1) {
+                    if (count($data) > 1) {
                         throw new Exception("More that one shop for this site is configured!");
                     }
 
-                    if(count($data) === 0) {
+                    if (count($data) === 0) {
                         throw new Exception("No shop for this site is configured!");
                     }
 
@@ -123,7 +126,8 @@ class Shop extends AbstractModel {
      *
      * @returns Shop
      */
-    public static function getDefaultShop() {
+    public static function getDefaultShop()
+    {
         $cacheKey = "coreshop_shop_site_default";
 
         try {
@@ -136,14 +140,13 @@ class Shop extends AbstractModel {
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-
                     $data = self::getList()->setCondition("isDefault = 1")->getData();
 
-                    if(count($data) > 1) {
+                    if (count($data) > 1) {
                         throw new Exception("More that one default shop is configured!");
                     }
 
-                    if(count($data) === 0) {
+                    if (count($data) === 0) {
                         throw new Exception("No default shop is configured!");
                     }
 

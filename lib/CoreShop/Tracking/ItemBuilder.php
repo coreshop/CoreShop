@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Tracking;
+
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
@@ -29,7 +30,7 @@ abstract class ItemBuilder
      * @param Product $product
      * @return ProductData
      */
-    public abstract function buildProductViewItem(Product $product);
+    abstract public function buildProductViewItem(Product $product);
 
     /**
      * Build a product action item object
@@ -37,7 +38,7 @@ abstract class ItemBuilder
      * @param Product $product
      * @return ProductData
      */
-    public abstract function buildProductActionItem(Product $product);
+    abstract public function buildProductActionItem(Product $product);
 
     /**
      * Build a product impression object
@@ -45,7 +46,7 @@ abstract class ItemBuilder
      * @param Product $product
      * @return ImpressionData
      */
-    public abstract function buildProductImpressionItem(Product $product);
+    abstract public function buildProductImpressionItem(Product $product);
 
     /**
      * Build a checkout transaction object
@@ -53,7 +54,7 @@ abstract class ItemBuilder
      * @param Order $order
      * @return ActionData
      */
-    public abstract function buildOrderAction(Order $order);
+    abstract public function buildOrderAction(Order $order);
 
     /**
      * Build checkout items
@@ -61,7 +62,7 @@ abstract class ItemBuilder
      * @param Order $order
      * @return ProductData[]
      */
-    public abstract function buildCheckoutItems(Order $order);
+    abstract public function buildCheckoutItems(Order $order);
 
     /**
      * Build checkout items by cart
@@ -69,7 +70,7 @@ abstract class ItemBuilder
      * @param Cart $cart
      * @return mixed
      */
-    public abstract function buildCheckoutItemsByCart(Cart $cart);
+    abstract public function buildCheckoutItemsByCart(Cart $cart);
 
     /**
      * Build a checkout item object
@@ -78,5 +79,5 @@ abstract class ItemBuilder
      * @param Order\Item $orderItem
      * @return ProductData
      */
-    public abstract function buildCheckoutItem(Order $order, Order\Item $orderItem);
+    abstract public function buildCheckoutItem(Order $order, Order\Item $orderItem);
 }

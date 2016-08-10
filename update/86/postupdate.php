@@ -8,10 +8,10 @@ $install->createClass('CoreShopCart');
 //Migrate all Orders
 $list = \CoreShop\Model\Order::getList();
 
-foreach($list->getObjects() as $object) {
+foreach ($list->getObjects() as $object) {
     $priceRule = $object->getPriceRule();
 
-    if($object instanceof \CoreShop\Model\Order) {
+    if ($object instanceof \CoreShop\Model\Order) {
         if ($priceRule instanceof \CoreShop\Model\Cart\PriceRule) {
             $item = \CoreShop\Model\PriceRule\Item::create();
 

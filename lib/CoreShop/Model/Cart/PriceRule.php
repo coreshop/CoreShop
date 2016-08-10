@@ -95,7 +95,7 @@ class PriceRule extends AbstractPriceRule
         //Search for a PriceRule with a single code
         $priceRule = parent::getByField('code', $code);
 
-        if($priceRule instanceof PriceRule) {
+        if ($priceRule instanceof PriceRule) {
             return $priceRule;
         }
 
@@ -104,7 +104,7 @@ class PriceRule extends AbstractPriceRule
         $voucherList->setCondition("code = ?", $code);
         $voucherData = $voucherList->getData();
 
-        if(count($voucherData) > 0) {
+        if (count($voucherData) > 0) {
             return $voucherData[0]->getPriceRule();
         }
 
@@ -140,7 +140,7 @@ class PriceRule extends AbstractPriceRule
         $availablePriceRules = array();
 
         foreach ($priceRules as $priceRule) {
-            if($priceRule instanceof PriceRule) {
+            if ($priceRule instanceof PriceRule) {
                 if ($priceRule->checkValidity($cart, false, true)) {
                     $found = false;
 
@@ -176,10 +176,10 @@ class PriceRule extends AbstractPriceRule
             $cart = Tool::prepareCart();
         }
 
-        foreach($cart->getPriceRules() as $priceRuleItem) {
+        foreach ($cart->getPriceRules() as $priceRuleItem) {
             $priceRule = $priceRuleItem->getPriceRule();
 
-            if($priceRule instanceof PriceRule) {
+            if ($priceRule instanceof PriceRule) {
                 if (!$priceRule->checkValidity($cart, null, false, true)) {
                     $cart->removePriceRule($priceRule);
                 }
@@ -200,7 +200,7 @@ class PriceRule extends AbstractPriceRule
             $cart = Tool::prepareCart();
         }
 
-        if(count($cart->getItems()) <= 0) {
+        if (count($cart->getItems()) <= 0) {
             return false;
         }
 
@@ -226,7 +226,8 @@ class PriceRule extends AbstractPriceRule
      *
      * @return int
      */
-    public static function getTotalUsesForPriceRule($priceRule, $voucherCode) {
+    public static function getTotalUsesForPriceRule($priceRule, $voucherCode)
+    {
         $list = Order::getList();
         $list->setCondition("priceRule = ? AND voucher = ?", array($priceRule->getId(), $voucherCode));
         $list->load();
@@ -253,7 +254,7 @@ class PriceRule extends AbstractPriceRule
         }
 
         //Carts without any items are invalid
-        if(count($cart->getItems()) <= 0) {
+        if (count($cart->getItems()) <= 0) {
             return false;
         }
 
@@ -262,14 +263,13 @@ class PriceRule extends AbstractPriceRule
             return false;
         }
 
-        if($this->getUsagePerVoucherCode() > 0 && $voucherCode) {
+        if ($this->getUsagePerVoucherCode() > 0 && $voucherCode) {
             $totalUses = self::getTotalUsesForPriceRule($this, $voucherCode);
 
-            if($totalUses >= intval($this->getUsagePerVoucherCode())) {
-                if($throwException) {
+            if ($totalUses >= intval($this->getUsagePerVoucherCode())) {
+                if ($throwException) {
                     throw new Exception('You cannot use this voucher anymore (usage limit reached)');
-                }
-                else {
+                } else {
                     return false;
                 }
             }
@@ -325,11 +325,12 @@ class PriceRule extends AbstractPriceRule
      *
      * @param Order $order
      */
-    public function applyOrder(Order $order) {
-        if($order->getVoucher()) {
+    public function applyOrder(Order $order)
+    {
+        if ($order->getVoucher()) {
             $voucherCode = Cart\PriceRule\VoucherCode::getByCode($order->getVoucher());
 
-            if($voucherCode instanceof Cart\PriceRule\VoucherCode) {
+            if ($voucherCode instanceof Cart\PriceRule\VoucherCode) {
                 $voucherCode->increaseUsage();
             }
         }
@@ -340,11 +341,12 @@ class PriceRule extends AbstractPriceRule
      *
      * @param Order $order
      */
-    public function unApplyOrder(Order $order) {
-        if($order->getVoucher()) {
+    public function unApplyOrder(Order $order)
+    {
+        if ($order->getVoucher()) {
             $voucherCode = Cart\PriceRule\VoucherCode::getByCode($order->getVoucher());
 
-            if($voucherCode instanceof Cart\PriceRule\VoucherCode) {
+            if ($voucherCode instanceof Cart\PriceRule\VoucherCode) {
                 $voucherCode->decreaseUsage();
             }
         }
@@ -374,7 +376,8 @@ class PriceRule extends AbstractPriceRule
     /**
      * @return Cart\PriceRule\VoucherCode[]
      */
-    public function getVoucherCodes() {
+    public function getVoucherCodes()
+    {
         $list = Cart\PriceRule\VoucherCode::getList();
         $list->setCondition("priceRuleId = ?", array($this->getId()));
 

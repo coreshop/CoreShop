@@ -44,17 +44,17 @@ class Fieldcollection extends AbstractGetter
         $fieldValues = [];
         $fieldGetter = 'get' . ucfirst($config->getKey());
 
-        if($collectionContainer instanceof \Pimcore\Model\Object\Fieldcollection) {
-            foreach($collectionContainer->getItems() as $item) {
+        if ($collectionContainer instanceof \Pimcore\Model\Object\Fieldcollection) {
+            foreach ($collectionContainer->getItems() as $item) {
                 $className = 'Pimcore\Model\Object\Fieldcollection\Data\\' . $config->getClassName();
-                if(is_a($item, $className)) {
+                if (is_a($item, $className)) {
                     $validItems[] = $item;
                 }
             }
         }
 
-        foreach($validItems as $item) {
-            if(method_exists($item, $fieldGetter)) {
+        foreach ($validItems as $item) {
+            if (method_exists($item, $fieldGetter)) {
                 $fieldValues[] = $item->$fieldGetter();
             }
         }

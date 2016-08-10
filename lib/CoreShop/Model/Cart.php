@@ -168,8 +168,8 @@ class Cart extends Base
         $priceRule = $this->getPriceRules();
         $discount = 0;
 
-        foreach($priceRule as $ruleItem) {
-            if($ruleItem instanceof \CoreShop\Model\PriceRule\Item) {
+        foreach ($priceRule as $ruleItem) {
+            if ($ruleItem instanceof \CoreShop\Model\PriceRule\Item) {
                 $rule = $ruleItem->getPriceRule();
 
                 if ($rule instanceof PriceRule) {
@@ -354,10 +354,11 @@ class Cart extends Base
      *
      * @return bool
      */
-    public function isFreeShipping() {
+    public function isFreeShipping()
+    {
         $priceRuleCollection = $this->getPriceRules();
 
-        foreach($priceRuleCollection as $ruleItem) {
+        foreach ($priceRuleCollection as $ruleItem) {
             $rule = $ruleItem->getPriceRule();
 
             if ($rule instanceof PriceRule) {
@@ -684,8 +685,8 @@ class Cart extends Base
 
             $priceRules = $this->getPriceRuleFieldCollection();
 
-            foreach($priceRules->getItems() as $index => $rule) {
-                if($rule->getPriceRule()->getId() === $priceRule->getId()) {
+            foreach ($priceRules->getItems() as $index => $rule) {
+                if ($rule->getPriceRule()->getId() === $priceRule->getId()) {
                     $priceRules->remove($index);
                     break;
                 }
@@ -710,10 +711,10 @@ class Cart extends Base
         $priceRules = $this->getPriceRules();
         $exists = false;
 
-        foreach($priceRules as $ruleItem) {
+        foreach ($priceRules as $ruleItem) {
             $rule = $ruleItem->getPriceRule();
 
-            if($rule instanceof PriceRule) {
+            if ($rule instanceof PriceRule) {
                 if ($rule->getId() === $priceRule->getId()) {
                     $exists = true;
                     break;
@@ -721,7 +722,7 @@ class Cart extends Base
             }
         }
 
-        if(!$exists) {
+        if (!$exists) {
             $priceRuleData = \CoreShop\Model\PriceRule\Item::create();
 
             $priceRuleData->setPriceRule($priceRule);
@@ -743,10 +744,11 @@ class Cart extends Base
     /**
      * @return \CoreShop\Model\PriceRule\Item[]
      */
-    public function getPriceRules() {
+    public function getPriceRules()
+    {
         $collection = $this->getPriceRuleFieldCollection();
 
-        if($collection instanceof Fieldcollection) {
+        if ($collection instanceof Fieldcollection) {
             return $collection->getItems();
         }
 
@@ -756,7 +758,8 @@ class Cart extends Base
     /**
      * @param \CoreShop\Model\PriceRule\Item[] $priceRules
      */
-    public function setPriceRules($priceRules) {
+    public function setPriceRules($priceRules)
+    {
         $fieldCollection = new Fieldcollection();
         $fieldCollection->setItems($priceRules);
 

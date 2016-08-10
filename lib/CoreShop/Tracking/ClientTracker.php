@@ -22,7 +22,8 @@ use CoreShop\Model\Product;
  * Class Tracker
  * @package CoreShop\Tracking
  */
-abstract class ClientTracker extends Tracker {
+abstract class ClientTracker extends Tracker
+{
     /**
      * @return \Zend_View
      */
@@ -59,7 +60,7 @@ abstract class ClientTracker extends Tracker {
         $data = $config['data'];
         $viewName = $config['viewName'];
 
-        foreach($data as $key=>$value) {
+        foreach ($data as $key=>$value) {
             $view->$key = $value;
         }
 

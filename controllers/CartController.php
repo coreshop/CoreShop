@@ -178,7 +178,7 @@ class CoreShop_CartController extends Action
 
         $id = $this->getParam("id");
 
-        foreach($this->cart->getPriceRules() as $ruleItem) {
+        foreach ($this->cart->getPriceRules() as $ruleItem) {
             if ($ruleItem->getPriceRule() instanceof PriceRule && $ruleItem->getPriceRule()->getId() === $id) {
                 $this->cart->removePriceRule($ruleItem->getPriceRule());
             }

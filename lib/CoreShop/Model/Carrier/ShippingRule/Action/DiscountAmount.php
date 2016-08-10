@@ -48,7 +48,8 @@ class DiscountAmount extends AbstractAction
      *
      * @return float
      */
-    public function getPriceModification(Cart $cart, Model\User\Address $address, $price) {
+    public function getPriceModification(Cart $cart, Model\User\Address $address, $price)
+    {
         return Tool::convertToCurrency(-1 * $this->getAmount(), Model\Currency::getById($this->getCurrency()));
     }
 

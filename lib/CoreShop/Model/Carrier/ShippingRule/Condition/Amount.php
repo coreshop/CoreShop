@@ -48,17 +48,18 @@ class Amount extends AbstractCondition
      *
      * @return mixed
      */
-    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule) {
+    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
+    {
         $totalAmount = $cart->getSubtotal(true);
 
         if ($this->getMinAmount() > 0) {
-            if($totalAmount <= $this->getMinAmount()) {
+            if ($totalAmount <= $this->getMinAmount()) {
                 return false;
             }
         }
 
-        if($this->getMaxAmount() > 0) {
-            if($totalAmount >= $this->getMaxAmount()) {
+        if ($this->getMaxAmount() > 0) {
+            if ($totalAmount >= $this->getMaxAmount()) {
                 return false;
             }
         }

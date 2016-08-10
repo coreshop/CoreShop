@@ -37,7 +37,7 @@ class CoreShop_Admin_SettingsController extends Admin
         $valueArray = [];
         $systemSettings = [];
 
-        foreach($shops as $shop) {
+        foreach ($shops as $shop) {
             $config = new Model\Configuration\Listing();
             $config->setFilter(function ($entry) use ($shop) {
                 if (startsWith($entry['key'], 'SYSTEM.') && ($entry['shop'] === null || $entry['shop'] === $shop->getId())) {
@@ -48,10 +48,9 @@ class CoreShop_Admin_SettingsController extends Admin
             });
 
             foreach ($config->getConfigurations() as $c) {
-                if(in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
+                if (in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
                     $systemSettings[$c->getKey()] = $c->getData();
-                }
-                else {
+                } else {
                     $valueArray[$shop->getId()][$c->getKey()] = $c->getData();
                 }
             }
@@ -90,7 +89,7 @@ class CoreShop_Admin_SettingsController extends Admin
         $valueArray = [];
         $systemValues = [];
             
-        foreach($shops as $shop) {
+        foreach ($shops as $shop) {
             $shopValues = [];
 
             $config = new Model\Configuration\Listing();
@@ -103,10 +102,9 @@ class CoreShop_Admin_SettingsController extends Admin
             });
 
             foreach ($config->getConfigurations() as $c) {
-                if(in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
+                if (in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
                     $systemValues[$c->getKey()] = $c->getData();
-                }
-                else {
+                } else {
                     $shopValues[$c->getKey()] = $c->getData();
                 }
             }
@@ -130,12 +128,12 @@ class CoreShop_Admin_SettingsController extends Admin
         $values = array_htmlspecialchars($values);
         $diff = [];
 
-        if(Model\Configuration::multiShopEnabled()) {
+        if (Model\Configuration::multiShopEnabled()) {
             $diff = call_user_func_array("array_diff_assoc", $values);
         }
 
 
-        if(Model\Configuration::multiShopEnabled()) {
+        if (Model\Configuration::multiShopEnabled()) {
             foreach ($values as $shop => $shopValues) {
                 foreach ($shopValues as $key => $val) {
                     Model\Configuration::remove($key);
@@ -145,18 +143,17 @@ class CoreShop_Admin_SettingsController extends Admin
             }
         }
 
-        foreach($values as $shopId => $shopValues) {
-            foreach($shopValues as $key => $value) {
-                if(array_key_exists($key, $diff)) {
+        foreach ($values as $shopId => $shopValues) {
+            foreach ($shopValues as $key => $value) {
+                if (array_key_exists($key, $diff)) {
                     Model\Configuration::set($key, $value, $shopId);
-                }
-                else {
+                } else {
                     Model\Configuration::set($key, $value);
                 }
             }
         }
 
-        foreach($systemValues as $key => $value) {
+        foreach ($systemValues as $key => $value) {
             Model\Configuration::set($key, $value);
         }
 

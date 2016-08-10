@@ -18,7 +18,8 @@ namespace CoreShop\Tracking;
  * Class ActionData
  * @package CoreShop\Tracking
  */
-class ActionData extends AbstractData {
+class ActionData extends AbstractData
+{
 
     /**
      * @var string

@@ -22,7 +22,8 @@ use CoreShop\Model\Product;
  * Class TrackingManager
  * @package CoreShop\Tracking
  */
-class TrackingManager {
+class TrackingManager
+{
     /**
      * @var Tracker[]
      */
@@ -38,7 +39,7 @@ class TrackingManager {
      */
     public function __construct()
     {
-        if(\Pimcore::getDiContainer()->has("coreshop.tracker")) {
+        if (\Pimcore::getDiContainer()->has("coreshop.tracker")) {
             $availableTracker = \Pimcore::getDiContainer()->get("coreshop.tracker");
 
             foreach ($availableTracker as $tracker) {
@@ -54,8 +55,9 @@ class TrackingManager {
     /**
      * @return TrackingManager
      */
-    public static function getInstance() {
-        if(!self::$instance) {
+    public static function getInstance()
+    {
+        if (!self::$instance) {
             self::$instance = new self();
         }
 
@@ -66,8 +68,9 @@ class TrackingManager {
      * @param $name
      * @param $params
      */
-    protected function callMethod($name, $params) {
-        foreach($this->tracker as $tracker) {
+    protected function callMethod($name, $params)
+    {
+        foreach ($this->tracker as $tracker) {
             if (method_exists($tracker, $name)) {
                 call_user_func_array(array($tracker, $name), $params);
             }
@@ -78,7 +81,8 @@ class TrackingManager {
      * @param Product $product
      * @return mixed
      */
-    public function trackProductView(Product $product) {
+    public function trackProductView(Product $product)
+    {
         $this->callMethod("trackProductView", array($product));
     }
 
@@ -86,7 +90,8 @@ class TrackingManager {
      * @param Product $product
      * @return mixed
      */
-    public function trackProductImpression(Product $product) {
+    public function trackProductImpression(Product $product)
+    {
         $this->callMethod("trackProductImpression", array($product));
     }
 
@@ -95,7 +100,8 @@ class TrackingManager {
      * @param int $quantity
      * @return mixed
      */
-    public function trackProductActionAdd(Product $product, $quantity = 1) {
+    public function trackProductActionAdd(Product $product, $quantity = 1)
+    {
         $this->callMethod("trackProductActionAdd", array($product, $quantity));
     }
 
@@ -104,7 +110,8 @@ class TrackingManager {
      * @param int $quantity
      * @return mixed
      */
-    public function trackProductActionRemove(Product $product, $quantity = 1) {
+    public function trackProductActionRemove(Product $product, $quantity = 1)
+    {
         $this->callMethod("trackProductActionRemove", array($product, $quantity));
     }
 
@@ -114,7 +121,8 @@ class TrackingManager {
      * @param null $checkoutOption
      * @return mixed
      */
-    public function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null) {
+    public function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null)
+    {
         $this->callMethod("trackCheckout", array($cart, $stepNumber, $checkoutOption));
     }
 
@@ -124,7 +132,8 @@ class TrackingManager {
      * @param null $checkoutOption
      * @return mixed
      */
-    public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null) {
+    public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null)
+    {
         $this->callMethod("trackCheckoutStep", array($cart, $stepNumber, $checkoutOption));
     }
 
@@ -134,7 +143,8 @@ class TrackingManager {
      * @param null $checkoutOption
      * @return mixed
      */
-    public function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null) {
+    public function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null)
+    {
         $this->callMethod("trackCheckoutAction", array($cart, $stepNumber, $checkoutOption));
     }
 
@@ -142,7 +152,8 @@ class TrackingManager {
      * @param Order $order
      * @return mixed
      */
-    public function trackCheckoutComplete(Order $order) {
+    public function trackCheckoutComplete(Order $order)
+    {
         $this->callMethod("trackCheckoutComplete", array($order));
     }
 }

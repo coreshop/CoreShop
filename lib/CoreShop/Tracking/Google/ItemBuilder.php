@@ -26,7 +26,8 @@ use CoreShop\Tracking\ProductData;
  * Class ItemBuilder
  * @package CoreShop\Tracking\Google
  */
-class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
+class ItemBuilder extends \CoreShop\Tracking\ItemBuilder
+{
     
     /**
      * Build a product view object
@@ -34,7 +35,8 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
      * @param Product $product
      * @return ProductData
      */
-    public function buildProductViewItem(Product $product) {
+    public function buildProductViewItem(Product $product)
+    {
         return $this->buildProductActionItem($product);
     }
 
@@ -45,7 +47,8 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
      * @param int $quantity
      * @return ProductData
      */
-    public function buildProductActionItem(Product $product, $quantity = 1) {
+    public function buildProductActionItem(Product $product, $quantity = 1)
+    {
         $item = new ProductData();
 
         $item->setId($product->getId());
@@ -63,7 +66,8 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
      * @param Product $product
      * @return ImpressionData
      */
-    public function buildProductImpressionItem(Product $product) {
+    public function buildProductImpressionItem(Product $product)
+    {
         $item = new ImpressionData();
         $item->setId($product->getId());
         $item->setName($product->getName());
@@ -79,7 +83,8 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
      * @param Order $order
      * @return ActionData
      */
-    public function buildOrderAction(Order $order) {
+    public function buildOrderAction(Order $order)
+    {
         $item = new ActionData();
         $item->setId($order->getOrderNumber());
         $item->setRevenue($order->getTotal());
@@ -87,7 +92,7 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
         $item->setTax($order->getTotalTax());
         $item->setAffiliation($order->getShop()->getName());
 
-        if($order->getPriceRule() instanceof AbstractPriceRule) {
+        if ($order->getPriceRule() instanceof AbstractPriceRule) {
             $item->setCoupon($order->getPriceRule()->getName());
         }
 
@@ -100,10 +105,11 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
      * @param Order $order
      * @return ProductData[]
      */
-    public function buildCheckoutItems(Order $order) {
+    public function buildCheckoutItems(Order $order)
+    {
         $items = [];
 
-        foreach($order->getItems() as $item) {
+        foreach ($order->getItems() as $item) {
             $items[] = $this->buildCheckoutItem($order, $item);
         }
 
@@ -116,7 +122,8 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
      * @param Cart $cart
      * @return mixed
      */
-    public function buildCheckoutItemsByCart(Cart $cart) {
+    public function buildCheckoutItemsByCart(Cart $cart)
+    {
         $items = [];
 
         foreach ($cart->getItems() as $item) {
@@ -133,7 +140,8 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder {
      * @param Order\Item $orderItem
      * @return ProductData
      */
-    public function buildCheckoutItem(Order $order, Order\Item $orderItem) {
+    public function buildCheckoutItem(Order $order, Order\Item $orderItem)
+    {
         $item = new ProductData();
         $item->setId($orderItem->getId());
         $item->setName($orderItem->getProduct()->getName());

@@ -62,10 +62,10 @@ class Products extends AbstractCondition
      */
     public function checkCondition(Cart $cart, Address $address, ShippingRule $shippingRule)
     {
-        foreach($cart->getItems() as $item) {
+        foreach ($cart->getItems() as $item) {
             $found = in_array($item->getProduct()->getId(), $this->getProducts());
 
-            if($found) {
+            if ($found) {
                 return true;
             }
         }

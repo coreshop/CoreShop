@@ -162,15 +162,16 @@ class Tool
     /**
      * @return User\Address
      */
-    public static function getDeliveryAddress() {
+    public static function getDeliveryAddress()
+    {
         $cart = self::prepareCart();
         $user = self::getUser();
 
-        if($cart->getCustomerShippingAddress()) {
+        if ($cart->getCustomerShippingAddress()) {
             return $cart->getCustomerShippingAddress();
         }
 
-        if($user instanceof User) {
+        if ($user instanceof User) {
             if ($user->getAddresses() instanceof Object\Fieldcollection) {
                 if ($user->getAddresses()->get(0) instanceof User\Address) {
                     return $user->getAddresses()->get(0);
@@ -617,7 +618,8 @@ class Tool
      *
      * @param Shop $shop
      */
-    public static function initTemplateForShop(Shop $shop) {
+    public static function initTemplateForShop(Shop $shop)
+    {
         $template = $shop->getTemplate();
 
         if (!$template) {

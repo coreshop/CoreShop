@@ -65,11 +65,11 @@ class Categories extends AbstractCondition
     {
         $found = false;
 
-        foreach($cart->getItems() as $item) {
-            foreach($this->getCategories() as $catId) {
+        foreach ($cart->getItems() as $item) {
+            foreach ($this->getCategories() as $catId) {
                 $cat = Category::getById($catId);
 
-                if($cat instanceof Category) {
+                if ($cat instanceof Category) {
                     if ($item->getProduct()->inCategory($cat)) {
                         $found = true;
                         break;
@@ -77,7 +77,7 @@ class Categories extends AbstractCondition
                 }
             }
 
-            if($found) {
+            if ($found) {
                 return true;
             }
         }

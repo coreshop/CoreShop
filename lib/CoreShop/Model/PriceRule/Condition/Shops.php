@@ -90,11 +90,11 @@ class Shops extends AbstractCondition
      */
     protected function check($throwException = false)
     {
-        if(Configuration::multiShopEnabled()) {
+        if (Configuration::multiShopEnabled()) {
             $currentShop = ShopModel::getShop();
             $found = false;
 
-            foreach($this->getShops() as $shop) {
+            foreach ($this->getShops() as $shop) {
                 if ($shop !== $currentShop->getId()) {
                     $found = true;
                     break;

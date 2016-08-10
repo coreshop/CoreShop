@@ -86,7 +86,8 @@ class Action extends \Website\Controller\Action
     /**
      * Init the Template for Shop
      */
-    protected function initTemplate() {
+    protected function initTemplate()
+    {
         //Throws Exception when Multishop is wrong configured
         $shop = Shop::getShop();
 
@@ -104,7 +105,7 @@ class Action extends \Website\Controller\Action
     {
         $this->cart = $this->view->cart = Tool::prepareCart();
 
-        if($this->cart->getId()) {
+        if ($this->cart->getId()) {
             PriceRule::autoRemoveFromCart($this->cart);
             PriceRule::autoAddToCart($this->cart);
         }

@@ -328,8 +328,9 @@ class Data
         }
     }
 
-    public static function createShop() {
-        if(!self::$shop instanceof Shop) {
+    public static function createShop()
+    {
+        if (!self::$shop instanceof Shop) {
             $shop = new Shop();
             $shop->setName("test");
             $shop->setSiteId(1);

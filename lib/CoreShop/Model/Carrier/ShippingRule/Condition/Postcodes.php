@@ -44,18 +44,19 @@ class Postcodes extends AbstractCondition
      *
      * @return mixed
      */
-    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule) {
+    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
+    {
         $postcodes = $this->getPostcodes();
         $postcodes = explode(",", $postcodes);
 
         $deliveryAddress = Tool::getDeliveryAddress();
 
-        if($deliveryAddress->getZip()) {
-            foreach($postcodes as $postcode) {
+        if ($deliveryAddress->getZip()) {
+            foreach ($postcodes as $postcode) {
                 //Substring postcode to have the same length
                 $deliveryZip = substr($deliveryAddress->getZip(), 0, strlen($postcode));
 
-                if(strtolower($deliveryZip) === strtolower($postcode)) {
+                if (strtolower($deliveryZip) === strtolower($postcode)) {
                     return true;
                 }
             }

@@ -92,24 +92,23 @@ class Personas extends AbstractCondition
         $targetingRulesIds = json_decode("[" . $_REQUEST["_ptc"] . "]", true);
         $found = false;
 
-        foreach($targetingRulesIds as $id) {
-            foreach($this->getPersonas() as $persona) {
-                if($id === $persona) {
+        foreach ($targetingRulesIds as $id) {
+            foreach ($this->getPersonas() as $persona) {
+                if ($id === $persona) {
                     $found = true;
                     break;
                 }
             }
 
-            if($found) {
+            if ($found) {
                 break;
             }
         }
 
-        if($found) {
+        if ($found) {
             return true;
-        }
-        else {
-            if($throwException) {
+        } else {
+            if ($throwException) {
                 throw new Exception('You cannot use this voucher');
             }
         }

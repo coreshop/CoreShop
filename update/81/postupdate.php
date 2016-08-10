@@ -10,13 +10,13 @@ $db = \Pimcore\Db::get();
 
 $modelsToUpdate = array("Country", "Carrier", "CustomerGroup", "TaxRuleGroup", "Manufacturer", "Messaging\\Contact", "Messaging\\Thread\\State");
 
-foreach($modelsToUpdate as $model) {
+foreach ($modelsToUpdate as $model) {
     $class = 'CoreShop\Model\\' . $model;
 
     $class = new $class();
     $tableName = $class->getDao()->getTableName();
 
-    if($class->isMultiShop()) {
+    if ($class->isMultiShop()) {
         $db->query("DROP TABLE IF EXISTS `" . $tableName . "_shops`;
         CREATE TABLE IF NOT EXISTS `" . $tableName . "_shops` (
           `oId` int(11) NOT NULL,
@@ -27,7 +27,7 @@ foreach($modelsToUpdate as $model) {
 
         $list = $class::getList();
 
-        foreach($list as $object) {
+        foreach ($list as $object) {
             $db->query("INSERT INTO `" . $tableName . "_shops` VALUES (".$object->getId().", ".\CoreShop\Model\Shop::getDefaultShop()->getId().")");
         }
     }
@@ -35,7 +35,7 @@ foreach($modelsToUpdate as $model) {
 
 $indexes = \CoreShop\Model\Index::getAll();
 
-foreach($indexes as $index) {
+foreach ($indexes as $index) {
     $tableName =  'coreshop_index_mysql_'. $index->getName();
 
     $db->query("ALTER TABLE `$tableName` ADD `shops` varchar(255) NOT NULL AFTER `active`;");
@@ -45,12 +45,12 @@ foreach($indexes as $index) {
 //Migrate Object Data
 $objectClassesToUpdate = ['Product', 'Category'];
 
-foreach($objectClassesToUpdate as $class) {
+foreach ($objectClassesToUpdate as $class) {
     $className = '\CoreShop\Model\\' . $class;
 
     $list = $className::getList();
 
-    foreach($list->load() as $obj) {
+    foreach ($list->load() as $obj) {
         $obj->setShops([
             \CoreShop\Model\Shop::getDefaultShop()->getId()
         ]);
@@ -60,12 +60,12 @@ foreach($objectClassesToUpdate as $class) {
 
 $objectClassesToUpdateWithFK = ['Order', 'Cart'];
 
-foreach($objectClassesToUpdateWithFK as $class) {
+foreach ($objectClassesToUpdateWithFK as $class) {
     $className = '\CoreShop\Model\\' . $class;
 
     $list = $className::getList();
 
-    foreach($list->load() as $obj) {
+    foreach ($list->load() as $obj) {
         $obj->setShop(\CoreShop\Model\Shop::getDefaultShop());
         $obj->save();
     }
@@ -89,6 +89,6 @@ $db->query("UPDATE `coreshop_messaging_thread` SET `shopId` = 1;");
 
 $templateConfig = \CoreShop\Model\Configuration::get("SYSTEM.TEMPLATE.NAME", null, true);
 
-if($templateConfig instanceof \CoreShop\Model\Configuration) {
+if ($templateConfig instanceof \CoreShop\Model\Configuration) {
     $templateConfig->delete();
 }

@@ -72,12 +72,11 @@ class Dao extends Model\Dao\PhpArrayTable
         $key = $this->model->getKey();
 
         $data = $this->db->fetchAll(function ($row) use ($key, $shopId) {
-            if($shopId) {
+            if ($shopId) {
                 if ($row['key'] == $key && $row['shopId'] === intval($shopId)) {
                     return true;
                 }
-            }
-            else {
+            } else {
                 if ($row['key'] == $key && $row['shopId'] === null) {
                     return true;
                 }
@@ -87,7 +86,7 @@ class Dao extends Model\Dao\PhpArrayTable
         });
 
         //Fallback for Inherited Configurations
-        if($shopId) {
+        if ($shopId) {
             if (!count($data)) {
                 $data = $this->db->fetchAll(function ($row) use ($key, $shopId) {
                     if ($row['key'] == $key && $row['shopId'] === null) {
@@ -139,10 +138,11 @@ class Dao extends Model\Dao\PhpArrayTable
         }
     }
 
-    public function removeAll($key) {
+    public function removeAll($key)
+    {
         $data = $this->db->fetchAll();
 
-        foreach($data as $d) {
+        foreach ($data as $d) {
             $d->delete();
         }
     }

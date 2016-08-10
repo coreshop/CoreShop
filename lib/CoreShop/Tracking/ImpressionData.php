@@ -18,6 +18,6 @@ namespace CoreShop\Tracking;
  * Class ImpressionData
  * @package CoreShop\Tracking
  */
-class ImpressionData extends AbstractProductData {
-
+class ImpressionData extends AbstractProductData
+{
 }

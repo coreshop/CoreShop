@@ -23,7 +23,8 @@ use Pimcore\Date;
  * Class VoucherCode
  * @package CoreShop\Model\Cart\PriceRule
  */
-class VoucherCode extends AbstractModel {
+class VoucherCode extends AbstractModel
+{
 
     /**
      * @var int
@@ -64,14 +65,16 @@ class VoucherCode extends AbstractModel {
      * @param $code
      * @return VoucherCode|null
      */
-    public static function getByCode($code) {
+    public static function getByCode($code)
+    {
         return self::getByField("code", $code);
     }
 
     /**
      * Increase Voucher Usage
      */
-    public function increaseUsage() {
+    public function increaseUsage()
+    {
         $this->setUses($this->getUses() + 1);
         $this->setUsed(true);
         $this->save();
@@ -80,14 +83,15 @@ class VoucherCode extends AbstractModel {
     /**
      * Decrease Voucher Usage
      */
-    public function decreaseUsage() {
+    public function decreaseUsage()
+    {
         $uses = $this->getUses() - 1;
 
-        if($uses < 0) {
+        if ($uses < 0) {
             $uses = 0;
         }
 
-        if($uses === 0) {
+        if ($uses === 0) {
             $this->setUsed(false);
         }
 
@@ -196,7 +200,7 @@ class VoucherCode extends AbstractModel {
      */
     public function getPriceRule()
     {
-        if(!$this->priceRule) {
+        if (!$this->priceRule) {
             $this->priceRule = Cart\PriceRule::getById($this->getPriceRuleId());
         }
 

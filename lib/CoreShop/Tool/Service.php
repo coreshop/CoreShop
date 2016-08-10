@@ -259,10 +259,10 @@ class Service
         $condition = 'o_path LIKE ?';
         $conditionParams = [$object->getFullPath() . '/%'];
         
-        if(Configuration::multiShopEnabled()) {
+        if (Configuration::multiShopEnabled()) {
             $shopParams = [];
 
-            foreach($object->getShops() as $shop) {
+            foreach ($object->getShops() as $shop) {
                 $shopParams[] = "shops LIKE '%,".$shop.",%'";
             }
 

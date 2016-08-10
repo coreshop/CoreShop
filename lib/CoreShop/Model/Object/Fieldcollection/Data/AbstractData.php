@@ -70,7 +70,8 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
      * @return Data[]
      * @throws \Exception
      */
-    public static function getMandatoryFields() {
+    public static function getMandatoryFields()
+    {
         $class = self::getPimcoreObjectClass();
         $key = explode("\\", $class);
         $key = $key[count($key) - 1];
@@ -79,9 +80,9 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
         $fields = $fieldCollectionDefinition->getFieldDefinitions();
         $mandatoryFields = [];
 
-        foreach($fields as $field) {
-            if($field instanceof Data) {
-                if($field->getMandatory()) {
+        foreach ($fields as $field) {
+            if ($field instanceof Data) {
+                if ($field->getMandatory()) {
                     $mandatoryFields[] = $field;
                 }
             }
@@ -94,10 +95,11 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
      * @param $data
      * @throws \Pimcore\Model\Element\ValidationException
      */
-    public static function validate($data) {
+    public static function validate($data)
+    {
         $mandatoryFields = self::getMandatoryFields();
 
-        foreach($mandatoryFields as $field) {
+        foreach ($mandatoryFields as $field) {
             $field->checkValidity($data[$field->getName()]);
         }
     }

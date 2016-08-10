@@ -77,7 +77,7 @@ class Manager implements TaxManager
      */
     public function getTaxCalculator($shopId = null)
     {
-        if(is_null($shopId)) {
+        if (is_null($shopId)) {
             $shopId = Shop::getShop()->getId();
         }
 
@@ -94,7 +94,7 @@ class Manager implements TaxManager
         if (!\Zend_Registry::isRegistered($cacheKey)) {
             $taxRuleGroup = TaxRuleGroup::getById($this->type);
 
-            if(Configuration::multiShopEnabled()) {
+            if (Configuration::multiShopEnabled()) {
                 if (!is_array($taxRuleGroup->getShopIds()) || !in_array($shopId, $taxRuleGroup->getShopIds())) {
                     return new TaxCalculator();
                 }

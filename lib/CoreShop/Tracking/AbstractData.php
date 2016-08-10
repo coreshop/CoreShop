@@ -18,7 +18,8 @@ namespace CoreShop\Tracking;
  * Class AbstractData
  * @package CoreShop\Tracking
  */
-class AbstractData {
+class AbstractData
+{
     /**
      * @var string
      */
@@ -39,6 +40,4 @@ class AbstractData {
     {
         $this->id = $id;
     }
-
-
 }

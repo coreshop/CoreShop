@@ -121,7 +121,7 @@ class Order extends Base
      */
     public static function getPathForNewOrder()
     {
-        if(Configuration::multiShopEnabled()) {
+        if (Configuration::multiShopEnabled()) {
             return Object\Service::createFolderByPath('/coreshop/orders/'.Shop::getShop()->getName().'/'.date('Y/m/d'));
         }
 
@@ -204,12 +204,12 @@ class Order extends Base
         $this->setDiscount($cart->getDiscount());
         $this->setPriceRuleFieldCollection($cart->getPriceRuleFieldCollection());
 
-        if($this->getPriceRuleFieldCollection() instanceof Object\Fieldcollection) {
-            foreach($this->getPriceRuleFieldCollection()->getItems() as $ruleItem) {
-                if($ruleItem instanceof \CoreShop\Model\PriceRule\Item) {
+        if ($this->getPriceRuleFieldCollection() instanceof Object\Fieldcollection) {
+            foreach ($this->getPriceRuleFieldCollection()->getItems() as $ruleItem) {
+                if ($ruleItem instanceof \CoreShop\Model\PriceRule\Item) {
                     $rule = $ruleItem->getPriceRule();
 
-                    if($rule instanceof PriceRule) {
+                    if ($rule instanceof PriceRule) {
                         $ruleItem->setDiscount($rule->getDiscount());
                     }
                 }
@@ -223,7 +223,7 @@ class Order extends Base
         $cart->setOrder($this);
         $cart->save();
 
-        if($this->getPriceRule() instanceof PriceRule) {
+        if ($this->getPriceRule() instanceof PriceRule) {
             $this->getPriceRule()->applyOrder($this);
         }
 

@@ -52,11 +52,12 @@ class Service extends AbstractDao
      *
      * @return VoucherCode[]
      */
-    public static function generateCodes($priceRule, $amount, $length, $format, $hyphensOn = 0, $prefix = "", $suffix = "") {
+    public static function generateCodes($priceRule, $amount, $length, $format, $hyphensOn = 0, $prefix = "", $suffix = "")
+    {
         $lettersToUse = "";
         $generatedVouchers = [];
 
-        switch($format) {
+        switch ($format) {
             case self::FORMAT_ALPHABETIC:
                 $lettersToUse = implode("", range(chr(65), chr(90)));
                 break;
@@ -70,10 +71,10 @@ class Service extends AbstractDao
                 break;
         }
 
-        for($i = 0; $i < $amount; $i++) {
+        for ($i = 0; $i < $amount; $i++) {
             $code = $prefix . self::generateCode($lettersToUse, $length) . $suffix;
 
-            if($hyphensOn > 0) {
+            if ($hyphensOn > 0) {
                 $code = implode("-", str_split($code, $hyphensOn));
             }
 
@@ -98,7 +99,8 @@ class Service extends AbstractDao
      * @param $length
      * @return string
      */
-    protected static function generateCode($letters, $length) {
+    protected static function generateCode($letters, $length)
+    {
         srand((double)microtime() * 1000000);
         $i = 0;
         $code = '' ;

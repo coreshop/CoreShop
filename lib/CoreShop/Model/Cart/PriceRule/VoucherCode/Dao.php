@@ -17,7 +17,6 @@ namespace CoreShop\Model\Cart\PriceRule\VoucherCode;
 use CoreShop\Model\Dao\AbstractDao;
 use Pimcore\Date;
 
-
 /**
  * Class Dao
  * @package CoreShop\Model\Cart\PriceRule\VoucherCode

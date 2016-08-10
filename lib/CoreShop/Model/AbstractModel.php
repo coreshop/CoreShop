@@ -100,7 +100,8 @@ class AbstractModel extends Model\AbstractModel
      * @param null $shopId
      * @return mixed|null
      */
-    public static function getByShopId($id, $shopId = null) {
+    public static function getByShopId($id, $shopId = null)
+    {
         $id = intval($id);
 
         if ($id < 1) {
@@ -120,8 +121,7 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-
-                    if(\Pimcore::getDiContainer()->has($className)) {
+                    if (\Pimcore::getDiContainer()->has($className)) {
                         $object = \Pimcore::getDiContainer()->make($className);
                     } else {
                         $object = new $className();
@@ -168,8 +168,7 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-
-                    if(\Pimcore::getDiContainer()->has($className)) {
+                    if (\Pimcore::getDiContainer()->has($className)) {
                         $object = \Pimcore::getDiContainer()->make($className);
                     } else {
                         $object = new $className();

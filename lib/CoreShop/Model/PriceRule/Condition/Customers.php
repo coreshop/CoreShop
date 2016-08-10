@@ -92,18 +92,18 @@ class Customers extends AbstractCondition
         $user = Tool::getUser();
         $found = false;
 
-        foreach($this->getCustomers() as $customerId) {
+        foreach ($this->getCustomers() as $customerId) {
             $customer = User::getById($customerId);
 
-            if($customer instanceof User) {
-                if($customer->getId() === $user->getId()) {
+            if ($customer instanceof User) {
+                if ($customer->getId() === $user->getId()) {
                     $found = true;
                     break;
                 }
             }
         }
 
-        if(!$found) {
+        if (!$found) {
             if ($throwException) {
                 throw new Exception('You cannot use this voucher');
             } else {

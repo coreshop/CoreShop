@@ -56,9 +56,9 @@ class ShippingRule extends AbstractRule
     {
         $valid = true;
 
-        foreach($this->getConditions() as $condition) {
-            if($condition instanceof AbstractCondition) {
-                if(!$condition->checkCondition($cart, $address, $this)) {
+        foreach ($this->getConditions() as $condition) {
+            if ($condition instanceof AbstractCondition) {
+                if (!$condition->checkCondition($cart, $address, $this)) {
                     $valid = false;
                     break;
                 }
@@ -76,13 +76,14 @@ class ShippingRule extends AbstractRule
      * @param $price
      * @return float
      */
-    public function getPriceModification(Cart $cart, Address $address, $price) {
+    public function getPriceModification(Cart $cart, Address $address, $price)
+    {
         $priceModification = 0;
 
-        foreach($this->getActions() as $action) {
-            if($action instanceof AbstractAction) {
+        foreach ($this->getActions() as $action) {
+            if ($action instanceof AbstractAction) {
                 $priceModificator = $action->getPriceModification($cart, $address, $price);
-                if($priceModificator !== 0) {
+                if ($priceModificator !== 0) {
                     $priceModification += $action->getPriceModification($cart, $address, $price);
                 }
             }
@@ -99,12 +100,13 @@ class ShippingRule extends AbstractRule
      *
      * @return float
      */
-    public function getPrice(Cart $cart, Address $address) {
+    public function getPrice(Cart $cart, Address $address)
+    {
         $price = 0;
 
-        foreach($this->getActions() as $action) {
-            if($action instanceof AbstractAction) {
-                if($action->getPrice($cart, $address)) {
+        foreach ($this->getActions() as $action) {
+            if ($action instanceof AbstractAction) {
+                if ($action->getPrice($cart, $address)) {
                     $price = $action->getPrice($cart, $address);
                 }
             }

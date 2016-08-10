@@ -47,7 +47,6 @@ abstract class AbstractDao extends Dao\AbstractDao
         }
 
         return $class::$tableName;
-
     }
 
     /**
@@ -55,7 +54,8 @@ abstract class AbstractDao extends Dao\AbstractDao
      *
      * @return string
      */
-    public function getShopTableName() {
+    public function getShopTableName()
+    {
         return $this->getTableName() . '_shops';
     }
 
@@ -75,12 +75,11 @@ abstract class AbstractDao extends Dao\AbstractDao
 
         $data = null;
 
-        if(!is_null($shopId)) {
+        if (!is_null($shopId)) {
             if ($this->model->isMultiShop()) {
                 $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
             }
-        }
-        else {
+        } else {
             $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' WHERE id = ?', $this->model->getId());
         }
         
@@ -88,18 +87,17 @@ abstract class AbstractDao extends Dao\AbstractDao
             throw new Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
         }
 
-        if($this->model->isMultiShop()) {
+        if ($this->model->isMultiShop()) {
             $shops = $this->db->fetchAll('SELECT * FROM ' . $this->getShopTableName() . ' WHERE oId = ?', array($this->model->getId()));
             $shopIds = [];
 
-            if(is_array($shops)) {
+            if (is_array($shops)) {
                 foreach ($shops as $shop) {
                     $shopIds[] = $shop['shopId'];
                 }
             }
 
             $this->model->setShopIds($shopIds);
-
         }
 
         $this->assignVariablesToModel($data);
@@ -119,15 +117,13 @@ abstract class AbstractDao extends Dao\AbstractDao
     {
         $data = null;
 
-        if(!is_null($shopId)) {
+        if (!is_null($shopId)) {
             if ($this->model->isMultiShop()) {
                 $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE ' . $field . ' = ?', [$shopId, $value]);
-            }
-            else if($this->model->isMultiShopFK()) {
+            } elseif ($this->model->isMultiShopFK()) {
                 $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' WHERE shopId = ? AND ' . $field . ' = ?', [$shopId, $value]);
             }
-        }
-        else {
+        } else {
             $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . " WHERE $field = ?", $value);
         }
 
@@ -188,10 +184,10 @@ abstract class AbstractDao extends Dao\AbstractDao
                 if ($value instanceof AbstractModel) {
                     $value = $value->getId();
                 }
-                if($value instanceof Date) {
+                if ($value instanceof Date) {
                     $value = $value->getTimestamp();
                 }
-                if($value instanceof \Zend_Date) {
+                if ($value instanceof \Zend_Date) {
                     $value = $value->getTimestamp();
                 }
                 if (is_object($value)) {
@@ -235,21 +231,21 @@ abstract class AbstractDao extends Dao\AbstractDao
     /**
      * @throws \Zend_Db_Adapter_Exception
      */
-    protected function saveShopIds() {
-
-        if($this->model->isMultiShop()) {
+    protected function saveShopIds()
+    {
+        if ($this->model->isMultiShop()) {
             $this->db->delete($this->getShopTableName(), $this->db->quoteInto('oId = ?', $this->model->getId()));
 
-            if(is_null($this->model->getShopIds())) {
+            if (is_null($this->model->getShopIds())) {
                 $this->model->setShopIds([Shop::getDefaultShop()->getId()]);
             }
 
-            if(!Configuration::multiShopEnabled()) {
+            if (!Configuration::multiShopEnabled()) {
                 //Multishop is disabled, so we always set the default shop
                 $this->model->setShopIds([Shop::getDefaultShop()->getId()]);
             }
 
-            foreach($this->model->getShopIds() as $shopId) {
+            foreach ($this->model->getShopIds() as $shopId) {
                 $this->db->insert($this->getShopTableName(), array(
                     "oId" => $this->model->getId(),
                     "shopId" => $shopId

@@ -64,7 +64,8 @@ class CustomerGroups extends AbstractCondition
      *
      * @return mixed
      */
-    public function checkCondition(Cart $cart, User\Address $address, ShippingRule $shippingRule) {
+    public function checkCondition(Cart $cart, User\Address $address, ShippingRule $shippingRule)
+    {
         return $this->check(Tool::getUser());
     }
 
@@ -82,7 +83,7 @@ class CustomerGroups extends AbstractCondition
 
         $validCustomerGroupFound = false;
 
-        foreach($this->getCustomerGroups() as $group) {
+        foreach ($this->getCustomerGroups() as $group) {
             foreach ($customer->getGroups() as $customerGroup) {
                 $customerGroup = CustomerGroupModel::getByField('name', $customerGroup);
 
@@ -94,7 +95,7 @@ class CustomerGroups extends AbstractCondition
                 }
             }
 
-            if($validCustomerGroupFound) {
+            if ($validCustomerGroupFound) {
                 break;
             }
         }

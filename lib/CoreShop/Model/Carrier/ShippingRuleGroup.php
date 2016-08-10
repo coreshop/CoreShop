@@ -150,7 +150,7 @@ class ShippingRuleGroup extends AbstractRule
      */
     public function getShippingRule()
     {
-        if(!$this->shippingRule instanceof ShippingRule) {
+        if (!$this->shippingRule instanceof ShippingRule) {
             $this->shippingRule = ShippingRule::getById($this->shippingRuleId);
         }
 
@@ -164,7 +164,7 @@ class ShippingRuleGroup extends AbstractRule
      */
     public function setShippingRule($shippingRule)
     {
-        if(!$shippingRule instanceof ShippingRule) {
+        if (!$shippingRule instanceof ShippingRule) {
             throw new Exception('$shippingRule must be instance of ShippingRule');
         }
 

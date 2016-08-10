@@ -66,10 +66,10 @@ class Products extends AbstractCondition
     {
         $found = false;
 
-        foreach($this->getProducts() as $productId) {
+        foreach ($this->getProducts() as $productId) {
             $pr = ProductModel::getById($productId);
 
-            if($pr instanceof ProductModel) {
+            if ($pr instanceof ProductModel) {
                 $found = true;
                 break;
             }

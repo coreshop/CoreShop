@@ -93,9 +93,9 @@ class Carriers extends AbstractCondition
      */
     private function check(Cart $cart, $throwException = false)
     {
-        if($cart->getCarrier() instanceof Carrier) {
-            if(in_array($cart->getCarrier()->getId(), $this->getCarriers())) {
-                if($throwException) {
+        if ($cart->getCarrier() instanceof Carrier) {
+            if (in_array($cart->getCarrier()->getId(), $this->getCarriers())) {
+                if ($throwException) {
                     throw new Exception('You cannot use this voucher.');
                 }
 

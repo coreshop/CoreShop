@@ -255,8 +255,7 @@ class Carrier extends AbstractModel
             ksort($carriers);
 
             $availableCarriers = $carriers;
-        }
-        else {
+        } else {
             usort($availableCarriers, function ($carrier1, $carrier2) use ($sortField, $cart, $address) {
                 if ($carrier1->getGrade() === $carrier2->getGrade()) {
                     return 0;
@@ -297,8 +296,7 @@ class Carrier extends AbstractModel
                     foreach ($providers as $p) {
                         if ($cheapestProvider === null) {
                             $cheapestProvider = $p;
-                        }
-                        elseif ($cheapestProvider->getDeliveryPrice($cart, true) > $p->getDeliveryPrice($cart, true)) {
+                        } elseif ($cheapestProvider->getDeliveryPrice($cart, true) > $p->getDeliveryPrice($cart, true)) {
                             $cheapestProvider = $p;
                         }
                     }
@@ -327,7 +325,8 @@ class Carrier extends AbstractModel
      *
      * @return ShippingRuleGroup[]
      */
-    public function getShippingRuleGroups() {
+    public function getShippingRuleGroups()
+    {
         $list = ShippingRuleGroup::getList();
         $list->setCondition("carrierId = ?", array($this->getId()));
         $list->setOrder("ASC");
@@ -341,13 +340,14 @@ class Carrier extends AbstractModel
      *
      * @return ShippingRule[]
      */
-    public function getShippingRules() {
+    public function getShippingRules()
+    {
         $groups = $this->getShippingRuleGroups();
 
         $rules = [];
 
-        foreach($groups as $group) {
-            if($group instanceof ShippingRuleGroup) {
+        foreach ($groups as $group) {
+            if ($group instanceof ShippingRuleGroup) {
                 $rules[] = $group->getShippingRule();
             }
         }
@@ -374,9 +374,9 @@ class Carrier extends AbstractModel
 
         $rules = $this->getShippingRules();
 
-        foreach($rules as $rule) {
-            if($rule instanceof ShippingRule) {
-                if($rule->checkValidity($this, $cart, $address)) {
+        foreach ($rules as $rule) {
+            if ($rule instanceof ShippingRule) {
+                if ($rule->checkValidity($this, $cart, $address)) {
                     //if one rule is valid, carrier is allowed
                     return true;
                 }
@@ -396,7 +396,7 @@ class Carrier extends AbstractModel
      */
     public function getMaxDeliveryPrice(Cart $cart = null, Address $address = null)
     {
-        if(is_null($cart)) {
+        if (is_null($cart)) {
             $cart = Tool::prepareCart();
         }
 
@@ -413,10 +413,10 @@ class Carrier extends AbstractModel
         $maxPrice = 0;
 
         foreach ($rules as $rule) {
-            if($rule instanceof ShippingRule) {
+            if ($rule instanceof ShippingRule) {
                 $price = $rule->getPrice($cart, $address);
 
-                if($price > $maxPrice) {
+                if ($price > $maxPrice) {
                     $maxPrice = $price;
                 }
             }
@@ -441,19 +441,19 @@ class Carrier extends AbstractModel
             $address = Tool::getDeliveryAddress();
         }
 
-        if($cart->isFreeShipping()) {
+        if ($cart->isFreeShipping()) {
             return 0;
         }
 
-        if($this->getIsFree()) {
+        if ($this->getIsFree()) {
             return 0;
         }
 
         $rules = $this->getShippingRules();
 
-        foreach($rules as $rule) {
-            if($rule instanceof ShippingRule) {
-                if($rule->checkValidity($this, $cart, $address)) {
+        foreach ($rules as $rule) {
+            if ($rule instanceof ShippingRule) {
+                if ($rule->checkValidity($this, $cart, $address)) {
                     $price = $rule->getPrice($cart, $address);
                     break;
                 }

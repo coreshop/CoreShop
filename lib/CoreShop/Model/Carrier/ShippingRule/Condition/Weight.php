@@ -48,17 +48,18 @@ class Weight extends AbstractCondition
      *
      * @return mixed
      */
-    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule) {
+    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
+    {
         $totalWeight = $cart->getTotalWeight();
 
         if ($this->getMinWeight() > 0) {
-            if($totalWeight < $this->getMinWeight()) {
+            if ($totalWeight < $this->getMinWeight()) {
                 return false;
             }
         }
 
-        if($this->getMaxWeight() > 0) {
-            if($totalWeight > $this->getMaxWeight()) {
+        if ($this->getMaxWeight() > 0) {
+            if ($totalWeight > $this->getMaxWeight()) {
                 return false;
             }
         }

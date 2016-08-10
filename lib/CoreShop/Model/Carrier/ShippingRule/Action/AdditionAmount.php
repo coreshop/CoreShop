@@ -38,7 +38,8 @@ class AdditionAmount extends DiscountAmount
      *
      * @return float
      */
-    public function getPriceModification(Cart $cart, Model\User\Address $address, $price) {
+    public function getPriceModification(Cart $cart, Model\User\Address $address, $price)
+    {
         return -1 * parent::getPriceModification($cart, $address, $price);
     }
 }

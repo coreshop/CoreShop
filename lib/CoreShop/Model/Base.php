@@ -124,10 +124,10 @@ class Base extends Concrete
      */
     public function save()
     {
-        if(!Configuration::multiShopEnabled()) {
+        if (!Configuration::multiShopEnabled()) {
             //Multishop is disabled, so we always set the default shop
 
-            if(property_exists($this, "shops")) {
+            if (property_exists($this, "shops")) {
                 $this->setShops([Shop::getDefaultShop()->getId()]);
             }
         }
@@ -240,7 +240,8 @@ class Base extends Concrete
      * @return Data[]
      * @throws \Exception
      */
-    public static function getMandatoryFields() {
+    public static function getMandatoryFields()
+    {
         $class = self::getPimcoreObjectClass();
         $key = explode("\\", $class);
         $key = $key[count($key) - 1];
@@ -249,9 +250,9 @@ class Base extends Concrete
         $fields = $fieldCollectionDefinition->getFieldDefinitions();
         $mandatoryFields = [];
 
-        foreach($fields as $field) {
-            if($field instanceof Data) {
-                if($field->getMandatory()) {
+        foreach ($fields as $field) {
+            if ($field instanceof Data) {
+                if ($field->getMandatory()) {
                     $mandatoryFields[] = $field;
                 }
             }
@@ -264,10 +265,11 @@ class Base extends Concrete
      * @param $data
      * @throws \Pimcore\Model\Element\ValidationException
      */
-    public static function validate($data) {
+    public static function validate($data)
+    {
         $mandatoryFields = self::getMandatoryFields();
 
-        foreach($mandatoryFields as $field) {
+        foreach ($mandatoryFields as $field) {
             $field->checkValidity($data[$field->getName()]);
         }
     }

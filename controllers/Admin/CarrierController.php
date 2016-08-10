@@ -75,7 +75,8 @@ class CoreShop_Admin_CarrierController extends Admin
         return $tmpCarrier;
     }
 
-    public function getShippingRuleGroupsAction() {
+    public function getShippingRuleGroupsAction()
+    {
         $id = $this->getParam('carrier');
         $carrier = Carrier::getById($id);
 
@@ -147,13 +148,13 @@ class CoreShop_Admin_CarrierController extends Admin
 
             $oldGroups = $carrier->getShippingRuleGroups();
 
-            foreach($oldGroups as $group) {
+            foreach ($oldGroups as $group) {
                 $group->delete();
             }
 
             $carrier->setValues($data['settings']);
 
-            foreach($data['groups'] as $group) {
+            foreach ($data['groups'] as $group) {
                 $obj = new CoreShop\Model\Carrier\ShippingRuleGroup();
                 $obj->setCarrier($carrier);
                 $obj->setPriority($group['priority']);

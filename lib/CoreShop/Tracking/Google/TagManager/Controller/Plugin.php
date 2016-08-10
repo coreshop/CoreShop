@@ -20,7 +20,8 @@ use Pimcore\Tool;
  * Class Plugin
  * @package CoreShop\Tracking\Google\TagManager\Controller\Plugin
  */
-class Plugin extends \Zend_Controller_Plugin_Abstract {
+class Plugin extends \Zend_Controller_Plugin_Abstract
+{
     /**
      * @var bool
      */
@@ -34,7 +35,8 @@ class Plugin extends \Zend_Controller_Plugin_Abstract {
     /**
      * @param array $data
      */
-    public static function addDataLayer($data) {
+    public static function addDataLayer($data)
+    {
         self::$dataLayer = array_merge(self::$dataLayer, $data);
     }
 

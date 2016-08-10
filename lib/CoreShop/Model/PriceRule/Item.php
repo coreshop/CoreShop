@@ -14,7 +14,6 @@
 
 namespace CoreShop\Model\PriceRule;
 
-
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Object\Fieldcollection\Data\AbstractData;
@@ -23,7 +22,8 @@ use CoreShop\Model\Object\Fieldcollection\Data\AbstractData;
  * Class Fieldcollection
  * @package CoreShop\Model\PriceRule
  */
-class Item extends AbstractData {
+class Item extends AbstractData
+{
 
     /**
      * Pimcore Object Class.
@@ -91,5 +91,4 @@ class Item extends AbstractData {
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
-
 }

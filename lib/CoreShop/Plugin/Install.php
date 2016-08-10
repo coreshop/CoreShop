@@ -638,7 +638,7 @@ class Install
      */
     public function createStaticRoutes($path = null)
     {
-        if(is_null($path)) {
+        if (is_null($path)) {
             $path = PIMCORE_PLUGINS_PATH.'/CoreShop/install/staticroutes.xml';
         }
 
@@ -647,7 +647,7 @@ class Install
 
         $routes = $conf['routes']['route'];
 
-        if(count($routes) == count($routes, 1)) {
+        if (count($routes) == count($routes, 1)) {
             $routes = [$routes];
         }
 
@@ -672,7 +672,7 @@ class Install
      */
     public function removeStaticRoutes($path = null)
     {
-        if(is_null($path)) {
+        if (is_null($path)) {
             $path = PIMCORE_PLUGINS_PATH.'/CoreShop/install/staticroutes.xml';
         }
 
@@ -681,7 +681,7 @@ class Install
 
         $routes = $conf['routes']['route'];
 
-        if(count($routes) == count($routes, 1)) {
+        if (count($routes) == count($routes, 1)) {
             $routes = [$routes];
         }
 

@@ -129,7 +129,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
         $this->startup();
 
-        if(Configuration::multiShopEnabled()) {
+        if (Configuration::multiShopEnabled()) {
             Product\PriceRule::addCondition('shop');
             Product\PriceRule::addCondition('shops');
 
@@ -149,7 +149,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
      *
      * This method initializes the defined Constants for pathes and loads the template paths
      */
-    protected function startup() {
+    protected function startup()
+    {
         require_once PIMCORE_PLUGINS_PATH.'/CoreShop/config/helper.php';
 
         if (!defined("CORESHOP_PATH")) {
@@ -208,7 +209,8 @@ class Plugin extends AbstractPlugin implements PluginInterface
      *
      * @param \Zend_EventManager_Event $e
      */
-    public function postDeleteObject(\Zend_EventManager_Event $e) {
+    public function postDeleteObject(\Zend_EventManager_Event $e)
+    {
         $object = $e->getTarget();
         if ($object instanceof Product) {
             $prices = Product\SpecificPrice::getSpecificPrices($object);

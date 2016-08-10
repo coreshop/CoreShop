@@ -104,7 +104,7 @@ class CustomerGroups extends AbstractCondition
 
         $validCustomerGroupFound = false;
 
-        foreach($this->getCustomerGroups() as $group) {
+        foreach ($this->getCustomerGroups() as $group) {
             foreach ($customer->getGroups() as $customerGroup) {
                 $customerGroup = CustomerGroupModel::getByField('name', $customerGroup);
 
@@ -116,7 +116,7 @@ class CustomerGroups extends AbstractCondition
                 }
             }
 
-            if($validCustomerGroupFound) {
+            if ($validCustomerGroupFound) {
                 break;
             }
         }

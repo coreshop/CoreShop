@@ -43,10 +43,11 @@ class Zones extends AbstractCondition
      *
      * @return mixed
      */
-    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule) {
-        foreach($this->getZones() as $zone) {
+    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
+    {
+        foreach ($this->getZones() as $zone) {
             $zone = Model\Zone::getById($zone);
-            if($zone instanceof Model\Zone) {
+            if ($zone instanceof Model\Zone) {
                 if (Tool::getDeliveryAddress()->getCountry()->getZone()->getId() === $zone->getId()) {
                     return true;
                 }

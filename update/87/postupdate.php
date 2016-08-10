@@ -23,33 +23,32 @@ $db->query("CREATE TABLE `coreshop_carrier_shippingrule_groups` (
 $carriers = \CoreShop\Model\Carrier::getList();
 $carriers->load();
 
-foreach($carriers as $carrier) {
-    if($carrier instanceof \CoreShop\Model\Carrier) {
+foreach ($carriers as $carrier) {
+    if ($carrier instanceof \CoreShop\Model\Carrier) {
         $type = $carrier->getShippingMethod();
 
-        foreach($carrier->getRanges() as $range) {
+        foreach ($carrier->getRanges() as $range) {
             $class = null;
 
-            if($type === 'price') {
+            if ($type === 'price') {
                 $class = new \CoreShop\Model\Carrier\ShippingRule\Condition\Amount();
                 $class->setMinAmount($range->getDelimiter1());
                 $class->setMaxAmount($range->getDelimiter2());
-            }
-            else {
+            } else {
                 $class = new \CoreShop\Model\Carrier\ShippingRule\Condition\Weight();
                 $class->setMinWeight($range->getDelimiter1());
                 $class->setMaxWeight($range->getDelimiter2());
             }
 
-            foreach($range->getPrices() as $deliveryPrice) {
-                if($deliveryPrice instanceof \CoreShop\Model\Carrier\DeliveryPrice) {
+            foreach ($range->getPrices() as $deliveryPrice) {
+                if ($deliveryPrice instanceof \CoreShop\Model\Carrier\DeliveryPrice) {
                     $zoneCondition = new \CoreShop\Model\Carrier\ShippingRule\Condition\Zones();
                     $zoneCondition->setZones([$deliveryPrice->getZoneId()]);
 
                     $price = new \CoreShop\Model\Carrier\ShippingRule\Action\FixedPrice();
                     $price->setFixedPrice($deliveryPrice->getPrice());
 
-                    if($deliveryPrice->getPrice() > 0) {
+                    if ($deliveryPrice->getPrice() > 0) {
                         $rule = new \CoreShop\Model\Carrier\ShippingRule();
                         $rule->setConditions([$class, $zoneCondition]);
                         $rule->setActions([$price]);

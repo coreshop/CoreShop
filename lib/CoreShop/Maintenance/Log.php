@@ -20,7 +20,8 @@ use Pimcore\Tool;
  * Class Log
  * @package CoreShop\Maintenance
  */
-class Log {
+class Log
+{
     /**
      *
      */

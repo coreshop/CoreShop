@@ -122,9 +122,9 @@ class Configuration extends AbstractModel
     {
         $cacheKey = $key . '~~~' . ($shopId ? $shopId : '-');
 
-        if(Tool::isFrontend()) {
-            if(!in_array($key, self::$systemKeys)) {
-                if(self::multiShopEnabled()) {
+        if (Tool::isFrontend()) {
+            if (!in_array($key, self::$systemKeys)) {
+                if (self::multiShopEnabled()) {
                     if (is_null($shopId)) {
                         $shopId = Shop::getShop()->getId();
                     }
@@ -192,7 +192,8 @@ class Configuration extends AbstractModel
      *
      * @param $key
      */
-    public static function remove($key) {
+    public static function remove($key)
+    {
         $list = new Listing();
         $list->setFilter(function ($row) use ($key) {
             if ($row['key'] == $key) {
@@ -202,7 +203,7 @@ class Configuration extends AbstractModel
             return false;
         });
 
-        foreach($list->getConfigurations() as $config) {
+        foreach ($list->getConfigurations() as $config) {
             $config->delete();
         }
     }
@@ -297,7 +298,8 @@ class Configuration extends AbstractModel
      * @return bool|mixed
      * @throws \Zend_Exception
      */
-    public static function multiShopEnabled() {
+    public static function multiShopEnabled()
+    {
         if (\Zend_Registry::isRegistered('coreshop_multishop_enabled')) {
             return \Zend_Registry::get('coreshop_multishop_enabled');
         } else {

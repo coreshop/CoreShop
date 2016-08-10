@@ -53,24 +53,28 @@ class Dimension extends AbstractCondition
      *
      * @return mixed
      */
-    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule) {
-        foreach($cart->getItems() as $item) {
+    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
+    {
+        foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
 
-            if($product instanceof Model\Product) {
+            if ($product instanceof Model\Product) {
                 if ($this->getHeight() > 0) {
-                    if($product->getHeight() > $this->getHeight())
+                    if ($product->getHeight() > $this->getHeight()) {
                         return false;
+                    }
                 }
 
                 if ($this->getDepth() > 0) {
-                    if($product->getDepth() > $this->getDepth())
+                    if ($product->getDepth() > $this->getDepth()) {
                         return false;
+                    }
                 }
 
                 if ($this->getWidth() > 0) {
-                    if($product->getWidth() > $this->getWidth())
+                    if ($product->getWidth() > $this->getWidth()) {
                         return false;
+                    }
                 }
             }
         }

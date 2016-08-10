@@ -31,7 +31,8 @@ class CoreShop_Admin_ShopController extends Admin
         }
     }
     
-    public function listSitesAction() {
+    public function listSitesAction()
+    {
         $list = new \Pimcore\Model\Site\Listing();
         $list->setOrder('ASC');
         $list->load();

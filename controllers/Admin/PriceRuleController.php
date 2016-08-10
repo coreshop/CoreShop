@@ -167,7 +167,8 @@ class CoreShop_Admin_PriceRuleController extends Admin
         $this->_helper->json(array('success' => false));
     }
 
-    public function getVoucherCodesAction() {
+    public function getVoucherCodesAction()
+    {
         $id = $this->getParam('id');
         $priceRule = PriceRule::getById($id);
 
@@ -183,8 +184,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
                 if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                     $list->setCondition(implode(' AND ', $conditionFilters), array($priceRule->getId()));
                 }
-            }
-            else {
+            } else {
                 $list->setCondition("priceRuleId = ?", array($priceRule->getId()));
             }
 
@@ -209,7 +209,8 @@ class CoreShop_Admin_PriceRuleController extends Admin
         $this->_helper->json(array('success' => false));
     }
 
-    public function generateVoucherCodesAction() {
+    public function generateVoucherCodesAction()
+    {
         $amount = $this->getParam("amount");
         $length = $this->getParam("length");
         $format = $this->getParam("format");
@@ -228,12 +229,12 @@ class CoreShop_Admin_PriceRuleController extends Admin
         $this->_helper->json(array('success' => false));
     }
 
-    public function exportVoucherCodesAction() {
+    public function exportVoucherCodesAction()
+    {
         $id = $this->getParam('id');
         $priceRule = PriceRule::getById($id);
 
         if ($priceRule instanceof PriceRule) {
-
             $fileName = $priceRule->getName() . "_vouchercodes";
             $csvData = [];
 
@@ -244,7 +245,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
                 "uses"
             ]);
 
-            foreach($priceRule->getVoucherCodes() as $code) {
+            foreach ($priceRule->getVoucherCodes() as $code) {
                 $data = [
                     "code" => $code->getCode(),
                     "creationDate" => $code->getCreationDate(),

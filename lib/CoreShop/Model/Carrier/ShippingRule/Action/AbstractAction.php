@@ -37,7 +37,8 @@ abstract class AbstractAction extends Model\Rules\Action\AbstractAction
      *
      * @return float
      */
-    public function getPriceModification(Cart $cart, Model\User\Address $address, $price) {
+    public function getPriceModification(Cart $cart, Model\User\Address $address, $price)
+    {
         return 0;
     }
 

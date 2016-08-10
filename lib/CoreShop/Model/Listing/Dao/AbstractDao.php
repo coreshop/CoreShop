@@ -84,7 +84,8 @@ class AbstractDao extends Listing\Dao\AbstractDao
     /**
      * @return string
      */
-    protected function getShopTableName() {
+    protected function getShopTableName()
+    {
         return $this->getTableName(true) . '_shops';
     }
 
@@ -139,10 +140,9 @@ class AbstractDao extends Listing\Dao\AbstractDao
         foreach ($list as $o_id) {
             $object = null;
 
-            if($modelClass::isMultiShop() && Tool::isFrontend()) {
+            if ($modelClass::isMultiShop() && Tool::isFrontend()) {
                 $object = $modelClass::getByShopId($o_id, Model\Shop::getShop()->getId());
-            }
-            else {
+            } else {
                 $object = $modelClass::getById($o_id);
             }
 

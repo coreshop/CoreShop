@@ -55,7 +55,7 @@ class NumberRange extends AbstractModel
      */
     public static function getByType($type, $shopId = null)
     {
-        if(is_null($shopId)) {
+        if (is_null($shopId)) {
             $shopId = Shop::getShop()->getId();
         }
 

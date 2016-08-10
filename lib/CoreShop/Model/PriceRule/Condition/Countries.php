@@ -91,8 +91,8 @@ class Countries extends AbstractCondition
     {
         $found = false;
 
-        foreach($this->getCountries() as $countryId) {
-            if($countryId === Tool::getCountry()->getId()) {
+        foreach ($this->getCountries() as $countryId) {
+            if ($countryId === Tool::getCountry()->getId()) {
                 $found = true;
                 break;
             }

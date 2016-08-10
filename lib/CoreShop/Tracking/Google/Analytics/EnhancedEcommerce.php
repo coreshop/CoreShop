@@ -28,7 +28,8 @@ use Pimcore\Google\Analytics;
  * Class EnhancedEcommerce
  * @package CoreShop\Tracking\Google\Analytics
  */
-class EnhancedEcommerce extends ClientTracker {
+class EnhancedEcommerce extends ClientTracker
+{
 
     /**
      * @var ItemBuilder
@@ -47,7 +48,8 @@ class EnhancedEcommerce extends ClientTracker {
 
     /**
      */
-    public function init() {
+    public function init()
+    {
         Analytics::addAdditionalCode("ga('require', 'ec')", "beforePageview");
     }
 
@@ -70,7 +72,8 @@ class EnhancedEcommerce extends ClientTracker {
      * @param Product $product
      * @return mixed
      */
-    public function trackProductView(Product $product) {
+    public function trackProductView(Product $product)
+    {
         $item = $this->getItemBuilder()->buildProductViewItem($product);
 
         $productData = $this->transformProductAction($item);
@@ -85,7 +88,8 @@ class EnhancedEcommerce extends ClientTracker {
      * @param Product $product
      * @return mixed
      */
-    public function trackProductImpression(Product $product) {
+    public function trackProductImpression(Product $product)
+    {
         $item = $this->getItemBuilder()->buildProductImpressionItem($product);
 
         $productData = $this->transformProductImpression($item);
@@ -98,7 +102,8 @@ class EnhancedEcommerce extends ClientTracker {
      * @param int $quantity
      * @return mixed
      */
-    public function trackProductActionAdd(Product $product, $quantity = 1) {
+    public function trackProductActionAdd(Product $product, $quantity = 1)
+    {
         $this->trackProductAction($product, "add", $quantity);
     }
 
@@ -107,7 +112,8 @@ class EnhancedEcommerce extends ClientTracker {
      * @param int $quantity
      * @return mixed
      */
-    public function trackProductActionRemove(Product $product, $quantity = 1) {
+    public function trackProductActionRemove(Product $product, $quantity = 1)
+    {
         $this->trackProductAction($product, "remove", $quantity);
     }
 
@@ -116,7 +122,8 @@ class EnhancedEcommerce extends ClientTracker {
      * @param $action
      * @param int $quantity
      */
-    protected function trackProductAction(Product $product, $action, $quantity = 1) {
+    protected function trackProductAction(Product $product, $action, $quantity = 1)
+    {
         $item = $this->getItemBuilder()->buildProductActionItem($product);
         $item->setQuantity($quantity);
 
@@ -131,11 +138,12 @@ class EnhancedEcommerce extends ClientTracker {
      * @param null $checkoutOption
      * @return mixed
      */
-    public function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null) {
+    public function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null)
+    {
         $items = $this->getItemBuilder()->buildCheckoutItemsByCart($cart);
         $products = [];
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $products[] = $this->transformProductAction($item);
         }
 
@@ -148,16 +156,17 @@ class EnhancedEcommerce extends ClientTracker {
      * @param null $checkoutOption
      * @return mixed
      */
-    public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null) {
+    public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null)
+    {
         $items = $this->getItemBuilder()->buildCheckoutItemsByCart($cart);
 
         $actionData = [];
 
-        if($stepNumber) {
+        if ($stepNumber) {
             $actionData['step'] = $stepNumber;
         }
 
-        if($checkoutOption) {
+        if ($checkoutOption) {
             $actionData['option'] = $checkoutOption;
         }
 
@@ -170,21 +179,22 @@ class EnhancedEcommerce extends ClientTracker {
      * @param null $checkoutOption
      * @return mixed
      */
-    public function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null) {
+    public function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null)
+    {
         $items = $this->getItemBuilder()->buildCheckoutItemsByCart($cart);
 
         $actionData = [];
         $products = [];
 
-        if($stepNumber) {
+        if ($stepNumber) {
             $actionData['step'] = $stepNumber;
         }
 
-        if($checkoutOption) {
+        if ($checkoutOption) {
             $actionData['option'] = $checkoutOption;
         }
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $products[] = $this->transformProductAction($item);
         }
 
@@ -195,13 +205,14 @@ class EnhancedEcommerce extends ClientTracker {
      * @param Order $order
      * @return mixed
      */
-    public function trackCheckoutComplete(Order $order) {
+    public function trackCheckoutComplete(Order $order)
+    {
         $orderItem = $this->getItemBuilder()->buildOrderAction($order);
         $items = $this->getItemBuilder()->buildCheckoutItems($order);
 
         $products = [];
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $products[] = $this->transformProductAction($item);
         }
 

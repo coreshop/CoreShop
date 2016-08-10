@@ -22,14 +22,14 @@ use CoreShop\Model\Product;
  * Class Tracker
  * @package CoreShop\Tracking
  */
-abstract class Tracker {
+abstract class Tracker
+{
 
     /**
      * Tracker constructor.
      */
     public function __construct()
     {
-
     }
 
     /**
@@ -62,37 +62,37 @@ abstract class Tracker {
      *
      * @return string
      */
-    public abstract function track($config);
+    abstract public function track($config);
 
     /**
      */
-    public abstract function init();
-
-    /**
-     * @param Product $product
-     * @return mixed
-     */
-    public abstract function trackProductView(Product $product);
+    abstract public function init();
 
     /**
      * @param Product $product
      * @return mixed
      */
-    public abstract function trackProductImpression(Product $product);
+    abstract public function trackProductView(Product $product);
 
     /**
      * @param Product $product
-     * @param int $quantity
      * @return mixed
      */
-    public abstract function trackProductActionAdd(Product $product, $quantity = 1);
+    abstract public function trackProductImpression(Product $product);
 
     /**
      * @param Product $product
      * @param int $quantity
      * @return mixed
      */
-    public abstract function trackProductActionRemove(Product $product, $quantity = 1);
+    abstract public function trackProductActionAdd(Product $product, $quantity = 1);
+
+    /**
+     * @param Product $product
+     * @param int $quantity
+     * @return mixed
+     */
+    abstract public function trackProductActionRemove(Product $product, $quantity = 1);
 
     /**
      * @param Cart $cart
@@ -100,7 +100,7 @@ abstract class Tracker {
      * @param null $checkoutOption
      * @return mixed
      */
-    public abstract function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null);
+    abstract public function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null);
 
     /**
      * @param Cart $cart
@@ -108,7 +108,7 @@ abstract class Tracker {
      * @param null $checkoutOption
      * @return mixed
      */
-    public abstract function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null);
+    abstract public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null);
 
     /**
      * @param Cart $cart
@@ -116,18 +116,18 @@ abstract class Tracker {
      * @param null $checkoutOption
      * @return mixed
      */
-    public abstract function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null);
+    abstract public function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null);
 
     /**
      * @param Order $order
      * @return mixed
      */
-    public abstract function trackCheckoutComplete(Order $order);
+    abstract public function trackCheckoutComplete(Order $order);
 
     /**
      * @return ItemBuilder
      */
-    public abstract function getItemBuilder();
+    abstract public function getItemBuilder();
 
     /**
      * Remove null values from an object, keep protected keys in any case

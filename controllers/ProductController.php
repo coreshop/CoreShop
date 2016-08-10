@@ -26,7 +26,7 @@ class CoreShop_ProductController extends Action
         $this->view->contacts = \CoreShop\Model\Messaging\Contact::getList()->load();
 
         if ($product instanceof \CoreShop\Model\Product) {
-            if(!in_array(\CoreShop\Model\Shop::getShop()->getId(), $product->getShops())) {
+            if (!in_array(\CoreShop\Model\Shop::getShop()->getId(), $product->getShops())) {
                 throw new CoreShop\Exception(sprintf('Product (%s) not valid for shop (%s)', $id, \CoreShop\Model\Shop::getShop()->getId()));
             }
 
@@ -124,7 +124,7 @@ class CoreShop_ProductController extends Action
                 $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort), true);
             }
 
-            foreach($this->view->paginator as $product) {
+            foreach ($this->view->paginator as $product) {
                 \CoreShop\Tracking\TrackingManager::getInstance()->trackProductImpression($product);
             }
 
@@ -183,7 +183,7 @@ class CoreShop_ProductController extends Action
     {
         $index = $filter->getIndex();
 
-        if(!$index instanceof CoreShop\Model\Index) {
+        if (!$index instanceof CoreShop\Model\Index) {
             return array();
         }
 
