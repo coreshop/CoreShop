@@ -431,3 +431,4 @@
 "coreshop_condition_dimension_depth","Depth"
 "coreshop_condition_postcodes","Postcodes"
 "coreshop_condition_carriers","Carriers"
+"coreshop_send_usagelog","Send Usagelog to CoreShop"

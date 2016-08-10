@@ -431,3 +431,4 @@
 "coreshop_condition_dimension_depth","Tiefe"
 "coreshop_condition_postcodes","Postleitzahlen"
 "coreshop_condition_carriers","Lieferanten"
+"coreshop_send_usagelog","Sende Nutzungsstatistiken an CoreShop"
