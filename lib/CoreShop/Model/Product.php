@@ -234,10 +234,12 @@ class Product extends Base
      * Get all Variants Differences.
      *
      * @param $language
+     * @param $type
+     * @param $field
      *
      * @return array
      */
-    public function getVariantDifferences($language = null)
+    public function getVariantDifferences($language = null, $type = 'objectbricks', $field = 'variants')
     {
         $cacheKey = 'coreshop_variant_differences'.$this->getId();
 
@@ -252,7 +254,7 @@ class Product extends Base
         $master = $this->getVariantMaster();
         
         if ($master instanceof self) {
-            $differences = Service::getProductVariations($master, $this, $language);
+            $differences = Service::getProductVariations($master, $this, $type, $field, $language);
 
             Cache::save($differences, $cacheKey);
 

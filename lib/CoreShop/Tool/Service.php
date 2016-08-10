@@ -19,6 +19,10 @@ use Pimcore\Model\Object\AbstractObject;
 use CoreShop\Model\Product;
 use CoreShop\Model\BrickVariant;
 use CoreShop\Exception;
+use Pimcore\Model\Object\ClassDefinition;
+use Pimcore\Model\Object\Classificationstore;
+use Pimcore\Model\Object\Classificationstore\KeyConfig;
+
 
 /**
  * Class Service
@@ -34,85 +38,34 @@ class Service
     private static $allowedVariationTypes = array('input', 'numeric', 'checkbox', 'select', 'slider', 'href', 'objects');
 
     /**
-     * @param \CoreShop\Model\Product $master
-     * @param \CoreShop\Model\Product $currentProduct
-     * @param string                  $language
-     *
+     * @param Product $master
+     * @param Product $currentProduct
+     * @param string $type
+     * @param string $field
+     * @param string $language
      * @return array
-     *
-     * @throws Exception
      */
-    public static function getProductVariations(Product $master, Product $currentProduct, $language = 'en')
+    public static function getProductVariations(Product $master, Product $currentProduct, $type = 'objectbricks', $field = 'variants', $language = 'en')
     {
-        $productVariants = self::getAllChildren($master);
+        $baseData = [
+            "compare" => [],
+            "urls" => []
+        ];
+
+        switch($type) {
+            case 'objectbricks':
+                $baseData = self::getVariantValuesFromBrick($master, $field, $language);
+                break;
+
+            case 'classificationstore':
+                $baseData = self::getVariantValuesFromClassificationStore($master, $field ,$language);
+                break;
+        }
+
+        $compareValues = $baseData["compare"];
+        $variantUrls = $baseData["urls"];
 
         $projectId = $currentProduct->getId();
-
-        $variantsAndMaster = array_merge(array($master), $productVariants);
-
-        //we do have some dimension entries!
-        $variantData = $master->getVariants();
-
-        $dimensionInfo = array();
-        $variantUrls = array();
-
-        if (!is_null($variantData)) {
-            $brickGetters = $variantData->getBrickGetters();
-
-            if (!empty($brickGetters)) {
-                foreach ($brickGetters as $brickGetter) {
-                    $getter = $variantData->{$brickGetter}();
-
-                    if (!is_null($getter)) {
-                        $dimensionMethodData = self::getProductValidMethods($getter);
-                        $dimensionInfo[$brickGetter] = $dimensionMethodData;
-                    }
-                }
-            }
-        }
-
-        $compareValues = array();
-
-        foreach ($variantsAndMaster as $productVariant) {
-            $productId = $productVariant->getId();
-
-            if (!empty($dimensionInfo)) {
-                foreach ($dimensionInfo as $dimensionGetter => $dimensionMethodData) {
-                    if (empty($dimensionMethodData)) {
-                        continue;
-                    }
-
-                    $getter = $productVariant->getVariants()->{$dimensionGetter}();
-
-                    //Getter must be an instance of Variant Model
-                    if (!$getter instanceof BrickVariant) {
-                        throw new Exception('Objectbrick "'.$dimensionGetter.'" needs to be a instance of \CoreShop\Model\BrickVariant"');
-                    } elseif (!method_exists($getter, 'getValueForVariant')) {
-                        throw new Exception('Variant Class needs a implemented "getValueForVariant" Method.');
-                    } else {
-                        foreach ($dimensionMethodData as $dMethod) {
-                            $variantValue = $getter->getValueForVariant($dMethod, $language);
-                            $variantName = $getter->getNameForVariant($dMethod);
-
-                            if ($variantValue === false) {
-                                continue;
-                            }
-
-                            if (!is_string($variantValue) && !is_numeric($variantValue)) {
-                                throw new Exception('Variant return value needs to be string or numeric, '.gettype($variantValue).' given.');
-                            }
-
-                            //Add a namespace, so fields from different blocks can have same name!
-                            $secureNameSpace = '__'.$getter->getType().'__';
-
-                            $compareValues[ $secureNameSpace.$variantName ][ $productId ] = $variantValue;
-                            $variantUrls[ $productVariant->getId() ] = $productVariant->getName();
-                        }
-                    }
-                }
-            }
-        }
-
         $filtered = $compareValues;
 
         foreach ($compareValues as $variantName => $variantValues) {
@@ -126,21 +79,18 @@ class Service
             unset($tmpArray[ $variantName ]);
 
             $available = self::findProjectIDsInVariant($currentVariantName, $variantValues);
-
             $filtered = self::findInOthers($tmpArray, $available, $filtered);
         }
 
-        $orderedData = array();
+        $orderedData = [];
 
         if (!empty($filtered)) {
             foreach ($filtered as $variantName => $variantValues) {
                 $currentVariantName = isset($variantValues[ $projectId ]) ? $variantValues[ $projectId ] : null;
 
                 $variantSelections = array(
-
                     'variantName' => preg_replace('/__(.*?)__/', '', $variantName),
-                    'variantValues' => array(),
-
+                    'variantValues' => [],
                 );
 
                 $variantValues = array_unique($variantValues);
@@ -148,12 +98,10 @@ class Service
                 if (!empty($variantValues)) {
                     foreach ($variantValues as $pid => $variantValue) {
                         $variantSelections['variantValues'][] = array(
-
                             'productId' => $pid,
                             'productName' => isset($variantUrls[ $pid ]) ?  $variantUrls[ $pid ] : null,
                             'selected' => $currentVariantName === $variantValue,
                             'variantName' => $variantValue,
-
                         );
                     }
                 }
@@ -165,6 +113,177 @@ class Service
         }
 
         return $orderedData;
+    }
+
+    /**
+     * @param Product $master
+     * @param string $classificationStoreField
+     * @param string $language
+     * @return array
+     */
+    public static function getVariantValuesFromClassificationStore(Product $master, $classificationStoreField = 'classificationStore', $language = 'en') {
+        $productClass = Product::getPimcoreObjectClass();
+        $productClassDefinition = ClassDefinition::getById($productClass::classId());
+
+        $definition = $productClassDefinition->getFieldDefinition($classificationStoreField);
+
+        if($definition instanceof ClassDefinition\Data\Classificationstore)
+        {
+            $productVariants = self::getAllChildren($master);
+            $variantsAndMaster = array_merge(array($master), $productVariants);
+            $getter = "get" . ucfirst($classificationStoreField);
+
+            $storeId = $definition->getStoreId();
+
+            $groups = new Classificationstore\GroupConfig\Listing();
+            $groups->setCondition("storeId = ?", $storeId);
+            $groups = $groups->load();
+            $dimensionInfo = [];
+
+            foreach($groups as $groupConfig) {
+                $list = new Classificationstore\KeyGroupRelation\Listing();
+                $list->setCondition("groupId = ?", $groupConfig->getId());
+                $relations = $list->load();
+
+                foreach($relations as $relation) {
+                    $keyConfig = KeyConfig::getById($relation->getKeyId());
+
+                    $dimensionInfo[$groupConfig->getId() . $keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
+                }
+            }
+
+            $compareValues = [];
+            $variantUrls = [];
+
+            foreach ($variantsAndMaster as $productVariant) {
+                $productId = $productVariant->getId();
+
+                if (!empty($dimensionInfo)) {
+                    foreach ($dimensionInfo as $keyName => $keyData) {
+                        if (empty($keyData)) {
+                            continue;
+                        }
+
+                        $classificationStoreData = $productVariant->$getter();
+                        $value = null;
+
+                        if($classificationStoreData instanceof Classificationstore) {
+                            $value = $classificationStoreData->getLocalizedKeyValue($keyData['groupId'], $keyData['keyId'], $language);
+
+                            if(is_null($value))
+                                continue;
+
+                            //Add a namespace, so fields from different blocks can have same name!
+                            $secureNameSpace = '__' . $keyData['groupId'].$keyData['keyId'].'__';
+                            $variantName = $keyData['name'];
+
+                            $compareValues[$secureNameSpace . $variantName][$productId] = $value;
+                            $variantUrls[$productVariant->getId()] = $productVariant->getName();
+                        }
+                    }
+                }
+            }
+
+            return [
+                "compare" => $compareValues,
+                "urls" => $variantUrls
+            ];
+        }
+
+        return [];
+    }
+
+    /**
+     * get data for variants from a brick-field
+     *
+     * @param Product $master
+     * @param string $brickField
+     * @param string $language
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    public static function getVariantValuesFromBrick(Product $master, $brickField = 'variants', $language = 'en') {
+        $productClass = Product::getPimcoreObjectClass();
+        $productClassDefinition = ClassDefinition::getById($productClass::classId());
+
+        $definition = $productClassDefinition->getFieldDefinition($brickField);
+
+        if($definition instanceof ClassDefinition\Data\Objectbricks) {
+            $productVariants = self::getAllChildren($master);
+            $variantsAndMaster = array_merge(array($master), $productVariants);
+
+            //we do have some dimension entries!
+            $variantData = $master->getVariants();
+
+            $dimensionInfo = [];
+
+            if (!is_null($variantData)) {
+                $brickGetters = $variantData->getBrickGetters();
+
+                if (!empty($brickGetters)) {
+                    foreach ($brickGetters as $brickGetter) {
+                        $getter = $variantData->{$brickGetter}();
+
+                        if (!is_null($getter)) {
+                            $dimensionMethodData = self::getProductValidMethods($getter);
+                            $dimensionInfo[$brickGetter] = $dimensionMethodData;
+                        }
+                    }
+                }
+            }
+
+            $compareValues = [];
+            $variantUrls = [];
+            
+            foreach ($variantsAndMaster as $productVariant) {
+                $productId = $productVariant->getId();
+
+                if (!empty($dimensionInfo)) {
+                    foreach ($dimensionInfo as $dimensionGetter => $dimensionMethodData) {
+                        if (empty($dimensionMethodData)) {
+                            continue;
+                        }
+
+                        $getter = $productVariant->getVariants()->{$dimensionGetter}();
+
+                        //Getter must be an instance of Variant Model
+                        if (!$getter instanceof BrickVariant) {
+                            throw new Exception('Objectbrick "'.$dimensionGetter.'" needs to be a instance of \CoreShop\Model\BrickVariant"');
+                        } elseif (!method_exists($getter, 'getValueForVariant')) {
+                            throw new Exception('Variant Class needs a implemented "getValueForVariant" Method.');
+                        } else {
+                            foreach ($dimensionMethodData as $dMethod) {
+                                $variantValue = $getter->getValueForVariant($dMethod, $language);
+                                $variantName = $getter->getNameForVariant($dMethod);
+
+                                if ($variantValue === false) {
+                                    continue;
+                                }
+
+                                if (!is_string($variantValue) && !is_numeric($variantValue)) {
+                                    throw new Exception('Variant return value needs to be string or numeric, '.gettype($variantValue).' given.');
+                                }
+
+                                //Add a namespace, so fields from different blocks can have same name!
+                                $secureNameSpace = '__'.$getter->getType().'__';
+
+                                $compareValues[ $secureNameSpace.$variantName ][ $productId ] = $variantValue;
+                                $variantUrls[ $productVariant->getId() ] = $productVariant->getName();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return [
+                "compare" => $compareValues,
+                "urls" => $variantUrls
+            ];
+        }
+
+        return [];
     }
 
     /**
@@ -197,7 +316,7 @@ class Service
      */
     private static function findProjectIDsInVariant($value, $array)
     {
-        $v = array();
+        $v = [];
 
         foreach ($array as $projectID => $variantName) {
             if ($variantName == $value) {
@@ -206,6 +325,25 @@ class Service
         }
 
         return $v;
+    }
+
+    /**
+     * @param Classificationstore\GroupConfig $group
+     * @param KeyConfig $field
+     * @return array
+     */
+    private static function getClassificationValidMethods(Classificationstore\GroupConfig $group, KeyConfig $field) {
+        if(!in_array($field->getType(), self::$allowedVariationTypes)) {
+            return [];
+        }
+
+        return array(
+            'groupId' => $group->getId(),
+            'keyId' => $field->getId(),
+            'name' => $field->getName(),
+            'type' => $field->getType(),
+            'title' => $field->getTitle(),
+        );
     }
 
     /**
@@ -219,10 +357,10 @@ class Service
         $fields = $getter->getDefinition()->getFieldDefinitions();
 
         if (empty($fields)) {
-            return array();
+            return [];
         }
 
-        $validValues = array();
+        $validValues = [];
 
         foreach ($fields as $field) {
             $isValid = false;
