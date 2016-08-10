@@ -178,20 +178,20 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             }
         ];
 
-        if(coreshop.settings.multishop) {
+        if (coreshop.settings.multishop) {
             columns.splice(1, 0, {
                 text: t('coreshop_shop'),
                 dataIndex: 'shop',
                 filter: {
                     type : 'number'
                 },
-                renderer : function(val) {
+                renderer : function (val) {
                     var store = pimcore.globalmanager.get('coreshop_shops');
                     var pos = store.findExact('id', String(val));
                     if (pos >= 0) {
                         var shop = store.getAt(pos);
 
-                        return shop.get("name");
+                        return shop.get('name');
                     }
 
                     return null;

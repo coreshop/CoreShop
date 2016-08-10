@@ -88,7 +88,7 @@ pimcore.plugin.coreshop.messaging.contact.item = Class.create(pimcore.plugin.cor
             }
         ];
 
-        if(this.getMultishopSettings()) {
+        if (this.getMultishopSettings()) {
             items.push(this.getMultishopSettings());
         }
 

@@ -40,7 +40,6 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
         return this.panel;
     },
 
-
     getSettings: function () {
         var data = this.data;
 
@@ -62,11 +61,11 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
         return this.settingsForm;
     },
 
-    getActionContainerClass : function() {
+    getActionContainerClass : function () {
         return pimcore.plugin.coreshop.carrier.shippingrules.action;
     },
 
-    getConditionContainerClass : function() {
+    getConditionContainerClass : function () {
         return pimcore.plugin.coreshop.carrier.shippingrules.condition;
     }
 });

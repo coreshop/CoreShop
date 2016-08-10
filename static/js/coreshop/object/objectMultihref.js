@@ -14,7 +14,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.object.objectMultihref');
 pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
 
-    type: "objectMultihref",
+    type: 'objectMultihref',
     dataChanged: false,
 
     initialize: function (data, fieldConfig) {
@@ -27,28 +27,27 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
 
         this.store = new Ext.data.ArrayStore({
             listeners: {
-                add:function() {
+                add:function () {
                     this.dataChanged = true;
                 }.bind(this),
-                remove: function() {
+                remove: function () {
                     this.dataChanged = true;
                 }.bind(this),
                 clear: function () {
                     this.dataChanged = true;
                 }.bind(this),
-                update: function(store) {
+                update: function (store) {
                     this.dataChanged = true;
                 }.bind(this)
             },
-            fields: ["id"],
+            fields: ['id'],
             expandData: true
         });
 
-        this.store.loadData(this.data)
+        this.store.loadData(this.data);
     },
 
-
-    createLayout: function(readOnly) {
+    createLayout: function (readOnly) {
         var autoHeight = false;
         if (intval(this.fieldConfig.height) < 15) {
             autoHeight = true;
@@ -68,10 +67,10 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
                 items: [
                     {
                         tooltip: t('open'),
-                        icon: "/pimcore/static6/img/flat-color-icons/cursor.svg",
+                        icon: '/pimcore/static6/img/flat-color-icons/cursor.svg',
                         handler: function (grid, rowIndex) {
                             var data = grid.getStore().getAt(rowIndex);
-                            pimcore.helpers.openObject(data.data.id, "object");
+                            pimcore.helpers.openObject(data.data.id, 'object');
                         }.bind(this)
                     }
                 ]
@@ -82,7 +81,7 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
                 items: [
                     {
                         tooltip: t('remove'),
-                        icon: "/pimcore/static6/img/flat-color-icons/delete.svg",
+                        icon: '/pimcore/static6/img/flat-color-icons/delete.svg',
                         handler: function (grid, rowIndex) {
                             grid.getStore().removeAt(rowIndex);
                         }.bind(this)
@@ -101,51 +100,53 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
             },
             columns: columns,
             cls: cls,
+
             //autoExpandColumn: 'path',
             width: this.fieldConfig.width,
             height: this.fieldConfig.height,
             tbar: {
                 items: [
                     {
-                        xtype: "tbspacer",
+                        xtype: 'tbspacer',
                         width: 20,
                         height: 16,
-                        cls: "pimcore_icon_droptarget"
+                        cls: 'pimcore_icon_droptarget'
                     },
                     {
-                        xtype: "tbtext",
-                        text: "<b>" + this.fieldConfig.title + "</b>"
+                        xtype: 'tbtext',
+                        text: '<b>' + this.fieldConfig.title + '</b>'
                     },
-                    "->",
+                    '->',
                     {
-                        xtype: "button",
-                        iconCls: "pimcore_icon_search",
+                        xtype: 'button',
+                        iconCls: 'pimcore_icon_search',
                         handler: this.openSearchEditor.bind(this)
                     },
                     {
-                        xtype: "button",
-                        iconCls: "pimcore_icon_delete",
+                        xtype: 'button',
+                        iconCls: 'pimcore_icon_delete',
                         handler: this.empty.bind(this)
                     }
                 ],
-                ctCls: "pimcore_force_auto_width",
-                cls: "pimcore_force_auto_width"
+                ctCls: 'pimcore_force_auto_width',
+                cls: 'pimcore_force_auto_width'
             },
             autoHeight: autoHeight,
-            bodyCssClass: "pimcore_object_tag_objects"
+            bodyCssClass: 'pimcore_object_tag_objects'
         });
 
-        this.component.on("rowcontextmenu", this.onRowContextmenu);
+        this.component.on('rowcontextmenu', this.onRowContextmenu);
         this.component.reference = this;
 
-        if(!readOnly) {
-            this.component.on("afterrender", function () {
+        if (!readOnly) {
+            this.component.on('afterrender', function () {
 
                 var dropTargetEl = this.component.getEl();
                 var gridDropTarget = new Ext.dd.DropZone(dropTargetEl, {
                     ddGroup    : 'element',
-                    getTargetFromEvent: function(e) {
+                    getTargetFromEvent: function (e) {
                         return this.component.getEl().dom;
+
                         //return e.getTarget(this.grid.getView().rowSelector);
                     }.bind(this),
                     onNodeOver: function (overHtmlNode, ddSource, e, data) {
@@ -153,14 +154,14 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
                         var data = record.data;
                         var fromTree = this.isFromTree(ddSource);
 
-                        if (data.elementType == "object" && this.dndAllowed(data, fromTree)) {
+                        if (data.elementType == 'object' && this.dndAllowed(data, fromTree)) {
                             return Ext.dd.DropZone.prototype.dropAllowed;
                         } else {
                             return Ext.dd.DropZone.prototype.dropNotAllowed;
                         }
 
                     }.bind(this),
-                    onNodeDrop : function(target, ddSource, e, data) {
+                    onNodeDrop : function (target, ddSource, e, data) {
                         var record = data.records[0];
                         var data = record.data;
                         var fromTree = this.isFromTree(ddSource);
@@ -170,7 +171,7 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
                             return true;
                         }
 
-                        if (data.elementType != "object") {
+                        if (data.elementType != 'object') {
                             return false;
                         }
 
@@ -186,16 +187,15 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
                                 return true;
                             }
                         }
+
                         return false;
                     }.bind(this)
                 });
             }.bind(this));
         }
 
-
         return this.component;
     },
-
 
     getLayoutEdit: function () {
         return this.createLayout(false);
@@ -215,9 +215,9 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
         }
 
         pimcore.helpers.itemselector(true, this.addDataFromSelector.bind(this), {
-            type: ["object"],
+            type: ['object'],
             subtype: {
-                object: ["object", "folder","variant"]
+                object: ['object', 'folder', 'variant']
             },
             specific: {
                 classes: allowedClasses
@@ -228,7 +228,7 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
     getValue: function () {
         var tmData = [];
 
-        var data = this.store.queryBy(function(record, id) {
+        var data = this.store.queryBy(function (record, id) {
             return true;
         });
 

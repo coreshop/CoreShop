@@ -79,9 +79,9 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         return {};
     },
 
-    getMultishopSettings : function() {
-        if(coreshop.settings.multishop) {
-            if(!this.multiShopSettings) {
+    getMultishopSettings : function () {
+        if (coreshop.settings.multishop) {
+            if (!this.multiShopSettings) {
                 this.multiShopSettings = Ext.create({
                     xtype: 'combo',
                     fieldLabel: t('coreshop_mulitshop_select'),

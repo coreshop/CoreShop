@@ -82,7 +82,7 @@ pimcore.plugin.coreshop.messaging.threadstate.item = Class.create(pimcore.plugin
             }
         ];
 
-        if(this.getMultishopSettings()) {
+        if (this.getMultishopSettings()) {
             items.push(this.getMultishopSettings());
         }
 

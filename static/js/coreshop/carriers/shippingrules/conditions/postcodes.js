@@ -21,7 +21,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.postcodes = Class.creat
         var postCodesValues = '';
 
         if (this.data) {
-            if(this.data.postcodes) {
+            if (this.data.postcodes) {
                 postCodesValues = this.data.postcodes;
             }
         }

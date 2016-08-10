@@ -215,7 +215,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                                     text: t('coreshop_carriers'),
                                     iconCls: 'coreshop_icon_carriers',
                                     handler: this.openCarriersList
-                                },{
+                                }, {
                                     text: t('coreshop_carriers_shipping_rules'),
                                     iconCls: 'coreshop_icon_carrier_shipping_rule',
                                     handler: this.openCarriersShippingRules
@@ -315,7 +315,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                             handler: this.openUpdate
                         });
 
-                        if(coreshop.settings.multishop) {
+                        if (coreshop.settings.multishop) {
                             coreShopMenuItems.push({
                                 text: t('coreshop_shops'),
                                 iconCls: 'coreshop_icon_shop',

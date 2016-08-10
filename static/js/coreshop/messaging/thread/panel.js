@@ -205,7 +205,7 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                 }
             ];
 
-            if(coreshop.settings.multishop) {
+            if (coreshop.settings.multishop) {
                 columns.splice(1, 0, {
                     text: t('coreshop_shop'),
                     dataIndex: 'shopId',
@@ -213,13 +213,13 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                         type : 'list',
                         store : pimcore.globalmanager.get('coreshop_messaging_thread_states')
                     },
-                    renderer : function(val) {
+                    renderer : function (val) {
                         var store = pimcore.globalmanager.get('coreshop_shops');
                         var pos = store.findExact('id', String(val));
                         if (pos >= 0) {
                             var shop = store.getAt(pos);
 
-                            return shop.get("name");
+                            return shop.get('name');
                         }
 
                         return null;

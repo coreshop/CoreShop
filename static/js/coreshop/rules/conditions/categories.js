@@ -22,17 +22,17 @@ pimcore.plugin.coreshop.rules.conditions.categories = Class.create(pimcore.plugi
     getForm : function () {
         this.categories = new pimcore.plugin.coreshop.object.objectMultihref(this.data ? this.data.categories : [], {
             classes: [
-                {classes: coreshop.settings.classMapping.category}
+                { classes: coreshop.settings.classMapping.category }
             ],
-            name: "categories",
-            title: "",
+            name: 'categories',
+            title: '',
             height: 200,
             width: 500,
             columns: [],
 
             columnType: null,
-            datatype: "data",
-            fieldtype: "objects"
+            datatype: 'data',
+            fieldtype: 'objects'
         });
 
         this.form = new Ext.form.FieldSet({
@@ -44,7 +44,7 @@ pimcore.plugin.coreshop.rules.conditions.categories = Class.create(pimcore.plugi
         return this.form;
     },
 
-    getValues : function() {
+    getValues : function () {
         return {
             categories : this.categories.getValue()
         };

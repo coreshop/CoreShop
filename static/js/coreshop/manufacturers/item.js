@@ -81,7 +81,7 @@ pimcore.plugin.coreshop.manufacturers.item = Class.create(pimcore.plugin.coresho
             }
         ];
 
-        if(this.getMultishopSettings()) {
+        if (this.getMultishopSettings()) {
             items.push(this.getMultishopSettings());
         }
 

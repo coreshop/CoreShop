@@ -61,7 +61,7 @@ pimcore.plugin.coreshop.rules.action = Class.create({
         this.actionsContainer.updateLayout();
     },
 
-    getActionClassItem : function(type) {
+    getActionClassItem : function (type) {
         return pimcore.plugin.coreshop.rules.actions[type];
     },
 

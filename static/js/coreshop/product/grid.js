@@ -119,7 +119,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
             }
         ];
 
-        if(coreshop.settings.multishop) {
+        if (coreshop.settings.multishop) {
             columns.splice(1, 0, {
                 text: t('coreshop_shop'),
                 dataIndex: 'shops',
@@ -127,16 +127,16 @@ pimcore.plugin.coreshop.product.grid = Class.create({
                     type : 'list',
                     store : pimcore.globalmanager.get('coreshop_shops')
                 },
-                renderer : function(val) {
+                renderer : function (val) {
                     var store = pimcore.globalmanager.get('coreshop_shops');
-                    var storeString = "";
+                    var storeString = '';
 
-                    Ext.each(val, function(shop) {
+                    Ext.each(val, function (shop) {
                         var pos = store.findExact('id', String(shop));
                         if (pos >= 0) {
                             var shopObj = store.getAt(pos);
 
-                            storeString += shopObj.get("name") + " ";
+                            storeString += shopObj.get('name') + ' ';
                         }
                     });
 

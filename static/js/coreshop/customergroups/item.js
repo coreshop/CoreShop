@@ -41,7 +41,7 @@ pimcore.plugin.coreshop.customergroups.item = Class.create(pimcore.plugin.coresh
             }
         ];
 
-        if(this.getMultishopSettings()) {
+        if (this.getMultishopSettings()) {
             items.push(this.getMultishopSettings());
         }
 

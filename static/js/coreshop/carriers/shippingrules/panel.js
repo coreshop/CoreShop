@@ -20,7 +20,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.panel = Class.create(pimcore.plugi
     storeId : 'coreshop_carrier_shipping_rules',
     iconCls : 'coreshop_icon_carrier_shipping_rule',
     type : 'carriers_shipping_rules',
-    
+
     url : {
         add : '/plugin/CoreShop/admin_carrier-shipping-rule/add',
         delete : '/plugin/CoreShop/admin_carrier-shipping-rule/delete',

@@ -40,7 +40,7 @@ pimcore.plugin.coreshop.settings = Class.create({
         if (this.data.values.hasOwnProperty(shopId)) {
             current = this.data.values[shopId];
 
-            if(current.hasOwnProperty(key)) {
+            if (current.hasOwnProperty(key)) {
                 current = current[key];
             }
         }
@@ -52,7 +52,7 @@ pimcore.plugin.coreshop.settings = Class.create({
         return '';
     },
 
-    getSystemValue : function(key) {
+    getSystemValue : function (key) {
         var current = null;
 
         if (this.data.systemValues.hasOwnProperty(key)) {
@@ -66,11 +66,11 @@ pimcore.plugin.coreshop.settings = Class.create({
         return '';
     },
 
-    getClass : function(key, fromCurrentValues) {
+    getClass : function (key, fromCurrentValues) {
         var lastValue = null;
         var firstLoop = true;
 
-        if(fromCurrentValues == undefined) {
+        if (fromCurrentValues == undefined) {
             fromCurrentValues = false;
         }
 
@@ -81,15 +81,14 @@ pimcore.plugin.coreshop.settings = Class.create({
 
             var value = this.getValue(shopId, key);
 
-            if(fromCurrentValues) {
-                value = this.shopPanels[shopId].down('[name="'+key+'"]').getValue();
+            if (fromCurrentValues) {
+                value = this.shopPanels[shopId].down('[name="' + key + '"]').getValue();
             }
 
-            if(firstLoop) {
+            if (firstLoop) {
                 lastValue = value;
-            }
-            else {
-                if(lastValue !== value) {
+            } else {
+                if (lastValue !== value) {
                     return '';
                 }
             }
@@ -100,7 +99,7 @@ pimcore.plugin.coreshop.settings = Class.create({
         return this.getInheritanceClass();
     },
 
-    getInheritanceClass : function() {
+    getInheritanceClass : function () {
         return 'coreshop_settings_inherited';
     },
 
@@ -174,7 +173,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         autoHeight: true,
                         labelWidth: 250,
                         defaultType: 'textfield',
-                        defaults: {width: 600},
+                        defaults: { width: 600 },
                         items: [
                             {
                                 fieldLabel: t('coreshop_multishop_enabled'),
@@ -192,7 +191,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         autoHeight: true,
                         labelWidth: 250,
                         defaultType: 'textfield',
-                        defaults: {width: 600},
+                        defaults: { width: 600 },
                         items: [
                             {
                                 fieldLabel: t('coreshop_send_usagelog'),
@@ -210,7 +209,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         autoHeight: true,
                         labelWidth: 250,
                         defaultType: 'textfield',
-                        defaults: {width: 600},
+                        defaults: { width: 600 },
                         items: [
                             {
                                 fieldLabel: t('coreshop_currency_automatic_exchange_rates'),
@@ -253,7 +252,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                 ]
             });
 
-            if(coreshop.settings.multishop) {
+            if (coreshop.settings.multishop) {
                 for (var shopId in this.data.values) {
                     if (!this.data.values.hasOwnProperty(shopId)) {
                         return;
@@ -262,15 +261,13 @@ pimcore.plugin.coreshop.settings = Class.create({
                     this.shopPanels[shopId] = this.getConfigFormForShop(shopId);
                     this.layout.add(this.shopPanels[shopId]);
                 }
-            }
-            else {
+            } else {
                 var shopPanel = this.getConfigFormForShop(coreshop.settings.defaultShop);
 
                 this.shopPanels[coreshop.settings.defaultShop] = shopPanel;
 
                 this.layout.add(shopPanel);
             }
-
 
             this.layout.add(this.noMultishopPanel);
 
@@ -291,8 +288,8 @@ pimcore.plugin.coreshop.settings = Class.create({
     save: function () {
         var values = {};
 
-        for(var shopId in this.shopPanels) {
-            if(this.shopPanels.hasOwnProperty(shopId)) {
+        for (var shopId in this.shopPanels) {
+            if (this.shopPanels.hasOwnProperty(shopId)) {
                 values[shopId] = this.shopPanels[shopId].getForm().getFieldValues();
             }
         }
@@ -312,8 +309,8 @@ pimcore.plugin.coreshop.settings = Class.create({
                     if (res.success) {
                         pimcore.helpers.showNotification(t('success'), t('coreshop_settings_save_success'), 'success');
 
-                        Ext.MessageBox.confirm(t("info"), t("reload_pimcore_changes"), function (buttonValue) {
-                            if (buttonValue == "yes") {
+                        Ext.MessageBox.confirm(t('info'), t('reload_pimcore_changes'), function (buttonValue) {
+                            if (buttonValue == 'yes') {
                                 window.location.reload();
                             }
                         }.bind(this));
@@ -328,11 +325,11 @@ pimcore.plugin.coreshop.settings = Class.create({
             }
         });
     },
-    
-    elementChanged : function(el, newValue, oldValue, eOpts) {
-        var elements = this.panel.query('[name="'+el.getName()+'"]');
 
-        if(elements) {
+    elementChanged : function (el, newValue, oldValue, eOpts) {
+        var elements = this.panel.query('[name="' + el.getName() + '"]');
+
+        if (elements) {
             Ext.each(elements, function (element) {
                 element.removeCls(this.getInheritanceClass());
                 element.addCls(this.getClass(el.getName(), true));
@@ -340,10 +337,10 @@ pimcore.plugin.coreshop.settings = Class.create({
         }
     },
 
-    checkForInheritance : function(element) {
+    checkForInheritance : function (element) {
         var me = this;
 
-        if(coreshop.settings.multishop) {
+        if (coreshop.settings.multishop) {
             if (element['items']) {
                 Ext.each(element.items.items, function (item) {
                     if (item['getName']) {
@@ -360,13 +357,13 @@ pimcore.plugin.coreshop.settings = Class.create({
         }
     },
 
-    getConfigFormForShop : function(shopId) {
+    getConfigFormForShop : function (shopId) {
         var me = this;
         var messagingLangTabs = [];
         var store = pimcore.globalmanager.get('coreshop_shops');
         var shop = store.getById(shopId);
         if (!shop) {
-            alert("SHOP NOT FOUND!");
+            alert('SHOP NOT FOUND!');
             return;
         }
 
@@ -510,14 +507,14 @@ pimcore.plugin.coreshop.settings = Class.create({
         });
 
         var shopPanel = Ext.create('Ext.form.Panel', {
-            title : shop.get("name"),
+            title : shop.get('name'),
             border: false,
             autoScroll: true,
             forceLayout: true,
             defaults: {
                 forceLayout: true,
                 listeners : {
-                    render : function(el) {
+                    render : function (el) {
                         me.checkForInheritance(el);
                     }
                 }
@@ -534,7 +531,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_show_debug'),
@@ -552,7 +549,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             xtype: 'combo',
@@ -598,7 +595,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             xtype: 'tabpanel',
@@ -651,7 +648,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_stock_defaultoutofstock_behavior'),
@@ -676,7 +673,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_base_tax_enabled'),
@@ -719,7 +716,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             xtype: 'combo',
@@ -753,7 +750,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_prices_are_gross'),
@@ -771,7 +768,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             xtype: 'numberfield',
@@ -814,7 +811,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_default_image'),
@@ -872,7 +869,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_default_image'),
@@ -923,7 +920,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_invoice_create'),
@@ -956,7 +953,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_mail_order_notification'),
@@ -982,7 +979,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: {width: 600},
+                    defaults: { width: 600 },
                     items: [
                         {
                             fieldLabel: t('coreshop_cart_activate_auto_cleanup'),

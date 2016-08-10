@@ -24,15 +24,15 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.dimension = Class.creat
         var me = this;
 
         if (this.data) {
-            if(this.data.height) {
+            if (this.data.height) {
                 heightValue = this.data.height;
             }
 
-            if(this.data.width) {
+            if (this.data.width) {
                 widthValue = this.data.width;
             }
 
-            if(this.data.depth) {
+            if (this.data.depth) {
                 depthValue = this.data.depth;
             }
         }

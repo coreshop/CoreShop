@@ -14,11 +14,11 @@
 pimcore.registerNS('pimcore.plugin.coreshop.rules.item');
 
 pimcore.plugin.coreshop.rules.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
-    getActionContainerClass : function() {
+    getActionContainerClass : function () {
         return pimcore.plugin.coreshop.rules.action;
     },
 
-    getConditionContainerClass : function() {
+    getConditionContainerClass : function () {
         return pimcore.plugin.coreshop.rules.condition;
     },
 

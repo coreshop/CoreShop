@@ -26,7 +26,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         this.panelKey = panelKey;
         this.type = type;
 
-        pimcore.globalmanager.get('coreshop_carrier_shipping_rules').load(function() {
+        pimcore.globalmanager.get('coreshop_carrier_shipping_rules').load(function () {
             this.initPanel();
         }.bind(this));
     },
@@ -134,14 +134,14 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             }]
         });
 
-        if(this.getMultishopSettings()) {
+        if (this.getMultishopSettings()) {
             this.settingsForm.add(this.getMultishopSettings());
         }
 
         return this.settingsForm;
     },
 
-    getShippingRulesGrid : function() {
+    getShippingRulesGrid : function () {
         this.shippingRuleGroupsStore = new Ext.data.Store({
             restful: false,
             idProperty: 'id',
@@ -279,10 +279,10 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
 
         var ruleGroups = this.shippingRuleGroupsStore.getRange();
 
-        Ext.each(ruleGroups, function(group) {
+        Ext.each(ruleGroups, function (group) {
             var rule = {
-                priority : group.get("priority"),
-                shippingRuleId : group.get("shippingRuleId")
+                priority : group.get('priority'),
+                shippingRuleId : group.get('shippingRuleId')
             };
 
             data.groups.push(rule);
@@ -293,7 +293,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         };
     },
 
-    postSave : function() {
+    postSave : function () {
         this.shippingRuleGroupsStore.load();
     }
 });

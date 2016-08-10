@@ -199,7 +199,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 }
             ];
 
-            if(coreshop.settings.multishop) {
+            if (coreshop.settings.multishop) {
                 items.push({
                     xtype : 'panel',
                     html : t('coreshop_shop') + '<br/><span class="coreshop_order_big">' + this.order.shop.name + '</span>',
@@ -999,7 +999,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
             var detailItems = [itemsGrid, summaryGrid];
 
-            if(this.order.priceRule) {
+            if (this.order.priceRule) {
 
                 var priceRuleStore = new Ext.data.JsonStore({
                     data : this.order.priceRule

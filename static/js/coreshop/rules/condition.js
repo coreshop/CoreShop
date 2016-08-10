@@ -53,7 +53,7 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
         return this.conditionsContainer;
     },
 
-    getConditionClassItem : function(type) {
+    getConditionClassItem : function (type) {
         return pimcore.plugin.coreshop.rules.conditions[type];
     },
 
@@ -79,10 +79,9 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
             var conditionItem = conditions[i];
             var conditionClass = conditionItem.xparent;
 
-            if(Ext.isFunction(conditionClass['getValues'])) {
+            if (Ext.isFunction(conditionClass['getValues'])) {
                 condition = conditionClass.getValues();
-            }
-            else {
+            } else {
                 var form = conditionClass.form;
 
                 for (var c = 0; c < form.items.length; c++) {

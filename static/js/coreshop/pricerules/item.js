@@ -37,7 +37,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
             items: this.getItems()
         });
 
-        if(this.data && this.data.useMultipleVoucherCodes) {
+        if (this.data && this.data.useMultipleVoucherCodes) {
             this.addVoucherCodes();
         }
 
@@ -72,14 +72,13 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                 fieldLabel: t('coreshop_cart_pricerule_useMultipleVoucherCodes'),
                 checked: this.data.useMultipleVoucherCodes == '1',
                 listeners : {
-                    change : function(cb, newValue, oldValue) {
-                        if(newValue) {
+                    change : function (cb, newValue, oldValue) {
+                        if (newValue) {
                             this.addVoucherCodes();
-                            cb.up("form").down('[name="code"]').disable();
-                        }
-                        else {
+                            cb.up('form').down('[name="code"]').disable();
+                        } else {
                             this.destroyVoucherCodes();
-                            cb.up("form").down('[name="code"]').enable();
+                            cb.up('form').down('[name="code"]').enable();
                         }
                     }.bind(this)
                 }
@@ -112,19 +111,19 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
         return this.settingsForm;
     },
 
-    addVoucherCodes : function() {
+    addVoucherCodes : function () {
         this.panel.add(this.getVoucherCodes());
     },
 
-    destroyVoucherCodes : function() {
-        if(this.voucherCodesPanel) {
+    destroyVoucherCodes : function () {
+        if (this.voucherCodesPanel) {
             this.getVoucherCodes().destroy();
             this.voucherCodesPanel = null;
         }
     },
 
-    getVoucherCodes : function() {
-        if(!this.voucherCodesPanel) {
+    getVoucherCodes : function () {
+        if (!this.voucherCodesPanel) {
             var store = new Ext.data.JsonStore({
                 remoteSort: true,
                 remoteFilter: true,
@@ -205,15 +204,15 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                         {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_generate_vouchers'),
-                            handler : function() {
+                            handler : function () {
                                 this.openVoucherGenerationDialog();
                             }.bind(this)
                         },
                         {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
-                            handler : function() {
-                                pimcore.helpers.download("/plugin/CoreShop/admin_price-rule/export-voucher-codes?id=" + this.data.id);
+                            handler : function () {
+                                pimcore.helpers.download('/plugin/CoreShop/admin_price-rule/export-voucher-codes?id=' + this.data.id);
                             }.bind(this)
                         }
                     ]
@@ -225,7 +224,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
         return this.voucherCodesPanel;
     },
 
-    openVoucherGenerationDialog : function() {
+    openVoucherGenerationDialog : function () {
         var window = new Ext.Window({
             width: 330,
             height: 420,
@@ -280,7 +279,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                     text: t('create'),
                     iconCls: 'pimcore_icon_apply',
                     handler: function (btn) {
-                        var params = btn.up("form").getForm().getFieldValues();
+                        var params = btn.up('form').getForm().getFieldValues();
 
                         params['id'] = this.data.id;
 
@@ -295,7 +294,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                                     pimcore.helpers.showNotification(t('success'), t('success'), 'success');
 
                                     window.close();
-                                    this.getVoucherCodes().down("grid").getStore().load();
+                                    this.getVoucherCodes().down('grid').getStore().load();
                                 } else {
                                     pimcore.helpers.showNotification(t('error'), 'error', 'error');
                                 }

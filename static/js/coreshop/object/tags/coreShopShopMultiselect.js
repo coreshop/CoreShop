@@ -18,7 +18,7 @@ pimcore.object.tags.coreShopShopMultiselect = Class.create(pimcore.plugin.coresh
     storeName : 'shops',
 
     getLayoutEdit: function ($super) {
-        if(coreshop.settings.multishop) {
+        if (coreshop.settings.multishop) {
             return $super();
         }
 

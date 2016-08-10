@@ -104,10 +104,10 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
             }
         ];
 
-        if(this.getMultishopSettings()) {
+        if (this.getMultishopSettings()) {
             items.push(this.getMultishopSettings());
         }
-        
+
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
             border: false,
