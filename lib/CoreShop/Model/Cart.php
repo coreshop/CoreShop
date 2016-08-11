@@ -842,7 +842,7 @@ class Cart extends Base
 
         if (is_null($language)) {
             if (\Zend_Registry::isRegistered("Zend_Locale")) {
-                $language = \Zend_Registry::get('Zend_Locale');
+                $language = Tool::getLocale();
             } else {
                 throw new Exception("language not found in registry and not set as param");
             }

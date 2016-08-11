@@ -178,7 +178,7 @@ class LocalizedFields extends Model\AbstractModel
 
         // try to get the language from the registry
         try {
-            $locale = \Zend_Registry::get('Zend_Locale');
+            $locale = \CoreShop\Tool::getLocale();
             if (Tool::isValidLanguage((string) $locale)) {
                 return (string) $locale;
             }

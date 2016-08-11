@@ -474,7 +474,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
     {
         $results = \Pimcore::getEventManager()->trigger('coreshop.hook.'.$name, null, array());
 
-        $params['language'] = \Zend_Registry::get('Zend_Locale');
+        $params['language'] = Tool::getLocale();
 
         if (count($results) > 0) {
             $return = array();
@@ -505,7 +505,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
             return is_callable($v);
         });
 
-        $params['language'] = \Zend_Registry::get('Zend_Locale');
+        $params['language'] = Tool::getLocale();
 
         if ($results->stopped()) {
             foreach ($results as $result) {

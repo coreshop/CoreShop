@@ -17,6 +17,7 @@ namespace CoreShop\IndexService\Getter;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Index\Config\Column\AbstractColumn;
 use CoreShop\Model\Product;
+use CoreShop\Tool;
 
 /**
  * Class Localizedfield
@@ -39,7 +40,7 @@ class Localizedfield extends AbstractGetter
         $language = null;
         
         if (\Zend_Registry::isRegistered("Zend_Locale")) {
-            $language = \Zend_Registry::get('Zend_Locale');
+            $language = Tool::getLocale();
         }
 
         if ($config->getGetterConfig()['locale']) {

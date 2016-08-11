@@ -16,6 +16,7 @@ namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
+use CoreShop\Tool;
 
 /**
  * Class AbstractCondition
@@ -56,7 +57,7 @@ abstract class AbstractCondition
     public function getView($language = null)
     {
         if (!$language) {
-            $language = \Zend_Registry::get('Zend_Locale');
+            $language = Tool::getLocale();
         }
 
         if (!$this->view) {

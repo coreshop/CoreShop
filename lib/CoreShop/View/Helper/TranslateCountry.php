@@ -15,6 +15,7 @@
 namespace CoreShop\View\Helper;
 
 use CoreShop\Model\Country;
+use CoreShop\Tool;
 
 /**
  * Class TranslateCountry
@@ -49,7 +50,7 @@ class TranslateCountry
             $countryCode = $countryCode->getIsoCode();
         }
 
-        $locale = \Zend_Registry::get('Zend_Locale');
+        $locale = Tool::getLocale();
         $countries = $locale->getTranslationList('Territory', $locale, 2);
 
         if (array_key_exists($countryCode, $countries)) {

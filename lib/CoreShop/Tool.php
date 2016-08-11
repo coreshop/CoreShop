@@ -144,6 +144,10 @@ class Tool
      */
     public static function getSession()
     {
+        if(php_sapi_name() === 'cli') {
+            \Zend_Session::$_unitTestEnabled = true; //Force \Zend_Session with output before it has been started
+        }
+
         return Session::get('CoreShop');
     }
 
@@ -603,7 +607,7 @@ class Tool
         if ($user instanceof User) {
             $lang = $user->getLanguage();
         } else {
-            $lang = \Zend_Registry::get('Zend_Locale');
+            $lang = self::getLocale();
         }
 
         if (!$lang) {
@@ -643,5 +647,20 @@ class Tool
         if (!is_dir(CORESHOP_TEMPLATE_PATH)) {
             \Logger::critical(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
         }
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public static function getLocale() {
+        if(php_sapi_name() === 'cli') {
+            \Zend_Registry::set("Zend_Locale", new \Zend_Locale());
+        }
+
+        if(\Zend_Registry::isRegistered("Zend_Locale")) {
+            return \Zend_Registry::get("Zend_Locale");
+        }
+
+        return "en";
     }
 }

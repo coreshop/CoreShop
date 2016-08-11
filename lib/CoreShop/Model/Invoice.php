@@ -124,7 +124,7 @@ class Invoice
         if (!$translate) {
             // setup \Zend_Translate
             try {
-                $locale = \Zend_Registry::get('Zend_Locale');
+                $locale = \CoreShop\Tool::getLocale();
 
                 $translate = new \Pimcore\Translate\Website($locale);
 
