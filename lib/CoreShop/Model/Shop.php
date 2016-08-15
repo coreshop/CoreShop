@@ -16,7 +16,9 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use Pimcore\Cache;
+use Pimcore\Model\Document;
 use Pimcore\Model\Site;
+use Pimcore\Tool;
 
 /**
  * Class Shop
@@ -50,6 +52,8 @@ class Shop extends AbstractModel
      */
     public $siteId;
 
+    protected static $currentShop;
+
     /**
      * @return mixed
      * @throws Exception
@@ -59,15 +63,116 @@ class Shop extends AbstractModel
      */
     public static function getShop()
     {
+        if(is_null(self::$currentShop)) {
+            self::$currentShop = self::getCurrentShop();
+        }
+
+        return self::$currentShop;
+    }
+
+    /**
+     * @return Shop
+     */
+    protected static function getCurrentShop() {
         if (Configuration::multiShopEnabled()) {
             if (Site::isSiteRequest()) {
                 $site = Site::getCurrentSite();
 
                 return self::getShopForSite($site);
             }
+            else {
+
+                if(Tool::isFrontentRequestByAdmin()) {
+                    $document = self::getNearestDocumentByPath(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+
+                    if ($document instanceof Document) {
+                        do {
+
+                            try {
+                                $site = Site::getByRootId($document->getId());
+
+                                if ($site instanceof Site) {
+                                    return self::getShopForSite($site);
+                                }
+                            }
+                            catch(\Exception $x) {
+
+                            }
+
+                            $document = $document->getParent();
+
+                        } while ($document instanceof Document);
+                    }
+                }
+            }
         }
 
         return self::getDefaultShop();
+    }
+
+    /**
+     * @note: Copied from Pimcore\Controller\Router\Route\Frontend, probably needs to be changed sometimes
+     *
+     * @param $path
+     * @param bool $ignoreHardlinks
+     * @param array $types
+     * @return Document|Document\PageSnippet|null|string
+     */
+    protected static function getNearestDocumentByPath($path, $ignoreHardlinks = false, $types = [])
+    {
+        $document = null;
+        $pathes[] = "/";
+        $pathParts = explode("/", $path);
+        $tmpPathes = [];
+        foreach ($pathParts as $pathPart) {
+            $tmpPathes[] = $pathPart;
+            $t = implode("/", $tmpPathes);
+            if (!empty($t)) {
+                $pathes[] = $t;
+            }
+        }
+
+        $pathes = array_reverse($pathes);
+
+        foreach ($pathes as $p) {
+            if ($document = Document::getByPath($p)) {
+                if (empty($types) || in_array($document->getType(), $types)) {
+                    break;
+                }
+            } elseif (Site::isSiteRequest()) {
+                // also check for a pretty url in a site
+                $site = Site::getCurrentSite();
+                $documentService = new Document\Service();
+
+                // undo the changed made by the site detection in self::match()
+                $originalPath = preg_replace("@^" . $site->getRootPath() . "@", "", $p);
+
+                $sitePrettyDocId = $documentService->getDocumentIdByPrettyUrlInSite($site, $originalPath);
+                if ($sitePrettyDocId) {
+                    if ($sitePrettyDoc = Document::getById($sitePrettyDocId)) {
+                        $document = $sitePrettyDoc;
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        if ($document) {
+            if (!$ignoreHardlinks) {
+                if ($document instanceof Document\Hardlink) {
+                    if ($hardLinkedDocument = Document\Hardlink\Service::getNearestChildByPath($document, $path)) {
+                        $document = $hardLinkedDocument;
+                    } else {
+                        $document = Document\Hardlink\Service::wrap($document);
+                    }
+                }
+            }
+
+            return $document;
+        }
+
+        return null;
     }
 
     /**
