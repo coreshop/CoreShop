@@ -54,7 +54,11 @@ class EnhancedEcommerce extends ClientTracker
 
         $frontController->registerPlugin(new Plugin());
 
-        $frontController->getPlugin('Pimcore\Controller\Plugin\GoogleTagManager')->disable();
+        $plugin = $frontController->getPlugin('Pimcore\Controller\Plugin\GoogleTagManager');
+
+        if($plugin) {
+            $plugin->disable();
+        }
     }
 
     /**
