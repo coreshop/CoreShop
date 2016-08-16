@@ -55,7 +55,7 @@ class Postcodes extends AbstractCondition
         $postcodes = $this->getPostcodes();
         $postcodes = explode(",", $postcodes);
 
-        $deliveryAddress = Tool::getDeliveryAddress();
+        $deliveryAddress = $address;
 
         if ($deliveryAddress->getZip()) {
             foreach ($postcodes as $postcode) {
