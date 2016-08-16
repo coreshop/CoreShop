@@ -194,11 +194,14 @@ abstract class AbstractWorker
     }
 
     /**
-     * @return \CoreShop\Model\Index\Config
+     * @return array
      */
     public function getColumnsConfiguration()
     {
-        return $this->index->getConfig()->getColumns();
+        if($this->index->getConfig() instanceof Index\Config)
+            return $this->index->getConfig()->getColumns();
+
+        return [];
     }
 
     /**
