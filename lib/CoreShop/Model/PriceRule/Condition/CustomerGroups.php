@@ -109,7 +109,7 @@ class CustomerGroups extends AbstractCondition
                 $customerGroup = CustomerGroupModel::getByField('name', $customerGroup);
 
                 if ($customerGroup instanceof CustomerGroupModel) {
-                    if ($group === $customerGroup->getId()) {
+                    if (intval($group) === intval($customerGroup->getId())) {
                         $validCustomerGroupFound = true;
                         break;
                     }

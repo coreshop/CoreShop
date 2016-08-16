@@ -92,7 +92,7 @@ class Zones extends AbstractCondition
         $found = false;
 
         foreach ($this->getZones() as $zoneId) {
-            if ($zoneId !== Tool::getCountry()->getZoneId()) {
+            if (intval($zoneId) !== intval(Tool::getCountry()->getZoneId())) {
                 $found = true;
                 break;
             }

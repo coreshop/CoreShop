@@ -14,11 +14,11 @@
 
 namespace CoreShop\Test\Models\Product;
 
-use CoreShop\Model\PriceRule\Condition\Country as ConditionCountry;
-use CoreShop\Model\PriceRule\Condition\Zone as ConditionZone;
-use CoreShop\Model\PriceRule\Condition\Customer;
+use CoreShop\Model\PriceRule\Condition\Countries;
+use CoreShop\Model\PriceRule\Condition\Customers;
 use CoreShop\Model\PriceRule\Condition\Quantity;
 use CoreShop\Model\PriceRule\Condition\TimeSpan;
+use CoreShop\Model\PriceRule\Condition\Zones;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 use CoreShop\Tool;
@@ -63,8 +63,8 @@ class SpecificPrice extends Base
 
     public function testPriceRuleCustomer()
     {
-        $customerConditon = new Customer();
-        $customerConditon->setCustomer(Data::$customer1->getId());
+        $customerConditon = new Customers();
+        $customerConditon->setCustomers([Data::$customer1->getId()]);
 
         $this->specificPrice->setConditions(array(
             $customerConditon
@@ -98,22 +98,22 @@ class SpecificPrice extends Base
 
     public function testPriceRuleCountry()
     {
-        $country = new ConditionCountry();
-        $country->setCountry(\CoreShop\Model\Country::getById(2));
+        $country = new Countries();
+        $country->setCountries([2]);
 
         $cart = Data::createCartWithProducts();
 
         $this->assertTrue($country->checkConditionProduct($this->product, $this->specificPrice));
 
-        $country->setCountry(\CoreShop\Model\Country::getById(1));
+        $country->setCountries([1]);
 
         $this->assertFalse($country->checkConditionProduct($this->product, $this->specificPrice));
     }
 
     public function testPriceRuleCustomerGroup()
     {
-        $customerConditon = new Customer();
-        $customerConditon->setCustomer(Data::$customer1->getId());
+        $customerConditon = new Customers();
+        $customerConditon->setCustomers([Data::$customer1->getId()]);
 
         $this->specificPrice->setConditions(array(
             $customerConditon
@@ -124,14 +124,14 @@ class SpecificPrice extends Base
 
     public function testPriceRuleZone()
     {
-        $zone = new ConditionZone();
-        $zone->setZone(\CoreShop\Model\Zone::getById(1));
+        $zone = new Zones();
+        $zone->setZones([2]);
 
         $cart = Data::createCartWithProducts();
 
         $this->assertTrue($zone->checkConditionProduct($this->product, $this->specificPrice));
 
-        $zone->setZone(\CoreShop\Model\Zone::getById(2));
+        $zone->setZones([1]);
 
         $this->assertFalse($zone->checkConditionProduct($this->product, $this->specificPrice));
     }
