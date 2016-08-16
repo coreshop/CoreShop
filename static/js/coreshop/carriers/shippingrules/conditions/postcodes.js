@@ -31,6 +31,12 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.postcodes = Class.creat
             }
         }
 
+        var info = new Ext.panel.Panel({
+            border : false,
+            html : t('coreshop_condition_postcodes_info'),
+            bodyPadding: '0 0 20px 0'
+        });
+
         var exclusion = new Ext.form.Checkbox({
             fieldLabel:t('coreshop_condition_postcodes_exclusion'),
             name:'exclusion',
@@ -45,7 +51,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.postcodes = Class.creat
 
         this.form = Ext.create('Ext.form.FieldSet', {
             items : [
-                postcodes, exclusion
+                info, postcodes, exclusion
             ]
         });
 
