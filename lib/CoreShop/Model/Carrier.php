@@ -414,7 +414,7 @@ class Carrier extends AbstractModel
 
         foreach ($rules as $rule) {
             if ($rule instanceof ShippingRule) {
-                $price = $rule->getPrice($cart, $address);
+                $price = $rule->getPrice($this, $cart, $address);
 
                 if ($price > $maxPrice) {
                     $maxPrice = $price;
@@ -454,7 +454,7 @@ class Carrier extends AbstractModel
         foreach ($rules as $rule) {
             if ($rule instanceof ShippingRule) {
                 if ($rule->checkValidity($this, $cart, $address)) {
-                    $price = $rule->getPrice($cart, $address);
+                    $price = $rule->getPrice($this, $cart, $address);
                     break;
                 }
             }

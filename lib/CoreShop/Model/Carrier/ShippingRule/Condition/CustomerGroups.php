@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 
 use CoreShop\Exception;
+use CoreShop\Model\Carrier;
 use CoreShop\Model\Carrier\ShippingRule;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
@@ -58,13 +59,14 @@ class CustomerGroups extends AbstractCondition
     /**
      * Check if Cart is Valid for Condition.
      *
+     * @param Carrier $carrier
      * @param Cart $cart
      * @param User\Address $address;
      * @param ShippingRule $shippingRule
      *
      * @return mixed
      */
-    public function checkCondition(Cart $cart, User\Address $address, ShippingRule $shippingRule)
+    public function checkCondition(Carrier $carrier, Cart $cart, User\Address $address, ShippingRule $shippingRule)
     {
         return $this->check(Tool::getUser());
     }

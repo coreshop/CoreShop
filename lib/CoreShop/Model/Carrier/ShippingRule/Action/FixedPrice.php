@@ -36,12 +36,13 @@ class FixedPrice extends AbstractAction
     /**
      * get price for shipping
      *
+     * @param Model\Carrier $carrier
      * @param Cart $cart
      * @param Model\User\Address $address
      *
      * @return float|boolean $price
      */
-    public function getPrice(Cart $cart, Model\User\Address $address)
+    public function getPrice(Model\Carrier $carrier, Cart $cart, Model\User\Address $address)
     {
         return $this->getFixedPrice();
     }

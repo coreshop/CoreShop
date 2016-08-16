@@ -37,13 +37,14 @@ class Countries extends AbstractCondition
     /**
      * Check if Cart is Valid for Condition.
      *
+     * @param Model\Carrier $carrier
      * @param Model\Cart $cart
      * @param Model\User\Address $address;
      * @param ShippingRule $shippingRule
      *
      * @return mixed
      */
-    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
+    public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
     {
         foreach ($this->getCountries() as $country) {
             if (Tool::getDeliveryAddress()->getCountry()->getId() === $country) {

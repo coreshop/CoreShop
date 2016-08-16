@@ -31,13 +31,14 @@ abstract class AbstractAction extends Model\Rules\Action\AbstractAction
     /**
      * get addition/discount for shipping
      *
+     * @param Model\Carrier $carrier
      * @param Cart $cart
      * @param Model\User\Address $address
      * @param float $price
      *
      * @return float
      */
-    public function getPriceModification(Cart $cart, Model\User\Address $address, $price)
+    public function getPriceModification(Model\Carrier $carrier, Cart $cart, Model\User\Address $address, $price)
     {
         return 0;
     }
@@ -45,12 +46,13 @@ abstract class AbstractAction extends Model\Rules\Action\AbstractAction
     /**
      * get price for shipping
      *
+     * @param Model\Carrier $carrier
      * @param Cart $cart
      * @param Model\User\Address $address
      *
      * @return float|boolean $price
      */
-    public function getPrice(Cart $cart, Model\User\Address $address)
+    public function getPrice(Model\Carrier $carrier, Cart $cart, Model\User\Address $address)
     {
         return false;
     }

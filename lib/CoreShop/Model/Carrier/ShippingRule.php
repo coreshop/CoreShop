@@ -58,7 +58,7 @@ class ShippingRule extends AbstractRule
 
         foreach ($this->getConditions() as $condition) {
             if ($condition instanceof AbstractCondition) {
-                if (!$condition->checkCondition($cart, $address, $this)) {
+                if (!$condition->checkCondition($carrier, $cart, $address, $this)) {
                     $valid = false;
                     break;
                 }
@@ -71,20 +71,22 @@ class ShippingRule extends AbstractRule
     /**
      * get price modifications
      *
+     * @param Carrier $carrier
      * @param Cart $cart
      * @param Address $address
      * @param $price
      * @return float
      */
-    public function getPriceModification(Cart $cart, Address $address, $price)
+    public function getPriceModification(Carrier $carrier, Cart $cart, Address $address, $price)
     {
         $priceModification = 0;
 
         foreach ($this->getActions() as $action) {
             if ($action instanceof AbstractAction) {
-                $priceModificator = $action->getPriceModification($cart, $address, $price);
-                if ($priceModificator !== 0) {
-                    $priceModification += $action->getPriceModification($cart, $address, $price);
+                $actionModificator = $action->getPriceModification($carrier, $cart, $address, $price);
+
+                if ($actionModificator !== 0) {
+                    $priceModification += $actionModificator;
                 }
             }
         }
@@ -95,23 +97,25 @@ class ShippingRule extends AbstractRule
     /**
      * get price
      *
+     * @param Carrier $carrier
      * @param Cart $cart
      * @param Address $address
      *
      * @return float
      */
-    public function getPrice(Cart $cart, Address $address)
+    public function getPrice(Carrier $carrier, Cart $cart, Address $address)
     {
         $price = 0;
 
         foreach ($this->getActions() as $action) {
             if ($action instanceof AbstractAction) {
-                if ($action->getPrice($cart, $address)) {
-                    $price = $action->getPrice($cart, $address);
+                $actionPrice = $action->getPrice($carrier, $cart, $address);
+                if ($actionPrice) {
+                    $price = $actionPrice;
                 }
             }
         }
 
-        return $price + $this->getPriceModification($cart, $address, $price);
+        return $price + $this->getPriceModification($carrier, $cart, $address, $price);
     }
 }
