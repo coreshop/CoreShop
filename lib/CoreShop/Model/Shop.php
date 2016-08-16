@@ -52,8 +52,6 @@ class Shop extends AbstractModel
      */
     public $siteId;
 
-    protected static $currentShop;
-
     /**
      * @return mixed
      * @throws Exception
@@ -63,17 +61,6 @@ class Shop extends AbstractModel
      */
     public static function getShop()
     {
-        if(is_null(self::$currentShop)) {
-            self::$currentShop = self::getCurrentShop();
-        }
-
-        return self::$currentShop;
-    }
-
-    /**
-     * @return Shop
-     */
-    protected static function getCurrentShop() {
         if (Configuration::multiShopEnabled()) {
             if (Site::isSiteRequest()) {
                 $site = Site::getCurrentSite();
