@@ -131,7 +131,7 @@
     background: url(/plugins/CoreShop/static/img/flat/currencies.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier, .coreshop_icon_report_carriers, .coreshop_rule_icon_condition_carriers {
+.coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier, .coreshop_icon_report_carriers, .coreshop_rule_icon_condition_carriers, .pimcore_icon_coreShopCarrierMultiselect {
     background: url(/plugins/CoreShop/static/img/flat/carriers.svg) center center no-repeat !important;
 }
 

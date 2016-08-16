@@ -89,6 +89,7 @@
 "coreshop_shipping","Versand"
 "coreshop_carriers","Versanddienste"
 "coreshop_carrier","Versanddienst"
+"coreshop_carrier_multiselect", "Versanddienst Multiselect"
 "coreshop_carrier_label","Label"
 "coreshop_carrier_delay","Liegerzeit"
 "coreshop_carrier_grade","Liefergeschwindigkeit"

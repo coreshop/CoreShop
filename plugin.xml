@@ -43,6 +43,8 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCountry.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCarrier.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCarrier.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCarrierMultiselect.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCarrierMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopPriceRule.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopPriceRule.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCurrencyMultiselect.js</path>

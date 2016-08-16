@@ -88,6 +88,7 @@
 "coreshop_priceRule","Cart Price Rule"
 "coreshop_shipping","Shipping"
 "coreshop_carriers","Carriers"
+"coreshop_carrier_multiselect", "Carrier Multiselect"
 "coreshop_carrier","Carrier"
 "coreshop_carrier_label","Label"
 "coreshop_carrier_delay","Delay"
