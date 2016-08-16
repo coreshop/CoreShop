@@ -17,7 +17,7 @@ namespace CoreShop\Model\PriceRule\Condition;
 use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
-use CoreShop\Model\Category;
+use CoreShop\Model\Category as CategoryModel;
 use CoreShop\Model\Product as ProductModel;
 
 /**
@@ -45,7 +45,7 @@ class Categories extends AbstractCondition
     }
 
     /**
-     * @param int $categories
+     * @param int[] $categories
      */
     public function setCategories($categories)
     {
@@ -68,9 +68,9 @@ class Categories extends AbstractCondition
         $found = false;
 
         foreach ($this->getCategories() as $catId) {
-            $cat = Category::getById($catId);
+            $cat = CategoryModel::getById($catId);
 
-            if ($cat instanceof Category) {
+            if ($cat instanceof CategoryModel) {
                 foreach ($cart->getItems() as $i) {
                     if ($i->getProduct()->inCategory($cat)) {
                         $found = true;
@@ -103,9 +103,9 @@ class Categories extends AbstractCondition
         $found = false;
 
         foreach ($this->getCategories() as $catId) {
-            $cat = Category::getById($catId);
+            $cat = CategoryModel::getById($catId);
 
-            if ($cat instanceof Category) {
+            if ($cat instanceof CategoryModel) {
                 if ($product->inCategory($cat)) {
                     $found = true;
                     break;

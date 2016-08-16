@@ -38,7 +38,7 @@
     background: url(/plugins/CoreShop/static/img/flat/countries.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_zone, .coreshop_rule_icon_condition_zone, .coreshop_rule_icon_condition_zones {
+.coreshop_icon_zone, .coreshop_rule_icon_condition_zones {
     background: url(/plugins/CoreShop/static/img/flat/zones.svg) center center no-repeat !important;
 }
 
@@ -82,19 +82,19 @@
     background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_category, .coreshop_rule_icon_condition_categories {
+.coreshop_rule_icon_condition_categories {
     background: url(/plugins/CoreShop/static/img/flat/category.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_customer, .coreshop_rule_icon_condition_customers {
+.coreshop_rule_icon_condition_customers {
     background: url(/plugins/CoreShop/static/img/flat/customer.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_country, .coreshop_rule_icon_condition_countries {
+.coreshop_rule_icon_condition_countries {
     background: url(/plugins/CoreShop/static/img/flat/countries.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_product, .coreshop_rule_icon_condition_products {
+.coreshop_rule_icon_condition_products {
     background: url(/plugins/CoreShop/static/img/flat/product.svg) center center no-repeat !important;
 }
 
@@ -302,11 +302,11 @@
     background: url(/plugins/CoreShop/static/img/flat/similarities-field.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_shop, .pimcore_icon_coreShopShopMultiselect, .pimcore_icon_coreShopShop, .coreshop_rule_icon_condition_shop, .coreshop_rule_icon_condition_shops {
+.coreshop_icon_shop, .pimcore_icon_coreShopShopMultiselect, .pimcore_icon_coreShopShop, .coreshop_rule_icon_condition_shops {
     background: url(/plugins/CoreShop/static/img/flat/shop.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_persona, .coreshop_rule_icon_condition_personas {
+.coreshop_rule_icon_condition_personas {
     background: url(/pimcore/static6/img/flat-color-icons/businessman.svg) center center no-repeat !important;
 }
 
