@@ -34,6 +34,11 @@ class Postcodes extends AbstractCondition
      */
     public $postcodes;
 
+    /**
+     * @var boolean
+     */
+    public $exclusion;
+
 
     /**
      * Check if Cart is Valid for Condition.
@@ -54,12 +59,55 @@ class Postcodes extends AbstractCondition
 
         if ($deliveryAddress->getZip()) {
             foreach ($postcodes as $postcode) {
-                //Substring postcode to have the same length
-                $deliveryZip = substr($deliveryAddress->getZip(), 0, strlen($postcode));
-
-                if (strtolower($deliveryZip) === strtolower($postcode)) {
-                    return true;
+                if ($this->checkPostCode($postcode, $deliveryAddress->getZip())) {
+                    return $this->getExclusion() ? false : true;
                 }
+            }
+        }
+
+        return $this->getExclusion() ? true : false;
+    }
+
+    /**
+     * @param $postcode
+     * @param $deliveryPostcode
+     * @return bool
+     */
+    protected function checkPostCode($postcode, $deliveryPostcode) {
+        //Check if postcode has a range
+        $deliveryPostcode = str_replace(' ', '', $deliveryPostcode);
+        $postcodes = [$postcode];
+
+        if(strpos($postcode,'-') > 0) {
+            $splitted = explode('-', $postcode); //We should now have 2 elements
+
+            if(count($splitted) === 2) {
+                $from = $splitted[0];
+                $to = $splitted[1];
+
+                $fromText = preg_replace('/[0-9]+/', '', $from);
+                $toText = preg_replace('/[0-9]+/', '', $to);
+
+                if($fromText === $toText) {
+                    $fromNumber = preg_replace('/\D/', '', $from);
+                    $toNumber = preg_replace('/\D/', '', $to);
+
+                    if ($fromNumber < $toNumber) {
+                        $postcodes = [];
+
+                        for ($i = $fromNumber; $i <= $toNumber; $i++) {
+                            $postcodes[] = $fromText . $i;
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach($postcodes as $postcode) {
+            $deliveryZip = substr($deliveryPostcode, 0, strlen($postcode));
+
+            if (strtolower($deliveryZip) === strtolower($postcode)) {
+                return true;
             }
         }
 
@@ -80,5 +128,21 @@ class Postcodes extends AbstractCondition
     public function setPostcodes($postcodes)
     {
         $this->postcodes = $postcodes;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getExclusion()
+    {
+        return $this->exclusion;
+    }
+
+    /**
+     * @param boolean $exclusion
+     */
+    public function setExclusion($exclusion)
+    {
+        $this->exclusion = $exclusion;
     }
 }
