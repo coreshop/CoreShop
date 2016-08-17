@@ -13,7 +13,7 @@
 
 pimcore.registerNS('pimcore.plugin.coreshop.pricerules.actions.newPrice');
 
-pimcore.plugin.coreshop.pricerules.actions.newPrice = Class.create(pimcore.plugin.coreshop.pricerules.actions.abstract, {
+pimcore.plugin.coreshop.rules.actions.newPrice = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
 
     type : 'newPrice',
 
