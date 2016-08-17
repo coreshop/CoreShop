@@ -1,4 +1,7 @@
 <?php
+$install = new \CoreShop\Plugin\Install();
+$install->createClass('CoreShopCustomerGroup');
+$install->createClass('CoreShopUser');
 
 $listing = \CoreShop\Model\CustomerGroup::getList();
 
