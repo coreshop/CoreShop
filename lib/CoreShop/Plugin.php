@@ -129,14 +129,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
         $this->startup();
 
-        if (Configuration::multiShopEnabled()) {
-            Product\PriceRule::addCondition('shop');
-            Product\PriceRule::addCondition('shops');
-
-            Cart\PriceRule::addCondition('shop');
-            Cart\PriceRule::addCondition('shops');
-        }
-
         if (Configuration::get('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')) {
             \Pimcore::getEventManager()->attach('coreshop.tax.getTaxManager', function () {
                 return new VatManager();

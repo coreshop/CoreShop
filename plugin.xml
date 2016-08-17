@@ -70,6 +70,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/timeSpan.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/totalPerCustomer.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/zones.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/currencies.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/actions/freeShipping.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/actions/discountAmount.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/actions/discountPercent.js</path>
@@ -189,6 +190,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/products.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/categories.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/customerGroups.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/currencies.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>
