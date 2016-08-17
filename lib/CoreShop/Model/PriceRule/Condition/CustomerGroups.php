@@ -18,7 +18,6 @@ use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
-use CoreShop\Model\CustomerGroup as CustomerGroupModel;
 use CoreShop\Model\User;
 use CoreShop\Tool;
 
@@ -29,7 +28,7 @@ use CoreShop\Tool;
 class CustomerGroups extends AbstractCondition
 {
     /**
-     * @var int
+     * @var int[]
      */
     public $customerGroups;
 
@@ -102,33 +101,12 @@ class CustomerGroups extends AbstractCondition
             }
         }
 
-        $validCustomerGroupFound = false;
-
-        foreach ($this->getCustomerGroups() as $group) {
-            foreach ($customer->getGroups() as $customerGroup) {
-                $customerGroup = CustomerGroupModel::getByField('name', $customerGroup);
-
-                if ($customerGroup instanceof CustomerGroupModel) {
-                    if (intval($group) === intval($customerGroup->getId())) {
-                        $validCustomerGroupFound = true;
-                        break;
-                    }
-                }
-            }
-
-            if ($validCustomerGroupFound) {
-                break;
+        foreach($customer->getCustomerGroups() as $group) {
+            if(in_array($group->getId(), $this->getCustomerGroups())) {
+                return true;
             }
         }
 
-        if (!$validCustomerGroupFound) {
-            if ($throwException) {
-                throw new Exception('You cannot use this voucher.');
-            }
-
-            return false;
-        }
-
-        return true;
+        return false;
     }
 }

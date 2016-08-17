@@ -17,10 +17,8 @@ namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 use CoreShop\Exception;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
-use CoreShop\Model\CustomerGroup as CustomerGroupModel;
 use CoreShop\Model\User;
 use CoreShop\Tool;
 
@@ -83,29 +81,12 @@ class CustomerGroups extends AbstractCondition
             return false;
         }
 
-        $validCustomerGroupFound = false;
-
-        foreach ($this->getCustomerGroups() as $group) {
-            foreach ($customer->getGroups() as $customerGroup) {
-                $customerGroup = CustomerGroupModel::getByField('name', $customerGroup);
-
-                if ($customerGroup instanceof CustomerGroupModel) {
-                    if ($group === $customerGroup->getId()) {
-                        $validCustomerGroupFound = true;
-                        break;
-                    }
-                }
-            }
-
-            if ($validCustomerGroupFound) {
-                break;
+        foreach($customer->getCustomerGroups() as $group) {
+            if(in_array($group->getId(), $this->getCustomerGroups())) {
+                return true;
             }
         }
 
-        if (!$validCustomerGroupFound) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 }

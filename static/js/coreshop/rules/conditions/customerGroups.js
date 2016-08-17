@@ -17,46 +17,36 @@ pimcore.plugin.coreshop.rules.conditions.customerGroups = Class.create(pimcore.p
 
     type : 'customerGroups',
 
+    customerGroups : null,
+
     getForm : function () {
-        var me = this;
-        var store = pimcore.globalmanager.get('coreshop_customergroups');
+        this.customerGroups = new pimcore.plugin.coreshop.object.objectMultihref(this.data ? this.data.customerGroups : [], {
+            classes: [
+                { classes: coreshop.settings.classMapping.customerGroup }
+            ],
+            name: 'customerGroups',
+            title: '',
+            height: 200,
+            width: 500,
+            columns: [],
 
-        var customerGroups = {
-            fieldLabel: t('coreshop_condition_customerGroups'),
-            typeAhead: true,
-            listWidth: 100,
-            width : 500,
-            store: store,
-            displayField: 'name',
-            valueField: 'id',
-            forceSelection: true,
-            multiselect : true,
-            triggerAction: 'all',
-            name:'customerGroups',
-            maxHeight : 400,
-            listeners: {
-                beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
-                        store.load();
-
-                    if (me.data && me.data.customerGroups)
-                        this.setValue(me.data.customerGroups);
-                }
-            }
-        };
-
-        customerGroups = new Ext.ux.form.MultiSelect(customerGroups);
-
-        if (this.data && this.data.customerGroups) {
-            customerGroups.value = this.data.customerGroups;
-        }
+            columnType: null,
+            datatype: 'data',
+            fieldtype: 'objects'
+        });
 
         this.form = new Ext.form.FieldSet({
             items : [
-                customerGroups
+                this.customerGroups.getLayoutEdit()
             ]
         });
 
         return this.form;
+    },
+
+    getValues : function () {
+        return {
+            customerGroups : this.customerGroups.getValue()
+        };
     }
 });

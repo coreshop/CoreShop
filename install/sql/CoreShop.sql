@@ -439,13 +439,6 @@ CREATE TABLE `coreshop_tax_rules` (
   `behavior` tinyint NOT NULL
 );
 
-DROP TABLE IF EXISTS `coreshop_customer_groups`;
-CREATE TABLE `coreshop_customer_groups` (
-  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(255) NOT NULL
-);
-
-
 DELETE FROM `users_permission_definitions` WHERE `key` LIKE 'coreshop_permission%';
 
 INSERT INTO `users_permission_definitions` (`key`)

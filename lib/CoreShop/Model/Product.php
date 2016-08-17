@@ -823,7 +823,7 @@ class Product extends Base
     }
 
     /**
-     * @param TaxRule $taxRule
+     * @param TaxRuleGroup $taxRule
      *
      * @throws ObjectUnsupportedException
      */

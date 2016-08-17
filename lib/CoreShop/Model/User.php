@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
+use CoreShop\Model\Customer\Group;
 use Pimcore\Model\Object;
 
 /**
@@ -174,14 +175,14 @@ class User extends Base
     /**
      * Check if user is in group.
      *
-     * @param CustomerGroup $group
+     * @param Group $group
      *
      * @return bool
      */
-    public function isInGroup(CustomerGroup $group)
+    public function isInGroup(Group $group)
     {
-        foreach ($this->getGroups() as $myGroup) {
-            if ($myGroup === $group->getName()) {
+        foreach ($this->getCustomerGroups() as $myGroup) {
+            if ($myGroup->getId() === $group->getId()) {
                 return true;
             }
         }
@@ -252,6 +253,8 @@ class User extends Base
     /**
      * @return CustomerGroup[]
      *
+     * @deprecated User getCustomerGroups instead
+     *
      * @throws ObjectUnsupportedException
      */
     public function getGroups()
@@ -265,6 +268,26 @@ class User extends Base
      * @throws ObjectUnsupportedException
      */
     public function setGroups($groups)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Group[]
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCustomerGroups()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Group[] $customerGroups
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCustomerGroups($customerGroups)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

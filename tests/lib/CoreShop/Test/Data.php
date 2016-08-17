@@ -17,7 +17,7 @@ namespace CoreShop\Test;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Country;
-use CoreShop\Model\CustomerGroup;
+use CoreShop\Model\Customer\Group;
 use CoreShop\Model\Product;
 use CoreShop\Model\Shop;
 use CoreShop\Model\State;
@@ -26,10 +26,8 @@ use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRule;
 use CoreShop\Model\TaxRuleGroup;
 use CoreShop\Model\User;
-use CoreShop\Model\Zone;
 use CoreShop\Model\Cart;
 use Pimcore\File;
-use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\Service;
 
 class Data
@@ -71,12 +69,12 @@ class Data
     public static $customer1;
 
     /**
-     * @var CustomerGroup
+     * @var Group
      */
     public static $customerGroup1;
 
     /**
-     * @var CustomerGroup
+     * @var Group
      */
     public static $customerGroup2;
 
@@ -298,17 +296,17 @@ class Data
 
     public static function createCustomerGroups()
     {
-        if (!self::$customerGroup1 instanceof CustomerGroup) {
-            self::$customerGroup1 = new CustomerGroup();
+        if (!self::$customerGroup1 instanceof Group) {
+            self::$customerGroup1 = Group::create();
             self::$customerGroup1->setName("Group1");
-            self::$customerGroup1->setShopIds(array(Shop::getDefaultShop()->getId()));
+            self::$customerGroup1->setShops(array(Shop::getDefaultShop()->getId()));
             self::$customerGroup1->save();
         }
 
-        if (!self::$customerGroup2 instanceof CustomerGroup) {
-            self::$customerGroup2 = new CustomerGroup();
+        if (!self::$customerGroup2 instanceof Group) {
+            self::$customerGroup2 = Group::create();
             self::$customerGroup2->setName("Group2");
-            self::$customerGroup2->setShopIds(array(Shop::getDefaultShop()->getId()));
+            self::$customerGroup2->setShops(array(Shop::getDefaultShop()->getId()));
             self::$customerGroup2->save();
         }
     }

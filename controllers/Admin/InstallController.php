@@ -45,6 +45,7 @@ class CoreShop_Admin_InstallController extends Admin
             $cartClass = $install->createClass('CoreShopCart');
             $cartItemClass = $install->createClass('CoreShopCartItem');
             $userClass = $install->createClass('CoreShopUser');
+            $customerGroupClass = $install->createClass('CoreShopCustomerGroup');
 
             $orderItemClass = $install->createClass('CoreShopOrderItem');
             $paymentClass = $install->createClass('CoreShopPayment');
@@ -62,6 +63,7 @@ class CoreShop_Admin_InstallController extends Admin
                 $orderItemClass->getId(),
                 $orderClass->getId(),
                 $paymentClass->getId(),
+                $customerGroupClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();

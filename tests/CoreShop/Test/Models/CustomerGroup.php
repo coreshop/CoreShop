@@ -22,15 +22,4 @@ class CustomerGroup extends Base
     {
         parent::setUp();
     }
-
-    public function testCustomerGroupCreation()
-    {
-        $this->printTestName();
-
-        $group = new \CoreShop\Model\CustomerGroup();
-        $group->setName("test");
-        $group->save();
-
-        $this->assertNotNull(\CoreShop\Model\CustomerGroup::getById($group->getId()));
-    }
 }

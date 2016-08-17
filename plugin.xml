@@ -61,20 +61,14 @@
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/amount.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/weight.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/quantity.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/category.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/categories.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/country.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/countries.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customer.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customers.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customerGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customerGroups.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/carriers.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/product.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/products.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/timeSpan.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/totalPerCustomer.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/zone.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/zones.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/actions/freeShipping.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/actions/discountAmount.js</path>
@@ -98,8 +92,6 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopTaxRuleGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/ordersAndCartsFromLastDays.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/salesFromLastDays.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/customergroups/panel.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/customergroups/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroupMultiselect.js</path>
@@ -181,9 +173,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopShop.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopShopMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopShopMultiselect.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/shop.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/shops.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/persona.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/personas.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/item.js</path>
