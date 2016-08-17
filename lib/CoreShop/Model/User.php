@@ -251,28 +251,6 @@ class User extends Base
     }
 
     /**
-     * @return CustomerGroup[]
-     *
-     * @deprecated User getCustomerGroups instead
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getGroups()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param CustomerGroup[] $groups
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setGroups($groups)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
      * @return Group[]
      *
      * @throws ObjectUnsupportedException

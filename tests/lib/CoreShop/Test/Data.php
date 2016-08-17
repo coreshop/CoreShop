@@ -300,6 +300,8 @@ class Data
             self::$customerGroup1 = Group::create();
             self::$customerGroup1->setName("Group1");
             self::$customerGroup1->setShops(array(Shop::getDefaultShop()->getId()));
+            self::$customerGroup1->setKey("group1");
+            self::$customerGroup1->setParent(Service::createFolderByPath("/customer-groups"));
             self::$customerGroup1->save();
         }
 
@@ -307,6 +309,8 @@ class Data
             self::$customerGroup2 = Group::create();
             self::$customerGroup2->setName("Group2");
             self::$customerGroup2->setShops(array(Shop::getDefaultShop()->getId()));
+            self::$customerGroup2->setKey("group2");
+            self::$customerGroup2->setParent(Service::createFolderByPath("/customer-groups"));
             self::$customerGroup2->save();
         }
     }
@@ -319,7 +323,9 @@ class Data
             $customer->setParent(Service::createFolderByPath("/users"));
             $customer->setFirstname("customer");
             $customer->setLastname("1");
-            $customer->setGroups(array(self::$customerGroup1->getName()));
+            $customer->setGender("m");
+            $customer->setEmail("test@coreshop.org");
+            $customer->setCustomerGroups(array(self::$customerGroup1));
             $customer->save();
 
             self::$customer1 = $customer;

@@ -120,31 +120,6 @@
             "visibleSearch":true
           },
           {
-            "fieldtype":"coreShopCustomerGroupMultiselect",
-            "options":[
-
-            ],
-            "width":"",
-            "height":"",
-            "queryColumnType":"text",
-            "columnType":"text",
-            "phpdocType":"array",
-            "name":"groups",
-            "title":"Groups",
-            "tooltip":"",
-            "mandatory":false,
-            "noteditable":false,
-            "index":false,
-            "locked":false,
-            "style":"",
-            "permissions":null,
-            "datatype":"data",
-            "relationType":false,
-            "invisible":false,
-            "visibleGridView":false,
-            "visibleSearch":false
-          },
-          {
             "fieldtype":"objects",
             "width":"",
             "height":"",
@@ -164,7 +139,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",

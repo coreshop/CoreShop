@@ -59,6 +59,31 @@
             "invisible":false,
             "visibleGridView":false,
             "visibleSearch":false
+          },
+          {
+            "fieldtype":"coreShopShopMultiselect",
+            "options":[
+
+            ],
+            "width":null,
+            "height":null,
+            "queryColumnType":"text",
+            "columnType":"text",
+            "phpdocType":"array",
+            "name":"shops",
+            "title":"Shops",
+            "tooltip":"",
+            "mandatory":false,
+            "noteditable":false,
+            "index":false,
+            "locked":null,
+            "style":"",
+            "permissions":null,
+            "datatype":"data",
+            "relationType":false,
+            "invisible":false,
+            "visibleGridView":false,
+            "visibleSearch":false
           }
         ],
         "locked":null

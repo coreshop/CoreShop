@@ -179,7 +179,7 @@
     background: url(/plugins/CoreShop/static/img/flat/setup.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_customer_groups, .pimcore_icon_coreShopCustomerGroupMultiselect, .pimcore_icon_coreShopCustomerGroup, .coreshop_rule_icon_condition_customerGroup, .coreshop_rule_icon_condition_customerGroups {
+.coreshop_rule_icon_condition_customerGroup, .coreshop_rule_icon_condition_customerGroups {
     background: url(/plugins/CoreShop/static/img/flat/customer-group.svg) center center no-repeat !important;
 }
 

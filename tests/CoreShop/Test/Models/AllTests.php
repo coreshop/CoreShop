@@ -29,7 +29,7 @@ class AllTests extends SuiteBase
             //'\\CoreShop\\Test\\Models\\Category',
             '\\CoreShop\\Test\\Models\\Country',
             '\\CoreShop\\Test\\Models\\Currency',
-            '\\CoreShop\\Test\\Models\\CustomerGroup',
+            //'\\CoreShop\\Test\\Models\\CustomerGroup',
             //'\\CoreShop\\Test\\Models\\Order',
             //'\\CoreShop\\Test\\Models\\OrderState',
             '\\CoreShop\\Test\\Models\\CartPriceRule',

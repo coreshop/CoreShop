@@ -92,10 +92,6 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopTaxRuleGroup.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/ordersAndCartsFromLastDays.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/salesFromLastDays.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroup.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroup.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopCustomerGroupMultiselect.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopCustomerGroupMultiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/objectMultihref.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/variantGenerator.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/panel.js</path>

@@ -66,7 +66,6 @@
 "coreshop_condition_totalAvailable_totalUsed","Benutzt"
 "coreshop_condition_totalPerCustomer","Gesamt pro Kunde",
 "coreshop_condition_totalPerCustomer_total", "Gesamt"
-"coreshop_condition_customerGroup","Kundengruppe"
 "coreshop_condition_customerGroups","Kundengruppen"
 "coreshop_condition_zones","Zones"
 "coreshop_condition_zone_zone", "Zone"
@@ -173,8 +172,6 @@
 "coreshop_orders_and_carts_from_last_days","Bestellung und Warenkörne der letzen 31 Tage"
 "coreshop_sales_from_last_days","Verkäufe der letzten 31 Tage"
 "coreshop_sales","Verkäufe"
-"coreshop_customergroups","Kundengruppen"
-"coreshop_customer_group","Kundengruppe"
 "coreshop_customer","Kunde"
 "coreshop_customer_group_multiselect","Kundengruppe Multiselect"
 "coreshop_order_by_number","Öffen Bestellung mit Nummer"
