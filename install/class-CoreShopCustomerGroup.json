@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":null,
+  "parentClass":"CoreShop\\Model\\Customer\\Group",
   "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,
@@ -31,7 +31,7 @@
         "title":null,
         "width":null,
         "height":null,
-        "collapsible":null,
+        "collapsible":false,
         "collapsed":null,
         "bodyStyle":null,
         "datatype":"layout",
@@ -51,7 +51,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",
@@ -65,8 +65,8 @@
             "options":[
 
             ],
-            "width":null,
-            "height":null,
+            "width":"",
+            "height":"",
             "queryColumnType":"text",
             "columnType":"text",
             "phpdocType":"array",
@@ -76,7 +76,7 @@
             "mandatory":false,
             "noteditable":false,
             "index":false,
-            "locked":null,
+            "locked":false,
             "style":"",
             "permissions":null,
             "datatype":"data",
@@ -86,7 +86,7 @@
             "visibleSearch":false
           }
         ],
-        "locked":null
+        "locked":false
       }
     ],
     "locked":null
