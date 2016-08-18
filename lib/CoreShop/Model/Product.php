@@ -91,6 +91,11 @@ class Product extends Base
     protected $validPriceRules = null;
 
     /**
+     * @var bool
+     */
+    public static $unitTests = false;
+
+    /**
      * @static
      *
      * @param int $id
@@ -284,7 +289,7 @@ class Product extends Base
      */
     public function getValidSpecificPriceRules()
     {
-        if(is_null($this->validPriceRules)) {
+        if(is_null($this->validPriceRules) || self::$unitTests) {
             $specificPrices = $this->getSpecificPrices();
             $rules = [];
 

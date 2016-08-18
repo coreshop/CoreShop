@@ -178,6 +178,8 @@ $install->createCustomView($coreShopFolder, array(
 
 $install->setConfigInstalled();
 
+\CoreShop\Model\Product::$unitTests = true;
+
 \Pimcore\ExtensionManager::enable("plugin", "CoreShop");
 \Pimcore\API\Plugin\Broker::getInstance()->registerPlugin(new \CoreShop\Plugin());
 
