@@ -277,10 +277,10 @@ class CoreShop_UserController extends Action
 
                 \CoreShop\Model\User\Address::validate($addressParams); //Throws Exception if failing
 
-                $adresses = $this->session->user->getAddresses();
+                $addresses = $this->session->user->getAddresses();
 
-                if (!$adresses instanceof Object\Fieldcollection) {
-                    $adresses = new Object\Fieldcollection();
+                if (!$addresses instanceof Object\Fieldcollection) {
+                    $addresses = new Object\Fieldcollection();
                 }
 
                 if ($update) {
@@ -297,9 +297,10 @@ class CoreShop_UserController extends Action
                 $this->view->address->setCountry(Country::getById($addressParams['country']));
 
                 if ($this->view->isNew) {
-                    $adresses->add($this->view->address);
+                    $addresses->add($this->view->address);
                 }
 
+                $this->session->user->setAddresses($addresses);
                 $this->session->user->save();
 
                 if (array_key_exists('_redirect', $params)) {
@@ -328,6 +329,7 @@ class CoreShop_UserController extends Action
 
         if ($i >= 0) {
             $this->session->user->getAddresses()->remove($i);
+            $this->session->user->setAddresses($this->session->user->getAddresses());
         }
 
         $this->_redirect($this->view->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
