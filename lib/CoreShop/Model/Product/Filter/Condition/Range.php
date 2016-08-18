@@ -118,7 +118,7 @@ class Range extends AbstractCondition
         }
 
         if (empty($valueMin)) {
-            $valueMin = $this->getPreSelect();
+            $valueMin = $this->getPreSelectMin();
         }
         if ($valueMin === Filter\Service::EMPTY_STRING) {
             $valueMin = null;
