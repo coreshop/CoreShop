@@ -11,7 +11,7 @@
   position: fixed;
   bottom: 0;
   right: 100px;
-  width: 300px;
+  width: 500px;
   margin-bottom: 0;
 }
 #coreshop-debug .coreshop-debug-panel {
@@ -42,4 +42,20 @@
   line-height: 1.42857;
   vertical-align: top;
   border-top: 1px solid #ddd;
+}
+
+#coreshop-debug .coreshop-debug-table thead td {
+  font-weight:bold;
+}
+
+#coreshop-debug .coreshop-debug-table td:first-child {
+  font-weight:bold;
+}
+
+#coreshop-debug .coreshop-debug-table .coreshop-debug-table tbody td:first-child {
+  font-weight:normal;
+}
+
+#coreshop-debug .coreshop-debug-table .coreshop-debug-table thead td {
+  border-top:none;
 }
