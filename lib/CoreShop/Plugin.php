@@ -17,6 +17,7 @@ namespace CoreShop;
 use CoreShop\Exception\ThemeNotFoundException;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
+use CoreShop\Model\Currency\ExchangeRates;
 use CoreShop\Model\Product;
 use CoreShop\Model\TaxRule\VatManager;
 use DI\ContainerBuilder;
@@ -96,7 +97,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             if ($manager instanceof Procedural) {
                 if (Configuration::get('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES')) {
-                    $manager->registerJob(new Job('coreshop_exchangerates', '\\CoreShop\\Model\\Currency\\ExchangeRates', 'maintenance'));
+                    $manager->registerJob(new Job('coreshop_exchangerates', ExchangeRates::getInstance(), 'maintenance'));
                 }
                 if (Configuration::get('SYSTEM.CART.AUTO_CLEANUP')) {
                     $manager->registerJob(new Job('coreshop_cart_cleanup', '\\CoreShop\\Model\\Cart', 'maintenance'));
