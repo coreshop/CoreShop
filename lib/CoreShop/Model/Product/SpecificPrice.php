@@ -79,6 +79,8 @@ class SpecificPrice extends AbstractProductPriceRule
         }
 
         $list->setCondition("o_id = ? " . $query, $queryParams);
+        $list->setOrder("DESC");
+        $list->setOrderKey("priority");
 
         return $list->getData();
     }
