@@ -129,7 +129,7 @@ class Product extends Base
 
         if (!$objects = \Pimcore\Cache::load($cacheKey)) {
             $list = self::getList();
-            $list->setCondition('enabled=1');
+            $list->setCondition("enabled = 1 AND shops LIKE '%,".Shop::getShop()->getId().",%'");
             $list->setOrderKey('o_creationDate');
             $list->setOrder('DESC');
 
