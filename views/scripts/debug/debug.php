@@ -54,41 +54,46 @@
                     </tr>
                     <tr>
                         <td><?=$this->translate("coreshop_retail_price")?></td>
-                        <td><?=\CoreShop\Tool::formatPrice($this->product->getRetailPrice())?></td>
+                        <td><?=\CoreShop\Tool::formatPrice($this->product->getRetailPriceWithTax())?> (<?=\CoreShop\Tool::formatPrice($this->product->getRetailPriceWithoutTax())?>)</td>
                     </tr>
                     <tr>
                         <td><?=$this->translate("coreshop_price")?></td>
-                        <td><?=\CoreShop\Tool::formatPrice($this->product->getPrice(true))?></td>
+                        <td><?=\CoreShop\Tool::formatPrice($this->product->getPrice(true))?> (<?=\CoreShop\Tool::formatPrice($this->product->getPrice(false))?>)</td>
                     </tr>
-                    <tr>
-                        <td><?=$this->translate("coreshop_price_rules")?></td>
-                        <td>
-                            <table class="coreshop-debug-table">
-                                <thead>
-                                <tr>
-                                    <td><?=$this->translate("corshop_price_rule_name")?></td>
-                                    <td><?=$this->translate("coreshop_price")?></td>
-                                    <td><?=$this->translate("coreshop_discount")?></td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                $priceRules = $this->product->getValidSpecificPriceRules();
-                                $specificPrice = $this->product->getSpecificPrice();
+                    <?php
+                    $priceRules = $this->product->getValidSpecificPriceRules();
 
-                                foreach($priceRules as $rule) {
-                                    ?>
+                    if(count($priceRules) > 0) {
+                        ?>
+                        <tr>
+                            <td><?=$this->translate("coreshop_price_rules")?></td>
+                            <td>
+                                <table class="coreshop-debug-table">
+                                    <thead>
                                     <tr>
-                                        <td><?=$rule->getName()?></td>
-                                        <td><?=\CoreShop\Tool::formatPrice($rule->getPrice($this->product))?></td>
-                                        <td><?=\CoreShop\Tool::formatPrice($rule->getDiscount($specificPrice, $this->product))?></td>
+                                        <td><?=$this->translate("corshop_price_rule_name")?></td>
+                                        <td><?=$this->translate("coreshop_price")?></td>
+                                        <td><?=$this->translate("coreshop_discount")?></td>
                                     </tr>
+                                    </thead>
+                                    <tbody>
                                     <?php
-                                }?>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
+                                    $specificPrice = $this->product->getSpecificPrice();
+
+                                    foreach($priceRules as $rule) {
+                                        ?>
+                                        <tr>
+                                            <td><?=$rule->getName()?></td>
+                                            <td><?=\CoreShop\Tool::formatPrice($rule->getPrice($this->product))?></td>
+                                            <td><?=\CoreShop\Tool::formatPrice($rule->getDiscount($specificPrice, $this->product))?></td>
+                                        </tr>
+                                        <?php
+                                    }?>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    <?php } ?>
 
                     <?php if($this->product->getTaxRule() instanceof \CoreShop\Model\TaxRuleGroup) { ?>
                         <tr>

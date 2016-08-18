@@ -416,6 +416,44 @@ class Product extends Base
     }
 
     /**
+     * Get retail price with tax
+     *
+     * @return float
+     */
+    public function getRetailPriceWithTax() {
+        $price = $this->getRetailPrice();
+
+        $calculator = $this->getTaxCalculator();
+
+        if (!Tool::getPricesAreGross()) {
+            if ($calculator) {
+                $price = $calculator->addTaxes($price);
+            }
+        }
+
+        return $price;
+    }
+
+    /**
+     * Get retail price without tax
+     *
+     * @return float
+     */
+    public function getRetailPriceWithoutTax() {
+        $price = $this->getRetailPrice();
+
+        $calculator = $this->getTaxCalculator();
+
+        if (Tool::getPricesAreGross()) {
+            if ($calculator) {
+                $price = $calculator->removeTaxes($price);
+            }
+        }
+
+        return $price;
+    }
+
+    /**
      * Get Product Price with Tax.
      *
      * @param boolean $withTax
