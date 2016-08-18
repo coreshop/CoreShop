@@ -15,7 +15,9 @@
 namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
+use CoreShop\Model\Currency;
 use CoreShop\Model\Product;
+use CoreShop\Tool;
 
 /**
  * Class NewPrice
@@ -29,25 +31,14 @@ class NewPrice extends AbstractAction
     public $newPrice;
 
     /**
+     * @var int
+     */
+    public $currency;
+
+    /**
      * @var string
      */
     public $type = 'newPrice';
-
-    /**
-     * @return float
-     */
-    public function getNewPrice()
-    {
-        return $this->newPrice;
-    }
-
-    /**
-     * @param float $newPrice
-     */
-    public function setNewPrice($newPrice)
-    {
-        $this->newPrice = $newPrice;
-    }
 
     /**
      * Apply Rule to Cart.
@@ -107,7 +98,7 @@ class NewPrice extends AbstractAction
      */
     public function getPrice(Product $product)
     {
-        return $this->getNewPrice();
+        return Tool::convertToCurrency($this->getNewPrice(), Tool::getCurrency(), Currency::getById($this->getCurrency()));
     }
 
     /**
@@ -127,5 +118,37 @@ class NewPrice extends AbstractAction
         }
 
         return $price;
+    }
+
+    /**
+     * @return float
+     */
+    public function getNewPrice()
+    {
+        return $this->newPrice;
+    }
+
+    /**
+     * @param float $newPrice
+     */
+    public function setNewPrice($newPrice)
+    {
+        $this->newPrice = $newPrice;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param int $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
     }
 }
