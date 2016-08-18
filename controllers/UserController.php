@@ -33,7 +33,7 @@ class CoreShop_UserController extends Action
         }
 
         if ($this->getParam('action') != 'login' && $this->getParam('action') != 'register') {
-            if (!$this->session->user instanceof \CoreShop\Model\User) {
+            if (!Tool::getUser() instanceof \CoreShop\Model\User) {
                 $this->_redirect($this->view->url(array('lang' => $this->language), 'coreshop_index'));
                 exit;
             }
@@ -68,8 +68,8 @@ class CoreShop_UserController extends Action
 
                 CoreShop\Model\User::validate($params);
 
-                $this->session->user->setValues($params);
-                $this->session->user->save();
+                Tool::getUser()->setValues($params);
+                Tool::getUser()->save();
 
                 $this->view->success = true;
 
@@ -84,7 +84,7 @@ class CoreShop_UserController extends Action
 
     public function logoutAction()
     {
-        $this->session->user = null;
+        Tool::unsetUser();
         $this->session->cartId = null;
 
         $this->_redirect('/'.$this->language.'/shop');
@@ -92,7 +92,7 @@ class CoreShop_UserController extends Action
 
     public function loginAction()
     {
-        if ($this->session->user instanceof \CoreShop\Model\User) {
+        if (Tool::getUser() instanceof \CoreShop\Model\User) {
             $this->redirect($this->view->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
         }
 
@@ -107,7 +107,7 @@ class CoreShop_UserController extends Action
                     $isAuthenticated = $user->authenticate($this->getParam('password'));
 
                     if ($isAuthenticated) {
-                        $this->session->user = $user;
+                        Tool::setUser($user);
 
                         //Reset country
                         unset($this->session->countryId);
@@ -137,7 +137,7 @@ class CoreShop_UserController extends Action
 
     public function registerAction()
     {
-        if ($this->session->user instanceof \CoreShop\Model\User) {
+        if (Tool::getUser() instanceof \CoreShop\Model\User) {
             $this->redirect($this->view->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
         }
 
@@ -214,7 +214,7 @@ class CoreShop_UserController extends Action
 
                 \Pimcore::getEventManager()->trigger('coreshop.user.postAdd', $this, array('request' => $this->getRequest(), 'user' => $user));
 
-                $this->session->user = $user;
+                Tool::setUser($user);
 
                 if (array_key_exists('_redirect', $params)) {
                     $this->redirect($params['_redirect']);
@@ -241,7 +241,7 @@ class CoreShop_UserController extends Action
         $update = $this->getParam('address');
         $this->view->isNew = false;
 
-        foreach ($this->session->user->getAddresses() as $address) {
+        foreach (Tool::getUser()->getAddresses() as $address) {
             if ($address->getName() === $update) {
                 $this->view->address = $address;
             }
@@ -277,16 +277,16 @@ class CoreShop_UserController extends Action
 
                 \CoreShop\Model\User\Address::validate($addressParams); //Throws Exception if failing
 
-                $addresses = $this->session->user->getAddresses();
+                $addresses = Tool::getUser()->getAddresses();
 
                 if (!$addresses instanceof Object\Fieldcollection) {
                     $addresses = new Object\Fieldcollection();
                 }
 
                 if ($update) {
-                    for ($i = 0; $i < count($this->session->user->getAddresses()); ++$i) {
-                        if ($this->session->user->getAddresses()->get($i)->getName() == $update) {
-                            //$this->session->user->getAddresses()->remove($i);
+                    for ($i = 0; $i < count(Tool::getUser()->getAddresses()); ++$i) {
+                        if (Tool::getUser()->getAddresses()->get($i)->getName() == $update) {
+                            //Tool::getUser()->getAddresses()->remove($i);
                             break;
                         }
                     }
@@ -300,8 +300,8 @@ class CoreShop_UserController extends Action
                     $addresses->add($this->view->address);
                 }
 
-                $this->session->user->setAddresses($addresses);
-                $this->session->user->save();
+                Tool::getUser()->setAddresses($addresses);
+                Tool::getUser()->save();
 
                 if (array_key_exists('_redirect', $params)) {
                     $this->redirect($params['_redirect']);
@@ -319,7 +319,7 @@ class CoreShop_UserController extends Action
         $address = $this->getParam('address');
         $i = -1;
 
-        foreach ($this->session->user->getAddresses() as $a) {
+        foreach (Tool::getUser()->getAddresses() as $a) {
             ++$i;
 
             if ($a->getName() === $address) {
@@ -328,8 +328,8 @@ class CoreShop_UserController extends Action
         }
 
         if ($i >= 0) {
-            $this->session->user->getAddresses()->remove($i);
-            $this->session->user->setAddresses($this->session->user->getAddresses());
+            Tool::getUser()->getAddresses()->remove($i);
+            Tool::getUser()->setAddresses(Tool::getUser()->getAddresses());
         }
 
         $this->_redirect($this->view->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));

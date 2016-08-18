@@ -158,9 +158,35 @@ class Tool
      */
     public static function getUser()
     {
+        if(\Pimcore::inDebugMode()) {
+            if ($_REQUEST['coreshop_user']) {
+                $user = User::getById($_REQUEST['coreshop_user']);
+
+                return $user;
+            }
+        }
+
         $session = self::getSession();
 
         return $session->user instanceof User ? $session->user : null;
+    }
+
+    /**
+     * @param User $user
+     */
+    public static function setUser(User $user) {
+        $session = self::getSession();
+
+        $session->user = $user;
+    }
+
+    /**
+     *
+     */
+    public static function unsetUser() {
+        $session = self::getSession();
+
+        unset($session->user);;
     }
 
     /**
@@ -298,8 +324,8 @@ class Tool
         }
 
         if (!$country instanceof Country) {
-            if ($session->user instanceof User) {
-                $user = $session->user;
+            if (self::getUser() instanceof User) {
+                $user = self::getUser();
 
                 if (count($user->getAddresses()) > 0) {
                     $country = $user->getAddresses()->get(0)->getCountry();

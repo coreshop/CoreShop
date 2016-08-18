@@ -31,7 +31,7 @@ use CoreShop\Tool\Service;
 /**
  * Class Product
  * @package CoreShop\Model
- * 
+ *
  * @method static Object\Listing\Concrete getByLocalizedfields ($field, $value, $locale = null, $limit = 0)
  * @method static Object\Listing\Concrete getByEan ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByArticleNumber ($value, $limit = 0)
@@ -84,6 +84,11 @@ class Product extends Base
      * @var float
      */
     protected $cheapestDeliveryPrice = null;
+
+    /**
+     * @var []
+     */
+    protected $validPriceRules = null;
 
     /**
      * @static
@@ -252,7 +257,7 @@ class Product extends Base
         }
 
         $master = $this->getVariantMaster();
-        
+
         if ($master instanceof self) {
             $differences = Service::getProductVariations($master, $this, $type, $field, $language);
 
@@ -279,32 +284,36 @@ class Product extends Base
      */
     public function getValidSpecificPriceRules()
     {
-        $specificPrices = $this->getSpecificPrices();
-        $rules = [];
+        if(is_null($this->validPriceRules)) {
+            $specificPrices = $this->getSpecificPrices();
+            $rules = [];
 
-        foreach ($specificPrices as $specificPrice) {
-            $conditions = $specificPrice->getConditions();
+            foreach ($specificPrices as $specificPrice) {
+                $conditions = $specificPrice->getConditions();
 
-            $isValid = true;
+                $isValid = true;
 
-            foreach ($conditions as $condition) {
-                if ($condition instanceof AbstractCondition) {
-                    if (!$condition->checkConditionProduct($this, $specificPrice)) {
-                        $isValid = false;
-                        break;
+                foreach ($conditions as $condition) {
+                    if ($condition instanceof AbstractCondition) {
+                        if (!$condition->checkConditionProduct($this, $specificPrice)) {
+                            $isValid = false;
+                            break;
+                        }
                     }
                 }
+
+                //Conditions are not valid, so continue with next rule
+                if (!$isValid) {
+                    continue;
+                }
+
+                $rules[] = $specificPrice;
             }
 
-            //Conditions are not valid, so continue with next rule
-            if (!$isValid) {
-                continue;
-            }
-
-            $rules[] = $specificPrice;
+            $this->validPriceRules = $rules;
         }
 
-        return $rules;
+        return $this->validPriceRules;
     }
 
     /**
@@ -344,6 +353,7 @@ class Product extends Base
     public function getDiscount()
     {
         $price = $this->getSalesPrice(false);
+
         $specificPrices = $this->getValidSpecificPriceRules();
         $discount = 0;
 

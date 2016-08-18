@@ -27,6 +27,7 @@ use CoreShop\Model\TaxRule;
 use CoreShop\Model\TaxRuleGroup;
 use CoreShop\Model\User;
 use CoreShop\Model\Cart;
+use CoreShop\Tool;
 use Pimcore\File;
 use Pimcore\Model\Object\Service;
 
@@ -100,7 +101,7 @@ class Data
         self::createCustomer();
         self::createShop();
 
-        $session->user = self::$customer1;
+        Tool::setUser(self::$customer1);
     }
 
     public static function createTaxRule()

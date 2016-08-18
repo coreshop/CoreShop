@@ -43,7 +43,9 @@ class CoreShop_CheckoutController extends Action
 
     public function indexAction()
     {
-        if ($this->session->user instanceof \CoreShop\Model\User) {
+        $user = CoreShop\Tool::getUser();
+
+        if ($user instanceof \CoreShop\Model\User) {
             $this->_redirect($this->view->url(array('act' => 'address'), 'coreshop_checkout'));
         }
 
@@ -69,6 +71,8 @@ class CoreShop_CheckoutController extends Action
     {
         $this->checkIsAllowed();
 
+        $user = \CoreShop\Tool::getUser();
+
         if ($this->getRequest()->isPost()) {
             $shippingAddress = $this->getParam('shipping-address');
             $billingAddress = $this->getParam('billing-address');
@@ -78,10 +82,10 @@ class CoreShop_CheckoutController extends Action
             }
 
             $fieldCollectionShipping = new \Pimcore\Model\Object\Fieldcollection();
-            $fieldCollectionShipping->add($this->session->user->findAddressByName($shippingAddress));
+            $fieldCollectionShipping->add($user->findAddressByName($shippingAddress));
 
             $fieldCollectionBilling = new \Pimcore\Model\Object\Fieldcollection();
-            $fieldCollectionBilling->add($this->session->user->findAddressByName($billingAddress));
+            $fieldCollectionBilling->add($user->findAddressByName($billingAddress));
 
             $this->cart->setShippingAddress($fieldCollectionShipping);
             $this->cart->setBillingAddress($fieldCollectionBilling);
@@ -202,8 +206,8 @@ class CoreShop_CheckoutController extends Action
         unset($this->session->cart);
         unset($this->session->cartId);
 
-        if ($this->session->user->getIsGuest()) {
-            unset($this->session->user);
+        if (CoreShop\Tool::getUser()->getIsGuest()) {
+            \CoreShop\Tool::unsetUser();
         }
 
         \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckoutComplete($order);
@@ -216,7 +220,7 @@ class CoreShop_CheckoutController extends Action
 
     protected function checkIsAllowed()
     {
-        if (!$this->session->user instanceof \CoreShop\Model\User) {
+        if (!\CoreShop\Tool::getUser() instanceof \CoreShop\Model\User) {
             $this->_redirect($this->view->url(array('act' => 'index'), 'coreshop_checkout'));
             exit;
         }
