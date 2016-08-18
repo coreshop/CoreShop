@@ -36,6 +36,12 @@ pimcore.plugin.coreshop.product.specificprice.item = Class.create(pimcore.plugin
                 width: 250,
                 value: data.name
             }, {
+                xtype: 'numberfield',
+                name: 'priority',
+                fieldLabel: t('coreshop_priority'),
+                value: this.data.priority,
+                width : 250
+            }, {
                 xtype: 'checkbox',
                 name: 'inherit',
                 fieldLabel: t('coreshop_inherit'),

@@ -52,6 +52,11 @@ class SpecificPrice extends AbstractProductPriceRule
     public $inherit;
 
     /**
+     * @var int
+     */
+    public $priority;
+
+    /**
      * Get all PriceRules.
      *
      * @param Product $product
@@ -108,5 +113,21 @@ class SpecificPrice extends AbstractProductPriceRule
     public function setInherit($inherit)
     {
         $this->inherit = $inherit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
     }
 }

@@ -465,12 +465,15 @@ VALUES
 
 DROP TABLE IF EXISTS `coreshop_product_specificprice`;
 CREATE TABLE `coreshop_product_specificprice` (
-  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `o_id` int NOT NULL,
-  `name` varchar(50) NULL,
-  `conditions` text NULL,
-  `actions` text NULL
-) COMMENT='';
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `o_id` int(11) NOT NULL,
+  `inherit` tinyint(5) NOT NULL DEFAULT '1',
+  `priority` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(50) DEFAULT NULL,
+  `conditions` text,
+  `actions` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `coreshop_indexes`;
 CREATE TABLE `coreshop_indexes` (
