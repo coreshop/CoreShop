@@ -14,13 +14,11 @@
 
 namespace Pimcore\Model\Object\ClassDefinition\Data;
 
-use Pimcore\Model;
-
 /**
  * Class CoreShopManufacturerMultiselect
  * @package Pimcore\Model\Object\ClassDefinition\Data
  */
-class CoreShopManufacturerMultiselect extends Model\Object\ClassDefinition\Data\Multiselect
+class CoreShopManufacturerMultiselect extends CoreShopMultiselect
 {
     /**
      * Static type of this element.

@@ -14,16 +14,27 @@
 
 namespace Pimcore\Model\Object\ClassDefinition\Data;
 
+use Pimcore\Model;
+
 /**
- * Class CoreShopCountryMultiselect
+ * Class CoreShopShopMultiselect
  * @package Pimcore\Model\Object\ClassDefinition\Data
  */
-class CoreShopCountryMultiselect extends CoreShopMultiselect
+class CoreShopMultiselect extends Model\Object\ClassDefinition\Data\Multiselect
 {
     /**
-     * Static type of this element.
-     *
-     * @var string
+     * @param $object
+     * @param array $params
+     * @return string
      */
-    public $fieldtype = 'coreShopCountryMultiselect';
+    public function preGetData($object, $params = [])
+    {
+        $data = $object->{$this->getName()};
+
+        if(is_null($data)) {
+            $data = [];
+        }
+
+        return $data;
+    }
 }

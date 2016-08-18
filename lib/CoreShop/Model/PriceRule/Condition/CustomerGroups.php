@@ -91,9 +91,9 @@ class CustomerGroups extends AbstractCondition
      * @throws Exception
      * @throws \Exception
      */
-    private function check(User $customer, $throwException = false)
+    private function check($customer, $throwException = false)
     {
-        if (!$customer) {
+        if (!$customer instanceof User) {
             if ($throwException) {
                 throw new Exception('Customer in cart is emtpy!');
             } else {

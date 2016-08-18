@@ -20,7 +20,7 @@ use Pimcore\Model;
  * Class CoreShopShopMultiselect
  * @package Pimcore\Model\Object\ClassDefinition\Data
  */
-class CoreShopShopMultiselect extends Model\Object\ClassDefinition\Data\Multiselect
+class CoreShopShopMultiselect extends CoreShopMultiselect
 {
     /**
      * Static type of this element.
@@ -28,4 +28,17 @@ class CoreShopShopMultiselect extends Model\Object\ClassDefinition\Data\Multisel
      * @var string
      */
     public $fieldtype = 'coreShopShopMultiselect';
+
+    /**
+     * @param Model\Object\Concrete $data
+     * @return bool
+     */
+    public function isEmpty($data)
+    {
+        if (!is_array($data)) {
+            return true;
+        }
+
+        return false;
+    }
 }

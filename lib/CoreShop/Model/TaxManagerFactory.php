@@ -35,7 +35,7 @@ class TaxManagerFactory
      */
     private static function getCacheKey(Address $address)
     {
-        return md5($address->getCountry()->getId().
+        return md5($address->getCountry() instanceof Country ? $address->getCountry()->getId() : ''.
             ($address->getState() instanceof State ? $address->getState()->getId() : '').
             ($address->getName() ? $address->getName() : '').
             ($address->getVatNumber() ? $address->getVatNumber() : '').
