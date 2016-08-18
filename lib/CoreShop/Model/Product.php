@@ -18,6 +18,7 @@ use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
+use CoreShop\Model\Product\AbstractProductPriceRule;
 use CoreShop\Model\Product\SpecificPrice;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
@@ -161,7 +162,7 @@ class Product extends Base
      */
     public static function getPriceCacheTag($product)
     {
-        return 'coreshop_product_'.$product->getId().'_price_' . $product->getTaxRate();
+        return 'coreshop_product_'.$product->getId().'_price_' . $product->getTaxRate() . '' . Tool::getFingerprint();
     }
 
     /**
@@ -332,16 +333,10 @@ class Product extends Base
         $price = false;
 
         foreach ($specificPrices as $specificPrice) {
-            $actions = $specificPrice->getActions();
+            $actionsPrice = $specificPrice->getPrice($this);
 
-            foreach ($actions as $action) {
-                if ($action instanceof AbstractAction) {
-                    $actionsPrice = $action->getPrice($this);
-
-                    if ($actionsPrice !== false) {
-                        $price = $actionsPrice;
-                    }
-                }
+            if ($actionsPrice !== false) {
+                $price = $actionsPrice;
             }
         }
 
@@ -363,10 +358,8 @@ class Product extends Base
         $discount = 0;
 
         foreach ($specificPrices as $specificPrice) {
-            $actions = $specificPrice->getActions();
-
-            foreach ($actions as $action) {
-                $discount += $action->getDiscountProduct($price, $this);
+            if($specificPrice instanceof AbstractProductPriceRule) {
+                $discount += $specificPrice->getDiscount($price, $this);
             }
         }
 

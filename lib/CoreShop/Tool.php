@@ -33,6 +33,36 @@ use GeoIp2\Database\Reader;
 class Tool
 {
     /**
+     * @return string
+     */
+    public static function getFingerprint() {
+        $user = Tool::getUser();
+        $fingerprint = "";
+
+        if($user instanceof User) {
+            $fingerprint .= $user->getId();
+        }
+
+        if(Tool::prepareCart()->getId()) {
+            $fingerprint .= Tool::prepareCart()->getId();
+
+            foreach(Tool::prepareCart()->getItems() as $item) {
+                $fingerprint .= $item->getAmount() . $item->getProduct()->getId();
+            }
+        }
+
+        if(Tool::getDeliveryAddress() instanceof User\Address) {
+            $fingerprint .= Tool::getDeliveryAddress()->getCountry()->getId();
+        }
+
+        if(Tool::getCurrency() instanceof Currency) {
+            $fingerprint .= Tool::getCurrency()->getId();
+        }
+
+        return $fingerprint;
+    }
+
+    /**
      * Format Price to locale.
      *
      * @param $price

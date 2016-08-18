@@ -103,6 +103,30 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
         return $discount;
     }
 
+    /**
+     * Get Specific Price for product.
+     *
+     * @param Product $product
+     *
+     * @return float|boolean
+     */
+    public function getPrice($product)
+    {
+        $price = false;
+        $actions = $this->getActions();
+
+        foreach ($actions as $action) {
+            if ($action instanceof AbstractAction) {
+                $actionsPrice = $action->getPrice($product);
+
+                if ($actionsPrice !== false) {
+                    $price = $actionsPrice;
+                }
+            }
+        }
+
+        return $price;
+    }
 
     /**
      * @return mixed
