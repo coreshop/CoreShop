@@ -106,13 +106,32 @@ class ExchangeRates
      */
     public function updateExchangeRateForCurrency($provider, Currency $toCurrency)
     {
+        $baseCurrency = Tool::getBaseCurrency();
+
+        $rate = $this->getExchangeRateForCurrencyPair($provider, $baseCurrency, $toCurrency);
+
+        $toCurrency->setExchangeRate($rate);
+        $toCurrency->save();
+
+        return $rate;
+    }
+
+    /**
+     * get exchange rate for currency pair from a specific provider
+     *
+     * @param $provider
+     * @param Currency $fromCurrency
+     * @param Currency $toCurrency
+     *
+     * @throws Exception
+     *
+     * @returns float
+     */
+    public function getExchangeRateForCurrencyPair($provider, Currency $fromCurrency, Currency $toCurrency) {
         $provider = $this->getProvider($provider);
 
         $swap = new Swap($provider);
-
-        $baseCurrency = Tool::getBaseCurrency();
-
-        $currencyPair = new CurrencyPair($baseCurrency->getIsoCode(), $toCurrency->getIsoCode());
+        $currencyPair = new CurrencyPair($fromCurrency->getIsoCode(), $toCurrency->getIsoCode());
 
         try {
             $rate = $swap->quote($currencyPair);
@@ -121,8 +140,6 @@ class ExchangeRates
             if ($rate < 0) {
                 throw new Exception('rate is smaller than 0');
             }
-
-            $toCurrency->setExchangeRate($rate);
 
             return $rate;
         } catch (\Exception $ex) {
