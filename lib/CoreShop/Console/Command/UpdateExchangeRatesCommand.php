@@ -65,9 +65,10 @@ class UpdateExchangeRatesCommand extends AbstractCommand
         $currencyId = $input->getOption('currency');
         $currency = null;
         $baseCurrency = Tool::getBaseCurrency();
+        $exchangeRates = ExchangeRates::getInstance();
 
         if (!$provider) {
-            $provider = ExchangeRates::getSystemProvider();
+            $provider = $exchangeRates->getSystemProvider();
         }
 
         if (is_null($provider) || !ExchangeRates::providerExists($provider)) {
@@ -95,7 +96,7 @@ class UpdateExchangeRatesCommand extends AbstractCommand
             }
 
             try {
-                $rate = ExchangeRates::updateExchangeRateForCurrency($provider, $currency);
+                $rate = $exchangeRates->updateExchangeRateForCurrency($provider, $currency);
 
                 $output->writeLn('Update Exchange Rate for Currency '.$currency->getName().' ('.$currency->getIsoCode().') to: '.$rate);
             } catch (Exception $ex) {

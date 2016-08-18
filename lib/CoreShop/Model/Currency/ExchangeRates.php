@@ -44,11 +44,22 @@ class ExchangeRates
     );
 
     /**
+     * @return ExchangeRates
+     */
+    public static function getInstance() {
+        if(\Pimcore::getDiContainer()->has('CoreShop\Model\Currency\ExchangeRates')) {
+            return \Pimcore::getDiContainer()->get('CoreShop\Model\Currency\ExchangeRates');
+        }
+
+        return new self();
+    }
+
+    /**
      * get configured provider.
      *
      * @return mixed|null
      */
-    public static function getSystemProvider()
+    public function getSystemProvider()
     {
         return Configuration::get('SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER');
     }
@@ -56,7 +67,7 @@ class ExchangeRates
     /**
      * maintenance job.
      */
-    public static function maintenance()
+    public function maintenance()
     {
         $lastUpdate = Configuration::get('SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE');
 
@@ -68,12 +79,12 @@ class ExchangeRates
 
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
         if ($timeDiff > 24 * 60 * 60) {
-            $provider = self::getSystemProvider();
+            $provider = $this->getSystemProvider();
             $currencies = Currency::getAvailable();
 
             foreach ($currencies as $currency) {
                 try {
-                    self::updateExchangeRateForCurrency($provider, $currency);
+                    $this->updateExchangeRateForCurrency($provider, $currency);
                 } catch (Exception $ex) {
                     \Logger::err($ex);
                 }
@@ -93,9 +104,9 @@ class ExchangeRates
      *
      * @return float
      */
-    public static function updateExchangeRateForCurrency($provider, Currency $toCurrency)
+    public function updateExchangeRateForCurrency($provider, Currency $toCurrency)
     {
-        $provider = self::getProvider($provider);
+        $provider = $this->getProvider($provider);
 
         $swap = new Swap($provider);
 
@@ -128,7 +139,7 @@ class ExchangeRates
      *
      * @throws Exception
      */
-    public static function getProvider($providerName)
+    public function getProvider($providerName)
     {
         $providerClass = '\\Swap\\Provider\\'.self::$providerList[$providerName];
 
