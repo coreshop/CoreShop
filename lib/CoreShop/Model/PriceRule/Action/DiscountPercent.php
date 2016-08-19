@@ -15,7 +15,9 @@
 namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
+use CoreShop\Model\Currency;
 use CoreShop\Model\Product;
+use CoreShop\Tool;
 
 /**
  * Class DiscountPercent
@@ -103,7 +105,7 @@ class DiscountPercent extends AbstractAction
      */
     public function getDiscountCart(Cart $cart)
     {
-        return $cart->getSubtotal() * ($this->getPercent() / 100);
+        return $this->getDiscount($cart->getSubtotal());
     }
 
     /**
@@ -116,6 +118,18 @@ class DiscountPercent extends AbstractAction
      */
     public function getDiscountProduct($basePrice, Product $product)
     {
-        return $basePrice * ($this->getPercent() / 100);
+        return $this->getDiscount($basePrice);
+    }
+
+    /**
+     * Calculates the discount and converts it to a specific currency
+     *
+     * @param $price
+     * @return mixed
+     */
+    protected function getDiscount($price) {
+        $discount = $price * ($this->getPercent() / 100);
+
+        return Tool::convertToCurrency($discount, Tool::getCurrency(), Currency::getById($this->getCurrencyId()));
     }
 }

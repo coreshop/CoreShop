@@ -41,7 +41,7 @@ class DiscountAmount extends AbstractAction
     public $type = 'discountAmount';
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getCurrency()
     {
@@ -49,7 +49,7 @@ class DiscountAmount extends AbstractAction
     }
 
     /**
-     * @param Currency|int $currency
+     * @param int $currency
      */
     public function setCurrency($currency)
     {
@@ -105,7 +105,7 @@ class DiscountAmount extends AbstractAction
      */
     public function getDiscountCart(Cart $cart)
     {
-        return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
+        return Tool::convertToCurrency($this->getAmount(), Tool::getCurrency(), Currency::getById($this->getCurrency()));
     }
 
     /**
@@ -118,6 +118,6 @@ class DiscountAmount extends AbstractAction
      */
     public function getDiscountProduct($basePrice, Product $product)
     {
-        return Tool::convertToCurrency($this->getAmount(), $this->getCurrency(), Tool::getCurrency());
+        return Tool::convertToCurrency($this->getAmount(), Tool::getCurrency(), Currency::getById($this->getCurrency()));
     }
 }

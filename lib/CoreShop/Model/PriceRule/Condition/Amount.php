@@ -110,7 +110,7 @@ class Amount extends AbstractCondition
         //Check Cart Amount
         if ($this->getMinAmount() > 0) {
             $minAmount = $this->getMinAmount();
-            $minAmount = Tool::convertToCurrency($minAmount, $this->getCurrency(), Tool::getCurrency());
+            $minAmount = Tool::convertToCurrency($minAmount, Model\Currency::getById($this->getCurrency()), Tool::getCurrency());
 
             $cartTotal = $cart->getSubtotal();
 

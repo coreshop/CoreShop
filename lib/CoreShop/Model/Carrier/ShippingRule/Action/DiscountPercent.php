@@ -51,7 +51,7 @@ class DiscountPercent extends AbstractAction
      */
     public function getPriceModification(Model\Carrier $carrier, Cart $cart, Model\User\Address $address, $price)
     {
-        return Tool::convertToCurrency(-1 * ($price * ($this->getPercent() / 100)), Model\Currency::getById($this->getCurrency()));
+        return Tool::convertToCurrency(-1 * ($price * ($this->getPercent() / 100)), Tool::getCurrency(), Model\Currency::getById($this->getCurrency()));
     }
 
     /**
