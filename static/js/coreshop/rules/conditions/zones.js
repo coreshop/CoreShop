@@ -45,13 +45,13 @@ pimcore.plugin.coreshop.rules.conditions.zones = Class.create(pimcore.plugin.cor
             }
         };
 
-        zones = new Ext.ux.form.MultiSelect(zones);
-
         if (this.data && this.data.zones) {
             zones.value = this.data.zones;
         }
 
-        this.form = new Ext.form.FieldSet({
+        zones = new Ext.ux.form.MultiSelect(zones);
+
+        this.form = new Ext.form.Panel({
             items : [
                 zones
             ]

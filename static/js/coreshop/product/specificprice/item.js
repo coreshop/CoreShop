@@ -39,7 +39,7 @@ pimcore.plugin.coreshop.product.specificprice.item = Class.create(pimcore.plugin
                 xtype: 'numberfield',
                 name: 'priority',
                 fieldLabel: t('coreshop_priority'),
-                value: this.data.priority,
+                value: this.data.priority ? this.data.priority : 0,
                 width : 250
             }, {
                 xtype: 'checkbox',
@@ -51,4 +51,32 @@ pimcore.plugin.coreshop.product.specificprice.item = Class.create(pimcore.plugin
 
         return this.settingsForm;
     },
+
+    getSaveData : function () {
+        var saveData = {};
+
+        // general settings
+        saveData['id'] = this.data.id;
+        saveData['settings'] = this.settingsForm.getForm().getFieldValues();
+        saveData['conditions'] = this.conditions.getConditionsData();
+        saveData['actions'] = this.actions.getActionsData();
+
+        return saveData;
+    },
+
+    isDirty : function() {
+        if(this.settingsForm.form.monitor && this.settingsForm.getForm().isDirty()) {
+            return true;
+        }
+
+        if(this.conditions.isDirty()) {
+            return true;
+        }
+
+        if(this.actions.isDirty()) {
+            return true;
+        }
+
+        return false;
+    }
 });

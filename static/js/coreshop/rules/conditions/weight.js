@@ -47,7 +47,7 @@ pimcore.plugin.coreshop.rules.conditions.weight = Class.create(pimcore.plugin.co
             step : 1
         });
 
-        this.form = Ext.create('Ext.form.FieldSet', {
+        this.form = Ext.create('Ext.form.Panel', {
             items : [
                 minWeight, maxWeight
             ]

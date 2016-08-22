@@ -35,7 +35,7 @@ pimcore.plugin.coreshop.rules.conditions.customerGroups = Class.create(pimcore.p
             fieldtype: 'objects'
         });
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items : [
                 this.customerGroups.getLayoutEdit()
             ]

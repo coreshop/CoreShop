@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Product;
 
 use CoreShop\Model\Product;
+use Pimcore\Model\Object\AbstractObject;
 
 /**
  * Class SpecificPrice
@@ -83,6 +84,17 @@ class SpecificPrice extends AbstractProductPriceRule
         $list->setOrderKey("priority");
 
         return $list->getData();
+    }
+
+    public function save()
+    {
+        parent::save();
+
+        $object = AbstractObject::getById($this->getO_Id());
+
+        if($object instanceof Product) {
+            $object->clearPriceCache();
+        }
     }
 
     /**

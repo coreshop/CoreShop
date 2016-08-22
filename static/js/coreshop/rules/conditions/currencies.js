@@ -45,13 +45,13 @@ pimcore.plugin.coreshop.rules.conditions.currencies = Class.create(pimcore.plugi
             }
         };
 
-        currencies = new Ext.ux.form.MultiSelect(currencies);
-
         if (this.data && this.data.currencies) {
             currencies.value = this.data.currencies;
         }
 
-        this.form = new Ext.form.FieldSet({
+        currencies = new Ext.ux.form.MultiSelect(currencies);
+
+        this.form = new Ext.form.Panel({
             items : [
                 currencies
             ]

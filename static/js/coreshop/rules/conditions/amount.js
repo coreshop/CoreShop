@@ -78,7 +78,7 @@ pimcore.plugin.coreshop.rules.conditions.amount = Class.create(pimcore.plugin.co
             currency.value = this.data.currency;
         }
 
-        this.form = Ext.create('Ext.form.FieldSet', {
+        this.form = Ext.create('Ext.form.Panel', {
             items : [
                 minAmount, maxAmount, currency
             ]

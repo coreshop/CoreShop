@@ -84,16 +84,20 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
             } else {
                 var form = conditionClass.form;
 
-                for (var c = 0; c < form.items.length; c++) {
-                    var item = form.items.get(c);
+                if(Ext.isFunction(form.getValues)) {
+                    condition = form.getValues();
+                }
+                else {
+                    for (var c = 0; c < form.items.length; c++) {
+                        var item = form.items.get(c);
 
-                    try {
-                        condition[item.getName()] = item.getValue();
+                        try {
+                            condition[item.getName()] = item.getValue();
+                        }
+                        catch (e) {
+
+                        }
                     }
-                    catch (e) {
-
-                    }
-
                 }
             }
 
@@ -102,5 +106,31 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
         }
 
         return conditionsData;
+    },
+
+    isDirty : function() {
+        if(this.conditionsContainer.items) {
+            var conditions = this.conditionsContainer.items.getRange();
+            for (var i = 0; i < conditions.length; i++) {
+                var conditionItem = conditions[i];
+                var conditionClass = conditionItem.xparent;
+
+                if (Ext.isFunction(conditionClass['isDirty'])) {
+                    if (conditionClass.isDirty()) {
+                        return true;
+                    }
+                } else {
+                    var form = conditionClass.form;
+
+                    if (form && Ext.isFunction(form.isDirty)) {
+                        if (form.isDirty()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 });

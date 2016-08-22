@@ -50,7 +50,7 @@
     background: url(/plugins/CoreShop/static/img/flat/orders.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_price_rule {
+.coreshop_icon_price_rule, .pimcore_icon_coreShopSpecificPrices {
     background: url(/plugins/CoreShop/static/img/flat/price-rules.svg) center center no-repeat !important;
 }
 

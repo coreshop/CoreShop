@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.rules.actions.freeShipping = Class.create(pimcore.plugin
 
     getForm : function () {
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             type: 'FreeShipping',
             forceLayout: true
         });

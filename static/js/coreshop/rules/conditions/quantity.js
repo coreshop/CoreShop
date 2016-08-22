@@ -50,7 +50,7 @@ pimcore.plugin.coreshop.rules.conditions.quantity = Class.create(pimcore.plugin.
             step : 1
         });
 
-        this.form = Ext.create('Ext.form.FieldSet', {
+        this.form = Ext.create('Ext.form.Panel', {
             items : [
                 minQuantity, maxQuantity
             ]

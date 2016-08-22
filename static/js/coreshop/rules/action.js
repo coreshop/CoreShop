@@ -77,18 +77,21 @@ pimcore.plugin.coreshop.rules.action = Class.create({
             var actionClass = actionItem.xparent;
             var form = actionClass.form;
 
-            for (var c = 0; c < form.items.length; c++)
-            {
-                var item = form.items.get(c);
+            if(Ext.isFunction(form.getValues)) {
+                action = form.getValues();
+            }
+            else {
+                for (var c = 0; c < form.items.length; c++) {
+                    var item = form.items.get(c);
 
-                try {
-                    action[item.getName()] = item.getValue();
+                    try {
+                        action[item.getName()] = item.getValue();
+                    }
+                    catch (e) {
+
+                    }
+
                 }
-                catch (e)
-                {
-
-                }
-
             }
 
             action['type'] = actions[i].xparent.type;
@@ -96,5 +99,31 @@ pimcore.plugin.coreshop.rules.action = Class.create({
         }
 
         return actionData;
+    },
+
+    isDirty : function() {
+        if(this.actionsContainer.items) {
+            var actions = this.actionsContainer.items.getRange();
+            for (var i = 0; i < actions.length; i++) {
+                var actionsItem = actions[i];
+                var actionsClass = actionsItem.xparent;
+
+                if (Ext.isFunction(actionsClass['isDirty'])) {
+                    if (actionsClass.isDirty()) {
+                        return true;
+                    }
+                } else {
+                    var form = actionsClass.form;
+
+                    if (form) {
+                        if (form.isDirty()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 });

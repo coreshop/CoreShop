@@ -57,7 +57,7 @@ pimcore.plugin.coreshop.rules.actions.newPrice = Class.create(pimcore.plugin.cor
             }
         };
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items : [
                 newPrice, currency
             ]

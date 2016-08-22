@@ -113,7 +113,7 @@ pimcore.plugin.coreshop.rules.conditions.timeSpan = Class.create(pimcore.plugin.
             }
         });
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items : [
                 dateFromFieldContainer, dateToFieldContainer
             ]

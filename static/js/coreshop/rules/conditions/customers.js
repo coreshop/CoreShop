@@ -35,7 +35,7 @@ pimcore.plugin.coreshop.rules.conditions.customers = Class.create(pimcore.plugin
             fieldtype: 'objects'
         });
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items : [
                 this.customers.getLayoutEdit()
             ]

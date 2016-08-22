@@ -62,7 +62,7 @@ pimcore.plugin.coreshop.rules.actions.gift = Class.create(pimcore.plugin.coresho
             gift.value = this.data.gift;
         }
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items : [
                 gift
             ],

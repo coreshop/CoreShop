@@ -39,6 +39,9 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
             xparent : this,
             id : myId,
             style: 'margin: 10px 0 0 0',
+            border : true,
+            bodyPadding : 10,
+            maxHeight : 500,
             tbar : this.getTopBar(t('coreshop_' + this.elementType +  '_' + this.type), myId, this.parent, this.data, 'coreshop_rule_icon_' + this.elementType + '_' + this.type),
             items : [
                 this.getForm()

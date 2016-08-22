@@ -35,7 +35,7 @@ pimcore.plugin.coreshop.rules.conditions.categories = Class.create(pimcore.plugi
             fieldtype: 'objects'
         });
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items : [
                 this.categories.getLayoutEdit()
             ]

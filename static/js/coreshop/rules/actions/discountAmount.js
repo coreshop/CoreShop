@@ -57,7 +57,7 @@ pimcore.plugin.coreshop.rules.actions.discountAmount = Class.create(pimcore.plug
             }
         };
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items : [
                 amount, currency
             ]

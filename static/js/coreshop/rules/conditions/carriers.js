@@ -45,13 +45,13 @@ pimcore.plugin.coreshop.rules.conditions.carriers = Class.create(pimcore.plugin.
             }
         };
 
-        carriers = new Ext.ux.form.MultiSelect(carriers);
-
         if (this.data && this.data.carriers) {
             carriers.value = this.data.carriers;
         }
 
-        this.form = new Ext.form.FieldSet({
+        carriers = new Ext.ux.form.MultiSelect(carriers);
+
+        this.form = new Ext.form.Panel({
             items : [
                 carriers
             ]

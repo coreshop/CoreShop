@@ -33,7 +33,7 @@ pimcore.plugin.coreshop.rules.conditions.countries = Class.create(pimcore.plugin
             multiselect : true,
             triggerAction: 'all',
             name:'countries',
-            maxHeight : 400,
+            height : 400,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())
@@ -45,13 +45,14 @@ pimcore.plugin.coreshop.rules.conditions.countries = Class.create(pimcore.plugin
             }
         };
 
-        countries = new Ext.ux.form.MultiSelect(countries);
 
         if (this.data && this.data.countries) {
             countries.value = this.data.countries;
         }
 
-        this.form = new Ext.form.FieldSet({
+        countries = new Ext.ux.form.MultiSelect(countries);
+
+        this.form = new Ext.form.Panel({
             items : [
                 countries
             ]

@@ -34,7 +34,7 @@ pimcore.plugin.coreshop.rules.conditions.totalPerCustomer = Class.create(pimcore
             step : 1
         });
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items : [
                 total
             ]
