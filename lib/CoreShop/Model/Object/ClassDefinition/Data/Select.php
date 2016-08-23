@@ -64,7 +64,12 @@ class Select extends Model\Object\ClassDefinition\Data\Select
         $data = $object->{$this->getName()};
 
         if($data instanceof AbstractModel) {
-            $data = $data::getById($data->getId());
+            //Reload from Database, but only if available
+            $tmpData = $data::getById($data->getId());
+
+            if($tmpData instanceof AbstractModel) {
+                return $tmpData;
+            }
         }
 
         return $data;
