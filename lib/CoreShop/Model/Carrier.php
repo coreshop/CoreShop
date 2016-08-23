@@ -169,7 +169,9 @@ class Carrier extends AbstractModel
             try {
                 if (!$carrier = Cache::load($cacheKey)) {
                     $db = Db::get();
-                    $tableName = Dao::getTableName();
+
+                    $obj = new self();
+                    $tableName = $obj->getDao()->getTableName();
 
                     $data = $db->fetchRow('SELECT class FROM '.$tableName.' WHERE id = ?', $id);
 

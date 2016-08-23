@@ -38,7 +38,7 @@ abstract class AbstractDao extends Dao\AbstractDao
      *
      * @return string
      */
-    public static function getTableName()
+    public function getTableName()
     {
         $class = get_called_class();
 
@@ -77,10 +77,10 @@ abstract class AbstractDao extends Dao\AbstractDao
 
         if (!is_null($shopId)) {
             if ($this->model->isMultiShop()) {
-                $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
+                $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
             }
         } else {
-            $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' WHERE id = ?', $this->model->getId());
+            $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . ' WHERE id = ?', $this->model->getId());
         }
         
         if (!$data['id']) {
@@ -119,12 +119,12 @@ abstract class AbstractDao extends Dao\AbstractDao
 
         if (!is_null($shopId)) {
             if ($this->model->isMultiShop()) {
-                $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE ' . $field . ' = ?', [$shopId, $value]);
+                $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE ' . $field . ' = ?', [$shopId, $value]);
             } elseif ($this->model->isMultiShopFK()) {
-                $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . ' WHERE shopId = ? AND ' . $field . ' = ?', [$shopId, $value]);
+                $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . ' WHERE shopId = ? AND ' . $field . ' = ?', [$shopId, $value]);
             }
         } else {
-            $data = $this->db->fetchRow('SELECT * FROM ' . self::getTableName() . " WHERE $field = ?", $value);
+            $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . " WHERE $field = ?", $value);
         }
 
         if (!$data['id']) {
@@ -156,7 +156,7 @@ abstract class AbstractDao extends Dao\AbstractDao
 
         $buffer = array();
 
-        $validColumns = $this->getValidTableColumns(self::getTableName());
+        $validColumns = $this->getValidTableColumns($this->getTableName());
 
         if (count($vars)) {
             foreach ($vars as $k => $v) {
@@ -199,7 +199,7 @@ abstract class AbstractDao extends Dao\AbstractDao
         }
 
         if ($this->model->getId() !== null) {
-            $this->db->update(self::getTableName(), $buffer, $this->db->quoteInto('id = ?', $this->model->getId()));
+            $this->db->update($this->getTableName(), $buffer, $this->db->quoteInto('id = ?', $this->model->getId()));
 
             if ($this->model->getLocalizedFields()) {
                 $this->model->getLocalizedFields()->save();
@@ -210,7 +210,7 @@ abstract class AbstractDao extends Dao\AbstractDao
             return;
         }
 
-        $this->db->insert(self::getTableName(), $buffer);
+        $this->db->insert($this->getTableName(), $buffer);
         $this->model->setId($this->db->lastInsertId());
 
         if ($this->model->getLocalizedFields()) {
@@ -225,7 +225,7 @@ abstract class AbstractDao extends Dao\AbstractDao
      */
     public function delete()
     {
-        $this->db->delete(self::getTableName(), $this->db->quoteInto('id = ?', $this->model->getId()));
+        $this->db->delete($this->getTableName(), $this->db->quoteInto('id = ?', $this->model->getId()));
     }
 
     /**
