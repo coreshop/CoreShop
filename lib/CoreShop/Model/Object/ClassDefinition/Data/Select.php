@@ -55,6 +55,22 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
+     * @param $object
+     * @param array $params
+     * @return string
+     */
+    public function preGetData($object, $params = [])
+    {
+        $data = $object->{$this->getName()};
+
+        if($data instanceof AbstractModel) {
+            $data = $data::getById($data->getId());
+        }
+
+        return $data;
+    }
+
+    /**
      * @see Object\ClassDefinition\Data::getDataForResource
      * @param string $data
      * @param null|Model\Object\AbstractObject $object

@@ -15,7 +15,9 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
+use CoreShop\Model\User\Address;
 use CoreShop\Tool;
+use Pimcore\Placeholder;
 
 /**
  * Class Country
@@ -74,6 +76,11 @@ class Country extends AbstractModel
     public $zone;
 
     /**
+     * @var string
+     */
+    public $addressFormat;
+
+    /**
      * @var int[]
      */
     public $shopIds;
@@ -101,6 +108,24 @@ class Country extends AbstractModel
         $list->setCondition('active = 1');
 
         return $list->getData();
+    }
+
+    /**
+     * @param Address $address
+     * @param bool $asHtml
+     * @return string
+     */
+    public function formatAddress(Address $address, $asHtml = true) {
+        $objectVars = get_object_vars($address);
+
+        $placeHolder = new Placeholder();
+        $address = $placeHolder->replacePlaceholders($this->getAddressFormat(), $objectVars);
+
+        if($asHtml) {
+            $address = nl2br($address);
+        }
+
+        return $address;
     }
 
     /**
@@ -282,6 +307,22 @@ class Country extends AbstractModel
     public function setUseStoreCurrency($useStoreCurrency)
     {
         $this->useStoreCurrency = $useStoreCurrency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddressFormat()
+    {
+        return $this->addressFormat;
+    }
+
+    /**
+     * @param string $addressFormat
+     */
+    public function setAddressFormat($addressFormat)
+    {
+        $this->addressFormat = $addressFormat;
     }
 
     /**

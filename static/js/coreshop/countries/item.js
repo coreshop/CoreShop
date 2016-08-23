@@ -101,6 +101,12 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                         this.forceReloadOnSave = true;
                     }.bind(this)
                 }
+            },
+            {
+                fieldLabel: t('coreshop_country_addressFormat'),
+                xtype : 'textarea',
+                name : 'addressFormat',
+                value : this.data.addressFormat
             }
         ];
 
