@@ -458,7 +458,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     },
 
     getAddressPanelForAddress : function (address, title, type) {
-        return {
+        var panel = {
             xtype: 'panel',
             dockedItems: [{
                 xtype: 'toolbar',
@@ -501,24 +501,30 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     xtype: 'panel',
                     bodyPadding : 5,
                     html :
-                        address.firstname + ' ' + address.lastname + '<br/>' +
-                        (address.company ? address.company + '<br/>' : '') +
-                        (address.street ? address.street  : '') + ' ' + (address.nr ? address.nr : '') + '<br/>' +
-                        (address.zip ? address.zip : '') + ' ' + (address.city ? address.city : '') + '<br/>' +
-                        address.country.name,
+                    address.firstname + ' ' + address.lastname + '<br/>' +
+                    (address.company ? address.company + '<br/>' : '') +
+                    (address.street ? address.street  : '') + ' ' + (address.nr ? address.nr : '') + '<br/>' +
+                    (address.zip ? address.zip : '') + ' ' + (address.city ? address.city : '') + '<br/>' +
+                    address.country.name,
                     flex : 1
-                },
-                {
-                    xtype: 'panel',
-                    html : '<img src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x200&maptype=roadmap'
-                                + '&center=' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + address.country.name
-                                + '&markers=color:blue|' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + address.country.name
-                            + '" />',
-                    flex : 1,
-                    bodyPadding : 5,
-                },
+                }
             ]
         };
+
+        if(pimcore.settings.google_maps_api_key) {
+            panel.items.push({
+                xtype: 'panel',
+                html : '<img src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x200&maptype=roadmap'
+                + '&center=' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + address.country.name
+                + '&markers=color:blue|' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + address.country.name
+                + '&key=' + pimcore.settings.google_maps_api_key
+                + '" />',
+                flex : 1,
+                bodyPadding : 5,
+            });
+        }
+
+        return panel;
     },
 
     getShippingInfo : function () {
