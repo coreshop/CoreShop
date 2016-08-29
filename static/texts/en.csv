@@ -423,7 +423,7 @@
 "coreshop_condition_dimension_width","Width"
 "coreshop_condition_dimension_depth","Depth"
 "coreshop_condition_postcodes","Postcodes"
-"coreshop_condition_postcodes_exclusion","Exclusive"
+"coreshop_condition_postcodes_exclusion","Exclusion"
 "coreshop_condition_carriers","Carriers"
 "coreshop_send_usagelog","Send Usagelog to CoreShop"
 "coreshop_condition_postcodes_info","You can add multiple postcodes using CSV format. You can also define Ranges. For example 46-49 or WR1-WR5."
