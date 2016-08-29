@@ -115,6 +115,10 @@ pimcore.object.tags.coreShopSpecificPrices = Class.create(pimcore.object.tags.ab
                 this.dirty = true;
             }.bind(this));
         }.bind(this));
+
+        if(this.panels.length > 0) {
+            this.getTabPanel().setActiveItem(this.panels[0].panel);
+        }
     },
 
     getTabPanel : function() {
