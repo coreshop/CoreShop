@@ -128,6 +128,14 @@ class Country extends AbstractModel
         return $address;
     }
 
+    public function getAddressFields() {
+        $regex = "/" . Placeholder::getPlaceholderPrefix() . "([a-z_]+)\(([a-z_0-9]+)[\s,]*(.*?)\)" . Placeholder::getPlaceholderSuffix() . "/is";
+
+        preg_match_all($regex, $this->getAddressFormat(), $matches);
+
+        return $matches[2];
+    }
+
     /**
      * @return int
      */
