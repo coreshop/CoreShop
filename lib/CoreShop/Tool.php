@@ -72,8 +72,10 @@ class Tool
     public static function formatPrice($price)
     {
         try {
-            $zCurrency = new \Zend_Currency('de_DE'); //TODO: fix to use Zend_Locale
-            return $zCurrency->toCurrency($price, array('symbol' => self::getCurrency()->getSymbol()));
+            $locale = \Zend_Locale::getLocaleToTerritory(static::getCountry()->getIsoCode());
+            $zCurrency = new \Zend_Currency($locale);
+
+            return $zCurrency->toCurrency($price, array('symbol' => static::getCurrency()->getSymbol()));
         } catch (\Exception $ex) {
             echo $ex;
         }
