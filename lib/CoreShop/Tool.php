@@ -17,6 +17,7 @@ namespace CoreShop;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
+use CoreShop\Model\Product;
 use CoreShop\Model\Shop;
 use Pimcore\Date;
 use Pimcore\Model\Object;
@@ -47,7 +48,9 @@ class Tool
             $fingerprint .= Tool::prepareCart()->getId();
 
             foreach(Tool::prepareCart()->getItems() as $item) {
-                $fingerprint .= $item->getAmount() . $item->getProduct()->getId();
+                if($item instanceof Cart\Item) {
+                    $fingerprint .= $item->getAmount() . $item->getProduct()->getId();
+                }
             }
         }
 
