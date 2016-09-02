@@ -57,7 +57,7 @@ abstract class AbstractCondition
     public function getView($language = null)
     {
         if (!$language) {
-            $language = Tool::getLocale();
+            $language = \CoreShop::getTools()->getLocale();
         }
 
         if (!$this->view) {

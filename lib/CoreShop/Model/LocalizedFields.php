@@ -178,7 +178,7 @@ class LocalizedFields extends Model\AbstractModel
 
         // try to get the language from the registry
         try {
-            $locale = \CoreShop\Tool::getLocale();
+            $locale = \CoreShop::getTools()->getLocale();
             if (Tool::isValidLanguage((string) $locale)) {
                 return (string) $locale;
             }

@@ -60,7 +60,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
                 }
 
                 if (!$language && \Zend_Registry::isRegistered('Zend_Locale')) {
-                    $locale = \CoreShop\Tool::getLocale();
+                    $locale = \CoreShop::getTools()->getLocale();
                     if (Tool::isValidLanguage((string) $locale)) {
                         $language = (string) $locale;
                     }

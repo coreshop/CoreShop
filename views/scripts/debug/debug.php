@@ -25,20 +25,20 @@
                 <?php } ?>
                 <tr>
                     <td><?=$this->translate("coreshop_country")?></td>
-                    <td><?=\CoreShop\Tool::getCountry()->getName() ?> (<?=\CoreShop\Tool::getCountry()->getId()?>)</td>
+                    <td><?=\CoreShop::getTools()->getCountry()->getName() ?> (<?=\CoreShop::getTools()->getCountry()->getId()?>)</td>
                 </tr>
                 <tr>
                     <td><?=$this->translate("coreshop_currency")?></td>
-                    <td><?=\CoreShop\Tool::getCurrency()->getName() ?> (<?=\CoreShop\Tool::getCurrency()->getId()?>)</td>
+                    <td><?=\CoreShop::getTools()->getCurrency()->getName() ?> (<?=\CoreShop::getTools()->getCurrency()->getId()?>)</td>
                 </tr>
 
-                <?php if(\CoreShop\Tool::getUser() instanceof \CoreShop\Model\User) { ?>
+                <?php if(\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) { ?>
                     <tr>
                         <td><?=$this->translate("coreshop_user")?></td>
-                        <td><?=\CoreShop\Tool::getUser()->getEmail() ?> (<?=\CoreShop\Tool::getUser()->getId()?>)</td>
+                        <td><?=\CoreShop::getTools()->getUser()->getEmail() ?> (<?=\CoreShop::getTools()->getUser()->getId()?>)</td>
                     </tr>
 
-                    <?php foreach(\CoreShop\Tool::getUser()->getCustomerGroups() as $group) { ?>
+                    <?php foreach(\CoreShop::getTools()->getUser()->getCustomerGroups() as $group) { ?>
                         <tr>
                             <td><?=$this->translate("coreshop_customer_group")?></td>
                             <td><?=$group->getName() ?> (<?=$group->getId()?>)</td>
@@ -54,11 +54,11 @@
                     </tr>
                     <tr>
                         <td><?=$this->translate("coreshop_retail_price")?></td>
-                        <td><?=\CoreShop\Tool::formatPrice($this->product->getRetailPriceWithTax())?> (<?=\CoreShop\Tool::formatPrice($this->product->getRetailPriceWithoutTax())?>)</td>
+                        <td><?=\CoreShop::getTools()->formatPrice($this->product->getRetailPriceWithTax())?> (<?=\CoreShop::getTools()->formatPrice($this->product->getRetailPriceWithoutTax())?>)</td>
                     </tr>
                     <tr>
                         <td><?=$this->translate("coreshop_price")?></td>
-                        <td><?=\CoreShop\Tool::formatPrice($this->product->getPrice(true))?> (<?=\CoreShop\Tool::formatPrice($this->product->getPrice(false))?>)</td>
+                        <td><?=\CoreShop::getTools()->formatPrice($this->product->getPrice(true))?> (<?=\CoreShop::getTools()->formatPrice($this->product->getPrice(false))?>)</td>
                     </tr>
                     <?php
                     $priceRules = $this->product->getValidSpecificPriceRules();
@@ -84,8 +84,8 @@
                                         ?>
                                         <tr>
                                             <td><?=$rule->getName()?></td>
-                                            <td><?=\CoreShop\Tool::formatPrice($rule->getPrice($this->product))?></td>
-                                            <td><?=\CoreShop\Tool::formatPrice($rule->getDiscount($specificPrice, $this->product))?></td>
+                                            <td><?=\CoreShop::getTools()->formatPrice($rule->getPrice($this->product))?></td>
+                                            <td><?=\CoreShop::getTools()->formatPrice($rule->getDiscount($specificPrice, $this->product))?></td>
                                         </tr>
                                         <?php
                                     }?>
@@ -103,15 +103,15 @@
                     <?php } ?>
                     <tr>
                         <td><?=$this->translate("coreshop_tax_rate")?></td>
-                        <td><?=\CoreShop\Tool::formatTax($this->product->getTaxRate()/100)?></td>
+                        <td><?=\CoreShop::getTools()->formatTax($this->product->getTaxRate()/100)?></td>
                     </tr>
 
                 <?php } ?>
 
-                <?php if(\CoreShop\Tool::prepareCart()->getId()) { ?>
+                <?php if(\CoreShop::getTools()->prepareCart()->getId()) { ?>
                     <tr>
                         <td><?=$this->translate("coreshop_cart")?></td>
-                        <td><?=\CoreShop\Tool::prepareCart()->getId()?></td>
+                        <td><?=\CoreShop::getTools()->prepareCart()->getId()?></td>
                     </tr>
                 <?php } ?>
             </table>

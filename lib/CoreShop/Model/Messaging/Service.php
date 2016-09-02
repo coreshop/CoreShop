@@ -19,7 +19,6 @@ use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use CoreShop\Model\Shop;
 use CoreShop\Model\User;
-use CoreShop\Tool;
 use Pimcore\Model\Document\Email;
 
 /**
@@ -74,8 +73,8 @@ class Service
             $thread->setShopId(Shop::getShop()->getId());
             $thread->setStatusId(Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
 
-            if (Tool::getUser() instanceof User) {
-                $thread->setUser(Tool::getUser());
+            if (\CoreShop::getTools()->getUser() instanceof User) {
+                $thread->setUser(\CoreShop::getTools()->getUser());
             }
 
             if ($params['orderNumber']) {

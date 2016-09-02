@@ -75,7 +75,7 @@ class CoreShop_Admin_OrderController extends Admin
             'paymentFee' => $order->getPaymentFee(),
             'totalTax' => $order->getTotalTax(),
             'total' => $order->getTotal(),
-            'currency' => $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop\Tool::getCurrency()),
+            'currency' => $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop::getTools()->getCurrency()),
             'shop' => $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getId() : null
         );
 
@@ -305,7 +305,7 @@ class CoreShop_Admin_OrderController extends Admin
         $jsonOrder['totalPayed'] = $order->getPayedTotal();
         $jsonOrder['details'] = $this->getDetails($order);
         $jsonOrder['summary'] = $this->getSummary($order);
-        $jsonOrder['currency'] = $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop\Tool::getCurrency());
+        $jsonOrder['currency'] = $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop::getTools()->getCurrency());
         $jsonOrder['shop'] = $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getObjectVars() : null;
 
         $jsonOrder['priceRule'] = false;

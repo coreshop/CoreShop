@@ -16,7 +16,6 @@ namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 
 use CoreShop\Model;
 use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Tool;
 
 /**
  * Class Postcodes
@@ -73,22 +72,23 @@ class Postcodes extends AbstractCondition
      * @param $deliveryPostcode
      * @return bool
      */
-    protected function checkPostCode($postcode, $deliveryPostcode) {
+    protected function checkPostCode($postcode, $deliveryPostcode)
+    {
         //Check if postcode has a range
         $deliveryPostcode = str_replace(' ', '', $deliveryPostcode);
         $postcodes = [$postcode];
 
-        if(strpos($postcode,'-') > 0) {
+        if (strpos($postcode, '-') > 0) {
             $splitted = explode('-', $postcode); //We should now have 2 elements
 
-            if(count($splitted) === 2) {
+            if (count($splitted) === 2) {
                 $from = $splitted[0];
                 $to = $splitted[1];
 
                 $fromText = preg_replace('/[0-9]+/', '', $from);
                 $toText = preg_replace('/[0-9]+/', '', $to);
 
-                if($fromText === $toText) {
+                if ($fromText === $toText) {
                     $fromNumber = preg_replace('/\D/', '', $from);
                     $toNumber = preg_replace('/\D/', '', $to);
 
@@ -103,7 +103,7 @@ class Postcodes extends AbstractCondition
             }
         }
 
-        foreach($postcodes as $postcode) {
+        foreach ($postcodes as $postcode) {
             $deliveryZip = substr($deliveryPostcode, 0, strlen($postcode));
 
             if (strtolower($deliveryZip) === strtolower($postcode)) {

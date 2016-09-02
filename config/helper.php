@@ -69,3 +69,71 @@ if (!function_exists("endsWith")) {
         return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
     }
 }
+
+if (!function_exists("objectToArray")) {
+    /**
+     * Re-usable helper method.
+     *
+     * @todo move to the library helpers
+     *
+     * @static
+     *
+     * @param $object
+     * @param null $fieldDefintions
+     *
+     * @return array
+     */
+    function _objectToArray($object, $fieldDefintions = null)
+    {
+        //if the given object is an array then loop through each element
+        if (is_array($object)) {
+            $collections = array();
+            foreach ($object as $o) {
+                $collections[] = $this->_objectToArray($o, $fieldDefintions);
+            }
+
+            return $collections;
+        }
+        if (!is_object($object)) {
+            return false;
+        }
+
+        //Custom list field definitions
+        if (null === $fieldDefintions) {
+            $fieldDefintions = $object->getClass()->getFieldDefinitions();
+        }
+
+        $collection = array();
+        foreach ($fieldDefintions as $fd) {
+            $fieldName = $fd->getName();
+            $getter = 'get'.ucfirst($fieldName);
+            $value = $object->$getter();
+
+            switch ($fd->getFieldtype()) {
+                case 'fieldcollections':
+                    if (($value instanceof \Pimcore\Model\Object\Fieldcollection) && is_array($value->getItems())) {
+                        /* @var $value \Pimcore\Model\Object\Fieldcollection */
+                        $def = $value->getItemDefinitions();
+                        if (method_exists($def['children'], 'getFieldDefinitions')) {
+                            $collection[$fieldName] = $this->_objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
+                        }
+                    }
+                    break;
+
+                case 'date':
+                    /* @var $value \Pimcore\Date */
+                    $collection[$fieldName] = ($value instanceof \Pimcore\Date) ? $value->getTimestamp() : 0;
+                    break;
+                default:
+                    /* @var $value string */
+                    $collection[$fieldName] = $value;
+            }
+        }
+
+        //Parent class properties
+        $collection['id'] = $object->o_id;
+        $collection['key'] = $object->o_key;
+
+        return $collection;
+    }
+}

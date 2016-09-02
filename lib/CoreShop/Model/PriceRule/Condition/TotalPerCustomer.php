@@ -19,7 +19,6 @@ use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\User;
 use CoreShop\Model\Product as ProductModel;
-use CoreShop\Tool;
 
 /**
  * Class TotalPerCustomer
@@ -66,7 +65,7 @@ class TotalPerCustomer extends AbstractCondition
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        $user = Tool::getUser();
+        $user = \CoreShop::getTools()->getUser();
 
         //Check Total For Customer
         if ($user instanceof User) {

@@ -18,7 +18,6 @@ use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model;
-use CoreShop\Tool;
 
 /**
  * Class Amount
@@ -110,7 +109,7 @@ class Amount extends AbstractCondition
         //Check Cart Amount
         if ($this->getMinAmount() > 0) {
             $minAmount = $this->getMinAmount();
-            $minAmount = Tool::convertToCurrency($minAmount, Model\Currency::getById($this->getCurrency()), Tool::getCurrency());
+            $minAmount = \CoreShop::getTools()->convertToCurrency($minAmount, Model\Currency::getById($this->getCurrency()), \CoreShop::getTools()->getCurrency());
 
             $cartTotal = $cart->getSubtotal();
 

@@ -15,7 +15,6 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
-use CoreShop\Tool;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Listing\AbstractListing;
 use Pimcore\Model\Object\ClassDefinition;
@@ -92,7 +91,7 @@ class Base extends Concrete
      */
     public function toArray()
     {
-        return Tool::objectToArray($this);
+        return \CoreShop::getTools()->objectToArray($this);
     }
 
     /**

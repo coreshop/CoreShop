@@ -16,7 +16,6 @@ namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
-use CoreShop\Tool;
 
 /**
  * Class Gift
@@ -97,7 +96,7 @@ class Gift extends AbstractAction
      */
     public function getDiscountCart(Cart $cart)
     {
-        $discount = Tool::convertToCurrency($this->getGift()->getPrice(), Tool::getCurrency());
+        $discount = \CoreShop::getTools()->convertToCurrency($this->getGift()->getPrice(), \CoreShop::getTools()->getCurrency());
 
         return $discount;
     }

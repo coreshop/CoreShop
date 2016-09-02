@@ -19,7 +19,6 @@ use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\Country as CountryModel;
-use CoreShop\Tool;
 
 /**
  * Class Countries
@@ -91,9 +90,9 @@ class Countries extends AbstractCondition
     {
         $found = false;
 
-        if(is_array($this->getCountries())) {
+        if (is_array($this->getCountries())) {
             foreach ($this->getCountries() as $countryId) {
-                if (intval($countryId) === intval(Tool::getCountry()->getId())) {
+                if (intval($countryId) === intval(\CoreShop::getTools()->getCountry()->getId())) {
                     $found = true;
                     break;
                 }

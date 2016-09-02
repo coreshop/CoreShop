@@ -18,7 +18,6 @@ use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model;
-use CoreShop\Tool;
 
 /**
  * Class Quantity
@@ -127,7 +126,7 @@ class Quantity extends AbstractCondition
     public function checkConditionProduct(Model\Product $product, Model\Product\AbstractProductPriceRule $priceRule)
     {
         //Check for Quantity in Cart
-        $cart = Tool::prepareCart();
+        $cart = \CoreShop::getTools()->prepareCart();
 
         if ($cart instanceof Cart) {
             foreach ($cart->getItems() as $item) {

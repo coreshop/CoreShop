@@ -49,7 +49,7 @@ class Invoice
 
         self::initTranslation();
 
-        \CoreShop\Tool::initTemplateForShop($order->getShop());
+        \CoreShop::getTools()->initTemplateForShop($order->getShop());
 
         $view = new View();
         $view->addScriptPath(array_merge(
@@ -124,7 +124,7 @@ class Invoice
         if (!$translate) {
             // setup \Zend_Translate
             try {
-                $locale = \CoreShop\Tool::getLocale();
+                $locale = \CoreShop::getTools()->getLocale();
 
                 $translate = new \Pimcore\Translate\Website($locale);
 

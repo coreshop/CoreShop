@@ -198,8 +198,9 @@ abstract class AbstractWorker
      */
     public function getColumnsConfiguration()
     {
-        if($this->index->getConfig() instanceof Index\Config)
+        if ($this->index->getConfig() instanceof Index\Config) {
             return $this->index->getConfig()->getColumns();
+        }
 
         return [];
     }

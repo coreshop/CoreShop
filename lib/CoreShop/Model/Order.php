@@ -21,7 +21,6 @@ use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
-use CoreShop\Tool;
 use Pimcore\Cache;
 use Pimcore\Date;
 use Pimcore\Model\Asset\Document;
@@ -154,8 +153,8 @@ class Order extends Base
             $item->setAmount($cartItem->getAmount());
             $item->setExtraInformation($cartItem->getExtraInformation());
             $item->setIsGiftItem($cartItem->getIsGiftItem());
-            $item->setTotal(Tool::roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getPrice()));
-            $item->setTotalTax(Tool::roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getTaxAmount()));
+            $item->setTotal(\CoreShop::getTools()->roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getPrice()));
+            $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getTaxAmount()));
 
             $productTaxes = $cartItem->getProduct()->getTaxCalculator();
 
@@ -169,7 +168,7 @@ class Order extends Base
 
                     $itemTax->setName($tax->getName());
                     $itemTax->setRate($tax->getRate());
-                    $itemTax->setAmount(Tool::roundPrice($itemTaxAmounts[$tax->getId()]));
+                    $itemTax->setAmount(\CoreShop::getTools()->roundPrice($itemTaxAmounts[$tax->getId()]));
 
                     $itemTaxes->add($itemTax);
                 }
@@ -195,7 +194,7 @@ class Order extends Base
             $tax = Order\Tax::create();
             $tax->setName($taxObject->getName());
             $tax->setRate($taxObject->getRate());
-            $tax->setAmount(Tool::roundPrice($taxAmount));
+            $tax->setAmount(\CoreShop::getTools()->roundPrice($taxAmount));
 
             $taxes->add($tax);
         }
@@ -271,7 +270,7 @@ class Order extends Base
             }
         }
 
-        $translate = Tool::getTranslate();
+        $translate = \CoreShop::getTools()->getTranslate();
         $note = $item->createNote('coreshop-updateOrderItem');
         $note->setTitle($translate->translate('coreshop_note_updateOrderItem'));
         $note->setDescription($translate->translate('coreshop_note_updateOrderItem_description'));
@@ -351,7 +350,7 @@ class Order extends Base
         $this->save();
 
 
-        $translate = Tool::getTranslate();
+        $translate = \CoreShop::getTools()->getTranslate();
 
         $note = $this->createNote("coreshop-updateOrderSummary");
         $note->setTitle($translate->translate('coreshop_note_updateOrderSummary'));
@@ -389,13 +388,13 @@ class Order extends Base
 
         $this->addPayment($payment);
 
-        $translate = Tool::getTranslate();
+        $translate = \CoreShop::getTools()->getTranslate();
 
         $note = $this->createNote('coreshop-order-payment');
-        $note->setTitle(sprintf($translate->translate('coreshop_note_order_payment'), $provider->getName(), Tool::formatPrice($amount)));
-        $note->setDescription(sprintf($translate->translate('coreshop_note_order_payment_description'), $provider->getName(), Tool::formatPrice(($amount))));
+        $note->setTitle(sprintf($translate->translate('coreshop_note_order_payment'), $provider->getName(), \CoreShop::getTools()->formatPrice($amount)));
+        $note->setDescription(sprintf($translate->translate('coreshop_note_order_payment_description'), $provider->getName(), \CoreShop::getTools()->formatPrice(($amount))));
         $note->addData('provider', 'text', $provider->getName());
-        $note->addData('amount', 'text', Tool::formatPrice($amount));
+        $note->addData('amount', 'text', \CoreShop::getTools()->formatPrice($amount));
         $note->save();
 
         return $payment;

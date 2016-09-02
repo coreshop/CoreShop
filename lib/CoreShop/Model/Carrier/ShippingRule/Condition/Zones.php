@@ -16,7 +16,6 @@ namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 
 use CoreShop\Model;
 use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Tool;
 
 /**
  * Class Zones
@@ -46,11 +45,13 @@ class Zones extends AbstractCondition
      */
     public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
     {
-        foreach ($this->getZones() as $zone) {
-            $zone = Model\Zone::getById($zone);
-            if ($zone instanceof Model\Zone) {
-                if (Tool::getDeliveryAddress()->getCountry()->getZone()->getId() === $zone->getId()) {
-                    return true;
+        if ($address->getCountry() instanceof Model\Country && $address->getCountry()->getZone() instanceof Model\Zone) {
+            foreach ($this->getZones() as $zone) {
+                $zone = Model\Zone::getById($zone);
+                if ($zone instanceof Model\Zone) {
+                    if ($address->getCountry()->getZone()->getId() === $zone->getId()) {
+                        return true;
+                    }
                 }
             }
         }

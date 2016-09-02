@@ -71,7 +71,7 @@ class CoreShop_CheckoutController extends Action
     {
         $this->checkIsAllowed();
 
-        $user = \CoreShop\Tool::getUser();
+        $user = \CoreShop::getTools()->getUser();
 
         if ($this->getRequest()->isPost()) {
             $shippingAddress = $this->getParam('shipping-address');
@@ -207,7 +207,7 @@ class CoreShop_CheckoutController extends Action
         unset($this->session->cartId);
 
         if (CoreShop\Tool::getUser()->getIsGuest()) {
-            \CoreShop\Tool::unsetUser();
+            \CoreShop::getTools()->unsetUser();
         }
 
         \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckoutComplete($order);
@@ -220,7 +220,7 @@ class CoreShop_CheckoutController extends Action
 
     protected function checkIsAllowed()
     {
-        if (!\CoreShop\Tool::getUser() instanceof \CoreShop\Model\User) {
+        if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
             $this->_redirect($this->view->url(array('act' => 'index'), 'coreshop_checkout'));
             exit;
         }

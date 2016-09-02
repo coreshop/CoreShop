@@ -16,7 +16,6 @@ namespace CoreShop\Model;
 
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Cart\PriceRule;
-use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Model\Product\AbstractProductPriceRule;
 use CoreShop\Model\Product\SpecificPrice;
@@ -25,7 +24,6 @@ use Pimcore\Cache;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
-use CoreShop\Tool;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Tool\Service;
 
@@ -162,7 +160,7 @@ class Product extends Base
      */
     public static function getPriceCacheTag($product)
     {
-        return 'coreshop_product_'.$product->getId().'_price_' . $product->getTaxRate() . '' . Tool::getFingerprint();
+        return 'coreshop_product_'.$product->getId().'_price_' . $product->getTaxRate() . '' . \CoreShop::getTools()->getFingerprint();
     }
 
     /**
@@ -290,7 +288,7 @@ class Product extends Base
      */
     public function getValidSpecificPriceRules()
     {
-        if(is_null($this->validPriceRules) || self::$unitTests) {
+        if (is_null($this->validPriceRules) || self::$unitTests) {
             $specificPrices = $this->getSpecificPrices();
             $rules = [];
 
@@ -358,13 +356,13 @@ class Product extends Base
         $discount = 0;
 
         foreach ($specificPrices as $specificPrice) {
-            if($specificPrice instanceof AbstractProductPriceRule) {
+            if ($specificPrice instanceof AbstractProductPriceRule) {
                 $discount += $specificPrice->getDiscount($price, $this);
             }
         }
 
         //TODO: With this, we can apply post-tax discounts, but this needs to be more tested
-        /*if(Tool::getPricesAreGross()) {
+        /*if(\CoreShop::getTools()->getPricesAreGross()) {
             $taxCalculator = $this->getTaxCalculator();
 
             if($taxCalculator) {
@@ -399,13 +397,13 @@ class Product extends Base
         $calculator = $this->getTaxCalculator();
 
         if ($withTax) {
-            if (!Tool::getPricesAreGross()) {
+            if (!\CoreShop::getTools()->getPricesAreGross()) {
                 if ($calculator) {
                     $price = $calculator->addTaxes($price);
                 }
             }
         } else {
-            if (Tool::getPricesAreGross()) {
+            if (\CoreShop::getTools()->getPricesAreGross()) {
                 if ($calculator) {
                     $price = $calculator->removeTaxes($price);
                 }
@@ -420,12 +418,13 @@ class Product extends Base
      *
      * @return float
      */
-    public function getRetailPriceWithTax() {
+    public function getRetailPriceWithTax()
+    {
         $price = $this->getRetailPrice();
 
         $calculator = $this->getTaxCalculator();
 
-        if (!Tool::getPricesAreGross()) {
+        if (!\CoreShop::getTools()->getPricesAreGross()) {
             if ($calculator) {
                 $price = $calculator->addTaxes($price);
             }
@@ -439,12 +438,13 @@ class Product extends Base
      *
      * @return float
      */
-    public function getRetailPriceWithoutTax() {
+    public function getRetailPriceWithoutTax()
+    {
         $price = $this->getRetailPrice();
 
         $calculator = $this->getTaxCalculator();
 
-        if (Tool::getPricesAreGross()) {
+        if (\CoreShop::getTools()->getPricesAreGross()) {
             if ($calculator) {
                 $price = $calculator->removeTaxes($price);
             }
@@ -477,7 +477,7 @@ class Product extends Base
             }
         }
 
-        return Tool::convertToCurrency($netPrice);
+        return \CoreShop::getTools()->convertToCurrency($netPrice);
     }
 
     /**
@@ -560,13 +560,13 @@ class Product extends Base
     public function getTaxCalculator(Address $address = null)
     {
         if (is_null($address)) {
-            $cart = Tool::prepareCart();
+            $cart = \CoreShop::getTools()->prepareCart();
 
             $address = $cart->getCustomerAddressForTaxation();
 
             if (!$address instanceof Address) {
                 $address = Address::create();
-                $address->setCountry(Tool::getCountry());
+                $address->setCountry(\CoreShop::getTools()->getCountry());
             }
         }
 

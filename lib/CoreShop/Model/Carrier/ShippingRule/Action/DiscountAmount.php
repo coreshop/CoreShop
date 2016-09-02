@@ -16,7 +16,6 @@ namespace CoreShop\Model\Carrier\ShippingRule\Action;
 
 use CoreShop\Model\Cart;
 use CoreShop\Model;
-use CoreShop\Tool;
 
 /**
  * Class DiscountAmount
@@ -51,7 +50,7 @@ class DiscountAmount extends AbstractAction
      */
     public function getPriceModification(Model\Carrier $carrier, Cart $cart, Model\User\Address $address, $price)
     {
-        return Tool::convertToCurrency(-1 * $this->getAmount(), Tool::getCurrency(), Model\Currency::getById($this->getCurrency()));
+        return \CoreShop::getTools()->convertToCurrency(-1 * $this->getAmount(), \CoreShop::getTools()->getCurrency(), Model\Currency::getById($this->getCurrency()));
     }
 
     /**

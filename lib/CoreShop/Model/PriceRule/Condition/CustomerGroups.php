@@ -19,7 +19,6 @@ use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\User;
-use CoreShop\Tool;
 
 /**
  * Class CustomerGroups
@@ -66,7 +65,7 @@ class CustomerGroups extends AbstractCondition
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        $customer = $cart->getUser() ? $cart->getUser() : Tool::getUser();
+        $customer = $cart->getUser() ? $cart->getUser() : \CoreShop::getTools()->getUser();
 
         return $this->check($customer);
     }
@@ -81,7 +80,7 @@ class CustomerGroups extends AbstractCondition
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
-        return $this->check(Tool::getUser());
+        return $this->check(\CoreShop::getTools()->getUser());
     }
 
     /**
@@ -101,8 +100,8 @@ class CustomerGroups extends AbstractCondition
             }
         }
 
-        foreach($customer->getCustomerGroups() as $group) {
-            if(in_array($group->getId(), $this->getCustomerGroups())) {
+        foreach ($customer->getCustomerGroups() as $group) {
+            if (in_array($group->getId(), $this->getCustomerGroups())) {
                 return true;
             }
         }

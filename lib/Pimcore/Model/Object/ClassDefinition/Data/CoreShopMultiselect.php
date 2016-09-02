@@ -31,7 +31,7 @@ class CoreShopMultiselect extends Model\Object\ClassDefinition\Data\Multiselect
     {
         $data = $object->{$this->getName()};
 
-        if(is_null($data)) {
+        if (is_null($data)) {
             $data = [];
         }
 

@@ -15,11 +15,9 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
-use CoreShop\Model\Carrier\Dao;
 use CoreShop\Model\Carrier\ShippingRule;
 use CoreShop\Model\Carrier\ShippingRuleGroup;
 use CoreShop\Model\User\Address;
-use CoreShop\Tool;
 use Pimcore\Cache;
 use Pimcore\Db;
 use Pimcore\Model\Asset;
@@ -227,10 +225,10 @@ class Carrier extends AbstractModel
     public static function getCarriersForCart(Cart $cart = null, Address $address = null)
     {
         if (is_null($cart)) {
-            $cart = Tool::prepareCart();
+            $cart = \CoreShop::getTools()->prepareCart();
         }
         if (is_null($address)) {
-            $address = Tool::getDeliveryAddress();
+            $address = \CoreShop::getTools()->getDeliveryAddress();
         }
 
         $carriers = self::getAll();
@@ -399,11 +397,11 @@ class Carrier extends AbstractModel
     public function getMaxDeliveryPrice(Cart $cart = null, Address $address = null)
     {
         if (is_null($cart)) {
-            $cart = Tool::prepareCart();
+            $cart = \CoreShop::getTools()->prepareCart();
         }
 
         if (is_null($address)) {
-            $address = Tool::getDeliveryAddress();
+            $address = \CoreShop::getTools()->getDeliveryAddress();
         }
 
         $rules = $this->getShippingRules();
@@ -440,7 +438,7 @@ class Carrier extends AbstractModel
         $price = false;
         
         if (is_null($address)) {
-            $address = Tool::getDeliveryAddress();
+            $address = \CoreShop::getTools()->getDeliveryAddress();
         }
 
         if ($cart->isFreeShipping()) {
@@ -472,13 +470,13 @@ class Carrier extends AbstractModel
             $calculator = $this->getTaxCalculator($cart->getCustomerAddressForTaxation() ? $cart->getCustomerAddressForTaxation() : null);
             
             if ($withTax) {
-                if (!Tool::getPricesAreGross()) {
+                if (!\CoreShop::getTools()->getPricesAreGross()) {
                     if ($calculator) {
                         $price = $calculator->addTaxes($price);
                     }
                 }
             } else {
-                if (Tool::getPricesAreGross()) {
+                if (\CoreShop::getTools()->getPricesAreGross()) {
                     if ($calculator) {
                         $price = $calculator->removeTaxes($price);
                     }
@@ -537,7 +535,7 @@ class Carrier extends AbstractModel
     public function getTaxCalculator(Address $address = null)
     {
         if (is_null($address)) {
-            $address = Tool::getDeliveryAddress();
+            $address = \CoreShop::getTools()->getDeliveryAddress();
         }
 
         $taxRule = $this->getTaxRuleGroup();

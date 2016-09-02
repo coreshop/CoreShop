@@ -17,7 +17,6 @@ namespace CoreShop\Model\Currency;
 use CoreShop\Exception;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Currency;
-use CoreShop\Tool;
 use Ivory\HttpAdapter\FileGetContentsHttpAdapter;
 use Swap\Model\CurrencyPair;
 use Swap\Provider\AbstractProvider;
@@ -46,8 +45,9 @@ class ExchangeRates
     /**
      * @return ExchangeRates
      */
-    public static function getInstance() {
-        if(\Pimcore::getDiContainer()->has('CoreShop\Model\Currency\ExchangeRates')) {
+    public static function getInstance()
+    {
+        if (\Pimcore::getDiContainer()->has('CoreShop\Model\Currency\ExchangeRates')) {
             return \Pimcore::getDiContainer()->get('CoreShop\Model\Currency\ExchangeRates');
         }
 
@@ -106,7 +106,7 @@ class ExchangeRates
      */
     public function updateExchangeRateForCurrency($provider, Currency $toCurrency)
     {
-        $baseCurrency = Tool::getBaseCurrency();
+        $baseCurrency = \CoreShop::getTools()->getBaseCurrency();
 
         $rate = $this->getExchangeRateForCurrencyPair($provider, $baseCurrency, $toCurrency);
 
@@ -127,7 +127,8 @@ class ExchangeRates
      *
      * @returns float
      */
-    public function getExchangeRateForCurrencyPair($provider, Currency $fromCurrency, Currency $toCurrency) {
+    public function getExchangeRateForCurrencyPair($provider, Currency $fromCurrency, Currency $toCurrency)
+    {
         $provider = $this->getProvider($provider);
 
         $swap = new Swap($provider);

@@ -20,7 +20,6 @@ use CoreShop\Model\Carrier\ShippingRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\User;
-use CoreShop\Tool;
 
 /**
  * Class CustomerGroups
@@ -66,7 +65,7 @@ class CustomerGroups extends AbstractCondition
      */
     public function checkCondition(Carrier $carrier, Cart $cart, User\Address $address, ShippingRule $shippingRule)
     {
-        return $this->check(Tool::getUser());
+        return $this->check(\CoreShop::getTools()->getUser());
     }
 
     /**
@@ -81,8 +80,8 @@ class CustomerGroups extends AbstractCondition
             return false;
         }
 
-        foreach($customer->getCustomerGroups() as $group) {
-            if(in_array($group->getId(), $this->getCustomerGroups())) {
+        foreach ($customer->getCustomerGroups() as $group) {
+            if (in_array($group->getId(), $this->getCustomerGroups())) {
                 return true;
             }
         }

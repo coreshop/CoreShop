@@ -92,7 +92,7 @@ class SpecificPrice extends AbstractProductPriceRule
 
         $object = AbstractObject::getById($this->getO_Id());
 
-        if($object instanceof Product) {
+        if ($object instanceof Product) {
             $object->clearPriceCache();
         }
     }

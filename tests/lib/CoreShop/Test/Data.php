@@ -88,7 +88,7 @@ class Data
     {
         Configuration::set("SYSTEM.BASE.COUNTRY", Country::getById(2)->getId());
 
-        $session = \CoreShop\Tool::getSession();
+        $session = \CoreShop::getTools()->getSession();
         $session->countryId = Country::getById(2)->getId();
 
         $session->stateId = State::getById(23)->getId();

@@ -23,7 +23,6 @@ use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\PriceRule\Action\FreeShipping;
 use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Date;
 use Pimcore\Model\Document;
@@ -110,7 +109,7 @@ class Cart extends Base
     public static function prepare($persist = false)
     {
         $createNew = true;
-        $cartSession = Tool::getSession();
+        $cartSession = \CoreShop::getTools()->getSession();
         $cart = null;
 
         if ($cartSession->cartObj) {
@@ -128,8 +127,8 @@ class Cart extends Base
         }
 
         if ($cart instanceof Cart) {
-            if (Tool::getUser() instanceof User) {
-                $cart->setUser(Tool::getUser());
+            if (\CoreShop::getTools()->getUser() instanceof User) {
+                $cart->setUser(\CoreShop::getTools()->getUser());
             }
 
             if ($persist) {
@@ -333,7 +332,7 @@ class Cart extends Base
         $freeShippingWeight = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_WEIGHT'));
 
         if (isset($freeShippingCurrency) && $freeShippingCurrency > 0) {
-            $freeShippingCurrency = Tool::convertToCurrency($freeShippingCurrency, Tool::getCurrency());
+            $freeShippingCurrency = \CoreShop::getTools()->convertToCurrency($freeShippingCurrency, \CoreShop::getTools()->getCurrency());
 
             if ($this->getSubtotal() >= $freeShippingCurrency) {
                 return 0;
@@ -842,7 +841,7 @@ class Cart extends Base
 
         if (is_null($language)) {
             if (\Zend_Registry::isRegistered("Zend_Locale")) {
-                $language = Tool::getLocale();
+                $language = \CoreShop::getTools()->getLocale();
             } else {
                 throw new Exception("language not found in registry and not set as param");
             }
@@ -864,7 +863,7 @@ class Cart extends Base
         $order->setPaymentProvider($paymentModule->getName());
         $order->setPaymentProviderDescription($paymentModule->getDescription());
         $order->setOrderDate(new Date());
-        $order->setCurrency(Tool::getCurrency());
+        $order->setCurrency(\CoreShop::getTools()->getCurrency());
         $order->setShop($this->getShop());
 
         if ($this->getCarrier() instanceof Carrier) {

@@ -17,7 +17,6 @@ namespace CoreShop\Console\Command;
 use CoreShop\Exception;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Currency\ExchangeRates;
-use CoreShop\Tool;
 use Pimcore\Console\AbstractCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -64,7 +63,7 @@ class UpdateExchangeRatesCommand extends AbstractCommand
         $provider = $input->getOption('provider');
         $currencyId = $input->getOption('currency');
         $currency = null;
-        $baseCurrency = Tool::getBaseCurrency();
+        $baseCurrency = \CoreShop::getTools()->getBaseCurrency();
         $exchangeRates = ExchangeRates::getInstance();
 
         if (!$provider) {

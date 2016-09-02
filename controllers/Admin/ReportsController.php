@@ -12,7 +12,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Tool;
 use CoreShop\Model;
 use CoreShop\Controller\Action\Admin;
 use CoreShop\Helper\ReportQuery;
@@ -54,9 +53,9 @@ class CoreShop_Admin_ReportsController extends Admin
         }
 
         foreach ($productSales as &$sale) {
-            $sale['salesPrice'] = Tool::formatPrice($sale['salesPrice']);
-            $sale['sales'] = Tool::formatPrice($sale['sales']);
-            $sale['profit'] = Tool::formatPrice($sale['profit']);
+            $sale['salesPrice'] = \CoreShop::getTools()->formatPrice($sale['salesPrice']);
+            $sale['sales'] = \CoreShop::getTools()->formatPrice($sale['sales']);
+            $sale['profit'] = \CoreShop::getTools()->formatPrice($sale['profit']);
         }
 
         usort($productSales, function ($item1, $item2) {
@@ -106,8 +105,8 @@ class CoreShop_Admin_ReportsController extends Admin
         }
 
         foreach ($catSales as &$sale) {
-            $sale['sales'] = Tool::formatPrice($sale['sales']);
-            $sale['profit'] = Tool::formatPrice($sale['profit']);
+            $sale['sales'] = \CoreShop::getTools()->formatPrice($sale['sales']);
+            $sale['profit'] = \CoreShop::getTools()->formatPrice($sale['profit']);
         }
 
         usort($catSales, function ($item1, $item2) {
@@ -149,7 +148,7 @@ class CoreShop_Admin_ReportsController extends Admin
         }
 
         foreach ($custSales as &$sale) {
-            $sale['sales'] = Tool::formatPrice($sale['sales']);
+            $sale['sales'] = \CoreShop::getTools()->formatPrice($sale['sales']);
         }
 
         usort($custSales, function ($item1, $item2) {
@@ -177,8 +176,8 @@ class CoreShop_Admin_ReportsController extends Admin
             $result[] = array(
                 'name' => $product->getName(),
                 'quantity' => intval($product->getQuantity()),
-                'price' => Tool::formatPrice($product->getPrice()),
-                'totalPrice' => Tool::formatPrice($product->getPrice() * intval($product->getQuantity())),
+                'price' => \CoreShop::getTools()->formatPrice($product->getPrice()),
+                'totalPrice' => \CoreShop::getTools()->formatPrice($product->getPrice() * intval($product->getQuantity())),
             );
         }
 
@@ -258,7 +257,7 @@ class CoreShop_Admin_ReportsController extends Admin
                 'timestamp' => $start,
                 'datetext' => $date->get(\Zend_Date::DATE_LONG),
                 'sales' => $total,
-                'salesFormatted' => Tool::formatPrice($total),
+                'salesFormatted' => \CoreShop::getTools()->formatPrice($total),
             );
         }
 

@@ -44,7 +44,7 @@ class Mail extends PimcoreMail
         $shop = Shop::getById($shopId);
 
         //init Template
-        Tool::initTemplateForShop($shop);
+        \CoreShop::getTools()->initTemplateForShop($shop);
 
         $mail = new self();
         $mail->setDocument($emailDocument);
@@ -68,10 +68,10 @@ class Mail extends PimcoreMail
     {
         if ($emailDocument instanceof Document\Email) {
             //init Template
-            Tool::initTemplateForShop($order->getShop());
+            \CoreShop::getTools()->initTemplateForShop($order->getShop());
 
             $emailParameters = array_merge($order->getObjectVars(), $orderState instanceof Order\State ? $orderState->getObjectVars() : [], $order->getCustomer()->getObjectVars());
-            $emailParameters['orderTotal'] = Tool::formatPrice($order->getTotal());
+            $emailParameters['orderTotal'] = \CoreShop::getTools()->formatPrice($order->getTotal());
             $emailParameters['order'] = $order;
 
             unset($emailParameters['____pimcore_cache_item__']);

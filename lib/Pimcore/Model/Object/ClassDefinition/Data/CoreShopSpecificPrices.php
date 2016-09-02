@@ -48,7 +48,7 @@ class CoreShopSpecificPrices extends Data
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        if($object instanceof Product) {
+        if ($object instanceof Product) {
             $prices = SpecificPrice::getSpecificPrices($object);
 
             return $prices;
@@ -68,8 +68,8 @@ class CoreShopSpecificPrices extends Data
     {
         $prices = [];
 
-        if($data) {
-            foreach($data as $dataRow) {
+        if ($data) {
+            foreach ($data as $dataRow) {
                 $conditions = $dataRow['conditions'];
                 $actions = $dataRow['actions'];
                 $actionInstances = array();
@@ -106,11 +106,11 @@ class CoreShopSpecificPrices extends Data
 
                 $specificPrice = null;
 
-                if($dataRow['id']) {
+                if ($dataRow['id']) {
                     $specificPrice = SpecificPrice::getById($dataRow['id']);
                 }
 
-                if(!$specificPrice instanceof SpecificPrice) {
+                if (!$specificPrice instanceof SpecificPrice) {
                     $specificPrice = new SpecificPrice();
                 }
 
@@ -129,8 +129,9 @@ class CoreShopSpecificPrices extends Data
      * @param Concrete $object
      * @param array $params
      */
-    public function save($object, $params = []) {
-        if($object) {
+    public function save($object, $params = [])
+    {
+        if ($object) {
             $getter = "get" . ucfirst($this->getName());
 
             $all = $this->load($object, $params);
@@ -138,7 +139,7 @@ class CoreShopSpecificPrices extends Data
             $founds = [];
             $prices = $object->$getter();
 
-            if(is_array($prices)) {
+            if (is_array($prices)) {
                 foreach ($prices as $price) {
                     if ($price instanceof SpecificPrice) {
                         $price->setO_Id($object->getId());
@@ -149,8 +150,8 @@ class CoreShopSpecificPrices extends Data
                 }
             }
 
-            foreach($all as $price) {
-                if(!in_array($price->getId(), $founds)) {
+            foreach ($all as $price) {
+                if (!in_array($price->getId(), $founds)) {
                     $price->delete();
                 }
             }
@@ -172,7 +173,8 @@ class CoreShopSpecificPrices extends Data
      * @param mixed $data
      * @return mixed
     */
-    public function getDataForQueryResource($data) {
+    public function getDataForQueryResource($data)
+    {
         return "not_supported";
     }
 

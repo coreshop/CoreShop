@@ -16,7 +16,6 @@ namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 
 use CoreShop\Model;
 use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Tool;
 
 /**
  * Class Currencies
@@ -47,7 +46,7 @@ class Currencies extends AbstractCondition
     public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
     {
         foreach ($this->getCurrencies() as $currency) {
-            if (Tool::getCurrency()->getId() === $currency) {
+            if (\CoreShop::getTools()->getCurrency()->getId() === $currency) {
                 return true;
             }
         }

@@ -19,7 +19,6 @@ use CoreShop\Model\Carrier;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
-use CoreShop\Tool;
 
 /**
  * Class Carriers
@@ -79,7 +78,7 @@ class Carriers extends AbstractCondition
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
-        return $this->check(Tool::prepareCart());
+        return $this->check(\CoreShop::getTools()->prepareCart());
     }
 
     /**

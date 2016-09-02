@@ -17,7 +17,6 @@ namespace CoreShop\Model\PriceRule\Action;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Product;
-use CoreShop\Tool;
 
 /**
  * Class DiscountAmount
@@ -105,7 +104,7 @@ class DiscountAmount extends AbstractAction
      */
     public function getDiscountCart(Cart $cart)
     {
-        return Tool::convertToCurrency($this->getAmount(), Tool::getCurrency(), Currency::getById($this->getCurrency()));
+        return \CoreShop::getTools()->convertToCurrency($this->getAmount(), \CoreShop::getTools()->getCurrency(), Currency::getById($this->getCurrency()));
     }
 
     /**
@@ -118,6 +117,6 @@ class DiscountAmount extends AbstractAction
      */
     public function getDiscountProduct($basePrice, Product $product)
     {
-        return Tool::convertToCurrency($this->getAmount(), Tool::getCurrency(), Currency::getById($this->getCurrency()));
+        return \CoreShop::getTools()->convertToCurrency($this->getAmount(), \CoreShop::getTools()->getCurrency(), Currency::getById($this->getCurrency()));
     }
 }

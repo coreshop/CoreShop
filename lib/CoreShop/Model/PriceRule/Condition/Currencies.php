@@ -19,7 +19,6 @@ use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\Country as CountryModel;
-use CoreShop\Tool;
 
 /**
  * Class Currencies
@@ -89,9 +88,9 @@ class Currencies extends AbstractCondition
      */
     protected function check($throwException = false)
     {
-        $currentCurrency = Tool::getCurrency();
+        $currentCurrency = \CoreShop::getTools()->getCurrency();
 
-        if(in_array($currentCurrency->getId(), $this->getCurrencies())) {
+        if (in_array($currentCurrency->getId(), $this->getCurrencies())) {
             return true;
         }
 

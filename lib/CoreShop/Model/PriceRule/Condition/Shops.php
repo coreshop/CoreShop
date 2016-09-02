@@ -20,7 +20,6 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Shop as ShopModel;
 use CoreShop\Model\Product as ProductModel;
-use CoreShop\Tool;
 
 /**
  * Class Shops

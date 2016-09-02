@@ -19,7 +19,6 @@ use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\Zone as ZoneModel;
-use CoreShop\Tool;
 
 /**
  * Class Zones
@@ -92,7 +91,7 @@ class Zones extends AbstractCondition
         $found = false;
 
         foreach ($this->getZones() as $zoneId) {
-            if (intval($zoneId) !== intval(Tool::getCountry()->getZoneId())) {
+            if (intval($zoneId) !== intval(\CoreShop::getTools()->getCountry()->getZoneId())) {
                 $found = true;
                 break;
             }

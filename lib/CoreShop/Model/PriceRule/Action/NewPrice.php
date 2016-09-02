@@ -17,7 +17,6 @@ namespace CoreShop\Model\PriceRule\Action;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Product;
-use CoreShop\Tool;
 
 /**
  * Class NewPrice
@@ -98,7 +97,7 @@ class NewPrice extends AbstractAction
      */
     public function getPrice(Product $product)
     {
-        return Tool::convertToCurrency($this->getNewPrice(), Tool::getCurrency(), Currency::getById($this->getCurrency()));
+        return \CoreShop::getTools()->convertToCurrency($this->getNewPrice(), \CoreShop::getTools()->getCurrency(), Currency::getById($this->getCurrency()));
     }
 
     /**

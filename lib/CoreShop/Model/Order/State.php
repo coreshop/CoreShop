@@ -18,7 +18,6 @@ use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Mail;
 use Pimcore\Model\Document;
 
@@ -116,7 +115,7 @@ class State extends AbstractModel
         $order->setOrderState($this);
         $order->save();
 
-        $translate = Tool::getTranslate();
+        $translate = \CoreShop::getTools()->getTranslate();
         $note = $order->createNote('coreshop-orderstate');
         $note->setTitle(sprintf($translate->translate('coreshop_note_orderstate_change'), $this->getName()));
         $note->setDescription(sprintf($translate->translate('coreshop_note_orderstate_change_description'), $this->getName()));

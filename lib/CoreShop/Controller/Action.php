@@ -18,7 +18,6 @@ use CoreShop\Exception;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Shop;
 use CoreShop\Plugin;
-use CoreShop\Tool;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Tool\Session;
 
@@ -71,9 +70,9 @@ class Action extends \Website\Controller\Action
 
         $this->view->addHelperPath(CORESHOP_PATH.'/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
 
-        $this->session = $this->view->session = Tool::getSession();
+        $this->session = $this->view->session = \CoreShop::getTools()->getSession();
 
-        $this->view->country = Tool::getCountry();
+        $this->view->country = \CoreShop::getTools()->getCountry();
 
         $this->prepareCart();
 
@@ -91,7 +90,7 @@ class Action extends \Website\Controller\Action
         //Throws Exception when Multishop is wrong configured
         $shop = Shop::getShop();
 
-        Tool::initTemplateForShop($shop);
+        \CoreShop::getTools()->initTemplateForShop($shop);
     }
 
     /**
@@ -103,7 +102,7 @@ class Action extends \Website\Controller\Action
      */
     protected function prepareCart()
     {
-        $this->cart = $this->view->cart = Tool::prepareCart();
+        $this->cart = $this->view->cart = \CoreShop::getTools()->prepareCart();
 
         if ($this->cart->getId()) {
             PriceRule::autoRemoveFromCart($this->cart);

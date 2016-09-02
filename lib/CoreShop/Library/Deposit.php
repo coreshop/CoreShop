@@ -172,7 +172,7 @@ class Deposit
      */
     protected function getSession()
     {
-        return \CoreShop\Tool::getSession();
+        return \CoreShop::getTools()->getSession();
     }
 
     /**

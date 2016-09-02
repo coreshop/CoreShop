@@ -16,7 +16,6 @@ namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 
 use CoreShop\Model;
 use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Tool;
 
 /**
  * Class Weight

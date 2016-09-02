@@ -23,7 +23,6 @@ use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\Classificationstore;
 use Pimcore\Model\Object\Classificationstore\KeyConfig;
 
-
 /**
  * Class Service
  * @package CoreShop\Tool
@@ -52,13 +51,13 @@ class Service
             "urls" => []
         ];
 
-        switch($type) {
+        switch ($type) {
             case 'objectbricks':
                 $baseData = self::getVariantValuesFromBrick($master, $field, $language);
                 break;
 
             case 'classificationstore':
-                $baseData = self::getVariantValuesFromClassificationStore($master, $field ,$language);
+                $baseData = self::getVariantValuesFromClassificationStore($master, $field, $language);
                 break;
         }
 
@@ -121,14 +120,14 @@ class Service
      * @param string $language
      * @return array
      */
-    public static function getVariantValuesFromClassificationStore(Product $master, $classificationStoreField = 'classificationStore', $language = 'en') {
+    public static function getVariantValuesFromClassificationStore(Product $master, $classificationStoreField = 'classificationStore', $language = 'en')
+    {
         $productClass = Product::getPimcoreObjectClass();
         $productClassDefinition = ClassDefinition::getById($productClass::classId());
 
         $definition = $productClassDefinition->getFieldDefinition($classificationStoreField);
 
-        if($definition instanceof ClassDefinition\Data\Classificationstore)
-        {
+        if ($definition instanceof ClassDefinition\Data\Classificationstore) {
             $productVariants = self::getAllChildren($master);
             $variantsAndMaster = array_merge(array($master), $productVariants);
             $getter = "get" . ucfirst($classificationStoreField);
@@ -140,12 +139,12 @@ class Service
             $groups = $groups->load();
             $dimensionInfo = [];
 
-            foreach($groups as $groupConfig) {
+            foreach ($groups as $groupConfig) {
                 $list = new Classificationstore\KeyGroupRelation\Listing();
                 $list->setCondition("groupId = ?", $groupConfig->getId());
                 $relations = $list->load();
 
-                foreach($relations as $relation) {
+                foreach ($relations as $relation) {
                     $keyConfig = KeyConfig::getById($relation->getKeyId());
 
                     $dimensionInfo[$groupConfig->getId() . $keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
@@ -167,11 +166,12 @@ class Service
                         $classificationStoreData = $productVariant->$getter();
                         $value = null;
 
-                        if($classificationStoreData instanceof Classificationstore) {
+                        if ($classificationStoreData instanceof Classificationstore) {
                             $value = $classificationStoreData->getLocalizedKeyValue($keyData['groupId'], $keyData['keyId'], $language);
 
-                            if(is_null($value))
+                            if (is_null($value)) {
                                 continue;
+                            }
 
                             //Add a namespace, so fields from different blocks can have same name!
                             $secureNameSpace = '__' . $keyData['groupId'].$keyData['keyId'].'__';
@@ -204,13 +204,14 @@ class Service
      *
      * @throws Exception
      */
-    public static function getVariantValuesFromBrick(Product $master, $brickField = 'variants', $language = 'en') {
+    public static function getVariantValuesFromBrick(Product $master, $brickField = 'variants', $language = 'en')
+    {
         $productClass = Product::getPimcoreObjectClass();
         $productClassDefinition = ClassDefinition::getById($productClass::classId());
 
         $definition = $productClassDefinition->getFieldDefinition($brickField);
 
-        if($definition instanceof ClassDefinition\Data\Objectbricks) {
+        if ($definition instanceof ClassDefinition\Data\Objectbricks) {
             $productVariants = self::getAllChildren($master);
             $variantsAndMaster = array_merge(array($master), $productVariants);
 
@@ -332,8 +333,9 @@ class Service
      * @param KeyConfig $field
      * @return array
      */
-    private static function getClassificationValidMethods(Classificationstore\GroupConfig $group, KeyConfig $field) {
-        if(!in_array($field->getType(), self::$allowedVariationTypes)) {
+    private static function getClassificationValidMethods(Classificationstore\GroupConfig $group, KeyConfig $field)
+    {
+        if (!in_array($field->getType(), self::$allowedVariationTypes)) {
             return [];
         }
 

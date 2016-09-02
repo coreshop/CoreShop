@@ -14,7 +14,6 @@
 
 namespace CoreShop\Model\Objectbrick\Data;
 
-use CoreShop\Tool;
 use Pimcore\Model\Object\Objectbrick\Data\AbstractData;
 
 /**
@@ -39,7 +38,7 @@ class Objectbrick extends AbstractData
     public function getView($language = null)
     {
         if (!$language) {
-            $language = Tool::getLocale();
+            $language = \CoreShop::getTools()->getLocale();
         }
 
         if (!$this->view) {

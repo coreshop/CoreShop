@@ -50,7 +50,7 @@ class TranslateCountry
             $countryCode = $countryCode->getIsoCode();
         }
 
-        $locale = Tool::getLocale();
+        $locale = \CoreShop::getTools()->getLocale();
         $countries = $locale->getTranslationList('Territory', $locale, 2);
 
         if (array_key_exists($countryCode, $countries)) {

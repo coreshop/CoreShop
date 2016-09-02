@@ -19,7 +19,6 @@ use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\User;
-use CoreShop\Tool;
 
 /**
  * Class Customers
@@ -89,7 +88,7 @@ class Customers extends AbstractCondition
      */
     protected function check($throwException = false)
     {
-        $user = Tool::getUser();
+        $user = \CoreShop::getTools()->getUser();
         $found = false;
 
         foreach ($this->getCustomers() as $customerId) {

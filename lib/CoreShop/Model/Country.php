@@ -16,7 +16,6 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Model\User\Address;
-use CoreShop\Tool;
 use Pimcore\Placeholder;
 
 /**
@@ -115,20 +114,22 @@ class Country extends AbstractModel
      * @param bool $asHtml
      * @return string
      */
-    public function formatAddress(Address $address, $asHtml = true) {
+    public function formatAddress(Address $address, $asHtml = true)
+    {
         $objectVars = get_object_vars($address);
 
         $placeHolder = new Placeholder();
         $address = $placeHolder->replacePlaceholders($this->getAddressFormat(), $objectVars);
 
-        if($asHtml) {
+        if ($asHtml) {
             $address = nl2br($address);
         }
 
         return $address;
     }
 
-    public function getAddressFields() {
+    public function getAddressFields()
+    {
         $regex = "/" . Placeholder::getPlaceholderPrefix() . "([a-z_]+)\(([a-z_0-9]+)[\s,]*(.*?)\)" . Placeholder::getPlaceholderSuffix() . "/is";
 
         preg_match_all($regex, $this->getAddressFormat(), $matches);
@@ -213,7 +214,7 @@ class Country extends AbstractModel
     public function getCurrency()
     {
         if ($this->getUseStoreCurrency()) {
-            return Tool::getBaseCurrency();
+            return \CoreShop::getTools()->getBaseCurrency();
         }
 
         if (!$this->currency instanceof Currency) {

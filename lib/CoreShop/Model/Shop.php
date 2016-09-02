@@ -66,28 +66,22 @@ class Shop extends AbstractModel
                 $site = Site::getCurrentSite();
 
                 return self::getShopForSite($site);
-            }
-            else {
-
-                if(Tool::isFrontentRequestByAdmin()) {
+            } else {
+                if (Tool::isFrontentRequestByAdmin()) {
                     $document = self::getNearestDocumentByPath(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
                     if ($document instanceof Document) {
                         do {
-
                             try {
                                 $site = Site::getByRootId($document->getId());
 
                                 if ($site instanceof Site) {
                                     return self::getShopForSite($site);
                                 }
-                            }
-                            catch(\Exception $x) {
-
+                            } catch (\Exception $x) {
                             }
 
                             $document = $document->getParent();
-
                         } while ($document instanceof Document);
                     }
                 }
