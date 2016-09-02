@@ -138,12 +138,14 @@ class CoreShopSpecificPrices extends Data
             $founds = [];
             $prices = $object->$getter();
 
-            foreach($prices as $price) {
-                if($price instanceof SpecificPrice) {
-                    $price->setO_Id($object->getId());
-                    $price->save();
+            if(is_array($prices)) {
+                foreach ($prices as $price) {
+                    if ($price instanceof SpecificPrice) {
+                        $price->setO_Id($object->getId());
+                        $price->save();
 
-                    $founds[] = $price->getId();
+                        $founds[] = $price->getId();
+                    }
                 }
             }
 
