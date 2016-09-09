@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Product\Filter\Condition;
 
+use CoreShop\IndexService\Condition;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
@@ -94,7 +95,7 @@ class Boolean extends AbstractCondition
     }
 
     /**
-     * add Condition to Productlist.
+     * add Condition to Product List.
      *
      * @param Filter  $filter
      * @param Listing $list
@@ -140,11 +141,15 @@ class Boolean extends AbstractCondition
         if (!empty($sqlFilter)) {
             $fieldName = $isPrecondition ? 'PRECONDITION_'.$name : $name;
 
+            $conditions = [];
+
             $condition = '(';
 
             $c = 0;
 
             foreach ($sqlFilter as $valName => $boolVal) {
+                $conditions[] = Condition::match($valName, (int) $boolVal);
+
                 $condition .= 'TRIM(`'.$valName.'`) = '.(int) $boolVal;
                 if ($c < count($sqlFilter) - 1) {
                     $condition .= ' AND ';
@@ -156,13 +161,18 @@ class Boolean extends AbstractCondition
             $condition .= ')';
 
             if (!empty($condition)) {
-                $list->addCondition($condition, $fieldName);
+                $list->addCondition(Condition::concat($fieldName, $conditions, "AND"), $fieldName);
             }
         }
 
         return $currentFilter;
     }
 
+    /**
+     * @param $definedValues
+     * @param $params
+     * @return bool
+     */
     private function isInFilterMode($definedValues, $params)
     {
         foreach ($definedValues as $d) {

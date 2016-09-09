@@ -324,18 +324,19 @@ class Dao
      * returns where statement for fulltext search index.
      *
      * @param $fields
-     * @param $searchstring
+     * @param $searchString
      *
      * @return string
      */
-    public function buildFulltextSearchWhere($fields, $searchstring)
+    public function buildFulltextSearchWhere($fields, $searchString)
     {
         $columnNames = array();
+
         foreach ($fields as $c) {
             $columnNames[] = $this->db->quoteIdentifier($c);
         }
 
-        return 'MATCH ('.implode(',', $columnNames).') AGAINST ('.$this->db->quote($searchstring).' IN BOOLEAN MODE)';
+        return 'MATCH ('.implode(',', $columnNames).') AGAINST ('.$this->db->quote($searchString).' IN BOOLEAN MODE)';
     }
 
     /**

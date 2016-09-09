@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Product\Listing;
 
 use CoreShop\Exception;
+use CoreShop\IndexService\Condition;
 use CoreShop\Model\Category;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
@@ -104,14 +105,9 @@ class Mysql extends AbstractListing
     protected $queryJoins = array();
 
     /**
-     * @var float
+     * @var \CoreShop\IndexService\Mysql
      */
-    protected $conditionPriceFrom = null;
-
-    /**
-     * @var float
-     */
-    protected $conditionPriceTo = null;
+    protected $worker;
 
     /**
      * Mysql constructor.
@@ -123,6 +119,7 @@ class Mysql extends AbstractListing
         parent::__construct($index);
 
         $this->dao = new Product\Listing\Mysql\Dao($this);
+        $this->worker = $this->getIndex()->getWorker();
     }
 
     /**
@@ -138,36 +135,36 @@ class Mysql extends AbstractListing
     }
 
     /**
-     * @param string $condition
-     * @param string $fieldname
+     * @param Condition $condition
+     * @param string $fieldName
      */
-    public function addCondition($condition, $fieldname = '')
+    public function addCondition(Condition $condition, $fieldName)
     {
         $this->products = null;
-        $this->conditions[$fieldname][] = $condition;
+        $this->conditions[$fieldName][] = $condition;
     }
 
     /**
      * Reset conditions.
      *
-     * @param $fieldname
+     * @param $fieldName
      */
-    public function resetCondition($fieldname)
+    public function resetCondition($fieldName)
     {
         $this->products = null;
-        unset($this->conditions[$fieldname]);
+        unset($this->conditions[$fieldName]);
     }
 
     /**
      * Add Relation Condition.
      *
-     * @param string $fieldname
-     * @param string $condition
+     * @param Condition $condition
+     * @param string $fieldName
      */
-    public function addRelationCondition($fieldname, $condition)
+    public function addRelationCondition(Condition $condition, $fieldName)
     {
         $this->products = null;
-        $this->relationConditions[$fieldname][] = '`fieldname` = '.$this->quote($fieldname).' AND '.$condition;
+        $this->relationConditions[$fieldName][] = $condition; //'`fieldname` = '.$this->quote($fieldName).' AND '.$condition;
     }
 
     /**
@@ -179,8 +176,7 @@ class Mysql extends AbstractListing
         $this->relationConditions = array();
         $this->queryConditions = array();
         $this->queryJoins = array();
-        $this->conditionPriceFrom = null;
-        $this->conditionPriceTo = null;
+
         $this->products = null;
     }
 
@@ -189,52 +185,25 @@ class Mysql extends AbstractListing
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param $condition
-     * @param string $fieldname
+     * @param Condition $condition
+     * @param string $fieldName
      */
-    public function addQueryCondition($condition, $fieldname = '')
+    public function addQueryCondition(Condition $condition, $fieldName)
     {
         $this->products = null;
-        $this->queryConditions[$fieldname][] = $condition;
+        $this->queryConditions[$fieldName][] = $condition;
     }
 
-    /**
-     * Adds query joins
-     * Use the joinTableAlias to catch joinTable in your custom condition!
-     *
-     * @param $table
-     * @param array $condition (type = 'LEFT|RIGHT|INNER|OUTER', joinTableAlias = xy, objectKeyField = o_id)
-     */
-    public function addJoin($table, $condition = array())
-    {
-        $this->products = null;
-        $this->queryJoins[$table] = $condition;
-    }
 
     /**
      * Reset query condition for fieldname.
      *
-     * @param $fieldname
-     *
-     * @return mixed
+     * @param $fieldName
      */
-    public function resetQueryCondition($fieldname)
+    public function resetQueryCondition($fieldName)
     {
         $this->products = null;
-        unset($this->queryConditions[$fieldname]);
-    }
-
-    /**
-     * Add Price Condition.
-     *
-     * @param null|float $from
-     * @param null|float $to
-     */
-    public function addPriceCondition($from = null, $to = null)
-    {
-        $this->products = null;
-        $this->conditionPriceFrom = $from;
-        $this->conditionPriceTo = $to;
+        unset($this->queryConditions[$fieldName]);
     }
 
     /**
@@ -430,83 +399,78 @@ class Mysql extends AbstractListing
     /**
      * get group by values.
      *
-     * @param $fieldname
+     * @param $fieldName
      * @param bool $countValues
-     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
      * @throws Exception
      */
-    public function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
+    public function getGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
-        $excludedFieldName = $fieldname;
-        if (!$fieldnameShouldBeExcluded) {
+        $excludedFieldName = $fieldName;
+        if (!$fieldNameShouldBeExcluded) {
             $excludedFieldName = null;
         }
-        if ($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
-            return $this->dao->loadGroupByValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
-        } else {
-            throw new Exception('Not supported yet');
-        }
+
+        return $this->dao->loadGroupByValues($fieldName, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
     }
 
     /**
      * get group by relation values.
      *
-     * @param      $fieldname
+     * @param      $fieldName
      * @param bool $countValues
-     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
      * @throws Exception
      */
-    public function getGroupByRelationValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
+    public function getGroupByRelationValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
-        $excludedFieldName = $fieldname;
-        if (!$fieldnameShouldBeExcluded) {
+        $excludedFieldName = $fieldName;
+        if (!$fieldNameShouldBeExcluded) {
             $excludedFieldName = null;
         }
-        if ($this->conditionPriceFrom === null && $this->conditionPriceTo === null) {
-            return $this->dao->loadGroupByRelationValues($fieldname, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
-        } else {
-            throw new Exception('Not supported yet');
-        }
+
+        return $this->dao->loadGroupByRelationValues($fieldName, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
     }
 
     /**
      * loads group by values based on relation fieldname either from local variable if prepared or directly from product index.
      *
-     * @param      $fieldname
+     * @param      $fieldName
      * @param bool $countValues
-     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
      * @throws Exception
      */
-    public function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true)
+    public function getGroupBySystemValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
         // not supported with mysql tables
+        return [];
     }
 
     /**
      * build query from conditions.
      *
      * @param bool $excludeConditions
-     * @param null $excludedFieldname
+     * @param null $excludedFieldName
      * @param null $variantMode
      *
      * @return string
      */
-    protected function buildQueryFromConditions($excludeConditions = false, $excludedFieldname = null, $variantMode = null)
+    protected function buildQueryFromConditions($excludeConditions = false, $excludedFieldName = null, $variantMode = null)
     {
         if ($variantMode == null) {
             $variantMode = $this->getVariantMode();
         }
 
-        $preCondition = 'active = 1 AND o_virtualProductActive = 1';
+        $preCondition = 'active = 1';
 
         if ($this->getCategory()) {
             $preCondition .= " AND parentCategoryIds LIKE '%,".$this->getCategory()->getId().",%'";
@@ -522,9 +486,9 @@ class Mysql extends AbstractListing
 
         if ($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (!$excludeConditions) {
-                $userspecific = $this->buildUserspecificConditions($excludedFieldname);
-                if ($userspecific) {
-                    $condition .= ' AND '.$userspecific;
+                $userSpecific = $this->buildUserSpecificConditions($excludedFieldName);
+                if ($userSpecific) {
+                    $condition .= ' AND '.$userSpecific;
                 }
             }
         } else {
@@ -533,22 +497,23 @@ class Mysql extends AbstractListing
             }
 
             if (!$excludeConditions) {
-                $userspecific = $this->buildUserspecificConditions($excludedFieldname);
-                if ($userspecific) {
-                    $condition .= ' AND '.$userspecific;
+                $userSpecific = $this->buildUserSpecificConditions($excludedFieldName);
+                if ($userSpecific) {
+                    $condition .= ' AND '.$userSpecific;
                 }
             }
         }
 
         if ($this->queryConditions) {
-            $searchstring = '';
-            foreach ($this->queryConditions as $queryConditionPartArray) {
-                foreach ($queryConditionPartArray as $queryConditionPart) {
-                    $searchstring .= '+'.$queryConditionPart.'* ';
+            $searchString = '';
+
+            foreach($this->queryConditions as $condition) {
+                if($condition instanceof Condition) {
+                    $searchString .= '+' . $condition->getValues() . '+ ';
                 }
             }
 
-            $condition .= ' AND '.$this->dao->buildFulltextSearchWhere(array('name'), $searchstring); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
+            $condition .= ' AND '.$this->dao->buildFulltextSearchWhere(array("name"), $searchString); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
         }
 
         return $condition;
@@ -557,41 +522,34 @@ class Mysql extends AbstractListing
     /**
      * build user specific conditions.
      *
-     * @param null $excludedFieldname
+     * @param null $excludedFieldName
      *
      * @return string
      */
-    protected function buildUserspecificConditions($excludedFieldname = null)
+    protected function buildUserSpecificConditions($excludedFieldName = null)
     {
-        $condition = '';
-        foreach ($this->relationConditions as $fieldname => $condArray) {
-            if ($fieldname !== $excludedFieldname) {
-                foreach ($condArray as $cond) {
-                    if ($condition) {
-                        $condition .= ' AND ';
-                    }
+        $renderedConditions = [];
+        $relationalTableName = $this->worker->getRelationTablename();
 
-                    $condition .= 'a.o_id IN (SELECT DISTINCT src FROM coreshop_product_index_relations WHERE '.$cond.')'; //TODO: Load tablename from any configuration (cause its also used by indexservice)
+        foreach ($this->relationConditions as $fieldName => $condArray) {
+            if ($fieldName !== $excludedFieldName && is_array($condArray)) {
+                foreach ($condArray as $cond) {
+                    $cond = $this->worker->renderCondition($cond);
+
+                    $renderedConditions[] = 'a.o_id IN (SELECT DISTINCT src FROM coreshop_product_index_relations WHERE '.$cond.')'; //TODO: Load tablename from any configuration (cause its also used by indexservice)
                 }
             }
         }
 
-        foreach ($this->conditions as $fieldname => $condArray) {
-            if ($fieldname !== $excludedFieldname) {
+        foreach ($this->conditions as $fieldName => $condArray) {
+            if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    if ($condition) {
-                        $condition .= ' AND ';
-                    }
-
-                    $condition .= is_array($cond)
-                        ? sprintf(' ( %1$s IN (%2$s) )', $fieldname, implode(',', $cond))
-                        : '('.$cond.')'
-                    ;
+                    $renderedConditions[] = $this->worker->renderCondition($cond);
                 }
             }
         }
 
-        return $condition;
+        return implode(" AND ", $renderedConditions);
     }
 
     /**

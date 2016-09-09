@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Product\Filter\Condition;
 
+use CoreShop\IndexService\Condition;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
@@ -72,7 +73,7 @@ class Multiselect extends AbstractCondition
     }
 
     /**
-     * add Condition to Productlist.
+     * add Condition to Product List.
      *
      * @param Filter  $filter
      * @param Listing $list
@@ -99,14 +100,8 @@ class Multiselect extends AbstractCondition
         if (!empty($values)) {
             $fieldName = $isPrecondition ? 'PRECONDITION_'.$this->getField() : $this->getField();
 
-            $inValues = array();
-
-            foreach ($values as $c => $value) {
-                $inValues[] = $list->quote($value);
-            }
-
-            if (!empty($inValues)) {
-                $list->addCondition('TRIM(`'.$this->getField().'`) IN ('.implode(',', $inValues).')', $fieldName);
+            if (!empty($values)) {
+                $list->addCondition(Condition::in($fieldName, $values), $fieldName);
             }
         }
 

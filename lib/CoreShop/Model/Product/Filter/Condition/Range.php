@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Product\Filter\Condition;
 
+use CoreShop\IndexService\Condition;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
@@ -128,11 +129,13 @@ class Range extends AbstractCondition
         $currentFilter[$this->getField().'-max'] = $valueMax;
 
         if (!empty($valueMin) && !empty($valueMax)) {
-            if ($isPrecondition) {
-                $list->addCondition('TRIM(`'.$this->getField().'`) >= '.$valueMin.' AND TRIM(`'.$this->getField().'`) <= '.$valueMax, 'PRECONDITION_'.$this->getField());
-            } else {
-                $list->addCondition('TRIM(`'.$this->getField().'`) >= '.$valueMin.' AND TRIM(`'.$this->getField().'`) <= '.$valueMax, $this->getField());
+            $fieldName = $this->getField();
+
+            if($isPrecondition) {
+                $fieldName = 'PRECONDITION_' . $fieldName;
             }
+
+            $list->addCondition(Condition::range($this->getField(), $valueMin, $valueMax), $fieldName);
         }
 
         return $currentFilter;

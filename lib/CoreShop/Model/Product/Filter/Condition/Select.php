@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Product\Filter\Condition;
 
+use CoreShop\IndexService\Condition;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 
@@ -56,11 +57,13 @@ class Select extends AbstractCondition
         $currentFilter[$this->getField()] = $value;
 
         if (!empty($value)) {
-            if ($isPrecondition) {
-                $list->addCondition('TRIM(`'.$this->getField().'`) = '.$list->quote($value), 'PRECONDITION_'.$this->getField());
-            } else {
-                $list->addCondition('TRIM(`'.$this->getField().'`) = '.$list->quote($value), $this->getField());
+            $fieldName = $this->getField();
+
+            if($isPrecondition) {
+                $fieldName = 'PRECONDITION_' . $fieldName;
             }
+
+            $list->addCondition(Condition::match($this->getField(), $value), $fieldName);
         }
 
         return $currentFilter;

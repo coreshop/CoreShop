@@ -51,8 +51,6 @@ class Mysql extends AbstractWorker
     {
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename()."` (
           `o_id` int(11) NOT NULL default '0',
-          `o_virtualProductId` int(11) NOT NULL,
-          `o_virtualProductActive` TINYINT(1) NOT NULL,
           `o_classId` int(11) NOT NULL,
           `o_type` varchar(20) NOT NULL,
           `categoryIds` varchar(255) NOT NULL,
@@ -99,7 +97,6 @@ class Mysql extends AbstractWorker
 
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getRelationTablename()."` (
           `src` int(11) NOT NULL default '0',
-          `src_virtualProductId` int(11) NOT NULL,
           `dest` int(11) NOT NULL,
           `fieldname` varchar(255) COLLATE utf8_bin NOT NULL,
           `type` varchar(20) COLLATE utf8_bin NOT NULL,
@@ -197,6 +194,57 @@ class Mysql extends AbstractWorker
     }
 
     /**
+     * Renders a condition to MySql
+     *
+     * @param Condition $condition
+     * @return string
+     * @throws \Exception
+     */
+    public function renderCondition(Condition $condition) {
+        switch($condition->getType()) {
+
+            case "in":
+                $inValues = [];
+
+                foreach ($condition->getValues() as $c => $value) {
+                    $inValues[] = Db::get()->quote($value);
+                }
+
+                $rendered = 'TRIM(`'.$condition->getFieldName().'`) IN ('.implode(',', $inValues).')';
+                break;
+
+            case "match":
+                $rendered = 'TRIM(`'.$condition->getFieldName().'`) = '.Db::get()->quote($condition->getValues());
+                break;
+
+            case "range":
+                $values = $condition->getValues();
+
+                $rendered = 'TRIM(`'.$condition->getFieldName().'`) >= '.$values['from'].' AND TRIM(`'.$condition->getFieldName().'`) <= '.$values['to'];
+                break;
+
+            case "concat":
+
+                $values = $condition->getValues();
+                $conditions = [];
+
+                foreach ($values['conditions'] as $cond) {
+                    $conditions[] = $this->renderCondition($cond);
+                }
+
+                $rendered = implode($values['operator'], $conditions);
+
+
+                break;
+
+            default:
+                throw new \Exception($condition->getType() . " is not supported yet");
+        }
+
+        return $rendered;
+    }
+
+    /**
      * Return Productlist.
      *
      * @return Product\Listing\Mysql
@@ -211,7 +259,7 @@ class Mysql extends AbstractWorker
      *
      * @return string
      */
-    protected function getTablename()
+    public function getTablename()
     {
         return 'coreshop_index_mysql_'.$this->getIndex()->getName();
     }
@@ -221,7 +269,7 @@ class Mysql extends AbstractWorker
      *
      * @return string
      */
-    protected function getRelationTablename()
+    public function getRelationTablename()
     {
         return 'coreshop_index_mysql_relations_'.$this->getIndex()->getName();
     }
@@ -233,6 +281,6 @@ class Mysql extends AbstractWorker
      */
     protected function getSystemAttributes()
     {
-        return array('o_id', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops');
+        return array('o_id', 'o_classId', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops');
     }
 }

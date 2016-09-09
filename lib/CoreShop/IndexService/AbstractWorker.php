@@ -239,6 +239,14 @@ abstract class AbstractWorker
     abstract public function getProductList();
 
     /**
+     * Renders the condition to fit the service
+     *
+     * @param Condition $condition
+     * @return mixed
+     */
+    abstract public function renderCondition(Condition $condition);
+
+    /**
      * get index.
      *
      * @return Index

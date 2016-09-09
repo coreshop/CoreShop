@@ -14,10 +14,12 @@
 
 namespace CoreShop\Model\Product;
 
+use CoreShop\IndexService\Condition;
 use CoreShop\Model\Category;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
 use CoreShop\Model\Shop;
+use CoreShop\Exception;
 
 /**
  * Class Listing
@@ -72,67 +74,47 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param string $condition
-     * @param string $fieldname
+     * @param Condition $condition
+     * @param string $fieldName
      */
-    abstract public function addCondition($condition, $fieldname = '');
+    abstract public function addCondition(Condition $condition, $fieldName);
 
     /**
      * Adds query condition to product list for fulltext search
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param $condition
-     * @param string $fieldname
+     * @param Condition $condition
+     * @param string $fieldName
      */
-    abstract public function addQueryCondition($condition, $fieldname = '');
-
-    /**
-     * Reset filter condition for fieldname.
-     *
-     * @param $fieldname
-     *
-     * @return mixed
-     */
-    abstract public function resetCondition($fieldname);
-
-    /**
-     * Reset query condition for fieldname.
-     *
-     * @param $fieldname
-     *
-     * @return mixed
-     */
-    abstract public function resetQueryCondition($fieldname);
+    abstract public function addQueryCondition(Condition $condition, $fieldName);
 
     /**
      * Adds relation condition to product list.
      *
-     * @param string $fieldname
-     * @param string $condition
+     * @param Condition $condition
+     * @param string $fieldName
      */
-    abstract public function addRelationCondition($fieldname, $condition);
+    abstract public function addRelationCondition(Condition $condition, $fieldName);
 
     /**
-     * Adds join to product list.
+     * Reset filter condition for fieldname.
      *
-     * @param string $table
-     * @param string $query
+     * @param $fieldName
      */
-    abstract public function addJoin($table, $query);
+    abstract public function resetCondition($fieldName);
+
+    /**
+     * Reset query condition for fieldname.
+     *
+     * @param $fieldName
+     */
+    abstract public function resetQueryCondition($fieldName);
 
     /**
      * Resets all conditions of product list.
      */
     abstract public function resetConditions();
-
-    /**
-     * Adds price condition to product list.
-     *
-     * @param null|float $from
-     * @param null|float $to
-     */
-    abstract public function addPriceCondition($from = null, $to = null);
 
     /**
      * sets order direction.
@@ -220,41 +202,41 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
     /**
      * loads group by values based on fieldname either from local variable if prepared or directly from product index.
      *
-     * @param $fieldname
+     * @param $fieldName
      * @param bool $countValues
-     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
      * @throws Exception
      */
-    abstract public function getGroupByValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+    abstract public function getGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true);
 
     /**
      * loads group by values based on relation fieldname either from local variable if prepared or directly from product index.
      *
-     * @param      $fieldname
+     * @param      $fieldName
      * @param bool $countValues
-     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
      * @throws Exception
      */
-    abstract public function getGroupByRelationValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+    abstract public function getGroupByRelationValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true);
 
     /**
      * loads group by values based on relation fieldname either from local variable if prepared or directly from product index.
      *
-     * @param      $fieldname
+     * @param      $fieldName
      * @param bool $countValues
-     * @param bool $fieldnameShouldBeExcluded => set to false for and-conditions
+     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
      * @throws Exception
      */
-    abstract public function getGroupBySystemValues($fieldname, $countValues = false, $fieldnameShouldBeExcluded = true);
+    abstract public function getGroupBySystemValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true);
 
     /**
      * returns order by statement for similarity calculations based on given fields and object ids
