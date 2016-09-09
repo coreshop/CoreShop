@@ -49,7 +49,13 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
 
     getSettings : function ()
     {
-        this.formPanel = new Ext.form.Panel({
+        this.indexTypeSettings = new Ext.form.Panel({});
+
+        if(this.data.type) {
+            this.getIndexTypeConfig(this.data.type);
+        }
+
+        this.formPanel = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_settings',
             title: t('settings'),
             bodyStyle:'padding:20px 5px 20px 5px;',
@@ -60,36 +66,47 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
             defaults: {
                 forceLayout: true
             },
-            items: [
+            items : [
                 {
-                    xtype:'fieldset',
-                    autoHeight:true,
-                    labelWidth: 350,
-                    defaultType: 'textfield',
-                    defaults: { width: '100%' },
-                    items :[
+                    xtype : 'form',
+                    items: [
                         {
-                            xtype : 'textfield',
-                            fieldLabel:t('coreshop_indexes_name'),
-                            name : 'name',
-                            value : this.data.name
-                        },
-                        {
-                            xtype:'combo',
-                            fieldLabel:t('coreshop_indexes_type'),
-                            typeAhead:true,
-                            value:this.data.type,
-                            mode:'local',
-                            listWidth:100,
-                            store: this.parentPanel.typesStore,
-                            displayField:'name',
-                            valueField:'name',
-                            forceSelection:true,
-                            triggerAction:'all',
-                            name:'type'
+                            xtype:'fieldset',
+                            autoHeight:true,
+                            labelWidth: 350,
+                            defaultType: 'textfield',
+                            defaults: { width: '100%' },
+                            items :[
+                                {
+                                    xtype : 'textfield',
+                                    fieldLabel:t('coreshop_indexes_name'),
+                                    name : 'name',
+                                    value : this.data.name
+                                },
+                                {
+                                    xtype:'combo',
+                                    fieldLabel:t('coreshop_indexes_type'),
+                                    typeAhead:true,
+                                    value:this.data.type,
+                                    mode:'local',
+                                    listWidth:100,
+                                    store: this.parentPanel.typesStore,
+                                    displayField:'name',
+                                    valueField:'name',
+                                    forceSelection:true,
+                                    triggerAction:'all',
+                                    name:'type',
+                                    listeners : {
+                                        change: function (combo, value) {
+                                            this.getIndexTypeConfig(value);
+                                        }.bind(this)
+                                    }
+                                }
+                            ]
                         }
                     ]
-                }
+                },
+                this.indexTypeSettings
             ]
         });
 
@@ -118,11 +135,31 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         return this.indexFields;
     },
 
+    getIndexTypeConfig : function(worker) {
+        if (this.indexTypeSettings) {
+            this.indexTypeSettings.removeAll();
+
+            if (pimcore.plugin.coreshop.indexes.type[worker] !== undefined) {
+                var workerSettings = new pimcore.plugin.coreshop.indexes.type[worker]();
+
+                this.indexTypeSettings.add(workerSettings.getFields(this.data.config));
+            }
+
+            if(this.indexTypeSettings.items.items.length === 0) {
+                this.indexTypeSettings.hide();
+            }
+            else {
+                this.indexTypeSettings.show();
+            }
+        }
+    },
+
     getSaveData : function () {
-        var saveData = this.formPanel.getForm().getFieldValues();
+        var saveData = this.formPanel.down("form").getForm().getFieldValues();
+        var config = this.indexTypeSettings.getForm().getFieldValues();
 
         // general settings
-        saveData['config'] = this.fieldsPanel.getData();
+        saveData['config'] = Ext.apply({}, this.fieldsPanel.getData(), config);
 
         return {
             data : Ext.encode(saveData)

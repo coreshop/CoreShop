@@ -31,7 +31,7 @@ class IndexService
      *
      * @var array
      */
-    public static $types = array('mysql');
+    public static $types = array('mysql', 'elasticsearch');
 
     /**
      * IndexService.

@@ -105,6 +105,9 @@
       <path>/plugins/CoreShop/static/js/coreshop/indexes/fields.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/mysql/field.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/objecttype/elasticsearch/field.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/type/abstract.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/type/elasticsearch.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/abstract.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/brick.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/fieldcollection.js</path>

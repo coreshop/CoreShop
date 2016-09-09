@@ -50,12 +50,13 @@ abstract class AbstractWorker
      * prepares Data for index.
      *
      * @param Product $object
+     * @param boolean $convertArrayToString
      *
      * @return array("data", "relation")
      *
      * @throws \CoreShop\Exception\UnsupportedException
      */
-    protected function prepareData(Product $object)
+    protected function prepareData(Product $object, $convertArrayToString = true)
     {
         $a = \Pimcore::inAdmin();
         $b = AbstractObject::doGetInheritedValues();
@@ -82,6 +83,7 @@ abstract class AbstractWorker
         }
 
         ksort($categoryIds);
+        $categoryIds = array_values($categoryIds);
 
         $virtualProductId = $object->getId();
         $virtualProductActive = $object->getEnabled();
@@ -103,10 +105,10 @@ abstract class AbstractWorker
             'o_virtualProductId' => $virtualProductId,
             'o_virtualProductActive' => $virtualProductActive === null ? false : $virtualProductActive,
             'o_type' => $object->getType(),
-            'categoryIds' => ','.implode(',', $categoryIds).',',
-            'parentCategoryIds' => ','.implode(',', $parentCategoryIds).',',
+            'categoryIds' => $convertArrayToString ? ','.implode(',', $categoryIds).',' : $categoryIds,
+            'parentCategoryIds' => $convertArrayToString ? ','.implode(',', $parentCategoryIds).',' : $parentCategoryIds,
             'active' => $object->getEnabled() === null ? false : $object->getEnabled(),
-            'shops' => ','.@implode(',', $object->getShops()).','
+            'shops' => $convertArrayToString ? ','.@implode(',', $object->getShops()).',' : $object->getShops()
         );
 
         $relationData = array();
@@ -171,7 +173,7 @@ abstract class AbstractWorker
                         $data[$column->getName()] = $value;
                     }
 
-                    if (is_array($data[$column->getName()])) {
+                    if (is_array($data[$column->getName()]) && $convertArrayToString) {
                         $data[$column->getName()] = ','.implode($data[$column->getName()], ',').',';
                     }
                 } catch (\Exception $e) {

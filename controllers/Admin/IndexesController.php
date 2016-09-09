@@ -83,7 +83,7 @@ class CoreShop_Admin_IndexesController extends Admin
         $group = Index::getById($id);
 
         if ($group instanceof Index) {
-            $data = get_object_vars($group);
+            $data = $group->getObjectVars();
             $data['classId'] = \CoreShop\Model\Product::classId();
 
             $this->_helper->json(array('success' => true, 'data' => $data));
