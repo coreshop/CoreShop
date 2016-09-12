@@ -60,7 +60,7 @@ class Elasticsearch extends AbstractWorker
     /**
      * @return Client
      */
-    protected function getElasticsearchClient() {
+    public function getElasticsearchClient() {
         if(is_null($this->client)) {
             $builder = ClientBuilder::create();
             $builder->setHosts(explode(",", $this->config->getHosts()));
@@ -70,7 +70,7 @@ class Elasticsearch extends AbstractWorker
         return $this->client;
     }
 
-    protected function createTableStructure() {
+    /*protected function createTableStructure() {
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename()."` (
           `o_id` int(11) NOT NULL default '0',
           `o_classId` int(11) NOT NULL,
@@ -81,7 +81,7 @@ class Elasticsearch extends AbstractWorker
           `shops` varchar(255) NOT NULL,
           PRIMARY KEY  (`o_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-    }
+    }*/
 
     /**
      * Create Database index table.
@@ -108,7 +108,9 @@ class Elasticsearch extends AbstractWorker
             //index didn't exist -> reset index queue to make sure all products get reindexed
             //$this->resetIndexingQueue();
         }
-
+        else {
+            $this->getElasticsearchClient()->indices()->delete(['index' => $this->getIndex()->getName()]);
+        }
 
         $properties = [];
 
@@ -223,36 +225,39 @@ class Elasticsearch extends AbstractWorker
         switch($condition->getType()) {
 
             case "in":
-                $inValues = [];
-
-                foreach ($condition->getValues() as $c => $value) {
-                    $inValues[] = Db::get()->quote($value);
-                }
-
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) IN ('.implode(',', $inValues).')';
+                $rendered = ["terms" => [
+                    $condition->getFieldName() => $condition->getValues()
+                ]];
                 break;
 
             case "match":
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) = '.Db::get()->quote($condition->getValues());
+                $rendered = ["term" => [
+                    $condition->getFieldName() => $condition->getValues()
+                ]];
                 break;
 
             case "range":
                 $values = $condition->getValues();
 
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) >= '.$values['from'].' AND TRIM(`'.$condition->getFieldName().'`) <= '.$values['to'];
+                $rendered = ["range" => [
+                    $condition->getFieldName() => [
+                        "gte" => $values['from'],
+                        "lte" => $values['to']
+                    ]
+                ]];
                 break;
 
             case "concat":
-
                 $values = $condition->getValues();
-                $conditions = [];
+                $rendered = [
+                    "filter" => [
+                        $values['operator'] => []
+                    ]
+                ];
 
                 foreach ($values['conditions'] as $cond) {
-                    $conditions[] = $this->renderCondition($cond);
+                    $rendered["filter"][$values['operator']][] = $this->renderCondition($cond);
                 }
-
-                $rendered = implode($values['operator'], $conditions);
-
 
                 break;
 
@@ -266,31 +271,11 @@ class Elasticsearch extends AbstractWorker
     /**
      * Return Productlist.
      *
-     * @return Product\Listing\Mysql
+     * @return Product\Listing\Elasticsearch
      */
     public function getProductList()
     {
-        return new Product\Listing\Mysql($this->getIndex());
-    }
-
-    /**
-     * get table name.
-     *
-     * @return string
-     */
-    public function getTablename()
-    {
-        return 'coreshop_index_mysql_'.$this->getIndex()->getName();
-    }
-
-    /**
-     * get tablename for relations.
-     *
-     * @return string
-     */
-    public function getRelationTablename()
-    {
-        return 'coreshop_index_mysql_relations_'.$this->getIndex()->getName();
+        return new Product\Listing\Elasticsearch($this->getIndex());
     }
 
     /**

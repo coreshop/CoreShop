@@ -73,6 +73,7 @@ class CoreShop_Admin_FilterController extends Admin
             $filter->setOrderKey('name');
             $filter->setPreConditions(array());
             $filter->setFilters(array());
+            $filter->setSimilarities(array());
             $filter->save();
 
             $this->_helper->json(array('success' => true, 'data' => $filter));
