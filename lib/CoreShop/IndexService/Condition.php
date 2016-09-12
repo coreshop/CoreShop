@@ -58,6 +58,17 @@ class Condition {
     }
 
     /**
+     * Match Condition (=)
+     *
+     * @param $fieldName
+     * @param $value
+     * @return Condition
+     */
+    public static function notMatch($fieldName, $value) {
+        return new Condition($fieldName, "not-match", $value);
+    }
+
+    /**
      * Range Condition (>=, <=)
      *
      * @param $fieldName

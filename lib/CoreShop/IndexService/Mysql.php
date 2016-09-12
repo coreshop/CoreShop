@@ -217,6 +217,10 @@ class Mysql extends AbstractWorker
                 $rendered = 'TRIM(`'.$condition->getFieldName().'`) = '.Db::get()->quote($condition->getValues());
                 break;
 
+            case "not-match":
+                $rendered = 'TRIM(`'.$condition->getFieldName().'`) != '.Db::get()->quote($condition->getValues());
+                break;
+
             case "range":
                 $values = $condition->getValues();
 
