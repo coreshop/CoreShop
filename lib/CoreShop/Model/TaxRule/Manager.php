@@ -21,7 +21,6 @@ use CoreShop\Model\State;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
 use CoreShop\Model\User\Address;
-use CoreShop\Tools;
 
 /**
  * Class Manager
@@ -135,7 +134,7 @@ class Manager implements TaxManager
      */
     private function getCacheKey()
     {
-        return 'coreshop_tax_calculator_'.\CoreShop::getTools()->getCountry()->getId().
+        return 'coreshop_tax_calculator_'.$this->address->getCountry()->getId().
             ($this->address->getState() instanceof State ? $this->address->getState()->getId() : '').'_'.
             (int) $this->type;
     }

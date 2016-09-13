@@ -126,7 +126,7 @@ class Base extends Concrete
         if (!Configuration::multiShopEnabled()) {
             //Multishop is disabled, so we always set the default shop
 
-            if(method_exists($this, "setShops")) {
+            if (property_exists($this, "shops")) {
                 $this->setShops([Shop::getDefaultShop()->getId()]);
             }
         }
