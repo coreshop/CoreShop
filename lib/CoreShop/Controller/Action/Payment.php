@@ -46,12 +46,12 @@ class Payment extends Action
 
         $this->view->setScriptPath(
             array_merge(
-                $this->view->getScriptPaths(),
                 array(
                     CORESHOP_TEMPLATE_BASE.'/scripts/'.strtolower($this->getModule()->getIdentifier()),
                     CORESHOP_TEMPLATE_PATH.'/scripts/'.strtolower($this->getModule()->getIdentifier()),
-                    PIMCORE_WEBSITE_PATH.'/views/scripts/'.strtolower($this->getModule()->getIdentifier())
-                )
+                    PIMCORE_WEBSITE_PATH.'/views/scripts/'.strtolower($this->getModule()->getIdentifier()),
+                ),
+                $this->view->getScriptPaths()
             )
         );
     }
