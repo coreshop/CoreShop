@@ -450,7 +450,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                     }
                 );
 
-                tab.tabbar.add(new pimcore.plugin.coreshop.product.specificprice.panel(tab).getLayout());
+                //tab.tabbar.add(new pimcore.plugin.coreshop.product.specificprice.panel(tab).getLayout());
 
                 /*tab.tab.items.items[0].add({
                     text: t('generate_variants'),

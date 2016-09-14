@@ -2,9 +2,9 @@
 	"description":null,
 	"parentClass":"CoreShop\\Model\\Product",
 	"useTraits":null,
-	"allowInherit":true,
-	"allowVariants":true,
-	"showVariants":true,
+	"allowInherit":false,
+	"allowVariants":false,
+	"showVariants":false,
 	"layoutDefinitions":{
 		"fieldtype":"panel",
 		"labelWidth":100,
@@ -15,7 +15,7 @@
 		"title":null,
 		"width":null,
 		"height":null,
-		"collapsible":null,
+		"collapsible":false,
 		"collapsed":null,
 		"bodyStyle":null,
 		"datatype":"layout",
@@ -312,8 +312,9 @@
 								"options":[
 
 								],
-								"width":null,
-								"height":null,
+								"width":"",
+								"height":"",
+								"maxItems":"",
 								"queryColumnType":"text",
 								"columnType":"text",
 								"phpdocType":"array",
@@ -323,7 +324,7 @@
 								"mandatory":false,
 								"noteditable":false,
 								"index":false,
-								"locked":null,
+								"locked":false,
 								"style":"",
 								"permissions":null,
 								"datatype":"data",
@@ -501,6 +502,45 @@
 								"permissions":null,
 								"datatype":"data",
 								"columnType":null,
+								"relationType":false,
+								"invisible":false,
+								"visibleGridView":false,
+								"visibleSearch":false
+							}
+						],
+						"locked":false
+					},
+					{
+						"fieldtype":"panel",
+						"labelWidth":100,
+						"layout":null,
+						"name":"Specific Prices",
+						"type":null,
+						"region":null,
+						"title":"Specific Prices",
+						"width":null,
+						"height":null,
+						"collapsible":false,
+						"collapsed":false,
+						"bodyStyle":"",
+						"datatype":"layout",
+						"permissions":null,
+						"childs":[
+							{
+								"fieldtype":"coreShopSpecificPrices",
+								"height":null,
+								"name":"productSpecificPrices",
+								"title":"Specific Prices",
+								"tooltip":"",
+								"mandatory":false,
+								"noteditable":false,
+								"index":false,
+								"locked":false,
+								"style":"",
+								"permissions":null,
+								"datatype":"data",
+								"columnType":null,
+								"queryColumnType":null,
 								"relationType":false,
 								"invisible":false,
 								"visibleGridView":false,
@@ -857,15 +897,18 @@
 								"objectsAllowed":false,
 								"assetsAllowed":true,
 								"assetTypes":[
-									"image"
+									{
+										"assetTypes":"image"
+									}
 								],
 								"documentsAllowed":false,
 								"documentTypes":[
-
+									{
+										"documentTypes":""
+									}
 								],
 								"lazyLoading":false,
 								"classes":[
-
 								],
 								"name":"images",
 								"title":"Images",
@@ -923,6 +966,35 @@
 								"invisible":false,
 								"visibleGridView":false,
 								"visibleSearch":false
+							},
+							{
+								"fieldtype":"fieldcollections",
+								"phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
+								"allowedTypes":[
+									"CoreShopProductTest"
+								],
+								"lazyLoading":true,
+								"maxItems":"",
+								"disallowAddRemove":false,
+								"disallowReorder":false,
+								"collapsed":false,
+								"collapsible":false,
+								"name":"fieldCollections",
+								"title":"fieldCollections",
+								"tooltip":"",
+								"mandatory":false,
+								"noteditable":false,
+								"index":false,
+								"locked":false,
+								"style":"",
+								"permissions":null,
+								"datatype":"data",
+								"columnType":null,
+								"queryColumnType":null,
+								"relationType":false,
+								"invisible":false,
+								"visibleGridView":false,
+								"visibleSearch":false
 							}
 						],
 						"locked":false
@@ -947,7 +1019,7 @@
 								"fieldtype":"objectbricks",
 								"phpdocType":"\\Pimcore\\Model\\Object\\Objectbrick",
 								"allowedTypes":[
-									"CoreShopDimensionTest"
+									
 								],
 								"name":"variants",
 								"title":"Variants",
@@ -1043,10 +1115,10 @@
 				"locked":false
 			}
 		],
-		"locked":null
+		"locked":false
 	},
 	"icon":null,
-	"previewUrl":"\/en\/shop\/%name\/~p%o_id",
+	"previewUrl":null,
 	"propertyVisibility":{
 		"grid":{
 			"id":true,
