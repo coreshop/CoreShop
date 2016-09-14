@@ -5,7 +5,7 @@ $install = new \CoreShop\Plugin\Install();
 $classDefinitions = new \Pimcore\Model\Object\ClassDefinition\Listing();
 $classDefinitions->load();
 
-foreach ($classDefinitions as $def) {
+foreach ($classDefinitions->getClasses() as $def) {
     $def->save();
 }
 
