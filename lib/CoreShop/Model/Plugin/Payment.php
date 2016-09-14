@@ -149,8 +149,19 @@ abstract class Payment implements AbstractPlugin
     {
         $route = Staticroute::getByName("coreshop_payment");
 
-        $params = array_merge($params, array('mod' => $module, 'act' => $action, 'lang' => (string) \Zend_Registry::get('Zend_Locale')));
+        $params = array_merge($params, array("mod" => $module, "act" => $action, "lang" => (string) \Zend_Registry::get("Zend_Locale")));
 
-        return $route->assemble($params, 'coreshop_payment');
+        $results = \Pimcore::getEventManager()->trigger("coreshop.payment.url", $this, [
+            "route" => $route,
+            "params" => $params,
+            "module" => $module,
+            "action" => $action
+        ]);
+
+        if ($results->count()) {
+            $params = $results->last();
+        }
+
+        return $route->assemble($params, "coreshop_payment");
     }
 }
