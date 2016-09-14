@@ -11,7 +11,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.pricerules.actions.newPrice');
+pimcore.registerNS('pimcore.plugin.coreshop.rules.actions.newPrice');
 
 pimcore.plugin.coreshop.rules.actions.newPrice = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
 
