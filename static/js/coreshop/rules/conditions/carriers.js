@@ -34,6 +34,7 @@ pimcore.plugin.coreshop.rules.conditions.carriers = Class.create(pimcore.plugin.
             triggerAction: 'all',
             name:'carriers',
             maxHeight : 400,
+            delimiter : false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())

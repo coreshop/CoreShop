@@ -34,6 +34,7 @@ pimcore.plugin.coreshop.rules.conditions.shops = Class.create(pimcore.plugin.cor
             triggerAction: 'all',
             name:'shops',
             maxHeight : 400,
+            delimiter : false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())

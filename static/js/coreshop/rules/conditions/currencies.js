@@ -34,6 +34,7 @@ pimcore.plugin.coreshop.rules.conditions.currencies = Class.create(pimcore.plugi
             triggerAction: 'all',
             name:'currencies',
             maxHeight : 400,
+            delimiter : false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())

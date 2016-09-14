@@ -34,6 +34,7 @@ pimcore.plugin.coreshop.rules.conditions.personas = Class.create(pimcore.plugin.
             triggerAction: 'all',
             name:'personas',
             maxHeight : 400,
+            delimiter : false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())

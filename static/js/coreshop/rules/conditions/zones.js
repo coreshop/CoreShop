@@ -34,6 +34,7 @@ pimcore.plugin.coreshop.rules.conditions.zones = Class.create(pimcore.plugin.cor
             triggerAction: 'all',
             name:'zones',
             maxHeight : 400,
+            delimiter : false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())

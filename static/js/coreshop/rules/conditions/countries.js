@@ -34,6 +34,7 @@ pimcore.plugin.coreshop.rules.conditions.countries = Class.create(pimcore.plugin
             triggerAction: 'all',
             name:'countries',
             height : 400,
+            delimiter : false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())
