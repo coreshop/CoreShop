@@ -27,24 +27,6 @@ use Pimcore\Cache;
 class TaxManagerFactory
 {
     /**
-     * get CacheKey for Address.
-     *
-     * @param Address $address
-     *
-     * @return string
-     */
-    private static function getCacheKey(Address $address)
-    {
-        return md5($address->getCountry() instanceof Country ? $address->getCountry()->getId() : ''.
-            ($address->getState() instanceof State ? $address->getState()->getId() : '').
-            ($address->getName() ? $address->getName() : '').
-            ($address->getVatNumber() ? $address->getVatNumber() : '').
-            ($address->getStreet() ? $address->getStreet() : '').
-            ($address->getCity() ? $address->getCity() : '').
-            ($address->getCompany() ? $address->getCompany() : ''));
-    }
-
-    /**
      * @param Address $address
      * @param $type
      *
@@ -52,7 +34,7 @@ class TaxManagerFactory
      */
     public static function getTaxManager(Address $address, $type)
     {
-        $cacheKey = 'coreshop_tax_manager_'.self::getCacheKey($address).'_'.$type;
+        $cacheKey = 'coreshop_tax_manager_'.$address->getCacheKey().'_'.$type;
 
         try {
             $taxManager = \Zend_Registry::get($cacheKey);

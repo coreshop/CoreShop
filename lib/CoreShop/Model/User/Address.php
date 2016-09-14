@@ -15,7 +15,9 @@
 namespace CoreShop\Model\User;
 
 use CoreShop\Exception\ObjectUnsupportedException;
+use CoreShop\Model\Country;
 use CoreShop\Model\Object\Fieldcollection\Data\AbstractData;
+use CoreShop\Model\State;
 
 /**
  * Class Address
@@ -29,6 +31,19 @@ class Address extends AbstractData
      * @var string
      */
     public static $pimcoreClass = 'Pimcore\\Model\\Object\\Fieldcollection\\Data\\CoreShopUserAddress';
+
+    /**
+     * @return string
+     */
+    public function getCacheKey() {
+        return md5($this->getCountry() instanceof Country ? $this->getCountry()->getId() : ''.
+            ($this->getState() instanceof State ? $this->getState()->getId() : '').
+            ($this->getName() ? $this->getName() : '').
+            ($this->getVatNumber() ? $this->getVatNumber() : '').
+            ($this->getStreet() ? $this->getStreet() : '').
+            ($this->getCity() ? $this->getCity() : '').
+            ($this->getCompany() ? $this->getCompany() : ''));
+    }
 
     /**
      * @return mixed

@@ -963,6 +963,21 @@ class Cart extends Base
     }
 
     /**
+     * @return string
+     */
+    public function getCacheKey() {
+        $fingerprint = $this->getId();
+
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof Cart\Item) {
+                $fingerprint .= $item->getAmount() . $item->getProduct()->getId();
+            }
+        }
+
+        return $fingerprint;
+    }
+
+    /**
      * @return Item[]
      *
      * @throws ObjectUnsupportedException

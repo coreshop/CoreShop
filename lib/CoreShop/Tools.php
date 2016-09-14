@@ -47,17 +47,11 @@ class Tools
         }
 
         if ($this->prepareCart()->getId()) {
-            $fingerprint .= $this->prepareCart()->getId();
-
-            foreach ($this->prepareCart()->getItems() as $item) {
-                if ($item instanceof Cart\Item) {
-                    $fingerprint .= $item->getAmount() . $item->getProduct()->getId();
-                }
-            }
+            $fingerprint .= $this->prepareCart()->getCacheKey();
         }
 
         if ($this->getDeliveryAddress() instanceof User\Address) {
-            $fingerprint .= $this->getDeliveryAddress()->getCountry()->getId();
+            $fingerprint .= $this->getDeliveryAddress()->getCacheKey();
         }
 
         if ($this->getCurrency() instanceof Currency) {

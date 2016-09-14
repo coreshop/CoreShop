@@ -54,18 +54,56 @@ class ShippingRule extends AbstractRule
      */
     public function checkValidity(Carrier $carrier, Cart $cart, Address $address)
     {
-        $valid = true;
+        $cacheKey = md5(\CoreShop::getTools()->getFingerprint() . $carrier->getId() . $address->getCacheKey() . $cart->getCacheKey() . $this->getId());
 
-        foreach ($this->getConditions() as $condition) {
-            if ($condition instanceof AbstractCondition) {
-                if (!$condition->checkCondition($carrier, $cart, $address, $this)) {
-                    $valid = false;
-                    break;
+        try {
+            $valid = \Zend_Registry::get($cacheKey);
+            if ($valid === false) {
+                throw new Exception('Validation in registry is null');
+            }
+
+            return $valid;
+        } catch (\Exception $e) {
+            try {
+                if(Cache::test($cacheKey)) {
+                    $valid = Cache::load($cacheKey);
+
+                    \Zend_Registry::set($cacheKey,  $valid ? 1 : 0);
                 }
+                else {
+                    $valid = true;
+
+                    foreach ($this->getConditions() as $condition) {
+                        if ($condition instanceof AbstractCondition) {
+                            if (!$condition->checkCondition($carrier, $cart, $address, $this)) {
+                                $valid = false;
+                                break;
+                            }
+                        }
+                    }
+
+
+                    \Zend_Registry::set($cacheKey, $valid ? 1 : 0);
+                    Cache::save($valid ? 1 : 0, $cacheKey, array($cacheKey, 'coreshop_carrier_shipping_rule'));
+                }
+
+                return $valid;
+            } catch (\Exception $e) {
+                \Logger::warning($e->getMessage());
             }
         }
 
-        return $valid;
+        return false;
+    }
+
+    /**
+     * save model to database.
+     */
+    public function save()
+    {
+        parent::save();
+
+        Cache::clearTag("coreshop_carrier_shipping_rule");
     }
 
     /**
