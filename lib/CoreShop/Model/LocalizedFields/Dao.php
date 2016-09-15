@@ -15,6 +15,7 @@
 namespace CoreShop\Model\LocalizedFields;
 
 use CoreShop\Model\Dao\AbstractDao;
+use Pimcore\Logger;
 use Pimcore\Model;
 use Pimcore\Model\Object;
 use Pimcore\Tool;
@@ -118,7 +119,7 @@ class Dao extends AbstractDao
                         $data[$key] = $insertData;
                     }
                 } else {
-                    \Logger::debug('Excluding untouchable query value for object [ '.$this->model->getId()." ]  key [ $key ] because it has not been loaded");
+                    Logger::debug('Excluding untouchable query value for object [ '.$this->model->getId()." ]  key [ $key ] because it has not been loaded");
                 }
             }
 
@@ -145,7 +146,7 @@ class Dao extends AbstractDao
                 }
             }
         } catch (\Exception $e) {
-            \Logger::error($e);
+            Logger::error($e);
             $this->createUpdateTable();
         }
     }
@@ -257,7 +258,7 @@ QUERY;
                 // execute
                 $this->db->query($viewQuery);
             } catch (\Exception $e) {
-                \Logger::error($e);
+                Logger::error($e);
             }
         }
     }

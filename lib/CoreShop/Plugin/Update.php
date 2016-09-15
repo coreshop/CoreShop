@@ -12,6 +12,7 @@
 
 namespace CoreShop\Plugin;
 
+use Pimcore\Logger;
 use Pimcore\Model\Tool\Setup;
 use Pimcore\Cache;
 use Pimcore\File;
@@ -207,7 +208,7 @@ class Update
                     $this->updateCoreShopBuild((int) $build['build']);
                 }
             } catch (\Exception $e) {
-                \Logger::error($e);
+                Logger::error($e);
             }
 
             $logs[] = array(
@@ -215,7 +216,7 @@ class Update
                 $this->dryRun ? '- dry run, no message - ' : ob_get_clean(),
             );
 
-            \Logger::info('CoreShop System Build implemented: '.$build['build']);
+            Logger::info('CoreShop System Build implemented: '.$build['build']);
         }
 
         return array(

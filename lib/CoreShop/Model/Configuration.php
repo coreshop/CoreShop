@@ -17,6 +17,7 @@ namespace CoreShop\Model;
 use CoreShop\Exception;
 use CoreShop\Model\Configuration\Listing;
 use CoreShop\Model\Index\Config;
+use Pimcore\Logger;
 use Pimcore\Tool;
 
 /**
@@ -102,7 +103,7 @@ class Configuration extends AbstractModel
                 $configurationEntry->setId(intval($id));
                 $configurationEntry->getDao()->getById();
             } catch (\Exception $e) {
-                \Logger::error($e);
+                Logger::error($e);
 
                 return null;
             }

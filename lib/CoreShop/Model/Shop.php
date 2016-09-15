@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use Pimcore\Cache;
+use Pimcore\Logger;
 use Pimcore\Model\Document;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
@@ -197,7 +198,7 @@ class Shop extends AbstractModel
 
                 return $object;
             } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
+                Logger::warning($e->getMessage());
             }
         }
 
@@ -246,7 +247,7 @@ class Shop extends AbstractModel
 
                 return $object;
             } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
+                Logger::warning($e->getMessage());
             }
         }
 

@@ -20,6 +20,7 @@ use CoreShop\Model\Carrier\ShippingRuleGroup;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
 use Pimcore\Db;
+use Pimcore\Logger;
 use Pimcore\Model\Asset;
 
 /**
@@ -178,7 +179,7 @@ class Carrier extends AbstractModel
                         if (\Pimcore\Tool::classExists($data['class'])) {
                             $class = $data['class'];
                         } else {
-                            \Logger::warning(sprintf("Carrier with ID %s has definied class '%s' which cannot be loaded.", $id, $data['class']));
+                            Logger::warning(sprintf("Carrier with ID %s has definied class '%s' which cannot be loaded.", $id, $data['class']));
                         }
                     }
 
@@ -193,7 +194,7 @@ class Carrier extends AbstractModel
 
                 return $carrier;
             } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
+                Logger::warning($e->getMessage());
             }
         }
 
@@ -313,7 +314,7 @@ class Carrier extends AbstractModel
 
                 return $cheapestProvider;
             } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
+                Logger::warning($e->getMessage());
             }
         }
 

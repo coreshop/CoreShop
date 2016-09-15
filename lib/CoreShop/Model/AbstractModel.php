@@ -18,6 +18,7 @@ use CoreShop\Exception;
 use CoreShop\Model\Listing\AbstractListing;
 use Pimcore\Cache;
 use Pimcore\File;
+use Pimcore\Logger;
 use Pimcore\Model;
 use Pimcore\Tool;
 
@@ -137,7 +138,7 @@ class AbstractModel extends Model\AbstractModel
 
                 return $object;
             } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
+                Logger::warning($e->getMessage());
             }
         }
 
@@ -184,7 +185,7 @@ class AbstractModel extends Model\AbstractModel
 
                 return $object;
             } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
+                Logger::warning($e->getMessage());
             }
         }
 

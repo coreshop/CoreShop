@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Tool\Wkhtmltopdf;
+use Pimcore\Logger;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Asset\Service;
 use Pimcore\Model\Object\AbstractObject;
@@ -96,7 +97,7 @@ class Invoice
                 return $invoice;
             }
         } catch (Exception $ex) {
-            \Logger::warn('wkhtmltopdf library not found, no invoice was generated');
+            Logger::warn('wkhtmltopdf library not found, no invoice was generated');
         }
 
         return false;
@@ -131,11 +132,11 @@ class Invoice
                 if (Tool::isValidLanguage($locale)) {
                     $translate->setLocale($locale);
                 } else {
-                    \Logger::error('You want to use an invalid language which is not defined in the system settings: '.$locale);
+                    Logger::error('You want to use an invalid language which is not defined in the system settings: '.$locale);
                     // fall back to the first (default) language defined
                     $languages = Tool::getValidLanguages();
                     if ($languages[0]) {
-                        \Logger::error("Using '".$languages[0]."' as a fallback, because the language '".$locale."' is not defined in system settings");
+                        Logger::error("Using '".$languages[0]."' as a fallback, because the language '".$locale."' is not defined in system settings");
                         $translate = new \Pimcore\Translate\Website($languages[0]); // reinit with new locale
                         $translate->setLocale($languages[0]);
                     } else {
@@ -146,8 +147,8 @@ class Invoice
                 // register the translator in \Zend_Registry with the key "\Zend_Translate" to use the translate helper for \Zend_View
                 \Zend_Registry::set('Zend_Translate', $translate);
             } catch (\Exception $e) {
-                \Logger::error('initialization of Pimcore_Translate failed');
-                \Logger::error($e);
+                Logger::error('initialization of Pimcore_Translate failed');
+                Logger::error($e);
             }
         }
 

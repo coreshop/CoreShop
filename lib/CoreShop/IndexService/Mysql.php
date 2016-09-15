@@ -18,6 +18,7 @@ use CoreShop\Model\Index;
 use CoreShop\Model\Product;
 use CoreShop\Model\Index\Config\Column\Mysql as Column;
 use Pimcore\Db;
+use Pimcore\Logger;
 
 /**
  * Class Mysql
@@ -139,7 +140,7 @@ class Mysql extends AbstractWorker
             try {
                 $this->doInsertData($preparedData['data']);
             } catch (\Exception $e) {
-                \Logger::warn('Error during updating index table: '.$e);
+                Logger::warn('Error during updating index table: '.$e);
             }
 
             try {
@@ -148,21 +149,21 @@ class Mysql extends AbstractWorker
                     $this->db->insert($this->getRelationTablename(), $rd);
                 }
             } catch (\Exception $e) {
-                \Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
+                Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
             }
         } else {
-            \Logger::info("Don't adding product ".$object->getId().' to index.');
+            Logger::info("Don't adding product ".$object->getId().' to index.');
 
             try {
                 $this->db->delete($this->getTablename(), 'o_id = '.$this->db->quote($object->getId()));
             } catch (\Exception $e) {
-                \Logger::warn('Error during updating index table: '.$e->getMessage(), $e);
+                Logger::warn('Error during updating index table: '.$e->getMessage(), $e);
             }
 
             try {
                 $this->db->delete($this->getRelationTablename(), 'src = '.$this->db->quote($object->getId()));
             } catch (\Exception $e) {
-                \Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
+                Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
             }
         }
     }

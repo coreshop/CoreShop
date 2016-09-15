@@ -23,6 +23,7 @@ use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use Pimcore\Cache;
 use Pimcore\Date;
+use Pimcore\Logger;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Object;
@@ -568,7 +569,7 @@ class Order extends Base
                     }
                 }
             } catch (\Exception $ex) {
-                \Logger::error($ex);
+                Logger::error($ex);
             }
         }
 

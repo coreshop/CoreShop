@@ -20,6 +20,7 @@ use CoreShop\Model\Configuration;
 use CoreShop\Model\Product;
 use CoreShop\Model\Shop;
 use Pimcore\Date;
+use Pimcore\Logger;
 use Pimcore\Model\Object;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
@@ -160,7 +161,7 @@ class Tools
         }
 
         if (!$currency instanceof Currency) {
-            \Logger::warn('No SYSTEM.BASE.CURRENCY found, so EURO is going to be used! Please set your Default Currency in CoreShop Settings');
+            Logger::warn('No SYSTEM.BASE.CURRENCY found, so EURO is going to be used! Please set your Default Currency in CoreShop Settings');
 
             $currency = Currency::getById(1); //TODO: Throw Exception because there is no base currency?
         }
@@ -400,7 +401,7 @@ class Tools
                 $country = Country::getById(Configuration::get('SYSTEM.BASE.COUNTRY'));
 
                 if (!$country instanceof Country) {
-                    \Logger::warn('No SYSTEM.BASE.COUNTRY found, so AUSTRIA is going to be used! Please set your Default Country in CoreShop Settings');
+                    Logger::warn('No SYSTEM.BASE.COUNTRY found, so AUSTRIA is going to be used! Please set your Default Country in CoreShop Settings');
                     $country = Country::getById(2);
                 }
             }
@@ -639,7 +640,7 @@ class Tools
         define("CORESHOP_TEMPLATE_RESOURCES", $templateResources);
 
         if (!is_dir(CORESHOP_TEMPLATE_PATH)) {
-            \Logger::critical(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
+            Logger::critical(sprintf("Template with name '%s' not found. (%s)", $template, CORESHOP_TEMPLATE_PATH));
         }
     }
 

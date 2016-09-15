@@ -14,6 +14,7 @@
 
 namespace Pimcore\Model\Document\Tag;
 
+use Pimcore\Logger;
 use Pimcore\Model;
 use Pimcore\Model\Document;
 use Pimcore\Model\Asset;
@@ -240,7 +241,7 @@ class Product extends Model\Document\Tag
             $el = Element\Service::getElementById($this->type, $this->id);
             if (!$el instanceof Element\ElementInterface) {
                 $sane = false;
-                \Logger::notice('Detected insane relation, removing reference to non existent '.$this->type.' with id ['.$this->id.']');
+                Logger::notice('Detected insane relation, removing reference to non existent '.$this->type.' with id ['.$this->id.']');
                 $this->id = null;
                 $this->type = null;
                 $this->o = null;

@@ -18,6 +18,7 @@ use CoreShop\Exception;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Currency;
 use Ivory\HttpAdapter\FileGetContentsHttpAdapter;
+use Pimcore\Logger;
 use Swap\Model\CurrencyPair;
 use Swap\Provider\AbstractProvider;
 use Swap\Swap;
@@ -86,7 +87,7 @@ class ExchangeRates
                 try {
                     $this->updateExchangeRateForCurrency($provider, $currency);
                 } catch (Exception $ex) {
-                    \Logger::err($ex);
+                    Logger::err($ex);
                 }
             }
         }

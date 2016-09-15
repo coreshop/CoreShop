@@ -25,6 +25,7 @@ use CoreShop\Model\User\Address;
 use CoreShop\Plugin;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Date;
+use Pimcore\Logger;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object\Fieldcollection;
 use Pimcore\Model\Object\Service;
@@ -835,7 +836,7 @@ class Cart extends Base
      */
     public function createOrder(Order\State $state, Payment $paymentModule, $totalPayed = 0, $language = null)
     {
-        \Logger::info('Create order for cart '.$this->getId());
+        Logger::info('Create order for cart '.$this->getId());
 
         $orderNumber = Order::getNextOrderNumber();
 
@@ -921,7 +922,7 @@ class Cart extends Base
 
         $timeDiff = time() - $lastMaintenance;
 
-        \Logger::log('CoreShop cart cleanup: start');
+        Logger::log('CoreShop cart cleanup: start');
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
         if ($timeDiff > 24 * 60 * 60) {
             $cleanUpParams = array();
@@ -950,14 +951,14 @@ class Cart extends Base
                     if (count($elements) > 0) {
                         foreach ($elements as $cart) {
                             $cleanUpCart->deleteCart($cart);
-                            \Logger::log('CoreShop cart cleanup: remove cart ('.$cart->getId().')');
+                            Logger::log('CoreShop cart cleanup: remove cart ('.$cart->getId().')');
                         }
                     }
 
                     Configuration::set('SYSTEM.CART.AUTO_CLEANUP.LAST_RUN', time());
                 }
             } catch (\Exception $e) {
-                \Logger::log('CoreShop cart cleanup error: '.$e->getMessage());
+                Logger::log('CoreShop cart cleanup error: '.$e->getMessage());
             }
         }
     }

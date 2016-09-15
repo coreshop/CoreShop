@@ -352,8 +352,13 @@ class CoreShop
     {
         $object = $e->getTarget();
         if ($object instanceof Product) {
-            $indexService = IndexService::getIndexService();
-            $indexService->updateIndex($object);
+            try {
+                $indexService = IndexService::getIndexService();
+                $indexService->updateIndex($object);
+            }
+            catch(\Exception $ex) {
+                \Pimcore\Logger::error($ex);
+            }
 
             $object->clearPriceCache();
         }
@@ -368,8 +373,13 @@ class CoreShop
     {
         $object = $e->getTarget();
         if ($object instanceof Product) {
-            $indexService = IndexService::getIndexService();
-            $indexService->deleteFromIndex($object);
+            try {
+                $indexService = IndexService::getIndexService();
+                $indexService->deleteFromIndex($object);
+            }
+            catch(\Exception $ex) {
+                \Pimcore\Logger::error($ex);
+            }
         }
     }
 

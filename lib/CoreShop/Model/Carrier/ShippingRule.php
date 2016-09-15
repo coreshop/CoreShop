@@ -22,6 +22,7 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Rules\AbstractRule;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
+use Pimcore\Logger;
 
 /**
  * Class ShippingRule
@@ -89,7 +90,7 @@ class ShippingRule extends AbstractRule
 
                 return $valid;
             } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
+                Logger::warning($e->getMessage());
             }
         }
 

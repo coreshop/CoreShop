@@ -19,6 +19,7 @@ use CoreShop\Model\Plugin\TaxManager as PluginTaxManager;
 use CoreShop\Model\TaxRule\Manager;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
+use Pimcore\Logger;
 
 /**
  * Class TaxManagerFactory
@@ -61,7 +62,7 @@ class TaxManagerFactory
 
                 return $taxManager;
             } catch (\Exception $e) {
-                \Logger::warning($e->getMessage());
+                Logger::warning($e->getMessage());
             }
         }
 

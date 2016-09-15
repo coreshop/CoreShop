@@ -20,6 +20,7 @@ use CoreShop\IndexService\Interpreter\AbstractInterpreter;
 use CoreShop\IndexService\Interpreter\RelationInterpreter;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
+use Pimcore\Logger;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Tool;
 
@@ -177,7 +178,7 @@ abstract class AbstractWorker
                         $data[$column->getName()] = ','.implode($data[$column->getName()], ',').',';
                     }
                 } catch (\Exception $e) {
-                    \Logger::err('Exception in CoreShopIndexService: '.$e->getMessage(), $e);
+                    Logger::err('Exception in CoreShopIndexService: '.$e->getMessage(), $e);
                 }
             }
         }

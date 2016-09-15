@@ -20,6 +20,7 @@ use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;
 use CoreShop\Model\Plugin\InstallPlugin;
 use CoreShop\Plugin\Install;
+use Pimcore\Logger;
 
 /**
  * Class Plugin
@@ -94,7 +95,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array('installer' => $install));
         } catch (Exception $e) {
-            \Logger::crit($e);
+            Logger::crit($e);
 
             return self::getTranslate()->_('coreshop_install_failed');
         }

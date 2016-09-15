@@ -80,7 +80,7 @@ class CoreShop_Admin_InstallController extends Admin
 
             $success = true;
         } catch (Exception $e) {
-            \Logger::crit($e);
+            \Pimcore\Logger::crit($e);
             throw $e;
             $success = false;
         }

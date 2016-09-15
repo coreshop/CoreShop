@@ -20,6 +20,7 @@ use CoreShop\Model\Index\Config\Column\Mysql as Column;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Pimcore\Db;
+use Pimcore\Logger;
 
 /**
  * Class Elasticsearch
@@ -100,7 +101,7 @@ class Elasticsearch extends AbstractWorker
         $result = $this->getElasticsearchClient()->indices()->exists(['index' => $this->getIndex()->getName()]);
         if(!$result) {
             $result = $this->getElasticsearchClient()->indices()->create(['index' => $this->getIndex()->getName(), 'body' => ['settings' => ["number_of_shards" => 5, "number_of_replicas" => 0]]]); //TODO: add to ui
-            \Logger::info('Creating new Index. Name: ' . $this->getIndex()->getName());
+            Logger::info('Creating new Index. Name: ' . $this->getIndex()->getName());
             if(!$result['acknowledged']) {
                 throw new \Exception("Index creation failed. IndexName: " . $this->getIndex()->getName());
             }
@@ -142,7 +143,7 @@ class Elasticsearch extends AbstractWorker
         try {
             $result = $this->getElasticsearchClient()->indices()->putMapping($params);
         } catch(\Exception $e) {
-            \Logger::info($e->getMessage());
+            Logger::info($e->getMessage());
 
         }
     }
@@ -196,7 +197,7 @@ class Elasticsearch extends AbstractWorker
 
                 $this->getElasticsearchClient()->index($params);
             } catch (\Exception $e) {
-                \Logger::warn('Error during updating index table: '.$e);
+                Logger::warn('Error during updating index table: '.$e);
             }
 
             /*try {
@@ -208,7 +209,7 @@ class Elasticsearch extends AbstractWorker
                 \Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
             }*/
         } else {
-            \Logger::info("Don't adding product ".$object->getId().' to index.');
+            Logger::info("Don't adding product ".$object->getId().' to index.');
 
             $this->deleteFromIndex($object);
         }
