@@ -80,6 +80,16 @@ class Item extends Base
     }
 
     /**
+     * Get Product Sales Price
+     *
+     * @param $withTax
+     * @return float
+     */
+    public function getProductSalesPrice($withTax) {
+        return $this->getProduct()->getSalesPrice($withTax);
+    }
+
+    /**
      * Get Products Wholesale Price
      *
      * @return float
@@ -95,6 +105,20 @@ class Item extends Base
      */
     public function getProductRetailPrice() {
         return $this->getProduct()->getRetailPrice();
+    }
+
+    /**
+     * @return float
+     */
+    public function getProductRetailPriceWithTax() {
+        return $this->getProduct()->getRetailPriceWithTax();
+    }
+
+    /**
+     * @return float
+     */
+    public function getProductRetailPriceWithoutTax() {
+        return $this->getProduct()->getRetailPriceWithoutTax();
     }
 
     /**
