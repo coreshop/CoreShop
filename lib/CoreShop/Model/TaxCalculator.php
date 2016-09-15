@@ -133,7 +133,7 @@ class TaxCalculator
      * @param float $price
      * @param bool  $asArray
      *
-     * @return array $taxes_amount
+     * @return float|array $taxes_amount
      */
     public function getTaxesAmount($price, $asArray = false)
     {

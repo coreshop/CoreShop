@@ -537,7 +537,7 @@ class Product extends Base
      *
      * @param bool $asArray
      *
-     * @return float
+     * @return float|array
      */
     public function getTaxAmount($asArray = false)
     {

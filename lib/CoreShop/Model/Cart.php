@@ -149,7 +149,7 @@ class Cart extends Base
     public function hasPhysicalItems()
     {
         foreach ($this->getItems() as $item) {
-            if ($item->getProduct()->getIsDownloadProduct() !== 'yes') {
+            if ($item->getIsDownloadProduct() !== 'yes') {
                 return true;
             }
         }
@@ -193,9 +193,9 @@ class Cart extends Base
 
         foreach ($this->getItems() as $item) {
             if ($useTaxes) {
-                $subtotal += $item->getAmount() * ($item->getProduct()->getPrice());
+                $subtotal += $item->getTotal();
             } else {
-                $subtotal += $item->getAmount() * ($item->getProduct()->getPrice(false));
+                $subtotal += $item->getTotal(false);
             }
         }
 
@@ -212,7 +212,7 @@ class Cart extends Base
         $subtotal = 0;
 
         foreach ($this->getItems() as $item) {
-            $subtotal += ($item->getAmount() * $item->getProduct()->getTaxAmount());
+            $subtotal += $item->getTotalTax();
         }
 
         return $subtotal;
@@ -237,7 +237,7 @@ class Cart extends Base
         };
 
         foreach ($this->getItems() as $item) {
-            $taxCalculator = $item->getProduct()->getTaxCalculator();
+            $taxCalculator = $item->getProductTaxCalculator();
 
             if ($taxCalculator instanceof TaxCalculator) {
                 $taxes = $taxCalculator->getTaxes();
@@ -246,7 +246,7 @@ class Cart extends Base
                     $addTax($tax);
                 }
 
-                $taxesAmount = $taxCalculator->getTaxesAmount($item->getProduct()->getPrice(false) * $item->getAmount(), true);
+                $taxesAmount = $taxCalculator->getTaxesAmount($item->getTotal(false), true);
 
                 foreach ($taxesAmount as $id => $amount) {
                     $usedTaxes[$id]['amount'] += $amount;
@@ -524,7 +524,7 @@ class Cart extends Base
         $weight = 0;
 
         foreach ($this->getItems() as $item) {
-            $weight += ($item->getAmount() * $item->getProduct()->getWeight());
+            $weight += $item->getWeight();
         }
 
         return $weight;

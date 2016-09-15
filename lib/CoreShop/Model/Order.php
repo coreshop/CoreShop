@@ -146,22 +146,22 @@ class Order extends Base
             $item->setPublished(true);
 
             $item->setProduct($cartItem->getProduct());
-            $item->setWholesalePrice($cartItem->getProduct()->getWholesalePrice());
-            $item->setRetailPrice($cartItem->getProduct()->getRetailPrice());
-            $item->setPrice($cartItem->getProduct()->getPrice());
-            $item->setPriceWithoutTax($cartItem->getProduct()->getPrice(false));
+            $item->setWholesalePrice($cartItem->getProductWholesalePrice());
+            $item->setRetailPrice($cartItem->getProductRetailPrice());
+            $item->setPrice($cartItem->getProductPrice());
+            $item->setPriceWithoutTax($cartItem->getProductPrice(false));
             $item->setAmount($cartItem->getAmount());
             $item->setExtraInformation($cartItem->getExtraInformation());
             $item->setIsGiftItem($cartItem->getIsGiftItem());
-            $item->setTotal(\CoreShop::getTools()->roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getPrice()));
-            $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getAmount() * $cartItem->getProduct()->getTaxAmount()));
+            $item->setTotal(\CoreShop::getTools()->roundPrice($cartItem->getTotal()));
+            $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getTotalTax()));
 
-            $productTaxes = $cartItem->getProduct()->getTaxCalculator();
+            $productTaxes = $cartItem->getProductTaxCalculator();
 
             if ($productTaxes instanceof TaxCalculator) {
                 $productTaxes = $productTaxes->getTaxes();
                 $itemTaxes = new Object\Fieldcollection();
-                $itemTaxAmounts = $cartItem->getProduct()->getTaxAmount(true);
+                $itemTaxAmounts = $cartItem->getProductTaxAmount(true);
 
                 foreach ($productTaxes as $tax) {
                     $itemTax = Order\Tax::create();
@@ -441,6 +441,8 @@ class Order extends Base
 
     /**
      * calculates the total weight of the cart.
+     *
+     * @todo: Total Weight should be stored in the OrderItem
      *
      * @return int
      */

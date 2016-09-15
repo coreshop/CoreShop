@@ -18,6 +18,7 @@ use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
+use CoreShop\Model\User\Address;
 use Pimcore\Model\Object;
 
 /**
@@ -41,12 +42,89 @@ class Item extends Base
     /**
      * Calculates the total for the CartItem.
      *
+     * @param $withTax boolean
+     *
      * @return mixed
      */
-    public function getTotal()
+    public function getTotal($withTax = true)
     {
-        return $this->getAmount() * $this->getProduct()->getPrice();
+        return $this->getAmount() * $this->getProductPrice($withTax);
     }
+
+    /**
+     * Get Cart Item Weight
+     *
+     * @return int
+     */
+    public function getWeight() {
+        return $this->getAmount() * $this->getProduct()->getWeight();
+    }
+
+    /**
+     * Get Cart Item is downloadable
+     *
+     * @return bool
+     */
+    public function getIsDownloadProduct() {
+        return $this->getProduct()->getIsDownloadProduct();
+    }
+
+    /**
+     * Get Product Price
+     *
+     * @param bool $withTax
+     * @return float|mixed
+     */
+    public function getProductPrice($withTax = true) {
+        return $this->getProduct()->getPrice($withTax);
+    }
+
+    /**
+     * Get Products Wholesale Price
+     *
+     * @return float
+     */
+    public function getProductWholesalePrice() {
+        return $this->getProduct()->getWholesalePrice();
+    }
+
+    /**
+     * Get Products Retail Price
+     *
+     * @return float
+     */
+    public function getProductRetailPrice() {
+        return $this->getProduct()->getRetailPrice();
+    }
+
+    /**
+     * Get Tax Amount for Cart Item
+     *
+     * @return float
+     */
+    public function getTotalTax() {
+       return $this->getAmount() * $this->getProductTaxAmount(false);
+    }
+
+    /**
+     * @param bool $asArray
+     * @return array|float
+     */
+    public function getProductTaxAmount($asArray = false)
+    {
+        return $this->getProduct()->getTaxAmount($asArray);
+    }
+
+    /**
+     * Get Products Tax Calculator
+     *
+     * @param Address|null $address
+     * @return bool|\CoreShop\Model\TaxCalculator
+     */
+    public function getProductTaxCalculator(Address $address = null) {
+        return $this->getProduct()->getTaxCalculator($address);
+    }
+
 
     /**
      * Get the Cart for this CartItem.
