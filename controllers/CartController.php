@@ -33,7 +33,7 @@ class CoreShop_CartController extends Action
 
         //Cart is not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect($this->view->url(array(), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url(array(), 'coreshop_index'));
         }
 
         $this->prepareCart();
@@ -169,7 +169,7 @@ class CoreShop_CartController extends Action
             }
         }
 
-        $this->_redirect($this->getParam('redirect') ? $this->getParam('redirect').'?error='.$error : $this->view->url(array('act' => 'list', 'error' => $error), 'coreshop_cart', true));
+        $this->_redirect($this->getParam('redirect') ? $this->getParam('redirect').'?error='.$error : \CoreShop::getTools()->url(array('act' => 'list', 'error' => $error), 'coreshop_cart', true));
     }
 
     public function removepriceruleAction()
@@ -184,7 +184,7 @@ class CoreShop_CartController extends Action
             }
         }
 
-        $this->_redirect($this->view->url(array('act' => 'list'), 'coreshop_cart'));
+        $this->_redirect(\CoreShop::getTools()->url(array('act' => 'list'), 'coreshop_cart'));
     }
 
     /**

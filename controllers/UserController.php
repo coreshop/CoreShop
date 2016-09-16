@@ -28,12 +28,12 @@ class CoreShop_UserController extends Action
 
         //Users are not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect($this->view->url(array(), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url(array(), 'coreshop_index'));
         }
 
         if ($this->getParam('action') != 'login' && $this->getParam('action') != 'register') {
             if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-                $this->_redirect($this->view->url(array('lang' => $this->language), 'coreshop_index'));
+                $this->_redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
                 exit;
             }
         }
@@ -92,10 +92,10 @@ class CoreShop_UserController extends Action
     public function loginAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-            $this->redirect($this->view->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
         }
 
-        $redirect = $this->getParam('_redirect', $this->view->url(array('act' => 'address'), 'coreshop_checkout'));
+        $redirect = $this->getParam('_redirect', \CoreShop::getTools()->url(array('act' => 'address'), 'coreshop_checkout'));
         $base = $this->getParam('_base');
 
         if ($this->getRequest()->isPost()) {
@@ -137,7 +137,7 @@ class CoreShop_UserController extends Action
     public function registerAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-            $this->redirect($this->view->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
         }
 
         if ($this->getRequest()->isPost()) {
@@ -218,7 +218,7 @@ class CoreShop_UserController extends Action
                 if (array_key_exists('_redirect', $params)) {
                     $this->redirect($params['_redirect']);
                 } else {
-                    $this->redirect($this->view->url(array('lang' => $this->view->language, 'act' => 'profile'), 'coreshop_user'));
+                    $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'profile'), 'coreshop_user'));
                 }
             } catch (\Exception $ex) {
                 if (array_key_exists('_error', $params)) {
@@ -236,7 +236,7 @@ class CoreShop_UserController extends Action
 
     public function addressAction()
     {
-        $this->view->redirect = $this->getParam('redirect', $this->view->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
+        $this->view->redirect = $this->getParam('redirect', \CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
         $update = $this->getParam('address');
         $this->view->isNew = false;
 
@@ -331,6 +331,6 @@ class CoreShop_UserController extends Action
             \CoreShop::getTools()->getUser()->setAddresses(\CoreShop::getTools()->getUser()->getAddresses());
         }
 
-        $this->_redirect($this->view->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
+        $this->_redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
     }
 }

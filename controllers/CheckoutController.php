@@ -27,11 +27,11 @@ class CoreShop_CheckoutController extends Action
 
         //Checkout is not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect($this->view->url(array(), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url(array(), 'coreshop_index'));
         }
 
         if (count($this->view->cart->getItems()) == 0 && $this->getParam('action') != 'thankyou') {
-            $this->_redirect($this->view->url(array('act' => 'list'), 'coreshop_cart'));
+            $this->redirect(\CoreShop::getTools()->url(array('act' => 'list'), 'coreshop_cart'));
         }
 
         if (!is_array($this->session->order)) {
@@ -46,7 +46,7 @@ class CoreShop_CheckoutController extends Action
         $user = CoreShop\Tool::getUser();
 
         if ($user instanceof \CoreShop\Model\User) {
-            $this->_redirect($this->view->url(array('act' => 'address'), 'coreshop_checkout'));
+            $this->redirect(\CoreShop::getTools()->url(array('act' => 'address'), 'coreshop_checkout'));
         }
 
         if ($this->getParam('error')) {
@@ -62,7 +62,7 @@ class CoreShop_CheckoutController extends Action
 
     public function registerAction()
     {
-        $this->view->redirect = $this->view->url(array('lang' => $this->view->language, 'act' => 'address'), 'coreshop_checkout');
+        $this->view->redirect = \CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'address'), 'coreshop_checkout');
 
         $this->_helper->viewRenderer('user/register', null, true);
     }
@@ -94,7 +94,7 @@ class CoreShop_CheckoutController extends Action
             //Reset Country in Session, now we use BillingAddressCountry
             unset($this->session->countryId);
 
-            $this->_redirect($this->view->url(array('act' => 'shipping'), 'coreshop_checkout'));
+            $this->redirect(\CoreShop::getTools()->url(array('act' => 'shipping'), 'coreshop_checkout'));
         }
 
         \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckout($this->cart, 3);
@@ -109,14 +109,14 @@ class CoreShop_CheckoutController extends Action
 
         //Download Article - no need for Shipping
         if (!$this->cart->hasPhysicalItems()) {
-            $this->_redirect($this->view->url(array('act' => 'payment'), 'coreshop_checkout'));
+            $this->redirect(\CoreShop::getTools()->url(array('act' => 'payment'), 'coreshop_checkout'));
         }
 
         $this->view->carriers = \CoreShop\Model\Carrier::getCarriersForCart($this->cart);
 
         if ($this->getRequest()->isPost()) {
             if (!$this->getParam('termsAndConditions', false)) {
-                $this->_redirect($this->view->url(array('act' => 'shipping', 'message' => 'Please check terms and conditions'), 'coreshop_checkout'));
+                $this->redirect(\CoreShop::getTools()->url(array('act' => 'shipping', 'message' => 'Please check terms and conditions'), 'coreshop_checkout'));
             }
 
             $carrier = $this->getParam('carrier', false);
@@ -135,7 +135,7 @@ class CoreShop_CheckoutController extends Action
                 $this->cart->setPaymentModule(null); //Reset PaymentModule, payment could not be available for this carrier
                 $this->cart->save();
 
-                $this->_redirect($this->view->url(array('act' => 'payment'), 'coreshop_checkout'));
+                $this->redirect(\CoreShop::getTools()->url(array('act' => 'payment'), 'coreshop_checkout'));
             }
         }
 
@@ -221,7 +221,7 @@ class CoreShop_CheckoutController extends Action
     protected function checkIsAllowed()
     {
         if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-            $this->_redirect($this->view->url(array('act' => 'index'), 'coreshop_checkout'));
+            $this->redirect(\CoreShop::getTools()->url(array('act' => 'index'), 'coreshop_checkout'));
             exit;
         }
     }

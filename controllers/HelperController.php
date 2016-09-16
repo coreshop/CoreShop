@@ -25,7 +25,7 @@ class CoreShop_HelperController extends Action
             $this->session->currencyId = $this->getParam('currency');
         }
 
-        $redirect = $this->getParam('redirect', $this->view->url(array('language' => $this->lang), 'coreshop_index'));
+        $redirect = $this->getParam('redirect', \CoreShop::getTools()->url(array('language' => $this->lang), 'coreshop_index'));
 
         $this->redirect($redirect);
     }

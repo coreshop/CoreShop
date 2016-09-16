@@ -25,8 +25,10 @@ use Pimcore\Model\Object;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
 use CoreShop\Model\User;
+use Pimcore\Model\Staticroute;
 use Pimcore\Tool\Session;
 use GeoIp2\Database\Reader;
+use Pimcore\View\Helper\Url;
 
 /**
  * Class Tools
@@ -34,6 +36,32 @@ use GeoIp2\Database\Reader;
  */
 class Tools
 {
+    /**
+     * @var Url
+     */
+    protected $urlViewHelper;
+
+    /**
+     * Tools constructor.
+     */
+    public function __construct()
+    {
+        $this->urlViewHelper = new Url();
+    }
+
+
+    /**
+     * assembles an url
+     *
+     * @param $userParams
+     * @param null $name
+     * @param bool $reset
+     * @param bool $encode
+     * @return string
+     */
+    public function url($userParams = [], $name = null, $reset = false, $encode = true) {
+        return $this->urlViewHelper->url($userParams, $name, $reset, $encode);
+    }
 
     /**
      * @return string
