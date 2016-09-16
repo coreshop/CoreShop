@@ -60,6 +60,18 @@ class Tools
      * @return string
      */
     public function url($userParams = [], $name = null, $reset = false, $encode = true) {
+
+        $results = \Pimcore::getEventManager()->trigger("coreshop.url", $this, [
+            "name" => $name,
+            "params" => $userParams,
+            "reset" => $reset,
+            "encode" => $encode
+        ]);
+
+        if ($results->count()) {
+            $userParams = $results->last();
+        }
+
         return $this->urlViewHelper->url($userParams, $name, $reset, $encode);
     }
 
