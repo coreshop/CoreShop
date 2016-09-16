@@ -34,11 +34,6 @@ class State extends AbstractModel
     protected $localizedValues = array('name');
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $name;
@@ -71,22 +66,6 @@ class State extends AbstractModel
         $list->setCondition('statusId = ?', array($this->getId()));
 
         return $list;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

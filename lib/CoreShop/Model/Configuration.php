@@ -44,11 +44,6 @@ class Configuration extends AbstractModel
     ];
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $key;
@@ -332,22 +327,6 @@ class Configuration extends AbstractModel
     public static function setSystemKeys($systemKeys)
     {
         self::$systemKeys = $systemKeys;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

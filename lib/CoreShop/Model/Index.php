@@ -23,11 +23,6 @@ use CoreShop\IndexService;
 class Index extends AbstractModel
 {
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $type;
@@ -61,22 +56,6 @@ class Index extends AbstractModel
      */
     public function getWorker() {
         return IndexService::getIndexService()->getWorker($this->getName());
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

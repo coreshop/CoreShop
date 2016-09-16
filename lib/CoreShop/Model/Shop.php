@@ -27,12 +27,6 @@ use Pimcore\Tool;
  */
 class Shop extends AbstractModel
 {
-
-    /**
-     * @var int
-     */
-    public $id;
-
     /**
      * @var string
      */
@@ -252,22 +246,6 @@ class Shop extends AbstractModel
         }
 
         throw new Exception("No default shop is configured!");
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

@@ -28,11 +28,6 @@ use Pimcore\Model\Document\Email;
 class Message extends AbstractModel
 {
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var
      */
     public $threadId;
@@ -91,22 +86,6 @@ class Message extends AbstractModel
         }
 
         parent::save();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

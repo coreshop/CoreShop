@@ -21,11 +21,6 @@ namespace CoreShop\Model;
 class Zone extends AbstractModel
 {
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $name;
@@ -34,22 +29,6 @@ class Zone extends AbstractModel
      * @var int
      */
     public $active;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return string

@@ -23,11 +23,6 @@ use CoreShop\Exception;
 class State extends AbstractModel
 {
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $isoCode;
@@ -83,22 +78,6 @@ class State extends AbstractModel
         $list->setCondition('countryId = ?', array($countryId));
 
         return $list->getData();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

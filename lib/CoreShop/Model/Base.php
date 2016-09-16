@@ -95,6 +95,15 @@ class Base extends Concrete
     }
 
     /**
+     * get cache key
+     *
+     * @return string
+     */
+    public function getCacheKey() {
+        return $this->getId();
+    }
+
+    /**
      * Admin Element Style.
      *
      * @return \Pimcore\Model\Element\AdminStyle

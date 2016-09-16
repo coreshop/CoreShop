@@ -33,11 +33,6 @@ class Contact extends AbstractModel
     protected $localizedValues = array('name');
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $name;
@@ -75,22 +70,6 @@ class Contact extends AbstractModel
         }
 
         return $threads;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

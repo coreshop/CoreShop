@@ -30,11 +30,6 @@ class Thread extends AbstractModel
     /**
      * @var int
      */
-    public $id;
-
-    /**
-     * @var int
-     */
     public $userId;
 
     /**
@@ -178,22 +173,6 @@ class Thread extends AbstractModel
         $list->setCondition('threadId = ?', array($this->getId()));
 
         return $list->load();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

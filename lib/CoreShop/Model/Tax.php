@@ -26,11 +26,6 @@ class Tax extends AbstractModel
     protected $localizedValues = array('name');
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var float
      */
     public $rate;
@@ -39,22 +34,6 @@ class Tax extends AbstractModel
      * @var bool
      */
     public $active;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @param string $language language

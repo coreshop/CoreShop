@@ -30,11 +30,6 @@ class Country extends AbstractModel
     protected static $isMultiShop = true;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $isoCode;
@@ -135,22 +130,6 @@ class Country extends AbstractModel
         preg_match_all($regex, $this->getAddressFormat(), $matches);
 
         return $matches[2];
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

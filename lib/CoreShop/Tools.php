@@ -84,7 +84,7 @@ class Tools
         $fingerprint = "";
 
         if ($user instanceof User) {
-            $fingerprint .= $user->getId();
+            $fingerprint .= $user->getCacheKey();
         }
 
         if ($this->prepareCart()->getId()) {
@@ -96,7 +96,7 @@ class Tools
         }
 
         if ($this->getCurrency() instanceof Currency) {
-            $fingerprint .= $this->getCurrency()->getId();
+            $fingerprint .= $this->getCurrency()->getCacheKey();
         }
 
         return $fingerprint;

@@ -51,11 +51,6 @@ class Carrier extends AbstractModel
     public static $rangeBehaviours = array(self::RANGE_BEHAVIOUR_LARGEST, self::RANGE_BEHAVIOUR_DEACTIVATE);
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $name;
@@ -559,22 +554,6 @@ class Carrier extends AbstractModel
         }
 
         return false;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

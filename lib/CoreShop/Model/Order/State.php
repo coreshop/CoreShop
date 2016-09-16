@@ -30,11 +30,6 @@ class State extends AbstractModel
     protected $localizedValues = array('emailDocument', 'name');
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $name;
@@ -133,22 +128,6 @@ class State extends AbstractModel
         //@TODO: Stock Management
 
         return true;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

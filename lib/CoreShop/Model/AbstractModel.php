@@ -29,6 +29,11 @@ use Pimcore\Tool;
 class AbstractModel extends Model\AbstractModel
 {
     /**
+     * @var int
+     */
+    public $id;
+
+    /**
      * Array of all localized field names.
      *
      * @var array
@@ -110,7 +115,7 @@ class AbstractModel extends Model\AbstractModel
         }
 
         $className = get_called_class();
-        $cacheKey = self::getCacheKey($className, $id . ($shopId ? '_' . $shopId : ''));
+        $cacheKey = self::getClassCacheKey($className, $id . ($shopId ? '_' . $shopId : ''));
 
         try {
             $object = \Zend_Registry::get($cacheKey);
@@ -157,7 +162,7 @@ class AbstractModel extends Model\AbstractModel
     public static function getByField($field, $value, $shopId = null)
     {
         $className = get_called_class();
-        $cacheKey = self::getCacheKey($className, $field . '_' . File::getValidFilename(str_replace('-', '_', $value)) . ($shopId ? $shopId : ''));
+        $cacheKey = self::getClassCacheKey($className, $field . '_' . File::getValidFilename(str_replace('-', '_', $value)) . ($shopId ? $shopId : ''));
 
         try {
             $object = \Zend_Registry::get($cacheKey);
@@ -178,7 +183,7 @@ class AbstractModel extends Model\AbstractModel
                     $object->getDao()->getByField($field, $value, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
-                    Cache::save($object, $cacheKey, array(self::getCacheKey(get_called_class(), $object->getId())));
+                    Cache::save($object, $cacheKey, array(self::getClassCacheKey(get_called_class(), $object->getId())));
                 } else {
                     \Zend_Registry::set($cacheKey, $object);
                 }
@@ -200,7 +205,7 @@ class AbstractModel extends Model\AbstractModel
      *
      * @return string
      */
-    protected static function getCacheKey($className, $append)
+    protected static function getClassCacheKey($className, $append)
     {
         return 'coreshop_'.str_replace('\\', '_', $className).'_'.$append;
     }
@@ -240,13 +245,36 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheKey() {
+        return static::getClassCacheKey(get_called_class(), $this->getId());
+    }
+
+    /**
      * save model to database.
      */
     public function save()
     {
         $this->getDao()->save();
 
-        $cacheKey = self::getCacheKey(get_called_class(), $this->getId());
+        $cacheKey = self::getClassCacheKey(get_called_class(), $this->getId());
 
         //unset object in cache
         Cache::clearTag($cacheKey);
@@ -261,7 +289,7 @@ class AbstractModel extends Model\AbstractModel
      */
     public function delete()
     {
-        $cacheKey = self::getCacheKey(get_called_class(), $this->getId());
+        $cacheKey = self::getClassCacheKey(get_called_class(), $this->getId());
 
         //unset object in cache
         Cache::clearTag($cacheKey);

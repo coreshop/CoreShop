@@ -24,11 +24,6 @@ class TaxRuleGroup extends AbstractModel
      * @var bool
      */
     protected static $isMultiShop = true;
-    
-    /**
-     * @var int
-     */
-    public $id;
 
     /**
      * @var string
@@ -93,23 +88,7 @@ class TaxRuleGroup extends AbstractModel
 
         return $listing->getData();
     }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
+    
     /**
      * @return string
      */

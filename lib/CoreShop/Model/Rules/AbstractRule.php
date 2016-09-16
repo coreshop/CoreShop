@@ -42,11 +42,6 @@ abstract class AbstractRule extends AbstractModel
     public static $type;
 
     /**
-     * @var int
-     */
-    public $id;
-
-    /**
      * @var string
      */
     public $name;
@@ -118,22 +113,6 @@ abstract class AbstractRule extends AbstractModel
         $class = get_called_class();
 
         return $class::$type;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

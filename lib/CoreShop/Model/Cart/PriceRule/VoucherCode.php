@@ -25,12 +25,6 @@ use Pimcore\Date;
  */
 class VoucherCode extends AbstractModel
 {
-
-    /**
-     * @var int
-     */
-    public $id;
-
     /**
      * @var string
      */
@@ -97,22 +91,6 @@ class VoucherCode extends AbstractModel
 
         $this->setUses($uses);
         $this->save();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

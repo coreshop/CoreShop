@@ -24,7 +24,7 @@ use CoreShop\Model\Product\Listing;
  * 
  * @todo: make more override-able
  */
-class Service extends AbstractModel
+class Service
 {
     const EMPTY_STRING = '##EMPTY##';
 

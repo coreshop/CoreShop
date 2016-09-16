@@ -25,11 +25,6 @@ class TaxRule extends AbstractModel
     /**
      * @var int
      */
-    public $id;
-
-    /**
-     * @var int
-     */
     public $taxRuleGroupId;
 
     /**
@@ -71,22 +66,6 @@ class TaxRule extends AbstractModel
      * @var int
      */
     public $behavior;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return int
