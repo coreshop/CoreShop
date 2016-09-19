@@ -27,7 +27,7 @@ class CoreShop_CheckoutController extends Action
 
         //Checkout is not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect(\CoreShop::getTools()->url(array(), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language), 'coreshop_index'));
         }
 
         if (count($this->view->cart->getItems()) == 0 && $this->getParam('action') != 'thankyou') {
@@ -43,10 +43,10 @@ class CoreShop_CheckoutController extends Action
 
     public function indexAction()
     {
-        $user = CoreShop\Tool::getUser();
+        $user = CoreShop::getTools()->getUser();
 
         if ($user instanceof \CoreShop\Model\User) {
-            $this->redirect(\CoreShop::getTools()->url(array('act' => 'address'), 'coreshop_checkout'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'address'), 'coreshop_checkout'));
         }
 
         if ($this->getParam('error')) {
@@ -94,7 +94,7 @@ class CoreShop_CheckoutController extends Action
             //Reset Country in Session, now we use BillingAddressCountry
             unset($this->session->countryId);
 
-            $this->redirect(\CoreShop::getTools()->url(array('act' => 'shipping'), 'coreshop_checkout'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'shipping'), 'coreshop_checkout'));
         }
 
         \CoreShop\Tracking\TrackingManager::getInstance()->trackCheckout($this->cart, 3);
@@ -109,14 +109,14 @@ class CoreShop_CheckoutController extends Action
 
         //Download Article - no need for Shipping
         if (!$this->cart->hasPhysicalItems()) {
-            $this->redirect(\CoreShop::getTools()->url(array('act' => 'payment'), 'coreshop_checkout'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'payment'), 'coreshop_checkout'));
         }
 
         $this->view->carriers = \CoreShop\Model\Carrier::getCarriersForCart($this->cart);
 
         if ($this->getRequest()->isPost()) {
             if (!$this->getParam('termsAndConditions', false)) {
-                $this->redirect(\CoreShop::getTools()->url(array('act' => 'shipping', 'message' => 'Please check terms and conditions'), 'coreshop_checkout'));
+                $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'shipping', 'message' => 'Please check terms and conditions'), 'coreshop_checkout'));
             }
 
             $carrier = $this->getParam('carrier', false);
@@ -135,7 +135,7 @@ class CoreShop_CheckoutController extends Action
                 $this->cart->setPaymentModule(null); //Reset PaymentModule, payment could not be available for this carrier
                 $this->cart->save();
 
-                $this->redirect(\CoreShop::getTools()->url(array('act' => 'payment'), 'coreshop_checkout'));
+                $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'payment'), 'coreshop_checkout'));
             }
         }
 
@@ -196,7 +196,7 @@ class CoreShop_CheckoutController extends Action
         //$this->cart->delete(); //Keep Cart for Statistics Purpose
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect('/'.$this->view->language);
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language), 'coreshop_index'));
         }
 
         $this->view->order = $order;
@@ -206,7 +206,7 @@ class CoreShop_CheckoutController extends Action
         unset($this->session->cart);
         unset($this->session->cartId);
 
-        if (CoreShop\Tool::getUser()->getIsGuest()) {
+        if (CoreShop::getTools()->getUser()->getIsGuest()) {
             \CoreShop::getTools()->unsetUser();
         }
 
@@ -221,7 +221,7 @@ class CoreShop_CheckoutController extends Action
     protected function checkIsAllowed()
     {
         if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-            $this->redirect(\CoreShop::getTools()->url(array('act' => 'index'), 'coreshop_checkout'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'index'), 'coreshop_checkout'));
             exit;
         }
     }
