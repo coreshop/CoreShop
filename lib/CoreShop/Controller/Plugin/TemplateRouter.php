@@ -30,10 +30,10 @@ class TemplateRouter extends \Zend_Controller_Plugin_Abstract
         $coreShopRequest = clone $request;
         if ($request->getModuleName() === 'CoreShop') {
             $frontController = \Zend_Controller_Front::getInstance();
-            $coreShopRequest->setModuleName('Default');
+            $coreShopRequest->setModuleName(PIMCORE_FRONTEND_MODULE);
 
             if ($frontController->getDispatcher()->isDispatchable($coreShopRequest)) {
-                $request->setModuleName('Default');
+                $request->setModuleName(PIMCORE_FRONTEND_MODULE);
             }
         }
     }

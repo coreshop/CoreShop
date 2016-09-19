@@ -125,10 +125,10 @@ class Action extends \Website\Controller\Action
         if ($request->getModuleName() === 'CoreShop') {
             $frontController = \Zend_Controller_Front::getInstance();
 
-            $request->setModuleName('Default');
+            $request->setModuleName(PIMCORE_FRONTEND_MODULE);
 
             if ($frontController->getDispatcher()->isDispatchable($request)) {
-                $this->getRequest()->setModuleName('Default');
+                $this->getRequest()->setModuleName(PIMCORE_FRONTEND_MODULE);
             }
         }
     }
