@@ -187,9 +187,9 @@ class CoreShop
      */
     public static function hook($name, $params = array())
     {
-        $results = \Pimcore::getEventManager()->trigger('coreshop.hook.'.$name, null, array());
-
         $params['language'] = static::getTools()->getLocale();
+
+        $results = \Pimcore::getEventManager()->trigger('coreshop.hook.'.$name, null, $params);
 
         if (count($results) > 0) {
             $return = array();
@@ -216,11 +216,11 @@ class CoreShop
      */
     public static function actionHook($name, $params = array())
     {
-        $results = \Pimcore::getEventManager()->trigger('coreshop.actionHook.'.$name, null, array(), function ($v) {
+        $params['language'] = static::getTools()->getLocale();
+
+        $results = \Pimcore::getEventManager()->trigger('coreshop.actionHook.'.$name, null, $params, function ($v) {
             return is_callable($v);
         });
-
-        $params['language'] = static::getTools()->getLocale();
 
         if ($results->stopped()) {
             foreach ($results as $result) {
