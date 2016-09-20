@@ -149,6 +149,9 @@ abstract class Payment implements AbstractPlugin
     {
         $params = array_merge($params, array("mod" => $module, "act" => $action, "lang" => (string) \Zend_Registry::get("Zend_Locale")));
 
-        return \CoreShop::getTools()->url($params, "coreshop_payment");
+        $url = \CoreShop::getTools()->url($params, "coreshop_payment");
+        $url = str_replace("/" . strtolower( $this->getName() ), "/" . $this->getName(), $url);
+
+        return $url;
     }
 }

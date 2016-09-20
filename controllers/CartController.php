@@ -169,7 +169,7 @@ class CoreShop_CartController extends Action
             }
         }
 
-        $this->_redirect($this->getParam('redirect') ? $this->getParam('redirect').'?error='.$error : \CoreShop::getTools()->url(array('act' => 'list', 'error' => $error), 'coreshop_cart', true));
+        $this->redirect($this->getParam('redirect') ? $this->getParam('redirect').'?error='.$error : \CoreShop::getTools()->url(array('act' => 'list', 'error' => $error), 'coreshop_cart', true));
     }
 
     public function removepriceruleAction()
@@ -184,7 +184,7 @@ class CoreShop_CartController extends Action
             }
         }
 
-        $this->_redirect(\CoreShop::getTools()->url(array('act' => 'list'), 'coreshop_cart'));
+        $this->redirect(\CoreShop::getTools()->url(array('act' => 'list'), 'coreshop_cart'));
     }
 
     /**

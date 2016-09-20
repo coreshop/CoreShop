@@ -28,12 +28,12 @@ class CoreShop_UserController extends Action
 
         //Users are not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect(\CoreShop::getTools()->url(array(), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
         }
 
         if ($this->getParam('action') != 'login' && $this->getParam('action') != 'register') {
             if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-                $this->_redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
+                $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
                 exit;
             }
         }
@@ -73,7 +73,7 @@ class CoreShop_UserController extends Action
                 $this->view->success = true;
 
                 if (array_key_exists('_redirect', $params)) {
-                    $this->_redirect($params['_redirect']);
+                    $this->redirect($params['_redirect']);
                 }
             } catch (\Exception $ex) {
                 $this->view->message = $ex->getMessage();
@@ -86,7 +86,7 @@ class CoreShop_UserController extends Action
         \CoreShop::getTools()->unsetUser();
         $this->session->cartId = null;
 
-        $this->_redirect('/'.$this->language.'/shop');
+        $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
     }
 
     public function loginAction()
@@ -119,7 +119,7 @@ class CoreShop_UserController extends Action
                             }
                         }
 
-                        $this->_redirect($redirect);
+                        $this->redirect($redirect);
                     }
                 } catch (Exception $ex) {
                     $this->view->message = $this->view->translate($ex->getMessage());
@@ -130,7 +130,7 @@ class CoreShop_UserController extends Action
         }
 
         if ($base) {
-            $this->_redirect($base.'?message='.$this->view->message);
+            $this->redirect($base.'?message='.$this->view->message);
         }
     }
 
@@ -331,6 +331,6 @@ class CoreShop_UserController extends Action
             \CoreShop::getTools()->getUser()->setAddresses(\CoreShop::getTools()->getUser()->getAddresses());
         }
 
-        $this->_redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
+        $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
     }
 }
