@@ -17,7 +17,6 @@ namespace CoreShop\Model\Order;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
-use CoreShop\Plugin;
 use CoreShop\Mail;
 use Pimcore\Model\Document;
 
@@ -90,7 +89,7 @@ class State extends AbstractModel
         }
 
         if ($this->getPaid()) {
-            //Plugin::actionHook("paymentConfirmation", array("order" => $order));
+            //\CoreShop::actionHook("paymentConfirmation", array("order" => $order));
         }
 
         if ($this->getInvoice()) {
@@ -123,7 +122,7 @@ class State extends AbstractModel
 
         $note->save();
 
-        Plugin::actionHook('orderstate.process.post', array('newOrderStatus' => $this, 'order' => $order));
+        \CoreShop::actionHook('orderstate.process.post', array('newOrderStatus' => $this, 'order' => $order));
 
         //@TODO: Stock Management
 

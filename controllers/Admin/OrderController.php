@@ -12,7 +12,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Plugin;
 use CoreShop\Controller\Action\Admin;
 use Pimcore\Model\Object;
 
@@ -100,7 +99,7 @@ class CoreShop_Admin_OrderController extends Admin
 
     public function getPaymentProvidersAction()
     {
-        $providers = Plugin::getPaymentProviders();
+        $providers = \CoreShop::getPaymentProviders();
         $result = array();
 
         foreach ($providers as $provider) {
@@ -128,7 +127,7 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
         }
 
-        $paymentProvider = Plugin::getPaymentProvider($paymentProviderName);
+        $paymentProvider = \CoreShop::getPaymentProvider($paymentProviderName);
 
         if ($paymentProvider instanceof \CoreShop\Model\Plugin\Payment) {
             $payedTotal = $order->getPayedTotal();

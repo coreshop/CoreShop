@@ -22,7 +22,6 @@ use CoreShop\Model\Plugin\Payment as PaymentPlugin;
 use CoreShop\Model\Plugin\Payment;
 use CoreShop\Model\PriceRule\Action\FreeShipping;
 use CoreShop\Model\User\Address;
-use CoreShop\Plugin;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Date;
 use Pimcore\Logger;
@@ -430,7 +429,7 @@ class Cart extends Base
      */
     public function getPaymentProvider()
     {
-        $paymentProvider = Plugin::getPaymentProvider($this->getPaymentModule());
+        $paymentProvider = \CoreShop::getPaymentProvider($this->getPaymentModule());
 
         return $paymentProvider;
     }
@@ -904,7 +903,7 @@ class Cart extends Base
         
         Mail::sendOrderMail($emailDocument, $order, $order->getOrderState(), true);
 
-        Plugin::actionHook('order.created', array('order' => $order));
+        \CoreShop::actionHook('order.created', array('order' => $order));
 
         return $order;
     }

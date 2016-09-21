@@ -20,7 +20,6 @@ use CoreShop\Model\Order\Item;
 use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
-use CoreShop\Plugin;
 use Pimcore\Cache;
 use Pimcore\Date;
 use Pimcore\Logger;
@@ -537,7 +536,7 @@ class Order extends Base
     {
         $paymentProvider = $this->getPaymentProvider();
 
-        return Plugin::getPaymentProvider($paymentProvider);
+        return \CoreShop::getPaymentProvider($paymentProvider);
     }
 
     /**

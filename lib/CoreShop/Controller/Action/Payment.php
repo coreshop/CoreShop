@@ -17,7 +17,6 @@ namespace CoreShop\Controller\Action;
 use CoreShop\Controller\Action;
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Order;
-use CoreShop\Plugin;
 use Pimcore\Model\Document;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 
@@ -64,7 +63,7 @@ class Payment extends Action
     public function getModule()
     {
         if (is_null($this->module)) {
-            $this->module = Plugin::getPaymentProvider($this->getParam('module'));
+            $this->module = \CoreShop::getPaymentProvider($this->getParam('module'));
         }
 
         return $this->module;

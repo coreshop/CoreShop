@@ -13,7 +13,6 @@
  */
 
 use CoreShop\Controller\Action;
-use CoreShop\Plugin;
 use CoreShop\Model\Plugin\Payment;
 
 /**
@@ -147,7 +146,7 @@ class CoreShop_CheckoutController extends Action
     {
         $this->checkIsAllowed();
 
-        $this->view->provider = Plugin::getPaymentProviders($this->cart);
+        $this->view->provider = \CoreShop::getPaymentProviders($this->cart);
 
         if ($this->getRequest()->isPost()) {
             $paymentProvider = $this->getParam('payment_provider', array());
