@@ -84,7 +84,7 @@ class Wkhtmltopdf
     {
         $tmpHtmlFile = PIMCORE_TEMPORARY_DIRECTORY.'/'.uniqid().'.htm';
         file_put_contents($tmpHtmlFile, $string);
-        $httpSource = Tool::getHostUrl().str_replace($_SERVER['DOCUMENT_ROOT'], '', $tmpHtmlFile);
+        $httpSource = rtrim(Tool::getHostUrl(), '/') . '/' .str_replace($_SERVER['DOCUMENT_ROOT'], '', $tmpHtmlFile);
 
         return array('absolutePath' => $httpSource, 'relativePath' => $tmpHtmlFile);
     }
