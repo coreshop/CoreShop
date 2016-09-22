@@ -136,7 +136,7 @@ class AbstractModel extends Model\AbstractModel
                     $object->getDao()->getById($id, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
-                    Cache::save($object, $cacheKey, array($cacheKey));
+                    Cache::save($object, $cacheKey, array($cacheKey, $object->getCacheKey()));
                 } else {
                     \Zend_Registry::set($cacheKey, $object);
                 }
@@ -183,7 +183,7 @@ class AbstractModel extends Model\AbstractModel
                     $object->getDao()->getByField($field, $value, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
-                    Cache::save($object, $cacheKey, array(self::getClassCacheKey(get_called_class(), $object->getId())));
+                    Cache::save($object, $cacheKey, $object->getCacheKey());
                 } else {
                     \Zend_Registry::set($cacheKey, $object);
                 }

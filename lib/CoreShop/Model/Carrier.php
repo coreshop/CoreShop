@@ -22,6 +22,7 @@ use Pimcore\Cache;
 use Pimcore\Db;
 use Pimcore\Logger;
 use Pimcore\Model\Asset;
+use Pimcore\Tool;
 
 /**
  * Class Carrier
@@ -150,7 +151,7 @@ class Carrier extends AbstractModel
             return null;
         }
 
-        $cacheKey = 'coreshop_carrier_'.$id;
+        $cacheKey = self::getClassCacheKey(get_called_class(), $id);
 
         try {
             $carrier = \Zend_Registry::get($cacheKey);
@@ -171,18 +172,21 @@ class Carrier extends AbstractModel
 
                     $class = get_called_class();
                     if (is_array($data) && $data['class']) {
-                        if (\Pimcore\Tool::classExists($data['class'])) {
+                        if (Tool::classExists($data['class'])) {
                             $class = $data['class'];
                         } else {
                             Logger::warning(sprintf("Carrier with ID %s has definied class '%s' which cannot be loaded.", $id, $data['class']));
                         }
                     }
 
+                    /**
+                     * @var $carrier static
+                     */
                     $carrier = new $class();
                     $carrier->getDao()->getById($id);
 
                     \Zend_Registry::set($cacheKey, $carrier);
-                    Cache::save($carrier, $cacheKey);
+                    Cache::save($carrier, $cacheKey, array($carrier->getCacheKey()));
                 } else {
                     \Zend_Registry::set($cacheKey, $carrier);
                 }
