@@ -14,77 +14,71 @@
 
 namespace CoreShop\Model;
 
+use CoreShop\Model\Cart\Item;
+use CoreShop\Model\Cart\PriceRule;
+use CoreShop\Model\PriceRule\Condition\AbstractCondition;
+use CoreShop\Model\Product\AbstractProductPriceRule;
+use CoreShop\Model\Product\SpecificPrice;
+use CoreShop\Model\User\Address;
+use Pimcore\Cache;
+use Pimcore\Model\Asset;
+use Pimcore\Model\Object;
+use Pimcore\Model\Asset\Image;
+use CoreShop\Exception\ObjectUnsupportedException;
+use CoreShop\Tool\Service;
+
 /**
  * Class Manufacturer
  * @package CoreShop\Model
+ *
+ * @method static Object\Listing\Concrete getByName ($value, $limit = 0)
  */
-class Manufacturer extends AbstractModel
+class Manufacturer extends Base
 {
     /**
-     * @var bool
-     */
-    protected static $isMultiShop = true;
-
-    /**
+     * Pimcore Object Class.
+     *
      * @var string
      */
-    public $name;
-
-    /**
-     * @var string
-     */
-    public $image;
-
-    /**
-     * @var int[]
-     */
-    public $shopIds;
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopManufacturer';
 
     /**
      * @return string
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getName()
     {
-        return $this->name;
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
      * @param string $name
+     *
+     * @throws ObjectUnsupportedException
      */
     public function setName($name)
     {
-        $this->name = $name;
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * @return string
+     * @return Image|null
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getImage()
     {
-        return $this->image;
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * @param string $image
+     * @param Image $image
+     *
+     * @throws ObjectUnsupportedException
      */
     public function setImage($image)
     {
-        $this->image = $image;
-    }
-
-    /**
-     * @return \int[]
-     */
-    public function getShopIds()
-    {
-        return $this->shopIds;
-    }
-
-    /**
-     * @param \int[] $shopIds
-     */
-    public function setShopIds($shopIds)
-    {
-        $this->shopIds = $shopIds;
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 }

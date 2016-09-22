@@ -158,6 +158,7 @@ $orderItemClass = $install->createClass("CoreShopOrderItem");
 $paymentClass = $install->createClass("CoreShopPayment");
 $orderClass = $install->createClass("CoreShopOrder");
 $customerGroupClass = $install->createClass("CoreShopCustomerGroup");
+$customerGroupClass = $install->createClass("CoreShopManufacturer");
 
 /*$coreShopFolder = $install->createFolders();
 $install->createCustomView($coreShopFolder, array(

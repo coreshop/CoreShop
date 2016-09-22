@@ -45,7 +45,6 @@ pimcore.plugin.coreshop.global = {
         this._createStore('coreshop_pricerules', 'price-rule');
         this._createStore('coreshop_indexes', 'indexes');
         this._createStore('coreshop_product_filters', 'filter');
-        this._createStore('coreshop_manufacturers', 'manufacturer');
         this._createStore('coreshop_states', 'state');
         this._createStore('coreshop_messaging_contacts', 'messaging-contact');
         this._createStore('coreshop_messaging_thread_states', 'messaging-thread-state');

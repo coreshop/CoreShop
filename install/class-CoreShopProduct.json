@@ -2,8 +2,8 @@
 	"description":null,
 	"parentClass":"CoreShop\\Model\\Product",
 	"useTraits":null,
-	"allowInherit":false,
-	"allowVariants":false,
+	"allowInherit":true,
+	"allowVariants":true,
 	"showVariants":false,
 	"layoutDefinitions":{
 		"fieldtype":"panel",
@@ -285,13 +285,29 @@
 								"visibleSearch":false
 							},
 							{
-								"fieldtype":"coreShopManufacturer",
-								"phpdocType":"CoreShop\\Model\\Manufacturer",
-								"queryColumnType":"int(11)",
-								"columnType":"int(11)",
-								"options":null,
+								"fieldtype":"href",
 								"width":"",
-								"defaultValue":null,
+								"assetUploadPath":"",
+								"relationType":true,
+								"queryColumnType":{
+									"id":"int(11)",
+									"type":"enum('document','asset','object')"
+								},
+								"phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
+								"objectsAllowed":true,
+								"assetsAllowed":false,
+								"assetTypes":[
+
+								],
+								"documentsAllowed":false,
+								"documentTypes":[
+
+								],
+								"lazyLoading":false,
+								"classes":[
+									"CoreShopManufacturer"
+
+								],
 								"name":"manufacturer",
 								"title":"Manufacturer",
 								"tooltip":"",
@@ -302,7 +318,7 @@
 								"style":"",
 								"permissions":null,
 								"datatype":"data",
-								"relationType":false,
+								"columnType":null,
 								"invisible":false,
 								"visibleGridView":false,
 								"visibleSearch":false
@@ -909,6 +925,7 @@
 								],
 								"lazyLoading":false,
 								"classes":[
+
 								],
 								"name":"images",
 								"title":"Images",
@@ -1019,7 +1036,7 @@
 								"fieldtype":"objectbricks",
 								"phpdocType":"\\Pimcore\\Model\\Object\\Objectbrick",
 								"allowedTypes":[
-									
+									"CoreShopDimensionTest"
 								],
 								"name":"variants",
 								"title":"Variants",

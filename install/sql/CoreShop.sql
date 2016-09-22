@@ -457,7 +457,6 @@ VALUES
   ('coreshop_permission_countries'),
   ('coreshop_permission_filters'),
   ('coreshop_permission_states'),
-  ('coreshop_permission_manufacturers'),
   ('coreshop_permission_indexes'),
   ('coreshop_permission_messaging_contact'),
   ('coreshop_permission_messaging_thread_state'),
@@ -496,13 +495,6 @@ CREATE TABLE `coreshop_product_filters` (
   `index` int(11) NULL
 );
 
-DROP TABLE IF EXISTS `coreshop_manufacturers`;
-CREATE TABLE `coreshop_manufacturers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(255) NOT NULL,
-  `image` int(11) NULL
-);
-
 DROP TABLE IF EXISTS `coreshop_states`;
 CREATE TABLE `coreshop_states` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -512,14 +504,6 @@ CREATE TABLE `coreshop_states` (
   `countryId` int,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `coreshop_manufacturers`;
-CREATE TABLE `coreshop_manufacturers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `image` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `coreshop_messaging_contact`;
 CREATE TABLE `coreshop_messaging_contact` (
@@ -599,13 +583,6 @@ CREATE TABLE `coreshop_carriers_shops` (
 
 DROP TABLE IF EXISTS `coreshop_customer_groups_shops`;
 CREATE TABLE `coreshop_customer_groups_shops` (
-  `oId` int(11) NOT NULL,
-  `shopId` int(11) NOT NULL,
-  PRIMARY KEY (`oId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `coreshop_manufacturers_shops`;
-CREATE TABLE `coreshop_manufacturers_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)

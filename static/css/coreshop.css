@@ -271,10 +271,6 @@
     background: url(/plugins/CoreShop/static/img/flat/monitor.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_manufacturers, .pimcore_icon_coreShopManufacturer, .pimcore_icon_coreShopManufacturerMultiselect {
-    background: url(/plugins/CoreShop/static/img/flat/manufacturer.svg) center center no-repeat !important;
-}
-
 .coreshop_icon_state, .pimcore_icon_coreShopState {
     background: url(/plugins/CoreShop/static/img/flat/state.svg) center center no-repeat !important;
 }
