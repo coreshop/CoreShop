@@ -27,7 +27,7 @@ class CoreShop_Admin_ShopController extends Admin
         // check permissions
         $notRestrictedActions = array('list');
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_currencies');
+            $this->checkPermission('coreshop_permission_shops');
         }
     }
     

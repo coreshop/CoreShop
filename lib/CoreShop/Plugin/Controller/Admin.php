@@ -30,7 +30,7 @@ class Admin extends \CoreShop\Controller\Action\Admin
         $notRestrictedActions = array();
 
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_extensions');
+            $this->checkPermission('coreshop_permission_plugins');
         }
     }
 }

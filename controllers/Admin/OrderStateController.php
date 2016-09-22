@@ -27,7 +27,7 @@ class CoreShop_Admin_OrderStateController extends Admin
         // check permissions
         $notRestrictedActions = array('list');
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_orderStates');
+            $this->checkPermission('coreshop_permission_order_states');
         }
     }
 

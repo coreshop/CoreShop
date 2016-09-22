@@ -67,7 +67,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
                     var priceRulesMenu = [];
 
-                    if (user.isAllowed('coreshop_permission_priceRules')) {
+                    if (user.isAllowed('coreshop_permission_price_rules')) {
                         priceRulesMenu.push({
                             text: t('coreshop_cart_pricerules'),
                             iconCls: 'coreshop_icon_price_rule',
@@ -75,7 +75,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         });
                     }
 
-                    if (user.isAllowed('coreshop_permission_productPriceRules')) {
+                    if (user.isAllowed('coreshop_permission_product_price_rules')) {
                         priceRulesMenu.push({
                             text: t('coreshop_product_pricerules'),
                             iconCls: 'coreshop_icon_price_rule',
@@ -178,7 +178,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         }
                     });
 
-                    if (user.isAllowed('coreshop_permission_orderStates')) {
+                    if (user.isAllowed('coreshop_permission_order_states')) {
                         ordersMenu.push({
                             text: t('coreshop_orderstates'),
                             iconCls: 'coreshop_icon_order_states',

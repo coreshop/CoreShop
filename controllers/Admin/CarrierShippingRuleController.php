@@ -27,7 +27,7 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
         // check permissions
         $notRestrictedActions = array('list');
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            //TODO: $this->checkPermission("coreshop_permission_productPriceRules");
+            $this->checkPermission("coreshop_permission_carriers");
         }
     }
 

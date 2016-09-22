@@ -448,12 +448,11 @@ VALUES
   ('coreshop_permission_carriers'),
   ('coreshop_permission_zones'),
   ('coreshop_permission_settings'),
-  ('coreshop_permission_priceRules'),
-  ('coreshop_permission_orderStates'),
+  ('coreshop_permission_price_rules'),
+  ('coreshop_permission_order_states'),
   ('coreshop_permission_currencies'),
   ('coreshop_permission_taxes'),
   ('coreshop_permission_tax_rules'),
-  ('coreshop_permission_customer_groups'),
   ('coreshop_permission_plugins'),
   ('coreshop_permission_countries'),
   ('coreshop_permission_filters'),
@@ -462,7 +461,8 @@ VALUES
   ('coreshop_permission_indexes'),
   ('coreshop_permission_messaging_contact'),
   ('coreshop_permission_messaging_thread_state'),
-  ('coreshop_permission_productPriceRules');
+  ('coreshop_permission_product_price_rules'),
+  ('coreshop_permission_shops');
 
 DROP TABLE IF EXISTS `coreshop_product_specificprice`;
 CREATE TABLE `coreshop_product_specificprice` (
