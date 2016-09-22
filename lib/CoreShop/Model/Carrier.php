@@ -278,7 +278,7 @@ class Carrier extends AbstractModel
      */
     public static function getCheapestCarrierForCart(Cart $cart, Address $address = null)
     {
-        $cacheKey = 'cheapest_carrier_' - $cart->getId();
+        $cacheKey = static::getClassCacheKey(get_called_class(), "cheapest_" . $cart->getId());
 
         try {
             $cheapestProvider = \Zend_Registry::get($cacheKey);
