@@ -217,6 +217,11 @@ class CoreShop_CheckoutController extends Action
         $this->view->headTitle("Payment Error");
     }
 
+    public function canceledAction()
+    {
+        $this->view->headTitle("Payment Canceled");
+    }
+
     protected function checkIsAllowed()
     {
         if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
