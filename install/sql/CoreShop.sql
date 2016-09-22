@@ -462,7 +462,6 @@ VALUES
   ('coreshop_permission_indexes'),
   ('coreshop_permission_messaging_contact'),
   ('coreshop_permission_messaging_thread_state'),
-  ('coreshop_permission_productSpecificPrices'),
   ('coreshop_permission_productPriceRules');
 
 DROP TABLE IF EXISTS `coreshop_product_specificprice`;
