@@ -13,7 +13,9 @@
 
 pimcore.registerNS('pimcore.plugin.coreshop.product.specificprice.object');
 pimcore.registerNS('pimcore.plugin.coreshop.product.specificprice.object.item');
-pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore.plugin.coreshop.product.specificprice.item, {
+pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore.plugin.coreshop.rules.item, {
+
+    iconCls : 'coreshop_icon_price_rule',
 
     getPanel: function () {
         this.panel = new Ext.TabPanel({
@@ -33,5 +35,65 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
         this.panel = this.getPanel();
 
         this.parentPanel.getTabPanel().add(this.panel);
+    },
+
+    getSettings: function () {
+        var data = this.data;
+
+        this.settingsForm = Ext.create('Ext.form.Panel', {
+            iconCls: 'coreshop_icon_settings',
+            title: t('settings'),
+            bodyStyle: 'padding:10px;',
+            autoScroll: true,
+            border:false,
+            items: [{
+                xtype: 'textfield',
+                name: 'name',
+                fieldLabel: t('name'),
+                width: 250,
+                value: data.name
+            }, {
+                xtype: 'numberfield',
+                name: 'priority',
+                fieldLabel: t('coreshop_priority'),
+                value: this.data.priority ? this.data.priority : 0,
+                width : 250
+            }, {
+                xtype: 'checkbox',
+                name: 'inherit',
+                fieldLabel: t('coreshop_inherit'),
+                checked: this.data.inherit == '1'
+            }]
+        });
+
+        return this.settingsForm;
+    },
+
+    getSaveData : function () {
+        var saveData = {};
+
+        // general settings
+        saveData['id'] = this.data.id;
+        saveData['settings'] = this.settingsForm.getForm().getFieldValues();
+        saveData['conditions'] = this.conditions.getConditionsData();
+        saveData['actions'] = this.actions.getActionsData();
+
+        return saveData;
+    },
+
+    isDirty : function() {
+        if(this.settingsForm.form.monitor && this.settingsForm.getForm().isDirty()) {
+            return true;
+        }
+
+        if(this.conditions.isDirty()) {
+            return true;
+        }
+
+        if(this.actions.isDirty()) {
+            return true;
+        }
+
+        return false;
     }
 });
