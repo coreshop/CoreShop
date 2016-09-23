@@ -288,6 +288,11 @@ class CoreShop_Admin_OrderController extends Admin
         }
 
         $jsonOrder = $order->getObjectVars();
+
+        if($jsonOrder['items'] === null) {
+            $jsonOrder['items'] = [];
+        }
+
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
         $jsonOrder['invoice'] = $order->getProperty("invoice");
         $jsonOrder['address'] = [
