@@ -24,12 +24,14 @@ class CoreShop_CheckoutController extends Action
     {
         parent::preDispatch();
 
+        $allowedActions = array('confirmation');
+
         //Checkout is not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
             $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language), 'coreshop_index', true));
         }
 
-        if (count($this->view->cart->getItems()) == 0 && $this->getParam('action') != 'thankyou') {
+        if (count($this->view->cart->getItems()) == 0 && !in_array($this->getParam('action'), $allowedActions)) {
             $this->redirect(\CoreShop::getTools()->url(array('act' => 'list'), 'coreshop_cart', true));
         }
 

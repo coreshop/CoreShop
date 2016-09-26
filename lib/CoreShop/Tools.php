@@ -18,6 +18,7 @@ use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Product;
+use CoreShop\Model\Order;
 use CoreShop\Model\Shop;
 use Pimcore\Date;
 use Pimcore\Logger;
@@ -345,6 +346,16 @@ class Tools
         }
 
         if ($cart instanceof Cart) {
+            //cart does already have a order, reset it!
+            if( $cart->getOrder() instanceof Order) {
+                //reset cartobj first
+                $cartSession->cartObj = null;
+                $cartSession->cartId = null;
+                $cart = Cart::prepare();
+                $cartSession->cartObj = $cart;
+                return $cart;
+            }
+
             if ($cart->getUser() === null && count($cart->getItems()) && $this->getUser() instanceof User) {
                 $cart->setUser($this->getUser());
                 $cart->save();
@@ -355,6 +366,7 @@ class Tools
 
         $cart = Cart::prepare();
         $cartSession->cartObj = $cart;
+        $cartSession->cartId = null;
 
         return $cart;
     }
