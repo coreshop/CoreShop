@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":"CoreShop\\Model\\Cart",
+  "parentClass":"\\CoreShop\\Model\\Cart",
   "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,
@@ -15,7 +15,7 @@
     "title":null,
     "width":null,
     "height":null,
-    "collapsible":null,
+    "collapsible":false,
     "collapsed":null,
     "bodyStyle":null,
     "datatype":"layout",
@@ -77,7 +77,9 @@
                     "relationType":true,
                     "lazyLoading":false,
                     "classes":[
-                        "CoreShopCartItem"
+                      {
+                        "classes":"CoreShopCartItem"
+                      }
                     ],
                     "name":"items",
                     "title":"Items",
@@ -168,7 +170,7 @@
                     "mandatory":false,
                     "noteditable":true,
                     "index":false,
-                    "locked":null,
+                    "locked":false,
                     "style":"",
                     "permissions":null,
                     "datatype":"data",
@@ -196,7 +198,7 @@
                     "permissions":null,
                     "datatype":"data",
                     "relationType":false,
-                    "invisible":true,
+                    "invisible":false,
                     "visibleGridView":false,
                     "visibleSearch":false
                   },
@@ -221,7 +223,9 @@
                     ],
                     "lazyLoading":true,
                     "classes":[
-                        "CoreShopOrder"
+                      {
+                        "classes":"CoreShopOrder"
+                      }
                     ],
                     "name":"order",
                     "title":"Order",
@@ -267,7 +271,7 @@
                     "queryColumnType":"int(11)",
                     "columnType":"int(11)",
                     "options":null,
-                    "width":null,
+                    "width":"",
                     "defaultValue":null,
                     "name":"shop",
                     "title":"Shop",
@@ -275,7 +279,7 @@
                     "mandatory":false,
                     "noteditable":false,
                     "index":false,
-                    "locked":null,
+                    "locked":false,
                     "style":"",
                     "permissions":null,
                     "datatype":"data",
@@ -372,7 +376,9 @@
                     ],
                     "lazyLoading":false,
                     "classes":[
-                        "CoreShopUser"
+                      {
+                        "classes":"CoreShopUser"
+                      }
                     ],
                     "name":"user",
                     "title":"User",
@@ -390,17 +396,30 @@
                     "visibleSearch":false
                   },
                   {
-                    "fieldtype":"fieldcollections",
-                    "phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
-                    "allowedTypes":[
-                      "CoreShopUserAddress"
+                    "fieldtype":"href",
+                    "width":"",
+                    "assetUploadPath":"",
+                    "relationType":true,
+                    "queryColumnType":{
+                      "id":"int(11)",
+                      "type":"enum('document','asset','object')"
+                    },
+                    "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
+                    "objectsAllowed":true,
+                    "assetsAllowed":false,
+                    "assetTypes":[
+
+                    ],
+                    "documentsAllowed":false,
+                    "documentTypes":[
+
                     ],
                     "lazyLoading":true,
-                    "maxItems":1,
-                    "disallowAddRemove":false,
-                    "disallowReorder":false,
-                    "collapsed":false,
-                    "collapsible":false,
+                    "classes":[
+                      {
+                        "classes":"CoreShopUserAddress"
+                      }
+                    ],
                     "name":"shippingAddress",
                     "title":"Shipping Address",
                     "tooltip":"",
@@ -412,24 +431,35 @@
                     "permissions":null,
                     "datatype":"data",
                     "columnType":null,
-                    "queryColumnType":null,
-                    "relationType":false,
                     "invisible":false,
                     "visibleGridView":false,
                     "visibleSearch":false
                   },
                   {
-                    "fieldtype":"fieldcollections",
-                    "phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
-                    "allowedTypes":[
-                      "CoreShopUserAddress"
+                    "fieldtype":"href",
+                    "width":"",
+                    "assetUploadPath":"",
+                    "relationType":true,
+                    "queryColumnType":{
+                      "id":"int(11)",
+                      "type":"enum('document','asset','object')"
+                    },
+                    "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
+                    "objectsAllowed":true,
+                    "assetsAllowed":false,
+                    "assetTypes":[
+
+                    ],
+                    "documentsAllowed":false,
+                    "documentTypes":[
+
                     ],
                     "lazyLoading":true,
-                    "maxItems":1,
-                    "disallowAddRemove":false,
-                    "disallowReorder":false,
-                    "collapsed":false,
-                    "collapsible":false,
+                    "classes":[
+                      {
+                        "classes":"CoreShopUserAddress"
+                      }
+                    ],
                     "name":"billingAddress",
                     "title":"Billing Address",
                     "tooltip":"",
@@ -441,8 +471,6 @@
                     "permissions":null,
                     "datatype":"data",
                     "columnType":null,
-                    "queryColumnType":null,
-                    "relationType":false,
                     "invisible":false,
                     "visibleGridView":false,
                     "visibleSearch":false
@@ -457,7 +485,7 @@
         "locked":false
       }
     ],
-    "locked":null
+    "locked":false
   },
   "icon":null,
   "previewUrl":null,

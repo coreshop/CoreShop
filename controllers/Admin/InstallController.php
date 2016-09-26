@@ -35,7 +35,6 @@ class CoreShop_Admin_InstallController extends Admin
             $install->installMessagingMails();
             $install->installMessagingContacts();
 
-            $install->createFieldCollection('CoreShopUserAddress');
             $install->createFieldCollection('CoreShopOrderTax');
             $install->createFieldCollection('CoreShopPriceRuleItem');
 
@@ -46,6 +45,7 @@ class CoreShop_Admin_InstallController extends Admin
             $cartItemClass = $install->createClass('CoreShopCartItem');
             $userClass = $install->createClass('CoreShopUser');
             $customerGroupClass = $install->createClass('CoreShopCustomerGroup');
+            $customerGroupClass = $install->createClass('CoreShopUserAddress');
 
             $orderItemClass = $install->createClass('CoreShopOrderItem');
             $paymentClass = $install->createClass('CoreShopPayment');

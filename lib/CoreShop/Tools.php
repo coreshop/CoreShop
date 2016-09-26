@@ -278,9 +278,11 @@ class Tools
         }
 
         if ($user instanceof User) {
-            if ($user->getAddresses() instanceof Object\Fieldcollection) {
-                if ($user->getAddresses()->get(0) instanceof User\Address) {
-                    return $user->getAddresses()->get(0);
+            if (is_array($user->getAddresses()) && count($user->getAddresses()) > 0) {
+                $addresses = $user->getAddresses();
+
+                if($addresses[0] instanceof User\Address) {
+                    return $addresses[0];
                 }
             }
         }
@@ -402,7 +404,7 @@ class Tools
 
         if ($cart instanceof Cart) {
             if (count($cart->getBillingAddress()) > 0) {
-                $address = $cart->getBillingAddress()->get(0);
+                $address = $cart->getBillingAddress();
 
                 if ($address instanceof User\Address) {
                     $country = $address->getCountry();
@@ -415,7 +417,8 @@ class Tools
                 $user = $this->getUser();
 
                 if (count($user->getAddresses()) > 0) {
-                    $country = $user->getAddresses()->get(0)->getCountry();
+                    $addresses = $user->getAddresses();
+                    $country = $addresses[0]->getCountry();
                 }
             }
         }

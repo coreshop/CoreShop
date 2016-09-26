@@ -101,6 +101,16 @@ class User extends Base
     }
 
     /**
+     * get folder for order
+     *
+     * @return Object\Folder
+     */
+    public function getPathForAddresses()
+    {
+        return Object\Service::createFolderByPath($this->getFullPath() . "/addresses");
+    }
+
+    /**
      * Auth User.
      *
      * @param $password

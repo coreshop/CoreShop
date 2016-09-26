@@ -464,10 +464,8 @@ class Order extends Base
      */
     public function getCustomerShippingAddress()
     {
-        $address = $this->getShippingAddress()->getItems();
-
-        if (count($address) > 0) {
-            return $address[0];
+        if ($this->getShippingAddress() instanceof Address) {
+            return $this->getShippingAddress();
         }
 
         return false;
@@ -480,10 +478,8 @@ class Order extends Base
      */
     public function getCustomerBillingAddress()
     {
-        $address = $this->getBillingAddress()->getItems();
-
-        if (count($address) > 0) {
-            return $address[0];
+        if ($this->getBillingAddress() instanceof Address) {
+            return $this->getBillingAddress();
         }
 
         return false;

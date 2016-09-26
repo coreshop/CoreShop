@@ -72,8 +72,6 @@ class CoreShop_CheckoutController extends Action
     {
         $this->checkIsAllowed();
 
-        $user = \CoreShop::getTools()->getUser();
-
         if ($this->getRequest()->isPost()) {
             $shippingAddress = $this->getParam('shipping-address');
             $billingAddress = $this->getParam('billing-address');
@@ -82,14 +80,8 @@ class CoreShop_CheckoutController extends Action
                 $billingAddress = $this->getParam('shipping-address');
             }
 
-            $fieldCollectionShipping = new \Pimcore\Model\Object\Fieldcollection();
-            $fieldCollectionShipping->add($user->findAddressByName($shippingAddress));
-
-            $fieldCollectionBilling = new \Pimcore\Model\Object\Fieldcollection();
-            $fieldCollectionBilling->add($user->findAddressByName($billingAddress));
-
-            $this->cart->setShippingAddress($fieldCollectionShipping);
-            $this->cart->setBillingAddress($fieldCollectionBilling);
+            $this->cart->setShippingAddress(\CoreShop\Model\User\Address::getById($shippingAddress));
+            $this->cart->setBillingAddress(\CoreShop\Model\User\Address::getById($billingAddress));
             $this->cart->save();
 
             //Reset Country in Session, now we use BillingAddressCountry

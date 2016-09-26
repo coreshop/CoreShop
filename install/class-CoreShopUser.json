@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":"CoreShop\\Model\\User",
+  "parentClass":"\\CoreShop\\Model\\User",
   "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,
@@ -15,7 +15,7 @@
     "title":null,
     "width":null,
     "height":null,
-    "collapsible":null,
+    "collapsible":false,
     "collapsed":null,
     "bodyStyle":null,
     "datatype":"layout",
@@ -196,17 +196,26 @@
             "visibleSearch":false
           },
           {
-            "fieldtype":"fieldcollections",
-            "phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
-            "allowedTypes":[
-              "CoreShopUserAddress"
+            "fieldtype":"multihref",
+            "width":"",
+            "height":"",
+            "maxItems":"",
+            "assetUploadPath":"",
+            "queryColumnType":"text",
+            "phpdocType":"array",
+            "relationType":true,
+            "objectsAllowed":true,
+            "assetsAllowed":false,
+            "assetTypes":[
+
+            ],
+            "documentsAllowed":false,
+            "documentTypes":[
             ],
             "lazyLoading":false,
-            "maxItems":"",
-            "disallowAddRemove":false,
-            "disallowReorder":false,
-            "collapsed":false,
-            "collapsible":false,
+            "classes":[
+                "CoreShopUserAddress"
+            ],
             "name":"addresses",
             "title":"Addresses",
             "tooltip":"",
@@ -218,8 +227,6 @@
             "permissions":null,
             "datatype":"data",
             "columnType":null,
-            "queryColumnType":null,
-            "relationType":false,
             "invisible":false,
             "visibleGridView":false,
             "visibleSearch":false
@@ -291,7 +298,7 @@
         "locked":false
       }
     ],
-    "locked":null
+    "locked":false
   },
   "icon":null,
   "previewUrl":null,

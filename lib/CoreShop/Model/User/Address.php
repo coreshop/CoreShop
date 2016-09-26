@@ -15,6 +15,7 @@
 namespace CoreShop\Model\User;
 
 use CoreShop\Exception\ObjectUnsupportedException;
+use CoreShop\Model\Base;
 use CoreShop\Model\Country;
 use CoreShop\Model\Object\Fieldcollection\Data\AbstractData;
 use CoreShop\Model\State;
@@ -23,14 +24,14 @@ use CoreShop\Model\State;
  * Class Address
  * @package CoreShop\Model\User
  */
-class Address extends AbstractData
+class Address extends Base
 {
     /**
      * Pimcore Object Class.
      *
      * @var string
      */
-    public static $pimcoreClass = 'Pimcore\\Model\\Object\\Fieldcollection\\Data\\CoreShopUserAddress';
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopUserAddress';
 
     /**
      * @return string

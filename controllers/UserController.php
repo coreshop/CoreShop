@@ -185,31 +185,41 @@ class CoreShop_UserController extends Action
                     }
                 }
 
-                $addresses = new Object\Fieldcollection();
-
                 \CoreShop\Model\User::validate($userParams); //Throws Exception if failing
                 \CoreShop\Model\User\Address::validate($addressParams); //Throws Exception if failing
-
-                $address = \CoreShop\Model\User\Address::create();
-                $address->setValues($addressParams);
-                $address->setCountry(Country::getById($addressParams['country']));
-
-                $addresses->add($address);
-
-                if ($isGuest) {
-                    //Set billing and shipping address in cart
-                    $this->cart->setBillingAddress(clone $addresses);
-                    $this->cart->setShippingAddress(clone $addresses);
-                    $this->cart->save();
-                }
 
                 $user = \CoreShop\Model\User::create();
                 $user->setKey($key);
                 $user->setPublished(true);
                 $user->setParent(Pimcore\Model\Object\Service::createFolderByPath($folder));
                 $user->setValues($userParams);
+                $user->save();
+
+                $address = \CoreShop\Model\User\Address::create();
+                $address->setValues($addressParams);
+                $address->setCountry(Country::getById($addressParams['country']));
+                $address->setParent($user->getPathForAddresses());
+                $address->setKey($address->getName() ? $address->getName() : $address->getFirstname() . ' ' . $address->getLastname());
+                $address->setKey(Object\Service::getUniqueKey($address));
+                $address->save();
+
+                $addresses = $user->getAddresses();
+
+                if(!is_array($addresses)) {
+                    $addresses = [];
+                }
+
+                $addresses[] = $address;
+
                 $user->setAddresses($addresses);
                 $user->save();
+
+                if ($isGuest) {
+                    //Set billing and shipping address in cart
+                    $this->cart->setBillingAddress($address);
+                    $this->cart->setShippingAddress($address);
+                    $this->cart->save();
+                }
 
                 \Pimcore::getEventManager()->trigger('coreshop.user.postAdd', $this, array('request' => $this->getRequest(), 'user' => $user));
 
@@ -237,12 +247,13 @@ class CoreShop_UserController extends Action
     public function addressAction()
     {
         $this->view->redirect = $this->getParam('redirect', \CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
-        $update = $this->getParam('address');
+        $update = intval($this->getParam('address'));
         $this->view->isNew = false;
 
         foreach (\CoreShop::getTools()->getUser()->getAddresses() as $address) {
-            if ($address->getName() === $update) {
+            if ($address->getId() === $update) {
                 $this->view->address = $address;
+                break;
             }
         }
 
@@ -278,28 +289,18 @@ class CoreShop_UserController extends Action
 
                 $addresses = \CoreShop::getTools()->getUser()->getAddresses();
 
-                if (!$addresses instanceof Object\Fieldcollection) {
-                    $addresses = new Object\Fieldcollection();
-                }
-
-                if ($update) {
-                    for ($i = 0; $i < count(\CoreShop::getTools()->getUser()->getAddresses()); ++$i) {
-                        if (\CoreShop::getTools()->getUser()->getAddresses()->get($i)->getName() == $update) {
-                            //\CoreShop::getTools()->getUser()->getAddresses()->remove($i);
-                            break;
-                        }
-                    }
+                if (!is_array($addresses)) {
+                    $addresses = [];
                 }
 
                 $this->view->address->setValues($addressParams);
-                //TODO: Check if country exists and is valid
                 $this->view->address->setCountry(Country::getById($addressParams['country']));
 
                 if ($this->view->isNew) {
-                    $addresses->add($this->view->address);
+                    $addresses[] = $this->view->address;
+                    \CoreShop::getTools()->getUser()->setAddresses($addresses);
                 }
 
-                \CoreShop::getTools()->getUser()->setAddresses($addresses);
                 \CoreShop::getTools()->getUser()->save();
 
                 if (array_key_exists('_redirect', $params)) {
@@ -315,20 +316,21 @@ class CoreShop_UserController extends Action
 
     public function deleteaddressAction()
     {
-        $address = $this->getParam('address');
+        $addressId = $this->getParam('address');
+        $address = null;
         $i = -1;
 
         foreach (\CoreShop::getTools()->getUser()->getAddresses() as $a) {
             ++$i;
 
-            if ($a->getName() === $address) {
+            if ($a->getName() === $addressId) {
+                $address = $a;
                 break;
             }
         }
 
-        if ($i >= 0) {
-            \CoreShop::getTools()->getUser()->getAddresses()->remove($i);
-            \CoreShop::getTools()->getUser()->setAddresses(\CoreShop::getTools()->getUser()->getAddresses());
+        if ($address instanceof \CoreShop\Model\User\Address) {
+            $address->delete();
         }
 
         $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));

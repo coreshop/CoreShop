@@ -772,12 +772,8 @@ class Cart extends Base
      */
     public function getCustomerShippingAddress()
     {
-        if ($this->getShippingAddress()) {
-            $address = $this->getShippingAddress()->getItems();
-
-            if (count($address) > 0) {
-                return $address[0];
-            }
+        if ($this->getShippingAddress() instanceof Address) {
+            return $this->getShippingAddress();
         }
 
         return false;
@@ -790,12 +786,8 @@ class Cart extends Base
      */
     public function getCustomerBillingAddress()
     {
-        if ($this->getBillingAddress()) {
-            $address = $this->getBillingAddress()->getItems();
-
-            if (count($address) > 0) {
-                return $address[0];
-            }
+        if ($this->getBillingAddress() instanceof Address) {
+            return $this->getBillingAddress();
         }
 
         return false;
@@ -857,8 +849,6 @@ class Cart extends Base
         $order->setPublished(true);
         $order->setLang($language);
         $order->setCustomer($this->getUser());
-        $order->setShippingAddress($this->getShippingAddress());
-        $order->setBillingAddress($this->getBillingAddress());
         $order->setPaymentProviderToken($paymentModule->getIdentifier());
         $order->setPaymentProvider($paymentModule->getName());
         $order->setPaymentProviderDescription($paymentModule->getDescription());
@@ -889,6 +879,15 @@ class Cart extends Base
         $order->setSubtotalWithoutTax($this->getSubtotal(false));
         $order->setSubtotalTax($this->getSubtotalTax());
         $order->save();
+
+        if($this->getShippingAddress() instanceof Address) {
+            $order->setShippingAddress($this->copyAddress($order, $this->getShippingAddress(), "shipping"));
+        }
+
+        if($this->getBillingAddress() instanceof Address) {
+            $order->setBillingAddress($this->copyAddress($order, $this->getBillingAddress(), "billing"));
+        }
+
         $order->importCart($this);
 
         if ($totalPayed > 0) {
@@ -907,6 +906,27 @@ class Cart extends Base
 
         return $order;
     }
+
+    /**
+     * Copy Address to order
+     *
+     * @param Order $order
+     * @param Address|null $address
+     * @param string $type
+     * @return Address
+     */
+    public function copyAddress(Order $order, Address $address = null, $type = "shipping") {
+        Service::loadAllObjectFields($address);
+
+        $newAddress = clone $address;
+        $newAddress->setId(null);
+        $newAddress->setParent(Service::createFolderByPath($order->getFullPath() . "/addresses/"));
+        $newAddress->setKey($type);
+        $newAddress->save();
+
+        return $newAddress;
+    }
+
     /**
      * maintenance job.
      */
