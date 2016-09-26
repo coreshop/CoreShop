@@ -26,11 +26,11 @@ class CoreShop_CheckoutController extends Action
 
         //Checkout is not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language), 'coreshop_index', true));
         }
 
         if (count($this->view->cart->getItems()) == 0 && $this->getParam('action') != 'thankyou') {
-            $this->redirect(\CoreShop::getTools()->url(array('act' => 'list'), 'coreshop_cart'));
+            $this->redirect(\CoreShop::getTools()->url(array('act' => 'list'), 'coreshop_cart', true));
         }
 
         if (!is_array($this->session->order)) {
