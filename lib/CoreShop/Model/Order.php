@@ -331,7 +331,7 @@ class Order extends Base
         $this->setTotalTax($totalTax);
 
         //Recalculate detailed Taxes
-        if ($this instanceof Object\CoreShopOrder) {
+        if ($this instanceof self) {
             if ($this->getPaymentFeeTaxRate() > 0) {
                 $addTax($this->getPaymentFeeTaxRate(), $this->getPaymentFeeTax());
             }
