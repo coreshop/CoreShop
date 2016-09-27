@@ -11,8 +11,8 @@ $db->query("UPDATE users_permission_definitions SET `key`='coreshop_permission_p
 $db->query("UPDATE users_permission_definitions SET `key`='coreshop_permission_order_states' WHERE `key`='coreshop_permission_orderStates'");
 
 $install = new \CoreShop\Plugin\Install();
-$install->createClass('CoreShopProduct');
-$install->createClass('CoreShopManufacturer');
+$install->createClass('CoreShopProduct', true);
+$install->createClass('CoreShopManufacturer', true);
 
 if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/manufacturer.tmp")) {
     $mapping = [];

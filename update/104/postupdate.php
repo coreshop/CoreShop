@@ -1,8 +1,10 @@
 <?php
 
 $install = new \CoreShop\Plugin\Install();
-$install->createClass('CoreShopUserAddress');
-$install->createClass('CoreShopUser');
+$install->createClass('CoreShopUserAddress', true);
+$install->createClass('CoreShopUser', true);
+$install->createClass('CoreShopOrder', true);
+$install->createClass('CoreShopCart', true);
 
 if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/addresses.tmp")) {
     try {
