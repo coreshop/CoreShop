@@ -52,6 +52,8 @@ class Mysql extends AbstractWorker
     {
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename()."` (
           `o_id` int(11) NOT NULL default '0',
+          `o_virtualProductId` int(11) NOT NULL,
+          `o_virtualProductActive` TINYINT(1) NOT NULL,
           `o_classId` int(11) NOT NULL,
           `o_type` varchar(20) NOT NULL,
           `categoryIds` varchar(255) NOT NULL,
@@ -98,6 +100,7 @@ class Mysql extends AbstractWorker
 
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getRelationTablename()."` (
           `src` int(11) NOT NULL default '0',
+          `src_virtualProductId` int(11) NOT NULL,
           `dest` int(11) NOT NULL,
           `fieldname` varchar(255) COLLATE utf8_bin NOT NULL,
           `type` varchar(20) COLLATE utf8_bin NOT NULL,
@@ -286,6 +289,6 @@ class Mysql extends AbstractWorker
      */
     protected function getSystemAttributes()
     {
-        return array('o_id', 'o_classId', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops');
+        return array('o_id', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops');
     }
 }
