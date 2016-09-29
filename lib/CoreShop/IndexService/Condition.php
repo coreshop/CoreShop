@@ -90,7 +90,7 @@ class Condition {
      * @return Condition
      */
     public static function concat($fieldName, $conditions, $operator) {
-        return new Condition($fieldName, "concat-", array("operator" => $operator, "conditions" => $conditions));
+        return new Condition($fieldName, "concat", array("operator" => $operator, "conditions" => $conditions));
     }
 
     /**
