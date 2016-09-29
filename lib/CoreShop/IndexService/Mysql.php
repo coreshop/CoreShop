@@ -258,11 +258,11 @@ class Mysql extends AbstractWorker
                 $values = $condition->getValues();
                 $conditions = [];
 
-                foreach ($values['conditions'] as $cond) {
+                foreach ($values["conditions"] as $cond) {
                     $conditions[] = $this->renderCondition($cond);
                 }
 
-                $rendered = implode(' ' . trim($values['operator']) . ' ', $conditions);
+                $rendered = "(" . implode(" " . trim($values['operator']) . " ", $conditions) . ")";
                 break;
 
             default:
