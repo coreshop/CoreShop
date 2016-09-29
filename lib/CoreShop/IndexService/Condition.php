@@ -94,6 +94,18 @@ class Condition {
     }
 
     /**
+     * Like Condition (%)
+     *
+     * @param $fieldName
+     * @param $value
+     * @param $patternPosition ("left", "right", "both")
+     * @return Condition
+     */
+    public static function like($fieldName, $value, $patternPosition) {
+        return new Condition($fieldName, "like", array("value" => $value, "pattern" => $patternPosition));
+    }
+
+    /**
      * @return string
      */
     public function getType()

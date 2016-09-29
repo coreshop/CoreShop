@@ -225,6 +225,28 @@ class Mysql extends AbstractWorker
                 $rendered = 'TRIM(`'.$condition->getFieldName().'`) != '.Db::get()->quote($condition->getValues());
                 break;
 
+            case "like":
+                $values = $condition->getValues();
+                $pattern = $values["pattern"];
+
+                $value = $values["value"];
+                $patternValue = '';
+
+                switch($pattern) {
+                    case "left":
+                        $patternValue = '%' . $value;
+                        break;
+                    case "right":
+                        $patternValue = $value . '%';
+                        break;
+                    case "both":
+                        $patternValue = '%' . $value . '%';
+                        break;
+                }
+
+                $rendered = 'TRIM(`'.$condition->getFieldName().'`) LIKE ' . Db::get()->quote($patternValue);
+                break;
+
             case "range":
                 $values = $condition->getValues();
 
@@ -240,9 +262,7 @@ class Mysql extends AbstractWorker
                     $conditions[] = $this->renderCondition($cond);
                 }
 
-                $rendered = implode($values['operator'], $conditions);
-
-
+                $rendered = implode(' ' . trim($values['operator']) . ' ', $conditions);
                 break;
 
             default:
