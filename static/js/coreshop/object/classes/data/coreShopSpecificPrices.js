@@ -47,7 +47,7 @@ pimcore.object.classes.data.coreShopSpecificPrices = Class.create(pimcore.plugin
         return 'coreshop';
     },
 
-    getIconClass: function () {debugger;
+    getIconClass: function () {
         return 'coreshop_icon_specific_prices';
     }
 });
