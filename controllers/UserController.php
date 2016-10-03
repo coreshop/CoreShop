@@ -295,6 +295,7 @@ class CoreShop_UserController extends Action
 
                 $this->view->address->setValues($addressParams);
                 $this->view->address->setCountry(Country::getById($addressParams['country']));
+                $this->view->address->save();
 
                 if ($this->view->isNew) {
                     $addresses[] = $this->view->address;
