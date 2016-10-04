@@ -897,10 +897,15 @@ class Cart extends Base
         $state->processStep($order);
         
         //Send Confirmation to customer
-        $emailDocument = "/" . $order->getLang() . Configuration::get("SYSTEM.MAIL.CONFIRMATION");
-        $emailDocument = Document::getByPath($emailDocument);
+        $orderMail = Configuration::get("SYSTEM.MAIL.CONFIRMATION." . $order->getLang());
         
-        Mail::sendOrderMail($emailDocument, $order, $order->getOrderState(), true);
+        if($orderMail) {
+            $emailDocument = Document::getByPath($orderMail);
+
+            if($emailDocument instanceof Document\Email) {
+                Mail::sendOrderMail($emailDocument, $order, $order->getOrderState(), true);
+            }
+        }
 
         \CoreShop::actionHook('order.created', array('order' => $order));
 
