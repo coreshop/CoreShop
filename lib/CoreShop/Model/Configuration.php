@@ -298,6 +298,10 @@ class Configuration extends AbstractModel
      */
     public static function multiShopEnabled()
     {
+        if(Shop::$ignoreMultiShop) {
+            return false;
+        }
+
         if (\Zend_Registry::isRegistered('coreshop_multishop_enabled')) {
             return \Zend_Registry::get('coreshop_multishop_enabled');
         } else {

@@ -82,8 +82,7 @@ pimcore.plugin.coreshop.shops.item = Class.create(pimcore.plugin.coreshop.abstra
                             editable: false,
                             forceSelection: true,
                             queryMode: 'local',
-                            value: this.data.siteId,
-                            disabled : intval(this.data.isDefault) === 1
+                            value: this.data.siteId
                         },
                         {
                             fieldLabel: t('coreshop_shop_template'),

@@ -48,6 +48,11 @@ class Shop extends AbstractModel
     public $siteId;
 
     /**
+     * @var bool
+     */
+    public static $ignoreMultiShop = false;
+
+    /**
      * @return mixed
      * @throws Exception
      * @throws \Exception
