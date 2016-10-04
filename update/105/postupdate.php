@@ -9,7 +9,7 @@ foreach($languages as $lang) {
     $document = \Pimcore\Model\Document::getByPath($path);
 
     if($document instanceof \Pimcore\Model\Document\Email) {
-        \CoreShop\Model\Configuration::set("SYSTEM.MAIL.CONFIRMATION." . $lang, $document->getFullPath());
+        \CoreShop\Model\Configuration::set("SYSTEM.MAIL.CONFIRMATION." . strtoupper($lang), $document->getFullPath());
     }
 }
 

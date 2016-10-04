@@ -897,7 +897,7 @@ class Cart extends Base
         $state->processStep($order);
         
         //Send Confirmation to customer
-        $orderMail = Configuration::get("SYSTEM.MAIL.CONFIRMATION." . $order->getLang());
+        $orderMail = Configuration::get("SYSTEM.MAIL.CONFIRMATION." . strtoupper($order->getLang()));
         
         if($orderMail) {
             $emailDocument = Document::getByPath($orderMail);
