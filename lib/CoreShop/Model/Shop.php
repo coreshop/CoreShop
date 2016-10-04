@@ -48,11 +48,6 @@ class Shop extends AbstractModel
     public $siteId;
 
     /**
-     * @var bool
-     */
-    public static $ignoreMultiShop = false;
-
-    /**
      * @return mixed
      * @throws Exception
      * @throws \Exception
@@ -201,7 +196,7 @@ class Shop extends AbstractModel
             }
         }
 
-        throw new Exception("No shop for this site is configured!");
+        return static::getDefaultShop();
     }
 
     /**
