@@ -62,7 +62,6 @@ class Action extends \Website\Controller\Action
                     CORESHOP_TEMPLATE_PATH.'/scripts',
                     CORESHOP_TEMPLATE_PATH.'/scripts/coreshop',
                     CORESHOP_TEMPLATE_PATH.'/layouts',
-                    PIMCORE_WEBSITE_PATH.'/views/scripts',
                     PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop',
                 )
             )
