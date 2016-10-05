@@ -620,6 +620,7 @@ class Cart extends Base
 
         //Clear Cache of Product Price, cause a PriceRule could change the price
         $product->clearPriceCache();
+        $this->checkCarrierValid();
 
         return $item;
     }
@@ -651,6 +652,8 @@ class Cart extends Base
         $item->getProduct()->clearPriceCache();
         
         $item->delete();
+
+        $this->checkCarrierValid();
     }
 
     /**
@@ -666,6 +669,27 @@ class Cart extends Base
     public function modifyItem(Item $item, $amount)
     {
         return $this->updateQuantity($item->getProduct(), $amount, false);
+    }
+
+    /**
+     * Check if carrier is still valid
+     */
+    public function checkCarrierValid() {
+        if($this->getCarrier() instanceof Carrier) {
+            $carrierValid = true;
+
+            if(!$this->getShippingAddress() instanceof Address) {
+                $carrierValid = false;
+            }
+            else if(!$this->getCarrier()->checkCarrierForCart($this, $this->getShippingAddress())) {
+                $carrierValid  = false;
+            }
+
+            if(!$carrierValid) {
+                $this->setCarrier(null);
+                $this->save();
+            }
+        }
     }
 
     /**
