@@ -191,6 +191,19 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                         xtype : 'numberfield',
                         decimalPrecision : 0
                     }
+                },
+                {
+                    xtype: 'actioncolumn',
+                    width: 40,
+                    items: [{
+                        iconCls: 'pimcore_icon_delete',
+                        tooltip: t('delete'),
+                        handler: function (grid, rowIndex, colIndex) {
+                            var rec = grid.getStore().getAt(rowIndex);
+
+                            grid.getStore().remove(rec);
+                        }
+                    }]
                 }
             ],
             tbar: [
