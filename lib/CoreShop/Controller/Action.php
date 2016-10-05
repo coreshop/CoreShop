@@ -52,6 +52,19 @@ class Action extends \Website\Controller\Action
 
         \Pimcore::getEventManager()->trigger('coreshop.controller.init', $this);
 
+        //We need to add the website path as well, but only if we are in the CoreShop Module
+        //because Zend only adds Module Paths to the script paths.
+        if(strtolower($this->getRequest()->getModuleName()) === "coreshop") {
+            $this->view->setScriptPath(
+                array_merge(
+                    $this->view->getScriptPaths(),
+                    array(
+                        PIMCORE_WEBSITE_PATH.'/views/scripts'
+                    )
+                )
+            );
+        }
+
         $this->view->setScriptPath(
             array_merge(
                 $this->view->getScriptPaths(),
