@@ -87,6 +87,9 @@ class Item extends Base
         return null;
     }
 
+    /**
+     * @return \Pimcore\Model\Asset|null
+     */
     public function getProductImage() {
         if($this->getProduct() instanceof Product) {
             if($this->getProduct()->getImage() instanceof Image) {
