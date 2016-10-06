@@ -244,17 +244,14 @@ class Carrier extends AbstractModel
         $sortField = Configuration::get('SYSTEM.SHIPPING.CARRIER_SORT') ? Configuration::get('SYSTEM.SHIPPING.CARRIER_SORT') : 'price';
 
         if ($sortField === 'price') {
-            $carriers = [];
-
-            foreach ($availableCarriers as $carrier) {
-                $price = $carrier->getDeliveryPrice($cart, $address);
-
-                $carriers[$price . '' . $carrier->getId()] = $carrier;
+            //Hopefully this one works better...
+            foreach($availableCarriers as $carrier) {
+                $carrier->getDeliveryPrice($cart, $address);
             }
 
-            ksort($carriers);
-
-            $availableCarriers = $carriers;
+            usort($availableCarriers, function($carrier1, $carrier2) use ($cart, $address) {
+                return $carrier1->getDeliveryPrice($cart, $address) > $carrier2->getDeliveryPrice($cart, $address);
+            });
         } else {
             usort($availableCarriers, function ($carrier1, $carrier2) use ($sortField, $cart, $address) {
                 if ($carrier1->getGrade() === $carrier2->getGrade()) {
