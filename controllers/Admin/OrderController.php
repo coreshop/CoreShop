@@ -297,8 +297,8 @@ class CoreShop_Admin_OrderController extends Admin
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
         $jsonOrder['invoice'] = $order->getProperty("invoice");
         $jsonOrder['address'] = [
-            'shipping' => $order->getCustomerShippingAddress()->getObjectVars(),
-            'billing' => $order->getCustomerBillingAddress()->getObjectVars()
+            'shipping' => $order->getShippingAddress()->getObjectVars(),
+            'billing' => $order->getBillingAddress()->getObjectVars()
         ];
         $jsonOrder['shipping'] = [
             'carrier' => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getName() : null,
@@ -359,7 +359,7 @@ class CoreShop_Admin_OrderController extends Admin
         if ($fieldCollection instanceof \Pimcore\Model\Object\Fieldcollection\Definition) {
             $this->_helper->json([
                 'success' => true,
-                'data' => $addressType == 'shipping' ? $this->getDataForObject($order->getCustomerShippingAddress()) : $this->getDataForObject($order->getCustomerBillingAddress()),
+                'data' => $addressType == 'shipping' ? $this->getDataForObject($order->getShippingAddress()) : $this->getDataForObject($order->getBillingAddress()),
                 'layout' => $fieldCollection->getLayoutDefinitions()
             ]);
         }
@@ -378,7 +378,7 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
         }
 
-        $address = $addressType == 'shipping' ? $order->getCustomerShippingAddress() : $order->getCustomerBillingAddress();
+        $address = $addressType == 'shipping' ? $order->getShippingAddress() : $order->getBillingAddress();
 
         if ($address instanceof \CoreShop\Model\User\Address) {
             $address->setValues($data);

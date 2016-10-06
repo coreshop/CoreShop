@@ -482,34 +482,6 @@ class Order extends Base
     }
 
     /**
-     * Returns Customers shipping address.
-     *
-     * @return Address|bool
-     */
-    public function getCustomerShippingAddress()
-    {
-        if ($this->getShippingAddress() instanceof Address) {
-            return $this->getShippingAddress();
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns Customers billing address.
-     *
-     * @return Address|bool
-     */
-    public function getCustomerBillingAddress()
-    {
-        if ($this->getBillingAddress() instanceof Address) {
-            return $this->getBillingAddress();
-        }
-
-        return false;
-    }
-
-    /**
      * checks if shipping and billing addresses are the same.
      *
      * @todo: Only need to check for address-id now
@@ -517,8 +489,8 @@ class Order extends Base
      */
     public function isShippingAndBillingAddressEqual()
     {
-        $shipping = $this->getCustomerShippingAddress();
-        $billing = $this->getCustomerBillingAddress();
+        $shipping = $this->getShippingAddress();
+        $billing = $this->getBillingAddress();
 
         $billingVars = $billing->getObjectVars();
         $shippingVars = $shipping->getObjectVars();
