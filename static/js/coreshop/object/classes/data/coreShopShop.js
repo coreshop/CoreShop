@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS('pimcore.object.classes.data.coreShopShop');
-pimcore.object.classes.data.coreShopShop = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
+pimcore.object.classes.data.coreShopShop = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {
 
     type: 'coreShopShop',
 

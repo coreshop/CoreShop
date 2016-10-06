@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS('pimcore.object.classes.data.coreShopTaxRuleGroup');
-pimcore.object.classes.data.coreShopTaxRuleGroup = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
+pimcore.object.classes.data.coreShopTaxRuleGroup = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {
 
     type: 'coreShopTaxRuleGroup',
 

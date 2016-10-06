@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS('pimcore.object.classes.data.coreShopLanguage');
-pimcore.object.classes.data.coreShopLanguage = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
+pimcore.object.classes.data.coreShopLanguage = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {
 
     type: 'coreShopLanguage',
 

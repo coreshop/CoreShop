@@ -12,7 +12,7 @@
  */
 
 pimcore.registerNS('pimcore.object.classes.data.coreShopPriceRule');
-pimcore.object.classes.data.coreShopPriceRule = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
+pimcore.object.classes.data.coreShopPriceRule = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {
 
     type: 'coreShopPriceRule',
 

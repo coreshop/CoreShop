@@ -16,6 +16,7 @@ namespace CoreShop\Model\Object\ClassDefinition\Data;
 
 use CoreShop\Model\AbstractModel;
 use Pimcore\Model;
+use Pimcore\Model\Object;
 
 /**
  * Class Select
@@ -36,6 +37,11 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      * @var string
      */
     public $columnType = 'int(11)';
+
+    /**
+     * @var bool
+     */
+    public $allowEmpty = false;
 
     /**
      * @param $object
@@ -150,7 +156,7 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      * @param null|Model\Object\AbstractObject $object
      * @param array                            $params
      *
-     * @return AbstractModel
+     * @return string
      */
     public function getDataFromEditmode($data, $object = null, $params = array())
     {
@@ -185,4 +191,22 @@ class Select extends Model\Object\ClassDefinition\Data\Select
 
         return parent::getDataForSearchIndex($object, $params);
     }
+
+    /**
+     * @return boolean
+     */
+    public function isAllowEmpty()
+    {
+        return $this->allowEmpty;
+    }
+
+    /**
+     * @param boolean $allowEmpty
+     */
+    public function setAllowEmpty($allowEmpty)
+    {
+        $this->allowEmpty = $allowEmpty;
+    }
+
+
 }

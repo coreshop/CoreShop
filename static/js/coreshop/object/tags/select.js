@@ -41,7 +41,7 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
         if (store.isLoaded()) {
             comboBoxStore.add(store.getRange());
 
-            if (this.allowEmpty) {
+            if (this.fieldConfig.allowEmpty) {
                 comboBoxStore.insert(0, {
                     name: t('empty'),
                     id: 0
@@ -49,7 +49,7 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
             }
         } else {
             comboBoxStore.load(function () {
-                if (this.allowEmpty) {
+                if (this.fieldConfig.allowEmpty) {
                     comboBoxStore.insert(0, {
                         name: t('empty'),
                         id: 0
@@ -80,7 +80,7 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
                 },
 
                 select: function (comp, record, index) {
-                    if (comp.getValue() == 0 && this.allowEmpty)
+                    if (comp.getValue() == 0 && this.fieldConfig.allowEmpty)
                         comp.setValue(null);
                 }.bind(this)
             }
