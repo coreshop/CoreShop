@@ -501,7 +501,7 @@ class CoreShop_Admin_OrderController extends Admin
                 "o_id" => $detail->getId(),
                 "product" => $detail->getProduct() instanceof \CoreShop\Model\Product ? $detail->getProduct()->getId() : null,
                 "product_name" => $detail->getProductName(),
-                "product_image" => ($detail->getProductImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProductImage->getPath() : null,
+                "product_image" => ($detail->getProductImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProductImage()->getPath() : null,
                 "wholesale_price" => $detail->getWholesalePrice(),
                 "price_without_tax" => $detail->getPriceWithoutTax(),
                 "price" => $detail->getPrice(),
