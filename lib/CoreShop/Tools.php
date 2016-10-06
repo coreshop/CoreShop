@@ -241,7 +241,11 @@ class Tools
 
         $session = $this->getSession();
 
-        return $session->user instanceof User ? $session->user : null;
+        if($session->user instanceof User) {
+            return User::getById($session->user->getId());
+        }
+
+        return null;
     }
 
     /**
