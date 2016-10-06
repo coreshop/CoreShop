@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use Carbon\Carbon;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Order\Item;
@@ -22,6 +23,7 @@ use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
 use Pimcore\Date;
+use Pimcore\File;
 use Pimcore\Logger;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Element\Note;
@@ -116,15 +118,35 @@ class Order extends Base
     /**
      * get folder for order
      *
+     * @param \DateTime $date
+     *
      * @return Object\Folder
      */
-    public static function getPathForNewOrder()
+    public static function getPathForNewOrder($date = null)
     {
-        if (Configuration::multiShopEnabled()) {
-            return Object\Service::createFolderByPath('/coreshop/orders/'.Shop::getShop()->getName().'/'.date('Y/m/d'));
+        if(is_null($date)) {
+            $date = new Carbon();
         }
 
-        return Object\Service::createFolderByPath('/coreshop/orders/'.date('Y/m/d'));
+        if (Configuration::multiShopEnabled()) {
+            return Object\Service::createFolderByPath('/coreshop/orders/' . File::getValidFilename(Shop::getShop()->getName()) . '/' . $date->format("Y/m/d"));
+        }
+
+        return Object\Service::createFolderByPath('/coreshop/orders/' . $date->format("Y/m/d"));
+    }
+
+    /**
+     * @return Object\Folder
+     */
+    public function getPathForAddresses() {
+        return Object\Service::createFolderByPath($this->getFullPath() . "/addresses/");
+    }
+
+    /**
+     * @return null
+     */
+    public function getPathForItems() {
+        return Object\Service::createFolderByPath($this->getFullPath().'/items/');
     }
 
     /**
@@ -142,7 +164,7 @@ class Order extends Base
         foreach ($cart->getItems() as $cartItem) {
             $item = Item::create();
             $item->setKey($i);
-            $item->setParent(Object\Service::createFolderByPath($this->getFullPath().'/items/'));
+            $item->setParent($this->getPathForItems());
             $item->setPublished(true);
 
             $item->setProduct($cartItem->getProduct());
@@ -451,7 +473,9 @@ class Order extends Base
         $weight = 0;
 
         foreach ($this->getItems() as $item) {
-            $weight += ($item->getAmount() * $item->getProduct()->getWeight());
+            if($item->getProduct() instanceof Product) {
+                $weight += ($item->getAmount() * $item->getProduct()->getWeight());
+            }
         }
 
         return $weight;
@@ -488,6 +512,7 @@ class Order extends Base
     /**
      * checks if shipping and billing addresses are the same.
      *
+     * @todo: Only need to check for address-id now
      * @returns boolean
      */
     public function isShippingAndBillingAddressEqual()

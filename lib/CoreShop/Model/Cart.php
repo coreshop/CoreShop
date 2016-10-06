@@ -949,7 +949,7 @@ class Cart extends Base
 
         $newAddress = clone $address;
         $newAddress->setId(null);
-        $newAddress->setParent(Service::createFolderByPath($order->getFullPath() . "/addresses/"));
+        $newAddress->setParent($order->getPathForAddresses());
         $newAddress->setKey($type);
         $newAddress->save();
 

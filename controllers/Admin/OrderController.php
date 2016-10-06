@@ -293,6 +293,7 @@ class CoreShop_Admin_OrderController extends Admin
             $jsonOrder['items'] = [];
         }
 
+        $jsonOrder['customer'] = $order->getCustomer() instanceof \CoreShop\Model\Base ? $order->getCustomer()->getObjectVars() : null;
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
         $jsonOrder['invoice'] = $order->getProperty("invoice");
         $jsonOrder['address'] = [
@@ -300,11 +301,12 @@ class CoreShop_Admin_OrderController extends Admin
             'billing' => $order->getCustomerBillingAddress()->getObjectVars()
         ];
         $jsonOrder['shipping'] = [
-            'carrier' => $order->getCarrier()->getName(),
+            'carrier' => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getName() : null,
             'weight' => $order->getTotalWeight(),
             'cost' => $order->getShipping(),
             'tracking' => $order->getTrackingCode()
         ];
+
         $jsonOrder['payments'] = $this->getPayments($order);
         $jsonOrder['totalPayed'] = $order->getPayedTotal();
         $jsonOrder['details'] = $this->getDetails($order);
@@ -497,9 +499,9 @@ class CoreShop_Admin_OrderController extends Admin
         foreach ($details as $detail) {
             $items[] = [
                 "o_id" => $detail->getId(),
-                "product" => $detail->getProduct()->getId(),
-                "product_name" => $detail->getProduct()->getName(),
-                "product_image" => ($detail->getProduct()->getImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProduct()->getImage()->getPath() : null,
+                "product" => $detail->getProduct() instanceof \CoreShop\Model\Product ? $detail->getProduct()->getId() : null,
+                "product_name" => $detail->getProductName(),
+                "product_image" => ($detail->getProductImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProductImage->getPath() : null,
                 "wholesale_price" => $detail->getWholesalePrice(),
                 "price_without_tax" => $detail->getPriceWithoutTax(),
                 "price" => $detail->getPrice(),

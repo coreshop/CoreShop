@@ -18,6 +18,7 @@ use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
+use Pimcore\Model\Asset\Image;
 use Pimcore\Model\Object;
 
 /**
@@ -71,6 +72,27 @@ class Item extends Base
 
             $parent = $parent->getParent();
         } while ($parent != null);
+
+        return null;
+    }
+
+    /**
+     * @return string|null Product Name
+     */
+    public function getProductName() {
+        if($this->getProduct() instanceof Product) {
+            return $this->getProduct()->getName();
+        }
+
+        return null;
+    }
+
+    public function getProductImage() {
+        if($this->getProduct() instanceof Product) {
+            if($this->getProduct()->getImage() instanceof Image) {
+                return $this->getProduct()->getImage();
+            };
+        }
 
         return null;
     }
