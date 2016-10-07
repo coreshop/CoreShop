@@ -47,13 +47,13 @@ class Mail extends PimcoreMail
         \CoreShop::getTools()->initTemplateForShop($shop);
 
         $mail = new self();
+
+        self::mergeDefaultMailSettings($mail, $emailDocument);
+
         $mail->setDocument($emailDocument);
         $mail->setParams(array('message' => $message->getMessage(), 'messageObject' => $message));
         $mail->setEnableLayoutOnPlaceholderRendering(false);
         $mail->addTo($recipient);
-
-        self::mergeDefaultMailSettings($mail, $emailDocument);
-
         $mail->send();
     }
 
@@ -80,6 +80,9 @@ class Mail extends PimcoreMail
             unset($emailParameters['____pimcore_cache_item__']);
 
             $mail = new self();
+
+            self::mergeDefaultMailSettings($mail, $emailDocument);
+
             $mail->setDocument($emailDocument);
             $mail->setParams($emailParameters);
             $mail->setEnableLayoutOnPlaceholderRendering(false);
@@ -103,8 +106,6 @@ class Mail extends PimcoreMail
                 }
             }
 
-            self::mergeDefaultMailSettings($mail, $emailDocument);
-
             if ($allowBcc === true) {
                 $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');
                 $adminMailAddress = Configuration::get('SYSTEM.MAIL.ORDER.NOTIFICATION');
@@ -125,18 +126,9 @@ class Mail extends PimcoreMail
     private static function mergeDefaultMailSettings($mail, $emailDocument)
     {
         $from = $emailDocument->getFrom();
-        $fromName = '';
 
         if( !empty($from) ) {
-
-            preg_match('/(.*?)\s<(.*?)>,?/', $from, $fromMatches);
-
-            if( !empty($fromMatches) && count($fromMatches) > 1 ) {
-                $fromName = $fromMatches[1];
-                $from = $fromMatches[2];
-            }
-
-            $mail->setFrom( $from, $fromName );
+            $mail->setFrom( $from );
         }
 
         $mail->addCc( $emailDocument->getCcAsArray() );
