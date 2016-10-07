@@ -88,6 +88,14 @@ class Payment extends Action
     }
 
     /**
+     * Error Action.
+     */
+    public function errorAction()
+    {
+        $this->coreShopForward("error", "checkout", "CoreShop");
+    }
+
+    /**
      * Confirmation Action.
      */
     public function confirmationAction()

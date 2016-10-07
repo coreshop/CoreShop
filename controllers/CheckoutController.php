@@ -208,6 +208,7 @@ class CoreShop_CheckoutController extends Action
 
     public function errorAction()
     {
+        $this->view->error = $this->getParam("error");
         $this->view->headTitle("Payment Error");
     }
 
