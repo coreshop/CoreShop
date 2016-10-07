@@ -427,15 +427,15 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         ]
                     });
                 }
-
-                items.push({
-                    xtype: 'tabpanel',
-                    items: [
-                        this.getAddressPanelForAddress(this.order.address.shipping, t('coreshop_address_shipping'), 'shipping'),
-                        this.getAddressPanelForAddress(this.order.address.billing, t('coreshop_address_billing'), 'billing')
-                    ]
-                });
             }
+
+            items.push({
+                xtype: 'tabpanel',
+                items: [
+                    this.getAddressPanelForAddress(this.order.address.shipping, t('coreshop_address_shipping'), 'shipping'),
+                    this.getAddressPanelForAddress(this.order.address.billing, t('coreshop_address_billing'), 'billing')
+                ]
+            });
 
             this.customerInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_customer') + ': ' + (this.order.customer ? this.order.customer.firstname + ' (' + this.order.customer.o_id + ')' : t('unknown')),
@@ -455,7 +455,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     }
                 ],
                 items : items
-           });
+            });
         }
 
         return this.customerInfo;
@@ -505,7 +505,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     xtype: 'panel',
                     bodyPadding : 5,
                     html :
-                    address.firstname + ' ' + address.lastname + '<br/>' +
+                    (address.firstname ? address.firstname : '') + ' ' + (address.lastname ? address.lastname  : '') + '<br/>' +
                     (address.company ? address.company + '<br/>' : '') +
                     (address.street ? address.street  : '') + ' ' + (address.nr ? address.nr : '') + '<br/>' +
                     (address.zip ? address.zip : '') + ' ' + (address.city ? address.city : '') + '<br/>' +
