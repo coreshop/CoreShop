@@ -58,6 +58,66 @@ abstract class AbstractRule extends AbstractModel
     public $actions = [];
 
     /**
+     * @param $actions
+     * @param $actionNamespace
+     * @return array
+     *
+     * @throws \CoreShop\Exception
+     */
+    public function prepareActions($actions, $actionNamespace)
+    {
+        $actionInstances = array();
+
+
+        foreach ($actions as $action) {
+            $class = $actionNamespace.ucfirst($action['type']);
+
+            if (Tool::classExists($class)) {
+                $instance = new $class();
+                $instance->setValues($action);
+
+                $actionInstances[] = $instance;
+            } else {
+                throw new \CoreShop\Exception(sprintf('Action with type %s not found'), $action['type']);
+            }
+        }
+
+        return $actionInstances;
+    }
+
+    /**
+     * @param $conditions
+     * @param $conditionNamespace
+     * @return mixed
+     * @throws \CoreShop\Exception
+     */
+    public function prepareConditions($conditions, $conditionNamespace) {
+        $conditionInstances = array();
+
+        foreach ($conditions as $condition) {
+            $class = $conditionNamespace.ucfirst($condition['type']);
+
+            if (Tool::classExists($class))
+            {
+                if($condition['type'] === "conditions")
+                {
+                    $nestedConditions = static::prepareConditions($condition['conditions'], $conditionNamespace);
+                    $condition['conditions'] = $nestedConditions;
+                }
+
+                $instance = new $class();
+                $instance->setValues($condition);
+
+                $conditionInstances[] = $instance;
+            } else {
+                throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $condition['type']);
+            }
+        }
+
+        return $conditionInstances;
+    }
+
+    /**
      * Add Condition Type.
      *
      * @param $condition

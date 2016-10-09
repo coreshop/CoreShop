@@ -72,37 +72,9 @@ class CoreShopSpecificPrices extends Data
             foreach ($data as $dataRow) {
                 $conditions = $dataRow['conditions'];
                 $actions = $dataRow['actions'];
-                $actionInstances = array();
-                $conditionInstances = array();
 
                 $actionNamespace = 'CoreShop\\Model\\PriceRule\\Action\\';
                 $conditionNamespace = 'CoreShop\\Model\\PriceRule\\Condition\\';
-
-                foreach ($conditions as $condition) {
-                    $class = $conditionNamespace.ucfirst($condition['type']);
-
-                    if (Tool::classExists($class)) {
-                        $instance = new $class();
-                        $instance->setValues($condition);
-
-                        $conditionInstances[] = $instance;
-                    } else {
-                        throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $condition['type']);
-                    }
-                }
-
-                foreach ($actions as $action) {
-                    $class = $actionNamespace.ucfirst($action['type']);
-
-                    if (Tool::classExists($class)) {
-                        $instance = new $class();
-                        $instance->setValues($action);
-
-                        $actionInstances[] = $instance;
-                    } else {
-                        throw new \CoreShop\Exception(sprintf('Action with type %s not found'), $action['type']);
-                    }
-                }
 
                 $specificPrice = null;
 
@@ -113,6 +85,9 @@ class CoreShopSpecificPrices extends Data
                 if (!$specificPrice instanceof SpecificPrice) {
                     $specificPrice = new SpecificPrice();
                 }
+
+                $actionInstances = $specificPrice->prepareActions($actions, $actionNamespace);
+                $conditionInstances = $specificPrice->prepareConditions($conditions, $conditionNamespace);
 
                 $specificPrice->setValues($dataRow['settings']);
                 $specificPrice->setActions($actionInstances);

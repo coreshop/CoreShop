@@ -1,6 +1,5 @@
-<?php
 /**
- * CoreShop.
+ * CoreShop
  *
  * LICENSE
  *
@@ -12,16 +11,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\PriceRule;
+pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.conditions.conditions');
 
-use CoreShop\Model\Rules\AbstractRule;
-use Pimcore\Tool;
-
-/**
- * Class AbstractPriceRule
- * @package CoreShop\Model\PriceRule
- */
-abstract class AbstractPriceRule extends AbstractRule
-{
-
-}
+pimcore.plugin.coreshop.carrier.shippingrules.conditions.conditions = Class.create(pimcore.plugin.coreshop.rules.conditions.conditions, {
+});

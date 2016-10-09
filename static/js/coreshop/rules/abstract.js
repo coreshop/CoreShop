@@ -40,6 +40,7 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
             id : myId,
             style: 'margin: 10px 0 0 0',
             border : true,
+            scrollable : true,
             bodyPadding : 10,
             maxHeight : 500,
             tbar : this.getTopBar(t('coreshop_' + this.elementType +  '_' + this.type), myId, this.parent, this.data, 'coreshop_rule_icon_' + this.elementType + '_' + this.type),
@@ -85,7 +86,7 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
             container = parent.conditionsContainer;
         }
 
-        return [{
+        var items = [{
             iconCls: iconCls,
             disabled: true,
             xtype : 'button'
@@ -145,12 +146,23 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
 
             }.bind(window, index, parent, container, namespace),
             xtype : 'button'
-        }, '->', {
-            iconCls: 'pimcore_icon_delete',
-            handler: function (index, parent, container, namespace) {
-                container.remove(Ext.getCmp(index));
-            }.bind(window, index, parent, container, namespace),
-            xtype : 'button'
         }];
+
+
+        if(Ext.isFunction(this.getTopBarItems)) {
+            items.push.apply(items, this.getTopBarItems());
+        }
+
+        items.push.apply(items, [
+            '->', {
+                iconCls: 'pimcore_icon_delete',
+                handler: function (index, parent, container, namespace) {
+                    container.remove(Ext.getCmp(index));
+                }.bind(window, index, parent, container, namespace),
+                xtype : 'button'
+            }
+        ]);
+
+        return items;
     },
 });

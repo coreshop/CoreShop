@@ -64,6 +64,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/quantity.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/categories.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/countries.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/conditions.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customers.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/customerGroups.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/rules/conditions/carriers.js</path>
@@ -177,6 +178,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/actions/discountAmount.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/actions/discountPercent.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/actions/fixedPrice.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/conditions.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/countries.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/amount.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/weight.js</path>

@@ -110,37 +110,12 @@ class CoreShop_Admin_PriceRuleController extends Admin
 
             $conditions = $data['conditions'];
             $actions = $data['actions'];
-            $actionInstances = array();
-            $conditionInstances = array();
 
             $actionNamespace = 'CoreShop\\Model\\PriceRule\\Action\\';
             $conditionNamespace = 'CoreShop\\Model\\PriceRule\\Condition\\';
 
-            foreach ($conditions as $condition) {
-                $class = $conditionNamespace.ucfirst($condition['type']);
-
-                if (PimTool::classExists($class)) {
-                    $instance = new $class();
-                    $instance->setValues($condition);
-
-                    $conditionInstances[] = $instance;
-                } else {
-                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found', $condition['type']));
-                }
-            }
-
-            foreach ($actions as $action) {
-                $class = $actionNamespace.ucfirst($action['type']);
-
-                if (PimTool::classExists($class)) {
-                    $instance = new $class();
-                    $instance->setValues($action);
-
-                    $actionInstances[] = $instance;
-                } else {
-                    throw new \CoreShop\Exception(sprintf('Action with type %s not found'), $action['type']);
-                }
-            }
+            $conditionInstances = $priceRule->prepareConditions($conditions, $conditionNamespace);
+            $actionInstances = $priceRule->prepareActions($actions, $actionNamespace);
 
             $priceRule->setValues($data['settings']);
             $priceRule->setActions($actionInstances);

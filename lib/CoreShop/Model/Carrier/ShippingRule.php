@@ -35,7 +35,7 @@ class ShippingRule extends AbstractRule
      *
      * @var array
      */
-    public static $availableConditions = array('countries', 'amount', 'weight', 'dimension', 'zones', 'postcodes', 'products', 'categories', 'customerGroups', 'currencies');
+    public static $availableConditions = array('conditions', 'countries', 'amount', 'weight', 'dimension', 'zones', 'postcodes', 'products', 'categories', 'customerGroups', 'currencies');
 
     /**
      * possible types of a action.

@@ -28,7 +28,7 @@ class SpecificPrice extends AbstractProductPriceRule
      *
      * @var array
      */
-    public static $availableConditions = array('customers', 'timeSpan', 'countries', 'customerGroups', 'zones', 'quantity', 'personas', 'shops', 'currencies');
+    public static $availableConditions = array('conditions', 'customers', 'timeSpan', 'countries', 'customerGroups', 'zones', 'quantity', 'personas', 'shops', 'currencies');
 
     /**
      * possible types of a action.

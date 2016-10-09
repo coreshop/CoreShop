@@ -101,37 +101,12 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
 
             $conditions = $data['conditions'];
             $actions = $data['actions'];
-            $actionInstances = array();
-            $conditionInstances = array();
 
             $actionNamespace = 'CoreShop\\Model\\Carrier\\ShippingRule\\Action\\';
             $conditionNamespace = 'CoreShop\\Model\\Carrier\\ShippingRule\\Condition\\';
 
-            foreach ($conditions as $condition) {
-                $class = $conditionNamespace.ucfirst($condition['type']);
-
-                if (PimTool::classExists($class)) {
-                    $instance = new $class();
-                    $instance->setValues($condition);
-
-                    $conditionInstances[] = $instance;
-                } else {
-                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $condition['type']);
-                }
-            }
-
-            foreach ($actions as $action) {
-                $class = $actionNamespace.ucfirst($action['type']);
-
-                if (PimTool::classExists($class)) {
-                    $instance = new $class();
-                    $instance->setValues($action);
-
-                    $actionInstances[] = $instance;
-                } else {
-                    throw new \CoreShop\Exception(sprintf('Action with type %s not found'), $action['type']);
-                }
-            }
+            $actionInstances = $shippingRule->prepareActions($actions, $actionNamespace);
+            $conditionInstances = $shippingRule->prepareConditions($conditions, $conditionNamespace);
 
             $shippingRule->setValues($data['settings']);
             $shippingRule->setActions($actionInstances);

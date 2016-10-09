@@ -315,6 +315,10 @@
     background: url(/plugins/CoreShop/static/img/flat/shippingrules.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_condition_conditions {
+    background: url(/plugins/CoreShop/static/img/flat/conditions.svg) center center no-repeat !important;
+}
+
 .x-tool-coreshop-open {
     background: url(/pimcore/static6/img/flat-color-icons/cursor.svg) center center no-repeat !important;
 }

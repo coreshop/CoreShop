@@ -437,3 +437,7 @@
 "corshop_price_rule_name","Name"
 "coreshop_specific_prices","Produkt Spezische Preise"
 "coreshop_country_addressFormat","Adressformatierung"
+"coreshop_condition_conditions","Verschachtelte Bedingungen"
+"coreshop_condition_conditions_operator_and","Und"
+"coreshop_condition_conditions_operator_or","Oder"
+"coreshop_condition_conditions_operator","Vergleich"

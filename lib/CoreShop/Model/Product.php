@@ -410,6 +410,7 @@ class Product extends Base
             }
         }
 
+        //Should we convert this price to the selected currency?
         return $price;
     }
 
