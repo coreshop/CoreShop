@@ -125,7 +125,7 @@ class Base extends Concrete
     }
 
     /**
-     * @return $this
+     * @return static
      * @throws Exception
      * @throws \Exception
      * @throws \Pimcore\Model\Element\ValidationException
