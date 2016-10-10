@@ -99,13 +99,13 @@ class Product extends Base
      *
      * @param int $id
      *
-     * @return null|Product
+     * @return null|static
      */
     public static function getById($id)
     {
         $object = Object\AbstractObject::getById($id);
 
-        if ($object instanceof self) {
+        if ($object instanceof static) {
             return $object;
         }
 
@@ -246,7 +246,7 @@ class Product extends Base
      * @param $type
      * @param $field
      *
-     * @return array
+     * @return array|boolean
      */
     public function getVariantDifferences($language = null, $type = 'objectbricks', $field = 'variants')
     {
@@ -460,8 +460,6 @@ class Product extends Base
      * @param boolean $withTax
      *
      * @return float|mixed
-     *
-     * @throws Exception
      */
     public function getPrice($withTax = true)
     {
@@ -647,6 +645,25 @@ class Product extends Base
         }
 
         return $this->cheapestDeliveryPrice;
+    }
+
+    /**
+     *
+     */
+    public function __sleep()
+    {
+        $parentVars = parent::__sleep();
+
+        $finalVars = [];
+        $notAllowedFields = ['cheapestDeliveryPrice', 'validPriceRules'];
+
+        foreach ($parentVars as $key) {
+            if (!in_array($key, $notAllowedFields)) {
+                $finalVars[] = $key;
+            }
+        }
+
+        return $finalVars;
     }
 
     /**
