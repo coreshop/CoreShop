@@ -931,6 +931,10 @@ class Cart extends Base
             }
         }
 
+        //Remove transaction to prevent double ordering
+        $this->setCustomIdentifier(NULL);
+        $this->save();
+
         \CoreShop::actionHook('order.created', array('order' => $order));
 
         return $order;
