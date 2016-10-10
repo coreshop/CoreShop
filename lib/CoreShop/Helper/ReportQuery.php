@@ -14,6 +14,7 @@
 
 namespace CoreShop\Helper;
 
+use Pimcore\Admin\Helper\QueryParams;
 use Pimcore\Db;
 
 /**
@@ -55,5 +56,23 @@ class ReportQuery
         }
 
         return implode(' AND ', $conditions);
+    }
+
+    /**
+     * Convert Extjs Params to ORDER BY String
+     *
+     * @param array $params
+     * @return string
+     */
+    public static function getSqlSort($params = array()) {
+        $sortingSettings = QueryParams::extractSortingSettings($params);
+
+        $order = [];
+
+        if($sortingSettings['orderKey']) {
+            $order[] = $sortingSettings['orderKey'] . " " . $sortingSettings['order'];
+        }
+
+        return count($order) > 0 ? "ORDER BY " . implode(", ", $order) : "";
     }
 }

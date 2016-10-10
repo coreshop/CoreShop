@@ -15,6 +15,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.report.reports.quantities');
 pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
     url : '/plugin/CoreShop/admin_reports/get-quantities-report',
+    remoteSort : true,
 
     getName: function () {
         return t('coreshop_report_quantities');
@@ -24,7 +25,17 @@ pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.
         return 'coreshop_icon_quantity';
     },
 
+    getStoreFields : function() {
+        return [
+            {name: 'retailPrice', type: 'number'},
+            {name: 'totalPrice', type: 'number'},
+            {name: 'quantity', type: 'integer'}
+        ];
+    },
+
     getGrid : function () {
+
+
         return new Ext.Panel({
             layout:'fit',
             height: 275,
@@ -45,17 +56,24 @@ pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.
                     },
                     {
                         text: t('coreshop_report_quantities_price'),
-                        dataIndex : 'price',
+                        dataIndex : 'retailPrice',
                         width : 100,
-                        align : 'right'
+                        align : 'right',
+                        renderer : function(value, metadata, record) {
+                            return record.get('retailPriceFormatted');
+                        }
                     },
                     {
                         text: t('coreshop_report_quantities_totalPrice'),
                         dataIndex : 'totalPrice',
                         width : 100,
-                        align : 'right'
+                        align : 'right',
+                        renderer : function(value, metadata, record) {
+                            return record.get('totalPriceFormatted');
+                        }
                     }
-                ]
+                ],
+                bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(this.getStore())
             }
         });
     },

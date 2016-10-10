@@ -24,6 +24,12 @@ pimcore.plugin.coreshop.report.reports.customers = Class.create(pimcore.plugin.c
         return 'coreshop_icon_customer';
     },
 
+    getStoreFields : function() {
+        return [
+            {name: 'sales', type: 'number'}
+        ];
+    },
+
     getGrid : function () {
         return new Ext.Panel({
             layout:'fit',
@@ -47,7 +53,10 @@ pimcore.plugin.coreshop.report.reports.customers = Class.create(pimcore.plugin.c
                         text: t('coreshop_report_customers_sales'),
                         dataIndex : 'sales',
                         width : 100,
-                        align : 'right'
+                        align : 'right',
+                        renderer : function(value, metadata, record) {
+                            return record.get('salesFormatted');
+                        }
                     }
                 ]
             }

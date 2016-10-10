@@ -24,6 +24,13 @@ pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.
         return 'coreshop_icon_category';
     },
 
+    getStoreFields : function() {
+        return [
+            {name: 'sales', type: 'number'},
+            {name: 'profit', type: 'number'}
+        ];
+    },
+
     getGrid : function () {
         return new Ext.Panel({
             layout:'fit',
@@ -47,13 +54,19 @@ pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.
                         text: t('coreshop_report_categories_sales'),
                         dataIndex : 'sales',
                         width : 100,
-                        align : 'right'
+                        align : 'right',
+                        renderer : function(value, metadata, record) {
+                            return record.get('salesFormatted');
+                        }
                     },
                     {
                         text: t('coreshop_report_categories_profit'),
                         dataIndex : 'profit',
                         width : 100,
-                        align : 'right'
+                        align : 'right',
+                        renderer : function(value, metadata, record) {
+                            return record.get('profitFormatted');
+                        }
                     }
                 ]
             }

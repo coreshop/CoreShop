@@ -48,7 +48,7 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
                     minimum: 0
                 }, {
                         type: 'category',
-                        fields: 'datetext',
+                        fields: 'timestamp',
                         position: 'bottom'
                     }
                 ],
@@ -57,7 +57,7 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
                         type: 'line',
                         axis:' left',
                         title: t('coreshop_cart'),
-                        xField: 'datetext',
+                        xField: 'timestamp',
                         yField: 'carts',
                         colors: ['#01841c'],
                         style: {
@@ -87,7 +87,7 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
                         type:'line',
                         axis:' left',
                         title: t('coreshop_order'),
-                        xField: 'datetext',
+                        xField: 'timestamp',
                         yField: 'orders',
                         colors: ['#15428B'],
                         style: {

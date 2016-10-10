@@ -15,6 +15,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.report.abstract');
 pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, {
 
     url : '',
+    remoteSort : false,
 
     matchType: function (type) {
         var types = ['global'];
@@ -178,8 +179,15 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
 
     getStore : function () {
         if (!this.store) {
+            var fields = ['timestamp', 'text', 'data'];
+
+            if(Ext.isFunction(this.getStoreFields)) {
+                fields = Ext.apply(fields, this.getStoreFields());
+            }
+
             this.store = new Ext.data.Store({
                 autoDestroy: true,
+                remoteSort : this.remoteSort,
                 proxy: {
                     type: 'ajax',
                     url: this.url,
@@ -191,7 +199,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
                         rootProperty: 'data'
                     }
                 },
-                fields: ['timestamp', 'text', 'data']
+                fields: fields
             });
         }
 

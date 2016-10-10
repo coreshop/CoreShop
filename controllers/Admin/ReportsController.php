@@ -23,165 +23,159 @@ class CoreShop_Admin_ReportsController extends Admin
 {
     public function getProductsReportAction()
     {
-        $filter = ReportQuery::extractFilterDefinition($this->getParam('filters'));
+        $filters = $this->getParam('filters', array('from' => date('01-m-Y'), 'to' => date('m-t-Y')));
+        $from = new \Pimcore\Date($filters['from']);
+        $to = new \Pimcore\Date($filters['to']);
 
-        $listOrders = Model\Order\Item::getList();
-        $listOrders->setCondition($filter);
-        $listOrders = $listOrders->getObjects();
+        $orderClassId = Model\Order::classId();
+        $orderItemClassId = Model\Order\Item::classId();
+        $productClassId = Model\Product::classId();
 
-        $productSales = array();
+        $db = \Pimcore\Db::get();
 
-        foreach ($listOrders as $orderItem) {
-            $product = $orderItem->getProduct();
+        $query = "
+            SELECT 
+              orderItems.product__id,
+              products.articleNumber as name,
+              SUM(orderItems.retailPrice * orderItems.amount) as sales, 
+              AVG(orderItems.retailPrice * orderItems.amount) as salesPrice,
+              SUM((orderItems.retailPrice - orderItems.wholesalePrice) * orderItems.amount) as profit,
+              COUNT(orderItems.product__id) as count
+            FROM object_query_$orderClassId AS orders
+            INNER JOIN object_relations_$orderClassId as orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
+            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
+            INNER JOIN object_query_$productClassId AS products ON orderItems.product__id = products.oo_id
+            WHERE orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            GROUP BY orderItems.product__id
+            ORDER BY COUNT(orderItems.product__id) DESC
+        ";
 
-            if ($product instanceof Model\Product) {
-                if (!array_key_exists($product->getId(), $productSales)) {
-                    $productSales[$product->getId()] = array(
-                        'count' => 0,
-                        'salesPrice' => 0,
-                        'sales' => 0,
-                        'name' => $product->getName(),
-                        'profit' => 0,
-                    );
-                }
-
-                ++$productSales[$product->getId()]['count'];
-                $productSales[$product->getId()]['salesPrice'] = ($productSales[$product->getId()]['salesPrice'] + $orderItem->getRetailPrice()) / 2;
-                $productSales[$product->getId()]['sales'] += $orderItem->getRetailPrice() * $orderItem->getAmount();
-                $productSales[$product->getId()]['profit'] += (($orderItem->getRetailPrice() - $orderItem->getWholesalePrice()) * $orderItem->getAmount());
-            }
-        }
+        $productSales = $db->fetchAll($query, array($from->getTimestamp(), $to->getTimestamp()));
 
         foreach ($productSales as &$sale) {
-            $sale['salesPrice'] = \CoreShop::getTools()->formatPrice($sale['salesPrice']);
-            $sale['sales'] = \CoreShop::getTools()->formatPrice($sale['sales']);
-            $sale['profit'] = \CoreShop::getTools()->formatPrice($sale['profit']);
+            $sale['salesPriceFormatted'] = \CoreShop::getTools()->formatPrice($sale['salesPrice']);
+            $sale['salesFormatted'] = \CoreShop::getTools()->formatPrice($sale['sales']);
+            $sale['profitFormatted'] = \CoreShop::getTools()->formatPrice($sale['profit']);
         }
-
-        usort($productSales, function ($item1, $item2) {
-            if ($item1['count'] == $item2['count']) {
-                return 0;
-            }
-
-            return $item1['count'] < $item2['count'] ? 1 : -1;
-        });
 
         $this->_helper->json(array('data' => array_values($productSales)));
     }
 
     public function getCategoriesReportAction()
     {
-        $filter = ReportQuery::extractFilterDefinition($this->getParam('filters'));
+        $filters = $this->getParam('filters', array('from' => date('01-m-Y'), 'to' => date('m-t-Y')));
+        $from = new \Pimcore\Date($filters['from']);
+        $to = new \Pimcore\Date($filters['to']);
 
-        $listOrders = Model\Order\Item::getList();
-        $listOrders->setCondition($filter);
-        $listOrders = $listOrders->getObjects();
+        $orderClassId = Model\Order::classId();
+        $orderItemClassId = Model\Order\Item::classId();
+        $productClassId = Model\Product::classId();
+        $categoryClassId = Model\Category::classId();
+        $categoryLocalizedQuery = $categoryClassId . "_" . $this->getLanguage();
 
-        $catSales = array();
+        $db = \Pimcore\Db::get();
 
-        foreach ($listOrders as $orderItem) {
-            $product = $orderItem->getProduct();
+        $query = "
+            SELECT 
+              category.oo_id as id,
+              categoryLocalized.name,
+              SUM(orderItems.retailPrice * orderItems.amount) as sales, 
+              SUM((orderItems.retailPrice - orderItems.wholesalePrice) * orderItems.amount) as profit,
+              COUNT(category.oo_id) as count
+            FROM object_query_$orderClassId AS orders
+            INNER JOIN object_relations_$orderClassId as orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
+            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
+            INNER JOIN object_query_$productClassId AS products ON orderItems.product__id = products.oo_id
+            INNER JOIN object_relations_$productClassId as productRelations ON productRelations.src_id = products.oo_id AND productRelations.fieldname = \"categories\"
+            INNER JOIN object_query_$categoryClassId as category ON productRelations.dest_id = category.oo_id
+            INNER JOIN object_localized_query_$categoryLocalizedQuery as categoryLocalized ON categoryLocalized.ooo_id = category.oo_id
+            WHERE orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            GROUP BY category.oo_id
+            ORDER BY COUNT(category.oo_id) DESC
+        ";
 
-            if ($product instanceof Model\Product) {
-                $categories = $product->getCategories();
-
-                foreach ($categories as $cat) {
-                    if ($cat instanceof Model\Category) {
-                        if (!array_key_exists($cat->getId(), $catSales)) {
-                            $catSales[$cat->getId()] = array(
-                                'name' => $cat->getName(),
-                                'count' => 0,
-                                'sales' => 0,
-                                'profit' => 0,
-                            );
-                        }
-
-                        ++$catSales[$cat->getId()]['count'];
-                        $catSales[$cat->getId()]['sales'] += $orderItem->getRetailPrice() * $orderItem->getAmount();
-                        $catSales[$cat->getId()]['profit'] += ($orderItem->getRetailPrice() - $orderItem->getWholesalePrice()) * $orderItem->getAmount();
-                    }
-                }
-            }
-        }
+        $catSales = $db->fetchAll($query, array($from->getTimestamp(), $to->getTimestamp()));
 
         foreach ($catSales as &$sale) {
-            $sale['sales'] = \CoreShop::getTools()->formatPrice($sale['sales']);
-            $sale['profit'] = \CoreShop::getTools()->formatPrice($sale['profit']);
+            $sale['salesFormatted'] = \CoreShop::getTools()->formatPrice($sale['sales']);
+            $sale['profitFormatted'] = \CoreShop::getTools()->formatPrice($sale['profit']);
         }
-
-        usort($catSales, function ($item1, $item2) {
-            if ($item1['count'] == $item2['count']) {
-                return 0;
-            }
-
-            return $item1['count'] < $item2['count'] ? 1 : -1;
-        });
 
         $this->_helper->json(array('data' => array_values($catSales)));
     }
 
     public function getCustomersReportAction()
     {
-        $filter = ReportQuery::extractFilterDefinition($this->getParam('filters'));
+        $filters = $this->getParam('filters', array('from' => date('01-m-Y'), 'to' => date('m-t-Y')));
+        $from = new \Pimcore\Date($filters['from']);
+        $to = new \Pimcore\Date($filters['to']);
 
-        $listOrders = Model\Order::getList();
-        $listOrders->setCondition($filter);
-        $listOrders = $listOrders->getObjects();
+        $orderClassId = Model\Order::classId();
+        $customerClassId = Model\User::classId();
 
-        $custSales = array();
+        $db = \Pimcore\Db::get();
 
-        foreach ($listOrders as $order) {
-            $customer = $order->getCustomer();
+        $query = "
+            SELECT 
+              customer.oo_id,
+              customer.email as name,
+              SUM(orders.total) as sales, 
+              COUNT(customer.oo_id) as count
+            FROM object_query_$orderClassId AS orders
+            INNER JOIN object_query_$customerClassId AS customer ON orders.customer__id = customer.oo_id
+            WHERE orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL
+            GROUP BY customer.oo_id
+            ORDER BY COUNT(customer.oo_id) DESC
+        ";
 
-            if ($customer  instanceof Model\User) {
-                if (!array_key_exists($customer->getId(), $custSales)) {
-                    $custSales[$customer->getId()] = array(
-                        'name' => $customer->getFirstname().' '.$customer->getLastname(),
-                        'count' => 0,
-                        'sales' => 0,
-                    );
-                }
-
-                ++$custSales[$customer->getId()]['count'];
-                $custSales[$customer->getId()]['sales'] += $order->getTotal();
-            }
-        }
+        $custSales = $db->fetchAll($query, array($from->getTimestamp(), $to->getTimestamp()));
 
         foreach ($custSales as &$sale) {
-            $sale['sales'] = \CoreShop::getTools()->formatPrice($sale['sales']);
+            $sale['salesFormatted'] = \CoreShop::getTools()->formatPrice($sale['sales']);
         }
-
-        usort($custSales, function ($item1, $item2) {
-            if ($item1['count'] == $item2['count']) {
-                return 0;
-            }
-
-            return $item1['count'] < $item2['count'] ? 1 : -1;
-        });
 
         $this->_helper->json(array('data' => array_values($custSales)));
     }
 
     public function getQuantitiesReportAction()
     {
-        $filter = ReportQuery::extractFilterDefinition($this->getParam('filters'));
+        $page = $this->getParam("page", 1) - 1;
+        $limit = $this->getParam("limit", 25);
+        $offset = $page * $limit;
 
-        $list = Model\Product::getList();
-        $list->setCondition($filter);
-        $list = $list->getObjects();
+        $productClassId = Model\Product::classId();
+        $productLocalizedClassId = $productClassId . "_" . $this->getLanguage();
+        $sqlOrderBy = ReportQuery::getSqlSort($this->getAllParams());
 
-        $result = array();
+        $db = \Pimcore\Db::get();
 
-        foreach ($list as $product) {
-            $result[] = array(
-                'name' => $product->getName(),
-                'quantity' => intval($product->getQuantity()),
-                'price' => \CoreShop::getTools()->formatPrice($product->getPrice()),
-                'totalPrice' => \CoreShop::getTools()->formatPrice($product->getPrice() * intval($product->getQuantity())),
-            );
+        $query = "
+            SELECT * FROM (
+                SELECT 
+                  productsLocalized.name,
+                  products.quantity,
+                  products.retailPrice,
+                  products.quantity * products.retailPrice as totalPrice
+                FROM object_query_$productClassId AS products
+                INNER JOIN object_localized_query_$productLocalizedClassId AS productsLocalized ON products.oo_id = productsLocalized.ooo_id
+            ) as query
+            $sqlOrderBy
+            LIMIT $offset, $limit
+        ";
+
+        $totalQuery = "
+            SELECT count(*) as count FROM object_query_$productClassId
+        ";
+
+        $products = $db->fetchAll($query);
+        $total = $db->fetchCol($totalQuery);
+
+        foreach($products as &$product) {
+            $product['retailPriceFormatted'] = \CoreShop::getTools()->formatPrice($product['retailPrice']);
+            $product['totalPriceFormatted'] = \CoreShop::getTools()->formatPrice($product['totalPrice']);
         }
 
-        $this->_helper->json(array('data' => $result));
+        $this->_helper->json(array('data' => $products, "total" => $total));
     }
 
     /**
@@ -193,31 +187,47 @@ class CoreShop_Admin_ReportsController extends Admin
         $from = new \Pimcore\Date($filters['from']);
         $to = new \Pimcore\Date($filters['to']);
 
-        $diff = $to->sub($from)->toValue();
-        $days = ceil($diff / 60 / 60 / 24) + 1;
+        $orderClassId = Model\Order::classId();
+        $cartClassId = Model\Cart::classId();
 
-        $startDate = $from->getTimestamp();
+        $db = \Pimcore\Db::get();
 
-        $data = array();
+        $queries = [];
 
-        for ($i = 0; $i < $days; ++$i) {
-            // documents
-            $end = $startDate + ($i * 86400);
-            $start = $end - 86399;
-            $date = new \Zend_Date($start);
+        $fromTimestamp = $from->getTimestamp();
+        $toTimestamp = $to->getTimestamp();
 
-            $listOrders = Model\Order::getList();
-            $listOrders->setCondition('o_creationDate > ? AND o_creationDate < ?', array($start, $end));
+        foreach(['LEFT', 'RIGHT'] as $join) {
+            $queries[] = "
+                SELECT
+                    CASE WHEN orderDateTimestamp IS NULL THEN cartDateTimestamp ELSE orderDateTimestamp END as timestamp,
+                    CASE WHEN orderCount IS NULL THEN 0 ELSE orderCount END as orders,
+                    CASE WHEN cartCount IS NULL THEN 0 ELSE cartCount END as carts
+                FROM (
+                  SELECT 
+                    COUNT(*) as orderCount,
+                    DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
+                  FROM object_query_$orderClassId AS orders
+                  WHERE orderDate > $fromTimestamp AND orderDate < $toTimestamp
+                  GROUP BY DATE(FROM_UNIXTIME(orderDate))
+                ) as ordersQuery
+                $join OUTER JOIN (
+                  SELECT
+                    COUNT(*) as cartCount,
+                    DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
+                  FROM object_$cartClassId AS carts
+                  WHERE o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
+                  GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
+                ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
+            ";
+        }
 
-            $listCarts = Model\Cart::getList();
-            $listCarts->setCondition('o_creationDate > ? AND o_creationDate < ?', array($start, $end));
+        $data = $db->fetchAll(implode(PHP_EOL . "UNION ALL" . PHP_EOL, $queries));
 
-            $data[] = array(
-                'timestamp' => $start,
-                'datetext' => $date->get(\Zend_Date::DATE_LONG),
-                'orders' => count($listOrders->load()),
-                'carts' => count($listCarts->load()),
-            );
+        foreach($data as &$day) {
+            $date = new \Zend_Date($day['timestamp']);
+
+            $day['datetext'] = $date->get(\Zend_Date::DATE_LONG);
         }
 
         $this->_helper->json(array('data' => $data));
@@ -232,32 +242,22 @@ class CoreShop_Admin_ReportsController extends Admin
         $from = new \Pimcore\Date($filters['from']);
         $to = new \Pimcore\Date($filters['to']);
 
-        $diff = $to->sub($from)->toValue();
-        $days = ceil($diff / 60 / 60 / 24) + 1;
-
-        $startDate = $from->getTimestamp();
-
         $data = array();
 
-        for ($i = 0; $i < $days; ++$i) {
-            // documents
-            $end = $startDate + ($i * 86400);
-            $start = $end - 86399;
-            $date = new \Zend_Date($start);
+        $classId = Model\Order::classId();
+        $db = \Pimcore\Db::get();
 
-            $listOrders = Model\Order::getList();
-            $listOrders->setCondition('o_creationDate > ? AND o_creationDate < ?', array($start, $end));
-            $total = 0;
+        $sqlQuery = "SELECT DATE(FROM_UNIXTIME(orderDate)) as dayDate, orderDate, SUM(total) as total FROM object_query_$classId WHERE orderDate > ? AND orderDate < ? GROUP BY DATE(FROM_UNIXTIME(orderDate))";
+        $results = $db->fetchAll($sqlQuery, array($from->getTimestamp(), $to->getTimestamp()));
 
-            foreach ($listOrders->getObjects() as $order) {
-                $total += $order->getTotal();
-            }
+        foreach($results as $result) {
+            $date = new \Pimcore\Date($result['orderDate']);
 
             $data[] = array(
-                'timestamp' => $start,
+                'timestamp' => $date->getTimestamp(),
                 'datetext' => $date->get(\Zend_Date::DATE_LONG),
-                'sales' => $total,
-                'salesFormatted' => \CoreShop::getTools()->formatPrice($total),
+                'sales' => $result['total'],
+                'salesFormatted' => \CoreShop::getTools()->formatPrice($result['total'])
             );
         }
 
