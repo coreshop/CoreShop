@@ -40,7 +40,7 @@ class PriceRule extends AbstractPriceRule
      *
      * @var array
      */
-    public static $availableActions = array('freeShipping', 'discountAmount', 'discountPercent', 'gift', 'shippingPrice');
+    public static $availableActions = array('freeShipping', 'discountAmount', 'discountPercent', 'gift');
 
     /**
      * @var string
