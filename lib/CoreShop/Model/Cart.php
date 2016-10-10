@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model;
 
+use Carbon\Carbon;
 use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Mail;
@@ -877,6 +878,11 @@ class Cart extends Base
         $order->setPaymentProvider($paymentModule->getName());
         $order->setPaymentProviderDescription($paymentModule->getDescription());
         $order->setOrderDate(new Date());
+        if (\Pimcore\Config::getFlag("useZendDate")) {
+            $order->setOrderDate(Date::now());
+        } else {
+            $order->setOrderDate(Carbon::now());
+        }
         $order->setCurrency(\CoreShop::getTools()->getCurrency());
         $order->setShop($this->getShop());
 

@@ -122,7 +122,7 @@ if (!function_exists("objectToArray")) {
 
                 case 'date':
                     /* @var $value \Pimcore\Date */
-                    $collection[$fieldName] = ($value instanceof \Pimcore\Date) ? $value->getTimestamp() : 0;
+                    $collection[$fieldName] = ($value instanceof \Pimcore\Date || $value instanceof \Carbon\Carbon) ? $value->getTimestamp() : 0;
                     break;
                 default:
                     /* @var $value string */

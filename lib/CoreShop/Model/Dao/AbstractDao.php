@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Dao;
 
+use Carbon\Carbon;
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Configuration;
@@ -184,7 +185,7 @@ abstract class AbstractDao extends Dao\AbstractDao
                 if ($value instanceof AbstractModel) {
                     $value = $value->getId();
                 }
-                if ($value instanceof Date) {
+                if ($value instanceof Date || $value instanceof Carbon) {
                     $value = $value->getTimestamp();
                 }
                 if ($value instanceof \Zend_Date) {

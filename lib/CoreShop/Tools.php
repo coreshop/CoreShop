@@ -14,19 +14,15 @@
 
 namespace CoreShop;
 
-use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
-use CoreShop\Model\Product;
 use CoreShop\Model\Order;
 use CoreShop\Model\Shop;
-use Pimcore\Date;
 use Pimcore\Logger;
 use Pimcore\Model\Object;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
 use CoreShop\Model\User;
-use Pimcore\Model\Staticroute;
 use Pimcore\Tool\Session;
 use GeoIp2\Database\Reader;
 use Pimcore\View\Helper\Url;

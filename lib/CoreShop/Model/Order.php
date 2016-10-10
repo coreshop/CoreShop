@@ -404,7 +404,13 @@ class Order extends Base
         $payment->setAmount($amount);
         $payment->setTransactionIdentifier(uniqid());
         $payment->setProvider($provider->getIdentifier());
-        $payment->setDatePayment(Date::now());
+
+        if (\Pimcore\Config::getFlag("useZendDate")) {
+            $payment->setDatePayment(Date::now());
+        } else {
+            $payment->setDatePayment(Carbon::now());
+        }
+
         $payment->setPayed($paid);
         $payment->save();
 

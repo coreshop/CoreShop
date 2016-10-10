@@ -63,7 +63,7 @@ class CoreShop_Admin_OrderController extends Admin
         $element = array(
             'o_id' => $order->getId(),
             'orderState' => $order->getOrderState() instanceof \CoreShop\Model\Order\State ? $order->getOrderState()->getId() : null,
-            'orderDate' => $order->getOrderDate() instanceof \Pimcore\Date ? intval($order->getOrderDate()->get(\Zend_Date::TIMESTAMP)) : null,
+            'orderDate' => $order->getOrderDate() instanceof \Pimcore\Date || $order->getOrderDate() instanceof \Carbon\Carbon ? intval($order->getOrderDate()->getTimestamp()) : null,
             'orderNumber' => $order->getOrderNumber(),
             'lang' => $order->getLang(),
             'carrier' => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getId() : null,
@@ -441,6 +441,7 @@ class CoreShop_Admin_OrderController extends Admin
         $statesHistory = array();
 
         $date = new \Pimcore\Date();
+
         foreach ($history as $note) {
             $user = $user = \Pimcore\Model\User::getById($note->getUser());
             $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
