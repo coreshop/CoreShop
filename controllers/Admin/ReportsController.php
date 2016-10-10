@@ -272,7 +272,7 @@ class CoreShop_Admin_ReportsController extends Admin
     {
         $filter = ReportQuery::extractFilterDefinition($this->getParam('filters'));
 
-        $tableName = 'object_query_'.\Pimcore\Model\Object\ClassDefinition::getByName('CoreShopOrder')->getId();
+        $tableName = 'object_query_'.Model\Order::classId();
         $sql = "SELECT carrier, COUNT(1) as total, COUNT(1) / t.cnt * 100 as `percentage` FROM $tableName as `order` INNER JOIN objects as o ON o.o_id = `order`.oo_id CROSS JOIN (SELECT COUNT(1) as cnt FROM $tableName as `order` INNER JOIN objects as o ON o.o_id = `order`.oo_id  WHERE $filter) t WHERE $filter GROUP BY carrier";
 
         $db = \Pimcore\Db::get();
@@ -283,7 +283,7 @@ class CoreShop_Admin_ReportsController extends Admin
             $carrier = Model\Carrier::getById($result['carrier']);
 
             $data[] = array(
-                'carrier' => $carrier->getName(),
+                'carrier' => $carrier instanceof Model\Carrier ? $carrier->getName() : $result['carrier'],
                 'data' => floatval($result['percentage']),
             );
         }
@@ -295,7 +295,7 @@ class CoreShop_Admin_ReportsController extends Admin
     {
         $filter = ReportQuery::extractFilterDefinition($this->getParam('filters'));
 
-        $tableName = 'object_query_'.\Pimcore\Model\Object\ClassDefinition::getByName('CoreShopOrder')->getId();
+        $tableName = 'object_query_'.Model\Order::classId();
         $sql = "SELECT paymentProvider, COUNT(1) as total, COUNT(1) / t.cnt * 100 as `percentage` FROM $tableName as `order` INNER JOIN objects as o ON o.o_id = `order`.oo_id CROSS JOIN (SELECT COUNT(1) as cnt FROM $tableName as `order` INNER JOIN objects as o ON o.o_id = `order`.oo_id  WHERE $filter) t WHERE $filter GROUP BY paymentProvider";
 
         $db = \Pimcore\Db::get();
