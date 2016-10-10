@@ -56,7 +56,7 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
                         flex : 1,
                         renderer: function (value, metadata, record)
                         {
-                            metadata.tdCls = record.get('iconCls') + ' td-icon';
+                            metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
 
                             return value;
                         }
