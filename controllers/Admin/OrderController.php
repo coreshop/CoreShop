@@ -296,20 +296,22 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
         }
 
-        Object\Service::loadAllObjectFields($order);
+        $jsonOrder = $this->getDataForObject($order);
 
-        $jsonOrder = $order->getObjectVars();
+        //$jsonOrder = $order->getObjectVars();
+        //$jsonOrder = [];
 
         if($jsonOrder['items'] === null) {
             $jsonOrder['items'] = [];
         }
 
-        $jsonOrder['customer'] = $order->getCustomer() instanceof \CoreShop\Model\Base ? $order->getCustomer()->getObjectVars() : null;
+        $jsonOrder['o_id'] = $order->getId();
+        $jsonOrder['customer'] = $order->getCustomer() instanceof \CoreShop\Model\Base ? $this->getDataForObject($order->getCustomer()) : null;
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
         $jsonOrder['invoice'] = $order->getProperty("invoice");
         $jsonOrder['address'] = [
-            'shipping' => $order->getShippingAddress()->getObjectVars(),
-            'billing' => $order->getBillingAddress()->getObjectVars()
+            'shipping' => $this->getDataForObject($order->getShippingAddress()),
+            'billing' => $this->getDataForObject($order->getBillingAddress())
         ];
         $jsonOrder['shipping'] = [
             'carrier' => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getName() : null,
@@ -389,19 +391,16 @@ class CoreShop_Admin_OrderController extends Admin
 
         $address = $addressType == 'shipping' ? $order->getShippingAddress() : $order->getBillingAddress();
 
+        unset($data['action']);
+        unset($data['module']);
+        unset($data['controller']);
+        unset($data['type']);
+        unset($data['_dc']);
+        unset($data['id']);
+
         if ($address instanceof \CoreShop\Model\User\Address) {
             $address->setValues($data);
-
-            $fieldCollection = new \Pimcore\Model\Object\Fieldcollection();
-            $fieldCollection->add($address);
-
-            if ($addressType == 'shipping') {
-                $order->setShippingAddress($fieldCollection);
-            } else {
-                $order->setBillingAddress($fieldCollection);
-            }
-
-            $order->save();
+            $address->save();
 
             if ($order->getProperty('invoice') instanceof \Pimcore\Model\Asset) {
                 $order->getInvoice(true);
@@ -433,6 +432,10 @@ class CoreShop_Admin_OrderController extends Admin
                 $objectData[$key] = null;
             }
         }
+
+        $objectData['o_id'] = $data->getId();
+        $objectData['o_creationDate'] = $data->getCreationDate();
+        $objectData['o_modificationDate'] = $data->getModificationDate();
 
         return $objectData;
     }

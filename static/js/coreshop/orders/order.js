@@ -175,7 +175,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             var items = [
                 {
                     xtype : 'panel',
-                    html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.o_creationDate * 1000), t('coreshop_date_format')) + '</span>',
+                    html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.orderDate * 1000), t('coreshop_date_format')) + '</span>',
                     bodyPadding : 20,
                     flex : 1
                 },
@@ -490,6 +490,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                     }.bind(this)).show();
                                 }.bind(this)
                             });
+                        }.bind(this)
+                    }, '->',
+                    {
+                        iconCls: 'coreshop_icon_open',
+                        text: t('open'),
+                        handler : function () {
+                            pimcore.helpers.openObject(address.o_id);
                         }.bind(this)
                     }
                 ]

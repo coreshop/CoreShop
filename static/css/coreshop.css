@@ -319,7 +319,7 @@
     background: url(/plugins/CoreShop/static/img/flat/conditions.svg) center center no-repeat !important;
 }
 
-.x-tool-coreshop-open {
+.x-tool-coreshop-open, .coreshop_icon_open {
     background: url(/pimcore/static6/img/flat-color-icons/cursor.svg) center center no-repeat !important;
 }
 
