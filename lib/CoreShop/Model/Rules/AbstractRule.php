@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Rules;
 
 use CoreShop\Model\AbstractModel;
+use Pimcore\Tool;
 
 /**
  * Class AbstractRule
