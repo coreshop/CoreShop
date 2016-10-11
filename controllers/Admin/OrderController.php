@@ -36,7 +36,7 @@ class CoreShop_Admin_OrderController extends Admin
         $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($this->getAllParams());
 
         $order = 'DESC';
-        $orderKey = 'o_id';
+        $orderKey = 'orderDate';
 
         if ($sortingSettings['order']) {
             $order = $sortingSettings['order'];
@@ -60,10 +60,19 @@ class CoreShop_Admin_OrderController extends Admin
 
     protected function prepareOrder(\CoreShop\Model\Order $order)
     {
+        $date = "";
+
+        if($order->getOrderDate() instanceof \Pimcore\Date) {
+            $date = intval($order->getOrderDate()->get(\Zend_Date::TIMESTAMP));
+        }
+        else if($order->getOrderDate() instanceof \Carbon\Carbon) {
+            $date = intval($order->getOrderDate()->getTimestamp());
+        }
+
         $element = array(
             'o_id' => $order->getId(),
             'orderState' => $order->getOrderState() instanceof \CoreShop\Model\Order\State ? $order->getOrderState()->getId() : null,
-            'orderDate' => $order->getOrderDate() instanceof \Pimcore\Date || $order->getOrderDate() instanceof \Carbon\Carbon ? intval($order->getOrderDate()->getTimestamp()) : null,
+            'orderDate' => $date,
             'orderNumber' => $order->getOrderNumber(),
             'lang' => $order->getLang(),
             'carrier' => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getId() : null,
@@ -287,6 +296,8 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
         }
 
+        Object\Service::loadAllObjectFields($order);
+
         $jsonOrder = $order->getObjectVars();
 
         if($jsonOrder['items'] === null) {
@@ -350,13 +361,11 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
         }
 
-        $fieldCollectionClass = \CoreShop\Model\User\Address::getPimcoreObjectClass();
-        $fieldCollectionType = new $fieldCollectionClass();
-        $fieldCollectionType = $fieldCollectionType->getType();
+        $addressClassId = \CoreShop\Model\User\Address::classId();
 
-        $fieldCollection = \Pimcore\Model\Object\Fieldcollection\Definition::getByKey($fieldCollectionType);
+        $fieldCollection = \Pimcore\Model\Object\ClassDefinition::getById($addressClassId);
 
-        if ($fieldCollection instanceof \Pimcore\Model\Object\Fieldcollection\Definition) {
+        if ($fieldCollection instanceof \Pimcore\Model\Object\ClassDefinition) {
             $this->_helper->json([
                 'success' => true,
                 'data' => $addressType == 'shipping' ? $this->getDataForObject($order->getShippingAddress()) : $this->getDataForObject($order->getBillingAddress()),
@@ -405,14 +414,14 @@ class CoreShop_Admin_OrderController extends Admin
     }
 
     /**
-     * @param Object\Fieldcollection\Data\AbstractData $data
+     * @param Object\Concrete $data
      * @return array
      */
-    private function getDataForObject(Pimcore\Model\Object\Fieldcollection\Data\AbstractData $data)
+    private function getDataForObject(Object\Concrete $data)
     {
         $objectData = [];
 
-        foreach ($data->getDefinition()->getFieldDefinitions() as $key => $def) {
+        foreach ($data->getClass()->getFieldDefinitions() as $key => $def) {
             $getter = "get" . ucfirst($key);
             $fieldData = $data->$getter();
 
@@ -441,7 +450,6 @@ class CoreShop_Admin_OrderController extends Admin
         $statesHistory = array();
 
         $date = new \Pimcore\Date();
-
         foreach ($history as $note) {
             $user = $user = \Pimcore\Model\User::getById($note->getUser());
             $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
