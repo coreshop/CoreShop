@@ -486,7 +486,7 @@ class Product extends Base
      */
     public function getCheapestVariantPrice()
     {
-        $cacheKey = 'coreshop_product_cheapest_variant_price_'.$this->getId();
+        $cacheKey = self::getPriceCacheTag($this) . "_cheapest";
 
         if ($price = Cache::load($cacheKey)) {
             return $price;
@@ -506,7 +506,7 @@ class Product extends Base
 
                 $price = min($prices);
 
-                Cache::save($price, $cacheKey);
+                Cache::save($price, $cacheKey, array('coreshop_product_price'));
 
                 return $price;
             }
