@@ -103,7 +103,7 @@
                     <?php } ?>
                     <tr>
                         <td><?=$this->translate("coreshop_tax_rate")?></td>
-                        <td><?=\CoreShop::getTools()->formatTax($this->product->getTaxRate()/100)?></td>
+                        <td><?=\CoreShop::getTools()->formatTax($this->product->getTaxRate())?></td>
                     </tr>
 
                 <?php } ?>

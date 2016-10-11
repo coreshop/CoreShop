@@ -103,16 +103,26 @@ class Tools
      * Format Price to locale.
      *
      * @param $price
+     * @param Country $country
+     * @param Currency $currency
      *
      * @return string
      */
-    public function formatPrice($price)
+    public function formatPrice($price, $country = null, $currency = null)
     {
         try {
-            $locale = \Zend_Locale::getLocaleToTerritory(static::getCountry()->getIsoCode());
+            if(is_null($country)) {
+                $country = static::getCountry();
+            }
+
+            if(is_null($currency)) {
+                $currency = self::getCurrency();
+            }
+
+            $locale = \Zend_Locale::getLocaleToTerritory($country->getIsoCode());
             $zCurrency = new \Zend_Currency($locale);
 
-            return $zCurrency->toCurrency($price, array('symbol' => static::getCurrency()->getSymbol()));
+            return $zCurrency->toCurrency($price, array('symbol' => $currency->getSymbol()));
         } catch (\Exception $ex) {
             echo $ex;
         }
@@ -316,7 +326,7 @@ class Tools
      */
     public function formatTax($tax)
     {
-        return ($tax * 100).'%';
+        return $tax . '%';
     }
 
     /**
