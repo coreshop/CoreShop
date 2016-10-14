@@ -222,11 +222,7 @@ class CoreShop_Admin_ReportsController extends Admin
             ";
         }
 
-        $query = implode(PHP_EOL . "UNION ALL" . PHP_EOL, $queries);
-
-        $query = "SELECT * FROM ($query) as query ORDER BY timestamp";
-
-        $data = $db->fetchAll($query);
+        $data = $db->fetchAll(implode(PHP_EOL . "UNION ALL" . PHP_EOL, $queries));
 
         foreach($data as &$day) {
             $date = new \Zend_Date($day['timestamp']);
