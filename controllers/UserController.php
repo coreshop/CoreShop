@@ -387,25 +387,26 @@ class CoreShop_UserController extends Action
         }
     }
 
-    public function deleteaddressAction()
+    public function addressDeleteAction()
     {
-        $addressId = $this->getParam('address');
-        $address = null;
-        $i = -1;
+        $address = intval($this->getParam('address'));
+        $address = \CoreShop\Model\User\Address::getById($address);
 
-        foreach (\CoreShop::getTools()->getUser()->getAddresses() as $a) {
-            ++$i;
+        if($address instanceof \CoreShop\Model\User\Address) {
+            $found = false;
 
-            if ($a->getName() === $addressId) {
-                $address = $a;
-                break;
+            foreach (\CoreShop::getTools()->getUser()->getAddresses() as $adr) {
+                if ($address->getId() === $address->getId()) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if ($found) {
+                $address->delete();
             }
         }
 
-        if ($address instanceof \CoreShop\Model\User\Address) {
-            $address->delete();
-        }
-
-        $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
+        $this->redirect(CoreShop::getTools()->url(array("lang" => $this->view->language, "act" => "addresses"), "coreshop_user", true));
     }
 }
