@@ -259,6 +259,8 @@ class CoreShop_UserController extends Action
 
         if (!$this->view->address instanceof \CoreShop\Model\User\Address) {
             $this->view->address = \CoreShop\Model\User\Address::create();
+            $this->view->address->setParent(\CoreShop::getTools()->getUser()->getPathForAddresses());
+
             $this->view->isNew = true;
         }
 
@@ -295,11 +297,19 @@ class CoreShop_UserController extends Action
 
                 $this->view->address->setValues($addressParams);
                 $this->view->address->setCountry(Country::getById($addressParams['country']));
-                $this->view->address->save();
 
                 if ($this->view->isNew) {
+
+                    $this->view->address->setKey(\Pimcore\File::getValidFilename($addressParams['name']));
+                    $this->view->address->setKey(\Pimcore\Model\Object\Service::getUniqueKey($this->view->address));
+                    $this->view->address->setPublished(true);
+                    $this->view->address->save();
+
                     $addresses[] = $this->view->address;
                     \CoreShop::getTools()->getUser()->setAddresses($addresses);
+
+                } else {
+                    $this->view->address->save();
                 }
 
                 \CoreShop::getTools()->getUser()->save();
