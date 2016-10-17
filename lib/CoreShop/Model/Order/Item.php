@@ -19,6 +19,7 @@ use CoreShop\Model\Base;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use Pimcore\Model\Asset\Image;
+use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 
 /**
@@ -316,6 +317,46 @@ class Item extends Base
      * @throws ObjectUnsupportedException
      */
     public function setTaxes($taxes)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getIsVirtualProduct()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $isVirtualProduct
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setIsVirtualProduct($isVirtualProduct)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Asset
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getVirtualAsset()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Asset|null $virtualAsset
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setVirtualAsset($virtualAsset)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

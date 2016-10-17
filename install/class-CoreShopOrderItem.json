@@ -1,6 +1,6 @@
 {
   "description":null,
-  "parentClass":"CoreShop\\Model\\Order\\Item",
+  "parentClass":"\\CoreShop\\Model\\Order\\Item",
   "useTraits":null,
   "allowInherit":false,
   "allowVariants":false,
@@ -15,7 +15,7 @@
     "title":null,
     "width":null,
     "height":null,
-    "collapsible":null,
+    "collapsible":false,
     "collapsed":null,
     "bodyStyle":null,
     "datatype":"layout",
@@ -64,13 +64,19 @@
                 "objectsAllowed":true,
                 "assetsAllowed":false,
                 "assetTypes":[
+                  {
+                    "assetTypes":""
+                  }
                 ],
                 "documentsAllowed":false,
                 "documentTypes":[
+                  {
+                    "documentTypes":""
+                  }
                 ],
                 "lazyLoading":false,
                 "classes":[
-                    "CoreShopProduct"
+                  "CoreShopProduct"
                 ],
                 "name":"product",
                 "title":"Product",
@@ -327,6 +333,84 @@
             "fieldtype":"panel",
             "labelWidth":100,
             "layout":null,
+            "name":"Virtual Product",
+            "type":null,
+            "region":null,
+            "title":"Virtual Product",
+            "width":null,
+            "height":null,
+            "collapsible":false,
+            "collapsed":false,
+            "bodyStyle":"",
+            "datatype":"layout",
+            "permissions":null,
+            "childs":[
+              {
+                "fieldtype":"checkbox",
+                "defaultValue":0,
+                "queryColumnType":"tinyint(1)",
+                "columnType":"tinyint(1)",
+                "phpdocType":"boolean",
+                "name":"isVirtualProduct",
+                "title":"Is Virtual Product",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
+                "fieldtype":"href",
+                "width":"",
+                "assetUploadPath":"",
+                "relationType":true,
+                "queryColumnType":{
+                  "id":"int(11)",
+                  "type":"enum('document','asset','object')"
+                },
+                "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
+                "objectsAllowed":false,
+                "assetsAllowed":true,
+                "assetTypes":[
+
+                ],
+                "documentsAllowed":false,
+                "documentTypes":[
+
+                ],
+                "lazyLoading":true,
+                "classes":[
+
+                ],
+                "name":"virtualAsset",
+                "title":"Virtual Asset",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "columnType":null,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              }
+            ],
+            "locked":false
+          },
+          {
+            "fieldtype":"panel",
+            "labelWidth":100,
+            "layout":null,
             "name":"Tax",
             "type":null,
             "region":null,
@@ -375,7 +459,7 @@
         "locked":false
       }
     ],
-    "locked":null
+    "locked":false
   },
   "icon":null,
   "previewUrl":null,

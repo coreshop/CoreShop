@@ -51,6 +51,59 @@ class CoreShop_UserController extends Action
     {
     }
 
+    public function downloadVirtualProductAction() {
+        $orderItemId = $this->getParam("id");
+
+        $orderItem = \CoreShop\Model\Order\Item::getById($orderItemId);
+
+        if($orderItem instanceof \CoreShop\Model\Order\Item) {
+            if($orderItem->getVirtualAsset() instanceof \Pimcore\Model\Asset) {
+                $order = $orderItem->getOrder();
+
+                if ($order instanceof \CoreShop\Model\Order && $order->getIsPayed()) {
+                    if ($order->getCustomer() instanceof \CoreShop\Model\User && $order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
+                        $this->serveFile($orderItem->getVirtualAsset());
+                    }
+                }
+            }
+        }
+
+        //404
+        $response = $this->getResponse();
+        $response->setHttpResponseCode(404);
+        header("HTTP/1.0 404 Not Found");
+        exit;
+    }
+
+    /**
+     * @param \Pimcore\Model\Asset $asset
+     */
+    private function serveFile(\Pimcore\Model\Asset $asset)
+    {
+        $size = $asset->getFileSize('noformatting');
+        $quoted = sprintf('"%s"', addcslashes( basename($asset->getFilename()), '"\\') );
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . $quoted);
+        header('Content-Transfer-Encoding: binary');
+        header('Connection: Keep-Alive');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . $size);
+
+        set_time_limit(0);
+        $file = @fopen(PIMCORE_ASSET_DIRECTORY . $asset->getFullPath(),'rb');
+        while(!feof($file))
+        {
+            print( @fread($file, 1024*8) );
+            ob_flush();
+            flush();
+        }
+        exit;
+    }
+
     public function settingsAction()
     {
         $this->view->success = false;

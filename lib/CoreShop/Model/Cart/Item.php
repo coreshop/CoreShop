@@ -19,6 +19,7 @@ use CoreShop\Model\Base;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
 use CoreShop\Model\User\Address;
+use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 
 /**
@@ -65,8 +66,17 @@ class Item extends Base
      *
      * @return bool
      */
-    public function getIsDownloadProduct() {
-        return $this->getProduct()->getIsDownloadProduct();
+    public function getIsVirtualProduct() {
+        return $this->getProduct()->getisVirtualProduct();
+    }
+
+    /**
+     * Get CartItem Virtual Asset
+     *
+     * @return Asset
+     */
+    public function getVirtualAsset() {
+        return $this->getProduct()->getVirtualAsset();
     }
 
     /**

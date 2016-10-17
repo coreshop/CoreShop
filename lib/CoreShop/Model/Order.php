@@ -25,6 +25,7 @@ use Pimcore\Cache;
 use Pimcore\Date;
 use Pimcore\File;
 use Pimcore\Logger;
+use Pimcore\Model\Asset;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Object;
@@ -177,6 +178,11 @@ class Order extends Base
             $item->setIsGiftItem($cartItem->getIsGiftItem());
             $item->setTotal(\CoreShop::getTools()->roundPrice($cartItem->getTotal()));
             $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getTotalTax()));
+            $item->setIsVirtualProduct($cartItem->getIsVirtualProduct());
+
+            if($cartItem->getVirtualAsset() instanceof Asset) {
+                $item->setVirtualAsset($cartItem->getVirtualAsset());
+            }
 
             $productTaxes = $cartItem->getProductTaxCalculator();
 
@@ -465,6 +471,15 @@ class Order extends Base
         }
 
         return $totalPayed;
+    }
+
+    /**
+     * Check if the order is fully paid
+     *
+     * @return bool
+     */
+    public function getIsPayed() {
+        return ($this->getTotal() === $this->getPayedTotal());
     }
 
     /**

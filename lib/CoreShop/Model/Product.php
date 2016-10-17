@@ -36,7 +36,8 @@ use CoreShop\Tool\Service;
  * @method static Object\Listing\Concrete getByArticleNumber ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByEnabled ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByAvailableForOrder ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByIsDownloadProduct ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByIsVirtualProduct ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByVirtualAsset ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByManufacturer ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByShops ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByCategories ($value, $limit = 0)
@@ -761,17 +762,17 @@ class Product extends Base
      *
      * @throws ObjectUnsupportedException
      */
-    public function getIsDownloadProduct()
+    public function getisVirtualProduct()
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
-     * @param boolean $isDownloadProduct
+     * @param boolean $isVirtualProduct
      *
      * @throws ObjectUnsupportedException
      */
-    public function setIsDownloadProduct($isDownloadProduct)
+    public function setIsVirtualProduct($isVirtualProduct)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
@@ -1090,6 +1091,26 @@ class Product extends Base
      * @throws ObjectUnsupportedException
      */
     public function setClassificationStore($classificationStore)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Asset
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getVirtualAsset()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Asset $virtualAsset
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setVirtualAsset($virtualAsset)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
