@@ -150,7 +150,7 @@ class Cart extends Base
     public function hasPhysicalItems()
     {
         foreach ($this->getItems() as $item) {
-            if ($item->getIsDownloadProduct() !== 'yes') {
+            if (!$item->getIsVirtualProduct()) {
                 return true;
             }
         }
@@ -310,10 +310,12 @@ class Cart extends Base
             return $this->getCarrier();
         }
 
-        $carrier = Carrier::getCheapestCarrierForCart($this);
+        if($this->hasPhysicalItems()) {
+            $carrier = Carrier::getCheapestCarrierForCart($this);
 
-        if ($carrier instanceof Carrier) {
-            return $carrier;
+            if ($carrier instanceof Carrier) {
+                return $carrier;
+            }
         }
 
         return null;
@@ -878,6 +880,7 @@ class Cart extends Base
         $order->setPaymentProvider($paymentModule->getName());
         $order->setPaymentProviderDescription($paymentModule->getDescription());
         $order->setOrderDate(new Date());
+
         if (\Pimcore\Config::getFlag("useZendDate")) {
             $order->setOrderDate(Date::now());
         } else {
@@ -1034,6 +1037,25 @@ class Cart extends Base
         }
 
         return $fingerprint;
+    }
+
+    /**
+     *
+     */
+    public function __sleep()
+    {
+        $parentVars = parent::__sleep();
+
+        $finalVars = [];
+        $notAllowedFields = ['shippingWithoutTax', 'shipping'];
+
+        foreach ($parentVars as $key) {
+            if (!in_array($key, $notAllowedFields)) {
+                $finalVars[] = $key;
+            }
+        }
+
+        return $finalVars;
     }
 
     /**
@@ -1274,17 +1296,5 @@ class Cart extends Base
     public function setBillingAddress($billingAddress)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * Prepare to sleep.
-     *
-     * @return array
-     */
-    public function __sleep()
-    {
-        $this->shipping = null;
-
-        return parent::__sleep();
     }
 }
