@@ -156,6 +156,14 @@ class CoreShop_UserController extends Action
                 }
             }
 
+            //if address firstname or lastname is missing ( in guest checkout for example ), use the user information!
+            if( empty( $addressParams['firstname'] )) {
+                $addressParams['firstname'] = $userParams['firstname'];
+            }
+            if( empty( $addressParams['lastname'] )) {
+                $addressParams['lastname'] = $userParams['lastname'];
+            }
+
             try {
                 $isGuest = intval($this->getParam('isGuest', 0)) === 1;
 
@@ -197,6 +205,7 @@ class CoreShop_UserController extends Action
 
                 $address = \CoreShop\Model\User\Address::create();
                 $address->setValues($addressParams);
+                $address->setPublished(true);
                 $address->setCountry(Country::getById($addressParams['country']));
                 $address->setParent($user->getPathForAddresses());
                 $address->setKey($address->getName() ? $address->getName() : $address->getFirstname() . ' ' . $address->getLastname());
