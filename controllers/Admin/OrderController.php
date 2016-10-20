@@ -179,6 +179,7 @@ class CoreShop_Admin_OrderController extends Admin
             $thread->setEmail($order->getCustomer()->getEmail());
             $thread->setUser($order->getCustomer());
             $thread->setContact($salesContact);
+            $thread->setShopId($order->getShop()->getId());
             $thread->setToken(uniqid());
             $thread->setOrder($order);
             $thread->save();
