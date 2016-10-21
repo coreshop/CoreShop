@@ -262,6 +262,32 @@ class Elasticsearch extends AbstractWorker
 
                 break;
 
+            case "like":
+                $values = $condition->getValues();
+
+                $pattern = $values["pattern"];
+                $value = $values["value"];
+
+                $patternValue = '';
+
+                switch($pattern) {
+                    case "left":
+                        $patternValue = '*' . $value;
+                        break;
+                    case "right":
+                        $patternValue = $value . '*';
+                        break;
+                    case "both":
+                        $patternValue = '*' . $value . '*';
+                        break;
+                }
+
+                $rendered = ["wildcard" => [
+                    $condition->getFieldName() => $patternValue
+                ]];
+
+                break;
+
             default:
                 throw new \Exception($condition->getType() . " is not supported yet");
         }
