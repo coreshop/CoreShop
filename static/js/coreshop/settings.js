@@ -212,10 +212,19 @@ pimcore.plugin.coreshop.settings = Class.create({
                         defaults: { width: 600 },
                         items: [
                             {
-                                fieldLabel: t('coreshop_track_visitors'),
+                                fieldLabel: t('coreshop_visitors_track'),
                                 xtype: 'checkbox',
                                 name: 'SYSTEM.VISITORS.TRACK',
                                 checked: this.getSystemValue('SYSTEM.VISITORS.TRACK')
+                            },
+                            {
+                                fieldLabel: t('coreshop_visitors_keep_days'),
+                                xtype : 'numberfield',
+                                name : 'SYSTEM.VISITORS.KEEP_TRACKS_DAYS',
+                                value : this.getSystemValue('SYSTEM.VISITORS.KEEP_TRACKS_DAYS'),
+                                width: 500,
+                                decimalPrecision: 0,
+                                step: 1
                             }
                         ]
                     },

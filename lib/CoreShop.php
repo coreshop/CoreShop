@@ -288,6 +288,9 @@ class CoreShop
                 if (Configuration::get('SYSTEM.LOG.USAGESTATISTICS')) {
                     $manager->registerJob(new Job('coreshop_send_usage_statistcs', '\\CoreShop\\Maintenance\\Log', 'maintenance'));
                 }
+                if(Configuration::get("SYSTEM.VISITORS.TRACK")) {
+                    $manager->registerJob(new Job('coreshop_send_usage_statistcs', '\\CoreShop\\Model\\Visitor', 'maintenance'));
+                }
             }
         });
 

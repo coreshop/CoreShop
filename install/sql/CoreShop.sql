@@ -637,7 +637,7 @@ CREATE TABLE `coreshop_carrier_shippingrule_groups` (
   `shippingRuleId` int NOT NULL
 );
 
-DROP TABLE IF EXISTS `coreshop_visitor`;
+DROP TABLE IF EXISTS `coreshop_visitors`;
 CREATE TABLE `coreshop_visitor` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `shopId` int(11) NOT NULL,
@@ -650,7 +650,7 @@ CREATE TABLE `coreshop_visitor` (
   `creationDate` bigint(20) NOT NULL
 );
 
-DROP TABLE IF EXISTS `coreshop_visitor_page`;
+DROP TABLE IF EXISTS `coreshop_visitors_page`;
 CREATE TABLE `coreshop_visitor_page` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `visitorId` int NOT NULL,
@@ -660,7 +660,7 @@ CREATE TABLE `coreshop_visitor_page` (
   `creationDate` bigint(20) NOT NULL
 );
 
-DROP TABLE IF EXISTS `coreshop_visitor_source`;
+DROP TABLE IF EXISTS `coreshop_visitors_source`;
 CREATE TABLE `coreshop_visitor_source` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `visitorId` int NOT NULL,

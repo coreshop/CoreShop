@@ -15,6 +15,7 @@
 namespace CoreShop\Model;
 use CoreShop\Model\Visitor\Page;
 use CoreShop\Model\Visitor\Source;
+use Pimcore\Db;
 
 /**
  * Class Visitor
@@ -63,6 +64,36 @@ class Visitor extends AbstractModel
     public $creationDate;
 
     /**
+     * Maintenance Task for cleanup
+     */
+    public static function maintenance() {
+        $keepRecordsForDays = Configuration::get("SYSTEM.VISITORS.KEEP_TRACKS_DAYS");
+
+        if($keepRecordsForDays > 0) {
+            $date = \Carbon\Carbon::now();
+            $date->subDays($keepRecordsForDays);
+            $timestampToDelete = $date->getTimestamp();
+            $db = Db::get();
+
+            $orderClassId = Order::classId();
+            $visitor = new static();
+            $tableName = $visitor->getDao()->getTableName();
+
+            $sql = "SELECT visitors.id FROM $tableName visitors LEFT JOIN object_store_$orderClassId orders ON orders.visitorId=visitors.id WHERE orders.oo_id IS NULL AND visitors.creationDate < $timestampToDelete";
+
+            $entriesToDelete = $db->fetchAll($sql);
+
+            foreach ($entriesToDelete as $entry) {
+                $visitor = Visitor::getById($entry['id']);
+
+                if ($visitor instanceof Visitor) {
+                    $visitor->delete();
+                }
+            }
+        }
+    }
+
+    /**
      * @return bool
      */
     public function delete()
@@ -85,7 +116,6 @@ class Visitor extends AbstractModel
 
         return parent::delete();
     }
-
 
     /**
      * @return int

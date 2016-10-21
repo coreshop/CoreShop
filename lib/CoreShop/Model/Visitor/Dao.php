@@ -27,5 +27,5 @@ class Dao extends AbstractDao
      *
      * @var string
      */
-    protected static $tableName = 'coreshop_visitor';
+    protected static $tableName = 'coreshop_visitors';
 }
