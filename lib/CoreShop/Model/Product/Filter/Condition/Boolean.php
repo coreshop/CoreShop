@@ -143,24 +143,15 @@ class Boolean extends AbstractCondition
 
             $conditions = [];
 
-            $condition = '(';
 
             $c = 0;
 
             foreach ($sqlFilter as $valName => $boolVal) {
                 $conditions[] = Condition::match($valName, (int) $boolVal);
-
-                $condition .= 'TRIM(`'.$valName.'`) = '.(int) $boolVal;
-                if ($c < count($sqlFilter) - 1) {
-                    $condition .= ' AND ';
-                }
-
                 ++$c;
             }
 
-            $condition .= ')';
-
-            if (!empty($condition)) {
+            if (count($conditions) > 0) {
                 $list->addCondition(Condition::concat($fieldName, $conditions, "AND"), $fieldName);
             }
         }
