@@ -445,3 +445,6 @@
 "coreshop_visitor_settings","Visitor Settings"
 "coreshop_track_visitors","Track Visitors"
 "coreshop_visitor","Visitor"
+"coreshop_visitor_ip","IP"
+"coreshop_visitor_referrer","Referrer"
+"coreshop_visitor_date","Date"

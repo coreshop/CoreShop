@@ -104,6 +104,12 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             this.getPaymentInfo()
         ];
 
+        var visitorInfo = this.getVisitorInfo();
+
+        if(visitorInfo) {
+            leftItems.push(visitorInfo);
+        }
+
         var rightItems = [
             this.getCustomerInfo(),
             this.getMessagesInfo(),
@@ -840,6 +846,36 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         }
 
         return null;
+    },
+
+    getVisitorInfo : function() {
+        if(this.order.visitor) {
+            if (!this.visitorInfo) {
+                var visitor = this.order.visitor;
+
+                this.visitorInfo = Ext.create('Ext.panel.Panel', {
+                    title : t('coreshop_visitor'),
+                    border : true,
+                    margin : '0 20 20 0',
+                    iconCls : 'coreshop_icon_visitor',
+                    items : [
+                        {
+                            xtype: 'panel',
+                            bodyPadding : 5,
+                            html :
+                            ('<strong>' + t('coreshop_visitor_ip') + '</strong>: ' + coreshop.helpers.long2ip(visitor.ip))  + '<br/>' +
+                            ('<strong>' + t('coreshop_visitor_referrer') + '</strong>: ' + visitor.referrer) + '<br/>' +
+                            ('<strong>' + t('coreshop_visitor_date')+ '</strong>: ' + Ext.Date.format(new Date(visitor.creationDate * 1000), t('coreshop_date_format'))) + '<br/>',
+                            flex : 1
+                        }
+                    ]
+                });
+            }
+
+            return this.visitorInfo;
+        }
+
+        return false;
     },
 
     getDetailInfo : function () {
