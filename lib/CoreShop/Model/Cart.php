@@ -1025,6 +1025,26 @@ class Cart extends Base
     }
 
     /**
+     * Adds existing order to cart (re-ordering)
+     *
+     * @param Order $order
+     * @param bool $removeExistingItems
+     */
+    public function addOrderToCart(Order $order, $removeExistingItems = false) {
+        if($removeExistingItems) {
+            foreach($this->getItems() as $item) {
+                $this->removeItem($item);
+            }
+        }
+
+        foreach($order->getItems() as $item) {
+            if($item->getProduct() instanceof Product) {
+                $this->addItem($item->getProduct(), $item->getAmount());
+            }
+        }
+    }
+
+    /**
      * @return string
      */
     public function getCacheKey() {

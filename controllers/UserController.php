@@ -56,11 +56,11 @@ class CoreShop_UserController extends Action
         $order = \CoreShop\Model\Order::getById($order);
 
         if(!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders"), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
         }
 
         if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders"), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
         }
 
         $this->view->messageSent = $this->getParam("messageSent", false);
@@ -80,11 +80,11 @@ class CoreShop_UserController extends Action
         }
 
         if(!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders"), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
         }
 
         if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders"), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
         }
 
         $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
@@ -114,6 +114,23 @@ class CoreShop_UserController extends Action
         $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
 
         $this->redirect(\CoreShop::getTools()->url(array("act" => "order-detail", "id" => $order->getId(), "messageSent" => true), "coreshop_user", true));
+    }
+
+    public function orderReorderAction() {
+        $order = $this->getParam("id");
+        $order = \CoreShop\Model\Order::getById($order);
+
+        if(!$order instanceof \CoreShop\Model\Order) {
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
+        }
+
+        if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
+        }
+
+        $this->cart->addOrderToCart($order, true);
+
+        $this->redirect(\CoreShop::getTools()->url(array("act" => "list", "lang" => $this->view->language), "coreshop_cart", true));
     }
 
     public function downloadVirtualProductAction() {
