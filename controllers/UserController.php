@@ -51,6 +51,71 @@ class CoreShop_UserController extends Action
     {
     }
 
+    public function orderDetailAction() {
+        $order = $this->getParam("id");
+        $order = \CoreShop\Model\Order::getById($order);
+
+        if(!$order instanceof \CoreShop\Model\Order) {
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders"), "coreshop_user", true));
+        }
+
+        if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders"), "coreshop_user", true));
+        }
+
+        $this->view->messageSent = $this->getParam("messageSent", false);
+        $this->view->order = $order;
+    }
+
+    public function orderDetailMessageAction() {
+        $order = $this->getParam("id");
+        $messageText = $this->getParam("text");
+        $product = $this->getParam("product");
+
+        $order = \CoreShop\Model\Order::getById($order);
+        $product = \CoreShop\Model\Product::getById($product);
+
+        if(!$product instanceof CoreShop\Model\Product) {
+            $product = null;
+        }
+
+        if(!$order instanceof \CoreShop\Model\Order) {
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders"), "coreshop_user", true));
+        }
+
+        if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders"), "coreshop_user", true));
+        }
+
+        $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
+        $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), \CoreShop\Model\Shop::getShop()->getId(), $order->getId(), $product);
+
+        if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
+            $thread = new CoreShop\Model\Messaging\Thread();
+            $thread->setLanguage($order->getLang());
+            $thread->setStatusId(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
+            $thread->setEmail($order->getCustomer()->getEmail());
+            $thread->setUser($order->getCustomer());
+            $thread->setContact($salesContact);
+            $thread->setShopId($order->getShop()->getId());
+            $thread->setToken(uniqid());
+            $thread->setOrder($order);
+
+            if($product instanceof \CoreShop\Model\Product) {
+                $thread->setProduct($product);
+            }
+
+            $thread->save();
+        }
+
+        $message = $thread->createMessage($messageText);
+
+        $contactEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
+        $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
+
+        $this->redirect(\CoreShop::getTools()->url(array("act" => "order-detail", "id" => $order->getId(), "messageSent" => true), "coreshop_user", true));
+    }
+
     public function downloadVirtualProductAction() {
         $orderItemId = $this->getParam("id");
 
