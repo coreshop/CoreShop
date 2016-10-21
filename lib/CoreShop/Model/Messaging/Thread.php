@@ -105,10 +105,11 @@ class Thread extends AbstractModel
      * @param $shopId int
      * @param $orderId int|null
      * @param $productId int|null
+     * @param $getAll boolean Gets all Threads, no matter if finished or orderId/productId is set
      *
-     * @return Thread|null
+     * @return Thread[]|Thread|null
      */
-    public static function searchThread($email, $contactId, $shopId, $orderId = null, $productId = null)
+    public static function searchThread($email, $contactId, $shopId, $orderId = null, $productId = null, $getAll = false)
     {
         $list = Thread::getList();
 
@@ -124,7 +125,9 @@ class Thread extends AbstractModel
 
         foreach ($params as $p => $v) {
             if (is_null($v)) {
-                $query[] = "$p is null";
+                if(!$getAll) {
+                    $query[] = "$p IS NULL";
+                }
             } else {
                 $query[] = "$p = ?";
                 $queryParams[] = $v;
@@ -132,6 +135,10 @@ class Thread extends AbstractModel
         }
         $list->setCondition(implode(' AND ', $query), $queryParams);
         $list = $list->load();
+
+        if($getAll) {
+            return $list;
+        }
 
         foreach ($list as $thread) {
             if (!$thread->getStatus()->getFinished()) {

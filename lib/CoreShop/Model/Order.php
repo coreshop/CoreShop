@@ -17,6 +17,8 @@ namespace CoreShop\Model;
 use Carbon\Carbon;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
+use CoreShop\Model\Messaging\Contact;
+use CoreShop\Model\Messaging\Thread;
 use CoreShop\Model\Order\Item;
 use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
@@ -705,6 +707,17 @@ class Order extends Base
         $noteList->setOrder('desc');
 
         return $noteList->load();
+    }
+
+    /**
+     * get all threads regargind this order
+     *
+     * @return Thread|Messaging\Thread[]|null
+     */
+    public function getCustomerThreads() {
+        $threadList = Thread::searchThread($this->getCustomer()->getEmail(), null, $this->getShop()->getId(), $this->getId(), null, true);
+
+        return $threadList;
     }
 
     /**
