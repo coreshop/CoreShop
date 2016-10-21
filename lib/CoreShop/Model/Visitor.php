@@ -13,6 +13,8 @@
  */
 
 namespace CoreShop\Model;
+use CoreShop\Model\Visitor\Page;
+use CoreShop\Model\Visitor\Source;
 
 /**
  * Class Visitor
@@ -59,6 +61,35 @@ class Visitor extends AbstractModel
      * @var int
      */
     public $creationDate;
+
+    /**
+     * @return bool
+     */
+    public function delete()
+    {
+        $result = parent::delete();
+
+        if($result) {
+            $list = Source::getList();
+            $list->setCondition("visitorId = ?", [$this->getId()]);
+            $list->load();
+
+            foreach($list as $source) {
+                $source->delete();
+            }
+
+            $list = Page::getList();
+            $list->setCondition("visitorId = ?", [$this->getId()]);
+            $list->load();
+
+            foreach($list as $source) {
+                $source->delete();
+            }
+        }
+
+        return $result;
+    }
+
 
     /**
      * @return int
