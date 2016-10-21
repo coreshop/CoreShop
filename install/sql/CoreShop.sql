@@ -641,7 +641,7 @@ DROP TABLE IF EXISTS `coreshop_visitor`;
 CREATE TABLE `coreshop_visitor` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `shopId` int(11) NOT NULL,
-  `userId` int NOT NULL,
+  `userId` int NULL,
   `ip` int NOT NULL,
   `controller` varchar(255) NOT NULL,
   `action` varchar(255) NOT NULL,

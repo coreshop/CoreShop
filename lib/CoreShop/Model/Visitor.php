@@ -67,27 +67,23 @@ class Visitor extends AbstractModel
      */
     public function delete()
     {
-        $result = parent::delete();
+        $list = Source::getList();
+        $list->setCondition("visitorId = ?", [$this->getId()]);
+        $list->load();
 
-        if($result) {
-            $list = Source::getList();
-            $list->setCondition("visitorId = ?", [$this->getId()]);
-            $list->load();
-
-            foreach($list as $source) {
-                $source->delete();
-            }
-
-            $list = Page::getList();
-            $list->setCondition("visitorId = ?", [$this->getId()]);
-            $list->load();
-
-            foreach($list as $source) {
-                $source->delete();
-            }
+        foreach($list as $source) {
+            $source->delete();
         }
 
-        return $result;
+        $list = Page::getList();
+        $list->setCondition("visitorId = ?", [$this->getId()]);
+        $list->load();
+
+        foreach($list as $source) {
+            $source->delete();
+        }
+
+        return parent::delete();
     }
 
 
