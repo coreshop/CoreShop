@@ -19,6 +19,9 @@ use CoreShop\Model;
 /**
  * Class Listing
  * @package CoreShop\Model\Messaging\Thread
+ *
+ * @method Model\Messaging\Thread[] load()
+ * @method Listing\Dao getDao()
  */
 class Listing extends Model\Listing\AbstractListing
 {

@@ -19,6 +19,9 @@ use CoreShop\Model;
 /**
  * Class Listing
  * @package CoreShop\Model\Carrier\ShippingRuleGroup
+ *
+ * @method Model\Carrier\ShippingRuleGroup[] load()
+ * @method Listing\Dao getDao()
  */
 class Listing extends Model\Listing\AbstractListing
 {

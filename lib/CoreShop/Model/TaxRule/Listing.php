@@ -19,6 +19,9 @@ use CoreShop\Model;
 /**
  * Class Listing
  * @package CoreShop\Model\TaxRule
+ *
+ * @method Model\TaxRule[] load()
+ * @method Listing\Dao getDao()
  */
 class Listing extends Model\Listing\AbstractListing
 {

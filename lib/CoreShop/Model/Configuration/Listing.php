@@ -20,6 +20,9 @@ use Pimcore\Model;
 /**
  * Class Listing
  * @package CoreShop\Model\Configuration
+ *
+ * @method Configuration[] load()
+ * @method Listing\Dao getDao()
  */
 class Listing extends Model\Listing\JsonListing
 {

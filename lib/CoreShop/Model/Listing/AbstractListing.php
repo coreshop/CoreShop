@@ -16,11 +16,19 @@ namespace CoreShop\Model\Listing;
 
 use Pimcore\Model;
 
+use CoreShop\Model\AbstractModel;
+
 /**
  * Class AbstractListing
  * @package CoreShop\Model\Listing
+ *
+ * @method int getTotalCount()
+ * @method int getCount()
+ * @method int loadIdList()
+ * @method AbstractModel[] load()
+ * @method Dao\AbstractDao getDao()
  */
-class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Paginator_Adapter_Interface, \Zend_Paginator_AdapterAggregate, \Iterator
+abstract class AbstractListing extends Model\Listing\AbstractListing implements \Zend_Paginator_Adapter_Interface, \Zend_Paginator_AdapterAggregate, \Iterator
 {
     /**
      * List of PriceRule.
