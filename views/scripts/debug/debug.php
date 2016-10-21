@@ -114,6 +114,13 @@
                         <td><?=\CoreShop::getTools()->prepareCart()->getId()?></td>
                     </tr>
                 <?php } ?>
+
+                <?php if(\CoreShop::getTools()->getVisitor() instanceof \CoreShop\Model\Visitor) { ?>
+                    <tr>
+                        <td><?=$this->translate("coreshop_visitor")?></td>
+                        <td><?=\CoreShop::getTools()->getVisitor()->getId()?></td>
+                    </tr>
+                <?php } ?>
             </table>
         </div>
     </div>

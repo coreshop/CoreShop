@@ -911,6 +911,11 @@ class Cart extends Base
         $order->setSubtotal($this->getSubtotal());
         $order->setSubtotalWithoutTax($this->getSubtotal(false));
         $order->setSubtotalTax($this->getSubtotalTax());
+
+        if(\CoreShop::getTools()->getVisitor() instanceof Visitor) {
+            $order->setVisitorId(\CoreShop::getTools()->getVisitor()->getId());
+        }
+
         $order->save();
 
         if($this->getShippingAddress() instanceof Address) {

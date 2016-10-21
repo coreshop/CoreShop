@@ -442,3 +442,6 @@
 "coreshop_condition_conditions_operator_or","Or"
 "coreshop_condition_conditions_operator","Operator"
 "coreshop_order_confirmation_mail","Order Confirmation Mail"
+"coreshop_visitor_settings","Visitor Settings"
+"coreshop_track_visitors","Track Visitors"
+"coreshop_visitor","Visitor"

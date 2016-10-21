@@ -203,6 +203,24 @@ pimcore.plugin.coreshop.settings = Class.create({
                     },
                     {
                         xtype: 'fieldset',
+                        title: t('coreshop_visitor_settings'),
+                        collapsible: true,
+                        collapsed: true,
+                        autoHeight: true,
+                        labelWidth: 250,
+                        defaultType: 'textfield',
+                        defaults: { width: 600 },
+                        items: [
+                            {
+                                fieldLabel: t('coreshop_track_visitors'),
+                                xtype: 'checkbox',
+                                name: 'SYSTEM.VISITORS.TRACK',
+                                checked: this.getSystemValue('SYSTEM.VISITORS.TRACK')
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'fieldset',
                         title: t('coreshop_currency'),
                         collapsible: true,
                         collapsed: true,

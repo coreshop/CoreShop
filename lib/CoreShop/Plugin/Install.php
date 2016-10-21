@@ -731,6 +731,7 @@ class Install
         Configuration::set("SYSTEM.SHIPPING.CARRIER_SORT", "grade");
         Configuration::set("SYSTEM.BASE.TAX.ENABLED", true);
         Configuration::set("SYSTEM.LOG.USAGESTATISTICS", true);
+        Configuration::set("SYSTEM.VISITORS.TRACK", false);
     }
 
     /**

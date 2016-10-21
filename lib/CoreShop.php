@@ -254,6 +254,10 @@ class CoreShop
             if ($frontController instanceof \Zend_Controller_Front) {
                 $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
                 $frontController->registerPlugin(new Controller\Plugin\Debug());
+
+                if(Configuration::get("SYSTEM.VISITORS.TRACK")) {
+                    $frontController->registerPlugin(new Controller\Plugin\Visitor());
+                }
             }
         });
 

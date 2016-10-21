@@ -751,7 +751,7 @@ class Order extends Base
     }
 
     /**
-     * @param Date $orderDate
+     * @param Date\\DateTime $orderDate
      *
      * @throws ObjectUnsupportedException
      */
@@ -1416,6 +1416,26 @@ class Order extends Base
      * @throws ObjectUnsupportedException
      */
     public function setExtraInformation($extraInformation)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return int
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getVisitorId()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param int $visitorId
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setVisitorId($visitorId)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

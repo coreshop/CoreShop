@@ -18,11 +18,13 @@ use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Model\Shop;
+use CoreShop\Model\Visitor;
 use Pimcore\Logger;
 use Pimcore\Model\Object;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
 use CoreShop\Model\User;
+use Pimcore\Tool;
 use Pimcore\Tool\Session;
 use GeoIp2\Database\Reader;
 use Pimcore\View\Helper\Url;
@@ -228,6 +230,21 @@ class Tools
         }
 
         return Session::get('CoreShop');
+    }
+
+    /**
+     * get visitor
+     *
+     * @return Visitor|null
+     */
+    public function getVisitor() {
+        $session = \CoreShop::getTools()->getSession();
+
+        if (isset($session->visitorId)) {
+            return Model\Visitor::getById($session->visitorId);
+        }
+
+        return null;
     }
 
     /**
@@ -723,5 +740,23 @@ class Tools
         }
 
         return "en";
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReferrer() {
+        $referrer = parse_url($_SERVER['HTTP_REFERER']);
+        $parsedHost = parse_url(Tool::getHostUrl());
+
+        if (!isset($referrer['host']) || (!isset($referrer['path']) || !isset($referrer['path']))) {
+            return false;
+        }
+
+        if($referrer['host'] === $parsedHost['host']) {
+            return false;
+        }
+
+        return $_SERVER['HTTP_REFERER'];
     }
 }

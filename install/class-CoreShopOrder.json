@@ -56,6 +56,7 @@
                 "phpdocType":"CoreShop\\Model\\Order\\State",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
+                "allowEmpty":false,
                 "options":[
                   {
                     "key":"Payment accepted",
@@ -175,6 +176,7 @@
                 "phpdocType":"\\CoreShop\\Model\\Carrier",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
+                "allowEmpty":false,
                 "options":[
                   {
                     "key":"Post",
@@ -203,6 +205,7 @@
                 "phpdocType":"CoreShop\\Model\\Cart\\PriceRule",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
+                "allowEmpty":false,
                 "options":[
                   {
                     "key":"test",
@@ -254,6 +257,7 @@
                 "phpdocType":"\\CoreShop\\Model\\Currency",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
+                "allowEmpty":false,
                 "options":null,
                 "width":"",
                 "defaultValue":null,
@@ -678,6 +682,7 @@
                 "phpdocType":"\\CoreShop\\Model\\Shop",
                 "queryColumnType":"int(11)",
                 "columnType":"int(11)",
+                "allowEmpty":false,
                 "options":null,
                 "width":"",
                 "defaultValue":null,
@@ -693,6 +698,29 @@
                 "datatype":"data",
                 "relationType":false,
                 "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
+                "fieldtype":"input",
+                "width":null,
+                "queryColumnType":"varchar",
+                "columnType":"varchar",
+                "columnLength":190,
+                "phpdocType":"string",
+                "regex":"",
+                "name":"visitorId",
+                "title":"Visitor ID",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":true,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":true,
                 "visibleGridView":false,
                 "visibleSearch":false
               }
@@ -891,6 +919,7 @@
                 "classes":[
 
                 ],
+                "pathFormatterClass":null,
                 "name":"payments",
                 "title":"Payment",
                 "tooltip":"",
@@ -935,10 +964,9 @@
                 "relationType":true,
                 "lazyLoading":false,
                 "classes":[
-                  {
-                    "classes":"CoreShopOrderItem"
-                  }
+                    "CoreShopOrderItem"
                 ],
+                "pathFormatterClass":null,
                 "name":"items",
                 "title":"Items",
                 "tooltip":"",
@@ -996,6 +1024,7 @@
                 "classes":[
 
                 ],
+                "pathFormatterClass":null,
                 "name":"customer",
                 "title":"Customer",
                 "tooltip":"",
@@ -1032,10 +1061,9 @@
                 ],
                 "lazyLoading":true,
                 "classes":[
-                  {
-                    "classes":"CoreShopUserAddress"
-                  }
+                    "CoreShopUserAddress"
                 ],
+                "pathFormatterClass":null,
                 "name":"shippingAddress",
                 "title":"Shipping Address",
                 "tooltip":"",
@@ -1072,10 +1100,9 @@
                 ],
                 "lazyLoading":true,
                 "classes":[
-                  {
-                    "classes":"CoreShopUserAddress"
-                  }
+                    "CoreShopUserAddress"
                 ],
+                "pathFormatterClass":null,
                 "name":"billingAddress",
                 "title":"Billing Address",
                 "tooltip":"",
