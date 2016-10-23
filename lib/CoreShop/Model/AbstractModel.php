@@ -333,7 +333,7 @@ class AbstractModel extends Model\AbstractModel
      * @param $key
      * @param $value
      *
-     * @return $this
+     * @return Model\AbstractModel
      */
     public function setValue($key, $value)
     {
