@@ -51,6 +51,14 @@ class AbstractActionCondition
     /**
      * @return string
      */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getElementType(), $this->getType());
+    }
+
+    /**
+     * @return string
+     */
     public function getElementType()
     {
         return $this->elementType;

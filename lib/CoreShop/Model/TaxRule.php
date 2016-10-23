@@ -68,6 +68,18 @@ class TaxRule extends AbstractModel
     public $behavior;
 
     /**
+     * @return string
+     */
+    function __toString()
+    {
+        $country = $this->getCountry() instanceof Country ? $this->getCountry()->getName() : "none";
+        $state = $this->getState() instanceof State ? $this->getState()->getName() : "none";
+        $tax = $this->getTax() instanceof Tax ? $this->getTax()->getName() : "none";
+
+        return sprintf("%s (%s) (%s) (%s)", $tax, $country, $state, $this->getId());
+    }
+
+    /**
      * @return int
      */
     public function getBehavior()

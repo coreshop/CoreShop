@@ -59,6 +59,14 @@ class Page extends AbstractModel
     public $creationDate;
 
     /**
+     * @return string
+     */
+    function __toString()
+    {
+        return sprintf("%s (%s) (%s) (%s) (%s) (%s)", $this->getVisitorId(), $this->getController(), $this->getAction(), $this->getModule(), $this->getReferrer(), $this->getId());
+    }
+
+    /**
      * @return int
      */
     public function getVisitorId()

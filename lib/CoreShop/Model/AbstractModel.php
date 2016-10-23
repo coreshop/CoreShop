@@ -351,6 +351,14 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
+     * @return string
+     */
+    function __toString()
+    {
+        return strval($this->getId());
+    }
+
+    /**
      * Prepare object to goto sleep.
      *
      * @return array

@@ -33,6 +33,14 @@ class Zone extends AbstractModel
     /**
      * @return string
      */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
@@ -67,13 +75,5 @@ class Zone extends AbstractModel
             }
         }
         $this->active = $active;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return strval($this->getName());
     }
 }

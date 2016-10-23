@@ -334,6 +334,14 @@ class Configuration extends AbstractModel
     /**
      * @return string
      */
+    function __toString()
+    {
+        return sprintf("%s=%s (%s)", $this->getKey(), $this->getData(), $this->getId());
+    }
+
+    /**
+     * @return string
+     */
     public function getKey()
     {
         return $this->key;

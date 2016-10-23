@@ -123,6 +123,9 @@ class Country extends AbstractModel
         return $address;
     }
 
+    /**
+     * @return mixed
+     */
     public function getAddressFields()
     {
         $regex = "/" . Placeholder::getPlaceholderPrefix() . "([a-z_]+)\(([a-z_0-9]+)[\s,]*(.*?)\)" . Placeholder::getPlaceholderSuffix() . "/is";
@@ -130,6 +133,14 @@ class Country extends AbstractModel
         preg_match_all($regex, $this->getAddressFormat(), $matches);
 
         return $matches[2];
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf("%s (%s)", $this->getName(), $this->getId());
     }
 
     /**
@@ -327,13 +338,5 @@ class Country extends AbstractModel
     public function setShopIds($shopIds)
     {
         $this->shopIds = $shopIds;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return strval($this->getName());
     }
 }

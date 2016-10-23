@@ -55,6 +55,14 @@ class Tax extends AbstractModel
     }
 
     /**
+     * @return string
+     */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
      * @return float
      */
     public function getRate()

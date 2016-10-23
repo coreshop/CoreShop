@@ -130,6 +130,14 @@ class State extends AbstractModel
     }
 
     /**
+     * @return string
+     */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
      * @param string $language language
      *
      * @return string

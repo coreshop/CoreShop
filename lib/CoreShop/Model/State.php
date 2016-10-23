@@ -83,6 +83,14 @@ class State extends AbstractModel
     /**
      * @return string
      */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return string
+     */
     public function getIsoCode()
     {
         return $this->isoCode;
@@ -178,13 +186,5 @@ class State extends AbstractModel
     public function setCountryId($countryId)
     {
         $this->countryId = $countryId;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return strval($this->getName());
     }
 }

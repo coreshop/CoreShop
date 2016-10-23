@@ -183,6 +183,14 @@ class Thread extends AbstractModel
     }
 
     /**
+     * @return string
+     */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getEmail(), $this->getId());
+    }
+
+    /**
      * @return int
      */
     public function getUserId()

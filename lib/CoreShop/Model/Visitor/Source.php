@@ -59,6 +59,14 @@ class Source extends AbstractModel
     public $creationDate;
 
     /**
+     * @return string
+     */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getPageId(), $this->getId());
+    }
+
+    /**
      * @return int
      */
     public function getVisitorId()

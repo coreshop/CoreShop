@@ -61,6 +61,14 @@ class Index extends AbstractModel
     /**
      * @return string
      */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return string
+     */
     public function getType()
     {
         return $this->type;

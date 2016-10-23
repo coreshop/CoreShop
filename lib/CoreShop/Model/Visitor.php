@@ -118,6 +118,14 @@ class Visitor extends AbstractModel
     }
 
     /**
+     * @return string
+     */
+    function __toString()
+    {
+        return sprintf("%s (%s) (%s) (%s) (%s) (%s)", $this->getIp(), $this->getController(), $this->getAction(), $this->getModule(), $this->getCreationDate(), $this->getId());
+    }
+
+    /**
      * @return int
      */
     public function getShopId()

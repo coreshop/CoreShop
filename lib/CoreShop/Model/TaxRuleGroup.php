@@ -88,7 +88,15 @@ class TaxRuleGroup extends AbstractModel
 
         return $listing->getData();
     }
-    
+
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+        return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
     /**
      * @return string
      */
