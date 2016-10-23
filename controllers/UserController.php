@@ -504,9 +504,8 @@ class CoreShop_UserController extends Action
 
         if($this->getRequest()->isPost()) {
             $order = \CoreShop\Model\Order::findByOrderNumber($orderReference);
-
-            if ($order instanceof \CoreShop\Model\Order) {
-                try {
+            try {
+                if ($order instanceof \CoreShop\Model\Order) {
                     if ($order->getCustomer() instanceof \CoreShop\Model\User) {
                         if ($order->getCustomer()->getIsGuest()) {
                             if ($order->getCustomer()->getEmail() === $email) {
@@ -518,11 +517,14 @@ class CoreShop_UserController extends Action
                             throw new \Exception($this->view->translate("You are not allowed to view this order"));
                         }
                     } else {
-                        throw new \Exception($this->view->translate("Order not found"));
+                        throw new \Exception($this->view->translate("Order invalid"));
                     }
-                } catch (\Exception $ex) {
-                    $this->view->error = $ex->getMessage();
                 }
+                else {
+                    throw new \Exception($this->view->translate("Order reference/email not found!"));
+                }
+            } catch (\Exception $ex) {
+                $this->view->error = $ex->getMessage();
             }
         }
     }
