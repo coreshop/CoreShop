@@ -31,7 +31,9 @@ class CoreShop_UserController extends Action
             $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
         }
 
-        if ($this->getParam('action') != 'login' && $this->getParam('action') != 'register') {
+        $allowedActionsWithoutLogin = ['login', 'register', 'guest-order-tracking'];
+
+        if (!in_array($this->getRequest()->getActionName(), $allowedActionsWithoutLogin)) {
             if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
                 $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
                 exit;
@@ -56,11 +58,11 @@ class CoreShop_UserController extends Action
         $order = \CoreShop\Model\Order::getById($order);
 
         if(!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
         }
 
         if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
         }
 
         $this->view->messageSent = $this->getParam("messageSent", false);
@@ -80,11 +82,11 @@ class CoreShop_UserController extends Action
         }
 
         if(!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
         }
 
         if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
         }
 
         $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
@@ -121,16 +123,16 @@ class CoreShop_UserController extends Action
         $order = \CoreShop\Model\Order::getById($order);
 
         if(!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
         }
 
         if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->view->language), "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
         }
 
         $this->cart->addOrderToCart($order, true);
 
-        $this->redirect(\CoreShop::getTools()->url(array("act" => "list", "lang" => $this->view->language), "coreshop_cart", true));
+        $this->redirect(\CoreShop::getTools()->url(array("act" => "list", "lang" => $this->language), "coreshop_cart", true));
     }
 
     public function downloadVirtualProductAction() {
@@ -372,7 +374,7 @@ class CoreShop_UserController extends Action
                 if (array_key_exists('_redirect', $params)) {
                     $this->redirect($params['_redirect']);
                 } else {
-                    $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->view->language, 'act' => 'profile'), 'coreshop_user'));
+                    $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
                 }
             } catch (\Exception $ex) {
                 if (array_key_exists('_error', $params)) {
@@ -489,6 +491,39 @@ class CoreShop_UserController extends Action
             }
         }
 
-        $this->redirect(CoreShop::getTools()->url(array("lang" => $this->view->language, "act" => "addresses"), "coreshop_user", true));
+        $this->redirect(CoreShop::getTools()->url(array("lang" => $this->language, "act" => "addresses"), "coreshop_user", true));
+    }
+
+    public function guestOrderTrackingAction() {
+        if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
+            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
+        }
+
+        $orderReference = $this->getParam("orderReference");
+        $email = $this->getParam("email");
+
+        if($this->getRequest()->isPost()) {
+            $order = \CoreShop\Model\Order::findByOrderNumber($orderReference);
+
+            if ($order instanceof \CoreShop\Model\Order) {
+                try {
+                    if ($order->getCustomer() instanceof \CoreShop\Model\User) {
+                        if ($order->getCustomer()->getIsGuest()) {
+                            if ($order->getCustomer()->getEmail() === $email) {
+                                $this->view->order = $order;
+                            } else {
+                                throw new \Exception($this->view->translate("E-Mail Address does not match."));
+                            }
+                        } else {
+                            throw new \Exception($this->view->translate("You are not allowed to view this order"));
+                        }
+                    } else {
+                        throw new \Exception($this->view->translate("Order not found"));
+                    }
+                } catch (\Exception $ex) {
+                    $this->view->error = $ex->getMessage();
+                }
+            }
+        }
     }
 }

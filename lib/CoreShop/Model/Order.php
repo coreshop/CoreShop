@@ -96,6 +96,22 @@ class Order extends Base
     }
 
     /**
+     * Get Order by OrderNumber
+     *
+     * @param $orderNumber
+     * @return static|null
+     */
+    public static function findByOrderNumber($orderNumber) {
+        $orders = static::getByOrderNumber($orderNumber);
+
+        if(count($orders->getObjects())) {
+            return $orders->getObjects()[0];
+        }
+
+        return null;
+    }
+
+    /**
      * Converts any Number to a valid OrderNumber with Suffix and Prefix.
      *
      * @param $number

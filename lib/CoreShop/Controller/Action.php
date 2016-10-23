@@ -42,11 +42,19 @@ class Action extends \Website\Controller\Action
     protected $session;
 
     /**
+     * @var
+     */
+    protected $language;
+
+    /**
      * Init CoreShop Controller.
      */
     public function init()
     {
         parent::init();
+
+        $this->language = $this->view->language;
+
         //Needs to be done within the controller, otherwise the Site is unkown
         $this->initTemplate();
 
