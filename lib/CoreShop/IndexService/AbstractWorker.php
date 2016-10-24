@@ -109,7 +109,9 @@ abstract class AbstractWorker
             'categoryIds' => $convertArrayToString ? ','.implode(',', $categoryIds).',' : $categoryIds,
             'parentCategoryIds' => $convertArrayToString ? ','.implode(',', $parentCategoryIds).',' : $parentCategoryIds,
             'active' => $object->getEnabled() === null ? false : $object->getEnabled(),
-            'shops' => $convertArrayToString ? ','.@implode(',', $object->getShops()).',' : $object->getShops()
+            'shops' => $convertArrayToString ? ','.@implode(',', $object->getShops()).',' : $object->getShops(),
+            'minPrice' => $object->getMinPrice(),
+            'maxPrice' => $object->getMaxPrice()
         );
 
         $relationData = array();

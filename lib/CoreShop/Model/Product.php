@@ -481,6 +481,53 @@ class Product extends Base
     }
 
     /**
+     * get possible min price of Product according to price-rules
+     *
+     * @return bool|float
+     */
+    public function getMinPrice() {
+        return $this->getMinMaxPrice("<");
+    }
+
+    /**
+     * get possible max price of Product according to price-rules
+     *
+     * @return bool|float
+     */
+    public function getMaxPrice() {
+        return $this->getMinMaxPrice(">");
+    }
+
+    /**
+     * get possible min/max price of Product according to price-rules
+     *
+     * @param string $operator
+     * @return bool|float
+     */
+    public function getMinMaxPrice($operator = "<") {
+        $priceRules = $this->getSpecificPrices();
+        $price = $this->getRetailPrice();
+
+        foreach($priceRules as $rule) {
+            $priceRulePrice = doubleval($rule->getPrice($this));
+
+            if($priceRulePrice) {
+                if ($operator === "<") {
+                    if ($priceRulePrice < $price) {
+                        $price = $priceRulePrice;
+                    }
+                } else {
+                    if ($priceRulePrice > $price) {
+                        $price = $priceRulePrice;
+                    }
+                }
+            }
+        }
+
+        return $price;
+    }
+
+    /**
      * returns variant with cheapest price.
      *
      * @return float|mixed

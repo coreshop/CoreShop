@@ -85,10 +85,15 @@ class Range extends AbstractCondition
         $rawValues = $list->getGroupByValues($this->getField(), true);
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
+        $minValue = count($rawValues) > 0 ? $rawValues[0]['value'] : 0;
+        $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues)-1]['value'] : 0;
+
         return $this->getView()->partial($script, array(
             'label' => $this->getLabel(),
-            'currentValueMin' => $currentFilter[$this->getField().'-min'],
-            'currentValueMax' => $currentFilter[$this->getField().'-max'],
+            'minValue' => $minValue,
+            'maxValue' => $maxValue,
+            'currentValueMin' => $currentFilter[$this->getField().'-min'] ? $currentFilter[$this->getField().'-min'] : $minValue,
+            'currentValueMax' => $currentFilter[$this->getField().'-max'] ? $currentFilter[$this->getField().'-max'] : $maxValue,
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
         ));
@@ -107,6 +112,13 @@ class Range extends AbstractCondition
      */
     public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
     {
+        if(array_key_exists($this->getField(), $params)) {
+            $values = explode(",", $params[$this->getField()]);
+
+            $params[$this->getField().'-min'] = $values[0];
+            $params[$this->getField().'-max'] = $values[1];
+        }
+
         $valueMin = $params[$this->getField().'-min'];
         $valueMax = $params[$this->getField().'-max'];
 

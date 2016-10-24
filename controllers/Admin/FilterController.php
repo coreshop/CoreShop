@@ -195,7 +195,10 @@ class CoreShop_Admin_FilterController extends Admin
         $index = \CoreShop\Model\Index::getById($this->getParam('index'));
 
         if ($index instanceof \CoreShop\Model\Index) {
-            $columns = array();
+            $columns = array(
+                ['name' => 'minPrice'],
+                ['name' => 'maxPrice']
+            );
             $config = $index->getConfig();
 
             if ($config->columns) {

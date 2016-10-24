@@ -47,6 +47,8 @@ class IndexCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->disableLogging();
+
         $allProducts = Product::getList();
         $allProducts->setObjectTypes(array(Product::OBJECT_TYPE_OBJECT, Product::OBJECT_TYPE_VARIANT));
         $allProducts = $allProducts->load();
