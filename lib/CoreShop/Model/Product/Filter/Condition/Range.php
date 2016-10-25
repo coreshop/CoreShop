@@ -85,13 +85,20 @@ class Range extends AbstractCondition
         $rawValues = $list->getGroupByValues($this->getField(), true);
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
+        $product = [];
+        foreach (['value'] as $value) {
+            $product[$value] = array_product(array_column($rawValues, $value));
+        }
+
         $minValue = count($rawValues) > 0 ? $rawValues[0]['value'] : 0;
         $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues)-1]['value'] : 0;
+        $isFloat = count($rawValues) > 0 ? is_float($product['value']) : 0;
 
         return $this->getView()->partial($script, array(
             'label' => $this->getLabel(),
             'minValue' => $minValue,
             'maxValue' => $maxValue,
+            'isFloat' => $isFloat,
             'currentValueMin' => $currentFilter[$this->getField().'-min'] ? $currentFilter[$this->getField().'-min'] : $minValue,
             'currentValueMax' => $currentFilter[$this->getField().'-max'] ? $currentFilter[$this->getField().'-max'] : $maxValue,
             'values' => array_values($rawValues),
