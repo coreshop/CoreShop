@@ -4,7 +4,7 @@
     "js": [],
     "variants": {
         "blue": {
-            "favicon": "<theme_url>img/favicon-blue.png",
+            "favicon": "<theme_url>img/favicon.ico",
             "css": ["<theme_url>css/theme-blue.min.css"]
         }
     }

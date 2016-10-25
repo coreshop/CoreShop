@@ -1,9 +1,10 @@
 {
     "title" : "CoreShop Documentation",
+    "tagline" : "Pimcore Onlineshop System",
     "repo": "coreshop/CoreShop",
     "html": {
         "theme": "coreshop-blue",
-        "edit_on_github" : "coreshop/CoreShop/docs"
+        "edit_on_github" : "/coreshop/CoreShop/edit/master/docs"
     },
     "themes_directory" : "docs/themes",
     "links": {
@@ -12,6 +13,6 @@
     "breadcrumbs": false,
     "google_analytics": "UA-75356862-4",
     "ignore": {
-        "files": ["generate-and-copy.sh", "config.json", "sami.php"]
+        "files": ["generate-api.sh", "generate-docs.sh", "config.json", "sami.php"]
     }
 }
