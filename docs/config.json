@@ -1,0 +1,17 @@
+{
+    "title" : "CoreShop Documentation",
+    "repo": "coreshop/CoreShop",
+    "html": {
+        "theme": "coreshop-blue",
+        "edit_on_github" : "coreshop/CoreShop/docs"
+    },
+    "themes_directory" : "docs/themes",
+    "links": {
+        "Website": "https://www.coreshop.org"
+    },
+    "breadcrumbs": false,
+    "google_analytics": "UA-75356862-4",
+    "ignore": {
+        "files": ["generate-and-copy.sh", "config.json", "sami.php"]
+    }
+}
