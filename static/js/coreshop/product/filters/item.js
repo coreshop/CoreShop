@@ -157,15 +157,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
                 fieldLabel: t('name'),
                 width: 250,
                 value: data.name
-            }, {
-                xtype : 'numberfield',
-                fieldLabel:t('coreshop_product_filters_resultsPerPage'),
-                name:'resultsPerPage',
-                value : data.resultsPerPage,
-                minValue : 1,
-                decimalPrecision : 0,
-                step : 1
-            }, {
+            }, this.indexCombo, {
                 xtype: 'combo',
                 fieldLabel: t('coreshop_product_filters_order'),
                 name: 'order',
@@ -183,7 +175,33 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
                 fieldLabel: t('coreshop_product_filters_orderKey'),
                 width: 250,
                 value: data.orderKey
-            }, this.indexCombo]
+            }, {
+                fieldLabel: t('coreshop_product_filters_use_shop_paging_settings'),
+                xtype: 'checkbox',
+                name: 'useShopPagingSettings',
+                checked: data.useShopPagingSettings,
+                listeners : {
+                    change: function (checkbox, newValue) {
+                        var resultsPerPage = checkbox.up("form").down("[name='resultsPerPage']");
+
+                        if (newValue) {
+                            resultsPerPage.disable();
+                        }
+                        else {
+                            resultsPerPage.enable();
+                        }
+                    }
+                }
+            }, {
+                xtype : 'numberfield',
+                fieldLabel:t('coreshop_product_filters_resultsPerPage'),
+                name:'resultsPerPage',
+                value : data.resultsPerPage,
+                minValue : 1,
+                decimalPrecision : 0,
+                step : 1,
+                disabled : data.useShopPagingSettings
+            }]
         });
 
         return this.settingsForm;

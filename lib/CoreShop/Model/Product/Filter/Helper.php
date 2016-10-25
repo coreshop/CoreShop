@@ -39,6 +39,7 @@ class Helper
     {
         $orderKey = $filter->getOrderKey();
         $orderDirection = $filter->getOrder();
+        $limit = $filter->getResultsPerPage();
 
         if ($params['orderKey']) {
             $orderKey = $params['orderKey'];
@@ -48,15 +49,14 @@ class Helper
             $orderDirection = $params['order'];
         }
 
-        $limit = $filter->getResultsPerPage();
-
-        if ($params['perPage']) {
+        if($params['perPage']) {
             $limit = $params['perPage'];
         }
 
         $list->setOrderKey($orderKey);
         $list->setOrder($orderDirection);
         $list->setLimit($limit);
+
         $list->setShop(Shop::getShop());
 
         if ($filterService instanceof Service) {

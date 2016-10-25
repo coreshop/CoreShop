@@ -90,11 +90,26 @@ class CoreShop_ProductController extends Action
 
     public function listAction()
     {
+        $listModeDefault = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.LIST.MODE");
+        $gridPerPageAllowed = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.GRID.PER_PAGE");
+        $gridPerPageDefault = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT");
+        $listPerPageAllowed = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.LIST.PER_PAGE");
+        $listPerPageDefault = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT");
+
+
         $id = $this->getParam('category');
         $page = $this->getParam('page', 0);
         $sort = $this->getParam('sort', 'NAMEA');
-        $perPage = $this->getParam('perPage', 12);
-        $type = $this->getParam('type', 'list');
+        $type = $this->getParam('type', $listModeDefault);
+
+        $defaultPerPage = $type === "list" ? $listPerPageDefault : $gridPerPageDefault;
+        $allowedPerPage = $type === "list" ? $listPerPageAllowed : $gridPerPageAllowed;
+
+        $perPage = $this->getParam('perPage', $defaultPerPage);
+
+        if(!in_array($perPage, $allowedPerPage)) {
+            $perPage = $defaultPerPage;
+        }
 
         $category = \CoreShop\Model\Category::getById($id);
 
@@ -105,17 +120,20 @@ class CoreShop_ProductController extends Action
 
                 $list = $indexService->getProductList();
                 $list->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_HIDE);
+                $list->setCategory($category);
 
                 $this->view->currentFilter = \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
 
-                $list->setCategory($category);
+                if($category->getFilterDefinition()->getUseShopPagingSettings()) {
+                    $list->setLimit($perPage);
+                }
 
                 $this->view->filter = $category->getFilterDefinition();
                 $this->view->list = $list;
                 $this->view->params = $this->getAllParams();
 
                 $paginator = Zend_Paginator::factory($list);
-                $paginator->setCurrentPageNumber($this->getParam('page'));
+                $paginator->setCurrentPageNumber($page);
                 $paginator->setItemCountPerPage($list->getLimit());
                 $paginator->setPageRange(10);
 
@@ -133,6 +151,7 @@ class CoreShop_ProductController extends Action
             $this->view->sort = $sort;
             $this->view->perPage = $perPage;
             $this->view->type = $type;
+            $this->view->perPageAllowed = $allowedPerPage;
 
             $this->view->seo = array(
                 'image' => $category->getImage(),

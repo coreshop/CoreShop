@@ -38,14 +38,14 @@ pimcore.plugin.coreshop.settings = Class.create({
         var current = null;
 
         if (this.data.values.hasOwnProperty(shopId)) {
-            current = this.data.values[shopId];
+            var shopValues = this.data.values[shopId];
 
-            if (current.hasOwnProperty(key)) {
-                current = current[key];
+            if (shopValues.hasOwnProperty(key)) {
+                current = shopValues[key];
             }
         }
 
-        if (typeof current != 'object' && typeof current != 'array' && typeof current != 'function') {
+        if (current != null && typeof current != 'function') {
             return current;
         }
 
@@ -88,7 +88,14 @@ pimcore.plugin.coreshop.settings = Class.create({
             if (firstLoop) {
                 lastValue = value;
             } else {
-                if (lastValue !== value) {
+                if(Ext.isArray(value) && Ext.isArray(lastValue)) {
+                    var diff = Ext.Array.difference(lastValue, value);
+
+                    if(Ext.isArray(diff) && diff.length > 0) {
+                        return '';
+                    }
+                }
+                else if (lastValue !== value) {
                     return '';
                 }
             }
@@ -580,6 +587,10 @@ pimcore.plugin.coreshop.settings = Class.create({
             })
         });
 
+        var categoryGridPerPageStore = new Ext.data.ArrayStore({
+
+        });
+
         var shopPanel = Ext.create('Ext.form.Panel', {
             title : shop.get('name'),
             border: false,
@@ -1006,6 +1017,73 @@ pimcore.plugin.coreshop.settings = Class.create({
                                     });
                                 }
                             }
+                        },
+                        {
+                            fieldLabel: t('coreshop_category_list_mode'),
+                            name: 'SYSTEM.CATEGORY.LIST.MODE',
+                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.LIST.MODE'),
+                            width: 500,
+                            xtype: 'combo',
+                            store: [['list', t('coreshop_category_list_mode_list')], ['grid', t('coreshop_category_list_mode_grid')]],
+                            triggerAction: 'all',
+                            typeAhead: false,
+                            editable: false,
+                            forceSelection: true,
+                            queryMode: 'local'
+                        },
+                        {
+                            xtype: 'tagfield',
+                            fieldLabel: t('coreshop_category_list_per_page'),
+                            store: new Ext.data.ArrayStore({
+                                fields: [
+                                    'perPage'
+                                ],
+                                data : [
+
+                                ]
+                            }),
+                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.LIST.PER_PAGE'),
+                            name: 'SYSTEM.CATEGORY.LIST.PER_PAGE',
+                            createNewOnEnter: true,
+                            createNewOnBlur: true,
+                            queryMode: 'local',
+                            displayField: 'perPage',
+                            valueField: 'perPage',
+                            hideTrigger : true
+                        },
+                        {
+                            fieldLabel: t('coreshop_category_list_per_page_default'),
+                            name: 'SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT',
+                            xtype: 'numberfield',
+                            minValue: 1,
+                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT')
+                        },
+                        {
+                            xtype: 'tagfield',
+                            fieldLabel: t('coreshop_category_grid_per_page'),
+                            store: new Ext.data.ArrayStore({
+                                fields: [
+                                    'perPage'
+                                ],
+                                data : [
+
+                                ]
+                            }),
+                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.GRID.PER_PAGE'),
+                            name: 'SYSTEM.CATEGORY.GRID.PER_PAGE',
+                            createNewOnEnter: true,
+                            createNewOnBlur: true,
+                            queryMode: 'local',
+                            displayField: 'perPage',
+                            valueField: 'perPage',
+                            hideTrigger : true
+                        },
+                        {
+                            fieldLabel: t('coreshop_category_grid_per_page_default'),
+                            name: 'SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT',
+                            xtype: 'numberfield',
+                            minValue: 1,
+                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT')
                         }
                     ]
                 },

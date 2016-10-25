@@ -130,7 +130,7 @@ class CoreShop_Admin_SettingsController extends Admin
         $diff = [];
 
         if (Model\Configuration::multiShopEnabled()) {
-            $diff = call_user_func_array("array_diff_assoc", $values);
+            $diff = call_user_func_array("array_diff_assoc_recursive", $values);
         }
 
 

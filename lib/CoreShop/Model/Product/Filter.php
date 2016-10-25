@@ -130,6 +130,11 @@ class Filter extends AbstractModel
     public $indexObject;
 
     /**
+     * @var boolean
+     */
+    public $useShopPagingSettings;
+
+    /**
      * @return string
      */
     public function getName()
@@ -263,5 +268,21 @@ class Filter extends AbstractModel
         }
 
         $this->index = $index;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseShopPagingSettings()
+    {
+        return $this->useShopPagingSettings;
+    }
+
+    /**
+     * @param boolean $useShopPagingSettings
+     */
+    public function setUseShopPagingSettings($useShopPagingSettings)
+    {
+        $this->useShopPagingSettings = $useShopPagingSettings;
     }
 }

@@ -18,3 +18,11 @@ foreach($indexes->getData() as $index) {
         }
     }
 }
+
+$db->query("ALTER TABLE `coreshop_product_filters` ADD `useShopPagingSettings` int(11) NULL DEFAULT '0';");
+
+$listModeDefault = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.LIST.MODE", "list");
+$gridPerPageAllowed = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.GRID.PER_PAGE", [5, 10, 15, 20, 25]);
+$gridPerPageDefault = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT", 10);
+$listPerPageAllowed = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE", [12, 24, 36]);
+$listPerPageDefault = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT", [12]);

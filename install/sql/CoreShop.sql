@@ -492,7 +492,8 @@ CREATE TABLE `coreshop_product_filters` (
   `orderKey` varchar(255) NOT NULL,
   `preConditions` text NOT NULL,
   `filters` text NOT NULL,
-  `index` int(11) NULL
+  `index` int(11) NULL,
+  `useShopPagingSettings` int(11) NULL DEFAULT '0'
 );
 
 DROP TABLE IF EXISTS `coreshop_states`;
