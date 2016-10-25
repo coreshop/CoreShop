@@ -7,7 +7,7 @@
 
 ![CoreShop Interface](docs/img/screenshot.png)
 
-* [Getting started](https://github.com/dpfaffenbauer/pimcore-coreshop/wiki/Getting-Started)
+* [Getting started](https://www.coreshop.org/docs/latest/Gettings_Started/Installation.html)
 * [Documentation](https://www.coreshop.org/docs/latest)
 * Website: [www.coreshop.org](https://www.coreshop.org/) - Learn more about CoreShop
 * Demo: [demo.coreshop.org](https://demo.coreshop.org/) - See CoreShop in Action
