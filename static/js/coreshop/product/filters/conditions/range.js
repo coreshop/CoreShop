@@ -21,6 +21,14 @@ pimcore.plugin.coreshop.filters.conditions.range = Class.create(pimcore.plugin.c
     {
         return [
             {
+                fieldLabel: t('coreshop_product_filters_step_count'),
+                xtype : 'numberfield',
+                name : 'stepCount',
+                value : this.data.stepCount,
+                width: 400,
+                decimalPrecision: 2
+            },
+            {
                 xtype: 'combo',
                 fieldLabel: t('coreshop_product_filters_value_min'),
                 name: 'preSelectMin',

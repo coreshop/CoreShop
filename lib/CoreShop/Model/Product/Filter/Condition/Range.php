@@ -40,6 +40,11 @@ class Range extends AbstractCondition
     public $preSelectMax;
 
     /**
+     * @var float
+     */
+    public $stepCount;
+
+    /**
      * @param mixed $preSelectMin
      */
     public function setPreSelectMin($preSelectMin)
@@ -72,6 +77,22 @@ class Range extends AbstractCondition
     }
 
     /**
+     * @return float
+     */
+    public function getStepCount()
+    {
+        return $this->stepCount;
+    }
+
+    /**
+     * @param float $stepCount
+     */
+    public function setStepCount($stepCount)
+    {
+        $this->stepCount = $stepCount;
+    }
+
+    /**
      * render HTML for filter.
      *
      * @param Filter  $filter
@@ -96,6 +117,7 @@ class Range extends AbstractCondition
             'currentValueMax' => $currentFilter[$this->getField().'-max'] ? $currentFilter[$this->getField().'-max'] : $maxValue,
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
+            'stepCount' => $this->getStepCount()
         ));
     }
 
