@@ -95,8 +95,7 @@ class CoreShop_ProductController extends Action
         $gridPerPageDefault = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT");
         $listPerPageAllowed = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.LIST.PER_PAGE");
         $listPerPageDefault = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT");
-
-
+        
         $id = $this->getParam('category');
         $page = $this->getParam('page', 0);
         $sort = $this->getParam('sort', 'NAMEA');
@@ -164,6 +163,10 @@ class CoreShop_ProductController extends Action
         }
     }
 
+    /**
+     * @param $sortString
+     * @return array
+     */
     protected function parseSorting($sortString)
     {
         $allowed = array('name', 'price');
