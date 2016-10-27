@@ -26,6 +26,13 @@ pimcore.plugin.coreshop.filters.conditions.abstract = Class.create(pimcore.plugi
                 fieldLabel : t('label'),
                 value : this.data.label
             },
+            {
+                xtype : 'textfield',
+                name : 'quantityUnit',
+                width : 400,
+                fieldLabel : t('coreshop_product_filters_quantityUnit'),
+                value : this.data.quantityUnit
+            },
             this.getFieldsComboBox()
         ];
     }

@@ -45,6 +45,11 @@ abstract class AbstractCondition
     public $preSelect;
 
     /**
+     * @var string
+     */
+    public $quantityUnit;
+
+    /**
      *  Zend_View.
      */
     protected $view;
@@ -116,6 +121,7 @@ abstract class AbstractCondition
             'currentValue' => $currentFilter[$this->getField()],
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
+            'quantityUnit' => $this->getQuantityUnit()
         ));
     }
 
@@ -209,5 +215,21 @@ abstract class AbstractCondition
     public function setPreSelect($preSelect)
     {
         $this->preSelect = $preSelect;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQuantityUnit()
+    {
+        return $this->quantityUnit;
+    }
+
+    /**
+     * @param string $quantityUnit
+     */
+    public function setQuantityUnit($quantityUnit)
+    {
+        $this->quantityUnit = $quantityUnit;
     }
 }

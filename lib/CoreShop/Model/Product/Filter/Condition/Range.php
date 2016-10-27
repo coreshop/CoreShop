@@ -117,7 +117,8 @@ class Range extends AbstractCondition
             'currentValueMax' => $currentFilter[$this->getField().'-max'] ? $currentFilter[$this->getField().'-max'] : $maxValue,
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
-            'stepCount' => $this->getStepCount()
+            'stepCount' => $this->getStepCount(),
+            'quantityUnit' => $this->getQuantityUnit()
         ));
     }
 

@@ -91,6 +91,7 @@ class Boolean extends AbstractCondition
             'currentValues' => $currentValues,
             'values' => $rawValues,
             'fieldname' => $this->getField(),
+            'quantityUnit' => $this->getQuantityUnit()
         ));
     }
 

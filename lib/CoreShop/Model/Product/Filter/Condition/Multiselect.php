@@ -69,6 +69,7 @@ class Multiselect extends AbstractCondition
             'currentValues' => $currentFilter[$this->getField()],
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
+            'quantityUnit' => $this->getQuantityUnit()
         ));
     }
 
