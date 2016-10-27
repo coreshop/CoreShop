@@ -506,7 +506,7 @@ class Product extends Base
      */
     public function getMinMaxPrice($operator = "<") {
         $priceRules = $this->getSpecificPrices();
-        $price = $this->getRetailPrice();
+        $price = $this->getRetailPrice() ? $this->getRetailPrice() : 0;
 
         foreach($priceRules as $rule) {
             $priceRulePrice = doubleval($rule->getPrice($this));
