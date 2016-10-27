@@ -25,4 +25,4 @@ $listModeDefault = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.LIST.MODE
 $gridPerPageAllowed = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.GRID.PER_PAGE", [5, 10, 15, 20, 25]);
 $gridPerPageDefault = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT", 10);
 $listPerPageAllowed = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE", [12, 24, 36]);
-$listPerPageDefault = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT", [12]);
+$listPerPageDefault = \CoreShop\Model\Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT", 12);

@@ -732,6 +732,11 @@ class Install
         Configuration::set("SYSTEM.BASE.TAX.ENABLED", true);
         Configuration::set("SYSTEM.LOG.USAGESTATISTICS", true);
         Configuration::set("SYSTEM.VISITORS.TRACK", false);
+        Configuration::set("SYSTEM.CATEGORY.LIST.MODE", "list");
+        Configuration::set("SYSTEM.CATEGORY.GRID.PER_PAGE", [5, 10, 15, 20, 25]);
+        Configuration::set("SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT", 10);
+        Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE", [12, 24, 36]);
+        Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT", 12);
     }
 
     /**
