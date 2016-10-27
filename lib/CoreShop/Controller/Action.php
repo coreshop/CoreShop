@@ -42,7 +42,7 @@ class Action extends \Website\Controller\Action
     protected $session;
 
     /**
-     * @var
+     * @var string
      */
     protected $language;
 
