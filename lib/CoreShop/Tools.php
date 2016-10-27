@@ -133,6 +133,19 @@ class Tools
     }
 
     /**
+     * @return bool
+     */
+    public function displayPricesWithTax() {
+        $session = $this->getSession();
+
+        if(isset($session->displayPricesWithTax)) {
+            return $session->displayPricesWithTax;
+        }
+
+        return true;
+    }
+
+    /**
      * Round Price.
      *
      * @param $price

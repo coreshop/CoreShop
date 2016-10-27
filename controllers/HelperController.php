@@ -29,4 +29,15 @@ class CoreShop_HelperController extends Action
 
         $this->redirect($redirect);
     }
+
+    public function changeDisplayPricesWithTaxAction() {
+        $displayPricesWithTax = boolval($this->getParam("displayPricesWithTax", true));
+
+        $session = \CoreShop::getTools()->getSession();
+        $session->displayPricesWithTax = $displayPricesWithTax;
+
+        $this->_helper->json([
+            "success" => true
+        ]);
+    }
 }
