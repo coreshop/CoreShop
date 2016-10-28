@@ -247,7 +247,14 @@ class Order extends Base
 
         $this->setTaxes($taxes);
         $this->setDiscount($cart->getDiscount());
-        $this->setPriceRuleFieldCollection($cart->getPriceRuleFieldCollection());
+
+        $fieldCollection = new Object\Fieldcollection();
+
+        foreach($cart->getPriceRules() as $priceRule) {
+            $fieldCollection->add($priceRule);
+        }
+
+        $this->setPriceRuleFieldCollection($fieldCollection);
 
         if ($this->getPriceRuleFieldCollection() instanceof Object\Fieldcollection) {
             foreach ($this->getPriceRuleFieldCollection()->getItems() as $ruleItem) {

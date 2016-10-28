@@ -251,6 +251,15 @@ class PriceRule extends AbstractPriceRule
         if (is_null($cart)) {
             $cart = \CoreShop::getTools()->prepareCart();
         }
+        
+        if (!$this->getActive()) {
+            if($throwException) {
+                throw new Exception("PriceRule is inactive");
+            }
+            else {
+                return false;
+            }
+        }
 
         //Carts without any items are invalid
         if (count($cart->getItems()) <= 0) {

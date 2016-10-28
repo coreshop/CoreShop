@@ -775,7 +775,17 @@ class Cart extends Base
         $collection = $this->getPriceRuleFieldCollection();
 
         if ($collection instanceof Fieldcollection) {
-            return $collection->getItems();
+            $priceRules = [];
+
+            foreach($collection->getItems() as $priceRule) {
+                if($priceRule instanceof \CoreShop\Model\PriceRule\Item) {
+                    if($priceRule->getPriceRule()->getActive()) {
+                        $priceRules[] = $priceRule;
+                    }
+                }
+            }
+
+            return $priceRules;
         }
 
         return [];
