@@ -24,7 +24,6 @@ use Pimcore\Model\Object;
 use CoreShop\Model\Currency;
 use CoreShop\Model\Country;
 use CoreShop\Model\User;
-use Pimcore\Tool;
 use Pimcore\Tool\Session;
 use GeoIp2\Database\Reader;
 use Pimcore\View\Helper\Url;
@@ -760,7 +759,7 @@ class Tools
      */
     public function getReferrer() {
         $referrer = parse_url($_SERVER['HTTP_REFERER']);
-        $parsedHost = parse_url(Tool::getHostUrl());
+        $parsedHost = parse_url(\Pimcore\Tool::getHostUrl());
 
         if (!isset($referrer['host']) || (!isset($referrer['path']) || !isset($referrer['path']))) {
             return false;
