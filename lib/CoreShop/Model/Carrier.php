@@ -178,6 +178,11 @@ class Carrier extends AbstractModel
                             Logger::warning(sprintf("Carrier with ID %s has definied class '%s' which cannot be loaded.", $id, $data['class']));
                         }
                     }
+                    else {
+                        if (\Pimcore::getDiContainer()->has($class)) {
+                            $class = \Pimcore::getDiContainer()->make($class);
+                        }
+                    }
 
                     /**
                      * @var $carrier static
