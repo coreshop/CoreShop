@@ -400,11 +400,12 @@ INSERT INTO `coreshop_zones` (`id`, `name`, `active`) VALUES
 DROP TABLE IF EXISTS `coreshop_numberranges`;
 CREATE TABLE `coreshop_numberranges` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `shopId` int NOT NULL,
   `type` varchar(255) NOT NULL,
   `number` int(11) NOT NULL DEFAULT '0'
 );
 
-ALTER TABLE coreshop_numberranges ADD UNIQUE (`type`);
+ALTER TABLE coreshop_numberranges ADD UNIQUE (`type`, `shopId`);
 
 DROP TABLE IF EXISTS `coreshop_orderstates`;
 CREATE TABLE `coreshop_orderstates` (
