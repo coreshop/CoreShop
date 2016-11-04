@@ -181,7 +181,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             var items = [
                 {
                     xtype : 'panel',
-                    html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.orderDate * 1000), t('coreshop_date_format')) + '</span>',
+                    html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.orderDate * 1000), t('coreshop_date_time_format')) + '</span>',
                     bodyPadding : 20,
                     flex : 1
                 },
@@ -428,7 +428,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             {
                                 xtype: 'label',
                                 style: 'display:block',
-                                text: Ext.Date.format(new Date(this.order.customer.o_creationDate * 1000), t('coreshop_date_format'))
+                                text: Ext.Date.format(new Date(this.order.customer.o_creationDate * 1000), t('coreshop_date_time_format'))
                             }
                         ]
                     });
@@ -680,7 +680,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         flex : 1,
                         renderer : function (val) {
                             if (val) {
-                                return Ext.Date.format(new Date(val * 1000), t('coreshop_date_format'));
+                                return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
                             }
 
                             return '';
@@ -865,7 +865,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             html :
                             ('<strong>' + t('coreshop_visitor_ip') + '</strong>: ' + coreshop.helpers.long2ip(visitor.ip))  + '<br/>' +
                             ('<strong>' + t('coreshop_visitor_referrer') + '</strong>: ' + visitor.referrer) + '<br/>' +
-                            ('<strong>' + t('coreshop_visitor_date')+ '</strong>: ' + Ext.Date.format(new Date(visitor.creationDate * 1000), t('coreshop_date_format'))) + '<br/>',
+                            ('<strong>' + t('coreshop_visitor_date')+ '</strong>: ' + Ext.Date.format(new Date(visitor.creationDate * 1000), t('coreshop_date_time_format'))) + '<br/>',
                             flex : 1
                         }
                     ]
