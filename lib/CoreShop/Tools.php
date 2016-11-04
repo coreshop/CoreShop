@@ -76,6 +76,17 @@ class Tools
     /**
      * @return string
      */
+    public function getPaymentRoute() {
+        if(Configuration::get("SYSTEM.CHECKOUT.OPC") === true) {
+            return "coreshop_payment_opc";
+        }
+
+        return "coreshop_payment";
+    }
+
+    /**
+     * @return string
+     */
     public function getFingerprint()
     {
         $user = $this->getUser();

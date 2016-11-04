@@ -20,8 +20,25 @@ namespace CoreShop\Model\Plugin;
  */
 interface AbstractPlugin
 {
+    /**
+     * @return string
+     */
     public function getName();
+
+    /**
+     * @return string
+     */
     public function getImage();
+
+    /**
+     * @return string
+     */
     public function getDescription();
+
+    /**
+     * Unique Identifier
+     *
+     * @return string
+     */
     public function getIdentifier();
 }

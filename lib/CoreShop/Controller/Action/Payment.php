@@ -34,6 +34,17 @@ class Payment extends Action
     protected $module;
 
     /**
+     * @var bool
+     */
+    protected $opc = false;
+
+    /**
+     * @var string
+     */
+    protected $checkoutController = 'checkout';
+
+
+    /**
      * Init Controller.
      */
     public function init()
@@ -43,16 +54,16 @@ class Payment extends Action
         $this->view->document = $this->document = Document::getByPath('/'.$this->language.'/shop');
         $this->view->module = $this->getModule();
 
-        $this->view->setScriptPath(
-            array_merge(
-                $this->view->getScriptPaths(),
-                array(
-                    CORESHOP_TEMPLATE_BASE.'/scripts/'.strtolower($this->getModule()->getIdentifier()),
-                    CORESHOP_TEMPLATE_PATH.'/scripts/'.strtolower($this->getModule()->getIdentifier()),
-                    PIMCORE_WEBSITE_PATH.'/views/scripts/'.strtolower($this->getModule()->getIdentifier()),
-                )
-            )
-        );
+        $this->view->addScriptPath(CORESHOP_TEMPLATE_BASE.'/scripts/'.strtolower($this->getModule()->getIdentifier()));
+        $this->view->addScriptPath(CORESHOP_TEMPLATE_PATH.'/scripts/'.strtolower($this->getModule()->getIdentifier()));
+        $this->view->addScriptPath(PIMCORE_WEBSITE_PATH.'/views/scripts/'.strtolower($this->getModule()->getIdentifier()));
+
+        if($this->getParam("opc", false)) {
+            $this->opc = true;
+            $this->checkoutController = "CheckoutOpc";
+
+            $this->disableLayout();
+        }
     }
 
     /**
@@ -63,7 +74,7 @@ class Payment extends Action
     public function getModule()
     {
         if (is_null($this->module)) {
-            $this->module = \CoreShop::getPaymentProvider($this->getParam('module'));
+            $this->module = \CoreShop::getPaymentProvider($this->getRequest()->getModuleName());
         }
 
         return $this->module;
@@ -84,15 +95,9 @@ class Payment extends Action
      */
     public function validateAction()
     {
-        $this->coreShopForward("validate", "checkout", "CoreShop", array("paymentViewScript" => $this->getViewScript()));
-    }
-
-    /**
-     * Error Action.
-     */
-    public function errorAction()
-    {
-        $this->coreShopForward("error", "checkout", "CoreShop");
+        if(!$this->opc) {
+            $this->coreShopForward("validate", $this->checkoutController, "CoreShop", array("paymentViewScript" => $this->getViewScript()));
+        }
     }
 
     /**
@@ -110,9 +115,9 @@ class Payment extends Action
             $forwardParams['order'] = $this->view->order;
             $forwardParams['paymentViewScript'] = $this->getViewScript();
 
-            $this->coreShopForward("confirmation", "checkout", "CoreShop", $forwardParams);
+            $this->coreShopForward("confirmation", $this->checkoutController, "CoreShop", $forwardParams);
         } else {
-            $this->coreShopForward("error", "checkout", "CoreShop", $forwardParams);
+            $this->coreShopForward("error", $this->checkoutController, "CoreShop", $forwardParams);
         }
     }
 }

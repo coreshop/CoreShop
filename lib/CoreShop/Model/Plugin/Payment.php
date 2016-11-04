@@ -15,8 +15,16 @@
 namespace CoreShop\Model\Plugin;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Carrier;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Order;
+use CoreShop\Model\Order\State;
+use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
+use CoreShop\Plugin;
+use Pimcore\Date;
+use Pimcore\Model\Object\Service;
+use Pimcore\Model\Staticroute;
 
 /**
  * Class Payment
@@ -129,19 +137,31 @@ abstract class Payment implements AbstractPlugin
     }
 
     /**
+     * Processes the Payment async, this method returns the process module, controller, action
+     *
+     * @param Cart $cart
+     * @throws UnsupportedException
+     *
+     * @return array('module', 'controller', 'action')
+     */
+    public function processAsync(Cart $cart) {
+        throw new UnsupportedException('');
+    }
+
+    /**
      * assemble route with zend router.
      *
      * @param $module string module name
      * @param $action string action name
      * @param $params array additional params
-     * 
+     *
      * @return string
      */
     public function url($module, $action, $params = [])
     {
         $params = array_merge($params, array("mod" => $module, "act" => $action, "lang" => (string) \Zend_Registry::get("Zend_Locale")));
 
-        $url = \CoreShop::getTools()->url($params, "coreshop_payment");
+        $url = \CoreShop::getTools()->url($params, \CoreShop::getTools()->getPaymentRoute());
         $url = str_replace("/" . strtolower( $this->getName() ), "/" . $this->getName(), $url);
 
         return $url;
