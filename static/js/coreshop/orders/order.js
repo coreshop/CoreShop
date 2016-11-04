@@ -981,14 +981,6 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     },
                     {
                         xtype : 'gridcolumn',
-                        dataIndex : 'total_tax',
-                        text : t('coreshop_total_tax'),
-                        width : 150,
-                        align : 'right',
-                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
-                    },
-                    {
-                        xtype : 'gridcolumn',
                         dataIndex : 'total',
                         text : t('coreshop_total'),
                         width : 150,
@@ -1006,7 +998,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             handler: function (grid, rowIndex, colIndex) {
                                 cellEditing.startEditByPosition({
                                     row: rowIndex,
-                                    column : 3
+                                    column : 4
                                 });
                             }.bind(this)
                         }, {
