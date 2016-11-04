@@ -184,6 +184,18 @@ class Cart extends Base
     }
 
     /**
+     * calculates discount percentage for cart
+     *
+     * @return float
+     */
+    public function getDiscountPercentage() {
+        $totalWithoutDiscount = $this->getSubtotal(false);
+        $totalWithDiscount = $this->getSubtotal(false) - $this->getDiscount(false);
+
+        return ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
+    }
+
+    /**
      * calculates the discount tax
      *
      * @return number
@@ -238,40 +250,24 @@ class Cart extends Base
     {
         $usedTaxes = array();
 
-        $totalWithoutDiscount = $this->getTotalWithoutDiscount(false);
-        $totalWithDiscount = $this->getTotal(false);
-
-        $discountPercentage = ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
-
-        $addTax = function (Tax $tax) use (&$usedTaxes) {
-            if (!array_key_exists($tax->getId(), $usedTaxes)) {
-                $usedTaxes[$tax->getId()] = array(
-                    'tax' => $tax,
-                    'amount' => 0,
-                );
+        $addTax = function (Tax $tax, $amount) use (&$usedTaxes) {
+            if($amount > 0) {
+                if (!array_key_exists($tax->getId(), $usedTaxes)) {
+                    $usedTaxes[$tax->getId()] = array(
+                        'tax' => $tax,
+                        'amount' => $amount,
+                    );
+                } else {
+                    $usedTaxes[$tax->getId()]['amount'] += $amount;
+                }
             }
         };
 
         foreach ($this->getItems() as $item) {
-            $taxCalculator = $item->getProductTaxCalculator();
+            $itemTaxes = $item->getTaxes($applyDiscountToTaxValues);
 
-            if ($taxCalculator instanceof TaxCalculator) {
-                $taxes = $taxCalculator->getTaxes();
-
-                foreach ($taxes as $tax) {
-                    $addTax($tax);
-                }
-
-                $itemTotal = $item->getTotal(false);
-                $taxesAmount = $taxCalculator->getTaxesAmount($itemTotal, true);
-
-                foreach ($taxesAmount as $id => $amount) {
-                    if($applyDiscountToTaxValues) {
-                        $amount *= $discountPercentage;
-                    }
-
-                    $usedTaxes[$id]['amount'] += $amount;
-                }
+            foreach($itemTaxes as $itemTax) {
+                $addTax($itemTax['tax'], $itemTax['amount']);
             }
         }
 
@@ -281,14 +277,10 @@ class Cart extends Base
             $shippingTax = $this->getShippingProvider()->getTaxCalculator();
 
             if ($shippingTax instanceof TaxCalculator) {
-                foreach ($shippingTax->getTaxes() as $tax) {
-                    $addTax($tax);
-                }
-
                 $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
 
                 foreach ($taxesAmount as $id => $amount) {
-                    $usedTaxes[$id]['amount'] += $amount;
+                    $addTax(Tax::getById($id), $amount);
                 }
             }
         }
@@ -297,14 +289,10 @@ class Cart extends Base
 
         if ($paymentProvider instanceof PaymentPlugin) {
             if ($paymentProvider->getPaymentTaxCalculator($this) instanceof TaxCalculator) {
-                foreach ($paymentProvider->getPaymentTaxCalculator($this) as $tax) {
-                    $addTax($tax);
-                }
-
                 $taxesAmount = $paymentProvider->getPaymentTaxCalculator($this)->getTaxesAmount($paymentProvider->getPaymentFee($this, false), true);
 
                 foreach ($taxesAmount as $id => $amount) {
-                    $usedTaxes[$id]['amount'] += $amount;
+                    $addTax(Tax::getById($id), $amount);
                 }
             }
         }
