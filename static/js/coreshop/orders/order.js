@@ -1035,6 +1035,10 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         align: 'right',
                         dataIndex : 'key',
                         renderer : function (value, metaData, record) {
+                            if(record.get("text")) {
+                                return '<span style="font-weight:bold">' + record.get("text") + '</span>';
+                            }
+
                             return '<span style="font-weight:bold">' + t('coreshop_' + value) + '</span>';
                         }
                     },
