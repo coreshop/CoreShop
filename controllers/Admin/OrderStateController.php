@@ -74,6 +74,7 @@ class CoreShop_Admin_OrderStateController extends Admin
             $orderState->setEmail(0);
             $orderState->setPaid(0);
             $orderState->setInvoice(0);
+            $orderState->setColor("#FFFFFF");
             $orderState->save();
 
             $this->_helper->json(array('success' => true, 'data' => $orderState));
