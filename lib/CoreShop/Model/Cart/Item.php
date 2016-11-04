@@ -18,6 +18,8 @@ use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
+use CoreShop\Model\Tax;
+use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\User\Address;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
@@ -132,12 +134,76 @@ class Item extends Base
     }
 
     /**
+     * get total tax for product in item
+     *
+     * @return float
+     */
+    public function getTotalProductTax() {
+        return $this->getAmount() * $this->getProductTaxAmount(false);
+    }
+
+    /**
+     * Get Single Item Tax for Cart Item
+     *
+     * @return array|float
+     */
+    public function getItemTax() {
+        return $this->getProductTaxAmount(false) * $this->getCart()->getDiscountPercentage();
+    }
+
+    /**
      * Get Tax Amount for Cart Item
      *
      * @return float
      */
     public function getTotalTax() {
-       return $this->getAmount() * $this->getProductTaxAmount(false);
+       return ($this->getAmount() * $this->getItemTax());
+    }
+
+    /**
+     * Returns array with key=>value for tax and value.
+     *
+     * @param $applyDiscountToTaxValues
+     *
+     * @return array
+     */
+    public function getTaxes($applyDiscountToTaxValues = true)
+    {
+        $usedTaxes = array();
+
+        $discountPercentage = $this->getCart()->getDiscountPercentage();
+
+        $addTax = function (Tax $tax) use (&$usedTaxes) {
+            if (!array_key_exists($tax->getId(), $usedTaxes)) {
+                $usedTaxes[$tax->getId()] = array(
+                    'tax' => $tax,
+                    'amount' => 0,
+                );
+            }
+        };
+
+        $taxCalculator = $this->getProductTaxCalculator();
+
+        if ($taxCalculator instanceof TaxCalculator) {
+            $taxes = $taxCalculator->getTaxes();
+
+            foreach ($taxes as $tax) {
+                $addTax($tax);
+            }
+
+            $itemTotal = $this->getTotal(false);
+            $taxesAmount = $taxCalculator->getTaxesAmount($itemTotal, true);
+
+            foreach ($taxesAmount as $id => $amount) {
+                if ($applyDiscountToTaxValues) {
+                    $amount *= $discountPercentage;
+                }
+
+                $usedTaxes[$id]['amount'] += $amount;
+            }
+        }
+
+        return $usedTaxes;
     }
 
     /**
@@ -163,7 +229,7 @@ class Item extends Base
     /**
      * Get the Cart for this CartItem.
      *
-     * @return \Pimcore\Model\Object\AbstractObject|void|null
+     * @return Cart
      */
     public function getCart()
     {

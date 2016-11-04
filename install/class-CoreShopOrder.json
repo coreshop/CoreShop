@@ -315,6 +315,33 @@
                 "minValue":null,
                 "maxValue":null,
                 "decimalPrecision":null,
+                "name":"discountWithoutTax",
+                "title":"Discount (without Tax)",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":true,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
+                "fieldtype":"numeric",
+                "width":"",
+                "defaultValue":null,
+                "queryColumnType":"double",
+                "columnType":"double",
+                "phpdocType":"float",
+                "integer":false,
+                "unsigned":false,
+                "minValue":null,
+                "maxValue":null,
+                "decimalPrecision":null,
                 "name":"subtotal",
                 "title":"Subtotal",
                 "tooltip":"",
@@ -964,7 +991,9 @@
                 "relationType":true,
                 "lazyLoading":false,
                 "classes":[
-                    "CoreShopOrderItem"
+                  {
+                    "classes":"CoreShopOrderItem"
+                  }
                 ],
                 "pathFormatterClass":null,
                 "name":"items",
@@ -1061,7 +1090,9 @@
                 ],
                 "lazyLoading":true,
                 "classes":[
-                    "CoreShopUserAddress"
+                  {
+                    "classes":"CoreShopUserAddress"
+                  }
                 ],
                 "pathFormatterClass":null,
                 "name":"shippingAddress",
@@ -1100,7 +1131,9 @@
                 ],
                 "lazyLoading":true,
                 "classes":[
-                    "CoreShopUserAddress"
+                  {
+                    "classes":"CoreShopUserAddress"
+                  }
                 ],
                 "pathFormatterClass":null,
                 "name":"billingAddress",

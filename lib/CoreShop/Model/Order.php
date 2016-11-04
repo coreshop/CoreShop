@@ -189,38 +189,36 @@ class Order extends Base
             $item->setProduct($cartItem->getProduct());
             $item->setWholesalePrice($cartItem->getProductWholesalePrice());
             $item->setRetailPrice($cartItem->getProductRetailPrice());
-            $item->setPrice($cartItem->getProductPrice());
+            $item->setPrice($cartItem->getProductPrice(true));
             $item->setPriceWithoutTax($cartItem->getProductPrice(false));
             $item->setAmount($cartItem->getAmount());
             $item->setExtraInformation($cartItem->getExtraInformation());
             $item->setIsGiftItem($cartItem->getIsGiftItem());
             $item->setTotal(\CoreShop::getTools()->roundPrice($cartItem->getTotal()));
-            $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getTotalTax()));
+            $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getTotalProductTax()));
             $item->setIsVirtualProduct($cartItem->getIsVirtualProduct());
 
             if($cartItem->getVirtualAsset() instanceof Asset) {
                 $item->setVirtualAsset($cartItem->getVirtualAsset());
             }
 
-            $productTaxes = $cartItem->getProductTaxCalculator();
+            $itemTaxes = new Object\Fieldcollection();
 
-            if ($productTaxes instanceof TaxCalculator) {
-                $productTaxes = $productTaxes->getTaxes();
-                $itemTaxes = new Object\Fieldcollection();
-                $itemTaxAmounts = $cartItem->getProductTaxAmount(true);
+            foreach($cartItem->getTaxes(false) as $taxes) {
+                $itemTax = Order\Tax::create();
 
-                foreach ($productTaxes as $tax) {
-                    $itemTax = Order\Tax::create();
+                $tax = $taxes['tax'];
 
+                if($tax instanceof Tax) {
                     $itemTax->setName($tax->getName());
                     $itemTax->setRate($tax->getRate());
-                    $itemTax->setAmount(\CoreShop::getTools()->roundPrice($itemTaxAmounts[$tax->getId()]));
+                    $itemTax->setAmount($taxes['amount']);
 
                     $itemTaxes->add($itemTax);
                 }
-
-                $item->setTaxes($itemTaxes);
             }
+
+            $item->setTaxes($itemTaxes);
             $item->save();
 
             //Stock Management
@@ -302,7 +300,7 @@ class Order extends Base
         $totalTax = 0;
 
         foreach ($item->getTaxes() as $tax) {
-            $taxValue = (($tax->getRate() / 100) * $item->getPriceWithoutTax());
+            $taxValue = ((($tax->getRate() / 100) * $item->getPriceWithoutTax())) ;
             $totalTax += $taxValue;
 
             $tax->setAmount($taxValue * $item->getAmount());
@@ -364,13 +362,24 @@ class Order extends Base
             $taxRateValues[(string)$rate] += $amount;
         };
 
+        $newSubTotalWithoutDiscount = 0;
+
+        foreach($this->getItems() as $orderItem) {
+            $newSubTotalWithoutDiscount += $orderItem->getTotalWithoutTax();
+        }
+
+        //((100 / 217,92) * (217,91-20,89))/100
+        $newSubTotal = $newSubTotalWithoutDiscount - $this->getDiscountWithoutTax();
+        $newDiscountPercentage = ((100 / $newSubTotalWithoutDiscount) * $newSubTotal) / 100;
+
+
         //Recaluclate Subtotal and taxes
         foreach ($this->getItems() as $item) {
-            $subTotalTax += $item->getTotalTax();
+            $subTotalTax += $item->getTotalTax() * $newDiscountPercentage;
             $subTotal += $item->getTotal();
 
             foreach ($item->getTaxes() as $tax) {
-                $addTax($tax->getRate(), $tax->getAmount());
+                $addTax($tax->getRate(), $tax->getAmount() * $newDiscountPercentage);
             }
         }
 
@@ -949,6 +958,26 @@ class Order extends Base
      * @throws ObjectUnsupportedException
      */
     public function getDiscount()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param double $discountWithoutTax
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setDiscountWithoutTax($discountWithoutTax)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getDiscountWithoutTax()
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
