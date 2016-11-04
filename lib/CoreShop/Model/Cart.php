@@ -221,13 +221,10 @@ class Cart extends Base
      */
     public function getSubtotalTax()
     {
-        $subtotal = 0;
+        $subtotalTi = $this->getSubtotal(true);
+        $subtotalTe = $this->getSubtotal(false);
 
-        foreach ($this->getItems() as $item) {
-            $subtotal += $item->getTotalTax();
-        }
-
-        return $subtotal;
+        return abs($subtotalTi - $subtotalTe);
     }
 
     /**
