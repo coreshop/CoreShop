@@ -13,6 +13,7 @@
   right: 100px;
   width: 500px;
   margin-bottom: 0;
+  z-index:10000;
 }
 #coreshop-debug .coreshop-debug-panel {
   background: white;
