@@ -45,10 +45,11 @@ abstract class AbstractAction extends \CoreShop\Model\Rules\Action\AbstractActio
      * Calculate discount.
      *
      * @param Cart $cart
+     * @param boolean $withTax
      *
      * @return int
      */
-    abstract public function getDiscountCart(Cart $cart);
+    abstract public function getDiscountCart(Cart $cart, $withTax = true);
 
     /**
      * Calculate discount.

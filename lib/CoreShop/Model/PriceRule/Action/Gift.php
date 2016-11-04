@@ -91,12 +91,13 @@ class Gift extends AbstractAction
      * Calculate discount.
      *
      * @param Cart $cart
+     * @param boolean $withTax
      *
      * @return int
      */
-    public function getDiscountCart(Cart $cart)
+    public function getDiscountCart(Cart $cart, $withTax = true)
     {
-        $discount = \CoreShop::getTools()->convertToCurrency($this->getGift()->getPrice(), \CoreShop::getTools()->getCurrency());
+        $discount = \CoreShop::getTools()->convertToCurrency($this->getGift()->getPrice($withTax), \CoreShop::getTools()->getCurrency());
 
         return $discount;
     }

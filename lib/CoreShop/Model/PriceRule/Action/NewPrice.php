@@ -80,10 +80,11 @@ class NewPrice extends AbstractAction
      * Calculate discount.
      *
      * @param Cart $cart
+     * @param boolean $withTax
      *
      * @return float
      */
-    public function getDiscountCart(Cart $cart)
+    public function getDiscountCart(Cart $cart, $withTax = true)
     {
         return 0;
     }

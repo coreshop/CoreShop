@@ -99,12 +99,13 @@ class DiscountPercent extends AbstractAction
      * Calculate discount.
      *
      * @param Cart $cart
+     * @param boolean $withTax
      *
      * @return int
      */
-    public function getDiscountCart(Cart $cart)
+    public function getDiscountCart(Cart $cart, $withTax = true)
     {
-        return $this->getDiscount($cart->getSubtotal());
+        return $this->getDiscount($cart->getSubtotal($withTax));
     }
 
     /**

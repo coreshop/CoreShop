@@ -99,10 +99,11 @@ class DiscountAmount extends AbstractAction
      * Calculate discount.
      *
      * @param Cart $cart
+     * @param boolean $withTax
      *
      * @return int
      */
-    public function getDiscountCart(Cart $cart)
+    public function getDiscountCart(Cart $cart, $withTax = true)
     {
         return \CoreShop::getTools()->convertToCurrency($this->getAmount(), \CoreShop::getTools()->getCurrency(), Currency::getById($this->getCurrency()));
     }

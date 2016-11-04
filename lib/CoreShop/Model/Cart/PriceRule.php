@@ -363,9 +363,11 @@ class PriceRule extends AbstractPriceRule
     /**
      * Get Discount for PriceRule.
      *
+     * @param boolean $withTax
+     *
      * @return int
      */
-    public function getDiscount()
+    public function getDiscount($withTax = true)
     {
         $cart = \CoreShop::getTools()->prepareCart();
         $discount = 0;
@@ -373,7 +375,7 @@ class PriceRule extends AbstractPriceRule
         if ($this->getActions()) {
             foreach ($this->getActions() as $action) {
                 if ($action instanceof AbstractAction) {
-                    $discount += $action->getDiscountCart($cart);
+                    $discount += $action->getDiscountCart($cart, $withTax);
                 }
             }
         }

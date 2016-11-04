@@ -161,9 +161,11 @@ class Cart extends Base
     /**
      * calculates discount for the cart.
      *
+     * @param boolean $withTax
+     *
      * @return int
      */
-    public function getDiscount()
+    public function getDiscount($withTax = true)
     {
         $priceRule = $this->getPriceRules();
         $discount = 0;
@@ -173,12 +175,21 @@ class Cart extends Base
                 $rule = $ruleItem->getPriceRule();
 
                 if ($rule instanceof PriceRule) {
-                    $discount += $rule->getDiscount();
+                    $discount += $rule->getDiscount($withTax);
                 }
             }
         }
 
         return $discount;
+    }
+
+    /**
+     * calculates the discount tax
+     *
+     * @return number
+     */
+    public function getDiscountTax() {
+        return abs($this->getDiscount(true) - $this->getDiscount(false));
     }
 
     /**
@@ -222,11 +233,16 @@ class Cart extends Base
     /**
      * Returns array with key=>value for tax and value.
      *
+     * @param $applyDiscountToTaxValues
+     *
      * @return array
      */
-    public function getTaxes()
+    public function getTaxes($applyDiscountToTaxValues = true)
     {
         $usedTaxes = array();
+
+        $discountTax = $this->getDiscountTax();
+        $subtotalEt = $this->getSubtotal(false);
 
         $addTax = function (Tax $tax) use (&$usedTaxes) {
             if (!array_key_exists($tax->getId(), $usedTaxes)) {
@@ -247,9 +263,22 @@ class Cart extends Base
                     $addTax($tax);
                 }
 
-                $taxesAmount = $taxCalculator->getTaxesAmount($item->getTotal(false), true);
+                $itemTotal = $item->getTotal(false);
+                $itemTotalPercentage = (100 / $subtotalEt) * $itemTotal;
+                $itemDiscountedTax = abs(($discountTax / 100) * $itemTotalPercentage);
+
+                $taxesAmount = $taxCalculator->getTaxesAmount($itemTotal, true);
+                $totalTaxRate = $taxCalculator->getTotalRate();
 
                 foreach ($taxesAmount as $id => $amount) {
+                    if($applyDiscountToTaxValues) {
+                        $tax = Tax::getById($id);
+
+                        $taxAmountPercentage = ((100 / $totalTaxRate) * $tax->getRate()) / 100;
+
+                        $amount -= ($itemDiscountedTax * $taxAmountPercentage);
+                    }
+
                     $usedTaxes[$id]['amount'] += $amount;
                 }
             }
@@ -440,16 +469,16 @@ class Cart extends Base
     /**
      * Calculate the payment fee.
      *
-     * @param $useTaxes boolean use taxes
+     * @param $withTax boolean use taxes
      *
      * @return float
      */
-    public function getPaymentFee($useTaxes = true)
+    public function getPaymentFee($withTax = true)
     {
         $paymentProvider = $this->getPaymentProvider();
 
         if ($paymentProvider instanceof PaymentPlugin) {
-            return $paymentProvider->getPaymentFee($this, $useTaxes);
+            return $paymentProvider->getPaymentFee($this, $withTax);
         }
 
         return 0;
@@ -494,27 +523,27 @@ class Cart extends Base
      */
     public function getTotalTax()
     {
-        $subtotalTax = $this->getSubtotalTax();
-        $shippingTax = $this->getShippingTax();
-        $paymentTax = $this->getPaymentFeeTax();
+        $totalWithTax = $this->getTotal();
+        $totalWithoutTax = $this->getTotal(false);
 
-        return $subtotalTax + $shippingTax + $paymentTax;
+        return abs($totalWithTax - $totalWithoutTax);
     }
 
     /**
      * calculates the total of the cart.
      *
+     * @param boolean $withTax get price with tax or without
+     *
      * @return float
      */
-    public function getTotal()
+    public function getTotal($withTax = true)
     {
-        $subtotal = $this->getSubtotal(false);
-        $discount = $this->getDiscount();
-        $shipping = $this->getShipping(false);
-        $totalTax = $this->getTotalTax();
-        $payment = $this->getPaymentFee();
+        $subtotal = $this->getSubtotal($withTax);
+        $discount = $this->getDiscount($withTax);
+        $shipping = $this->getShipping($withTax);
+        $payment = $this->getPaymentFee($withTax);
 
-        return ($subtotal + $shipping + $payment + $totalTax) - $discount;
+        return ($subtotal + $shipping + $payment) - $discount;
     }
 
     /**
