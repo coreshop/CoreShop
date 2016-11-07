@@ -27,6 +27,13 @@ use CoreShop\Model\Plugin\Payment as CorePayment;
 class Payment extends Action
 {
     /**
+     * Determines if the action is triggered by an internal-forward
+     *
+     * @var bool
+     */
+    public static $isActionForward = false;
+
+    /**
      * Payment Module.
      *
      * @var CorePayment
@@ -54,9 +61,28 @@ class Payment extends Action
         $this->view->document = $this->document = Document::getByPath('/'.$this->language.'/shop');
         $this->view->module = $this->getModule();
 
-        $this->view->addScriptPath(CORESHOP_TEMPLATE_BASE.'/scripts/'.strtolower($this->getModule()->getIdentifier()));
-        $this->view->addScriptPath(CORESHOP_TEMPLATE_PATH.'/scripts/'.strtolower($this->getModule()->getIdentifier()));
-        $this->view->addScriptPath(PIMCORE_WEBSITE_PATH.'/views/scripts/'.strtolower($this->getModule()->getIdentifier()));
+        $pathsToAdd = [
+            CORESHOP_TEMPLATE_BASE.'/scripts/'.strtolower($this->getModule()->getIdentifier()),
+            CORESHOP_TEMPLATE_PATH.'/scripts/'.strtolower($this->getModule()->getIdentifier()),
+            PIMCORE_WEBSITE_PATH.'/views/scripts/'.strtolower($this->getModule()->getIdentifier())
+        ];
+
+        if(self::$isActionForward) {
+            $this->view->setScriptPath(
+                array_merge(
+                    $this->view->getScriptPaths(),
+                    $pathsToAdd
+                )
+            );
+        }
+        else {
+            $this->view->setScriptPath(
+                array_merge(
+                    $pathsToAdd,
+                    $this->view->getScriptPaths()
+                )
+            );
+        }
 
         if($this->getParam("opc", false)) {
             $this->opc = true;

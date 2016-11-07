@@ -250,6 +250,8 @@ class CoreShop
     {
         $this->createDefines();
 
+        \Pimcore::getEventManager()->trigger("coreshop.preBootstrap");
+
         \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
             /** @var \Pimcore\Console\Application $application */
             $application = $e->getTarget();
@@ -329,6 +331,10 @@ class CoreShop
                 return new VatManager();
             });
         }
+
+        \Zend_Controller_Action_HelperBroker::addPath(CORESHOP_PATH.'/lib/CoreShop/Controller/Action/Helper', 'CoreShop\Controller\Action\Helper');
+
+        \Pimcore::getEventManager()->trigger("coreshop.postBootstrap");
     }
 
     /**
