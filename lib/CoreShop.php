@@ -49,6 +49,11 @@ class CoreShop
     private $layout = 'shop';
 
     /**
+     * @var Tools
+     */
+    private static $tools;
+
+    /**
      * @param \CoreShop\Plugin $plugin
      *
      * CoreShop constructor.
@@ -63,11 +68,16 @@ class CoreShop
      */
     public static function getTools()
     {
-        if (\Pimcore::getDiContainer()->has('CoreShop\Tools')) {
-            return \Pimcore::getDiContainer()->get('CoreShop\Tools');
+        if(!isset(self::$tools)) {
+            if (\Pimcore::getDiContainer()->has('CoreShop\Tools')) {
+                self::$tools = \Pimcore::getDiContainer()->get('CoreShop\Tools');
+            }
+            else {
+                self::$tools = new Tools();
+            }
         }
 
-        return new Tools();
+        return self::$tools;
     }
 
     /**
