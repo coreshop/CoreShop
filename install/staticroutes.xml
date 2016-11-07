@@ -121,5 +121,15 @@
             <variables>lang,act,mod</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>coreshop_change_display_prices_with_tax</name>
+            <pattern>/(\w+)\/shop\/display-prices-with-tax/</pattern>
+            <reverse>/%lang/shop/display-prices-with-tax</reverse>
+            <module>CoreShop</module>
+            <controller>helper</controller>
+            <action>change-display-prices-with-tax</action>
+            <variables>lang</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>
