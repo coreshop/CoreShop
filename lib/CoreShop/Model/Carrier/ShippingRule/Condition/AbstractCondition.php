@@ -34,4 +34,13 @@ abstract class AbstractCondition extends Model\Rules\Condition\AbstractCondition
      * @return mixed
      */
     abstract public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, CarrierShippingRule $shippingRule);
+
+    /**
+     * get cache key for Condition. Use this method to invalidate a condition
+     *
+     * @return string
+     */
+    public function getCacheKey() {
+        return md5(\Zend_Json::encode(get_object_vars($this)));
+    }
 }

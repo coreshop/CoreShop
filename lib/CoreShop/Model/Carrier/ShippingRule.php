@@ -55,7 +55,7 @@ class ShippingRule extends AbstractRule
      */
     public function checkValidity(Carrier $carrier, Cart $cart, Address $address)
     {
-        $cacheKey = md5(\CoreShop::getTools()->getFingerprint() . $carrier->getId() . $address->getCacheKey() . $cart->getCacheKey() . $this->getId());
+        $cacheKey = $this->getValidationCacheKey($carrier, $cart, $address);
 
         try {
             $valid = \Zend_Registry::get($cacheKey);
@@ -95,6 +95,26 @@ class ShippingRule extends AbstractRule
         }
 
         return false;
+    }
+
+    /**
+     * get cache key for shipping rule validation
+     *
+     * @param Carrier $carrier
+     * @param Address $address
+     * @param Cart $cart
+     * @return string
+     */
+    public function getValidationCacheKey(Carrier $carrier, Cart $cart, Address $address) {
+        $cacheKey = \CoreShop::getTools()->getFingerprint() . $carrier->getId() . $address->getCacheKey() . $cart->getCacheKey() . $this->getId();
+
+        foreach($this->getConditions() as $condition) {
+            if($condition instanceof AbstractCondition) {
+                $cacheKey = $cacheKey . $condition->getCacheKey();
+            }
+        }
+
+        return md5($cacheKey);
     }
 
     /**
