@@ -17,41 +17,24 @@ namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Carrier\ShippingRule as CarrierShippingRule;
 use CoreShop\Model\Cart;
-use CoreShop\Model\Category;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\User\Address;
 
 /**
- * Class Categories
+ * Class ShippingRule
  * @package CoreShop\Model\PriceRule\Condition
  */
-class Categories extends AbstractCondition
+class ShippingRule extends AbstractCondition
 {
-    /**
-     * @var int[]
-     */
-    public $categories;
-
     /**
      * @var string
      */
-    public $type = 'categories';
+    public $type = 'shippingRule';
 
     /**
-     * @return int[]
+     * @var int
      */
-    public function getCategories()
-    {
-        return $this->categories;
-    }
-
-    /**
-     * @param int $categories
-     */
-    public function setCategories($categories)
-    {
-        $this->categories = $categories;
-    }
+    public $shippingRule;
 
     /**
      * Check if Cart is Valid for Condition.
@@ -65,25 +48,28 @@ class Categories extends AbstractCondition
      */
     public function checkCondition(Carrier $carrier, Cart $cart, Address $address, CarrierShippingRule $shippingRule)
     {
-        $found = false;
+        $carrierShippingRule = CarrierShippingRule::getById($this->getShippingRule());
 
-        foreach ($cart->getItems() as $item) {
-            foreach ($this->getCategories() as $catId) {
-                $cat = Category::getById($catId);
-
-                if ($cat instanceof Category) {
-                    if ($item->getProduct()->inCategory($cat)) {
-                        $found = true;
-                        break;
-                    }
-                }
-            }
-
-            if ($found) {
-                return true;
-            }
+        if($carrierShippingRule instanceof CarrierShippingRule) {
+            return $carrierShippingRule->checkValidity($carrier, $cart, $address);
         }
 
         return false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getShippingRule()
+    {
+        return $this->shippingRule;
+    }
+
+    /**
+     * @param int $shippingRule
+     */
+    public function setShippingRule($shippingRule)
+    {
+        $this->shippingRule = $shippingRule;
     }
 }

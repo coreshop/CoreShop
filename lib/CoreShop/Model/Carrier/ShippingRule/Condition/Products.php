@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 
 use CoreShop\Model\Carrier;
-use CoreShop\Model\Carrier\ShippingRule;
+use CoreShop\Model\Carrier\ShippingRule as CarrierShippingRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\User\Address;
@@ -58,11 +58,11 @@ class Products extends AbstractCondition
      * @param Carrier $carrier
      * @param Cart $cart
      * @param Address $address;
-     * @param ShippingRule $shippingRule
+     * @param CarrierShippingRule $shippingRule
      *
      * @return mixed
      */
-    public function checkCondition(Carrier $carrier, Cart $cart, Address $address, ShippingRule $shippingRule)
+    public function checkCondition(Carrier $carrier, Cart $cart, Address $address, CarrierShippingRule $shippingRule)
     {
         foreach ($cart->getItems() as $item) {
             $found = in_array($item->getProduct()->getId(), $this->getProducts());

@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 
 use CoreShop\Model;
-use CoreShop\Model\Carrier\ShippingRule;
+use CoreShop\Model\Carrier\ShippingRule as CarrierShippingRule;
 
 /**
  * Class AbstractCondition
@@ -29,9 +29,9 @@ abstract class AbstractCondition extends Model\Rules\Condition\AbstractCondition
      * @param Model\Carrier $carrier
      * @param Model\Cart $cart
      * @param Model\User\Address $address;
-     * @param ShippingRule $shippingRule
+     * @param CarrierShippingRule $shippingRule
      *
      * @return mixed
      */
-    abstract public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule);
+    abstract public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, CarrierShippingRule $shippingRule);
 }

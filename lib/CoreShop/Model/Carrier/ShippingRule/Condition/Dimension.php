@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Carrier\ShippingRule\Condition;
 
 use CoreShop\Model;
-use CoreShop\Model\Carrier\ShippingRule;
+use CoreShop\Model\Carrier\ShippingRule as CarrierShippingRule;
 
 /**
  * Class Dimension
@@ -53,7 +53,7 @@ class Dimension extends AbstractCondition
      *
      * @return mixed
      */
-    public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule)
+    public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, CarrierShippingRule $shippingRule)
     {
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
