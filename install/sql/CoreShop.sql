@@ -29,7 +29,7 @@ CREATE TABLE `coreshop_countries` (
   `zoneId` int,
   `addressFormat` VARCHAR(255) NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `coreshop_currencies`;
 CREATE TABLE `coreshop_currencies` (
@@ -40,7 +40,7 @@ CREATE TABLE `coreshop_currencies` (
   `symbol` varchar(255) DEFAULT NULL,
   `exchangeRate` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 INSERT INTO `coreshop_currencies` (`id`, `name`, `isoCode`, `numericIsoCode`, `symbol`, `exchangeRate`) VALUES
 (1,	'Euro',	'EUR',	'978',	'€',	1.2),
@@ -505,7 +505,7 @@ CREATE TABLE `coreshop_states` (
   `active` tinyint(1) DEFAULT 0,
   `countryId` int,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `coreshop_messaging_contact`;
 CREATE TABLE `coreshop_messaging_contact` (
