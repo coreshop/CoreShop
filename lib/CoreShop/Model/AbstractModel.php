@@ -162,7 +162,7 @@ class AbstractModel extends Model\AbstractModel
     public static function getByField($field, $value, $shopId = null)
     {
         $className = get_called_class();
-        $cacheKey = self::getClassCacheKey($className, $field . '_' . File::getValidFilename(str_replace('-', '_', $value)) . ($shopId ? $shopId : ''));
+        $cacheKey = self::getClassCacheKey($className, md5($field . '_' . File::getValidFilename(str_replace('-', '_', $value))) . ($shopId ? $shopId : ''));
 
         try {
             $object = \Zend_Registry::get($cacheKey);
