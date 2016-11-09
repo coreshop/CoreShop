@@ -21,6 +21,7 @@ use CoreShop\Model\Product\AbstractProductPriceRule;
 use CoreShop\Model\Product\SpecificPrice;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
+use Pimcore\File;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
@@ -65,6 +66,10 @@ class Product extends Base
      */
     public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopProduct';
 
+    /**
+     * @var string
+     */
+    public static $staticRoute = "coreshop_detail";
     /**
      * OUT_OF_STOCK_DENY denies order of product if out-of-stock.
      */
@@ -693,6 +698,19 @@ class Product extends Base
         }
 
         return $this->cheapestDeliveryPrice;
+    }
+
+    /**
+     * get url for product -> returns false if the product is not available for the shop
+     *
+     * @param $language
+     * @param bool $reset
+     * @param Shop|null $shop
+     *
+     * @return bool|string
+     */
+    public function getProductUrl($language, $reset = false, Shop $shop = null) {
+        return $this->getUrl($language, ["product" => $this->getId(), "name" => File::getValidFilename($this->getName())], static::$staticRoute, $reset, $shop);
     }
 
     /**

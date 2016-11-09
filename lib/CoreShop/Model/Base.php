@@ -20,7 +20,9 @@ use Pimcore\Model\Listing\AbstractListing;
 use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model\Object\Concrete;
+use Pimcore\Model\Site;
 use Pimcore\Model\User;
+use Pimcore\Tool;
 use Pimcore\Tool\Authentication;
 
 /**
@@ -85,8 +87,106 @@ class Base extends Concrete
     }
 
     /**
+     * @param array $config
+     *
+     * @return AbstractListing
+     *
+     * @throws Exception
+     */
+    public static function getList($config = array())
+    {
+        //We need to re-write this method, since pimcore uses the called_class method
+        $className = self::getPimcoreObjectClass();
+
+        if (is_array($config)) {
+            if ($className) {
+                $listClass = $className.'\\Listing';
+                $list = null;
+
+                if (\Pimcore::getDiContainer()->has($listClass)) {
+                    $listClass = \Pimcore::getDiContainer()->get($listClass);
+                    
+                    $list = new $listClass();
+                } elseif (\Pimcore\Tool::classExists($listClass)) {
+                    $list = new $listClass();
+                }
+
+                if ($list instanceof AbstractListing) {
+                    $list->setValues($config);
+
+                    return $list;
+                }
+            }
+        }
+
+        throw new Exception('Unable to initiate list class - class not found or invalid configuration');
+    }
+
+    /**
+     * @return Data[]
+     * @throws \Exception
+     */
+    public static function getMandatoryFields()
+    {
+        $class = self::getPimcoreObjectClass();
+        $key = explode("\\", $class);
+        $key = $key[count($key) - 1];
+
+        $fieldCollectionDefinition = ClassDefinition::getByName($key);
+        $fields = $fieldCollectionDefinition->getFieldDefinitions();
+        $mandatoryFields = [];
+
+        foreach ($fields as $field) {
+            if ($field instanceof Data) {
+                if ($field->getMandatory()) {
+                    $mandatoryFields[] = $field;
+                }
+            }
+        }
+
+        return $mandatoryFields;
+    }
+
+    /**
+     * @param $data
+     * @throws \Pimcore\Model\Element\ValidationException
+     */
+    public static function validate($data)
+    {
+        $mandatoryFields = self::getMandatoryFields();
+
+        foreach ($mandatoryFields as $field) {
+            $field->checkValidity($data[$field->getName()]);
+        }
+    }
+
+    /**
+     * @param $method
+     * @param $arguments
+     *
+     * @return mixed|null
+     *
+     * @throws Exception
+     */
+    public static function __callStatic($method, $arguments)
+    {
+        $pimcoreClass = self::getPimcoreObjectClass();
+
+        if (get_called_class() === $pimcoreClass) {
+            return parent::__callStatic($method, $arguments);
+        }
+
+        if (!\Pimcore\Tool::classExists($pimcoreClass)) {
+            throw new Exception('Calling to unkown class '.$pimcoreClass);
+        }
+
+        return call_user_func_array(array($pimcoreClass, $method), $arguments);
+    }
+
+
+    /**
      * Object to Array.
-     * 
+     *
      * @return array
      */
     public function toArray()
@@ -144,66 +244,6 @@ class Base extends Concrete
     }
 
     /**
-     * @param array $config
-     *
-     * @return AbstractListing
-     *
-     * @throws Exception
-     */
-    public static function getList($config = array())
-    {
-        //We need to re-write this method, since pimcore uses the called_class method
-        $className = self::getPimcoreObjectClass();
-
-        if (is_array($config)) {
-            if ($className) {
-                $listClass = $className.'\\Listing';
-                $list = null;
-
-                if (\Pimcore::getDiContainer()->has($listClass)) {
-                    $listClass = \Pimcore::getDiContainer()->get($listClass);
-                    
-                    $list = new $listClass();
-                } elseif (\Pimcore\Tool::classExists($listClass)) {
-                    $list = new $listClass();
-                }
-
-                if ($list instanceof AbstractListing) {
-                    $list->setValues($config);
-
-                    return $list;
-                }
-            }
-        }
-
-        throw new Exception('Unable to initiate list class - class not found or invalid configuration');
-    }
-
-    /**
-     * @param $method
-     * @param $arguments
-     *
-     * @return mixed|null
-     *
-     * @throws Exception
-     */
-    public static function __callStatic($method, $arguments)
-    {
-        $pimcoreClass = self::getPimcoreObjectClass();
-
-        if (get_called_class() === $pimcoreClass) {
-            return parent::__callStatic($method, $arguments);
-        }
-
-        if (!\Pimcore\Tool::classExists($pimcoreClass)) {
-            throw new Exception('Calling to unkown class '.$pimcoreClass);
-        }
-
-        return call_user_func_array(array($pimcoreClass, $method), $arguments);
-    }
-
-
-    /**
      * Create a note for this object.
      *
      * @param $type string
@@ -243,42 +283,47 @@ class Base extends Concrete
         return $master;
     }
 
-
     /**
-     * @return Data[]
-     * @throws \Exception
+     * @param Shop $shop
+     * @return bool
      */
-    public static function getMandatoryFields()
-    {
-        $class = self::getPimcoreObjectClass();
-        $key = explode("\\", $class);
-        $key = $key[count($key) - 1];
+    public function isAllowedForShop(Shop $shop) {
+        if(method_exists($this, "getShops")) {
+            $shops = $this->getShops();
 
-        $fieldCollectionDefinition = ClassDefinition::getByName($key);
-        $fields = $fieldCollectionDefinition->getFieldDefinitions();
-        $mandatoryFields = [];
-
-        foreach ($fields as $field) {
-            if ($field instanceof Data) {
-                if ($field->getMandatory()) {
-                    $mandatoryFields[] = $field;
-                }
-            }
+            return in_array($shop->getId(), $shops);
         }
 
-        return $mandatoryFields;
+        return true;
     }
 
     /**
-     * @param $data
-     * @throws \Pimcore\Model\Element\ValidationException
+     * @param $language
+     * @param $params
+     * @param $route
+     * @param bool $reset
+     * @param Shop|null $shop
+     * @return bool|string
      */
-    public static function validate($data)
-    {
-        $mandatoryFields = self::getMandatoryFields();
-
-        foreach ($mandatoryFields as $field) {
-            $field->checkValidity($data[$field->getName()]);
+    public function getUrl($language, $params = [], $route, $reset = false, Shop $shop = null) {
+        if(is_null($shop)) {
+            $shop = Shop::getShop();
         }
+
+        if(!$this->isAllowedForShop($shop)) {
+            return false;
+        }
+
+        $params['lang'] = $language;
+
+        $url = \CoreShop::getTools()->url($params, $route, $reset);
+
+        if($shop->getId() === Shop::getShop()->getId()) {
+            return $url;
+        }
+
+        $site = Site::getById($shop->getSiteId());
+
+        return Tool::getRequestScheme() . "://" . $site->getMainDomain() . $url;
     }
 }

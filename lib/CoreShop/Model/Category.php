@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Product\Filter;
+use Pimcore\File;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
@@ -38,6 +39,11 @@ class Category extends Base
      * @var string
      */
     public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopCategory';
+
+    /**
+     * @var string
+     */
+    public static $staticRoute = "coreshop_list";
 
     /**
      * Get all Categories.
@@ -264,6 +270,19 @@ class Category extends Base
         $list->setCondition("parentCategory__id = ? AND shops LIKE '%,".Shop::getShop()->getId().",%'", array($this->getId()));
 
         return $list->load();
+    }
+
+    /**
+     * get url for category -> returns false if the category is not available for the shop
+     *
+     * @param $language
+     * @param bool $reset
+     * @param Shop|null $shop
+     *
+     * @return bool|string
+     */
+    public function getCategoryUrl($language, $reset = false, Shop $shop = null) {
+        return $this->getUrl($language, ["category" => $this->getId(), "name" => File::getValidFilename($this->getName())], static::$staticRoute, $reset, $shop);
     }
 
     /**
