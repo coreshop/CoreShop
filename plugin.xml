@@ -178,6 +178,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/actions/discountAmount.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/actions/discountPercent.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/actions/fixedPrice.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/actions/shippingRule.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/shippingRule.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/conditions.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/shippingrules/conditions/countries.js</path>

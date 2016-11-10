@@ -311,7 +311,7 @@
     background: url(/plugins/CoreShop/static/img/flat/voucher.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_carrier_shipping_rule, .coreshop_rule_icon_condition_shippingRule {
+.coreshop_icon_carrier_shipping_rule, .coreshop_rule_icon_condition_shippingRule, .coreshop_rule_icon_action_shippingRule {
     background: url(/plugins/CoreShop/static/img/flat/shippingrules.svg) center center no-repeat !important;
 }
 

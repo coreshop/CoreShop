@@ -42,7 +42,7 @@ class ShippingRule extends AbstractRule
      *
      * @var array
      */
-    public static $availableActions = array('fixedPrice', 'additionAmount', 'additionPercent', 'discountAmount', 'discountPercent');
+    public static $availableActions = array('fixedPrice', 'additionAmount', 'additionPercent', 'discountAmount', 'discountPercent', 'shippingRule');
 
     /**
      * Check if Shipping Rule is valid
