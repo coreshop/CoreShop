@@ -53,21 +53,36 @@ class Invoice
         \CoreShop::getTools()->initTemplateForShop($order->getShop());
 
         $view = new View();
-        $view->addScriptPath(array_merge(
-            $view->getScriptPaths(),
-            array(
-                CORESHOP_TEMPLATE_BASE.'/scripts/coreshop/invoice/',
-                CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/invoice/',
-                PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/invoice',
+        $view->setScriptPath(
+            array_merge(
+                $view->getScriptPaths(),
+                array(
+                    CORESHOP_TEMPLATE_BASE.'/scripts',
+                    CORESHOP_TEMPLATE_BASE.'/scripts/coreshop',
+                    CORESHOP_TEMPLATE_BASE.'/layouts',
+                    CORESHOP_TEMPLATE_PATH.'/scripts',
+                    CORESHOP_TEMPLATE_PATH.'/scripts/coreshop',
+                    CORESHOP_TEMPLATE_PATH.'/layouts',
+                    PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop',
+                )
             )
-        ));
+        );
         $view->assign('order', $order);
+        $view->assign("editmode", false);
+        $view->assign("language", (string) $locale);
+
         $view->addHelperPath(PIMCORE_PATH.'/lib/Pimcore/View/Helper', '\\Pimcore\\View\\Helper\\');
         $view->addHelperPath(CORESHOP_PATH.'/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
-        $view->language = (string) $locale;
-        $html = $view->render('invoice.php');
-        $header = $view->render('header.php');
-        $footer = $view->render('footer.php');
+
+
+        $editmodeBackup = \Zend_Registry::isRegistered("pimcore_editmode") ? \Zend_Registry::get("pimcore_editmode") : false;
+        \Zend_Registry::set("pimcore_editmode", false);
+
+        $html = $view->render('invoice/invoice.php');
+        $header = $view->render('invoice/header.php');
+        $footer = $view->render('invoice/footer.php');
+
+        \Zend_Registry::set("pimcore_editmode", $editmodeBackup);
 
         Localizedfield::setGetFallbackValues(false);
 
