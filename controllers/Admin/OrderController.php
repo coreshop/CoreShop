@@ -421,12 +421,22 @@ class CoreShop_Admin_OrderController extends Admin
     private function getDataForObject(Object\Concrete $data)
     {
         $objectData = [];
+        Object\Service::loadAllObjectFields($data);
 
         foreach ($data->getClass()->getFieldDefinitions() as $key => $def) {
             $getter = "get" . ucfirst($key);
             $fieldData = $data->$getter();
 
-            if ($def instanceof Object\ClassDefinition\Data) {
+            if($def instanceof Object\ClassDefinition\Data\Href) {
+                $objectData[$key] = $this->getDataForObject($fieldData);
+            }
+            else if($def instanceof Object\ClassDefinition\Data\Multihref) {
+                $objectData[$key] = [];
+
+                foreach($fieldData as $object) {
+                    $objectData[$key][] = $this->getDataForObject($object);
+                }
+            } else if ($def instanceof Object\ClassDefinition\Data) {
                 $value = $def->getDataForEditmode($fieldData, $data, false);
 
                 $objectData[$key] = $value;
