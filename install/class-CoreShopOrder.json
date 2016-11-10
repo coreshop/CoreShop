@@ -666,8 +666,35 @@
                 "minValue":null,
                 "maxValue":null,
                 "decimalPrecision":null,
+                "name":"totalWithoutTax",
+                "title":"Total (excl. Tax)",
+                "tooltip":"",
+                "mandatory":false,
+                "noteditable":false,
+                "index":false,
+                "locked":false,
+                "style":"",
+                "permissions":null,
+                "datatype":"data",
+                "relationType":false,
+                "invisible":false,
+                "visibleGridView":false,
+                "visibleSearch":false
+              },
+              {
+                "fieldtype":"numeric",
+                "width":"",
+                "defaultValue":null,
+                "queryColumnType":"double",
+                "columnType":"double",
+                "phpdocType":"float",
+                "integer":false,
+                "unsigned":false,
+                "minValue":null,
+                "maxValue":null,
+                "decimalPrecision":null,
                 "name":"total",
-                "title":"Total",
+                "title":"Total (incl. Tax)",
                 "tooltip":"",
                 "mandatory":false,
                 "noteditable":true,
@@ -991,9 +1018,7 @@
                 "relationType":true,
                 "lazyLoading":false,
                 "classes":[
-                  {
-                    "classes":"CoreShopOrderItem"
-                  }
+                  "CoreShopOrderItem"
                 ],
                 "pathFormatterClass":null,
                 "name":"items",
@@ -1090,9 +1115,7 @@
                 ],
                 "lazyLoading":true,
                 "classes":[
-                  {
-                    "classes":"CoreShopUserAddress"
-                  }
+                    "CoreShopUserAddress"
                 ],
                 "pathFormatterClass":null,
                 "name":"shippingAddress",
@@ -1131,9 +1154,7 @@
                 ],
                 "lazyLoading":true,
                 "classes":[
-                  {
-                    "classes":"CoreShopUserAddress"
-                  }
+                  "CoreShopUserAddress"
                 ],
                 "pathFormatterClass":null,
                 "name":"billingAddress",

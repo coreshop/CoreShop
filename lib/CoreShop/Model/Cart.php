@@ -938,6 +938,7 @@ class Cart extends Base
         $order->setPaymentFeeTaxRate($this->getPaymentFeeTaxRate());
         $order->setTotalTax($this->getTotalTax());
         $order->setTotal($this->getTotal());
+        $order->setTotalWithoutTax($this->getTotal(false));
         $order->setSubtotal($this->getSubtotal());
         $order->setSubtotalWithoutTax($this->getSubtotal(false));
         $order->setSubtotalTax($this->getSubtotalTax());

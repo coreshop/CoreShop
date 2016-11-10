@@ -1237,6 +1237,26 @@ class Order extends Base
      *
      * @throws ObjectUnsupportedException
      */
+    public function getTotalWithoutTax()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param double $totalWithtouTax
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setTotalWithtoutTax($totalWithtouTax)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
     public function getTotal()
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
