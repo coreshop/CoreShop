@@ -86,7 +86,7 @@ class Payment extends Action
 
         if($this->getParam("opc", false)) {
             $this->opc = true;
-            $this->checkoutController = "CheckoutOpc";
+            $this->checkoutController = "checkout-opc";
 
             $this->disableLayout();
         }
