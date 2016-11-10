@@ -123,7 +123,7 @@ class PaymentForward extends \Zend_Controller_Action_Helper_Abstract
             $module = $this->defaultModule;
         }
 
-        Payment::$isActionForwared = true;
+        Payment::$isActionForward = true;
 
         // clone the view object to prevent over-writing of view variables
         $viewRendererObj = \Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
@@ -139,7 +139,7 @@ class PaymentForward extends \Zend_Controller_Action_Helper_Abstract
 
         // reset the viewRenderer object to it's original state
         \Zend_Controller_Action_HelperBroker::addHelper($viewRendererObj);
-        Payment::$isActionForwared = false;
+        Payment::$isActionForward = false;
 
         if (!$this->request->isDispatched()
             || $this->response->isRedirect())
