@@ -15,6 +15,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
+use CoreShop\Model\Country\Dao;
 use CoreShop\Model\User\Address;
 use Pimcore\Placeholder;
 
@@ -94,14 +95,18 @@ class Country extends AbstractModel
     /**
      * Gets all active Countries.
      *
+     * @param int $shopId
      * @return array
      */
-    public static function getActiveCountries()
+    public static function getActiveCountries($shopId = null)
     {
-        $list = Country::getList();
-        $list->setCondition('active = 1');
+        if(is_null($shopId)) {
+            $shopId = Shop::getDefaultShop()->getId();
+        }
 
-        return $list->getData();
+        $dao = new Dao();
+
+        return $dao->getActiveCountries($shopId);
     }
 
     /**

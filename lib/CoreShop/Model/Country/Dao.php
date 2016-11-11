@@ -14,7 +14,9 @@
 
 namespace CoreShop\Model\Country;
 
+use CoreShop\Model\Country;
 use CoreShop\Model\Dao\AbstractDao;
+use Pimcore\Db;
 
 /**
  * Class Dao
@@ -28,4 +30,21 @@ class Dao extends AbstractDao
      * @var string
      */
     protected static $tableName = 'coreshop_countries';
+
+    /**
+     * @param $shopId
+     * @return array
+     */
+    public function getActiveCountries($shopId) {
+        $db = Db::get();
+
+        $data = $db->fetchAll('SELECT countries.id FROM ' . $this->getTableName() . ' as countries INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE active = 1', [$shopId]);
+        $result = [];
+
+        foreach($data as $entry) {
+            $result[] = Country::getById($entry['id']);
+        }
+
+        return $result;
+    }
 }
