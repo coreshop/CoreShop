@@ -22,6 +22,7 @@ use CoreShop\Model\Shop;
 use Pimcore\Date;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Dao;
+use Pimcore\Tool\Serialize;
 
 /**
  * Class AbstractDao
@@ -177,7 +178,7 @@ abstract class AbstractDao extends Dao\AbstractDao
                     $value = (int) $value;
                 }
                 if (is_array($value)) {
-                    $value = serialize($value);
+                    $value = Serialize::serialize($value);
                 }
                 if ($value instanceof AbstractObject) {
                     $value = $value->getId();
@@ -192,7 +193,7 @@ abstract class AbstractDao extends Dao\AbstractDao
                     $value = $value->getTimestamp();
                 }
                 if (is_object($value)) {
-                    $value = serialize($value);
+                    $value = Serialize::serialize($value);
                 }
 
                 $buffer[$k] = $value;

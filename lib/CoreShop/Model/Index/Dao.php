@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Index;
 
 use CoreShop\Model\Dao\AbstractDao;
+use Pimcore\Tool\Serialize;
 
 /**
  * Class Dao
@@ -38,7 +39,7 @@ class Dao extends AbstractDao
 
         foreach ($data as $key => $value) {
             if ($key == 'config') {
-                $this->model->setConfig(unserialize($value));
+                $this->model->setConfig(Serialize::unserialize($value));
             }
         }
     }

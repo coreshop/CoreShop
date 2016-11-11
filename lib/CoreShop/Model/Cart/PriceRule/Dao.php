@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Cart\PriceRule;
 
 use CoreShop\Model\Dao\AbstractDao;
+use Pimcore\Tool\Serialize;
 
 /**
  * Class Dao
@@ -38,9 +39,9 @@ class Dao extends AbstractDao
 
         foreach ($data as $key => $value) {
             if ($key == 'actions') {
-                $this->model->setActions(unserialize($value));
+                $this->model->setActions(Serialize::unserialize($value));
             } elseif ($key == 'conditions') {
-                $this->model->setConditions(unserialize($value));
+                $this->model->setConditions(Serialize::unserialize($value));
             }
         }
     }

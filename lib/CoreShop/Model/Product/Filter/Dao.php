@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Product\Filter;
 
 use CoreShop\Model\Dao\AbstractDao;
+use Pimcore\Tool\Serialize;
 
 /**
  * Class Dao
@@ -35,11 +36,11 @@ class Dao extends AbstractDao
 
         foreach ($data as $key => $value) {
             if ($key == 'filters') {
-                $this->model->setFilters(unserialize($value));
+                $this->model->setFilters(Serialize::unserialize($value));
             } elseif ($key == 'preConditions') {
-                $this->model->setPreConditions(unserialize($value));
+                $this->model->setPreConditions(Serialize::unserialize($value));
             } elseif ($key == 'similarities') {
-                $this->model->setSimilarities(unserialize($value));
+                $this->model->setSimilarities(Serialize::unserialize($value));
             }
         }
     }
