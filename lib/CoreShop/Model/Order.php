@@ -182,7 +182,7 @@ class Order extends Base
 
         foreach ($cart->getItems() as $cartItem) {
             $item = Item::create();
-            $item->setKey($i);
+            $item->setKey(strval($i));
             $item->setParent($this->getPathForItems());
             $item->setPublished(true);
 
