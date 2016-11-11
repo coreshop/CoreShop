@@ -947,6 +947,8 @@ class Cart extends Base
             $order->setVisitorId(\CoreShop::getTools()->getVisitor()->getId());
         }
 
+        \CoreShop::actionHook('order.preSave', array('order' => $order, 'cart' => $this));
+
         $order->save();
 
         if($this->getShippingAddress() instanceof Address) {
