@@ -96,6 +96,11 @@ class Product extends Base
     protected $validPriceRules = null;
 
     /**
+     * @var TaxCalculator|boolean
+     */
+    protected $taxCalculator;
+
+    /**
      * @var bool
      */
     public static $unitTests = false;
@@ -611,27 +616,32 @@ class Product extends Base
      */
     public function getTaxCalculator(Address $address = null)
     {
-        if (is_null($address)) {
-            $cart = \CoreShop::getTools()->prepareCart();
+        if(is_null($this->taxCalculator)) {
+            if (is_null($address)) {
+                $cart = \CoreShop::getTools()->prepareCart();
 
-            $address = $cart->getCustomerAddressForTaxation();
+                $address = $cart->getCustomerAddressForTaxation();
 
-            if (!$address instanceof Address) {
-                $address = Address::create();
-                $address->setCountry(\CoreShop::getTools()->getCountry());
+                if (!$address instanceof Address) {
+                    $address = Address::create();
+                    $address->setCountry(\CoreShop::getTools()->getCountry());
+                }
+            }
+
+            $taxRule = $this->getTaxRule();
+
+            if ($taxRule instanceof TaxRuleGroup) {
+                $taxManager = TaxManagerFactory::getTaxManager($address, $taxRule->getId());
+                $taxCalculator = $taxManager->getTaxCalculator();
+
+                $this->taxCalculator = $taxCalculator;
+            }
+            else {
+                $this->taxCalculator = false;
             }
         }
 
-        $taxRule = $this->getTaxRule();
-
-        if ($taxRule instanceof TaxRuleGroup) {
-            $taxManager = TaxManagerFactory::getTaxManager($address, $taxRule->getId());
-            $taxCalculator = $taxManager->getTaxCalculator();
-
-            return $taxCalculator;
-        }
-
-        return false;
+        return $this->taxCalculator;
     }
 
     /**
