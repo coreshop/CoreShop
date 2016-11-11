@@ -13,6 +13,7 @@
     }],
     "require": {
         "pimcore/installer-plugin": ">=1",
+        "pimcore/core-version": "4.4.0",
         "florianv/swap": "^2.4",
         "elasticsearch/elasticsearch": "~2.0"
     }
