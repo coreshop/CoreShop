@@ -33,6 +33,7 @@ class CoreShop_SearchController extends Action
             'shortDescription LIKE ?',
             'metaTitle LIKE ?',
             'metaDescription LIKE ?',
+            'articleNumber LIKE ?'
         );
         $queryParams = array(
             '%'.$text.'%',
@@ -40,6 +41,7 @@ class CoreShop_SearchController extends Action
             '%'.$text.'%',
             '%'.$text.'%',
             '%'.$text.'%',
+            '%'.$text.'%'
         );
 
         $list = \CoreShop\Model\Product::getList();
