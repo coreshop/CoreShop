@@ -15,14 +15,12 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
+use CoreShop\Helper\Zend\Action;
 use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Logger;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Asset\Service;
-use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Model\Object\Localizedfield;
 use Pimcore\Tool;
-use Pimcore\View;
 
 /**
  * Class Invoice
@@ -42,49 +40,16 @@ class Invoice
     public static function generateInvoice(Order $order)
     {
         $locale = new \Zend_Locale($order->getLang());
-        \Zend_Locale::setDefault($locale);
-        \Zend_Registry::set('Zend_Locale', $locale);
 
-        Localizedfield::setGetFallbackValues(true);
-        AbstractObject::setGetInheritedValues(true);
+        $params = [
+            "order" => $order,
+            "language" => (string) $locale
+        ];
 
-        self::initTranslation();
-
-        \CoreShop::getTools()->initTemplateForShop($order->getShop());
-
-        $view = new View();
-        $view->setScriptPath(
-            array_merge(
-                $view->getScriptPaths(),
-                array(
-                    CORESHOP_TEMPLATE_BASE.'/scripts',
-                    CORESHOP_TEMPLATE_BASE.'/scripts/coreshop',
-                    CORESHOP_TEMPLATE_BASE.'/layouts',
-                    CORESHOP_TEMPLATE_PATH.'/scripts',
-                    CORESHOP_TEMPLATE_PATH.'/scripts/coreshop',
-                    CORESHOP_TEMPLATE_PATH.'/layouts',
-                    PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop',
-                )
-            )
-        );
-        $view->assign('order', $order);
-        $view->assign("editmode", false);
-        $view->assign("language", (string) $locale);
-
-        $view->addHelperPath(PIMCORE_PATH.'/lib/Pimcore/View/Helper', '\\Pimcore\\View\\Helper\\');
-        $view->addHelperPath(CORESHOP_PATH.'/lib/CoreShop/View/Helper', 'CoreShop\View\Helper');
-
-
-        $editmodeBackup = \Zend_Registry::isRegistered("pimcore_editmode") ? \Zend_Registry::get("pimcore_editmode") : false;
-        \Zend_Registry::set("pimcore_editmode", false);
-
-        $html = $view->render('invoice/invoice.php');
-        $header = $view->render('invoice/header.php');
-        $footer = $view->render('invoice/footer.php');
-
-        \Zend_Registry::set("pimcore_editmode", $editmodeBackup);
-
-        Localizedfield::setGetFallbackValues(false);
+        $forward = new Action();
+        $html = $forward->action("invoice", "invoice", "CoreShop", $params);
+        $header = $forward->action("header", "invoice", "CoreShop", $params);
+        $footer = $forward->action("footer", "invoice", "CoreShop", $params);
 
         try {
             $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, array('options' => array(Configuration::get('SYSTEM.INVOICE.WKHTML'))));
