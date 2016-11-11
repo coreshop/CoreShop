@@ -69,9 +69,8 @@ class SpecificPrice extends AbstractProductPriceRule
      */
     public static function getSpecificPrices(Product $product)
     {
-        $cacheKey = "specific_prices_product_" . $product->getCacheKey();
         $className = static::class;
-        self::getClassCacheKey($className, "prices_for_product_" . $product->getId());
+        $cacheKey = self::getClassCacheKey($className, "prices_for_product_" . $product->getId());
 
         try {
             $object = \Zend_Registry::get($cacheKey);

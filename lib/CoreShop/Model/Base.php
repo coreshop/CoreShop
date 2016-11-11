@@ -200,7 +200,17 @@ class Base extends Concrete
      * @return string
      */
     public function getCacheKey() {
-        return $this->getId();
+        return static::getClassCacheKey(get_class($this), $this->getId());
+    }
+
+    /**
+     * @param $className
+     * @param $append
+     * @return string
+     */
+    protected static function getClassCacheKey($className, $append)
+    {
+        return 'coreshop_' . str_replace('\\', '_', $className) . '_' . $append;
     }
 
     /**
