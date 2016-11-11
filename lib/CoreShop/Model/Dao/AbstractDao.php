@@ -77,16 +77,19 @@ abstract class AbstractDao extends Dao\AbstractDao
 
         $data = null;
 
-        if (!is_null($shopId)) {
-            if ($this->model->isMultiShop()) {
-                $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
-            }
+        if (!is_null($shopId) && $this->model->isMultiShop()) {
+            $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
         } else {
             $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . ' WHERE id = ?', $this->model->getId());
         }
-        
+
         if (!$data['id']) {
-            throw new Exception(get_class($this->model).' with the ID '.$this->model->getId()." doesn't exists");
+            if (!is_null($shopId) && $this->model->isMultiShop()) {
+                throw new Exception(sprintf('%s with the ID "%s" for ShopId "%s" does not exist or is not activated', get_class($this->model), $this->model->getId(), $shopId));
+            }
+            else {
+                throw new Exception(sprintf('%s with the ID "%s" for does not exist', get_class($this->model), $this->model->getId()));
+            }
         }
 
         if ($this->model->isMultiShop()) {
