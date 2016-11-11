@@ -14,7 +14,10 @@
 
 namespace CoreShop\Model\Product;
 
+use CoreShop\Exception;
 use CoreShop\Model\Product;
+use Pimcore\Cache;
+use Pimcore\Logger;
 use Pimcore\Model\Object\AbstractObject;
 
 /**
@@ -66,24 +69,51 @@ class SpecificPrice extends AbstractProductPriceRule
      */
     public static function getSpecificPrices(Product $product)
     {
-        $list = SpecificPrice::getList();
+        $cacheKey = "specific_prices_product_" . $product->getCacheKey();
+        $className = static::class;
+        self::getClassCacheKey($className, "prices_for_product_" . $product->getId());
 
-        $query = "";
-        $queryParams = [
-            $product->getId()
-        ];
+        try {
+            $object = \Zend_Registry::get($cacheKey);
+            if (!$object) {
+                throw new Exception($className.' in registry is null');
+            }
 
-        if ($product->getType() === Product::OBJECT_TYPE_VARIANT) {
-            $parentIds = $product->getParentIds();
+            return $object;
+        } catch (\Exception $e) {
+            try {
+                if (!$objects = Cache::load($cacheKey)) {
+                    $list = SpecificPrice::getList();
 
-            $query = "OR (o_id in (" . implode(",", $parentIds) . ") AND inherit = 1)";
+                    $query = "";
+                    $queryParams = [
+                        $product->getId()
+                    ];
+
+                    if ($product->getType() === Product::OBJECT_TYPE_VARIANT) {
+                        $parentIds = $product->getParentIds();
+
+                        $query = "OR (o_id in (" . implode(",", $parentIds) . ") AND inherit = 1)";
+                    }
+
+                    $list->setCondition("o_id = ? " . $query, $queryParams);
+                    $list->setOrder("DESC");
+                    $list->setOrderKey("priority");
+
+                    $objects = $list->getData();
+                    \Zend_Registry::set($cacheKey, $objects);
+                    Cache::save($objects, $cacheKey, array($cacheKey, $product->getCacheKey()));
+                } else {
+                    \Zend_Registry::set($cacheKey, $objects);
+                }
+
+                return $objects;
+            } catch (\Exception $e) {
+                Logger::warning($e->getMessage());
+            }
         }
 
-        $list->setCondition("o_id = ? " . $query, $queryParams);
-        $list->setOrder("DESC");
-        $list->setOrderKey("priority");
-
-        return $list->getData();
+        return [];
     }
 
     public function save()
