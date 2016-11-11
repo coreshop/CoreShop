@@ -428,13 +428,17 @@ class CoreShop_Admin_OrderController extends Admin
             $fieldData = $data->$getter();
 
             if($def instanceof Object\ClassDefinition\Data\Href) {
-                $objectData[$key] = $this->getDataForObject($fieldData);
+                if($fieldData instanceof Object\Concrete) {
+                    $objectData[$key] = $this->getDataForObject($fieldData);
+                }
             }
             else if($def instanceof Object\ClassDefinition\Data\Multihref) {
                 $objectData[$key] = [];
 
                 foreach($fieldData as $object) {
-                    $objectData[$key][] = $this->getDataForObject($object);
+                    if($fieldData instanceof Object\Concrete) {
+                        $objectData[$key][] = $this->getDataForObject($object);
+                    }
                 }
             } else if ($def instanceof Object\ClassDefinition\Data) {
                 $value = $def->getDataForEditmode($fieldData, $data, false);
