@@ -77,7 +77,7 @@ pimcore.plugin.coreshop.states.item = Class.create(pimcore.plugin.coreshop.abstr
                             valueField:'id',
                             forceSelection:true,
                             triggerAction:'all',
-                            name:'zoneId',
+                            name:'countryId',
                             listeners: {
                                 change: function () {
                                     this.forceReloadOnSave = true;
