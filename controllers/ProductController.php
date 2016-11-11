@@ -113,6 +113,10 @@ class CoreShop_ProductController extends Action
         $category = \CoreShop\Model\Category::getById($id);
 
         if ($category instanceof \CoreShop\Model\Category) {
+            if (!in_array(\CoreShop\Model\Shop::getShop()->getId(), $category->getShops())) {
+                throw new CoreShop\Exception(sprintf('Category (%s) not valid for shop (%s)', $id, \CoreShop\Model\Shop::getShop()->getId()));
+            }
+            
             if ($category->getFilterDefinition() instanceof \CoreShop\Model\Product\Filter) {
                 $index = $category->getFilterDefinition()->getIndex();
                 $indexService = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
