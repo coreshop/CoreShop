@@ -63,32 +63,7 @@ class CoreShop_Admin_MessagingThreadController extends Admin
 
         foreach ($list->load() as $thread) {
             if ($thread instanceof CoreShop\Model\Messaging\Thread) {
-                $entry = array(
-                    'id' => $thread->getId(),
-                    'email' => $thread->getEmail(),
-                    'contactId' => $thread->getContactId(),
-                    'language' => $thread->getLanguage(),
-                    'statusId' => $thread->getStatusId(),
-                    'userId' => null,
-                    'user' => null,
-                    'adminId' => null,
-                    'admin' => null,
-                    'messages' => '',
-                    'token' => $thread->getToken(),
-                    'reference' => null,
-                    'shopId' => $thread->getShopId()
-                );
-
-                if ($thread->getUser() instanceof \CoreShop\Model\User) {
-                    $entry['user'] = $thread->getUser()->getFirstname().' '.$thread->getUser()->getLastname();
-                    $entry['userId'] = $thread->getUserId();
-                }
-
-                if ($thread->getProduct() instanceof \CoreShop\Model\Product) {
-                    $entry['reference'] = $thread->getProduct()->getName().' ('.$thread->getProduct()->getId().')';
-                } elseif ($thread->getOrder() instanceof \CoreShop\Model\Order) {
-                    $entry['reference'] = $thread->getOrder()->getOrderNumber().' ('.$thread->getOrder()->getId().')';
-                }
+                $entry = $this->getThreadForAjax($thread);
 
                 $messages = $thread->getMessages();
                 $messagesShort = [];
@@ -123,7 +98,7 @@ class CoreShop_Admin_MessagingThreadController extends Admin
         $thread = \CoreShop\Model\Messaging\Thread::getById($id);
 
         if ($thread instanceof \CoreShop\Model\Messaging\Thread) {
-            $this->_helper->json(array('success' => true, 'data' => ['thread' => $thread->getObjectVars(), 'messages' => $this->getMessagesForAjax($thread)]));
+            $this->_helper->json(array('success' => true, 'data' => ['thread' => $this->getThreadForAjax($thread), 'messages' => $this->getMessagesForAjax($thread)]));
         } else {
             $this->_helper->json(array('success' => false));
         }
@@ -180,7 +155,7 @@ class CoreShop_Admin_MessagingThreadController extends Admin
                 $thread->save();
             }
 
-            $this->_helper->json(array('success' => true, 'data' => ['thread' => $thread->getObjectVars()]));
+            $this->_helper->json(array('success' => true, 'data' => ['thread' => $this->getThreadForAjax($thread)]));
         } else {
             $this->_helper->json(array('success' => false));
         }
@@ -199,7 +174,7 @@ class CoreShop_Admin_MessagingThreadController extends Admin
             $customerEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
             $message->sendNotification($customerEmailDocument, $thread->getEmail());
 
-            $this->_helper->json(array('success' => true, 'data' => ['thread' => $thread->getObjectVars(), 'newMessage' => $this->getMessageForAjax($message)]));
+            $this->_helper->json(array('success' => true, 'data' => ['thread' => $this->getThreadForAjax($thread), 'newMessage' => $this->getMessageForAjax($message)]));
         } else {
             $this->_helper->json(array('success' => false));
         }
@@ -250,5 +225,43 @@ class CoreShop_Admin_MessagingThreadController extends Admin
         }
 
         return $data;
+    }
+
+
+    /**
+     * Prepare Thread for Ajax Request
+     *
+     * @param \CoreShop\Model\Messaging\Thread $thread
+     * @return array
+     */
+    protected function getThreadForAjax(CoreShop\Model\Messaging\Thread $thread) {
+        $entry = [
+            'id' => $thread->getId(),
+            'email' => $thread->getEmail(),
+            'contactId' => $thread->getContactId(),
+            'language' => $thread->getLanguage(),
+            'statusId' => $thread->getStatusId(),
+            'userId' => null,
+            'user' => null,
+            'adminId' => null,
+            'admin' => null,
+            'messages' => '',
+            'token' => $thread->getToken(),
+            'reference' => null,
+            'shopId' => $thread->getShopId()
+        ];
+
+        if ($thread->getUser() instanceof \CoreShop\Model\User) {
+            $entry['user'] = $thread->getUser()->getFirstname().' '.$thread->getUser()->getLastname();
+            $entry['userId'] = $thread->getUserId();
+        }
+
+        if ($thread->getProduct() instanceof \CoreShop\Model\Product) {
+            $entry['reference'] = $thread->getProduct()->getName().' ('.$thread->getProduct()->getId().')';
+        } elseif ($thread->getOrder() instanceof \CoreShop\Model\Order) {
+            $entry['reference'] = $thread->getOrder()->getOrderNumber().' ('.$thread->getOrder()->getId().')';
+        }
+
+        return $entry;
     }
 }
