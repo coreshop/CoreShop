@@ -60,9 +60,26 @@ class IndexCommand extends AbstractCommand
         $progress = new ProgressBar($output, $steps);
         $progress->start();
 
+        $process = null;
+
+        if(class_exists('\ProcessManager\Model\Process')) {
+            $process = new \ProcessManager\Model\Process();
+            $process->setName('CoreShop Index');
+            $process->setTotal($steps);
+            $process->setMessage('Loading');
+            $process->setProgress(0);
+            $process->save();
+        }
+
         foreach ($allProducts as $product) {
             IndexService::getIndexService()->updateIndex($product);
             $progress->advance();
+
+            if(class_exists('\ProcessManager\Model\Process')) {
+                if($process instanceof \ProcessManager\Model\Process) {
+                    $process->progress(1, sprintf("Indexing %s", $product->getName()));
+                }
+            }
         }
         $this->output->writeln('');
         $this->output->writeln('<info>Done</info>');
