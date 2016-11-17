@@ -493,6 +493,7 @@ CREATE TABLE `coreshop_product_filters` (
   `orderKey` varchar(255) NOT NULL,
   `preConditions` text NOT NULL,
   `filters` text NOT NULL,
+  `similarities` text NOT NULL,
   `index` int(11) NULL,
   `useShopPagingSettings` int(11) NULL DEFAULT '0'
 );
