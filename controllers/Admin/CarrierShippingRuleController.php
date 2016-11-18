@@ -134,4 +134,34 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
 
         $this->_helper->json(array('success' => false));
     }
+
+    public function getUsedByCarriersAction() {
+        $id = $this->getParam('id');
+        $shippingRule = \CoreShop\Model\Carrier\ShippingRule::getById($id);
+
+        if ($shippingRule instanceof \CoreShop\Model\Carrier\ShippingRule) {
+            $list = \CoreShop\Model\Carrier\ShippingRuleGroup::getList();
+            $list->setCondition("shippingRuleId = ?", [$id]);
+            $list->load();
+
+            $carriers = [];
+
+            foreach($list->getData() as $group) {
+                if($group instanceof \CoreShop\Model\Carrier\ShippingRuleGroup) {
+                    $carrier = $group->getCarrier();
+
+                    if($carrier instanceof \CoreShop\Model\Carrier) {
+                        $carriers[] = [
+                            "id" => $carrier->getId(),
+                            "name" => $carrier->getName()
+                        ];
+                    }
+                }
+            }
+
+            $this->_helper->json(array('success' => true, 'carriers' => $carriers));
+        }
+
+        $this->_helper->json(array('success' => false));
+    }
 }

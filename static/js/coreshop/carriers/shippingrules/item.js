@@ -22,6 +22,10 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
     },
 
     getPanel: function () {
+        var items = this.getItems();
+
+        items.push(this.getUsedByPanel());
+
         this.panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -34,7 +38,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
                 iconCls: 'pimcore_icon_apply',
                 handler: this.save.bind(this)
             }],
-            items: this.getItems()
+            items: items
         });
 
         return this.panel;
@@ -59,6 +63,50 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
         });
 
         return this.settingsForm;
+    },
+
+    getUsedByPanel : function() {
+        this.store = new Ext.data.JsonStore({
+            fields: [
+                'id',
+                'name'
+            ],
+            proxy: {
+                type: 'ajax',
+                url: '/plugin/CoreShop/admin_carrier-shipping-rule/get-used-by-carriers',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'carriers'
+                },
+                extraParams: {
+                    id: this.data.id
+                }
+            }
+        });
+
+        var columns = [
+            {
+                text: t('id'),
+                dataIndex: 'id'
+            },
+            {
+                text: t('coreshop_carrier'),
+                dataIndex: 'name',
+                flex : 1
+            }
+        ];
+
+        this.grid = Ext.create('Ext.grid.Panel', {
+            title: t('coreshop_carriers'),
+            iconCls: 'coreshop_icon_carriers',
+            store: this.store,
+            columns: columns,
+            region: 'center'
+        });
+
+        this.store.load();
+
+        return this.grid;
     },
 
     getActionContainerClass : function () {
