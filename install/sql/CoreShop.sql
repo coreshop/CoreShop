@@ -16,7 +16,7 @@ CREATE TABLE `coreshop_carriers` (
   `maxDepth` double NOT NULL DEFAULT '0',
   `maxWeight` double NOT NULL DEFAULT '0',
   `class` varchar(255) NULL
-) COMMENT='';
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_countries`;
 CREATE TABLE `coreshop_countries` (
@@ -29,7 +29,7 @@ CREATE TABLE `coreshop_countries` (
   `zoneId` int,
   `addressFormat` VARCHAR(255) NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_currencies`;
 CREATE TABLE `coreshop_currencies` (
@@ -40,7 +40,7 @@ CREATE TABLE `coreshop_currencies` (
   `symbol` varchar(255) DEFAULT NULL,
   `exchangeRate` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `coreshop_currencies` (`id`, `name`, `isoCode`, `numericIsoCode`, `symbol`, `exchangeRate`) VALUES
 (1,	'Euro',	'EUR',	'978',	'€',	1.2),
@@ -379,14 +379,14 @@ CREATE TABLE `coreshop_cart_pricerules` (
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `conditions` text NULL,
   `actions` text NULL
-) COMMENT='';
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_zones`;
 CREATE TABLE `coreshop_zones` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(50) NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0'
-) COMMENT='';
+) DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `coreshop_zones` (`id`, `name`, `active`) VALUES
 (1,	'Europe',	1),
@@ -401,9 +401,9 @@ DROP TABLE IF EXISTS `coreshop_numberranges`;
 CREATE TABLE `coreshop_numberranges` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `shopId` int NOT NULL,
-  `type` varchar(255) NOT NULL,
+  `type` varchar(100) NOT NULL,
   `number` int(11) NOT NULL DEFAULT '0'
-);
+) DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE coreshop_numberranges ADD UNIQUE (`type`, `shopId`);
 
@@ -416,21 +416,21 @@ CREATE TABLE `coreshop_orderstates` (
   `invoice` tinyint(1) NOT NULL DEFAULT '0',
   `email` tinyint(1) NOT NULL DEFAULT '0',
   `color` varchar(7) NOT NULL DEFAULT '#000000'
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_taxes`;
 CREATE TABLE `coreshop_taxes` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `rate` double NOT NULL,
   `active` tinyint NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_tax_rule_groups`;
 CREATE TABLE `coreshop_tax_rule_groups` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
   `active` tinyint NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_tax_rules`;
 CREATE TABLE `coreshop_tax_rules` (
@@ -440,7 +440,7 @@ CREATE TABLE `coreshop_tax_rules` (
   `stateId` int(11) NOT NULL,
   `taxId` int(11) NOT NULL,
   `behavior` tinyint NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DELETE FROM `users_permission_definitions` WHERE `key` LIKE 'coreshop_permission%';
 
@@ -474,7 +474,7 @@ CREATE TABLE `coreshop_product_specificprice` (
   `conditions` text,
   `actions` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_indexes`;
 CREATE TABLE `coreshop_indexes` (
@@ -482,7 +482,7 @@ CREATE TABLE `coreshop_indexes` (
   `type` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `config` text NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_product_filters`;
 CREATE TABLE `coreshop_product_filters` (
@@ -496,7 +496,7 @@ CREATE TABLE `coreshop_product_filters` (
   `similarities` text NOT NULL,
   `index` int(11) NULL,
   `useShopPagingSettings` int(11) NULL DEFAULT '0'
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_states`;
 CREATE TABLE `coreshop_states` (
@@ -506,21 +506,21 @@ CREATE TABLE `coreshop_states` (
   `active` tinyint(1) DEFAULT 0,
   `countryId` int,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_messaging_contact`;
 CREATE TABLE `coreshop_messaging_contact` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `email` varchar(255) NULL,
   `description` varchar(1000) NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_messaging_thread_state`;
 CREATE TABLE `coreshop_messaging_thread_state` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `color` varchar(255) NULL,
   `finished` TINYINT(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_messaging_thread`;
 CREATE TABLE `coreshop_messaging_thread` (
@@ -534,7 +534,7 @@ CREATE TABLE `coreshop_messaging_thread` (
   `contactId` int NOT NULL,
   `language` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_messaging_message`;
 CREATE TABLE `coreshop_messaging_message` (
@@ -545,7 +545,7 @@ CREATE TABLE `coreshop_messaging_message` (
   `read` tinyint(1)  NOT NULL DEFAULT '1',
   `creationDate` bigint NOT NULL,
   FOREIGN KEY (`adminUserId`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_product_pricerules`;
 CREATE TABLE `coreshop_product_pricerules` (
@@ -556,7 +556,7 @@ CREATE TABLE `coreshop_product_pricerules` (
   `conditions` text,
   `actions` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_shops`;
 CREATE TABLE `coreshop_shops` (
@@ -565,7 +565,7 @@ CREATE TABLE `coreshop_shops` (
   `name` varchar(255) NOT NULL,
   `template` varchar(255) NOT NULL,
   `isDefault` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `coreshop_shops` (`name`, `template`, `isDefault`)
 VALUES ('Default', 'default', '1');
@@ -575,42 +575,42 @@ CREATE TABLE `coreshop_countries_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_carriers_shops`;
 CREATE TABLE `coreshop_carriers_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_customer_groups_shops`;
 CREATE TABLE `coreshop_customer_groups_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_tax_rule_groups_shops`;
 CREATE TABLE `coreshop_tax_rule_groups_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 
 DROP TABLE IF EXISTS `coreshop_messaging_contact_shops`;
 CREATE TABLE `coreshop_messaging_contact_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_messaging_thread_state_shops`;
 CREATE TABLE `coreshop_messaging_thread_state_shops` (
   `oId` int(11) NOT NULL,
   `shopId` int(11) NOT NULL,
   PRIMARY KEY (`oId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE `coreshop_voucher_codes` (
@@ -620,7 +620,7 @@ CREATE TABLE `coreshop_voucher_codes` (
   `used` tinyint(1) NOT NULL,
   `uses` tinyint(12) NOT NULL,
   `priceRuleId` int NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_carrier_shippingrules`;
 CREATE TABLE `coreshop_carrier_shippingrules` (
@@ -630,7 +630,7 @@ CREATE TABLE `coreshop_carrier_shippingrules` (
   `conditions` text,
   `actions` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_carrier_shippingrule_groups`;
 CREATE TABLE `coreshop_carrier_shippingrule_groups` (
@@ -638,7 +638,7 @@ CREATE TABLE `coreshop_carrier_shippingrule_groups` (
   `carrierId` int NOT NULL,
   `priority` int NOT NULL,
   `shippingRuleId` int NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_visitors`;
 CREATE TABLE `coreshop_visitors` (
@@ -651,7 +651,7 @@ CREATE TABLE `coreshop_visitors` (
   `module` varchar(255) NOT NULL,
   `referrer` varchar(255) NOT NULL,
   `creationDate` bigint(20) NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_visitors_page`;
 CREATE TABLE `coreshop_visitors_page` (
@@ -661,7 +661,7 @@ CREATE TABLE `coreshop_visitors_page` (
   `action` varchar(255) NOT NULL,
   `module` varchar(255) NOT NULL,
   `creationDate` bigint(20) NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_visitors_source`;
 CREATE TABLE `coreshop_visitors_source` (
@@ -673,4 +673,4 @@ CREATE TABLE `coreshop_visitors_source` (
   `action` varchar(255) NOT NULL,
   `module` varchar(255) NOT NULL,
   `creationDate` bigint(20) NOT NULL
-);
+) DEFAULT CHARSET=utf8mb4;
