@@ -77,10 +77,9 @@
                     "relationType":true,
                     "lazyLoading":false,
                     "classes":[
-                      {
-                        "classes":"CoreShopCartItem"
-                      }
+                        "CoreShopCartItem"
                     ],
+                    "pathFormatterClass":null,
                     "name":"items",
                     "title":"Items",
                     "tooltip":"",
@@ -101,6 +100,7 @@
                     "phpdocType":"\\CoreShop\\Model\\Carrier",
                     "queryColumnType":"int(11)",
                     "columnType":"int(11)",
+                    "allowEmpty":false,
                     "options":[
                       {
                         "key":"Post",
@@ -133,6 +133,7 @@
                     "phpdocType":"CoreShop\\Model\\Cart\\PriceRule",
                     "queryColumnType":"int(11)",
                     "columnType":"int(11)",
+                    "allowEmpty":false,
                     "options":[
                       {
                         "key":"test",
@@ -146,29 +147,6 @@
                     "tooltip":"",
                     "mandatory":false,
                     "noteditable":false,
-                    "index":false,
-                    "locked":false,
-                    "style":"",
-                    "permissions":null,
-                    "datatype":"data",
-                    "relationType":false,
-                    "invisible":false,
-                    "visibleGridView":false,
-                    "visibleSearch":false
-                  },
-                  {
-                    "fieldtype":"input",
-                    "width":null,
-                    "queryColumnType":"varchar",
-                    "columnType":"varchar",
-                    "columnLength":255,
-                    "phpdocType":"string",
-                    "regex":"",
-                    "name":"voucher",
-                    "title":"Voucher",
-                    "tooltip":"",
-                    "mandatory":false,
-                    "noteditable":true,
                     "index":false,
                     "locked":false,
                     "style":"",
@@ -223,10 +201,9 @@
                     ],
                     "lazyLoading":true,
                     "classes":[
-                      {
-                        "classes":"CoreShopOrder"
-                      }
+                      "CoreShopOrder"
                     ],
+                    "pathFormatterClass":null,
                     "name":"order",
                     "title":"Order",
                     "tooltip":"",
@@ -270,6 +247,7 @@
                     "phpdocType":"\\CoreShop\\Model\\Shop",
                     "queryColumnType":"int(11)",
                     "columnType":"int(11)",
+                    "allowEmpty":false,
                     "options":null,
                     "width":"",
                     "defaultValue":null,
@@ -376,10 +354,9 @@
                     ],
                     "lazyLoading":false,
                     "classes":[
-                      {
-                        "classes":"CoreShopUser"
-                      }
+                      "CoreShopUser"
                     ],
+                    "pathFormatterClass":null,
                     "name":"user",
                     "title":"User",
                     "tooltip":"",
@@ -416,10 +393,9 @@
                     ],
                     "lazyLoading":true,
                     "classes":[
-                      {
-                        "classes":"CoreShopUserAddress"
-                      }
+                      "CoreShopUserAddress"
                     ],
+                    "pathFormatterClass":null,
                     "name":"shippingAddress",
                     "title":"Shipping Address",
                     "tooltip":"",
@@ -456,10 +432,9 @@
                     ],
                     "lazyLoading":true,
                     "classes":[
-                      {
-                        "classes":"CoreShopUserAddress"
-                      }
+                      "CoreShopUserAddress"
                     ],
+                    "pathFormatterClass":null,
                     "name":"billingAddress",
                     "title":"Billing Address",
                     "tooltip":"",

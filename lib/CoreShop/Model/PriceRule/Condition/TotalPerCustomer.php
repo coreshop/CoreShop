@@ -17,6 +17,8 @@ namespace CoreShop\Model\PriceRule\Condition;
 use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Order;
+use CoreShop\Model\PriceRule\Item;
 use CoreShop\Model\User;
 use CoreShop\Model\Product as ProductModel;
 
@@ -73,22 +75,20 @@ class TotalPerCustomer extends AbstractCondition
             $priceRulesUsed = 0;
 
             foreach ($orders as $order) {
-                if ($order->getPriceRule() instanceof PriceRule && $order->getPriceRule()->getId() == $priceRule->getId()) {
-                    if ($priceRule->getUseMultipleVoucherCodes()) {
-                        if ($cart->getVoucher()) {
-                            $voucher = PriceRule\VoucherCode::getByCode($cart->getVoucher());
+                if($order instanceof Order) {
+                    foreach($order->getPriceRuleFieldCollection() as $item) {
+                        if($item instanceof Item) {
+                            if($item->getVoucherCode()) {
+                                $voucher = PriceRule\VoucherCode::getByCode($item->getVoucherCode());
 
-                            if ($voucher instanceof PriceRule\VoucherCode) {
-                                ++$priceRulesUsed;
+                                if ($voucher instanceof PriceRule\VoucherCode) {
+                                    ++$priceRulesUsed;
+                                }
                             }
                         }
-                    } else {
-                        ++$priceRulesUsed;
                     }
                 }
             }
-
-            $isValid = true;
 
             if ($priceRule->getUseMultipleVoucherCodes()) {
                 $isValid = $priceRulesUsed < $priceRule->getUsagePerVoucherCode();

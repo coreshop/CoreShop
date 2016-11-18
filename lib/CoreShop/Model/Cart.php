@@ -1197,26 +1197,6 @@ class Cart extends Base
     }
 
     /**
-     * @return string|null
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getVoucher()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param string $voucher
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setVoucher($voucher)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
      * @return string
      *
      * @throws ObjectUnsupportedException

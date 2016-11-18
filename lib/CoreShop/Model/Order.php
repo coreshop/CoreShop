@@ -261,6 +261,8 @@ class Order extends Base
 
                     if ($rule instanceof PriceRule) {
                         $ruleItem->setDiscount($rule->getDiscount());
+
+                        $rule->applyOrder($this, $ruleItem);
                     }
                 }
             }
@@ -272,10 +274,6 @@ class Order extends Base
         //Store Order into cart for statistic purpose
         $cart->setOrder($this);
         $cart->save();
-
-        if ($this->getPriceRule() instanceof PriceRule) {
-            $this->getPriceRule()->applyOrder($this);
-        }
 
         return true;
     }
@@ -908,26 +906,6 @@ class Order extends Base
      * @throws ObjectUnsupportedException
      */
     public function setPriceRuleFieldCollection($priceRules)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return string|null
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getVoucher()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param string $voucher
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setVoucher($voucher)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

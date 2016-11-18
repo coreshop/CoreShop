@@ -21,6 +21,7 @@ use CoreShop\Model\Order;
 use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
+use CoreShop\Model\PriceRule\Item as PriceRuleItem;
 
 /**
  * Class PriceRule
@@ -332,11 +333,12 @@ class PriceRule extends AbstractPriceRule
      * apply price rule on order
      *
      * @param Order $order
+     * @param PriceRuleItem $item
      */
-    public function applyOrder(Order $order)
+    public function applyOrder(Order $order, PriceRuleItem $item)
     {
-        if ($order->getVoucher()) {
-            $voucherCode = Cart\PriceRule\VoucherCode::getByCode($order->getVoucher());
+        if ($item->getVoucherCode()) {
+            $voucherCode = Cart\PriceRule\VoucherCode::getByCode($item->getVoucherCode());
 
             if ($voucherCode instanceof Cart\PriceRule\VoucherCode) {
                 $voucherCode->increaseUsage();
@@ -348,11 +350,12 @@ class PriceRule extends AbstractPriceRule
      * un apply price rule on order
      *
      * @param Order $order
+     * @param PriceRuleItem $item
      */
-    public function unApplyOrder(Order $order)
+    public function unApplyOrder(Order $order, PriceRuleItem $item)
     {
-        if ($order->getVoucher()) {
-            $voucherCode = Cart\PriceRule\VoucherCode::getByCode($order->getVoucher());
+        if ($item->getVoucherCode()) {
+            $voucherCode = Cart\PriceRule\VoucherCode::getByCode($item->getVoucherCode());
 
             if ($voucherCode instanceof Cart\PriceRule\VoucherCode) {
                 $voucherCode->decreaseUsage();

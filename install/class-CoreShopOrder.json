@@ -1018,7 +1018,7 @@
                 "relationType":true,
                 "lazyLoading":false,
                 "classes":[
-                  "CoreShopOrderItem"
+                    "CoreShopOrderItem"
                 ],
                 "pathFormatterClass":null,
                 "name":"items",
