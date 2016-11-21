@@ -32,8 +32,7 @@ class AdminStyle extends \Pimcore\Model\Element\AdminStyle
         parent::__construct($element);
 
         if ($element instanceof Order) {
-            $this->elementIcon = '/pimcore/static/img/icon/page_white.png';
-            $this->elementIconClass = null;
+            $this->elementIconClass = 'coreshop_icon_order';
         }
     }
 }

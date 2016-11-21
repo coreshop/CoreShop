@@ -208,6 +208,14 @@
     background: url(/plugins/CoreShop/static/img/flat/product.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_product_blue {
+    background: url(/plugins/CoreShop/static/img/flat/product_blue.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_product_green {
+    background: url(/plugins/CoreShop/static/img/flat/product_green.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_product_list {
     background: url(/plugins/CoreShop/static/img/flat/product-list.svg) center center no-repeat !important;
 }
