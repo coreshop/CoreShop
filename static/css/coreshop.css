@@ -180,7 +180,7 @@
     background: url(/plugins/CoreShop/static/img/flat/setup.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_customerGroup, .coreshop_rule_icon_condition_customerGroups {
+.coreshop_icon_customer_group, .coreshop_rule_icon_condition_customerGroup, .coreshop_rule_icon_condition_customerGroups {
     background: url(/plugins/CoreShop/static/img/flat/customer-group.svg) center center no-repeat !important;
 }
 
@@ -255,7 +255,7 @@
     background: url(/plugins/CoreShop/static/img/flat/charts.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_report_carts {
+.coreshop_icon_cart, .coreshop_icon_report_carts {
     background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
 }
 
@@ -333,6 +333,14 @@
 
 .coreshop_icon_visitor {
     background: url(/plugins/CoreShop/static/img/flat/visitor.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_manufacturer {
+    background: url(/plugins/CoreShop/static/img/flat/manufacturer.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_address {
+    background: url(/plugins/CoreShop/static/img/flat/address.svg) center center no-repeat !important;
 }
 
 .x-tool-coreshop-open, .coreshop_icon_open {

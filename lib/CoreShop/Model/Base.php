@@ -227,7 +227,7 @@ class Base extends Concrete
             if (\Pimcore\Tool::classExists($class)) {
                 $this->o_elementAdminStyle = new $class($this);
             } else {
-                $this->o_elementAdminStyle = parent::getElementAdminStyle();
+                $this->o_elementAdminStyle = new AdminStyle($this);
             }
         }
 
