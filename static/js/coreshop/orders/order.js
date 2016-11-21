@@ -67,7 +67,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             }.bind(this)
                         },
                         {
-                            iconCls : 'coreshop_icon_invoice',
+                            iconCls : 'coreshop_icon_orders_invoice',
                             text : t('coreshop_invoice'),
                             handler : function () {
                                 this.createInvoice();
