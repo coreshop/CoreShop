@@ -13,6 +13,8 @@
  */
 
 namespace CoreShop\Model;
+use Pimcore\Model\Asset\Image;
+use Pimcore\Model\Object\AbstractObject;
 
 /**
  * Class AdminStyle
@@ -20,6 +22,11 @@ namespace CoreShop\Model;
  */
 class AdminStyle extends \Pimcore\Model\Element\AdminStyle
 {
+    /**
+     * @var AbstractObject
+     */
+    protected $element;
+
     /**
      * AdminStyle constructor.
      * @param $element
@@ -61,5 +68,57 @@ class AdminStyle extends \Pimcore\Model\Element\AdminStyle
         else if($element instanceof Order\Payment) {
             $this->elementIconClass = "coreshop_icon_payment";
         }
+
+        $this->element = $element;
+    }
+
+    /**
+     * @return array
+     */
+    public function getElementQtipConfig()
+    {
+        if($this->element instanceof Product) {
+            $image = $this->element->getImage();
+
+            $text = sprintf("<h1>%s</h1>", $this->element->getArticleNumber());
+
+            if($image instanceof Image) {
+                $thumbnail = $image->getThumbnail("coreshop_productDetailThumbnail");
+
+                $text .= sprintf("<p>%s</p>", $thumbnail->getHTML());
+            }
+            return [
+                "title" => $this->element->getName() . " (" . $this->element->getId() . ")",
+                "text" => $text
+            ];
+        }
+        else if($this->element instanceof Order) {
+            $translate = new \Pimcore\Translate\Admin(\Zend_Registry::get("Zend_Locale"));
+
+            $text = sprintf(
+                '<p style="text-align: right">
+                        %s %s<br/>
+                        %s %s<br/>
+                        %s %s<br/>
+                        <br/>
+                        %s (%d)
+                </p>',
+                $translate->translate("Subtotal"),
+                \CoreShop::getTools()->formatPrice($this->element->getSubtotal(), null, $this->element->getCurrency()),
+                $translate->translate("Tax"),
+                \CoreShop::getTools()->formatPrice($this->element->getTotalTax(), null, $this->element->getCurrency()),
+                $translate->translate("Total"),
+                \CoreShop::getTools()->formatPrice($this->element->getTotal(), null, $this->element->getCurrency()),
+                $translate->translate("Invoices"),
+                count($this->element->getInvoices())
+            );
+
+            return [
+                "title" => ($this->element->getOrderState() instanceof Order\State ? $this->element->getOrderState()->getName() : $translate->translate("Unknown")) . " (" . $this->element->getId() . ")",
+                "text" => $text
+            ];
+        }
+
+        return parent::getElementQtipConfig();
     }
 }
