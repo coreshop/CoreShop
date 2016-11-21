@@ -192,6 +192,10 @@
     background: url(/plugins/CoreShop/static/img/flat/invoice.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_orders_invoice_pdf {
+    background: url(/plugins/CoreShop/static/img/flat/pdf.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_indexes, .coreshop_icon_indexes_fields {
     background: url(/plugins/CoreShop/static/img/flat/indexes.svg) center center no-repeat !important;
 }

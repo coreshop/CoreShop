@@ -24,7 +24,7 @@ pimcore.plugin.coreshop.invoice.render = Class.create({
             // create new panel
             this.layout = new Ext.Panel({
                 title: t('coreshop_orders_invoice'),
-                iconCls: 'coreshop_icon_orders_invoice',
+                iconCls: 'coreshop_icon_orders_invoice_pdf',
                 border: false,
                 layout: 'border',
                 items : []
