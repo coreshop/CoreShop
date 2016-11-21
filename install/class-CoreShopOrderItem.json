@@ -64,20 +64,17 @@
                 "objectsAllowed":true,
                 "assetsAllowed":false,
                 "assetTypes":[
-                  {
-                    "assetTypes":""
-                  }
+
                 ],
                 "documentsAllowed":false,
                 "documentTypes":[
-                  {
-                    "documentTypes":""
-                  }
+
                 ],
                 "lazyLoading":false,
                 "classes":[
                   "CoreShopProduct"
                 ],
+                "pathFormatterClass":null,
                 "name":"product",
                 "title":"Product",
                 "tooltip":"",
@@ -389,6 +386,7 @@
                 "classes":[
 
                 ],
+                "pathFormatterClass":null,
                 "name":"virtualAsset",
                 "title":"Virtual Asset",
                 "tooltip":"",

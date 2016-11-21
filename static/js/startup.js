@@ -455,32 +455,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
             } else if (tab.data.general.o_className === coreshop.settings.classMapping.order) {
                 var orderMoreButtons = [];
 
-                if (this.settings.coreshop[this.settings.defaultShop]['SYSTEM.INVOICE.CREATE']) {
-                    var resetChangesFunction = tab.resetChanges;
-
-                    var invoiceTab = new pimcore.plugin.coreshop.orders.invoice(tab);
-
-                    tab.tabbar.add(invoiceTab.getLayout());
-
-                    tab.resetChanges = function () {
-                        resetChangesFunction.call(tab);
-
-                        invoiceTab.reload();
-                    };
-
-                    orderMoreButtons.push({
-                        text: t('coreshop_open_invoice'),
-                        iconCls: 'coreshop_icon_orders_invoice',
-                        handler: function () {
-                            if (tab.data.properties.hasOwnProperty('invoice')) {
-                                pimcore.helpers.openAsset(tab.data.properties.invoice.data.id, tab.data.properties.invoice.data.type);
-                            } else {
-                                Ext.MessageBox.alert(t('error'), t('coreshop_invoice_not_generated'));
-                            }
-                        }.bind(this)
-                    });
-                }
-
                 orderMoreButtons.push(
                     {
                         text: t('coreshop_add_payment'),
@@ -505,6 +479,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                     }
                 );
 
+                orderMoreButtons.push({
+                    text: t('open'),
+                    scale: 'medium',
+                    iconCls: 'coreshop_icon_order',
+                    handler: function () {
+                        coreshop.helpers.openOrder(tab.id);
+                    }.bind(this, tab)
+                });
+
                 if (orderMoreButtons.length > 0) {
                     tab.toolbar.insert(tab.toolbar.items.length,
                         '-'
@@ -519,6 +502,18 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         }
                     );
                 }
+            } else if (tab.data.general.o_className === coreshop.settings.classMapping.invoice) {
+                var resetChangesFunction = tab.resetChanges;
+
+                var renderTab = new pimcore.plugin.coreshop.invoice.render(tab);
+
+                tab.tabbar.add(renderTab.getLayout());
+
+                tab.resetChanges = function () {
+                    resetChangesFunction.call(tab);
+
+                    renderTab.reload();
+                };
             }
 
             pimcore.layout.refresh();

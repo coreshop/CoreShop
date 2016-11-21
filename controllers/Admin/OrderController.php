@@ -27,7 +27,7 @@ class CoreShop_Admin_OrderController extends Admin
         $list->setOffset($this->getParam('page', 1) - 1);
 
         if ($this->getParam('filter', null)) {
-            $conditionFilters[] = \Pimcore\Model\Object\Service::getFilterCondition($this->getParam('filter'), \Pimcore\Model\Object\ClassDefinition::getByName('CoreShopOrder'));
+            $conditionFilters[] = \Pimcore\Model\Object\Service::getFilterCondition($this->getParam('filter'), \Pimcore\Model\Object\ClassDefinition::getById(\CoreShop\Model\Order::classId()));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
@@ -76,7 +76,6 @@ class CoreShop_Admin_OrderController extends Admin
             'orderNumber' => $order->getOrderNumber(),
             'lang' => $order->getLang(),
             'carrier' => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getId() : null,
-            'priceRule' => $order->getPriceRule() instanceof \CoreShop\Model\Cart\PriceRule ? $order->getPriceRule()->getId() : null,
             'discount' => $order->getDiscount(),
             'subtotal' => $order->getSubtotal(),
             'shipping' => $order->getShipping(),
@@ -88,22 +87,6 @@ class CoreShop_Admin_OrderController extends Admin
         );
 
         return $element;
-    }
-
-    public function getInvoiceForOrderAction()
-    {
-        $orderId = $this->getParam('id');
-        $order = \CoreShop\Model\Order::getById($orderId);
-
-        if ($order instanceof \CoreShop\Model\Order) {
-            $invoice = $order->getProperty('invoice');
-
-            if ($invoice instanceof \Pimcore\Model\Asset\Document) {
-                $this->_helper->json(array('success' => true, 'assetId' => $invoice->getId()));
-            }
-        }
-
-        $this->_helper->json(array('success' => false));
     }
 
     public function getPaymentProvidersAction()
@@ -310,6 +293,7 @@ class CoreShop_Admin_OrderController extends Admin
         $jsonOrder['customer'] = $order->getCustomer() instanceof \CoreShop\Model\Base ? $this->getDataForObject($order->getCustomer()) : null;
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
         $jsonOrder['invoice'] = $order->getProperty("invoice");
+        $jsonOrder['invoices'] = $this->getInvoices($order);
         $jsonOrder['address'] = [
             'shipping' => $this->getDataForObject($order->getShippingAddress()),
             'billing' => $this->getDataForObject($order->getBillingAddress())
@@ -322,6 +306,7 @@ class CoreShop_Admin_OrderController extends Admin
         ];
 
         $jsonOrder['payments'] = $this->getPayments($order);
+        $jsonOrder['editable'] = count($order->getInvoices()) > 0 ? false : true;
         $jsonOrder['totalPayed'] = $order->getPayedTotal();
         $jsonOrder['details'] = $this->getDetails($order);
         $jsonOrder['summary'] = $this->getSummary($order);
@@ -405,7 +390,9 @@ class CoreShop_Admin_OrderController extends Admin
             $address->save();
 
             if ($order->getProperty('invoice') instanceof \Pimcore\Model\Asset) {
-                $order->getInvoice(true);
+                foreach($order->getInvoices() as $invoice) {
+                    $invoice->generate();
+                }
             }
 
             $this->_helper->json(array('success' => true));
@@ -599,6 +586,21 @@ class CoreShop_Admin_OrderController extends Admin
         ];
 
         return $summary;
+    }
+
+    /**
+     * @param $order
+     * @return array
+     */
+    protected function getInvoices($order) {
+        $invoices = $order->getInvoices();
+        $invoiceArray = [];
+
+        foreach($invoices as $invoice) {
+            $invoiceArray[] = $this->getDataForObject($invoice);
+        }
+
+        return $invoiceArray;
     }
 
     /**

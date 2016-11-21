@@ -89,7 +89,6 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                 'orderNumber',
                 'lang',
                 'carrier',
-                'priceRule',
                 { name : 'discount', type : 'float' },
                 { name : 'subtotal', type : 'float' },
                 { name : 'shipping', type : 'float' },

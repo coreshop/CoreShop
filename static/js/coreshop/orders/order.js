@@ -65,6 +65,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             handler : function () {
                                 this.reload();
                             }.bind(this)
+                        },
+                        {
+                            iconCls : 'coreshop_icon_invoice',
+                            text : t('coreshop_invoice'),
+                            handler : function () {
+                                this.createInvoice();
+                            }.bind(this)
                         }
                     ]
                 }]
@@ -230,6 +237,19 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 data : this.order.statesHistory
             });
 
+            var invoiceButtons = [];
+
+            this.order.invoices.forEach(function(item) {
+                invoiceButtons.push({
+                    xtype: 'button',
+                    margin : '0 10 0 0',
+                    text : Ext.String.format(t('coreshop_invoice_order'), item.invoiceNumber),
+                    handler : function () {
+                        pimcore.helpers.openObject(item.o_id, 'object');
+                    }.bind(this)
+                });
+            });
+
             this.orderInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_order') + ': ' + this.order.orderNumber + ' (' + this.order.o_id + ')',
                 margin : '0 20 20 0',
@@ -251,14 +271,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         style: this.borderStyle,
                         bodyPadding : 5,
                         margin: '0 0 15 0',
-                        items : [{
-                            xtype: 'button',
-                            text : this.order.invoice ? t('coreshop_invoice') : t('coreshop_invoice_not_generated'),
-                            disabled : !this.order.invoice,
-                            handler : function () {
-                                pimcore.helpers.openAsset(this.order.invoice.id, this.order.invoice.type);
-                            }.bind(this)
-                        }]
+                        items : invoiceButtons
                     },
                     {
                         xtype : 'grid',
@@ -925,14 +938,39 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 }
             });
 
+            var plugins = [];
+            var actions = [
+                {
+                    iconCls: 'pimcore_icon_open',
+                    tooltip : t('open'),
+                    handler : function (grid, rowIndex) {
+                        var record = grid.getStore().getAt(rowIndex);
+
+                        pimcore.helpers.openObject(record.get('o_id'));
+                    }
+                }
+            ];
+
+            if(this.order.editable) {
+                plugins.push(cellEditing);
+                actions.push({
+                    iconCls: 'pimcore_icon_edit',
+                    tooltip: t('edit'),
+                    handler: function (grid, rowIndex, colIndex) {
+                        cellEditing.startEditByPosition({
+                            row: rowIndex,
+                            column : 4
+                        });
+                    }.bind(this)
+                });
+            }
+
             var itemsGrid = {
                 xtype : 'grid',
                 margin: '0 0 15 0',
                 cls : 'coreshop-order-detail-grid',
                 store :  this.detailsStore,
-                plugins: [
-                    cellEditing
-                ],
+                plugins: plugins,
                 columns : [
                     {
                         xtype : 'gridcolumn',
@@ -992,24 +1030,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         sortable: false,
                         xtype: 'actioncolumn',
                         width: 50,
-                        items: [{
-                            iconCls: 'pimcore_icon_edit',
-                            tooltip: t('edit'),
-                            handler: function (grid, rowIndex, colIndex) {
-                                cellEditing.startEditByPosition({
-                                    row: rowIndex,
-                                    column : 4
-                                });
-                            }.bind(this)
-                        }, {
-                            iconCls: 'pimcore_icon_open',
-                            tooltip : t('open'),
-                            handler : function (grid, rowIndex) {
-                                var record = grid.getStore().getAt(rowIndex);
-
-                                pimcore.helpers.openObject(record.get('o_id'));
-                            }
-                        }]
+                        items: actions
                     }
                 ]
             };
@@ -1093,5 +1114,11 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         }
 
         return this.detailsInfo;
+    },
+
+    createInvoice : function() {
+        new pimcore.plugin.coreshop.orders.invoice(this.order, function() {
+            this.reload();
+        }.bind(this));
     }
 });

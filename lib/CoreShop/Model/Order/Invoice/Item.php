@@ -12,7 +12,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Order;
+namespace CoreShop\Model\Order\Invoice;
 
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
@@ -24,8 +24,9 @@ use Pimcore\Model\Object;
 
 /**
  * Class Item
- * @package CoreShop\Model\Order
- * 
+ * @package CoreShop\Model\Order\Invoice
+ *
+ * @method static Object\Listing\Concrete getByOrderItem ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByProduct ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByWholesalePrice ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByRetailPrice ($value, $limit = 0)
@@ -45,7 +46,7 @@ class Item extends Base
      *
      * @var string
      */
-    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopOrderItem';
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopOrderInvoiceItem';
 
     /**
      * Calculate Total of OrderItem without tax.
@@ -58,16 +59,16 @@ class Item extends Base
     }
 
     /**
-     * Get Order for OrderItem.
+     * Get Invoice for InvoiceItem.
      *
      * @return null|\Pimcore\Model\Object\AbstractObject
      */
-    public function getOrder()
+    public function getInvoice()
     {
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof Order) {
+            if ($parent instanceof Order\Invoice) {
                 return $parent;
             }
 
@@ -75,33 +76,6 @@ class Item extends Base
         } while ($parent != null);
 
         return null;
-    }
-
-    /**
-     * calculates the invoiced amount
-     *
-     * @return int
-     */
-    public function getInvoicedAmount() {
-        $order = $this->getOrder();
-
-        $amount = 0;
-
-        if($order instanceof Order) {
-            $invoices = $order->getInvoices();
-
-            foreach($invoices as $invoice) {
-                foreach($invoice->getItems() as $item) {
-                    if($item instanceof Invoice\Item) {
-                        if($item->getOrderItem()->getId() === $this->getId()) {
-                            $amount += $item->getAmount();
-                        }
-                    }
-                }
-            }
-        }
-
-        return $amount;
     }
 
     /**
@@ -126,6 +100,26 @@ class Item extends Base
         }
 
         return null;
+    }
+
+    /**
+     * @return Order\Item
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getOrderItem()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Order\Item $orderItem
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setOrderItem($orderItem)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**

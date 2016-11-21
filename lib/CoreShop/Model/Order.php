@@ -15,14 +15,17 @@
 namespace CoreShop\Model;
 
 use Carbon\Carbon;
+use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Messaging\Contact;
 use CoreShop\Model\Messaging\Thread;
+use CoreShop\Model\Order\Invoice;
 use CoreShop\Model\Order\Item;
 use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
+use CoreShop\Tool\Service;
 use Pimcore\Cache;
 use Pimcore\Date;
 use Pimcore\File;
@@ -162,6 +165,13 @@ class Order extends Base
     }
 
     /**
+     * @return Object\Folder
+     */
+    public function getPathForInvoices() {
+        return Object\Service::createFolderByPath($this->getFullPath() . "/invoices/");
+    }
+
+    /**
      * @return null
      */
     public function getPathForItems() {
@@ -245,6 +255,7 @@ class Order extends Base
 
         $this->setTaxes($taxes);
         $this->setDiscount($cart->getDiscount());
+        $this->setDiscountWithoutTax($cart->getDiscount(false));
 
         $fieldCollection = new Object\Fieldcollection();
 
@@ -284,10 +295,16 @@ class Order extends Base
      * @param Item $item
      * @param $amount
      * @param $priceWithoutTax
-     * @throws \Pimcore\Model\Element\ValidationException
+     * @throws \Pimcore\Model\Element\ValidationException|Exception
      */
     public function updateOrderItem(Item $item, $amount, $priceWithoutTax)
     {
+        $invoicesCount = count($this->getInvoices());
+
+        if($invoicesCount > 0) {
+            throw new Exception("You are not allowed to edit this order anymore");
+        }
+
         $currentPrice = $item->getPriceWithoutTax();
         $currentAmount = $item->getAmount();
 
@@ -343,7 +360,7 @@ class Order extends Base
     /**
      * Update Order Summary and Taxes
      */
-    public function updateOrderSummary()
+    protected function updateOrderSummary()
     {
         $totalTax = 0;
         $subTotalTax = 0;
@@ -425,6 +442,18 @@ class Order extends Base
     }
 
     /**
+     * calculates discount percentage for cart
+     *
+     * @return float
+     */
+    public function getDiscountPercentage() {
+        $totalWithoutDiscount = $this->getSubtotalWithoutTax();
+        $totalWithDiscount = $this->getSubtotalWithoutTax() - $this->getDiscountWithoutTax();
+
+        return ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
+    }
+
+    /**
      * Create a new Payment.
      *
      * @param CorePayment $provider
@@ -464,6 +493,222 @@ class Order extends Base
         $note->save();
 
         return $payment;
+    }
+
+    /**
+     * @return Invoice[]
+     */
+    public function getInvoices() {
+        $list = Invoice::getList();
+        $list->setCondition("order__id = ?", [$this->getId()]);
+        $list->load();
+
+        return $list->getObjects();
+    }
+
+    /**
+     * @return Invoice
+     */
+    public function createInvoiceForAllItems() {
+        $items = [];
+
+        foreach($this->getItems() as $item) {
+            $items[] = [
+                'orderItemId' => $item->getId(),
+                'amount' => $item->getAmount()
+            ];
+        }
+
+        return $this->createInvoice($items);
+    }
+
+    /**
+     * get all items that are still invoice-able
+     *
+     * @return array
+     */
+    public function getInvoiceAbleItems() {
+        $items = $this->getItems();
+        $invoicedItems = $this->getInvoicedItems();
+        $invoiceAbleItems = [];
+
+        foreach($items as $item) {
+            if(array_key_exists($item->getId(), $invoicedItems)) {
+                if($invoicedItems[$item->getId()]['amount'] < $item->getAmount()) {
+                    $invoiceAbleItems[$item->getId()] = [
+                        "amount" => $item->getAmount() - $invoicedItems[$item->getId()]['amount'],
+                        "item" => $item
+                    ];
+                }
+            }
+            else {
+                $invoiceAbleItems[$item->getId()] = [
+                    "amount" => $item->getAmount(),
+                    "item" => $item
+                ];
+            }
+        }
+
+        return $invoiceAbleItems;
+    }
+
+    /**
+     * get all invoiced items with amounts
+     *
+     * @return array
+     */
+    public function getInvoicedItems() {
+        $invoices = $this->getInvoices();
+        $invoicedItems = [];
+
+        foreach($invoices as $invoice) {
+            foreach($invoice->getItems() as $invoiceItem) {
+                $orderItem = $invoiceItem->getOrderItem();
+
+                if($orderItem instanceof Item) {
+                    if(array_key_exists($orderItem->getId(), $invoicedItems)) {
+                        $invoicedItems[$orderItem->getId()]['amount'] += $invoiceItem->getAmount();
+                    }
+                    else {
+                        $invoicedItems[$orderItem->getId()] = [
+                            'amount' => $invoiceItem->getAmount(),
+                            'orderItem' => $orderItem
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $invoicedItems;
+    }
+
+    /**
+     * Creates a new invoices
+     *
+     * @param $items
+     * @throws Exception
+     *
+     * @return Invoice
+     */
+    public function createInvoice($items)
+    {
+        if(!is_array($items)) {
+            throw new Exception("Invalid Paramters");
+        }
+
+        foreach ($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if ($orderItem instanceof Item) {
+                $invoicedAmount = $orderItem->getInvoicedAmount();
+                $newInvoicedAmount = $invoicedAmount + $amount;
+
+                if ($newInvoicedAmount > $orderItem->getAmount()) {
+                    throw new Exception("You cannot invoice more items than sold items");
+                }
+            }
+        }
+
+        $invoice = Invoice::create();
+
+        $invoice->setInvoiceNumber(Invoice::getNextInvoiceNumber());
+        $invoice->setOrder($this);
+        if (\Pimcore\Config::getFlag("useZendDate")) {
+            $invoice->setInvoiceDate(Date::now());
+        } else {
+            $invoice->setInvoiceDate(Carbon::now());
+        }
+        $invoice->setLang($this->getLang());
+        $invoice->setCurrency($this->getCurrency());
+        $invoice->setShop($this->getShop());
+        $invoice->setCustomer($this->getCustomer());
+        $invoice->setShippingAddress($this->getShippingAddress());
+        $invoice->setBillingAddress($this->getBillingAddress());
+        $invoice->setExtraInformation($this->getExtraInformation());
+        $invoice->setParent($this->getPathForInvoices());
+        $invoice->setKey(\Pimcore\File::getValidFilename($invoice->getInvoiceNumber()));
+        $invoice->save();
+
+        $invoiceItems = [];
+
+        foreach($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if($orderItem instanceof Item) {
+                $invoicedAmount = $orderItem->getInvoicedAmount();
+                $newInvoicedAmount = $invoicedAmount + $amount;
+
+                if ($newInvoicedAmount > $orderItem->getAmount()) {
+                    throw new Exception("You cannot invoice more items than sold items");
+                }
+
+                $invoiceItem = Invoice\Item::create();
+
+                Service::copyObject($orderItem, $invoiceItem);
+
+                $invoiceItem->setAmount($amount);
+                $invoiceItem->setParent($invoice->getPathForItems());
+                $invoiceItem->setTotal($orderItem->getPrice() * $amount);
+                $invoiceItem->setTotalTax(($orderItem->getPrice() - $orderItem->getPriceWithoutTax()) * $amount);
+
+                $invoiceItemTaxes = new Object\Fieldcollection();
+                $totalTax = 0;
+
+                foreach ($orderItem->getTaxes() as $tax) {
+                    if ($tax instanceof Order\Tax) {
+                        $taxRate = new Tax();
+                        $taxRate->setRate($tax->getRate());
+
+                        $taxCalculator = new TaxCalculator([$taxRate]);
+
+                        $itemTax = Order\Tax::create();
+                        $itemTax->setName($tax->getName());
+                        $itemTax->setRate($tax->getRate());
+                        $itemTax->setAmount($taxCalculator->getTaxesAmount($invoiceItem->getTotalWithoutTax()));
+
+                        $invoiceItemTaxes->add($itemTax);
+
+                        $totalTax += $itemTax->getAmount();
+                    }
+                }
+
+                $invoiceItem->setOrderItem($orderItem);
+                $invoiceItem->setKey($orderItem->getKey());
+                $invoiceItem->setTaxes($invoiceItemTaxes);
+                $invoiceItem->setTotalTax($totalTax);
+                $invoiceItem->setPublished(true);
+                $invoiceItem->save();
+
+                $invoiceItems[] = $invoiceItem;
+            }
+        }
+
+        $invoice->setPublished(true);
+        $invoice->setItems($invoiceItems);
+        $invoice->save();
+
+        $invoice->calculatePrices();
+
+        return $invoice;
+    }
+
+    /**
+     * get any accumulated invoiced value for a field
+     *
+     * @param $field
+     * @return float
+     */
+    public function getInvoicedValue($field) {
+        $invoices = $this->getInvoices();
+        $invoicedValue = 0;
+
+        foreach($invoices as $invoice) {
+            $invoicedValue += $invoice->getValueForFieldName($field);
+        }
+
+        return $invoicedValue;
     }
 
     /**
@@ -622,32 +867,14 @@ class Order extends Base
 
         if ($orderState instanceof Order\State) {
             if ($orderState->getInvoice()) {
-                $this->getInvoice(); //Re-Generate Invoice if it does not exist
+                //TODO: Should this still be done?
+                //$this->getInvoice(); //Re-Generate Invoice if it does not exist
             }
         }
 
         Version::enable();
 
         parent::save();
-    }
-
-    /**
-     * Get Invoice for Order.
-     *
-     * @param bool $renewInvoice Recreate Invoice?
-     *
-     * @return bool|mixed|Document
-     */
-    public function getInvoice($renewInvoice = false)
-    {
-        //Check if invoice has already been generated
-        $document = $this->getProperty('invoice');
-
-        if ($document instanceof Document && !$renewInvoice) {
-            return $document;
-        }
-
-        return Invoice::generateInvoice($this);
     }
 
     /**

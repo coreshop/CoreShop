@@ -28,6 +28,7 @@ class CoreShop_InvoiceController extends Action
 
         $this->view->language = $this->getParam("language");
         $this->view->order = $this->getParam("order");
+        $this->view->invoice = $this->getParam("invoice");
     }
 
     public function invoiceAction() {

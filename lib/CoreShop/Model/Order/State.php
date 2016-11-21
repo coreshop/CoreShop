@@ -95,7 +95,11 @@ class State extends AbstractModel
         if ($this->getInvoice()) {
             if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE')) {
                 //Generates the invoice, force re-generation cause of state change
-                $order->getInvoice(true);
+                $invoices = $order->getInvoices();
+
+                if(count($invoices) === 0) {
+                    $order->createInvoiceForAllItems();
+                }
             }
         }
 

@@ -13,102 +13,180 @@
 
 pimcore.registerNS('pimcore.plugin.coreshop.orders.invoice');
 pimcore.plugin.coreshop.orders.invoice = Class.create({
-    initialize: function (element) {
-        this.panels = [];
-        this.element = element;
-    },
+    order : null,
+    cb : null,
 
-    getLayout: function ()
-    {
-        if (!this.layout) {
-            // create new panel
-            this.layout = new Ext.Panel({
-                title: t('coreshop_orders_invoice'),
-                iconCls: 'coreshop_icon_orders_invoice',
-                border: false,
-                layout: 'border',
-                items : []
-            });
-        }
+    initialize: function (order, cb) {
+        this.order = order;
+        this.cb = cb;
 
-        return this.layout;
-    },
-
-    reload : function () {
         Ext.Ajax.request({
-            url: '/plugin/CoreShop/admin_order/get-invoice-for-order',
-            params : { id : this.element.id },
-            method: 'GET',
-            success: function (result)
-            {
-                var response = Ext.decode(result.responseText);
+            url: '/plugin/CoreShop/admin_order-invoice/get-invoice-able-items',
+            params: {
+                id : this.order.o_id
+            },
+            success: function (response) {
+                var res = Ext.decode(response.responseText);
 
-                this.layout.removeAll(true);
-
-                if (response.success) {
-                    this.layout.add(this.loadDocument(response.assetId));
-                } else {
-                    this.layout.add(this.showEmptyPanel());
+                if(res.success) {
+                    if(res.items.length > 0) {
+                        this.show(res.items);
+                    }
+                    else {
+                        Ext.Msg.alert(t('coreshop_invoice'), t('coreshop_invoice_no_items'));
+                    }
                 }
             }.bind(this)
         });
     },
 
-    loadDocument : function (invoiceId) {
-        var frameUrl = '/admin/asset/get-preview-document/id/' + invoiceId + '/';
-
-        //check for native/plugin PDF viewer
-        if (this.hasNativePDFViewer()) {
-            frameUrl += '?native-viewer=true';
-        }
-
-        var editPanel = new Ext.Panel({
-            bodyCls: 'pimcore_overflow_scrolling',
-            html: '<iframe src="' + frameUrl + '" frameborder="0" id="coreshop_invoice_preview_' + invoiceId + '"></iframe>',
-            region : 'center'
-        });
-        editPanel.on('resize', function (el, width, height, rWidth, rHeight) {
-            Ext.get('coreshop_invoice_preview_' + invoiceId).setStyle({
-                width: width + 'px',
-                height: (height) + 'px'
-            });
-        }.bind(this));
-
-        return editPanel;
-    },
-
-    showEmptyPanel : function () {
-        var emptyPanel = new Ext.Panel({
-            html : '<p>' + t('coreshop_invoice_not_generated') + '</p>',
-            region : 'center'
+    show : function (invoiceAbleItems) {
+        var positionStore = new Ext.data.JsonStore({
+            data : invoiceAbleItems
         });
 
-        return emptyPanel;
-    },
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing');
 
-    hasNativePDFViewer: function () {
-
-        var getActiveXObject = function (name) {
-            try { return new ActiveXObject(name); } catch (e) {}
-        };
-
-        var getNavigatorPlugin = function (name) {
-            for (key in navigator.plugins) {
-                var plugin = navigator.plugins[key];
-                if (plugin.name == name) return plugin;
-            }
-        };
-
-        var getPDFPlugin = function () {
-            return this.plugin = this.plugin || (function () {
-                    if (typeof window['ActiveXObject'] != 'undefined') {
-                        return getActiveXObject('AcroPDF.PDF') || getActiveXObject('PDF.PdfCtrl');
-                    } else {
-                        return getNavigatorPlugin('Adobe Acrobat') || getNavigatorPlugin('Chrome PDF Viewer') || getNavigatorPlugin('WebKit built-in PDF');
+        var itemsGrid = {
+            xtype : 'grid',
+            padding : 10,
+            cls : 'coreshop-order-detail-grid',
+            store :  positionStore,
+            plugins: [cellEditing],
+            listeners : {
+                validateedit : function(editor, context) {
+                    if(context.value > context.record.data.maxToInvoice) {
+                        return false;
                     }
-                })();
+
+                    return true;
+                }
+            },
+            columns : [
+                {
+                    xtype : 'gridcolumn',
+                    flex : 1,
+                    dataIndex : 'name',
+                    text : t('coreshop_product')
+                },
+                {
+                    xtype : 'gridcolumn',
+                    dataIndex : 'price',
+                    text : t('coreshop_price'),
+                    width : 100,
+                    align : 'right',
+                    renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                },
+                {
+                    xtype : 'gridcolumn',
+                    dataIndex : 'amount',
+                    text : t('coreshop_amount'),
+                    width : 100,
+                    align : 'right'
+                },
+                {
+                    xtype : 'gridcolumn',
+                    dataIndex : 'amountInvoiced',
+                    text : t('coreshop_invoiced_amount'),
+                    width : 120,
+                    align : 'right'
+                },
+                {
+                    xtype : 'gridcolumn',
+                    dataIndex : 'toInvoice',
+                    text : t('coreshop_amount_to_invoice'),
+                    width : 100,
+                    align : 'right',
+                    field : {
+                        xtype: 'numberfield',
+                        decimalPrecision : 0
+                    }
+                },
+                {
+                    xtype : 'gridcolumn',
+                    dataIndex : 'tax',
+                    text : t('coreshop_tax'),
+                    width : 100,
+                    align : 'right',
+                    renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                },
+                {
+                    xtype : 'gridcolumn',
+                    dataIndex : 'total',
+                    text : t('coreshop_total'),
+                    width : 100,
+                    align : 'right',
+                    renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                }
+            ]
         };
 
-        return !!getPDFPlugin();
+        var panel = Ext.create('Ext.panel.Panel', {
+            title : t('coreshop_products'),
+            border : true,
+            iconCls : 'coreshop_icon_product',
+            items : itemsGrid
+        });
+
+        var window = new Ext.window.Window({
+            width: 800,
+            height: 300,
+            resizeable: true,
+            modal : true,
+            layout : 'fit',
+            title : t('coreshop_invoice_create_new') + ' (' + this.order.o_id + ')',
+            items : [panel],
+            buttons: [
+                {
+                    text: t('save'),
+                    iconCls: 'pimcore_icon_apply',
+                    handler: function (btn) {
+                        var itemsToInvoice = [];
+
+                        positionStore.getRange().forEach(function(item) {
+                            if(item.get("toInvoice") > 0) {
+                                itemsToInvoice.push({
+                                    orderItemId : item.get("orderItemId"),
+                                    amount : item.get("toInvoice")
+                                });
+                            }
+                        });
+
+                        window.setLoading(t('loading'));
+
+                        Ext.Ajax.request({
+                            url: '/plugin/CoreShop/admin_order-invoice/create-invoice',
+                            method : 'post',
+                            params: {
+                                'items' : Ext.encode(itemsToInvoice),
+                                'id' : this.order.o_id
+                            },
+                            success: function (response) {
+                                var res = Ext.decode(response.responseText);
+
+                                if (res.success) {
+                                    pimcore.helpers.showNotification(t('success'), t('success'), 'success');
+
+                                    pimcore.helpers.openObject(res.invoiceId, 'object');
+
+                                    if(Ext.isFunction(this.cb)) {
+                                        this.cb();
+                                    }
+                                } else {
+                                    pimcore.helpers.showNotification(t('error'), t(res.message), 'error');
+                                }
+
+                                window.setLoading(false);
+                                window.close();
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                }
+            ]
+        });
+
+        window.show();
+
+        return window;
     }
 });

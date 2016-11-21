@@ -51,6 +51,9 @@ class CoreShop_Admin_InstallController extends Admin
             $paymentClass = $install->createClass('CoreShopPayment');
             $orderClass = $install->createClass('CoreShopOrder');
 
+            $invoiceitemClass = $install->createClass('CoreShopOrderInvoiceItem');
+            $invoiceClass = $install->createClass('CoreShopOrderInvoice');
+
             // create root object folder with subfolders
             $coreShopFolder = $install->createFolders();
             // create custom view for blog objects
@@ -63,7 +66,9 @@ class CoreShop_Admin_InstallController extends Admin
                 $orderItemClass->getId(),
                 $orderClass->getId(),
                 $paymentClass->getId(),
-                $customerGroupClass->getId()
+                $customerGroupClass->getId(),
+                $invoiceClass->getId(),
+                $invoiceitemClass->getId()
             ));
             // create static routes
             $install->createStaticRoutes();
