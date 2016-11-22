@@ -85,8 +85,6 @@ class CoreShop
      */
     public static function bootstrap($plugin)
     {
-        //TODO: Maybe load CoreShop class using DI?
-
         $className = "CoreShop";
 
         if (Pimcore::getDiContainer()->has("CoreShop")) {
