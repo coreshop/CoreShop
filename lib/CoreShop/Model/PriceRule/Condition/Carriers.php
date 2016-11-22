@@ -78,7 +78,7 @@ class Carriers extends AbstractCondition
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
-        return $this->check(\CoreShop::getTools()->prepareCart());
+        return $this->check(\CoreShop::getTools()->getCart());
     }
 
     /**

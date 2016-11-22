@@ -17,6 +17,7 @@ namespace CoreShop\Model\Currency;
 use CoreShop\Exception;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Currency;
+use CoreShop\Tools;
 use Ivory\HttpAdapter\FileGetContentsHttpAdapter;
 use Pimcore\Logger;
 use Swap\Model\CurrencyPair;
@@ -48,11 +49,7 @@ class ExchangeRates
      */
     public static function getInstance()
     {
-        if (\Pimcore::getDiContainer()->has('CoreShop\Model\Currency\ExchangeRates')) {
-            return \Pimcore::getDiContainer()->get('CoreShop\Model\Currency\ExchangeRates');
-        }
-
-        return new self();
+        return Tools::createObject(static::class);
     }
 
     /**

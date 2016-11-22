@@ -2,6 +2,8 @@
 
 $install = new \CoreShop\Plugin\Install();
 
+$install->createClass('CoreShopCart');
+
 $install->createClass('CoreShopOrderItem');
 $install->createClass('CoreShopOrder');
 

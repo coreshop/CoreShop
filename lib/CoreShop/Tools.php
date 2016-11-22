@@ -40,13 +40,34 @@ class Tools
     protected $urlViewHelper;
 
     /**
+     * @var Cart\Manager
+     */
+    protected $cartManager;
+
+    /**
      * Tools constructor.
      */
     public function __construct()
     {
         $this->urlViewHelper = new Url();
+
+        $this->cartManager = static::createObject(Cart\Manager::class);
     }
 
+    /**
+     * create object by type -> checks also for DI
+     *
+     * @param string $class
+     * @param array $params
+     * @return mixed
+     */
+    public static function createObject($class, $params = []) {
+        if (\Pimcore::getDiContainer()->has($class)) {
+            return \Pimcore::getDiContainer()->make($class, $params);
+        }
+
+        return new $class(...$params);
+    }
 
     /**
      * assembles an url
@@ -96,8 +117,8 @@ class Tools
             $fingerprint .= $user->getCacheKey();
         }
 
-        if ($this->prepareCart()->getId()) {
-            $fingerprint .= $this->prepareCart()->getCacheKey();
+        if ($this->getCart()->getId()) {
+            $fingerprint .= $this->getCart()->getCacheKey();
         }
 
         if ($this->getDeliveryAddress() instanceof User\Address) {
@@ -320,7 +341,7 @@ class Tools
      */
     public function getDeliveryAddress()
     {
-        $cart = $this->prepareCart();
+        $cart = $this->getCart();
         $user = $this->getUser();
 
         if ($cart->getCustomerShippingAddress()) {
@@ -375,12 +396,25 @@ class Tools
      * @param $resetCart bool create a new cart
      *
      * @return Cart
+     *
+     * @deprecated use getCart instead
      */
     public function prepareCart($resetCart = false)
     {
-        $cartSession = $this->getSession();
+        return $this->getCart("default", $resetCart);
+    }
 
+    /**
+     * get cart
+     *
+     * @param boolean $resetCart
+     * @param string $name
+     *
+     * @return Cart
+     */
+    public function getCart($resetCart = false, $name = "default") {
         $cart = null;
+        $cartSession = $this->getSession();
 
         if (!$resetCart) {
             if (isset($cartSession->cartId) && $cartSession->cartId !== 0) {
@@ -397,9 +431,13 @@ class Tools
             }
         }
 
+        if(!$cart instanceof Cart && $this->getUser() instanceof User) {
+            $cart = $this->getCartManager()->getByName($name, $this->getUser());
+        }
+
         if ($cart instanceof Cart) {
             //cart does already have a order, reset it!
-            if( $cart->getOrder() instanceof Order) {
+            if($cart->getOrder() instanceof Order) {
                 //reset cartobj first
                 $cartSession->cartObj = null;
                 $cartSession->cartId = null;
@@ -417,8 +455,7 @@ class Tools
         }
 
         $cart = Cart::prepare();
-        $cartSession->cartObj = $cart;
-        $cartSession->cartId = null;
+        $this->getCartManager()->setSessionCart($cart);
 
         return $cart;
     }
@@ -432,7 +469,7 @@ class Tools
     {
         $session = $this->getSession();
         $country = null;
-        $cart = $this->prepareCart();
+        $cart = $this->getCart();
 
         if (\Pimcore::inDebugMode()) {
             if (!empty($_REQUEST["coreshop_country"])) {
@@ -781,5 +818,13 @@ class Tools
         }
 
         return $_SERVER['HTTP_REFERER'];
+    }
+
+    /**
+     * @return Cart\Manager
+     */
+    public function getCartManager()
+    {
+        return $this->cartManager;
     }
 }

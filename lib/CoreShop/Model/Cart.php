@@ -109,34 +109,14 @@ class Cart extends Base
      */
     public static function prepare($persist = false)
     {
-        $createNew = true;
-        $cartSession = \CoreShop::getTools()->getSession();
-        $cart = null;
+        $cart = \CoreShop::getTools()->getCartManager()->getSessionCart();
 
-        if ($cartSession->cartObj) {
-            if ($cartSession->cartObj instanceof self) {
-                $createNew = false;
-                $cart = $cartSession->cartObj;
-            }
+        if (!$cart instanceof Cart) {
+            $cart = \CoreShop::getTools()->getCartManager()->createCart("default", \CoreShop::getTools()->getUser(), Shop::getShop());
         }
 
-        if ($createNew) {
-            $cart = self::create();
-            $cart->setKey(uniqid());
-            $cart->setPublished(true);
-            $cart->setShop(Shop::getShop());
-        }
-
-        if ($cart instanceof Cart) {
-            if (\CoreShop::getTools()->getUser() instanceof User) {
-                $cart->setUser(\CoreShop::getTools()->getUser());
-            }
-
-            if ($persist) {
-                $cartsFolder = Service::createFolderByPath('/coreshop/carts/' . date('Y/m/d'));
-                $cart->setParent($cartsFolder);
-                $cart->save();
-            }
+        if($persist) {
+            \CoreShop::getTools()->getCartManager()->persistCart($cart);
         }
 
         return $cart;
@@ -175,7 +155,7 @@ class Cart extends Base
                 $rule = $ruleItem->getPriceRule();
 
                 if ($rule instanceof PriceRule) {
-                    $discount += $rule->getDiscount($withTax);
+                    $discount += $rule->getDiscount($this, $withTax);
                 }
             }
         }
@@ -638,7 +618,7 @@ class Cart extends Base
         }
 
         if ($autoAddPriceRule) {
-            PriceRule::autoAddToCart();
+            PriceRule::autoAddToCart($this);
         }
 
         //Clear Cache of Product Price, cause a PriceRule could change the price
@@ -727,7 +707,7 @@ class Cart extends Base
     public function removePriceRule($priceRule)
     {
         if ($priceRule instanceof PriceRule) {
-            $priceRule->unApplyRules();
+            $priceRule->unApplyRules($this);
 
             $priceRules = $this->getPriceRuleFieldCollection();
 
@@ -1083,6 +1063,21 @@ class Cart extends Base
     }
 
     /**
+     * Check if Cart is active session cart
+     *
+     * @return bool
+     */
+    public function isActiveCart() {
+        $sessionCart = \CoreShop::getTools()->getCartManager()->getSessionCart();
+
+        if($sessionCart instanceof Cart) {
+            return $sessionCart->getId() === $this->getId();
+        }
+
+        return false;
+    }
+
+    /**
      * @return string
      */
     public function getCacheKey() {
@@ -1114,6 +1109,25 @@ class Cart extends Base
         }
 
         return $finalVars;
+    }
+    /**
+     * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getName()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setName($name)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**

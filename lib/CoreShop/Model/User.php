@@ -162,6 +162,15 @@ class User extends Base
     }
 
     /**
+     * Get User Carts
+     *
+     * @return Cart[]
+     */
+    public function getCarts() {
+        return \CoreShop::getTools()->getCartManager()->getCarts($this);
+    }
+
+    /**
      * Get Users latest Cart.
      *
      * @return bool

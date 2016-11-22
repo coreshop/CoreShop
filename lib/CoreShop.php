@@ -69,12 +69,7 @@ class CoreShop
     public static function getTools()
     {
         if(!isset(self::$tools)) {
-            if (\Pimcore::getDiContainer()->has('CoreShop\Tools')) {
-                self::$tools = \Pimcore::getDiContainer()->get('CoreShop\Tools');
-            }
-            else {
-                self::$tools = new Tools();
-            }
+            self::$tools = Tools::createObject(Tools::class);
         }
 
         return self::$tools;
@@ -85,13 +80,7 @@ class CoreShop
      */
     public static function bootstrap($plugin)
     {
-        $className = "CoreShop";
-
-        if (Pimcore::getDiContainer()->has("CoreShop")) {
-            $className = Pimcore::getDiContainer()->get("CoreShop");
-        }
-
-        self::$instance = new $className($plugin);
+        self::$instance = Tools::createObject(\CoreShop::class, [$plugin]);
         self::$instance->doBootstrap();
     }
 

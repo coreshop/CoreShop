@@ -126,7 +126,7 @@ class Quantity extends AbstractCondition
     public function checkConditionProduct(Model\Product $product, Model\Product\AbstractProductPriceRule $priceRule)
     {
         //Check for Quantity in Cart
-        $cart = \CoreShop::getTools()->prepareCart();
+        $cart = \CoreShop::getTools()->getCart();
 
         if ($cart instanceof Cart) {
             foreach ($cart->getItems() as $item) {

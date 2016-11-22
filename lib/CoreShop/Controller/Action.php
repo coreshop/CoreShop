@@ -122,7 +122,7 @@ class Action extends \Website\Controller\Action
      */
     protected function prepareCart()
     {
-        $this->cart = $this->view->cart = \CoreShop::getTools()->prepareCart();
+        $this->cart = $this->view->cart = \CoreShop::getTools()->getCart();
 
         if ($this->cart->getId()) {
             PriceRule::autoRemoveFromCart($this->cart);

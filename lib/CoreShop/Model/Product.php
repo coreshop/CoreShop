@@ -618,7 +618,7 @@ class Product extends Base
     {
         if(is_null($this->taxCalculator)) {
             if (is_null($address)) {
-                $cart = \CoreShop::getTools()->prepareCart();
+                $cart = \CoreShop::getTools()->getCart();
 
                 $address = $cart->getCustomerAddressForTaxation();
 

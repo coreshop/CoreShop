@@ -16,6 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Model\Listing\AbstractListing;
+use CoreShop\Tools;
 use Pimcore\Cache;
 use Pimcore\File;
 use Pimcore\Logger;
@@ -127,12 +128,7 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    if (\Pimcore::getDiContainer()->has($className)) {
-                        $object = \Pimcore::getDiContainer()->make($className);
-                    } else {
-                        $object = new $className();
-                    }
-
+                    $object = Tools::createObject($className);
                     $object->getDao()->getById($id, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
@@ -174,12 +170,7 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    if (\Pimcore::getDiContainer()->has($className)) {
-                        $object = \Pimcore::getDiContainer()->make($className);
-                    } else {
-                        $object = new $className();
-                    }
-
+                    $object = Tools::createObject($className);
                     $object->getDao()->getByField($field, $value, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);

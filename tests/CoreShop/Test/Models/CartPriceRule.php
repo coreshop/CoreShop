@@ -220,6 +220,6 @@ class CartPriceRule extends Base
         $cart2 = Data::createCart();
         $cart2->addItem(Data::$product2);
 
-        $this->assertEquals($cart2->getSubtotal() * 0.1, $this->priceRule->getDiscount());
+        $this->assertEquals($cart2->getSubtotal() * 0.1, $this->priceRule->getDiscount($cart));
     }
 }

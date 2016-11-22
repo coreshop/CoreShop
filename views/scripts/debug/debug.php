@@ -108,10 +108,10 @@
 
                 <?php } ?>
 
-                <?php if(\CoreShop::getTools()->prepareCart()->getId()) { ?>
+                <?php if(\CoreShop::getTools()->getCart()->getId()) { ?>
                     <tr>
                         <td><?=$this->translate("coreshop_cart")?></td>
-                        <td><?=\CoreShop::getTools()->prepareCart()->getId()?></td>
+                        <td><?=\CoreShop::getTools()->getCart()->getId()?></td>
                     </tr>
                 <?php } ?>
 

@@ -271,7 +271,7 @@ class Order extends Base
                     $rule = $ruleItem->getPriceRule();
 
                     if ($rule instanceof PriceRule) {
-                        $ruleItem->setDiscount($rule->getDiscount());
+                        $ruleItem->setDiscount($rule->getDiscount($cart));
 
                         $rule->applyOrder($this, $ruleItem);
                     }

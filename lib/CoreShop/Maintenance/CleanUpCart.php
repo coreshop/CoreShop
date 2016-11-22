@@ -88,6 +88,9 @@ class CleanUpCart
         $conditions[] = 'o_creationDate < ?';
         $params[] = $daysTimestamp->getTimestamp();
 
+        //Never delete carts with a order
+        $conditions[] = 'order__id IS NULL';
+
         if (self::$params['deleteAnonymousCart']) {
             $groupCondition[] = 'user__id IS NULL';
         }

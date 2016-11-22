@@ -230,7 +230,7 @@ class Carrier extends AbstractModel
     public static function getCarriersForCart(Cart $cart = null, Address $address = null)
     {
         if (is_null($cart)) {
-            $cart = \CoreShop::getTools()->prepareCart();
+            $cart = \CoreShop::getTools()->getCart();
         }
         if (is_null($address)) {
             $address = \CoreShop::getTools()->getDeliveryAddress();
@@ -409,7 +409,7 @@ class Carrier extends AbstractModel
     public function getMaxDeliveryPrice(Cart $cart = null, Address $address = null)
     {
         if (is_null($cart)) {
-            $cart = \CoreShop::getTools()->prepareCart();
+            $cart = \CoreShop::getTools()->getCart();
         }
 
         if (is_null($address)) {

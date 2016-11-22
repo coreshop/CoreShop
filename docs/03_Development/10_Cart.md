@@ -120,6 +120,8 @@ class CoreShopCartItemPersonal extends AbstractData
 
 ## View: personal-data.php
 
+## List all Carts
+
 ```php
 <div class="row">
     <div class="col-xs-12 col-sm-6">
@@ -134,3 +136,39 @@ class CoreShopCartItemPersonal extends AbstractData
     </div>
 </div>
 ```
+
+# Cart Manager
+
+CoreShop supports the use of multiple Carts per User.
+
+The \CoreShop\Model\Cart\Manager helps to manage all the carts.
+
+## List all Carts
+```php
+\CoreShop::getTools()->getCartManager()->getCarts(\CoreShop::getTools()->getUser());
+```
+
+## Activate a specific Cart
+
+To activate a specific cart, use following code.
+
+```php
+\CoreShop::getTools()->getCartManager()->setSessionCart($cart);
+```
+
+**Be aware**: The active Cart is used for checkout!
+
+## Delete a specific Cart
+
+```php
+\CoreShop::getTools()->getCartManager()->deleteCart($cart);
+```
+
+## Create a new Cart
+
+```php
+\CoreShop::getTools()->getCartManager()->setSessionCart(\CoreShop::getTools()->getCartManager()->createCart("default", \CoreShop::getTools()->getUser(), \CoreShop\Model\Shop::getShop(), true));
+```
+
+The last parameter is used to determine if the Cart should be persisted in the database, or in the session. On adding items, the cart will always be persisted in database.
+

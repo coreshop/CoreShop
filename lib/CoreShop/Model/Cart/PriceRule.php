@@ -126,12 +126,12 @@ class PriceRule extends AbstractPriceRule
     /**
      * Get public PriceRules.
      *
+     * @param Cart $cart
+     *
      * @return array
      */
-    public static function getHighlightItems()
+    public static function getHighlightItems(Cart $cart)
     {
-        $cart = \CoreShop::getTools()->prepareCart();
-
         $priceRules = PriceRule::getList();
         $priceRules->setCondition("(code IS NOT NULL AND code <> '') AND highlight = 1");
 
@@ -170,12 +170,8 @@ class PriceRule extends AbstractPriceRule
      *
      * @param Cart|null $cart
      */
-    public static function autoRemoveFromCart(Cart $cart = null)
+    public static function autoRemoveFromCart(Cart $cart)
     {
-        if ($cart == null) {
-            $cart = \CoreShop::getTools()->prepareCart();
-        }
-
         foreach ($cart->getPriceRules() as $priceRuleItem) {
             $priceRule = $priceRuleItem->getPriceRule();
 
@@ -194,12 +190,8 @@ class PriceRule extends AbstractPriceRule
      *
      * @return bool
      */
-    public static function autoAddToCart(Cart $cart = null)
+    public static function autoAddToCart(Cart $cart)
     {
-        if ($cart == null) {
-            $cart = \CoreShop::getTools()->prepareCart();
-        }
-
         if (count($cart->getItems()) <= 0) {
             return false;
         }
@@ -247,12 +239,8 @@ class PriceRule extends AbstractPriceRule
      *
      * @return bool
      */
-    public function checkValidity(Cart $cart = null, $voucherCode = null, $throwException = false, $alreadyInCart = false)
+    public function checkValidity(Cart $cart, $voucherCode = null, $throwException = false, $alreadyInCart = false)
     {
-        if (is_null($cart)) {
-            $cart = \CoreShop::getTools()->prepareCart();
-        }
-        
         if (!$this->getActive()) {
             if($throwException) {
                 throw new Exception("PriceRule is inactive");
@@ -304,10 +292,6 @@ class PriceRule extends AbstractPriceRule
      */
     public function applyRules(Cart $cart)
     {
-        if (is_null($cart)) {
-            $cart = \CoreShop::getTools()->prepareCart();
-        }
-
         foreach ($this->getActions() as $action) {
             if ($action instanceof AbstractAction) {
                 $action->applyRule($cart);
@@ -317,11 +301,11 @@ class PriceRule extends AbstractPriceRule
 
     /**
      * Removes Rules from Cart.
+     *
+     * @param Cart $cart
      */
-    public function unApplyRules()
+    public function unApplyRules(Cart $cart)
     {
-        $cart = \CoreShop::getTools()->prepareCart();
-
         foreach ($this->getActions() as $action) {
             if ($action instanceof AbstractAction) {
                 $action->unApplyRule($cart);
@@ -366,13 +350,13 @@ class PriceRule extends AbstractPriceRule
     /**
      * Get Discount for PriceRule.
      *
+     * @param Cart $cart
      * @param boolean $withTax
      *
      * @return int
      */
-    public function getDiscount($withTax = true)
+    public function getDiscount(Cart $cart, $withTax = true)
     {
-        $cart = \CoreShop::getTools()->prepareCart();
         $discount = 0;
 
         if ($this->getActions()) {
