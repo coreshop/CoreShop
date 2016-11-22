@@ -131,5 +131,15 @@
             <variables>lang</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>coreshop_cart_list</name>
+            <pattern>/(\w+)\/shop\/cart-list\/([A-Za-z0-9._-]+)/</pattern>
+            <reverse>/%lang/shop/cart-list/%act</reverse>
+            <module>CoreShop</module>
+            <controller>cart-list</controller>
+            <action>%act</action>
+            <variables>lang,act</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>

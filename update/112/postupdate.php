@@ -10,8 +10,9 @@ $install->createClass('CoreShopOrder');
 $install->createClass('CoreShopOrderInvoiceItem');
 $install->createClass('CoreShopOrderInvoice');
 
-$db = \Pimcore\Db::get();
+$install->createStaticRoutes();
 
+$db = \Pimcore\Db::get();
 $sql = "SELECT cid FROM properties WHERE `name`='invoice'";
 
 $objects = $db->fetchAll($sql);
