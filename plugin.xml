@@ -113,6 +113,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/localizedfield.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/getters/classificationstore.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/indexes/interpreters/abstract.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/indexes/interpreters/objectproperty.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/abstract.js</path>

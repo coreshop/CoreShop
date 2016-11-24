@@ -15,42 +15,14 @@
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
+use Pimcore\Model\Object\AbstractObject;
 
 /**
- * Class AbstractInterpreter
- * @package CoreShop\IndexService\Interpreter+
+ * Class ObjectProperty
+ * @package CoreShop\IndexService\Interpreter
  */
-class AbstractInterpreter
+class ObjectProperty extends AbstractInterpreter
 {
-    /**
-     * defined getters.
-     *
-     * @var array
-     */
-    protected static $interpreters = array('Object', 'Soundex', 'ObjectIdSum', 'ObjectId', 'ObjectProperty');
-
-    /**
-     * Add Interpreter Class.
-     *
-     * @param string $interpreter
-     */
-    public static function addInterpreter($interpreter)
-    {
-        if (!in_array($interpreter, self::$interpreters)) {
-            self::$interpreters[] = $interpreter;
-        }
-    }
-
-    /**
-     * Get all Interpreter Classes.
-     *
-     * @return array
-     */
-    public static function getInterpreters()
-    {
-        return self::$interpreters;
-    }
-
     /**
      * interpret value.
      *
@@ -63,6 +35,19 @@ class AbstractInterpreter
      */
     public function interpret($value, $config = null)
     {
-        throw new UnsupportedException('Not implemented in abstract');
+        $config = isset($config) ? $config->getInterpreterConfig() : [];
+
+        if($value instanceof AbstractObject) {
+            if (array_key_exists("property", $config)) {
+                $name = $config['property'];
+                $getter = "get" . ucfirst($name);
+
+                if(method_exists($value, $getter)) {
+                    return $value->$getter();
+                }
+            }
+        }
+
+        return null;
     }
 }
