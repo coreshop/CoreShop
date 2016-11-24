@@ -312,6 +312,6 @@ class Elasticsearch extends AbstractWorker
      */
     protected function getSystemAttributes()
     {
-        return array('o_id' => "long", 'o_classId' => "string", 'o_type' => "string", 'categoryIds' => "long", 'parentCategoryIds' => "long", 'active' => "boolean", 'shops' => "long", 'minPrice' => 'double', 'maxPrice' => 'double');
+        return array('o_id' => "long", 'o_key' => 'string', 'o_classId' => "string", 'o_type' => "string", 'categoryIds' => "long", 'parentCategoryIds' => "long", 'active' => "boolean", 'shops' => "long", 'minPrice' => 'double', 'maxPrice' => 'double');
     }
 }
