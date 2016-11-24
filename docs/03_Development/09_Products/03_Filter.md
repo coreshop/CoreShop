@@ -71,10 +71,8 @@ Similarity works in CoreShop using a **number**. The number is then sorted and t
 
 ![Filter Similarity](img/filter-similarity.png)
 
-## Re-Index
+## Filter -> Category
 
-If you make changes to the index, you need to re-index all of your products. To do that, there is a cli Command
+To assign a filter to a category, open a CoreShopCategory object and select one of your filters.
 
-```
-php pimcore/console/cli.php coreshop:index
-```
+![Filter Condition Select](img/filter-category.png)
