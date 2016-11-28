@@ -17,10 +17,12 @@ namespace CoreShop\Tracking\Google;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\PriceRule\AbstractPriceRule;
+use CoreShop\Model\PriceRule\Item;
 use CoreShop\Model\Product;
 use CoreShop\Tracking\ActionData;
 use CoreShop\Tracking\ImpressionData;
 use CoreShop\Tracking\ProductData;
+use Pimcore\Model\Object\Fieldcollection;
 
 /**
  * Class ItemBuilder
@@ -92,8 +94,16 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder
         $item->setTax($order->getTotalTax());
         $item->setAffiliation($order->getShop()->getName());
 
-        if ($order->getPriceRule() instanceof AbstractPriceRule) {
-            $item->setCoupon($order->getPriceRule()->getName());
+        if($order->getPriceRuleFieldCollection() instanceof Fieldcollection) {
+            if ($order->getPriceRuleFieldCollection()->getCount() > 0) {
+                foreach ($order->getPriceRuleFieldCollection() as $priceRule) {
+                    if ($priceRule instanceof Item) {
+                        if ($priceRule->getPriceRule() instanceof Cart\PriceRule) {
+                            $item->setCoupon($priceRule->getPriceRule()->getName());
+                        }
+                    }
+                }
+            }
         }
 
         return $item;

@@ -1299,26 +1299,6 @@ class Order extends Base
     }
 
     /**
-     * @return PriceRule|null
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getPriceRule()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param PriceRule $priceRule
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setPriceRule($priceRule)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
      * @return Object\Fieldcollection|null
      *
      * @throws ObjectUnsupportedException
