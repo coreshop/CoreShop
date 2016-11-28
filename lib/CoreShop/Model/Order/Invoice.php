@@ -332,13 +332,14 @@ class Invoice extends Base
         $params = [
             "order" => $this->getOrder(),
             "invoice" => $this,
-            "language" => (string) $locale
+            "language" => (string) $locale,
+            "type" => "invoice"
         ];
 
         $forward = new Action();
-        $html = $forward->action("invoice", "invoice", "CoreShop", $params);
-        $header = $forward->action("header", "invoice", "CoreShop", $params);
-        $footer = $forward->action("footer", "invoice", "CoreShop", $params);
+        $html = $forward->action("invoice", "order-print", "CoreShop", $params);
+        $header = $forward->action("header", "order-print", "CoreShop", $params);
+        $footer = $forward->action("footer", "order-print", "CoreShop", $params);
 
         try {
             $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, array('options' => array(Configuration::get('SYSTEM.INVOICE.WKHTML'))));

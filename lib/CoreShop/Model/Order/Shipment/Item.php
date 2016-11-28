@@ -12,7 +12,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Order;
+namespace CoreShop\Model\Order\Shipment;
 
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
@@ -24,11 +24,10 @@ use Pimcore\Model\Object;
 
 /**
  * Class Item
- * @package CoreShop\Model\Order
- * 
+ * @package CoreShop\Model\Order\Shipment
+ *
+ * @method static Object\Listing\Concrete getByOrderItem ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByProduct ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByWholesalePrice ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByRetailPrice ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByPrice ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByPriceWithoutTax ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByAmount ($value, $limit = 0)
@@ -45,7 +44,7 @@ class Item extends Base
      *
      * @var string
      */
-    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopOrderItem';
+    public static $pimcoreClass = 'Pimcore\\Model\\Object\\CoreShopOrderShipmentItem';
 
     /**
      * Calculate Total of OrderItem without tax.
@@ -58,16 +57,16 @@ class Item extends Base
     }
 
     /**
-     * Get Order for OrderItem.
+     * Get Shipment for Shipment Item.
      *
      * @return null|\Pimcore\Model\Object\AbstractObject
      */
-    public function getOrder()
+    public function getShipment()
     {
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof Order) {
+            if ($parent instanceof Order\Shipment) {
                 return $parent;
             }
 
@@ -75,60 +74,6 @@ class Item extends Base
         } while ($parent != null);
 
         return null;
-    }
-
-    /**
-     * calculates the invoiced amount
-     *
-     * @return int
-     */
-    public function getInvoicedAmount() {
-        $order = $this->getOrder();
-
-        $amount = 0;
-
-        if($order instanceof Order) {
-            $invoices = $order->getInvoices();
-
-            foreach($invoices as $invoice) {
-                foreach($invoice->getItems() as $item) {
-                    if($item instanceof Invoice\Item) {
-                        if($item->getOrderItem()->getId() === $this->getId()) {
-                            $amount += $item->getAmount();
-                        }
-                    }
-                }
-            }
-        }
-
-        return $amount;
-    }
-
-    /**
-     * calculates the invoiced amount
-     *
-     * @return int
-     */
-    public function getShippedAmount() {
-        $order = $this->getOrder();
-
-        $amount = 0;
-
-        if($order instanceof Order) {
-            $shipments = $order->getShipments();
-
-            foreach($shipments as $shipment) {
-                foreach($shipment->getItems() as $item) {
-                    if($item instanceof Shipment\Item) {
-                        if($item->getOrderItem()->getId() === $this->getId()) {
-                            $amount += $item->getAmount();
-                        }
-                    }
-                }
-            }
-        }
-
-        return $amount;
     }
 
     /**
@@ -156,6 +101,26 @@ class Item extends Base
     }
 
     /**
+     * @return Order\Item
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getOrderItem()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Order\Item $orderItem
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setOrderItem($orderItem)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
      * @return Product
      *
      * @throws ObjectUnsupportedException
@@ -171,46 +136,6 @@ class Item extends Base
      * @throws ObjectUnsupportedException
      */
     public function setProduct($product)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return double
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getWholesalePrice()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param double $wholesalePrice
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setWholesalePrice($wholesalePrice)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return double
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getRetailPrice()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param double $retailPrice
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setRetailPrice($retailPrice)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
@@ -371,46 +296,6 @@ class Item extends Base
      * @throws ObjectUnsupportedException
      */
     public function setTaxes($taxes)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return boolean
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getIsVirtualProduct()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param boolean $isVirtualProduct
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setIsVirtualProduct($isVirtualProduct)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return Asset
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getVirtualAsset()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param Asset|null $virtualAsset
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setVirtualAsset($virtualAsset)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

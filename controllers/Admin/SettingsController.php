@@ -69,7 +69,9 @@ class CoreShop_Admin_SettingsController extends Admin
             'user' => \CoreShop\Model\User::getPimcoreObjectClass(),
             'customerGroup' => \CoreShop\Model\Customer\Group::getPimcoreObjectClass(),
             'invoice' => \CoreShop\Model\Order\Invoice::getPimcoreObjectClass(),
-            'invoiceItem' => \CoreShop\Model\Order\Invoice\Item::getPimcoreObjectClass()
+            'invoiceItem' => \CoreShop\Model\Order\Invoice\Item::getPimcoreObjectClass(),
+            'shipment' => \CoreShop\Model\Order\Shipment::getPimcoreObjectClass(),
+            'shipmentItem' => \CoreShop\Model\Order\Shipment\Item::getPimcoreObjectClass()
         );
 
         foreach ($classMapping as $key => &$class) {

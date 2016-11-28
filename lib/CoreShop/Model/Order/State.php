@@ -86,6 +86,13 @@ class State extends AbstractModel
         }
 
         if ($this->getShipped()) {
+            if ((bool) Configuration::get('SYSTEM.SHIPMENT.CREATE')) {
+                $shipments = $order->getShipments();
+
+                if(count($shipments) === 0) {
+                    $order->createShipmentForAllItems();
+                }
+            }
         }
 
         if ($this->getPaid()) {
@@ -94,7 +101,6 @@ class State extends AbstractModel
 
         if ($this->getInvoice()) {
             if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE')) {
-                //Generates the invoice, force re-generation cause of state change
                 $invoices = $order->getInvoices();
 
                 if(count($invoices) === 0) {

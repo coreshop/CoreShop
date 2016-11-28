@@ -45,14 +45,17 @@ class CoreShop_Admin_InstallController extends Admin
             $cartItemClass = $install->createClass('CoreShopCartItem');
             $userClass = $install->createClass('CoreShopUser');
             $customerGroupClass = $install->createClass('CoreShopCustomerGroup');
-            $customerGroupClass = $install->createClass('CoreShopUserAddress');
+            $userAddressClass = $install->createClass('CoreShopUserAddress');
 
             $orderItemClass = $install->createClass('CoreShopOrderItem');
             $paymentClass = $install->createClass('CoreShopPayment');
             $orderClass = $install->createClass('CoreShopOrder');
 
-            $invoiceitemClass = $install->createClass('CoreShopOrderInvoiceItem');
+            $invoiceItemClass = $install->createClass('CoreShopOrderInvoiceItem');
             $invoiceClass = $install->createClass('CoreShopOrderInvoice');
+
+            $shipmentItemClass = $install->createClass('CoreShopOrderShipmentItem');
+            $shipmentClass = $install->createClass('CoreShopOrderShipment');
 
             // create root object folder with subfolders
             $coreShopFolder = $install->createFolders();
@@ -63,12 +66,16 @@ class CoreShop_Admin_InstallController extends Admin
                 $cartClass->getId(),
                 $cartItemClass->getId(),
                 $userClass->getId(),
+                $userAddressClass->getId(),
+                $customerGroupClass->getId(),
                 $orderItemClass->getId(),
                 $orderClass->getId(),
                 $paymentClass->getId(),
                 $customerGroupClass->getId(),
                 $invoiceClass->getId(),
-                $invoiceitemClass->getId()
+                $invoiceItemClass->getId(),
+                $shipmentClass->getId(),
+                $shipmentItemClass->getId(),
             ));
             // create static routes
             $install->createStaticRoutes();

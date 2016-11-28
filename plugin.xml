@@ -194,8 +194,10 @@
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopSpecificPrices.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopSpecificPrices.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/object/item.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/invoice/render.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/orders/invoice/render.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/orders/shipment/render.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/invoice.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/orders/shipment.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

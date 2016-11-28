@@ -514,6 +514,18 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
                     renderTab.reload();
                 };
+            } else if (tab.data.general.o_className === coreshop.settings.classMapping.shipment) {
+                var resetChangesFunction = tab.resetChanges;
+
+                var renderTab = new pimcore.plugin.coreshop.shipment.render(tab);
+
+                tab.tabbar.add(renderTab.getLayout());
+
+                tab.resetChanges = function () {
+                    resetChangesFunction.call(tab);
+
+                    renderTab.reload();
+                };
             }
 
             pimcore.layout.refresh();

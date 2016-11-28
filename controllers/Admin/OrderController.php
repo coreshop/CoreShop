@@ -294,6 +294,7 @@ class CoreShop_Admin_OrderController extends Admin
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
         $jsonOrder['invoice'] = $order->getProperty("invoice");
         $jsonOrder['invoices'] = $this->getInvoices($order);
+        $jsonOrder['shipments'] = $this->getShipments($order);
         $jsonOrder['address'] = [
             'shipping' => $this->getDataForObject($order->getShippingAddress()),
             'billing' => $this->getDataForObject($order->getBillingAddress())
@@ -601,6 +602,21 @@ class CoreShop_Admin_OrderController extends Admin
         }
 
         return $invoiceArray;
+    }
+
+    /**
+     * @param $order
+     * @return array
+     */
+    protected function getShipments($order) {
+        $shipments = $order->getShipments();
+        $shipmentArray = [];
+
+        foreach($shipments as $shipment) {
+            $shipmentArray[] = $this->getDataForObject($shipment);
+        }
+
+        return $shipmentArray;
     }
 
     /**

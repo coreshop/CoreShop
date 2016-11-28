@@ -707,8 +707,12 @@ class Install
         Configuration::set('SYSTEM.PRODUCT.DEFAULTIMAGE', null);
         Configuration::set('SYSTEM.CATEGORY.DEFAULTIMAGE', null);
         Configuration::set('SYSTEM.INVOICE.CREATE', true);
-        Configuration::set('SYSTEM.INVOICE.PREFIX', 'RE');
+        Configuration::set('SYSTEM.INVOICE.PREFIX', 'OI');
         Configuration::set('SYSTEM.INVOICE.SUFFIX', '');
+        Configuration::set('SYSTEM.INVOICE.WKHTML', '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5');
+        Configuration::set('SYSTEM.SHIPMENT.PREFIX', 'OS');
+        Configuration::set('SYSTEM.SHIPMENT.SUFFIX', '');
+        Configuration::set('SYSTEM.SHIPMENT.WKHTML', '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5');
         Configuration::set('SYSTEM.MAIL.ORDER.NOTIFICATION', '');
         Configuration::set('SYSTEM.MAIL.ORDER.NOTIFICATION', true);
         Configuration::set('SYSTEM.MESSAGING.THREAD.STATE.NEW', 1);
@@ -725,7 +729,6 @@ class Install
         Configuration::set('SYSTEM.ORDERSTATE.OUTOFSTOCK_UNPAID', 11);
         Configuration::set('SYSTEM.ORDERSTATE.COD', 12);
         Configuration::set('SYSTEM.ISINSTALLED', false);
-        Configuration::set('SYSTEM.INVOICE.WKHTML', '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5');
         Configuration::set("SYSTEM.MAIL.CONFIRMATION", "/shop/email/order-confirmation");
         Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);
         Configuration::set("SYSTEM.SHIPPING.CARRIER_SORT", "grade");

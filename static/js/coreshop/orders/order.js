@@ -72,6 +72,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             handler : function () {
                                 this.createInvoice();
                             }.bind(this)
+                        },
+                        {
+                            iconCls : 'coreshop_icon_orders_shipment',
+                            text : t('coreshop_shipment'),
+                            handler : function () {
+                                this.createShipment();
+                            }.bind(this)
                         }
                     ]
                 }]
@@ -250,6 +257,16 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 });
             });
 
+            this.order.shipments.forEach(function(item) {
+                invoiceButtons.push({
+                    xtype: 'button',
+                    margin : '0 10 0 0',
+                    text : Ext.String.format(t('coreshop_shipment_order'), item.shipmentNumber),
+                    handler : function () {
+                        pimcore.helpers.openObject(item.o_id, 'object');
+                    }.bind(this)
+                });
+            });
             this.orderInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_order') + ': ' + this.order.orderNumber + ' (' + this.order.o_id + ')',
                 margin : '0 20 20 0',
@@ -1118,6 +1135,12 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
     createInvoice : function() {
         new pimcore.plugin.coreshop.orders.invoice(this.order, function() {
+            this.reload();
+        }.bind(this));
+    },
+
+    createShipment : function() {
+        new pimcore.plugin.coreshop.orders.shipment(this.order, function() {
             this.reload();
         }.bind(this));
     }

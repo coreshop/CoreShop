@@ -12,13 +12,10 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Controller\Action;
-use CoreShop\Model\Cart\PriceRule;
-
 /**
- * Class CoreShop_InvoiceController
+ * Class CoreShop_OrderPrintController
  */
-class CoreShop_InvoiceController extends Action
+class CoreShop_OrderPrintController extends \CoreShop\Controller\Action
 {
     public function init()
     {
@@ -28,11 +25,7 @@ class CoreShop_InvoiceController extends Action
 
         $this->view->language = $this->getParam("language");
         $this->view->order = $this->getParam("order");
-        $this->view->invoice = $this->getParam("invoice");
-    }
-
-    public function invoiceAction() {
-
+        $this->view->type = $this->getParam("type");
     }
 
     public function headerAction() {
@@ -41,5 +34,13 @@ class CoreShop_InvoiceController extends Action
 
     public function footerAction() {
 
+    }
+
+    public function invoiceAction() {
+        $this->view->invoice = $this->getParam("invoice");
+    }
+
+    public function shipmentAction() {
+        $this->view->shipment = $this->getParam("shipment");
     }
 }

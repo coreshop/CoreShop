@@ -19,3 +19,14 @@ foreach($list->getData() as $index) {
         }
     }
 }
+
+$install = new \CoreShop\Plugin\Install();
+
+$install->createClass('CoreShopOrderShipmentItem');
+$install->createClass('CoreShopOrderShipment');
+
+\CoreShop\Model\Configuration::set('SYSTEM.SHIPMENT.PREFIX', 'OS');
+\CoreShop\Model\Configuration::set('SYSTEM.SHIPMENT.SUFFIX', '');
+\CoreShop\Model\Configuration::set('SYSTEM.SHIPMENT.WKHTML', '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5');
+
+//Should we check for Order-States and create Shipments for specific states?

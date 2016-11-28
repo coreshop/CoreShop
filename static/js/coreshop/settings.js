@@ -908,6 +908,27 @@ pimcore.plugin.coreshop.settings = Class.create({
                             editable: false,
                             forceSelection: true,
                             queryMode: 'local'
+                        },
+                        {
+                            fieldLabel: t('coreshop_shipment_create'),
+                            xtype: 'checkbox',
+                            name: 'SYSTEM.SHIPMENT.CREATE',
+                            checked: this.getValue(shopId, 'SYSTEM.SHIPMENT.CREATE')
+                        },
+                        {
+                            fieldLabel: t('coreshop_prefix'),
+                            name: 'SYSTEM.SHIPMENT.PREFIX',
+                            value: this.getValue(shopId, 'SYSTEM.SHIPMENT.PREFIX')
+                        },
+                        {
+                            fieldLabel: t('coreshop_suffix'),
+                            name: 'SYSTEM.SHIPMENT.SUFFIX',
+                            value: this.getValue(shopId, 'SYSTEM.SHIPMENT.SUFFIX')
+                        },
+                        {
+                            fieldLabel: t('coreshop_wkhtmltopdf_params'),
+                            name: 'SYSTEM.SHIPMENT.WKHTML',
+                            value: this.getValue(shopId, 'SYSTEM.SHIPMENT.WKHTML')
                         }
                     ]
                 },
@@ -1104,17 +1125,17 @@ pimcore.plugin.coreshop.settings = Class.create({
                             checked: this.getValue(shopId, 'SYSTEM.INVOICE.CREATE')
                         },
                         {
-                            fieldLabel: t('coreshop_invoice_prefix'),
+                            fieldLabel: t('coreshop_prefix'),
                             name: 'SYSTEM.INVOICE.PREFIX',
                             value: this.getValue(shopId, 'SYSTEM.INVOICE.PREFIX')
                         },
                         {
-                            fieldLabel: t('coreshop_invoice_suffix'),
+                            fieldLabel: t('coreshop_suffix'),
                             name: 'SYSTEM.INVOICE.SUFFIX',
                             value: this.getValue(shopId, 'SYSTEM.INVOICE.SUFFIX')
                         },
                         {
-                            fieldLabel: t('coreshop_invoice_wkhtmltopdf_params'),
+                            fieldLabel: t('coreshop_wkhtmltopdf_params'),
                             name: 'SYSTEM.INVOICE.WKHTML',
                             value: this.getValue(shopId, 'SYSTEM.INVOICE.WKHTML')
                         }

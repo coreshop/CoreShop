@@ -23,6 +23,7 @@ use CoreShop\Model\Messaging\Thread;
 use CoreShop\Model\Order\Invoice;
 use CoreShop\Model\Order\Item;
 use CoreShop\Model\Order\Payment;
+use CoreShop\Model\Order\Shipment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
 use CoreShop\Tool\Service;
@@ -169,6 +170,13 @@ class Order extends Base
      */
     public function getPathForInvoices() {
         return Object\Service::createFolderByPath($this->getFullPath() . "/invoices/");
+    }
+
+    /**
+     * @return Object\Folder
+     */
+    public function getPathForShipments() {
+        return Object\Service::createFolderByPath($this->getFullPath() . "/shipments/");
     }
 
     /**
@@ -507,6 +515,19 @@ class Order extends Base
     }
 
     /**
+     * @return Invoice[]
+     */
+    public function getShipments() {
+        $list = Shipment::getList();
+        $list->setCondition("order__id = ?", [$this->getId()]);
+        $list->load();
+
+        return $list->getObjects();
+    }
+
+    /**
+     * Creates an Invoice for all Items
+     *
      * @return Invoice
      */
     public function createInvoiceForAllItems() {
@@ -593,7 +614,7 @@ class Order extends Base
     public function createInvoice($items)
     {
         if(!is_array($items)) {
-            throw new Exception("Invalid Paramters");
+            throw new Exception("Invalid Parameters");
         }
 
         foreach ($items as $item) {
@@ -712,6 +733,193 @@ class Order extends Base
     }
 
     /**
+     * Creates a Shipment for all Items
+     *
+     * @return Shipment
+     */
+    public function createShipmentForAllItems() {
+        $items = [];
+
+        foreach($this->getItems() as $item) {
+            $items[] = [
+                'orderItemId' => $item->getId(),
+                'amount' => $item->getAmount()
+            ];
+        }
+
+        return $this->createShipment($items);
+    }
+
+    /**
+     * get all items that are still ship-able
+     *
+     * @return array
+     */
+    public function getShipAbleItems() {
+        $items = $this->getItems();
+        $shippedItems = $this->getShippedItems();
+        $shipAbleItems = [];
+
+        foreach($items as $item) {
+            if(array_key_exists($item->getId(), $shippedItems)) {
+                if($shippedItems[$item->getId()]['amount'] < $item->getAmount()) {
+                    $shipAbleItems[$item->getId()] = [
+                        "amount" => $item->getAmount() - $shippedItems[$item->getId()]['amount'],
+                        "item" => $item
+                    ];
+                }
+            }
+            else {
+                $shipAbleItems[$item->getId()] = [
+                    "amount" => $item->getAmount(),
+                    "item" => $item
+                ];
+            }
+        }
+
+        return $shipAbleItems;
+    }
+
+    /**
+     * get all shipped items with amounts
+     *
+     * @return array
+     */
+    public function getShippedItems() {
+        $shipments = $this->getShipments();
+        $shippedItems = [];
+
+        foreach($shipments as $shipment) {
+            foreach($shipment->getItems() as $shipmentItem) {
+                $orderItem = $shipmentItem->getOrderItem();
+
+                if($orderItem instanceof Item) {
+                    if(array_key_exists($orderItem->getId(), $shippedItems)) {
+                        $shippedItems[$orderItem->getId()]['amount'] += $shipmentItem->getAmount();
+                    }
+                    else {
+                        $shippedItems[$orderItem->getId()] = [
+                            'amount' => $shipmentItem->getAmount(),
+                            'orderItem' => $orderItem
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $shippedItems;
+    }
+
+    /**
+     * Creates a new Shipment
+     *
+     * @param $items
+     * @throws Exception
+     *
+     * @return Shipment
+     */
+    public function createShipment($items)
+    {
+        if(!is_array($items)) {
+            throw new Exception("Invalid Parameters");
+        }
+
+        foreach ($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if ($orderItem instanceof Item) {
+                $shippedAmount = $orderItem->getShippedAmount();
+                $newShippedAmount = $shippedAmount + $amount;
+
+                if ($newShippedAmount > $orderItem->getAmount()) {
+                    throw new Exception("You cannot ship more items than sold items");
+                }
+            }
+        }
+
+        $shipment = Shipment::create();
+
+        $shipment->setShipmentNumber(Shipment::getNextShipmentNumber());
+        $shipment->setOrder($this);
+        if (\Pimcore\Config::getFlag("useZendDate")) {
+            $shipment->setShipmentDate(Date::now());
+        } else {
+            $shipment->setShipmentDate(Carbon::now());
+        }
+        $shipment->setLang($this->getLang());
+        $shipment->setShop($this->getShop());
+        $shipment->setCustomer($this->getCustomer());
+        $shipment->setShippingAddress($this->getShippingAddress());
+        $shipment->setBillingAddress($this->getBillingAddress());
+        $shipment->setExtraInformation($this->getExtraInformation());
+        $shipment->setParent($this->getPathForShipments());
+        $shipment->setKey(\Pimcore\File::getValidFilename($shipment->getShipmentNumber()));
+        $shipment->save();
+
+        $shipmentItems = [];
+
+        foreach($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if($orderItem instanceof Item) {
+                $shippedAmount = $orderItem->getShippedAmount();
+                $newShippedAmount = $shippedAmount + $amount;
+
+                if ($newShippedAmount > $orderItem->getAmount()) {
+                    throw new Exception("You cannot ship more items than sold items");
+                }
+
+                $shipmentItem = Shipment\Item::create();
+
+                Service::copyObject($orderItem, $shipmentItem);
+
+                $shipmentItem->setAmount($amount);
+                $shipmentItem->setParent($shipment->getPathForItems());
+                $shipmentItem->setTotal($orderItem->getPrice() * $amount);
+                $shipmentItem->setTotalTax(($orderItem->getPrice() - $orderItem->getPriceWithoutTax()) * $amount);
+
+                $invoiceItemTaxes = new Object\Fieldcollection();
+                $totalTax = 0;
+
+                foreach ($orderItem->getTaxes() as $tax) {
+                    if ($tax instanceof Order\Tax) {
+                        $taxRate = new Tax();
+                        $taxRate->setRate($tax->getRate());
+
+                        $taxCalculator = new TaxCalculator([$taxRate]);
+
+                        $itemTax = Order\Tax::create();
+                        $itemTax->setName($tax->getName());
+                        $itemTax->setRate($tax->getRate());
+                        $itemTax->setAmount($taxCalculator->getTaxesAmount($shipmentItem->getTotalWithoutTax()));
+
+                        $invoiceItemTaxes->add($itemTax);
+
+                        $totalTax += $itemTax->getAmount();
+                    }
+                }
+
+                $shipmentItem->setOrderItem($orderItem);
+                $shipmentItem->setKey($orderItem->getKey());
+                $shipmentItem->setTaxes($invoiceItemTaxes);
+                $shipmentItem->setTotalTax($totalTax);
+                $shipmentItem->setPublished(true);
+                $shipmentItem->save();
+
+                $shipmentItems[] = $shipmentItem;
+            }
+        }
+
+        $shipment->setPublished(true);
+        $shipment->setItems($shipmentItems);
+        $shipment->save();
+
+        return $shipment;
+    }
+
+    /**
      * Add a new Payment.
      *
      * @param Payment $payment
@@ -780,9 +988,8 @@ class Order extends Base
     }
 
     /**
-     * checks if shipping and billing addresses are the same.
+     * Checks if Shipping and Billing addresses are the same.
      *
-     * @todo: Only need to check for address-id now
      * @returns boolean
      */
     public function isShippingAndBillingAddressEqual()
@@ -790,30 +997,13 @@ class Order extends Base
         $shipping = $this->getShippingAddress();
         $billing = $this->getBillingAddress();
 
-        $billingVars = $billing->getObjectVars();
-        $shippingVars = $shipping->getObjectVars();
-
-        foreach ($shippingVars as $key => $value) {
-            if ($key === 'fieldname') {
-                continue;
-            }
-
-            if (array_key_exists($key, $billingVars)) {
-                if (!is_object($value)) {
-                    if ($billingVars[$key] !== $value) {
-                        return false;
-                    }
-                } else {
-                    if ($value instanceof Object\AbstractObject) {
-                        if ($value->getId() !== $billingVars[$key]->getId()) {
-                            return false;
-                        }
-                    }
-                }
+        if($shipping instanceof Address && $billing instanceof Address) {
+            if($shipping->getId() === $billing->getId()) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -1578,7 +1768,7 @@ class Order extends Base
     }
 
     /**
-     * @return string
+     * @return array
      *
      * @throws ObjectUnsupportedException
      */
@@ -1588,7 +1778,7 @@ class Order extends Base
     }
 
     /**
-     * @param mixed $payments
+     * @param array $payments
      *
      * @throws ObjectUnsupportedException
      */
