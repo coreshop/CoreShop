@@ -239,35 +239,47 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.headerPanel;
     },
 
+    rebuildPrintDocumentsPanel : function(order) {
+        this.printDocumentButtons.removeAll();
+
+        order.invoices.forEach(function(item) {
+            this.printDocumentButtons.add({
+                xtype: 'button',
+                margin : '0 10 0 0',
+                text : Ext.String.format(t('coreshop_invoice_order'), item.invoiceNumber),
+                handler : function () {
+                    pimcore.helpers.openObject(item.o_id, 'object');
+                }.bind(this)
+            });
+        }.bind(this));
+
+        order.shipments.forEach(function(item) {
+            this.printDocumentButtons.add({
+                xtype: 'button',
+                margin : '0 10 0 0',
+                text : Ext.String.format(t('coreshop_shipment_order'), item.shipmentNumber),
+                handler : function () {
+                    pimcore.helpers.openObject(item.o_id, 'object');
+                }.bind(this)
+            });
+        }.bind(this));
+    },
+
     getOrderInfo : function () {
         if (!this.orderInfo) {
             this.orderStatesStore = new Ext.data.JsonStore({
                 data : this.order.statesHistory
             });
 
-            var invoiceButtons = [];
-
-            this.order.invoices.forEach(function(item) {
-                invoiceButtons.push({
-                    xtype: 'button',
-                    margin : '0 10 0 0',
-                    text : Ext.String.format(t('coreshop_invoice_order'), item.invoiceNumber),
-                    handler : function () {
-                        pimcore.helpers.openObject(item.o_id, 'object');
-                    }.bind(this)
-                });
+            this.printDocumentButtons = Ext.create('Ext.panel.Panel', {
+                xtype : 'panel',
+                style: this.borderStyle,
+                bodyPadding : 5,
+                margin: '0 0 15 0'
             });
 
-            this.order.shipments.forEach(function(item) {
-                invoiceButtons.push({
-                    xtype: 'button',
-                    margin : '0 10 0 0',
-                    text : Ext.String.format(t('coreshop_shipment_order'), item.shipmentNumber),
-                    handler : function () {
-                        pimcore.helpers.openObject(item.o_id, 'object');
-                    }.bind(this)
-                });
-            });
+            this.rebuildPrintDocumentsPanel(this.order);
+
             this.orderInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_order') + ': ' + this.order.orderNumber + ' (' + this.order.o_id + ')',
                 margin : '0 20 20 0',
@@ -284,13 +296,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     }
                 ],
                 items : [
-                    {
-                        xtype : 'panel',
-                        style: this.borderStyle,
-                        bodyPadding : 5,
-                        margin: '0 0 15 0',
-                        items : invoiceButtons
-                    },
+                    this.printDocumentButtons,
                     {
                         xtype : 'grid',
                         margin: '0 0 15 0',
@@ -404,6 +410,10 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
                                             if (res.success) {
                                                 this.orderStatesStore.loadData(res.statesHistory);
+                                                this.shipmentsStore.loadData(res.shipments);
+                                                this.invoicesStore.loadData(res.invoices);
+
+                                                this.rebuildPrintDocumentsPanel(res);
                                             } else {
                                                 pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
                                             }
@@ -597,6 +607,10 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 }
             });
 
+            this.shipmentsStore = new Ext.data.JsonStore({
+                data : this.order.shipments
+            });
+
             this.shippingInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_shipments'),
                 border : true,
@@ -607,9 +621,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         xtype : 'grid',
                         margin: '0 0 15 0',
                         cls : 'coreshop-order-detail-grid',
-                        store :  new Ext.data.JsonStore({
-                            data : this.order.shipments
-                        }),
+                        store :  this.shipmentsStore,
                         plugins: [
                             cellEditing
                         ],
@@ -680,6 +692,10 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
     getInvoiceDetails : function () {
         if (!this.invoiceDetails) {
+            this.invoicesStore = new Ext.data.JsonStore({
+                data : this.order.invoices
+            });
+
             this.invoiceDetails = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_invoices'),
                 border : true,
@@ -690,9 +706,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         xtype : 'grid',
                         margin: '0 0 15 0',
                         cls : 'coreshop-order-detail-grid',
-                        store :  new Ext.data.JsonStore({
-                            data : this.order.invoices
-                        }),
+                        store : this.invoicesStore,
                         columns : [
                             {
                                 xtype : 'gridcolumn',

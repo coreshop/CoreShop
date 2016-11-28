@@ -193,7 +193,7 @@ class CoreShop_Admin_OrderController extends Admin
 
         $orderState->processStep($order);
 
-        $this->_helper->json(array("success" => true, "statesHistory" => $this->getStatesHistory($order)));
+        $this->_helper->json(array("success" => true, "statesHistory" => $this->getStatesHistory($order), "invoices" => $this->getInvoices($order), "shipments" => $this->getShipments($order)));
     }
 
     public function changeOrderItemAction()
