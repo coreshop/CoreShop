@@ -369,6 +369,35 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
                                     return '';
                                 }.bind(this)
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'toState',
+                                width : 60,
+                                align : 'right',
+                                renderer : function (value) {
+                                    var store = pimcore.globalmanager.get('coreshop_orderstates');
+                                    var orderState = store.getById(value);
+
+                                    if (orderState && orderState.get('email') === '1') {
+                                        var id = Ext.id();
+                                        Ext.defer(function () {
+                                            Ext.widget('button', {
+                                                renderTo: id,
+                                                iconCls: 'coreshop_icon_open',
+                                                flex : 1,
+                                                handler: function () {
+                                                    if(orderState.data.localizedFields.items.hasOwnProperty(pimcore.settings.language)) {
+                                                        pimcore.helpers.openDocumentByPath(orderState.data.localizedFields.items[pimcore.settings.language].emailDocument);
+                                                    }
+                                                }.bind(this)
+                                            });
+                                        }.bind(this), 50);
+                                        return Ext.String.format('<div id="{0}"></div>', id);
+                                    }
+
+                                    return '';
+                                }.bind(this)
                             }
                         ]
                     },

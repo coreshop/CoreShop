@@ -54,7 +54,8 @@ class CoreShop_Admin_OrderStateController extends Admin
             ),
             'name' => $orderState->getName(),
             'color' => $orderState->getColor(),
-            'email' => $orderState->getEmail()
+            'email' => $orderState->getEmail(),
+            'localizedFields' => $orderState->getLocalizedFields()
         );
 
         return $tmp;
