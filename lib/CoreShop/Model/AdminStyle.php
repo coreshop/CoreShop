@@ -68,6 +68,12 @@ class AdminStyle extends \Pimcore\Model\Element\AdminStyle
         else if($element instanceof Order\Payment) {
             $this->elementIconClass = "coreshop_icon_payment";
         }
+        else if($element instanceof Order\Shipment) {
+            $this->elementIconClass = "coreshop_icon_orders_shipment";
+        }
+        else if($element instanceof Order\Shipment\Item) {
+            $this->elementIconClass = "coreshop_icon_orders_shipment";
+        }
 
         $this->element = $element;
     }
