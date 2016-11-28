@@ -19,6 +19,7 @@ use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Helper\Zend\Action;
 use CoreShop\Model\Base;
+use CoreShop\Model\Carrier;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Currency;
 use CoreShop\Model\NumberRange;
@@ -49,6 +50,8 @@ use Pimcore\Model\User as PimcoreUser;
  * @method static Object\Listing\Concrete getByShippingAddress ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByBillingAddress ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByExtraInformation ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByTrackingCode ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByWeight ($value, $limit = 0)
  */
 class Shipment extends Base
 {
@@ -381,6 +384,66 @@ class Shipment extends Base
      * @throws ObjectUnsupportedException
      */
     public function setExtraInformation($extraInformation)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Carrier
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCarrier()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Carrier $carrier
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCarrier($carrier)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return string
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getTrackingCode()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param string $trackingCode
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setTrackingCode($trackingCode)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return float
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getWeight()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param float $weight
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setWeight($weight)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

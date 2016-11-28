@@ -53,22 +53,51 @@ class CoreShop_Admin_OrderShipmentController extends Admin
     public function createShipmentAction() {
         $items = $this->getParam("items");
         $orderId = $this->getParam("id");
+        $carrierId = $this->getParam("carrier");
+        $trackingCode = $this->getParam("trackingCode");
+
         $order = \CoreShop\Model\Order::getById($orderId);
+        $carrier = \CoreShop\Model\Carrier::getById($carrierId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
             $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
         }
 
+        if (!$carrier instanceof \CoreShop\Model\Carrier) {
+            $this->_helper->json(array('success' => false, 'message' => "Carrier with ID '$carrierId' not found"));
+        }
+
         try {
             $items = \Zend_Json::decode($items);
 
-            $shipment = $order->createShipment($items);
+            $shipment = $order->createShipment($items, $carrier, $trackingCode);
 
             $this->_helper->json(["success" => true, "shipmentId" => $shipment->getId()]);
         }
         catch(\CoreShop\Exception $ex) {
             $this->_helper->json(array('success' => false, 'message' => $ex->getMessage()));
         }
+    }
+
+    public function changeTrackingCodeAction()
+    {
+        $shipmentId = $this->getParam('shipmentId');
+        $trackingCode = $this->getParam("trackingCode");
+
+        $shipment = \CoreShop\Model\Order\Shipment::getById($shipmentId);
+
+        if (!$shipment instanceof \CoreShop\Model\Order\Shipment) {
+            $this->_helper->json(array('success' => false, 'message' => "Shipment with ID '$shipmentId' not found"));
+        }
+
+        if (!$trackingCode || $shipment->getTrackingCode() === $trackingCode) {
+            $this->_helper->json(array('success' => false, 'message' => "Tracking code did not change or is empty"));
+        }
+
+        $shipment->setTrackingCode($trackingCode);
+        $shipment->save();
+
+        $this->_helper->json(array('success' => true));
     }
 
     public function renderShipmentAction() {

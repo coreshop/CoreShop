@@ -475,3 +475,8 @@
 "coreshop_amount_to_ship","Zu versenden"
 "coreshop_shipment_pdf","Lieferschein PDF"
 "coreshop_shipment","Lieferschein"
+"coreshop_shipments","Lieferscheine"
+"coreshop_invoices","Rechnungen"
+"coreshop_invoice_date","Rechnungsdatum"
+"coreshop_total_without_tax","Total (exkl.)
+"coreshop_invoice_number","Rechnungsnummer"

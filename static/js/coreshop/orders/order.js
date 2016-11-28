@@ -114,7 +114,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
         var leftItems = [
             this.getOrderInfo(),
-            this.getShippingInfo(),
+            this.getShipmentDetails(),
+            this.getInvoiceDetails(),
             this.getPaymentInfo()
         ];
 
@@ -574,17 +575,17 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return panel;
     },
 
-    getShippingInfo : function () {
+    getShipmentDetails : function () {
         if (!this.shippingInfo) {
             var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
                 listeners : {
                     edit : function (editor, context, eOpts) {
-                        var trackingCode = context.record.get('tracking');
+                        var trackingCode = context.record.get('trackingCode');
 
                         Ext.Ajax.request({
-                            url: '/plugin/CoreShop/admin_order/change-tracking-code',
+                            url: '/plugin/CoreShop/admin_order-shipment/change-tracking-code',
                             params: {
-                                id: this.order.o_id,
+                                shipmentId : context.record.get("o_id"),
                                 trackingCode : trackingCode
                             },
                             success: function (response) {
@@ -597,17 +598,17 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             });
 
             this.shippingInfo = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_carrier'),
+                title : t('coreshop_shipments'),
                 border : true,
                 margin : '0 20 20 0',
-                iconCls : 'coreshop_icon_carriers',
+                iconCls : 'coreshop_icon_orders_shipment',
                 items : [
                     {
                         xtype : 'grid',
                         margin: '0 0 15 0',
                         cls : 'coreshop-order-detail-grid',
                         store :  new Ext.data.JsonStore({
-                            data : [this.order.shipping]
+                            data : this.order.shipments
                         }),
                         plugins: [
                             cellEditing
@@ -617,7 +618,17 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 xtype : 'gridcolumn',
                                 dataIndex : 'carrier',
                                 text : t('coreshop_carrier'),
-                                flex : 1
+                                flex : 1,
+                                renderer : function (value) {
+                                    var store = pimcore.globalmanager.get('coreshop_carriers');
+                                    var carrier = store.getById(value);
+
+                                    if (carrier) {
+                                        return carrier.get("name");
+                                    }
+
+                                    return value;
+                                }
                             },
                             {
                                 xtype : 'gridcolumn',
@@ -627,15 +638,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             },
                             {
                                 xtype : 'gridcolumn',
-                                dataIndex : 'cost',
-                                text : t('coreshop_shipping_cost'),
-                                flex : 1,
-                                align : 'right',
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'tracking',
+                                dataIndex : 'trackingCode',
                                 text : t('coreshop_carrier_tracking_code'),
                                 flex : 1,
                                 field: {
@@ -656,6 +659,14 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                             column : colIndex - 1
                                         });
                                     }.bind(this)
+                                },{
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip : t('open'),
+                                    handler : function (grid, rowIndex) {
+                                        var record = grid.getStore().getAt(rowIndex);
+
+                                        pimcore.helpers.openObject(record.get('o_id'));
+                                    }
                                 }]
                             }
                         ]
@@ -665,6 +676,81 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         }
 
         return this.shippingInfo;
+    },
+
+    getInvoiceDetails : function () {
+        if (!this.invoiceDetails) {
+            this.invoiceDetails = Ext.create('Ext.panel.Panel', {
+                title : t('coreshop_invoices'),
+                border : true,
+                margin : '0 20 20 0',
+                iconCls : 'coreshop_icon_orders_invoice',
+                items : [
+                    {
+                        xtype : 'grid',
+                        margin: '0 0 15 0',
+                        cls : 'coreshop-order-detail-grid',
+                        store :  new Ext.data.JsonStore({
+                            data : this.order.invoices
+                        }),
+                        columns : [
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'invoiceNumber',
+                                text : t('coreshop_invoice_number'),
+                                flex : 1
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                flex : 1,
+                                dataIndex : 'invoiceDate',
+                                text : t('coreshop_invoice_date'),
+                                renderer : function (val) {
+                                    if (val) {
+                                        return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
+                                    }
+
+                                    return '';
+                                }
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'totalWithoutTax',
+                                text : t('coreshop_total_without_tax'),
+                                width : 150,
+                                align : 'right',
+                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'total',
+                                text : t('coreshop_total'),
+                                width : 150,
+                                align : 'right',
+                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                            },
+                            {
+                                menuDisabled: true,
+                                sortable: false,
+                                xtype: 'actioncolumn',
+                                width: 50,
+                                items: [{
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip : t('open'),
+                                    handler : function (grid, rowIndex) {
+                                        var record = grid.getStore().getAt(rowIndex);
+
+                                        pimcore.helpers.openObject(record.get('o_id'));
+                                    }
+                                }]
+                            }
+                        ]
+                    }
+                ]
+            });
+        }
+
+        return this.invoiceDetails;
     },
 
     updatePaymentInfoAlert : function () {

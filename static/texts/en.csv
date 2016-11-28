@@ -475,3 +475,8 @@
 "coreshop_amount_to_ship","To Ship"
 "coreshop_shipment_pdf","Shipment PDF"
 "coreshop_shipment","Shipment"
+"coreshop_shipments","Shipments"
+"coreshop_invoices","Invoices"
+"coreshop_invoice_date","Invoice Date"
+"coreshop_total_without_tax","Total (excl.)"
+"coreshop_invoice_number","Invoice Number"

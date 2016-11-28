@@ -747,7 +747,7 @@ class Order extends Base
             ];
         }
 
-        return $this->createShipment($items);
+        return $this->createShipment($items, $this->getCarrier());
     }
 
     /**
@@ -814,11 +814,14 @@ class Order extends Base
      * Creates a new Shipment
      *
      * @param $items
+     * @param Carrier $carrier,
+     * @param string $trackingCode
+     *
      * @throws Exception
      *
      * @return Shipment
      */
-    public function createShipment($items)
+    public function createShipment($items, Carrier $carrier, $trackingCode = null)
     {
         if(!is_array($items)) {
             throw new Exception("Invalid Parameters");
@@ -855,9 +858,13 @@ class Order extends Base
         $shipment->setExtraInformation($this->getExtraInformation());
         $shipment->setParent($this->getPathForShipments());
         $shipment->setKey(\Pimcore\File::getValidFilename($shipment->getShipmentNumber()));
+        $shipment->setCarrier($carrier);
+        $shipment->setTrackingCode($trackingCode);
         $shipment->save();
 
         $shipmentItems = [];
+
+        $totalWeight = 0;
 
         foreach($items as $item) {
             $orderItem = Item::getById($item['orderItemId']);
@@ -901,6 +908,7 @@ class Order extends Base
                     }
                 }
 
+                $shipmentItem->setWeight($orderItem->getProduct()->getWeight() * $orderItem->getAmount());
                 $shipmentItem->setOrderItem($orderItem);
                 $shipmentItem->setKey($orderItem->getKey());
                 $shipmentItem->setTaxes($invoiceItemTaxes);
@@ -908,10 +916,13 @@ class Order extends Base
                 $shipmentItem->setPublished(true);
                 $shipmentItem->save();
 
+                $totalWeight += $shipmentItem->getWeight();
+
                 $shipmentItems[] = $shipmentItem;
             }
         }
 
+        $shipment->setWeight($totalWeight);
         $shipment->setPublished(true);
         $shipment->setItems($shipmentItems);
         $shipment->save();

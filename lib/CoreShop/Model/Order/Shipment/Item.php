@@ -36,6 +36,7 @@ use Pimcore\Model\Object;
  * @method static Object\Listing\Concrete getByExtraInformation ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByIsGiftItem ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTaxes ($value, $limit = 0)
+ * @method static Object\Listing\Concrete getByWeight ($value, $limit = 0)
  */
 class Item extends Base
 {
@@ -296,6 +297,26 @@ class Item extends Base
      * @throws ObjectUnsupportedException
      */
     public function setTaxes($taxes)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return float
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getWeight()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param float $weight
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setWeight($weight)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

@@ -58,6 +58,7 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.get('coreshop_currencies').load();
         pimcore.globalmanager.get('coreshop_orderstates').load();
         pimcore.globalmanager.get('coreshop_shops').load();
+        pimcore.globalmanager.get('coreshop_carriers').load();
     },
 
     _createStore : function (name, url, fields) {

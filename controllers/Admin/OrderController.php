@@ -196,27 +196,6 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array("success" => true, "statesHistory" => $this->getStatesHistory($order)));
     }
 
-    public function changeTrackingCodeAction()
-    {
-        $orderId = $this->getParam('id');
-        $trackingCode = $this->getParam("trackingCode");
-
-        $order = \CoreShop\Model\Order::getById($orderId);
-
-        if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
-        }
-
-        if (!$trackingCode || $order->getTrackingCode() === $trackingCode) {
-            $this->_helper->json(array('success' => false, 'message' => "Tracking code did not change or is empty"));
-        }
-
-        $order->setTrackingCode($trackingCode);
-        $order->save();
-
-        $this->_helper->json(array('success' => true));
-    }
-
     public function changeOrderItemAction()
     {
         $orderId = $this->getParam('id');

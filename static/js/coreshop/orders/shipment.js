@@ -47,9 +47,10 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing');
 
+
+
         var itemsGrid = {
             xtype : 'grid',
-            padding : 10,
             cls : 'coreshop-order-detail-grid',
             store :  positionStore,
             plugins: [cellEditing],
@@ -105,16 +106,48 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
             ]
         };
 
+        var trackingCode = Ext.create('Ext.form.TextField', {
+            fieldLabel:t('coreshop_carrier_tracking_code'),
+            name : 'trackingCode'
+        });
+
+        pimcore.globalmanager.get("coreshop_carriers").load();
+
+        var carrier = Ext.create('Ext.form.ComboBox', {
+            xtype:'combo',
+            fieldLabel:t('coreshop_carrier'),
+            mode: 'local',
+            store: pimcore.globalmanager.get("coreshop_carriers"),
+            displayField: 'name',
+            valueField: 'id',
+            forceSelection: true,
+            triggerAction: 'all',
+            name:'carrierId',
+            value : parseInt(this.order.carrier),
+            afterLabelTextTpl: [
+                '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
+            ],
+            allowBlank: false,
+            required : true
+        });
+
         var panel = Ext.create('Ext.panel.Panel', {
             title : t('coreshop_products'),
             border : true,
             iconCls : 'coreshop_icon_product',
-            items : itemsGrid
+            items : [
+                {
+                    xtype : 'panel',
+                    border :false,
+                    padding : 10,
+                    items : [carrier, trackingCode, itemsGrid]
+                }
+            ]
         });
 
         var window = new Ext.window.Window({
             width: 800,
-            height: 300,
+            height: 400,
             resizeable: true,
             modal : true,
             layout : 'fit',
@@ -143,7 +176,9 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
                             method : 'post',
                             params: {
                                 'items' : Ext.encode(itemsToShip),
-                                'id' : this.order.o_id
+                                'id' : this.order.o_id,
+                                'carrier' : carrier.getValue(),
+                                'trackingCode' : trackingCode.getValue()
                             },
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
