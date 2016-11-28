@@ -201,7 +201,7 @@
 "coreshop_orders_total","Total"
 "coreshop_orders_orderState","State"
 "coreshop_orders_orderDate","Date"
-"coreshop_orders_invoice","Invoice"
+"coreshop_order_pdf","Invoice PDF"
 "coreshop_freeshipping_price","Free Shipping starts at (Currency)"
 "coreshop_freeshipping_weight","Free Shipping starts at (Weight)"
 "coreshop_indexes","Indexes"
