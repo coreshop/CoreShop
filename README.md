@@ -1,9 +1,11 @@
-# CoreShop - Pimcore Onlineshop System
+# CoreShop - Pimcore eCommerce
 
 [![Join the chat at https://gitter.im/dpfaffenbauer/pimcore-coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dpfaffenbauer/pimcore-coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/coreshop/CoreShop.svg?branch=master)](https://travis-ci.org/coreshop/CoreShop)
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 [![Latest Stable Version](https://poser.pugx.org/coreshop/core-shop/v/stable)](https://packagist.org/packages/coreshop/core-shop)
+
+CoreShop is a Plugin for [Pimcore](http://www.pimcore.org). It enhances Pimcore with eCommerce features.
 
 ![CoreShop Interface](docs/img/screenshot.png)
 

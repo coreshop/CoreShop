@@ -2,8 +2,9 @@
 <zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
   <plugin>
     <pluginName>CoreShop</pluginName>
+    <pluginNiceName>CoreShop - Pimcore eCommerce</pluginNiceName>
     <pluginDescription>
-            CoreShop is the first OpenSource Onlineshop plugin for Pimcore.
+            CoreShop eCommerce enhances Pimcore's with eCommerce features
         </pluginDescription>
     <pluginVersion>1.1.2</pluginVersion>
     <pluginRevision>112</pluginRevision>
