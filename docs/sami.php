@@ -16,5 +16,5 @@ $xml = simplexml_load_string(file_get_contents("../plugin.xml"));
 return new Sami($iterator, array(
     'build_dir' => __DIR__ . '/build',
     'cache_dir' => __DIR__ . '/cache',
-    'title' => 'CoreShop API (Build: ' . $xml->plugin->pluginRevision . ')',
+    'title' => $xml->plugin->pluginNiceName . ' API (Build: ' . $xml->plugin->pluginRevision . ')',
 ));

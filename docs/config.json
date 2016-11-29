@@ -1,6 +1,6 @@
 {
-    "title" : "CoreShop Documentation",
-    "tagline" : "Pimcore Onlineshop System",
+    "title" : "CoreShop - Pimcore eCommerce - Documentation",
+    "tagline" : "CoreShop - Pimcore eCommerce",
     "repo": "coreshop/CoreShop",
     "html": {
         "theme": "coreshop-blue",
