@@ -224,8 +224,6 @@ class PriceRule extends AbstractPriceRule
         $orderId = Order::classId();
         $priceRuleCollection = PriceRuleItem::getFieldCollectionType();
 
-        echo $priceRuleCollection;
-
         $table = "object_collection_" . $priceRuleCollection . "_" . $orderId;
 
         $sql = "SELECT o_id as cnt FROM " . $table . " WHERE fieldname='priceRuleFieldCollection' AND priceRule=? AND " .
