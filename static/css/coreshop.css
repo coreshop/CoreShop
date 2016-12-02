@@ -246,6 +246,9 @@
 .coreshop_product_filters_icon_conditions_boolean {
     background: url(/plugins/CoreShop/static/img/flat/filter-boolean.svg) center center no-repeat !important;
 }
+.coreshop_product_filters_icon_conditions_combined {
+    background: url(/plugins/CoreShop/static/img/flat/filter-combined.svg) center center no-repeat !important;
+}
 
 .coreshop_icon_language, .pimcore_icon_coreShopLanguage {
     background: url(/plugins/CoreShop/static/img/flat/language.svg) center center no-repeat !important;

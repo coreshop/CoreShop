@@ -18,6 +18,7 @@ use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product\Filter\Condition\AbstractCondition;
 use CoreShop\Model\Product\Filter\Similarity\AbstractSimilarity;
+use Pimcore\Tool;
 
 /**
  * Class Filter
@@ -30,7 +31,7 @@ class Filter extends AbstractModel
      *
      * @var array
      */
-    public static $availableConditions = array('select', 'multiselect', 'range', 'boolean');
+    public static $availableConditions = array('select', 'multiselect', 'range', 'boolean', 'combined');
 
     /**
      * possible types of a condition.
@@ -133,6 +134,64 @@ class Filter extends AbstractModel
      * @var boolean
      */
     public $useShopPagingSettings;
+
+    /**
+     * @param $conditions
+     * @param $conditionNamespace
+     * @return mixed
+     * @throws \CoreShop\Exception
+     */
+    public function prepareConditions($conditions, $conditionNamespace) {
+        $conditionInstances = array();
+
+        foreach ($conditions as $condition) {
+            $class = $conditionNamespace.ucfirst($condition['type']);
+
+            if (Tool::classExists($class))
+            {
+                if($condition['type'] === "combined")
+                {
+                    $nestedConditions = static::prepareConditions($condition['conditions'], $conditionNamespace);
+                    $condition['conditions'] = $nestedConditions;
+                }
+
+                $instance = new $class();
+                $instance->setValues($condition);
+
+                $conditionInstances[] = $instance;
+            } else {
+                throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $condition['type']);
+            }
+        }
+
+        return $conditionInstances;
+    }
+
+    /**
+     * @param $similarities
+     * @param $similarityNamespace
+     * @return mixed
+     * @throws \CoreShop\Exception
+     */
+    public function prepareSimilarities($similarities, $similarityNamespace) {
+        $instances = array();
+
+        foreach ($similarities as $sim) {
+            $class = $similarityNamespace.ucfirst($sim['type']);
+
+            if (Tool::classExists($class))
+            {
+                $instance = new $class();
+                $instance->setValues($sim);
+
+                $instances[] = $instance;
+            } else {
+                throw new \CoreShop\Exception(sprintf('Similarity with type %s not found'), $sim['type']);
+            }
+        }
+
+        return $instances;
+    }
 
     /**
      * @return string

@@ -90,7 +90,16 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
             var conditionClass = conditionItem.xparent;
             var form = conditionClass.form;
 
-            var condition = form.form.getFieldValues();
+            var condition = {};
+
+            if(Ext.isFunction(conditionClass.getData)) {
+                condition = conditionClass.getData();
+            }
+            else {
+                condition = form.form.getFieldValues();
+            }
+
+
             condition['type'] = conditions[i].xparent.type;
 
             conditionsData.push(condition);

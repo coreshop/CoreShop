@@ -123,6 +123,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/select.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/multiselect.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/boolean.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/combined.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/conditions/range.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/similarity.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/filters/similarities/abstract.js</path>

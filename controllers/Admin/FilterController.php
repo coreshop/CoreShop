@@ -104,56 +104,12 @@ class CoreShop_Admin_FilterController extends Admin
         if ($data && $filter instanceof Filter) {
             $data = \Zend_Json::decode($this->getParam('data'));
 
-            $preConditions = $data['conditions'];
-            $preConditionInstances = array();
-
             $conditionNamespace = 'CoreShop\\Model\\Product\\Filter\\Condition\\';
             $similarityNamespace = 'CoreShop\\Model\\Product\\Filter\\Similarity\\';
 
-            foreach ($preConditions as $condition) {
-                $class = $conditionNamespace.ucfirst($condition['type']);
-
-                if (\Pimcore\Tool::classExists($class)) {
-                    $instance = new $class();
-                    $instance->setValues($condition);
-
-                    $preConditionInstances[] = $instance;
-                } else {
-                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $condition['type']);
-                }
-            }
-
-            $filters = $data['filters'];
-            $filtersInstances = array();
-
-            foreach ($filters as $filterCondition) {
-                $class = $conditionNamespace.ucfirst($filterCondition['type']);
-
-                if (\Pimcore\Tool::classExists($class)) {
-                    $instance = new $class();
-                    $instance->setValues($filterCondition);
-
-                    $filtersInstances[] = $instance;
-                } else {
-                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $filterCondition['type']);
-                }
-            }
-
-            $similarities = $data['similarities'];
-            $similaritiesInstances = array();
-
-            foreach ($similarities as $similarity) {
-                $class = $similarityNamespace.ucfirst($similarity['type']);
-
-                if (\Pimcore\Tool::classExists($class)) {
-                    $instance = new $class();
-                    $instance->setValues($similarity);
-
-                    $similaritiesInstances[] = $instance;
-                } else {
-                    throw new \CoreShop\Exception(sprintf('Condition with type %s not found', $similarity['type']));
-                }
-            }
+            $filtersInstances = $filter->prepareConditions($data['filters'], $conditionNamespace);
+            $preConditionInstances = $filter->prepareConditions($data['conditions'], $conditionNamespace);
+            $similaritiesInstances = $filter->prepareSimilarities($data['similarities'], $similarityNamespace);
 
             $filter->setValues($data['settings']);
             $filter->setPreConditions($preConditionInstances);
