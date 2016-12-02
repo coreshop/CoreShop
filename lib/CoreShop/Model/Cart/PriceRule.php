@@ -22,7 +22,6 @@ use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Model\PriceRule\Item as PriceRuleItem;
-use CoreShop\Model\PriceRule\Item;
 use Pimcore\Db;
 
 /**
@@ -223,7 +222,7 @@ class PriceRule extends AbstractPriceRule
     public static function getTotalUsesForPriceRule(PriceRule $priceRule, $voucherCode = null)
     {
         $orderId = Order::classId();
-        $priceRuleCollection = Item::getFieldCollectionType();
+        $priceRuleCollection = PriceRuleItem::getFieldCollectionType();
 
         echo $priceRuleCollection;
 
