@@ -165,7 +165,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
                 tmpContainer.updateLayout();
 
                 pimcore.layout.refresh();
-            }.bind(window, index, parent, container),
+            }.bind(this, index, parent, container),
             xtype : 'button'
         }, {
             iconCls: 'pimcore_icon_down',
@@ -190,13 +190,13 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
 
                 pimcore.layout.refresh();
 
-            }.bind(window, index, parent, container),
+            }.bind(this, index, parent, container),
             xtype : 'button'
         }, '->', {
             iconCls: 'pimcore_icon_delete',
             handler: function (index, parent, container) {
                 container.remove(Ext.getCmp(index));
-            }.bind(window, index, parent, container),
+            }.bind(this, index, parent, container),
             xtype : 'button'
         }];
     },
