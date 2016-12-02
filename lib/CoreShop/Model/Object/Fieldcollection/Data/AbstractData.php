@@ -49,6 +49,18 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
     }
 
     /**
+     * returns the class ID of the current object class.
+     *
+     * @return int
+     */
+    public static function getFieldCollectionType()
+    {
+        $v = get_class_vars(self::getPimcoreObjectClass());
+
+        return $v['type'];
+    }
+
+    /**
      * Create new instance of Pimcore Object.
      *
      * @throws Exception

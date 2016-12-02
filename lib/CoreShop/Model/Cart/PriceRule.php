@@ -22,6 +22,8 @@ use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Model\PriceRule\Item as PriceRuleItem;
+use CoreShop\Model\PriceRule\Item;
+use Pimcore\Db;
 
 /**
  * Class PriceRule
@@ -218,13 +220,29 @@ class PriceRule extends AbstractPriceRule
      *
      * @return int
      */
-    public static function getTotalUsesForPriceRule($priceRule, $voucherCode)
+    public static function getTotalUsesForPriceRule(PriceRule $priceRule, $voucherCode = null)
     {
-        $list = Order::getList();
-        $list->setCondition("priceRule = ? AND voucher = ?", array($priceRule->getId(), $voucherCode));
-        $list->load();
+        $orderId = Order::classId();
+        $priceRuleCollection = Item::getFieldCollectionType();
 
-        return count($list->getObjects());
+        echo $priceRuleCollection;
+
+        $table = "object_collection_" . $priceRuleCollection . "_" . $orderId;
+
+        $sql = "SELECT o_id as cnt FROM " . $table . " WHERE fieldname='priceRuleFieldCollection' AND priceRule=? AND " .
+            ($voucherCode === null ? "voucherCode is NULL" : "voucherCode = ?") . " GROUP BY o_id";
+        $sqlWrapper = "SELECT count(*) as cnt FROM ($sql) as query";
+
+        $params = [$priceRule->getId()];
+
+        if(!is_null($voucherCode)) {
+            $params[] = $voucherCode;
+        }
+
+        $db = Db::get();
+        $result = $db->fetchRow($sqlWrapper, $params);
+
+        return $result['cnt'];
     }
 
     /**
@@ -261,7 +279,7 @@ class PriceRule extends AbstractPriceRule
         }
 
         if ($this->getUsagePerVoucherCode() > 0 && $voucherCode) {
-            $totalUses = self::getTotalUsesForPriceRule($this, $voucherCode);
+            $totalUses = self::getTotalUsesForPriceRule($this, $this->getCode() === $voucherCode ? null : $voucherCode);
 
             if ($totalUses >= intval($this->getUsagePerVoucherCode())) {
                 if ($throwException) {
