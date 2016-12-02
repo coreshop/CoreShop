@@ -28,6 +28,7 @@ use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\User;
 use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Logger;
+use Pimcore\Model\Asset;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Asset\Service;
 use Pimcore\Model\Object;
@@ -316,6 +317,16 @@ class Invoice extends Base
         $this->setTotalTax($totalTax);
         $this->setTotalWithoutTax($totalWithoutTax);
         $this->save();
+    }
+
+    /**
+     * @return Asset
+     */
+    public function getAsset() {
+        $path = $this->getOrder()->getPathForInvoices();
+        $fileName = 'invoice-'.$this->getInvoiceNumber().'.pdf';
+
+        return Asset::getByPath($path . "/" . $fileName);
     }
 
     /**

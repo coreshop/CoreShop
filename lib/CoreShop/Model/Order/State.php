@@ -113,7 +113,7 @@ class State extends AbstractModel
             $emailDocument = $this->getEmailDocument();
             $emailDocument = Document::getByPath($emailDocument);
 
-            Mail::sendOrderMail($emailDocument, $order, $order->getOrderState());
+            Mail::sendOrderMail($emailDocument, $order, $this);
         }
 
         $order->setOrderState($this);

@@ -94,12 +94,18 @@ class Mail extends PimcoreMail
                         $invoices = $order->getInvoices();
 
                         foreach($invoices as $invoice) {
-                            if ($invoice instanceof Asset\Document) {
-                                $attachment = new \Zend_Mime_Part($invoice->getData());
-                                $attachment->type = $invoice->getMimetype();
+                            if ($invoice instanceof Order\Invoice) {
+                                $asset = $invoice->getAsset();
+
+                                if(!$asset instanceof Asset) {
+                                    $asset = $invoice->generate();
+                                }
+
+                                $attachment = new \Zend_Mime_Part($asset->getData());
+                                $attachment->type = $asset->getMimetype();
                                 $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
                                 $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
-                                $attachment->filename = $invoice->getFilename();
+                                $attachment->filename = $asset->getFilename();
 
                                 $mail->addAttachment($attachment);
                             }
