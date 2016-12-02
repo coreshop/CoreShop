@@ -44,13 +44,13 @@ pimcore.plugin.coreshop.rules.conditions.timeSpan = Class.create(pimcore.plugin.
         };
 
         if (this.data) {
-            var tmpDate = new Date(intval(this.data.dateFrom));
-            dateFrom.value = tmpDate;
-            timeFrom.value = Ext.Date.format(tmpDate, 'H:i');
+            var tmpDateFrom = new Date(intval(this.data.dateFrom));
+            dateFrom.value = tmpDateFrom;
+            timeFrom.value = Ext.Date.format(tmpDateFrom, 'H:i');
 
-            var tmpDate = new Date(intval(this.data.dateTo));
-            dateTo.value = tmpDate;
-            timeTo.value = Ext.Date.format(tmpDate, 'H:i');
+            var tmpDateTo = new Date(intval(this.data.dateTo));
+            dateTo.value = tmpDateTo;
+            timeTo.value = Ext.Date.format(tmpDateTo, 'H:i');
         }
 
         this.dateFromField = new Ext.form.DateField(dateFrom);
@@ -59,7 +59,7 @@ pimcore.plugin.coreshop.rules.conditions.timeSpan = Class.create(pimcore.plugin.
         this.dateToField = new Ext.form.DateField(dateTo);
         this.timeToField = new Ext.form.TimeField(timeTo);
 
-        var dateFromFieldContainer = new Ext.form.FieldContainer({
+        this.dateFromFieldContainer = new Ext.form.FieldContainer({
             xtype:'fieldcontainer',
             fieldLabel: t('coreshop_condition_timeSpan_dateFrom'),
             combineErrors:true,
@@ -86,7 +86,7 @@ pimcore.plugin.coreshop.rules.conditions.timeSpan = Class.create(pimcore.plugin.
             }
         });
 
-        var dateToFieldContainer = new Ext.form.FieldContainer({
+        this.dateToFieldContainer = new Ext.form.FieldContainer({
             xtype: 'fieldcontainer',
             fieldLabel: t('coreshop_condition_timeSpan_dateTo'),
             combineErrors: true,
@@ -115,10 +115,17 @@ pimcore.plugin.coreshop.rules.conditions.timeSpan = Class.create(pimcore.plugin.
 
         this.form = new Ext.form.Panel({
             items : [
-                dateFromFieldContainer, dateToFieldContainer
+                this.dateFromFieldContainer, this.dateToFieldContainer
             ]
         });
 
         return this.form;
+    },
+
+    getValues : function() {
+        return {
+            dateTo  : this.dateToFieldContainer.getValue(),
+            dateFrom: this.dateFromFieldContainer.getValue()
+        };
     }
 });
