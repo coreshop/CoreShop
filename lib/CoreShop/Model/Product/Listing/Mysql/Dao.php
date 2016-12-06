@@ -140,7 +140,7 @@ class Dao
             $query = 'SELECT '.$this->db->quoteIdentifier($fieldname).' FROM '
                 .$this->model->getTablename().' a '
                 .$this->model->getJoins()
-                .$condition.' GROUP BY '.$this->db->quoteIdentifier($fieldname);
+                .$condition.' GROUP BY '.$this->db->quoteIdentifier($fieldname) . ' ORDER BY ' . $this->db->quoteIdentifier($fieldname);
 
             $result = $this->db->fetchCol($query);
 
