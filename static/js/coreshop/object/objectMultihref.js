@@ -237,5 +237,9 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
         }
 
         return tmData;
+    },
+
+    requestNicePathData : function() {
+
     }
 });
