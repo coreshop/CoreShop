@@ -108,44 +108,50 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
 
     save: function ()
     {
-        var saveData = this.getSaveData();
+        if(this.isValid()) {
+            var saveData = this.getSaveData();
 
-        saveData['id'] = this.data.id;
+            saveData['id'] = this.data.id;
 
-        Ext.Ajax.request({
-            url: this.url.save,
-            method: 'post',
-            params: saveData,
-            success: function (response) {
-                try {
-                    if (this.parentPanel.store) {
-                        this.parentPanel.store.load();
+            Ext.Ajax.request({
+                url: this.url.save,
+                method: 'post',
+                params: saveData,
+                success: function (response) {
+                    try {
+                        if (this.parentPanel.store) {
+                            this.parentPanel.store.load();
+                        }
+
+                        this.parentPanel.refresh();
+
+                        var res = Ext.decode(response.responseText);
+
+                        this.postSave(res);
+
+                        if (res.success) {
+                            pimcore.helpers.showNotification(t('success'), t('coreshop_save_success'), 'success');
+
+                            this.data = res.data;
+
+                            this.panel.setTitle(this.getTitleText());
+                        } else {
+                            pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'),
+                                'error', res.message);
+                        }
+                    } catch (e) {
+                        pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
                     }
-
-                    this.parentPanel.refresh();
-
-                    var res = Ext.decode(response.responseText);
-
-                    this.postSave(res);
-
-                    if (res.success) {
-                        pimcore.helpers.showNotification(t('success'), t('coreshop_save_success'), 'success');
-
-                        this.data = res.data;
-
-                        this.panel.setTitle(this.getTitleText());
-                    } else {
-                        pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'),
-                            'error', res.message);
-                    }
-                } catch (e) {
-                    pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
-                }
-            }.bind(this)
-        });
+                }.bind(this)
+            });
+        }
     },
 
     postSave : function (result) {
 
+    },
+
+    isValid : function() {
+        return true;
     }
 });

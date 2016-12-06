@@ -81,7 +81,8 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
                                     xtype : 'textfield',
                                     fieldLabel:t('coreshop_indexes_name'),
                                     name : 'name',
-                                    value : this.data.name
+                                    value : this.data.name,
+                                    regex: /^[a-z0-9]+$/i
                                 },
                                 {
                                     xtype:'combo',
@@ -164,5 +165,9 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         return {
             data : Ext.encode(saveData)
         };
+    },
+
+    isValid : function() {
+        return this.formPanel.down("form").isValid();
     }
 });
