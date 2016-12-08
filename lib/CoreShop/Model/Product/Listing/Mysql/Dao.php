@@ -125,12 +125,12 @@ class Dao
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualProductId) as `count` FROM "
                     .$this->model->getTablename().' a '
                     .$this->model->getJoins()
-                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`)';
+                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY ' . $this->db->quoteIdentifier($fieldname);
             } else {
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(*) as `count` FROM "
                     .$this->model->getTablename().' a '
                     .$this->model->getJoins()
-                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`)';
+                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY ' . $this->db->quoteIdentifier($fieldname);
             }
 
             $result = $this->db->fetchAll($query);
