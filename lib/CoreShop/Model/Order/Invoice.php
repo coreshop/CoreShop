@@ -27,6 +27,7 @@ use CoreShop\Model\Shop;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\User;
 use CoreShop\Tool\Wkhtmltopdf;
+use Pimcore\File;
 use Pimcore\Logger;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Asset\Document;
@@ -356,7 +357,7 @@ class Invoice extends Base
             $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, array('options' => array(Configuration::get('SYSTEM.INVOICE.WKHTML'))));
 
             if ($pdfContent) {
-                $fileName = 'invoice-'.$this->getInvoiceNumber().'.pdf';
+                $fileName = 'invoice-'. File::getValidFilename($this->getInvoiceNumber()) . '.pdf';
                 $path = $this->getOrder()->getPathForInvoices();
 
                 $invoice = Document::getByPath($path.'/'.$fileName);

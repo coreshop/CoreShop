@@ -78,7 +78,7 @@ class CoreShop_Admin_OrderInvoiceController extends Admin
 
         if($invoice instanceof \CoreShop\Model\Order\Invoice) {
             header('Content-type: application/pdf');
-            header(sprintf('Content-Disposition: inline; filename="invoice-%s"', $invoice->getInvoiceNumber()));
+            header(sprintf('Content-Disposition: inline; filename="invoice-%s"', \Pimcore\File::getValidFilename($invoice->getInvoiceNumber())));
             header('Content-Transfer-Encoding: binary');
             header('Accept-Ranges: bytes');
 
