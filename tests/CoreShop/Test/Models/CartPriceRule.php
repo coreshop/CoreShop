@@ -40,7 +40,7 @@ class CartPriceRule extends Base
     {
         parent::setUp();
 
-        $priceRule = new \CoreShop\Model\Cart\PriceRule();
+        $priceRule = \CoreShop\Model\Cart\PriceRule::create();
         $priceRule->setName("test-rule");
         $priceRule->setActive(true);
         $priceRule->setHighlight(false);

@@ -71,7 +71,7 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
     {
         $name = $this->getParam('name');
 
-        $shippingRule = new \CoreShop\Model\Carrier\ShippingRule();
+        $shippingRule = \CoreShop\Model\Carrier\ShippingRule::create();
         $shippingRule->setName($name);
         $shippingRule->save();
 

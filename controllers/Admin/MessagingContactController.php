@@ -66,7 +66,7 @@ class CoreShop_Admin_MessagingContactController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $contact = new Contact();
+            $contact = Contact::create();
             $contact->setName($name);
             $contact->save();
 

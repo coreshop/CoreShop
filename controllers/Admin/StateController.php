@@ -116,7 +116,7 @@ class CoreShop_Admin_StateController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $state = new State();
+            $state = State::create();
             $state->setName($name);
             $state->setActive(1);
             $state->save();

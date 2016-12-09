@@ -679,7 +679,7 @@ class Order extends Base
 
                 foreach ($orderItem->getTaxes() as $tax) {
                     if ($tax instanceof Order\Tax) {
-                        $taxRate = new Tax();
+                        $taxRate = Tax::create();
                         $taxRate->setRate($tax->getRate());
 
                         $taxCalculator = new TaxCalculator([$taxRate]);
@@ -892,7 +892,7 @@ class Order extends Base
 
                 foreach ($orderItem->getTaxes() as $tax) {
                     if ($tax instanceof Order\Tax) {
-                        $taxRate = new Tax();
+                        $taxRate = Tax::create();
                         $taxRate->setRate($tax->getRate());
 
                         $taxCalculator = new TaxCalculator([$taxRate]);

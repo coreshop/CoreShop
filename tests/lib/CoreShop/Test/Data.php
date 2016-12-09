@@ -107,19 +107,19 @@ class Data
     public static function createTaxRule()
     {
         if (!self::$taxRuleGroup instanceof TaxRuleGroup) {
-            $tax = new Tax();
+            $tax = Tax::create();
             $tax->setRate(20);
             $tax->setName("20");
             $tax->setActive(true);
             $tax->save();
 
-            $taxRuleGroup = new TaxRuleGroup();
+            $taxRuleGroup = TaxRuleGroup::create();
             $taxRuleGroup->setName("20");
             $taxRuleGroup->setActive(true);
             $taxRuleGroup->setShopIds(array(Shop::getDefaultShop()->getId()));
             $taxRuleGroup->save();
 
-            $taxRule = new TaxRule();
+            $taxRule = TaxRule::create();
             $taxRule->setTaxRuleGroup($taxRuleGroup);
             $taxRule->setTax($tax);
             $taxRule->setBehavior(TaxCalculator::DISABLE_METHOD);
@@ -134,7 +134,7 @@ class Data
     public static function createTestCarrierWeight()
     {
         if (!self::$carrier1 instanceof Carrier) {
-            $carrier = new Carrier();
+            $carrier = Carrier::create();
             $carrier->setName("Test-Carrier-Weight");
             $carrier->setLabel("Test-Carrier-Weight");
             $carrier->setGrade(1);
@@ -163,13 +163,13 @@ class Data
             $priceAct = new Carrier\ShippingRule\Action\FixedPrice();
             $priceAct->setFixedPrice(10);
 
-            $rule1 = new Carrier\ShippingRule();
+            $rule1 = Carrier\ShippingRule::create();
             $rule1->setName("carrier1-rule");
             $rule1->setActions([$priceAct]);
             $rule1->setConditions([$dimensionCond, $weightCond, $zoneCond, $weightCond]);
             $rule1->save();
 
-            $ruleGroup = new Carrier\ShippingRuleGroup();
+            $ruleGroup = Carrier\ShippingRuleGroup::create();
             $ruleGroup->setCarrier($carrier);
             $ruleGroup->setShippingRule($rule1);
             $ruleGroup->setPriority(1);
@@ -182,7 +182,7 @@ class Data
     public static function createTestCarrierPrice()
     {
         if (!self::$carrier2 instanceof Carrier) {
-            $carrier = new Carrier();
+            $carrier = Carrier::create();
             $carrier->setName("Test-Carrier-Weight No-Max");
             $carrier->setLabel("Test-Carrier-Weight No-Max");
             $carrier->setGrade(1);
@@ -202,13 +202,13 @@ class Data
             $priceAct = new Carrier\ShippingRule\Action\FixedPrice();
             $priceAct->setFixedPrice(20);
 
-            $rule1 = new Carrier\ShippingRule();
+            $rule1 = Carrier\ShippingRule::create();
             $rule1->setName("carrier2-rule");
             $rule1->setActions([$priceAct]);
             $rule1->setConditions([$zoneCond, $weightCond]);
             $rule1->save();
 
-            $ruleGroup = new Carrier\ShippingRuleGroup();
+            $ruleGroup = Carrier\ShippingRuleGroup::create();
             $ruleGroup->setCarrier($carrier);
             $ruleGroup->setShippingRule($rule1);
             $ruleGroup->setPriority(1);
@@ -326,7 +326,7 @@ class Data
     public static function createShop()
     {
         if (!self::$shop instanceof Shop) {
-            $shop = new Shop();
+            $shop = Shop::create();
             $shop->setName("test");
             $shop->setSiteId(1);
             $shop->setTemplate("default");

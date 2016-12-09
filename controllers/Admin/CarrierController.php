@@ -96,17 +96,12 @@ class CoreShop_Admin_CarrierController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $carrier = new Carrier();
+            $carrier = Carrier::create();
             $carrier->setName($name);
             $carrier->setLabel($name);
             $carrier->setGrade(1);
             $carrier->setIsFree(0);
-            $carrier->setShippingMethod('weight');
             $carrier->setRangeBehaviour('largest');
-            $carrier->setMaxDepth(0);
-            $carrier->setMaxHeight(0);
-            $carrier->setMaxWeight(0);
-            $carrier->setMaxWidth(0);
             $carrier->save();
 
             $config = $this->getTreeNodeConfig($carrier);
@@ -154,7 +149,7 @@ class CoreShop_Admin_CarrierController extends Admin
             $carrier->setValues($data['settings']);
 
             foreach ($data['groups'] as $group) {
-                $obj = new CoreShop\Model\Carrier\ShippingRuleGroup();
+                $obj = CoreShop\Model\Carrier\ShippingRuleGroup::create();
                 $obj->setCarrier($carrier);
                 $obj->setPriority($group['priority']);
                 $obj->setShippingRuleId($group['shippingRuleId']);

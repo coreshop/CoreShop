@@ -236,7 +236,7 @@ class Invoice extends Base
         if($totalShipping - $invoicedShipping > 0) {
             $shippingTaxRate = $order->getShippingTaxRate();
 
-            $taxRate = new \CoreShop\Model\Tax();
+            $taxRate = \CoreShop\Model\Tax::create();
             $taxRate->setRate($shippingTaxRate);
 
             $taxCalculator = new TaxCalculator([$taxRate]);
@@ -264,7 +264,7 @@ class Invoice extends Base
         if($totalPaymentFee - $invoicedPaymentFees > 0) {
             $paymentFeeTaxRate = $order->getPaymentFeeTaxRate();
 
-            $taxRate = new \CoreShop\Model\Tax();
+            $taxRate = \CoreShop\Model\Tax::create();
             $taxRate->setRate($paymentFeeTaxRate);
 
             $taxCalculator = new TaxCalculator([$taxRate]);

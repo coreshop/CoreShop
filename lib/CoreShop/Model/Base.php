@@ -17,6 +17,7 @@ namespace CoreShop\Model;
 use CoreShop\Exception;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Listing\AbstractListing;
+use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model\Object\Concrete;
@@ -107,7 +108,7 @@ class Base extends Concrete
                     $listClass = \Pimcore::getDiContainer()->get($listClass);
                     
                     $list = new $listClass();
-                } elseif (\Pimcore\Tool::classExists($listClass)) {
+                } elseif (Tool::classExists($listClass)) {
                     $list = new $listClass();
                 }
 
@@ -176,7 +177,7 @@ class Base extends Concrete
             return parent::__callStatic($method, $arguments);
         }
 
-        if (!\Pimcore\Tool::classExists($pimcoreClass)) {
+        if (!Tool::classExists($pimcoreClass)) {
             throw new Exception('Calling to unkown class '.$pimcoreClass);
         }
 
@@ -224,7 +225,7 @@ class Base extends Concrete
             $class = get_parent_class(get_called_class());
             $class .= '\\AdminStyle';
 
-            if (\Pimcore\Tool::classExists($class)) {
+            if (Tool::classExists($class)) {
                 $this->o_elementAdminStyle = new $class($this);
             } else {
                 $this->o_elementAdminStyle = new AdminStyle($this);
@@ -236,6 +237,7 @@ class Base extends Concrete
 
     /**
      * @return static
+     *
      * @throws Exception
      * @throws \Exception
      * @throws \Pimcore\Model\Element\ValidationException
@@ -280,7 +282,7 @@ class Base extends Concrete
     /**
      * Return Topmost Master if Object is Variant
      *
-     * @return AbstractModel
+     * @return AbstractObject
      */
     public function getVariantMaster()
     {

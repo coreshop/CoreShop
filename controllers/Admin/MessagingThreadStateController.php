@@ -68,7 +68,7 @@ class CoreShop_Admin_MessagingThreadStateController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $state = new State();
+            $state = State::create();
             $state->setFinished(false);
             $state->setName($name);
             $state->save();

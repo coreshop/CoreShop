@@ -78,7 +78,7 @@ class Service extends AbstractDao
                 $code = implode("-", str_split($code, $hyphensOn));
             }
 
-            $codeObject = new VoucherCode();
+            $codeObject = VoucherCode::create();
             $codeObject->setCode($code);
             $codeObject->setCreationDate(Date::now());
             $codeObject->setUsed(false);

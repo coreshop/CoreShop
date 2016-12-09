@@ -95,7 +95,7 @@ class Configuration extends AbstractModel
             }
         } catch (\Exception $e) {
             try {
-                $configurationEntry = new self();
+                $configurationEntry = static::create();
                 \Zend_Registry::set($cacheKey, $configurationEntry);
                 $configurationEntry->setId(intval($id));
                 $configurationEntry->getDao()->getById();
@@ -144,7 +144,7 @@ class Configuration extends AbstractModel
         }
 
         // create a tmp object to obtain the id
-        $configurationEntry = new self();
+        $configurationEntry = static::create();
 
         try {
             $configurationEntry->getDao()->getByKey($key, $shopId);

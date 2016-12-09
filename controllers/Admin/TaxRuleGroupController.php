@@ -65,7 +65,7 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $group = new TaxRuleGroup();
+            $group = TaxRuleGroup::create();
             $group->setName($name);
             $group->setActive(1);
             $group->save();
@@ -112,7 +112,7 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
                 }
 
                 if (!$taxRuleObject instanceof \CoreShop\Model\TaxRule) {
-                    $taxRuleObject = new \CoreShop\Model\TaxRule();
+                    $taxRuleObject = \CoreShop\Model\TaxRule::create();
                 }
 
                 $taxRuleObject->setStateId($taxRule['stateId'] ? $taxRule['stateId'] : 0);
@@ -177,7 +177,7 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
             $taxId = $this->getParam('taxId');
             $behavior = $this->getParam('behavior');
 
-            $taxRule = new \CoreShop\Model\TaxRule();
+            $taxRule = \CoreShop\Model\TaxRule::create();
             $taxRule->setCountryId($countryId);
             $taxRule->setTaxId($taxId);
             $taxRule->setBehavior($behavior);

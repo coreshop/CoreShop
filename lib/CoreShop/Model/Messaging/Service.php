@@ -68,7 +68,7 @@ class Service
         }
 
         if (!$thread instanceof Thread) {
-            $thread = new Thread();
+            $thread = Thread::create();
             $thread->setEmail($params['email']);
             $thread->setShopId(Shop::getShop()->getId());
             $thread->setStatusId(Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));

@@ -71,7 +71,7 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin
     {
         $name = $this->getParam('name');
 
-        $priceRule = new \CoreShop\Model\Product\PriceRule();
+        $priceRule = \CoreShop\Model\Product\PriceRule::create();
         $priceRule->setName($name);
         $priceRule->setActive(false);
         $priceRule->save();

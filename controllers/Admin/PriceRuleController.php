@@ -75,7 +75,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $priceRule = new PriceRule();
+            $priceRule = PriceRule::create();
             $priceRule->setName($name);
             $priceRule->setActive(0);
             $priceRule->setHighlight(0);

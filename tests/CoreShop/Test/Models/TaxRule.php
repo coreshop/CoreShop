@@ -36,10 +36,10 @@ class TaxRule extends Base
     {
         $this->printTestName();
 
-        $tax10 = new \CoreShop\Model\Tax();
+        $tax10 = \CoreShop\Model\Tax::create();
         $tax10->setRate(10);
 
-        $tax20 = new \CoreShop\Model\Tax();
+        $tax20 = \CoreShop\Model\Tax::create();
         $tax20->setRate(20);
 
         $taxCalculator = new TaxCalculator(array($tax10), TaxCalculator::DISABLE_METHOD);

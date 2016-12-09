@@ -98,7 +98,7 @@ class CoreShop_Admin_ZoneController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $zone = new Zone();
+            $zone = Zone::create();
             $zone->setName($name);
             $zone->setActive(1);
             $zone->save();

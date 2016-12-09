@@ -68,7 +68,7 @@ class CoreShop_Admin_OrderStateController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $orderState = new State();
+            $orderState = State::create();
             $orderState->setName($name);
             $orderState->setAccepted(0);
             $orderState->setShipped(0);

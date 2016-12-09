@@ -71,7 +71,7 @@ class AbstractModel extends Model\AbstractModel
      */
     public static function getById($id)
     {
-        return self::getByShopId($id, null);
+        return static::getByShopId($id, null);
     }
 
     /**
@@ -103,9 +103,21 @@ class AbstractModel extends Model\AbstractModel
     }
 
     /**
+     * Create new instance of Pimcore Object.
+     *
+     * @throws Exception
+     *
+     * @return static
+     */
+    public static function create()
+    {
+        return Tools::createObject(static::class);
+    }
+
+    /**
      * @param $id
      * @param null $shopId
-     * @return mixed|null
+     * @return static|null
      */
     public static function getByShopId($id, $shopId = null)
     {
@@ -128,7 +140,7 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    $object = Tools::createObject($className);
+                    $object = static::create();
                     $object->getDao()->getById($id, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
@@ -153,7 +165,7 @@ class AbstractModel extends Model\AbstractModel
      * @param string $value
      * @param int $shopId
      *
-     * @return null|AbstractModel
+     * @return null|static
      */
     public static function getByField($field, $value, $shopId = null)
     {
@@ -170,7 +182,7 @@ class AbstractModel extends Model\AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    $object = Tools::createObject($className);
+                    $object = static::create();
                     $object->getDao()->getByField($field, $value, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);

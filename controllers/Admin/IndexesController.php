@@ -67,7 +67,7 @@ class CoreShop_Admin_IndexesController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $group = new Index();
+            $group = Index::create();
             $group->setName($name);
             $group->setType('mysql');
             $group->setConfig(array());

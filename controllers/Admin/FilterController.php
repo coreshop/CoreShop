@@ -66,7 +66,7 @@ class CoreShop_Admin_FilterController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $filter = new Filter();
+            $filter = Filter::create();
             $filter->setName($name);
             $filter->setResultsPerPage(20);
             $filter->setOrder('desc');

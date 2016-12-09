@@ -99,7 +99,7 @@ class CoreShop_Admin_CountryController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $country = new Country();
+            $country = Country::create();
             $country->setName($name);
             $country->setActive(1);
             $country->save();

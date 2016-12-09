@@ -49,7 +49,7 @@ class Visitor extends \Zend_Controller_Plugin_Abstract
 
             //new Visitor
             if (!$visitor instanceof \CoreShop\Model\Visitor) {
-                $visitor = new \CoreShop\Model\Visitor();
+                $visitor = \CoreShop\Model\Visitor::create();
                 $visitor->setShopId(Shop::getShop()->getId());
                 $visitor->setIp(ip2long(Tool::getClientIp()));
                 $visitor->setController($request->getControllerName());
@@ -67,7 +67,7 @@ class Visitor extends \Zend_Controller_Plugin_Abstract
                 $session->visitorId = $visitor->getId();
             } else {
                 //recurring Visitor, set new page
-                $page = new Page();
+                $page = Page::create();
                 $page->setVisitor($visitor);
                 $page->setController($request->getControllerName());
                 $page->setAction($request->getActionName());
@@ -77,7 +77,7 @@ class Visitor extends \Zend_Controller_Plugin_Abstract
 
                 if (\CoreShop::getTools()->getReferrer()) {
                     //recurring Visitor that comes from external: add new source
-                    $source = new Source();
+                    $source = Source::create();
                     $source->setVisitor($visitor);
                     $source->setPage($page);
                     $source->setReferrer(\CoreShop::getTools()->getReferrer());

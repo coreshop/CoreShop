@@ -14,8 +14,8 @@
 
 namespace CoreShop\Plugin;
 
+use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Configuration;
-use CoreShop\Plugin;
 use CoreShop\Version;
 use Pimcore\File;
 use Pimcore\Model\Document;
@@ -404,6 +404,7 @@ class Install
      * installs some data based from an XML File.
      *
      * @param $xml
+     * @param $namespace
      */
     public function installObjectData($xml, $namespace = '')
     {
@@ -418,12 +419,12 @@ class Install
                 $class = $coreShopNamespace.$class;
 
                 foreach ($amounts as $values) {
-                    if (Tool::classExists($class)) {
-                        $object = new $class();
+                    if (Tool::classExists($class) && is_a($class, AbstractModel::class)) {
+                        $object = $class::create();
 
                         foreach ($values as $key => $value) {
                             //Localized Value
-                            $setter = 'set'.ucfirst($key);
+                            $setter = 'set' . ucfirst($key);
 
                             if (is_array($value)) {
                                 foreach ($value as $lang => $val) {
@@ -796,36 +797,6 @@ class Install
         }
     }
 
-    /*
-        public function createDocTypes()
-        {
-            $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
-            foreach ($conf->doctypes->doctype as $def) {
-                $docType = Document_DocType::create();
-                $docType->setName($def->name);
-                $docType->setType($def->type);
-                $docType->setModule($def->module);
-                $docType->setController($def->controller);
-                $docType->setAction($def->action);
-                $docType->save();
-            }
-        }
-        public function removeDocTypes()
-        {
-            $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
-            $names = array();
-            foreach ($conf->doctypes->doctype as $def) {
-                $names[] = $def->name;
-            }
-            $list = new Document_DocType_List();
-            $list->load();
-            foreach ($list->docTypes as $docType) {
-                if (in_array($docType->name, $names)) {
-                    $docType->delete();
-                }
-            }
-        }
-    */
     /**
      * @return \Int User Id
      */

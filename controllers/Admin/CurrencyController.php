@@ -97,7 +97,7 @@ class CoreShop_Admin_CurrencyController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $currency = new Currency();
+            $currency = Currency::create();
             $currency->setName($name);
             $currency->save();
 

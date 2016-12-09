@@ -71,7 +71,7 @@ class VatManager implements TaxManager
         $cacheKey = 'coreshop_vattax_calculator';
 
         if (!\Zend_Registry::isRegistered($cacheKey)) {
-            $tax = new Tax();
+            $tax = Tax::create();
             $tax->setRate(0);
 
             \Zend_Registry::set($cacheKey, new TaxCalculator(array($tax), 0));

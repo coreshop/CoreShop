@@ -39,7 +39,7 @@ class SpecificPrice extends Base
     {
         parent::setUp();
 
-        $specificPrice = new \CoreShop\Model\Product\SpecificPrice();
+        $specificPrice = \CoreShop\Model\Product\SpecificPrice::create();
         $specificPrice->setName("test-rule");
 
         $this->specificPrice = $specificPrice;

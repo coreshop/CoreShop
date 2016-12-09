@@ -93,7 +93,7 @@ class CoreShop_UserController extends Action
         $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), \CoreShop\Model\Shop::getShop()->getId(), $order->getId(), $product);
 
         if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
-            $thread = new CoreShop\Model\Messaging\Thread();
+            $thread = CoreShop\Model\Messaging\Thread::create();
             $thread->setLanguage($order->getLang());
             $thread->setStatusId(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
             $thread->setEmail($order->getCustomer()->getEmail());

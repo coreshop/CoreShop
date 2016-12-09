@@ -160,7 +160,7 @@ class Thread extends AbstractModel
      */
     public function createMessage($messageText)
     {
-        $message = new Message();
+        $message = Message::create();
         $message->setThread($this);
         $message->setMessage($messageText);
         $message->setRead(false);

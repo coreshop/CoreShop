@@ -76,7 +76,7 @@ class Visitor extends AbstractModel
             $db = Db::get();
 
             $orderClassId = Order::classId();
-            $visitor = new static();
+            $visitor = static::create();
             $tableName = $visitor->getDao()->getTableName();
 
             $sql = "SELECT visitors.id FROM $tableName visitors LEFT JOIN object_store_$orderClassId orders ON orders.visitorId=visitors.id WHERE orders.oo_id IS NULL AND visitors.creationDate < $timestampToDelete";

@@ -66,7 +66,7 @@ class CoreShop_Admin_TaxController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $tax = new Tax();
+            $tax = Tax::create();
             $tax->setName($name);
             $tax->setRate(0);
             $tax->setActive(1);

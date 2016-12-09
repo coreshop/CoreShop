@@ -43,7 +43,7 @@ class PriceRule extends Base
     {
         parent::setUp();
 
-        $priceRule = new \CoreShop\Model\Product\PriceRule();
+        $priceRule = \CoreShop\Model\Product\PriceRule::create();
         $priceRule->setName("test-rule");
         $priceRule->setActive(true);
         $priceRule->setDescription("");

@@ -156,7 +156,7 @@ class CoreShop_Admin_OrderController extends Admin
         $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), \CoreShop\Model\Shop::getShop()->getId(), $orderId);
 
         if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
-            $thread = new CoreShop\Model\Messaging\Thread();
+            $thread = CoreShop\Model\Messaging\Thread::create();
             $thread->setLanguage($order->getLang());
             $thread->setStatusId(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
             $thread->setEmail($order->getCustomer()->getEmail());

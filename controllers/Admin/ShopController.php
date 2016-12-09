@@ -116,7 +116,7 @@ class CoreShop_Admin_ShopController extends Admin
         if (strlen($name) <= 0) {
             $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
         } else {
-            $shop = new Shop();
+            $shop = Shop::create();
             $shop->setName($name);
             $shop->setTemplate(Shop::getDefaultShop()->getTemplate());
             $shop->save();
