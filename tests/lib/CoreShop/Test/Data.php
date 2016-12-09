@@ -138,11 +138,6 @@ class Data
             $carrier->setName("Test-Carrier-Weight");
             $carrier->setLabel("Test-Carrier-Weight");
             $carrier->setGrade(1);
-            $carrier->setMaxHeight(100);
-            $carrier->setMaxWeight(100);
-            $carrier->setMaxDepth(100);
-            $carrier->setMaxWidth(100);
-            $carrier->setShippingMethod(Carrier::SHIPPING_METHOD_WEIGHT);
             $carrier->setRangeBehaviour(Carrier::RANGE_BEHAVIOUR_DEACTIVATE);
             $carrier->setTaxRuleGroup(TaxRuleGroup::getById(1));
             $carrier->setIsFree(false);
@@ -191,11 +186,6 @@ class Data
             $carrier->setName("Test-Carrier-Weight No-Max");
             $carrier->setLabel("Test-Carrier-Weight No-Max");
             $carrier->setGrade(1);
-            $carrier->setMaxHeight(0);
-            $carrier->setMaxWeight(0);
-            $carrier->setMaxDepth(0);
-            $carrier->setMaxWidth(0);
-            $carrier->setShippingMethod(Carrier::SHIPPING_METHOD_WEIGHT);
             $carrier->setRangeBehaviour(Carrier::RANGE_BEHAVIOUR_LARGEST);
             $carrier->setTaxRuleGroup(TaxRuleGroup::getById(1));
             $carrier->setIsFree(false);
