@@ -89,6 +89,15 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
                         }
                     ]
                 },
+                bbar : {
+                    items : ['->', {
+                        iconCls: 'pimcore_icon_reload',
+                        scale : 'small',
+                        handler: function() {
+                            this.grid.getStore().load();
+                        }.bind(this)
+                    }]
+                },
                 hideHeaders: true
             });
 

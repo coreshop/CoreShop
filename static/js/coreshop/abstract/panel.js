@@ -121,6 +121,15 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
                         }
                     ]
                 },
+                bbar : {
+                    items : ['->', {
+                        iconCls: 'pimcore_icon_reload',
+                        scale : 'small',
+                        handler: function() {
+                            this.grid.getStore().load();
+                        }.bind(this)
+                    }]
+                },
                 hideHeaders: true
             });
 
