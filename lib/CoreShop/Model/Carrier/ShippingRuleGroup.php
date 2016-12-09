@@ -15,14 +15,14 @@
 namespace CoreShop\Model\Carrier;
 
 use CoreShop\Exception;
+use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Carrier;
-use CoreShop\Model\Rules\AbstractRule;
 
 /**
  * Class ShippingRuleGroup
  * @package CoreShop\Model\Carrier
  */
-class ShippingRuleGroup extends AbstractRule
+class ShippingRuleGroup extends AbstractModel
 {
     /**
      * @var int
