@@ -40,7 +40,7 @@ composer require coreshop/core-shop dev-master
 
 ## CoreShop Demo Data
 
-To install demo products, add the (CoreShopDemo)[https://github.com/coreshop/CoreShop-Demo] Plugin to Pimcore and install it through CoreShop -> Plugins -> CoreShop Demo Installer.
+To install demo products, add the [CoreShopDemo](https://github.com/coreshop/CoreShop-Demo) Plugin to Pimcore and install it through CoreShop -> Plugins -> CoreShop Demo Installer.
 
 ## Copyright and license 
 Copyright: [Dominik Pfaffenbauer](https://www.pfaffenbauer.at)
