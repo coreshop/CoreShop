@@ -87,11 +87,6 @@ class Carrier extends AbstractModel
     public $isFree;
 
     /**
-     * @var string
-     */
-    public $shippingMethod;
-
-    /**
      * @var int
      */
     public $taxRuleGroupId;
@@ -105,26 +100,6 @@ class Carrier extends AbstractModel
      * @var int
      */
     public $rangeBehaviour;
-
-    /**
-     * @var float
-     */
-    public $maxHeight;
-
-    /**
-     * @var float
-     */
-    public $maxWidth;
-
-    /**
-     * @var float
-     */
-    public $maxDepth;
-
-    /**
-     * @var float
-     */
-    public $maxWeight;
 
     /**
      * @var string
@@ -691,22 +666,6 @@ class Carrier extends AbstractModel
     }
 
     /**
-     * @return string
-     */
-    public function getShippingMethod()
-    {
-        return $this->shippingMethod;
-    }
-
-    /**
-     * @param string $shippingMethod
-     */
-    public function setShippingMethod($shippingMethod)
-    {
-        $this->shippingMethod = $shippingMethod;
-    }
-
-    /**
      * @return int
      */
     public function getTaxRuleGroupId()
@@ -765,70 +724,6 @@ class Carrier extends AbstractModel
     public function setRangeBehaviour($rangeBehaviour)
     {
         $this->rangeBehaviour = $rangeBehaviour;
-    }
-
-    /**
-     * @return float
-     */
-    public function getMaxHeight()
-    {
-        return $this->maxHeight;
-    }
-
-    /**
-     * @param float $maxHeight
-     */
-    public function setMaxHeight($maxHeight)
-    {
-        $this->maxHeight = $maxHeight;
-    }
-
-    /**
-     * @return float
-     */
-    public function getMaxWidth()
-    {
-        return $this->maxWidth;
-    }
-
-    /**
-     * @param float $maxWidth
-     */
-    public function setMaxWidth($maxWidth)
-    {
-        $this->maxWidth = $maxWidth;
-    }
-
-    /**
-     * @return float
-     */
-    public function getMaxDepth()
-    {
-        return $this->maxDepth;
-    }
-
-    /**
-     * @param float $maxDepth
-     */
-    public function setMaxDepth($maxDepth)
-    {
-        $this->maxDepth = $maxDepth;
-    }
-
-    /**
-     * @return float
-     */
-    public function getMaxWeight()
-    {
-        return $this->maxWeight;
-    }
-
-    /**
-     * @param float $maxWeight
-     */
-    public function setMaxWeight($maxWeight)
-    {
-        $this->maxWeight = $maxWeight;
     }
 
     /**

@@ -8,13 +8,8 @@ CREATE TABLE `coreshop_carriers` (
   `image` int NULL,
   `trackingUrl` varchar(512) NULL,
   `isFree` tinyint NOT NULL DEFAULT '0',
-  `shippingMethod` enum('price','weight') NOT NULL,
   `taxRuleGroupId` INT(11) NULL DEFAULT NULL,
   `rangeBehaviour` enum('largest','deactivate') NOT NULL,
-  `maxHeight` double NOT NULL DEFAULT '0',
-  `maxWidth` double NOT NULL DEFAULT '0',
-  `maxDepth` double NOT NULL DEFAULT '0',
-  `maxWeight` double NOT NULL DEFAULT '0',
   `class` varchar(255) NULL
 ) DEFAULT CHARSET=utf8mb4;
 
