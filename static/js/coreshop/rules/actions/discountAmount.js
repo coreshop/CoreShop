@@ -47,7 +47,7 @@ pimcore.plugin.coreshop.rules.actions.discountAmount = Class.create(pimcore.plug
             valueField: 'id',
             forceSelection: true,
             triggerAction: 'all',
-            hiddenName:'currency',
+            name:'currency',
             listeners: {
                 listeners: {
                     beforerender: function () {
