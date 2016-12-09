@@ -70,15 +70,19 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
     },
 
     getSaveData : function () {
-        var saveData = {};
+        if(this.settingsForm.getEl()) {
+            var saveData = {};
 
-        // general settings
-        saveData['id'] = this.data.id;
-        saveData['settings'] = this.settingsForm.getForm().getFieldValues();
-        saveData['conditions'] = this.conditions.getConditionsData();
-        saveData['actions'] = this.actions.getActionsData();
+            // general settings
+            saveData['id'] = this.data.id;
+            saveData['settings'] = this.settingsForm.getForm().getFieldValues();
+            saveData['conditions'] = this.conditions.getConditionsData();
+            saveData['actions'] = this.actions.getActionsData();
 
-        return saveData;
+            return saveData;
+        }
+
+        return {};
     },
 
     isDirty : function() {

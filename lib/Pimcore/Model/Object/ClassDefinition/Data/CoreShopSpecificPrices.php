@@ -16,6 +16,7 @@ namespace Pimcore\Model\Object\ClassDefinition\Data;
 
 use CoreShop\Model\Product;
 use CoreShop\Model\Product\SpecificPrice;
+use Pimcore\Cache;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model\Object\Concrete;
@@ -129,6 +130,10 @@ class CoreShopSpecificPrices extends Data
                 if (!in_array($price->getId(), $founds)) {
                     $price->delete();
                 }
+            }
+
+            if($object instanceof Product) {
+                Cache::clearTag($object->getCacheKey());
             }
         }
     }
