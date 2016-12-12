@@ -409,10 +409,11 @@ class Tools
      *
      * @param boolean $resetCart
      * @param string $name
+     * @param boolean $create
      *
      * @return Cart
      */
-    public function getCart($resetCart = false, $name = "default") {
+    public function getCart($resetCart = false, $name = "default", $create = true) {
         $cart = null;
         $cartSession = $this->getSession();
 
@@ -454,10 +455,14 @@ class Tools
             return $cart;
         }
 
-        $cart = Cart::prepare();
-        $this->getCartManager()->setSessionCart($cart);
+        if($create) {
+            $cart = Cart::prepare();
+            $this->getCartManager()->setSessionCart($cart);
 
-        return $cart;
+            return $cart;
+        }
+
+        return null;
     }
 
     /**
@@ -469,7 +474,7 @@ class Tools
     {
         $session = $this->getSession();
         $country = null;
-        $cart = $this->getCart();
+        $cart = $this->getCart(false, "default", false);
 
         if (\Pimcore::inDebugMode()) {
             if (!empty($_REQUEST["coreshop_country"])) {
@@ -615,8 +620,10 @@ class Tools
             }
         }
         else {
-            if($this->getCart()->getId() > 0 && $this->getCart()->getCurrency() instanceof Currency) {
-                return $this->getCart()->getCurrency();
+            $cart = $this->getCart(false, "default", false);
+
+            if($cart instanceof Cart && $cart->getId() > 0 && $cart->getCurrency() instanceof Currency) {
+                return $cart->getCurrency();
             }
         }
 

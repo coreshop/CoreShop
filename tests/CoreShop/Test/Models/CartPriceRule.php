@@ -212,7 +212,7 @@ class CartPriceRule extends Base
 
         $this->priceRule->setActions(array($discount));
 
-        $cart = \CoreShop::getTools()->getCart();
+        $cart = Data::createCart();
         $cart->addItem(Data::$product2);
         $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
 
