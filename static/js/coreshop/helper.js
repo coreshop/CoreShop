@@ -55,6 +55,24 @@ coreshop.helpers.openOrderByNumber = function (orderNumber) {
     });
 };
 
+coreshop.helpers.createOrder = function() {
+    pimcore.helpers.itemselector(
+        false,
+        function(customer) {
+            new pimcore.plugin.coreshop.orders.create.order(customer.id);
+        }.bind(this),
+        {
+            type: ['object'],
+            subtype: {
+                object : ['object']
+            },
+            specific: {
+                classes : [coreshop.settings.classMapping.user]
+            }
+        }
+    );
+};
+
 coreshop.helpers.openProductByArticleNumber = function (articleNumber) {
 
 };

@@ -48,7 +48,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                             iconCls : 'coreshop_icon_order_create',
                             text : t('coreshop_order_create'),
                             handler : function () {
-                                new pimcore.plugin.coreshop.orders.create.order();
+                                coreshop.helpers.createOrder();
                             }.bind(this)
                         }
                     ]

@@ -167,6 +167,14 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         handler: this.openOrders
                     });
 
+                    ordersMenu.push({
+                        text: t('coreshop_order_create'),
+                        iconCls: 'coreshop_icon_order_create',
+                        handler: function() {
+                            coreshop.helpers.createOrder();
+                        }.bind(this)
+                    });
+
                     coreShopMenuItems.push({
                         text: t('coreshop_order'),
                         iconCls: 'coreshop_icon_order',
