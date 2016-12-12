@@ -381,6 +381,345 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(array('success' => false));
     }
 
+    public function getCustomerDetailsAction() {
+        $customerId = $this->getParam("customerId");
+        $user = \CoreShop\Model\User::getById($customerId);
+
+        if(!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        }
+
+        $this->_helper->json(array('success' => true, 'customer' => $this->getDataForObject($user)));
+    }
+
+    public function getCustomerCartsAction() {
+        $customerId = $this->getParam("customerId");
+        $user = \CoreShop\Model\User::getById($customerId);
+
+        if(!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        }
+
+        $manager = new \CoreShop\Model\Cart\Manager();
+        $carts = $manager->getCarts($user);
+        $result = [];
+
+        foreach($carts as $cart) {
+            $productIds = [];
+
+            foreach($cart->getItems() as $item) {
+                $productIds[] = [
+                    'id' => $item->getProduct()->getId(),
+                    'amount' => $item->getAmount()
+                ];
+            }
+
+            $result[] = [
+                "id" => $cart->getId(),
+                "date" => $cart->getCreationDate(),
+                "total" => $cart->getTotal(true),
+                "name" => $cart->getName(),
+                "currency" => $this->getCurrency(\CoreShop::getTools()->getBaseCurrency()),
+                "productIds" => $productIds
+            ];
+        }
+
+        $this->_helper->json(array('success' => true, 'carts' => $result));
+    }
+
+    public function getCustomerOrdersAction() {
+        $customerId = $this->getParam("customerId");
+        $user = \CoreShop\Model\User::getById($customerId);
+
+        if(!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        }
+
+        $orders = $user->getOrders();
+        $result = [];
+
+        foreach($orders as $order) {
+            if($order instanceof \CoreShop\Model\Order) {
+                $productIds = [];
+
+                foreach($order->getItems() as $item) {
+                    $productIds[] = [
+                        'id' => $item->getProduct()->getId(),
+                        'amount' => $item->getAmount()
+                    ];
+                }
+
+                $result[] = [
+                    "id" => $order->getId(),
+                    "date" => $order->getOrderDate() instanceof \Carbon\Carbon ? $order->getOrderDate()->getTimestamp() : ($order->getOrderDate() instanceof \Pimcore\Date ? $order->getOrderDate()->getTimestamp() : 0),
+                    "total" => $order->getTotal(),
+                    "currency" => $this->getCurrency($order->getCurrency()),
+                    "productIds" => $productIds
+                ];
+            }
+        }
+
+        $this->_helper->json(array('success' => true, 'orders' => $result));
+    }
+
+    public function getProductDetailsAction() {
+        $productIds = \Zend_Json::decode($this->getParam("products"));
+        $currency = \CoreShop\Model\Currency::getById($this->getParam("currency"));
+
+        $result = [];
+
+        foreach($productIds as $productObject) {
+            $productId = $productObject['id'];
+
+            $product = \CoreShop\Model\Product::getById($productId);
+
+            if($product instanceof \CoreShop\Model\Product) {
+                $productFlat = $this->getDataForObject($product);
+
+                $productFlat['amount'] = $productObject['amount'];
+
+                $productFlat['price'] = \CoreShop::getTools()->convertToCurrency($product->getPrice(true, false), $currency);
+                $result[] = $productFlat;
+            }
+        }
+
+        $this->_helper->json(array('success' => true, 'products' => $result));
+    }
+
+    public function getCarriersDetailsAction() {
+        $productIds = \Zend_Json::decode($this->getParam("products"));
+        $customerId = $this->getParam("customerId");
+        $shippingAddressId = $this->getParam("shippingAddress");
+        $billingAddressId = $this->getParam("billingAddress");
+
+        //$language = $this->getParma("language");
+        $currency = \CoreShop\Model\Currency::getById($this->getParam("currency"));
+
+        $user = \CoreShop\Model\User::getById($customerId);
+        $shippingAddress = \CoreShop\Model\User\Address::getById($shippingAddressId);
+        $billingAddress = \CoreShop\Model\User\Address::getById($billingAddressId);
+
+        $result = [];
+
+        if(!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        }
+
+        if(!$shippingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$shippingAddressId' not found"));
+        }
+
+        if(!$billingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$billingAddressId' not found"));
+        }
+
+        $cart = $this->createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds);
+
+        $carriers = \CoreShop\Model\Carrier::getCarriersForCart($cart, $cart->getShippingAddress());
+
+        foreach($carriers as $carrier) {
+            $price = $carrier->getDeliveryPrice($cart, true, $cart->getShippingAddress());
+
+            $result[] = [
+                "id" => $carrier->getId(),
+                "name" => $carrier->getName(),
+                "price" => \CoreShop::getTools()->convertToCurrency($price, $currency)
+            ];
+        }
+
+        $cart->delete();
+
+        $this->_helper->json(array('success' => true, 'carriers' => $result));
+    }
+
+    public function getOrderTotalAction() {
+        $productIds = \Zend_Json::decode($this->getParam("products"));
+        $customerId = $this->getParam("customerId");
+        $shippingAddressId = $this->getParam("shippingAddress");
+        $billingAddressId = $this->getParam("billingAddress");
+        $carrierId = $this->getParam("carrier");
+        $freeShipping = $this->getParam("freeShipping");
+
+        //$language = $this->getParma("language");
+        $currency = \CoreShop\Model\Currency::getById($this->getParam("currency"));
+
+        $user = \CoreShop\Model\User::getById($customerId);
+        $shippingAddress = \CoreShop\Model\User\Address::getById($shippingAddressId);
+        $billingAddress = \CoreShop\Model\User\Address::getById($billingAddressId);
+        $carrier = \CoreShop\Model\Carrier::getById($carrierId);
+
+        if(!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        }
+
+        if(!$shippingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$shippingAddressId' not found"));
+        }
+
+        if(!$billingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$billingAddressId' not found"));
+        }
+
+        if(!$carrier instanceof \CoreShop\Model\Carrier) {
+            $this->_helper->json(array('success' => false, 'message' => "Carrier with ID '$carrierId' not found"));
+        }
+
+        $cart = $this->createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds);
+        $cart->setCarrier($carrier);
+        $cart->setFreeShipping($freeShipping);
+        $cart->save();
+
+        $values = [
+            [
+                "key" => "subtotal",
+                "value" => $cart->getSubtotal(true)
+            ],
+            [
+                "key" => "subtotal_tax",
+                "value" => $cart->getSubtotalTax()
+            ],
+            [
+                "key" => "subtotal_without_tax",
+                "value" =>$cart->getSubtotal(false)
+            ],
+            [
+                "key" => "shipping_without_tax",
+                "value" =>$cart->getShipping(false)
+            ],
+            [
+                "key" => "shipping_tax",
+                "value" => $cart->getShippingTax()
+            ],
+            [
+                "key" => "shipping",
+                "value" => $cart->getShipping(true)
+            ],
+            [
+                "key" => "discount_without_tax",
+                "value" => -1 * $cart->getDiscount(false)
+            ],
+            [
+                "key" => "discount_tax",
+                "value" => -1 * $cart->getDiscountTax()
+            ],
+            [
+                "key" => "discount",
+                "value" => -1 * $cart->getDiscount(true)
+            ],
+            [
+                "key" => "total_without_tax",
+                "value" =>$cart->getTotal(false)
+            ],
+            [
+                "key" => "total_tax",
+                "value" =>$cart->getTotalTax()
+            ],
+            [
+                "key" => "total",
+                "value" => $cart->getTotal(true)
+            ]
+        ];
+
+        $cart->delete();
+
+        $this->_helper->json(array('success' => true, 'summary' => $values));
+    }
+
+    public function createOrderAction() {
+        $productIds = \Zend_Json::decode($this->getParam("products"));
+        $customerId = $this->getParam("customerId");
+        $shippingAddressId = $this->getParam("shippingAddress");
+        $billingAddressId = $this->getParam("billingAddress");
+        $carrierId = $this->getParam("carrier");
+        $freeShipping = $this->getParam("freeShipping");
+        $orderStateId = $this->getParam("orderState");
+        $paymentModuleName = $this->getParam("paymentProvider");
+        $shopId = $this->getParam("shop");
+
+        $language = $this->getParam("language");
+        $currency = \CoreShop\Model\Currency::getById($this->getParam("currency"));
+
+        $user = \CoreShop\Model\User::getById($customerId);
+        $shippingAddress = \CoreShop\Model\User\Address::getById($shippingAddressId);
+        $billingAddress = \CoreShop\Model\User\Address::getById($billingAddressId);
+        $carrier = \CoreShop\Model\Carrier::getById($carrierId);
+        $orderState = \CoreShop\Model\Order\State::getById($orderStateId);
+        $paymentModule = \CoreShop::getPaymentProvider($paymentModuleName);
+        $shop = \CoreShop\Model\Shop::getById($shopId);
+
+        if(!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        }
+
+        if(!$shippingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$shippingAddressId' not found"));
+        }
+
+        if(!$billingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$billingAddressId' not found"));
+        }
+
+        if(!$carrier instanceof \CoreShop\Model\Carrier) {
+            $this->_helper->json(array('success' => false, 'message' => "Carrier with ID '$carrierId' not found"));
+        }
+
+        if(!$paymentModule instanceof \CoreShop\Model\Plugin\Payment) {
+            $this->_helper->json(array('success' => false, 'message' => "Payment Module with ID '$paymentModuleName' not found"));
+        }
+
+        if(!$orderState instanceof \CoreShop\Model\Order\State) {
+            $this->_helper->json(array('success' => false, 'message' => "Order State with ID '$orderStateId' not found"));
+        }
+
+        if(!$shop instanceof \CoreShop\Model\Shop) {
+            $this->_helper->json(array('success' => false, 'message' => "Shop with ID '$shopId' not found"));
+        }
+
+        $cart = $this->createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds);
+        $cart->setCarrier($carrier);
+        $cart->setShop($shop);
+        $cart->setFreeShipping($freeShipping);
+        $cart->save();
+
+        $order = $cart->createOrder($orderState, $paymentModule, 0, $language);
+
+        $cart->delete();
+
+        $this->_helper->json(array('success' => true, 'orderId' => $order->getId()));
+    }
+
+    /**
+     * @param $shippingAddress
+     * @param $billingAddress
+     * @param $currency
+     * @param $productIds
+     * @return \CoreShop\Model\Cart
+     */
+    protected function createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds) {
+        $cart = \CoreShop\Model\Cart::create();
+        $cart->setParent(\Pimcore\Model\Object\Service::createFolderByPath("/coreshop/tmp"));
+        $cart->setKey(uniqid());
+        $cart->setShippingAddress($shippingAddress);
+        $cart->setBillingAddress($billingAddress);
+        $cart->setCurrency($currency);
+        $cart->setUser($user);
+        //$cart->setCurrency($currency); needs a CORE Change -> Cart should be responsible for the currency...
+        //$cart->setLanguage($language);
+        $cart->save();
+
+        foreach($productIds as $productObject) {
+            $productId = $productObject['id'];
+
+            $product = \CoreShop\Model\Product::getById($productId);
+
+            if($product instanceof \CoreShop\Model\Product) {
+                $cart->addItem($product, $productObject['amount']);
+            }
+        }
+
+        return $cart;
+    }
+
     /**
      * @param Object\Concrete $data
      * @return array
@@ -403,7 +742,7 @@ class CoreShop_Admin_OrderController extends Admin
                 $objectData[$key] = [];
 
                 foreach($fieldData as $object) {
-                    if($fieldData instanceof Object\Concrete) {
+                    if($object instanceof Object\Concrete) {
                         $objectData[$key][] = $this->getDataForObject($object);
                     }
                 }

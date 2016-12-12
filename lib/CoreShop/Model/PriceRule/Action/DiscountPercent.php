@@ -125,12 +125,14 @@ class DiscountPercent extends AbstractAction
      * Calculates the discount and converts it to a specific currency
      *
      * @param $price
+     * @param $currency
+     *
      * @return mixed
      */
     protected function getDiscount($price)
     {
         $discount = $price * ($this->getPercent() / 100);
 
-        return \CoreShop::getTools()->convertToCurrency($discount, \CoreShop::getTools()->getCurrency(), Currency::getById($this->getCurrencyId()));
+        return $discount;
     }
 }

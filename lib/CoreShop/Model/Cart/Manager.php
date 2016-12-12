@@ -17,6 +17,7 @@ namespace CoreShop\Model\Cart;
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
+use CoreShop\Model\Currency;
 use CoreShop\Model\Order;
 use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
@@ -113,16 +114,18 @@ class Manager
      * @param string $name
      * @param User|null $user
      * @param Shop|null $shop
+     * @param Currency|null $currency
      * @param boolean $persist
 
      * @return Cart
      */
-    public function createCart($name = "default", User $user = null, Shop $shop = null, $persist = false) {
+    public function createCart($name = "default", User $user = null, Shop $shop = null, Currency $currency = null, $persist = false) {
         $cart = Cart::create();
         $cart->setKey(uniqid());
         $cart->setPublished(true);
         $cart->setShop($shop ? $shop : Shop::getShop());
         $cart->setName($name);
+        $cart->setCurrency(is_null($currency) ? \CoreShop::getTools()->getCurrency() : $currency);
 
         if ($cart instanceof Cart) {
             if ($user instanceof User) {

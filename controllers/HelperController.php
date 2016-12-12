@@ -21,8 +21,17 @@ class CoreShop_HelperController extends Action
 {
     public function changeCurrencyAction()
     {
-        if (\CoreShop\Model\Currency::getById($this->getParam('currency')) instanceof \CoreShop\Model\Currency) {
+        $currencyId = $this->getParam("currency");
+        $currency = \CoreShop\Model\Currency::getById($currencyId);
+
+        if ($currency instanceof \CoreShop\Model\Currency)
+        {
             $this->session->currencyId = $this->getParam('currency');
+
+            if(\CoreShop::getTools()->getCart()->getId() > 0) {
+                \CoreShop::getTools()->getCart()->setCurrency($currency);
+                \CoreShop::getTools()->getCart()->save();
+            }
         }
 
         $redirect = $this->getParam('redirect', \CoreShop::getTools()->url(array('language' => $this->lang), 'coreshop_index'));

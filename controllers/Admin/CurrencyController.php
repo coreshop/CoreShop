@@ -46,7 +46,11 @@ class CoreShop_Admin_CurrencyController extends Admin
         $this->_helper->json($currencies);
     }
 
-    protected function getTreeNodeConfig($currency)
+    /**
+     * @param Currency $currency
+     * @return array
+     */
+    protected function getTreeNodeConfig(Currency $currency)
     {
         $tmpCurrency = array(
             'id' => $currency->getId(),
@@ -55,6 +59,8 @@ class CoreShop_Admin_CurrencyController extends Admin
                 'title' => 'ID: '.$currency->getId(),
             ),
             'name' => $currency->getName(),
+            'symbol' => $currency->getSymbol(),
+            'active' => $currency->getActive()
         );
 
         return $tmpCurrency;

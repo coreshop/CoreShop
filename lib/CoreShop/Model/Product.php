@@ -469,10 +469,11 @@ class Product extends Base
      * Get Product Price with Tax.
      *
      * @param boolean $withTax
+     * @param boolean $doCurrencyConvert
      *
      * @return float|mixed
      */
-    public function getPrice($withTax = true)
+    public function getPrice($withTax = true, $doCurrencyConvert = true)
     {
         $netPrice = $this->getSalesPrice(false);
 
@@ -487,7 +488,11 @@ class Product extends Base
             }
         }
 
-        return \CoreShop::getTools()->convertToCurrency($netPrice);
+        if($doCurrencyConvert) {
+            return \CoreShop::getTools()->convertToCurrency($netPrice);
+        }
+
+        return $netPrice;
     }
 
     /**

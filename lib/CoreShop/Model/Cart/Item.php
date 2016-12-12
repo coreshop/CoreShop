@@ -98,7 +98,7 @@ class Item extends Base
      * @return float
      */
     public function getProductSalesPrice($withTax) {
-        return $this->getProduct()->getSalesPrice($withTax);
+        return $this->convertToCurrency($this->getProduct()->getSalesPrice($withTax));
     }
 
     /**
@@ -107,7 +107,7 @@ class Item extends Base
      * @return float
      */
     public function getProductWholesalePrice() {
-        return $this->getProduct()->getWholesalePrice();
+        return $this->convertToCurrency($this->getProduct()->getWholesalePrice());
     }
 
     /**
@@ -116,21 +116,21 @@ class Item extends Base
      * @return float
      */
     public function getProductRetailPrice() {
-        return $this->getProduct()->getRetailPrice();
+        return $this->convertToCurrency($this->getProduct()->getRetailPrice());
     }
 
     /**
      * @return float
      */
     public function getProductRetailPriceWithTax() {
-        return $this->getProduct()->getRetailPriceWithTax();
+        return $this->convertToCurrency($this->getProduct()->getRetailPriceWithTax());
     }
 
     /**
      * @return float
      */
     public function getProductRetailPriceWithoutTax() {
-        return $this->getProduct()->getRetailPriceWithoutTax();
+        return $this->convertToCurrency($this->getProduct()->getRetailPriceWithoutTax());
     }
 
     /**
@@ -212,7 +212,11 @@ class Item extends Base
      */
     public function getProductTaxAmount($asArray = false)
     {
-        return $this->getProduct()->getTaxAmount($asArray);
+        if($asArray) {
+            return $this->getProduct()->getTaxAmount($asArray);
+        }
+
+        return $this->convertToCurrency($this->getProduct()->getTaxAmount($asArray));
     }
 
     /**
@@ -233,7 +237,7 @@ class Item extends Base
      */
     public function getCart()
     {
-        $parent = $this->getParent();
+        $parent = $this;
 
         do {
             if ($parent instanceof Cart) {
@@ -244,6 +248,20 @@ class Item extends Base
         } while ($parent != null);
 
         return null;
+    }
+
+    /**
+     * Convert Value to Carts - Currency
+     *
+     * @param $price
+     * @return mixed
+     */
+    public function convertToCurrency($price) {
+        if($this->getCart() instanceof Cart) {
+            return $this->getCart()->convertToCurrency($price);
+        }
+
+        return $price;
     }
     
     /**

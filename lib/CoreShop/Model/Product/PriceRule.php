@@ -14,9 +14,6 @@
 
 namespace CoreShop\Model\Product;
 
-use CoreShop\Model\Product;
-use CoreShop\Tool;
-
 /**
  * Class PriceRule
  * @package CoreShop\Model\Product

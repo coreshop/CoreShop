@@ -80,6 +80,17 @@ class Currency extends AbstractModel
     }
 
     /**
+     * get if currency is active
+     *
+     * @return bool
+     */
+    public function getActive() {
+        $countryList = Country::getList();
+        $countryList->setCondition("active = 1 AND currencyId = ?", [$this->getId()]);
+        return count($countryList->getData()) > 0;
+    }
+
+    /**
      * @return string
      */
     function __toString()

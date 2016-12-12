@@ -46,8 +46,8 @@
     background: url(/plugins/CoreShop/static/img/logo.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_create_order {
-    background: url(/plugins/CoreShop/static/img/flat/orders.svg) center center no-repeat !important;
+.coreshop_icon_order_create {
+    background: url(/plugins/CoreShop/static/img/flat/order-create.svg) center center no-repeat !important;
 }
 
 .coreshop_icon_price_rule, .pimcore_icon_coreShopSpecificPrices {
@@ -358,6 +358,10 @@
     background: url(/plugins/CoreShop/static/img/flat/add.svg) center center no-repeat !important;
 }
 
+.x-tool-coreshop-add-product {
+    background: url(/plugins/CoreShop/static/img/flat/product-add.svg) center center no-repeat !important;
+}
+
 .coreshop_inline_icon {
     width: 16px;
     height: 16px;
@@ -415,38 +419,38 @@
     font-weight:bold;
 }
 
-.x-panel.coreshop-order > .x-panel-default-outer-border-trl,
-.x-panel.coreshop-order > .x-panel-default-outer-border-rbl {
+.x-panel.coreshop-panel > .x-panel-default-outer-border-trl,
+.x-panel.coreshop-panel > .x-panel-default-outer-border-rbl {
     border:0;
 }
 
-.x-panel.coreshop-order .x-panel-header-default {
+.x-panel.coreshop-panel .x-panel-header-default {
     background: white;
     border-bottom: #ccc solid 1px!important;
     font-weight:bold;
     padding:5px;
 }
 
-.x-panel.coreshop-order .x-title-text {
+.x-panel.coreshop-panel .x-title-text {
     font-weight: bold;
     font-size: 12px
 }
 
-.coreshop-order-detail-grid .x-grid-row .x-grid-cell:first-child .x-grid-cell-inner{
+.coreshop-detail-grid .x-grid-row .x-grid-cell:first-child .x-grid-cell-inner{
     padding: 5px 0 0 0;
 }
 
-.coreshop-order-detail-grid .x-grid-row .x-grid-cell-inner {
+.coreshop-detail-grid .x-grid-row .x-grid-cell-inner {
     height: 32px;
 }
 
-.coreshop-order-detail-grid .x-column-header {
+.coreshop-detail-grid .x-column-header {
     background:white;
     border-right-color:white;
     font-size:13px;
 }
 
-.coreshop-order-detail-grid .x-grid-body {
+.coreshop-detail-grid .x-grid-body {
     border-color: #36d672;
 }
 

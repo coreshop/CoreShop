@@ -160,6 +160,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/messaging/thread/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/message.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/order.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/orders/create/order.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/pricerule/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/pricerule/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/address.js</path>

@@ -39,7 +39,20 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                 border: false,
                 layout: 'border',
                 closable: true,
-                items: this.getItems()
+                items: this.getItems(),
+                dockedItems: [{
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
+                        {
+                            iconCls : 'coreshop_icon_order_create',
+                            text : t('coreshop_order_create'),
+                            handler : function () {
+                                new pimcore.plugin.coreshop.orders.create.order();
+                            }.bind(this)
+                        }
+                    ]
+                }]
             });
 
             // add event listener

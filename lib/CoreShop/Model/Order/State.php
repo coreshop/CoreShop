@@ -110,7 +110,7 @@ class State extends AbstractModel
         }
 
         if ($this->getEmail()) {
-            $emailDocument = $this->getEmailDocument();
+            $emailDocument = $this->getEmailDocument($order->getLang());
             $emailDocument = Document::getByPath($emailDocument);
 
             Mail::sendOrderMail($emailDocument, $order, $this);

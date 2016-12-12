@@ -16,7 +16,6 @@ namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
-use CoreShop\Tool;
 
 /**
  * Class AbstractCondition

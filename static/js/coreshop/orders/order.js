@@ -108,7 +108,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     getPanel : function () {
         var defaults = {
             style: this.borderStyle,
-            cls : 'coreshop-order',
+            cls : 'coreshop-panel',
             bodyPadding : 5
         };
 
@@ -300,7 +300,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     {
                         xtype : 'grid',
                         margin: '0 0 15 0',
-                        cls : 'coreshop-order-detail-grid',
+                        cls : 'coreshop-detail-grid',
                         store : this.orderStatesStore,
                         columns : [
                             {
@@ -649,7 +649,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     {
                         xtype : 'grid',
                         margin: '0 0 15 0',
-                        cls : 'coreshop-order-detail-grid',
+                        cls : 'coreshop-detail-grid',
                         store :  this.shipmentsStore,
                         plugins: [
                             cellEditing
@@ -734,7 +734,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     {
                         xtype : 'grid',
                         margin: '0 0 15 0',
-                        cls : 'coreshop-order-detail-grid',
+                        cls : 'coreshop-detail-grid',
                         store : this.invoicesStore,
                         columns : [
                             {
@@ -829,7 +829,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             items.push({
                 xtype : 'grid',
                 margin: '0 0 15 0',
-                cls : 'coreshop-order-detail-grid',
+                cls : 'coreshop-detail-grid',
                 store :  this.paymentsStore,
                 columns : [
                     {
@@ -1114,7 +1114,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             var itemsGrid = {
                 xtype : 'grid',
                 margin: '0 0 15 0',
-                cls : 'coreshop-order-detail-grid',
+                cls : 'coreshop-detail-grid',
                 store :  this.detailsStore,
                 plugins: plugins,
                 columns : [
@@ -1184,7 +1184,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             var summaryGrid = {
                 xtype : 'grid',
                 margin: '0 0 15 0',
-                cls : 'coreshop-order-detail-grid',
+                cls : 'coreshop-detail-grid',
                 store :  this.summaryStore,
                 hideHeaders : true,
                 columns : [
@@ -1224,7 +1224,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 var priceRuleItem =  {
                     xtype : 'grid',
                     margin: '0 0 15 0',
-                    cls : 'coreshop-order-detail-grid',
+                    cls : 'coreshop-detail-grid',
                     store :  priceRuleStore,
                     hideHeaders : true,
                     title : t('coreshop_pricerules'),

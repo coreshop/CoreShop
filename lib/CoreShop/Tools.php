@@ -607,11 +607,16 @@ class Tools
             }
         }
 
-        if ($session->currencyId) {
+        if (isset($session->currencyId)) {
             $currency = Currency::getById($session->currencyId);
 
             if ($currency instanceof Currency) {
                 return $currency;
+            }
+        }
+        else {
+            if($this->getCart()->getId() > 0 && $this->getCart()->getCurrency() instanceof Currency) {
+                return $this->getCart()->getCurrency();
             }
         }
 

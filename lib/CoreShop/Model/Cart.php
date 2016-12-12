@@ -251,16 +251,18 @@ class Cart extends Base
             }
         }
 
-        $shippingProvider = $this->getShippingProvider();
+        if(!$this->getFreeShipping()) {
+            $shippingProvider = $this->getShippingProvider();
 
-        if ($shippingProvider instanceof Carrier) {
-            $shippingTax = $this->getShippingProvider()->getTaxCalculator();
+            if ($shippingProvider instanceof Carrier) {
+                $shippingTax = $this->getShippingProvider()->getTaxCalculator();
 
-            if ($shippingTax instanceof TaxCalculator) {
-                $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
+                if ($shippingTax instanceof TaxCalculator) {
+                    $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
 
-                foreach ($taxesAmount as $id => $amount) {
-                    $addTax(Tax::getById($id), $amount);
+                    foreach ($taxesAmount as $id => $amount) {
+                        $addTax(Tax::getById($id), $amount);
+                    }
                 }
             }
         }
@@ -269,7 +271,7 @@ class Cart extends Base
 
         if ($paymentProvider instanceof PaymentPlugin) {
             if ($paymentProvider->getPaymentTaxCalculator($this) instanceof TaxCalculator) {
-                $taxesAmount = $paymentProvider->getPaymentTaxCalculator($this)->getTaxesAmount($paymentProvider->getPaymentFee($this, false), true);
+                $taxesAmount = $paymentProvider->getPaymentTaxCalculator($this)->getTaxesAmount($this->getPaymentFee(false), true);
 
                 foreach ($taxesAmount as $id => $amount) {
                     $addTax(Tax::getById($id), $amount);
@@ -319,24 +321,28 @@ class Cart extends Base
      */
     public function getShippingCostsForCarrier(Carrier $carrier, $useTax = true)
     {
-        $freeShippingCurrency = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_PRICE'));
-        $freeShippingWeight = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_WEIGHT'));
+        if(!$this->getFreeShipping()) {
+            $freeShippingCurrency = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_PRICE'));
+            $freeShippingWeight = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_WEIGHT'));
 
-        if (isset($freeShippingCurrency) && $freeShippingCurrency > 0) {
-            $freeShippingCurrency = \CoreShop::getTools()->convertToCurrency($freeShippingCurrency, \CoreShop::getTools()->getCurrency());
+            if (isset($freeShippingCurrency) && $freeShippingCurrency > 0) {
+                $freeShippingCurrency = $this->convertToCurrency($freeShippingCurrency);
 
-            if ($this->getSubtotal() >= $freeShippingCurrency) {
-                return 0;
+                if ($this->getSubtotal() >= $freeShippingCurrency) {
+                    return 0;
+                }
             }
+
+            if (isset($freeShippingWeight) && $freeShippingWeight > 0) {
+                if ($this->getTotalWeight() >= $freeShippingWeight) {
+                    return 0;
+                }
+            }
+
+            return $this->convertToCurrency($carrier->getDeliveryPrice($this, $useTax));
         }
 
-        if (isset($freeShippingWeight) && $freeShippingWeight > 0) {
-            if ($this->getTotalWeight() >= $freeShippingWeight) {
-                return 0;
-            }
-        }
-
-        return $carrier->getDeliveryPrice($this, $useTax);
+        return 0;
     }
 
     /**
@@ -372,17 +378,21 @@ class Cart extends Base
      */
     public function getShipping($useTax = true)
     {
-        $cacheKey = $useTax ? 'shipping' : 'shippingWithoutTax';
+        if(!$this->getFreeShipping()) {
+            $cacheKey = $useTax ? 'shipping' : 'shippingWithoutTax';
 
-        if (is_null($this->$cacheKey)) {
-            $this->$cacheKey = 0;
+            if (is_null($this->$cacheKey)) {
+                $this->$cacheKey = 0;
 
-            if ($this->getShippingProvider() instanceof Carrier) {
-                $this->$cacheKey = $this->getShippingCostsForCarrier($this->getShippingProvider(), $useTax);
+                if ($this->getShippingProvider() instanceof Carrier) {
+                    $this->$cacheKey = $this->getShippingCostsForCarrier($this->getShippingProvider(), $useTax);
+                }
             }
+
+            return $this->$cacheKey;
         }
 
-        return $this->$cacheKey;
+        return 0;
     }
 
     /**
@@ -392,8 +402,10 @@ class Cart extends Base
      */
     public function getShippingTaxRate()
     {
-        if ($this->getShippingProvider() instanceof Carrier) {
-            return $this->getShippingProvider()->getTaxRate($this);
+        if(!$this->getFreeShipping()) {
+            if ($this->getShippingProvider() instanceof Carrier) {
+                return $this->getShippingProvider()->getTaxRate($this);
+            }
         }
 
         return 0;
@@ -406,8 +418,10 @@ class Cart extends Base
      */
     public function getShippingTax()
     {
-        if ($this->getShippingProvider() instanceof Carrier) {
-            return $this->getShippingProvider()->getTaxAmount($this);
+        if(!$this->getFreeShipping()) {
+            if ($this->getShippingProvider() instanceof Carrier) {
+                return $this->getShippingProvider()->getTaxAmount($this);
+            }
         }
 
         return 0;
@@ -437,7 +451,7 @@ class Cart extends Base
         $paymentProvider = $this->getPaymentProvider();
 
         if ($paymentProvider instanceof PaymentPlugin) {
-            return $paymentProvider->getPaymentFee($this, $withTax);
+            return $this->convertToCurrency($paymentProvider->getPaymentFee($this, $withTax));
         }
 
         return 0;
@@ -469,7 +483,7 @@ class Cart extends Base
         $paymentProvider = $this->getPaymentProvider();
 
         if ($paymentProvider instanceof PaymentPlugin) {
-            return $paymentProvider->getPaymentFeeTax($this);
+            return $this->convertToCurrency($paymentProvider->getPaymentFeeTax($this));
         }
 
         return 0;
@@ -862,7 +876,7 @@ class Cart extends Base
      *
      * @throws Exception
      */
-    public function createOrder(Order\State $state, Payment $paymentModule, $totalPayed = 0, $language = null)
+    public function createOrder(Order\State $state, Payment $paymentModule = null, $totalPayed = 0, $language = null)
     {
         Logger::info('Create order for cart '.$this->getId());
 
@@ -886,9 +900,13 @@ class Cart extends Base
         $order->setPublished(true);
         $order->setLang($language);
         $order->setCustomer($this->getUser());
-        $order->setPaymentProviderToken($paymentModule->getIdentifier());
-        $order->setPaymentProvider($paymentModule->getName());
-        $order->setPaymentProviderDescription($paymentModule->getDescription());
+
+        if($paymentModule instanceof Payment) {
+            $order->setPaymentProviderToken($paymentModule->getIdentifier());
+            $order->setPaymentProvider($paymentModule->getName());
+            $order->setPaymentProviderDescription($paymentModule->getDescription());
+        }
+
         $order->setOrderDate(new Date());
 
         if (\Pimcore\Config::getFlag("useZendDate")) {
@@ -896,7 +914,7 @@ class Cart extends Base
         } else {
             $order->setOrderDate(Carbon::now());
         }
-        $order->setCurrency(\CoreShop::getTools()->getCurrency());
+        $order->setCurrency($this->getCurrency());
         $order->setShop($this->getShop());
 
         if ($this->getCarrier() instanceof Carrier) {
@@ -1110,6 +1128,18 @@ class Cart extends Base
 
         return $finalVars;
     }
+
+    /**
+     * Convert Value to Carts - Currency
+     *
+     * @param $price
+     * @return mixed
+     */
+    public function convertToCurrency($price) {
+        return \CoreShop::getTools()->convertToCurrency($price, $this->getCurrency());
+    }
+
+
     /**
      * @return string
      *
@@ -1126,6 +1156,46 @@ class Cart extends Base
      * @throws ObjectUnsupportedException
      */
     public function setName($name)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return Currency
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getCurrency()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param Currency $currency
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setCurrency($currency)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return boolean
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getFreeShipping()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param boolean $freeShipping
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setFreeShipping($freeShipping)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
