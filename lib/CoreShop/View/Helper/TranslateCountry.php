@@ -15,7 +15,6 @@
 namespace CoreShop\View\Helper;
 
 use CoreShop\Model\Country;
-use CoreShop\Tool;
 
 /**
  * Class TranslateCountry

@@ -24,7 +24,6 @@ use CoreShop\Model\PriceRule\Condition\TimeSpan;
 use CoreShop\Model\PriceRule\Condition\Zones;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
-use CoreShop\Tool;
 use Pimcore\Cache;
 
 class PriceRule extends Base

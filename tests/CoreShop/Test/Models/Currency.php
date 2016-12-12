@@ -15,7 +15,6 @@
 namespace CoreShop\Test\Models;
 
 use CoreShop\Test\Base;
-use CoreShop\Tool;
 
 class Currency extends Base
 {
@@ -40,7 +39,7 @@ class Currency extends Base
         $usd->setExchangeRate(1.2);
         $asd->setExchangeRate(2);
 
-        $this->assertEquals(12, Tool::convertToCurrency(10, $usd, $euro));
-        $this->assertEquals(20, Tool::convertToCurrency(10, $asd, $euro));
+        $this->assertEquals(12, \CoreShop::getTools()->convertToCurrency(10, $usd, $euro));
+        $this->assertEquals(20, \CoreShop::getTools()->convertToCurrency(10, $asd, $euro));
     }
 }

@@ -21,7 +21,6 @@ use CoreShop\Model\PriceRule\Condition\TimeSpan;
 use CoreShop\Model\PriceRule\Condition\Zones;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
-use CoreShop\Tool;
 
 class SpecificPrice extends Base
 {
@@ -56,7 +55,7 @@ class SpecificPrice extends Base
             $quantityCondition
         ));
 
-        Tool::prepareCart()->addItem($this->product, 4);
+        \CoreShop::getTools()->getCart()->addItem($this->product, 4);
 
         $this->assertTrue($quantityCondition->checkConditionProduct($this->product, $this->specificPrice));
     }

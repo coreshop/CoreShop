@@ -27,7 +27,6 @@ use CoreShop\Model\PriceRule\Condition\TotalPerCustomer;
 use CoreShop\Model\PriceRule\Condition\Zones;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
-use CoreShop\Tool;
 
 class CartPriceRule extends Base
 {
@@ -213,7 +212,7 @@ class CartPriceRule extends Base
 
         $this->priceRule->setActions(array($discount));
 
-        $cart = Tool::prepareCart();
+        $cart = \CoreShop::getTools()->getCart();
         $cart->addItem(Data::$product2);
         $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
 
