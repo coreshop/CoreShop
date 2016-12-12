@@ -85,6 +85,8 @@ class CoreShopSpecificPrices extends Data
 
                 if (!$specificPrice instanceof SpecificPrice) {
                     $specificPrice = new SpecificPrice();
+                    $specificPrice->setInherit(false);
+                    $specificPrice->setPriority(0);
                 }
 
                 $actionInstances = $specificPrice->prepareActions($actions, $actionNamespace);
