@@ -538,6 +538,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     },
 
     getAddressPanelForAddress : function (address, title, type) {
+        var country = pimcore.globalmanager.get("coreshop_countries").getById(address.country);
+
         var panel = {
             xtype: 'panel',
             dockedItems: [{
@@ -592,7 +594,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     (address.company ? address.company + '<br/>' : '') +
                     (address.street ? address.street  : '') + ' ' + (address.nr ? address.nr : '') + '<br/>' +
                     (address.zip ? address.zip : '') + ' ' + (address.city ? address.city : '') + '<br/>' +
-                    address.country.name,
+                    country.get("name"),
                     flex : 1
                 }
             ]
@@ -602,12 +604,12 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             panel.items.push({
                 xtype: 'panel',
                 html : '<img src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x200&maptype=roadmap'
-                + '&center=' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + address.country.name
-                + '&markers=color:blue|' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + address.country.name
+                + '&center=' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + country.get("name")
+                + '&markers=color:blue|' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + country.get("name")
                 + '&key=' + pimcore.settings.google_maps_api_key
                 + '" />',
                 flex : 1,
-                bodyPadding : 5,
+                bodyPadding : 5
             });
         }
 
