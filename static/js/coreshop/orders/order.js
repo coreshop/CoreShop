@@ -714,6 +714,15 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             }
                         ]
                     }
+                ],
+                tools : [
+                    {
+                        type: 'coreshop-add',
+                        tooltip: t('add'),
+                        handler : function () {
+                            this.createShipment();
+                        }.bind(this)
+                    }
                 ]
             });
         }
@@ -790,6 +799,15 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 }]
                             }
                         ]
+                    }
+                ],
+                tools : [
+                    {
+                        type: 'coreshop-add',
+                        tooltip: t('add'),
+                        handler : function () {
+                            this.createInvoice();
+                        }.bind(this)
                     }
                 ]
             });
