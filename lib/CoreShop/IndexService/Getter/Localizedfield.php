@@ -34,7 +34,7 @@ class Localizedfield extends AbstractGetter
      *
      * @throws UnsupportedException
      */
-    public function get(Product $object, AbstractColumn $config = null)
+    public function get(Product $object, AbstractColumn $config)
     {
         $language = null;
         
@@ -42,12 +42,7 @@ class Localizedfield extends AbstractGetter
             $language = \CoreShop::getTools()->getLocale();
         }
 
-        if ($config->getGetterConfig()['locale']) {
-            $language = $config->getGetterConfig()['locale'];
-        }
-
         $getter = 'get'.ucfirst($config->getKey());
-
 
         return $object->$getter($language);
     }

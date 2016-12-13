@@ -16,15 +16,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.indexes.getters.localizedfield');
 pimcore.plugin.coreshop.indexes.getters.localizedfield = Class.create(pimcore.plugin.coreshop.indexes.getters.abstract, {
 
     getLayout : function (record) {
-        return [
-            {
-                xtype : 'textfield',
-                fieldLabel : t('language'),
-                name : 'locale',
-                length : 255,
-                value : record.data.getterConfig ? record.data.getterConfig.locale : null
-            },
-        ];
+
     }
 
 });

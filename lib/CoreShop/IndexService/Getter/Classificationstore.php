@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Index\Config\Column\AbstractColumn;
 use CoreShop\Model\Index\Config\Column\Classificationstore as Config;
 use CoreShop\Model\Product;
 
@@ -28,13 +29,13 @@ class Classificationstore extends AbstractGetter
      * get value.
      *
      * @param $object
-     * @param Config $config
+     * @param AbstractColumn $config
      *
      * @return mixed
      *
      * @throws UnsupportedException
      */
-    public function get(Product $object, Config $config = null)
+    public function get(Product $object, AbstractColumn $config)
     {
         $classificationStore = $config->getGetterConfig()['classificationStoreField'];
         $classificationStoreGetter = 'get'.ucfirst($classificationStore);

@@ -71,19 +71,6 @@ class Elasticsearch extends AbstractWorker
         return $this->client;
     }
 
-    /*protected function createTableStructure() {
-        $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename()."` (
-          `o_id` int(11) NOT NULL default '0',
-          `o_classId` int(11) NOT NULL,
-          `o_type` varchar(20) NOT NULL,
-          `categoryIds` varchar(255) NOT NULL,
-          `parentCategoryIds` varchar(255) NOT NULL,
-          `active` TINYINT(1) NOT NULL,
-          `shops` varchar(255) NOT NULL,
-          PRIMARY KEY  (`o_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-    }*/
-
     /**
      * Create Database index table.
      */

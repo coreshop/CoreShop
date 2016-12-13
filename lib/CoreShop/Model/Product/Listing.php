@@ -20,6 +20,7 @@ use CoreShop\Model\Index;
 use CoreShop\Model\Product;
 use CoreShop\Model\Shop;
 use CoreShop\Exception;
+use Pimcore\Tool;
 
 /**
  * Class Listing
@@ -51,6 +52,11 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @var Index|null
      */
     public $index = null;
+
+    /**
+     * @var string
+     */
+    protected $locale;
 
     /**
      * Listing constructor.
@@ -263,5 +269,38 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
     public function setIndex($index)
     {
         $this->index = $index;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        if(is_null($this->locale)) {
+            $language = null;
+
+            if (\Zend_Registry::isRegistered("Zend_Locale")) {
+                $language = \Zend_Registry::get("Zend_Locale");
+                if (Tool::isValidLanguage((string) $language)) {
+                    $language = (string) $language;
+                }
+            }
+
+            if (!$language) {
+                $language = Tool::getDefaultLanguage();
+            }
+
+            $this->locale = $language;
+        }
+
+        return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }

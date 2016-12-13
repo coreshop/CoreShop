@@ -19,6 +19,7 @@ use CoreShop\Model\Product;
 use CoreShop\Model\Index\Config\Column\Mysql as Column;
 use Pimcore\Db;
 use Pimcore\Logger;
+use Pimcore\Tool;
 
 /**
  * Class Mysql
@@ -66,29 +67,61 @@ class Mysql extends AbstractWorker
           PRIMARY KEY  (`o_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
+        $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getLocalizedTablename()."` (
+		  `oo_id` int(11) NOT NULL default '0',
+		  `language` varchar(10) NOT NULL DEFAULT '',
+		  `name` varchar(255) NOT NULL,
+		  PRIMARY KEY (`oo_id`,`language`),
+          INDEX `ooo_id` (`oo_id`),
+          INDEX `language` (`language`)
+		) DEFAULT CHARSET=utf8;");
+
         $data = $this->db->fetchAll('SHOW COLUMNS FROM '.$this->getTablename());
+        $localizedData = $this->db->fetchAll('SHOW COLUMNS FROM '.$this->getLocalizedTablename());
+
         $columns = array();
+        $localizedColumns = array();
 
         foreach ($data as $d) {
             $columns[$d['Field']] = $d['Field'];
         }
 
+        foreach ($localizedData as $d) {
+            $localizedColumns[$d['Field']] = $d['Field'];
+        }
+
         $systemColumns = $this->getSystemAttributes();
         $columnsToDelete = $columns;
-        $columnsToAdd = array();
+        $columnsToAdd = [];
+
+        $localizedColumnsToAdd = [];
+        $localizedColumnsToDelete =$localizedColumns;
 
         $columnConfig = $this->getColumnsConfiguration();
 
         foreach ($columnConfig as $column) {
-            if (!array_key_exists($column->getName(), $columns)) {
-                $doAdd = true;
+            if($column instanceof Index\Config\Column\Localizedfields) {
+                if (!array_key_exists($column->getName(), $localizedColumns)) {
+                    $doAdd = true;
 
-                if ($doAdd) {
-                    $columnsToAdd[$column->getName()] = $column->getColumnType();
+                    if ($doAdd) {
+                        $localizedColumnsToAdd[$column->getName()] = $column->getColumnType();
+                    }
                 }
-            }
 
-            unset($columnsToDelete[$column->getName()]);
+                unset($localizedColumnsToDelete[$column->getName()]);
+            }
+            else {
+                if (!array_key_exists($column->getName(), $columns)) {
+                    $doAdd = true;
+
+                    if ($doAdd) {
+                        $columnsToAdd[$column->getName()] = $column->getColumnType();
+                    }
+                }
+
+                unset($columnsToDelete[$column->getName()]);
+            }
         }
 
         foreach ($columnsToDelete as $c) {
@@ -97,8 +130,18 @@ class Mysql extends AbstractWorker
             }
         }
 
+        foreach ($localizedColumnsToDelete as $c) {
+            if (!in_array($c, $systemColumns)) {
+                $this->db->query('ALTER TABLE `'.$this->getLocalizedTablename().'` DROP COLUMN `'.$c.'`;');
+            }
+        }
+
         foreach ($columnsToAdd as $c => $type) {
             $this->db->query('ALTER TABLE `'.$this->getTablename().'` ADD `'.$c.'` '.$type.';');
+        }
+
+        foreach ($localizedColumnsToAdd as $c => $type) {
+            $this->db->query('ALTER TABLE `'.$this->getLocalizedTablename().'` ADD `'.$c.'` '.$type.';');
         }
 
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getRelationTablename()."` (
@@ -109,6 +152,42 @@ class Mysql extends AbstractWorker
           `type` varchar(20) COLLATE utf8_bin NOT NULL,
           PRIMARY KEY (`src`,`dest`,`fieldname`,`type`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;");
+
+        $this->createLocalizedViews();
+    }
+
+    /**
+     * Create Localized Views.
+     */
+    protected function createLocalizedViews()
+    {
+        // init
+        $languages = Tool::getValidLanguages();
+
+        foreach ($languages as $language) {
+            try {
+                $localizedTable = $this->getLocalizedTablename();
+                $localizedViewName = $this->getLocalizedViewName($language);
+                $tableName = $this->getTableName();
+
+                // create view
+                $viewQuery = <<<QUERY
+CREATE OR REPLACE VIEW `{$localizedViewName}` AS
+
+SELECT *
+FROM `{$tableName}`
+LEFT JOIN {$localizedTable}
+    ON( 
+        {$tableName}.o_id = {$localizedTable}.oo_id AND
+        {$localizedTable}.language = '{$language}'
+    )
+QUERY;
+
+                $this->db->query($viewQuery);
+            } catch (\Exception $e) {
+                Logger::error($e);
+            }
+        }
     }
 
     /**
@@ -119,6 +198,7 @@ class Mysql extends AbstractWorker
     public function deleteIndexStructures()
     {
         $this->db->query('DROP TABLE IF EXISTS `'.$this->getTablename().'`');
+        $this->db->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename().'`');
         $this->db->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename().'`');
     }
 
@@ -130,6 +210,7 @@ class Mysql extends AbstractWorker
     public function deleteFromIndex(Product $object)
     {
         $this->db->delete($this->getTablename(), 'o_id = '.$this->db->quote($object->getId()));
+        $this->db->delete($this->getLocalizedTablename(), 'o_id = '.$this->db->quote($object->getId()));
         $this->db->delete($this->getRelationTablename(), 'src = '.$this->db->quote($object->getId()));
     }
 
@@ -145,6 +226,12 @@ class Mysql extends AbstractWorker
 
             try {
                 $this->doInsertData($preparedData['data']);
+            } catch (\Exception $e) {
+                Logger::warn('Error during updating index table: '.$e);
+            }
+
+            try {
+                $this->doInsertLocalizedData($preparedData['localizedData']);
             } catch (\Exception $e) {
                 Logger::warn('Error during updating index table: '.$e);
             }
@@ -198,6 +285,47 @@ class Mysql extends AbstractWorker
             .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
 
         $this->db->query($insert, array_merge($updateData, $insertData));
+    }
+
+
+    /**
+     * Insert data into mysql-table.
+     *
+     * @param $data
+     */
+    protected function doInsertLocalizedData($data)
+    {
+        foreach($data['values'] as $language => $values) {
+            $dataKeys = [
+                'oo_id' => '?',
+                'language' => '?'
+            ];
+            $updateData = [
+                $data['oo_id'],
+                $language
+            ];
+            $insertStatement = [
+                'oo_id=?',
+                'language=?'
+            ];
+            $insertData = [
+                $data['oo_id'],
+                $language
+            ];
+
+            foreach ($values as $key => $d) {
+                $dataKeys[$this->db->quoteIdentifier($key)] = '?';
+                $updateData[] = $d;
+
+                $insertStatement[] = $this->db->quoteIdentifier($key).' = ?';
+                $insertData[] = $d;
+            }
+
+            $insert = 'INSERT INTO '.$this->getLocalizedTablename().' ('.implode(',', array_keys($dataKeys)).') VALUES ('.implode(',', $dataKeys).')'
+                .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
+
+            $this->db->query($insert, array_merge($updateData, $insertData));
+        }
     }
 
     /**
@@ -296,6 +424,27 @@ class Mysql extends AbstractWorker
     }
 
     /**
+     * get table name.
+     *
+     * @return string
+     */
+    public function getLocalizedTablename()
+    {
+        return 'coreshop_index_mysql_localized_'.$this->getIndex()->getName();
+    }
+
+    /**
+     * get localized view name
+     *
+     * @param $language
+     * @return string
+     */
+    public function getLocalizedViewName($language)
+    {
+        return $this->getLocalizedTablename() . "_" . $language;
+    }
+
+    /**
      * get tablename for relations.
      *
      * @return string
@@ -312,6 +461,6 @@ class Mysql extends AbstractWorker
      */
     protected function getSystemAttributes()
     {
-        return array('o_id', 'o_key', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops', 'minPrice', 'maxPrice');
+        return array('o_id', 'oo_id', 'name', 'language', 'o_key', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops', 'minPrice', 'maxPrice');
     }
 }

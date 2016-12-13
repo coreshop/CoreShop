@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Index\Config\Column\AbstractColumn;
 use CoreShop\Model\Product;
 
 /**
@@ -56,13 +57,13 @@ class AbstractGetter
      * get value.
      *
      * @param $object
-     * @param array $config
+     * @param AbstractColumn $config
      *
      * @return mixed
      *
      * @throws UnsupportedException
      */
-    public function get(Product $object, $config = null)
+    public function get(Product $object, AbstractColumn $config)
     {
         throw new UnsupportedException('Not implemented in abstract');
     }

@@ -83,18 +83,18 @@ class Dao
         if ($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if ($orderBy) {
                 $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualProductId as o_id FROM '
-                    .$this->model->getTablename().' a '
+                    .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
                     .$condition.' GROUP BY o_virtualProductId'.$orderBy.' '.$limit;
             } else {
                 $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualProductId as o_id FROM '
-                    .$this->model->getTablename().' a '
+                    .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
                     .$condition.' '.$limit;
             }
         } else {
             $query = 'SELECT SQL_CALC_FOUND_ROWS a.o_id FROM '
-                .$this->model->getTablename().' a '
+                .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
                 .$condition.$orderBy.' '.$limit;
         }
@@ -123,12 +123,12 @@ class Dao
         if ($countValues) {
             if ($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualProductId) as `count` FROM "
-                    .$this->model->getTablename().' a '
+                    .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
                     .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY ' . $this->db->quoteIdentifier($fieldname);
             } else {
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(*) as `count` FROM "
-                    .$this->model->getTablename().' a '
+                    .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
                     .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY ' . $this->db->quoteIdentifier($fieldname);
             }
@@ -138,7 +138,7 @@ class Dao
             return $result;
         } else {
             $query = 'SELECT '.$this->db->quoteIdentifier($fieldname).' FROM '
-                .$this->model->getTablename().' a '
+                .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
                 .$condition.' GROUP BY '.$this->db->quoteIdentifier($fieldname) . ' ORDER BY ' . $this->db->quoteIdentifier($fieldname);
 
@@ -175,7 +175,7 @@ class Dao
             }
 
             $subquery = 'SELECT a.o_id FROM '
-                .$this->model->getTablename().' a '
+                .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
                 .$condition;
 
@@ -189,7 +189,7 @@ class Dao
                 .'WHERE fieldname = '.$this->quote($fieldname);
 
             $subquery = 'SELECT a.o_id FROM '
-                .$this->model->getTablename().' a '
+                .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
                 .$condition;
 
@@ -231,12 +231,12 @@ class Dao
 
         if ($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             $query = 'SELECT count(DISTINCT o_virtualProductId) FROM '
-                .$this->model->getTablename().' a '
+                .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
                 .$condition.$orderBy.' '.$limit;
         } else {
             $query = 'SELECT count(*) FROM '
-                .$this->model->getTablename().' a '
+                .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
                 .$condition.$orderBy.' '.$limit;
         }
@@ -284,10 +284,10 @@ class Dao
                 }
             }
 
-            $query = 'SELECT '.$fieldString.' FROM '.$this->model->getTablename().' a WHERE a.o_id = ?;';
+            $query = 'SELECT '.$fieldString.' FROM '.$this->model->getQueryTableName().' a WHERE a.o_id = ?;';
             $objectValues = $this->db->fetchRow($query, $objectId);
 
-            $query = 'SELECT '.$maxFieldString.' FROM '.$this->model->getTablename().' a';
+            $query = 'SELECT '.$maxFieldString.' FROM '.$this->model->getQueryTableName().' a';
             $maxObjectValues = $this->db->fetchRow($query);
 
             if (!empty($objectValues)) {

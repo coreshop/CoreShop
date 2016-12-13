@@ -617,7 +617,16 @@ class Mysql extends AbstractListing
      */
     public function getTableName()
     {
-        return 'coreshop_index_mysql_'.$this->getIndex()->getName();
+        return $this->worker->getTablename();
+    }
+
+    /**
+     * return query tablename
+     *
+     * @return string
+     */
+    public function getQueryTableName() {
+        return $this->worker->getLocalizedViewName($this->getLocale());
     }
 
     /**
@@ -627,7 +636,7 @@ class Mysql extends AbstractListing
      */
     public function getRelationTablename()
     {
-        return 'coreshop_index_mysql_relations_'.$this->getIndex()->getName();
+        return $this->worker->getRelationTablename();
     }
 
     /**

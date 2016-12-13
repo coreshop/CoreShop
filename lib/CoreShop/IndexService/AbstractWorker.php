@@ -100,6 +100,8 @@ abstract class AbstractWorker
             $virtualProductActive = $parent->getEnabled();
         }
 
+        $validLanguages = Tool::getValidLanguages();
+
         $data = array(
             'o_id' => $object->getId(),
             'o_key' => $object->getKey(),
@@ -115,6 +117,15 @@ abstract class AbstractWorker
             'maxPrice' => $object->getMaxPrice()
         );
 
+        $localizedData = array(
+            'oo_id' => $object->getId(),
+            'values' => []
+        );
+
+        foreach($validLanguages as $language) {
+            $localizedData['values'][$language]['name'] = $object->getName($language);
+        }
+
         $relationData = array();
         $columnConfig = $this->getColumnsConfiguration();
 
@@ -123,62 +134,44 @@ abstract class AbstractWorker
                 try {
                     $value = null;
                     $getter = $column->getGetter();
-                    $interpreter = $column->getInterpreter();
 
-                    if (!empty($getter)) {
-                        $getterClass = '\\CoreShop\\IndexService\\Getter\\'.$getter;
-
-                        if (Tool::classExists($getterClass)) {
-                            $getterObject = new $getterClass();
-
-                            if ($getterObject instanceof AbstractGetter) {
-                                $value = $getterObject->get($object, $column);
-                            } else {
-                                throw new Exception('Getter class must inherit from AbstractGetter');
-                            }
-                        }
-                    } else {
-                        $getter = 'get'.ucfirst($column->getKey());
+                    if($column instanceof Index\Config\Column\Localizedfields) {
+                        $getter = 'get' . ucfirst($column->getKey());
 
                         if (method_exists($object, $getter)) {
-                            $value = $object->$getter();
+                            foreach($validLanguages as $language) {
+                                $value = $this->interpretValue($column, $object->$getter($language), $object, $virtualProductId, $convertArrayToString);
+
+                                $localizedData['values'][$language][$column->getName()] = $value;
+                            }
                         }
                     }
+                    else {
+                        if (!empty($getter)) {
+                            $getterClass = '\\CoreShop\\IndexService\\Getter\\' . $getter;
 
-                    if (!empty($interpreter)) {
-                        $interpreterClass = '\\CoreShop\\IndexService\\Interpreter\\'.$interpreter;
+                            if (Tool::classExists($getterClass)) {
+                                $getterObject = new $getterClass();
 
-                        if (Tool::classExists($interpreterClass)) {
-                            $interpreterObject = new $interpreterClass();
-
-                            if ($interpreterObject instanceof AbstractInterpreter) {
-                                $value = $interpreterObject->interpret($value, $column);
-
-                                if ($interpreterObject instanceof RelationInterpreter) {
-                                    foreach ($value as $v) {
-                                        $relData = array();
-                                        $relData['src'] = $object->getId();
-                                        $relData['src_virtualProductId'] = $virtualProductId;
-                                        $relData['dest'] = $v['dest'];
-                                        $relData['fieldname'] = $column->name;
-                                        $relData['type'] = $v['type'];
-                                        $relationData[] = $relData;
-                                    }
+                                if ($getterObject instanceof AbstractGetter) {
+                                    $value = $getterObject->get($object, $column);
                                 } else {
-                                    $data[$column->getName()] = $value;
+                                    throw new Exception('Getter class must inherit from AbstractGetter');
                                 }
-                            } else {
-                                throw new \Exception('Interpreter class must inherit form AbstractInterpreter');
                             }
                         } else {
+                            $getter = 'get' . ucfirst($column->getKey());
+
+                            if (method_exists($object, $getter)) {
+                                $value = $object->$getter();
+                            }
+                        }
+
+                        $value = $this->interpretValue($column, $value, $object, $virtualProductId, $convertArrayToString);
+
+                        if($value) {
                             $data[$column->getName()] = $value;
                         }
-                    } else {
-                        $data[$column->getName()] = $value;
-                    }
-
-                    if (is_array($data[$column->getName()]) && $convertArrayToString) {
-                        $data[$column->getName()] = ','.implode($data[$column->getName()], ',').',';
                     }
                 } catch (\Exception $e) {
                     Logger::err('Exception in CoreShopIndexService: '.$e->getMessage(), $e);
@@ -196,7 +189,53 @@ abstract class AbstractWorker
         return array(
             'data' => $data,
             'relation' => $relationData,
+            'localizedData' => $localizedData
         );
+    }
+
+    /**
+     * @param Index\Config\Column\AbstractColumn $column
+     * @param $value
+     * @param $object
+     * @param $virtualProductId
+     * @param $convertArrayToString
+     * @return mixed|string
+     * @throws \Exception
+     */
+    protected function interpretValue(Index\Config\Column\AbstractColumn $column, $value, $object, $virtualProductId, $convertArrayToString) {
+        $interpreter = $column->getInterpreter();
+
+        if (!empty($interpreter)) {
+            $interpreterClass = '\\CoreShop\\IndexService\\Interpreter\\' . $interpreter;
+
+            if (Tool::classExists($interpreterClass)) {
+                $interpreterObject = new $interpreterClass();
+
+                if ($interpreterObject instanceof AbstractInterpreter) {
+                    $value = $interpreterObject->interpret($value, $column);
+
+                    if ($interpreterObject instanceof RelationInterpreter) {
+                        foreach ($value as $v) {
+                            $relData = array();
+                            $relData['src'] = $object->getId();
+                            $relData['src_virtualProductId'] = $virtualProductId;
+                            $relData['dest'] = $v['dest'];
+                            $relData['fieldname'] = $column->name;
+                            $relData['type'] = $v['type'];
+                            $relationData[] = $relData;
+                        }
+                    }
+                } else {
+                    throw new \Exception('Interpreter class must inherit form AbstractInterpreter');
+                }
+            }
+        }
+
+        if (is_array($value) && $convertArrayToString) {
+            $value = ',' . implode($value, ',') . ',';
+        }
+
+        return $value;
     }
 
     /**

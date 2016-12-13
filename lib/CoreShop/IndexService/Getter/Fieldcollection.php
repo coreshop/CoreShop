@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Index\Config\Column\AbstractColumn;
 use CoreShop\Model\Index\Config\Column\Fieldcollections;
 use CoreShop\Model\Product;
 
@@ -28,13 +29,13 @@ class Fieldcollection extends AbstractGetter
      * get value.
      *
      * @param $object
-     * @param Fieldcollections $config
+     * @param AbstractColumn $config
      *
      * @return mixed
      *
      * @throws UnsupportedException
      */
-    public function get(Product $object, Fieldcollections $config = null)
+    public function get(Product $object, AbstractColumn $config)
     {
         $collectionField = $config->getGetterConfig()['collectionField'];
 
