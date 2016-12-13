@@ -494,3 +494,7 @@
 "coreshop_free_shipping","Kostenloser Versand"
 "coreshop_order_create","Neue Bestellung"
 "coreshop_creating_order","Bestellung wird erstellt"
+"coreshop_category_variant_mode","Varianten Modus"
+"coreshop_category_variant_mode_hide","Nicht anzeigen"
+"coreshop_category_variant_mode_include","Anzeigen"
+"coreshop_category_variant_mode_include_parent_object","Für Suche verwenden, aber nicht anzeigen"

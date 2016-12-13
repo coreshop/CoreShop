@@ -130,12 +130,13 @@ class Category extends Base
      * @param int   $itemsPerPage
      * @param array $sort
      * @param bool  $includeChildCategories
+     * @param string $includeVariants
      *
      * @return \Zend_Paginator
      *
      * @throws \Zend_Paginator_Exception
      */
-    public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array('name' => 'name', 'direction' => 'asc'), $includeChildCategories = false)
+    public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array('name' => 'name', 'direction' => 'asc'), $includeChildCategories = false, $includeVariants = false)
     {
         $list = Product::getList();
 
@@ -159,6 +160,10 @@ class Category extends Base
         $list->setCondition($condition);
         $list->setOrderKey($sort['name']);
         $list->setOrder($sort['direction']);
+
+        if($includeVariants) {
+            $list->setObjectTypes([Object\AbstractObject::OBJECT_TYPE_OBJECT, Object\AbstractObject::OBJECT_TYPE_VARIANT]);
+        }
 
         $paginator = \Zend_Paginator::factory($list);
         $paginator->setCurrentPageNumber($page);

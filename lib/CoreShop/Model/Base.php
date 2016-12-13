@@ -21,6 +21,7 @@ use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model\Object\Concrete;
+use Pimcore\Model\Object\Listing;
 use Pimcore\Model\Site;
 use Pimcore\Model\User;
 use Pimcore\Tool;
@@ -90,7 +91,7 @@ class Base extends Concrete
     /**
      * @param array $config
      *
-     * @return AbstractListing
+     * @return Listing
      *
      * @throws Exception
      */
@@ -112,7 +113,7 @@ class Base extends Concrete
                     $list = new $listClass();
                 }
 
-                if ($list instanceof AbstractListing) {
+                if ($list instanceof Listing) {
                     $list->setValues($config);
 
                     return $list;

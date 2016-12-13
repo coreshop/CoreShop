@@ -95,10 +95,12 @@ class CoreShop_ProductController extends Action
         $gridPerPageDefault = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT");
         $listPerPageAllowed = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.LIST.PER_PAGE");
         $listPerPageDefault = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT");
+        $variantMode = \CoreShop\Model\Configuration::get("SYSTEM.CATEGORY.VARIANT_MODE");
         
         $id = $this->getParam('category');
         $page = $this->getParam('page', 0);
         $sort = $this->getParam('sort', 'NAMEA');
+        $sortParsed = $this->parseSorting($sort);
         $type = $this->getParam('type', $listModeDefault);
 
         $defaultPerPage = $type === "list" ? $listPerPageDefault : $gridPerPageDefault;
@@ -122,7 +124,7 @@ class CoreShop_ProductController extends Action
                 $indexService = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
 
                 $list = $indexService->getProductList();
-                $list->setVariantMode(\CoreShop\Model\Product\Listing::VARIANT_MODE_HIDE);
+                $list->setVariantMode($variantMode ? $variantMode : \CoreShop\Model\Product\Listing::VARIANT_MODE_HIDE);
                 $list->setCategory($category);
 
                 $this->view->currentFilter = \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
@@ -142,7 +144,7 @@ class CoreShop_ProductController extends Action
 
                 $this->view->paginator = $paginator;
             } else {
-                $this->view->paginator = $category->getProductsPaging($page, $perPage, $this->parseSorting($sort), true);
+                $this->view->paginator = $category->getProductsPaging($page, $perPage, $sortParsed, true, $variantMode !== \CoreShop\Model\Product\Listing::VARIANT_MODE_HIDE);
             }
 
             foreach ($this->view->paginator as $product) {

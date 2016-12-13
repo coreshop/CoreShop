@@ -494,3 +494,7 @@
 "coreshop_free_shipping","Free Shipping"
 "coreshop_order_create","Create Order"
 "coreshop_creating_order","Order is being created"
+"coreshop_category_variant_mode","Variant Mode"
+"coreshop_category_variant_mode_hide","Hide"
+"coreshop_category_variant_mode_include","Show"
+"coreshop_category_variant_mode_include_parent_object","Consider for results, bot do not display"

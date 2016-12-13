@@ -1105,6 +1105,19 @@ pimcore.plugin.coreshop.settings = Class.create({
                             xtype: 'numberfield',
                             minValue: 1,
                             value: this.getValue(shopId, 'SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT')
+                        },
+                        {
+                            fieldLabel: t('coreshop_category_variant_mode'),
+                            name: 'SYSTEM.CATEGORY.VARIANT_MODE',
+                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.VARIANT_MODE'),
+                            width: 500,
+                            xtype: 'combo',
+                            store: [['hide', t('coreshop_category_variant_mode_hide')], ['include', t('coreshop_category_variant_mode_include')], ['include_parent_object', t('coreshop_category_variant_mode_include_parent_object')]],
+                            triggerAction: 'all',
+                            typeAhead: false,
+                            editable: false,
+                            forceSelection: true,
+                            queryMode: 'local'
                         }
                     ]
                 },
