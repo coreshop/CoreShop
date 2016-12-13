@@ -197,9 +197,21 @@ QUERY;
      */
     public function deleteIndexStructures()
     {
-        $this->db->query('DROP TABLE IF EXISTS `'.$this->getTablename().'`');
-        $this->db->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename().'`');
-        $this->db->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename().'`');
+        try {
+            $languages = Tool::getValidLanguages();
+
+            foreach ($languages as $language) {
+                $this->db->query('DROP VIEW IF EXISTS `'.$this->getLocalizedViewName($language).'`');
+            }
+
+            $this->db->query('DROP TABLE IF EXISTS `'.$this->getTablename().'`');
+            $this->db->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename().'`');
+            $this->db->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename().'`');
+        }
+        catch (\Exception $e)
+        {
+            Logger::error($e);
+        }
     }
 
     /**
@@ -247,17 +259,7 @@ QUERY;
         } else {
             Logger::info("Don't adding product ".$object->getId().' to index.');
 
-            try {
-                $this->db->delete($this->getTablename(), 'o_id = '.$this->db->quote($object->getId()));
-            } catch (\Exception $e) {
-                Logger::warn('Error during updating index table: '.$e->getMessage(), $e);
-            }
-
-            try {
-                $this->db->delete($this->getRelationTablename(), 'src = '.$this->db->quote($object->getId()));
-            } catch (\Exception $e) {
-                Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
-            }
+            $this->deleteFromIndex($object);
         }
     }
 
