@@ -741,6 +741,7 @@ class Install
         Configuration::set("SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT", 10);
         Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE", [12, 24, 36]);
         Configuration::set("SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT", 12);
+        Configuration::set("SYSTEM.CATEGORY.VARIANT_MODE", "hide");
     }
 
     /**
