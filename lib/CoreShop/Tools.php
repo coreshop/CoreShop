@@ -401,7 +401,7 @@ class Tools
      */
     public function prepareCart($resetCart = false)
     {
-        return $this->getCart("default", $resetCart);
+        return $this->getCart($resetCart, "default");
     }
 
     /**
