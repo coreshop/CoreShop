@@ -17,6 +17,7 @@ namespace CoreShop\IndexService;
 use CoreShop\Exception;
 use CoreShop\IndexService\Getter\AbstractGetter;
 use CoreShop\IndexService\Interpreter\AbstractInterpreter;
+use CoreShop\IndexService\Interpreter\LocalizedInterpreter;
 use CoreShop\IndexService\Interpreter\RelationInterpreter;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
@@ -140,7 +141,29 @@ abstract class AbstractWorker
 
                         if (method_exists($object, $getter)) {
                             foreach($validLanguages as $language) {
-                                $value = $this->interpretValue($column, $object->$getter($language), $object, $virtualProductId, $convertArrayToString);
+                                $value = $object->$getter($language);
+
+                                $interpreterClass = $this->getInterpreterObject($column);
+
+                                if($interpreterClass instanceof AbstractInterpreter) {
+                                    $value = $interpreterClass->interpret($value, $column);
+
+                                    if ($interpreterClass instanceof RelationInterpreter) {
+                                        foreach ($value as $v) {
+                                            $relData = array();
+                                            $relData['src'] = $object->getId();
+                                            $relData['src_virtualProductId'] = $virtualProductId;
+                                            $relData['dest'] = $v['dest'];
+                                            $relData['fieldname'] = $column->name;
+                                            $relData['type'] = $v['type'];
+                                            $relationData[] = $relData;
+                                        }
+                                    }
+                                }
+
+                                if (is_array($value) && $convertArrayToString) {
+                                    $value = ',' . implode($value, ',') . ',';
+                                }
 
                                 $localizedData['values'][$language][$column->getName()] = $value;
                             }
@@ -167,9 +190,37 @@ abstract class AbstractWorker
                             }
                         }
 
-                        $value = $this->interpretValue($column, $value, $object, $virtualProductId, $convertArrayToString);
+                        $interpreterClass = $this->getInterpreterObject($column);
+
+                        if($interpreterClass instanceof AbstractInterpreter) {
+                            $value = $interpreterClass->interpret($value, $column);
+
+                            if ($interpreterClass instanceof RelationInterpreter) {
+                                foreach ($value as $v) {
+                                    $relData = array();
+                                    $relData['src'] = $object->getId();
+                                    $relData['src_virtualProductId'] = $virtualProductId;
+                                    $relData['dest'] = $v['dest'];
+                                    $relData['fieldname'] = $column->name;
+                                    $relData['type'] = $v['type'];
+                                    $relationData[] = $relData;
+                                }
+                            }
+                        }
+                        else if ($interpreterClass instanceof LocalizedInterpreter) {
+                            $validLanguages = Tool::getValidLanguages();
+                            $value = null;
+
+                            foreach($validLanguages as $language) {
+                                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $column);
+                            }
+                        }
 
                         if($value) {
+                            if (is_array($value) && $convertArrayToString) {
+                                $value = ',' . implode($value, ',') . ',';
+                            }
+
                             $data[$column->getName()] = $value;
                         }
                     }
@@ -195,14 +246,10 @@ abstract class AbstractWorker
 
     /**
      * @param Index\Config\Column\AbstractColumn $column
-     * @param $value
-     * @param $object
-     * @param $virtualProductId
-     * @param $convertArrayToString
-     * @return mixed|string
+     * @return bool|AbstractInterpreter
      * @throws \Exception
      */
-    protected function interpretValue(Index\Config\Column\AbstractColumn $column, $value, $object, $virtualProductId, $convertArrayToString) {
+    protected function getInterpreterObject(Index\Config\Column\AbstractColumn $column) {
         $interpreter = $column->getInterpreter();
 
         if (!empty($interpreter)) {
@@ -212,30 +259,15 @@ abstract class AbstractWorker
                 $interpreterObject = new $interpreterClass();
 
                 if ($interpreterObject instanceof AbstractInterpreter) {
-                    $value = $interpreterObject->interpret($value, $column);
-
-                    if ($interpreterObject instanceof RelationInterpreter) {
-                        foreach ($value as $v) {
-                            $relData = array();
-                            $relData['src'] = $object->getId();
-                            $relData['src_virtualProductId'] = $virtualProductId;
-                            $relData['dest'] = $v['dest'];
-                            $relData['fieldname'] = $column->name;
-                            $relData['type'] = $v['type'];
-                            $relationData[] = $relData;
-                        }
-                    }
-                } else {
+                    return $interpreterObject;
+                }
+                else {
                     throw new \Exception('Interpreter class must inherit form AbstractInterpreter');
                 }
             }
         }
 
-        if (is_array($value) && $convertArrayToString) {
-            $value = ',' . implode($value, ',') . ',';
-        }
-
-        return $value;
+        return false;
     }
 
     /**
