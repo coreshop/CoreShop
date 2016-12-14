@@ -67,6 +67,22 @@ class Payment extends Action
             PIMCORE_WEBSITE_PATH.'/views/scripts/'.strtolower($this->getModule()->getIdentifier())
         ];
 
+        /**
+         * @fixme
+         * Because $isActionForward is false by default,
+         * the (commented out) script path order won't work if user tries to override payment scripts in website module.
+
+         * @deprecated $isActionForward (?)
+         */
+        $this->view->setScriptPath(
+            array_merge(
+                $this->view->getScriptPaths(),
+                $pathsToAdd
+            )
+        );
+
+        /*
+
         if(self::$isActionForward) {
             $this->view->setScriptPath(
                 array_merge(
@@ -83,6 +99,8 @@ class Payment extends Action
                 )
             );
         }
+
+        */
 
         if($this->getParam("opc", false)) {
             $this->opc = true;
