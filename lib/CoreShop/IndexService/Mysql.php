@@ -350,14 +350,6 @@ QUERY;
                 $rendered = 'TRIM(`'.$condition->getFieldName().'`) IN ('.implode(',', $inValues).')';
                 break;
 
-            case "match":
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) = '.Db::get()->quote($condition->getValues());
-                break;
-
-            case "not-match":
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) != '.Db::get()->quote($condition->getValues());
-                break;
-
             case "like":
                 $values = $condition->getValues();
                 $pattern = $values["pattern"];
@@ -387,7 +379,6 @@ QUERY;
                 break;
 
             case "concat":
-
                 $values = $condition->getValues();
                 $conditions = [];
 
@@ -396,6 +387,14 @@ QUERY;
                 }
 
                 $rendered = "(" . implode(" " . trim($values['operator']) . " ", $conditions) . ")";
+                break;
+
+            case "compare":
+                $values = $condition->getValues();
+                $value = $values['value'];
+                $operator = $values['operator'];
+
+                $rendered = 'TRIM(`'.$condition->getFieldName().'`) '.$operator.' '.Db::get()->quote($value);
                 break;
 
             default:

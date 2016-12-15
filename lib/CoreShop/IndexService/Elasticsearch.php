@@ -218,12 +218,6 @@ class Elasticsearch extends AbstractWorker
                 ]];
                 break;
 
-            case "match":
-                $rendered = ["term" => [
-                    $condition->getFieldName() => $condition->getValues()
-                ]];
-                break;
-
             case "range":
                 $values = $condition->getValues();
 
@@ -273,6 +267,48 @@ class Elasticsearch extends AbstractWorker
                     $condition->getFieldName() => $patternValue
                 ]];
 
+                break;
+
+            case "compare":
+                $values = $condition->getValues();
+                $value = $values['value'];
+                $operator = $values['operator'];
+
+                if($operator === "=" || $operator === "!=") {
+                    if($operator === "!=") {
+                        $rendered = ["not" =>
+                            [
+                                "term" => [
+                                    $condition->getFieldName() => $condition->getValues()
+                                ]
+                            ]
+                        ];
+                    }
+                    else {
+                        $rendered = ["term" => [
+                            $condition->getFieldName() => $condition->getValues()
+                        ]];
+                    }
+                }
+                else {
+                    $map = [
+                        ">" => "gt",
+                        ">=" => "gte",
+                        "<" => "lt",
+                        "<=" => "lte"
+                    ];
+
+                    if(array_key_exists($operator, $map)) {
+                        $rendered = ["range" => [
+                            $condition->getFieldName() => [
+                                $map[$operator] => $value
+                            ]
+                        ]];
+                    }
+                    else {
+                        throw new \Exception($operator . " is not supported for compare method");
+                    }
+                }
                 break;
 
             default:

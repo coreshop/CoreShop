@@ -47,28 +47,6 @@ class Condition {
     }
 
     /**
-     * Match Condition (=)
-     *
-     * @param $fieldName
-     * @param $value
-     * @return Condition
-     */
-    public static function match($fieldName, $value) {
-        return new Condition($fieldName, "match", $value);
-    }
-
-    /**
-     * Match Condition (=)
-     *
-     * @param $fieldName
-     * @param $value
-     * @return Condition
-     */
-    public static function notMatch($fieldName, $value) {
-        return new Condition($fieldName, "not-match", $value);
-    }
-
-    /**
      * Range Condition (>=, <=)
      *
      * @param $fieldName
@@ -103,6 +81,84 @@ class Condition {
      */
     public static function like($fieldName, $value, $patternPosition) {
         return new Condition($fieldName, "like", array("value" => $value, "pattern" => $patternPosition));
+    }
+
+    /**
+     * Match Condition (=)
+     *
+     * @param $fieldName
+     * @param $value
+     * @return Condition
+     */
+    public static function match($fieldName, $value) {
+        return static::compare($fieldName, $value, '=');
+    }
+
+    /**
+     * Match Condition (=)
+     *
+     * @param $fieldName
+     * @param $value
+     * @return Condition
+     */
+    public static function notMatch($fieldName, $value) {
+        return static::compare($fieldName, $value, '!=');
+    }
+
+    /**
+     * Lower Than Condition (<)
+     *
+     * @param $fieldName
+     * @param $value
+     * @return Condition
+     */
+    public static function lt($fieldName, $value) {
+        return static::compare($fieldName, $value, '<');
+    }
+
+    /**
+     * Lower Than Equal Condition (<=)
+     *
+     * @param $fieldName
+     * @param $value
+     * @return Condition
+     */
+    public static function lte($fieldName, $value) {
+        return static::compare($fieldName, $value, '<=');
+    }
+
+    /**
+     * Greater Than Condition (>)
+     *
+     * @param $fieldName
+     * @param $value
+     * @return Condition
+     */
+    public static function gt($fieldName, $value) {
+        return static::compare($fieldName, $value, '>');
+    }
+
+    /**
+     * Greater Than Equal Condition (<=)
+     *
+     * @param $fieldName
+     * @param $value
+     * @return Condition
+     */
+    public static function gte($fieldName, $value) {
+        return static::compare($fieldName, $value, '>=');
+    }
+
+    /**
+     * Compare Condition ($operator)
+     *
+     * @param $fieldName
+     * @param $value
+     * @param $operator
+     * @return Condition
+     */
+    public static function compare($fieldName, $value, $operator) {
+        return new Condition($fieldName, "compare", array("value" => $value, "operator" => $operator));
     }
 
     /**
