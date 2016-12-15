@@ -25,5 +25,24 @@ pimcore.plugin.coreshop.orderstates.panel = Class.create(pimcore.plugin.coreshop
         delete : '/plugin/CoreShop/admin_order-state/delete',
         get : '/plugin/CoreShop/admin_order-state/get',
         list : '/plugin/CoreShop/admin_order-state/list'
+    },
+
+    onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts) {
+        e.stopEvent();
+        tree.select();
+
+        //disallow
+        if( record.data.system && record.data.system === '1') {
+            return false;
+        }
+
+        var menu = new Ext.menu.Menu();
+        menu.add(new Ext.menu.Item({
+            text: t('delete'),
+            iconCls: 'pimcore_icon_delete',
+            handler: this.deleteItem.bind(this, record)
+        }));
+
+        menu.showAt(e.pageX, e.pageY);
     }
 });

@@ -11,11 +11,13 @@
             <paid>0</paid>
             <invoice>0</invoice>
             <email>0</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/awaiting-check-payment</de>
                 <en>/en/shop/email/awaiting-check-payment</en>
             </emailDocument>
             <color>#4169E1</color>
+            <identifier>QUEUE</identifier>
         </State>
         <State>
             <name>
@@ -27,11 +29,13 @@
             <paid>1</paid>
             <invoice>1</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/payment-accepted</de>
                 <en>/en/shop/email/payment-accepted</en>
             </emailDocument>
             <color>#32CD32</color>
+            <identifier>PAYMENT</identifier>
         </State>
         <State>
             <name>
@@ -43,11 +47,13 @@
             <paid>1</paid>
             <invoice>1</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/preparation-in-progress</de>
                 <en>/en/shop/email/preparation-in-progress</en>
             </emailDocument>
             <color>#FF8C00</color>
+            <identifier>PREPERATION</identifier>
         </State>
         <State>
             <name>
@@ -59,11 +65,13 @@
             <paid>1</paid>
             <invoice>1</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/shipped</de>
                 <en>/en/shop/email/shipped</en>
             </emailDocument>
             <color>#8A2BE2</color>
+            <identifier>SHIPPING</identifier>
         </State>
         <State>
             <name>
@@ -75,11 +83,13 @@
             <paid>1</paid>
             <invoice>0</invoice>
             <email>0</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/delivered</de>
                 <en>/en/shop/email/delivered</en>
             </emailDocument>
             <color>#108510</color>
+            <identifier>DELIVERED</identifier>
         </State>
         <State>
             <name>
@@ -91,11 +101,13 @@
             <paid>0</paid>
             <invoice>0</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/canceled</de>
                 <en>/en/shop/email/canceled</en>
             </emailDocument>
             <color>#DC143C</color>
+            <identifier>CANCELED</identifier>
         </State>
         <State>
             <name>
@@ -107,11 +119,13 @@
             <paid>0</paid>
             <invoice>1</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/refunded</de>
                 <en>/en/shop/email/refunded</en>
             </emailDocument>
             <color>#EC2E15</color>
+            <identifier>REFUND</identifier>
         </State>
         <State>
             <name>
@@ -123,11 +137,13 @@
             <paid>0</paid>
             <invoice>0</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/payment-error</de>
                 <en>/en/shop/email/payment-error</en>
             </emailDocument>
             <color>#8F0621</color>
+            <identifier>ERROR</identifier>
         </State>
         <State>
             <name>
@@ -139,11 +155,13 @@
             <paid>1</paid>
             <invoice>1</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/out-of-stock</de>
                 <en>/en/shop/email/out-of-stock</en>
             </emailDocument>
             <color>#FF69B4</color>
+            <identifier>OUTOFSTOCK</identifier>
         </State>
         <State>
             <name>
@@ -155,11 +173,13 @@
             <paid>0</paid>
             <invoice>0</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/bankwire</de>
                 <en>/en/shop/email/bankwire</en>
             </emailDocument>
             <color>#4169E1</color>
+            <identifier>BANKWIRE</identifier>
         </State>
         <State>
             <name>
@@ -171,11 +191,13 @@
             <paid>0</paid>
             <invoice>0</invoice>
             <email>1</email>
+            <system>1</system>
             <emailDocument>
                 <de>/de/shop/email/out-of-stock</de>
                 <en>/en/shop/email/out-of-stock</en>
             </emailDocument>
             <color>#4169E1</color>
+            <identifier>OUTOFSTOCK_UNPAID</identifier>
         </State>
         <State>
             <name>
@@ -187,7 +209,9 @@
             <paid>0</paid>
             <invoice>0</invoice>
             <email>0</email>
+            <system>1</system>
             <color>#4169E1</color>
+            <identifier>COD</identifier>
         </State>
     </objects>
 </zend-config>

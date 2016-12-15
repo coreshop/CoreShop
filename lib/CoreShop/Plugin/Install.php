@@ -717,18 +717,6 @@ class Install
         Configuration::set('SYSTEM.MAIL.ORDER.NOTIFICATION', '');
         Configuration::set('SYSTEM.MAIL.ORDER.NOTIFICATION', true);
         Configuration::set('SYSTEM.MESSAGING.THREAD.STATE.NEW', 1);
-        Configuration::set('SYSTEM.ORDERSTATE.QUEUE', 1);
-        Configuration::set('SYSTEM.ORDERSTATE.PAYMENT', 2);
-        Configuration::set('SYSTEM.ORDERSTATE.PREPERATION', 3);
-        Configuration::set('SYSTEM.ORDERSTATE.SHIPPING', 4);
-        Configuration::set('SYSTEM.ORDERSTATE.DELIVERED', 5);
-        Configuration::set('SYSTEM.ORDERSTATE.CANCELED', 6);
-        Configuration::set('SYSTEM.ORDERSTATE.REFUND', 7);
-        Configuration::set('SYSTEM.ORDERSTATE.ERROR', 8);
-        Configuration::set('SYSTEM.ORDERSTATE.OUTOFSTOCK', 9);
-        Configuration::set('SYSTEM.ORDERSTATE.BANKWIRE', 10);
-        Configuration::set('SYSTEM.ORDERSTATE.OUTOFSTOCK_UNPAID', 11);
-        Configuration::set('SYSTEM.ORDERSTATE.COD', 12);
         Configuration::set('SYSTEM.ISINSTALLED', false);
         Configuration::set("SYSTEM.MAIL.CONFIRMATION", "/shop/email/order-confirmation");
         Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);

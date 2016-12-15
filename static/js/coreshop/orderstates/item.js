@@ -118,6 +118,17 @@ pimcore.plugin.coreshop.orderstates.item = Class.create(pimcore.plugin.coreshop.
                     defaults: { width: '100%' },
                     items :[
                         {
+                            xtype: 'textfield',
+                            name : 'identifier',
+                            fieldLabel: t('coreshop_order_state_identifier'),
+                            width : 400,
+                            maskRe: /[A-Z_]/,
+                            value : data.identifier,
+                            readOnly: data.system === '1',
+                            allowBlank: false,
+                            required: true
+                        },
+                        {
                             xtype: 'checkbox',
                             name: 'accepted',
                             fieldLabel: t('coreshop_order_state_accepted'),

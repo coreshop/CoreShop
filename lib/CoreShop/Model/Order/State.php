@@ -59,9 +59,32 @@ class State extends AbstractModel
     public $email;
 
     /**
+     * @var bool
+     */
+    public $system;
+
+    /**
      * @var string
      */
     public $color;
+
+    /**
+     * @var string
+     */
+    public $identifier;
+
+
+    /**
+     * Get Range by identifier.
+     *
+     * @param $identifier
+     *
+     * @return null|static
+     */
+    public static function getByIdentifier($identifier)
+    {
+        return static::getByField('identifier', $identifier);
+    }
 
     /**
      * Process OrderState for Order.
@@ -127,7 +150,7 @@ class State extends AbstractModel
         if ($previousState instanceof self) {
             $note->addData('fromState', 'text', $previousState->getId());
         }
-        
+
         $note->addData('toState', 'text', $this->getId());
 
         $note->save();
@@ -247,6 +270,22 @@ class State extends AbstractModel
     }
 
     /**
+     * @return bool
+     */
+    public function getSystem()
+    {
+        return $this->system;
+    }
+
+    /**
+     * @param bool $system
+     */
+    public function setSystem($system)
+    {
+        $this->system = $system;
+    }
+
+    /**
      * @return string
      */
     public function getColor()
@@ -260,6 +299,22 @@ class State extends AbstractModel
     public function setColor($color)
     {
         $this->color = $color;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * @param bool $identifier
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
     }
 
     /**

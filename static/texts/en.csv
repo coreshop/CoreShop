@@ -130,6 +130,7 @@
 "coreshop_order","Order"
 "coreshop_orderstates","Order States"
 "coreshop_order_state","Order State"
+"coreshop_order_state_identifier","Identifier"
 "coreshop_order_state_accepted","Accepted"
 "coreshop_order_state_shipped","Shipped"
 "coreshop_order_state_paid","Paid"

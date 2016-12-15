@@ -54,7 +54,9 @@ class CoreShop_Admin_OrderStateController extends Admin
             ),
             'name' => $orderState->getName(),
             'color' => $orderState->getColor(),
+            'identifier' => $orderState->getIdentifier(),
             'email' => $orderState->getEmail(),
+            'system' => $orderState->getSystem(),
             'localizedFields' => $orderState->getLocalizedFields()
         );
 
@@ -73,8 +75,10 @@ class CoreShop_Admin_OrderStateController extends Admin
             $orderState->setAccepted(0);
             $orderState->setShipped(0);
             $orderState->setEmail(0);
+            $orderState->setSystem(0);
             $orderState->setPaid(0);
             $orderState->setInvoice(0);
+            $orderState->setIdentifier('');
             $orderState->setColor("#FFFFFF");
             $orderState->save();
 

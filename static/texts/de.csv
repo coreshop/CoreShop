@@ -129,6 +129,7 @@
 "coreshop_order","Bestellung"
 "coreshop_orderstates","Bestellstatus"
 "coreshop_order_state","Bestellstatus"
+"coreshop_order_state_identifier","Identifier"
 "coreshop_order_state_accepted","Akzeptiert"
 "coreshop_order_state_shipped","Versendet"
 "coreshop_order_state_paid","Bezahlt"
