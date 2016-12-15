@@ -58,7 +58,6 @@ class Payment extends Action
     {
         parent::init();
 
-        $this->view->document = $this->document = Document::getByPath('/'.$this->language.'/shop');
         $this->view->module = $this->getModule();
 
         $pathsToAdd = [
