@@ -113,7 +113,8 @@ class CreateObjectClassCommand extends AbstractCommand
 
 
         if(!$isWebsite) {
-            if (!Broker::getInstance()->hasPlugin($pluginName)) {
+
+            if (!Broker::getInstance()->hasPlugin($pluginName . '\\Plugin')) {
                 $question = new ConfirmationQuestion("Plugin with name $pluginName not found, should I create it? (y/n)", false);
                 if (!$helper->ask($input, $output, $question)) {
                     $this->output->writeln("<error>Aborting due to not creating the plugin!</error>");
@@ -342,6 +343,7 @@ class CreateObjectClassCommand extends AbstractCommand
                     $definition = Objectbrick\Definition::getByKey($type);
 
                     $tablesToMigrate["object_brick_query_" . $definition->getKey() . "_%s"] = false;
+                    $tablesToMigrate["object_brick_store_" . $definition->getKey() . "_%s"] = false;
                 }
             }
             else if($fd instanceof ClassDefinition\Data\Fieldcollections) {
@@ -378,7 +380,9 @@ class CreateObjectClassCommand extends AbstractCommand
             $oldSqlTable = sprintf($tbl, $oldClassId);
             $newSqlTable = sprintf($tbl, $newClassId);
 
-            $sql = "INSERT INTO $newSqlTable SELECT * FROM $oldSqlTable";
+            $columns = $this->getColumns($newSqlTable);
+
+            $sql = "INSERT INTO $newSqlTable SELECT ".implode(",", $columns)." FROM $oldSqlTable";
 
             $db->query($sql);
 
@@ -390,5 +394,22 @@ class CreateObjectClassCommand extends AbstractCommand
         }
 
         $db->query("UPDATE objects SET o_classId=?, o_className=? WHERE o_classId=?", [$newClassDefinition->getId(), $newClassDefinition->getName(), $oldClassDefinition->getId()]);
+    }
+
+    /**
+     * @param $table
+     * @return array
+     */
+    protected function getColumns($table) {
+        $db = Db::get();
+
+        $data = $db->fetchAll("SHOW COLUMNS FROM " . $table);
+        $columns = [];
+
+        foreach ($data as $d) {
+            $columns[] = $d["Field"];
+        }
+
+        return $columns;
     }
 }
