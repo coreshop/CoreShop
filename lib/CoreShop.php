@@ -231,6 +231,81 @@ class CoreShop
     }
 
     /**
+     * return all available Pimcore classes and its mapped Pimcore Class Name
+     *
+     * @return array
+     */
+    public static function getPimcoreClasses() {
+        return [
+            'product' => [
+                "pimcoreClass" => \CoreShop\Model\Product::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Product::classId(),
+                "coreShopClass" => \CoreShop\Model\Product::class
+            ],
+            'category' => [
+                "pimcoreClass" => \CoreShop\Model\Category::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Category::classId(),
+                "coreShopClass" => \CoreShop\Model\Category::class
+            ],
+            'order' => [
+                "pimcoreClass" => \CoreShop\Model\Order::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Category::classId(),
+                "coreShopClass" => \CoreShop\Model\Category::class
+            ],
+            'orderItem' => [
+                "pimcoreClass" => \CoreShop\Model\Order\Item::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Category::classId(),
+                "coreShopClass" => \CoreShop\Model\Category::class
+            ],
+            'cart' => [
+                "pimcoreClass" => \CoreShop\Model\Cart::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Cart::classId(),
+                "coreShopClass" => \CoreShop\Model\Cart::class
+            ],
+            'cartItem' => [
+                "pimcoreClass" => \CoreShop\Model\Cart\Item::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Cart\Item::classId(),
+                "coreShopClass" => \CoreShop\Model\Cart\Item::class
+            ],
+            'payment' => [
+                "pimcoreClass" => \CoreShop\Model\Order\Payment::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Order\Payment::classId(),
+                "coreShopClass" => \CoreShop\Model\Order\Payment::class
+            ],
+            'user' => [
+                "pimcoreClass" => \CoreShop\Model\User::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\User::classId(),
+                "coreShopClass" => \CoreShop\Model\User::class
+            ],
+            'customerGroup' => [
+                "pimcoreClass" => \CoreShop\Model\Customer\Group::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Customer\Group::classId(),
+                "coreShopClass" => \CoreShop\Model\Customer\Group::class
+            ],
+            'invoice' => [
+                "pimcoreClass" => \CoreShop\Model\Order\Invoice::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Order\Invoice::classId(),
+                "coreShopClass" => \CoreShop\Model\Order\Invoice::class
+            ],
+            'invoiceItem' => [
+                "pimcoreClass" => \CoreShop\Model\Order\Invoice\Item::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Order\Invoice\Item::classId(),
+                "coreShopClass" => \CoreShop\Model\Order\Invoice\Item::class
+            ],
+            'shipment' => [
+                "pimcoreClass" => \CoreShop\Model\Order\Shipment::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Order\Shipment::classId(),
+                "coreShopClass" => \CoreShop\Model\Order\Shipment::class
+            ],
+            'shipmentItem' => [
+                "pimcoreClass" => \CoreShop\Model\Order\Shipment\Item::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Order\Shipment\Item::classId(),
+                "coreShopClass" => \CoreShop\Model\Order\Shipment\Item::class
+            ]
+        ];
+    }
+
+    /**
      * Bootstrap CoreShop
      */
     private function doBootstrap()

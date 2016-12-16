@@ -58,21 +58,12 @@ class CoreShop_Admin_SettingsController extends Admin
 
         $pluginConfig = \Pimcore\ExtensionManager::getPluginConfig('CoreShop');
 
-        $classMapping = array(
-            'product' => \CoreShop\Model\Product::getPimcoreObjectClass(),
-            'category' => \CoreShop\Model\Category::getPimcoreObjectClass(),
-            'order' => \CoreShop\Model\Order::getPimcoreObjectClass(),
-            'orderItem' => \CoreShop\Model\Order\Item::getPimcoreObjectClass(),
-            'cart' => \CoreShop\Model\Cart::getPimcoreObjectClass(),
-            'cartItem' => \CoreShop\Model\Cart\Item::getPimcoreObjectClass(),
-            'payment' => \CoreShop\Model\Order\Payment::getPimcoreObjectClass(),
-            'user' => \CoreShop\Model\User::getPimcoreObjectClass(),
-            'customerGroup' => \CoreShop\Model\Customer\Group::getPimcoreObjectClass(),
-            'invoice' => \CoreShop\Model\Order\Invoice::getPimcoreObjectClass(),
-            'invoiceItem' => \CoreShop\Model\Order\Invoice\Item::getPimcoreObjectClass(),
-            'shipment' => \CoreShop\Model\Order\Shipment::getPimcoreObjectClass(),
-            'shipmentItem' => \CoreShop\Model\Order\Shipment\Item::getPimcoreObjectClass()
-        );
+        $pimcoreClasses = \CoreShop::getPimcoreClasses();
+        $classMapping = [];
+
+        foreach($pimcoreClasses as $key=>$value) {
+            $classMapping[$key] = $value['pimcoreClass'];
+        }
 
         foreach ($classMapping as $key => &$class) {
             $class = str_replace('Pimcore\\Model\\Object\\', '', $class);
