@@ -964,17 +964,6 @@ class Cart extends Base
         }
 
         $state->processStep($order);
-        
-        //Send Confirmation to customer
-        $orderMail = Configuration::get("SYSTEM.MAIL.CONFIRMATION." . strtoupper($order->getLang()));
-        
-        if($orderMail) {
-            $emailDocument = Document::getByPath($orderMail);
-
-            if($emailDocument instanceof Document\Email) {
-                Mail::sendOrderMail($emailDocument, $order, $order->getOrderState(), true);
-            }
-        }
 
         //Remove transaction to prevent double ordering
         $this->setCustomIdentifier(NULL);

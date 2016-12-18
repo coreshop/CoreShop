@@ -394,7 +394,6 @@ pimcore.plugin.coreshop.settings = Class.create({
     getConfigFormForShop : function (shopId) {
         var me = this;
         var messagingLangTabs = [];
-        var orderConfirmationLangTabs = [];
         var store = pimcore.globalmanager.get('coreshop_shops');
         var shop = store.getById(shopId);
         if (!shop) {
@@ -409,54 +408,6 @@ pimcore.plugin.coreshop.settings = Class.create({
                 shortLang = shortLang.split('-');
                 shortLang = shortLang[0];
             }
-
-            orderConfirmationLangTabs.push({
-                title: pimcore.available_languages[lang],
-                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
-                layout: 'form',
-                items: [
-                    {
-                        name: 'SYSTEM.MAIL.CONFIRMATION.' + shortLang,
-                        value: me.getValue(shopId, 'SYSTEM.MAIL.CONFIRMATION.' + shortLang),
-                        fieldLabel: t('coreshop_order_confirmation_mail'),
-                        labelWidth: 350,
-                        fieldCls: 'pimcore_droptarget_input',
-                        xtype: 'textfield',
-                        listeners: {
-                            render: function (el) {
-                                new Ext.dd.DropZone(el.getEl(), {
-                                    reference: this,
-                                    ddGroup: 'element',
-                                    getTargetFromEvent: function (e) {
-                                        return this.getEl();
-                                    }.bind(el),
-
-                                    onNodeOver: function (target, dd, e, data) {
-                                        data = data.records[0].data;
-
-                                        if (data.elementType == 'document') {
-                                            return Ext.dd.DropZone.prototype.dropAllowed;
-                                        }
-
-                                        return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                    },
-
-                                    onNodeDrop: function (target, dd, e, data) {
-                                        data = data.records[0].data;
-
-                                        if (data.elementType == 'document') {
-                                            this.setValue(data.id);
-                                            return true;
-                                        }
-
-                                        return false;
-                                    }.bind(el)
-                                });
-                            }
-                        }
-                    }
-                ]
-            });
 
             messagingLangTabs.push({
                 title: pimcore.available_languages[lang],
@@ -587,10 +538,6 @@ pimcore.plugin.coreshop.settings = Class.create({
             })
         });
 
-        var categoryGridPerPageStore = new Ext.data.ArrayStore({
-
-        });
-
         var shopPanel = Ext.create('Ext.form.Panel', {
             title : shop.get('name'),
             border: false,
@@ -669,29 +616,6 @@ pimcore.plugin.coreshop.settings = Class.create({
                             xtype: 'checkbox',
                             name: 'SYSTEM.BASE.GUESTCHECKOUT',
                             checked: this.getValue(shopId, 'SYSTEM.BASE.GUESTCHECKOUT')
-                        }
-                    ]
-                },
-                {
-                    xtype: 'fieldset',
-                    title: t('coreshop_order'),
-                    collapsible: true,
-                    collapsed: true,
-                    autoHeight: true,
-                    labelWidth: 250,
-                    defaultType: 'textfield',
-                    defaults: { width: 600 },
-                    items: [
-                        {
-                            xtype: 'tabpanel',
-                            activeTab: 0,
-                            width: '100%',
-                            defaults: {
-                                autoHeight: true,
-                                bodyStyle: 'padding:10px;'
-                            },
-                            items: orderConfirmationLangTabs
-
                         }
                     ]
                 },
