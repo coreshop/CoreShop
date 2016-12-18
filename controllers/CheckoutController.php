@@ -122,7 +122,7 @@ class CoreShop_CheckoutController extends Action
             }
 
             if (!$carrier instanceof \CoreShop\Model\Carrier) {
-                $this->view->error = 'oh shit, not found';
+                $this->view->error = 'CoreShop Error: No valid carrier provider selected.';
             } else {
                 $this->cart->setCarrier($carrier);
                 $this->cart->setPaymentModule(null); //Reset PaymentModule, payment could not be available for this carrier
@@ -154,7 +154,7 @@ class CoreShop_CheckoutController extends Action
             }
 
             if (!$paymentProvider instanceof Payment) {
-                $this->view->error = 'oh shit, not found';
+                $this->view->error = 'CoreShop Error: No valid payment provider selected.';
             } else {
                 $this->cart->setPaymentModule($paymentProvider->getIdentifier());
                 $this->cart->save();
@@ -171,7 +171,7 @@ class CoreShop_CheckoutController extends Action
     {
         $this->view->headTitle($this->view->translate('Validate'));
 
-        $paymentViewScript = $this->getParam("paymentViewScript");
+        $paymentViewScript = $this->getParam('paymentViewScript');
 
         $this->view->paymentViewScript = $paymentViewScript;
 
