@@ -412,7 +412,7 @@ CREATE TABLE `coreshop_orderstates` (
   `email` tinyint(1) NOT NULL DEFAULT '0',
   `system` tinyint(1) NOT NULL DEFAULT '0',
   `color` varchar(7) NOT NULL DEFAULT '#000000',
-  `identifier` varchar(255) DEFAULT NULL,
+  `identifier` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `identifier` (`identifier`)
 ) DEFAULT CHARSET=utf8mb4;
