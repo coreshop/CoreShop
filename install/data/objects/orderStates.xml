@@ -3,6 +3,20 @@
     <objects>
         <State>
             <name>
+                <en>pending payment</en>
+                <de>Ausstehende Bezahlung</de>
+            </name>
+            <accepted>0</accepted>
+            <shipped>0</shipped>
+            <paid>0</paid>
+            <invoice>0</invoice>
+            <email>0</email>
+            <system>1</system>
+            <color>#4292f4</color>
+            <identifier>PENDING_PAYMENT</identifier>
+        </State>
+        <State>
+            <name>
                 <en>Awaiting check payment</en>
                 <de>Warten auf Check-Zahlung</de>
             </name>

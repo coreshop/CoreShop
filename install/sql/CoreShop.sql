@@ -404,13 +404,17 @@ ALTER TABLE coreshop_numberranges ADD UNIQUE (`type`, `shopId`);
 
 DROP TABLE IF EXISTS `coreshop_orderstates`;
 CREATE TABLE `coreshop_orderstates` (
-  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `accepted` tinyint(1) NOT NULL DEFAULT '0',
   `shipped` tinyint(1) NOT NULL DEFAULT '0',
   `paid` tinyint(1) NOT NULL DEFAULT '0',
   `invoice` tinyint(1) NOT NULL DEFAULT '0',
   `email` tinyint(1) NOT NULL DEFAULT '0',
-  `color` varchar(7) NOT NULL DEFAULT '#000000'
+  `system` tinyint(1) NOT NULL DEFAULT '0',
+  `color` varchar(7) NOT NULL DEFAULT '#000000',
+  `identifier` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `identifier` (`identifier`)
 ) DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `coreshop_taxes`;
