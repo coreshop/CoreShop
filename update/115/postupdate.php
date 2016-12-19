@@ -34,7 +34,7 @@ if ($db->fetchRow("SHOW COLUMNS FROM `coreshop_orderstates` LIKE 'system';") ===
 }
 
 if ($db->fetchRow("SHOW COLUMNS FROM `coreshop_orderstates` LIKE 'identifier';") === false) {
-    $db->query("ALTER TABLE `coreshop_orderstates` ADD `identifier` varchar(255) DEFAULT NULL AFTER `color`;");
+    $db->query("ALTER TABLE `coreshop_orderstates` ADD `identifier` varchar(100) DEFAULT NULL AFTER `color`;");
     $db->query("ALTER TABLE `coreshop_orderstates` ADD UNIQUE INDEX `identifier` (`identifier`);");
 }
 
@@ -73,7 +73,7 @@ if (!\CoreShop\Model\Order\State::getByIdentifier('PENDING_PAYMENT') instanceof 
     $state->setEmail(0);
     $state->setPaid(0);
     $state->setInvoice(0);
-    $state->setColor("#4292f4");
+    $state->setColor("#e4e4e4");
     $state->save();
 }
 
