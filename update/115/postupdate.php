@@ -72,7 +72,6 @@ if( !\CoreShop\Model\Order\State::getByIdentifier('PENDING_PAYMENT') instanceof 
     $state->setAccepted(0);
     $state->setShipped(0);
     $state->setEmail(0);
-    $state->setSystem(0);
     $state->setPaid(0);
     $state->setInvoice(0);
     $state->setColor("#4292f4");
