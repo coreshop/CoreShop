@@ -128,18 +128,23 @@ class Payment extends Action
      *
      * @param $language
      * @param Order\State|null $state
+     * @param int $totalPayed
      * @return Order
      */
-    protected function createOrder($language, Order\State $state = null)
+    protected function createOrder($language, Order\State $state = null, $totalPayed = null)
     {
         if(!$state instanceof Order\State) {
             $state = Order\State::getByIdentifier('PAYMENT_PENDING');
         }
 
+        if(is_null($totalPayed)) {
+            $totalPayed = $this->cart->getTotal();
+        }
+
         return $this->cart->createOrder(
             $state,
             $this->getModule(),
-            $this->cart->getTotal(),
+            $totalPayed,
             $language
         );
     }
