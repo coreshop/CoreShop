@@ -19,20 +19,21 @@ use CoreShop\Controller\Action\Admin;
  */
 class CoreShop_Admin_OrderShipmentController extends Admin
 {
-    public function getShipAbleItemsAction() {
+    public function getShipAbleItemsAction()
+    {
         $orderId = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($orderId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         $items = $order->getShipAbleItems();
         $itemsToReturn = [];
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $orderItem = $item['item'];
-            if($orderItem instanceof \CoreShop\Model\Order\Item) {
+            if ($orderItem instanceof \CoreShop\Model\Order\Item) {
                 $itemsToReturn[] = [
                     "orderItemId" => $orderItem->getId(),
                     "price" => $orderItem->getPrice(),
@@ -47,10 +48,11 @@ class CoreShop_Admin_OrderShipmentController extends Admin
             }
         }
 
-        $this->_helper->json(array('success' => true, 'items' => $itemsToReturn));
+        $this->_helper->json(['success' => true, 'items' => $itemsToReturn]);
     }
 
-    public function createShipmentAction() {
+    public function createShipmentAction()
+    {
         $items = $this->getParam("items");
         $orderId = $this->getParam("id");
         $carrierId = $this->getParam("carrier");
@@ -60,11 +62,11 @@ class CoreShop_Admin_OrderShipmentController extends Admin
         $carrier = \CoreShop\Model\Carrier::getById($carrierId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         if (!$carrier instanceof \CoreShop\Model\Carrier) {
-            $this->_helper->json(array('success' => false, 'message' => "Carrier with ID '$carrierId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Carrier with ID '$carrierId' not found"]);
         }
 
         try {
@@ -73,9 +75,8 @@ class CoreShop_Admin_OrderShipmentController extends Admin
             $shipment = $order->createShipment($items, $carrier, $trackingCode);
 
             $this->_helper->json(["success" => true, "shipmentId" => $shipment->getId()]);
-        }
-        catch(\CoreShop\Exception $ex) {
-            $this->_helper->json(array('success' => false, 'message' => $ex->getMessage()));
+        } catch (\CoreShop\Exception $ex) {
+            $this->_helper->json(['success' => false, 'message' => $ex->getMessage()]);
         }
     }
 
@@ -87,32 +88,32 @@ class CoreShop_Admin_OrderShipmentController extends Admin
         $shipment = \CoreShop\Model\Order\Shipment::getById($shipmentId);
 
         if (!$shipment instanceof \CoreShop\Model\Order\Shipment) {
-            $this->_helper->json(array('success' => false, 'message' => "Shipment with ID '$shipmentId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Shipment with ID '$shipmentId' not found"]);
         }
 
         if (!$trackingCode || $shipment->getTrackingCode() === $trackingCode) {
-            $this->_helper->json(array('success' => false, 'message' => "Tracking code did not change or is empty"));
+            $this->_helper->json(['success' => false, 'message' => "Tracking code did not change or is empty"]);
         }
 
         $shipment->setTrackingCode($trackingCode);
         $shipment->save();
 
-        $this->_helper->json(array('success' => true));
+        $this->_helper->json(['success' => true]);
     }
 
-    public function renderShipmentAction() {
+    public function renderShipmentAction()
+    {
         $shipmentId = $this->getParam('id');
         $shipment = \CoreShop\Model\Order\Shipment::getById($shipmentId);
 
-        if($shipment instanceof \CoreShop\Model\Order\Shipment) {
+        if ($shipment instanceof \CoreShop\Model\Order\Shipment) {
             header('Content-type: application/pdf');
             header(sprintf('Content-Disposition: inline; filename="shipment-%s"', $shipment->getShipmentNumber()));
             header('Content-Transfer-Encoding: binary');
             header('Accept-Ranges: bytes');
 
             echo $shipment->generate()->getData();
-        }
-        else {
+        } else {
             echo "Shipment not found";
         }
 

@@ -94,7 +94,7 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder
         $item->setTax($order->getTotalTax());
         $item->setAffiliation($order->getShop()->getName());
 
-        if($order->getPriceRuleFieldCollection() instanceof Fieldcollection) {
+        if ($order->getPriceRuleFieldCollection() instanceof Fieldcollection) {
             if ($order->getPriceRuleFieldCollection()->getCount() > 0) {
                 foreach ($order->getPriceRuleFieldCollection() as $priceRule) {
                     if ($priceRule instanceof Item) {

@@ -31,7 +31,7 @@ class State extends AbstractModel
     /**
      * @var array
      */
-    protected $localizedValues = array('name');
+    protected $localizedValues = ['name'];
 
     /**
      * @var string
@@ -63,7 +63,7 @@ class State extends AbstractModel
     public function getThreadsList()
     {
         $list = Thread::getList();
-        $list->setCondition('statusId = ?', array($this->getId()));
+        $list->setCondition('statusId = ?', [$this->getId()]);
 
         return $list;
     }

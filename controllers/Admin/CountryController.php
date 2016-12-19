@@ -25,7 +25,7 @@ class CoreShop_Admin_CountryController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_countries');
         }
@@ -38,7 +38,7 @@ class CoreShop_Admin_CountryController extends Admin
         $list->setOrderKey('name');
         $list->load();
 
-        $countries = array();
+        $countries = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $country) {
                 $countries[] = $this->getTreeNodeConfig($country);
@@ -49,15 +49,15 @@ class CoreShop_Admin_CountryController extends Admin
 
     protected function getTreeNodeConfig(Country $country)
     {
-        $tmpCountry = array(
+        $tmpCountry = [
             'id' => $country->getId(),
             'text' => $country->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$country->getId(),
-            ),
+            ],
             'name' => $country->getName(),
             'zone' => $country->getZone() instanceof \CoreShop\Model\Zone ? $country->getZone()->getName() : ''
-        );
+        ];
 
         return $tmpCountry;
     }
@@ -68,9 +68,9 @@ class CoreShop_Admin_CountryController extends Admin
         $country = Country::getById($id);
 
         if ($country instanceof Country) {
-            $this->_helper->json(array('success' => true, 'data' => $country));
+            $this->_helper->json(['success' => true, 'data' => $country]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -86,9 +86,9 @@ class CoreShop_Admin_CountryController extends Admin
             $country->setValues($data);
             $country->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $country));
+            $this->_helper->json(['success' => true, 'data' => $country]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -97,14 +97,14 @@ class CoreShop_Admin_CountryController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $country = Country::create();
             $country->setName($name);
             $country->setActive(1);
             $country->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $country));
+            $this->_helper->json(['success' => true, 'data' => $country]);
         }
     }
 
@@ -116,9 +116,9 @@ class CoreShop_Admin_CountryController extends Admin
         if ($country instanceof Country) {
             $country->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

@@ -40,7 +40,8 @@ class Manager
      *
      * @return Cart[]
      */
-    public function getCarts(User $user) {
+    public function getCarts(User $user)
+    {
         $list = Cart::getList();
         $list->setCondition("user__id = ? AND order__id is null", [$user->getId()]);
         $list->load();
@@ -55,12 +56,13 @@ class Manager
      * @param User $user
      * @return null
      */
-    public function getByName($name, User $user) {
+    public function getByName($name, User $user)
+    {
         $list = Cart::getList();
         $list->setCondition("user__id = ? AND name = ? AND order__id is null", [$user->getId(), $name]);
         $list->load();
 
-        if($list->getTotalCount() > 0) {
+        if ($list->getTotalCount() > 0) {
             $objects = $list->getObjects();
 
             return $objects[0];
@@ -74,14 +76,16 @@ class Manager
      *
      * @param Cart $cart
      */
-    public function deleteCart(Cart $cart) {
+    public function deleteCart(Cart $cart)
+    {
         $cart->delete();
     }
 
     /**
      * @param Cart $cart
      */
-    public function setSessionCart(Cart $cart) {
+    public function setSessionCart(Cart $cart)
+    {
         $cartSession = \CoreShop::getTools()->getSession();
 
         $cartSession->cartObj = $cart;
@@ -93,7 +97,8 @@ class Manager
      *
      * @return Cart|null
      */
-    public function getSessionCart() {
+    public function getSessionCart()
+    {
         $cartSession = \CoreShop::getTools()->getSession();
         $cart = null;
 
@@ -119,7 +124,8 @@ class Manager
 
      * @return Cart
      */
-    public function createCart($name = "default", User $user = null, Shop $shop = null, Currency $currency = null, $persist = false) {
+    public function createCart($name = "default", User $user = null, Shop $shop = null, Currency $currency = null, $persist = false)
+    {
         $cart = Cart::create();
         $cart->setKey(uniqid());
         $cart->setPublished(true);
@@ -133,7 +139,7 @@ class Manager
             }
         }
 
-        if($persist) {
+        if ($persist) {
             $this->persistCart($cart);
         }
 
@@ -145,7 +151,8 @@ class Manager
      *
      * @param Cart $cart
      */
-    public function persistCart(Cart $cart) {
+    public function persistCart(Cart $cart)
+    {
         $cartsFolder = Service::createFolderByPath('/coreshop/carts/' . date('Y/m/d'));
         $cart->setParent($cartsFolder);
         $cart->save();

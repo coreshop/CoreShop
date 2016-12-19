@@ -20,7 +20,7 @@ use CoreShop\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
  * Class CoreShopFilter
  * @package Pimcore\Model\Object\ClassDefinition\Data
  */
-class CoreShopFilter extends  CoreShopSelect
+class CoreShopFilter extends CoreShopSelect
 {
     /**
      * Static type of this element.

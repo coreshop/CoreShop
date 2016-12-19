@@ -23,7 +23,7 @@ class CoreShop_Admin_ReportsController extends Admin
 {
     public function getProductsReportAction()
     {
-        $filters = $this->getParam('filters', array('from' => date('01-m-Y'), 'to' => date('m-t-Y')));
+        $filters = $this->getParam('filters', ['from' => date('01-m-Y'), 'to' => date('m-t-Y')]);
         $from = new \Pimcore\Date($filters['from']);
         $to = new \Pimcore\Date($filters['to']);
 
@@ -50,7 +50,7 @@ class CoreShop_Admin_ReportsController extends Admin
             ORDER BY COUNT(orderItems.product__id) DESC
         ";
 
-        $productSales = $db->fetchAll($query, array($from->getTimestamp(), $to->getTimestamp()));
+        $productSales = $db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
         foreach ($productSales as &$sale) {
             $sale['salesPriceFormatted'] = \CoreShop::getTools()->formatPrice($sale['salesPrice']);
@@ -58,12 +58,12 @@ class CoreShop_Admin_ReportsController extends Admin
             $sale['profitFormatted'] = \CoreShop::getTools()->formatPrice($sale['profit']);
         }
 
-        $this->_helper->json(array('data' => array_values($productSales)));
+        $this->_helper->json(['data' => array_values($productSales)]);
     }
 
     public function getCategoriesReportAction()
     {
-        $filters = $this->getParam('filters', array('from' => date('01-m-Y'), 'to' => date('m-t-Y')));
+        $filters = $this->getParam('filters', ['from' => date('01-m-Y'), 'to' => date('m-t-Y')]);
         $from = new \Pimcore\Date($filters['from']);
         $to = new \Pimcore\Date($filters['to']);
 
@@ -94,19 +94,19 @@ class CoreShop_Admin_ReportsController extends Admin
             ORDER BY COUNT(category.oo_id) DESC
         ";
 
-        $catSales = $db->fetchAll($query, array($from->getTimestamp(), $to->getTimestamp()));
+        $catSales = $db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
         foreach ($catSales as &$sale) {
             $sale['salesFormatted'] = \CoreShop::getTools()->formatPrice($sale['sales']);
             $sale['profitFormatted'] = \CoreShop::getTools()->formatPrice($sale['profit']);
         }
 
-        $this->_helper->json(array('data' => array_values($catSales)));
+        $this->_helper->json(['data' => array_values($catSales)]);
     }
 
     public function getCustomersReportAction()
     {
-        $filters = $this->getParam('filters', array('from' => date('01-m-Y'), 'to' => date('m-t-Y')));
+        $filters = $this->getParam('filters', ['from' => date('01-m-Y'), 'to' => date('m-t-Y')]);
         $from = new \Pimcore\Date($filters['from']);
         $to = new \Pimcore\Date($filters['to']);
 
@@ -128,13 +128,13 @@ class CoreShop_Admin_ReportsController extends Admin
             ORDER BY COUNT(customer.oo_id) DESC
         ";
 
-        $custSales = $db->fetchAll($query, array($from->getTimestamp(), $to->getTimestamp()));
+        $custSales = $db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
         foreach ($custSales as &$sale) {
             $sale['salesFormatted'] = \CoreShop::getTools()->formatPrice($sale['sales']);
         }
 
-        $this->_helper->json(array('data' => array_values($custSales)));
+        $this->_helper->json(['data' => array_values($custSales)]);
     }
 
     public function getQuantitiesReportAction()
@@ -170,12 +170,12 @@ class CoreShop_Admin_ReportsController extends Admin
         $products = $db->fetchAll($query);
         $total = $db->fetchCol($totalQuery);
 
-        foreach($products as &$product) {
+        foreach ($products as &$product) {
             $product['retailPriceFormatted'] = \CoreShop::getTools()->formatPrice($product['retailPrice']);
             $product['totalPriceFormatted'] = \CoreShop::getTools()->formatPrice($product['totalPrice']);
         }
 
-        $this->_helper->json(array('data' => $products, "total" => $total));
+        $this->_helper->json(['data' => $products, "total" => $total]);
     }
 
     /**
@@ -183,7 +183,7 @@ class CoreShop_Admin_ReportsController extends Admin
      */
     public function getOrdersCartsReportAction()
     {
-        $filters = $this->getParam('filters', array('from' => date('01-m-Y'), 'to' => date('m-t-Y')));
+        $filters = $this->getParam('filters', ['from' => date('01-m-Y'), 'to' => date('m-t-Y')]);
         $from = new \Pimcore\Date($filters['from']);
         $to = new \Pimcore\Date($filters['to']);
 
@@ -197,7 +197,7 @@ class CoreShop_Admin_ReportsController extends Admin
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        foreach(['LEFT', 'RIGHT'] as $join) {
+        foreach (['LEFT', 'RIGHT'] as $join) {
             $queries[] = "
                 SELECT
                     CASE WHEN orderDateTimestamp IS NULL THEN cartDateTimestamp ELSE orderDateTimestamp END as timestamp,
@@ -224,13 +224,13 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $data = $db->fetchAll(implode(PHP_EOL . "UNION ALL" . PHP_EOL, $queries));
 
-        foreach($data as &$day) {
+        foreach ($data as &$day) {
             $date = new \Zend_Date($day['timestamp']);
 
             $day['datetext'] = $date->get(\Zend_Date::DATE_LONG);
         }
 
-        $this->_helper->json(array('data' => $data));
+        $this->_helper->json(['data' => $data]);
     }
 
     /**
@@ -238,30 +238,30 @@ class CoreShop_Admin_ReportsController extends Admin
      */
     public function getSalesReportAction()
     {
-        $filters = $this->getParam('filters', array('from' => date('01-m-Y'), 'to' => date('m-t-Y')));
+        $filters = $this->getParam('filters', ['from' => date('01-m-Y'), 'to' => date('m-t-Y')]);
         $from = new \Pimcore\Date($filters['from']);
         $to = new \Pimcore\Date($filters['to']);
 
-        $data = array();
+        $data = [];
 
         $classId = Model\Order::classId();
         $db = \Pimcore\Db::get();
 
         $sqlQuery = "SELECT DATE(FROM_UNIXTIME(orderDate)) as dayDate, orderDate, SUM(total) as total FROM object_query_$classId WHERE orderDate > ? AND orderDate < ? GROUP BY DATE(FROM_UNIXTIME(orderDate))";
-        $results = $db->fetchAll($sqlQuery, array($from->getTimestamp(), $to->getTimestamp()));
+        $results = $db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $date = new \Pimcore\Date($result['orderDate']);
 
-            $data[] = array(
+            $data[] = [
                 'timestamp' => $date->getTimestamp(),
                 'datetext' => $date->get(\Zend_Date::DATE_LONG),
                 'sales' => $result['total'],
                 'salesFormatted' => \CoreShop::getTools()->formatPrice($result['total'])
-            );
+            ];
         }
 
-        $this->_helper->json(array('data' => $data));
+        $this->_helper->json(['data' => $data]);
     }
 
     public function getCarrierReportAction()
@@ -273,18 +273,18 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $db = \Pimcore\Db::get();
         $results = $db->fetchAll($sql);
-        $data = array();
+        $data = [];
 
         foreach ($results as $result) {
             $carrier = Model\Carrier::getById($result['carrier']);
 
-            $data[] = array(
+            $data[] = [
                 'carrier' => $carrier instanceof Model\Carrier ? $carrier->getName() : $result['carrier'],
                 'data' => floatval($result['percentage']),
-            );
+            ];
         }
 
-        $this->_helper->json(array('data' => $data));
+        $this->_helper->json(['data' => $data]);
     }
 
     public function getPaymentReportAction()
@@ -296,16 +296,16 @@ class CoreShop_Admin_ReportsController extends Admin
 
         $db = \Pimcore\Db::get();
         $results = $db->fetchAll($sql);
-        $data = array();
+        $data = [];
 
         foreach ($results as $result) {
-            $data[] = array(
+            $data[] = [
                 'provider' => $result['paymentProvider'],
                 'data' => floatval($result['percentage']),
-            );
+            ];
         }
 
-        $this->_helper->json(array('data' => $data));
+        $this->_helper->json(['data' => $data]);
     }
 
     public function getEmptyCategoriesMonitoringAction()
@@ -313,39 +313,39 @@ class CoreShop_Admin_ReportsController extends Admin
         $cats = Model\Category::getList();
         $cats = $cats->getObjects();
 
-        $emptyCategories = array();
+        $emptyCategories = [];
 
         foreach ($cats as $category) {
             $products = $category->getProducts(true);
 
             if (count($products) === 0) {
-                $emptyCategories[] = array(
+                $emptyCategories[] = [
                     'name' => $category->getName(),
                     'id' => $category->getId(),
-                );
+                ];
             }
         }
 
-        $this->_helper->json(array('data' => $emptyCategories));
+        $this->_helper->json(['data' => $emptyCategories]);
     }
 
     public function getDisabledProductsMonitoringAction()
     {
         $products = Model\Product::getList();
-        $products->setCondition('enabled=? OR availableForOrder=?', array(0, 0));
+        $products->setCondition('enabled=? OR availableForOrder=?', [0, 0]);
 
-        $result = array();
+        $result = [];
 
         foreach ($products as $product) {
-            $result[] = array(
+            $result[] = [
                 'id' => $product->getId(),
                 'name' => $product->getName(),
                 'enabled' => $product->getEnabled(),
                 'availableForOrder' => $product->getAvailableForOrder(),
-            );
+            ];
         }
 
-        $this->_helper->json(array('data' => $result));
+        $this->_helper->json(['data' => $result]);
     }
 
     public function getOutOfStockProductsMonitoringAction()
@@ -361,12 +361,12 @@ class CoreShop_Admin_ReportsController extends Admin
         $products = Model\Product::getList();
         $products->setCondition($query);
 
-        $result = array();
+        $result = [];
 
-        $behaviour = array(
+        $behaviour = [
             0 => 'deny',
             1 => 'allow',
-        );
+        ];
 
         foreach ($products as $product) {
             $productBehaviour = $product->getOutOfStockBehaviour();
@@ -375,14 +375,14 @@ class CoreShop_Admin_ReportsController extends Admin
                 $productBehaviour = $defaultOutOfStockBehaviour;
             }
 
-            $result[] = array(
+            $result[] = [
                 'id' => $product->getId(),
                 'name' => $product->getName(),
                 'quantity' => $product->getQuantity(),
                 'outOfStockBehaviour' => $behaviour[$productBehaviour],
-            );
+            ];
         }
 
-        $this->_helper->json(array('data' => $result));
+        $this->_helper->json(['data' => $result]);
     }
 }

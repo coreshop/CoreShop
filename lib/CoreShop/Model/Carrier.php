@@ -44,12 +44,12 @@ class Carrier extends AbstractModel
     /**
      * @var array
      */
-    public static $shippingMethods = array(self::SHIPPING_METHOD_PRICE, self::SHIPPING_METHOD_WEIGHT);
+    public static $shippingMethods = [self::SHIPPING_METHOD_PRICE, self::SHIPPING_METHOD_WEIGHT];
 
     /**
      * @var array
      */
-    public static $rangeBehaviours = array(self::RANGE_BEHAVIOUR_LARGEST, self::RANGE_BEHAVIOUR_DEACTIVATE);
+    public static $rangeBehaviours = [self::RANGE_BEHAVIOUR_LARGEST, self::RANGE_BEHAVIOUR_DEACTIVATE];
 
     /**
      * @var string
@@ -152,8 +152,7 @@ class Carrier extends AbstractModel
                         } else {
                             Logger::warning(sprintf("Carrier with ID %s has definied class '%s' which cannot be loaded.", $id, $data['class']));
                         }
-                    }
-                    else {
+                    } else {
                         if (\Pimcore::getDiContainer()->has($class)) {
                             $class = \Pimcore::getDiContainer()->make($class);
                         }
@@ -166,7 +165,7 @@ class Carrier extends AbstractModel
                     $carrier->getDao()->getById($id);
 
                     \Zend_Registry::set($cacheKey, $carrier);
-                    Cache::save($carrier, $cacheKey, array($carrier->getCacheKey()));
+                    Cache::save($carrier, $cacheKey, [$carrier->getCacheKey()]);
                 } else {
                     \Zend_Registry::set($cacheKey, $carrier);
                 }
@@ -212,7 +211,7 @@ class Carrier extends AbstractModel
         }
 
         $carriers = self::getAll();
-        $availableCarriers = array();
+        $availableCarriers = [];
 
         foreach ($carriers as $carrier) {
             if ($carrier->checkCarrierForCart($cart, $address)) {
@@ -225,11 +224,11 @@ class Carrier extends AbstractModel
 
         if ($sortField === 'price') {
             //Hopefully this one works better...
-            foreach($availableCarriers as $carrier) {
+            foreach ($availableCarriers as $carrier) {
                 $carrier->getDeliveryPrice($cart, $address);
             }
 
-            usort($availableCarriers, function($carrier1, $carrier2) use ($cart, $address) {
+            usort($availableCarriers, function ($carrier1, $carrier2) use ($cart, $address) {
                 return $carrier1->getDeliveryPrice($cart, $address) > $carrier2->getDeliveryPrice($cart, $address);
             });
         } else {
@@ -315,7 +314,7 @@ class Carrier extends AbstractModel
     public function getShippingRuleGroups()
     {
         $list = ShippingRuleGroup::getList();
-        $list->setCondition("carrierId = ?", array($this->getId()));
+        $list->setCondition("carrierId = ?", [$this->getId()]);
         $list->setOrder("ASC");
         $list->setOrderKey("priority");
 
@@ -414,7 +413,7 @@ class Carrier extends AbstractModel
 
     /**
      * get delivery price for carrier
-     * 
+     *
      * @param Cart $cart
      * @param bool $withTax
      * @param Address|null $address
@@ -540,7 +539,7 @@ class Carrier extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

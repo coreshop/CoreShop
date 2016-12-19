@@ -25,7 +25,7 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission("coreshop_permission_product_price_rules");
         }
@@ -41,30 +41,30 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin
             $data[] = $this->getPriceRuleTreeNodeConfig($rule);
         }
 
-        $this->_helper->json(array('success' => true, 'data' => $data));
+        $this->_helper->json(['success' => true, 'data' => $data]);
     }
 
     protected function getPriceRuleTreeNodeConfig($price)
     {
-        $tmpPriceRule = array(
+        $tmpPriceRule = [
             'id' => $price->getId(),
             'text' => $price->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$price->getId(),
-            ),
+            ],
             'name' => $price->getName(),
-        );
+        ];
 
         return $tmpPriceRule;
     }
 
     public function getConfigAction()
     {
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => true,
             'conditions' => \CoreShop\Model\Product\PriceRule::$availableConditions,
             'actions' => \CoreShop\Model\Product\PriceRule::$availableActions,
-        ));
+        ]);
     }
 
     public function addAction()
@@ -76,7 +76,7 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin
         $priceRule->setActive(false);
         $priceRule->save();
 
-        $this->_helper->json(array('success' => true, 'data' => $priceRule));
+        $this->_helper->json(['success' => true, 'data' => $priceRule]);
     }
 
     public function getAction()
@@ -85,9 +85,9 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin
         $specificPrice = \CoreShop\Model\Product\PriceRule::getById($id);
 
         if ($specificPrice instanceof \CoreShop\Model\Product\PriceRule) {
-            $this->_helper->json(array('success' => true, 'data' => $specificPrice->getObjectVars()));
+            $this->_helper->json(['success' => true, 'data' => $specificPrice->getObjectVars()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -116,9 +116,9 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin
 
             \Pimcore\Cache::clearTag('coreshop_product_price');
 
-            $this->_helper->json(array('success' => true, 'data' => $priceRule));
+            $this->_helper->json(['success' => true, 'data' => $priceRule]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -130,9 +130,9 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin
         if ($priceRule instanceof \CoreShop\Model\Product\PriceRule) {
             $priceRule->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

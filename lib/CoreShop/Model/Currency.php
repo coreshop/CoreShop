@@ -66,7 +66,7 @@ class Currency extends AbstractModel
     {
         $countries = Country::getActiveCountries();
 
-        $currencies = array();
+        $currencies = [];
 
         foreach ($countries as $c) {
             if ($c instanceof Country) {
@@ -84,7 +84,8 @@ class Currency extends AbstractModel
      *
      * @return bool
      */
-    public function getActive() {
+    public function getActive()
+    {
         $countryList = Country::getList();
         $countryList->setCondition("active = 1 AND currencyId = ?", [$this->getId()]);
         return count($countryList->getData()) > 0;
@@ -93,7 +94,7 @@ class Currency extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

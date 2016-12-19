@@ -55,7 +55,7 @@ class TaxManagerFactory
                     }
 
                     \Zend_Registry::set($cacheKey, $taxManager);
-                    Cache::save($taxManager, $cacheKey, array('coreshop_tax_manager'));
+                    Cache::save($taxManager, $cacheKey, ['coreshop_tax_manager']);
                 } else {
                     \Zend_Registry::set($cacheKey, $taxManager);
                 }
@@ -77,7 +77,7 @@ class TaxManagerFactory
      */
     protected static function getPluginTaxManager(Address $address, $type)
     {
-        $results = \Pimcore::getEventManager()->trigger('coreshop.tax.getTaxManager', null, array('address' => $address, 'type' => $type));
+        $results = \Pimcore::getEventManager()->trigger('coreshop.tax.getTaxManager', null, ['address' => $address, 'type' => $type]);
 
         foreach ($results as $result) {
             if ($result instanceof PluginTaxManager) {

@@ -28,14 +28,14 @@ abstract class AbstractRule extends AbstractModel
      *
      * @var array
      */
-    public static $availableConditions = array();
+    public static $availableConditions = [];
 
     /**
      * possible types of a action.
      *
      * @var array
      */
-    public static $availableActions = array();
+    public static $availableActions = [];
 
     /**
      * @var string
@@ -67,7 +67,7 @@ abstract class AbstractRule extends AbstractModel
      */
     public function prepareActions($actions, $actionNamespace)
     {
-        $actionInstances = array();
+        $actionInstances = [];
 
 
         foreach ($actions as $action) {
@@ -92,16 +92,15 @@ abstract class AbstractRule extends AbstractModel
      * @return mixed
      * @throws \CoreShop\Exception
      */
-    public function prepareConditions($conditions, $conditionNamespace) {
-        $conditionInstances = array();
+    public function prepareConditions($conditions, $conditionNamespace)
+    {
+        $conditionInstances = [];
 
         foreach ($conditions as $condition) {
             $class = $conditionNamespace.ucfirst($condition['type']);
 
-            if (Tool::classExists($class))
-            {
-                if($condition['type'] === "conditions")
-                {
+            if (Tool::classExists($class)) {
+                if ($condition['type'] === "conditions") {
                     $nestedConditions = static::prepareConditions($condition['conditions'], $conditionNamespace);
                     $condition['conditions'] = $nestedConditions;
                 }
@@ -179,7 +178,7 @@ abstract class AbstractRule extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

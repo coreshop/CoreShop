@@ -25,7 +25,7 @@ class CoreShop_Admin_SettingsController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('get-settings');
+        $notRestrictedActions = ['get-settings'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_settings');
         }
@@ -61,7 +61,7 @@ class CoreShop_Admin_SettingsController extends Admin
         $pimcoreClasses = \CoreShop::getPimcoreClasses();
         $classMapping = [];
 
-        foreach($pimcoreClasses as $key=>$value) {
+        foreach ($pimcoreClasses as $key=>$value) {
             $classMapping[$key] = $value['pimcoreClass'];
         }
 
@@ -108,10 +108,10 @@ class CoreShop_Admin_SettingsController extends Admin
             $valueArray[$shop->getId()] = $shopValues;
         }
 
-        $response = array(
+        $response = [
             'values' => $valueArray,
             'systemValues' => $systemValues
-        );
+        ];
 
         $this->_helper->json($response);
         $this->_helper->json(false);
@@ -153,6 +153,6 @@ class CoreShop_Admin_SettingsController extends Admin
             Model\Configuration::set($key, $value);
         }
 
-        $this->_helper->json(array('success' => true));
+        $this->_helper->json(['success' => true]);
     }
 }

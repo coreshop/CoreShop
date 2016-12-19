@@ -24,7 +24,7 @@ use Pimcore\Model\Asset\Image;
 /**
  * Class Category
  * @package CoreShop\Model
- * 
+ *
  * @method static Object\Listing\Concrete getByParentCategory ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByLocalizedfields ($field, $value, $locale = null, $limit = 0)
  * @method static Object\Listing\Concrete getByCategoryImage ($value, $limit = 0)
@@ -79,7 +79,7 @@ class Category extends Base
      */
     public static function getAllChildCategories(Category $category)
     {
-        $allChildren = array($category->getId());
+        $allChildren = [$category->getId()];
 
         $loopChilds = function (Category $child) use (&$loopChilds, &$allChildren) {
             $childs = $child->getChildCategories();
@@ -111,7 +111,7 @@ class Category extends Base
             $list->setCondition("enabled = 1 AND categories LIKE '%,".$this->getId().",%'");
         } else {
             $categories = $this->getCatChilds();
-            $categoriesWhere = array();
+            $categoriesWhere = [];
 
             foreach ($categories as $cat) {
                 $categoriesWhere[] = "categories LIKE '%,".$cat.",%'";
@@ -136,7 +136,7 @@ class Category extends Base
      *
      * @throws \Zend_Paginator_Exception
      */
-    public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = array('name' => 'name', 'direction' => 'asc'), $includeChildCategories = false, $includeVariants = false)
+    public function getProductsPaging($page = 0, $itemsPerPage = 10, $sort = ['name' => 'name', 'direction' => 'asc'], $includeChildCategories = false, $includeVariants = false)
     {
         $list = Product::getList();
 
@@ -146,7 +146,7 @@ class Category extends Base
             $condition .= " AND categories LIKE '%,".$this->getId().",%'";
         } else {
             $categories = $this->getCatChilds();
-            $categoriesWhere = array();
+            $categoriesWhere = [];
 
             foreach ($categories as $cat) {
                 $categoriesWhere[] = "categories LIKE '%,".$cat.",%'";
@@ -161,7 +161,7 @@ class Category extends Base
         $list->setOrderKey($sort['name']);
         $list->setOrder($sort['direction']);
 
-        if($includeVariants) {
+        if ($includeVariants) {
             $list->setObjectTypes([Object\AbstractObject::OBJECT_TYPE_OBJECT, Object\AbstractObject::OBJECT_TYPE_VARIANT]);
         }
 
@@ -251,7 +251,7 @@ class Category extends Base
      */
     public function getHierarchy()
     {
-        $hierarchy = array();
+        $hierarchy = [];
 
         $category = $this;
 
@@ -272,7 +272,7 @@ class Category extends Base
     public function getChildCategories()
     {
         $list = Category::getList();
-        $list->setCondition("parentCategory__id = ? AND shops LIKE '%,".Shop::getShop()->getId().",%'", array($this->getId()));
+        $list->setCondition("parentCategory__id = ? AND shops LIKE '%,".Shop::getShop()->getId().",%'", [$this->getId()]);
 
         return $list->load();
     }
@@ -286,7 +286,8 @@ class Category extends Base
      *
      * @return bool|string
      */
-    public function getCategoryUrl($language, $reset = false, Shop $shop = null) {
+    public function getCategoryUrl($language, $reset = false, Shop $shop = null)
+    {
         return $this->getUrl($language, ["category" => $this->getId(), "name" => File::getValidFilename($this->getName())], static::$staticRoute, $reset, $shop);
     }
 

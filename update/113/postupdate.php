@@ -5,11 +5,11 @@ $list->load();
 
 $db = \Pimcore\Db::get();
 
-foreach($list->getData() as $index) {
-    if($index instanceof \CoreShop\Model\Index) {
-        if($index->getType() === "mysql") {
+foreach ($list->getData() as $index) {
+    if ($index instanceof \CoreShop\Model\Index) {
+        if ($index->getType() === "mysql") {
             $worker = $index->getWorker();
-            if($worker instanceof \CoreShop\IndexService\Mysql) {
+            if ($worker instanceof \CoreShop\IndexService\Mysql) {
                 $tableName = $worker->getTablename();
 
                 $db->query("ALTER TABLE `$tableName`

@@ -80,8 +80,9 @@ class Item extends Base
     /**
      * @return string|null Product Name
      */
-    public function getProductName() {
-        if($this->getProduct() instanceof Product) {
+    public function getProductName()
+    {
+        if ($this->getProduct() instanceof Product) {
             return $this->getProduct()->getName();
         }
 
@@ -91,9 +92,10 @@ class Item extends Base
     /**
      * @return \Pimcore\Model\Asset|null
      */
-    public function getProductImage() {
-        if($this->getProduct() instanceof Product) {
-            if($this->getProduct()->getImage() instanceof Image) {
+    public function getProductImage()
+    {
+        if ($this->getProduct() instanceof Product) {
+            if ($this->getProduct()->getImage() instanceof Image) {
                 return $this->getProduct()->getImage();
             };
         }

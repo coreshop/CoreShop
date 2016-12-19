@@ -6,7 +6,8 @@ namespace CoreShop\IndexService;
  * Class Condition
  * @package CoreShop\IndexService
  */
-class Condition {
+class Condition
+{
 
     /**
      * @var string
@@ -42,7 +43,8 @@ class Condition {
      * @param $array
      * @return Condition
      */
-    public static function in($fieldName, $array) {
+    public static function in($fieldName, $array)
+    {
         return new Condition($fieldName, "in", $array);
     }
 
@@ -55,8 +57,9 @@ class Condition {
      *
      * @return Condition
      */
-    public static function range($fieldName, $from, $to) {
-        return new Condition($fieldName, "range", array("from" => $from, "to" => $to));
+    public static function range($fieldName, $from, $to)
+    {
+        return new Condition($fieldName, "range", ["from" => $from, "to" => $to]);
     }
 
     /**
@@ -67,8 +70,9 @@ class Condition {
      * @param string $operator ("AND", "OR")
      * @return Condition
      */
-    public static function concat($fieldName, $conditions, $operator) {
-        return new Condition($fieldName, "concat", array("operator" => $operator, "conditions" => $conditions));
+    public static function concat($fieldName, $conditions, $operator)
+    {
+        return new Condition($fieldName, "concat", ["operator" => $operator, "conditions" => $conditions]);
     }
 
     /**
@@ -79,8 +83,9 @@ class Condition {
      * @param $patternPosition ("left", "right", "both")
      * @return Condition
      */
-    public static function like($fieldName, $value, $patternPosition) {
-        return new Condition($fieldName, "like", array("value" => $value, "pattern" => $patternPosition));
+    public static function like($fieldName, $value, $patternPosition)
+    {
+        return new Condition($fieldName, "like", ["value" => $value, "pattern" => $patternPosition]);
     }
 
     /**
@@ -90,7 +95,8 @@ class Condition {
      * @param $value
      * @return Condition
      */
-    public static function match($fieldName, $value) {
+    public static function match($fieldName, $value)
+    {
         return static::compare($fieldName, $value, '=');
     }
 
@@ -101,7 +107,8 @@ class Condition {
      * @param $value
      * @return Condition
      */
-    public static function notMatch($fieldName, $value) {
+    public static function notMatch($fieldName, $value)
+    {
         return static::compare($fieldName, $value, '!=');
     }
 
@@ -112,7 +119,8 @@ class Condition {
      * @param $value
      * @return Condition
      */
-    public static function lt($fieldName, $value) {
+    public static function lt($fieldName, $value)
+    {
         return static::compare($fieldName, $value, '<');
     }
 
@@ -123,7 +131,8 @@ class Condition {
      * @param $value
      * @return Condition
      */
-    public static function lte($fieldName, $value) {
+    public static function lte($fieldName, $value)
+    {
         return static::compare($fieldName, $value, '<=');
     }
 
@@ -134,7 +143,8 @@ class Condition {
      * @param $value
      * @return Condition
      */
-    public static function gt($fieldName, $value) {
+    public static function gt($fieldName, $value)
+    {
         return static::compare($fieldName, $value, '>');
     }
 
@@ -145,7 +155,8 @@ class Condition {
      * @param $value
      * @return Condition
      */
-    public static function gte($fieldName, $value) {
+    public static function gte($fieldName, $value)
+    {
         return static::compare($fieldName, $value, '>=');
     }
 
@@ -157,8 +168,9 @@ class Condition {
      * @param $operator
      * @return Condition
      */
-    public static function compare($fieldName, $value, $operator) {
-        return new Condition($fieldName, "compare", array("value" => $value, "operator" => $operator));
+    public static function compare($fieldName, $value, $operator)
+    {
+        return new Condition($fieldName, "compare", ["value" => $value, "operator" => $operator]);
     }
 
     /**

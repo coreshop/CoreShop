@@ -80,7 +80,7 @@ class Update
 
         $availableBuilds = $this->getBuilds($buildState['installed'], $buildState['newest']);
 
-        $log = array();
+        $log = [];
 
         if (!empty($availableBuilds)) {
             $execution = $this->executeBuildUpdates($availableBuilds);
@@ -95,7 +95,7 @@ class Update
 
         $this->updateClasses();
 
-        return array('success' => true, 'log' => $log);
+        return ['success' => true, 'log' => $log];
     }
 
     /**
@@ -112,10 +112,10 @@ class Update
             return false;
         }
 
-        return array(
+        return [
             'newest' => (int) $currentBuild,
             'installed' => (int) $installedBuild,
-        );
+        ];
     }
 
     /**
@@ -142,7 +142,7 @@ class Update
             return false;
         }
 
-        $builds = array();
+        $builds = [];
 
         $newBuild = $fromBuild;
 
@@ -162,11 +162,11 @@ class Update
                 continue;
             }
 
-            $builds[] = array(
+            $builds[] = [
                 'build' => $newBuild,
                 'script' => $scriptFile,
                 'query' => is_file($QueryFile) ? $QueryFile : false,
-            );
+            ];
         }
 
         return $builds;
@@ -185,7 +185,7 @@ class Update
             return false;
         }
 
-        $logs = array();
+        $logs = [];
 
         $maxExecutionTime = 900;
         @ini_set('max_execution_time', $maxExecutionTime);
@@ -211,18 +211,18 @@ class Update
                 Logger::error($e);
             }
 
-            $logs[] = array(
+            $logs[] = [
                 $build['build'],
                 $this->dryRun ? '- dry run, no message - ' : ob_get_clean(),
-            );
+            ];
 
             Logger::info('CoreShop System Build implemented: '.$build['build']);
         }
 
-        return array(
+        return [
             'log' => $logs,
             'success' => true,
-        );
+        ];
     }
 
     /**
@@ -322,7 +322,7 @@ class Update
     {
         $tagReleases = $this->gitRequest('https://api.github.com/repos/coreshop/CoreShop/tags');
 
-        $releasesInfo = array();
+        $releasesInfo = [];
 
         if (!empty($tagReleases)) {
             foreach ($tagReleases as $release) {
@@ -336,11 +336,11 @@ class Update
                     continue;
                 }
 
-                $releaseInfo = array(
+                $releaseInfo = [
                     'sha' => $release->name,
                     'date' => '',
                     'message' => $release->commit->sha,
-                );
+                ];
 
                 $releasesInfo[] = $releaseInfo;
             }
@@ -362,18 +362,18 @@ class Update
             return false;
         }
 
-        $masterInfo = array();
+        $masterInfo = [];
 
         if (!empty($master)) {
             $installedSha = Configuration::get('SYSTEM.BASE.COMMITSHA');
 
             //master is head.
             if (is_null($installedSha) || $installedSha !== $master->sha) {
-                $masterInfo[] = array(
+                $masterInfo[] = [
                     'sha' => $master->sha,
                     'date' => $master->commit->committer->date,
                     'message' => $master->commit->message.' (#'.substr($master->sha, 0, 7).')',
-                );
+                ];
             }
         }
 
@@ -415,7 +415,7 @@ class Update
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15']);
 
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -476,7 +476,7 @@ class Update
 
         curl_close($ch);
 
-        return array('success' => $success, 'message' => $message);
+        return ['success' => $success, 'message' => $message];
     }
 
     /**
@@ -489,7 +489,7 @@ class Update
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15'));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15']);
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);

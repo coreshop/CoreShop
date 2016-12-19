@@ -93,7 +93,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $install->executeSQL('CoreShop-States');
             $install->createConfig();
 
-            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array('installer' => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, ['installer' => $install]);
         } catch (Exception $e) {
             Logger::crit($e);
 
@@ -113,7 +113,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
         try {
             $install = new Install();
 
-            \Pimcore::getEventManager()->trigger('coreshop.uninstall.pre', null, array('installer' => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.uninstall.pre', null, ['installer' => $install]);
 
             // remove predefined document types
             //$install->removeDocTypes();
@@ -140,7 +140,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
             $install->removeImageThumbnails();
             $install->removeConfig();
 
-            \Pimcore::getEventManager()->trigger('coreshop.uninstall.post', null, array('installer' => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.uninstall.post', null, ['installer' => $install]);
 
             return self::getTranslate()->_('coreshop_uninstalled_successfully');
         } catch (Exception $e) {
@@ -216,7 +216,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
             'csv',
             PIMCORE_PLUGINS_PATH.self::getTranslationFile($lang),
             $lang,
-            array('delimiter' => ',')
+            ['delimiter' => ',']
         );
 
         return self::$_translate;
@@ -285,7 +285,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
      *
      * @deprecated use \CoreShop::hook directly, will be removed with CoreShop 1.2
      */
-    public static function hook($name, $params = array())
+    public static function hook($name, $params = [])
     {
         return \CoreShop::hook($name, $params);
     }
@@ -302,7 +302,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
      *
      * @deprecated use \CoreShop::actionHook directly, will be removed with CoreShop 1.2
      */
-    public static function actionHook($name, $params = array())
+    public static function actionHook($name, $params = [])
     {
         return \CoreShop::actionHook($name, $params);
     }

@@ -87,22 +87,22 @@ class Mysql extends AbstractListing
     /**
      * @var string[]
      */
-    protected $conditions = array();
+    protected $conditions = [];
 
     /**
      * @var string[]
      */
-    protected $relationConditions = array();
+    protected $relationConditions = [];
 
     /**
      * @var string[][]
      */
-    protected $queryConditions = array();
+    protected $queryConditions = [];
 
     /**
      * @var string[][]
      */
-    protected $queryJoins = array();
+    protected $queryJoins = [];
 
     /**
      * @var \CoreShop\IndexService\Mysql
@@ -172,10 +172,10 @@ class Mysql extends AbstractListing
      */
     public function resetConditions()
     {
-        $this->conditions = array();
-        $this->relationConditions = array();
-        $this->queryConditions = array();
-        $this->queryJoins = array();
+        $this->conditions = [];
+        $this->relationConditions = [];
+        $this->queryConditions = [];
+        $this->queryJoins = [];
 
         $this->products = null;
     }
@@ -373,7 +373,7 @@ class Mysql extends AbstractListing
         $objectRaws = $this->dao->load($this->buildQueryFromConditions(), $this->buildOrderBy(), $this->getLimit(), $this->getOffset());
         $this->totalCount = $this->dao->getLastRecordCount();
 
-        $this->products = array();
+        $this->products = [];
         foreach ($objectRaws as $raw) {
             $product = $this->loadElementById($raw['o_id']);
             if ($product) {
@@ -507,13 +507,13 @@ class Mysql extends AbstractListing
         if ($this->queryConditions) {
             $searchString = '';
 
-            foreach($this->queryConditions as $condition) {
-                if($condition instanceof Condition) {
+            foreach ($this->queryConditions as $condition) {
+                if ($condition instanceof Condition) {
                     $searchString .= '+' . $condition->getValues() . '+ ';
                 }
             }
 
-            $condition .= ' AND '.$this->dao->buildFulltextSearchWhere(array("name"), $searchString); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
+            $condition .= ' AND '.$this->dao->buildFulltextSearchWhere(["name"], $searchString); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
         }
 
         return $condition;
@@ -562,19 +562,19 @@ class Mysql extends AbstractListing
         if (!empty($this->orderKey) && $this->orderKey !== AbstractListing::ORDERKEY_PRICE) {
             $orderKeys = $this->orderKey;
             if (!is_array($orderKeys)) {
-                $orderKeys = array($orderKeys);
+                $orderKeys = [$orderKeys];
             }
 
-            $directionOrderKeys = array();
+            $directionOrderKeys = [];
             foreach ($orderKeys as $key) {
                 if (is_array($key)) {
                     $directionOrderKeys[] = $key;
                 } else {
-                    $directionOrderKeys[] = array($key, $this->order);
+                    $directionOrderKeys[] = [$key, $this->order];
                 }
             }
 
-            $orderByStringArray = array();
+            $orderByStringArray = [];
             foreach ($directionOrderKeys as $keyDirection) {
                 $key = $keyDirection[0];
                 $direction = $keyDirection[1];
@@ -625,7 +625,8 @@ class Mysql extends AbstractListing
      *
      * @return string
      */
-    public function getQueryTableName() {
+    public function getQueryTableName()
+    {
         return $this->worker->getLocalizedViewName($this->getLocale());
     }
 

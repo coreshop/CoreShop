@@ -96,7 +96,7 @@ class VoucherCode extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getCode(), $this->getId());
     }

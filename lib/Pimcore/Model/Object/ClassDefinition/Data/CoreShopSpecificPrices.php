@@ -134,7 +134,7 @@ class CoreShopSpecificPrices extends Data
                 }
             }
 
-            if($object instanceof Product) {
+            if ($object instanceof Product) {
                 Cache::clearTag($object->getCacheKey());
             }
         }

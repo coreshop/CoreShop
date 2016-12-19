@@ -6,7 +6,7 @@ $list->load();
 $db = \Pimcore\Db::get();
 $languages = \Pimcore\Tool::getValidLanguages();
 
-foreach($list->getData() as $index) {
+foreach ($list->getData() as $index) {
     if ($index instanceof \CoreShop\Model\Index) {
         if ($index->getType() === "mysql") {
             $index->getWorker()->createOrUpdateIndexStructures(); //Creates localized index-views
@@ -29,11 +29,11 @@ foreach($list->getData() as $index) {
 \CoreShop\Model\Configuration::remove('SYSTEM.ORDERSTATE.COD');
 
 //alter table && and extend!
-if( $db->fetchRow("SHOW COLUMNS FROM `coreshop_orderstates` LIKE 'system';") === FALSE ) {
+if ($db->fetchRow("SHOW COLUMNS FROM `coreshop_orderstates` LIKE 'system';") === false) {
     $db->query("ALTER TABLE `coreshop_orderstates` ADD `system` tinyint(1) NOT NULL DEFAULT '0' AFTER `email`;");
 }
 
-if( $db->fetchRow("SHOW COLUMNS FROM `coreshop_orderstates` LIKE 'identifier';") === FALSE ) {
+if ($db->fetchRow("SHOW COLUMNS FROM `coreshop_orderstates` LIKE 'identifier';") === false) {
     $db->query("ALTER TABLE `coreshop_orderstates` ADD `identifier` varchar(255) DEFAULT NULL AFTER `color`;");
     $db->query("ALTER TABLE `coreshop_orderstates` ADD UNIQUE INDEX `identifier` (`identifier`);");
 }
@@ -53,18 +53,17 @@ $states = [
     12 => 'COD',
 ];
 
-foreach( $states as $dbId => $identifier) {
+foreach ($states as $dbId => $identifier) {
     $db->query("UPDATE `coreshop_orderstates` SET `system` = 1, `identifier` = '" . $identifier . "' WHERE id = " . $dbId . ";");
 }
 
 //Install Postfinance Pending State
-if( !\CoreShop\Model\Order\State::getByIdentifier('PENDING_PAYMENT') instanceof \CoreShop\Model\Order\State)
-{
+if (!\CoreShop\Model\Order\State::getByIdentifier('PENDING_PAYMENT') instanceof \CoreShop\Model\Order\State) {
     $state = \CoreShop\Model\Order\State::create();
 
     $title = ['de' => 'Ausstehende Bezahlung', 'en' => 'pending payment'];
-    foreach($languages as $lang) {
-        $state->setName( ( isset($title[$lang]) ? $title[$lang] : 'pending payment' ), $lang );
+    foreach ($languages as $lang) {
+        $state->setName((isset($title[$lang]) ? $title[$lang] : 'pending payment'), $lang);
     }
 
     $state->setIdentifier('PAYMENT_PENDING');
@@ -79,6 +78,6 @@ if( !\CoreShop\Model\Order\State::getByIdentifier('PENDING_PAYMENT') instanceof 
 }
 
 //remove deprecated confirmation mail
-foreach($languages as $lang) {
-    \CoreShop\Model\Configuration::remove("SYSTEM.MAIL.CONFIRMATION." . strtoupper($lang) );
+foreach ($languages as $lang) {
+    \CoreShop\Model\Configuration::remove("SYSTEM.MAIL.CONFIRMATION." . strtoupper($lang));
 }

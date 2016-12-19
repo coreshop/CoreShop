@@ -23,7 +23,7 @@ use Pimcore\Model\Object;
 /**
  * Class Payment
  * @package CoreShop\Model\Order
- * 
+ *
  * @method static Object\Listing\Concrete getByProvider ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByAmount ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTransactionIdentifier ($value, $limit = 0)

@@ -75,10 +75,10 @@ class TotalPerCustomer extends AbstractCondition
             $priceRulesUsed = 0;
 
             foreach ($orders as $order) {
-                if($order instanceof Order) {
-                    foreach($order->getPriceRuleFieldCollection() as $item) {
-                        if($item instanceof Item) {
-                            if($item->getVoucherCode()) {
+                if ($order instanceof Order) {
+                    foreach ($order->getPriceRuleFieldCollection() as $item) {
+                        if ($item instanceof Item) {
+                            if ($item->getVoucherCode()) {
                                 $voucher = PriceRule\VoucherCode::getByCode($item->getVoucherCode());
 
                                 if ($voucher instanceof PriceRule\VoucherCode) {

@@ -90,7 +90,7 @@ class CreateObjectClassCommand extends AbstractCommand
 
         $availableClasses = \CoreShop::getPimcoreClasses();
 
-        if(!array_key_exists($classType, $availableClasses)) {
+        if (!array_key_exists($classType, $availableClasses)) {
             throw new Exception("Class Type $classType not found");
         }
 
@@ -112,8 +112,7 @@ class CreateObjectClassCommand extends AbstractCommand
         $namespace = implode("\\", $namespacePath);
 
 
-        if(!$isWebsite) {
-
+        if (!$isWebsite) {
             if (!Broker::getInstance()->hasPlugin($pluginName . '\\Plugin')) {
                 $question = new ConfirmationQuestion("Plugin with name $pluginName not found, should I create it? (y/n)", false);
                 if (!$helper->ask($input, $output, $question)) {
@@ -127,10 +126,9 @@ class CreateObjectClassCommand extends AbstractCommand
 
         $fileName = str_replace("\\", "/", $baseNamespace);
 
-        if($isWebsite) {
+        if ($isWebsite) {
             $pathForFile = PIMCORE_WEBSITE_PATH . "/models/Website/Model/" . $fileName . ".php";
-        }
-        else {
+        } else {
             $pathForFile = PIMCORE_PLUGINS_PATH . "/" . $pluginName . "/lib/" . $pluginName . "/Model/" . $fileName . ".php";
         }
 
@@ -141,7 +139,7 @@ class CreateObjectClassCommand extends AbstractCommand
         }
 
         $this->createPhpClass($namespace, $coreShopClassName, $className, $newClassName, $pathForFile);
-        $this->createClassDefinition($oldClassName,  '\\' . $namespace . '\\' . $className, $newClassName);
+        $this->createClassDefinition($oldClassName, '\\' . $namespace . '\\' . $className, $newClassName);
 
         $question = new ConfirmationQuestion("Do you want to migrate the existing data from $oldClassName to $newClassName? (y/n)", true);
 
@@ -164,7 +162,8 @@ class CreateObjectClassCommand extends AbstractCommand
      * @param $name
      * @return bool
      */
-    protected function createPlugin($name) {
+    protected function createPlugin($name)
+    {
         $examplePluginPath = realpath(PIMCORE_PATH . "/modules/extensionmanager/example-plugin");
         $pluginDestinationPath = realpath(PIMCORE_PLUGINS_PATH) . DIRECTORY_SEPARATOR . $name;
 
@@ -208,8 +207,8 @@ class CreateObjectClassCommand extends AbstractCommand
      * @param $pimcoreClass
      * @param $pathForFile
      */
-    protected function createPhpClass($namespace, $coreShopClass, $className, $pimcoreClass, $pathForFile) {
-
+    protected function createPhpClass($namespace, $coreShopClass, $className, $pimcoreClass, $pathForFile)
+    {
         $cd = '<?php ';
         $cd .= "\n\n";
         $cd .= "namespace $namespace;";
@@ -235,10 +234,11 @@ class CreateObjectClassCommand extends AbstractCommand
      * @return string
      * @throws Exception
      */
-    protected function createClassDefinition($oldPimcoreClass, $newParentClass, $newPimcoreClassName) {
+    protected function createClassDefinition($oldPimcoreClass, $newParentClass, $newPimcoreClassName)
+    {
         $newClassDefinition = ClassDefinition::getByName($newPimcoreClassName);
 
-        if($newClassDefinition instanceof ClassDefinition) {
+        if ($newClassDefinition instanceof ClassDefinition) {
             $newClassDefinition->delete();
         }
 
@@ -247,7 +247,7 @@ class CreateObjectClassCommand extends AbstractCommand
         //Somehow ::generateClassDefinitionJson destroys the field-definitions, this line repairs it. So we just remove it from \Zend_Registry
         \Zend_Registry::getInstance()->offsetUnset("class_" . $classDefinition->getId());
 
-        if(!$classDefinition instanceof ClassDefinition) {
+        if (!$classDefinition instanceof ClassDefinition) {
             throw new Exception("ClassDefinition for $oldPimcoreClass not found!");
         }
 
@@ -266,10 +266,8 @@ class CreateObjectClassCommand extends AbstractCommand
         $list = $list->load();
 
         if (is_array($list)) {
-            foreach ($list as $brickDefinition)
-            {
-                if($brickDefinition instanceof Objectbrick\Definition)
-                {
+            foreach ($list as $brickDefinition) {
+                if ($brickDefinition instanceof Objectbrick\Definition) {
                     $clsDef = $brickDefinition->getClassDefinitions();
 
                     if (is_array($clsDef)) {
@@ -283,7 +281,7 @@ class CreateObjectClassCommand extends AbstractCommand
                             }
                         }
 
-                        if($fieldName) {
+                        if ($fieldName) {
                             $clsDef[] = [
                                 'classname' => $class->getId(),
                                 'fieldname' => $fieldName
@@ -297,8 +295,8 @@ class CreateObjectClassCommand extends AbstractCommand
             }
         }
 
-        foreach($class->getFieldDefinitions() as $fd) {
-            if($fd instanceof ClassDefinition\Data\Fieldcollections) {
+        foreach ($class->getFieldDefinitions() as $fd) {
+            if ($fd instanceof ClassDefinition\Data\Fieldcollections) {
                 foreach ($fd->getAllowedTypes() as $type) {
                     $definition = Fieldcollection\Definition::getByKey($type);
 
@@ -306,7 +304,6 @@ class CreateObjectClassCommand extends AbstractCommand
                 }
             }
         }
-
     }
 
     /**
@@ -314,15 +311,16 @@ class CreateObjectClassCommand extends AbstractCommand
      * @param $newPimcoreClass
      * @throws Exception
      */
-    protected function migrateDataFrom($oldPimcoreClass, $newPimcoreClass) {
+    protected function migrateDataFrom($oldPimcoreClass, $newPimcoreClass)
+    {
         $oldClassDefinition = ClassDefinition::getByName($oldPimcoreClass);
         $newClassDefinition = ClassDefinition::getByName($newPimcoreClass);
 
-        if(!$oldClassDefinition) {
+        if (!$oldClassDefinition) {
             throw new Exception("Could not find the ClassDefinition for class $oldPimcoreClass");
         }
 
-        if(!$newClassDefinition) {
+        if (!$newClassDefinition) {
             throw new Exception("Could not find the ClassDefinition for class $newPimcoreClass");
         }
 
@@ -337,46 +335,43 @@ class CreateObjectClassCommand extends AbstractCommand
             "object_relations_%s" => false
         ];
 
-        foreach($oldClassDefinition->getFieldDefinitions() as $fd) {
-            if($fd instanceof ClassDefinition\Data\Objectbricks) {
+        foreach ($oldClassDefinition->getFieldDefinitions() as $fd) {
+            if ($fd instanceof ClassDefinition\Data\Objectbricks) {
                 foreach ($fd->getAllowedTypes() as $type) {
                     $definition = Objectbrick\Definition::getByKey($type);
 
                     $tablesToMigrate["object_brick_query_" . $definition->getKey() . "_%s"] = false;
                     $tablesToMigrate["object_brick_store_" . $definition->getKey() . "_%s"] = false;
                 }
-            }
-            else if($fd instanceof ClassDefinition\Data\Fieldcollections) {
+            } elseif ($fd instanceof ClassDefinition\Data\Fieldcollections) {
                 foreach ($fd->getAllowedTypes() as $type) {
                     $definition = Fieldcollection\Definition::getByKey($type);
 
-                    if($definition instanceof Fieldcollection\Definition) {
+                    if ($definition instanceof Fieldcollection\Definition) {
                         $tablesToMigrate["object_collection_" . $definition->getKey() . "_%s"] = false;
 
                         foreach ($definition->getFieldDefinitions() as $fieldDef) {
-                            if($fieldDef instanceof ClassDefinition\Data\Localizedfields) {
+                            if ($fieldDef instanceof ClassDefinition\Data\Localizedfields) {
                                 $tablesToMigrate["object_collection_" . $definition->getKey() . "_localized_%s"] = false;
                             }
                         }
                     }
                 }
-            }
-            else if($fd instanceof ClassDefinition\Data\Localizedfields) {
+            } elseif ($fd instanceof ClassDefinition\Data\Localizedfields) {
                 $tablesToMigrate["object_localized_data_%s"] = false;
 
                 $validLanguages = Tool::getValidLanguages();
 
-                foreach($validLanguages as $lang) {
+                foreach ($validLanguages as $lang) {
                     $tablesToMigrate["object_localized_query_%s_" . $lang] = false;
                 }
-            }
-            else if($fd instanceof ClassDefinition\Data\Classificationstore) {
+            } elseif ($fd instanceof ClassDefinition\Data\Classificationstore) {
                 $tablesToMigrate["object_classificationstore_data_%s"] = false;
                 $tablesToMigrate["object_classificationstore_groups_%s"] = false;
             }
         }
 
-        foreach($tablesToMigrate as $tbl => $replaceClassNames) {
+        foreach ($tablesToMigrate as $tbl => $replaceClassNames) {
             $oldSqlTable = sprintf($tbl, $oldClassId);
             $newSqlTable = sprintf($tbl, $newClassId);
 
@@ -386,7 +381,7 @@ class CreateObjectClassCommand extends AbstractCommand
 
             $db->query($sql);
 
-            if($replaceClassNames) {
+            if ($replaceClassNames) {
                 $sql = "UPDATE $newSqlTable SET oo_classId=?, oo_className=?";
 
                 $db->query($sql, [$newClassDefinition->getId(), $newClassDefinition->getName()]);
@@ -400,7 +395,8 @@ class CreateObjectClassCommand extends AbstractCommand
      * @param $table
      * @return array
      */
-    protected function getColumns($table) {
+    protected function getColumns($table)
+    {
         $db = Db::get();
 
         $data = $db->fetchAll("SHOW COLUMNS FROM " . $table);

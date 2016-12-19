@@ -91,7 +91,7 @@ class Message extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s %s (%s)", $this->getThreadId(), substr($this->getMessage(), 0, 20), $this->getId());
     }

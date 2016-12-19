@@ -158,7 +158,7 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      *
      * @return string
      */
-    public function getDataFromEditmode($data, $object = null, $params = array())
+    public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
@@ -207,6 +207,4 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     {
         $this->allowEmpty = $allowEmpty;
     }
-
-
 }

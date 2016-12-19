@@ -86,14 +86,13 @@ abstract class AbstractDao extends Dao\AbstractDao
         if (!$data['id']) {
             if (!is_null($shopId) && $this->model->isMultiShop()) {
                 throw new Exception(sprintf('%s with the ID "%s" for ShopId "%s" does not exist or is not activated', get_class($this->model), $this->model->getId(), $shopId));
-            }
-            else {
+            } else {
                 throw new Exception(sprintf('%s with the ID "%s" for does not exist', get_class($this->model), $this->model->getId()));
             }
         }
 
         if ($this->model->isMultiShop()) {
-            $shops = $this->db->fetchAll('SELECT * FROM ' . $this->getShopTableName() . ' WHERE oId = ?', array($this->model->getId()));
+            $shops = $this->db->fetchAll('SELECT * FROM ' . $this->getShopTableName() . ' WHERE oId = ?', [$this->model->getId()]);
             $shopIds = [];
 
             if (is_array($shops)) {
@@ -159,7 +158,7 @@ abstract class AbstractDao extends Dao\AbstractDao
     {
         $vars = get_object_vars($this->model);
 
-        $buffer = array();
+        $buffer = [];
 
         $validColumns = $this->getValidTableColumns($this->getTableName());
 
@@ -171,7 +170,7 @@ abstract class AbstractDao extends Dao\AbstractDao
 
                 $getter = 'get'.ucfirst($k);
 
-                if (!is_callable(array($this->model, $getter))) {
+                if (!is_callable([$this->model, $getter])) {
                     continue;
                 }
 
@@ -251,10 +250,10 @@ abstract class AbstractDao extends Dao\AbstractDao
             }
 
             foreach ($this->model->getShopIds() as $shopId) {
-                $this->db->insert($this->getShopTableName(), array(
+                $this->db->insert($this->getShopTableName(), [
                     "oId" => $this->model->getId(),
                     "shopId" => $shopId
-                ));
+                ]);
             }
         }
     }

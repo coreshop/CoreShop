@@ -8,7 +8,7 @@ $productClass = $install->createClass('CoreShopProduct');
 //Migrate to Multishops
 $db = \Pimcore\Db::get();
 
-$modelsToUpdate = array("Country", "Carrier", "CustomerGroup", "TaxRuleGroup", "Manufacturer", "Messaging\\Contact", "Messaging\\Thread\\State");
+$modelsToUpdate = ["Country", "Carrier", "CustomerGroup", "TaxRuleGroup", "Manufacturer", "Messaging\\Contact", "Messaging\\Thread\\State"];
 
 foreach ($modelsToUpdate as $model) {
     $class = 'CoreShop\Model\\' . $model;

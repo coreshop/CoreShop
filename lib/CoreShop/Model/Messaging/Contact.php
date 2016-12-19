@@ -30,7 +30,7 @@ class Contact extends AbstractModel
     /**
      * @var array
      */
-    protected $localizedValues = array('name');
+    protected $localizedValues = ['name'];
 
     /**
      * @var string
@@ -60,7 +60,7 @@ class Contact extends AbstractModel
     public function getThreads()
     {
         $list = Thread::getList();
-        $list->setCondition('contactId = ?', array($this->getId()));
+        $list->setCondition('contactId = ?', [$this->getId()]);
         $threads = [];
 
         foreach ($list->load() as $thread) {
@@ -75,7 +75,7 @@ class Contact extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

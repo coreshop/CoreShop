@@ -69,7 +69,7 @@ class Install
             $jsonFile = PIMCORE_PLUGINS_PATH."/CoreShop/install/class-$className.json";
             $json = file_get_contents($jsonFile);
 
-            $result = \Pimcore::getEventManager()->trigger("coreshop.install.class.getClass.$className", $this, array('className' => $className, 'json' => $json), function ($v) {
+            $result = \Pimcore::getEventManager()->trigger("coreshop.install.class.getClass.$className", $this, ['className' => $className, 'json' => $json], function ($v) {
                 return $v instanceof Object\ClassDefinition;
             });
 
@@ -84,7 +84,7 @@ class Install
             $class->setName($className);
             $class->setUserOwner($this->_getUserId());
 
-            $result = \Pimcore::getEventManager()->trigger('coreshop.install.class.preCreate', $this, array('className' => $className, 'json' => $json), function ($v) {
+            $result = \Pimcore::getEventManager()->trigger('coreshop.install.class.preCreate', $this, ['className' => $className, 'json' => $json], function ($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
 
@@ -157,7 +157,7 @@ class Install
 
         $json = file_get_contents($jsonPath);
 
-        $result = \Pimcore::getEventManager()->trigger('coreshop.install.objectbrick.preCreate', $this, array('objectbrickName' => $name, 'json' => $json), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.install.objectbrick.preCreate', $this, ['objectbrickName' => $name, 'json' => $json], function ($v) {
             return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
         });
 
@@ -219,7 +219,7 @@ class Install
 
         $json = file_get_contents($jsonPath);
 
-        $result = \Pimcore::getEventManager()->trigger('coreshop.install.fieldcollection.preCreate', $this, array('fieldcollectionName' => $name, 'json' => $json), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.install.fieldcollection.preCreate', $this, ['fieldcollectionName' => $name, 'json' => $json], function ($v) {
             return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
         });
 
@@ -271,47 +271,47 @@ class Install
         $cart = Folder::getByPath('/coreshop/carts');
 
         if (!$root instanceof Folder) {
-            $root = Folder::create(array(
+            $root = Folder::create([
                 'o_parentId' => 1,
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUserId(),
                 'o_userModification' => $this->_getUserId(),
                 'o_key' => 'coreshop',
                 'o_published' => true,
-            ));
+            ]);
         }
 
         if (!$products instanceof Folder) {
-            Folder::create(array(
+            Folder::create([
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUserId(),
                 'o_userModification' => $this->_getUserId(),
                 'o_key' => 'products',
                 'o_published' => true,
-            ));
+            ]);
         }
 
         if (!$categories instanceof Folder) {
-            Folder::create(array(
+            Folder::create([
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUserId(),
                 'o_userModification' => $this->_getUserId(),
                 'o_key' => 'categories',
                 'o_published' => true,
-            ));
+            ]);
         }
 
         if (!$cart instanceof Folder) {
-            Folder::create(array(
+            Folder::create([
                 'o_parentId' => $root->getId(),
                 'o_creationDate' => time(),
                 'o_userOwner' => $this->_getUserId(),
                 'o_userModification' => $this->_getUserId(),
                 'o_key' => 'carts',
                 'o_published' => true,
-            ));
+            ]);
         }
 
         return $root;
@@ -344,7 +344,7 @@ class Install
 
         if (empty($storedViews)) {
             $customViewId = 1;
-            $storedViews = array();
+            $storedViews = [];
         } else {
             $last = end($storedViews);
             $customViewId = $last['id'] + 1;
@@ -366,7 +366,7 @@ class Install
             return false;
         }
 
-        $view = array(
+        $view = [
             'name' => 'CoreShop',
             'condition' => '',
             'icon' => '/pimcore/static/img/icon/cart.png',
@@ -374,11 +374,11 @@ class Install
             'rootfolder' => $rootFolder->getFullPath(),
             'showroot' => false,
             'classes' => implode(',', $classIds),
-        );
+        ];
 
         $storedViews[] = $view;
 
-        $customViews = array('views' => $storedViews);
+        $customViews = ['views' => $storedViews];
 
         $configFile = \Pimcore\Config::locateConfigFile('customviews.php');
         File::put($configFile, to_php_data_file_format($customViews));
@@ -460,7 +460,7 @@ class Install
 
             if (array_key_exists('documents', $config)) {
                 $validLanguages = explode(',', \Pimcore\Config::getSystemConfig()->general->validLanguages);
-                $languagesDone = array();
+                $languagesDone = [];
 
                 foreach ($validLanguages as $language) {
                     $locale = new \Zend_Locale($language);
@@ -616,10 +616,10 @@ class Install
                     break;
                 }
             }
-            $writer = new \Zend_Config_Writer_Xml(array(
-                'config' => new \Zend_Config(array('views' => array('view' => $customViews))),
+            $writer = new \Zend_Config_Writer_Xml([
+                'config' => new \Zend_Config(['views' => ['view' => $customViews]]),
                 'filename' => PIMCORE_CONFIGURATION_DIRECTORY.'/customviews.xml',
-            ));
+            ]);
             $writer->write();
         }
     }

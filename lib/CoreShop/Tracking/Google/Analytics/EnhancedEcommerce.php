@@ -61,7 +61,7 @@ class EnhancedEcommerce extends ClientTracker
      */
     protected function render($viewName, $data = [])
     {
-        $view = $this->track(array("viewName" => $viewName, "data" => $data));
+        $view = $this->track(["viewName" => $viewName, "data" => $data]);
 
         Analytics::addAdditionalCode($view, 'beforePageview');
 
@@ -81,7 +81,7 @@ class EnhancedEcommerce extends ClientTracker
         unset($productData['quantity']);
         unset($productData['price']);
 
-        $this->render("product", array("productData" => $productData));
+        $this->render("product", ["productData" => $productData]);
     }
 
     /**
@@ -94,7 +94,7 @@ class EnhancedEcommerce extends ClientTracker
 
         $productData = $this->transformProductImpression($item);
 
-        $this->render("impression", array("productData" => $productData));
+        $this->render("impression", ["productData" => $productData]);
     }
 
     /**
@@ -129,7 +129,7 @@ class EnhancedEcommerce extends ClientTracker
 
         $productData = $this->transformProductAction($item);
 
-        $this->render("action", array("productData" => $productData, "action" => $action));
+        $this->render("action", ["productData" => $productData, "action" => $action]);
     }
 
     /**
@@ -147,7 +147,7 @@ class EnhancedEcommerce extends ClientTracker
             $products[] = $this->transformProductAction($item);
         }
 
-        $this->render("checkout", array("items" => $items, "products" => $products, "actionData" => ["step" => $stepNumber ? $stepNumber : 1]));
+        $this->render("checkout", ["items" => $items, "products" => $products, "actionData" => ["step" => $stepNumber ? $stepNumber : 1]]);
     }
 
     /**
@@ -170,7 +170,7 @@ class EnhancedEcommerce extends ClientTracker
             $actionData['option'] = $checkoutOption;
         }
 
-        $this->render("checkout", array("items" => $items, "products" => [], "actionData" => $actionData));
+        $this->render("checkout", ["items" => $items, "products" => [], "actionData" => $actionData]);
     }
 
     /**
@@ -198,7 +198,7 @@ class EnhancedEcommerce extends ClientTracker
             $products[] = $this->transformProductAction($item);
         }
 
-        $this->render("checkout", array("items" => $items, "products" => $products, "actionData" => $actionData));
+        $this->render("checkout", ["items" => $items, "products" => $products, "actionData" => $actionData]);
     }
 
     /**
@@ -216,7 +216,7 @@ class EnhancedEcommerce extends ClientTracker
             $products[] = $this->transformProductAction($item);
         }
 
-        $this->render("checkout-complete", array("items" => $items, "order" => $orderItem, "products" => $products));
+        $this->render("checkout-complete", ["items" => $items, "order" => $orderItem, "products" => $products]);
     }
 
     /**

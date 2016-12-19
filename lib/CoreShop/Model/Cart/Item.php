@@ -27,7 +27,7 @@ use Pimcore\Model\Object;
 /**
  * Class Item
  * @package CoreShop\Model\Cart
- * 
+ *
  * @method static Object\Listing\Concrete getByAmount ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByProduct ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByExtraInformation ($value, $limit = 0)
@@ -59,7 +59,8 @@ class Item extends Base
      *
      * @return int
      */
-    public function getWeight() {
+    public function getWeight()
+    {
         return $this->getAmount() * $this->getProduct()->getWeight();
     }
 
@@ -68,7 +69,8 @@ class Item extends Base
      *
      * @return bool
      */
-    public function getIsVirtualProduct() {
+    public function getIsVirtualProduct()
+    {
         return $this->getProduct()->getisVirtualProduct();
     }
 
@@ -77,7 +79,8 @@ class Item extends Base
      *
      * @return Asset
      */
-    public function getVirtualAsset() {
+    public function getVirtualAsset()
+    {
         return $this->getProduct()->getVirtualAsset();
     }
 
@@ -87,7 +90,8 @@ class Item extends Base
      * @param bool $withTax
      * @return float|mixed
      */
-    public function getProductPrice($withTax = true) {
+    public function getProductPrice($withTax = true)
+    {
         return $this->getProduct()->getPrice($withTax);
     }
 
@@ -97,7 +101,8 @@ class Item extends Base
      * @param $withTax
      * @return float
      */
-    public function getProductSalesPrice($withTax) {
+    public function getProductSalesPrice($withTax)
+    {
         return $this->convertToCurrency($this->getProduct()->getSalesPrice($withTax));
     }
 
@@ -106,7 +111,8 @@ class Item extends Base
      *
      * @return float
      */
-    public function getProductWholesalePrice() {
+    public function getProductWholesalePrice()
+    {
         return $this->convertToCurrency($this->getProduct()->getWholesalePrice());
     }
 
@@ -115,21 +121,24 @@ class Item extends Base
      *
      * @return float
      */
-    public function getProductRetailPrice() {
+    public function getProductRetailPrice()
+    {
         return $this->convertToCurrency($this->getProduct()->getRetailPrice());
     }
 
     /**
      * @return float
      */
-    public function getProductRetailPriceWithTax() {
+    public function getProductRetailPriceWithTax()
+    {
         return $this->convertToCurrency($this->getProduct()->getRetailPriceWithTax());
     }
 
     /**
      * @return float
      */
-    public function getProductRetailPriceWithoutTax() {
+    public function getProductRetailPriceWithoutTax()
+    {
         return $this->convertToCurrency($this->getProduct()->getRetailPriceWithoutTax());
     }
 
@@ -138,7 +147,8 @@ class Item extends Base
      *
      * @return float
      */
-    public function getTotalProductTax() {
+    public function getTotalProductTax()
+    {
         return $this->getAmount() * $this->getProductTaxAmount(false);
     }
 
@@ -147,7 +157,8 @@ class Item extends Base
      *
      * @return array|float
      */
-    public function getItemTax() {
+    public function getItemTax()
+    {
         return $this->getProductTaxAmount(false) * $this->getCart()->getDiscountPercentage();
     }
 
@@ -156,8 +167,9 @@ class Item extends Base
      *
      * @return float
      */
-    public function getTotalTax() {
-       return ($this->getAmount() * $this->getItemTax());
+    public function getTotalTax()
+    {
+        return ($this->getAmount() * $this->getItemTax());
     }
 
     /**
@@ -169,16 +181,16 @@ class Item extends Base
      */
     public function getTaxes($applyDiscountToTaxValues = true)
     {
-        $usedTaxes = array();
+        $usedTaxes = [];
 
         $discountPercentage = $this->getCart()->getDiscountPercentage();
 
         $addTax = function (Tax $tax) use (&$usedTaxes) {
             if (!array_key_exists($tax->getId(), $usedTaxes)) {
-                $usedTaxes[$tax->getId()] = array(
+                $usedTaxes[$tax->getId()] = [
                     'tax' => $tax,
                     'amount' => 0,
-                );
+                ];
             }
         };
 
@@ -212,7 +224,7 @@ class Item extends Base
      */
     public function getProductTaxAmount($asArray = false)
     {
-        if($asArray) {
+        if ($asArray) {
             return $this->getProduct()->getTaxAmount($asArray);
         }
 
@@ -225,7 +237,8 @@ class Item extends Base
      * @param Address|null $address
      * @return bool|\CoreShop\Model\TaxCalculator
      */
-    public function getProductTaxCalculator(Address $address = null) {
+    public function getProductTaxCalculator(Address $address = null)
+    {
         return $this->getProduct()->getTaxCalculator($address);
     }
 
@@ -256,8 +269,9 @@ class Item extends Base
      * @param $price
      * @return mixed
      */
-    public function convertToCurrency($price) {
-        if($this->getCart() instanceof Cart) {
+    public function convertToCurrency($price)
+    {
+        if ($this->getCart() instanceof Cart) {
             return $this->getCart()->convertToCurrency($price);
         }
 

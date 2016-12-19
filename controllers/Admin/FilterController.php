@@ -25,7 +25,7 @@ class CoreShop_Admin_FilterController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
 
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_filters');
@@ -36,7 +36,7 @@ class CoreShop_Admin_FilterController extends Admin
     {
         $list = Filter::getList();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $group) {
                 $data[] = $this->getTreeNodeConfig($group);
@@ -47,14 +47,14 @@ class CoreShop_Admin_FilterController extends Admin
 
     protected function getTreeNodeConfig(Filter $filter)
     {
-        $tmp = array(
+        $tmp = [
             'id' => $filter->getId(),
             'text' => $filter->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$filter->getId(),
-            ),
+            ],
             'name' => $filter->getName(),
-        );
+        ];
         
         return $tmp;
     }
@@ -64,19 +64,19 @@ class CoreShop_Admin_FilterController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $filter = Filter::create();
             $filter->setName($name);
             $filter->setResultsPerPage(20);
             $filter->setOrder('desc');
             $filter->setOrderKey('name');
-            $filter->setPreConditions(array());
-            $filter->setFilters(array());
-            $filter->setSimilarities(array());
+            $filter->setPreConditions([]);
+            $filter->setFilters([]);
+            $filter->setSimilarities([]);
             $filter->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $filter));
+            $this->_helper->json(['success' => true, 'data' => $filter]);
         }
     }
 
@@ -89,9 +89,9 @@ class CoreShop_Admin_FilterController extends Admin
             $data = get_object_vars($filter);
             $data['index'] = $filter->getIndex() instanceof \CoreShop\Model\Index ? $filter->getIndex()->getId() : null;
 
-            $this->_helper->json(array('success' => true, 'data' => $data));
+            $this->_helper->json(['success' => true, 'data' => $data]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -117,9 +117,9 @@ class CoreShop_Admin_FilterController extends Admin
             $filter->setSimilarities($similaritiesInstances);
             $filter->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $filter));
+            $this->_helper->json(['success' => true, 'data' => $filter]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -131,19 +131,19 @@ class CoreShop_Admin_FilterController extends Admin
         if ($filter instanceof Filter) {
             $filter->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
     public function getConfigAction()
     {
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => true,
             'conditions' => Filter::getConditions(),
             'similarities' => Filter::getSimilarityTypes()
-        ));
+        ]);
     }
 
     public function getFieldsForIndexAction()
@@ -151,17 +151,17 @@ class CoreShop_Admin_FilterController extends Admin
         $index = \CoreShop\Model\Index::getById($this->getParam('index'));
 
         if ($index instanceof \CoreShop\Model\Index) {
-            $columns = array(
+            $columns = [
                 ['name' => 'minPrice'],
                 ['name' => 'maxPrice']
-            );
+            ];
             $config = $index->getConfig();
 
             if ($config->columns) {
                 foreach ($config->columns as $col) {
-                    $columns[] = array(
+                    $columns[] = [
                         'name' => $col->name,
-                    );
+                    ];
                 }
             }
 
@@ -180,19 +180,19 @@ class CoreShop_Admin_FilterController extends Admin
             $productList = $list->getProductList();
 
             $values = $productList->getGroupByValues($this->getParam('field'));
-            $returnValues = array();
+            $returnValues = [];
 
             foreach ($values as $value) {
                 if ($value) {
-                    $returnValues[] = array(
+                    $returnValues[] = [
                         'value' => $value,
                         'key' => $value,
-                    );
+                    ];
                 } else {
-                    $returnValues[] = array(
+                    $returnValues[] = [
                         'value' => Filter\Service::EMPTY_STRING,
                         'key' => 'empty',
-                    );
+                    ];
                 }
             }
 

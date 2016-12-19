@@ -113,19 +113,19 @@ class Thread extends AbstractModel
     {
         $list = Thread::getList();
 
-        $params = array(
+        $params = [
             'email' => $email,
             'contactId' => $contactId,
             'orderId' => $orderId,
             'productId' => $productId,
             'shopId' => $shopId
-        );
-        $query = array();
-        $queryParams = array();
+        ];
+        $query = [];
+        $queryParams = [];
 
         foreach ($params as $p => $v) {
             if (is_null($v)) {
-                if(!$getAll) {
+                if (!$getAll) {
                     $query[] = "$p IS NULL";
                 }
             } else {
@@ -136,7 +136,7 @@ class Thread extends AbstractModel
         $list->setCondition(implode(' AND ', $query), $queryParams);
         $list = $list->load();
 
-        if($getAll) {
+        if ($getAll) {
             return $list;
         }
 
@@ -177,7 +177,7 @@ class Thread extends AbstractModel
     public function getMessages()
     {
         $list = Message::getList();
-        $list->setCondition('threadId = ?', array($this->getId()));
+        $list->setCondition('threadId = ?', [$this->getId()]);
 
         return $list->load();
     }
@@ -185,7 +185,7 @@ class Thread extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getEmail(), $this->getId());
     }

@@ -27,7 +27,7 @@ class Admin extends \CoreShop\Controller\Action\Admin
     {
         parent::init();
 
-        $notRestrictedActions = array();
+        $notRestrictedActions = [];
 
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_plugins');

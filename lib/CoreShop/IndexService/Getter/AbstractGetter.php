@@ -29,7 +29,7 @@ class AbstractGetter
      *
      * @var array
      */
-    protected static $getter = array('Brick', 'Classificationstore', 'Localizedfield', 'Fieldcollection');
+    protected static $getter = ['Brick', 'Classificationstore', 'Localizedfield', 'Fieldcollection'];
 
     /**
      * Add Getter Class.

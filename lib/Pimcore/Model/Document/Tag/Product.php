@@ -76,11 +76,11 @@ class Product extends Model\Document\Tag
      */
     public function getData()
     {
-        return array(
+        return [
             'id' => $this->id,
             'type' => $this->getObjectType(),
             'subtype' => $this->subtype,
-        );
+        ];
     }
 
     /**
@@ -91,11 +91,11 @@ class Product extends Model\Document\Tag
     public function getDataEditmode()
     {
         if ($this->o instanceof Element\ElementInterface) {
-            return array(
+            return [
                 'id' => $this->id,
                 'type' => $this->getObjectType(),
                 'subtype' => $this->subtype,
-            );
+            ];
         }
 
         return null;
@@ -112,7 +112,7 @@ class Product extends Model\Document\Tag
     {
         if ($this->o instanceof \CoreShop\Model\Product) {
             if ($this->getView()) {
-                return $this->getView()->template('coreshop/product/preview.php', array('product' => $this->o));
+                return $this->getView()->template('coreshop/product/preview.php', ['product' => $this->o]);
             }
         }
     }
@@ -177,16 +177,16 @@ class Product extends Model\Document\Tag
     {
         $this->load();
 
-        $dependencies = array();
+        $dependencies = [];
 
         if ($this->o instanceof Element\ElementInterface) {
             $elementType = Element\Service::getElementType($this->o);
             $key = $elementType.'_'.$this->o->getId();
 
-            $dependencies[$key] = array(
+            $dependencies[$key] = [
                 'id' => $this->o->getId(),
                 'type' => $elementType,
-            );
+            ];
         }
 
         return $dependencies;
@@ -259,9 +259,9 @@ class Product extends Model\Document\Tag
      */
     public function __sleep()
     {
-        $finalVars = array();
+        $finalVars = [];
         $parentVars = parent::__sleep();
-        $blockedVars = array('o');
+        $blockedVars = ['o'];
         foreach ($parentVars as $key) {
             if (!in_array($key, $blockedVars)) {
                 $finalVars[] = $key;

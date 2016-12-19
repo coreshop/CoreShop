@@ -55,9 +55,9 @@ class CartPriceRule extends Base
         $customerConditon = new Customers();
         $customerConditon->setCustomers([Data::$customer1->getId()]);
 
-        $this->priceRule->setConditions(array(
+        $this->priceRule->setConditions([
             $customerConditon
-        ));
+        ]);
 
         $cart = Data::createCartWithProducts();
         $cart->setUser(Data::$customer1);
@@ -166,7 +166,7 @@ class CartPriceRule extends Base
         $cart = Data::createCart();
         $cart->addItem(Data::$product2);
 
-        $this->priceRule->setActions(array($gift));
+        $this->priceRule->setActions([$gift]);
 
         $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
 
@@ -181,7 +181,7 @@ class CartPriceRule extends Base
         $cart = Data::createCart();
         $cart->addItem(Data::$product2);
 
-        $this->priceRule->setActions(array($freeShipping));
+        $this->priceRule->setActions([$freeShipping]);
 
         $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
 
@@ -193,7 +193,7 @@ class CartPriceRule extends Base
         $discount = new DiscountAmount();
         $discount->setAmount(10);
 
-        $this->priceRule->setActions(array($discount));
+        $this->priceRule->setActions([$discount]);
 
         $cart = Data::createCart();
         $cart->addItem(Data::$product2);
@@ -210,7 +210,7 @@ class CartPriceRule extends Base
         $discount = new DiscountPercent();
         $discount->setPercent(10);
 
-        $this->priceRule->setActions(array($discount));
+        $this->priceRule->setActions([$discount]);
 
         $cart = Data::createCart();
         $cart->addItem(Data::$product2);

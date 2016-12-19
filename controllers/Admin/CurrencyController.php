@@ -25,7 +25,7 @@ class CoreShop_Admin_CurrencyController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_currencies');
         }
@@ -37,7 +37,7 @@ class CoreShop_Admin_CurrencyController extends Admin
         $list->setOrder('ASC');
         $list->load();
 
-        $currencies = array();
+        $currencies = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $currency) {
                 $currencies[] = $this->getTreeNodeConfig($currency);
@@ -52,16 +52,16 @@ class CoreShop_Admin_CurrencyController extends Admin
      */
     protected function getTreeNodeConfig(Currency $currency)
     {
-        $tmpCurrency = array(
+        $tmpCurrency = [
             'id' => $currency->getId(),
             'text' => $currency->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$currency->getId(),
-            ),
+            ],
             'name' => $currency->getName(),
             'symbol' => $currency->getSymbol(),
             'active' => $currency->getActive()
-        );
+        ];
 
         return $tmpCurrency;
     }
@@ -72,9 +72,9 @@ class CoreShop_Admin_CurrencyController extends Admin
         $currency = Currency::getById($id);
 
         if ($currency instanceof Currency) {
-            $this->_helper->json(array('success' => true, 'data' => $currency));
+            $this->_helper->json(['success' => true, 'data' => $currency]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -90,9 +90,9 @@ class CoreShop_Admin_CurrencyController extends Admin
             $currency->setValues($data);
             $currency->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $currency));
+            $this->_helper->json(['success' => true, 'data' => $currency]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -101,13 +101,13 @@ class CoreShop_Admin_CurrencyController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $currency = Currency::create();
             $currency->setName($name);
             $currency->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $currency));
+            $this->_helper->json(['success' => true, 'data' => $currency]);
         }
     }
 
@@ -119,20 +119,20 @@ class CoreShop_Admin_CurrencyController extends Admin
         if ($currency instanceof Currency) {
             $currency->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
     public function getExchangeRateProvidersAction()
     {
-        $providersList = array();
+        $providersList = [];
 
         foreach (Currency\ExchangeRates::$providerList as $name => $class) {
-            $providersList[] = array('name' => $name);
+            $providersList[] = ['name' => $name];
         }
 
-        $this->_helper->json(array('success' => true, 'data' => $providersList));
+        $this->_helper->json(['success' => true, 'data' => $providersList]);
     }
 }

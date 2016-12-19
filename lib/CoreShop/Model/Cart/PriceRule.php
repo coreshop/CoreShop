@@ -35,14 +35,14 @@ class PriceRule extends AbstractPriceRule
      *
      * @var array
      */
-    public static $availableConditions = array('conditions', 'customers', 'timeSpan', 'amount', 'totalPerCustomer', 'countries', 'products', 'categories', 'customerGroups', 'zones', 'personas', 'carriers', 'currencies');
+    public static $availableConditions = ['conditions', 'customers', 'timeSpan', 'amount', 'totalPerCustomer', 'countries', 'products', 'categories', 'customerGroups', 'zones', 'personas', 'carriers', 'currencies'];
 
     /**
      * possible types of a action.
      *
      * @var array
      */
-    public static $availableActions = array('freeShipping', 'discountAmount', 'discountPercent', 'gift');
+    public static $availableActions = ['freeShipping', 'discountAmount', 'discountPercent', 'gift'];
 
     /**
      * @var string
@@ -138,7 +138,7 @@ class PriceRule extends AbstractPriceRule
 
         $priceRules = $priceRules->getData();
 
-        $availablePriceRules = array();
+        $availablePriceRules = [];
 
         foreach ($priceRules as $priceRule) {
             if ($priceRule instanceof PriceRule) {
@@ -232,7 +232,7 @@ class PriceRule extends AbstractPriceRule
 
         $params = [$priceRule->getId()];
 
-        if(!is_null($voucherCode)) {
+        if (!is_null($voucherCode)) {
             $params[] = $voucherCode;
         }
 
@@ -257,10 +257,9 @@ class PriceRule extends AbstractPriceRule
     public function checkValidity(Cart $cart, $voucherCode = null, $throwException = false, $alreadyInCart = false)
     {
         if (!$this->getActive()) {
-            if($throwException) {
+            if ($throwException) {
                 throw new Exception("PriceRule is inactive");
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -302,7 +301,7 @@ class PriceRule extends AbstractPriceRule
 
     /**
      * Applies Rules to Cart.
-     * 
+     *
      * @param Cart $cart
      */
     public function applyRules(Cart $cart)
@@ -391,7 +390,7 @@ class PriceRule extends AbstractPriceRule
     public function getVoucherCodes()
     {
         $list = Cart\PriceRule\VoucherCode::getList();
-        $list->setCondition("priceRuleId = ?", array($this->getId()));
+        $list->setCondition("priceRuleId = ?", [$this->getId()]);
 
         return $list->getData();
     }

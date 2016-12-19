@@ -51,7 +51,7 @@ class Mail extends PimcoreMail
         self::mergeDefaultMailSettings($mail, $emailDocument);
 
         $mail->setDocument($emailDocument);
-        $mail->setParams(array('message' => $message->getMessage(), 'messageObject' => $message));
+        $mail->setParams(['message' => $message->getMessage(), 'messageObject' => $message]);
         $mail->setEnableLayoutOnPlaceholderRendering(false);
         $mail->addTo($recipient);
         $mail->send();
@@ -93,11 +93,11 @@ class Mail extends PimcoreMail
                     if ($orderState->getInvoice()) {
                         $invoices = $order->getInvoices();
 
-                        foreach($invoices as $invoice) {
+                        foreach ($invoices as $invoice) {
                             if ($invoice instanceof Order\Invoice) {
                                 $asset = $invoice->getAsset();
 
-                                if(!$asset instanceof Asset) {
+                                if (!$asset instanceof Asset) {
                                     $asset = $invoice->generate();
                                 }
 
@@ -135,11 +135,11 @@ class Mail extends PimcoreMail
     {
         $from = $emailDocument->getFrom();
 
-        if( !empty($from) ) {
-            $mail->setFrom( $from );
+        if (!empty($from)) {
+            $mail->setFrom($from);
         }
 
-        $mail->addCc( $emailDocument->getCcAsArray() );
-        $mail->addBcc( $emailDocument->getBccAsArray() );
+        $mail->addCc($emailDocument->getCcAsArray());
+        $mail->addBcc($emailDocument->getBccAsArray());
     }
 }

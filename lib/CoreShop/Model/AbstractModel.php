@@ -39,7 +39,7 @@ class AbstractModel extends Model\AbstractModel
      *
      * @var array
      */
-    protected $localizedValues = array();
+    protected $localizedValues = [];
 
     /**
      * Localized field Provider.
@@ -144,7 +144,7 @@ class AbstractModel extends Model\AbstractModel
                     $object->getDao()->getById($id, $shopId);
 
                     \Zend_Registry::set($cacheKey, $object);
-                    Cache::save($object, $cacheKey, array($cacheKey, $object->getCacheKey()));
+                    Cache::save($object, $cacheKey, [$cacheKey, $object->getCacheKey()]);
                 } else {
                     \Zend_Registry::set($cacheKey, $object);
                 }
@@ -266,7 +266,8 @@ class AbstractModel extends Model\AbstractModel
     /**
      * @return string
      */
-    public function getCacheKey() {
+    public function getCacheKey()
+    {
         return static::getClassCacheKey(get_called_class(), $this->getId());
     }
 
@@ -356,7 +357,7 @@ class AbstractModel extends Model\AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return strval($this->getId());
     }
@@ -369,7 +370,7 @@ class AbstractModel extends Model\AbstractModel
     public function __sleep()
     {
         $vars = parent::__sleep();
-        $returnVars = array();
+        $returnVars = [];
         $values = $this->getObjectVars();
 
         foreach ($vars as $key) {

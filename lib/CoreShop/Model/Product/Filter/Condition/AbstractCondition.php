@@ -76,13 +76,13 @@ abstract class AbstractCondition
         $class = array_pop($class);
 
         $this->view->setScriptPath(
-            array(
+            [
                 CORESHOP_TEMPLATE_BASE.'/scripts/coreshop/product/filter',
                 CORESHOP_TEMPLATE_BASE.'/scripts/coreshop/product/filter/'.strtolower($class),
                 CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter',
                 CORESHOP_TEMPLATE_PATH.'/scripts/coreshop/product/filter/'.strtolower($class),
                 PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/' . strtolower($class),
-            )
+            ]
         );
 
         return $this->view;
@@ -115,13 +115,13 @@ abstract class AbstractCondition
         $rawValues = $list->getGroupByValues($this->getField(), true);
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
-        return $this->getView()->partial($script, array(
+        return $this->getView()->partial($script, [
             'label' => $this->getLabel(),
             'currentValue' => $currentFilter[$this->getField()],
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
             'quantityUnit' => $this->getQuantityUnit()
-        ));
+        ]);
     }
 
     /**

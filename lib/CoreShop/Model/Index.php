@@ -54,14 +54,15 @@ class Index extends AbstractModel
     /**
      * @return IndexService\AbstractWorker|null
      */
-    public function getWorker() {
+    public function getWorker()
+    {
         return IndexService::getIndexService()->getWorker($this->getName());
     }
 
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

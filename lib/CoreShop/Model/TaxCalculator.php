@@ -53,7 +53,7 @@ class TaxCalculator
      * @param array $taxes
      * @param int   $computation_method (COMBINE_METHOD | ONE_AFTER_ANOTHER_METHOD)
      */
-    public function __construct(array $taxes = array(), $computation_method = self::COMBINE_METHOD)
+    public function __construct(array $taxes = [], $computation_method = self::COMBINE_METHOD)
     {
         $this->taxes = $taxes;
         $this->computation_method = (int) $computation_method;
@@ -137,7 +137,7 @@ class TaxCalculator
      */
     public function getTaxesAmount($price, $asArray = false)
     {
-        $taxes_amounts = array();
+        $taxes_amounts = [];
         $taxAmount = 0;
 
         foreach ($this->getTaxes() as $tax) {

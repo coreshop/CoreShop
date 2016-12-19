@@ -36,7 +36,8 @@ class Address extends Base
     /**
      * @return string
      */
-    public function getCacheKey() {
+    public function getCacheKey()
+    {
         return md5($this->getCountry() instanceof Country ? $this->getCountry()->getId() : ''.
             ($this->getState() instanceof State ? $this->getState()->getId() : '').
             ($this->getName() ? $this->getName() : '').

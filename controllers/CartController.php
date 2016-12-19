@@ -33,7 +33,7 @@ class CoreShop_CartController extends Action
 
         //Cart is not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect(\CoreShop::getTools()->url(array(), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url([], 'coreshop_index'));
         }
 
         $this->prepareCart();
@@ -53,7 +53,7 @@ class CoreShop_CartController extends Action
             $message = $this->view->translate('Product is out of stock');
         }
 
-        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preAdd', $this, array('product' => $product, 'cart' => $this->cart, 'request' => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preAdd', $this, ['product' => $product, 'cart' => $this->cart, 'request' => $this->getRequest()], function ($v) {
             return is_bool($v);
         });
 
@@ -65,15 +65,15 @@ class CoreShop_CartController extends Action
             if ($product instanceof \CoreShop\Model\Product && $product->getEnabled() && $product->getAvailableForOrder()) {
                 $item = $this->cart->addItem($product, $amount);
 
-                \Pimcore::getEventManager()->trigger('coreshop.cart.postAdd', $this, array('request' => $this->getRequest(), 'product' => $product, 'cart' => $this->cart, 'cartItem' => $item));
+                \Pimcore::getEventManager()->trigger('coreshop.cart.postAdd', $this, ['request' => $this->getRequest(), 'product' => $product, 'cart' => $this->cart, 'cartItem' => $item]);
 
-                $this->_helper->json(array('success' => true, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()));
+                $this->_helper->json(['success' => true, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()]);
             }
         } else {
-            $this->_helper->json(array('success' => false, 'message' => $message));
+            $this->_helper->json(['success' => false, 'message' => $message]);
         }
 
-        $this->_helper->json(array('success' => false, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()));
+        $this->_helper->json(['success' => false, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()]);
     }
 
     public function removeAction()
@@ -82,7 +82,7 @@ class CoreShop_CartController extends Action
         $item = \CoreShop\Model\Cart\Item::getById($cartItem);
 
         $isAllowed = true;
-        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preRemove', $this, array('cartItem' => $item, 'cart' => $this->cart, 'request' => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preRemove', $this, ['cartItem' => $item, 'cart' => $this->cart, 'request' => $this->getRequest()], function ($v) {
             return is_bool($v);
         });
 
@@ -97,17 +97,17 @@ class CoreShop_CartController extends Action
                 $this->cart->removeItem($item);
                 $this->reloadCart();
 
-                \Pimcore::getEventManager()->trigger('coreshop.cart.postRemove', $this, array('item' => $item, 'cart' => $this->cart));
+                \Pimcore::getEventManager()->trigger('coreshop.cart.postRemove', $this, ['item' => $item, 'cart' => $this->cart]);
 
-                $this->_helper->json(array('success' => true, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()));
+                $this->_helper->json(['success' => true, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()]);
             }
         } else {
-            $this->_helper->json(array('success' => false, 'message' => 'not allowed'));
+            $this->_helper->json(['success' => false, 'message' => 'not allowed']);
         }
 
         $this->reloadCart();
 
-        $this->_helper->json(array('success' => false, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()));
+        $this->_helper->json(['success' => false, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()]);
     }
 
     public function modifyAction()
@@ -117,7 +117,7 @@ class CoreShop_CartController extends Action
         $item = \CoreShop\Model\Cart\Item::getById($cartItem);
 
         $isAllowed = true;
-        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preModify', $this, array('cartItem' => $item, 'cart' => $this->cart, 'request' => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.cart.preModify', $this, ['cartItem' => $item, 'cart' => $this->cart, 'request' => $this->getRequest()], function ($v) {
             return is_bool($v);
         });
 
@@ -131,15 +131,15 @@ class CoreShop_CartController extends Action
             if ($item instanceof \CoreShop\Model\Cart\Item) {
                 $this->cart->modifyItem($item, $amount);
 
-                \Pimcore::getEventManager()->trigger('coreshop.cart.postModify', $this, array('item' => $item, 'cart' => $this->cart));
+                \Pimcore::getEventManager()->trigger('coreshop.cart.postModify', $this, ['item' => $item, 'cart' => $this->cart]);
 
-                $this->_helper->json(array('success' => true, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()));
+                $this->_helper->json(['success' => true, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()]);
             }
         } else {
-            $this->_helper->json(array('success' => false, 'message' => 'not allowed'));
+            $this->_helper->json(['success' => false, 'message' => 'not allowed']);
         }
 
-        $this->_helper->json(array('success' => false, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()));
+        $this->_helper->json(['success' => false, 'cart' => $this->renderCart(), 'minicart' => $this->renderMiniCart()]);
     }
 
     public function listAction()
@@ -169,7 +169,7 @@ class CoreShop_CartController extends Action
             }
         }
 
-        $this->redirect($this->getParam('redirect') ? $this->getParam('redirect').'?error='.$error : \CoreShop::getTools()->url(array('act' => 'list', 'error' => $error), 'coreshop_cart', true));
+        $this->redirect($this->getParam('redirect') ? $this->getParam('redirect').'?error='.$error : \CoreShop::getTools()->url(['act' => 'list', 'error' => $error], 'coreshop_cart', true));
     }
 
     public function removepriceruleAction()
@@ -184,7 +184,7 @@ class CoreShop_CartController extends Action
             }
         }
 
-        $this->redirect(\CoreShop::getTools()->url(array('act' => 'list'), 'coreshop_cart'));
+        $this->redirect(\CoreShop::getTools()->url(['act' => 'list'], 'coreshop_cart'));
     }
 
     /**
@@ -214,11 +214,11 @@ class CoreShop_CartController extends Action
      */
     protected function renderCartView($view)
     {
-        return $this->view->partial($view, array(
+        return $this->view->partial($view, [
             'cart' => $this->cart,
             'language' => (string) \Zend_Registry::get('Zend_Locale'),
             'edit' => true,
-        ));
+        ]);
     }
 
     protected function reloadCart()

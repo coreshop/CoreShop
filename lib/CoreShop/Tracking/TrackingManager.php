@@ -72,7 +72,7 @@ class TrackingManager
     {
         foreach ($this->tracker as $tracker) {
             if (method_exists($tracker, $name)) {
-                call_user_func_array(array($tracker, $name), $params);
+                call_user_func_array([$tracker, $name], $params);
             }
         }
     }
@@ -83,7 +83,7 @@ class TrackingManager
      */
     public function trackProductView(Product $product)
     {
-        $this->callMethod("trackProductView", array($product));
+        $this->callMethod("trackProductView", [$product]);
     }
 
     /**
@@ -92,7 +92,7 @@ class TrackingManager
      */
     public function trackProductImpression(Product $product)
     {
-        $this->callMethod("trackProductImpression", array($product));
+        $this->callMethod("trackProductImpression", [$product]);
     }
 
     /**
@@ -102,7 +102,7 @@ class TrackingManager
      */
     public function trackProductActionAdd(Product $product, $quantity = 1)
     {
-        $this->callMethod("trackProductActionAdd", array($product, $quantity));
+        $this->callMethod("trackProductActionAdd", [$product, $quantity]);
     }
 
     /**
@@ -112,7 +112,7 @@ class TrackingManager
      */
     public function trackProductActionRemove(Product $product, $quantity = 1)
     {
-        $this->callMethod("trackProductActionRemove", array($product, $quantity));
+        $this->callMethod("trackProductActionRemove", [$product, $quantity]);
     }
 
     /**
@@ -123,7 +123,7 @@ class TrackingManager
      */
     public function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
-        $this->callMethod("trackCheckout", array($cart, $stepNumber, $checkoutOption));
+        $this->callMethod("trackCheckout", [$cart, $stepNumber, $checkoutOption]);
     }
 
     /**
@@ -134,7 +134,7 @@ class TrackingManager
      */
     public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
-        $this->callMethod("trackCheckoutStep", array($cart, $stepNumber, $checkoutOption));
+        $this->callMethod("trackCheckoutStep", [$cart, $stepNumber, $checkoutOption]);
     }
 
     /**
@@ -145,7 +145,7 @@ class TrackingManager
      */
     public function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
-        $this->callMethod("trackCheckoutAction", array($cart, $stepNumber, $checkoutOption));
+        $this->callMethod("trackCheckoutAction", [$cart, $stepNumber, $checkoutOption]);
     }
 
     /**
@@ -154,6 +154,6 @@ class TrackingManager
      */
     public function trackCheckoutComplete(Order $order)
     {
-        $this->callMethod("trackCheckoutComplete", array($order));
+        $this->callMethod("trackCheckoutComplete", [$order]);
     }
 }

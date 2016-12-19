@@ -55,10 +55,10 @@ abstract class AbstractListing extends Model\Listing\AbstractListing implements 
      *
      * @var array
      */
-    public $validOrderKeys = array(
+    public $validOrderKeys = [
         'id',
         'active',
-    );
+    ];
 
     /**
      * Test if the passed key is valid.

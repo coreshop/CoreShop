@@ -91,7 +91,7 @@ class Customers extends AbstractCondition
         $user = \CoreShop::getTools()->getUser();
         $found = false;
 
-        if($user instanceof User) {
+        if ($user instanceof User) {
             foreach ($this->getCustomers() as $customerId) {
                 $customer = User::getById($customerId);
 

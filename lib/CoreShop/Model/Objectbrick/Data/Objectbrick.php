@@ -54,11 +54,11 @@ class Objectbrick extends AbstractData
         $class = strtolower($class);
 
         $this->view->setScriptPath(
-            array(
+            [
                 CORESHOP_TEMPLATE_BASE . '/scripts/' . $class,
                 CORESHOP_TEMPLATE_PATH . '/scripts/' . $class,
                 PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/' . $class,
-            )
+            ]
         );
 
         return $this->view;

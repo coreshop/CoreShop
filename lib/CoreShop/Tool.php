@@ -34,7 +34,7 @@ class Tool
         $toolClass = \CoreShop::getTools();
 
         if (method_exists($toolClass, $name)) {
-            return call_user_func_array(array($toolClass, $name), $arguments);
+            return call_user_func_array([$toolClass, $name], $arguments);
         }
 
         throw new Exception("Static Tool Method not found $name");

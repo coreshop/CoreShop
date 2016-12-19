@@ -107,7 +107,7 @@ class DiscountAmount extends AbstractAction
     {
         $amount = \CoreShop::getTools()->convertToCurrency($this->getAmount(), $cart->getCurrency(), Currency::getById($this->getCurrency()));
 
-        if($withTax) {
+        if ($withTax) {
             $subTotalTe = $cart->getSubtotal(false);
             $subTotalTax = $cart->getSubtotalTax();
 

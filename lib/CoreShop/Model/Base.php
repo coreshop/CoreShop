@@ -95,7 +95,7 @@ class Base extends Concrete
      *
      * @throws Exception
      */
-    public static function getList($config = array())
+    public static function getList($config = [])
     {
         //We need to re-write this method, since pimcore uses the called_class method
         $className = self::getPimcoreObjectClass();
@@ -182,7 +182,7 @@ class Base extends Concrete
             throw new Exception('Calling to unkown class '.$pimcoreClass);
         }
 
-        return call_user_func_array(array($pimcoreClass, $method), $arguments);
+        return call_user_func_array([$pimcoreClass, $method], $arguments);
     }
 
 
@@ -201,7 +201,8 @@ class Base extends Concrete
      *
      * @return string
      */
-    public function getCacheKey() {
+    public function getCacheKey()
+    {
         return static::getClassCacheKey(get_class($this), $this->getId());
     }
 
@@ -300,8 +301,9 @@ class Base extends Concrete
      * @param Shop $shop
      * @return bool
      */
-    public function isAllowedForShop(Shop $shop) {
-        if(method_exists($this, "getShops")) {
+    public function isAllowedForShop(Shop $shop)
+    {
+        if (method_exists($this, "getShops")) {
             $shops = $this->getShops();
 
             return in_array($shop->getId(), $shops);
@@ -318,12 +320,13 @@ class Base extends Concrete
      * @param Shop|null $shop
      * @return bool|string
      */
-    public function getUrl($language, $params = [], $route, $reset = false, Shop $shop = null) {
-        if(is_null($shop)) {
+    public function getUrl($language, $params = [], $route, $reset = false, Shop $shop = null)
+    {
+        if (is_null($shop)) {
             $shop = Shop::getShop();
         }
 
-        if(!$this->isAllowedForShop($shop)) {
+        if (!$this->isAllowedForShop($shop)) {
             return false;
         }
 
@@ -331,7 +334,7 @@ class Base extends Concrete
 
         $url = \CoreShop::getTools()->url($params, $route, $reset);
 
-        if($shop->getId() === Shop::getShop()->getId()) {
+        if ($shop->getId() === Shop::getShop()->getId()) {
             return $url;
         }
 

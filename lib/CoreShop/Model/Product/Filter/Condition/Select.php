@@ -59,7 +59,7 @@ class Select extends AbstractCondition
         if (!empty($value)) {
             $fieldName = $this->getField();
 
-            if($isPrecondition) {
+            if ($isPrecondition) {
                 $fieldName = 'PRECONDITION_' . $fieldName;
             }
 

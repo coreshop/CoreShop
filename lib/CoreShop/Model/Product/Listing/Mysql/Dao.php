@@ -291,7 +291,7 @@ class Dao
             $maxObjectValues = $this->db->fetchRow($query);
 
             if (!empty($objectValues)) {
-                $subStatement = array();
+                $subStatement = [];
 
                 foreach ($fields as $field) {
                     if ($field instanceof AbstractSimilarity) {
@@ -330,7 +330,7 @@ class Dao
      */
     public function buildFulltextSearchWhere($fields, $searchString)
     {
-        $columnNames = array();
+        $columnNames = [];
 
         foreach ($fields as $c) {
             $columnNames[] = $this->db->quoteIdentifier($c);

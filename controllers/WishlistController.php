@@ -50,7 +50,7 @@ class CoreShop_WishlistController extends Action
             if ($checkAvailability === true) {
                 $this->model->add($product->getId());
 
-                $this->_helper->json(array('success' => true, 'wishlist' => $this->model->getWishlist()));
+                $this->_helper->json(['success' => true, 'wishlist' => $this->model->getWishlist()]);
             } else {
                 if ($checkAvailability == 'limit_reached') {
                     $message = $this->view->translate('You reached the limit of products to your wishlist.');
@@ -60,11 +60,11 @@ class CoreShop_WishlistController extends Action
                     $message = 'Error: '.$checkAvailability;
                 }
 
-                $this->_helper->json(array('success' => false, 'message' => $message));
+                $this->_helper->json(['success' => false, 'message' => $message]);
             }
         }
 
-        $this->_helper->json(array('success' => false, 'wishlist' => $this->model->getWishlist()));
+        $this->_helper->json(['success' => false, 'wishlist' => $this->model->getWishlist()]);
     }
 
     public function removeAction()
@@ -75,10 +75,10 @@ class CoreShop_WishlistController extends Action
         if ($product instanceof \CoreShop\Model\Product) {
             $this->model->remove($product->getId());
 
-            $this->_helper->json(array('success' => true, 'wishlist' => $this->model->getWishlist()));
+            $this->_helper->json(['success' => true, 'wishlist' => $this->model->getWishlist()]);
         }
 
-        $this->_helper->json(array('success' => false, 'wishlist' => $this->model->getWishlist()));
+        $this->_helper->json(['success' => false, 'wishlist' => $this->model->getWishlist()]);
     }
 
     public function listAction()
@@ -88,7 +88,7 @@ class CoreShop_WishlistController extends Action
         $this->view->headTitle($this->view->translate('Wishlist'));
 
         $productIds = $this->model->getWishlist();
-        $products = array();
+        $products = [];
 
         if (!empty($productIds)) {
             $list = \CoreShop\Model\Product::getList();

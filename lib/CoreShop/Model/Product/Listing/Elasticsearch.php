@@ -82,22 +82,22 @@ class Elasticsearch extends AbstractListing
     /**
      * @var string[]
      */
-    protected $conditions = array();
+    protected $conditions = [];
 
     /**
      * @var string[]
      */
-    protected $relationConditions = array();
+    protected $relationConditions = [];
 
     /**
      * @var string[][]
      */
-    protected $queryConditions = array();
+    protected $queryConditions = [];
 
     /**
      * @var string[][]
      */
-    protected $queryJoins = array();
+    protected $queryJoins = [];
 
     /**
      * @var \CoreShop\IndexService\Elasticsearch
@@ -107,12 +107,12 @@ class Elasticsearch extends AbstractListing
     /**
      * @var array
      */
-    protected $preparedGroupByValues = array();
+    protected $preparedGroupByValues = [];
 
     /**
      * @var array
      */
-    protected $preparedGroupByValuesResults = array();
+    protected $preparedGroupByValuesResults = [];
 
     /**
      * Mysql constructor.
@@ -176,10 +176,10 @@ class Elasticsearch extends AbstractListing
      */
     public function resetConditions()
     {
-        $this->conditions = array();
-        $this->relationConditions = array();
-        $this->queryConditions = array();
-        $this->queryJoins = array();
+        $this->conditions = [];
+        $this->relationConditions = [];
+        $this->queryConditions = [];
+        $this->queryJoins = [];
 
         $this->products = null;
     }
@@ -374,14 +374,12 @@ class Elasticsearch extends AbstractListing
     {
         $result = $this->sendRequest($this->getQuery());
 
-        $objectRaw = array();
+        $objectRaw = [];
 
-        if($result['hits'])
-        {
+        if ($result['hits']) {
             $this->totalCount = $result['hits']['total'];
 
-            foreach($result['hits']['hits'] as $hit)
-            {
+            foreach ($result['hits']['hits'] as $hit) {
                 $objectRaw[] = $hit['_id'];
             }
         }
@@ -390,9 +388,9 @@ class Elasticsearch extends AbstractListing
         $this->products = [];
         $i = 0;
 
-        foreach($objectRaw as $raw) {
+        foreach ($objectRaw as $raw) {
             $product = $this->loadElementById($raw);
-            if($product) {
+            if ($product) {
                 $this->products[] = $product;
                 $i++;
             }
@@ -405,17 +403,17 @@ class Elasticsearch extends AbstractListing
     /**
      * @return array|string
      */
-    protected function getQuery() {
-
+    protected function getQuery()
+    {
         $filters = $this->buildSystemConditions();
 
         //user specific filters
-        $filters = array_merge($filters, $this->buildFilterConditions(array()));
+        $filters = array_merge($filters, $this->buildFilterConditions([]));
 
         //relation conditions
-        $queryFilters = $this->buildQueryConditions(array());
+        $queryFilters = $this->buildQueryConditions([]);
 
-        $params = array();
+        $params = [];
         $params['index'] = $this->worker->getIndex()->getName();
         $params['type'] = "coreshop";
         $params['body']['_source'] = false;
@@ -424,9 +422,9 @@ class Elasticsearch extends AbstractListing
         $params['body']['query']['filtered']['query']['bool']['must'] = $queryFilters;
         $params['body']['query']['filtered']['filter']['bool']['must'] = $filters;
 
-        if($this->orderKey) {
-            if(is_array($this->orderKey)) {
-                foreach($this->orderKey as $orderKey) {
+        if ($this->orderKey) {
+            if (is_array($this->orderKey)) {
+                foreach ($this->orderKey as $orderKey) {
                     $params['body']['sort'][] = [$orderKey[0] => ($orderKey[1] ?: "asc")];
                 }
             } else {
@@ -506,16 +504,17 @@ class Elasticsearch extends AbstractListing
      * @param bool $fieldNameShouldBeExcluded
      * @return array
      */
-    protected function doGetGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true) {
+    protected function doGetGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
+    {
         $this->doLoadGroupByValues();
 
         $results = $this->preparedGroupByValuesResults[$fieldName];
-        if($results) {
-            if($countValues) {
+        if ($results) {
+            if ($countValues) {
                 return $results;
             } else {
-                $resultsWithoutCounts = array();
-                foreach($results as $result) {
+                $resultsWithoutCounts = [];
+                foreach ($results as $result) {
                     $resultsWithoutCounts[] = $result['value'];
                 }
                 return $resultsWithoutCounts;
@@ -532,17 +531,18 @@ class Elasticsearch extends AbstractListing
      *
      * @throws \Exception
      */
-    protected function doLoadGroupByValues() {
+    protected function doLoadGroupByValues()
+    {
         // create general filters and queries
-        $toExcludeFieldnames = array();
+        $toExcludeFieldnames = [];
 
         $filters = $this->buildSystemConditions();
 
         //user specific filters
-        $filters = array_merge($filters, $this->buildFilterConditions(array()));
+        $filters = array_merge($filters, $this->buildFilterConditions([]));
 
         //relation conditions
-        $queryFilters = $this->buildQueryConditions(array());
+        $queryFilters = $this->buildQueryConditions([]);
 
         $columns = $this->worker->getColumnsConfiguration();
         $aggregations = [];
@@ -557,8 +557,8 @@ class Elasticsearch extends AbstractListing
             ];
         }
 
-        if(count($aggregations) > 0) {
-            $params = array();
+        if (count($aggregations) > 0) {
+            $params = [];
             $params['index'] = $this->worker->getIndex()->getName();
             $params['type'] = "coreshop";
             $params['search_type'] = "count";
@@ -571,20 +571,20 @@ class Elasticsearch extends AbstractListing
 
 
             // send request
-            $result = $this->sendRequest( $params );
+            $result = $this->sendRequest($params);
 
 
-            if($result['aggregations']) {
-                foreach($result['aggregations'] as $fieldName => $aggregation) {
-                    if($aggregation['buckets']) {
+            if ($result['aggregations']) {
+                foreach ($result['aggregations'] as $fieldName => $aggregation) {
+                    if ($aggregation['buckets']) {
                         $buckets = $aggregation['buckets'];
                     } else {
                         $buckets = $aggregation[$fieldName]['buckets'];
                     }
 
-                    $groupByValueResult = array();
-                    if($buckets) {
-                        foreach($buckets as $bucket) {
+                    $groupByValueResult = [];
+                    if ($buckets) {
+                        foreach ($buckets as $bucket) {
                             $groupByValueResult[] = ['value' => $bucket['key'], 'count' => $bucket['doc_count']];
                         }
                     }
@@ -593,7 +593,7 @@ class Elasticsearch extends AbstractListing
                 }
             }
         } else {
-            $this->preparedGroupByValuesResults = array();
+            $this->preparedGroupByValuesResults = [];
         }
 
 
@@ -645,7 +645,8 @@ class Elasticsearch extends AbstractListing
      * @param $excludedFieldName
      * @return array
      */
-    protected function buildFilterConditions($excludedFieldName) {
+    protected function buildFilterConditions($excludedFieldName)
+    {
         $filters = [];
 
         foreach ($this->conditions as $fieldName => $condArray) {
@@ -663,13 +664,13 @@ class Elasticsearch extends AbstractListing
      * @param $excludedFieldName
      * @return array
      */
-    protected function buildQueryConditions($excludedFieldName) {
+    protected function buildQueryConditions($excludedFieldName)
+    {
         $filters = [];
 
         if ($this->queryConditions) {
-
-            foreach($this->queryConditions as $queryCondition) {
-                if($queryCondition instanceof Condition) {
+            foreach ($this->queryConditions as $queryCondition) {
+                if ($queryCondition instanceof Condition) {
                     $filters[] = ['match' => [$queryCondition->getFieldName() => $queryCondition->getValues()]];
                 }
             }
@@ -718,19 +719,19 @@ class Elasticsearch extends AbstractListing
         if (!empty($this->orderKey) && $this->orderKey !== AbstractListing::ORDERKEY_PRICE) {
             $orderKeys = $this->orderKey;
             if (!is_array($orderKeys)) {
-                $orderKeys = array($orderKeys);
+                $orderKeys = [$orderKeys];
             }
 
-            $directionOrderKeys = array();
+            $directionOrderKeys = [];
             foreach ($orderKeys as $key) {
                 if (is_array($key)) {
                     $directionOrderKeys[] = $key;
                 } else {
-                    $directionOrderKeys[] = array($key, $this->order);
+                    $directionOrderKeys[] = [$key, $this->order];
                 }
             }
 
-            $orderByStringArray = array();
+            $orderByStringArray = [];
             foreach ($directionOrderKeys as $keyDirection) {
                 $key = $keyDirection[0];
                 $direction = $keyDirection[1];

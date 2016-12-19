@@ -25,7 +25,7 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission("coreshop_permission_carriers");
         }
@@ -46,25 +46,25 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
 
     protected function getPriceRuleTreeNodeConfig($price)
     {
-        $tmpRule = array(
+        $tmpRule = [
             'id' => $price->getId(),
             'text' => $price->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$price->getId(),
-            ),
+            ],
             'name' => $price->getName(),
-        );
+        ];
 
         return $tmpRule;
     }
 
     public function getConfigAction()
     {
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => true,
             'conditions' => \CoreShop\Model\Carrier\ShippingRule::$availableConditions,
             'actions' => \CoreShop\Model\Carrier\ShippingRule::$availableActions,
-        ));
+        ]);
     }
 
     public function addAction()
@@ -75,7 +75,7 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
         $shippingRule->setName($name);
         $shippingRule->save();
 
-        $this->_helper->json(array('success' => true, 'data' => $shippingRule));
+        $this->_helper->json(['success' => true, 'data' => $shippingRule]);
     }
 
     public function getAction()
@@ -84,9 +84,9 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
         $specificPrice = \CoreShop\Model\Carrier\ShippingRule::getById($id);
 
         if ($specificPrice instanceof \CoreShop\Model\Carrier\ShippingRule) {
-            $this->_helper->json(array('success' => true, 'data' => $specificPrice->getObjectVars()));
+            $this->_helper->json(['success' => true, 'data' => $specificPrice->getObjectVars()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -115,9 +115,9 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
 
             \Pimcore\Cache::clearTag('coreshop_product_price');
 
-            $this->_helper->json(array('success' => true, 'data' => $shippingRule));
+            $this->_helper->json(['success' => true, 'data' => $shippingRule]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -129,13 +129,14 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
         if ($shippingRule instanceof \CoreShop\Model\Carrier\ShippingRule) {
             $shippingRule->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
-    public function getUsedByCarriersAction() {
+    public function getUsedByCarriersAction()
+    {
         $id = $this->getParam('id');
         $shippingRule = \CoreShop\Model\Carrier\ShippingRule::getById($id);
 
@@ -146,11 +147,11 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
 
             $carriers = [];
 
-            foreach($list->getData() as $group) {
-                if($group instanceof \CoreShop\Model\Carrier\ShippingRuleGroup) {
+            foreach ($list->getData() as $group) {
+                if ($group instanceof \CoreShop\Model\Carrier\ShippingRuleGroup) {
                     $carrier = $group->getCarrier();
 
-                    if($carrier instanceof \CoreShop\Model\Carrier) {
+                    if ($carrier instanceof \CoreShop\Model\Carrier) {
                         $carriers[] = [
                             "id" => $carrier->getId(),
                             "name" => $carrier->getName()
@@ -159,9 +160,9 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
                 }
             }
 
-            $this->_helper->json(array('success' => true, 'carriers' => $carriers));
+            $this->_helper->json(['success' => true, 'carriers' => $carriers]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

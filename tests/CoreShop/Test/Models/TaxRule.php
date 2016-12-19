@@ -42,17 +42,17 @@ class TaxRule extends Base
         $tax20 = \CoreShop\Model\Tax::create();
         $tax20->setRate(20);
 
-        $taxCalculator = new TaxCalculator(array($tax10), TaxCalculator::DISABLE_METHOD);
+        $taxCalculator = new TaxCalculator([$tax10], TaxCalculator::DISABLE_METHOD);
 
         $this->assertEquals(11, $taxCalculator->addTaxes(10));
         $this->assertEquals(13.2, $taxCalculator->addTaxes(12));
 
-        $taxCalculator = new TaxCalculator(array($tax10, $tax20), TaxCalculator::COMBINE_METHOD);
+        $taxCalculator = new TaxCalculator([$tax10, $tax20], TaxCalculator::COMBINE_METHOD);
 
         $this->assertEquals(13, $taxCalculator->addTaxes(10));
         $this->assertEquals(15.6, $taxCalculator->addTaxes(12));
 
-        $taxCalculator = new TaxCalculator(array($tax10, $tax20), TaxCalculator::ONE_AFTER_ANOTHER_METHOD);
+        $taxCalculator = new TaxCalculator([$tax10, $tax20], TaxCalculator::ONE_AFTER_ANOTHER_METHOD);
 
         $this->assertEquals(13.2, round($taxCalculator->addTaxes(10), 2));
         $this->assertEquals(15.84, round($taxCalculator->addTaxes(12), 2));

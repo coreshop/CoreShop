@@ -25,7 +25,7 @@ class CoreShop_Admin_ProductController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             //$this->checkPermission("coreshop_permission_priceRules");
             //TODO
@@ -61,24 +61,24 @@ class CoreShop_Admin_ProductController extends Admin
         $list->setOrderKey($orderKey);
 
         $products = $list->load();
-        $jsonProducts = array();
+        $jsonProducts = [];
 
         foreach ($products as $product) {
             $jsonProducts[] = $this->prepareProduct($product);
         }
 
-        $this->_helper->json(array('success' => true, 'data' => $jsonProducts, 'count' => count($jsonProducts), 'total' => $list->getTotalCount()));
+        $this->_helper->json(['success' => true, 'data' => $jsonProducts, 'count' => count($jsonProducts), 'total' => $list->getTotalCount()]);
     }
 
     protected function prepareProduct(\CoreShop\Model\Product $product)
     {
-        $element = array(
+        $element = [
             'o_id' => $product->getId(),
             'name' => $product->getName(),
             'quantity' => $product->getQuantity(),
             'price' => $product->getPrice(),
             'shops' => $product->getShops()
-        );
+        ];
 
         return $element;
     }

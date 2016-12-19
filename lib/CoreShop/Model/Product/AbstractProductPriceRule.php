@@ -30,14 +30,14 @@ abstract class AbstractProductPriceRule extends AbstractPriceRule
      *
      * @var array
      */
-    public static $availableConditions = array();
+    public static $availableConditions = [];
 
     /**
      * possible types of a action.
      *
      * @var array
      */
-    public static $availableActions = array();
+    public static $availableActions = [];
 
     /**
      * @var int

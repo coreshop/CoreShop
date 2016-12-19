@@ -100,7 +100,7 @@ class Country extends AbstractModel
      */
     public static function getActiveCountries($shopId = null)
     {
-        if(is_null($shopId)) {
+        if (is_null($shopId)) {
             $shopId = Shop::getDefaultShop()->getId();
         }
 

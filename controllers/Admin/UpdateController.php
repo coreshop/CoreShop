@@ -46,9 +46,9 @@ class CoreShop_Admin_UpdateController extends Admin
             $success = true;
         }
 
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => $success,
-        ));
+        ]);
     }
 
     public function getAvailableUpdatesAction()
@@ -77,12 +77,12 @@ class CoreShop_Admin_UpdateController extends Admin
             \CoreShop\Update::arrangeData($this->getParam('revision'), $this->getParam('url'), $this->getParam('file'));
         }
 
-        $this->_helper->json(array('success' => true));
+        $this->_helper->json(['success' => true]);
     }
 
     public function jobProceduralAction()
     {
-        $status = array('success' => true);
+        $status = ['success' => true];
 
         if ($this->getParam('type') == 'files') {
             \CoreShop\Update::installData($this->getParam('revision'));

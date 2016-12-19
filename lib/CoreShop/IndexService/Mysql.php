@@ -79,8 +79,8 @@ class Mysql extends AbstractWorker
         $data = $this->db->fetchAll('SHOW COLUMNS FROM '.$this->getTablename());
         $localizedData = $this->db->fetchAll('SHOW COLUMNS FROM '.$this->getLocalizedTablename());
 
-        $columns = array();
-        $localizedColumns = array();
+        $columns = [];
+        $localizedColumns = [];
 
         foreach ($data as $d) {
             $columns[$d['Field']] = $d['Field'];
@@ -100,7 +100,7 @@ class Mysql extends AbstractWorker
         $columnConfig = $this->getColumnsConfiguration();
 
         foreach ($columnConfig as $column) {
-            if($column instanceof Index\Config\Column\Localizedfields) {
+            if ($column instanceof Index\Config\Column\Localizedfields) {
                 if (!array_key_exists($column->getName(), $localizedColumns)) {
                     $doAdd = true;
 
@@ -110,8 +110,7 @@ class Mysql extends AbstractWorker
                 }
 
                 unset($localizedColumnsToDelete[$column->getName()]);
-            }
-            else {
+            } else {
                 if (!array_key_exists($column->getName(), $columns)) {
                     $doAdd = true;
 
@@ -207,9 +206,7 @@ QUERY;
             $this->db->query('DROP TABLE IF EXISTS `'.$this->getTablename().'`');
             $this->db->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename().'`');
             $this->db->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename().'`');
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             Logger::error($e);
         }
     }
@@ -297,7 +294,7 @@ QUERY;
      */
     protected function doInsertLocalizedData($data)
     {
-        foreach($data['values'] as $language => $values) {
+        foreach ($data['values'] as $language => $values) {
             $dataKeys = [
                 'oo_id' => '?',
                 'language' => '?'
@@ -337,8 +334,9 @@ QUERY;
      * @return string
      * @throws \Exception
      */
-    public function renderCondition(Condition $condition) {
-        switch($condition->getType()) {
+    public function renderCondition(Condition $condition)
+    {
+        switch ($condition->getType()) {
 
             case "in":
                 $inValues = [];
@@ -357,7 +355,7 @@ QUERY;
                 $value = $values["value"];
                 $patternValue = '';
 
-                switch($pattern) {
+                switch ($pattern) {
                     case "left":
                         $patternValue = '%' . $value;
                         break;
@@ -462,6 +460,6 @@ QUERY;
      */
     protected function getSystemAttributes()
     {
-        return array('o_id', 'oo_id', 'name', 'language', 'o_key', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops', 'minPrice', 'maxPrice');
+        return ['o_id', 'oo_id', 'name', 'language', 'o_key', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops', 'minPrice', 'maxPrice'];
     }
 }

@@ -33,7 +33,7 @@ class Deposit
      *
      * @var array
      */
-    public $depositData = array();
+    public $depositData = [];
 
     /**
      * set max elements per deposit
@@ -67,11 +67,11 @@ class Deposit
         $this->depositNamespace = $namespace;
 
         if (!isset($session->deposits)) {
-            $session->deposits = array();
+            $session->deposits = [];
         }
 
         if (!isset($session->deposits[ $this->depositNamespace ])) {
-            $session->deposits[ $this->depositNamespace ] = array();
+            $session->deposits[ $this->depositNamespace ] = [];
         }
 
         $this->depositData = $session->deposits[ $this->depositNamespace ];
@@ -101,10 +101,10 @@ class Deposit
     protected function toArray()
     {
         if (empty($this->depositData)) {
-            return array();
+            return [];
         }
 
-        $data = array();
+        $data = [];
 
         foreach ($this->depositData as $id => $val) {
             $data[] = $id;

@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Model;
+
 use Pimcore\Model\Asset\Image;
 use Pimcore\Model\Object\AbstractObject;
 
@@ -37,41 +38,29 @@ class AdminStyle extends \Pimcore\Model\Element\AdminStyle
 
         if ($element instanceof Product) {
             $this->elementIconClass = 'coreshop_icon_product_green';
-        }
-        else if ($element instanceof Order) {
+        } elseif ($element instanceof Order) {
             $this->elementIconClass = 'coreshop_icon_order';
-        }
-        else if ($element instanceof Order\Item) {
+        } elseif ($element instanceof Order\Item) {
             $this->elementIconClass = 'coreshop_icon_product';
-        }
-        else if ($element instanceof User) {
+        } elseif ($element instanceof User) {
             $this->elementIconClass = 'coreshop_icon_customers';
-        }
-        else if ($element instanceof User\Address) {
+        } elseif ($element instanceof User\Address) {
             $this->elementIconClass = 'coreshop_icon_address';
-        }
-        else if ($element instanceof Category) {
+        } elseif ($element instanceof Category) {
             $this->elementIconClass = 'coreshop_icon_category';
-        }
-        else if ($element instanceof Order\Invoice) {
+        } elseif ($element instanceof Order\Invoice) {
             $this->elementIconClass = 'coreshop_icon_orders_invoice';
-        }
-        else if($element instanceof Customer\Group) {
+        } elseif ($element instanceof Customer\Group) {
             $this->elementIconClass = 'coreshop_icon_customer_group';
-        }
-        else if($element instanceof Manufacturer) {
+        } elseif ($element instanceof Manufacturer) {
             $this->elementIconClass = 'coreshop_icon_manufacturer';
-        }
-        else if($element instanceof Cart) {
+        } elseif ($element instanceof Cart) {
             $this->elementIconClass = "coreshop_icon_cart";
-        }
-        else if($element instanceof Order\Payment) {
+        } elseif ($element instanceof Order\Payment) {
             $this->elementIconClass = "coreshop_icon_payment";
-        }
-        else if($element instanceof Order\Shipment) {
+        } elseif ($element instanceof Order\Shipment) {
             $this->elementIconClass = "coreshop_icon_orders_shipment";
-        }
-        else if($element instanceof Order\Shipment\Item) {
+        } elseif ($element instanceof Order\Shipment\Item) {
             $this->elementIconClass = "coreshop_icon_orders_shipment";
         }
 
@@ -83,12 +72,12 @@ class AdminStyle extends \Pimcore\Model\Element\AdminStyle
      */
     public function getElementQtipConfig()
     {
-        if($this->element instanceof Product) {
+        if ($this->element instanceof Product) {
             $image = $this->element->getImage();
 
             $text = sprintf("<h1>%s</h1>", $this->element->getArticleNumber());
 
-            if($image instanceof Image) {
+            if ($image instanceof Image) {
                 $thumbnail = $image->getThumbnail("coreshop_productDetailThumbnail");
 
                 $text .= sprintf("<p>%s</p>", $thumbnail->getHTML());
@@ -97,8 +86,7 @@ class AdminStyle extends \Pimcore\Model\Element\AdminStyle
                 "title" => $this->element->getName() . " (" . $this->element->getId() . ")",
                 "text" => $text
             ];
-        }
-        else if($this->element instanceof Order) {
+        } elseif ($this->element instanceof Order) {
             $translate = new \Pimcore\Translate\Admin(\Zend_Registry::get("Zend_Locale"));
 
             $text = sprintf(

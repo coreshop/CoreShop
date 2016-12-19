@@ -23,5 +23,4 @@ use Pimcore\Tool;
  */
 abstract class AbstractPriceRule extends AbstractRule
 {
-
 }

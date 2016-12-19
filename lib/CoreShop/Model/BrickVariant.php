@@ -34,7 +34,7 @@ class BrickVariant extends Objectbrick
      *
      * @return bool|float|int|string
      */
-    public function getValueForVariant($fieldInfo = array(), $language = 'en')
+    public function getValueForVariant($fieldInfo = [], $language = 'en')
     {
         $methodName = 'get'.$fieldInfo['name'];
 
@@ -100,7 +100,7 @@ class BrickVariant extends Objectbrick
             }
         } else {
             $items = $object->getItems();
-            $itemValues = is_array($items) ? array_values($items[$language]) : array();
+            $itemValues = is_array($items) ? array_values($items[$language]) : [];
         }
 
         if (isset($itemValues[0]) && is_string($itemValues[0])) {

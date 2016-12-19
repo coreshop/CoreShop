@@ -31,12 +31,12 @@ class CoreShop_ProductController extends Action
             }
 
             $this->view->product = $product;
-            $this->view->similarProducts = array();
+            $this->view->similarProducts = [];
             
-            $this->view->seo = array(
+            $this->view->seo = [
                 'image' => $product->getImage(),
                 'description' => $product->getMetaDescription() ? $product->getMetaDescription() : $product->getShortDescription(),
-            );
+            ];
 
             if (count($product->getCategories()) > 0) {
                 $mainCategory = $product->getCategories()[0];
@@ -108,7 +108,7 @@ class CoreShop_ProductController extends Action
 
         $perPage = $this->getParam('perPage', $defaultPerPage);
 
-        if(!in_array($perPage, $allowedPerPage)) {
+        if (!in_array($perPage, $allowedPerPage)) {
             $perPage = $defaultPerPage;
         }
 
@@ -129,7 +129,7 @@ class CoreShop_ProductController extends Action
 
                 $this->view->currentFilter = \CoreShop\Model\Product\Filter\Helper::setupProductList($list, $this->getAllParams(), $category->getFilterDefinition(), new \CoreShop\Model\Product\Filter\Service());
 
-                if($category->getFilterDefinition()->getUseShopPagingSettings()) {
+                if ($category->getFilterDefinition()->getUseShopPagingSettings()) {
                     $list->setLimit($perPage);
                 }
 
@@ -158,10 +158,10 @@ class CoreShop_ProductController extends Action
             $this->view->type = $type;
             $this->view->perPageAllowed = $allowedPerPage;
 
-            $this->view->seo = array(
+            $this->view->seo = [
                 'image' => $category->getImage(),
                 'description' => $category->getMetaDescription() ? $category->getMetaDescription() : $category->getDescription(),
-            );
+            ];
 
             $this->view->headTitle($category->getMetaTitle() ? $category->getMetaTitle() : $category->getName());
         } else {
@@ -175,11 +175,11 @@ class CoreShop_ProductController extends Action
      */
     protected function parseSorting($sortString)
     {
-        $allowed = array('name', 'price');
-        $sort = array(
+        $allowed = ['name', 'price'];
+        $sort = [
             'name' => 'name',
             'direction' => 'asc',
-        );
+        ];
 
         $sortString = explode('_', $sortString);
 
@@ -190,11 +190,11 @@ class CoreShop_ProductController extends Action
         $name = strtolower($sortString[0]);
         $direction = strtolower($sortString[1]);
 
-        if (in_array($name, $allowed) && in_array($direction, array('desc', 'asc'))) {
-            return array(
+        if (in_array($name, $allowed) && in_array($direction, ['desc', 'asc'])) {
+            return [
                 'name' => $name,
                 'direction' => $direction,
-            );
+            ];
         }
 
         return $sort;
@@ -212,7 +212,7 @@ class CoreShop_ProductController extends Action
         $index = $filter->getIndex();
 
         if (!$index instanceof CoreShop\Model\Index) {
-            return array();
+            return [];
         }
 
         $indexService = \CoreShop\IndexService::getIndexService()->getWorker($index->getName());
@@ -238,6 +238,6 @@ class CoreShop_ProductController extends Action
             return $productList->load();
         }
 
-        return array();
+        return [];
     }
 }

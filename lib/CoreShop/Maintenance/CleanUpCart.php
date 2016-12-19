@@ -26,21 +26,21 @@ class CleanUpCart
     /**
      * @var array
      */
-    private static $params = array();
+    private static $params = [];
 
     /***
      * @var array
      */
-    private static $errors = array();
+    private static $errors = [];
 
     /**
      * @param array $params
      */
-    public function setOptions($params = array())
+    public function setOptions($params = [])
     {
-        $defaults = array(
+        $defaults = [
             'olderThanDays' => 30,
-        );
+        ];
 
         self::$params = array_merge($defaults, $params);
 
@@ -78,9 +78,9 @@ class CleanUpCart
 
         $list = Cart::getList();
 
-        $conditions = array();
-        $groupCondition = array();
-        $params = array();
+        $conditions = [];
+        $groupCondition = [];
+        $params = [];
 
         $daysTimestamp = new \Pimcore\Date();
         $daysTimestamp->subDay(self::$params['olderThanDays']);

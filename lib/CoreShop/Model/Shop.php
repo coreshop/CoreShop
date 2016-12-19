@@ -172,7 +172,7 @@ class Shop extends AbstractModel
         } catch (\Exception $e) {
             try {
                 if (!$object = Cache::load($cacheKey)) {
-                    $data = self::getList()->setCondition("siteId = ?", array($site->getId()))->getData();
+                    $data = self::getList()->setCondition("siteId = ?", [$site->getId()])->getData();
 
                     if (count($data) > 1) {
                         throw new Exception("More that one shop for this site is configured!");
@@ -251,7 +251,7 @@ class Shop extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

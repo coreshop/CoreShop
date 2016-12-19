@@ -35,14 +35,14 @@ class ExchangeRates
      *
      * @var array
      */
-    public static $providerList = array(
+    public static $providerList = [
         'CentralBankOfRepulicTurkey' => 'CentralBankOfRepublicTurkeyProvider',
         'EuropeanCentralBank' => 'EuropeanCentralBankProvider',
         'GoogleFinance' => 'GoogleFinanceProvider',
         'NationalBankOfRomania' => 'NationalBankOfRomaniaProvider',
         'YahooFinance' => 'YahooFinanceProvider',
         'WebserviceX' => 'WebserviceXProvider',
-    );
+    ];
 
     /**
      * @return ExchangeRates

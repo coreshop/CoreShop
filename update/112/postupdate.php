@@ -17,12 +17,12 @@ $sql = "SELECT cid FROM properties WHERE `name`='invoice'";
 
 $objects = $db->fetchAll($sql);
 
-foreach($objects as $objectRaw) {
+foreach ($objects as $objectRaw) {
     $id = $objectRaw['cid'];
 
     $object = \Pimcore\Model\Object\AbstractObject::getById($id);
 
-    if($object instanceof \CoreShop\Model\Order) {
+    if ($object instanceof \CoreShop\Model\Order) {
         $object->createInvoiceForAllItems();
     }
 }

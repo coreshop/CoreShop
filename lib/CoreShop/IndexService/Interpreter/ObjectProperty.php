@@ -37,12 +37,12 @@ class ObjectProperty extends AbstractInterpreter
     {
         $config = isset($config) ? $config->getInterpreterConfig() : [];
 
-        if($value instanceof AbstractObject) {
+        if ($value instanceof AbstractObject) {
             if (array_key_exists("property", $config)) {
                 $name = $config['property'];
                 $getter = "get" . ucfirst($name);
 
-                if(method_exists($value, $getter)) {
+                if (method_exists($value, $getter)) {
                     return $value->$getter();
                 }
             }

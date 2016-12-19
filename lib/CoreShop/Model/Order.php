@@ -42,7 +42,7 @@ use Pimcore\Tool\Authentication;
 /**
  * Class Order
  * @package CoreShop\Model
- * 
+ *
  * @method static Object\Listing\Concrete getByOrderState ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByOrderDate ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByOrderNumber ($value, $limit = 0)
@@ -105,10 +105,11 @@ class Order extends Base
      * @param $orderNumber
      * @return static|null
      */
-    public static function findByOrderNumber($orderNumber) {
+    public static function findByOrderNumber($orderNumber)
+    {
         $orders = static::getByOrderNumber($orderNumber);
 
-        if(count($orders->getObjects())) {
+        if (count($orders->getObjects())) {
             return $orders->getObjects()[0];
         }
 
@@ -147,7 +148,7 @@ class Order extends Base
      */
     public static function getPathForNewOrder($date = null)
     {
-        if(is_null($date)) {
+        if (is_null($date)) {
             $date = new Carbon();
         }
 
@@ -161,28 +162,32 @@ class Order extends Base
     /**
      * @return Object\Folder
      */
-    public function getPathForAddresses() {
+    public function getPathForAddresses()
+    {
         return Object\Service::createFolderByPath($this->getFullPath() . "/addresses/");
     }
 
     /**
      * @return Object\Folder
      */
-    public function getPathForInvoices() {
+    public function getPathForInvoices()
+    {
         return Object\Service::createFolderByPath($this->getFullPath() . "/invoices/");
     }
 
     /**
      * @return Object\Folder
      */
-    public function getPathForShipments() {
+    public function getPathForShipments()
+    {
         return Object\Service::createFolderByPath($this->getFullPath() . "/shipments/");
     }
 
     /**
      * @return null
      */
-    public function getPathForItems() {
+    public function getPathForItems()
+    {
         return Object\Service::createFolderByPath($this->getFullPath().'/items/');
     }
 
@@ -195,7 +200,7 @@ class Order extends Base
      */
     public function importCart(Cart $cart)
     {
-        $items = array();
+        $items = [];
         $i = 1;
 
         foreach ($cart->getItems() as $cartItem) {
@@ -216,18 +221,18 @@ class Order extends Base
             $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getTotalProductTax()));
             $item->setIsVirtualProduct($cartItem->getIsVirtualProduct());
 
-            if($cartItem->getVirtualAsset() instanceof Asset) {
+            if ($cartItem->getVirtualAsset() instanceof Asset) {
                 $item->setVirtualAsset($cartItem->getVirtualAsset());
             }
 
             $itemTaxes = new Object\Fieldcollection();
 
-            foreach($cartItem->getTaxes(false) as $taxes) {
+            foreach ($cartItem->getTaxes(false) as $taxes) {
                 $itemTax = Order\Tax::create();
 
                 $tax = $taxes['tax'];
 
-                if($tax instanceof Tax) {
+                if ($tax instanceof Tax) {
                     $itemTax->setName($tax->getName());
                     $itemTax->setRate($tax->getRate());
                     $itemTax->setAmount($taxes['amount']);
@@ -267,7 +272,7 @@ class Order extends Base
 
         $fieldCollection = new Object\Fieldcollection();
 
-        foreach($cart->getPriceRules() as $priceRule) {
+        foreach ($cart->getPriceRules() as $priceRule) {
             $fieldCollection->add($priceRule);
         }
 
@@ -309,7 +314,7 @@ class Order extends Base
     {
         $invoicesCount = count($this->getInvoices());
 
-        if($invoicesCount > 0) {
+        if ($invoicesCount > 0) {
             throw new Exception("You are not allowed to edit this order anymore");
         }
 
@@ -387,7 +392,7 @@ class Order extends Base
 
         $newSubTotalWithoutDiscount = 0;
 
-        foreach($this->getItems() as $orderItem) {
+        foreach ($this->getItems() as $orderItem) {
             $newSubTotalWithoutDiscount += $orderItem->getTotalWithoutTax();
         }
 
@@ -454,7 +459,8 @@ class Order extends Base
      *
      * @return float
      */
-    public function getDiscountPercentage() {
+    public function getDiscountPercentage()
+    {
         $totalWithoutDiscount = $this->getSubtotalWithoutTax();
         $totalWithDiscount = $this->getSubtotalWithoutTax() - $this->getDiscountWithoutTax();
 
@@ -506,7 +512,8 @@ class Order extends Base
     /**
      * @return Invoice[]
      */
-    public function getInvoices() {
+    public function getInvoices()
+    {
         $list = Invoice::getList();
         $list->setCondition("order__id = ?", [$this->getId()]);
         $list->load();
@@ -517,7 +524,8 @@ class Order extends Base
     /**
      * @return Invoice[]
      */
-    public function getShipments() {
+    public function getShipments()
+    {
         $list = Shipment::getList();
         $list->setCondition("order__id = ?", [$this->getId()]);
         $list->load();
@@ -530,10 +538,11 @@ class Order extends Base
      *
      * @return Invoice
      */
-    public function createInvoiceForAllItems() {
+    public function createInvoiceForAllItems()
+    {
         $items = [];
 
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $items[] = [
                 'orderItemId' => $item->getId(),
                 'amount' => $item->getAmount()
@@ -548,21 +557,21 @@ class Order extends Base
      *
      * @return array
      */
-    public function getInvoiceAbleItems() {
+    public function getInvoiceAbleItems()
+    {
         $items = $this->getItems();
         $invoicedItems = $this->getInvoicedItems();
         $invoiceAbleItems = [];
 
-        foreach($items as $item) {
-            if(array_key_exists($item->getId(), $invoicedItems)) {
-                if($invoicedItems[$item->getId()]['amount'] < $item->getAmount()) {
+        foreach ($items as $item) {
+            if (array_key_exists($item->getId(), $invoicedItems)) {
+                if ($invoicedItems[$item->getId()]['amount'] < $item->getAmount()) {
                     $invoiceAbleItems[$item->getId()] = [
                         "amount" => $item->getAmount() - $invoicedItems[$item->getId()]['amount'],
                         "item" => $item
                     ];
                 }
-            }
-            else {
+            } else {
                 $invoiceAbleItems[$item->getId()] = [
                     "amount" => $item->getAmount(),
                     "item" => $item
@@ -578,19 +587,19 @@ class Order extends Base
      *
      * @return array
      */
-    public function getInvoicedItems() {
+    public function getInvoicedItems()
+    {
         $invoices = $this->getInvoices();
         $invoicedItems = [];
 
-        foreach($invoices as $invoice) {
-            foreach($invoice->getItems() as $invoiceItem) {
+        foreach ($invoices as $invoice) {
+            foreach ($invoice->getItems() as $invoiceItem) {
                 $orderItem = $invoiceItem->getOrderItem();
 
-                if($orderItem instanceof Item) {
-                    if(array_key_exists($orderItem->getId(), $invoicedItems)) {
+                if ($orderItem instanceof Item) {
+                    if (array_key_exists($orderItem->getId(), $invoicedItems)) {
                         $invoicedItems[$orderItem->getId()]['amount'] += $invoiceItem->getAmount();
-                    }
-                    else {
+                    } else {
                         $invoicedItems[$orderItem->getId()] = [
                             'amount' => $invoiceItem->getAmount(),
                             'orderItem' => $orderItem
@@ -613,7 +622,7 @@ class Order extends Base
      */
     public function createInvoice($items)
     {
-        if(!is_array($items)) {
+        if (!is_array($items)) {
             throw new Exception("Invalid Parameters");
         }
 
@@ -653,11 +662,11 @@ class Order extends Base
 
         $invoiceItems = [];
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $orderItem = Item::getById($item['orderItemId']);
             $amount = $item['amount'];
 
-            if($orderItem instanceof Item) {
+            if ($orderItem instanceof Item) {
                 $invoicedAmount = $orderItem->getInvoicedAmount();
                 $newInvoicedAmount = $invoicedAmount + $amount;
 
@@ -721,11 +730,12 @@ class Order extends Base
      * @param $field
      * @return float
      */
-    public function getInvoicedValue($field) {
+    public function getInvoicedValue($field)
+    {
         $invoices = $this->getInvoices();
         $invoicedValue = 0;
 
-        foreach($invoices as $invoice) {
+        foreach ($invoices as $invoice) {
             $invoicedValue += $invoice->getValueForFieldName($field);
         }
 
@@ -737,10 +747,11 @@ class Order extends Base
      *
      * @return Shipment
      */
-    public function createShipmentForAllItems() {
+    public function createShipmentForAllItems()
+    {
         $items = [];
 
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $items[] = [
                 'orderItemId' => $item->getId(),
                 'amount' => $item->getAmount()
@@ -755,21 +766,21 @@ class Order extends Base
      *
      * @return array
      */
-    public function getShipAbleItems() {
+    public function getShipAbleItems()
+    {
         $items = $this->getItems();
         $shippedItems = $this->getShippedItems();
         $shipAbleItems = [];
 
-        foreach($items as $item) {
-            if(array_key_exists($item->getId(), $shippedItems)) {
-                if($shippedItems[$item->getId()]['amount'] < $item->getAmount()) {
+        foreach ($items as $item) {
+            if (array_key_exists($item->getId(), $shippedItems)) {
+                if ($shippedItems[$item->getId()]['amount'] < $item->getAmount()) {
                     $shipAbleItems[$item->getId()] = [
                         "amount" => $item->getAmount() - $shippedItems[$item->getId()]['amount'],
                         "item" => $item
                     ];
                 }
-            }
-            else {
+            } else {
                 $shipAbleItems[$item->getId()] = [
                     "amount" => $item->getAmount(),
                     "item" => $item
@@ -785,19 +796,19 @@ class Order extends Base
      *
      * @return array
      */
-    public function getShippedItems() {
+    public function getShippedItems()
+    {
         $shipments = $this->getShipments();
         $shippedItems = [];
 
-        foreach($shipments as $shipment) {
-            foreach($shipment->getItems() as $shipmentItem) {
+        foreach ($shipments as $shipment) {
+            foreach ($shipment->getItems() as $shipmentItem) {
                 $orderItem = $shipmentItem->getOrderItem();
 
-                if($orderItem instanceof Item) {
-                    if(array_key_exists($orderItem->getId(), $shippedItems)) {
+                if ($orderItem instanceof Item) {
+                    if (array_key_exists($orderItem->getId(), $shippedItems)) {
                         $shippedItems[$orderItem->getId()]['amount'] += $shipmentItem->getAmount();
-                    }
-                    else {
+                    } else {
                         $shippedItems[$orderItem->getId()] = [
                             'amount' => $shipmentItem->getAmount(),
                             'orderItem' => $orderItem
@@ -823,7 +834,7 @@ class Order extends Base
      */
     public function createShipment($items, Carrier $carrier, $trackingCode = null)
     {
-        if(!is_array($items)) {
+        if (!is_array($items)) {
             throw new Exception("Invalid Parameters");
         }
 
@@ -866,11 +877,11 @@ class Order extends Base
 
         $totalWeight = 0;
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $orderItem = Item::getById($item['orderItemId']);
             $amount = $item['amount'];
 
-            if($orderItem instanceof Item) {
+            if ($orderItem instanceof Item) {
                 $shippedAmount = $orderItem->getShippedAmount();
                 $newShippedAmount = $shippedAmount + $amount;
 
@@ -940,7 +951,7 @@ class Order extends Base
         $payments = $this->getPayments();
 
         if (!is_array($payments)) {
-            $payments = array();
+            $payments = [];
         }
 
         $payments[] = $payment;
@@ -974,7 +985,8 @@ class Order extends Base
      *
      * @return bool
      */
-    public function getIsPayed() {
+    public function getIsPayed()
+    {
         return ($this->getTotal() === $this->getPayedTotal());
     }
 
@@ -990,7 +1002,7 @@ class Order extends Base
         $weight = 0;
 
         foreach ($this->getItems() as $item) {
-            if($item->getProduct() instanceof Product) {
+            if ($item->getProduct() instanceof Product) {
                 $weight += ($item->getAmount() * $item->getProduct()->getWeight());
             }
         }
@@ -1008,8 +1020,8 @@ class Order extends Base
         $shipping = $this->getShippingAddress();
         $billing = $this->getBillingAddress();
 
-        if($shipping instanceof Address && $billing instanceof Address) {
-            if($shipping->getId() === $billing->getId()) {
+        if ($shipping instanceof Address && $billing instanceof Address) {
+            if ($shipping->getId() === $billing->getId()) {
                 return true;
             }
         }
@@ -1109,16 +1121,16 @@ class Order extends Base
      */
     public function getTaxRates()
     {
-        $taxes = array();
+        $taxes = [];
 
-        $taxValues = array();
+        $taxValues = [];
 
         foreach ($this->getTaxes() as $tax) {
-            $taxValues[] = array(
+            $taxValues[] = [
                 'rate' => $tax->getRate(),
                 'name' => $tax->getName(),
                 'value' => $tax->getAmount(),
-            );
+            ];
         }
 
         foreach ($taxValues as $tax) {
@@ -1172,7 +1184,8 @@ class Order extends Base
      *
      * @return Thread|Messaging\Thread[]|null
      */
-    public function getCustomerThreads() {
+    public function getCustomerThreads()
+    {
         $threadList = Thread::searchThread($this->getCustomer()->getEmail(), null, $this->getShop()->getId(), $this->getId(), null, true);
 
         return $threadList;

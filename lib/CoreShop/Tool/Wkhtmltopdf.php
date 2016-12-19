@@ -34,7 +34,7 @@ class Wkhtmltopdf
      *
      * @throws Exception
      */
-    public static function fromUrl($url, $config = array())
+    public static function fromUrl($url, $config = [])
     {
         return self::convert($url, $config);
     }
@@ -51,14 +51,14 @@ class Wkhtmltopdf
      *
      * @throws Exception
      */
-    public static function fromString($string, $header = '', $footer = '', $config = array())
+    public static function fromString($string, $header = '', $footer = '', $config = [])
     {
         $bodyHtml = self::createHtmlFile($string);
         $headerHtml = self::createHtmlFile($header);
         $footerHtml = self::createHtmlFile($footer);
 
         if (!is_array($config['options'])) {
-            $config['options'] = array();
+            $config['options'] = [];
         }
 
         $config['options']['--header-html'] = $headerHtml['absolutePath'];
@@ -86,7 +86,7 @@ class Wkhtmltopdf
         file_put_contents($tmpHtmlFile, $string);
         $httpSource = rtrim(Tool::getHostUrl(), '/') . '/' .str_replace($_SERVER['DOCUMENT_ROOT'], '', $tmpHtmlFile);
 
-        return array('absolutePath' => $httpSource, 'relativePath' => $tmpHtmlFile);
+        return ['absolutePath' => $httpSource, 'relativePath' => $tmpHtmlFile];
     }
 
     /**
@@ -99,11 +99,11 @@ class Wkhtmltopdf
      *
      * @throws Exception
      */
-    protected static function convert($httpSource, $config = array())
+    protected static function convert($httpSource, $config = [])
     {
         $tmpPdfFile = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/'.uniqid().'.pdf';
         $options = ' ';
-        $optionConfig = array();
+        $optionConfig = [];
 
         if (is_array($config['options'])) {
             foreach ($config['options'] as $argument => $value) {

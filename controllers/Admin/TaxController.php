@@ -25,7 +25,7 @@ class CoreShop_Admin_TaxController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_taxes');
         }
@@ -35,7 +35,7 @@ class CoreShop_Admin_TaxController extends Admin
     {
         $list = Tax::getList();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $tax) {
                 $data[] = $this->getTreeNodeConfig($tax);
@@ -46,15 +46,15 @@ class CoreShop_Admin_TaxController extends Admin
 
     protected function getTreeNodeConfig(Tax $tax)
     {
-        $tmp = array(
+        $tmp = [
             'id' => $tax->getId(),
             'text' => $tax->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$tax->getId(),
-            ),
+            ],
             'name' => $tax->getName(),
             'rate' => $tax->getRate(),
-        );
+        ];
 
         return $tmp;
     }
@@ -64,7 +64,7 @@ class CoreShop_Admin_TaxController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $tax = Tax::create();
             $tax->setName($name);
@@ -72,7 +72,7 @@ class CoreShop_Admin_TaxController extends Admin
             $tax->setActive(1);
             $tax->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $tax));
+            $this->_helper->json(['success' => true, 'data' => $tax]);
         }
     }
 
@@ -85,9 +85,9 @@ class CoreShop_Admin_TaxController extends Admin
             $taxArray = $tax->getObjectVars();
             $taxArray['title'] = $tax->getName();
 
-            $this->_helper->json(array('success' => true, 'data' => $taxArray));
+            $this->_helper->json(['success' => true, 'data' => $taxArray]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -103,9 +103,9 @@ class CoreShop_Admin_TaxController extends Admin
             $tax->setValues($data);
             $tax->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $tax));
+            $this->_helper->json(['success' => true, 'data' => $tax]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -117,9 +117,9 @@ class CoreShop_Admin_TaxController extends Admin
         if ($tax instanceof Tax) {
             $tax->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

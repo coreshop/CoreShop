@@ -13,8 +13,10 @@
  */
 ?>
 
-<?php foreach ($this->products as $prData) { ?>
+<?php foreach ($this->products as $prData) {
+    ?>
     ga('ec:addProduct', <?= \Zend_Json::encode($prData) ?>);
-<?php } ?>
+<?php 
+} ?>
 
 ga('ec:setAction', 'purchase', <?=json_encode($this->order)?>);

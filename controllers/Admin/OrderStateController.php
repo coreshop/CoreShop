@@ -25,7 +25,7 @@ class CoreShop_Admin_OrderStateController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_order_states');
         }
@@ -35,7 +35,7 @@ class CoreShop_Admin_OrderStateController extends Admin
     {
         $list = State::getList();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $orderState) {
                 $data[] = $this->getTreeNodeConfig($orderState);
@@ -46,19 +46,19 @@ class CoreShop_Admin_OrderStateController extends Admin
 
     protected function getTreeNodeConfig(State $orderState)
     {
-        $tmp = array(
+        $tmp = [
             'id' => $orderState->getId(),
             'text' => $orderState->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$orderState->getId(),
-            ),
+            ],
             'name' => $orderState->getName(),
             'color' => $orderState->getColor(),
             'identifier' => $orderState->getIdentifier(),
             'email' => $orderState->getEmail(),
             'system' => $orderState->getSystem(),
             'localizedFields' => $orderState->getLocalizedFields()
-        );
+        ];
 
         return $tmp;
     }
@@ -68,7 +68,7 @@ class CoreShop_Admin_OrderStateController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $orderState = State::create();
             $orderState->setName($name);
@@ -82,7 +82,7 @@ class CoreShop_Admin_OrderStateController extends Admin
             $orderState->setColor("#FFFFFF");
             $orderState->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $orderState));
+            $this->_helper->json(['success' => true, 'data' => $orderState]);
         }
     }
 
@@ -92,9 +92,9 @@ class CoreShop_Admin_OrderStateController extends Admin
         $orderState = State::getById($id);
 
         if ($orderState instanceof State) {
-            $this->_helper->json(array('success' => true, 'data' => $orderState->getObjectVars()));
+            $this->_helper->json(['success' => true, 'data' => $orderState->getObjectVars()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -110,9 +110,9 @@ class CoreShop_Admin_OrderStateController extends Admin
             $oderState->setValues($data);
             $oderState->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $oderState->getObjectVars()));
+            $this->_helper->json(['success' => true, 'data' => $oderState->getObjectVars()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -124,9 +124,9 @@ class CoreShop_Admin_OrderStateController extends Admin
         if ($oderState instanceof State) {
             $oderState->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

@@ -31,14 +31,14 @@ class SpecificPrice extends AbstractProductPriceRule
      *
      * @var array
      */
-    public static $availableConditions = array('conditions', 'customers', 'timeSpan', 'countries', 'customerGroups', 'zones', 'quantity', 'personas', 'shops', 'currencies');
+    public static $availableConditions = ['conditions', 'customers', 'timeSpan', 'countries', 'customerGroups', 'zones', 'quantity', 'personas', 'shops', 'currencies'];
 
     /**
      * possible types of a action.
      *
      * @var array
      */
-    public static $availableActions = array('discountAmount', 'discountPercent', 'newPrice');
+    public static $availableActions = ['discountAmount', 'discountPercent', 'newPrice'];
 
     /**
      * @var string
@@ -101,7 +101,7 @@ class SpecificPrice extends AbstractProductPriceRule
 
                     $objects = $list->getData();
                     \Zend_Registry::set($cacheKey, $objects);
-                    Cache::save($objects, $cacheKey, array($cacheKey, $product->getCacheKey()));
+                    Cache::save($objects, $cacheKey, [$cacheKey, $product->getCacheKey()]);
                 } else {
                     \Zend_Registry::set($cacheKey, $objects);
                 }

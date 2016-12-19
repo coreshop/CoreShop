@@ -25,7 +25,7 @@ class CoreShop_Admin_ShopController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_shops');
         }
@@ -37,7 +37,7 @@ class CoreShop_Admin_ShopController extends Admin
         $list->setOrder('ASC');
         $list->load();
 
-        $sites = array();
+        $sites = [];
         if (is_array($list->getSites())) {
             foreach ($list->getSites() as $site) {
                 $sites[] = [
@@ -56,7 +56,7 @@ class CoreShop_Admin_ShopController extends Admin
         $list->setOrder('ASC');
         $list->load();
 
-        $shops = array();
+        $shops = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $shop) {
                 $shops[] = $this->getTreeNodeConfig($shop);
@@ -67,14 +67,14 @@ class CoreShop_Admin_ShopController extends Admin
 
     protected function getTreeNodeConfig(Shop $shop)
     {
-        $tmpShop = array(
+        $tmpShop = [
             'id' => $shop->getId(),
             'text' => $shop->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$shop->getId(),
-            ),
+            ],
             'name' => $shop->getName(),
-        );
+        ];
 
         return $tmpShop;
     }
@@ -85,9 +85,9 @@ class CoreShop_Admin_ShopController extends Admin
         $shop = Shop::getById($id);
 
         if ($shop instanceof Shop) {
-            $this->_helper->json(array('success' => true, 'data' => $shop));
+            $this->_helper->json(['success' => true, 'data' => $shop]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -103,9 +103,9 @@ class CoreShop_Admin_ShopController extends Admin
             $shop->setValues($data);
             $shop->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $shop));
+            $this->_helper->json(['success' => true, 'data' => $shop]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -114,14 +114,14 @@ class CoreShop_Admin_ShopController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $shop = Shop::create();
             $shop->setName($name);
             $shop->setTemplate(Shop::getDefaultShop()->getTemplate());
             $shop->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $shop));
+            $this->_helper->json(['success' => true, 'data' => $shop]);
         }
     }
 
@@ -133,9 +133,9 @@ class CoreShop_Admin_ShopController extends Admin
         if ($shop instanceof Shop) {
             $shop->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

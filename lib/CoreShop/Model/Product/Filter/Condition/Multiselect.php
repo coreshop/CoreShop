@@ -64,13 +64,13 @@ class Multiselect extends AbstractCondition
         $rawValues = $list->getGroupByValues($this->getField(), true);
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
-        return $this->getView()->partial($script, array(
+        return $this->getView()->partial($script, [
             'label' => $this->getLabel(),
             'currentValues' => $currentFilter[$this->getField()],
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
             'quantityUnit' => $this->getQuantityUnit()
-        ));
+        ]);
     }
 
     /**

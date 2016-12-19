@@ -25,7 +25,7 @@ class CoreShop_Admin_CarrierController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_carriers');
         }
@@ -35,7 +35,7 @@ class CoreShop_Admin_CarrierController extends Admin
     {
         $list = Carrier::getList();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $carrier) {
                 $data[] = $this->getTreeNodeConfig($carrier);
@@ -51,7 +51,7 @@ class CoreShop_Admin_CarrierController extends Admin
         $list->setOrderKey('name');
         $list->load();
 
-        $carriers = array();
+        $carriers = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $carrier) {
                 $carriers[] = $this->getTreeNodeConfig($carrier);
@@ -63,14 +63,14 @@ class CoreShop_Admin_CarrierController extends Admin
 
     protected function getTreeNodeConfig($carrier)
     {
-        $tmpCarrier = array(
+        $tmpCarrier = [
             'id' => $carrier->getId(),
             'text' => $carrier->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$carrier->getId(),
-            ),
+            ],
             'name' => $carrier->getName(),
-        );
+        ];
 
         return $tmpCarrier;
     }
@@ -83,9 +83,9 @@ class CoreShop_Admin_CarrierController extends Admin
         if ($carrier instanceof Carrier) {
             $groups = $carrier->getShippingRuleGroups();
 
-            $this->_helper->json(array('success' => true, 'total' => count($groups), 'data' => $groups));
+            $this->_helper->json(['success' => true, 'total' => count($groups), 'data' => $groups]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -94,7 +94,7 @@ class CoreShop_Admin_CarrierController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $carrier = Carrier::create();
             $carrier->setName($name);
@@ -107,7 +107,7 @@ class CoreShop_Admin_CarrierController extends Admin
             $config = $this->getTreeNodeConfig($carrier);
             $config['success'] = true;
 
-            $this->_helper->json(array('success' => true, 'data' => $carrier));
+            $this->_helper->json(['success' => true, 'data' => $carrier]);
         }
     }
 
@@ -117,9 +117,9 @@ class CoreShop_Admin_CarrierController extends Admin
         $carrier = Carrier::getById($id);
 
         if ($carrier instanceof Carrier) {
-            $this->_helper->json(array('success' => true, 'data' => $carrier));
+            $this->_helper->json(['success' => true, 'data' => $carrier]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -158,9 +158,9 @@ class CoreShop_Admin_CarrierController extends Admin
 
             $carrier->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $carrier, 'shippingRuleGroups' => $carrier->getShippingRuleGroups()));
+            $this->_helper->json(['success' => true, 'data' => $carrier, 'shippingRuleGroups' => $carrier->getShippingRuleGroups()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -172,9 +172,9 @@ class CoreShop_Admin_CarrierController extends Admin
         if ($carrier instanceof Carrier) {
             $carrier->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

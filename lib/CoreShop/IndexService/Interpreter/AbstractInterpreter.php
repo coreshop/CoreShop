@@ -27,7 +27,7 @@ class AbstractInterpreter
      *
      * @var array
      */
-    protected static $interpreters = array('Object', 'Soundex', 'ObjectIdSum', 'ObjectId', 'ObjectProperty');
+    protected static $interpreters = ['Object', 'Soundex', 'ObjectIdSum', 'ObjectId', 'ObjectProperty'];
 
     /**
      * Add Interpreter Class.

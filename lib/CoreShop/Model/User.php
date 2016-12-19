@@ -55,8 +55,8 @@ class User extends Base
     {
         $list = self::getList();
 
-        $conditions = array('email = ?');
-        $conditionsValues = array($email);
+        $conditions = ['email = ?'];
+        $conditionsValues = [$email];
         $conditionsValues[] = $isGuest ? 1 : 0;
 
         if (!$isGuest) {
@@ -154,7 +154,7 @@ class User extends Base
     public function getOrders()
     {
         $list = Order::getList();
-        $list->setCondition('customer__id = ?', array($this->getId()));
+        $list->setCondition('customer__id = ?', [$this->getId()]);
         $list->setOrderKey('orderDate');
         $list->setOrder('DESC');
 
@@ -166,7 +166,8 @@ class User extends Base
      *
      * @return Cart[]
      */
-    public function getCarts() {
+    public function getCarts()
+    {
         return \CoreShop::getTools()->getCartManager()->getCarts($this);
     }
 
@@ -178,7 +179,7 @@ class User extends Base
     public function getLatestCart()
     {
         $list = Cart::getList();
-        $list->setCondition('user__id = ?', array($this->getId()));
+        $list->setCondition('user__id = ?', [$this->getId()]);
         $list->setOrderKey('o_creationDate');
         $list->setOrder('DESC');
 

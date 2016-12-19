@@ -35,22 +35,22 @@ class Object extends RelationInterpreter
      */
     public function interpret($value, $config = null)
     {
-        $result = array();
+        $result = [];
 
         if (is_array($value)) {
             foreach ($value as $v) {
                 if ($v instanceof AbstractObject) {
-                    $result[] = array(
+                    $result[] = [
                         'dest' => $v->getId(),
                         'type' => 'object',
-                    );
+                    ];
                 }
             }
         } elseif ($value instanceof AbstractObject) {
-            $result[] = array(
+            $result[] = [
                 'dest' => $value->getId(),
                 'type' => 'object',
-            );
+            ];
         }
 
         return $result;

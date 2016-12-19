@@ -56,9 +56,9 @@ class PriceRule extends Base
         $customerConditon = new Customers();
         $customerConditon->setCustomers([Data::$customer1->getId()]);
 
-        $this->priceRule->setConditions(array(
+        $this->priceRule->setConditions([
             $customerConditon
-        ));
+        ]);
 
         $cart = Data::createCartWithProducts();
         $cart->setUser(Data::$customer1);
@@ -128,7 +128,7 @@ class PriceRule extends Base
         $discount = new DiscountAmount();
         $discount->setAmount(10);
 
-        $this->priceRule->setActions(array($discount));
+        $this->priceRule->setActions([$discount]);
         $this->priceRule->save();
 
         $retailPriceWithoutTax = $this->product->getRetailPrice() - 10;
@@ -141,7 +141,7 @@ class PriceRule extends Base
 
         $this->assertEquals($this->product->getPrice(), $retailPriceWithoutTax);
 
-        $this->priceRule->setActions(array());
+        $this->priceRule->setActions([]);
         $this->priceRule->save();
     }
 
@@ -150,7 +150,7 @@ class PriceRule extends Base
         $discount = new DiscountPercent();
         $discount->setPercent(10);
 
-        $this->priceRule->setActions(array($discount));
+        $this->priceRule->setActions([$discount]);
         $this->priceRule->save();
 
         Cache::clearAll();
@@ -165,7 +165,7 @@ class PriceRule extends Base
 
         $this->assertEquals($this->product->getPrice(), $retailPriceWithoutTax);
 
-        $this->priceRule->setActions(array());
+        $this->priceRule->setActions([]);
         $this->priceRule->save();
     }
 
@@ -174,7 +174,7 @@ class PriceRule extends Base
         $newPrice = new NewPrice();
         $newPrice->setNewPrice(150);
 
-        $this->priceRule->setActions(array($newPrice));
+        $this->priceRule->setActions([$newPrice]);
         $this->priceRule->save();
 
         Cache::clearAll();
@@ -189,7 +189,7 @@ class PriceRule extends Base
 
         $this->assertEquals($this->product->getPrice(), $retailPriceWithoutTax);
 
-        $this->priceRule->setActions(array());
+        $this->priceRule->setActions([]);
         $this->priceRule->save();
     }
 }

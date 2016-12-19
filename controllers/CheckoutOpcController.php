@@ -20,5 +20,4 @@ use CoreShop\Model\Plugin\Payment;
  */
 class CoreShop_CheckoutOpcController extends Action
 {
-
 }

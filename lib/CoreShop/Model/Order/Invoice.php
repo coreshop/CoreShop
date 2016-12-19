@@ -95,10 +95,11 @@ class Invoice extends Base
      * @param $invoiceNumber
      * @return static|null
      */
-    public static function findByInvoiceNumber($invoiceNumber) {
+    public static function findByInvoiceNumber($invoiceNumber)
+    {
         $invoices = static::getByInvoiceNumber($invoiceNumber);
 
-        if(count($invoices->getObjects())) {
+        if (count($invoices->getObjects())) {
             return $invoices->getObjects()[0];
         }
 
@@ -138,7 +139,7 @@ class Invoice extends Base
      */
     public static function getPathForNewInvoice(Order $order, $date = null)
     {
-        if(is_null($date)) {
+        if (is_null($date)) {
             $date = new Carbon();
         }
 
@@ -148,7 +149,8 @@ class Invoice extends Base
     /**
      * @return null
      */
-    public function getPathForItems() {
+    public function getPathForItems()
+    {
         return Object\Service::createFolderByPath($this->getFullPath().'/items/');
     }
 
@@ -159,16 +161,16 @@ class Invoice extends Base
      */
     public function getTaxRates()
     {
-        $taxes = array();
+        $taxes = [];
 
-        $taxValues = array();
+        $taxValues = [];
 
         foreach ($this->getTaxes() as $tax) {
-            $taxValues[] = array(
+            $taxValues[] = [
                 'rate' => $tax->getRate(),
                 'name' => $tax->getName(),
                 'value' => $tax->getAmount(),
-            );
+            ];
         }
 
         foreach ($taxValues as $tax) {
@@ -185,7 +187,8 @@ class Invoice extends Base
     /**
      * Calculates Prices, Shipping, Discounts and Payment Fees for Invoice
      */
-    public function calculatePrices() {
+    public function calculatePrices()
+    {
         $order = $this->getOrder();
 
         $discountPercentage = $order->getDiscountPercentage();
@@ -196,26 +199,25 @@ class Invoice extends Base
 
         $taxes = [];
 
-        $addTax = function($tax, $rate, $name) use (&$taxes) {
-            if(!array_key_exists($name, $taxes)) {
+        $addTax = function ($tax, $rate, $name) use (&$taxes) {
+            if (!array_key_exists($name, $taxes)) {
                 $taxes[$name] = [
                     'rate' => $rate,
                     'name' => $name,
                     'amount' => $tax
                 ];
-            }
-            else {
+            } else {
                 $taxes[$name]['amount'] += $tax;
             }
         };
 
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $subtotalWithTax += $item->getTotal();
             $subtotalWithoutTax += $item->getTotalWithoutTax();
             $subtotalTax += $item->getTotalTax();
 
-            foreach($item->getTaxes() as $tax) {
-                if($tax instanceof Tax) {
+            foreach ($item->getTaxes() as $tax) {
+                if ($tax instanceof Tax) {
                     $addTax($tax->getAmount() * $discountPercentage, $tax->getRate(), $tax->getName());
                 }
             }
@@ -233,7 +235,7 @@ class Invoice extends Base
         $totalShipping = $order->getShipping();
         $invoicedShipping = $order->getInvoicedValue('shipping');
 
-        if($totalShipping - $invoicedShipping > 0) {
+        if ($totalShipping - $invoicedShipping > 0) {
             $shippingTaxRate = $order->getShippingTaxRate();
 
             $taxRate = \CoreShop\Model\Tax::create();
@@ -261,7 +263,7 @@ class Invoice extends Base
         $totalPaymentFee = $order->getPaymentFee();
         $invoicedPaymentFees = $order->getInvoicedValue('paymentFee');
 
-        if($totalPaymentFee - $invoicedPaymentFees > 0) {
+        if ($totalPaymentFee - $invoicedPaymentFees > 0) {
             $paymentFeeTaxRate = $order->getPaymentFeeTaxRate();
 
             $taxRate = \CoreShop\Model\Tax::create();
@@ -289,7 +291,7 @@ class Invoice extends Base
         $totalDiscount = $order->getDiscount();
         $invoicedDiscount = $order->getInvoicedValue('discount');
 
-        if($totalDiscount - $invoicedDiscount > 0) {
+        if ($totalDiscount - $invoicedDiscount > 0) {
             $discountWithTax = $totalDiscount - $invoicedDiscount;
             $discountWithoutTax = $order->getDiscountWithoutTax() - $order->getInvoicedValue('discountWithoutTax');
             $discountTax = $discountWithTax - $discountWithoutTax;
@@ -304,7 +306,7 @@ class Invoice extends Base
 
         $itemTaxes = new Object\Fieldcollection();
 
-        foreach($taxes as $tax) {
+        foreach ($taxes as $tax) {
             $taxItem = Tax::create();
             $taxItem->setRate($tax['rate']);
             $taxItem->setName($tax['name']);
@@ -323,7 +325,8 @@ class Invoice extends Base
     /**
      * @return Asset
      */
-    public function getAsset() {
+    public function getAsset()
+    {
         $path = $this->getOrder()->getPathForInvoices();
         $fileName = 'invoice-'.$this->getInvoiceNumber().'.pdf';
 
@@ -354,7 +357,7 @@ class Invoice extends Base
         $footer = $forward->action("footer", "order-print", "CoreShop", $params);
 
         try {
-            $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, array('options' => array(Configuration::get('SYSTEM.INVOICE.WKHTML'))));
+            $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, ['options' => [Configuration::get('SYSTEM.INVOICE.WKHTML')]]);
 
             if ($pdfContent) {
                 $fileName = 'invoice-'. File::getValidFilename($this->getInvoiceNumber()) . '.pdf';

@@ -20,7 +20,7 @@ use CoreShop\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
  * Class CoreShopOrderState
  * @package Pimcore\Model\Object\ClassDefinition\Data
  */
-class CoreShopOrderState extends  CoreShopSelect
+class CoreShopOrderState extends CoreShopSelect
 {
     /**
      * Static type of this element.

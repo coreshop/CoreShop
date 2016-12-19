@@ -70,7 +70,7 @@ class TaxRule extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         $country = $this->getCountry() instanceof Country ? $this->getCountry()->getName() : "none";
         $state = $this->getState() instanceof State ? $this->getState()->getName() : "none";

@@ -80,10 +80,11 @@ class Shipment extends Base
      * @param $shipmentNumber
      * @return static|null
      */
-    public static function findByShipmentNumber($shipmentNumber) {
+    public static function findByShipmentNumber($shipmentNumber)
+    {
         $shipments = static::getByShipmentNumber($shipmentNumber);
 
-        if(count($shipments->getObjects())) {
+        if (count($shipments->getObjects())) {
             return $shipments->getObjects()[0];
         }
 
@@ -123,7 +124,7 @@ class Shipment extends Base
      */
     public static function getPathForNewShipment(Order $order, $date = null)
     {
-        if(is_null($date)) {
+        if (is_null($date)) {
             $date = new Carbon();
         }
 
@@ -133,7 +134,8 @@ class Shipment extends Base
     /**
      * @return null
      */
-    public function getPathForItems() {
+    public function getPathForItems()
+    {
         return Object\Service::createFolderByPath($this->getFullPath().'/items/');
     }
 
@@ -161,7 +163,7 @@ class Shipment extends Base
         $footer = $forward->action("footer", "order-print", "CoreShop", $params);
 
         try {
-            $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, array('options' => array(Configuration::get('SYSTEM.SHIPMENT.WKHTML'))));
+            $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, ['options' => [Configuration::get('SYSTEM.SHIPMENT.WKHTML')]]);
 
             if ($pdfContent) {
                 $fileName = 'shipment-'.$this->getShipmentNumber().'.pdf';

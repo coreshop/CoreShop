@@ -101,7 +101,7 @@ class Manager implements TaxManager
             }
 
             $taxRules = $taxRuleGroup->getForCountryAndState($this->address->getCountry(), $this->address->getState());
-            $taxes = array();
+            $taxes = [];
             $firstRow = true;
             $behavior = false;
 

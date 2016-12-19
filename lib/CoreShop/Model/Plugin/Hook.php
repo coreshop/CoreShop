@@ -28,5 +28,5 @@ interface Hook extends AbstractPlugin
      *
      * @return mixed
      */
-    public function getResult($name, $params = array());
+    public function getResult($name, $params = []);
 }

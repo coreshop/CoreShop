@@ -26,7 +26,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_price_rules');
         }
@@ -36,7 +36,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
     {
         $list = PriceRule::getList();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $pricerule) {
                 $data[] = $this->getTreeNodeConfig($pricerule);
@@ -47,25 +47,25 @@ class CoreShop_Admin_PriceRuleController extends Admin
 
     protected function getTreeNodeConfig($priceRule)
     {
-        $tmpPriceRule = array(
+        $tmpPriceRule = [
             'id' => $priceRule->getId(),
             'text' => $priceRule->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$priceRule->getId(),
-            ),
+            ],
             'name' => $priceRule->getName(),
-        );
+        ];
 
         return $tmpPriceRule;
     }
 
     public function getConfigAction()
     {
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => true,
             'conditions' => PriceRule::$availableConditions,
             'actions' => PriceRule::$availableActions,
-        ));
+        ]);
     }
 
     public function addAction()
@@ -73,7 +73,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $priceRule = PriceRule::create();
             $priceRule->setName($name);
@@ -83,7 +83,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
             $priceRule->setUseMultipleVoucherCodes(false);
             $priceRule->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $priceRule));
+            $this->_helper->json(['success' => true, 'data' => $priceRule]);
         }
     }
 
@@ -93,9 +93,9 @@ class CoreShop_Admin_PriceRuleController extends Admin
         $priceRule = PriceRule::getById($id);
 
         if ($priceRule instanceof PriceRule) {
-            $this->_helper->json(array('success' => true, 'data' => $priceRule->getObjectVars()));
+            $this->_helper->json(['success' => true, 'data' => $priceRule->getObjectVars()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -122,9 +122,9 @@ class CoreShop_Admin_PriceRuleController extends Admin
             $priceRule->setConditions($conditionInstances);
             $priceRule->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $priceRule));
+            $this->_helper->json(['success' => true, 'data' => $priceRule]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -136,10 +136,10 @@ class CoreShop_Admin_PriceRuleController extends Admin
         if ($priceRule instanceof PriceRule) {
             $priceRule->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
     public function getVoucherCodesAction()
@@ -157,10 +157,10 @@ class CoreShop_Admin_PriceRuleController extends Admin
                 $conditionFilters[] = "priceRuleId = ?";
 
                 if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
-                    $list->setCondition(implode(' AND ', $conditionFilters), array($priceRule->getId()));
+                    $list->setCondition(implode(' AND ', $conditionFilters), [$priceRule->getId()]);
                 }
             } else {
-                $list->setCondition("priceRuleId = ?", array($priceRule->getId()));
+                $list->setCondition("priceRuleId = ?", [$priceRule->getId()]);
             }
 
             $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($this->getAllParams());
@@ -178,10 +178,10 @@ class CoreShop_Admin_PriceRuleController extends Admin
             $list->setOrder($order);
             $list->setOrderKey($orderKey);
 
-            $this->_helper->json(array('success' => true, 'data' => $list->getData(), "total" => $list->getTotalCount()));
+            $this->_helper->json(['success' => true, 'data' => $list->getData(), "total" => $list->getTotalCount()]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
     public function generateVoucherCodesAction()
@@ -198,10 +198,10 @@ class CoreShop_Admin_PriceRuleController extends Admin
         if ($priceRule instanceof PriceRule) {
             PriceRule\VoucherCode\Service::generateCodes($priceRule, $amount, $length, $format, $hyphensOn, $prefix, $suffix);
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
     public function exportVoucherCodesAction()

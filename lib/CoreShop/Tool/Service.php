@@ -35,7 +35,7 @@ class Service
      *
      * @var array
      */
-    private static $allowedVariationTypes = array('input', 'numeric', 'checkbox', 'select', 'slider', 'href', 'objects');
+    private static $allowedVariationTypes = ['input', 'numeric', 'checkbox', 'select', 'slider', 'href', 'objects'];
 
     /**
      * @param Product $master
@@ -88,21 +88,21 @@ class Service
             foreach ($filtered as $variantName => $variantValues) {
                 $currentVariantName = isset($variantValues[ $projectId ]) ? $variantValues[ $projectId ] : null;
 
-                $variantSelections = array(
+                $variantSelections = [
                     'variantName' => preg_replace('/__(.*?)__/', '', $variantName),
                     'variantValues' => [],
-                );
+                ];
 
                 $variantValues = array_unique($variantValues);
 
                 if (!empty($variantValues)) {
                     foreach ($variantValues as $pid => $variantValue) {
-                        $variantSelections['variantValues'][] = array(
+                        $variantSelections['variantValues'][] = [
                             'productId' => $pid,
                             'productName' => isset($variantUrls[ $pid ]) ?  $variantUrls[ $pid ] : null,
                             'selected' => $currentVariantName === $variantValue,
                             'variantName' => $variantValue,
-                        );
+                        ];
                     }
                 }
 
@@ -130,7 +130,7 @@ class Service
 
         if ($definition instanceof ClassDefinition\Data\Classificationstore) {
             $productVariants = self::getAllChildren($master);
-            $variantsAndMaster = array_merge(array($master), $productVariants);
+            $variantsAndMaster = array_merge([$master], $productVariants);
             $getter = "get" . ucfirst($classificationStoreField);
 
             $storeId = $definition->getStoreId();
@@ -214,7 +214,7 @@ class Service
 
         if ($definition instanceof ClassDefinition\Data\Objectbricks) {
             $productVariants = self::getAllChildren($master);
-            $variantsAndMaster = array_merge(array($master), $productVariants);
+            $variantsAndMaster = array_merge([$master], $productVariants);
 
             //we do have some dimension entries!
             $variantData = $master->getVariants();
@@ -294,12 +294,12 @@ class Service
      * @param Concrete $from
      * @param Concrete $to
      */
-    public static function copyObject(Concrete $from, Concrete $to) {
+    public static function copyObject(Concrete $from, Concrete $to)
+    {
         //load all in case of lazy loading fields
         $toFd = $to->getClass()->getFieldDefinitions();
 
-        foreach ($toFd as $def)
-        {
+        foreach ($toFd as $def) {
             $fromGetter = "get" . ucfirst($def->getName());
             $toSetter = "set" . ucfirst($def->getName());
 
@@ -361,13 +361,13 @@ class Service
             return [];
         }
 
-        return array(
+        return [
             'groupId' => $group->getId(),
             'keyId' => $field->getId(),
             'name' => $field->getName(),
             'type' => $field->getType(),
             'title' => $field->getTitle(),
-        );
+        ];
     }
 
     /**
@@ -398,11 +398,11 @@ class Service
             }
 
             if ($isValid) {
-                $validValues[] = array(
+                $validValues[] = [
                     'name' => $field->getName(),
                     'type' => $field->getPhpdocType(),
                     'title' => $field->getTitle(),
-                );
+                ];
             }
         }
 
@@ -434,7 +434,7 @@ class Service
         $list->setCondition($condition, $conditionParams);
         $list->setOrderKey('o_key');
         $list->setOrder('asc');
-        $list->setObjectTypes(array(AbstractObject::OBJECT_TYPE_VARIANT));
+        $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
 
         return $list->load();
     }

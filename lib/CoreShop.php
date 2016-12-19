@@ -68,7 +68,7 @@ class CoreShop
      */
     public static function getTools()
     {
-        if(!isset(self::$tools)) {
+        if (!isset(self::$tools)) {
             self::$tools = Tools::createObject(Tools::class);
         }
 
@@ -133,7 +133,7 @@ class CoreShop
     public static function getPaymentProviders(Cart $cart = null)
     {
         $results = \Pimcore::getEventManager()->trigger('coreshop.payment.getProvider');
-        $provider = array();
+        $provider = [];
 
         foreach ($results as $result) {
             if ($result instanceof Payment) {
@@ -182,14 +182,14 @@ class CoreShop
      *
      * @deprecated will be removed in Version 1.2
      */
-    public static function hook($name, $params = array())
+    public static function hook($name, $params = [])
     {
         $params['language'] = static::getTools()->getLocale();
 
         $results = \Pimcore::getEventManager()->trigger('coreshop.hook.'.$name, null, $params);
 
         if (count($results) > 0) {
-            $return = array();
+            $return = [];
 
             foreach ($results as $result) {
                 $return[] = $result->render($params);
@@ -211,7 +211,7 @@ class CoreShop
      *
      * @throws \Zend_Exception
      */
-    public static function actionHook($name, $params = array())
+    public static function actionHook($name, $params = [])
     {
         $params['language'] = static::getTools()->getLocale();
 
@@ -235,7 +235,8 @@ class CoreShop
      *
      * @return array
      */
-    public static function getPimcoreClasses() {
+    public static function getPimcoreClasses()
+    {
         return [
             'product' => [
                 "pimcoreClass" => \CoreShop\Model\Product::getPimcoreObjectClass(),
@@ -329,24 +330,22 @@ class CoreShop
                 $frontController->registerPlugin(new Controller\Plugin\TemplateRouter());
                 $frontController->registerPlugin(new Controller\Plugin\Debug());
 
-                if(Configuration::get("SYSTEM.VISITORS.TRACK")) {
+                if (Configuration::get("SYSTEM.VISITORS.TRACK")) {
                     $frontController->registerPlugin(new Controller\Plugin\Visitor());
                 }
             }
         });
 
         \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
-
             $autoloader = \Zend_Loader_Autoloader::getInstance();
             $autoloader->registerNamespace('CoreShopTemplate');
 
-            $includePaths = array(
+            $includePaths = [
                 get_include_path(),
                 CORESHOP_TEMPLATE_PATH . '/controllers',
                 CORESHOP_TEMPLATE_PATH . '/lib',
-            );
+            ];
             set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
-
         });
 
         \Pimcore::getEventManager()->attach('system.maintenance', function (\Zend_EventManager_Event $e) {
@@ -362,16 +361,16 @@ class CoreShop
                 if (Configuration::get('SYSTEM.LOG.USAGESTATISTICS')) {
                     $manager->registerJob(new Job('coreshop_send_usage_statistcs', '\\CoreShop\\Maintenance\\Log', 'maintenance'));
                 }
-                if(Configuration::get("SYSTEM.VISITORS.TRACK")) {
+                if (Configuration::get("SYSTEM.VISITORS.TRACK")) {
                     $manager->registerJob(new Job('coreshop_send_usage_statistcs', '\\CoreShop\\Model\\Visitor', 'maintenance'));
                 }
             }
         });
 
         //\Pimcore::getEventManager()->attach('object.postAdd', array($this, 'postAddObject'));
-        \Pimcore::getEventManager()->attach('object.postUpdate', array($this, 'postUpdateObject'));
-        \Pimcore::getEventManager()->attach('object.postDelete', array($this, 'postDeleteObject'));
-        \Pimcore::getEventManager()->attach('object.postDelete', array($this, 'preDeleteObject'));
+        \Pimcore::getEventManager()->attach('object.postUpdate', [$this, 'postUpdateObject']);
+        \Pimcore::getEventManager()->attach('object.postDelete', [$this, 'postDeleteObject']);
+        \Pimcore::getEventManager()->attach('object.postDelete', [$this, 'preDeleteObject']);
 
         \Pimcore::getEventManager()->attach("system.di.init", function (\Zend_EventManager_Event $e) {
             $diBuilder = $e->getTarget();
@@ -382,10 +381,10 @@ class CoreShop
         });
 
         //Allows to load classes with CoreShop namespace from Website (eg. for overriding classes)
-        $includePaths = array(
+        $includePaths = [
             get_include_path(),
             PIMCORE_WEBSITE_PATH . '/lib/CoreShop',
-        );
+        ];
         set_include_path(implode(PATH_SEPARATOR, $includePaths));
 
         if (Configuration::get('SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')) {
@@ -440,8 +439,7 @@ class CoreShop
             try {
                 $indexService = IndexService::getIndexService();
                 $indexService->updateIndex($object);
-            }
-            catch(\Exception $ex) {
+            } catch (\Exception $ex) {
                 \Pimcore\Logger::error($ex);
             }
 
@@ -461,8 +459,7 @@ class CoreShop
             try {
                 $indexService = IndexService::getIndexService();
                 $indexService->deleteFromIndex($object);
-            }
-            catch(\Exception $ex) {
+            } catch (\Exception $ex) {
                 \Pimcore\Logger::error($ex);
             }
         }

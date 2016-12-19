@@ -27,10 +27,10 @@ class CoreShop_Admin_ProductSpecificPriceController extends Admin
 
     public function getConfigAction()
     {
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => true,
             'conditions' => \CoreShop\Model\Product\SpecificPrice::$availableConditions,
             'actions' => \CoreShop\Model\Product\SpecificPrice::$availableActions,
-        ));
+        ]);
     }
 }

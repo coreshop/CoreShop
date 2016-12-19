@@ -35,12 +35,12 @@ class LocalizedFields extends Model\AbstractModel
     /**
      * @var array
      */
-    public $items = array();
+    public $items = [];
 
     /**
      * @var array
      */
-    public $fields = array();
+    public $fields = [];
 
     /**
      * @var AbstractModel
@@ -251,7 +251,7 @@ class LocalizedFields extends Model\AbstractModel
 
         $language = $this->getLanguage($language);
         if (!$this->languageExists($language)) {
-            $this->items[$language] = array();
+            $this->items[$language] = [];
         }
 
         $this->items[$language][$name] = $value;
@@ -262,6 +262,6 @@ class LocalizedFields extends Model\AbstractModel
      */
     public function __sleep()
     {
-        return array('items');
+        return ['items'];
     }
 }

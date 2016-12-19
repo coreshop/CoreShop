@@ -276,7 +276,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      */
     public function getLocale()
     {
-        if(is_null($this->locale)) {
+        if (is_null($this->locale)) {
             $language = null;
 
             if (\Zend_Registry::isRegistered("Zend_Locale")) {

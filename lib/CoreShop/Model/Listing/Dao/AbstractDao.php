@@ -136,7 +136,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
         // load id's
         $list = $this->loadIdList();
 
-        $objects = array();
+        $objects = [];
         foreach ($list as $o_id) {
             $object = null;
 

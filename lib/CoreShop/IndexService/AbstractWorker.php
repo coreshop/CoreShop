@@ -69,8 +69,8 @@ abstract class AbstractWorker
 
         $categories = $object->getCategories();
 
-        $categoryIds = array();
-        $parentCategoryIds = array();
+        $categoryIds = [];
+        $parentCategoryIds = [];
 
         if ($categories) {
             foreach ($categories as $c) {
@@ -103,7 +103,7 @@ abstract class AbstractWorker
 
         $validLanguages = Tool::getValidLanguages();
 
-        $data = array(
+        $data = [
             'o_id' => $object->getId(),
             'o_key' => $object->getKey(),
             'o_classId' => $object->getClassId(),
@@ -116,18 +116,18 @@ abstract class AbstractWorker
             'shops' => $convertArrayToString ? ','.@implode(',', $object->getShops()).',' : $object->getShops(),
             'minPrice' => $object->getMinPrice(),
             'maxPrice' => $object->getMaxPrice()
-        );
+        ];
 
-        $localizedData = array(
+        $localizedData = [
             'oo_id' => $object->getId(),
             'values' => []
-        );
+        ];
 
-        foreach($validLanguages as $language) {
+        foreach ($validLanguages as $language) {
             $localizedData['values'][$language]['name'] = $object->getName($language);
         }
 
-        $relationData = array();
+        $relationData = [];
         $columnConfig = $this->getColumnsConfiguration();
 
         foreach ($columnConfig as $column) {
@@ -136,21 +136,21 @@ abstract class AbstractWorker
                     $value = null;
                     $getter = $column->getGetter();
 
-                    if($column instanceof Index\Config\Column\Localizedfields) {
+                    if ($column instanceof Index\Config\Column\Localizedfields) {
                         $getter = 'get' . ucfirst($column->getKey());
 
                         if (method_exists($object, $getter)) {
-                            foreach($validLanguages as $language) {
+                            foreach ($validLanguages as $language) {
                                 $value = $object->$getter($language);
 
                                 $interpreterClass = $this->getInterpreterObject($column);
 
-                                if($interpreterClass instanceof AbstractInterpreter) {
+                                if ($interpreterClass instanceof AbstractInterpreter) {
                                     $value = $interpreterClass->interpret($value, $column);
 
                                     if ($interpreterClass instanceof RelationInterpreter) {
                                         foreach ($value as $v) {
-                                            $relData = array();
+                                            $relData = [];
                                             $relData['src'] = $object->getId();
                                             $relData['src_virtualProductId'] = $virtualProductId;
                                             $relData['dest'] = $v['dest'];
@@ -168,8 +168,7 @@ abstract class AbstractWorker
                                 $localizedData['values'][$language][$column->getName()] = $value;
                             }
                         }
-                    }
-                    else {
+                    } else {
                         if (!empty($getter)) {
                             $getterClass = '\\CoreShop\\IndexService\\Getter\\' . $getter;
 
@@ -192,12 +191,12 @@ abstract class AbstractWorker
 
                         $interpreterClass = $this->getInterpreterObject($column);
 
-                        if($interpreterClass instanceof AbstractInterpreter) {
+                        if ($interpreterClass instanceof AbstractInterpreter) {
                             $value = $interpreterClass->interpret($value, $column);
 
                             if ($interpreterClass instanceof RelationInterpreter) {
                                 foreach ($value as $v) {
-                                    $relData = array();
+                                    $relData = [];
                                     $relData['src'] = $object->getId();
                                     $relData['src_virtualProductId'] = $virtualProductId;
                                     $relData['dest'] = $v['dest'];
@@ -206,17 +205,16 @@ abstract class AbstractWorker
                                     $relationData[] = $relData;
                                 }
                             }
-                        }
-                        else if ($interpreterClass instanceof LocalizedInterpreter) {
+                        } elseif ($interpreterClass instanceof LocalizedInterpreter) {
                             $validLanguages = Tool::getValidLanguages();
                             $value = null;
 
-                            foreach($validLanguages as $language) {
+                            foreach ($validLanguages as $language) {
                                 $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $column);
                             }
                         }
 
-                        if($value) {
+                        if ($value) {
                             if (is_array($value) && $convertArrayToString) {
                                 $value = ',' . implode($value, ',') . ',';
                             }
@@ -237,11 +235,11 @@ abstract class AbstractWorker
         AbstractObject::setGetInheritedValues($b);
         AbstractObject::setHideUnpublished($hidePublishedMemory);
 
-        return array(
+        return [
             'data' => $data,
             'relation' => $relationData,
             'localizedData' => $localizedData
-        );
+        ];
     }
 
     /**
@@ -249,7 +247,8 @@ abstract class AbstractWorker
      * @return bool|AbstractInterpreter
      * @throws \Exception
      */
-    protected function getInterpreterObject(Index\Config\Column\AbstractColumn $column) {
+    protected function getInterpreterObject(Index\Config\Column\AbstractColumn $column)
+    {
         $interpreter = $column->getInterpreter();
 
         if (!empty($interpreter)) {
@@ -260,8 +259,7 @@ abstract class AbstractWorker
 
                 if ($interpreterObject instanceof AbstractInterpreter) {
                     return $interpreterObject;
-                }
-                else {
+                } else {
                     throw new \Exception('Interpreter class must inherit form AbstractInterpreter');
                 }
             }

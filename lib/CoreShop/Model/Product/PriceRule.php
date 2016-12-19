@@ -25,14 +25,14 @@ class PriceRule extends AbstractProductPriceRule
      *
      * @var array
     */
-    public static $availableConditions = array('conditions', 'customers', 'timeSpan', 'quantity', 'countries', 'products', 'categories', 'customerGroups', 'zones', 'personas', 'shops', 'currencies');
+    public static $availableConditions = ['conditions', 'customers', 'timeSpan', 'quantity', 'countries', 'products', 'categories', 'customerGroups', 'zones', 'personas', 'shops', 'currencies'];
 
     /**
      * possible types of a action.
      *
      * @var array
      */
-    public static $availableActions = array('discountAmount', 'discountPercent');
+    public static $availableActions = ['discountAmount', 'discountPercent'];
 
 
     /**
@@ -59,7 +59,7 @@ class PriceRule extends AbstractProductPriceRule
     public static function getPriceRules($active = true)
     {
         $list = PriceRule::getList();
-        $list->setCondition("active = ?", array($active));
+        $list->setCondition("active = ?", [$active]);
 
         return $list->getData();
     }

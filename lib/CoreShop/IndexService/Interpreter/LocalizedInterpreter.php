@@ -48,7 +48,8 @@ abstract class LocalizedInterpreter extends AbstractInterpreter
      *
      * @throws UnsupportedException
      */
-    public function interpretForLanguage($language, $value, $config = null) {
+    public function interpretForLanguage($language, $value, $config = null)
+    {
         throw new UnsupportedException('Not implemented in abstract');
     }
 }

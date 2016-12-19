@@ -25,7 +25,7 @@ class CoreShop_Admin_InstallController extends Admin
         try {
             $install = new Plugin\Install();
 
-            \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, array('installer' => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, ['installer' => $install]);
 
             //install Data
             $install->installObjectData('orderStates', 'Order\\');
@@ -60,7 +60,7 @@ class CoreShop_Admin_InstallController extends Admin
             // create root object folder with subfolders
             $coreShopFolder = $install->createFolders();
             // create custom view for blog objects
-            $install->createCustomView($coreShopFolder, array(
+            $install->createCustomView($coreShopFolder, [
                 $productClass->getId(),
                 $categoryClass->getId(),
                 $cartClass->getId(),
@@ -76,7 +76,7 @@ class CoreShop_Admin_InstallController extends Admin
                 $invoiceItemClass->getId(),
                 $shipmentClass->getId(),
                 $shipmentItemClass->getId(),
-            ));
+            ]);
             // create static routes
             $install->createStaticRoutes();
             // create predefined document types
@@ -86,7 +86,7 @@ class CoreShop_Admin_InstallController extends Admin
 
             $install->createImageThumbnails();
 
-            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, array('installer' => $install));
+            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, ['installer' => $install]);
 
             $install->setConfigInstalled();
 
@@ -97,6 +97,6 @@ class CoreShop_Admin_InstallController extends Admin
             $success = false;
         }
 
-        $this->_helper->json(array('success' => $success));
+        $this->_helper->json(['success' => $success]);
     }
 }

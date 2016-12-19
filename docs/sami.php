@@ -13,8 +13,8 @@ $iterator = Finder::create()
 
 $xml = simplexml_load_string(file_get_contents("../plugin.xml"));
 
-return new Sami($iterator, array(
+return new Sami($iterator, [
     'build_dir' => __DIR__ . '/build',
     'cache_dir' => __DIR__ . '/cache',
     'title' => $xml->plugin->pluginNiceName . ' API (Build: ' . $xml->plugin->pluginRevision . ')',
-));
+]);

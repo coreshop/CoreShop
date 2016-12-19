@@ -101,7 +101,7 @@ class Payment extends Action
 
         */
 
-        if($this->getParam("opc", false)) {
+        if ($this->getParam("opc", false)) {
             $this->opc = true;
             $this->checkoutController = "checkout-opc";
 
@@ -138,8 +138,8 @@ class Payment extends Action
      */
     public function validateAction()
     {
-        if(!$this->opc) {
-            $this->coreShopForward("validate", $this->checkoutController, "CoreShop", array("paymentViewScript" => $this->getViewScript()));
+        if (!$this->opc) {
+            $this->coreShopForward("validate", $this->checkoutController, "CoreShop", ["paymentViewScript" => $this->getViewScript()]);
         }
     }
 
@@ -150,9 +150,9 @@ class Payment extends Action
     {
         $this->view->order = $this->session->order;
 
-        $forwardParams = array(
+        $forwardParams = [
             "module" => $this->getModule()
-        );
+        ];
 
         if ($this->view->order instanceof Order) {
             $forwardParams['order'] = $this->view->order;

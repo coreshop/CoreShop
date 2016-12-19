@@ -40,7 +40,8 @@ abstract class AbstractCondition extends Model\Rules\Condition\AbstractCondition
      *
      * @return string
      */
-    public function getCacheKey() {
+    public function getCacheKey()
+    {
         return md5(\Zend_Json::encode(get_object_vars($this)));
     }
 }

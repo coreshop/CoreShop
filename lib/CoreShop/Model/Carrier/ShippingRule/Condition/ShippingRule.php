@@ -50,7 +50,7 @@ class ShippingRule extends AbstractCondition
     {
         $carrierShippingRule = CarrierShippingRule::getById($this->getShippingRule());
 
-        if($carrierShippingRule instanceof CarrierShippingRule) {
+        if ($carrierShippingRule instanceof CarrierShippingRule) {
             return $carrierShippingRule->checkValidity($carrier, $cart, $address);
         }
 

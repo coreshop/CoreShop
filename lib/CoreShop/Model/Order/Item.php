@@ -25,7 +25,7 @@ use Pimcore\Model\Object;
 /**
  * Class Item
  * @package CoreShop\Model\Order
- * 
+ *
  * @method static Object\Listing\Concrete getByProduct ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByWholesalePrice ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByRetailPrice ($value, $limit = 0)
@@ -82,18 +82,19 @@ class Item extends Base
      *
      * @return int
      */
-    public function getInvoicedAmount() {
+    public function getInvoicedAmount()
+    {
         $order = $this->getOrder();
 
         $amount = 0;
 
-        if($order instanceof Order) {
+        if ($order instanceof Order) {
             $invoices = $order->getInvoices();
 
-            foreach($invoices as $invoice) {
-                foreach($invoice->getItems() as $item) {
-                    if($item instanceof Invoice\Item) {
-                        if($item->getOrderItem()->getId() === $this->getId()) {
+            foreach ($invoices as $invoice) {
+                foreach ($invoice->getItems() as $item) {
+                    if ($item instanceof Invoice\Item) {
+                        if ($item->getOrderItem()->getId() === $this->getId()) {
                             $amount += $item->getAmount();
                         }
                     }
@@ -109,18 +110,19 @@ class Item extends Base
      *
      * @return int
      */
-    public function getShippedAmount() {
+    public function getShippedAmount()
+    {
         $order = $this->getOrder();
 
         $amount = 0;
 
-        if($order instanceof Order) {
+        if ($order instanceof Order) {
             $shipments = $order->getShipments();
 
-            foreach($shipments as $shipment) {
-                foreach($shipment->getItems() as $item) {
-                    if($item instanceof Shipment\Item) {
-                        if($item->getOrderItem()->getId() === $this->getId()) {
+            foreach ($shipments as $shipment) {
+                foreach ($shipment->getItems() as $item) {
+                    if ($item instanceof Shipment\Item) {
+                        if ($item->getOrderItem()->getId() === $this->getId()) {
                             $amount += $item->getAmount();
                         }
                     }
@@ -134,8 +136,9 @@ class Item extends Base
     /**
      * @return string|null Product Name
      */
-    public function getProductName() {
-        if($this->getProduct() instanceof Product) {
+    public function getProductName()
+    {
+        if ($this->getProduct() instanceof Product) {
             return $this->getProduct()->getName();
         }
 
@@ -145,9 +148,10 @@ class Item extends Base
     /**
      * @return \Pimcore\Model\Asset|null
      */
-    public function getProductImage() {
-        if($this->getProduct() instanceof Product) {
-            if($this->getProduct()->getImage() instanceof Image) {
+    public function getProductImage()
+    {
+        if ($this->getProduct() instanceof Product) {
+            if ($this->getProduct()->getImage() instanceof Image) {
                 return $this->getProduct()->getImage();
             };
         }

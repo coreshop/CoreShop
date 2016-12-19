@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Model\Visitor;
+
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Visitor;
@@ -61,7 +62,7 @@ class Source extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getPageId(), $this->getId());
     }

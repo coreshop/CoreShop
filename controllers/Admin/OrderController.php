@@ -49,27 +49,26 @@ class CoreShop_Admin_OrderController extends Admin
         $list->setOrderKey($orderKey);
 
         $orders = $list->load();
-        $jsonOrders = array();
+        $jsonOrders = [];
 
         foreach ($orders as $order) {
             $jsonOrders[] = $this->prepareOrder($order);
         }
 
-        $this->_helper->json(array('success' => true, 'data' => $jsonOrders, 'count' => count($jsonOrders), 'total' => $list->getTotalCount()));
+        $this->_helper->json(['success' => true, 'data' => $jsonOrders, 'count' => count($jsonOrders), 'total' => $list->getTotalCount()]);
     }
 
     protected function prepareOrder(\CoreShop\Model\Order $order)
     {
         $date = "";
 
-        if($order->getOrderDate() instanceof \Pimcore\Date) {
+        if ($order->getOrderDate() instanceof \Pimcore\Date) {
             $date = intval($order->getOrderDate()->get(\Zend_Date::TIMESTAMP));
-        }
-        else if($order->getOrderDate() instanceof \Carbon\Carbon) {
+        } elseif ($order->getOrderDate() instanceof \Carbon\Carbon) {
             $date = intval($order->getOrderDate()->getTimestamp());
         }
 
-        $element = array(
+        $element = [
             'o_id' => $order->getId(),
             'orderState' => $order->getOrderState() instanceof \CoreShop\Model\Order\State ? $order->getOrderState()->getId() : null,
             'orderDate' => $date,
@@ -84,7 +83,7 @@ class CoreShop_Admin_OrderController extends Admin
             'total' => $order->getTotal(),
             'currency' => $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop::getTools()->getCurrency()),
             'shop' => $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getId() : null
-        );
+        ];
 
         return $element;
     }
@@ -92,18 +91,18 @@ class CoreShop_Admin_OrderController extends Admin
     public function getPaymentProvidersAction()
     {
         $providers = \CoreShop::getPaymentProviders();
-        $result = array();
+        $result = [];
 
         foreach ($providers as $provider) {
             if ($provider instanceof \CoreShop\Model\Plugin\Payment) {
-                $result[] = array(
+                $result[] = [
                     'name' => $provider->getName(),
                     'id' => $provider->getIdentifier(),
-                );
+                ];
             }
         }
 
-        $this->_helper->json(array('success' => true, 'data' => $result));
+        $this->_helper->json(['success' => true, 'data' => $result]);
     }
 
     public function addPaymentAction()
@@ -116,7 +115,7 @@ class CoreShop_Admin_OrderController extends Admin
         $paymentProviderName = $this->getParam('paymentProvider');
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         $paymentProvider = \CoreShop::getPaymentProvider($paymentProviderName);
@@ -127,14 +126,14 @@ class CoreShop_Admin_OrderController extends Admin
             $payedTotal += $amount;
 
             if ($payedTotal > $order->getTotal()) {
-                $this->_helper->json(array('success' => false, 'message' => 'Payed Amount is greater than order amount'));
+                $this->_helper->json(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
                 $order->createPayment($paymentProvider, $amount, true);
 
-                $this->_helper->json(array('success' => true, "payments" => $this->getPayments($order), "totalPayed" => $order->getPayedTotal()));
+                $this->_helper->json(['success' => true, "payments" => $this->getPayments($order), "totalPayed" => $order->getPayedTotal()]);
             }
         } else {
-            $this->_helper->json(array('success' => false, 'message' => "Payment Provider '$paymentProviderName' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Payment Provider '$paymentProviderName' not found"]);
         }
     }
 
@@ -145,11 +144,11 @@ class CoreShop_Admin_OrderController extends Admin
         $messageText = $this->getParam('message', '');
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         if (strlen($messageText) <= 0) {
-            $this->_helper->json(array('success' => false, 'message' => 'No Message text set'));
+            $this->_helper->json(['success' => false, 'message' => 'No Message text set']);
         }
 
         $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
@@ -173,7 +172,7 @@ class CoreShop_Admin_OrderController extends Admin
         $customerInfoMail = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
         $message->sendNotification($customerInfoMail, $thread->getEmail());
 
-        $this->_helper->json(array('success' => true));
+        $this->_helper->json(['success' => true]);
     }
 
     public function changeOrderStateAction()
@@ -184,16 +183,16 @@ class CoreShop_Admin_OrderController extends Admin
         $orderState = \CoreShop\Model\Order\State::getById($orderStateId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         if (!$orderState instanceof \CoreShop\Model\Order\State) {
-            $this->_helper->json(array('success' => false, 'message' => "OrderState with ID '$orderStateId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "OrderState with ID '$orderStateId' not found"]);
         }
 
         $orderState->processStep($order);
 
-        $this->_helper->json(array("success" => true, "statesHistory" => $this->getStatesHistory($order), "invoices" => $this->getInvoices($order), "shipments" => $this->getShipments($order)));
+        $this->_helper->json(["success" => true, "statesHistory" => $this->getStatesHistory($order), "invoices" => $this->getInvoices($order), "shipments" => $this->getShipments($order)]);
     }
 
     public function changeOrderItemAction()
@@ -207,16 +206,16 @@ class CoreShop_Admin_OrderController extends Admin
         $orderItem = \CoreShop\Model\Order\Item::getById($orderItemId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         if (!$orderItem instanceof \CoreShop\Model\Order\Item) {
-            $this->_helper->json(array('success' => false, 'message' => "OrderItem with ID '$orderItemId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "OrderItem with ID '$orderItemId' not found"]);
         }
 
         $order->updateOrderItem($orderItem, $amount, $price);
 
-        $this->_helper->json(array('success' => true, "summary" => $this->getSummary($order), "details" => $this->getDetails($order), "total" => $order->getTotal()));
+        $this->_helper->json(['success' => true, "summary" => $this->getSummary($order), "details" => $this->getDetails($order), "total" => $order->getTotal()]);
     }
 
     public function resendOrderStateMailAction()
@@ -227,11 +226,11 @@ class CoreShop_Admin_OrderController extends Admin
         $orderState = \CoreShop\Model\Order\State::getById($orderStateId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         if (!$orderState instanceof \CoreShop\Model\Order\State) {
-            $this->_helper->json(array('success' => false, 'message' => "OrderState with ID '$orderStateId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "OrderState with ID '$orderStateId' not found"]);
         }
 
         if ($orderState->getEmail()) {
@@ -241,13 +240,13 @@ class CoreShop_Admin_OrderController extends Admin
                 $mail = new \CoreShop\Mail();
                 $mail->sendOrderMail($orderStateMailDocument, $order, $orderState);
 
-                $this->_helper->json(array('success' => true));
+                $this->_helper->json(['success' => true]);
             } else {
-                $this->_helper->json(array('success' => false, 'message' => 'coreshop_order_state_document_not_found'));
+                $this->_helper->json(['success' => false, 'message' => 'coreshop_order_state_document_not_found']);
             }
         }
 
-        $this->_helper->json(array('success' => false, 'message' => 'coreshop_order_state_has_no_email'));
+        $this->_helper->json(['success' => false, 'message' => 'coreshop_order_state_has_no_email']);
     }
 
     public function detailAction()
@@ -256,7 +255,7 @@ class CoreShop_Admin_OrderController extends Admin
         $order = \CoreShop\Model\Order::getById($orderId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         $jsonOrder = $this->getDataForObject($order);
@@ -264,7 +263,7 @@ class CoreShop_Admin_OrderController extends Admin
         //$jsonOrder = $order->getObjectVars();
         //$jsonOrder = [];
 
-        if($jsonOrder['items'] === null) {
+        if ($jsonOrder['items'] === null) {
             $jsonOrder['items'] = [];
         }
 
@@ -317,7 +316,7 @@ class CoreShop_Admin_OrderController extends Admin
             $jsonOrder['priceRule'] = $rules;
         }
 
-        $this->_helper->json(array("success" => true, "order" => $jsonOrder));
+        $this->_helper->json(["success" => true, "order" => $jsonOrder]);
     }
 
     public function getAddressFieldsAction()
@@ -327,7 +326,7 @@ class CoreShop_Admin_OrderController extends Admin
         $addressType = $this->getParam('type');
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         $addressClassId = \CoreShop\Model\User\Address::classId();
@@ -353,7 +352,7 @@ class CoreShop_Admin_OrderController extends Admin
         $data = $this->getAllParams();
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         $address = $addressType == 'shipping' ? $order->getShippingAddress() : $order->getBillingAddress();
@@ -370,44 +369,46 @@ class CoreShop_Admin_OrderController extends Admin
             $address->save();
 
             if ($order->getProperty('invoice') instanceof \Pimcore\Model\Asset) {
-                foreach($order->getInvoices() as $invoice) {
+                foreach ($order->getInvoices() as $invoice) {
                     $invoice->generate();
                 }
             }
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
-    public function getCustomerDetailsAction() {
+    public function getCustomerDetailsAction()
+    {
         $customerId = $this->getParam("customerId");
         $user = \CoreShop\Model\User::getById($customerId);
 
-        if(!$user instanceof \CoreShop\Model\User) {
-            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        if (!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
-        $this->_helper->json(array('success' => true, 'customer' => $this->getDataForObject($user)));
+        $this->_helper->json(['success' => true, 'customer' => $this->getDataForObject($user)]);
     }
 
-    public function getCustomerCartsAction() {
+    public function getCustomerCartsAction()
+    {
         $customerId = $this->getParam("customerId");
         $user = \CoreShop\Model\User::getById($customerId);
 
-        if(!$user instanceof \CoreShop\Model\User) {
-            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        if (!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
         $manager = new \CoreShop\Model\Cart\Manager();
         $carts = $manager->getCarts($user);
         $result = [];
 
-        foreach($carts as $cart) {
+        foreach ($carts as $cart) {
             $productIds = [];
 
-            foreach($cart->getItems() as $item) {
+            foreach ($cart->getItems() as $item) {
                 $productIds[] = [
                     'id' => $item->getProduct()->getId(),
                     'amount' => $item->getAmount()
@@ -424,25 +425,26 @@ class CoreShop_Admin_OrderController extends Admin
             ];
         }
 
-        $this->_helper->json(array('success' => true, 'carts' => $result));
+        $this->_helper->json(['success' => true, 'carts' => $result]);
     }
 
-    public function getCustomerOrdersAction() {
+    public function getCustomerOrdersAction()
+    {
         $customerId = $this->getParam("customerId");
         $user = \CoreShop\Model\User::getById($customerId);
 
-        if(!$user instanceof \CoreShop\Model\User) {
-            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        if (!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
         $orders = $user->getOrders();
         $result = [];
 
-        foreach($orders as $order) {
-            if($order instanceof \CoreShop\Model\Order) {
+        foreach ($orders as $order) {
+            if ($order instanceof \CoreShop\Model\Order) {
                 $productIds = [];
 
-                foreach($order->getItems() as $item) {
+                foreach ($order->getItems() as $item) {
                     $productIds[] = [
                         'id' => $item->getProduct()->getId(),
                         'amount' => $item->getAmount()
@@ -459,21 +461,22 @@ class CoreShop_Admin_OrderController extends Admin
             }
         }
 
-        $this->_helper->json(array('success' => true, 'orders' => $result));
+        $this->_helper->json(['success' => true, 'orders' => $result]);
     }
 
-    public function getProductDetailsAction() {
+    public function getProductDetailsAction()
+    {
         $productIds = \Zend_Json::decode($this->getParam("products"));
         $currency = \CoreShop\Model\Currency::getById($this->getParam("currency"));
 
         $result = [];
 
-        foreach($productIds as $productObject) {
+        foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
 
             $product = \CoreShop\Model\Product::getById($productId);
 
-            if($product instanceof \CoreShop\Model\Product) {
+            if ($product instanceof \CoreShop\Model\Product) {
                 $productFlat = $this->getDataForObject($product);
 
                 $productFlat['amount'] = $productObject['amount'];
@@ -483,10 +486,11 @@ class CoreShop_Admin_OrderController extends Admin
             }
         }
 
-        $this->_helper->json(array('success' => true, 'products' => $result));
+        $this->_helper->json(['success' => true, 'products' => $result]);
     }
 
-    public function getCarriersDetailsAction() {
+    public function getCarriersDetailsAction()
+    {
         $productIds = \Zend_Json::decode($this->getParam("products"));
         $customerId = $this->getParam("customerId");
         $shippingAddressId = $this->getParam("shippingAddress");
@@ -501,23 +505,23 @@ class CoreShop_Admin_OrderController extends Admin
 
         $result = [];
 
-        if(!$user instanceof \CoreShop\Model\User) {
-            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        if (!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
-        if(!$shippingAddress instanceof \CoreShop\Model\User\Address) {
-            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$shippingAddressId' not found"));
+        if (!$shippingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
         }
 
-        if(!$billingAddress instanceof \CoreShop\Model\User\Address) {
-            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$billingAddressId' not found"));
+        if (!$billingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(['success' => false, 'message' => "Address with ID '$billingAddressId' not found"]);
         }
 
         $cart = $this->createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds);
 
         $carriers = \CoreShop\Model\Carrier::getCarriersForCart($cart, $cart->getShippingAddress());
 
-        foreach($carriers as $carrier) {
+        foreach ($carriers as $carrier) {
             $price = $carrier->getDeliveryPrice($cart, true, $cart->getShippingAddress());
 
             $result[] = [
@@ -529,10 +533,11 @@ class CoreShop_Admin_OrderController extends Admin
 
         $cart->delete();
 
-        $this->_helper->json(array('success' => true, 'carriers' => $result));
+        $this->_helper->json(['success' => true, 'carriers' => $result]);
     }
 
-    public function getOrderTotalAction() {
+    public function getOrderTotalAction()
+    {
         $productIds = \Zend_Json::decode($this->getParam("products"));
         $customerId = $this->getParam("customerId");
         $shippingAddressId = $this->getParam("shippingAddress");
@@ -548,20 +553,20 @@ class CoreShop_Admin_OrderController extends Admin
         $billingAddress = \CoreShop\Model\User\Address::getById($billingAddressId);
         $carrier = \CoreShop\Model\Carrier::getById($carrierId);
 
-        if(!$user instanceof \CoreShop\Model\User) {
-            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        if (!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
-        if(!$shippingAddress instanceof \CoreShop\Model\User\Address) {
-            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$shippingAddressId' not found"));
+        if (!$shippingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
         }
 
-        if(!$billingAddress instanceof \CoreShop\Model\User\Address) {
-            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$billingAddressId' not found"));
+        if (!$billingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(['success' => false, 'message' => "Address with ID '$billingAddressId' not found"]);
         }
 
-        if(!$carrier instanceof \CoreShop\Model\Carrier) {
-            $this->_helper->json(array('success' => false, 'message' => "Carrier with ID '$carrierId' not found"));
+        if (!$carrier instanceof \CoreShop\Model\Carrier) {
+            $this->_helper->json(['success' => false, 'message' => "Carrier with ID '$carrierId' not found"]);
         }
 
         $cart = $this->createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds);
@@ -622,10 +627,11 @@ class CoreShop_Admin_OrderController extends Admin
 
         $cart->delete();
 
-        $this->_helper->json(array('success' => true, 'summary' => $values));
+        $this->_helper->json(['success' => true, 'summary' => $values]);
     }
 
-    public function createOrderAction() {
+    public function createOrderAction()
+    {
         $productIds = \Zend_Json::decode($this->getParam("products"));
         $customerId = $this->getParam("customerId");
         $shippingAddressId = $this->getParam("shippingAddress");
@@ -647,32 +653,32 @@ class CoreShop_Admin_OrderController extends Admin
         $paymentModule = \CoreShop::getPaymentProvider($paymentModuleName);
         $shop = \CoreShop\Model\Shop::getById($shopId);
 
-        if(!$user instanceof \CoreShop\Model\User) {
-            $this->_helper->json(array('success' => false, 'message' => "Customer with ID '$customerId' not found"));
+        if (!$user instanceof \CoreShop\Model\User) {
+            $this->_helper->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
-        if(!$shippingAddress instanceof \CoreShop\Model\User\Address) {
-            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$shippingAddressId' not found"));
+        if (!$shippingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
         }
 
-        if(!$billingAddress instanceof \CoreShop\Model\User\Address) {
-            $this->_helper->json(array('success' => false, 'message' => "Address with ID '$billingAddressId' not found"));
+        if (!$billingAddress instanceof \CoreShop\Model\User\Address) {
+            $this->_helper->json(['success' => false, 'message' => "Address with ID '$billingAddressId' not found"]);
         }
 
-        if(!$carrier instanceof \CoreShop\Model\Carrier) {
-            $this->_helper->json(array('success' => false, 'message' => "Carrier with ID '$carrierId' not found"));
+        if (!$carrier instanceof \CoreShop\Model\Carrier) {
+            $this->_helper->json(['success' => false, 'message' => "Carrier with ID '$carrierId' not found"]);
         }
 
-        if(!$paymentModule instanceof \CoreShop\Model\Plugin\Payment) {
-            $this->_helper->json(array('success' => false, 'message' => "Payment Module with ID '$paymentModuleName' not found"));
+        if (!$paymentModule instanceof \CoreShop\Model\Plugin\Payment) {
+            $this->_helper->json(['success' => false, 'message' => "Payment Module with ID '$paymentModuleName' not found"]);
         }
 
-        if(!$orderState instanceof \CoreShop\Model\Order\State) {
-            $this->_helper->json(array('success' => false, 'message' => "Order State with ID '$orderStateId' not found"));
+        if (!$orderState instanceof \CoreShop\Model\Order\State) {
+            $this->_helper->json(['success' => false, 'message' => "Order State with ID '$orderStateId' not found"]);
         }
 
-        if(!$shop instanceof \CoreShop\Model\Shop) {
-            $this->_helper->json(array('success' => false, 'message' => "Shop with ID '$shopId' not found"));
+        if (!$shop instanceof \CoreShop\Model\Shop) {
+            $this->_helper->json(['success' => false, 'message' => "Shop with ID '$shopId' not found"]);
         }
 
         $cart = $this->createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds);
@@ -685,7 +691,7 @@ class CoreShop_Admin_OrderController extends Admin
 
         $cart->delete();
 
-        $this->_helper->json(array('success' => true, 'orderId' => $order->getId()));
+        $this->_helper->json(['success' => true, 'orderId' => $order->getId()]);
     }
 
     /**
@@ -695,7 +701,8 @@ class CoreShop_Admin_OrderController extends Admin
      * @param $productIds
      * @return \CoreShop\Model\Cart
      */
-    protected function createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds) {
+    protected function createTempCart($user, $shippingAddress, $billingAddress, $currency, $productIds)
+    {
         $cart = \CoreShop\Model\Cart::create();
         $cart->setParent(\Pimcore\Model\Object\Service::createFolderByPath("/coreshop/tmp"));
         $cart->setKey(uniqid());
@@ -707,12 +714,12 @@ class CoreShop_Admin_OrderController extends Admin
         //$cart->setLanguage($language);
         $cart->save();
 
-        foreach($productIds as $productObject) {
+        foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
 
             $product = \CoreShop\Model\Product::getById($productId);
 
-            if($product instanceof \CoreShop\Model\Product) {
+            if ($product instanceof \CoreShop\Model\Product) {
                 $cart->addItem($product, $productObject['amount']);
             }
         }
@@ -733,20 +740,19 @@ class CoreShop_Admin_OrderController extends Admin
             $getter = "get" . ucfirst($key);
             $fieldData = $data->$getter();
 
-            if($def instanceof Object\ClassDefinition\Data\Href) {
-                if($fieldData instanceof Object\Concrete) {
+            if ($def instanceof Object\ClassDefinition\Data\Href) {
+                if ($fieldData instanceof Object\Concrete) {
                     $objectData[$key] = $this->getDataForObject($fieldData);
                 }
-            }
-            else if($def instanceof Object\ClassDefinition\Data\Multihref) {
+            } elseif ($def instanceof Object\ClassDefinition\Data\Multihref) {
                 $objectData[$key] = [];
 
-                foreach($fieldData as $object) {
-                    if($object instanceof Object\Concrete) {
+                foreach ($fieldData as $object) {
+                    if ($object instanceof Object\Concrete) {
                         $objectData[$key][] = $this->getDataForObject($object);
                     }
                 }
-            } else if ($def instanceof Object\ClassDefinition\Data) {
+            } elseif ($def instanceof Object\ClassDefinition\Data) {
                 $value = $def->getDataForEditmode($fieldData, $data, false);
 
                 $objectData[$key] = $value;
@@ -772,7 +778,7 @@ class CoreShop_Admin_OrderController extends Admin
         $history = $order->getOrderStateHistory();
 
         // create timeline
-        $statesHistory = array();
+        $statesHistory = [];
 
         $date = new \Pimcore\Date();
         foreach ($history as $note) {
@@ -885,8 +891,8 @@ class CoreShop_Admin_OrderController extends Admin
 
         $taxes = $order->getTaxes();
 
-        foreach($taxes as $tax) {
-            if($tax instanceof \CoreShop\Model\Order\Tax) {
+        foreach ($taxes as $tax) {
+            if ($tax instanceof \CoreShop\Model\Order\Tax) {
                 $summary[] = [
                     "key" => "tax_" . $tax->getName(),
                     "text" => sprintf($this->view->translateAdmin("Tax (%s - %s)"), $tax->getName(), \CoreShop::getTools()->formatTax($tax->getRate())),
@@ -911,11 +917,12 @@ class CoreShop_Admin_OrderController extends Admin
      * @param $order
      * @return array
      */
-    protected function getInvoices($order) {
+    protected function getInvoices($order)
+    {
         $invoices = $order->getInvoices();
         $invoiceArray = [];
 
-        foreach($invoices as $invoice) {
+        foreach ($invoices as $invoice) {
             $invoiceArray[] = $this->getDataForObject($invoice);
         }
 
@@ -926,11 +933,12 @@ class CoreShop_Admin_OrderController extends Admin
      * @param $order
      * @return array
      */
-    protected function getShipments($order) {
+    protected function getShipments($order)
+    {
         $shipments = $order->getShipments();
         $shipmentArray = [];
 
-        foreach($shipments as $shipment) {
+        foreach ($shipments as $shipment) {
             $shipmentArray[] = $this->getDataForObject($shipment);
         }
 

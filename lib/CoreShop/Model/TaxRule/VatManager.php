@@ -74,7 +74,7 @@ class VatManager implements TaxManager
             $tax = Tax::create();
             $tax->setRate(0);
 
-            \Zend_Registry::set($cacheKey, new TaxCalculator(array($tax), 0));
+            \Zend_Registry::set($cacheKey, new TaxCalculator([$tax], 0));
         }
 
         return \Zend_Registry::get($cacheKey);

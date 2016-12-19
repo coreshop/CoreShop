@@ -6,19 +6,17 @@ $install->createClass('CoreShopUser', true);
 $install->createClass('CoreShopOrder', true);
 $install->createClass('CoreShopCart', true);
 
-if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/addresses.tmp")) {
+if (file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/addresses.tmp")) {
     try {
         $addressesSerialized = file_get_contents(PIMCORE_TEMPORARY_DIRECTORY . "/addresses.tmp");
         $addresses = unserialize($addressesSerialized);
 
-        foreach($addresses as $userId => $addressArray) {
+        foreach ($addresses as $userId => $addressArray) {
             $user = \CoreShop\Model\User::getById($userId);
 
-            if($user instanceof \CoreShop\Model\User)
-            {
+            if ($user instanceof \CoreShop\Model\User) {
                 $newAddresses = [];
-                foreach($addressArray as $address)
-                {
+                foreach ($addressArray as $address) {
                     $newAddresses[] = createAddressFromArray($user->getPathForAddresses(), $address);
                 }
 
@@ -26,31 +24,28 @@ if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/addresses.tmp")) {
                 $user->save();
             }
         }
-    }
-    catch (\Exception $ex) {
-
+    } catch (\Exception $ex) {
     }
 }
 
-if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/order_addresses.tmp")) {
+if (file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/order_addresses.tmp")) {
     try {
         $addressesSerialized = file_get_contents(PIMCORE_TEMPORARY_DIRECTORY . "/order_addresses.tmp");
         $addresses = unserialize($addressesSerialized);
 
-        foreach($addresses as $orderId => $addressArray) {
+        foreach ($addresses as $orderId => $addressArray) {
             $order = \CoreShop\Model\Order::getById($orderId);
 
-            if($order instanceof \CoreShop\Model\Order)
-            {
+            if ($order instanceof \CoreShop\Model\Order) {
                 $shippingAddress = $addressArray['shipping'];
                 $billingAddress = $addressArray['billing'];
 
-                if($shippingAddress) {
+                if ($shippingAddress) {
                     $shipping = createAddressFromArray(\Pimcore\Model\Object\Service::createFolderByPath($order->getFullPath() . "/addresses"), $shippingAddress, 'shipping');
                     $order->setShippingAddress($shipping);
                 }
 
-                if($billingAddress) {
+                if ($billingAddress) {
                     $billing = createAddressFromArray(\Pimcore\Model\Object\Service::createFolderByPath($order->getFullPath() . "/addresses"), $billingAddress, 'billing');
                     $order->setBillingAddress($billing);
                 }
@@ -58,31 +53,29 @@ if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/order_addresses.tmp")) {
                 $order->save();
             }
         }
-    }
-    catch (\Exception $ex) {
+    } catch (\Exception $ex) {
         throw $ex;
     }
 }
 
-if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/cart_addresses.tmp")) {
+if (file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/cart_addresses.tmp")) {
     try {
         $addressesSerialized = file_get_contents(PIMCORE_TEMPORARY_DIRECTORY . "/cart_addresses.tmp");
         $addresses = unserialize($addressesSerialized);
 
-        foreach($addresses as $orderId => $addressArray) {
+        foreach ($addresses as $orderId => $addressArray) {
             $cart = \CoreShop\Model\Cart::getById($orderId);
 
-            if($cart instanceof \CoreShop\Model\Cart)
-            {
+            if ($cart instanceof \CoreShop\Model\Cart) {
                 $shippingAddress = $addressArray['shipping'];
                 $billingAddress = $addressArray['billing'];
 
-                if($shippingAddress) {
+                if ($shippingAddress) {
                     $shipping = createAddressFromArray(\Pimcore\Model\Object\Service::createFolderByPath($cart->getFullPath() . "/addresses"), $shippingAddress, 'shipping');
                     $cart->setShippingAddress($shipping);
                 }
 
-                if($billingAddress) {
+                if ($billingAddress) {
                     $billing = createAddressFromArray(\Pimcore\Model\Object\Service::createFolderByPath($cart->getFullPath() . "/addresses"), $billingAddress, 'billing');
                     $cart->setBillingAddress($billing);
                 }
@@ -90,13 +83,13 @@ if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/cart_addresses.tmp")) {
                 $cart->save();
             }
         }
-    }
-    catch (\Exception $ex) {
+    } catch (\Exception $ex) {
         throw $ex;
     }
 }
 
-function createAddressFromArray($path, $address, $key = null) {
+function createAddressFromArray($path, $address, $key = null)
+{
     $newAddress = \CoreShop\Model\User\Address::create();
     $newAddress->setParent($path);
     $newAddress->setPublished(true);

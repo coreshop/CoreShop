@@ -83,7 +83,7 @@ class UpdateExchangeRatesCommand extends AbstractCommand
         }
 
         if ($currency instanceof Currency) {
-            $currencies = array($currency);
+            $currencies = [$currency];
         } else {
             //Do all activated currencies
             $currencies = Currency::getAvailable();

@@ -31,14 +31,14 @@ class Filter extends AbstractModel
      *
      * @var array
      */
-    public static $availableConditions = array('select', 'multiselect', 'range', 'boolean', 'combined');
+    public static $availableConditions = ['select', 'multiselect', 'range', 'boolean', 'combined'];
 
     /**
      * possible types of a condition.
      *
      * @var array
      */
-    public static $availableSimilarities = array('field');
+    public static $availableSimilarities = ['field'];
 
 
     /**
@@ -141,16 +141,15 @@ class Filter extends AbstractModel
      * @return mixed
      * @throws \CoreShop\Exception
      */
-    public function prepareConditions($conditions, $conditionNamespace) {
-        $conditionInstances = array();
+    public function prepareConditions($conditions, $conditionNamespace)
+    {
+        $conditionInstances = [];
 
         foreach ($conditions as $condition) {
             $class = $conditionNamespace.ucfirst($condition['type']);
 
-            if (Tool::classExists($class))
-            {
-                if($condition['type'] === "combined")
-                {
+            if (Tool::classExists($class)) {
+                if ($condition['type'] === "combined") {
                     $nestedConditions = static::prepareConditions($condition['conditions'], $conditionNamespace);
                     $condition['conditions'] = $nestedConditions;
                 }
@@ -173,14 +172,14 @@ class Filter extends AbstractModel
      * @return mixed
      * @throws \CoreShop\Exception
      */
-    public function prepareSimilarities($similarities, $similarityNamespace) {
-        $instances = array();
+    public function prepareSimilarities($similarities, $similarityNamespace)
+    {
+        $instances = [];
 
         foreach ($similarities as $sim) {
             $class = $similarityNamespace.ucfirst($sim['type']);
 
-            if (Tool::classExists($class))
-            {
+            if (Tool::classExists($class)) {
                 $instance = new $class();
                 $instance->setValues($sim);
 

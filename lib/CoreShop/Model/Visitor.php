@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Model;
+
 use CoreShop\Model\Visitor\Page;
 use CoreShop\Model\Visitor\Source;
 use Pimcore\Db;
@@ -66,10 +67,11 @@ class Visitor extends AbstractModel
     /**
      * Maintenance Task for cleanup
      */
-    public static function maintenance() {
+    public static function maintenance()
+    {
         $keepRecordsForDays = Configuration::get("SYSTEM.VISITORS.KEEP_TRACKS_DAYS");
 
-        if($keepRecordsForDays > 0) {
+        if ($keepRecordsForDays > 0) {
             $date = \Carbon\Carbon::now();
             $date->subDays($keepRecordsForDays);
             $timestampToDelete = $date->getTimestamp();
@@ -102,7 +104,7 @@ class Visitor extends AbstractModel
         $list->setCondition("visitorId = ?", [$this->getId()]);
         $list->load();
 
-        foreach($list as $source) {
+        foreach ($list as $source) {
             $source->delete();
         }
 
@@ -110,7 +112,7 @@ class Visitor extends AbstractModel
         $list->setCondition("visitorId = ?", [$this->getId()]);
         $list->load();
 
-        foreach($list as $source) {
+        foreach ($list as $source) {
             $source->delete();
         }
 
@@ -120,7 +122,7 @@ class Visitor extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s) (%s) (%s) (%s) (%s)", $this->getIp(), $this->getController(), $this->getAction(), $this->getModule(), $this->getCreationDate(), $this->getId());
     }

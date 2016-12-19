@@ -402,7 +402,7 @@ class Product extends Base
                 $price = $specificPrice;
             }
 
-            Cache::save($price, $cacheKey, array('coreshop_product_price', $cacheKey));
+            Cache::save($price, $cacheKey, ['coreshop_product_price', $cacheKey]);
         }
 
         $calculator = $this->getTaxCalculator();
@@ -488,7 +488,7 @@ class Product extends Base
             }
         }
 
-        if($doCurrencyConvert) {
+        if ($doCurrencyConvert) {
             return \CoreShop::getTools()->convertToCurrency($netPrice);
         }
 
@@ -500,7 +500,8 @@ class Product extends Base
      *
      * @return bool|float
      */
-    public function getMinPrice() {
+    public function getMinPrice()
+    {
         return $this->getMinMaxPrice("<");
     }
 
@@ -509,7 +510,8 @@ class Product extends Base
      *
      * @return bool|float
      */
-    public function getMaxPrice() {
+    public function getMaxPrice()
+    {
         return $this->getMinMaxPrice(">");
     }
 
@@ -519,14 +521,15 @@ class Product extends Base
      * @param string $operator
      * @return bool|float
      */
-    public function getMinMaxPrice($operator = "<") {
+    public function getMinMaxPrice($operator = "<")
+    {
         $priceRules = $this->getSpecificPrices();
         $price = $this->getRetailPrice() ? $this->getRetailPrice() : 0;
 
-        foreach($priceRules as $rule) {
+        foreach ($priceRules as $rule) {
             $priceRulePrice = doubleval($rule->getPrice($this));
 
-            if($priceRulePrice) {
+            if ($priceRulePrice) {
                 if ($operator === "<") {
                     if ($priceRulePrice < $price) {
                         $price = $priceRulePrice;
@@ -556,9 +559,9 @@ class Product extends Base
         }
 
         if ($this->getType() == 'object') {
-            $childs = $this->getChilds(array(self::OBJECT_TYPE_VARIANT));
+            $childs = $this->getChilds([self::OBJECT_TYPE_VARIANT]);
 
-            $prices = array($this->getPrice());
+            $prices = [$this->getPrice()];
 
             if (empty($childs)) {
                 return $this->getPrice();
@@ -569,7 +572,7 @@ class Product extends Base
 
                 $price = min($prices);
 
-                Cache::save($price, $cacheKey, array('coreshop_product_price'));
+                Cache::save($price, $cacheKey, ['coreshop_product_price']);
 
                 return $price;
             }
@@ -621,7 +624,7 @@ class Product extends Base
      */
     public function getTaxCalculator(Address $address = null)
     {
-        if(is_null($this->taxCalculator)) {
+        if (is_null($this->taxCalculator)) {
             if (is_null($address)) {
                 $cart = \CoreShop::getTools()->getCart();
 
@@ -640,8 +643,7 @@ class Product extends Base
                 $taxCalculator = $taxManager->getTaxCalculator();
 
                 $this->taxCalculator = $taxCalculator;
-            }
-            else {
+            } else {
                 $this->taxCalculator = false;
             }
         }
@@ -705,7 +707,7 @@ class Product extends Base
             $cartItem->setPublished(true);
             $cartItem->setAmount(1);
             $cartItem->setProduct($this);
-            $cart->setItems(array($cartItem));
+            $cart->setItems([$cartItem]);
             $cart->getItems();
 
             PriceRule::autoAddToCart($cart);
@@ -724,7 +726,8 @@ class Product extends Base
      *
      * @return bool|string
      */
-    public function getProductUrl($language, $reset = false, Shop $shop = null) {
+    public function getProductUrl($language, $reset = false, Shop $shop = null)
+    {
         return $this->getUrl($language, ["product" => $this->getId(), "name" => File::getValidFilename($this->getName())], static::$staticRoute, $reset, $shop);
     }
 

@@ -51,9 +51,9 @@ class SpecificPrice extends Base
         $quantityCondition->setMinQuantity(4);
         $quantityCondition->setMaxQuantity(10);
 
-        $this->specificPrice->setConditions(array(
+        $this->specificPrice->setConditions([
             $quantityCondition
-        ));
+        ]);
 
         \CoreShop::getTools()->getCart()->addItem($this->product, 4);
 
@@ -65,9 +65,9 @@ class SpecificPrice extends Base
         $customerConditon = new Customers();
         $customerConditon->setCustomers([Data::$customer1->getId()]);
 
-        $this->specificPrice->setConditions(array(
+        $this->specificPrice->setConditions([
             $customerConditon
-        ));
+        ]);
 
         $cart = Data::createCartWithProducts();
         $cart->setUser(Data::$customer1);
@@ -114,9 +114,9 @@ class SpecificPrice extends Base
         $customerConditon = new Customers();
         $customerConditon->setCustomers([Data::$customer1->getId()]);
 
-        $this->specificPrice->setConditions(array(
+        $this->specificPrice->setConditions([
             $customerConditon
-        ));
+        ]);
 
         $this->assertTrue($customerConditon->checkConditionProduct($this->product, $this->specificPrice));
     }

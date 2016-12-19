@@ -63,13 +63,13 @@ class Combined extends AbstractCondition
     {
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
-        return $this->getView()->partial($script, array(
+        return $this->getView()->partial($script, [
             'label' => !$this->getLabel() ? " " : $this->getLabel(),
             'conditions' => is_array($this->getConditions()) ? $this->getConditions() : [],
             'filter' => $filter,
             'list' => $list,
             'currentFilter' => $currentFilter
-        ));
+        ]);
     }
 
     /**
@@ -87,7 +87,7 @@ class Combined extends AbstractCondition
     {
         $filters = [];
 
-        if($this->getConditions() && is_array($this->getConditions())) {
+        if ($this->getConditions() && is_array($this->getConditions())) {
             foreach ($this->getConditions() as $element) {
                 if ($element instanceof AbstractCondition) {
                     $filters = array_merge($filters, $element->addCondition($filter, $list, $currentFilter, $params, $isPrecondition));

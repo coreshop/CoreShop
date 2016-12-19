@@ -68,7 +68,7 @@ class Update
 
         $newerBuilds = self::getNewerBuilds($currentBuild);
 
-        return array('revisions' => $newerBuilds, 'releases' => array());
+        return ['revisions' => $newerBuilds, 'releases' => []];
     }
 
     /**
@@ -111,19 +111,19 @@ class Update
 
         $builds = self::getNewerBuilds($currentBuild, $toBuild);
 
-        $jobs = array();
+        $jobs = [];
 
         foreach ($builds as $build) {
             $buildNumber = (string) $build['number'];
             $buildPackage = self::$buildServerData.'/'.$buildNumber.'.zip';
 
             //@fixme: check if package is available!
-            $jobs['parallel'][] = array(
+            $jobs['parallel'][] = [
                 'type' => 'download',
                 'revision' => $buildNumber,
                 'file' => 'file',
                 'url' => $buildPackage,
-            );
+            ];
         }
 
         return $jobs;
@@ -151,8 +151,8 @@ class Update
 
         $builds = self::getNewerBuilds($currentBuild, $toBuild);
 
-        $updateScripts = array();
-        $revisions = array();
+        $updateScripts = [];
+        $revisions = [];
 
         foreach ($builds as $build) {
             $buildNumber = (string) $build['number'];
@@ -166,63 +166,63 @@ class Update
                     continue;
                 }
 
-                $jobs['parallel'][] = array(
+                $jobs['parallel'][] = [
                     'type' => 'arrange',
                     'revision' => $buildNumber,
                     'file' => 'file',
                     'url' => $download.'.build',
-                );
+                ];
 
                 if (strpos($download, 'install/class-') === 0) {
                     if (!is_array($updateScripts[$buildNumber]['installClass'])) {
-                        $updateScripts[$buildNumber]['installClass'] = array();
+                        $updateScripts[$buildNumber]['installClass'] = [];
                     }
 
-                    $updateScripts[$buildNumber]['installClass'][] = array(
+                    $updateScripts[$buildNumber]['installClass'][] = [
                         'type' => 'installClass',
                         'revision' => $buildNumber,
                         'class' => str_replace('.json', '', str_replace('install/class-', '', $download)),
-                    );
+                    ];
                 }
 
                 if (strpos($download, 'install/translations/admin.csv') === 0) {
-                    $updateScripts[$buildNumber]['importTranslation'] = array(
+                    $updateScripts[$buildNumber]['importTranslation'] = [
                         'type' => 'importTranslations',
                         'revision' => $buildNumber,
-                    );
+                    ];
                 }
 
                 $revisions[] = (int) $buildNumber;
             }
 
             if ($preUpdateScript) {
-                $updateScripts[$buildNumber]['preupdate'] = array(
+                $updateScripts[$buildNumber]['preupdate'] = [
                     'type' => 'preupdate',
                     'revision' => $buildNumber,
-                );
+                ];
 
-                $jobs['parallel'][] = array(
+                $jobs['parallel'][] = [
                     'type' => 'arrange',
                     'revision' => $buildNumber,
                     'file' => 'script',
                     'url' => 'preupdate.php',
-                );
+                ];
 
                 $revisions[] = (int) $buildNumber;
             }
 
             if ($postUpdateScript) {
-                $updateScripts[$buildNumber]['postupdate'] = array(
+                $updateScripts[$buildNumber]['postupdate'] = [
                     'type' => 'postupdate',
                     'revision' => $buildNumber,
-                );
+                ];
 
-                $jobs['parallel'][] = array(
+                $jobs['parallel'][] = [
                     'type' => 'arrange',
                     'revision' => $buildNumber,
                     'file' => 'script',
                     'url' => 'postupdate.php',
-                );
+                ];
 
                 $revisions[] = (int) $buildNumber;
             }
@@ -235,10 +235,10 @@ class Update
                 $jobs['procedural'][] = $updateScripts[$revision]['preupdate'];
             }
 
-            $jobs['procedural'][] = array(
+            $jobs['procedural'][] = [
                 'type' => 'files',
                 'revision' => (string) $revision,
-            );
+            ];
 
             if (is_array($updateScripts[$revision]['installClass'])) {
                 foreach ($updateScripts[$revision]['installClass'] as $installClass) {
@@ -255,10 +255,10 @@ class Update
             if ($deletedFiles) {
                 foreach ($deletedFiles as $toDelete) {
                     if ($toDelete) {
-                        $jobs['procedural'][] = array(
+                        $jobs['procedural'][] = [
                             'type' => 'deleteFile',
                             'url' => $toDelete,
-                        );
+                        ];
                     }
                 }
             }
@@ -268,13 +268,13 @@ class Update
             }
         }
 
-        $jobs['procedural'][] = array(
+        $jobs['procedural'][] = [
             'type' => 'clearcache',
-        );
+        ];
 
-        $jobs['procedural'][] = array(
+        $jobs['procedural'][] = [
             'type' => 'cleanup',
-        );
+        ];
 
         return $jobs;
     }
@@ -318,7 +318,7 @@ class Update
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15']);
 
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -374,10 +374,10 @@ class Update
 
         if (file_exists($baseDir.$url)) {
             if ($fileType == 'file') {
-                $db->insert(self::$tmpTable, array(
+                $db->insert(self::$tmpTable, [
                     'revision' => $revision,
                     'path' => $url,
-                ));
+                ]);
             }
         } else {
             throw new Exception('Install file (ref '.$revision.') not found: '.$url);
@@ -443,10 +443,10 @@ class Update
             $outputMessage = ob_get_clean();
         }
 
-        return array(
+        return [
             'message' => $outputMessage,
             'success' => true,
-        );
+        ];
     }
 
     /**
@@ -463,10 +463,10 @@ class Update
             $install->createClass($class, true);
         }
 
-        return array(
+        return [
             'message' => 'Installed Class '.$class,
             'success' => true,
-        );
+        ];
     }
 
     /**
@@ -561,7 +561,7 @@ class Update
 
         if (is_array($builds)) {
             $pluginVersion = intval($currentBuild);
-            $newerBuilds = array();
+            $newerBuilds = [];
 
             if (array_key_exists('builds', $builds)) {
                 foreach ($builds['builds'] as $build) {

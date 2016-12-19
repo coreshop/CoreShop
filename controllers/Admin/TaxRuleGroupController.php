@@ -25,7 +25,7 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_tax_rules');
         }
@@ -35,7 +35,7 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
     {
         $list = TaxRuleGroup::getList();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $group) {
                 $data[] = $this->getTreeNodeConfig($group);
@@ -46,14 +46,14 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
 
     protected function getTreeNodeConfig(TaxRuleGroup $group)
     {
-        $tmp = array(
+        $tmp = [
             'id' => $group->getId(),
             'text' => $group->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$group->getId(),
-            ),
+            ],
             'name' => $group->getName(),
-        );
+        ];
 
         return $tmp;
     }
@@ -63,14 +63,14 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $group = TaxRuleGroup::create();
             $group->setName($name);
             $group->setActive(1);
             $group->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $group));
+            $this->_helper->json(['success' => true, 'data' => $group]);
         }
     }
 
@@ -80,9 +80,9 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
         $group = TaxRuleGroup::getById($id);
 
         if ($group instanceof TaxRuleGroup) {
-            $this->_helper->json(array('success' => true, 'data' => $group->getObjectVars()));
+            $this->_helper->json(['success' => true, 'data' => $group->getObjectVars()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -99,7 +99,7 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
             $group->save();
 
             $taxRules = \Zend_Json::decode($this->getParam('taxRules'));
-            $taxRulesUpdated = array();
+            $taxRulesUpdated = [];
 
             foreach ($taxRules as $taxRule) {
                 $id = intval($taxRule['id']);
@@ -133,9 +133,9 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
                 }
             }
 
-            $this->_helper->json(array('success' => true, 'data' => $group));
+            $this->_helper->json(['success' => true, 'data' => $group]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -147,10 +147,10 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
         if ($group instanceof TaxRuleGroup) {
             $group->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
     public function listRulesAction()
@@ -161,9 +161,9 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
         if ($group instanceof TaxRuleGroup) {
             $rules = $group->getRules();
 
-            $this->_helper->json(array('total' => count($rules), 'data' => $rules));
+            $this->_helper->json(['total' => count($rules), 'data' => $rules]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -184,9 +184,9 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
             $taxRule->setTaxRuleGroup($group);
             $taxRule->save();
 
-            $this->_helper->json(array('success' => true, 'taxRule' => $taxRule));
+            $this->_helper->json(['success' => true, 'taxRule' => $taxRule]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 }

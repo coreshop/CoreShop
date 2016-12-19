@@ -87,7 +87,7 @@ if (!function_exists("objectToArray")) {
     {
         //if the given object is an array then loop through each element
         if (is_array($object)) {
-            $collections = array();
+            $collections = [];
             foreach ($object as $o) {
                 $collections[] = $this->_objectToArray($o, $fieldDefintions);
             }
@@ -103,7 +103,7 @@ if (!function_exists("objectToArray")) {
             $fieldDefintions = $object->getClass()->getFieldDefinitions();
         }
 
-        $collection = array();
+        $collection = [];
         foreach ($fieldDefintions as $fd) {
             $fieldName = $fd->getName();
             $getter = 'get'.ucfirst($fieldName);
@@ -142,27 +142,32 @@ if (!function_exists("array_diff_assoc_recursive")) {
     /**
      * @return array
      */
-    function array_diff_assoc_recursive ( )
+    function array_diff_assoc_recursive()
     {
-        $args = func_get_args ( );
-        $diff = array ( );
-        foreach ( array_shift ( $args ) as $key => $val )
-        {
-            for ( $i = 0, $j = 0, $tmp = array ( $val ) , $count = count ( $args ); $i < $count; $i++ )
-                if ( is_array ( $val ) )
-                    if ( !isset ( $args[$i][$key] ) || !is_array ( $args[$i][$key] ) || empty( $args[$i][$key] ) )
+        $args = func_get_args();
+        $diff =  [ ];
+        foreach (array_shift($args) as $key => $val) {
+            for ($i = 0, $j = 0, $tmp =  [ $val ], $count = count($args); $i < $count; $i++) {
+                if (is_array($val)) {
+                    if (!isset($args[$i][$key]) || !is_array($args[$i][$key]) || empty($args[$i][$key])) {
                         $j++;
-                    else
+                    } else {
                         $tmp[] = $args[$i][$key];
-                elseif ( ! array_key_exists ( $key, $args[$i] ) || $args[$i][$key] !== $val )
+                    }
+                } elseif (! array_key_exists($key, $args[$i]) || $args[$i][$key] !== $val) {
                     $j++;
-            if ( is_array ( $val ) )
-            {
-                $tmp = call_user_func_array ( __FUNCTION__, $tmp );
-                if ( ! empty ( $tmp ) ) $diff[$key] = $tmp;
-                elseif ( $j == $count ) $diff[$key] = $val;
+                }
             }
-            elseif ( $j == $count && $count ) $diff[$key] = $val;
+            if (is_array($val)) {
+                $tmp = call_user_func_array(__FUNCTION__, $tmp);
+                if (! empty($tmp)) {
+                    $diff[$key] = $tmp;
+                } elseif ($j == $count) {
+                    $diff[$key] = $val;
+                }
+            } elseif ($j == $count && $count) {
+                $diff[$key] = $val;
+            }
         }
 
         return $diff;

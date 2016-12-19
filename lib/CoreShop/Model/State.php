@@ -75,7 +75,7 @@ class State extends AbstractModel
         }
 
         $list = State::getList();
-        $list->setCondition('countryId = ?', array($countryId));
+        $list->setCondition('countryId = ?', [$countryId]);
 
         return $list->getData();
     }
@@ -83,7 +83,7 @@ class State extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

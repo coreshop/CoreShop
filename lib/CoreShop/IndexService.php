@@ -31,7 +31,7 @@ class IndexService
      *
      * @var array
      */
-    public static $types = array('mysql', 'elasticsearch');
+    public static $types = ['mysql', 'elasticsearch'];
 
     /**
      * IndexService.
@@ -89,7 +89,7 @@ class IndexService
     public function __construct()
     {
         $indexes = Index::getAll();
-        $this->worker = array();
+        $this->worker = [];
 
         foreach ($indexes as $index) {
             $class = '\\CoreShop\\IndexService\\'.ucfirst($index->getType());

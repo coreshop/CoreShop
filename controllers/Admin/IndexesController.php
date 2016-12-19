@@ -26,7 +26,7 @@ class CoreShop_Admin_IndexesController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
 
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_indexes');
@@ -37,7 +37,7 @@ class CoreShop_Admin_IndexesController extends Admin
     {
         $list = Index::getList();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $group) {
                 $data[] = $this->getTreeNodeConfig($group);
@@ -48,14 +48,14 @@ class CoreShop_Admin_IndexesController extends Admin
 
     protected function getTreeNodeConfig(Index $index)
     {
-        $tmp = array(
+        $tmp = [
             'id' => $index->getId(),
             'text' => $index->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$index->getId(),
-            ),
+            ],
             'name' => $index->getName(),
-        );
+        ];
         
         return $tmp;
     }
@@ -65,15 +65,15 @@ class CoreShop_Admin_IndexesController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $group = Index::create();
             $group->setName($name);
             $group->setType('mysql');
-            $group->setConfig(array());
+            $group->setConfig([]);
             $group->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $group));
+            $this->_helper->json(['success' => true, 'data' => $group]);
         }
     }
 
@@ -86,9 +86,9 @@ class CoreShop_Admin_IndexesController extends Admin
             $data = $group->getObjectVars();
             $data['classId'] = \CoreShop\Model\Product::classId();
 
-            $this->_helper->json(array('success' => true, 'data' => $data));
+            $this->_helper->json(['success' => true, 'data' => $data]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -112,7 +112,7 @@ class CoreShop_Admin_IndexesController extends Admin
                     $config = new $configClass();
 
                     if ($config instanceof \CoreShop\Model\Index\Config) {
-                        $columns = array();
+                        $columns = [];
 
                         foreach ($data['config']['columns'] as $col) {
                             $objectType = ucfirst($col['objectType']);
@@ -166,14 +166,14 @@ class CoreShop_Admin_IndexesController extends Admin
                 }
 
                 //Check for unique fieldnames
-                $fieldNames = array();
+                $fieldNames = [];
 
                 foreach ($config->getColumns() as $col) {
                     if (in_array($col->getName(), $fieldNames)) {
-                        $this->_helper->json(array(
+                        $this->_helper->json([
                             'success' => false,
                             'message' => sprintf($this->view->translate("Duplicate fieldname '%s' found."), $col->getName()),
-                        ));
+                        ]);
                     }
 
                     $fieldNames[] = $col->getName();
@@ -184,12 +184,12 @@ class CoreShop_Admin_IndexesController extends Admin
 
                 \CoreShop\IndexService::getIndexService()->getWorker($index->getName())->createOrUpdateIndexStructures();
 
-                $this->_helper->json(array('success' => true, 'data' => $index));
+                $this->_helper->json(['success' => true, 'data' => $index]);
             } catch (Exception $ex) {
-                $this->_helper->json(array('success' => false, 'message' => $ex->getMessage()));
+                $this->_helper->json(['success' => false, 'message' => $ex->getMessage()]);
             }
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -201,21 +201,21 @@ class CoreShop_Admin_IndexesController extends Admin
         if ($group instanceof Index) {
             $group->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
     public function getTypesAction()
     {
         $types = \CoreShop\IndexService::getTypes();
-        $typesObject = array();
+        $typesObject = [];
 
         foreach ($types as $type) {
-            $typesObject[] = array(
+            $typesObject[] = [
                 'name' => $type,
-            );
+            ];
         }
 
         $this->_helper->json($typesObject);
@@ -226,22 +226,22 @@ class CoreShop_Admin_IndexesController extends Admin
         $class = Object\ClassDefinition::getById(intval($this->getParam('id')));
         $fields = $class->getFieldDefinitions();
 
-        $result = array(
-            'fields' => array(
+        $result = [
+            'fields' => [
                 'nodeLabel' => 'fields',
                 'nodeType' => 'object',
-                'childs' => array(),
-            ),
-        );
+                'childs' => [],
+            ],
+        ];
 
         foreach ($fields as $field) {
             if ($field instanceof Object\ClassDefinition\Data\Localizedfields) {
                 if (!is_array($result['localizedfields'])) {
-                    $result['localizedfields'] = array(
+                    $result['localizedfields'] = [
                         'nodeLabel' => 'localizedfields',
                         'nodeType' => 'localizedfields',
-                        'childs' => array(),
-                    );
+                        'childs' => [],
+                    ];
                 }
 
                 $localizedFields = $field->getFieldDefinitions();
@@ -262,11 +262,11 @@ class CoreShop_Admin_IndexesController extends Admin
                             if ($classDef['classname'] === $class->getId()) {
                                 $fields = $brickDefinition->getFieldDefinitions();
 
-                                $result[$key] = array();
+                                $result[$key] = [];
                                 $result[$key]['nodeLabel'] = $key;
                                 $result[$key]['className'] = $key;
                                 $result[$key]['nodeType'] = 'objectbricks';
-                                $result[$key]['childs'] = array();
+                                $result[$key]['childs'] = [];
 
                                 foreach ($fields as $field) {
                                     $result[$key]['childs'][] = $this->getFieldConfiguration($field);
@@ -287,11 +287,11 @@ class CoreShop_Admin_IndexesController extends Admin
 
                     $key = $definition->getKey();
 
-                    $result[$key] = array();
+                    $result[$key] = [];
                     $result[$key]["nodeLabel"] = $key;
                     $result[$key]["className"] = $key;
                     $result[$key]["nodeType"] = "fieldcollections";
-                    $result[$key]['childs'] = array();
+                    $result[$key]['childs'] = [];
 
                     foreach ($fieldDefinition as $fieldcollectionField) {
                         $result[$key]['childs'][] = $this->getFieldConfiguration($fieldcollectionField);
@@ -325,10 +325,10 @@ class CoreShop_Admin_IndexesController extends Admin
 
     protected function getClassificationStoreGroupConfiguration(Object\Classificationstore\GroupConfig $config)
     {
-        $result = array();
+        $result = [];
         $result['nodeLabel'] = $config->getName();
         $result['nodeType'] = 'classificationstore';
-        $result['childs'] = array();
+        $result['childs'] = [];
 
         foreach ($config->getRelations() as $relation) {
             if ($relation instanceof Object\Classificationstore\KeyGroupRelation) {
@@ -345,59 +345,59 @@ class CoreShop_Admin_IndexesController extends Admin
 
     protected function getFieldConfiguration(Object\ClassDefinition\Data $field)
     {
-        return array(
+        return [
             'name' => $field->getName(),
             'fieldtype' => $field->getFieldtype(),
             'title' => $field->getTitle(),
             'tooltip' => $field->getTooltip(),
-        );
+        ];
     }
 
     protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig)
     {
-        return array(
+        return [
             'name' => $field->getName(),
             'fieldtype' => $field->getType(),
             'title' => $field->getName(),
             'tooltip' => $field->getDescription(),
             'keyConfigId' => $field->getId(),
             'groupConfigId' => $groupConfig->getId(),
-        );
+        ];
     }
 
     public function getAvailableGettersAction()
     {
         $getters = \CoreShop\IndexService\Getter\AbstractGetter::getGetters();
-        $result = array();
+        $result = [];
 
         foreach ($getters as $getter) {
-            $result[] = array(
+            $result[] = [
                 'type' => $getter,
                 'name' => $getter,
-            );
+            ];
         }
 
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => true,
             'data' => $result,
-        ));
+        ]);
     }
 
     public function getAvailableInterpretersAction()
     {
         $interpreters = \CoreShop\IndexService\Interpreter\AbstractInterpreter::getInterpreters();
-        $result = array();
+        $result = [];
 
         foreach ($interpreters as $interpreter) {
-            $result[] = array(
+            $result[] = [
                 'type' => $interpreter,
                 'name' => $interpreter,
-            );
+            ];
         }
 
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => true,
             'data' => $result,
-        ));
+        ]);
     }
 }

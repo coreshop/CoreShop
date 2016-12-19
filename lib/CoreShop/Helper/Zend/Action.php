@@ -105,7 +105,7 @@ class Action
      * @param  array $params
      * @return string
      */
-    public function action($action, $controller, $module = null, array $params = array())
+    public function action($action, $controller, $module = null, array $params = [])
     {
         $this->resetObjects();
         if (null === $module) {
@@ -128,8 +128,7 @@ class Action
         \Zend_Controller_Action_HelperBroker::addHelper($viewRendererObj);
 
         if (!$this->request->isDispatched()
-            || $this->response->isRedirect())
-        {
+            || $this->response->isRedirect()) {
             // forwards and redirects render nothing
             return '';
         }

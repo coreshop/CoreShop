@@ -20,20 +20,21 @@ use Pimcore\Model\Object;
  */
 class CoreShop_Admin_OrderInvoiceController extends Admin
 {
-    public function getInvoiceAbleItemsAction() {
+    public function getInvoiceAbleItemsAction()
+    {
         $orderId = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($orderId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         $items = $order->getInvoiceAbleItems();
         $itemsToReturn = [];
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $orderItem = $item['item'];
-            if($orderItem instanceof \CoreShop\Model\Order\Item) {
+            if ($orderItem instanceof \CoreShop\Model\Order\Item) {
                 $itemsToReturn[] = [
                     "orderItemId" => $orderItem->getId(),
                     "price" => $orderItem->getPrice(),
@@ -48,16 +49,17 @@ class CoreShop_Admin_OrderInvoiceController extends Admin
             }
         }
 
-        $this->_helper->json(array('success' => true, 'items' => $itemsToReturn));
+        $this->_helper->json(['success' => true, 'items' => $itemsToReturn]);
     }
 
-    public function createInvoiceAction() {
+    public function createInvoiceAction()
+    {
         $items = $this->getParam("items");
         $orderId = $this->getParam("id");
         $order = \CoreShop\Model\Order::getById($orderId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(array('success' => false, 'message' => "Order with ID '$orderId' not found"));
+            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         try {
@@ -66,25 +68,24 @@ class CoreShop_Admin_OrderInvoiceController extends Admin
             $invoice = $order->createInvoice($items);
 
             $this->_helper->json(["success" => true, "invoiceId" => $invoice->getId()]);
-        }
-        catch(\CoreShop\Exception $ex) {
-            $this->_helper->json(array('success' => false, 'message' => $ex->getMessage()));
+        } catch (\CoreShop\Exception $ex) {
+            $this->_helper->json(['success' => false, 'message' => $ex->getMessage()]);
         }
     }
 
-    public function renderInvoiceAction() {
+    public function renderInvoiceAction()
+    {
         $invoiceId = $this->getParam('id');
         $invoice = \CoreShop\Model\Order\Invoice::getById($invoiceId);
 
-        if($invoice instanceof \CoreShop\Model\Order\Invoice) {
+        if ($invoice instanceof \CoreShop\Model\Order\Invoice) {
             header('Content-type: application/pdf');
             header(sprintf('Content-Disposition: inline; filename="invoice-%s"', \Pimcore\File::getValidFilename($invoice->getInvoiceNumber())));
             header('Content-Transfer-Encoding: binary');
             header('Accept-Ranges: bytes');
 
             echo $invoice->generate()->getData();
-        }
-        else {
+        } else {
             echo "Invoice not found";
         }
 

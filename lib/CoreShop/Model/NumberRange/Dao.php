@@ -25,7 +25,7 @@ class Dao extends AbstractDao
 {
     /**
      * Mysql table name.
-     * 
+     *
      * @var string
      */
     protected static $tableName = 'coreshop_numberranges';

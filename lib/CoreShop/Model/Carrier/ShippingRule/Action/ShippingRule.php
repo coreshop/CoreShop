@@ -49,7 +49,7 @@ class ShippingRule extends AbstractAction
     {
         $carrierShippingRule = CarrierShippingRule::getById($this->getShippingRule());
 
-        if($carrierShippingRule instanceof CarrierShippingRule) {
+        if ($carrierShippingRule instanceof CarrierShippingRule) {
             return $carrierShippingRule->getPrice($carrier, $cart, $address);
         }
 

@@ -22,7 +22,7 @@ class AllTests extends SuiteBase
     {
         $suite = new AllTests('Models');
 
-        $tests = array(
+        $tests = [
             '\\CoreShop\\Test\\Models\\Carrier',
             '\\CoreShop\\Test\\Models\\Product',
             '\\CoreShop\\Test\\Models\\Cart',
@@ -42,7 +42,7 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\Models\\Product\\SpecificPrice',
             '\\CoreShop\\Test\\Models\\Product\\PriceRule',
             '\\CoreShop\\Test\\Models\\Shop'
-        );
+        ];
 
         shuffle($tests);
         print("Created the following execution order:\n");

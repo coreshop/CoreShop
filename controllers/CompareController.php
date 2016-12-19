@@ -48,7 +48,7 @@ class CoreShop_CompareController extends Action
         $product = \CoreShop\Model\Product::getById($product_id);
 
         $isAllowed = true;
-        $result = \Pimcore::getEventManager()->trigger('coreshop.compare.preAdd', $this, array('product' => $product, 'model' => $this->model, 'request' => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.compare.preAdd', $this, ['product' => $product, 'model' => $this->model, 'request' => $this->getRequest()], function ($v) {
             return is_bool($v);
         });
 
@@ -64,7 +64,7 @@ class CoreShop_CompareController extends Action
                     //add compare element to session
                     $this->model->add($product->getId());
 
-                    $this->_helper->json(array('success' => true, 'compareList' => $this->model->getCompareList()));
+                    $this->_helper->json(['success' => true, 'compareList' => $this->model->getCompareList()]);
                 } else {
                     if ($checkAvailability == 'limit_reached') {
                         $message = $this->view->translate('You reached the limit of products to compare.');
@@ -73,14 +73,14 @@ class CoreShop_CompareController extends Action
                     } else {
                         $message = 'Error: '.$checkAvailability;
                     }
-                    $this->_helper->json(array('success' => false, 'message' => $message));
+                    $this->_helper->json(['success' => false, 'message' => $message]);
                 }
             }
         } else {
-            $this->_helper->json(array('success' => false, 'message' => 'not allowed'));
+            $this->_helper->json(['success' => false, 'message' => 'not allowed']);
         }
 
-        $this->_helper->json(array('success' => false, 'compareList' => $this->model->getCompareList()));
+        $this->_helper->json(['success' => false, 'compareList' => $this->model->getCompareList()]);
     }
 
     public function removeAction()
@@ -89,7 +89,7 @@ class CoreShop_CompareController extends Action
         $product = \CoreShop\Model\Product::getById($product_id);
 
         $isAllowed = true;
-        $result = \Pimcore::getEventManager()->trigger('coreshop.compare.preRemove', $this, array('product' => $product, 'model' => $this->model, 'request' => $this->getRequest()), function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.compare.preRemove', $this, ['product' => $product, 'model' => $this->model, 'request' => $this->getRequest()], function ($v) {
             return is_bool($v);
         });
 
@@ -100,13 +100,13 @@ class CoreShop_CompareController extends Action
         if ($isAllowed) {
             if ($product instanceof \CoreShop\Model\Product) {
                 $this->model->remove($product->getId());
-                $this->_helper->json(array('success' => true, 'compareList' => $this->model->getCompareList()));
+                $this->_helper->json(['success' => true, 'compareList' => $this->model->getCompareList()]);
             }
         } else {
-            $this->_helper->json(array('success' => false, 'message' => 'not allowed'));
+            $this->_helper->json(['success' => false, 'message' => 'not allowed']);
         }
 
-        $this->_helper->json(array('success' => false, 'compareList' => $this->model->getCompareList()));
+        $this->_helper->json(['success' => false, 'compareList' => $this->model->getCompareList()]);
     }
 
     public function listAction()
@@ -120,8 +120,8 @@ class CoreShop_CompareController extends Action
 
         $productIds = $this->model->getCompareList();
 
-        $products = array();
-        $compareValues = array();
+        $products = [];
+        $compareValues = [];
 
         if (!empty($productIds)) {
             if (count($productIds) < $this->minCompareElements) {
@@ -134,7 +134,7 @@ class CoreShop_CompareController extends Action
 
             $products = $list->getObjects();
 
-            $dings = \Pimcore::getEventManager()->trigger('coreshop.compare.products', $this, array('products' => $products, 'language' => $this->language, 'request' => $this->getRequest()), function ($v) {
+            $dings = \Pimcore::getEventManager()->trigger('coreshop.compare.products', $this, ['products' => $products, 'language' => $this->language, 'request' => $this->getRequest()], function ($v) {
                 return $v;
             });
 

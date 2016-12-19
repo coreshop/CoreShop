@@ -115,7 +115,7 @@ class Data
             $taxRuleGroup = TaxRuleGroup::create();
             $taxRuleGroup->setName("20");
             $taxRuleGroup->setActive(true);
-            $taxRuleGroup->setShopIds(array(Shop::getDefaultShop()->getId()));
+            $taxRuleGroup->setShopIds([Shop::getDefaultShop()->getId()]);
             $taxRuleGroup->save();
 
             $taxRule = TaxRule::create();
@@ -140,7 +140,7 @@ class Data
             $carrier->setRangeBehaviour(Carrier::RANGE_BEHAVIOUR_DEACTIVATE);
             $carrier->setTaxRuleGroup(TaxRuleGroup::getById(1));
             $carrier->setIsFree(false);
-            $carrier->setShopIds(array(Shop::getDefaultShop()->getId()));
+            $carrier->setShopIds([Shop::getDefaultShop()->getId()]);
             $carrier->save();
 
             $zoneCond = new Carrier\ShippingRule\Condition\Zones();
@@ -188,7 +188,7 @@ class Data
             $carrier->setRangeBehaviour(Carrier::RANGE_BEHAVIOUR_LARGEST);
             $carrier->setTaxRuleGroup(TaxRuleGroup::getById(1));
             $carrier->setIsFree(false);
-            $carrier->setShopIds(array(Shop::getDefaultShop()->getId()));
+            $carrier->setShopIds([Shop::getDefaultShop()->getId()]);
             $carrier->save();
 
             $weightCond = new Carrier\ShippingRule\Condition\Weight();
@@ -231,7 +231,7 @@ class Data
             self::$product1->setTaxRule(self::$taxRuleGroup);
             self::$product1->setParent(Service::createFolderByPath("/coreshop/products"));
             self::$product1->setKey(File::getValidFilename("test1"));
-            self::$product1->setShops(array(Shop::getDefaultShop()->getId()));
+            self::$product1->setShops([Shop::getDefaultShop()->getId()]);
             self::$product1->save();
         }
 
@@ -247,7 +247,7 @@ class Data
             self::$product1->setTaxRule(self::$taxRuleGroup);
             self::$product2->setParent(Service::createFolderByPath("/coreshop/products"));
             self::$product2->setKey(File::getValidFilename("test2"));
-            self::$product2->setShops(array(Shop::getDefaultShop()->getId()));
+            self::$product2->setShops([Shop::getDefaultShop()->getId()]);
             self::$product2->save();
         }
 
@@ -263,7 +263,7 @@ class Data
             self::$product1->setTaxRule(self::$taxRuleGroup);
             self::$product3->setParent(Service::createFolderByPath("/coreshop/products"));
             self::$product3->setKey(File::getValidFilename("test3"));
-            self::$product3->setShops(array(Shop::getDefaultShop()->getId()));
+            self::$product3->setShops([Shop::getDefaultShop()->getId()]);
             self::$product3->save();
         }
     }
@@ -289,7 +289,7 @@ class Data
         if (!self::$customerGroup1 instanceof Group) {
             self::$customerGroup1 = Group::create();
             self::$customerGroup1->setName("Group1");
-            self::$customerGroup1->setShops(array(Shop::getDefaultShop()->getId()));
+            self::$customerGroup1->setShops([Shop::getDefaultShop()->getId()]);
             self::$customerGroup1->setKey("group1");
             self::$customerGroup1->setParent(Service::createFolderByPath("/customer-groups"));
             self::$customerGroup1->save();
@@ -298,7 +298,7 @@ class Data
         if (!self::$customerGroup2 instanceof Group) {
             self::$customerGroup2 = Group::create();
             self::$customerGroup2->setName("Group2");
-            self::$customerGroup2->setShops(array(Shop::getDefaultShop()->getId()));
+            self::$customerGroup2->setShops([Shop::getDefaultShop()->getId()]);
             self::$customerGroup2->setKey("group2");
             self::$customerGroup2->setParent(Service::createFolderByPath("/customer-groups"));
             self::$customerGroup2->save();
@@ -315,7 +315,7 @@ class Data
             $customer->setLastname("1");
             $customer->setGender("m");
             $customer->setEmail("test@coreshop.org");
-            $customer->setCustomerGroups(array(self::$customerGroup1));
+            $customer->setCustomerGroups([self::$customerGroup1]);
             $customer->save();
 
             self::$customer1 = $customer;

@@ -75,7 +75,7 @@ class Configuration extends AbstractModel
      *
      * @var array
      */
-    protected static $nameIdMappingCache = array();
+    protected static $nameIdMappingCache = [];
 
     /**
      * Get By Id.
@@ -334,7 +334,7 @@ class Configuration extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s=%s (%s)", $this->getKey(), $this->getData(), $this->getId());
     }

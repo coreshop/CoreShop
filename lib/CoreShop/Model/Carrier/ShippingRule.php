@@ -35,14 +35,14 @@ class ShippingRule extends AbstractRule
      *
      * @var array
      */
-    public static $availableConditions = array('conditions', 'countries', 'amount', 'weight', 'dimension', 'zones', 'postcodes', 'products', 'categories', 'customerGroups', 'currencies', 'shippingRule');
+    public static $availableConditions = ['conditions', 'countries', 'amount', 'weight', 'dimension', 'zones', 'postcodes', 'products', 'categories', 'customerGroups', 'currencies', 'shippingRule'];
 
     /**
      * possible types of a action.
      *
      * @var array
      */
-    public static $availableActions = array('fixedPrice', 'additionAmount', 'additionPercent', 'discountAmount', 'discountPercent', 'shippingRule');
+    public static $availableActions = ['fixedPrice', 'additionAmount', 'additionPercent', 'discountAmount', 'discountPercent', 'shippingRule'];
 
     /**
      * Check if Shipping Rule is valid
@@ -66,12 +66,11 @@ class ShippingRule extends AbstractRule
             return $valid;
         } catch (\Exception $e) {
             try {
-                if(Cache::test($cacheKey)) {
+                if (Cache::test($cacheKey)) {
                     $valid = Cache::load($cacheKey);
 
-                    \Zend_Registry::set($cacheKey,  $valid ? 1 : 0);
-                }
-                else {
+                    \Zend_Registry::set($cacheKey, $valid ? 1 : 0);
+                } else {
                     $valid = true;
 
                     foreach ($this->getConditions() as $condition) {
@@ -85,7 +84,7 @@ class ShippingRule extends AbstractRule
 
 
                     \Zend_Registry::set($cacheKey, $valid ? 1 : 0);
-                    Cache::save($valid ? 1 : 0, $cacheKey, array($cacheKey, 'coreshop_carrier_shipping_rule'));
+                    Cache::save($valid ? 1 : 0, $cacheKey, [$cacheKey, 'coreshop_carrier_shipping_rule']);
                 }
 
                 return $valid;
@@ -105,11 +104,12 @@ class ShippingRule extends AbstractRule
      * @param Cart $cart
      * @return string
      */
-    public function getValidationCacheKey(Carrier $carrier, Cart $cart, Address $address) {
+    public function getValidationCacheKey(Carrier $carrier, Cart $cart, Address $address)
+    {
         $cacheKey = \CoreShop::getTools()->getFingerprint() . $carrier->getId() . $address->getCacheKey() . $cart->getCacheKey() . $this->getId();
 
-        foreach($this->getConditions() as $condition) {
-            if($condition instanceof AbstractCondition) {
+        foreach ($this->getConditions() as $condition) {
+            if ($condition instanceof AbstractCondition) {
                 $cacheKey = $cacheKey . $condition->getCacheKey();
             }
         }

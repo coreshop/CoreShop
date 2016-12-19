@@ -50,7 +50,7 @@ class IndexCommand extends AbstractCommand
         $this->disableLogging();
 
         $allProducts = Product::getList();
-        $allProducts->setObjectTypes(array(Product::OBJECT_TYPE_OBJECT, Product::OBJECT_TYPE_VARIANT));
+        $allProducts->setObjectTypes([Product::OBJECT_TYPE_OBJECT, Product::OBJECT_TYPE_VARIANT]);
         $allProducts = $allProducts->load();
 
         $steps = count($allProducts);
@@ -62,7 +62,7 @@ class IndexCommand extends AbstractCommand
 
         $process = null;
 
-        if(class_exists('\ProcessManager\Model\Process')) {
+        if (class_exists('\ProcessManager\Model\Process')) {
             $process = new \ProcessManager\Model\Process();
             $process->setName('CoreShop Index');
             $process->setTotal($steps);
@@ -75,8 +75,8 @@ class IndexCommand extends AbstractCommand
             IndexService::getIndexService()->updateIndex($product);
             $progress->advance();
 
-            if(class_exists('\ProcessManager\Model\Process')) {
-                if($process instanceof \ProcessManager\Model\Process) {
+            if (class_exists('\ProcessManager\Model\Process')) {
+                if ($process instanceof \ProcessManager\Model\Process) {
                     $process->progress(1, sprintf("Indexing %s", $product->getName()));
                 }
             }

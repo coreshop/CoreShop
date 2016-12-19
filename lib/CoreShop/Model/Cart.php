@@ -115,7 +115,7 @@ class Cart extends Base
             $cart = \CoreShop::getTools()->getCartManager()->createCart("default", \CoreShop::getTools()->getUser(), Shop::getShop());
         }
 
-        if($persist) {
+        if ($persist) {
             \CoreShop::getTools()->getCartManager()->persistCart($cart);
         }
 
@@ -168,7 +168,8 @@ class Cart extends Base
      *
      * @return float
      */
-    public function getDiscountPercentage() {
+    public function getDiscountPercentage()
+    {
         $totalWithoutDiscount = $this->getSubtotal(false);
         $totalWithDiscount = $this->getSubtotal(false) - $this->getDiscount(false);
 
@@ -180,7 +181,8 @@ class Cart extends Base
      *
      * @return number
      */
-    public function getDiscountTax() {
+    public function getDiscountTax()
+    {
         return abs($this->getDiscount(true) - $this->getDiscount(false));
     }
 
@@ -228,15 +230,15 @@ class Cart extends Base
      */
     public function getTaxes($applyDiscountToTaxValues = true)
     {
-        $usedTaxes = array();
+        $usedTaxes = [];
 
         $addTax = function (Tax $tax, $amount) use (&$usedTaxes) {
-            if($amount > 0) {
+            if ($amount > 0) {
                 if (!array_key_exists($tax->getId(), $usedTaxes)) {
-                    $usedTaxes[$tax->getId()] = array(
+                    $usedTaxes[$tax->getId()] = [
                         'tax' => $tax,
                         'amount' => $amount,
-                    );
+                    ];
                 } else {
                     $usedTaxes[$tax->getId()]['amount'] += $amount;
                 }
@@ -246,12 +248,12 @@ class Cart extends Base
         foreach ($this->getItems() as $item) {
             $itemTaxes = $item->getTaxes($applyDiscountToTaxValues);
 
-            foreach($itemTaxes as $itemTax) {
+            foreach ($itemTaxes as $itemTax) {
                 $addTax($itemTax['tax'], $itemTax['amount']);
             }
         }
 
-        if(!$this->getFreeShipping()) {
+        if (!$this->getFreeShipping()) {
             $shippingProvider = $this->getShippingProvider();
 
             if ($shippingProvider instanceof Carrier) {
@@ -300,7 +302,7 @@ class Cart extends Base
             return $this->getCarrier();
         }
 
-        if($this->hasPhysicalItems()) {
+        if ($this->hasPhysicalItems()) {
             $carrier = Carrier::getCheapestCarrierForCart($this);
 
             if ($carrier instanceof Carrier) {
@@ -321,7 +323,7 @@ class Cart extends Base
      */
     public function getShippingCostsForCarrier(Carrier $carrier, $useTax = true)
     {
-        if(!$this->getFreeShipping()) {
+        if (!$this->getFreeShipping()) {
             $freeShippingCurrency = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_PRICE'));
             $freeShippingWeight = floatval(Configuration::get('SYSTEM.SHIPPING.FREESHIPPING_WEIGHT'));
 
@@ -378,7 +380,7 @@ class Cart extends Base
      */
     public function getShipping($useTax = true)
     {
-        if(!$this->getFreeShipping()) {
+        if (!$this->getFreeShipping()) {
             $cacheKey = $useTax ? 'shipping' : 'shippingWithoutTax';
 
             if (is_null($this->$cacheKey)) {
@@ -402,7 +404,7 @@ class Cart extends Base
      */
     public function getShippingTaxRate()
     {
-        if(!$this->getFreeShipping()) {
+        if (!$this->getFreeShipping()) {
             if ($this->getShippingProvider() instanceof Carrier) {
                 return $this->getShippingProvider()->getTaxRate($this);
             }
@@ -418,7 +420,7 @@ class Cart extends Base
      */
     public function getShippingTax()
     {
-        if(!$this->getFreeShipping()) {
+        if (!$this->getFreeShipping()) {
             if ($this->getShippingProvider() instanceof Carrier) {
                 return $this->getShippingProvider()->getTaxAmount($this);
             }
@@ -523,7 +525,8 @@ class Cart extends Base
      * @param bool $withTax
      * @return float
      */
-    public function getTotalWithoutDiscount($withTax = true) {
+    public function getTotalWithoutDiscount($withTax = true)
+    {
         $subtotal = $this->getSubtotal($withTax);
         $shipping = $this->getShipping($withTax);
         $payment = $this->getPaymentFee($withTax);
@@ -614,7 +617,7 @@ class Cart extends Base
             $items = $this->getItems();
 
             if (!is_array($items)) {
-                $items = array();
+                $items = [];
             }
 
             $item = Item::create();
@@ -691,18 +694,18 @@ class Cart extends Base
     /**
      * Check if carrier is still valid
      */
-    public function checkCarrierValid() {
-        if($this->getCarrier() instanceof Carrier) {
+    public function checkCarrierValid()
+    {
+        if ($this->getCarrier() instanceof Carrier) {
             $carrierValid = true;
 
-            if(!$this->getShippingAddress() instanceof Address) {
+            if (!$this->getShippingAddress() instanceof Address) {
                 $carrierValid = false;
-            }
-            else if(!$this->getCarrier()->checkCarrierForCart($this, $this->getShippingAddress())) {
+            } elseif (!$this->getCarrier()->checkCarrierForCart($this, $this->getShippingAddress())) {
                 $carrierValid  = false;
             }
 
-            if(!$carrierValid) {
+            if (!$carrierValid) {
                 $this->setCarrier(null);
                 $this->save();
             }
@@ -791,9 +794,9 @@ class Cart extends Base
         if ($collection instanceof Fieldcollection) {
             $priceRules = [];
 
-            foreach($collection->getItems() as $priceRule) {
-                if($priceRule instanceof \CoreShop\Model\PriceRule\Item) {
-                    if($priceRule->getPriceRule()->getActive()) {
+            foreach ($collection->getItems() as $priceRule) {
+                if ($priceRule instanceof \CoreShop\Model\PriceRule\Item) {
+                    if ($priceRule->getPriceRule()->getActive()) {
                         $priceRules[] = $priceRule;
                     }
                 }
@@ -901,7 +904,7 @@ class Cart extends Base
         $order->setLang($language);
         $order->setCustomer($this->getUser());
 
-        if($paymentModule instanceof Payment) {
+        if ($paymentModule instanceof Payment) {
             $order->setPaymentProviderToken($paymentModule->getIdentifier());
             $order->setPaymentProvider($paymentModule->getName());
             $order->setPaymentProviderDescription($paymentModule->getDescription());
@@ -941,19 +944,19 @@ class Cart extends Base
         $order->setSubtotalWithoutTax($this->getSubtotal(false));
         $order->setSubtotalTax($this->getSubtotalTax());
 
-        if(\CoreShop::getTools()->getVisitor() instanceof Visitor) {
+        if (\CoreShop::getTools()->getVisitor() instanceof Visitor) {
             $order->setVisitorId(\CoreShop::getTools()->getVisitor()->getId());
         }
 
-        \CoreShop::actionHook('order.preSave', array('order' => $order, 'cart' => $this));
+        \CoreShop::actionHook('order.preSave', ['order' => $order, 'cart' => $this]);
 
         $order->save();
 
-        if($this->getShippingAddress() instanceof Address) {
+        if ($this->getShippingAddress() instanceof Address) {
             $order->setShippingAddress($this->copyAddress($order, $this->getShippingAddress(), "shipping"));
         }
 
-        if($this->getBillingAddress() instanceof Address) {
+        if ($this->getBillingAddress() instanceof Address) {
             $order->setBillingAddress($this->copyAddress($order, $this->getBillingAddress(), "billing"));
         }
 
@@ -966,10 +969,10 @@ class Cart extends Base
         $state->processStep($order);
 
         //Remove transaction to prevent double ordering
-        $this->setCustomIdentifier(NULL);
+        $this->setCustomIdentifier(null);
         $this->save();
 
-        \CoreShop::actionHook('order.created', array('order' => $order));
+        \CoreShop::actionHook('order.created', ['order' => $order]);
 
         return $order;
     }
@@ -982,7 +985,8 @@ class Cart extends Base
      * @param string $type
      * @return Address
      */
-    public function copyAddress(Order $order, Address $address = null, $type = "shipping") {
+    public function copyAddress(Order $order, Address $address = null, $type = "shipping")
+    {
         Service::loadAllObjectFields($address);
 
         $newAddress = clone $address;
@@ -1011,7 +1015,7 @@ class Cart extends Base
         Logger::log('CoreShop cart cleanup: start');
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
         if ($timeDiff > 24 * 60 * 60) {
-            $cleanUpParams = array();
+            $cleanUpParams = [];
 
             $days = Configuration::get('SYSTEM.CART.AUTO_CLEANUP.OLDER_THAN_DAYS');
             $anonCart = Configuration::get('SYSTEM.CART.AUTO_CLEANUP.DELETE_ANONYMOUS');
@@ -1055,15 +1059,16 @@ class Cart extends Base
      * @param Order $order
      * @param bool $removeExistingItems
      */
-    public function addOrderToCart(Order $order, $removeExistingItems = false) {
-        if($removeExistingItems) {
-            foreach($this->getItems() as $item) {
+    public function addOrderToCart(Order $order, $removeExistingItems = false)
+    {
+        if ($removeExistingItems) {
+            foreach ($this->getItems() as $item) {
                 $this->removeItem($item);
             }
         }
 
-        foreach($order->getItems() as $item) {
-            if($item->getProduct() instanceof Product) {
+        foreach ($order->getItems() as $item) {
+            if ($item->getProduct() instanceof Product) {
                 $this->addItem($item->getProduct(), $item->getAmount());
             }
         }
@@ -1074,10 +1079,11 @@ class Cart extends Base
      *
      * @return bool
      */
-    public function isActiveCart() {
+    public function isActiveCart()
+    {
         $sessionCart = \CoreShop::getTools()->getCartManager()->getSessionCart();
 
-        if($sessionCart instanceof Cart) {
+        if ($sessionCart instanceof Cart) {
             return $sessionCart->getId() === $this->getId();
         }
 
@@ -1087,7 +1093,8 @@ class Cart extends Base
     /**
      * @return string
      */
-    public function getCacheKey() {
+    public function getCacheKey()
+    {
         $fingerprint = $this->getId();
 
         foreach ($this->getItems() as $item) {
@@ -1124,7 +1131,8 @@ class Cart extends Base
      * @param $price
      * @return mixed
      */
-    public function convertToCurrency($price) {
+    public function convertToCurrency($price)
+    {
         return \CoreShop::getTools()->convertToCurrency($price, $this->getCurrency());
     }
 

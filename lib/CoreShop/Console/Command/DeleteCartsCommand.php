@@ -45,7 +45,7 @@ class DeleteCartsCommand extends AbstractCommand
             $output->writeLn('==========================================');
         }
 
-        $cleanUpParams = array();
+        $cleanUpParams = [];
 
         $days = $input->getOption('days');
 

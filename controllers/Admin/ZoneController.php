@@ -25,7 +25,7 @@ class CoreShop_Admin_ZoneController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_zones');
         }
@@ -37,7 +37,7 @@ class CoreShop_Admin_ZoneController extends Admin
         $list->setOrder('ASC');
         $list->load();
 
-        $zones = array();
+        $zones = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $zone) {
                 $zones[] = $this->getTreeNodeConfig($zone);
@@ -48,15 +48,15 @@ class CoreShop_Admin_ZoneController extends Admin
 
     protected function getTreeNodeConfig($zone)
     {
-        $tmpZone = array(
+        $tmpZone = [
             'id' => $zone->getId(),
             'text' => $zone->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$zone->getId(),
-            ),
+            ],
             'name' => $zone->getName(),
             'active' => intval($zone->getActive()),
-        );
+        ];
 
         return $tmpZone;
     }
@@ -67,9 +67,9 @@ class CoreShop_Admin_ZoneController extends Admin
         $zone = Zone::getById($id);
 
         if ($zone instanceof Zone) {
-            $this->_helper->json(array('success' => true, 'data' => $zone));
+            $this->_helper->json(['success' => true, 'data' => $zone]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -85,9 +85,9 @@ class CoreShop_Admin_ZoneController extends Admin
             $zone->setValues($data);
             $zone->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $zone));
+            $this->_helper->json(['success' => true, 'data' => $zone]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -96,14 +96,14 @@ class CoreShop_Admin_ZoneController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $zone = Zone::create();
             $zone->setName($name);
             $zone->setActive(1);
             $zone->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $zone));
+            $this->_helper->json(['success' => true, 'data' => $zone]);
         }
     }
 
@@ -115,9 +115,9 @@ class CoreShop_Admin_ZoneController extends Admin
         if ($zone instanceof Zone) {
             $zone->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

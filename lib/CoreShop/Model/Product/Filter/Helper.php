@@ -49,7 +49,7 @@ class Helper
             $orderDirection = $params['order'];
         }
 
-        if($params['perPage']) {
+        if ($params['perPage']) {
             $limit = $params['perPage'];
         }
 
@@ -63,6 +63,6 @@ class Helper
             return $filterService->initFilterService($filter, $list, $params);
         }
 
-        return array();
+        return [];
     }
 }

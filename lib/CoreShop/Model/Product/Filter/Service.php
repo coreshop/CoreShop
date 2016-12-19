@@ -21,7 +21,7 @@ use CoreShop\Model\Product\Listing;
 /**
  * Class Service
  * @package CoreShop\Model\Product\Filter
- * 
+ *
  * @todo: make more override-able
  */
 class Service
@@ -35,9 +35,9 @@ class Service
      *
      * @return array $currentFilter
      */
-    public function initFilterService(Filter $filterObject, Listing $list, $params = array())
+    public function initFilterService(Filter $filterObject, Listing $list, $params = [])
     {
-        $currentFilter = array();
+        $currentFilter = [];
 
         if (is_array($filterObject->getFilters())) {
             foreach ($filterObject->getFilters() as $filter) {

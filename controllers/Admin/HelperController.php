@@ -25,32 +25,32 @@ class CoreShop_Admin_HelperController extends Admin
 
         if ($orderNumber) {
             $list = \CoreShop\Model\Order::getList();
-            $list->setCondition('orderNumber = ? OR orderNumber = ?', array($orderNumber, \CoreShop\Model\Order::getValidOrderNumber($orderNumber)));
+            $list->setCondition('orderNumber = ? OR orderNumber = ?', [$orderNumber, \CoreShop\Model\Order::getValidOrderNumber($orderNumber)]);
 
             $orders = $list->getObjects();
 
             if (count($orders) > 0) {
-                $this->_helper->json(array('success' => true, 'id' => $orders[0]->getId()));
+                $this->_helper->json(['success' => true, 'id' => $orders[0]->getId()]);
             }
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 
     public function getLanguagesAction()
     {
         $locales = \Pimcore\Tool::getSupportedLocales();
-        $languageOptions = array();
+        $languageOptions = [];
         foreach ($locales as $short => $translation) {
             if (!empty($short)) {
-                $languageOptions[] = array(
+                $languageOptions[] = [
                     'language' => $short,
                     'display' => $translation." ($short)",
-                );
+                ];
                 $validLanguages[] = $short;
             }
         }
 
-        $this->_helper->json(array('languages' => $languageOptions));
+        $this->_helper->json(['languages' => $languageOptions]);
     }
 }

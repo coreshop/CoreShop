@@ -62,13 +62,13 @@ class Action extends \Website\Controller\Action
 
         //We need to add the website path as well, but only if we are in the CoreShop Module
         //because Zend only adds Module Paths to the script paths.
-        if(strtolower($this->getRequest()->getModuleName()) !== "default") {
+        if (strtolower($this->getRequest()->getModuleName()) !== "default") {
             $this->view->setScriptPath(
                 array_merge(
                     $this->view->getScriptPaths(),
-                    array(
+                    [
                         PIMCORE_WEBSITE_PATH.'/views/scripts'
-                    )
+                    ]
                 )
             );
         }
@@ -76,7 +76,7 @@ class Action extends \Website\Controller\Action
         $this->view->setScriptPath(
             array_merge(
                 $this->view->getScriptPaths(),
-                array(
+                [
                     CORESHOP_TEMPLATE_BASE.'/scripts',
                     CORESHOP_TEMPLATE_BASE.'/scripts/coreshop',
                     CORESHOP_TEMPLATE_BASE.'/layouts',
@@ -84,7 +84,7 @@ class Action extends \Website\Controller\Action
                     CORESHOP_TEMPLATE_PATH.'/scripts/coreshop',
                     CORESHOP_TEMPLATE_PATH.'/layouts',
                     PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop',
-                )
+                ]
             )
         );
 

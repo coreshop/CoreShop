@@ -25,7 +25,7 @@ class CoreShop_Admin_MessagingContactController extends Admin
         parent::init();
 
         // check permissions
-        $notRestrictedActions = array('list');
+        $notRestrictedActions = ['list'];
 
         if (!in_array($this->getParam('action'), $notRestrictedActions)) {
             $this->checkPermission('coreshop_permission_messaging_contact');
@@ -36,7 +36,7 @@ class CoreShop_Admin_MessagingContactController extends Admin
     {
         $list = Contact::getList();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $contact) {
                 $data[] = $this->getTreeNodeConfig($contact);
@@ -47,14 +47,14 @@ class CoreShop_Admin_MessagingContactController extends Admin
 
     protected function getTreeNodeConfig(Contact $contact)
     {
-        $tmp = array(
+        $tmp = [
             'id' => $contact->getId(),
             'text' => $contact->getName(),
-            'qtipCfg' => array(
+            'qtipCfg' => [
                 'title' => 'ID: '.$contact->getId(),
-            ),
+            ],
             'name' => $contact->getName(),
-        );
+        ];
 
         return $tmp;
     }
@@ -64,13 +64,13 @@ class CoreShop_Admin_MessagingContactController extends Admin
         $name = $this->getParam('name');
 
         if (strlen($name) <= 0) {
-            $this->helper->json(array('success' => false, 'message' => $this->getTranslator()->translate('Name must be set')));
+            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
         } else {
             $contact = Contact::create();
             $contact->setName($name);
             $contact->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $contact));
+            $this->_helper->json(['success' => true, 'data' => $contact]);
         }
     }
 
@@ -80,9 +80,9 @@ class CoreShop_Admin_MessagingContactController extends Admin
         $contact = Contact::getById($id);
 
         if ($contact instanceof Contact) {
-            $this->_helper->json(array('success' => true, 'data' => $contact->getObjectVars()));
+            $this->_helper->json(['success' => true, 'data' => $contact->getObjectVars()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -98,9 +98,9 @@ class CoreShop_Admin_MessagingContactController extends Admin
             $contact->setValues($data);
             $contact->save();
 
-            $this->_helper->json(array('success' => true, 'data' => $contact->getObjectVars()));
+            $this->_helper->json(['success' => true, 'data' => $contact->getObjectVars()]);
         } else {
-            $this->_helper->json(array('success' => false));
+            $this->_helper->json(['success' => false]);
         }
     }
 
@@ -112,9 +112,9 @@ class CoreShop_Admin_MessagingContactController extends Admin
         if ($contact instanceof Contact) {
             $contact->delete();
 
-            $this->_helper->json(array('success' => true));
+            $this->_helper->json(['success' => true]);
         }
 
-        $this->_helper->json(array('success' => false));
+        $this->_helper->json(['success' => false]);
     }
 }

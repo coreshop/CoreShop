@@ -38,12 +38,12 @@ abstract class ClientTracker extends Tracker
         $class = strtolower($class);
 
         $view->setScriptPath(
-            array(
+            [
                 CORESHOP_PATH . '/views/scripts/tracking/' . $class,
                 CORESHOP_TEMPLATE_BASE . '/scripts/tracking/' . $class,
                 CORESHOP_TEMPLATE_PATH . '/scripts/tracking/' . $class,
                 PIMCORE_WEBSITE_PATH.'/views/scripts/coreshop/tracking/' . $class,
-            )
+            ]
         );
 
         return $view;

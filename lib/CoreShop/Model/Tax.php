@@ -23,7 +23,7 @@ class Tax extends AbstractModel
     /**
      * @var array
      */
-    protected $localizedValues = array('name');
+    protected $localizedValues = ['name'];
 
     /**
      * @var float
@@ -57,7 +57,7 @@ class Tax extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

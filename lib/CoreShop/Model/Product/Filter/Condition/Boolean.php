@@ -61,7 +61,7 @@ class Boolean extends AbstractCondition
      */
     public function render(Filter $filter, Listing $list, $currentFilter)
     {
-        $rawValues = array();
+        $rawValues = [];
         $currentValues = $currentFilter[\Pimcore\File::getValidFilename($this->getLabel())];
 
         foreach ($this->getField() as $field) {
@@ -75,10 +75,10 @@ class Boolean extends AbstractCondition
                 $dbVal = (int) $fieldRawValue['value'];
 
                 if ($dbVal === 1) {
-                    $rawValues[] = array(
+                    $rawValues[] = [
                         'value' => $field,
                         'count' => $fieldRawValue['count'],
-                    );
+                    ];
                     break;
                 }
             }
@@ -86,13 +86,13 @@ class Boolean extends AbstractCondition
 
         $script = $this->getViewScript($filter, $list, $currentFilter);
 
-        return $this->getView()->partial($script, array(
+        return $this->getView()->partial($script, [
             'label' => $this->getLabel(),
             'currentValues' => $currentValues,
             'values' => $rawValues,
             'fieldname' => $this->getField(),
             'quantityUnit' => $this->getQuantityUnit()
-        ));
+        ]);
     }
 
     /**
@@ -110,8 +110,8 @@ class Boolean extends AbstractCondition
     {
         $definedValues = (array) $this->getField();
 
-        $values = array();
-        $sqlFilter = array();
+        $values = [];
+        $sqlFilter = [];
 
         $preSelects = (array) $this->getPreSelects();
 

@@ -36,19 +36,19 @@ class CoreShop_Admin_ObjectController extends Admin
         $object = \Pimcore\Model\Object\AbstractObject::getById($objectId);
 
         if (!$object instanceof \CoreShop\Model\Product) {
-            $this->_helper->json(array('success' => false, 'message' => 'only Product is allowed'));
+            $this->_helper->json(['success' => false, 'message' => 'only Product is allowed']);
         }
 
         $field = $object->getClass()->getFieldDefinition($this->variantsBrick);
 
         if (!$field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
-            $this->_helper->json(array('success' => false, 'message' => 'variants field has wrong type'));
+            $this->_helper->json(['success' => false, 'message' => 'variants field has wrong type']);
         }
 
         $allowedTypes = $field->getAllowedTypes();
 
         if (!in_array($brickType, $allowedTypes)) {
-            $this->_helper->json(array('success' => false, 'message' => "$brickType is not allowed"));
+            $this->_helper->json(['success' => false, 'message' => "$brickType is not allowed"]);
         }
 
         $definition = \Pimcore\Model\Object\Objectbrick\Definition::getByKey($brickType);
@@ -57,7 +57,7 @@ class CoreShop_Admin_ObjectController extends Admin
             $fieldDefinition = $definition->getFieldDefinition($fieldName);
 
             if (!$fieldDefinition instanceof \Pimcore\Model\Object\ClassDefinition\Data) {
-                $this->_helper->json(array('success' => false, 'message' => "$fieldName not found in brick $brickType"));
+                $this->_helper->json(['success' => false, 'message' => "$fieldName not found in brick $brickType"]);
             }
         }
 
@@ -84,7 +84,7 @@ class CoreShop_Admin_ObjectController extends Admin
             $object->save();
         }
 
-        return $this->_helper->json(array('success' => true));
+        return $this->_helper->json(['success' => true]);
     }
 
     public function getVariantBricksAction()
@@ -96,47 +96,47 @@ class CoreShop_Admin_ObjectController extends Admin
         $object = \Pimcore\Model\Object\AbstractObject::getById($id);
 
         if (!$object instanceof \CoreShop\Model\Product) {
-            $this->_helper->json(array('success' => false, 'message' => 'only Product is allowed'));
+            $this->_helper->json(['success' => false, 'message' => 'only Product is allowed']);
         }
 
         $field = $object->getClass()->getFieldDefinition($this->variantsBrick);
 
         if (!$field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
-            $this->_helper->json(array('success' => false, 'message' => 'variants field has wrong type'));
+            $this->_helper->json(['success' => false, 'message' => 'variants field has wrong type']);
         }
 
         $allowedTypes = $field->getAllowedTypes();
-        $brickFields = array();
+        $brickFields = [];
 
         foreach ($allowedTypes as $type) {
             $definition = \Pimcore\Model\Object\Objectbrick\Definition::getByKey($type);
 
-            $brickFields[] = array(
+            $brickFields[] = [
                 'name' => $definition->getKey(),
-            );
+            ];
         }
 
-        $this->_helper->json(array('success' => true, 'data' => $brickFields));
+        $this->_helper->json(['success' => true, 'data' => $brickFields]);
     }
 
     public function getBrickFieldsAction()
     {
         $key = $this->getParam('key');
 
-        $variantFields = array();
+        $variantFields = [];
         $definition = \Pimcore\Model\Object\Objectbrick\Definition::getByKey($key);
 
         if ($definition instanceof \Pimcore\Model\Object\Objectbrick\Definition) {
             $fieldsInDefinition = $definition->getFieldDefinitions();
 
             foreach ($fieldsInDefinition as $field) {
-                $variantFields[] = array(
+                $variantFields[] = [
                     'type' => $field->getFieldtype(),
                     'name' => $field->getName(),
-                );
+                ];
             }
         }
 
-        $this->_helper->json(array('success' => true, 'data' => $variantFields));
+        $this->_helper->json(['success' => true, 'data' => $variantFields]);
     }
 }

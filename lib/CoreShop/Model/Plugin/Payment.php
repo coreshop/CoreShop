@@ -144,7 +144,8 @@ abstract class Payment implements AbstractPlugin
      *
      * @return array('module', 'controller', 'action')
      */
-    public function processAsync(Cart $cart) {
+    public function processAsync(Cart $cart)
+    {
         throw new UnsupportedException('');
     }
 
@@ -159,10 +160,10 @@ abstract class Payment implements AbstractPlugin
      */
     public function url($module, $action, $params = [])
     {
-        $params = array_merge($params, array("mod" => $module, "act" => $action, "lang" => (string) \Zend_Registry::get("Zend_Locale")));
+        $params = array_merge($params, ["mod" => $module, "act" => $action, "lang" => (string) \Zend_Registry::get("Zend_Locale")]);
 
         $url = \CoreShop::getTools()->url($params, \CoreShop::getTools()->getPaymentRoute());
-        $url = str_replace("/" . strtolower( $this->getName() ), "/" . $this->getName(), $url);
+        $url = str_replace("/" . strtolower($this->getName()), "/" . $this->getName(), $url);
 
         return $url;
     }

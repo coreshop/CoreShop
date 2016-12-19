@@ -14,9 +14,11 @@
 ?>
 
 
-<?php foreach($this->products as $prItem) { ?>
+<?php foreach ($this->products as $prItem) {
+    ?>
     ga('ec:addProduct', <?= \Zend_Json::encode($prItem) ?>);
-<?php } ?>
+<?php 
+} ?>
 
 ga('ec:setAction', 'checkout', <?= json_encode($this->actionData) ?>);
 ga('send','event','Checkout','Step');

@@ -81,7 +81,7 @@ class EnhancedEcommerce extends ClientTracker
 
         $productData = $this->transformProductAction($item);
 
-        $this->track(array("detail" => ['products' => [$productData]]));
+        $this->track(["detail" => ['products' => [$productData]]]);
     }
 
     /**
@@ -94,7 +94,7 @@ class EnhancedEcommerce extends ClientTracker
 
         $productData = $this->transformProductImpression($item);
 
-        $this->track(array("impressions" => [$productData]));
+        $this->track(["impressions" => [$productData]]);
     }
 
     /**
@@ -129,7 +129,7 @@ class EnhancedEcommerce extends ClientTracker
 
         $productData = $this->transformProductAction($item);
 
-        $this->track(array($action => ["products" => [$productData]]));
+        $this->track([$action => ["products" => [$productData]]]);
     }
 
     /**

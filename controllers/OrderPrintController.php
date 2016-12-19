@@ -28,19 +28,21 @@ class CoreShop_OrderPrintController extends \CoreShop\Controller\Action
         $this->view->type = $this->getParam("type");
     }
 
-    public function headerAction() {
-
+    public function headerAction()
+    {
     }
 
-    public function footerAction() {
-
+    public function footerAction()
+    {
     }
 
-    public function invoiceAction() {
+    public function invoiceAction()
+    {
         $this->view->invoice = $this->getParam("invoice");
     }
 
-    public function shipmentAction() {
+    public function shipmentAction()
+    {
         $this->view->shipment = $this->getParam("shipment");
     }
 }

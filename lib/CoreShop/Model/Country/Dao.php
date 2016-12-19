@@ -35,13 +35,14 @@ class Dao extends AbstractDao
      * @param $shopId
      * @return array
      */
-    public function getActiveCountries($shopId) {
+    public function getActiveCountries($shopId)
+    {
         $db = Db::get();
 
         $data = $db->fetchAll('SELECT countries.id FROM ' . $this->getTableName() . ' as countries INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE active = 1', [$shopId]);
         $result = [];
 
-        foreach($data as $entry) {
+        foreach ($data as $entry) {
             $result[] = Country::getById($entry['id']);
         }
 

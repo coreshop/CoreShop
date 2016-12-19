@@ -45,7 +45,8 @@ class PaymentForward extends \Zend_Controller_Action_Helper_Abstract
      * @param array $params
      * @return string
      */
-    public function direct($action, $controller, $module, $params = []) {
+    public function direct($action, $controller, $module, $params = [])
+    {
         Payment::$isActionForward = true;
 
         $result = $this->helper->action($action, $controller, $module, $params);

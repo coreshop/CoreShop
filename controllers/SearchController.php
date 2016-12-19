@@ -27,22 +27,22 @@ class CoreShop_SearchController extends Action
         $page = $this->getParam('page', 1);
         $itemsPerPage = $this->getParam('perPage', 10);
 
-        $query = array(
+        $query = [
             'name LIKE ?',
             'description LIKE ?',
             'shortDescription LIKE ?',
             'metaTitle LIKE ?',
             'metaDescription LIKE ?',
             'articleNumber LIKE ?'
-        );
-        $queryParams = array(
+        ];
+        $queryParams = [
             '%'.$text.'%',
             '%'.$text.'%',
             '%'.$text.'%',
             '%'.$text.'%',
             '%'.$text.'%',
             '%'.$text.'%'
-        );
+        ];
 
         $list = \CoreShop\Model\Product::getList();
         $list->setCondition(implode(' OR ', $query), $queryParams);

@@ -40,7 +40,7 @@ class Service
         $classFields = get_class_vars($class);
 
         // create filter condition
-        $conditionPartsFilters = array();
+        $conditionPartsFilters = [];
 
         if ($filterJson) {
             $db = \Pimcore\Db::get();

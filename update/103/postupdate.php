@@ -14,14 +14,14 @@ $install = new \CoreShop\Plugin\Install();
 $install->createClass('CoreShopProduct', true);
 $install->createClass('CoreShopManufacturer', true);
 
-if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/manufacturer.tmp")) {
+if (file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/manufacturer.tmp")) {
     $mapping = [];
 
     try {
         $manufacturerSerialized = file_get_contents(PIMCORE_TEMPORARY_DIRECTORY . "/manufacturer.tmp");
         $manufacturer = unserialize($manufacturerSerialized);
 
-        foreach($manufacturer as $man) {
+        foreach ($manufacturer as $man) {
             $newMan = \CoreShop\Model\Manufacturer::create();
             $newMan->setName($man['name']);
             $newMan->setImage(\Pimcore\Model\Asset::getById($man['image']));
@@ -32,8 +32,6 @@ if(file_exists(PIMCORE_TEMPORARY_DIRECTORY . "/manufacturer.tmp")) {
 
             $mapping[$man['id']] = $newMan;
         }
-    }
-    catch (\Exception $ex) {
-
+    } catch (\Exception $ex) {
     }
 }

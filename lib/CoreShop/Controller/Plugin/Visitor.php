@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Controller\Plugin;
+
 use CoreShop\Model\Shop;
 use CoreShop\Model\User;
 use CoreShop\Model\Visitor\Page;
@@ -38,12 +39,11 @@ class Visitor extends \Zend_Controller_Plugin_Abstract
      */
     public function preDispatch(\Zend_Controller_Request_Abstract $request)
     {
-        if(Tool::isFrontentRequestByAdmin()) {
+        if (Tool::isFrontentRequestByAdmin()) {
             return;
         }
 
-        if(Tool::isFrontend()) {
-
+        if (Tool::isFrontend()) {
             $session = \CoreShop::getTools()->getSession();
             $visitor = \CoreShop::getTools()->getVisitor();
 

@@ -61,7 +61,8 @@ class Tools
      * @param array $params
      * @return mixed
      */
-    public static function createObject($class, $params = []) {
+    public static function createObject($class, $params = [])
+    {
         if (\Pimcore::getDiContainer()->has($class)) {
             return \Pimcore::getDiContainer()->make($class, $params);
         }
@@ -78,8 +79,8 @@ class Tools
      * @param bool $encode
      * @return string
      */
-    public function url($userParams = [], $name = null, $reset = false, $encode = true) {
-
+    public function url($userParams = [], $name = null, $reset = false, $encode = true)
+    {
         $results = \Pimcore::getEventManager()->trigger("coreshop.url", $this, [
             "name" => $name,
             "params" => $userParams,
@@ -97,8 +98,9 @@ class Tools
     /**
      * @return string
      */
-    public function getPaymentRoute() {
-        if(Configuration::get("SYSTEM.CHECKOUT.OPC") === true) {
+    public function getPaymentRoute()
+    {
+        if (Configuration::get("SYSTEM.CHECKOUT.OPC") === true) {
             return "coreshop_payment_opc";
         }
 
@@ -144,18 +146,18 @@ class Tools
     public function formatPrice($price, $country = null, $currency = null)
     {
         try {
-            if(is_null($country)) {
+            if (is_null($country)) {
                 $country = static::getCountry();
             }
 
-            if(is_null($currency)) {
+            if (is_null($currency)) {
                 $currency = self::getCurrency();
             }
 
             $locale = \Zend_Locale::getLocaleToTerritory($country->getIsoCode());
             $zCurrency = new \Zend_Currency($locale);
 
-            return $zCurrency->toCurrency($price, array('symbol' => $currency->getSymbol()));
+            return $zCurrency->toCurrency($price, ['symbol' => $currency->getSymbol()]);
         } catch (\Exception $ex) {
             echo $ex;
         }
@@ -166,10 +168,11 @@ class Tools
     /**
      * @return bool
      */
-    public function displayPricesWithTax() {
+    public function displayPricesWithTax()
+    {
         $session = $this->getSession();
 
-        if(isset($session->displayPricesWithTax)) {
+        if (isset($session->displayPricesWithTax)) {
             return $session->displayPricesWithTax;
         }
 
@@ -281,7 +284,8 @@ class Tools
      *
      * @return Visitor|null
      */
-    public function getVisitor() {
+    public function getVisitor()
+    {
         $session = \CoreShop::getTools()->getSession();
 
         if (isset($session->visitorId)) {
@@ -308,7 +312,7 @@ class Tools
 
         $session = $this->getSession();
 
-        if($session->user instanceof User) {
+        if ($session->user instanceof User) {
             return User::getById($session->user->getId());
         }
 
@@ -352,7 +356,7 @@ class Tools
             if (is_array($user->getAddresses()) && count($user->getAddresses()) > 0) {
                 $addresses = $user->getAddresses();
 
-                if($addresses[0] instanceof User\Address) {
+                if ($addresses[0] instanceof User\Address) {
                     return $addresses[0];
                 }
             }
@@ -413,7 +417,8 @@ class Tools
      *
      * @return Cart
      */
-    public function getCart($resetCart = false, $name = "default", $create = true) {
+    public function getCart($resetCart = false, $name = "default", $create = true)
+    {
         $cart = null;
         $cartSession = $this->getSession();
 
@@ -432,13 +437,13 @@ class Tools
             }
         }
 
-        if(!$cart instanceof Cart && $this->getUser() instanceof User) {
+        if (!$cart instanceof Cart && $this->getUser() instanceof User) {
             $cart = $this->getCartManager()->getByName($name, $this->getUser());
         }
 
         if ($cart instanceof Cart) {
             //cart does already have a order, reset it!
-            if($cart->getOrder() instanceof Order) {
+            if ($cart->getOrder() instanceof Order) {
                 //reset cartobj first
                 $cartSession->cartObj = null;
                 $cartSession->cartId = null;
@@ -455,7 +460,7 @@ class Tools
             return $cart;
         }
 
-        if($create) {
+        if ($create) {
             $cart = Cart::prepare();
             $this->getCartManager()->setSessionCart($cart);
 
@@ -568,13 +573,13 @@ class Tools
      */
     private function checkIfIpIsPrivate($ip)
     {
-        $pri_addrs = array(
+        $pri_addrs = [
             '10.0.0.0|10.255.255.255', // single class A network
             '172.16.0.0|172.31.255.255', // 16 contiguous class B network
             '192.168.0.0|192.168.255.255', // 256 contiguous class C network
             '169.254.0.0|169.254.255.255', // Link-local address also refered to as Automatic Private IP Addressing
             '127.0.0.0|127.255.255.255', // localhost
-        );
+        ];
 
         $long_ip = ip2long($ip);
         if ($long_ip != -1) {
@@ -618,11 +623,10 @@ class Tools
             if ($currency instanceof Currency) {
                 return $currency;
             }
-        }
-        else {
+        } else {
             $cart = $this->getCart(false, "default", false);
 
-            if($cart instanceof Cart && $cart->getId() > 0 && $cart->getCurrency() instanceof Currency) {
+            if ($cart instanceof Cart && $cart->getId() > 0 && $cart->getCurrency() instanceof Currency) {
                 return $cart->getCurrency();
             }
         }
@@ -643,7 +647,7 @@ class Tools
      */
     public function validateVatNumber($vatNumber)
     {
-        $intracom_array = array(
+        $intracom_array = [
             'AT' => 'AT',
             //Austria
             'BE' => 'BE',
@@ -702,7 +706,7 @@ class Tools
             //Bulgaria
             'HR' => 'HR',
             //Croatia
-        );
+        ];
 
         $vatNumber = str_replace(' ', '', $vatNumber);
         $prefix = substr($vatNumber, 0, 2);
@@ -817,7 +821,8 @@ class Tools
     /**
      * @return mixed
      */
-    public function getReferrer() {
+    public function getReferrer()
+    {
         $referrer = parse_url($_SERVER['HTTP_REFERER']);
         $parsedHost = parse_url(\Pimcore\Tool::getHostUrl());
 
@@ -825,7 +830,7 @@ class Tools
             return false;
         }
 
-        if($referrer['host'] === $parsedHost['host']) {
+        if ($referrer['host'] === $parsedHost['host']) {
             return false;
         }
 

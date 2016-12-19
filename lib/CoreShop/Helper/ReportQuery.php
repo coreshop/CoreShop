@@ -29,9 +29,9 @@ class ReportQuery
      * @param $params
      * @returns string
      */
-    public static function extractFilterDefinition($params = array())
+    public static function extractFilterDefinition($params = [])
     {
-        $allowedFields = array('from', 'to');
+        $allowedFields = ['from', 'to'];
         $conditions = [];
         $db = Db::get();
 
@@ -64,12 +64,13 @@ class ReportQuery
      * @param array $params
      * @return string
      */
-    public static function getSqlSort($params = array()) {
+    public static function getSqlSort($params = [])
+    {
         $sortingSettings = QueryParams::extractSortingSettings($params);
 
         $order = [];
 
-        if($sortingSettings['orderKey']) {
+        if ($sortingSettings['orderKey']) {
             $order[] = $sortingSettings['orderKey'] . " " . $sortingSettings['order'];
         }
 

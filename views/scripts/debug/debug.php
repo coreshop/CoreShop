@@ -11,18 +11,22 @@
         </div>
         <div class="coreshop-debug-panel-body" style="display:none">
             <table class="coreshop-debug-table">
-                <?php if(\Pimcore\Model\Staticroute::getCurrentRoute() instanceof \Pimcore\Model\Staticroute) { ?>
+                <?php if (\Pimcore\Model\Staticroute::getCurrentRoute() instanceof \Pimcore\Model\Staticroute) {
+    ?>
                     <tr>
                         <td>Staticroute</td>
                         <td><?=\Pimcore\Model\Staticroute::getCurrentRoute()->getName()?></td>
                     </tr>
-                <?php } ?>
-                <?php if(\CoreShop\Model\Configuration::multiShopEnabled()) { ?>
+                <?php 
+} ?>
+                <?php if (\CoreShop\Model\Configuration::multiShopEnabled()) {
+    ?>
                     <tr>
                         <td><?=$this->translate("coreshop_shop")?></td>
                         <td><?=CoreShop\Model\Shop::getShop()->getName() ?> (<?=\CoreShop\Model\Shop::getShop()->getId()?>)</td>
                     </tr>
-                <?php } ?>
+                <?php 
+} ?>
                 <tr>
                     <td><?=$this->translate("coreshop_country")?></td>
                     <td><?=\CoreShop::getTools()->getCountry()->getName() ?> (<?=\CoreShop::getTools()->getCountry()->getId()?>)</td>
@@ -32,22 +36,26 @@
                     <td><?=\CoreShop::getTools()->getCurrency()->getName() ?> (<?=\CoreShop::getTools()->getCurrency()->getId()?>)</td>
                 </tr>
 
-                <?php if(\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) { ?>
+                <?php if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
+    ?>
                     <tr>
                         <td><?=$this->translate("coreshop_user")?></td>
                         <td><?=\CoreShop::getTools()->getUser()->getEmail() ?> (<?=\CoreShop::getTools()->getUser()->getId()?>)</td>
                     </tr>
 
-                    <?php foreach(\CoreShop::getTools()->getUser()->getCustomerGroups() as $group) { ?>
+                    <?php foreach (\CoreShop::getTools()->getUser()->getCustomerGroups() as $group) {
+        ?>
                         <tr>
                             <td><?=$this->translate("coreshop_customer_group")?></td>
                             <td><?=$group->getName() ?> (<?=$group->getId()?>)</td>
                         </tr>
-                    <?php } ?>
-                <?php } ?>
+                    <?php 
+    } ?>
+                <?php 
+} ?>
 
-                <?php if($this->product instanceof \CoreShop\Model\Product) {
-                    ?>
+                <?php if ($this->product instanceof \CoreShop\Model\Product) {
+    ?>
                     <tr>
                         <td><?=$this->translate("coreshop_product")?></td>
                         <td><?=$this->product->getName()?> (<?=$this->product->getId()?>)</td>
@@ -63,8 +71,8 @@
                     <?php
                     $priceRules = $this->product->getValidSpecificPriceRules();
 
-                    if(count($priceRules) > 0) {
-                        ?>
+    if (count($priceRules) > 0) {
+        ?>
                         <tr>
                             <td><?=$this->translate("coreshop_price_rules")?></td>
                             <td>
@@ -80,47 +88,56 @@
                                     <?php
                                     $specificPrice = $this->product->getSpecificPrice();
 
-                                    foreach($priceRules as $rule) {
-                                        ?>
+        foreach ($priceRules as $rule) {
+            ?>
                                         <tr>
                                             <td><?=$rule->getName()?></td>
                                             <td><?=\CoreShop::getTools()->formatPrice($rule->getPrice($this->product))?></td>
                                             <td><?=\CoreShop::getTools()->formatPrice($rule->getDiscount($specificPrice, $this->product))?></td>
                                         </tr>
                                         <?php
-                                    }?>
+
+        } ?>
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
-                    <?php } ?>
+                    <?php 
+    } ?>
 
-                    <?php if($this->product->getTaxRule() instanceof \CoreShop\Model\TaxRuleGroup) { ?>
+                    <?php if ($this->product->getTaxRule() instanceof \CoreShop\Model\TaxRuleGroup) {
+        ?>
                         <tr>
                             <td><?=$this->translate("coreshop_taxrulegroups")?></td>
                             <td><?=$this->product->getTaxRule()->getName()?> (<?=$this->product->getTaxRule()->getId()?>)</td>
                         </tr>
-                    <?php } ?>
+                    <?php 
+    } ?>
                     <tr>
                         <td><?=$this->translate("coreshop_tax_rate")?></td>
                         <td><?=\CoreShop::getTools()->formatTax($this->product->getTaxRate())?></td>
                     </tr>
 
-                <?php } ?>
+                <?php 
+} ?>
 
-                <?php if(\CoreShop::getTools()->getCart()->getId()) { ?>
+                <?php if (\CoreShop::getTools()->getCart()->getId()) {
+    ?>
                     <tr>
                         <td><?=$this->translate("coreshop_cart")?></td>
                         <td><?=\CoreShop::getTools()->getCart()->getId()?></td>
                     </tr>
-                <?php } ?>
+                <?php 
+} ?>
 
-                <?php if(\CoreShop::getTools()->getVisitor() instanceof \CoreShop\Model\Visitor) { ?>
+                <?php if (\CoreShop::getTools()->getVisitor() instanceof \CoreShop\Model\Visitor) {
+    ?>
                     <tr>
                         <td><?=$this->translate("coreshop_visitor")?></td>
                         <td><?=\CoreShop::getTools()->getVisitor()->getId()?></td>
                     </tr>
-                <?php } ?>
+                <?php 
+} ?>
             </table>
         </div>
     </div>

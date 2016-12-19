@@ -26,7 +26,7 @@ use Pimcore\Model\Document;
  */
 class State extends AbstractModel
 {
-    protected $localizedValues = array('emailDocument', 'name');
+    protected $localizedValues = ['emailDocument', 'name'];
 
     /**
      * @var string
@@ -112,7 +112,7 @@ class State extends AbstractModel
             if ((bool) Configuration::get('SYSTEM.SHIPMENT.CREATE')) {
                 $shipments = $order->getShipments();
 
-                if(count($shipments) === 0) {
+                if (count($shipments) === 0) {
                     $order->createShipmentForAllItems();
                 }
             }
@@ -126,7 +126,7 @@ class State extends AbstractModel
             if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE')) {
                 $invoices = $order->getInvoices();
 
-                if(count($invoices) === 0) {
+                if (count($invoices) === 0) {
                     $order->createInvoiceForAllItems();
                 }
             }
@@ -155,7 +155,7 @@ class State extends AbstractModel
 
         $note->save();
 
-        \CoreShop::actionHook('orderstate.process.post', array('newOrderStatus' => $this, 'order' => $order));
+        \CoreShop::actionHook('orderstate.process.post', ['newOrderStatus' => $this, 'order' => $order]);
 
         //@TODO: Stock Management
 
@@ -165,7 +165,7 @@ class State extends AbstractModel
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }

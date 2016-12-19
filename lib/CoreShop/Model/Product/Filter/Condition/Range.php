@@ -109,7 +109,7 @@ class Range extends AbstractCondition
         $minValue = count($rawValues) > 0 ? $rawValues[0]['value'] : 0;
         $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues)-1]['value'] : 0;
 
-        return $this->getView()->partial($script, array(
+        return $this->getView()->partial($script, [
             'label' => $this->getLabel(),
             'minValue' => $minValue,
             'maxValue' => $maxValue,
@@ -119,7 +119,7 @@ class Range extends AbstractCondition
             'fieldname' => $this->getField(),
             'stepCount' => $this->getStepCount(),
             'quantityUnit' => $this->getQuantityUnit()
-        ));
+        ]);
     }
 
     /**
@@ -135,7 +135,7 @@ class Range extends AbstractCondition
      */
     public function addCondition(Filter $filter, Listing $list, $currentFilter, $params, $isPrecondition = false)
     {
-        if(array_key_exists($this->getField(), $params)) {
+        if (array_key_exists($this->getField(), $params)) {
             $values = explode(",", $params[$this->getField()]);
 
             $params[$this->getField().'-min'] = $values[0];
@@ -166,7 +166,7 @@ class Range extends AbstractCondition
         if (!empty($valueMin) && !empty($valueMax)) {
             $fieldName = $this->getField();
 
-            if($isPrecondition) {
+            if ($isPrecondition) {
                 $fieldName = 'PRECONDITION_' . $fieldName;
             }
 

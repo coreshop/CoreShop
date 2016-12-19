@@ -89,10 +89,10 @@ class Dao extends AbstractDao
                 }
             }
 
-            $insertData = array(
+            $insertData = [
                 'ooo_id' => $this->model->getObject()->getId(),
                 'language' => $language,
-            );
+            ];
 
             foreach ($localizedFields as $field) {
                 $insertData[$field] = $this->model->getLocalizedValue($field, $language, true);
@@ -101,12 +101,12 @@ class Dao extends AbstractDao
             $this->db->insertOrUpdate($this->getLocalizedTableName(), $insertData);
 
             // query table
-            $data = array();
+            $data = [];
             $data['ooo_id'] = $this->model->getObject()->getId();
             $data['language'] = $language;
 
             // get fields which shouldn't be updated
-            $untouchable = array();
+            $untouchable = [];
 
             foreach ($this->model->getFields() as $key) {
                 if (!(in_array($key, $untouchable) and !is_array($this->model->$key))) {
@@ -280,7 +280,7 @@ QUERY;
 
         $existingColumns = $this->getValidTableColumns($table, false); // no caching of table definition
         $columnsToRemove = $existingColumns;
-        $protectedColumns = array('ooo_id', 'language');
+        $protectedColumns = ['ooo_id', 'language'];
 
         foreach ($this->model->getFields() as $field) {
             $this->addModifyColumn($table, $field, 'varchar(255)', '', 'NULL');
@@ -304,7 +304,7 @@ QUERY;
                 ) DEFAULT CHARSET=utf8;");
 
             // create object table if not exists
-            $protectedColumns = array('ooo_id', 'language');
+            $protectedColumns = ['ooo_id', 'language'];
 
             $existingColumns = $this->getValidTableColumns($queryTable, false); // no caching of table definition
             $columnsToRemove = $existingColumns;

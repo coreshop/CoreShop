@@ -30,13 +30,13 @@ class CoreShop_CartListController extends Action
         parent::preDispatch();
 
         if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language], 'coreshop_index'));
             exit;
         }
 
         //CartList is not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect(\CoreShop::getTools()->url(array(), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url([], 'coreshop_index'));
         }
 
         $this->prepareCart();
@@ -47,30 +47,32 @@ class CoreShop_CartListController extends Action
         $this->view->carts = \CoreShop::getTools()->getCartManager()->getCarts(\CoreShop::getTools()->getUser());
     }
 
-    public function detailAction() {
+    public function detailAction()
+    {
         $cartId = $this->getParam("id");
         $cart = \CoreShop\Model\Cart::getById($cartId);
 
-        if(!$cart instanceof \CoreShop\Model\Cart) {
+        if (!$cart instanceof \CoreShop\Model\Cart) {
             $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
         }
 
-        if(!$cart->getUser() instanceof \CoreShop\Model\User || $cart->getUser()->getId() != \CoreShop::getTools()->getUser()->getId()) {
+        if (!$cart->getUser() instanceof \CoreShop\Model\User || $cart->getUser()->getId() != \CoreShop::getTools()->getUser()->getId()) {
             $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
         }
 
         $this->view->cart = $cart;
     }
 
-    public function activateAction() {
+    public function activateAction()
+    {
         $cartId = $this->getParam("id");
         $cart = \CoreShop\Model\Cart::getById($cartId);
 
-        if(!$cart instanceof \CoreShop\Model\Cart) {
+        if (!$cart instanceof \CoreShop\Model\Cart) {
             $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
         }
 
-        if(!$cart->getUser() instanceof \CoreShop\Model\User || $cart->getUser()->getId() != \CoreShop::getTools()->getUser()->getId()) {
+        if (!$cart->getUser() instanceof \CoreShop\Model\User || $cart->getUser()->getId() != \CoreShop::getTools()->getUser()->getId()) {
             $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
         }
 
@@ -79,21 +81,23 @@ class CoreShop_CartListController extends Action
         $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
     }
 
-    public function saveAction() {
+    public function saveAction()
+    {
         \CoreShop::getTools()->getCartManager()->setSessionCart(\CoreShop::getTools()->getCartManager()->createCart("default", \CoreShop::getTools()->getUser()));
 
         $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $cartId = $this->getParam("id");
         $cart = \CoreShop\Model\Cart::getById($cartId);
 
-        if(!$cart instanceof \CoreShop\Model\Cart) {
+        if (!$cart instanceof \CoreShop\Model\Cart) {
             $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
         }
 
-        if(!$cart->getUser() instanceof \CoreShop\Model\User || $cart->getUser()->getId() != \CoreShop::getTools()->getUser()->getId()) {
+        if (!$cart->getUser() instanceof \CoreShop\Model\User || $cart->getUser()->getId() != \CoreShop::getTools()->getUser()->getId()) {
             $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
         }
 

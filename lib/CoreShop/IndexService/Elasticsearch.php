@@ -61,8 +61,9 @@ class Elasticsearch extends AbstractWorker
     /**
      * @return Client
      */
-    public function getElasticsearchClient() {
-        if(is_null($this->client)) {
+    public function getElasticsearchClient()
+    {
+        if (is_null($this->client)) {
             $builder = ClientBuilder::create();
             $builder->setHosts(explode(",", $this->config->getHosts()));
             $this->client = $builder->build();
@@ -80,23 +81,20 @@ class Elasticsearch extends AbstractWorker
             $params = ['index' => $this->getIndex()->getName()];
 
             $this->getElasticsearchClient()->indices()->delete($params);
-        }
-        catch(\Exception $ex) {
-
+        } catch (\Exception $ex) {
         }
 
         $result = $this->getElasticsearchClient()->indices()->exists(['index' => $this->getIndex()->getName()]);
-        if(!$result) {
+        if (!$result) {
             $result = $this->getElasticsearchClient()->indices()->create(['index' => $this->getIndex()->getName(), 'body' => ['settings' => ["number_of_shards" => 5, "number_of_replicas" => 0]]]); //TODO: add to ui
             Logger::info('Creating new Index. Name: ' . $this->getIndex()->getName());
-            if(!$result['acknowledged']) {
+            if (!$result['acknowledged']) {
                 throw new \Exception("Index creation failed. IndexName: " . $this->getIndex()->getName());
             }
 
             //index didn't exist -> reset index queue to make sure all products get reindexed
             //$this->resetIndexingQueue();
-        }
-        else {
+        } else {
             $this->getElasticsearchClient()->indices()->delete(['index' => $this->getIndex()->getName()]);
         }
 
@@ -105,16 +103,16 @@ class Elasticsearch extends AbstractWorker
         $systemColumns = $this->getSystemAttributes();
         $columnConfig = $this->getColumnsConfiguration();
 
-        foreach($systemColumns as $column => $type) {
-            $properties[$column] = array(
+        foreach ($systemColumns as $column => $type) {
+            $properties[$column] = [
                 'type' => $type
-            );
+            ];
         }
 
         foreach ($columnConfig as $column) {
-            $properties[$column->getName()] = array(
+            $properties[$column->getName()] = [
                 'type' => $column->getColumnType()
-            );
+            ];
         }
 
         $params = [
@@ -129,9 +127,8 @@ class Elasticsearch extends AbstractWorker
 
         try {
             $result = $this->getElasticsearchClient()->indices()->putMapping($params);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             Logger::info($e->getMessage());
-
         }
     }
 
@@ -209,8 +206,9 @@ class Elasticsearch extends AbstractWorker
      * @return string
      * @throws \Exception
      */
-    public function renderCondition(Condition $condition) {
-        switch($condition->getType()) {
+    public function renderCondition(Condition $condition)
+    {
+        switch ($condition->getType()) {
 
             case "in":
                 $rendered = ["terms" => [
@@ -251,7 +249,7 @@ class Elasticsearch extends AbstractWorker
 
                 $patternValue = '';
 
-                switch($pattern) {
+                switch ($pattern) {
                     case "left":
                         $patternValue = '*' . $value;
                         break;
@@ -274,8 +272,8 @@ class Elasticsearch extends AbstractWorker
                 $value = $values['value'];
                 $operator = $values['operator'];
 
-                if($operator === "=" || $operator === "!=") {
-                    if($operator === "!=") {
+                if ($operator === "=" || $operator === "!=") {
+                    if ($operator === "!=") {
                         $rendered = ["not" =>
                             [
                                 "term" => [
@@ -283,14 +281,12 @@ class Elasticsearch extends AbstractWorker
                                 ]
                             ]
                         ];
-                    }
-                    else {
+                    } else {
                         $rendered = ["term" => [
                             $condition->getFieldName() => $condition->getValues()
                         ]];
                     }
-                }
-                else {
+                } else {
                     $map = [
                         ">" => "gt",
                         ">=" => "gte",
@@ -298,14 +294,13 @@ class Elasticsearch extends AbstractWorker
                         "<=" => "lte"
                     ];
 
-                    if(array_key_exists($operator, $map)) {
+                    if (array_key_exists($operator, $map)) {
                         $rendered = ["range" => [
                             $condition->getFieldName() => [
                                 $map[$operator] => $value
                             ]
                         ]];
-                    }
-                    else {
+                    } else {
                         throw new \Exception($operator . " is not supported for compare method");
                     }
                 }
@@ -335,6 +330,6 @@ class Elasticsearch extends AbstractWorker
      */
     protected function getSystemAttributes()
     {
-        return array('o_id' => "long", 'o_key' => 'string', 'o_classId' => "string", 'o_type' => "string", 'categoryIds' => "long", 'parentCategoryIds' => "long", 'active' => "boolean", 'shops' => "long", 'minPrice' => 'double', 'maxPrice' => 'double');
+        return ['o_id' => "long", 'o_key' => 'string', 'o_classId' => "string", 'o_type' => "string", 'categoryIds' => "long", 'parentCategoryIds' => "long", 'active' => "boolean", 'shops' => "long", 'minPrice' => 'double', 'maxPrice' => 'double'];
     }
 }

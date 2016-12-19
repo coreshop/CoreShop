@@ -9,6 +9,6 @@ foreach ($data as $d) {
     $columns[] = $d["Field"];
 }
 
-if(!in_array('similarities', $columns)) {
+if (!in_array('similarities', $columns)) {
     $db->query("ALTER TABLE `coreshop_product_filters` ADD `similarities` text NOT NULL;");
 }

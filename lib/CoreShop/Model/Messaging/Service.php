@@ -40,24 +40,24 @@ class Service
     public static function handleRequestAndCreateThread($params, $language, $sendContact = true, $sendCustomer = true)
     {
         if (!$params['contact']) {
-            return array(
+            return [
                 'success' => false,
                 'message' => 'Subject is not set',
-            );
+            ];
         }
 
         if (!$params['message']) {
-            return array(
+            return [
                 'success' => false,
                 'message' => 'Message is not set',
-            );
+            ];
         }
 
         if (!$params['email']) {
-            return array(
+            return [
                 'success' => false,
                 'message' => 'E-Mail is not set',
-            );
+            ];
         }
 
         $thread = Thread::getByField('token', $params['token']);
@@ -124,10 +124,10 @@ class Service
             $message->sendNotification($customerInfoMail, $thread->getEmail());
         }
 
-        return array(
+        return [
             'success' => true,
             'message' => $message,
             'thread' => $thread,
-        );
+        ];
     }
 }

@@ -87,7 +87,7 @@ class Conditions extends AbstractCondition
      */
     public function checkConditionCart(Cart $cart, PriceRule $priceRule, $throwException = false)
     {
-        return $this->check(function($condition) use ($cart, $priceRule, $throwException) {
+        return $this->check(function ($condition) use ($cart, $priceRule, $throwException) {
             return $condition->checkConditionCart($cart, $priceRule, $throwException);
         });
     }
@@ -102,7 +102,7 @@ class Conditions extends AbstractCondition
      */
     public function checkConditionProduct(ProductModel $product, ProductModel\AbstractProductPriceRule $priceRule)
     {
-        return $this->check(function($condition) use ($product, $priceRule) {
+        return $this->check(function ($condition) use ($product, $priceRule) {
             return $condition->checkConditionProduct($product, $priceRule);
         });
     }
@@ -117,16 +117,15 @@ class Conditions extends AbstractCondition
         $operator = $this->getOperator();
         $valid = null;
 
-        foreach($this->getConditions() as $condition) {
+        foreach ($this->getConditions() as $condition) {
             $valid = $checkCondition($condition);
 
             if ($operator === "and") {
-                if(!$valid) {
+                if (!$valid) {
                     return false;
                 }
-            }
-            else if($operator === "or") {
-                if($valid) {
+            } elseif ($operator === "or") {
+                if ($valid) {
                     return true;
                 }
             }

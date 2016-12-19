@@ -35,7 +35,7 @@ class ObjectId extends AbstractInterpreter
      */
     public function interpret($value, $config = null)
     {
-        if($value instanceof AbstractObject) {
+        if ($value instanceof AbstractObject) {
             return $value->getId();
         }
 

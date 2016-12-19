@@ -28,14 +28,14 @@ class CoreShop_UserController extends Action
 
         //Users are not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
-            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
+            $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language], 'coreshop_index'));
         }
 
         $allowedActionsWithoutLogin = ['login', 'register', 'guest-order-tracking'];
 
         if (!in_array($this->getRequest()->getActionName(), $allowedActionsWithoutLogin)) {
             if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-                $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
+                $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language], 'coreshop_index'));
                 exit;
             }
         }
@@ -53,23 +53,25 @@ class CoreShop_UserController extends Action
     {
     }
 
-    public function orderDetailAction() {
+    public function orderDetailAction()
+    {
         $order = $this->getParam("id");
         $order = \CoreShop\Model\Order::getById($order);
 
-        if(!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
         }
 
-        if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
+        if (!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
+            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
         }
 
         $this->view->messageSent = $this->getParam("messageSent", false);
         $this->view->order = $order;
     }
 
-    public function orderDetailMessageAction() {
+    public function orderDetailMessageAction()
+    {
         $order = $this->getParam("id");
         $messageText = $this->getParam("text");
         $product = $this->getParam("product");
@@ -77,16 +79,16 @@ class CoreShop_UserController extends Action
         $order = \CoreShop\Model\Order::getById($order);
         $product = \CoreShop\Model\Product::getById($product);
 
-        if(!$product instanceof CoreShop\Model\Product) {
+        if (!$product instanceof CoreShop\Model\Product) {
             $product = null;
         }
 
-        if(!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
         }
 
-        if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
+        if (!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
+            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
         }
 
         $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
@@ -103,7 +105,7 @@ class CoreShop_UserController extends Action
             $thread->setToken(uniqid());
             $thread->setOrder($order);
 
-            if($product instanceof \CoreShop\Model\Product) {
+            if ($product instanceof \CoreShop\Model\Product) {
                 $thread->setProduct($product);
             }
 
@@ -115,33 +117,35 @@ class CoreShop_UserController extends Action
         $contactEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
         $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
 
-        $this->redirect(\CoreShop::getTools()->url(array("act" => "order-detail", "id" => $order->getId(), "messageSent" => true), "coreshop_user", true));
+        $this->redirect(\CoreShop::getTools()->url(["act" => "order-detail", "id" => $order->getId(), "messageSent" => true], "coreshop_user", true));
     }
 
-    public function orderReorderAction() {
+    public function orderReorderAction()
+    {
         $order = $this->getParam("id");
         $order = \CoreShop\Model\Order::getById($order);
 
-        if(!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
+        if (!$order instanceof \CoreShop\Model\Order) {
+            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
         }
 
-        if(!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(array("act" => "orders",  "lang" => $this->language), "coreshop_user", true));
+        if (!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
+            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
         }
 
         $this->cart->addOrderToCart($order, true);
 
-        $this->redirect(\CoreShop::getTools()->url(array("act" => "list", "lang" => $this->language), "coreshop_cart", true));
+        $this->redirect(\CoreShop::getTools()->url(["act" => "list", "lang" => $this->language], "coreshop_cart", true));
     }
 
-    public function downloadVirtualProductAction() {
+    public function downloadVirtualProductAction()
+    {
         $orderItemId = $this->getParam("id");
 
         $orderItem = \CoreShop\Model\Order\Item::getById($orderItemId);
 
-        if($orderItem instanceof \CoreShop\Model\Order\Item) {
-            if($orderItem->getVirtualAsset() instanceof \Pimcore\Model\Asset) {
+        if ($orderItem instanceof \CoreShop\Model\Order\Item) {
+            if ($orderItem->getVirtualAsset() instanceof \Pimcore\Model\Asset) {
                 $order = $orderItem->getOrder();
 
                 if ($order instanceof \CoreShop\Model\Order && $order->getIsPayed()) {
@@ -165,7 +169,7 @@ class CoreShop_UserController extends Action
     private function serveFile(\Pimcore\Model\Asset $asset)
     {
         $size = $asset->getFileSize('noformatting');
-        $quoted = sprintf('"%s"', addcslashes( basename($asset->getFilename()), '"\\') );
+        $quoted = sprintf('"%s"', addcslashes(basename($asset->getFilename()), '"\\'));
 
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
@@ -178,10 +182,9 @@ class CoreShop_UserController extends Action
         header('Content-Length: ' . $size);
 
         set_time_limit(0);
-        $file = @fopen(PIMCORE_ASSET_DIRECTORY . $asset->getFullPath(),'rb');
-        while(!feof($file))
-        {
-            print( @fread($file, 1024*8) );
+        $file = @fopen(PIMCORE_ASSET_DIRECTORY . $asset->getFullPath(), 'rb');
+        while (!feof($file)) {
+            print(@fread($file, 1024*8));
             ob_flush();
             flush();
         }
@@ -223,16 +226,16 @@ class CoreShop_UserController extends Action
         \CoreShop::getTools()->unsetUser();
         $this->session->cartId = null;
 
-        $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language), 'coreshop_index'));
+        $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language], 'coreshop_index'));
     }
 
     public function loginAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
+            $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'profile'], 'coreshop_user'));
         }
 
-        $redirect = $this->getParam('_redirect', \CoreShop::getTools()->url(array('act' => 'address'), 'coreshop_checkout'));
+        $redirect = $this->getParam('_redirect', \CoreShop::getTools()->url(['act' => 'address'], 'coreshop_checkout'));
         $base = $this->getParam('_base');
 
         if ($this->getRequest()->isPost()) {
@@ -274,14 +277,14 @@ class CoreShop_UserController extends Action
     public function registerAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
+            $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'profile'], 'coreshop_user'));
         }
 
         if ($this->getRequest()->isPost()) {
             $params = $this->getAllParams();
 
-            $addressParams = array();
-            $userParams = array();
+            $addressParams = [];
+            $userParams = [];
 
             foreach ($params as $key => $value) {
                 if (startsWith($key, 'address_')) {
@@ -294,10 +297,10 @@ class CoreShop_UserController extends Action
             }
 
             //if address firstname or lastname is missing ( in guest checkout for example ), use the user information!
-            if( empty( $addressParams['firstname'] )) {
+            if (empty($addressParams['firstname'])) {
                 $addressParams['firstname'] = $userParams['firstname'];
             }
-            if( empty( $addressParams['lastname'] )) {
+            if (empty($addressParams['lastname'])) {
                 $addressParams['lastname'] = $userParams['lastname'];
             }
 
@@ -351,7 +354,7 @@ class CoreShop_UserController extends Action
 
                 $addresses = $user->getAddresses();
 
-                if(!is_array($addresses)) {
+                if (!is_array($addresses)) {
                     $addresses = [];
                 }
 
@@ -367,14 +370,14 @@ class CoreShop_UserController extends Action
                     $this->cart->save();
                 }
 
-                \Pimcore::getEventManager()->trigger('coreshop.user.postAdd', $this, array('request' => $this->getRequest(), 'user' => $user));
+                \Pimcore::getEventManager()->trigger('coreshop.user.postAdd', $this, ['request' => $this->getRequest(), 'user' => $user]);
 
                 \CoreShop::getTools()->setUser($user);
 
                 if (array_key_exists('_redirect', $params)) {
                     $this->redirect($params['_redirect']);
                 } else {
-                    $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
+                    $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'profile'], 'coreshop_user'));
                 }
             } catch (\Exception $ex) {
                 if (array_key_exists('_error', $params)) {
@@ -392,7 +395,7 @@ class CoreShop_UserController extends Action
 
     public function addressAction()
     {
-        $this->view->redirect = $this->getParam('redirect', \CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'addresses'), 'coreshop_user', true));
+        $this->view->redirect = $this->getParam('redirect', \CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'addresses'], 'coreshop_user', true));
         $update = intval($this->getParam('address'));
         $this->view->isNew = false;
 
@@ -414,7 +417,7 @@ class CoreShop_UserController extends Action
             try {
                 $params = $this->getAllParams();
 
-                $addressParams = array();
+                $addressParams = [];
 
                 foreach ($params as $key => $value) {
                     if (startsWith($key, 'address_')) {
@@ -445,7 +448,6 @@ class CoreShop_UserController extends Action
                 $this->view->address->setCountry(Country::getById($addressParams['country']));
 
                 if ($this->view->isNew) {
-
                     $this->view->address->setKey(\Pimcore\File::getValidFilename($addressParams['name']));
                     $this->view->address->setKey(\Pimcore\Model\Object\Service::getUniqueKey($this->view->address));
                     $this->view->address->setPublished(true);
@@ -453,7 +455,6 @@ class CoreShop_UserController extends Action
 
                     $addresses[] = $this->view->address;
                     \CoreShop::getTools()->getUser()->setAddresses($addresses);
-
                 } else {
                     $this->view->address->save();
                 }
@@ -476,7 +477,7 @@ class CoreShop_UserController extends Action
         $address = intval($this->getParam('address'));
         $address = \CoreShop\Model\User\Address::getById($address);
 
-        if($address instanceof \CoreShop\Model\User\Address) {
+        if ($address instanceof \CoreShop\Model\User\Address) {
             $found = false;
 
             foreach (\CoreShop::getTools()->getUser()->getAddresses() as $adr) {
@@ -491,18 +492,19 @@ class CoreShop_UserController extends Action
             }
         }
 
-        $this->redirect(CoreShop::getTools()->url(array("lang" => $this->language, "act" => "addresses"), "coreshop_user", true));
+        $this->redirect(CoreShop::getTools()->url(["lang" => $this->language, "act" => "addresses"], "coreshop_user", true));
     }
 
-    public function guestOrderTrackingAction() {
+    public function guestOrderTrackingAction()
+    {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
-            $this->redirect(\CoreShop::getTools()->url(array('lang' => $this->language, 'act' => 'profile'), 'coreshop_user'));
+            $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'profile'], 'coreshop_user'));
         }
 
         $orderReference = $this->getParam("orderReference");
         $email = $this->getParam("email");
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $order = \CoreShop\Model\Order::findByOrderNumber($orderReference);
             try {
                 if ($order instanceof \CoreShop\Model\Order) {
@@ -519,8 +521,7 @@ class CoreShop_UserController extends Action
                     } else {
                         throw new \Exception($this->view->translate("Order invalid"));
                     }
-                }
-                else {
+                } else {
                     throw new \Exception($this->view->translate("Order reference/email not found!"));
                 }
             } catch (\Exception $ex) {
