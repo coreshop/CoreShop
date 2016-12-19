@@ -64,7 +64,7 @@ if( !\CoreShop\Model\Order\State::getByIdentifier('PENDING_PAYMENT') instanceof 
 
     $title = ['de' => 'Ausstehende Bezahlung', 'en' => 'pending payment'];
     foreach($languages as $lang) {
-        $state->setName( isset($title[$lang]) ? $title[$lang] : 'pending payment' );
+        $state->setName( ( isset($title[$lang]) ? $title[$lang] : 'pending payment' ), $lang );
     }
 
     $state->setIdentifier('PAYMENT_PENDING');
