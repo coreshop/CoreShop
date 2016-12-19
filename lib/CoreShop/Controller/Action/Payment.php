@@ -101,9 +101,9 @@ class Payment extends Action
 
         */
 
-        if ($this->getParam("opc", false)) {
+        if ($this->getParam('opc', false)) {
             $this->opc = true;
-            $this->checkoutController = "checkout-opc";
+            $this->checkoutController = 'checkout-opc';
 
             $this->disableLayout();
         }
@@ -124,13 +124,33 @@ class Payment extends Action
     }
 
     /**
-     * Payment Action.
+     * Creates Order
      *
-     * @throws UnsupportedException
+     * @param $language
+     * @param Order\State|null $state
+     * @return Order
+     */
+    protected function createOrder($language, Order\State $state = null)
+    {
+        if(!$state instanceof Order\State) {
+            $state = Order\State::getByIdentifier('PAYMENT_PENDING');
+        }
+
+        return $this->cart->createOrder(
+            $state,
+            $this->getModule(),
+            $this->cart->getTotal(),
+            $language
+        );
+    }
+
+    /**
+     * Payment Action.
      */
     public function paymentAction()
     {
-        throw new UnsupportedException('This Method has to implemented by the Plugin Controller');
+        //Overwrite this Method in your Payment-Controller and call the parent to set the order
+        $this->order = $this->createOrder($this->language);
     }
 
     /**
@@ -139,7 +159,7 @@ class Payment extends Action
     public function validateAction()
     {
         if (!$this->opc) {
-            $this->coreShopForward("validate", $this->checkoutController, "CoreShop", ["paymentViewScript" => $this->getViewScript()]);
+            $this->coreShopForward('validate', $this->checkoutController, 'CoreShop', ['paymentViewScript' => $this->getViewScript()]);
         }
     }
 
@@ -151,16 +171,16 @@ class Payment extends Action
         $this->view->order = $this->session->order;
 
         $forwardParams = [
-            "module" => $this->getModule()
+            'module' => $this->getModule()
         ];
 
         if ($this->view->order instanceof Order) {
             $forwardParams['order'] = $this->view->order;
             $forwardParams['paymentViewScript'] = $this->getViewScript();
 
-            $this->coreShopForward("confirmation", $this->checkoutController, "CoreShop", $forwardParams);
+            $this->coreShopForward('confirmation', $this->checkoutController, 'CoreShop', $forwardParams);
         } else {
-            $this->coreShopForward("error", $this->checkoutController, "CoreShop", $forwardParams);
+            $this->coreShopForward('error', $this->checkoutController, 'CoreShop', $forwardParams);
         }
     }
 }
