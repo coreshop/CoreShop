@@ -1076,15 +1076,6 @@ class Order extends Base
             }
         }
 
-        $orderState = $this->getOrderState();
-
-        if ($orderState instanceof Order\State) {
-            if ($orderState->getInvoice()) {
-                //TODO: Should this still be done?
-                //$this->getInvoice(); //Re-Generate Invoice if it does not exist
-            }
-        }
-
         Version::enable();
 
         parent::save();
@@ -1189,26 +1180,6 @@ class Order extends Base
         $threadList = Thread::searchThread($this->getCustomer()->getEmail(), null, $this->getShop()->getId(), $this->getId(), null, true);
 
         return $threadList;
-    }
-
-    /**
-     * @return Order\State
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getOrderState()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param Order\State $orderState
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setOrderState($orderState)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**

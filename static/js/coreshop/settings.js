@@ -111,7 +111,9 @@ pimcore.plugin.coreshop.settings = Class.create({
     },
 
     getTabPanel: function () {
+
         if (!this.panel) {
+
             var me = this;
 
             this.panel = Ext.create('Ext.panel.Panel', {
@@ -141,6 +143,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     }
                 }
             });
+
             this.exchangeRatesStore.load();
 
             this.messagingContactStore = pimcore.globalmanager.get('coreshop_messaging_contacts');
@@ -163,7 +166,8 @@ pimcore.plugin.coreshop.settings = Class.create({
                 ]
             });
 
-            this.noMultishopPanel = Ext.create('Ext.form.Panel', {
+            this.systemSettingsPanel = Ext.create('Ext.form.Panel', {
+
                 title: t('coreshop_system_settings'),
                 border: false,
                 autoScroll: true,
@@ -254,7 +258,6 @@ pimcore.plugin.coreshop.settings = Class.create({
                                     change: function (checkbox, newValue) {
                                         checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setHidden(!newValue);
                                         checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setDisabled(!newValue);
-
                                         checkbox.up('fieldset').down('label').setHidden(!newValue);
                                     }
                                 }
@@ -282,7 +285,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                                 hidden: !this.getSystemValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
                             }
                         ]
-                    },
+                    }
                 ]
             });
 
@@ -303,9 +306,11 @@ pimcore.plugin.coreshop.settings = Class.create({
                 this.layout.add(shopPanel);
             }
 
-            this.layout.add(this.noMultishopPanel);
+            this.layout.add(this.systemSettingsPanel);
+            this.layout.add(this.mailPanel);
 
             this.panel.add(this.layout);
+
             this.layout.setActiveItem(0);
 
             pimcore.layout.refresh();
@@ -328,14 +333,14 @@ pimcore.plugin.coreshop.settings = Class.create({
             }
         }
 
-        var data = this.noMultishopPanel.getForm().getFieldValues();
+        var systemSettingsFieldValues = this.systemSettingsPanel.getForm().getFieldValues();
 
         Ext.Ajax.request({
             url: '/plugin/CoreShop/admin_settings/set',
             method: 'post',
             params: {
                 values: Ext.encode(values),
-                systemValues : Ext.encode(data)
+                systemValues : Ext.encode( systemSettingsFieldValues )
             },
             success: function (response) {
                 try {
@@ -392,10 +397,14 @@ pimcore.plugin.coreshop.settings = Class.create({
     },
 
     getConfigFormForShop : function (shopId) {
-        var me = this;
-        var messagingLangTabs = [];
-        var store = pimcore.globalmanager.get('coreshop_shops');
-        var shop = store.getById(shopId);
+
+        var me = this,
+            messagingLangTabs = [],
+            orderStatesTabs = [],
+            shopPanel,
+            store = pimcore.globalmanager.get('coreshop_shops'),
+            shop = store.getById(shopId);
+
         if (!shop) {
             alert('SHOP NOT FOUND!');
             return;
@@ -421,38 +430,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         labelWidth: 350,
                         fieldCls: 'pimcore_droptarget_input',
                         xtype: 'textfield',
-                        listeners: {
-                            render: function (el) {
-                                new Ext.dd.DropZone(el.getEl(), {
-                                    reference: this,
-                                    ddGroup: 'element',
-                                    getTargetFromEvent: function (e) {
-                                        return this.getEl();
-                                    }.bind(el),
-
-                                    onNodeOver: function (target, dd, e, data) {
-                                        data = data.records[0].data;
-
-                                        if (data.elementType == 'document') {
-                                            return Ext.dd.DropZone.prototype.dropAllowed;
-                                        }
-
-                                        return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                    },
-
-                                    onNodeDrop: function (target, dd, e, data) {
-                                        data = data.records[0].data;
-
-                                        if (data.elementType == 'document') {
-                                            this.setValue(data.id);
-                                            return true;
-                                        }
-
-                                        return false;
-                                    }.bind(el)
-                                });
-                            }
-                        }
+                        listeners: me._getMailTemplateDropAreaListener()
                     },
                     {
                         name: 'SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang,
@@ -461,38 +439,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         labelWidth: 350,
                         fieldCls: 'pimcore_droptarget_input',
                         xtype: 'textfield',
-                        listeners: {
-                            render: function (el) {
-                                new Ext.dd.DropZone(el.getEl(), {
-                                    reference: this,
-                                    ddGroup: 'element',
-                                    getTargetFromEvent: function (e) {
-                                        return this.getEl();
-                                    }.bind(el),
-
-                                    onNodeOver: function (target, dd, e, data) {
-                                        data = data.records[0].data;
-
-                                        if (data.elementType == 'document') {
-                                            return Ext.dd.DropZone.prototype.dropAllowed;
-                                        }
-
-                                        return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                    },
-
-                                    onNodeDrop: function (target, dd, e, data) {
-                                        data = data.records[0].data;
-
-                                        if (data.elementType == 'document') {
-                                            this.setValue(data.id);
-                                            return true;
-                                        }
-
-                                        return false;
-                                    }.bind(el)
-                                });
-                            }
-                        }
+                        listeners: me._getMailTemplateDropAreaListener()
                     },
                     {
                         name: 'SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang,
@@ -501,44 +448,39 @@ pimcore.plugin.coreshop.settings = Class.create({
                         labelWidth: 350,
                         fieldCls: 'pimcore_droptarget_input',
                         xtype: 'textfield',
-                        listeners: {
-                            render: function (el) {
-                                new Ext.dd.DropZone(el.getEl(), {
-                                    reference: this,
-                                    ddGroup: 'element',
-                                    getTargetFromEvent: function (e) {
-                                        return this.getEl();
-                                    }.bind(el),
-
-                                    onNodeOver: function (target, dd, e, data) {
-                                        data = data.records[0].data;
-
-                                        if (data.elementType == 'document') {
-                                            return Ext.dd.DropZone.prototype.dropAllowed;
-                                        }
-
-                                        return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                    },
-
-                                    onNodeDrop: function (target, dd, e, data) {
-                                        data = data.records[0].data;
-
-                                        if (data.elementType == 'document') {
-                                            this.setValue(data.id);
-                                            return true;
-                                        }
-
-                                        return false;
-                                    }.bind(el)
-                                });
-                            }
-                        }
+                        listeners: me._getMailTemplateDropAreaListener()
                     }
                 ]
-            })
+            });
+
+            orderStatesTabs.push({
+                title: pimcore.available_languages[lang],
+                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
+                layout: 'form',
+                items: [
+                    {
+                        name: 'SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' + shortLang,
+                        value: me.getValue(shopId, 'SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' + shortLang),
+                        fieldLabel: t('coreshop_order_states_confirmation_mail'),
+                        labelWidth: 350,
+                        fieldCls: 'pimcore_droptarget_input',
+                        xtype: 'textfield',
+                        listeners: me._getMailTemplateDropAreaListener()
+                    },
+                    {
+                        name: 'SYSTEM.MAIL.ORDER.STATES.UPDATE.' + shortLang,
+                        value: me.getValue(shopId, 'SYSTEM.MAIL.ORDER.STATES.UPDATE.' + shortLang),
+                        fieldLabel: t('coreshop_order_states_update_mail'),
+                        labelWidth: 350,
+                        fieldCls: 'pimcore_droptarget_input',
+                        xtype: 'textfield',
+                        listeners: me._getMailTemplateDropAreaListener()
+                    }
+                ]
+            });
         });
 
-        var shopPanel = Ext.create('Ext.form.Panel', {
+        shopPanel = Ext.create('Ext.form.Panel', {
             title : shop.get('name'),
             border: false,
             autoScroll: true,
@@ -629,17 +571,6 @@ pimcore.plugin.coreshop.settings = Class.create({
                     defaultType: 'textfield',
                     defaults: { width: 600 },
                     items: [
-                        {
-                            xtype: 'tabpanel',
-                            activeTab: 0,
-                            width: '100%',
-                            defaults: {
-                                autoHeight: true,
-                                bodyStyle: 'padding:10px;'
-                            },
-                            items: messagingLangTabs
-
-                        },
                         {
                             xtype: 'combo',
                             fieldLabel: t('coreshop_messaging_contact_sales'),
@@ -872,38 +803,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                             cls: 'input_drop_target',
                             value: this.getValue(shopId, 'SYSTEM.PRODUCT.DEFAULTIMAGE'),
                             xtype: 'textfield',
-                            listeners: {
-                                render: function (el) {
-                                    new Ext.dd.DropZone(el.getEl(), {
-                                        reference: this,
-                                        ddGroup: 'element',
-                                        getTargetFromEvent: function (e) {
-                                            return this.getEl();
-                                        }.bind(el),
-
-                                        onNodeOver: function (target, dd, e, data) {
-                                            data = data.records[0].data;
-
-                                            if (data.elementType == 'asset') {
-                                                return Ext.dd.DropZone.prototype.dropAllowed;
-                                            }
-
-                                            return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                        },
-
-                                        onNodeDrop: function (target, dd, e, data) {
-                                            data = data.records[0].data;
-
-                                            if (data.elementType == 'asset') {
-                                                this.setValue(data.path);
-                                                return true;
-                                            }
-
-                                            return false;
-                                        }.bind(el)
-                                    });
-                                }
-                            }
+                            listeners: me._getAssetDropAreaListener()
                         },
                         {
                             fieldLabel: t('coreshop_product_daysasnew'),
@@ -930,38 +830,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                             cls: 'input_drop_target',
                             value: this.getValue(shopId, 'SYSTEM.CATEGORY.DEFAULTIMAGE'),
                             xtype: 'textfield',
-                            listeners: {
-                                render: function (el) {
-                                    new Ext.dd.DropZone(el.getEl(), {
-                                        reference: this,
-                                        ddGroup: 'element',
-                                        getTargetFromEvent: function (e) {
-                                            return this.getEl();
-                                        }.bind(el),
-
-                                        onNodeOver: function (target, dd, e, data) {
-                                            data = data.records[0].data;
-
-                                            if (data.elementType == 'asset') {
-                                                return Ext.dd.DropZone.prototype.dropAllowed;
-                                            }
-
-                                            return Ext.dd.DropZone.prototype.dropNotAllowed;
-                                        },
-
-                                        onNodeDrop: function (target, dd, e, data) {
-                                            data = data.records[0].data;
-
-                                            if (data.elementType == 'asset') {
-                                                this.setValue(data.path);
-                                                return true;
-                                            }
-
-                                            return false;
-                                        }.bind(el)
-                                    });
-                                }
-                            }
+                            listeners: me._getAssetDropAreaListener()
                         },
                         {
                             fieldLabel: t('coreshop_category_list_mode'),
@@ -1102,6 +971,61 @@ pimcore.plugin.coreshop.settings = Class.create({
                             checked: this.getValue(shopId, 'SYSTEM.MAIL.ORDER.BCC')
 
                         }
+
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
+                    title: t('coreshop_mail_template_settings'),
+                    collapsible: true,
+                    collapsed: true,
+                    autoHeight: true,
+                    labelWidth: 250,
+                    defaultType: 'textfield',
+                    defaults: { width: 800 },
+                    items: [
+                        {
+                            xtype: 'fieldset',
+                            title: t('coreshop_messaging'),
+                            collapsible: false,
+                            collapsed: false,
+                            autoHeight: true,
+                            labelWidth: 250,
+                            defaultType: 'textfield',
+                            items: [
+                                {
+                                    xtype: 'tabpanel',
+                                    activeTab: 0,
+                                    width: '100%',
+                                    defaults: {
+                                        autoHeight: true,
+                                        bodyStyle: 'padding:10px;'
+                                    },
+                                    items: messagingLangTabs
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'fieldset',
+                            title: t('coreshop_order_states_mail'),
+                            collapsible: false,
+                            collapsed: false,
+                            autoHeight: true,
+                            labelWidth: 250,
+                            defaultType: 'textfield',
+                            items: [
+                                {
+                                    xtype: 'tabpanel',
+                                    activeTab: 0,
+                                    width: '100%',
+                                    defaults: {
+                                        autoHeight: true,
+                                        bodyStyle: 'padding:10px;'
+                                    },
+                                    items: orderStatesTabs
+                                }
+                            ]
+                        }
                     ]
                 },
                 {
@@ -1171,5 +1095,81 @@ pimcore.plugin.coreshop.settings = Class.create({
         });
 
         return shopPanel;
+    },
+
+    _getMailTemplateDropAreaListener: function() {
+
+        return {
+
+            render: function (el) {
+                new Ext.dd.DropZone(el.getEl(), {
+                    reference: this,
+                    ddGroup: 'element',
+                    getTargetFromEvent: function (e) {
+                        return this.getEl();
+                    }.bind(el),
+
+                    onNodeOver: function (target, dd, e, data) {
+                        data = data.records[0].data;
+                        if (data.elementType === 'document' && data.type === 'email') {
+                            return Ext.dd.DropZone.prototype.dropAllowed;
+                        }
+
+                        return Ext.dd.DropZone.prototype.dropNotAllowed;
+                    },
+
+                    onNodeDrop: function (target, dd, e, data) {
+                        data = data.records[0].data;
+
+                        if (data.elementType === 'document' && data.type === 'email') {
+                            this.setValue(data.path);
+                            return true;
+                        }
+
+                        return false;
+                    }.bind(el)
+                });
+            }
+
+        };
+    },
+
+    _getAssetDropAreaListener: function() {
+
+        return {
+
+            render: function (el) {
+                new Ext.dd.DropZone(el.getEl(), {
+                    reference: this,
+                    ddGroup: 'element',
+                    getTargetFromEvent: function (e) {
+                        return this.getEl();
+                    }.bind(el),
+
+                    onNodeOver: function (target, dd, e, data) {
+                        data = data.records[0].data;
+
+                        if (data.elementType === 'asset') {
+                            return Ext.dd.DropZone.prototype.dropAllowed;
+                        }
+
+                        return Ext.dd.DropZone.prototype.dropNotAllowed;
+                    },
+
+                    onNodeDrop: function (target, dd, e, data) {
+                        data = data.records[0].data;
+
+                        if (data.elementType === 'asset') {
+                            this.setValue(data.path);
+                            return true;
+                        }
+
+                        return false;
+                    }.bind(el)
+                });
+            }
+
+        };
+
     }
 });

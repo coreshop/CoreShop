@@ -82,8 +82,6 @@
       <path>/plugins/CoreShop/static/js/coreshop/pricerules/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/panel.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/carriers/item.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/orderstates/panel.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/orderstates/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/tags/coreShopOrderState.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/classes/data/coreShopOrderState.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/broker.js</path>

@@ -33,7 +33,6 @@ pimcore.plugin.coreshop.global = {
             { name:'active' }
         ]);
         this._createStore('coreshop_countries', 'country');
-        this._createStore('coreshop_orderstates', 'order-state');
         this._createStore('coreshop_taxes', 'Tax', [
             { name:'id' },
             { name:'name' },
@@ -56,7 +55,6 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.get('coreshop_states').load();
         pimcore.globalmanager.get('coreshop_zones').load();
         pimcore.globalmanager.get('coreshop_currencies').load();
-        pimcore.globalmanager.get('coreshop_orderstates').load();
         pimcore.globalmanager.get('coreshop_shops').load();
         pimcore.globalmanager.get('coreshop_carriers').load();
     },

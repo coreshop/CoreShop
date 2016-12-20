@@ -870,7 +870,6 @@ class Cart extends Base
     /**
      * Creates order for cart
      *
-     * @param Order\State $state
      * @param Payment $paymentModule
      * @param $totalPayed
      * @param $language
@@ -879,7 +878,7 @@ class Cart extends Base
      *
      * @throws Exception
      */
-    public function createOrder(Order\State $state, Payment $paymentModule = null, $totalPayed = 0, $language = null)
+    public function createOrder(Payment $paymentModule = null, $totalPayed = 0, $language = null)
     {
         Logger::info('Create order for cart '.$this->getId());
 
@@ -965,8 +964,6 @@ class Cart extends Base
         if ($totalPayed > 0) {
             $order->createPayment($paymentModule, $totalPayed, true);
         }
-
-        $state->processStep($order);
 
         //Remove transaction to prevent double ordering
         $this->setCustomIdentifier(null);

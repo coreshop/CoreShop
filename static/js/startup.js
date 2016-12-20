@@ -186,15 +186,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         }
                     });
 
-                    if (user.isAllowed('coreshop_permission_order_states')) {
-                        ordersMenu.push({
-                            text: t('coreshop_orderstates'),
-                            iconCls: 'coreshop_icon_order_states',
-                            handler: this.openOrderStates
-                        });
-                    }
-
-
                     if (user.isAllowed('coreshop_permission_carriers')) {
                         coreShopMenuItems.push({
                             text: t('coreshop_shipping'),
@@ -614,15 +605,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_install', new pimcore.plugin.coreshop.install());
-        }
-    },
-
-    openOrderStates : function () {
-        try {
-            pimcore.globalmanager.get('coreshop_order_states_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_order_states_panel', new pimcore.plugin.coreshop.orderstates.panel());
         }
     },
 

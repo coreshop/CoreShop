@@ -19,6 +19,7 @@ use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Mail;
 use Pimcore\Model\Document;
+use Pimcore\WorkflowManagement\Workflow;
 
 /**
  * Class State
@@ -26,67 +27,57 @@ use Pimcore\Model\Document;
  */
 class State extends AbstractModel
 {
-    protected $localizedValues = ['emailDocument', 'name'];
+    const STATUS_NEW                = 'new';
+    const STATUS_PENDING_PAYMENT    = 'pending_payment';
+    const STATUS_PROCESSING         = 'processing';
+    const STATUS_COMPLETE           = 'complete';
+    const STATUS_CLOSED             = 'closed';
+    const STATUS_CANCELED           = 'canceled';
+    const STATUS_HOLDED             = 'holded';
+    const STATUS_PAYMENT_REVIEW     = 'payment_review';
+
+    const ORDER_STATE_CONFIRMATION_MAIL     = 'sendOrderConfirmationMail';
+    const ORDER_STATE_STATUS_MAIL           = 'sendOrderStatusMail';
 
     /**
-     * @var string
-     */
-    public $name;
-
-    /**
-     * @var bool
-     */
-    public $accepted;
-
-    /**
-     * @var bool
-     */
-    public $shipped;
-
-    /**
-     * @var bool
-     */
-    public $paid;
-
-    /**
-     * @var bool
-     */
-    public $invoice;
-
-    /**
-     * @var bool
-     */
-    public $email;
-
-    /**
-     * @var bool
-     */
-    public $system;
-
-    /**
-     * @var string
-     */
-    public $color;
-
-    /**
-     * @var string
-     */
-    public $identifier;
-
-
-    /**
-     * Get Range by identifier.
+     * @param Order $order
+     * @param array $params
      *
-     * @param $identifier
-     *
-     * @return null|static
+     * @return bool
+     * @throws \Exception
      */
-    public static function getByIdentifier($identifier)
+    public static function changeOrderState(Order $order, $params = [])
     {
-        return static::getByField('identifier', $identifier);
+        $user = \Pimcore\Model\User::getById(0);
+        $manager = Workflow\Manager\Factory::getManager($order, $user);
+
+        if (!\Zend_Registry::isRegistered('pimcore_admin_user')) {
+            \Zend_Registry::set('pimcore_admin_user', $user);
+        }
+
+        $params['action'] = 'change_order_state';
+
+        if ($manager->validateAction($params['action'], $params['newState'], $params['newStatus'])) {
+
+            try {
+                $manager->performAction($params['action'], $params);
+            } catch (\Exception $e) {
+                throw new \Exception('changeOrderState Error: ' .$e->getMessage());
+            }
+
+        } else {
+            throw new \Exception('changeOrderState Error: ' . $manager->getError());
+        }
+
+        \Zend_Registry::set('pimcore_admin_user', NULL);
+
+        return TRUE;
     }
 
     /**
+     *
+     * @deprecated
+     *
      * Process OrderState for Order.
      *
      * @param Order $order
@@ -142,197 +133,8 @@ class State extends AbstractModel
         $order->setOrderState($this);
         $order->save();
 
-        $translate = \CoreShop::getTools()->getTranslate();
-        $note = $order->createNote('coreshop-orderstate');
-        $note->setTitle(sprintf($translate->translate('coreshop_note_orderstate_change'), $this->getName()));
-        $note->setDescription(sprintf($translate->translate('coreshop_note_orderstate_change_description'), $this->getName()));
-
-        if ($previousState instanceof self) {
-            $note->addData('fromState', 'text', $previousState->getId());
-        }
-
-        $note->addData('toState', 'text', $this->getId());
-
-        $note->save();
-
-        \CoreShop::actionHook('orderstate.process.post', ['newOrderStatus' => $this, 'order' => $order]);
-
-        //@TODO: Stock Management
 
         return true;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return sprintf("%s (%s)", $this->getName(), $this->getId());
-    }
-
-    /**
-     * @param string $language language
-     *
-     * @return string
-     */
-    public function getName($language = null)
-    {
-        return $this->getLocalizedFields()->getLocalizedValue('name', $language);
-    }
-
-    /**
-     * @param string $name
-     * @param string $language language
-     */
-    public function setName($name, $language = null)
-    {
-        $this->getLocalizedFields()->setLocalizedValue('name', $name, $language);
-    }
-
-    /**
-     * @return bool
-     */
-    public function getAccepted()
-    {
-        return $this->accepted;
-    }
-
-    /**
-     * @param bool $accepted
-     */
-    public function setAccepted($accepted)
-    {
-        $this->accepted = $accepted;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getShipped()
-    {
-        return $this->shipped;
-    }
-
-    /**
-     * @param bool $shipped
-     */
-    public function setShipped($shipped)
-    {
-        $this->shipped = $shipped;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getPaid()
-    {
-        return $this->paid;
-    }
-
-    /**
-     * @param bool $paid
-     */
-    public function setPaid($paid)
-    {
-        $this->paid = $paid;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getInvoice()
-    {
-        return $this->invoice;
-    }
-
-    /**
-     * @param bool $invoice
-     */
-    public function setInvoice($invoice)
-    {
-        $this->invoice = $invoice;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param bool $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getSystem()
-    {
-        return $this->system;
-    }
-
-    /**
-     * @param bool $system
-     */
-    public function setSystem($system)
-    {
-        $this->system = $system;
-    }
-
-    /**
-     * @return string
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
-
-    /**
-     * @param string $color
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIdentifier()
-    {
-        return $this->identifier;
-    }
-
-    /**
-     * @param bool $identifier
-     */
-    public function setIdentifier($identifier)
-    {
-        $this->identifier = $identifier;
-    }
-
-    /**
-     * @param string $language language
-     *
-     * @return string
-     */
-    public function getEmailDocument($language = null)
-    {
-        return $this->getLocalizedFields()->getLocalizedValue('emailDocument', $language);
-    }
-
-    /**
-     * @param string $emailDocument
-     * @param string $language      language
-     */
-    public function setEmailDocument($emailDocument, $language = null)
-    {
-        $this->getLocalizedFields()->setLocalizedValue('emailDocument', $emailDocument, $language);
-    }
 }

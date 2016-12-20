@@ -171,7 +171,7 @@ class CoreShop_Admin_MessagingThreadController extends Admin
             $message->setAdminUserId($this->getUser()->getId());
             $message->save();
 
-            $customerEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
+            $customerEmailDocument = \Pimcore\Model\Document\Email::getByPath(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
             $message->sendNotification($customerEmailDocument, $thread->getEmail());
 
             $this->_helper->json(['success' => true, 'data' => ['thread' => $this->getThreadForAjax($thread), 'newMessage' => $this->getMessageForAjax($message)]]);

@@ -107,8 +107,10 @@ class AdminStyle extends \Pimcore\Model\Element\AdminStyle
                 count($this->element->getInvoices())
             );
 
+            //@fixme: get latest OrderState from Workflow History?
+
             return [
-                "title" => ($this->element->getOrderState() instanceof Order\State ? $this->element->getOrderState()->getName() : $translate->translate("Unknown")) . " (" . $this->element->getId() . ")",
+                "title" => "", //($this->element->getOrderState() instanceof Order\State ? $this->element->getOrderState()->getName() : $translate->translate("Unknown")) . " (" . $this->element->getId() . ")",
                 "text" => $text
             ];
         }

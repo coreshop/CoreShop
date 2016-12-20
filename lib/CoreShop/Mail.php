@@ -62,18 +62,17 @@ class Mail extends PimcoreMail
      *
      * @param $emailDocument
      * @param Order $order
-     * @param Order\State $orderState
      * @param bool $allowBcc
      * @throws Exception\UnsupportedException
      * @throws \Exception
      */
-    public static function sendOrderMail($emailDocument, Order $order, Order\State $orderState = null, $allowBcc = false)
+    public static function sendOrderMail($emailDocument, Order $order, $allowBcc = false)
     {
         if ($emailDocument instanceof Document\Email) {
             //init Template
             \CoreShop::getTools()->initTemplateForShop($order->getShop());
 
-            $emailParameters = array_merge($order->getObjectVars(), $orderState instanceof Order\State ? $orderState->getObjectVars() : [], $order->getCustomer()->getObjectVars());
+            $emailParameters = $order->getCustomer()->getObjectVars();
             $emailParameters['orderTotal'] = \CoreShop::getTools()->formatPrice($order->getTotal());
             $emailParameters['order'] = $order;
 
@@ -88,6 +87,7 @@ class Mail extends PimcoreMail
             $mail->setEnableLayoutOnPlaceholderRendering(false);
             $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname());
 
+            /*
             if ($orderState instanceof Order\State) {
                 if ((bool)Configuration::get('SYSTEM.INVOICE.CREATE')) {
                     if ($orderState->getInvoice()) {
@@ -113,6 +113,7 @@ class Mail extends PimcoreMail
                     }
                 }
             }
+            */
 
             if ($allowBcc === true) {
                 $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');

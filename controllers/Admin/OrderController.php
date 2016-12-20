@@ -169,12 +169,15 @@ class CoreShop_Admin_OrderController extends Admin
 
         $message = $thread->createMessage($messageText);
 
-        $customerInfoMail = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
+        $customerInfoMail = \Pimcore\Model\Document\Email::getByPath(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
         $message->sendNotification($customerInfoMail, $thread->getEmail());
 
         $this->_helper->json(['success' => true]);
     }
 
+    /**
+     * @deprecated
+     */
     public function changeOrderStateAction()
     {
         $orderId = $this->getParam('id');
@@ -218,6 +221,9 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(['success' => true, "summary" => $this->getSummary($order), "details" => $this->getDetails($order), "total" => $order->getTotal()]);
     }
 
+    /**
+     * @deprecated
+     */
     public function resendOrderStateMailAction()
     {
         $orderId = $this->getParam('id');

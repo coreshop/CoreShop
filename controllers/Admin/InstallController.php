@@ -28,7 +28,6 @@ class CoreShop_Admin_InstallController extends Admin
             \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, ['installer' => $install]);
 
             //install Data
-            $install->installObjectData('orderStates', 'Order\\');
             $install->installObjectData('threadStates', 'Messaging\\Thread\\');
             $install->installObjectData('threadContacts', 'Messaging\\');
             $install->installDocuments('documents');

@@ -655,21 +655,6 @@ CREATE TABLE `coreshop_numberranges` (
 
 ALTER TABLE coreshop_numberranges ADD UNIQUE (`type`, `shopId`);
 
-DROP TABLE IF EXISTS `coreshop_orderstates`;
-CREATE TABLE `coreshop_orderstates` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `accepted` tinyint(1) NOT NULL DEFAULT '0',
-  `shipped` tinyint(1) NOT NULL DEFAULT '0',
-  `paid` tinyint(1) NOT NULL DEFAULT '0',
-  `invoice` tinyint(1) NOT NULL DEFAULT '0',
-  `email` tinyint(1) NOT NULL DEFAULT '0',
-  `system` tinyint(1) NOT NULL DEFAULT '0',
-  `color` varchar(7) NOT NULL DEFAULT '#000000',
-  `identifier` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `identifier` (`identifier`)
-) DEFAULT CHARSET=utf8mb4;
-
 DROP TABLE IF EXISTS `coreshop_taxes`;
 CREATE TABLE `coreshop_taxes` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -702,7 +687,6 @@ VALUES
   ('coreshop_permission_zones'),
   ('coreshop_permission_settings'),
   ('coreshop_permission_price_rules'),
-  ('coreshop_permission_order_states'),
   ('coreshop_permission_currencies'),
   ('coreshop_permission_taxes'),
   ('coreshop_permission_tax_rules'),

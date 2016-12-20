@@ -114,7 +114,7 @@ class CoreShop_UserController extends Action
 
         $message = $thread->createMessage($messageText);
 
-        $contactEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
+        $contactEmailDocument = \Pimcore\Model\Document\Email::getByPath(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
         $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
 
         $this->redirect(\CoreShop::getTools()->url(["act" => "order-detail", "id" => $order->getId(), "messageSent" => true], "coreshop_user", true));
