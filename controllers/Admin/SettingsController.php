@@ -33,6 +33,7 @@ class CoreShop_Admin_SettingsController extends Admin
 
     public function getSettingsAction()
     {
+        $result = [];
         $shops = Model\Shop::getList();
         $valueArray = [];
         $systemSettings = [];
@@ -56,27 +57,31 @@ class CoreShop_Admin_SettingsController extends Admin
             }
         }
 
+        $result['systemSettings'] = $systemSettings;
+
+        if(Model\Configuration::get("SYSTEM.ISINSTALLED")) {
+            $pimcoreClasses = \CoreShop::getPimcoreClasses();
+            $classMapping = [];
+
+            foreach ($pimcoreClasses as $key=>$value) {
+                $classMapping[$key] = $value['pimcoreClass'];
+            }
+
+            foreach ($classMapping as $key => &$class) {
+                $class = str_replace('Pimcore\\Model\\Object\\', '', $class);
+            }
+
+            $result['classMapping'] = $classMapping;
+            $result['multishop'] = Model\Configuration::multiShopEnabled();
+            $result['defaultShop'] = Model\Shop::getDefaultShop()->getId();
+            $result['coreshop'] = $valueArray;
+        }
+
         $pluginConfig = \Pimcore\ExtensionManager::getPluginConfig('CoreShop');
 
-        $pimcoreClasses = \CoreShop::getPimcoreClasses();
-        $classMapping = [];
+        $result['plugin'] = $pluginConfig['plugin'];
 
-        foreach ($pimcoreClasses as $key=>$value) {
-            $classMapping[$key] = $value['pimcoreClass'];
-        }
-
-        foreach ($classMapping as $key => &$class) {
-            $class = str_replace('Pimcore\\Model\\Object\\', '', $class);
-        }
-
-        $this->_helper->json([
-            'coreshop' => $valueArray,
-            'plugin' => $pluginConfig['plugin'],
-            'classMapping' => $classMapping,
-            'multishop' => Model\Configuration::multiShopEnabled(),
-            'systemSettings' => $systemSettings,
-            'defaultShop' => Model\Shop::getDefaultShop()->getId()
-        ]);
+        $this->_helper->json($result);
     }
 
     public function getAction()
