@@ -32,6 +32,7 @@ pimcore.object.tags.coreShopSpecificPrices = Class.create(pimcore.object.tags.ab
     initialize: function (data, fieldConfig) {
         this.data = data;
         this.fieldConfig = fieldConfig;
+        this.panels = [];
     },
 
     getGridColumnConfig: function(field) {
