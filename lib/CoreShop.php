@@ -302,6 +302,11 @@ class CoreShop
                 "pimcoreClass" => \CoreShop\Model\Order\Shipment\Item::getPimcoreObjectClass(),
                 "pimcoreClassId" => \CoreShop\Model\Order\Shipment\Item::classId(),
                 "coreShopClass" => \CoreShop\Model\Order\Shipment\Item::class
+            ],
+            'manufacturer' => [
+                "pimcoreClass" => \CoreShop\Model\Manufacturer::getPimcoreObjectClass(),
+                "pimcoreClassId" => \CoreShop\Model\Manufacturer::classId(),
+                "coreShopClass" => \CoreShop\Model\Manufacturer::class
             ]
         ];
     }

@@ -39,6 +39,7 @@ class CoreShop_Admin_InstallController extends Admin
             $install->createFieldCollection('CoreShopPriceRuleItem');
 
             // create object classes
+            $manufacturer = $install->createClass('CoreShopManufacturer');
             $categoryClass = $install->createClass('CoreShopCategory');
             $productClass = $install->createClass('CoreShopProduct');
             $cartClass = $install->createClass('CoreShopCart');
@@ -76,6 +77,7 @@ class CoreShop_Admin_InstallController extends Admin
                 $invoiceItemClass->getId(),
                 $shipmentClass->getId(),
                 $shipmentItemClass->getId(),
+                $manufacturer->getId()
             ]);
             // create static routes
             $install->createStaticRoutes();
