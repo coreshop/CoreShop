@@ -49,22 +49,22 @@ class Workflow
 
         $orderObject = $manager->getElement();
 
-        if( $orderObject instanceof Object\CoreShopOrder ) {
+        if($orderObject instanceof Object\CoreShopOrder) {
 
-            if( isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
+            if(isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
                 $confirmationMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' . strtoupper($orderObject->getLang()));
                 $emailDocument = Document::getByPath($confirmationMailPath);
 
-                if( $emailDocument instanceof Document\Email) {
+                if($emailDocument instanceof Document\Email) {
                     Mail::sendOrderMail($emailDocument, $orderObject);
                 }
             }
 
-            if( isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
+            if(isset($additional[Order\State::ORDER_STATE_STATUS_MAIL]) && $additional[Order\State::ORDER_STATE_STATUS_MAIL] === 'yes') {
                 $updateMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.UPDATE.' . strtoupper($orderObject->getLang()));
                 $emailDocument = Document::getByPath($updateMailPath);
 
-                if( $emailDocument instanceof Document\Email) {
+                if($emailDocument instanceof Document\Email) {
                     Mail::sendOrderMail($emailDocument, $orderObject);
                 }
             }
@@ -77,6 +77,6 @@ class Workflow
     public static function dispatchOrderChangeFailed($event)
     {
         $exception = $event->getParam('exception');
-        \Pimcore\Logger::err('CoreShop Workflow OrderChange failed. Reason: ' . $exception->getMessage() );
+        \Pimcore\Logger::err('CoreShop Workflow OrderChange failed. Reason: ' . $exception->getMessage());
     }
 }

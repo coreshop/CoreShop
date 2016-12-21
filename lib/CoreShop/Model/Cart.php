@@ -965,10 +965,14 @@ class Cart extends Base
             $order->createPayment($paymentModule, $totalPayed, true);
         }
 
-        //Remove transaction to prevent double ordering
+        //remove transaction to prevent double ordering
         $this->setCustomIdentifier(null);
         $this->save();
 
+        //remove user session => not valid anymore!
+        \CoreShop::getTools()->deleteUserSession(true);
+
+        //allow third-parties to hook into order
         \CoreShop::actionHook('order.created', ['order' => $order]);
 
         return $order;

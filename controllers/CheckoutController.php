@@ -182,11 +182,8 @@ class CoreShop_CheckoutController extends Action
     {
         $this->view->headTitle($this->view->translate('Confirmation'));
 
-        $order = $this->getParam("order");
-        $paymentViewScript = $this->getParam("paymentViewScript");
-
-        $this->prepareCart();
-        //$this->cart->delete(); //Keep Cart for Statistics Purpose
+        $order = $this->getParam('order');
+        $paymentViewScript = $this->getParam('paymentViewScript');
 
         if (!$order instanceof \CoreShop\Model\Order) {
             $this->redirect(\CoreShop::getTools()->url(['lang' => $this->view->language], 'coreshop_index'));
@@ -194,10 +191,6 @@ class CoreShop_CheckoutController extends Action
 
         $this->view->order = $order;
         $this->view->paymentViewScript = $paymentViewScript;
-
-        unset($this->session->order);
-        unset($this->session->cart);
-        unset($this->session->cartId);
 
         if (CoreShop::getTools()->getUser()->getIsGuest()) {
             \CoreShop::getTools()->unsetUser();

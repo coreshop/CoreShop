@@ -94,10 +94,24 @@ class State
 
         $params['action'] = 'change_order_state';
 
+        if( isset($params['additional']['sendOrderConfirmationMail'])) {
+            if( is_bool($params['additional']['sendOrderConfirmationMail'])) {
+                $params['additional']['sendOrderConfirmationMail'] = $params['additional']['sendOrderConfirmationMail'] === TRUE ? 'yes' : 'no';
+            }
+        }
+
+        if( isset($params['additional']['sendOrderStatusMail'])) {
+            if( is_bool($params['additional']['sendOrderStatusMail'])) {
+                $params['additional']['sendOrderStatusMail'] = $params['additional']['sendOrderStatusMail'] === TRUE ? 'yes' : 'no';
+            }
+        }
+
         if ($manager->validateAction($params['action'], $params['newState'], $params['newStatus'])) {
 
             try {
                 $manager->performAction($params['action'], $params);
+                \Pimcore\Logger::debug('CoreShop orderState update. OrderId: ' . $order->getId() . ', newState: "' . $params['newState'] . '", newStatus: "' . $params['newStatus'] .'"');
+
             } catch (\Exception $e) {
                 throw new \Exception('changeOrderState Error: ' . $e->getMessage());
             }

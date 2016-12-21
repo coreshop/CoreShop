@@ -93,11 +93,9 @@ class Action extends \Website\Controller\Action
         $this->session = $this->view->session = \CoreShop::getTools()->getSession();
 
         $this->view->country = \CoreShop::getTools()->getCountry();
-
-        $this->prepareCart();
-
         $this->view->isShop = true;
 
+        $this->prepareCart();
         $this->enableLayout();
         $this->setLayout(Plugin::getLayout());
     }
