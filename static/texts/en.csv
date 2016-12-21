@@ -128,6 +128,8 @@
 "coreshop_mail_order_notification","admin email-addresses to send order notification (CSV)"
 "coreshop_mail_order_bbc","Send OrderStates as BBC to admin email-addresses"
 "coreshop_order","Order"
+"coreshop_orderstate","Order State"
+"coreshop_orderstate_email_sent","email sent to customer"
 "coreshop_update","Update"
 "coreshop_latest_version_already_installed","Latest CoreShop Version is already installed."
 "coreshop_server_is_currently_offline","CoreShop Update Server currently offline."

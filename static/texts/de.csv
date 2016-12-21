@@ -127,6 +127,8 @@
 "coreshop_mail_order_notification","Admin E-Mail Adressen für Bestellbenachrichtigungen (CSV)"
 "coreshop_mail_order_bbc","Sende Bestellstatus als BBC an Admin Email-Adressen"
 "coreshop_order","Bestellung"
+"coreshop_orderstate","Bestellstatus"
+"coreshop_orderstate_email_sent","Kunde via E-Mail benachrichtigt"
 "coreshop_update","Update"
 "coreshop_latest_version_already_installed","Letzte CoreShop Version bereits installiert."
 "coreshop_server_is_currently_offline","CoreShop Update Server derzeit offline."

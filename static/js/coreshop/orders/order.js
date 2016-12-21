@@ -15,6 +15,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.orders.order');
 pimcore.plugin.coreshop.orders.order = Class.create({
 
     order : null,
+    objectData : null,
     layoutId : null,
 
     borderStyle : {
@@ -29,6 +30,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         this.layoutId = 'coreshop_order_' + this.order.o_id;
 
         this.getLayout();
+        this.getObjectInfo();
     },
 
     activate: function () {
@@ -38,8 +40,22 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
     reload : function () {
         this.layout.destroy();
-
         coreshop.helpers.openOrder(this.order.o_id);
+    },
+
+    getObjectInfo : function () {
+
+        Ext.Ajax.request({
+            url: '/admin/object/get/',
+            params: {id: this.order.o_id},
+            success: function(response) {
+                try {
+                    this.objectData = Ext.decode(response.responseText);
+                    this.setWorkflowInfo();
+
+                } catch (e) { }
+            }.bind(this)
+        });
     },
 
     getLayout: function () {
@@ -305,21 +321,18 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         columns : [
                             {
                                 xtype : 'gridcolumn',
-                                dataIndex : 'toState',
-                                text : t('coreshop_orderstate'),
                                 flex : 1,
+                                dataIndex : 'title',
+                                text : t('coreshop_orderstate'),
                                 renderer : function (value, metaData) {
-                                    var store = pimcore.globalmanager.get('coreshop_orderstates');
-                                    var orderState = store.getById(value);
 
-                                    if (orderState) {
-                                        var bgColor = orderState.get('color');
-                                        var textColor = coreshop.helpers.constrastColor(bgColor);
-
-                                        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderState.get('name') + '</span>';
+                                    if (value) {
+                                        var bgColor = '';
+                                        //@fixme: add some colored circle to the left instead of heavy color stuff!
+                                        return '<span class="rounded-color" style="background-color:' + bgColor + ';"></span>' + value;
                                     }
 
-                                    return value;
+                                    return '';
                                 }
                             },
                             {
@@ -330,127 +343,21 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             },
                             {
                                 xtype : 'gridcolumn',
-                                dataIndex : 'toState',
                                 flex : 1,
-                                align : 'right',
+                                dataIndex : 'data',
+                                text : t('coreshop_orderstate_email_sent'),
                                 renderer : function (value) {
-                                    var store = pimcore.globalmanager.get('coreshop_orderstates');
-                                    var orderState = store.getById(value);
 
-                                    if (orderState && orderState.get('email') === '1') {
+                                    var sendMail = (value.sendOrderConfirmationMail && value.sendOrderConfirmationMail.data === 'yes') ||
+                                        (value.sendOrderStatusMail && value.sendOrderStatusMail.data === 'yes' );
+
+                                    if (sendMail) {
                                         var id = Ext.id();
-                                        Ext.defer(function () {
-                                            Ext.widget('button', {
-                                                renderTo: id,
-                                                text: t('coreshop_order_resend_email'),
-                                                flex : 1,
-                                                handler: function () {
-                                                    Ext.Ajax.request({
-                                                        url: '/plugin/CoreShop/admin_order/resend-order-state-mail',
-                                                        params: {
-                                                            id: this.order.o_id,
-                                                            orderStateId : orderState.get('id')
-                                                        },
-                                                        success: function (response) {
-                                                            var res = Ext.decode(response.responseText);
-
-                                                            if (res.success) {
-                                                                pimcore.helpers.showNotification(t('success'), t('success'), 'success');
-                                                            } else {
-                                                                pimcore.helpers.showNotification(t('error'), t(res.message), 'error');
-                                                            }
-                                                        }.bind(this)
-                                                    });
-                                                }.bind(this)
-                                            });
-                                        }.bind(this), 50);
-                                        return Ext.String.format('<div id="{0}"></div>', id);
+                                        return Ext.String.format('<span class="pimcore_icon_publish" style="width:20px;height:20px;text-align:center;display:block;margin: 5px 0 0 0;" id="{0}"></span>', id);
                                     }
 
                                     return '';
-                                }.bind(this)
-                            },
-                            {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'toState',
-                                width : 60,
-                                align : 'right',
-                                renderer : function (value) {
-                                    var store = pimcore.globalmanager.get('coreshop_orderstates');
-                                    var orderState = store.getById(value);
-
-                                    if (orderState && orderState.get('email') === '1') {
-                                        var id = Ext.id();
-                                        Ext.defer(function () {
-                                            Ext.widget('button', {
-                                                renderTo: id,
-                                                iconCls: 'coreshop_icon_open',
-                                                flex : 1,
-                                                handler: function () {
-                                                    if(orderState.data.localizedFields.items.hasOwnProperty(pimcore.settings.language)) {
-                                                        pimcore.helpers.openDocumentByPath(orderState.data.localizedFields.items[pimcore.settings.language].emailDocument);
-                                                    }
-                                                }.bind(this)
-                                            });
-                                        }.bind(this), 50);
-                                        return Ext.String.format('<div id="{0}"></div>', id);
-                                    }
-
-                                    return '';
-                                }.bind(this)
-                            }
-                        ]
-                    },
-                    {
-                        xtype : 'panel',
-                        style: this.borderStyle,
-                        bodyPadding : 5,
-                        layout : 'hbox',
-                        items : [
-                            {
-                                xtype : 'combo',
-                                triggerAction: 'all',
-                                editable: false,
-                                typeAhead: false,
-                                forceSelection: true,
-                                fieldLabel: t('coreshop_orderstate'),
-                                store: pimcore.globalmanager.get('coreshop_orderstates'),
-                                componentCls: 'object_field',
-                                flex : 1,
-                                labelWidth: 100,
-                                displayField:'name',
-                                valueField:'id',
-                                queryMode : 'local'
-                            },
-                            {
-                                xtype : 'button',
-                                text : t('coreshop_orderstate_change'),
-                                handler : function (button) {
-                                    var comboBox = button.previousSibling();
-
-                                    Ext.Ajax.request({
-                                        url: '/plugin/CoreShop/admin_order/change-order-state',
-                                        params: {
-                                            id: this.order.o_id,
-                                            orderStateId : comboBox.getValue()
-                                        },
-                                        success: function (response) {
-                                            var res = Ext.decode(response.responseText);
-
-                                            if (res.success) {
-                                                this.orderStatesStore.loadData(res.statesHistory);
-                                                this.shipmentsStore.loadData(res.shipments);
-                                                this.invoicesStore.loadData(res.invoices);
-
-                                                this.rebuildPrintDocumentsPanel(res);
-                                            } else {
-                                                pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
-                                            }
-
-                                        }.bind(this)
-                                    });
-                                }.bind(this),
-                                width : 100
+                                }
                             }
                         ]
                     }
@@ -1282,6 +1189,29 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.detailsInfo;
     },
 
+    setWorkflowInfo : function() {
+
+        var buttons = [],
+            toolbar;
+
+        //add reload function for worfklow manager!
+        this.objectData.reload = this.reload.bind(this);
+
+        if( this.objectData.workflowManagement) {
+            this.objectData.data.workflowManagement = this.objectData.workflowManagement;
+        }
+
+        pimcore.elementservice.integrateWorkflowManagement('object', this.order.o_id, this.objectData, buttons);
+
+        toolbar = new Ext.Toolbar({
+            border: false,
+            items: buttons,
+            overflowHandler: 'scroller'
+        });
+
+        this.orderInfo.insert(0, toolbar);
+    },
+
     createInvoice : function() {
         new pimcore.plugin.coreshop.orders.invoice(this.order, function() {
             this.reload();
@@ -1293,4 +1223,5 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             this.reload();
         }.bind(this));
     }
+
 });

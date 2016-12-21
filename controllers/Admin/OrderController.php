@@ -70,7 +70,7 @@ class CoreShop_Admin_OrderController extends Admin
 
         $element = [
             'o_id' => $order->getId(),
-            'orderState' => $order->getOrderState() instanceof \CoreShop\Model\Order\State ? $order->getOrderState()->getId() : null,
+            'orderState' => \CoreShop\Model\Order\State::getOrderCurrentState($order),
             'orderDate' => $date,
             'orderNumber' => $order->getOrderNumber(),
             'lang' => $order->getLang(),
@@ -781,18 +781,15 @@ class CoreShop_Admin_OrderController extends Admin
     protected function getStatesHistory(\CoreShop\Model\Order $order)
     {
         //Get History
-        $history = $order->getOrderStateHistory();
+        $history = \CoreShop\Model\Order\State::getOrderStateHistory($order);
 
         // create timeline
         $statesHistory = [];
 
         $date = new \Pimcore\Date();
         foreach ($history as $note) {
-            $user = $user = \Pimcore\Model\User::getById($note->getUser());
+            $user = \Pimcore\Model\User::getById($note->getUser());
             $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
-
-            $fromState = $note->getData()['fromState']['data'];
-            $toState = $note->getData()['toState']['data'];
 
             $statesHistory[] = [
                 'icon' => 'coreshop_icon_orderstates',
@@ -802,8 +799,7 @@ class CoreShop_Admin_OrderController extends Admin
                 'user' => $user ? $user->getName() : null,
                 'description' => $note->getDescription(),
                 'title' => $note->getTitle(),
-                'toState' => $toState,
-                'fromState' => $fromState
+                'data' => $note->getData()
             ];
         }
 

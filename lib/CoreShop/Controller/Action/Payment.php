@@ -182,4 +182,17 @@ class Payment extends Action
             $this->coreShopForward('error', $this->checkoutController, 'CoreShop', $forwardParams);
         }
     }
+
+    /**
+     * Error Action.
+     */
+    public function errorAction()
+    {
+        $forwardParams = [
+            'module' => $this->getModule(),
+            'error' => $this->getParam('error')
+        ];
+
+        $this->coreShopForward('error', $this->checkoutController, 'CoreShop', $forwardParams);
+    }
 }

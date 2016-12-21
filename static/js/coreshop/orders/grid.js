@@ -16,6 +16,10 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
 
     layoutId : 'coreshop_orders',
 
+    grid : null,
+
+    store : null,
+
     initialize: function () {
         // create layout
         this.getLayout();
@@ -78,6 +82,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
     },
 
     getGrid : function () {
+
         this.store = new Ext.data.JsonStore({
             remoteSort: true,
             remoteFilter: true,
@@ -145,15 +150,12 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             {
                 text: t('coreshop_orders_orderState'),
                 dataIndex: 'orderState',
-                renderer : function (val) {
-                    var store = pimcore.globalmanager.get('coreshop_orderstates');
-                    var pos = store.findExact('id', val);
-                    if (pos >= 0) {
-                        var orderState = store.getAt(pos);
-                        var bgColor = orderState.get('color');
+                renderer : function (orderState) {
+                    if (orderState) {
+                        var bgColor = orderState.color;
                         var textColor = coreshop.helpers.constrastColor(bgColor);
 
-                        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderState.get('name') + '</span>';
+                        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderState.name + '</span>';
                     }
 
                     return null;
@@ -226,8 +228,6 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                 }.bind(this)
             }
         });
-
-        this.store.load();
 
         return this.grid;
     },

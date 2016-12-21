@@ -14,20 +14,29 @@
 
 namespace CoreShop\Model\Order;
 
-use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Mail;
 use Pimcore\Model\Document;
+use Pimcore\Model\Element\Note;
 use Pimcore\WorkflowManagement\Workflow;
 
 /**
  * Class State
  * @package CoreShop\Model\Order
  */
-class State extends AbstractModel
+class State
 {
-    const STATUS_NEW                = 'new';
+    const STATE_NEW                = 'new';
+    const STATE_PENDING_PAYMENT    = 'pending_payment';
+    const STATE_PROCESSING         = 'processing';
+    const STATE_COMPLETE           = 'complete';
+    const STATE_CLOSED             = 'closed';
+    const STATE_CANCELED           = 'canceled';
+    const STATE_HOLDED             = 'holded';
+    const STATE_PAYMENT_REVIEW     = 'payment_review';
+
+    const STATUS_PENDING            = 'pending';
     const STATUS_PENDING_PAYMENT    = 'pending_payment';
     const STATUS_PROCESSING         = 'processing';
     const STATUS_COMPLETE           = 'complete';
@@ -38,6 +47,34 @@ class State extends AbstractModel
 
     const ORDER_STATE_CONFIRMATION_MAIL     = 'sendOrderConfirmationMail';
     const ORDER_STATE_STATUS_MAIL           = 'sendOrderStatusMail';
+
+    protected static $STATUS_CONFIG = [
+
+        self::STATUS_PENDING => [
+            'color' => '#c4d5a9'
+        ],
+        self::STATUS_PENDING_PAYMENT => [
+            'color' => '#eccd1d'
+        ],
+        self::STATUS_PROCESSING => [
+            'color' => '#69acbf'
+        ],
+        self::STATUS_COMPLETE => [
+            'color' => '#89a550'
+        ],
+        self::STATUS_CLOSED => [
+            'color' => '#aabbd7'
+        ],
+        self::STATUS_CANCELED => [
+            'color' => '#a44948'
+        ],
+        self::STATUS_HOLDED => [
+            'color' => '#e49f68'
+        ],
+        self::STATUS_PAYMENT_REVIEW => [
+            'color' => '#dc833f'
+        ]
+    ];
 
     /**
      * @param Order $order
@@ -62,7 +99,7 @@ class State extends AbstractModel
             try {
                 $manager->performAction($params['action'], $params);
             } catch (\Exception $e) {
-                throw new \Exception('changeOrderState Error: ' .$e->getMessage());
+                throw new \Exception('changeOrderState Error: ' . $e->getMessage());
             }
 
         } else {
@@ -72,6 +109,51 @@ class State extends AbstractModel
         \Zend_Registry::set('pimcore_admin_user', NULL);
 
         return TRUE;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return array|string
+     * @throws \Exception
+     */
+    public static function getOrderCurrentState(Order $order)
+    {
+        $user = \Pimcore\Model\User::getById(0);
+        $manager = Workflow\Manager\Factory::getManager($order, $user);
+
+        $state = $manager->getWorkflowStateForElement()->getStatus();
+
+        if(!is_null($state)) {
+
+            $decorator = new Workflow\Decorator($manager->getWorkflow());
+            $title = $decorator->getStatusLabel($state);
+
+            return [
+                'name'  => $title,
+                'color' => self::$STATUS_CONFIG[ $state ]['color']
+            ];
+        }
+
+        return $state;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return array|string
+     * @throws \Exception
+     */
+    public static function getOrderStateHistory(Order $order)
+    {
+        /* @var \Pimcore\Model\Element\Note\Listing $noteList */
+        $noteList = new Note\Listing();
+        $noteList->addConditionParam('type = ?', 'Order State Change');
+        $noteList->addConditionParam('cid = ?', $order->getId());
+        $noteList->setOrderKey('date');
+        $noteList->setOrder('desc');
+
+        return $noteList->load();
     }
 
     /**
@@ -96,9 +178,6 @@ class State extends AbstractModel
             }
         }
 
-        if ($this->getAccepted()) {
-        }
-
         if ($this->getShipped()) {
             if ((bool) Configuration::get('SYSTEM.SHIPMENT.CREATE')) {
                 $shipments = $order->getShipments();
@@ -107,10 +186,6 @@ class State extends AbstractModel
                     $order->createShipmentForAllItems();
                 }
             }
-        }
-
-        if ($this->getPaid()) {
-            //\CoreShop::actionHook("paymentConfirmation", array("order" => $order));
         }
 
         if ($this->getInvoice()) {

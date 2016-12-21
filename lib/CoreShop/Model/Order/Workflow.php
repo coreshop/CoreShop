@@ -16,7 +16,6 @@ namespace CoreShop\Model\Order;
 
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
-use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Mail;
@@ -26,7 +25,7 @@ use CoreShop\Exception;
  * Class Workflow
  * @package CoreShop\Model\Order
  */
-class Workflow extends AbstractModel
+class Workflow
 {
     /**
      * @fixme: not supported right now.
@@ -50,10 +49,9 @@ class Workflow extends AbstractModel
 
         $orderObject = $manager->getElement();
 
-
         if( $orderObject instanceof Object\CoreShopOrder ) {
 
-            if( isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'true') {
+            if( isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
                 $confirmationMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' . strtoupper($orderObject->getLang()));
                 $emailDocument = Document::getByPath($confirmationMailPath);
 
@@ -62,7 +60,7 @@ class Workflow extends AbstractModel
                 }
             }
 
-            if( isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'true') {
+            if( isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
                 $updateMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.UPDATE.' . strtoupper($orderObject->getLang()));
                 $emailDocument = Document::getByPath($updateMailPath);
 

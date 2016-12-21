@@ -24,7 +24,7 @@ class CoreShop_CheckoutController extends Action
     {
         parent::preDispatch();
 
-        $allowedActions = ['confirmation'];
+        $allowedActions = ['confirmation', 'error'];
 
         //Checkout is not allowed in CatalogMode
         if (\CoreShop\Model\Configuration::isCatalogMode()) {
@@ -208,13 +208,13 @@ class CoreShop_CheckoutController extends Action
 
     public function errorAction()
     {
-        $this->view->error = $this->getParam("error");
-        $this->view->headTitle("Payment Error");
+        $this->view->error = $this->getParam('error');
+        $this->view->headTitle('Payment Error');
     }
 
     public function canceledAction()
     {
-        $this->view->headTitle("Payment Canceled");
+        $this->view->headTitle('Payment Canceled');
     }
 
     protected function checkIsAllowed()
