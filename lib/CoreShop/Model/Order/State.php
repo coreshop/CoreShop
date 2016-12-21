@@ -177,21 +177,12 @@ class State
      * Process OrderState for Order.
      *
      * @param Order $order
-     *
      * @return bool
-     *
      * @throws \Exception
      */
     public function processStep(Order $order)
     {
-        $previousState = $order->getOrderState();
-        //Check if new OrderState is the same as the current one
-        if ($order->getOrderState() instanceof self) {
-            if ($order->getOrderState()->getId() === $this->getId()) {
-                return false;
-            }
-        }
-
+        //implement into workflows!
         if ($this->getShipped()) {
             if ((bool) Configuration::get('SYSTEM.SHIPMENT.CREATE')) {
                 $shipments = $order->getShipments();
@@ -201,27 +192,6 @@ class State
                 }
             }
         }
-
-        if ($this->getInvoice()) {
-            if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE')) {
-                $invoices = $order->getInvoices();
-
-                if (count($invoices) === 0) {
-                    $order->createInvoiceForAllItems();
-                }
-            }
-        }
-
-        if ($this->getEmail()) {
-            $emailDocument = $this->getEmailDocument($order->getLang());
-            $emailDocument = Document::getByPath($emailDocument);
-
-            Mail::sendOrderMail($emailDocument, $order, $this);
-        }
-
-        $order->setOrderState($this);
-        $order->save();
-
 
         return true;
     }

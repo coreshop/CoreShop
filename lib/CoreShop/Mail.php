@@ -87,33 +87,27 @@ class Mail extends PimcoreMail
             $mail->setEnableLayoutOnPlaceholderRendering(false);
             $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname());
 
-            /*
-            if ($orderState instanceof Order\State) {
-                if ((bool)Configuration::get('SYSTEM.INVOICE.CREATE')) {
-                    if ($orderState->getInvoice()) {
-                        $invoices = $order->getInvoices();
+            if ((bool)Configuration::get('SYSTEM.INVOICE.CREATE')) {
+                $invoices = $order->getInvoices();
 
-                        foreach ($invoices as $invoice) {
-                            if ($invoice instanceof Order\Invoice) {
-                                $asset = $invoice->getAsset();
+                foreach ($invoices as $invoice) {
+                    if ($invoice instanceof Order\Invoice) {
+                        $asset = $invoice->getAsset();
 
-                                if (!$asset instanceof Asset) {
-                                    $asset = $invoice->generate();
-                                }
-
-                                $attachment = new \Zend_Mime_Part($asset->getData());
-                                $attachment->type = $asset->getMimetype();
-                                $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
-                                $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
-                                $attachment->filename = $asset->getFilename();
-
-                                $mail->addAttachment($attachment);
-                            }
+                        if (!$asset instanceof Asset) {
+                            $asset = $invoice->generate();
                         }
+
+                        $attachment = new \Zend_Mime_Part($asset->getData());
+                        $attachment->type = $asset->getMimetype();
+                        $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
+                        $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
+                        $attachment->filename = $asset->getFilename();
+
+                        $mail->addAttachment($attachment);
                     }
                 }
             }
-            */
 
             if ($allowBcc === true) {
                 $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');
