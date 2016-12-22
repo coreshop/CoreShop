@@ -480,7 +480,7 @@ class Tools
     {
         $session = self::getSession();
 
-        if( $unlinkCart === true && $session->cart instanceof Cart) {
+        if ($unlinkCart === true && $session->cart instanceof Cart) {
             $session->cart->delete();
         }
 

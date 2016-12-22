@@ -132,7 +132,7 @@ class Payment extends Action
      */
     protected function createOrder($language, $totalPayed = null)
     {
-        if(is_null($totalPayed)) {
+        if (is_null($totalPayed)) {
             $totalPayed = $this->cart->getTotal();
         }
 

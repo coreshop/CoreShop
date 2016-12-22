@@ -59,7 +59,7 @@ class CoreShop_Admin_SettingsController extends Admin
 
         $result['systemSettings'] = $systemSettings;
 
-        if(Model\Configuration::get("SYSTEM.ISINSTALLED")) {
+        if (Model\Configuration::get("SYSTEM.ISINSTALLED")) {
             $pimcoreClasses = \CoreShop::getPimcoreClasses();
             $classMapping = [];
 

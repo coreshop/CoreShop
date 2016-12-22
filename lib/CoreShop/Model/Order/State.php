@@ -94,35 +94,32 @@ class State
 
         $params['action'] = 'change_order_state';
 
-        if( isset($params['additional']['sendOrderConfirmationMail'])) {
-            if( is_bool($params['additional']['sendOrderConfirmationMail'])) {
-                $params['additional']['sendOrderConfirmationMail'] = $params['additional']['sendOrderConfirmationMail'] === TRUE ? 'yes' : 'no';
+        if (isset($params['additional']['sendOrderConfirmationMail'])) {
+            if (is_bool($params['additional']['sendOrderConfirmationMail'])) {
+                $params['additional']['sendOrderConfirmationMail'] = $params['additional']['sendOrderConfirmationMail'] === true ? 'yes' : 'no';
             }
         }
 
-        if( isset($params['additional']['sendOrderStatusMail'])) {
-            if( is_bool($params['additional']['sendOrderStatusMail'])) {
-                $params['additional']['sendOrderStatusMail'] = $params['additional']['sendOrderStatusMail'] === TRUE ? 'yes' : 'no';
+        if (isset($params['additional']['sendOrderStatusMail'])) {
+            if (is_bool($params['additional']['sendOrderStatusMail'])) {
+                $params['additional']['sendOrderStatusMail'] = $params['additional']['sendOrderStatusMail'] === true ? 'yes' : 'no';
             }
         }
 
         if ($manager->validateAction($params['action'], $params['newState'], $params['newStatus'])) {
-
             try {
                 $manager->performAction($params['action'], $params);
                 \Pimcore\Logger::debug('CoreShop orderState update. OrderId: ' . $order->getId() . ', newState: "' . $params['newState'] . '", newStatus: "' . $params['newStatus'] .'"');
-
             } catch (\Exception $e) {
                 throw new \Exception('changeOrderState Error: ' . $e->getMessage());
             }
-
         } else {
             throw new \Exception('changeOrderState Error: ' . $manager->getError());
         }
 
-        \Zend_Registry::set('pimcore_admin_user', NULL);
+        \Zend_Registry::set('pimcore_admin_user', null);
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -138,8 +135,7 @@ class State
 
         $state = $manager->getWorkflowStateForElement()->getStatus();
 
-        if(!is_null($state)) {
-
+        if (!is_null($state)) {
             $decorator = new Workflow\Decorator($manager->getWorkflow());
             $title = $decorator->getStatusLabel($state);
 
@@ -195,5 +191,4 @@ class State
 
         return true;
     }
-
 }
