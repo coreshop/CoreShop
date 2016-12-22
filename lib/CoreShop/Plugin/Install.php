@@ -707,6 +707,8 @@ class Install
         Configuration::set('SYSTEM.BASE.VERSION', (string) Version::getVersion());
         Configuration::set('SYSTEM.PRODUCT.DEFAULTIMAGE', null);
         Configuration::set('SYSTEM.CATEGORY.DEFAULTIMAGE', null);
+        Configuration::set('SYSTEM.ORDER.PREFIX', 'O');
+        Configuration::set('SYSTEM.ORDER.SUFFIX', '');
         Configuration::set('SYSTEM.INVOICE.CREATE', true);
         Configuration::set('SYSTEM.INVOICE.PREFIX', 'OI');
         Configuration::set('SYSTEM.INVOICE.SUFFIX', '');

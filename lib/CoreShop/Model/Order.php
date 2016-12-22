@@ -125,8 +125,8 @@ class Order extends Base
      */
     public static function getValidOrderNumber($number)
     {
-        $prefix = Configuration::get('SYSTEM.INVOICE.PREFIX');
-        $suffix = Configuration::get('SYSTEM.INVOICE.SUFFIX');
+        $prefix = Configuration::get('SYSTEM.ORDER.PREFIX');
+        $suffix = Configuration::get('SYSTEM.ORDER.SUFFIX');
 
         if ($prefix) {
             $number = $prefix.$number;

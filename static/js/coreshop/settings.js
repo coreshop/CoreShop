@@ -916,6 +916,28 @@ pimcore.plugin.coreshop.settings = Class.create({
                 },
                 {
                     xtype: 'fieldset',
+                    title: t('coreshop_order'),
+                    collapsible: true,
+                    collapsed: true,
+                    autoHeight: true,
+                    labelWidth: 250,
+                    defaultType: 'textfield',
+                    defaults: { width: 600 },
+                    items: [
+                        {
+                            fieldLabel: t('coreshop_prefix'),
+                            name: 'SYSTEM.ORDER.PREFIX',
+                            value: this.getValue(shopId, 'SYSTEM.ORDER.PREFIX')
+                        },
+                        {
+                            fieldLabel: t('coreshop_suffix'),
+                            name: 'SYSTEM.ORDER.SUFFIX',
+                            value: this.getValue(shopId, 'SYSTEM.ORDER.SUFFIX')
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
                     title: t('coreshop_invoice'),
                     collapsible: true,
                     collapsed: true,
