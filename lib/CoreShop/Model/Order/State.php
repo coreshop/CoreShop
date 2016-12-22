@@ -141,7 +141,7 @@ class State
 
             return [
                 'name'  => $title,
-                'color' => self::$STATUS_CONFIG[ $state ]['color']
+                'color' => self::$STATUS_CONFIG[$state]['color']
             ];
         }
 

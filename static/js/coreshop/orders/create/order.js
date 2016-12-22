@@ -783,19 +783,6 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
                 labelWidth : 150
             });
 
-            this.totalPanelOrderState = Ext.create({
-                xtype:'combo',
-                fieldLabel:t('coreshop_order_state'),
-                typeAhead:true,
-                mode:'local',
-                labelWidth : 150,
-                listWidth:100,
-                store:pimcore.globalmanager.get("coreshop_orderstates"),
-                displayField:'name',
-                valueField:'id',
-                triggerAction:'all'
-            });
-
             this.totalPanelShop = Ext.create({
                 xtype: 'combo',
                 fieldLabel: t('coreshop_shop'),
@@ -845,7 +832,6 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
                         ]
                     },
                     this.totalPanelPaymentModule,
-                    this.totalPanelOrderState,
                     this.totalPanelShop
                 ],
                 dockedItems: [{
@@ -947,7 +933,6 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
             carrier: this.deliveryPanelCarrier.getValue(),
             freeShipping : this.deliveryPanelFreeShipping.getValue() ? 1 : 0,
             paymentProvider : this.totalPanelPaymentModule.getValue(),
-            orderState : this.totalPanelOrderState.getValue(),
             shop : this.totalPanelShop.getValue()
         };
     }
