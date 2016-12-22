@@ -428,10 +428,12 @@ class CoreShop_Admin_OrderController extends Admin
                 $productIds = [];
 
                 foreach ($order->getItems() as $item) {
-                    $productIds[] = [
-                        'id' => $item->getProduct()->getId(),
-                        'amount' => $item->getAmount()
-                    ];
+                    if($item->getProduct() instanceof \CoreShop\Model\Product) {
+                        $productIds[] = [
+                            'id' => $item->getProduct()->getId(),
+                            'amount' => $item->getAmount()
+                        ];
+                    }
                 }
 
                 $result[] = [
@@ -621,7 +623,6 @@ class CoreShop_Admin_OrderController extends Admin
         $billingAddressId = $this->getParam("billingAddress");
         $carrierId = $this->getParam("carrier");
         $freeShipping = $this->getParam("freeShipping");
-        $orderStateId = $this->getParam("orderState");
         $paymentModuleName = $this->getParam("paymentProvider");
         $shopId = $this->getParam("shop");
 
@@ -632,7 +633,6 @@ class CoreShop_Admin_OrderController extends Admin
         $shippingAddress = \CoreShop\Model\User\Address::getById($shippingAddressId);
         $billingAddress = \CoreShop\Model\User\Address::getById($billingAddressId);
         $carrier = \CoreShop\Model\Carrier::getById($carrierId);
-        $orderState = \CoreShop\Model\Order\State::getById($orderStateId);
         $paymentModule = \CoreShop::getPaymentProvider($paymentModuleName);
         $shop = \CoreShop\Model\Shop::getById($shopId);
 
@@ -656,10 +656,6 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(['success' => false, 'message' => "Payment Module with ID '$paymentModuleName' not found"]);
         }
 
-        if (!$orderState instanceof \CoreShop\Model\Order\State) {
-            $this->_helper->json(['success' => false, 'message' => "Order State with ID '$orderStateId' not found"]);
-        }
-
         if (!$shop instanceof \CoreShop\Model\Shop) {
             $this->_helper->json(['success' => false, 'message' => "Shop with ID '$shopId' not found"]);
         }
@@ -670,7 +666,7 @@ class CoreShop_Admin_OrderController extends Admin
         $cart->setFreeShipping($freeShipping);
         $cart->save();
 
-        $order = $cart->createOrder($orderState, $paymentModule, 0, $language);
+        $order = $cart->createOrder($paymentModule, 0, $language);
 
         $cart->delete();
 

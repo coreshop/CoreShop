@@ -309,13 +309,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             },
                             {
                                 xtype : 'gridcolumn',
-                                flex : 1,
+                                width : 250,
                                 dataIndex : 'date',
                                 text : t('date')
                             },
                             {
                                 xtype : 'gridcolumn',
-                                flex : 1,
+                                width : 180,
                                 dataIndex : 'data',
                                 text : t('coreshop_orderstate_email_sent'),
                                 renderer : function (value) {

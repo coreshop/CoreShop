@@ -11,15 +11,12 @@
  * @copyright  Copyright (c) 2015-2016 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
-
 namespace CoreShop\Model\Order;
-
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Mail;
-
 /**
  * Class Workflow
  * @package CoreShop\Model\Order
@@ -41,19 +38,15 @@ class Workflow
         /** @var \Pimcore\WorkflowManagement\Workflow\Manager $manager */
         $manager = $event->getTarget();
         $data = $event->getParam('data');
-
         $currentStatus = $manager->getWorkflowStateForElement()->getStatus();
         $newStatus = $data['newStatus'];
-
         $orderObject = $manager->getElement();
-
-        if($orderObject instanceof Order) {
-            if( $currentStatus === $newStatus) {
+        if ($orderObject instanceof Order) {
+            if ($currentStatus === $newStatus) {
                 throw new \Exception('Cannot apply same orderState again. (' . $currentStatus . ' => ' . $newStatus .')');
             }
         }
     }
-
     /**
      * @param \Zend_EventManager_Event $event
      */
@@ -62,7 +55,6 @@ class Workflow
         $exception = $event->getParam('exception');
         \Pimcore\Logger::err('CoreShop Workflow OrderChange failed. Reason: ' . $exception->getMessage());
     }
-
     /**
      * @param \Zend_EventManager_Event $event
      */
@@ -71,59 +63,51 @@ class Workflow
         $manager = $event->getTarget();
         $data = $event->getParam('data');
         $additional = $data['additional'];
-
         $orderObject = $manager->getElement();
-
         $oldStatus = $data['oldStatus'];
         $newStatus = $data['newStatus'];
-
-        if($orderObject instanceof Order) {
-
+        if ($orderObject instanceof Order) {
             //create invoice, if allowed.
-            if(self::checkAutomatedInvoicePossibility($orderObject, $oldStatus, $newStatus)) {
+            if (self::checkAutomatedInvoicePossibility($orderObject, $oldStatus, $newStatus)) {
                 $orderObject->createInvoiceForAllItems();
             }
-
             //send confirmation order mail.
-            if(isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
+            if (isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
                 $confirmationMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' . strtoupper($orderObject->getLang()));
                 $emailDocument = Document::getByPath($confirmationMailPath);
-
-                if($emailDocument instanceof Document\Email) {
+                if ($emailDocument instanceof Document\Email) {
                     Mail::sendOrderMail($emailDocument, $orderObject);
                 }
             }
-
             //send order update status mail.
-            if(isset($additional[Order\State::ORDER_STATE_STATUS_MAIL]) && $additional[Order\State::ORDER_STATE_STATUS_MAIL] === 'yes') {
+            if (isset($additional[Order\State::ORDER_STATE_STATUS_MAIL]) && $additional[Order\State::ORDER_STATE_STATUS_MAIL] === 'yes') {
                 $updateMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.UPDATE.' . strtoupper($orderObject->getLang()));
                 $emailDocument = Document::getByPath($updateMailPath);
-
-                if($emailDocument instanceof Document\Email) {
+                if ($emailDocument instanceof Document\Email) {
                     Mail::sendOrderMail($emailDocument, $orderObject);
                 }
             }
         }
     }
-
+    /**
+     * @param Order $order
+     * @param $oldStatus
+     * @param $newStatus
+     * @return bool
+     */
     private static function checkAutomatedInvoicePossibility(Order $order, $oldStatus, $newStatus)
     {
-        if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE') === FALSE) {
-            return FALSE;
+        if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE') === false) {
+            return false;
         }
-
         $allowedStatuses = [Order\State::STATUS_PENDING_PAYMENT, Order\State::STATUS_PAYMENT_REVIEW];
-
-        if(!in_array($oldStatus, $allowedStatuses)) {
-            return FALSE;
+        if (!in_array($oldStatus, $allowedStatuses)) {
+            return false;
         }
-
         $invoices = $order->getInvoices();
-
         if (count($invoices) !== 0) {
-           return FALSE;
+            return false;
         }
-
-        return TRUE;
+        return true;
     }
 }
