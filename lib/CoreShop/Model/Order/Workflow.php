@@ -47,7 +47,7 @@ class Workflow
 
         $orderObject = $manager->getElement();
 
-        if($orderObject instanceof Object\CoreShopOrder) {
+        if($orderObject instanceof Order) {
             if( $currentStatus === $newStatus) {
                 throw new \Exception('Cannot apply same orderState again. (' . $currentStatus . ' => ' . $newStatus .')');
             }
@@ -77,7 +77,7 @@ class Workflow
         $oldStatus = $data['oldStatus'];
         $newStatus = $data['newStatus'];
 
-        if($orderObject instanceof Object\CoreShopOrder) {
+        if($orderObject instanceof Order) {
 
             //create invoice, if allowed.
             if(self::checkAutomatedInvoicePossibility($orderObject, $oldStatus, $newStatus)) {
@@ -106,6 +106,12 @@ class Workflow
         }
     }
 
+    /**
+     * @param Order $order
+     * @param $oldStatus
+     * @param $newStatus
+     * @return bool
+     */
     private static function checkAutomatedInvoicePossibility(Order $order, $oldStatus, $newStatus)
     {
         if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE') === FALSE) {
