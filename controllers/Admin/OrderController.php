@@ -175,29 +175,6 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(['success' => true]);
     }
 
-    /**
-     * @deprecated
-     */
-    public function changeOrderStateAction()
-    {
-        $orderId = $this->getParam('id');
-        $orderStateId = $this->getParam('orderStateId');
-        $order = \CoreShop\Model\Order::getById($orderId);
-        $orderState = \CoreShop\Model\Order\State::getById($orderStateId);
-
-        if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
-        }
-
-        if (!$orderState instanceof \CoreShop\Model\Order\State) {
-            $this->_helper->json(['success' => false, 'message' => "OrderState with ID '$orderStateId' not found"]);
-        }
-
-        $orderState->processStep($order);
-
-        $this->_helper->json(["success" => true, "statesHistory" => $this->getStatesHistory($order), "invoices" => $this->getInvoices($order), "shipments" => $this->getShipments($order)]);
-    }
-
     public function changeOrderItemAction()
     {
         $orderId = $this->getParam('id');

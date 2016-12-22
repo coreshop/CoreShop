@@ -255,32 +255,6 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.headerPanel;
     },
 
-    rebuildPrintDocumentsPanel : function(order) {
-        this.printDocumentButtons.removeAll();
-
-        order.invoices.forEach(function(item) {
-            this.printDocumentButtons.add({
-                xtype: 'button',
-                margin : '0 10 0 0',
-                text : Ext.String.format(t('coreshop_invoice_order'), item.invoiceNumber),
-                handler : function () {
-                    pimcore.helpers.openObject(item.o_id, 'object');
-                }.bind(this)
-            });
-        }.bind(this));
-
-        order.shipments.forEach(function(item) {
-            this.printDocumentButtons.add({
-                xtype: 'button',
-                margin : '0 10 0 0',
-                text : Ext.String.format(t('coreshop_shipment_order'), item.shipmentNumber),
-                handler : function () {
-                    pimcore.helpers.openObject(item.o_id, 'object');
-                }.bind(this)
-            });
-        }.bind(this));
-    },
-
     getOrderInfo : function () {
         if (!this.orderInfo) {
             this.orderStatesStore = new Ext.data.JsonStore({
@@ -291,10 +265,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 xtype : 'panel',
                 style: this.borderStyle,
                 bodyPadding : 5,
-                margin: '0 0 15 0'
+                margin: '15 0 15 0'
             });
-
-            this.rebuildPrintDocumentsPanel(this.order);
 
             this.orderInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_order') + ': ' + this.order.orderNumber + ' (' + this.order.o_id + ')',
@@ -596,6 +568,26 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 }
                             },
                             {
+                                xtype: 'widgetcolumn',
+                                widget: {
+                                    xtype: 'button',
+                                    margin : '5 0 5 0',
+                                    _btnText: '',
+                                    tooltip : t('open'),
+                                    defaultBindProperty: null,
+                                    handler: function(widgetColumn) {
+                                        var record = widgetColumn.getWidgetRecord();
+                                        pimcore.helpers.openObject(record.data.o_id, 'object');
+                                    },
+                                    listeners: {
+                                        beforerender: function(widgetColumn){
+                                            var record = widgetColumn.getWidgetRecord();
+                                            widgetColumn.setText( Ext.String.format(t('coreshop_shipment_order'), record.data.shipmentNumber) );
+                                        }
+                                    }
+                                }
+                            },
+                            {
                                 menuDisabled: true,
                                 sortable: false,
                                 xtype: 'actioncolumn',
@@ -609,14 +601,6 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                             column : colIndex - 1
                                         });
                                     }.bind(this)
-                                },{
-                                    iconCls: 'pimcore_icon_open',
-                                    tooltip : t('open'),
-                                    handler : function (grid, rowIndex) {
-                                        var record = grid.getStore().getAt(rowIndex);
-
-                                        pimcore.helpers.openObject(record.get('o_id'));
-                                    }
                                 }]
                             }
                         ]
@@ -651,7 +635,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 items : [
                     {
                         xtype : 'grid',
-                        margin: '0 0 15 0',
+                        margin: '5 0 15 0',
                         cls : 'coreshop-detail-grid',
                         store : this.invoicesStore,
                         columns : [
@@ -691,19 +675,25 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                             },
                             {
-                                menuDisabled: true,
-                                sortable: false,
-                                xtype: 'actioncolumn',
-                                width: 50,
-                                items: [{
-                                    iconCls: 'pimcore_icon_open',
-                                    tooltip : t('open'),
-                                    handler : function (grid, rowIndex) {
-                                        var record = grid.getStore().getAt(rowIndex);
-
-                                        pimcore.helpers.openObject(record.get('o_id'));
+                                xtype: 'widgetcolumn',
+                                width : 200,
+                                widget: {
+                                    xtype: 'button',
+                                    margin : '5 0 5 0',
+                                    padding: '3 4 3 4',
+                                    _btnText: '',
+                                    defaultBindProperty: null,
+                                    handler: function(widgetColumn) {
+                                        var record = widgetColumn.getWidgetRecord();
+                                        pimcore.helpers.openObject(record.data.o_id, 'object');
+                                    },
+                                    listeners: {
+                                        beforerender: function(widgetColumn){
+                                            var record = widgetColumn.getWidgetRecord();
+                                            widgetColumn.setText(Ext.String.format(t('coreshop_invoice_order'), record.data.invoiceNumber));
+                                        }
                                     }
-                                }]
+                                }
                             }
                         ]
                     }

@@ -136,11 +136,16 @@ class Payment extends Action
             $totalPayed = $this->cart->getTotal();
         }
 
-        return $this->cart->createOrder(
+        $order = $this->cart->createOrder(
             $this->getModule(),
             $totalPayed,
             $language
         );
+
+        //remove user session => not valid anymore!
+        \CoreShop::getTools()->deleteUserSession(true);
+
+        return $order;
     }
 
     /**
@@ -192,6 +197,7 @@ class Payment extends Action
             'module' => $this->getModule(),
             'error' => $this->getParam('error')
         ];
+
 
         $this->coreShopForward('error', $this->checkoutController, 'CoreShop', $forwardParams);
     }

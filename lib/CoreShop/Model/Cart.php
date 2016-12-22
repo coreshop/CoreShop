@@ -969,9 +969,6 @@ class Cart extends Base
         $this->setCustomIdentifier(null);
         $this->save();
 
-        //remove user session => not valid anymore!
-        \CoreShop::getTools()->deleteUserSession(true);
-
         //allow third-parties to hook into order
         \CoreShop::actionHook('order.created', ['order' => $order]);
 
