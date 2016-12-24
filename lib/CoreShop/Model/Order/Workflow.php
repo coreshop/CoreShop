@@ -127,7 +127,7 @@ class Workflow
             "states" => [
                 [
                     "name" => "new",
-                    "label" => "Pending",
+                    "label" => "New",
                     "color" => "#9bc4c4"
                 ],
                 [
@@ -169,42 +169,42 @@ class Workflow
             "statuses" => [
                 [
                     "name" => "pending",
-                    "label" => "Pending (Ausstehend)",
+                    "label" => "Pending",
                     "elementPublished" => true
                 ],
                 [
                     "name" => "pending_payment",
-                    "label" => "Pending Payment (Ausstehende Zahlung)",
+                    "label" => "Pending Payment",
                     "elementPublished" => true
                 ],
                 [
                     "name" => "processing",
-                    "label" => "Processing (Verarbeitung)",
+                    "label" => "Processing",
                     "elementPublished" => true
                 ],
                 [
                     "name" => "complete",
-                    "label" => "Complete (Vollständig)",
+                    "label" => "Complete",
                     "elementPublished" => true
                 ],
                 [
                     "name" => "closed",
-                    "label" => "Closed (Geschlossen)",
+                    "label" => "Closed",
                     "elementPublished" => true
                 ],
                 [
                     "name" => "canceled",
-                    "label" => "Canceled (Storniert)",
+                    "label" => "Canceled",
                     "elementPublished" => true
                 ],
                 [
                     "name" => "holded",
-                    "label" => "On Hold (Zurückgestellt)",
+                    "label" => "On Hold",
                     "elementPublished" => true
                 ],
                 [
                     "name" => "payment_review",
-                    "label" => "Payment Review (Zahlungsprüfung)",
+                    "label" => "Payment Review",
                     "elementPublished" => true
                 ]
             ],
