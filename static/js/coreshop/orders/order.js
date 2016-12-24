@@ -84,14 +84,14 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         },
                         {
                             iconCls : 'coreshop_icon_orders_invoice',
-                            text : t('coreshop_invoice'),
+                            text : t('coreshop_invoice_create_short'),
                             handler : function () {
                                 this.createInvoice();
                             }.bind(this)
                         },
                         {
                             iconCls : 'coreshop_icon_orders_shipment',
-                            text : t('coreshop_shipment'),
+                            text : t('coreshop_shipment_create_short'),
                             handler : function () {
                                 this.createShipment();
                             }.bind(this)
@@ -261,13 +261,6 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 data : this.order.statesHistory
             });
 
-            this.printDocumentButtons = Ext.create('Ext.panel.Panel', {
-                xtype : 'panel',
-                style: this.borderStyle,
-                bodyPadding : 5,
-                margin: '15 0 15 0'
-            });
-
             this.orderInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_order') + ': ' + this.order.orderNumber + ' (' + this.order.o_id + ')',
                 margin : '0 20 20 0',
@@ -284,7 +277,6 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     }
                 ],
                 items : [
-                    this.printDocumentButtons,
                     {
                         xtype : 'grid',
                         margin: '0 0 15 0',
@@ -568,26 +560,6 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 }
                             },
                             {
-                                xtype: 'widgetcolumn',
-                                widget: {
-                                    xtype: 'button',
-                                    margin : '5 0 5 0',
-                                    _btnText: '',
-                                    tooltip : t('open'),
-                                    defaultBindProperty: null,
-                                    handler: function(widgetColumn) {
-                                        var record = widgetColumn.getWidgetRecord();
-                                        pimcore.helpers.openObject(record.data.o_id, 'object');
-                                    },
-                                    listeners: {
-                                        beforerender: function(widgetColumn){
-                                            var record = widgetColumn.getWidgetRecord();
-                                            widgetColumn.setText( Ext.String.format(t('coreshop_shipment_order'), record.data.shipmentNumber) );
-                                        }
-                                    }
-                                }
-                            },
-                            {
                                 menuDisabled: true,
                                 sortable: false,
                                 xtype: 'actioncolumn',
@@ -602,6 +574,28 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                         });
                                     }.bind(this)
                                 }]
+                            },
+                            {
+                                xtype: 'widgetcolumn',
+                                width : 200,
+                                widget: {
+                                    xtype: 'button',
+                                    margin : '5 0 5 0',
+                                    padding: '3 4 3 4',
+                                    _btnText: '',
+                                    tooltip : t('open'),
+                                    defaultBindProperty: null,
+                                    handler: function(widgetColumn) {
+                                        var record = widgetColumn.getWidgetRecord();
+                                        pimcore.helpers.openObject(record.data.o_id, 'object');
+                                    },
+                                    listeners: {
+                                        beforerender: function(widgetColumn){
+                                            var record = widgetColumn.getWidgetRecord();
+                                            widgetColumn.setText( Ext.String.format(t('coreshop_shipment_order'), record.data.shipmentNumber) );
+                                        }
+                                    }
+                                }
                             }
                         ]
                     }
