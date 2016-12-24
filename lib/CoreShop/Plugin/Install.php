@@ -602,6 +602,61 @@ class Install
     }
 
     /**
+     * Install Workflow Data
+     */
+    public function installWorkflow()
+    {
+        //install workflow data!!
+        $orderListing = \CoreShop\Model\Order::getList();
+        $classId = $orderListing->getClassId();
+
+        $workflowConfig = \CoreShop\Model\Order\Workflow::getWorkflowConfig();
+        $systemWorkflowConfig = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
+
+        $configFile = PIMCORE_CONFIGURATION_DIRECTORY . '/workflowmanagement.php';
+
+        //set defaults
+        $workflowConfig['workflowSubject']['classes'] = [$classId];
+
+        //no workflow file. create it!
+        if($systemWorkflowConfig === NULL) {
+
+            //set defaults
+            $workflowConfig['id'] = 1;
+
+            $workflowCompleteData = [
+                'workflows' => [ $workflowConfig ]
+            ];
+
+            \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($workflowCompleteData));
+
+        } else {
+
+            $hasCoreShopWorkflow = FALSE;
+            $lastId = 1;
+
+            if(isset($systemWorkflowConfig['workflows']) && is_array($systemWorkflowConfig['workflows'])) {
+                foreach($systemWorkflowConfig['workflows'] as $workflow) {
+                    if($workflow['name'] === 'OrderState') {
+                        $hasCoreShopWorkflow = TRUE;
+                        break;
+                    }
+                    $lastId = (int) $workflow['id'];
+                }
+
+                if($hasCoreShopWorkflow === FALSE) {
+                    //set defaults
+                    $workflowConfig['id'] = $lastId+1;
+                    $systemWorkflowConfig['workflows'] = array_merge($systemWorkflowConfig['workflows'], [$workflowConfig]);
+                    \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($systemWorkflowConfig));
+                }
+            }
+        }
+
+        return $workflowConfig['id'];
+    }
+
+    /**
      * Removes CoreShop CustomView.
      *
      * @throws \Zend_Config_Exception

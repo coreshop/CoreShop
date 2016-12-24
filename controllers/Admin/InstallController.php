@@ -33,6 +33,7 @@ class CoreShop_Admin_InstallController extends Admin
             $install->installDocuments('documents');
             $install->installMessagingMails();
             $install->installMessagingContacts();
+            $install->installWorkflow();
 
             $install->createFieldCollection('CoreShopOrderTax');
             $install->createFieldCollection('CoreShopPriceRuleItem');
