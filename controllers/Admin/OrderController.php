@@ -115,7 +115,7 @@ class CoreShop_Admin_OrderController extends Admin
         $paymentProviderName = $this->getParam('paymentProvider');
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+            $this->_helper->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $paymentProvider = \CoreShop::getPaymentProvider($paymentProviderName);
@@ -130,7 +130,7 @@ class CoreShop_Admin_OrderController extends Admin
             } else {
                 $order->createPayment($paymentProvider, $amount, true);
 
-                $this->_helper->json(['success' => true, "payments" => $this->getPayments($order), "totalPayed" => $order->getPayedTotal()]);
+                $this->_helper->json(['success' => true, 'payments' => $this->getPayments($order), 'totalPayed' => $order->getPayedTotal()]);
             }
         } else {
             $this->_helper->json(['success' => false, 'message' => "Payment Provider '$paymentProviderName' not found"]);

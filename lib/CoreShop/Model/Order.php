@@ -506,6 +506,9 @@ class Order extends Base
         $note->addData('amount', 'text', \CoreShop::getTools()->formatPrice($amount));
         $note->save();
 
+        //check orderState
+        $this->checkOrderState();
+
         return $payment;
     }
 
@@ -769,7 +772,7 @@ class Order extends Base
         if(count($invoices)===0) {
             throw new Exception('Can\'t create shipping without valid invoice');
         }
-        
+
         $items = $this->getItems();
         $shippedItems = $this->getShippedItems();
         $shipAbleItems = [];
@@ -1103,7 +1106,12 @@ class Order extends Base
 
     /**
      * check order state.
-     * if all invoices and shipments has been created: set status to complete.
+     * - if all invoices and shipments has been created: set status to complete.
+     * - next, if current state is not processing, change it to processing.
+     *
+     * @todo: send correct mail:
+     *      - get the mail information - how?
+     *      - set correct mail type (status updates like "payment has been received") - how?
      */
     public function checkOrderState()
     {
@@ -1116,39 +1124,34 @@ class Order extends Base
             ];
         }
 
-        $currentState = \CoreShop\Model\Order\State::getOrderCurrentState($this);
+        $currentState = Order\State::getOrderCurrentState($this);
 
         try {
             //all items has been checked
             if(!$this->canHaveInvoice($items) && !$this->canHaveShipping($items)) {
                 $params = [
-                    'newState'      => \CoreShop\Model\Order\State::STATE_COMPLETE,
-                    'newStatus'     => \CoreShop\Model\Order\State::STATE_COMPLETE,
+                    'newState'      => Order\State::STATE_COMPLETE,
+                    'newStatus'     => Order\State::STATE_COMPLETE,
                     'additional'    => [
                         //'sendOrderConfirmationMail' => 'yes',
                     ]
                 ];
-
                 \CoreShop\Model\Order\State::changeOrderState($this, $params);
-
             } else {
-
                 if( $currentState['state'] !== \CoreShop\Model\Order\State::STATE_PROCESSING) {
                     $params = [
-                        'newState'      => \CoreShop\Model\Order\State::STATE_PROCESSING,
-                        'newStatus'     => \CoreShop\Model\Order\State::STATE_PROCESSING,
+                        'newState'      => Order\State::STATE_PROCESSING,
+                        'newStatus'     => Order\State::STATE_PROCESSING,
                         'additional'    => [
                             //'sendOrderConfirmationMail' => 'yes',
                         ]
                     ];
-
                     \CoreShop\Model\Order\State::changeOrderState($this, $params);
                 }
             }
         } catch(\Exception $e) {
             //fail silently.
         }
-
     }
 
     /**
