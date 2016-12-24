@@ -114,13 +114,13 @@ class Service
 
         if ($sendContact) {
             //Send Contact
-            $contactEmailDocument = Email::getByPath(Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
+            $contactEmailDocument = Email::getById(Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
             $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
         }
 
         if ($sendCustomer) {
             //Send Customer Info Mail
-            $customerInfoMail = Email::getByPath(Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.'.strtoupper($thread->getLanguage())));
+            $customerInfoMail = Email::getById(Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.'.strtoupper($thread->getLanguage())));
             $message->sendNotification($customerInfoMail, $thread->getEmail());
         }
 

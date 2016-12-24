@@ -169,7 +169,7 @@ class CoreShop_Admin_OrderController extends Admin
 
         $message = $thread->createMessage($messageText);
 
-        $customerInfoMail = \Pimcore\Model\Document\Email::getByPath(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
+        $customerInfoMail = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($thread->getLanguage())));
         $message->sendNotification($customerInfoMail, $thread->getEmail());
 
         $this->_helper->json(['success' => true]);

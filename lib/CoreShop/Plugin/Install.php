@@ -579,15 +579,15 @@ class Install
             $contEmail = Document::getByPath('/'.$language.'/shop/email/message-contact');
 
             if ($custEmail instanceof Document) {
-                Configuration::set('SYSTEM.MESSAGING.MAIL.CUSTOMER.'.strtoupper($language), $custEmail->getFullPath());
+                Configuration::set('SYSTEM.MESSAGING.MAIL.CUSTOMER.'.strtoupper($language), $custEmail->getId());
             }
 
             if ($custReplyEmail instanceof Document) {
-                Configuration::set('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($language), $custReplyEmail->getFullPath());
+                Configuration::set('SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.'.strtoupper($language), $custReplyEmail->getId());
             }
 
             if ($contEmail instanceof Document) {
-                Configuration::set('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($language), $contEmail->getFullPath());
+                Configuration::set('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($language), $contEmail->getId());
             }
         }
     }

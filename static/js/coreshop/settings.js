@@ -1144,7 +1144,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         data = data.records[0].data;
 
                         if (data.elementType === 'document' && data.type === 'email') {
-                            this.setValue(data.path);
+                            this.setValue(data.id);
                             return true;
                         }
 

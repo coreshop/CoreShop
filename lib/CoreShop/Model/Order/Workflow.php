@@ -74,7 +74,7 @@ class Workflow
             //send confirmation order mail.
             if (isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
                 $confirmationMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' . strtoupper($orderObject->getLang()));
-                $emailDocument = Document::getByPath($confirmationMailPath);
+                $emailDocument = Document::getById($confirmationMailPath);
                 if ($emailDocument instanceof Document\Email) {
                     Mail::sendOrderMail($emailDocument, $orderObject);
                 }
@@ -82,7 +82,7 @@ class Workflow
             //send order update status mail.
             if (isset($additional[Order\State::ORDER_STATE_STATUS_MAIL]) && $additional[Order\State::ORDER_STATE_STATUS_MAIL] === 'yes') {
                 $updateMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.UPDATE.' . strtoupper($orderObject->getLang()));
-                $emailDocument = Document::getByPath($updateMailPath);
+                $emailDocument = Document::getById($updateMailPath);
                 if ($emailDocument instanceof Document\Email) {
                     Mail::sendOrderMail($emailDocument, $orderObject);
                 }
@@ -109,5 +109,204 @@ class Workflow
             return false;
         }
         return true;
+    }
+
+    public static function getWorkflowConfig()
+    {
+        return [
+            "name" => "OrderState",
+            "id" => NULL,
+            "workflowSubject" => [
+                "types" => ["object"],
+                "classes" => [8],
+            ],
+            "enabled" => true,
+            "defaultState" => "new",
+            "defaultStatus" => "pending",
+            "allowUnpublished" => true,
+            "states" => [
+                [
+                    "name" => "new",
+                    "label" => "Pending",
+                    "color" => "#9bc4c4"
+                ],
+                [
+                    "name" => "pending_payment",
+                    "label" => "Pending Payment",
+                    "color" => "#d0c31f"
+                ],
+                [
+                    "name" => "processing",
+                    "label" => "Processing",
+                    "color" => "#3081ba"
+                ],
+                [
+                    "name" => "complete",
+                    "label" => "Complete",
+                    "color" => "#73a623"
+                ],
+                [
+                    "name" => "closed",
+                    "label" => "Closed",
+                    "color" => "#ffc301"
+                ],
+                [
+                    "name" => "canceled",
+                    "label" => "Canceled",
+                    "color" => "#c12f30"
+                ],
+                [
+                    "name" => "holded",
+                    "label" => "On Hold",
+                    "color" => "#b9c1bd"
+                ],
+                [
+                    "name" => "payment_review",
+                    "label" => "Payment Review",
+                    "color" => "#ae61db"
+                ]
+            ],
+            "statuses" => [
+                [
+                    "name" => "pending",
+                    "label" => "Pending (Ausstehend)",
+                    "elementPublished" => true
+                ],
+                [
+                    "name" => "pending_payment",
+                    "label" => "Pending Payment (Ausstehende Zahlung)",
+                    "elementPublished" => true
+                ],
+                [
+                    "name" => "processing",
+                    "label" => "Processing (Verarbeitung)",
+                    "elementPublished" => true
+                ],
+                [
+                    "name" => "complete",
+                    "label" => "Complete (Vollständig)",
+                    "elementPublished" => true
+                ],
+                [
+                    "name" => "closed",
+                    "label" => "Closed (Geschlossen)",
+                    "elementPublished" => true
+                ],
+                [
+                    "name" => "canceled",
+                    "label" => "Canceled (Storniert)",
+                    "elementPublished" => true
+                ],
+                [
+                    "name" => "holded",
+                    "label" => "On Hold (Zurückgestellt)",
+                    "elementPublished" => true
+                ],
+                [
+                    "name" => "payment_review",
+                    "label" => "Payment Review (Zahlungsprüfung)",
+                    "elementPublished" => true
+                ]
+            ],
+            "actions" => [
+                [
+                    "name" => "change_order_state",
+                    "label" => "Change Order State",
+                    "transitionTo" => [
+                        "new" => [
+                            "pending"
+                        ],
+                        "pending_payment" => [
+                            "pending_payment"
+                        ],
+                        "processing" => [
+                            "processing"
+                        ],
+                        "complete" => [
+                            "complete"
+                        ],
+                        "closed" => [
+                            "closed"
+                        ],
+                        "canceled" => [
+                            "canceled"
+                        ],
+                        "holded" => [
+                            "holded"
+                        ],
+                        "payment_review" => [
+                            "payment_review"
+                        ]
+                    ],
+                    "events" => [
+                        "before" => ["\\CoreShop\\Model\\Order\\Workflow", "beforeDispatchOrderChange"],
+                        "success" => ["\\CoreShop\\Model\\Order\\Workflow", "dispatchOrderChange"],
+                        "failure" => ["\\CoreShop\\Model\\Order\\Workflow", "dispatchOrderChangeFailed"]
+                    ],
+                    "notes" => [
+                        "type" => "Order State Change",
+                        "required" => false
+                    ],
+                    "additionalFields" => [
+                        [
+                            "name"      => "sendOrderConfirmationMail",
+                            "fieldType" => "select",
+                            "title"     => "Send Order Confirmation Mail",
+                            "defaultValue" => "no",
+                            "options"   => [["key" => "Yes", "value" => "yes"], ["key" => "No", "value" => "no"]]
+                        ],
+                        [
+                            "name"      => "sendOrderStatusMail",
+                            "fieldType" => "select",
+                            "title"     => "Send Order Status Update Mail",
+                            "defaultValue" => "no",
+                            "options"   => [["key" => "Yes", "value" => "yes"], ["key" => "No", "value" => "no"]]
+                        ]
+                    ]
+                ]
+            ],
+            "transitionDefinitions" => [
+                "pending" => [
+                    "validActions" => [
+                        "change_order_state" => null,
+                    ]
+                ],
+                "pending_payment" => [
+                    "validActions" => [
+                        "change_order_state" => null,
+                    ]
+                ],
+                "processing" => [
+                    "validActions" => [
+                        "change_order_state" => null,
+                    ]
+                ],
+                "complete" => [
+                    "validActions" => [
+                        "change_order_state" => null,
+                    ]
+                ],
+                "closed" => [
+                    "validActions" => [
+                        "change_order_state" => null,
+                    ]
+                ],
+                "canceled" => [
+                    "validActions" => [
+                        "change_order_state" => null,
+                    ]
+                ],
+                "holded" => [
+                    "validActions" => [
+                        "change_order_state" => null,
+                    ]
+                ],
+                "payment_review" => [
+                    "validActions" => [
+                        "change_order_state" => null,
+                    ]
+                ],
+            ]
+        ];
     }
 }

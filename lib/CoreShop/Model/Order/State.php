@@ -51,28 +51,28 @@ class State
     protected static $STATUS_CONFIG = [
 
         self::STATUS_PENDING => [
-            'color' => '#c4d5a9'
+            'color' => '#9bc4c4'
         ],
         self::STATUS_PENDING_PAYMENT => [
-            'color' => '#eccd1d'
+            'color' => '#d0c31f'
         ],
         self::STATUS_PROCESSING => [
-            'color' => '#69acbf'
+            'color' => '#3081ba'
         ],
         self::STATUS_COMPLETE => [
-            'color' => '#89a550'
+            'color' => '#73a623'
         ],
         self::STATUS_CLOSED => [
-            'color' => '#aabbd7'
+            'color' => '#ffc301'
         ],
         self::STATUS_CANCELED => [
-            'color' => '#a44948'
+            'color' => '#c12f30'
         ],
         self::STATUS_HOLDED => [
-            'color' => '#e49f68'
+            'color' => '#b9c1bd'
         ],
         self::STATUS_PAYMENT_REVIEW => [
-            'color' => '#dc833f'
+            'color' => '#ae61db'
         ]
     ];
 
