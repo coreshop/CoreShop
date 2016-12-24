@@ -26,11 +26,17 @@ class CoreShop_Admin_OrderInvoiceController extends Admin
         $order = \CoreShop\Model\Order::getById($orderId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+            $this->_helper->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
-        $items = $order->getInvoiceAbleItems();
+        $items = [];
         $itemsToReturn = [];
+
+        try {
+            $items = $order->getInvoiceAbleItems();
+        } catch(\Exception $e) {
+            $this->_helper->json(['success' => false, 'message' => $e->getMessage()]);
+        }
 
         foreach ($items as $item) {
             $orderItem = $item['item'];

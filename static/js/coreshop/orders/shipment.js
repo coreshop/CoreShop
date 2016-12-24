@@ -35,6 +35,8 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
                     else {
                         Ext.Msg.alert(t('coreshop_shipment'), t('coreshop_shipment_no_items'));
                     }
+                } else {
+                    Ext.Msg.alert(t('error'), res.message);
                 }
             }.bind(this)
         });

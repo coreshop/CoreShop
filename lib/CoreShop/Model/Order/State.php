@@ -133,15 +133,18 @@ class State
         $user = \Pimcore\Model\User::getById(0);
         $manager = Workflow\Manager\Factory::getManager($order, $user);
 
-        $state = $manager->getWorkflowStateForElement()->getStatus();
+        $state = $manager->getWorkflowStateForElement()->getState();
+        $status = $manager->getWorkflowStateForElement()->getStatus();
 
         if (!is_null($state)) {
             $decorator = new Workflow\Decorator($manager->getWorkflow());
-            $title = $decorator->getStatusLabel($state);
+            $title = $decorator->getStatusLabel($status);
 
             return [
+                'state' => $state,
+                'status' => $status,
                 'name'  => $title,
-                'color' => self::$STATUS_CONFIG[$state]['color']
+                'color' => self::$STATUS_CONFIG[$status]['color']
             ];
         }
 

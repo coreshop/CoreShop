@@ -25,11 +25,17 @@ class CoreShop_Admin_OrderShipmentController extends Admin
         $order = \CoreShop\Model\Order::getById($orderId);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->_helper->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+            $this->_helper->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
-        $items = $order->getShipAbleItems();
+        $items = [];
         $itemsToReturn = [];
+
+        try {
+            $items = $order->getShipAbleItems();
+        } catch(\Exception $e) {
+            $this->_helper->json(['success' => false, 'message' => $e->getMessage()]);
+        }
 
         foreach ($items as $item) {
             $orderItem = $item['item'];
@@ -92,7 +98,7 @@ class CoreShop_Admin_OrderShipmentController extends Admin
         }
 
         if (!$trackingCode || $shipment->getTrackingCode() === $trackingCode) {
-            $this->_helper->json(['success' => false, 'message' => "Tracking code did not change or is empty"]);
+            $this->_helper->json(['success' => false, 'message' => 'Tracking code did not change or is empty']);
         }
 
         $shipment->setTrackingCode($trackingCode);

@@ -35,7 +35,10 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
                     else {
                         Ext.Msg.alert(t('coreshop_invoice'), t('coreshop_invoice_no_items'));
                     }
+                } else {
+                    Ext.Msg.alert(t('error'), res.message);
                 }
+
             }.bind(this)
         });
     },

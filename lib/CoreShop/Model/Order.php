@@ -554,11 +554,19 @@ class Order extends Base
 
     /**
      * get all items that are still invoice-able
-     *
+
      * @return array
+     * @throws Exception
+     * @throws ObjectUnsupportedException
      */
     public function getInvoiceAbleItems()
     {
+        $payments = $this->getPayments();
+
+        if(count($payments)===0) {
+            throw new Exception('Can\'t create invoice without valid order payment');
+        }
+
         $items = $this->getItems();
         $invoicedItems = $this->getInvoicedItems();
         $invoiceAbleItems = [];
@@ -623,28 +631,18 @@ class Order extends Base
     public function createInvoice($items)
     {
         if (!is_array($items)) {
-            throw new Exception("Invalid Parameters");
+            throw new Exception('Invalid Parameters');
         }
 
-        foreach ($items as $item) {
-            $orderItem = Item::getById($item['orderItemId']);
-            $amount = $item['amount'];
-
-            if ($orderItem instanceof Item) {
-                $invoicedAmount = $orderItem->getInvoicedAmount();
-                $newInvoicedAmount = $invoicedAmount + $amount;
-
-                if ($newInvoicedAmount > $orderItem->getAmount()) {
-                    throw new Exception("You cannot invoice more items than sold items");
-                }
-            }
+        if(!$this->canHaveInvoice($items)) {
+            throw new Exception('You cannot invoice more items than sold items');
         }
 
         $invoice = Invoice::create();
 
         $invoice->setInvoiceNumber(Invoice::getNextInvoiceNumber());
         $invoice->setOrder($this);
-        if (\Pimcore\Config::getFlag("useZendDate")) {
+        if (\Pimcore\Config::getFlag('useZendDate')) {
             $invoice->setInvoiceDate(Date::now());
         } else {
             $invoice->setInvoiceDate(Carbon::now());
@@ -667,13 +665,6 @@ class Order extends Base
             $amount = $item['amount'];
 
             if ($orderItem instanceof Item) {
-                $invoicedAmount = $orderItem->getInvoicedAmount();
-                $newInvoicedAmount = $invoicedAmount + $amount;
-
-                if ($newInvoicedAmount > $orderItem->getAmount()) {
-                    throw new Exception("You cannot invoice more items than sold items");
-                }
-
                 $invoiceItem = Invoice\Item::create();
 
                 Service::copyObject($orderItem, $invoiceItem);
@@ -721,6 +712,9 @@ class Order extends Base
 
         $invoice->calculatePrices();
 
+        //check orderState
+        $this->checkOrderState();
+
         return $invoice;
     }
 
@@ -765,9 +759,17 @@ class Order extends Base
      * get all items that are still ship-able
      *
      * @return array
+     * @throws Exception
+     * @throws ObjectUnsupportedException
      */
     public function getShipAbleItems()
     {
+        $invoices = $this->getInvoices();
+
+        if(count($invoices)===0) {
+            throw new Exception('Can\'t create shipping without valid invoice');
+        }
+        
         $items = $this->getItems();
         $shippedItems = $this->getShippedItems();
         $shipAbleItems = [];
@@ -835,28 +837,18 @@ class Order extends Base
     public function createShipment($items, Carrier $carrier, $trackingCode = null)
     {
         if (!is_array($items)) {
-            throw new Exception("Invalid Parameters");
+            throw new Exception('Invalid Parameters');
         }
 
-        foreach ($items as $item) {
-            $orderItem = Item::getById($item['orderItemId']);
-            $amount = $item['amount'];
-
-            if ($orderItem instanceof Item) {
-                $shippedAmount = $orderItem->getShippedAmount();
-                $newShippedAmount = $shippedAmount + $amount;
-
-                if ($newShippedAmount > $orderItem->getAmount()) {
-                    throw new Exception("You cannot ship more items than sold items");
-                }
-            }
+        if(!$this->canHaveShipping($items)) {
+            throw new Exception('You cannot ship more items than sold items');
         }
 
         $shipment = Shipment::create();
 
         $shipment->setShipmentNumber(Shipment::getNextShipmentNumber());
         $shipment->setOrder($this);
-        if (\Pimcore\Config::getFlag("useZendDate")) {
+        if (\Pimcore\Config::getFlag('useZendDate')) {
             $shipment->setShipmentDate(Date::now());
         } else {
             $shipment->setShipmentDate(Carbon::now());
@@ -882,13 +874,6 @@ class Order extends Base
             $amount = $item['amount'];
 
             if ($orderItem instanceof Item) {
-                $shippedAmount = $orderItem->getShippedAmount();
-                $newShippedAmount = $shippedAmount + $amount;
-
-                if ($newShippedAmount > $orderItem->getAmount()) {
-                    throw new Exception("You cannot ship more items than sold items");
-                }
-
                 $shipmentItem = Shipment\Item::create();
 
                 Service::copyObject($orderItem, $shipmentItem);
@@ -937,6 +922,9 @@ class Order extends Base
         $shipment->setPublished(true);
         $shipment->setItems($shipmentItems);
         $shipment->save();
+
+        //check orderState
+        $this->checkOrderState();
 
         return $shipment;
     }
@@ -1044,44 +1032,6 @@ class Order extends Base
     }
 
     /**
-     * Pimcore: When save is called from Pimcore, check for changes of the OrderState.
-     *
-     * @return int
-     */
-    public function save()
-    {
-        Version::disable();
-
-        if (isset($_REQUEST['data'])) {
-            try {
-                $data = \Zend_Json::decode($_REQUEST['data']);
-
-                if (isset($data['orderState'])) {
-                    Cache::clearTag('object_'.$this->getId());
-                    \Zend_Registry::set('object_'.$this->getId(), null);
-
-                    $orderStep = Order\State::getById($data['orderState']);
-                    $originalOrder = self::getById($this->getId());
-
-                    unset($_REQUEST['data']);
-
-                    if ($orderStep instanceof Order\State) {
-                        if ($orderStep->getId() !== $originalOrder->getOrderState()->getId()) {
-                            $orderStep->processStep($originalOrder);
-                        }
-                    }
-                }
-            } catch (\Exception $ex) {
-                Logger::error($ex);
-            }
-        }
-
-        Version::enable();
-
-        parent::save();
-    }
-
-    /**
      * Create a note for this order.
      *
      * @param $type string
@@ -1152,6 +1102,56 @@ class Order extends Base
     }
 
     /**
+     * check order state.
+     * if all invoices and shipments has been created: set status to complete.
+     */
+    public function checkOrderState()
+    {
+        $items = [];
+
+        foreach ($this->getItems() as $item) {
+            $items[] = [
+                'orderItemId' => $item->getId(),
+                'amount' => $item->getAmount()
+            ];
+        }
+
+        $currentState = \CoreShop\Model\Order\State::getOrderCurrentState($this);
+
+        try {
+            //all items has been checked
+            if(!$this->canHaveInvoice($items) && !$this->canHaveShipping($items)) {
+                $params = [
+                    'newState'      => \CoreShop\Model\Order\State::STATE_COMPLETE,
+                    'newStatus'     => \CoreShop\Model\Order\State::STATE_COMPLETE,
+                    'additional'    => [
+                        //'sendOrderConfirmationMail' => 'yes',
+                    ]
+                ];
+
+                \CoreShop\Model\Order\State::changeOrderState($this, $params);
+
+            } else {
+
+                if( $currentState['state'] !== \CoreShop\Model\Order\State::STATE_PROCESSING) {
+                    $params = [
+                        'newState'      => \CoreShop\Model\Order\State::STATE_PROCESSING,
+                        'newStatus'     => \CoreShop\Model\Order\State::STATE_PROCESSING,
+                        'additional'    => [
+                            //'sendOrderConfirmationMail' => 'yes',
+                        ]
+                    ];
+
+                    \CoreShop\Model\Order\State::changeOrderState($this, $params);
+                }
+            }
+        } catch(\Exception $e) {
+            //fail silently.
+        }
+
+    }
+
+    /**
      * get all order-state changes
      *
      * @return Note[]
@@ -1168,6 +1168,53 @@ class Order extends Base
         $noteList->setOrder('desc');
 
         return $noteList->load();
+    }
+
+    public function canHaveInvoice($items)
+    {
+        if (!is_array($items)) {
+            return false;
+        }
+
+        foreach ($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if ($orderItem instanceof Item) {
+                $invoicedAmount = $orderItem->getInvoicedAmount();
+                $newInvoicedAmount = $invoicedAmount + $amount;
+
+                if ($newInvoicedAmount > $orderItem->getAmount()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    public function canHaveShipping($items)
+    {
+        if (!is_array($items)) {
+            return false;
+        }
+
+        foreach ($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if ($orderItem instanceof Item) {
+                $shippedAmount = $orderItem->getShippedAmount();
+                $newShippedAmount = $shippedAmount + $amount;
+
+                if ($newShippedAmount > $orderItem->getAmount()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
