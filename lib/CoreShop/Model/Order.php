@@ -566,7 +566,7 @@ class Order extends Base
     {
         $payments = $this->getPayments();
 
-        if(count($payments)===0) {
+        if (count($payments) === 0) {
             throw new Exception('Can\'t create invoice without valid order payment');
         }
 
@@ -637,7 +637,7 @@ class Order extends Base
             throw new Exception('Invalid Parameters');
         }
 
-        if(!$this->canHaveInvoice($items)) {
+        if (!$this->canHaveInvoice($items)) {
             throw new Exception('You cannot invoice more items than sold items');
         }
 
@@ -769,7 +769,7 @@ class Order extends Base
     {
         $invoices = $this->getInvoices();
 
-        if(count($invoices)===0) {
+        if (count($invoices) === 0) {
             throw new Exception('Can\'t create shipping without valid invoice');
         }
 
@@ -843,7 +843,7 @@ class Order extends Base
             throw new Exception('Invalid Parameters');
         }
 
-        if(!$this->canHaveShipping($items)) {
+        if (!$this->canHaveShipping($items)) {
             throw new Exception('You cannot ship more items than sold items');
         }
 
@@ -1128,7 +1128,7 @@ class Order extends Base
 
         try {
             //all items has been checked
-            if(!$this->canHaveInvoice($items) && !$this->canHaveShipping($items)) {
+            if (!$this->canHaveInvoice($items) && !$this->canHaveShipping($items)) {
                 $params = [
                     'newState'      => Order\State::STATE_COMPLETE,
                     'newStatus'     => Order\State::STATE_COMPLETE,
@@ -1136,9 +1136,9 @@ class Order extends Base
                         //'sendOrderConfirmationMail' => 'yes',
                     ]
                 ];
-                \CoreShop\Model\Order\State::changeOrderState($this, $params);
+                Order\State::changeOrderState($this, $params);
             } else {
-                if( $currentState['state'] !== \CoreShop\Model\Order\State::STATE_PROCESSING) {
+                if ($currentState['state'] !== \CoreShop\Model\Order\State::STATE_PROCESSING) {
                     $params = [
                         'newState'      => Order\State::STATE_PROCESSING,
                         'newStatus'     => Order\State::STATE_PROCESSING,
@@ -1146,10 +1146,10 @@ class Order extends Base
                             //'sendOrderConfirmationMail' => 'yes',
                         ]
                     ];
-                    \CoreShop\Model\Order\State::changeOrderState($this, $params);
+                    Order\State::changeOrderState($this, $params);
                 }
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             //fail silently.
         }
     }
@@ -1173,6 +1173,12 @@ class Order extends Base
         return $noteList->load();
     }
 
+    /**
+     * Check if order can create a new invoice
+     *
+     * @param $items
+     * @return bool
+     */
     public function canHaveInvoice($items)
     {
         if (!is_array($items)) {
@@ -1196,7 +1202,12 @@ class Order extends Base
         return true;
     }
 
-
+    /**
+     * Check if order can have another shipment
+     *
+     * @param $items
+     * @return bool
+     */
     public function canHaveShipping($items)
     {
         if (!is_array($items)) {
@@ -1221,7 +1232,7 @@ class Order extends Base
     }
 
     /**
-     * get all threads regargind this order
+     * get all threads regarding this order
      *
      * @return Thread|Messaging\Thread[]|null
      */

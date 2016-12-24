@@ -619,7 +619,7 @@ class Install
         $workflowConfig['workflowSubject']['classes'] = [$classId];
 
         //no workflow file. create it!
-        if($systemWorkflowConfig === NULL) {
+        if ($systemWorkflowConfig === null) {
 
             //set defaults
             $workflowConfig['id'] = 1;
@@ -629,22 +629,20 @@ class Install
             ];
 
             \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($workflowCompleteData));
-
         } else {
-
-            $hasCoreShopWorkflow = FALSE;
+            $hasCoreShopWorkflow = false;
             $lastId = 1;
 
-            if(isset($systemWorkflowConfig['workflows']) && is_array($systemWorkflowConfig['workflows'])) {
-                foreach($systemWorkflowConfig['workflows'] as $workflow) {
-                    if($workflow['name'] === 'OrderState') {
-                        $hasCoreShopWorkflow = TRUE;
+            if (isset($systemWorkflowConfig['workflows']) && is_array($systemWorkflowConfig['workflows'])) {
+                foreach ($systemWorkflowConfig['workflows'] as $workflow) {
+                    if ($workflow['name'] === 'OrderState') {
+                        $hasCoreShopWorkflow = true;
                         break;
                     }
                     $lastId = (int) $workflow['id'];
                 }
 
-                if($hasCoreShopWorkflow === FALSE) {
+                if ($hasCoreShopWorkflow === false) {
                     //set defaults
                     $workflowConfig['id'] = $lastId+1;
                     $systemWorkflowConfig['workflows'] = array_merge($systemWorkflowConfig['workflows'], [$workflowConfig]);

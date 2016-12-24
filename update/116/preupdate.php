@@ -15,7 +15,7 @@ $configFile = PIMCORE_CONFIGURATION_DIRECTORY . '/workflowmanagement.php';
 $workflowConfig['workflowSubject']['classes'] = [$classId];
 
 //no workflow file. create it!
-if($systemWorkflowConfig === NULL) {
+if ($systemWorkflowConfig === null) {
 
     //set defaults
     $workflowConfig['id'] = 1;
@@ -25,22 +25,20 @@ if($systemWorkflowConfig === NULL) {
     ];
 
     \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($workflowCompleteData));
-
 } else {
-
-    $hasCoreShopWorkflow = FALSE;
+    $hasCoreShopWorkflow = false;
     $lastId = 1;
 
-    if(isset($systemWorkflowConfig['workflows']) && is_array($systemWorkflowConfig['workflows'])) {
-        foreach($systemWorkflowConfig['workflows'] as $workflow) {
-            if($workflow['name'] === 'OrderState') {
-                $hasCoreShopWorkflow = TRUE;
+    if (isset($systemWorkflowConfig['workflows']) && is_array($systemWorkflowConfig['workflows'])) {
+        foreach ($systemWorkflowConfig['workflows'] as $workflow) {
+            if ($workflow['name'] === 'OrderState') {
+                $hasCoreShopWorkflow = true;
                 break;
             }
             $lastId = (int) $workflow['id'];
         }
 
-        if($hasCoreShopWorkflow === FALSE) {
+        if ($hasCoreShopWorkflow === false) {
             //set defaults
             $workflowConfig['id'] = $lastId+1;
             $systemWorkflowConfig['workflows'] = array_merge($systemWorkflowConfig['workflows'], [$workflowConfig]);
@@ -58,13 +56,13 @@ if (is_array($orders->getData())) {
     foreach ($orders->getData() as $order) {
         /** @var \CoreShop\Model\Order\State $order */
         $currentState = $order->getOrderState();
-        if( $currentState instanceof \CoreShop\Model\Order\State ) {
+        if ($currentState instanceof \CoreShop\Model\Order\State) {
             $identifier = $currentState->getIdentifier();
 
             $newState = 'complete';
             $newStatus = 'complete';
 
-            switch($identifier) {
+            switch ($identifier) {
                 case 'QUEUE':
                     $newState = 'new';
                     $newStatus = 'pending';

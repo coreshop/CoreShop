@@ -428,7 +428,7 @@ class CoreShop_Admin_OrderController extends Admin
                 $productIds = [];
 
                 foreach ($order->getItems() as $item) {
-                    if($item->getProduct() instanceof \CoreShop\Model\Product) {
+                    if ($item->getProduct() instanceof \CoreShop\Model\Product) {
                         $productIds[] = [
                             'id' => $item->getProduct()->getId(),
                             'amount' => $item->getAmount()
@@ -889,7 +889,7 @@ class CoreShop_Admin_OrderController extends Admin
     }
 
     /**
-     * @param $order
+     * @param \CoreShop\Model\Order $order
      * @return array
      */
     protected function getInvoices($order)
@@ -905,7 +905,7 @@ class CoreShop_Admin_OrderController extends Admin
     }
 
     /**
-     * @param $order
+     * @param \CoreShop\Model\Order $order
      * @return array
      */
     protected function getShipments($order)

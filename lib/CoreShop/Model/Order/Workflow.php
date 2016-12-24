@@ -12,11 +12,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 namespace CoreShop\Model\Order;
+
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use CoreShop\Mail;
+
 /**
  * Class Workflow
  * @package CoreShop\Model\Order
@@ -115,7 +117,7 @@ class Workflow
     {
         return [
             "name" => "OrderState",
-            "id" => NULL,
+            "id" => null,
             "workflowSubject" => [
                 "types" => ["object"],
                 "classes" => [8],

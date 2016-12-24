@@ -33,7 +33,7 @@ class CoreShop_Admin_OrderShipmentController extends Admin
 
         try {
             $items = $order->getShipAbleItems();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->_helper->json(['success' => false, 'message' => $e->getMessage()]);
         }
 

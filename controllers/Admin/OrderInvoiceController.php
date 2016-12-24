@@ -34,7 +34,7 @@ class CoreShop_Admin_OrderInvoiceController extends Admin
 
         try {
             $items = $order->getInvoiceAbleItems();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->_helper->json(['success' => false, 'message' => $e->getMessage()]);
         }
 
