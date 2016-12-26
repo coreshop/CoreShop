@@ -503,3 +503,7 @@
 "coreshop_condition_invoice","Rechnung"
 "coreshop_condition_shipment","Versand"
 "coreshop_action_mail","Mail Dokument"
+"coreshop_transition_direction","Transition Direction"
+"coreshop_transition_to","Übergang Zu"
+"coreshop_transition_from","Übergang Von"
+"coreshop_transition_all","Alle"
