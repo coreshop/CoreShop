@@ -206,6 +206,8 @@
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/payment.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/orderState.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/carriers.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/invoice.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/shipment.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/actions/mail.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
