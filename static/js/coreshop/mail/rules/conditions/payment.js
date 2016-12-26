@@ -30,26 +30,28 @@ pimcore.plugin.coreshop.mail.rules.conditions.payment = Class.create(pimcore.plu
         });
         paymentProvidersStore.load();
 
+        var providers = new Ext.ux.form.MultiSelect({
+            typeAhead: true,
+            listWidth: 100,
+            width : 500,
+            forceSelection: true,
+            maxHeight : 400,
+            delimiter : false,
+            labelWidth : 150,
+            fieldLabel:t('coreshop_paymentProvider'),
+            mode:'local',
+            store:paymentProvidersStore,
+            displayField:'name',
+            valueField:'id',
+            triggerAction:'all',
+            name:'providers',
+            multiSelect: true,
+            value : this.data ? this.data.providers : []
+        });
+
         this.form = Ext.create('Ext.form.FieldSet', {
             items : [
-                {
-                    xtype:'combo',
-                    fieldLabel:t('coreshop_paymentProvider'),
-                    mode:'local',
-                    listWidth:100,
-                    store:paymentProvidersStore,
-                    displayField:'name',
-                    valueField:'id',
-                    forceSelection:true,
-                    triggerAction:'all',
-                    name:'providers',
-                    afterLabelTextTpl: [
-                        '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
-                    ],
-                    allowBlank: false,
-                    multiSelect: true,
-                    value : this.data ? this.data.providers : []
-                }
+                providers
             ]
         });
 
