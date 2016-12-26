@@ -73,6 +73,11 @@ class Workflow
             if (self::checkAutomatedInvoicePossibility($orderObject, $oldStatus, $newStatus)) {
                 $orderObject->createInvoiceForAllItems();
             }
+
+            //@fixme: https://github.com/coreshop/CoreShop/issues/148
+            // check for email order conditions
+
+            /*
             //send confirmation order mail.
             if (isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
                 $confirmationMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' . strtoupper($orderObject->getLang()));
@@ -89,6 +94,7 @@ class Workflow
                     Mail::sendOrderMail($emailDocument, $orderObject);
                 }
             }
+            */
         }
     }
     /**
@@ -248,22 +254,6 @@ class Workflow
                     "notes" => [
                         "type" => "Order State Change",
                         "required" => false
-                    ],
-                    "additionalFields" => [
-                        [
-                            "name"      => "sendOrderConfirmationMail",
-                            "fieldType" => "select",
-                            "title"     => "Send Order Confirmation Mail",
-                            "defaultValue" => "no",
-                            "options"   => [["key" => "Yes", "value" => "yes"], ["key" => "No", "value" => "no"]]
-                        ],
-                        [
-                            "name"      => "sendOrderStatusMail",
-                            "fieldType" => "select",
-                            "title"     => "Send Order Status Update Mail",
-                            "defaultValue" => "no",
-                            "options"   => [["key" => "Yes", "value" => "yes"], ["key" => "No", "value" => "no"]]
-                        ]
                     ]
                 ]
             ],

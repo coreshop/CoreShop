@@ -1109,9 +1109,7 @@ class Order extends Base
      * - if all invoices and shipments has been created: set status to complete.
      * - next, if current state is not processing, change it to processing.
      *
-     * @todo: send correct mail:
-     *      - get the mail information - how?
-     *      - set correct mail type (status updates like "payment has been received") - how?
+     * @todo: send correct mail: https://github.com/coreshop/CoreShop/issues/148
      */
     public function checkOrderState()
     {

@@ -94,18 +94,6 @@ class State
 
         $params['action'] = 'change_order_state';
 
-        if (isset($params['additional']['sendOrderConfirmationMail'])) {
-            if (is_bool($params['additional']['sendOrderConfirmationMail'])) {
-                $params['additional']['sendOrderConfirmationMail'] = $params['additional']['sendOrderConfirmationMail'] === true ? 'yes' : 'no';
-            }
-        }
-
-        if (isset($params['additional']['sendOrderStatusMail'])) {
-            if (is_bool($params['additional']['sendOrderStatusMail'])) {
-                $params['additional']['sendOrderStatusMail'] = $params['additional']['sendOrderStatusMail'] === true ? 'yes' : 'no';
-            }
-        }
-
         if ($manager->validateAction($params['action'], $params['newState'], $params['newStatus'])) {
             try {
                 $manager->performAction($params['action'], $params);
