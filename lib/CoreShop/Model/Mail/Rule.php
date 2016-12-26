@@ -145,6 +145,44 @@ class Rule extends AbstractRule
     }
 
     /**
+     * Apply valid Order Rules
+     *
+     * @param $type
+     * @param AbstractModel $object
+     * @param array $params
+     */
+    public static function apply($type, $object, $params = [])
+    {
+        $list = static::getList();
+        $list->setCondition("mailType = ?", [$type]);
+        $list->load();
+
+        foreach($list->getData() as $rule) {
+            if($rule instanceof static) {
+                if($rule->checkValidity($object, $params)) {
+                    $rule->applyRule($object, $params);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $object
+     * @param array $params
+     *
+     * @return boolean
+     */
+    public function applyRule($object, $params = []) {
+        foreach($this->getActions() as $action) {
+            if($action instanceof AbstractAction) {
+                return $action->apply($object, $this, $params);
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Check if Email Rule is valid
      *
      * @param AbstractModel $object
