@@ -22,6 +22,10 @@ use Pimcore\Model\Object;
  */
 class CoreShop_UserController extends Action
 {
+
+    /**
+     * Check if user is allowed here globally.
+     */
     public function preDispatch()
     {
         parent::preDispatch();
@@ -31,7 +35,7 @@ class CoreShop_UserController extends Action
             $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language], 'coreshop_index'));
         }
 
-        $allowedActionsWithoutLogin = ['login', 'register', 'guest-order-tracking'];
+        $allowedActionsWithoutLogin = ['login', 'register', 'password-reset-request', 'password-reset', 'guest-order-tracking'];
 
         if (!in_array($this->getRequest()->getActionName(), $allowedActionsWithoutLogin)) {
             if (!\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
@@ -53,28 +57,35 @@ class CoreShop_UserController extends Action
     {
     }
 
+    /**
+     * @throws Exception\ObjectUnsupportedException
+     */
     public function orderDetailAction()
     {
-        $order = $this->getParam("id");
+        $order = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($order);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(['act' => 'orders',  'lang' => $this->language], 'coreshop_user', true));
         }
 
         if (!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(['act' => 'orders',  'lang' => $this->language], 'coreshop_user', true));
         }
 
-        $this->view->messageSent = $this->getParam("messageSent", false);
+        $this->view->messageSent = $this->getParam('messageSent', false);
         $this->view->order = $order;
     }
 
+    /**
+     * @throws Exception
+     * @throws Exception\ObjectUnsupportedException
+     */
     public function orderDetailMessageAction()
     {
-        $order = $this->getParam("id");
-        $messageText = $this->getParam("text");
-        $product = $this->getParam("product");
+        $order = $this->getParam('id');
+        $messageText = $this->getParam('text');
+        $product = $this->getParam('product');
 
         $order = \CoreShop\Model\Order::getById($order);
         $product = \CoreShop\Model\Product::getById($product);
@@ -84,14 +95,14 @@ class CoreShop_UserController extends Action
         }
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(['act' => 'orders',  'lang' => $this->language], 'coreshop_user', true));
         }
 
         if (!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(['act' => 'orders',  'lang' => $this->language], 'coreshop_user', true));
         }
 
-        $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
+        $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.CONTACT.SALES'));
         $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), \CoreShop\Model\Shop::getShop()->getId(), $order->getId(), $product);
 
         if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
@@ -117,30 +128,41 @@ class CoreShop_UserController extends Action
         $contactEmailDocument = \Pimcore\Model\Document\Email::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
         $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
 
-        $this->redirect(\CoreShop::getTools()->url(["act" => "order-detail", "id" => $order->getId(), "messageSent" => true], "coreshop_user", true));
+        //send mail via email-workflow
+        //@fixme: https://github.com/coreshop/CoreShop/issues/148
+        //\CoreShop\Mail\Workflow\apply('message', ['obj' => $message, 'conditions' => ['contact', 'params' => []]];
+
+        $this->redirect(\CoreShop::getTools()->url(['act' => 'order-detail', 'id' => $order->getId(), 'messageSent' => true], 'coreshop_user', true));
     }
 
+    /**
+     * @throws Exception\ObjectUnsupportedException
+     */
     public function orderReorderAction()
     {
-        $order = $this->getParam("id");
+        $order = $this->getParam('id');
         $order = \CoreShop\Model\Order::getById($order);
 
         if (!$order instanceof \CoreShop\Model\Order) {
-            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(['act' => 'orders',  'lang' => $this->language], 'coreshop_user', true));
         }
 
         if (!$order->getCustomer() instanceof \CoreShop\Model\User || !$order->getCustomer()->getId() === \CoreShop::getTools()->getUser()->getId()) {
-            $this->redirect(\CoreShop::getTools()->url(["act" => "orders",  "lang" => $this->language], "coreshop_user", true));
+            $this->redirect(\CoreShop::getTools()->url(['act' => 'orders',  'lang' => $this->language], 'coreshop_user', true));
         }
 
         $this->cart->addOrderToCart($order, true);
 
-        $this->redirect(\CoreShop::getTools()->url(["act" => "list", "lang" => $this->language], "coreshop_cart", true));
+        $this->redirect(\CoreShop::getTools()->url(['act' => 'list', 'lang' => $this->language], 'coreshop_cart', true));
     }
 
+    /**
+     * @throws Exception\ObjectUnsupportedException
+     * @throws Zend_Controller_Response_Exception
+     */
     public function downloadVirtualProductAction()
     {
-        $orderItemId = $this->getParam("id");
+        $orderItemId = $this->getParam('id');
 
         $orderItem = \CoreShop\Model\Order\Item::getById($orderItemId);
 
@@ -159,7 +181,7 @@ class CoreShop_UserController extends Action
         //404
         $response = $this->getResponse();
         $response->setHttpResponseCode(404);
-        header("HTTP/1.0 404 Not Found");
+        header('HTTP/1.0 404 Not Found');
         exit;
     }
 
@@ -191,6 +213,9 @@ class CoreShop_UserController extends Action
         exit;
     }
 
+    /**
+     * Update user settings.
+     */
     public function settingsAction()
     {
         $this->view->success = false;
@@ -200,8 +225,8 @@ class CoreShop_UserController extends Action
                 $params = $this->getAllParams();
 
                 if ($params['password']) {
-                    if ($params['password'] != $params['repassword']) {
-                        throw new Exception('Passwords do not match!');
+                    if ($params['password'] !== $params['repassword']) {
+                        throw new Exception($this->view->translate('Passwords do not match!'));
                     }
                 }
 
@@ -221,6 +246,9 @@ class CoreShop_UserController extends Action
         }
     }
 
+    /**
+     * logout user, also unlink user cart
+     */
     public function logoutAction()
     {
         \CoreShop::getTools()->unsetUser();
@@ -229,6 +257,9 @@ class CoreShop_UserController extends Action
         $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language], 'coreshop_index'));
     }
 
+    /**
+     * @throws Exception\ObjectUnsupportedException
+     */
     public function loginAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
@@ -274,6 +305,9 @@ class CoreShop_UserController extends Action
         }
     }
 
+    /**
+     * Allow user to register themselves
+     */
     public function registerAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
@@ -289,7 +323,6 @@ class CoreShop_UserController extends Action
             foreach ($params as $key => $value) {
                 if (startsWith($key, 'address_')) {
                     $addressKey = str_replace('address_', '', $key);
-
                     $addressParams[$addressKey] = $value;
                 } else {
                     $userParams[$key] = $value;
@@ -313,7 +346,7 @@ class CoreShop_UserController extends Action
 
                 //Check User exists
                 if (\CoreShop\Model\User::getUserByEmail($userParams['email']) instanceof \CoreShop\Model\User) {
-                    throw new Exception('E-Mail already exists');
+                    throw new Exception($this->view->translate('E-Mail already exists'));
                 }
 
                 $folder = '/users/' . strtolower(substr($userParams['lastname'], 0, 1));
@@ -374,6 +407,12 @@ class CoreShop_UserController extends Action
 
                 \CoreShop::getTools()->setUser($user);
 
+                if (!$isGuest) {
+                    //send mail via email-workflow
+                    //@fixme: https://github.com/coreshop/CoreShop/issues/148
+                    //\CoreShop\Mail\Workflow\apply('user', ['obj' => $user, 'conditions' => ['register']];
+                }
+
                 if (array_key_exists('_redirect', $params)) {
                     $this->redirect($params['_redirect']);
                 } else {
@@ -389,10 +428,114 @@ class CoreShop_UserController extends Action
         }
     }
 
+    /**
+     * @throws Exception\ObjectUnsupportedException
+     */
+    public function passwordResetAction()
+    {
+        if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
+            $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'profile'], 'coreshop_user'));
+        }
+
+        $message = '';
+        $success = false;
+        $showForm = true;
+
+        $hash = trim($this->getParam('hash'));
+
+        if( $this->getParam('success') === '1' ) {
+            $success = true;
+        } else {
+            if (empty($hash)) {
+                $message = $this->view->translate('invalid password reset link');
+                $showForm = false;
+            } else {
+                $user = \CoreShop\Model\User::getByResetHash($hash, ['limit' => 1]);
+                if (!$user instanceof \CoreShop\Model\User) {
+                    $message = $this->view->translate('Invalid password reset link');
+                    $showForm = false;
+                } else {
+                    if ($this->getRequest()->isPost()) {
+                        $newPass = $this->getParam('password');
+                        $newPassRe = $this->getParam('passwordRe');
+                        if ($newPass !== $newPassRe) {
+                            $message = $this->view->translate('Passwords do not match!');
+                        } else {
+                            $user->setResetHash(null);
+                            $user->setPassword($newPass);
+                            $user->save();
+
+                            //send mail via email-workflow
+                            //@fixme: https://github.com/coreshop/CoreShop/issues/148
+                            //\CoreShop\Mail\Workflow\apply('user', ['obj' => $user, 'conditions' => ['password-reset', 'params' => []]];
+
+                            $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset', 'success' => true], 'coreshop_user'));
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+        $this->view->assign([
+            'message' => $message,
+            'showForm' => $showForm,
+            'success' => $success
+        ]);
+
+    }
+
+    /**
+     * @throws Exception
+     * @throws Exception\ObjectUnsupportedException
+     * @throws Zend_Validate_Exception
+     */
+    public function passwordResetRequestAction()
+    {
+        $message = '';
+        $success = false;
+
+        if ($this->getRequest()->isPost()) {
+            $emailAddress = $this->getParam('email');
+            if (!\Zend_Validate::is($emailAddress, 'EmailAddress')) {
+                $message = $this->view->translate('invalid email address');
+            } else {
+                $user = \CoreShop\Model\User::getUserByEmail($emailAddress);
+                if ($user instanceof \CoreShop\Model\User) {
+                    $hash = hash('md5', $user->getId() . $user->getEmail() . mt_rand());
+                    $user->setResetHash($hash);
+                    $user->save();
+
+                    $link = \Pimcore\Tool::getHostUrl() . \CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset', 'hash' => $hash], 'coreshop_user');
+
+                    //send mail via email-workflow
+                    //@fixme: https://github.com/coreshop/CoreShop/issues/148
+                    //\CoreShop\Mail\Workflow\apply('user', ['obj' => $user, 'conditions' => ['password-reset-request', 'params' => ['resetLink' => $link]]];
+                }
+
+                $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset-request', 'success' => true], 'coreshop_user'));
+
+            }
+        } else if( $this->getParam('success') === '1' ) {
+            $success = true;
+        }
+
+        $this->view->assign([
+            'message' => $message,
+            'success' => $success
+        ]);
+
+    }
+
     public function addressesAction()
     {
     }
 
+    /**
+     * @throws Exception
+     * @throws Exception\ObjectUnsupportedException
+     */
     public function addressAction()
     {
         $this->view->redirect = $this->getParam('redirect', \CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'addresses'], 'coreshop_user', true));
@@ -472,6 +615,9 @@ class CoreShop_UserController extends Action
         }
     }
 
+    /**
+     * @throws Exception\ObjectUnsupportedException
+     */
     public function addressDeleteAction()
     {
         $address = intval($this->getParam('address'));
@@ -492,17 +638,20 @@ class CoreShop_UserController extends Action
             }
         }
 
-        $this->redirect(CoreShop::getTools()->url(["lang" => $this->language, "act" => "addresses"], "coreshop_user", true));
+        $this->redirect(CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'addresses'], 'coreshop_user', true));
     }
 
+    /**
+     * Show Order vor Guests only
+     */
     public function guestOrderTrackingAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
             $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'profile'], 'coreshop_user'));
         }
 
-        $orderReference = $this->getParam("orderReference");
-        $email = $this->getParam("email");
+        $orderReference = $this->getParam('orderReference');
+        $email = $this->getParam('email');
 
         if ($this->getRequest()->isPost()) {
             $order = \CoreShop\Model\Order::findByOrderNumber($orderReference);
@@ -513,16 +662,16 @@ class CoreShop_UserController extends Action
                             if ($order->getCustomer()->getEmail() === $email) {
                                 $this->view->order = $order;
                             } else {
-                                throw new \Exception($this->view->translate("E-Mail Address does not match."));
+                                throw new \Exception($this->view->translate('E-Mail Address does not match.'));
                             }
                         } else {
-                            throw new \Exception($this->view->translate("You are not allowed to view this order"));
+                            throw new \Exception($this->view->translate('You are not allowed to view this order'));
                         }
                     } else {
-                        throw new \Exception($this->view->translate("Order invalid"));
+                        throw new \Exception($this->view->translate('Order invalid'));
                     }
                 } else {
-                    throw new \Exception($this->view->translate("Order reference/email not found!"));
+                    throw new \Exception($this->view->translate('Order reference/email not found!'));
                 }
             } catch (\Exception $ex) {
                 $this->view->error = $ex->getMessage();
