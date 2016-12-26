@@ -79,7 +79,7 @@ abstract class AbstractRule extends AbstractModel
 
                 $actionInstances[] = $instance;
             } else {
-                throw new \CoreShop\Exception(sprintf('Action with type %s not found'), $action['type']);
+                throw new \CoreShop\Exception(sprintf('Action with type %s not found', $action['type']));
             }
         }
 
@@ -110,7 +110,7 @@ abstract class AbstractRule extends AbstractModel
 
                 $conditionInstances[] = $instance;
             } else {
-                throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $condition['type']);
+                throw new \CoreShop\Exception(sprintf('Condition with type %s not found', $condition['type']));
             }
         }
 

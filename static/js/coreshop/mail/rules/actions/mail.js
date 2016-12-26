@@ -17,13 +17,11 @@ pimcore.plugin.coreshop.mail.rules.actions.mail = Class.create(pimcore.plugin.co
 
     type : 'mail',
 
+    fields : {},
+
     getForm : function () {
         var me = this,
             tabs = [];
-
-        if (this.data) {
-
-        }
 
         Ext.each(pimcore.settings.websiteLanguages, function (lang) {
             var shortLang = lang.toLowerCase();
@@ -33,24 +31,28 @@ pimcore.plugin.coreshop.mail.rules.actions.mail = Class.create(pimcore.plugin.co
                 shortLang = shortLang[0];
             }
 
+            var value = this.data && this.data.mails && this.data.mails.hasOwnProperty(lang) ? this.data.mails[lang] : '';
+
+            this.fields[shortLang] = Ext.create({
+                xtype: 'textfield',
+                name: 'mails[' + shortLang + ']',
+                fieldLabel: t('coreshop_messaging_customer_email'),
+                labelWidth: 350,
+                fieldCls: 'pimcore_droptarget_input',
+                listeners: me._getMailTemplateDropAreaListener(),
+                value : value
+            });
+
             tabs.push({
                 title: pimcore.available_languages[lang],
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout: 'form',
                 items: [
-                    {
-                        name: 'document.' + shortLang,
-                        value: '',
-                        fieldLabel: t('coreshop_messaging_customer_email'),
-                        labelWidth: 350,
-                        fieldCls: 'pimcore_droptarget_input',
-                        xtype: 'textfield',
-                        listeners: me._getMailTemplateDropAreaListener()
-                    }
+                    this.fields[shortLang]
                 ]
             });
 
-        });
+        }.bind(this));
 
         this.form = new Ext.form.FieldSet({
             items : [
@@ -64,10 +66,23 @@ pimcore.plugin.coreshop.mail.rules.actions.mail = Class.create(pimcore.plugin.co
                     },
                     items: tabs
                 }
-            ]
+            ],
+            getValues : this.getValues.bind(this)
         });
 
         return this.form;
+    },
+
+    getValues : function() {
+        var values = {};
+
+        Ext.Object.each(this.fields, function(key, value) {
+            values[key] = value.getValue();
+        });
+
+        return {
+            mails : values
+        };
     },
 
     _getMailTemplateDropAreaListener: function() {

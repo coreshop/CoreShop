@@ -35,7 +35,6 @@ pimcore.plugin.coreshop.mail.rules.conditions.payment = Class.create(pimcore.plu
                 {
                     xtype:'combo',
                     fieldLabel:t('coreshop_paymentProvider'),
-                    typeAhead:true,
                     mode:'local',
                     listWidth:100,
                     store:paymentProvidersStore,
@@ -43,12 +42,13 @@ pimcore.plugin.coreshop.mail.rules.conditions.payment = Class.create(pimcore.plu
                     valueField:'id',
                     forceSelection:true,
                     triggerAction:'all',
-                    name:'provider',
+                    name:'providers',
                     afterLabelTextTpl: [
                         '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                     ],
                     allowBlank: false,
-                    multiselect : true
+                    multiSelect: true,
+                    value : this.data ? this.data.providers : []
                 }
             ]
         });

@@ -108,8 +108,8 @@ class CoreShop_Admin_MailRuleController extends Admin
             $conditions = $data['conditions'];
             $actions = $data['actions'];
 
-            $actionNamespace = 'CoreShop\\Model\\Mail\\Action\\';
-            $conditionNamespace = 'CoreShop\\Model\\Mail\\Condition\\';
+            $actionNamespace = 'CoreShop\\Model\\Mail\\Rule\\Action\\';
+            $conditionNamespace = 'CoreShop\\Model\\Mail\\Rule\\Condition\\';
 
             $actionInstances = $rule->prepareActions($actions, $actionNamespace);
             $conditionInstances = $rule->prepareConditions($conditions, $conditionNamespace);
