@@ -1131,7 +1131,6 @@ class Order extends Base
                     'newState'      => Order\State::STATE_COMPLETE,
                     'newStatus'     => Order\State::STATE_COMPLETE,
                     'additional'    => [
-                        //'sendOrderConfirmationMail' => 'yes',
                     ]
                 ];
                 Order\State::changeOrderState($this, $params);
@@ -1141,7 +1140,6 @@ class Order extends Base
                         'newState'      => Order\State::STATE_PROCESSING,
                         'newStatus'     => Order\State::STATE_PROCESSING,
                         'additional'    => [
-                            //'sendOrderConfirmationMail' => 'yes',
                         ]
                     ];
                     Order\State::changeOrderState($this, $params);
