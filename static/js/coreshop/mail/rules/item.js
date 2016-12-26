@@ -154,10 +154,10 @@ pimcore.plugin.coreshop.mail.rules.item = Class.create(pimcore.plugin.coreshop.r
     },
 
     getActionContainerClass : function () {
-        return pimcore.plugin.coreshop.mail.action;
+        return pimcore.plugin.coreshop.mail.rules.action;
     },
 
     getConditionContainerClass : function () {
-        return pimcore.plugin.coreshop.mail.condition;
+        return pimcore.plugin.coreshop.mail.rules.condition;
     }
 });

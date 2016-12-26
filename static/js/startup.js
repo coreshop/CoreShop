@@ -284,19 +284,18 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                     }
 
                     if (user.admin) {
+
+                        coreShopMenuItems.push({
+                            text: t('coreshop_mail_rules'),
+                            iconCls: 'coreshop_icon_mail_rule',
+                            handler: this.openMailRules
+                        });
+
                         coreShopMenuItems.push({
                             text: t('coreshop_update'),
                             iconCls: 'pimcore_icon_update',
                             handler: this.openUpdate
                         });
-
-                        if (coreshop.settings.multishop) {
-                            coreShopMenuItems.push({
-                                text: t('coreshop_mail_rules'),
-                                iconCls: 'coreshop_icon_mail_rule',
-                                handler: this.openMailRules
-                            });
-                        }
 
                         if (coreshop.settings.multishop) {
                             coreShopMenuItems.push({

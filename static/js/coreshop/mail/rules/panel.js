@@ -32,7 +32,7 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
     },
 
     getItemClass : function () {
-        return pimcore.plugin.coreshop.mail.item;
+        return pimcore.plugin.coreshop.mail.rules.item;
     },
 
     getActionsForType : function(allowedType) {
