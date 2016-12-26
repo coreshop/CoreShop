@@ -494,3 +494,13 @@
 "coreshop_category_variant_mode_hide","Hide"
 "coreshop_category_variant_mode_include","Show"
 "coreshop_category_variant_mode_include_parent_object","Consider for results, bot do not display"
+
+"coreshop_mail_rules","Mail Rules"
+"coreshop_mail_rule","Mail Rule"
+"coreshop_mail_rule_type","Rule Type"
+"coreshop_condition_payment","Payment"
+"coreshop_condition_orderState","Order State"
+"coreshop_condition_shipping","Shipping"
+"coreshop_condition_invoice","Invoice"
+"coreshop_condition_shipment","Shipment"
+"coreshop_action_mail","Mail"

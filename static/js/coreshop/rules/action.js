@@ -53,6 +53,12 @@ pimcore.plugin.coreshop.rules.action = Class.create({
         return this.actionsContainer;
     },
 
+    destroy : function() {
+        if(this.actionsContainer) {
+            this.actionsContainer.destroy();
+        }
+    },
+
     addAction: function (type, data) {
         var actionClass = this.getActionClassItem(type);
         var item = new actionClass(this, data);

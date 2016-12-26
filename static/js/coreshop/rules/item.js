@@ -26,8 +26,8 @@ pimcore.plugin.coreshop.rules.item = Class.create(pimcore.plugin.coreshop.abstra
         var actionContainerClass = this.getActionContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.actions = new actionContainerClass(this.parentPanel.actions);
-        this.conditions = new conditionContainerClass(this.parentPanel.conditions);
+        this.actions = new actionContainerClass(this.parentPanel.getActions());
+        this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
 
         var items = [
             this.getSettings(),

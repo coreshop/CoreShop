@@ -292,6 +292,14 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
                         if (coreshop.settings.multishop) {
                             coreShopMenuItems.push({
+                                text: t('coreshop_mail_rules'),
+                                iconCls: 'coreshop_icon_mail_rule',
+                                handler: this.openMailRules
+                            });
+                        }
+
+                        if (coreshop.settings.multishop) {
+                            coreShopMenuItems.push({
                                 text: t('coreshop_shops'),
                                 iconCls: 'coreshop_icon_shop',
                                 handler: this.openShops
@@ -724,6 +732,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
             pimcore.globalmanager.add('coreshop_carrier_shipping_rule_panel', new pimcore.plugin.coreshop.carrier.shippingrules.panel());
         }
     },
+
+    openMailRules : function () {
+        try {
+            pimcore.globalmanager.get('coreshop_mail_rule_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_mail_rule_panel', new pimcore.plugin.coreshop.mail.rules.panel());
+        }
+    }
 });
 
 new pimcore.plugin.coreshop();

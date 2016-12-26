@@ -152,7 +152,7 @@
     background: url(/plugins/CoreShop/static/img/flat/orders.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_order_states, .pimcore_icon_coreShopOrderState {
+.coreshop_icon_order_states, .pimcore_icon_coreShopOrderState, .coreshop_rule_icon_condition_orderState {
     background: url(/plugins/CoreShop/static/img/flat/order-states.svg) center center no-repeat !important;
 }
 
@@ -188,11 +188,11 @@
     background: url(/plugins/CoreShop/static/img/flat/orders.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_orders_invoice {
+.coreshop_icon_orders_invoice, .coreshop_rule_icon_condition_invoice {
     background: url(/plugins/CoreShop/static/img/flat/invoice.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_orders_shipment {
+.coreshop_icon_orders_shipment, .coreshop_rule_icon_condition_shipment {
     background: url(/plugins/CoreShop/static/img/flat/shipment.svg) center center no-repeat !important;
 }
 
@@ -282,7 +282,7 @@
     background: url(/plugins/CoreShop/static/img/flat/stock.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_report_payments, .coreshop_icon_payment {
+.coreshop_icon_report_payments, .coreshop_icon_payment, .coreshop_rule_icon_condition_payment {
     background: url(/plugins/CoreShop/static/img/flat/payments.svg) center center no-repeat !important;
 }
 
@@ -330,7 +330,7 @@
     background: url(/plugins/CoreShop/static/img/flat/voucher.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_carrier_shipping_rule, .coreshop_rule_icon_condition_shippingRule, .coreshop_rule_icon_action_shippingRule {
+.coreshop_icon_carrier_shipping_rule, .coreshop_rule_icon_condition_shippingRule, .coreshop_rule_icon_action_shippingRule, .coreshop_rule_icon_condition_shipping {
     background: url(/plugins/CoreShop/static/img/flat/shippingrules.svg) center center no-repeat !important;
 }
 
@@ -348,6 +348,14 @@
 
 .coreshop_icon_address {
     background: url(/plugins/CoreShop/static/img/flat/address.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_mail_rule {
+    background: url(/plugins/CoreShop/static/img/flat/mail-rule.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_action_mail {
+    background: url(/plugins/CoreShop/static/img/flat/mail.svg) center center no-repeat !important;
 }
 
 .x-tool-coreshop-open, .coreshop_icon_open {

@@ -53,6 +53,12 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
         return this.conditionsContainer;
     },
 
+    destroy : function() {
+        if(this.conditionsContainer) {
+            this.conditionsContainer.destroy();
+        }
+    },
+
     getConditionClassItem : function (type) {
         return pimcore.plugin.coreshop.rules.conditions[type];
     },

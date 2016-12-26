@@ -26,6 +26,11 @@ pimcore.plugin.coreshop.rules.panel = Class.create(pimcore.plugin.coreshop.abstr
     actions: [],
 
     /**
+     * @var object
+     */
+    config : {},
+
+    /**
      * constructor
      */
     initialize: function () {
@@ -38,6 +43,8 @@ pimcore.plugin.coreshop.rules.panel = Class.create(pimcore.plugin.coreshop.abstr
                 var config = Ext.decode(result.responseText);
                 me.conditions = config.conditions;
                 me.actions = config.actions;
+
+                me.config = config;
             }
         });
 
@@ -49,5 +56,17 @@ pimcore.plugin.coreshop.rules.panel = Class.create(pimcore.plugin.coreshop.abstr
 
     getItemClass : function () {
         return pimcore.plugin.coreshop.rules.item;
+    },
+
+    getActions : function() {
+        return this.actions;
+    },
+
+    getConfig : function() {
+        return this.config;
+    },
+
+    getConditions : function() {
+        return this.conditions;
     }
 });

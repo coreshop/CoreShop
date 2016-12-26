@@ -124,10 +124,8 @@ abstract class AbstractRule extends AbstractModel
      */
     public static function addCondition($condition)
     {
-        $class = get_called_class();
-
-        if (!in_array($condition, $class::$availableConditions)) {
-            $class::$availableConditions[] = $condition;
+        if (!in_array($condition, static::$availableConditions)) {
+            static::$availableConditions[] = $condition;
         }
     }
 
@@ -138,10 +136,8 @@ abstract class AbstractRule extends AbstractModel
      */
     public static function addAction($action)
     {
-        $class = get_called_class();
-
-        if (!in_array($action, $class::$availableActions)) {
-            $class::$availableActions[] = $action;
+        if (!in_array($action, static::$availableActions)) {
+            static::$availableActions[] = $action;
         }
     }
 
@@ -150,9 +146,7 @@ abstract class AbstractRule extends AbstractModel
      */
     public static function getAvailableConditions()
     {
-        $class = get_called_class();
-
-        return $class::$availableConditions;
+        return static::$availableConditions;
     }
 
     /**
@@ -160,9 +154,7 @@ abstract class AbstractRule extends AbstractModel
      */
     public static function getAvailableActions()
     {
-        $class = get_called_class();
-
-        return $class::$availableActions;
+        return static::$availableActions;
     }
 
     /**
@@ -170,9 +162,7 @@ abstract class AbstractRule extends AbstractModel
      */
     public static function getType()
     {
-        $class = get_called_class();
-
-        return $class::$type;
+        return static::$type;
     }
 
     /**

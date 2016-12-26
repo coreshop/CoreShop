@@ -199,6 +199,12 @@
       <path>/plugins/CoreShop/static/js/coreshop/orders/shipment/render.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/invoice.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/shipment.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/panel.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/item.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/action.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/condition.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/payment.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/actions/mail.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

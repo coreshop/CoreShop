@@ -903,3 +903,14 @@ CREATE TABLE `coreshop_visitors_source` (
   `module` varchar(255) NOT NULL,
   `creationDate` bigint(20) NOT NULL
 ) DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `coreshop_mail_rules`;
+CREATE TABLE `coreshop_mail_rules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `mailType` varchar(50) DEFAULT NULL,
+  `description` text,
+  `conditions` text,
+  `actions` text,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8mb4;

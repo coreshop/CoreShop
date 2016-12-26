@@ -49,6 +49,7 @@ pimcore.plugin.coreshop.global = {
         this._createStore('coreshop_messaging_thread_states', 'messaging-thread-state');
         this._createStore('coreshop_shops', 'shop');
         this._createStore('coreshop_carrier_shipping_rules', 'carrier-shipping-rule');
+        this._createStore('coreshop_mail_rules', 'mail-rule');
 
         pimcore.globalmanager.get('coreshop_taxes').load();
         pimcore.globalmanager.get('coreshop_countries').load();

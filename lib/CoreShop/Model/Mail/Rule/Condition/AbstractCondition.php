@@ -12,28 +12,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Carrier\ShippingRule\Condition;
+namespace CoreShop\Model\Mail\Rule\Condition;
 
-use CoreShop\Model;
 use CoreShop\Model\Carrier\ShippingRule as CarrierShippingRule;
+use CoreShop\Model\Mail\Rule;
+use Pimcore\Model\AbstractModel;
 
 /**
  * Class AbstractCondition
- * @package CoreShop\Model\Carrier\ShippingRule\Condition
+ * @package CoreShop\Model\Mail\Rule\Condition
  */
-abstract class AbstractCondition extends Model\Rules\Condition\AbstractCondition
+abstract class AbstractCondition extends \CoreShop\Model\Rules\Condition\AbstractCondition
 {
     /**
-     * Check if Cart is Valid for Condition.
+     * Check condition
      *
-     * @param Model\Carrier $carrier
-     * @param Model\Cart $cart
-     * @param Model\User\Address $address;
-     * @param CarrierShippingRule $shippingRule
-     *
-     * @return boolean
+     * @param AbstractModel $object
+     * @param array $params
+     * @param Rule $rule
+     * @return mixed
      */
-    abstract public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, CarrierShippingRule $shippingRule);
+    abstract public function checkCondition(AbstractModel $object, $params = [], Rule $rule);
 
     /**
      * get cache key for Condition. Use this method to invalidate a condition
