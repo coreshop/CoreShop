@@ -47,7 +47,7 @@ class Rule extends AbstractRule
         'orderState' => [
             'order'
         ],
-        'shipping' => [
+        'carriers' => [
             'order'
         ],
         'invoice' => [

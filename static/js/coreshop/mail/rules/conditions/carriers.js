@@ -11,10 +11,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.carriers');
+pimcore.registerNS('pimcore.plugin.coreshop.mail.rules.conditions.carriers');
 
-pimcore.plugin.coreshop.rules.conditions.carriers = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-
+pimcore.plugin.coreshop.mail.rules.conditions.carriers = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
     type : 'carriers',
 
     getForm : function () {
