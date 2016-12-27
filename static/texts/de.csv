@@ -514,3 +514,7 @@
 "coreshop_condition_userType","Benutzer Typ"
 "coreshop_user_type_new","Registrierung"
 "coreshop_user_type_password","Passwort zurücksetzen"
+"coreshop_condition_messageType","Nachrichten Typ"
+"coreshop_message_type_customer","Kundennachricht"
+"coreshop_message_type_customer_reply","Kundennachricht Antwort"
+"coreshop_message_type_contact","Kontakt"

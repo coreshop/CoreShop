@@ -294,7 +294,7 @@
     background: url(/plugins/CoreShop/static/img/flat/state.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_messaging {
+.coreshop_icon_messaging, .coreshop_rule_icon_condition_messageType {
     background: url(/plugins/CoreShop/static/img/flat/messaging.svg) center center no-repeat !important;
 }
 
