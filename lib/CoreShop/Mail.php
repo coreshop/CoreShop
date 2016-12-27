@@ -58,6 +58,27 @@ class Mail extends PimcoreMail
     }
 
     /**
+     * @param $emailDocument
+     * @param $recipient
+     * @param array $params
+     */
+    public static function sendMail($emailDocument, $recipient, $params = []) {
+        //init Template
+        //TODO: Shop init?
+        //\CoreShop::getTools()->initTemplateForShop($shop);
+
+        $mail = new self();
+
+        self::mergeDefaultMailSettings($mail, $emailDocument);
+
+        $mail->setDocument($emailDocument);
+        $mail->setParams($params);
+        $mail->setEnableLayoutOnPlaceholderRendering(false);
+        $mail->addTo($recipient);
+        $mail->send();
+    }
+
+    /**
      * Send email which belongs to an order
      *
      * @param $emailDocument
