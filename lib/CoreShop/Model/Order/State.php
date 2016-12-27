@@ -158,6 +158,30 @@ class State
     }
 
     /**
+     * get valid Order-States
+     *
+     * @return bool|array
+     */
+    public static function getValidOrderStates() {
+        $config = Workflow\Config::getWorkflowManagementConfig(true);
+        $orderClassId = Order::classId();
+
+        foreach($config['workflows'] as $workflow) {
+            if(array_key_exists('workflowSubject', $workflow)) {
+                $subject = $workflow['workflowSubject'];
+
+                if(array_key_exists('classes', $subject)) {
+                    if(in_array($orderClassId, $subject['classes'])) {
+                        return $workflow['states'];
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      *
      * @deprecated
      *

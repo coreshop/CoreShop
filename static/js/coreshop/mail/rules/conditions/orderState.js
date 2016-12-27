@@ -20,8 +20,20 @@ pimcore.plugin.coreshop.mail.rules.conditions.orderState = Class.create(pimcore.
         this.form = Ext.create('Ext.form.FieldSet', {
             items : [
                 {
-                    xtype : 'label',
-                    html: 'IMPLEMENT ME'
+                    xtype: 'combo',
+                    fieldLabel: t('coreshop_transition_direction'),
+                    name: 'states',
+                    value: this.data ? this.data.states : [],
+                    width: 250,
+                    store: pimcore.globalmanager.get("coreshop_order_states"),
+                    triggerAction: 'all',
+                    typeAhead: false,
+                    editable: false,
+                    forceSelection: true,
+                    queryMode: 'local',
+                    multiSelect : true,
+                    displayField : 'label',
+                    valueField : 'name'
                 },
                 {
                     xtype: 'combo',

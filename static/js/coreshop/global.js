@@ -58,6 +58,12 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.get('coreshop_currencies').load();
         pimcore.globalmanager.get('coreshop_shops').load();
         pimcore.globalmanager.get('coreshop_carriers').load();
+
+        pimcore.globalmanager.add('coreshop_order_states', new Ext.data.JsonStore({
+            data : this.settings.orderStates,
+            fields: ['name', 'label', 'color'],
+            idProperty : 'name'
+        }));
     },
 
     _createStore : function (name, url, fields) {

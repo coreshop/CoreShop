@@ -75,6 +75,7 @@ class CoreShop_Admin_SettingsController extends Admin
             $result['multishop'] = Model\Configuration::multiShopEnabled();
             $result['defaultShop'] = Model\Shop::getDefaultShop()->getId();
             $result['coreshop'] = $valueArray;
+            $result['orderStates'] = Model\Order\State::getValidOrderStates();
         }
 
         $pluginConfig = \Pimcore\ExtensionManager::getPluginConfig('CoreShop');
