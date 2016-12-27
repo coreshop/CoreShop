@@ -51,7 +51,8 @@ class Rule extends AbstractRule
             'order'
         ],
         'invoiceState' => [
-            'invoice'
+            'invoice',
+            'order'
         ],
         'shipmentState' => [
             'shipment'

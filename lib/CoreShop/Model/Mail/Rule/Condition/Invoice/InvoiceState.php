@@ -22,33 +22,8 @@ use Pimcore\Model\AbstractModel;
  * Class Invoice
  * @package CoreShop\Model\Mail\Rule\Condition\Invoice
  */
-class InvoiceState extends Rule\Condition\AbstractCondition
+class InvoiceState extends Rule\Condition\Order\InvoiceState
 {
-    /**
-     * @var string
-     */
-    public $type = 'invoiceState';
-
-    /**
-     *
-     */
-    const INVOICE_TYPE_PARTIAL = 1;
-
-    /**
-     *
-     */
-    const INVOICE_TYPE_FULL = 2;
-
-    /**
-     *
-     */
-    const INVOICE_TYPE_ALL = 3;
-
-    /**
-     * @var int
-     */
-    public $invoiceState;
-
     /**
      * @param AbstractModel $object
      * @param array $params
@@ -59,39 +34,9 @@ class InvoiceState extends Rule\Condition\AbstractCondition
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
         if($object instanceof Model\Order\Invoice) {
-            $order = $object->getOrder();
-
-            if($this->getInvoiceState() === self::INVOICE_TYPE_ALL) {
-                return true;
-            }
-            else if($this->getInvoiceState() === self::INVOICE_TYPE_FULL) {
-                if(count($order->getInvoiceAbleItems()) === 0) {
-                    return true;
-                }
-            }
-            else if($this->getInvoiceState() === self::INVOICE_TYPE_PARTIAL) {
-                if(count($order->getInvoiceAbleItems()) > 0) {
-                    return true;
-                }
-            }
+            return parent::checkCondition($object->getOrder(), $params, $rule);
         }
 
         return false;
-    }
-
-    /**
-     * @return int
-     */
-    public function getInvoiceState()
-    {
-        return $this->invoiceState;
-    }
-
-    /**
-     * @param int $invoiceState
-     */
-    public function setInvoiceState($invoiceState)
-    {
-        $this->invoiceState = $invoiceState;
     }
 }
