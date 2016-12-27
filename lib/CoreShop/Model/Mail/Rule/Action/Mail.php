@@ -59,13 +59,11 @@ class Mail extends AbstractAction
         }
 
         if(array_key_exists($language, $this->getMails())) {
-            $mailDocument = $this->mails[$language];
+            $mailDocumentId = $this->mails[$language];
+            $mailDocument = Document::getById($mailDocumentId);
 
-            $document = Document::getById($mailDocument);
-
-            if($document instanceof Document\Email) {
+            if($mailDocument instanceof Document\Email) {
                 $params['object'] = $model;
-
                 \CoreShop\Mail::sendMail($mailDocument, $params['recipient'], $params);
             }
         }

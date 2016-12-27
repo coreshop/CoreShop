@@ -461,11 +461,6 @@ class CoreShop_UserController extends Action
                             $user->setPassword($newPass);
                             $user->save();
 
-                            \CoreShop\Model\Mail\Rule::apply('user', $user, [
-                                'type' => 'password-reset',
-                                'recipient' => $user->getEmail()
-                            ]);
-
                             $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset', 'success' => true], 'coreshop_user'));
 
                         }
@@ -504,11 +499,14 @@ class CoreShop_UserController extends Action
                     $user->setResetHash($hash);
                     $user->save();
 
-                    $link = \Pimcore\Tool::getHostUrl() . \CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset', 'hash' => $hash], 'coreshop_user');
+                    $resetLink = \Pimcore\Tool::getHostUrl() . \CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset', 'hash' => $hash], 'coreshop_user');
 
-                    //send mail via email-workflow
-                    //@fixme: https://github.com/coreshop/CoreShop/issues/148
-                    //\CoreShop\Mail\Workflow\apply('user', ['obj' => $user, 'conditions' => ['password-reset-request', 'params' => ['resetLink' => $link]]];
+                    \CoreShop\Model\Mail\Rule::apply('user', $user, [
+                        'type' => 'password-reset',
+                        'recipient' => $user->getEmail(),
+                        'resetLink' => $resetLink,
+                    ]);
+
                 }
 
                 $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset-request', 'success' => true], 'coreshop_user'));
