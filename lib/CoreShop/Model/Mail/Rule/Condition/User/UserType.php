@@ -32,15 +32,15 @@ class UserType extends Rule\Condition\AbstractCondition
     /**
      *
      */
-    const TYPE_NEW_ACCOUNT = 1;
+    const TYPE_REGISTER = 'register';
 
     /**
      *
      */
-    const TYPE_PASSWORD_RESET = 2;
+    const TYPE_PASSWORD_RESET = 'password-reset';
 
     /**
-     * @var int
+     * @var string
      */
     public $userType;
 
@@ -53,7 +53,7 @@ class UserType extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order) {
+        if($object instanceof Model\User) {
             $paramsToExist = [
                 'type'
             ];
@@ -75,7 +75,7 @@ class UserType extends Rule\Condition\AbstractCondition
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getUserType()
     {
@@ -83,7 +83,7 @@ class UserType extends Rule\Condition\AbstractCondition
     }
 
     /**
-     * @param int $userType
+     * @param string $userType
      */
     public function setUserType($userType)
     {

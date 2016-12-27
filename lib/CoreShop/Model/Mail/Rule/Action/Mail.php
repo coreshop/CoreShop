@@ -17,6 +17,7 @@ namespace CoreShop\Model\Mail\Rule\Action;
 use CoreShop\Exception;
 use CoreShop\Model\Cart;
 use CoreShop\Model;
+use Pimcore\Model\AbstractModel;
 use Pimcore\Model\Document;
 
 /**
@@ -36,13 +37,13 @@ class Mail extends AbstractAction
     public $mails;
 
     /**
-     * @param Model\AbstractModel $model
+     * @param AbstractModel $model
      * @param Model\Mail\Rule $rule
      * @param array $params
      *
      * @throws Exception
      */
-    public function apply(Model\AbstractModel $model, Model\Mail\Rule $rule, $params = [])
+    public function apply(AbstractModel $model, Model\Mail\Rule $rule, $params = [])
     {
         $language = null;
 
@@ -50,14 +51,14 @@ class Mail extends AbstractAction
             $language = $params['language'];
         }
         else if(\Zend_Registry::isRegistered("Zend_Locale")) {
-            $language = \Zend_Registry::get("Zend_Locale");
+            $language = (string)\Zend_Registry::get("Zend_Locale");
         }
 
         if(is_null($language)) {
             throw new Exception("Language is not set");
         }
 
-        if(array_key_exists($this->getMails(), $language)) {
+        if(array_key_exists($language, $this->getMails())) {
             $mailDocument = $this->mails[$language];
 
             $document = Document::getById($mailDocument);

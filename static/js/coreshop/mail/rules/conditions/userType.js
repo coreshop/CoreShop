@@ -25,7 +25,7 @@ pimcore.plugin.coreshop.mail.rules.conditions.userType = Class.create(pimcore.pl
                     name: 'userType',
                     value: this.data ? this.data.userType : null,
                     width: 250,
-                    store: [[1, t('coreshop_user_type_new')], [2, t('coreshop_user_type_password')]],
+                    store: [['register', t('coreshop_user_type_new')], ['password-reset', t('coreshop_user_type_password')]],
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,

@@ -16,6 +16,7 @@ namespace CoreShop\Model\Mail\Rule\Action;
 
 use CoreShop\Model\Cart;
 use CoreShop\Model;
+use Pimcore\Model\AbstractModel;
 
 /**
  * Class AbstractAction
@@ -31,11 +32,11 @@ abstract class AbstractAction extends Model\Rules\Action\AbstractAction
     /**
      * apply action
      *
-     * @param Model\AbstractModel $model
+     * @param AbstractModel $model
      * @param Model\Mail\Rule $rule
      * @param array $params
      */
-    public function apply(Model\AbstractModel $model, Model\Mail\Rule $rule, $params = [])
+    public function apply(AbstractModel $model, Model\Mail\Rule $rule, $params = [])
     {
 
     }

@@ -408,9 +408,9 @@ class CoreShop_UserController extends Action
                 \CoreShop::getTools()->setUser($user);
 
                 if (!$isGuest) {
-                    //send mail via email-workflow
-                    //@fixme: https://github.com/coreshop/CoreShop/issues/148
-                    //\CoreShop\Mail\Workflow\apply('user', ['obj' => $user, 'conditions' => ['register']];
+                    \CoreShop\Model\Mail\Rule::apply('user', $user, [
+                        'type' => 'register'
+                    ]);
                 }
 
                 if (array_key_exists('_redirect', $params)) {
@@ -465,9 +465,9 @@ class CoreShop_UserController extends Action
                             $user->setPassword($newPass);
                             $user->save();
 
-                            //send mail via email-workflow
-                            //@fixme: https://github.com/coreshop/CoreShop/issues/148
-                            //\CoreShop\Mail\Workflow\apply('user', ['obj' => $user, 'conditions' => ['password-reset', 'params' => []]];
+                            \CoreShop\Model\Mail\Rule::apply('user', $user, [
+                                'type' => 'password-reset'
+                            ]);
 
                             $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset', 'success' => true], 'coreshop_user'));
 
