@@ -409,7 +409,8 @@ class CoreShop_UserController extends Action
 
                 if (!$isGuest) {
                     \CoreShop\Model\Mail\Rule::apply('user', $user, [
-                        'type' => 'register'
+                        'type' => 'register',
+                        'recipient' => $user->getEmail()
                     ]);
                 }
 
@@ -466,7 +467,8 @@ class CoreShop_UserController extends Action
                             $user->save();
 
                             \CoreShop\Model\Mail\Rule::apply('user', $user, [
-                                'type' => 'password-reset'
+                                'type' => 'password-reset',
+                                'recipient' => $user->getEmail()
                             ]);
 
                             $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset', 'success' => true], 'coreshop_user'));
