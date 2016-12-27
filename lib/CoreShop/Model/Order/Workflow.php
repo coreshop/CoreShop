@@ -13,6 +13,7 @@
  */
 namespace CoreShop\Model\Order;
 
+use CoreShop\Model\Mail\Rule;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object;
 use CoreShop\Model\Configuration;
@@ -73,27 +74,10 @@ class Workflow
                 $orderObject->createInvoiceForAllItems();
             }
 
-            //@fixme: https://github.com/coreshop/CoreShop/issues/148
-            // check for email order conditions
-
-            /*
-            //send confirmation order mail.
-            if (isset($additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL]) && $additional[Order\State::ORDER_STATE_CONFIRMATION_MAIL] === 'yes') {
-                $confirmationMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' . strtoupper($orderObject->getLang()));
-                $emailDocument = Document::getById($confirmationMailPath);
-                if ($emailDocument instanceof Document\Email) {
-                    Mail::sendOrderMail($emailDocument, $orderObject);
-                }
-            }
-            //send order update status mail.
-            if (isset($additional[Order\State::ORDER_STATE_STATUS_MAIL]) && $additional[Order\State::ORDER_STATE_STATUS_MAIL] === 'yes') {
-                $updateMailPath = Configuration::get('SYSTEM.MAIL.ORDER.STATES.UPDATE.' . strtoupper($orderObject->getLang()));
-                $emailDocument = Document::getById($updateMailPath);
-                if ($emailDocument instanceof Document\Email) {
-                    Mail::sendOrderMail($emailDocument, $orderObject);
-                }
-            }
-            */
+            Rule::apply('order', $orderObject, [
+                'fromState' => $oldStatus,
+                'toState' => $newStatus
+            ]);
         }
     }
     /**

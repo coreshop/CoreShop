@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
+use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Messaging\Contact;
 use CoreShop\Model\Messaging\Thread;
 use CoreShop\Model\Order\Invoice;
@@ -718,6 +719,8 @@ class Order extends Base
         //check orderState
         $this->checkOrderState();
 
+        Rule::apply('invoice', $invoice);
+
         return $invoice;
     }
 
@@ -929,6 +932,8 @@ class Order extends Base
         //check orderState
         $this->checkOrderState();
 
+        Rule::apply('shipment', $shipment);
+
         return $shipment;
     }
 
@@ -1104,12 +1109,22 @@ class Order extends Base
         return null;
     }
 
+    /**
+     * get current order state
+     *
+     * @return string
+     */
     public function getOrderState()
     {
         $currentStateInfo = Order\State::getOrderCurrentState($this);
         return isset($currentStateInfo['state']) ? $currentStateInfo['state'] : false;
     }
 
+    /**
+     * get current order status
+     *
+     * @return string
+     */
     public function getOrderStatus()
     {
         $currentStateInfo = Order\State::getOrderCurrentState($this);

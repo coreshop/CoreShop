@@ -12,22 +12,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Mail\Rule\Condition\Order;
+namespace CoreShop\Model\Mail\Rule\Condition\Shipment;
 
 use CoreShop\Model;
 use CoreShop\Model\Mail\Rule;
 use Pimcore\Model\AbstractModel;
 
 /**
- * Class Shipment
- * @package CoreShop\Model\Mail\Rule\Condition\Order
+ * Class ShipmentState
+ * @package CoreShop\Model\Mail\Rule\Condition\Shipment
  */
-class Shipment extends Rule\Condition\AbstractCondition
+class ShipmentState extends Rule\Condition\AbstractCondition
 {
     /**
      * @var string
      */
-    public $type = 'shipment';
+    public $type = 'shipmentState';
 
     /**
      *
@@ -47,7 +47,7 @@ class Shipment extends Rule\Condition\AbstractCondition
     /**
      * @var int
      */
-    public $shipmentType;
+    public $shipmentState;
 
     /**
      * @param AbstractModel $object
@@ -58,27 +58,19 @@ class Shipment extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order) {
-            $paramsToExist = [
-                'shipment'
-            ];
+        if($object instanceof Model\Order\Shipment) {
+            $order = $object->getOrder();
 
-            foreach($paramsToExist as $paramToExist) {
-                if(!array_key_exists($paramToExist, $params)) {
-                    return false;
-                }
-            }
-
-            if($this->getShipmentType() === self::SHIPMENT_TYPE_ALL) {
+            if($this->getShipmentState() === self::SHIPMENT_TYPE_ALL) {
                 return true;
             }
-            else if($this->getShipmentType() === self::SHIPMENT_TYPE_FULL) {
-                if(count($object->getShipAbleItems()) === 0) {
+            else if($this->getShipmentState() === self::SHIPMENT_TYPE_FULL) {
+                if(count($order->getShipAbleItems()) === 0) {
                     return true;
                 }
             }
-            else if($this->getShipmentType() === self::SHIPMENT_TYPE_PARTIAL) {
-                if(count($object->getShipAbleItems()) > 0) {
+            else if($this->getShipmentState() === self::SHIPMENT_TYPE_PARTIAL) {
+                if(count($order->getShipAbleItems()) > 0) {
                     return true;
                 }
             }
@@ -90,16 +82,16 @@ class Shipment extends Rule\Condition\AbstractCondition
     /**
      * @return int
      */
-    public function getShipmentType()
+    public function getShipmentState()
     {
-        return $this->shipmentType;
+        return $this->shipmentState;
     }
 
     /**
-     * @param int $shipmentType
+     * @param int $shipmentState
      */
-    public function setShipmentType($shipmentType)
+    public function setShipmentState($shipmentState)
     {
-        $this->shipmentType = $shipmentType;
+        $this->shipmentState = $shipmentState;
     }
 }

@@ -188,11 +188,11 @@
     background: url(/plugins/CoreShop/static/img/flat/orders.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_orders_invoice, .coreshop_rule_icon_condition_invoice {
+.coreshop_icon_orders_invoice, .coreshop_rule_icon_condition_invoiceState {
     background: url(/plugins/CoreShop/static/img/flat/invoice.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_orders_shipment, .coreshop_rule_icon_condition_shipment {
+.coreshop_icon_orders_shipment, .coreshop_rule_icon_condition_shipmentState {
     background: url(/plugins/CoreShop/static/img/flat/shipment.svg) center center no-repeat !important;
 }
 

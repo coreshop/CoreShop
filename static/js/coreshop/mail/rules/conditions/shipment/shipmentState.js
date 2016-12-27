@@ -11,19 +11,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.mail.rules.conditions.invoice');
+pimcore.registerNS('pimcore.plugin.coreshop.mail.rules.conditions.shipmentState');
 
-pimcore.plugin.coreshop.mail.rules.conditions.invoice = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-    type : 'invoice',
+pimcore.plugin.coreshop.mail.rules.conditions.shipmentState = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
+    type : 'shipmentState',
 
     getForm : function () {
         this.form = Ext.create('Ext.form.FieldSet', {
             items : [
                 {
                     xtype: 'combo',
-                    fieldLabel: t('coreshop_invoice_type'),
-                    name: 'invoiceType',
-                    value: this.data ? this.data.invoiceType : 3,
+                    fieldLabel: t('coreshop_condition_shipmentState'),
+                    name: 'shipmentState',
+                    value: this.data ? this.data.shipmentState : 3,
                     width: 250,
                     store: [[1, t('coreshop_partial')], [2, t('coreshop_full')], [3, t('coreshop_all')]],
                     triggerAction: 'all',

@@ -203,13 +203,13 @@
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/item.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/action.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/condition.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/payment.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/orderState.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/carriers.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/invoice.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/shipment.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/userType.js</path>
-      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/messageType.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/order/payment.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/order/orderState.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/order/carriers.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/invoice/invoiceState.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/shipment/shipmentState.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/user/userType.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/messaging/messageType.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/actions/mail.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>

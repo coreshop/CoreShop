@@ -33,7 +33,7 @@ class Rule extends AbstractRule
      *
      * @var array
      */
-    public static $availableTypes = ['order', 'user', 'messaging'];
+    public static $availableTypes = ['order', 'invoice', 'shipment', 'user', 'messaging'];
 
     /**
      * possible types of a condition.
@@ -50,11 +50,11 @@ class Rule extends AbstractRule
         'carriers' => [
             'order'
         ],
-        'invoice' => [
-            'order'
+        'invoiceState' => [
+            'invoice'
         ],
-        'shipment' => [
-            'order'
+        'shipmentState' => [
+            'shipment'
         ],
         'userType' => [
             'user'
@@ -73,7 +73,9 @@ class Rule extends AbstractRule
         'mail' => [
             'user',
             'order',
-            'messaging'
+            'messaging',
+            'invoice',
+            'shipment'
         ]
     ];
 
