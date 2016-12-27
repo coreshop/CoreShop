@@ -32,17 +32,17 @@ class MessageType extends Rule\Condition\AbstractCondition
     /**
      *
      */
-    const TYPE_CUSTOMER = 1;
+    const TYPE_CUSTOMER = 'customer';
 
     /**
      *
      */
-    const TYPE_CUSTOMER_REPLY = 2;
+    const TYPE_CUSTOMER_REPLY = 'customer-reply';
 
     /**
      *
      */
-    const TYPE_CUSTOMER_CONTACT = 2;
+    const TYPE_CUSTOMER_CONTACT = 'contact';
 
     /**
      * @var int
@@ -58,7 +58,7 @@ class MessageType extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order) {
+        if($object instanceof Model\Messaging\Message) {
             $paramsToExist = [
                 'type'
             ];

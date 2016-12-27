@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Messaging;
 
 use CoreShop\Model\Configuration;
+use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use CoreShop\Model\Shop;
@@ -114,14 +115,12 @@ class Service
 
         if ($sendContact) {
             //Send Contact
-            $contactEmailDocument = Email::getById(Configuration::get('SYSTEM.MESSAGING.MAIL.CONTACT.'.strtoupper($thread->getLanguage())));
-            $message->sendNotification($contactEmailDocument, $thread->getContact()->getEmail());
+            $message->sendNotification('contact', $thread->getContact()->getEmail());
         }
 
         if ($sendCustomer) {
             //Send Customer Info Mail
-            $customerInfoMail = Email::getById(Configuration::get('SYSTEM.MESSAGING.MAIL.CUSTOMER.'.strtoupper($thread->getLanguage())));
-            $message->sendNotification($customerInfoMail, $thread->getEmail());
+            $message->sendNotification('customer', $thread->getEmail());
         }
 
         return [

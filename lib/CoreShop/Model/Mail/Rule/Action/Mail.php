@@ -64,6 +64,8 @@ class Mail extends AbstractAction
             $document = Document::getById($mailDocument);
 
             if($document instanceof Document\Email) {
+                $params['object'] = $model;
+
                 $mail = new \CoreShop\Mail();
 
                 $mail->setDocument($mailDocument);

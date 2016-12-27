@@ -25,7 +25,7 @@ pimcore.plugin.coreshop.mail.rules.conditions.messageType = Class.create(pimcore
                     name: 'messageType',
                     value: this.data ? this.data.messageType : null,
                     width: 250,
-                    store: [[1, t('coreshop_message_type_customer')], [2, t('coreshop_message_type_customer_reply')], [3, t('coreshop_message_type_contact')]],
+                    store: [['customer', t('coreshop_message_type_customer')], ['customer-reply', t('coreshop_message_type_customer_reply')], ['contact', t('coreshop_message_type_contact')]],
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,

@@ -17,6 +17,7 @@ namespace CoreShop\Model\Messaging;
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Mail;
+use CoreShop\Model\Mail\Rule;
 use Pimcore\Logger;
 use Pimcore\Model\Document;
 use Pimcore\Model\Document\Email;
@@ -60,18 +61,17 @@ class Message extends AbstractModel
     /**
      * Send email to recipient with Message.
      *
-     * @param Document $mailDocument
-     * @param string   $recipient
+     * @param string $type
+     * @param string $recipient
      *
      * @throws \Exception
      */
-    public function sendNotification(Document $mailDocument, $recipient)
+    public function sendNotification($type, $recipient)
     {
-        if ($mailDocument instanceof Email) {
-            Mail::sendMessagingMail($mailDocument, $this, $recipient);
-        } else {
-            Logger::warn('Email Document for Messages not found!');
-        }
+        Rule::apply('messaging', $this, [
+            'type' => $type,
+            'recipient' => $recipient
+        ]);
     }
 
     /**
