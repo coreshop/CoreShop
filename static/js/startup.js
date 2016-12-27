@@ -291,12 +291,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                             handler: this.openMailRules
                         });
 
-                        coreShopMenuItems.push({
-                            text: t('coreshop_update'),
-                            iconCls: 'pimcore_icon_update',
-                            handler: this.openUpdate
-                        });
-
                         if (coreshop.settings.multishop) {
                             coreShopMenuItems.push({
                                 text: t('coreshop_shops'),
@@ -304,6 +298,12 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                                 handler: this.openShops
                             });
                         }
+
+                        coreShopMenuItems.push({
+                            text: t('coreshop_update'),
+                            iconCls: 'pimcore_icon_update',
+                            handler: this.openUpdate
+                        });
                     }
 
                     coreShopMenuItems.push({
