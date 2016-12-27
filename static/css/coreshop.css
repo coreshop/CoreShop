@@ -86,7 +86,7 @@
     background: url(/plugins/CoreShop/static/img/flat/category.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_customers {
+.coreshop_rule_icon_condition_customers, .coreshop_rule_icon_condition_userType {
     background: url(/plugins/CoreShop/static/img/flat/customer.svg) center center no-repeat !important;
 }
 
