@@ -150,12 +150,12 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             {
                 text: t('coreshop_orders_orderState'),
                 dataIndex: 'orderState',
-                renderer : function (orderState) {
-                    if (orderState) {
-                        var bgColor = orderState.color;
-                        var textColor = coreshop.helpers.constrastColor(bgColor);
+                renderer : function (orderStateInfo) {
+                    if (orderStateInfo.state) {
+                        var bgColor = orderStateInfo.state.color,
+                            textColor = coreshop.helpers.constrastColor(bgColor);
 
-                        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderState.name + '</span>';
+                        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderStateInfo.state.translatedLabel + '</span>';
                     }
 
                     return null;

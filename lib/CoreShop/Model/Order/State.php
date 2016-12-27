@@ -16,7 +16,6 @@ namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
-use CoreShop\Mail;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\WorkflowManagement\Workflow;
@@ -48,30 +47,30 @@ class State
     const ORDER_STATE_CONFIRMATION_MAIL     = 'sendOrderConfirmationMail';
     const ORDER_STATE_STATUS_MAIL           = 'sendOrderStatusMail';
 
-    protected static $STATUS_CONFIG = [
+    protected static $STATE_CONFIG = [
 
-        self::STATUS_PENDING => [
+        self::STATE_NEW => [
             'color' => '#9bc4c4'
         ],
-        self::STATUS_PENDING_PAYMENT => [
+        self::STATE_PENDING_PAYMENT => [
             'color' => '#d0c31f'
         ],
-        self::STATUS_PROCESSING => [
+        self::STATE_PROCESSING => [
             'color' => '#3081ba'
         ],
-        self::STATUS_COMPLETE => [
+        self::STATE_COMPLETE => [
             'color' => '#73a623'
         ],
-        self::STATUS_CLOSED => [
+        self::STATE_CLOSED => [
             'color' => '#ffc301'
         ],
-        self::STATUS_CANCELED => [
+        self::STATE_CANCELED => [
             'color' => '#c12f30'
         ],
-        self::STATUS_HOLDED => [
+        self::STATE_HOLDED => [
             'color' => '#b9c1bd'
         ],
-        self::STATUS_PAYMENT_REVIEW => [
+        self::STATE_PAYMENT_REVIEW => [
             'color' => '#ae61db'
         ]
     ];
@@ -124,19 +123,20 @@ class State
         $state = $manager->getWorkflowStateForElement()->getState();
         $status = $manager->getWorkflowStateForElement()->getStatus();
 
-        if (!is_null($state)) {
-            $decorator = new Workflow\Decorator($manager->getWorkflow());
-            $title = $decorator->getStatusLabel($status);
+        $info = [];
 
-            return [
-                'state' => $state,
-                'status' => $status,
-                'name'  => $title,
-                'color' => self::$STATUS_CONFIG[$status]['color']
-            ];
+        if (!is_null($state)) {
+            $info['state'] = $manager->getWorkflow()->getStateConfig($state);
+            $info['state']['translatedLabel'] = self::_translateWorkflowLabel($info['state']['label']);
+            $info['state']['color'] = self::$STATE_CONFIG[$state]['color'];
         }
 
-        return $state;
+        if (!is_null($status)) {
+            $info['status'] = $manager->getWorkflow()->getStateConfig($status);
+            $info['status']['translatedLabel'] = self::_translateWorkflowLabel($info['status']['label']);
+        }
+
+        return !empty($info) ? $info : false;
     }
 
     /**
@@ -162,7 +162,8 @@ class State
      *
      * @return bool|array
      */
-    public static function getValidOrderStates() {
+    public static function getValidOrderStates()
+    {
         $config = Workflow\Config::getWorkflowManagementConfig(true);
         $orderClassId = Order::classId();
 
@@ -182,28 +183,17 @@ class State
     }
 
     /**
+     * Because Pimcore Workflow does not allow to use the translateLabel() method, we need a custom one.
      *
-     * @deprecated
-     *
-     * Process OrderState for Order.
-     *
-     * @param Order $order
-     * @return bool
-     * @throws \Exception
+     * @param $key
+     * @return string
      */
-    public function processStep(Order $order)
+    private static function _translateWorkflowLabel($key)
     {
-        //implement into workflows!
-        if ($this->getShipped()) {
-            if ((bool) Configuration::get('SYSTEM.SHIPMENT.CREATE')) {
-                $shipments = $order->getShipments();
-
-                if (count($shipments) === 0) {
-                    $order->createShipmentForAllItems();
-                }
-            }
+        try {
+            return \Pimcore\Model\Translation\Admin::getByKeyLocalized($key, false, true);
+        } catch (\Exception $e) {
+            return $key;
         }
-
-        return true;
     }
 }

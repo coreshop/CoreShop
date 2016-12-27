@@ -1104,6 +1104,18 @@ class Order extends Base
         return null;
     }
 
+    public function getOrderState()
+    {
+        $currentStateInfo = Order\State::getOrderCurrentState($this);
+        return isset($currentStateInfo['state']) ? $currentStateInfo['state'] : false;
+    }
+
+    public function getOrderStatus()
+    {
+        $currentStateInfo = Order\State::getOrderCurrentState($this);
+        return isset($currentStateInfo['status']) ? $currentStateInfo['status'] : false;
+    }
+
     /**
      * check order state.
      * - if all invoices and shipments has been created: set status to complete.
@@ -1122,7 +1134,7 @@ class Order extends Base
             ];
         }
 
-        $currentState = Order\State::getOrderCurrentState($this);
+        $currentStateInfo = Order\State::getOrderCurrentState($this);
 
         try {
             //all items has been checked
@@ -1135,7 +1147,7 @@ class Order extends Base
                 ];
                 Order\State::changeOrderState($this, $params);
             } else {
-                if ($currentState['state'] !== \CoreShop\Model\Order\State::STATE_PROCESSING) {
+                if ($currentStateInfo['state']['name'] !== \CoreShop\Model\Order\State::STATE_PROCESSING) {
                     $params = [
                         'newState'      => Order\State::STATE_PROCESSING,
                         'newStatus'     => Order\State::STATE_PROCESSING,

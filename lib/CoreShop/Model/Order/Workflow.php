@@ -17,7 +17,6 @@ use Pimcore\Model\Document;
 use Pimcore\Model\Object;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
-use CoreShop\Mail;
 
 /**
  * Class Workflow
