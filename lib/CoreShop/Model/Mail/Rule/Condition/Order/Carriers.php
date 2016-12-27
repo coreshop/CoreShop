@@ -12,7 +12,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Mail\Rule\Condition;
+namespace CoreShop\Model\Mail\Rule\Condition\Order;
 
 use CoreShop\Model;
 use CoreShop\Model\Mail\Rule;
@@ -20,19 +20,19 @@ use Pimcore\Model\AbstractModel;
 
 /**
  * Class Carriers
- * @package CoreShop\Model\Mail\Rule\Condition
+ * @package CoreShop\Model\Mail\Rule\Condition\Order
  */
-class Carriers extends AbstractCondition
+class Carriers extends Rule\Condition\AbstractCondition
 {
-    /**
-     * @var int[]
-     */
-    public $carriers;
-
     /**
      * @var string
      */
     public $type = 'carriers';
+
+    /**
+     * @var int[]
+     */
+    public $carriers;
 
     /**
      * @param AbstractModel $object

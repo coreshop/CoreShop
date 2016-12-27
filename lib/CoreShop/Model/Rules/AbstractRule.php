@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Rules;
 
+use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
 use Pimcore\Tool;
 
@@ -79,7 +80,7 @@ abstract class AbstractRule extends AbstractModel
 
                 $actionInstances[] = $instance;
             } else {
-                throw new \CoreShop\Exception(sprintf('Action with type %s not found', $action['type']));
+                throw new Exception(sprintf('Action with type %s in namespace %s not found', $action['type'], $actionNamespace));
             }
         }
 
@@ -110,7 +111,7 @@ abstract class AbstractRule extends AbstractModel
 
                 $conditionInstances[] = $instance;
             } else {
-                throw new \CoreShop\Exception(sprintf('Condition with type %s not found', $condition['type']));
+                throw new Exception(sprintf('Condition with type %s in namespace %s not found', $condition['type'], $conditionNamespace));
             }
         }
 

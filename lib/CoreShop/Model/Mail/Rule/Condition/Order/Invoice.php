@@ -12,7 +12,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Mail\Rule\Condition;
+namespace CoreShop\Model\Mail\Rule\Condition\Order;
 
 use CoreShop\Model;
 use CoreShop\Model\Mail\Rule;
@@ -20,10 +20,15 @@ use Pimcore\Model\AbstractModel;
 
 /**
  * Class Invoice
- * @package CoreShop\Model\Mail\Rule\Condition
+ * @package CoreShop\Model\Mail\Rule\Condition\Order
  */
-class Invoice extends AbstractCondition
+class Invoice extends Rule\Condition\AbstractCondition
 {
+    /**
+     * @var string
+     */
+    public $type = 'invoice';
+
     /**
      *
      */
@@ -38,11 +43,6 @@ class Invoice extends AbstractCondition
      *
      */
     const INVOICE_TYPE_ALL = 3;
-
-    /**
-     * @var string
-     */
-    public $type = 'invoice';
 
     /**
      * @var int

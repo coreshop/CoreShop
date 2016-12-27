@@ -12,7 +12,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Mail\Rule\Condition;
+namespace CoreShop\Model\Mail\Rule\Condition\Order;
 
 use CoreShop\Model;
 use CoreShop\Model\Mail\Rule;
@@ -20,9 +20,9 @@ use Pimcore\Model\AbstractModel;
 
 /**
  * Class Payment
- * @package CoreShop\Model\Mail\Rule\Condition
+ * @package CoreShop\Model\Mail\Rule\Condition\Order
  */
-class Payment extends AbstractCondition
+class Payment extends Rule\Condition\AbstractCondition
 {
     /**
      * @var string

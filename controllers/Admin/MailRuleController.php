@@ -109,7 +109,7 @@ class CoreShop_Admin_MailRuleController extends Admin
             $actions = $data['actions'];
 
             $actionNamespace = 'CoreShop\\Model\\Mail\\Rule\\Action\\';
-            $conditionNamespace = 'CoreShop\\Model\\Mail\\Rule\\Condition\\';
+            $conditionNamespace = 'CoreShop\\Model\\Mail\\Rule\\Condition\\' . ucfirst($data['settings']['mailType']) . '\\';
 
             $actionInstances = $rule->prepareActions($actions, $actionNamespace);
             $conditionInstances = $rule->prepareConditions($conditions, $conditionNamespace);
