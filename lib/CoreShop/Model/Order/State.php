@@ -89,6 +89,8 @@ class State
 
         if (!\Zend_Registry::isRegistered('pimcore_admin_user')) {
             \Zend_Registry::set('pimcore_admin_user', $user);
+        } else if (is_null(\Zend_Registry::get('pimcore_admin_user'))) {
+            \Zend_Registry::set('pimcore_admin_user', $user);
         }
 
         $params['action'] = 'change_order_state';

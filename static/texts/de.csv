@@ -517,7 +517,7 @@
 "coreshop_invoice_all","Beliebiger Status trifft zu"
 "coreshop_shipment_partial","Lieferschein für Teil-Versand wurde erstellt"
 "coreshop_shipment_full","Alle Lieferscheine wurden erstellt"
-"coreshop_shimpment_all","Beliebiger Status trifft zu"
+"coreshop_shipment_all","Beliebiger Status trifft zu"
 "coreshop_condition_userType","Benutzer Typ"
 "coreshop_user_type_new","Registrierung"
 "coreshop_user_type_password","Passwort zurücksetzen"

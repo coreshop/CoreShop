@@ -22,33 +22,8 @@ use Pimcore\Model\AbstractModel;
  * Class ShipmentState
  * @package CoreShop\Model\Mail\Rule\Condition\Shipment
  */
-class ShipmentState extends Rule\Condition\AbstractCondition
+class ShipmentState extends Rule\Condition\Order\ShipmentState
 {
-    /**
-     * @var string
-     */
-    public $type = 'shipmentState';
-
-    /**
-     *
-     */
-    const SHIPMENT_TYPE_PARTIAL = 1;
-
-    /**
-     *
-     */
-    const SHIPMENT_TYPE_FULL = 2;
-
-    /**
-     *
-     */
-    const SHIPMENT_TYPE_ALL = 3;
-
-    /**
-     * @var int
-     */
-    public $shipmentState;
-
     /**
      * @param AbstractModel $object
      * @param array $params
@@ -59,39 +34,9 @@ class ShipmentState extends Rule\Condition\AbstractCondition
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
         if($object instanceof Model\Order\Shipment) {
-            $order = $object->getOrder();
-
-            if($this->getShipmentState() === self::SHIPMENT_TYPE_ALL) {
-                return true;
-            }
-            else if($this->getShipmentState() === self::SHIPMENT_TYPE_FULL) {
-                if(count($order->getShipAbleItems()) === 0) {
-                    return true;
-                }
-            }
-            else if($this->getShipmentState() === self::SHIPMENT_TYPE_PARTIAL) {
-                if(count($order->getShipAbleItems()) > 0) {
-                    return true;
-                }
-            }
+            return parent::checkCondition($object->getOrder(), $params, $rule);
         }
 
         return false;
-    }
-
-    /**
-     * @return int
-     */
-    public function getShipmentState()
-    {
-        return $this->shipmentState;
-    }
-
-    /**
-     * @param int $shipmentState
-     */
-    public function setShipmentState($shipmentState)
-    {
-        $this->shipmentState = $shipmentState;
     }
 }

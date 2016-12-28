@@ -44,10 +44,10 @@ class Rule extends AbstractRule
         'payment' => [
             'order'
         ],
-        'orderState' => [
+        'carriers' => [
             'order'
         ],
-        'carriers' => [
+        'orderState' => [
             'order'
         ],
         'invoiceState' => [
@@ -55,7 +55,8 @@ class Rule extends AbstractRule
             'order'
         ],
         'shipmentState' => [
-            'shipment'
+            'shipment',
+            'order'
         ],
         'userType' => [
             'user'
