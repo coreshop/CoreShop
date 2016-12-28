@@ -43,7 +43,7 @@ pimcore.plugin.coreshop.mail.rules.actions.mail = Class.create(pimcore.plugin.co
                     documentTypes : 'email'
                 }],
                 name: 'mails[' + shortLang + ']',
-                title: t('coreshop_messaging_customer_email')
+                title: t('coreshop_email_document')
             });
 
             tabs.push({
