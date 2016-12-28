@@ -25,7 +25,7 @@ pimcore.plugin.coreshop.mail.rules.conditions.invoiceState = Class.create(pimcor
                     name: 'invoiceState',
                     value: this.data ? this.data.invoiceState : 3,
                     width: 250,
-                    store: [[1, t('coreshop_partial')], [2, t('coreshop_full')], [3, t('coreshop_all')]],
+                    store: [[1, t('coreshop_invoice_partial')], [2, t('coreshop_invoice_full')], [3, t('coreshop_invoice_all')]],
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,

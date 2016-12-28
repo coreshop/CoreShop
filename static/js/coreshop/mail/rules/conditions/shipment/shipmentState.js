@@ -25,7 +25,7 @@ pimcore.plugin.coreshop.mail.rules.conditions.shipmentState = Class.create(pimco
                     name: 'shipmentState',
                     value: this.data ? this.data.shipmentState : 3,
                     width: 250,
-                    store: [[1, t('coreshop_partial')], [2, t('coreshop_full')], [3, t('coreshop_all')]],
+                    store: [[1, t('coreshop_shipment_partial')], [2, t('coreshop_shipment_full')], [3, t('coreshop_shipment_all')]],
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,

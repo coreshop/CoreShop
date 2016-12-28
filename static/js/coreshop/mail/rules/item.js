@@ -51,12 +51,12 @@ pimcore.plugin.coreshop.mail.rules.item = Class.create(pimcore.plugin.coreshop.r
         var types = [];
 
         this.parentPanel.getConfig().types.forEach(function (type) {
-            types.push([type]);
+            types.push([type, t('coreshop_mail_rule_type_' + type)]);
         }.bind(this));
 
         var typesStore = new Ext.data.ArrayStore({
             data : types,
-            fields: ['type'],
+            fields: ['type', 'typeName'],
             idProperty : 'type'
         });
 
@@ -78,7 +78,7 @@ pimcore.plugin.coreshop.mail.rules.item = Class.create(pimcore.plugin.coreshop.r
                     xtype : 'combo',
                     fieldLabel: t('coreshop_mail_rule_type'),
                     name: 'mailType',
-                    displayField: 'type',
+                    displayField: 'typeName',
                     valueField: 'type',
                     store: typesStore,
                     value : this.data.mailType,

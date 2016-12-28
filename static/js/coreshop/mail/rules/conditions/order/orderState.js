@@ -21,11 +21,24 @@ pimcore.plugin.coreshop.mail.rules.conditions.orderState = Class.create(pimcore.
             items : [
                 {
                     xtype: 'combo',
-                    fieldLabel: t('coreshop_transition_direction'),
+                    fieldLabel: t('coreshop_transition_direction_mode'),
+                    name: 'transitionType',
+                    value: this.data ? this.data.transitionType : 3,
+                    width: 250,
+                    store: [[1, t('coreshop_transition_to')], [2, t('coreshop_transition_from')], [3, t('coreshop_transition_all')]],
+                    triggerAction: 'all',
+                    typeAhead: false,
+                    editable: false,
+                    forceSelection: true,
+                    queryMode: 'local'
+                },
+                {
+                    xtype: 'combo',
+                    fieldLabel: t('coreshop_transition_direction_state'),
                     name: 'states',
                     value: this.data ? this.data.states : [],
                     width: 250,
-                    store: pimcore.globalmanager.get("coreshop_order_states"),
+                    store: pimcore.globalmanager.get('coreshop_order_states'),
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,
@@ -34,19 +47,6 @@ pimcore.plugin.coreshop.mail.rules.conditions.orderState = Class.create(pimcore.
                     multiSelect : true,
                     displayField : 'label',
                     valueField : 'name'
-                },
-                {
-                    xtype: 'combo',
-                    fieldLabel: t('coreshop_transition_direction'),
-                    name: 'transitionType',
-                    value: this.data ? this.data.transitionType : 3,
-                    width: 250,
-                    store: [[1, t('coreshop_transition_to')], [2, t('coreshop_transition_from')], [3, t('coreshop_all')]],
-                    triggerAction: 'all',
-                    typeAhead: false,
-                    editable: false,
-                    forceSelection: true,
-                    queryMode: 'local'
                 }
             ]
         });
