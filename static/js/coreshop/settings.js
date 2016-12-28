@@ -423,33 +423,42 @@ pimcore.plugin.coreshop.settings = Class.create({
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout: 'form',
                 items: [
-                    {
+                    new pimcore.plugin.coreshop.object.elementHref({
+                        id : me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CUSTOMER.' + shortLang),
+                        type : 'document',
+                        subtype : 'email'
+                    }, {
+                        documentsAllowed : true,
+                        documentTypes : [{
+                            documentTypes : 'email'
+                        }],
                         name: 'SYSTEM.MESSAGING.MAIL.CUSTOMER.' + shortLang,
-                        value: me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CUSTOMER.' + shortLang),
-                        fieldLabel: t('coreshop_messaging_customer_email'),
-                        labelWidth: 350,
-                        fieldCls: 'pimcore_droptarget_input',
-                        xtype: 'textfield',
-                        listeners: me._getMailTemplateDropAreaListener()
-                    },
-                    {
+                        title: t('coreshop_messaging_customer_email')
+                    }).getLayoutEdit(),
+                    new pimcore.plugin.coreshop.object.elementHref({
+                        id : me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang),
+                        type : 'document',
+                        subtype : 'email'
+                    }, {
+                        documentsAllowed : true,
+                        documentTypes : [{
+                            documentTypes : 'email'
+                        }],
                         name: 'SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang,
-                        value: me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang),
-                        fieldLabel: t('coreshop_messaging_customer_re_email'),
-                        labelWidth: 350,
-                        fieldCls: 'pimcore_droptarget_input',
-                        xtype: 'textfield',
-                        listeners: me._getMailTemplateDropAreaListener()
-                    },
-                    {
+                        title: t('coreshop_messaging_customer_re_email')
+                    }).getLayoutEdit(),
+                    new pimcore.plugin.coreshop.object.elementHref({
+                        id : me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang),
+                        type : 'document',
+                        subtype : 'email'
+                    }, {
+                        documentsAllowed : true,
+                        documentTypes : [{
+                            documentTypes : 'email'
+                        }],
                         name: 'SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang,
-                        value: me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang),
-                        fieldLabel: t('coreshop_messaging_contact_email'),
-                        labelWidth: 350,
-                        fieldCls: 'pimcore_droptarget_input',
-                        xtype: 'textfield',
-                        listeners: me._getMailTemplateDropAreaListener()
-                    }
+                        title: t('coreshop_messaging_contact_email')
+                    }).getLayoutEdit()
                 ]
             });
 
@@ -458,24 +467,30 @@ pimcore.plugin.coreshop.settings = Class.create({
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout: 'form',
                 items: [
-                    {
+                    new pimcore.plugin.coreshop.object.elementHref({
+                        id : me.getValue(shopId, 'SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' + shortLang),
+                        type : 'document',
+                        subtype : 'email'
+                    }, {
+                        documentsAllowed : true,
+                        documentTypes : [{
+                            documentTypes : 'email'
+                        }],
                         name: 'SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' + shortLang,
-                        value: me.getValue(shopId, 'SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' + shortLang),
-                        fieldLabel: t('coreshop_order_states_confirmation_mail'),
-                        labelWidth: 350,
-                        fieldCls: 'pimcore_droptarget_input',
-                        xtype: 'textfield',
-                        listeners: me._getMailTemplateDropAreaListener()
-                    },
-                    {
+                        title: t('coreshop_order_states_confirmation_mail')
+                    }).getLayoutEdit(),
+                    new pimcore.plugin.coreshop.object.elementHref({
+                        id : me.getValue(shopId, 'SYSTEM.MAIL.ORDER.STATES.UPDATE.' + shortLang),
+                        type : 'document',
+                        subtype : 'email'
+                    }, {
+                        documentsAllowed : true,
+                        documentTypes : [{
+                            documentTypes : 'email'
+                        }],
                         name: 'SYSTEM.MAIL.ORDER.STATES.UPDATE.' + shortLang,
-                        value: me.getValue(shopId, 'SYSTEM.MAIL.ORDER.STATES.UPDATE.' + shortLang),
-                        fieldLabel: t('coreshop_order_states_update_mail'),
-                        labelWidth: 350,
-                        fieldCls: 'pimcore_droptarget_input',
-                        xtype: 'textfield',
-                        listeners: me._getMailTemplateDropAreaListener()
-                    }
+                        title: t('coreshop_order_states_update_mail')
+                    }).getLayoutEdit()
                 ]
             });
         });
@@ -795,16 +810,20 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: { width: 600 },
+                    defaults: { minWidth: 600 },
                     items: [
-                        {
-                            fieldLabel: t('coreshop_default_image'),
+                        new pimcore.plugin.coreshop.object.elementHref({
+                            id : me.getValue(shopId, 'SYSTEM.PRODUCT.DEFAULTIMAGE'),
+                            type : 'asset',
+                            subtype : 'image'
+                        }, {
+                            assetsAllowed : true,
+                            assetTypes : [{
+                                assetTypes : 'image'
+                            }],
                             name: 'SYSTEM.PRODUCT.DEFAULTIMAGE',
-                            cls: 'input_drop_target',
-                            value: this.getValue(shopId, 'SYSTEM.PRODUCT.DEFAULTIMAGE'),
-                            xtype: 'textfield',
-                            listeners: me._getAssetDropAreaListener()
-                        },
+                            title: t('coreshop_default_image')
+                        }).getLayoutEdit(),
                         {
                             fieldLabel: t('coreshop_product_daysasnew'),
                             name: 'SYSTEM.PRODUCT.DAYSASNEW',
@@ -822,16 +841,20 @@ pimcore.plugin.coreshop.settings = Class.create({
                     autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: { width: 600 },
+                    defaults: { minWidth: 600 },
                     items: [
-                        {
-                            fieldLabel: t('coreshop_default_image'),
+                        new pimcore.plugin.coreshop.object.elementHref({
+                            id : me.getValue(shopId, 'SYSTEM.CATEGORY.DEFAULTIMAGE'),
+                            type : 'asset',
+                            subtype : 'image'
+                        }, {
+                            assetsAllowed : true,
+                            assetTypes : [{
+                                assetTypes : 'image'
+                            }],
                             name: 'SYSTEM.CATEGORY.DEFAULTIMAGE',
-                            cls: 'input_drop_target',
-                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.DEFAULTIMAGE'),
-                            xtype: 'textfield',
-                            listeners: me._getAssetDropAreaListener()
-                        },
+                            title: t('coreshop_default_image')
+                        }).getLayoutEdit(),
                         {
                             fieldLabel: t('coreshop_category_list_mode'),
                             name: 'SYSTEM.CATEGORY.LIST.MODE',
@@ -1117,81 +1140,5 @@ pimcore.plugin.coreshop.settings = Class.create({
         });
 
         return shopPanel;
-    },
-
-    _getMailTemplateDropAreaListener: function() {
-
-        return {
-
-            render: function (el) {
-                new Ext.dd.DropZone(el.getEl(), {
-                    reference: this,
-                    ddGroup: 'element',
-                    getTargetFromEvent: function (e) {
-                        return this.getEl();
-                    }.bind(el),
-
-                    onNodeOver: function (target, dd, e, data) {
-                        data = data.records[0].data;
-                        if (data.elementType === 'document' && data.type === 'email') {
-                            return Ext.dd.DropZone.prototype.dropAllowed;
-                        }
-
-                        return Ext.dd.DropZone.prototype.dropNotAllowed;
-                    },
-
-                    onNodeDrop: function (target, dd, e, data) {
-                        data = data.records[0].data;
-
-                        if (data.elementType === 'document' && data.type === 'email') {
-                            this.setValue(data.id);
-                            return true;
-                        }
-
-                        return false;
-                    }.bind(el)
-                });
-            }
-
-        };
-    },
-
-    _getAssetDropAreaListener: function() {
-
-        return {
-
-            render: function (el) {
-                new Ext.dd.DropZone(el.getEl(), {
-                    reference: this,
-                    ddGroup: 'element',
-                    getTargetFromEvent: function (e) {
-                        return this.getEl();
-                    }.bind(el),
-
-                    onNodeOver: function (target, dd, e, data) {
-                        data = data.records[0].data;
-
-                        if (data.elementType === 'asset') {
-                            return Ext.dd.DropZone.prototype.dropAllowed;
-                        }
-
-                        return Ext.dd.DropZone.prototype.dropNotAllowed;
-                    },
-
-                    onNodeDrop: function (target, dd, e, data) {
-                        data = data.records[0].data;
-
-                        if (data.elementType === 'asset') {
-                            this.setValue(data.path);
-                            return true;
-                        }
-
-                        return false;
-                    }.bind(el)
-                });
-            }
-
-        };
-
     }
 });

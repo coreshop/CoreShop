@@ -613,14 +613,6 @@ class Carrier extends AbstractModel
      */
     public function getImage()
     {
-        if (is_string($this->image)) {
-            $asset = Asset::getByPath($this->image);
-
-            if ($asset instanceof Asset) {
-                $this->image = $asset;
-            }
-        }
-
         return $this->image;
     }
 
@@ -630,6 +622,13 @@ class Carrier extends AbstractModel
     public function setImage($image)
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return Asset\Image|null
+     */
+    public function getImageAsset() {
+        return Asset\Image::getById($this->image);
     }
 
     /**

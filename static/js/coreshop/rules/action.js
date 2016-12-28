@@ -83,20 +83,24 @@ pimcore.plugin.coreshop.rules.action = Class.create({
             var actionClass = actionItem.xparent;
             var form = actionClass.form;
 
-            if(Ext.isFunction(form.getValues)) {
-                action = form.getValues();
-            }
-            else {
-                for (var c = 0; c < form.items.length; c++) {
-                    var item = form.items.get(c);
+            if (Ext.isFunction(actionClass['getValues'])) {
+                action = actionClass.getValues();
+            } else {
+                if (Ext.isFunction(form.getValues)) {
+                    action = form.getValues();
+                }
+                else {
+                    for (var c = 0; c < form.items.length; c++) {
+                        var item = form.items.get(c);
 
-                    try {
-                        action[item.getName()] = item.getValue();
+                        try {
+                            action[item.getName()] = item.getValue();
+                        }
+                        catch (e) {
+
+                        }
+
                     }
-                    catch (e) {
-
-                    }
-
                 }
             }
 

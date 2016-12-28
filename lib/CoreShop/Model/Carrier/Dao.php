@@ -29,24 +29,4 @@ class Dao extends AbstractDao
      * @var string
      */
     protected static $tableName = 'coreshop_carriers';
-
-    /**
-     * Assign Variables to Model.
-     *
-     * @param array $data
-     */
-    protected function assignVariablesToModel($data)
-    {
-        parent::assignVariablesToModel($data);
-
-        foreach ($data as $key => $value) {
-            if ($key == 'image') {
-                $asset = Asset::getById($value);
-
-                if ($asset instanceof Asset) {
-                    $this->model->setImage($asset->getFullPath());
-                }
-            }
-        }
-    }
 }

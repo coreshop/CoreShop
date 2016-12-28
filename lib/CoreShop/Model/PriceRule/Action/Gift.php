@@ -24,14 +24,14 @@ use CoreShop\Model\Product;
 class Gift extends AbstractAction
 {
     /**
-     * @var Product
-     */
-    public $gift;
-
-    /**
      * @var string
      */
     public $type = 'gift';
+
+    /**
+     * @var int
+     */
+    public $gift;
 
     /**
      * @return Product
@@ -39,7 +39,7 @@ class Gift extends AbstractAction
     public function getGift()
     {
         if (!$this->gift instanceof Product) {
-            $this->gift = Product::getByPath($this->gift);
+            $this->gift = Product::getById($this->gift);
         }
 
         return $this->gift;

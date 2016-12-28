@@ -95,6 +95,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/ordersAndCartsFromLastDays.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/layout/portlets/salesFromLastDays.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/objectMultihref.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/object/elementHref.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/object/variantGenerator.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/product/specificprice/actions/newPrice.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/orders/grid.js</path>

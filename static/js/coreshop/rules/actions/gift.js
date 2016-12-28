@@ -18,57 +18,31 @@ pimcore.plugin.coreshop.rules.actions.gift = Class.create(pimcore.plugin.coresho
     type : 'gift',
 
     getForm : function () {
-        var gift = {
-            fieldLabel: t('coreshop_action_gift_product'),
+        this.gift = new pimcore.plugin.coreshop.object.elementHref({
+            id : this.data ? this.data.gift : null,
+            type : 'object',
+            subtype : coreshop.settings.classMapping.product
+        }, {
+            objectsAllowed : true,
+            classes : [{
+                classes : coreshop.settings.classMapping.product
+            }],
             name: 'gift',
-            cls: 'input_drop_target',
-            width: 300,
-            xtype: 'textfield',
-            listeners: {
-                render: function (el) {
-                    new Ext.dd.DropZone(el.getEl(), {
-                        reference: this,
-                        ddGroup: 'element',
-                        getTargetFromEvent: function (e) {
-                            return this.getEl();
-                        }.bind(el),
-
-                        onNodeOver : function (target, dd, e, data) {
-                            data = data.records[0].data;
-
-                            if (data.elementType == 'object' && data.className == coreshop.settings.classMapping.product) {
-                                return Ext.dd.DropZone.prototype.dropAllowed;
-                            }
-
-                            return Ext.dd.DropZone.prototype.dropNotAllowed;
-                        },
-
-                        onNodeDrop : function (target, dd, e, data) {
-                            data = data.records[0].data;
-
-                            if (data.elementType == 'object' && data.className == coreshop.settings.classMapping.product) {
-                                this.setValue(data.path);
-                                return true;
-                            }
-
-                            return false;
-                        }.bind(el)
-                    });
-                }
-            }
-        };
-
-        if (this.data && this.data.gift) {
-            gift.value = this.data.gift;
-        }
+            title: t('coreshop_action_gift_product')
+        });
 
         this.form = new Ext.form.Panel({
             items : [
-                gift
-            ],
-            border : 0
+                this.gift.getLayoutEdit()
+            ]
         });
 
         return this.form;
+    },
+
+    getValues : function() {
+        return {
+            gift : this.gift.getValue()
+        };
     }
 });
