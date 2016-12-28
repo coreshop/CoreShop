@@ -63,11 +63,15 @@ class Workflow
     public static function dispatchOrderChange($event)
     {
         $manager = $event->getTarget();
+        $orderObject = $manager->getElement();
+
         $data = $event->getParam('data');
         $additional = $data['additional'];
-        $orderObject = $manager->getElement();
         $oldStatus = $data['oldStatus'];
         $newStatus = $data['newStatus'];
+        $oldState = $data['oldState'];
+        $newState = $data['newState'];
+
         if ($orderObject instanceof Order) {
             //create invoice, if allowed.
             if (self::checkAutomatedInvoicePossibility($orderObject, $oldStatus, $newStatus)) {
@@ -75,8 +79,8 @@ class Workflow
             }
 
             Rule::apply('order', $orderObject, [
-                'fromState' => $oldStatus,
-                'toState' => $newStatus
+                'fromState' => $oldState,
+                'toState' => $newState
             ]);
         }
     }
@@ -112,10 +116,15 @@ class Workflow
                 "classes" => [8],
             ],
             "enabled" => true,
-            "defaultState" => "new",
-            "defaultStatus" => "pending",
+            "defaultState" => "initialized",
+            "defaultStatus" => "initialized",
             "allowUnpublished" => true,
             "states" => [
+                [
+                    "name" => "initialized",
+                    "label" => "Initialized",
+                    "color" => "#4d4a4c"
+                ],
                 [
                     "name" => "new",
                     "label" => "New",
@@ -158,6 +167,11 @@ class Workflow
                 ]
             ],
             "statuses" => [
+                [
+                    "name" => "initialized",
+                    "label" => "Initialized",
+                    "elementPublished" => TRUE
+                ],
                 [
                     "name" => "pending",
                     "label" => "Pending",
@@ -204,6 +218,9 @@ class Workflow
                     "name" => "change_order_state",
                     "label" => "Change Order State",
                     "transitionTo" => [
+                        "initialized" => [
+                            "initialized"
+                        ],
                         "new" => [
                             "pending"
                         ],
@@ -241,6 +258,11 @@ class Workflow
                 ]
             ],
             "transitionDefinitions" => [
+                "initialized" => [
+                    "validActions" => [
+                        "change_order_state" => NULL
+                    ]
+                ],
                 "pending" => [
                     "validActions" => [
                         "change_order_state" => null,
