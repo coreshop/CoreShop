@@ -472,20 +472,14 @@ class Tools
      * unlink non-persisted user data like cart.
      * mostly called after a oder has been created.
      *
-     * @param bool $unlinkCart
-     *
      * @return Cart
      */
-    public function deleteUserSession($unlinkCart = false)
+    public function deleteUserSession()
     {
         $session = self::getSession();
 
-        if ($unlinkCart === true && $session->cart instanceof Cart) {
-            $session->cart->delete();
-        }
-
+        unset($session->cartObj);
         unset($session->order);
-        unset($session->cart);
         unset($session->cartId);
 
         return $this->getCart(true);

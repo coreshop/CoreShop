@@ -143,7 +143,7 @@ class Payment extends Action
         );
 
         //remove user session => not valid anymore!
-        \CoreShop::getTools()->deleteUserSession(true);
+        \CoreShop::getTools()->deleteUserSession();
 
         return $order;
     }

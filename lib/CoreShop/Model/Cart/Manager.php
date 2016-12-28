@@ -103,7 +103,7 @@ class Manager
         $cart = null;
 
         if (isset($cartSession->cartId) && $cartSession->cartId !== 0) {
-            return  Cart::getById($cartSession->cartId);
+            return Cart::getById($cartSession->cartId);
         } elseif (isset($cartSession->cartObj)) {
             if ($cartSession->cartObj instanceof Cart) {
                 return $cartSession->cartObj;
