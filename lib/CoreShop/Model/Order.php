@@ -487,7 +487,7 @@ class Order extends Base
         $payment->setTransactionIdentifier(uniqid());
         $payment->setProvider($provider->getIdentifier());
 
-        if (\Pimcore\Config::getFlag("useZendDate")) {
+        if (\Pimcore\Config::getFlag('useZendDate')) {
             $payment->setDatePayment(Date::now());
         } else {
             $payment->setDatePayment(Carbon::now());
@@ -506,9 +506,6 @@ class Order extends Base
         $note->addData('provider', 'text', $provider->getName());
         $note->addData('amount', 'text', \CoreShop::getTools()->formatPrice($amount));
         $note->save();
-
-        //check orderState
-        $this->checkOrderState();
 
         return $payment;
     }
@@ -1135,8 +1132,6 @@ class Order extends Base
      * check order state.
      * - if all invoices and shipments has been created: set status to complete.
      * - next, if current state is not processing, change it to processing.
-     *
-     * @todo: send correct mail: https://github.com/coreshop/CoreShop/issues/148
      */
     public function checkOrderState()
     {
