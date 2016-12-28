@@ -59,7 +59,13 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
             {
                 header: 'ID',
                 dataIndex: 'id',
-                flex : 1
+                width : 50
+            },
+            {
+                header: t("reference"),
+                dataIndex: 'path',
+                flex : 1,
+                sortable: false
             },
             {
                 xtype: 'actioncolumn',
@@ -194,6 +200,8 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
             }.bind(this));
         }
 
+        this.requestNicePathData(this.store.data);
+
         return this.component;
     },
 
@@ -239,7 +247,16 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
         return tmData;
     },
 
-    requestNicePathData : function() {
+    requestNicePathData : function(targets) {
+        var elementData = [];
 
+        targets.each(function(record){
+            elementData.push({
+                type : 'object',
+                id : record.get("id")
+            });
+        },this);
+
+        coreshop.helpers.requestNicePathData(elementData, pimcore.helpers.getNicePathHandlerStore.bind(this, this.store, {}, this.component.getView()));
     }
 });

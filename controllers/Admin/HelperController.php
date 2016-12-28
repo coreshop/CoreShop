@@ -53,4 +53,20 @@ class CoreShop_Admin_HelperController extends Admin
 
         $this->_helper->json(['languages' => $languageOptions]);
     }
+
+    public function getNicePathAction()
+    {
+        $targets = \Zend_Json::decode($this->getParam("targets"));
+        $result = [];
+
+        foreach($targets as $target) {
+            $element = Pimcore\Model\Element\Service::getElementById($target['type'], $target['id']);
+
+            if($element instanceof Pimcore\Model\Element\AbstractElement) {
+                $result[$element->getId()] = $element->getFullPath();
+            }
+        }
+
+        $this->_helper->json(["success" => true, "data" => $result]);
+    }
 }

@@ -149,6 +149,30 @@ coreshop.helpers.openOrder = function (id) {
     }
 };
 
+coreshop.helpers.requestNicePathData = function(targets, responseHandler) {
+    var elementData = Ext.encode(targets);
+
+    Ext.Ajax.request({
+        method: 'POST',
+        url: "/plugin/CoreShop/admin_helper/get-nice-path",
+        params: {
+            targets: elementData
+        },
+        success: function (response) {
+            try {
+                var rdata = Ext.decode(response.responseText);
+                if (rdata.success) {
+
+                    var responseData = rdata.data;
+                    responseHandler(responseData);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }.bind(this)
+    });
+};
+
 String.prototype.ucfirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
 };
