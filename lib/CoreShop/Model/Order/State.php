@@ -26,6 +26,7 @@ use Pimcore\WorkflowManagement\Workflow;
  */
 class State
 {
+    const STATE_INITIALIZED        = 'initialized';
     const STATE_NEW                = 'new';
     const STATE_PENDING_PAYMENT    = 'pending_payment';
     const STATE_PROCESSING         = 'processing';
@@ -35,6 +36,7 @@ class State
     const STATE_HOLDED             = 'holded';
     const STATE_PAYMENT_REVIEW     = 'payment_review';
 
+    const STATUS_INITIALIZED        = 'initialized';
     const STATUS_PENDING            = 'pending';
     const STATUS_PENDING_PAYMENT    = 'pending_payment';
     const STATUS_PROCESSING         = 'processing';
@@ -44,11 +46,11 @@ class State
     const STATUS_HOLDED             = 'holded';
     const STATUS_PAYMENT_REVIEW     = 'payment_review';
 
-    const ORDER_STATE_CONFIRMATION_MAIL     = 'sendOrderConfirmationMail';
-    const ORDER_STATE_STATUS_MAIL           = 'sendOrderStatusMail';
-
     protected static $STATE_CONFIG = [
 
+        self::STATE_INITIALIZED => [
+            'color' => '#4d4a4c'
+        ],
         self::STATE_NEW => [
             'color' => '#9bc4c4'
         ],
