@@ -399,8 +399,6 @@ pimcore.plugin.coreshop.settings = Class.create({
     getConfigFormForShop : function (shopId) {
 
         var me = this,
-            messagingLangTabs = [],
-            orderStatesTabs = [],
             shopPanel,
             store = pimcore.globalmanager.get('coreshop_shops'),
             shop = store.getById(shopId);
@@ -409,92 +407,6 @@ pimcore.plugin.coreshop.settings = Class.create({
             alert('SHOP NOT FOUND!');
             return;
         }
-
-        Ext.each(pimcore.settings.websiteLanguages, function (lang) {
-            var shortLang = lang.toUpperCase();
-
-            if (shortLang.indexOf('-') > 0) {
-                shortLang = shortLang.split('-');
-                shortLang = shortLang[0];
-            }
-
-            messagingLangTabs.push({
-                title: pimcore.available_languages[lang],
-                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
-                layout: 'form',
-                items: [
-                    new pimcore.plugin.coreshop.object.elementHref({
-                        id : me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CUSTOMER.' + shortLang),
-                        type : 'document',
-                        subtype : 'email'
-                    }, {
-                        documentsAllowed : true,
-                        documentTypes : [{
-                            documentTypes : 'email'
-                        }],
-                        name: 'SYSTEM.MESSAGING.MAIL.CUSTOMER.' + shortLang,
-                        title: t('coreshop_messaging_customer_email')
-                    }).getLayoutEdit(),
-                    new pimcore.plugin.coreshop.object.elementHref({
-                        id : me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang),
-                        type : 'document',
-                        subtype : 'email'
-                    }, {
-                        documentsAllowed : true,
-                        documentTypes : [{
-                            documentTypes : 'email'
-                        }],
-                        name: 'SYSTEM.MESSAGING.MAIL.CUSTOMER.RE.' + shortLang,
-                        title: t('coreshop_messaging_customer_re_email')
-                    }).getLayoutEdit(),
-                    new pimcore.plugin.coreshop.object.elementHref({
-                        id : me.getValue(shopId, 'SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang),
-                        type : 'document',
-                        subtype : 'email'
-                    }, {
-                        documentsAllowed : true,
-                        documentTypes : [{
-                            documentTypes : 'email'
-                        }],
-                        name: 'SYSTEM.MESSAGING.MAIL.CONTACT.' + shortLang,
-                        title: t('coreshop_messaging_contact_email')
-                    }).getLayoutEdit()
-                ]
-            });
-
-            orderStatesTabs.push({
-                title: pimcore.available_languages[lang],
-                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
-                layout: 'form',
-                items: [
-                    new pimcore.plugin.coreshop.object.elementHref({
-                        id : me.getValue(shopId, 'SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' + shortLang),
-                        type : 'document',
-                        subtype : 'email'
-                    }, {
-                        documentsAllowed : true,
-                        documentTypes : [{
-                            documentTypes : 'email'
-                        }],
-                        name: 'SYSTEM.MAIL.ORDER.STATES.CONFIRMATION.' + shortLang,
-                        title: t('coreshop_order_states_confirmation_mail')
-                    }).getLayoutEdit(),
-                    new pimcore.plugin.coreshop.object.elementHref({
-                        id : me.getValue(shopId, 'SYSTEM.MAIL.ORDER.STATES.UPDATE.' + shortLang),
-                        type : 'document',
-                        subtype : 'email'
-                    }, {
-                        documentsAllowed : true,
-                        documentTypes : [{
-                            documentTypes : 'email'
-                        }],
-                        name: 'SYSTEM.MAIL.ORDER.STATES.UPDATE.' + shortLang,
-                        title: t('coreshop_order_states_update_mail')
-                    }).getLayoutEdit()
-                ]
-            });
-        });
-
         shopPanel = Ext.create('Ext.form.Panel', {
             title : shop.get('name'),
             border: false,
@@ -1017,60 +929,6 @@ pimcore.plugin.coreshop.settings = Class.create({
 
                         }
 
-                    ]
-                },
-                {
-                    xtype: 'fieldset',
-                    title: t('coreshop_mail_template_settings'),
-                    collapsible: true,
-                    collapsed: true,
-                    autoHeight: true,
-                    labelWidth: 250,
-                    defaultType: 'textfield',
-                    defaults: { width: 800 },
-                    items: [
-                        {
-                            xtype: 'fieldset',
-                            title: t('coreshop_messaging'),
-                            collapsible: false,
-                            collapsed: false,
-                            autoHeight: true,
-                            labelWidth: 250,
-                            defaultType: 'textfield',
-                            items: [
-                                {
-                                    xtype: 'tabpanel',
-                                    activeTab: 0,
-                                    width: '100%',
-                                    defaults: {
-                                        autoHeight: true,
-                                        bodyStyle: 'padding:10px;'
-                                    },
-                                    items: messagingLangTabs
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'fieldset',
-                            title: t('coreshop_order_states_mail'),
-                            collapsible: false,
-                            collapsed: false,
-                            autoHeight: true,
-                            labelWidth: 250,
-                            defaultType: 'textfield',
-                            items: [
-                                {
-                                    xtype: 'tabpanel',
-                                    activeTab: 0,
-                                    width: '100%',
-                                    defaults: {
-                                        autoHeight: true,
-                                        bodyStyle: 'padding:10px;'
-                                    },
-                                    items: orderStatesTabs
-                                }
-                            ]
-                        }
                     ]
                 },
                 {

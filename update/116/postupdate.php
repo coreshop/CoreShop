@@ -15,3 +15,11 @@ foreach ($languages as $lang) {
 
 \CoreShop\Model\Configuration::set('SYSTEM.ORDER.PREFIX', 'O');
 \CoreShop\Model\Configuration::set('SYSTEM.ORDER.SUFFIX', '');
+
+foreach ($languages as $lang) {
+    \CoreShop\Model\Configuration::remove("SYSTEM.MESSAGING.MAIL.CUSTOMER." . strtoupper($lang));
+    \CoreShop\Model\Configuration::remove("SYSTEM.MESSAGING.MAIL.CONTACT." . strtoupper($lang));
+    \CoreShop\Model\Configuration::remove("SYSTEM.MESSAGING.MAIL.CUSTOMER.RE." . strtoupper($lang));
+    \CoreShop\Model\Configuration::remove("SYSTEM.MAIL.ORDER.STATES.CONFIRMATION." . strtoupper($lang));
+    \CoreShop\Model\Configuration::remove("SYSTEM.MAIL.ORDER.STATES.UPDATE." . strtoupper($lang));
+}
