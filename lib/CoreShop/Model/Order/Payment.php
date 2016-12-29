@@ -64,20 +64,36 @@ class Payment extends Base
 
     /**
      * @param $status
+     * @param $code
      * @param $description
      *
      * @return \Pimcore\Model\Element\Note
      * @throws ObjectUnsupportedException
      */
-    public function addTransactionNote($status, $description)
+    public function addTransactionNote($status, $code = null, $description = null)
     {
         $note = $this->createNote(self::TRANSACTION_NOTE_TITLE);
         $note->setTitle($status);
         $note->setDescription($description);
         $note->addData('provider', 'text', $this->getProvider());
+        $note->addData('code', 'text', $code);
         $note->save();
 
         return $note;
+    }
+
+    public function getLastTransactionNote()
+    {
+        $noteList = new \Pimcore\Model\Element\Note\Listing();
+        $noteList->addConditionParam('type = ?', self::TRANSACTION_NOTE_TITLE);
+        $noteList->addConditionParam('cid = ?', $this->getId());
+        $noteList->setOrderKey('date');
+        $noteList->setOrder('desc');
+        $noteList->setLimit(1);
+        $noteList->load();
+
+        $lists = $noteList->getNotes();
+        return isset($lists[0]) ? $lists[0] : false;
     }
 
     /**
