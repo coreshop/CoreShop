@@ -41,6 +41,9 @@ class Rule extends AbstractRule
      * @var array
      */
     public static $availableConditions = [
+        'externalEvent' => [
+            'order'
+        ],
         'payment' => [
             'order'
         ],

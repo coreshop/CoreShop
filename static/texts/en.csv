@@ -500,6 +500,7 @@
 "coreshop_condition_orderState","Order State"
 "coreshop_condition_invoiceState","Invoice State"
 "coreshop_condition_shipmentState","Shipment State"
+"coreshop_condition_externalEvent","External Event"
 "coreshop_action_mail","Mail Document"
 "coreshop_transition_direction_state","State"
 "coreshop_transition_direction_mode","Mode"

@@ -13,6 +13,7 @@
  */
 
 use CoreShop\Controller\Action\Admin;
+use CoreShop\Model\Mail\Rule;
 use Pimcore\Tool as PimTool;
 
 /**
@@ -71,6 +72,12 @@ class CoreShop_Admin_MailRuleController extends Admin
             'conditions' => \CoreShop\Model\Mail\Rule::$availableConditions,
             'actions' => \CoreShop\Model\Mail\Rule::$availableActions,
         ]);
+    }
+
+    public function getExternalEventsAction()
+    {
+        $events = Rule\Event\EventDispatcher::getExternalEvents();
+        $this->_helper->json(['data' => $events]);
     }
 
     public function addAction()
