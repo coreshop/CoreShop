@@ -40,15 +40,18 @@ class Workflow
         /** @var \Pimcore\WorkflowManagement\Workflow\Manager $manager */
         $manager = $event->getTarget();
         $data = $event->getParam('data');
-        $currentStatus = $manager->getWorkflowStateForElement()->getStatus();
-        $newStatus = $data['newStatus'];
+        $currentState = $manager->getWorkflowStateForElement()->getState();
+        $newState = $data['newState'];
         $orderObject = $manager->getElement();
         if ($orderObject instanceof Order) {
-            if ($currentStatus === $newStatus) {
-                throw new \Exception('Cannot apply same orderState again. (' . $currentStatus . ' => ' . $newStatus .')');
+            if ($currentState === $newState) {
+                throw new \Exception('Cannot apply same orderState again. (' . $currentState . ' => ' . $newState .')');
+            } elseif (!self::newStateIsValid($orderObject, $currentState, $newState) ) {
+                throw new \Exception('New State is not valid.');
             }
         }
     }
+
     /**
      * @param \Zend_EventManager_Event $event
      */
@@ -57,6 +60,7 @@ class Workflow
         $exception = $event->getParam('exception');
         \Pimcore\Logger::err('CoreShop Workflow OrderChange failed. Reason: ' . $exception->getMessage());
     }
+
     /**
      * @param \Zend_EventManager_Event $event
      */
@@ -73,39 +77,48 @@ class Workflow
         $newState = $data['newState'];
 
         if ($orderObject instanceof Order) {
-            //create invoice, if allowed.
-            if (self::checkAutomatedInvoicePossibility($orderObject, $oldStatus, $newStatus)) {
-                $orderObject->createInvoiceForAllItems();
-            }
-
             Rule::apply('order', $orderObject, [
                 'fromState' => $oldState,
                 'toState' => $newState
             ]);
         }
     }
+
     /**
+     * Check if new state is valid.
+     *
      * @param Order $order
-     * @param $oldStatus
-     * @param $newStatus
+     * @param $currentState
+     * @param $newState
+     *
      * @return bool
      */
-    private static function checkAutomatedInvoicePossibility(Order $order, $oldStatus, $newStatus)
+    private static function newStateIsValid($order, $currentState, $newState)
     {
-        if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE') === false) {
+        if ($currentState !== State::STATE_INITIALIZED && $newState === State::STATE_INITIALIZED) {
+            return false;
+        } elseif ($newState === State::STATE_COMPLETE) {
+            $items = [];
+            foreach ($order->getItems() as $item) {
+                $items[] = [
+                    'orderItemId' => $item->getId(),
+                    'amount' => $item->getAmount()
+                ];
+            }
+
+            if(!$order->canHaveInvoice($items) && !$order->canHaveShipping($items)) {
+                return true;
+            }
+
             return false;
         }
-        $allowedStatuses = [Order\State::STATUS_PENDING_PAYMENT, Order\State::STATUS_PAYMENT_REVIEW];
-        if (!in_array($oldStatus, $allowedStatuses)) {
-            return false;
-        }
-        $invoices = $order->getInvoices();
-        if (count($invoices) !== 0) {
-            return false;
-        }
+
         return true;
     }
 
+    /**
+     * @return array
+     */
     public static function getWorkflowConfig()
     {
         return [

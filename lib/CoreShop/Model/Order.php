@@ -632,6 +632,10 @@ class Order extends Base
      */
     public function createInvoice($items)
     {
+        if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE') === false) {
+            throw new Exception('Invoicing not allowed');
+        }
+
         if (!is_array($items)) {
             throw new Exception('Invalid Parameters');
         }
@@ -1175,8 +1179,6 @@ class Order extends Base
                 $params = [
                     'newState'      => Order\State::STATE_COMPLETE,
                     'newStatus'     => Order\State::STATE_COMPLETE,
-                    'additional'    => [
-                    ]
                 ];
                 Order\State::changeOrderState($this, $params);
             } else {
@@ -1184,8 +1186,6 @@ class Order extends Base
                     $params = [
                         'newState'      => Order\State::STATE_PROCESSING,
                         'newStatus'     => Order\State::STATE_PROCESSING,
-                        'additional'    => [
-                        ]
                     ];
                     Order\State::changeOrderState($this, $params);
                 }
