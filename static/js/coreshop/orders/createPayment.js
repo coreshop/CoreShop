@@ -128,7 +128,11 @@ pimcore.plugin.coreshop.orders.createPayment = {
                     {
                         xtype : 'textfield',
                         name : 'transactionNumber',
-                        fieldLabel : t('coreshop_transactionNumber')
+                        fieldLabel : t('coreshop_transactionNumber'),
+                        afterLabelTextTpl: [
+                            '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
+                        ],
+                        allowBlank: false
                     },
                     {
                         xtype : 'numberfield',

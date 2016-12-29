@@ -127,18 +127,12 @@ class Payment extends Action
      * Creates Order
      *
      * @param $language
-     * @param int $totalPayed
      * @return Order
      */
-    protected function createOrder($language, $totalPayed = null)
+    protected function createOrder($language)
     {
-        if (is_null($totalPayed)) {
-            $totalPayed = $this->cart->getTotal();
-        }
-
         $order = $this->cart->createOrder(
             $this->getModule(),
-            $totalPayed,
             $language
         );
 
@@ -146,6 +140,25 @@ class Payment extends Action
         \CoreShop::getTools()->deleteUserSession();
 
         return $order;
+    }
+
+    /**
+     * @param \CoreShop\Model\Order $order
+     * @param null $transactionId
+     *
+     * @return \CoreShop\Model\Order\Payment
+     */
+    protected function getOrderPayment($order, $transactionId = null)
+    {
+        $payment = $order->getOrderPaymentByIdentifier($transactionId);
+
+        if ($payment instanceof \CoreShop\Model\Order\Payment) {
+            return $payment;
+        } else {
+            $payment = $order->createPayment($this->getModule(), $order->getTotal(), true, $transactionId);
+
+        }
+        return $payment;
     }
 
     /**

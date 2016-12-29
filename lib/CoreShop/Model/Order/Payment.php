@@ -33,6 +33,8 @@ use Pimcore\Model\Object;
  */
 class Payment extends Base
 {
+    const TRANSACTION_NOTE_TITLE = 'Payment Transaction';
+
     /**
      * Pimcore Object Class.
      *
@@ -58,6 +60,24 @@ class Payment extends Base
         }
 
         return false;
+    }
+
+    /**
+     * @param $status
+     * @param $description
+     *
+     * @return \Pimcore\Model\Element\Note
+     * @throws ObjectUnsupportedException
+     */
+    public function addTransactionNote($status, $description)
+    {
+        $note = $this->createNote(self::TRANSACTION_NOTE_TITLE);
+        $note->setTitle($status);
+        $note->setDescription($description);
+        $note->addData('provider', 'text', $this->getProvider());
+        $note->save();
+
+        return $note;
     }
 
     /**

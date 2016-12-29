@@ -67,26 +67,6 @@ class Cart extends Base
     protected $shippingWithoutTax;
 
     /**
-     * Return Cart by custom identifier.
-     *
-     * @param $transactionIdentification
-     *
-     * @return bool|Cart
-     */
-    public static function findByCustomIdentifier($transactionIdentification)
-    {
-        $list = self::getByCustomIdentifier($transactionIdentification);
-
-        $carts = $list->load();
-
-        if (count($carts) > 0) {
-            return $carts[0];
-        }
-
-        return false;
-    }
-
-    /**
      * Get all existing Carts.
      *
      * @return array Cart
@@ -871,14 +851,13 @@ class Cart extends Base
      * Creates order for cart
      *
      * @param Payment $paymentModule
-     * @param $totalPayed
      * @param $language
      *
      * @return Order
      *
      * @throws Exception
      */
-    public function createOrder(Payment $paymentModule = null, $totalPayed = 0, $language = null)
+    public function createOrder(Payment $paymentModule = null, $language = null)
     {
         Logger::info('Create order for cart '.$this->getId());
 
@@ -961,12 +940,6 @@ class Cart extends Base
 
         $order->importCart($this);
 
-        if ($totalPayed > 0) {
-            $order->createPayment($paymentModule, $totalPayed, true);
-        }
-
-        //remove transaction to prevent double ordering
-        $this->setCustomIdentifier(null);
         $this->save();
 
         //allow third-parties to hook into order
@@ -1271,26 +1244,6 @@ class Cart extends Base
      * @throws ObjectUnsupportedException
      */
     public function setPriceRuleFieldCollection($priceRules)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return string
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getCustomIdentifier()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param string $customIdentifier
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setCustomIdentifier($customIdentifier)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

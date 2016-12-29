@@ -112,6 +112,7 @@ class CoreShop_Admin_OrderController extends Admin
         $orderId = $this->getParam('o_id');
         $order = \CoreShop\Model\Order::getById($orderId);
         $amount = doubleval($this->getParam('amount', 0));
+        $transactionId = $this->getParam('transactionNumber');
         $paymentProviderName = $this->getParam('paymentProvider');
 
         if (!$order instanceof \CoreShop\Model\Order) {
@@ -128,8 +129,7 @@ class CoreShop_Admin_OrderController extends Admin
             if ($payedTotal > $order->getTotal()) {
                 $this->_helper->json(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
-                $order->createPayment($paymentProvider, $amount, true);
-
+                $order->createPayment($paymentProvider, $amount, true, $transactionId);
                 $this->_helper->json(['success' => true, 'payments' => $this->getPayments($order), 'totalPayed' => $order->getPayedTotal()]);
             }
         } else {
@@ -789,11 +789,19 @@ class CoreShop_Admin_OrderController extends Admin
         $return = [];
 
         foreach ($payments as $payment) {
+            $noteList = new \Pimcore\Model\Element\Note\Listing();
+            $noteList->addConditionParam('type = ?', \CoreShop\Model\Order\Payment::TRANSACTION_NOTE_TITLE);
+            $noteList->addConditionParam('cid = ?', $payment->getId());
+            $noteList->setOrderKey('date');
+            $noteList->setOrder('desc');
+
             $return[] = [
-                "datePayment" => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : "",
-                "provider" => $payment->getProvider(),
-                "transactionIdentifier" => $payment->getTransactionIdentifier(),
-                "amount" => $payment->getAmount()
+                'id' => $payment->getId(),
+                'datePayment' => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
+                'provider' => $payment->getProvider(),
+                'transactionIdentifier' => $payment->getTransactionIdentifier(),
+                'transactionNotes' => $noteList->load(),
+                'amount' => $payment->getAmount()
             ];
         }
 

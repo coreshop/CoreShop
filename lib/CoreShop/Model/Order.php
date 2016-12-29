@@ -474,17 +474,18 @@ class Order extends Base
      * @param CorePayment $provider
      * @param $amount
      * @param bool $paid
+     * @param $transactionId
      *
      * @return Payment
      */
-    public function createPayment(CorePayment $provider, $amount, $paid = false)
+    public function createPayment(CorePayment $provider, $amount, $paid = false, $transactionId = null)
     {
         $payment = Payment::create();
         $payment->setKey(uniqid());
         $payment->setPublished(true);
         $payment->setParent(Object\Service::createFolderByPath($this->getFullPath().'/payments/'));
         $payment->setAmount($amount);
-        $payment->setTransactionIdentifier(uniqid());
+        $payment->setTransactionIdentifier(!is_null($transactionId) ? $transactionId : uniqid());
         $payment->setProvider($provider->getIdentifier());
 
         if (\Pimcore\Config::getFlag('useZendDate')) {
@@ -1037,6 +1038,28 @@ class Order extends Base
     }
 
     /**
+     * @param $identifier
+     *
+     * @return bool|Payment
+     */
+    public function getOrderPaymentByIdentifier($identifier)
+    {
+        $payments = $this->getPayments();
+        if (count($payments) === 0) {
+            return false;
+        }
+
+        /** @var \CoreShop\Model\Order\Payment $payment */
+        foreach ($payments as $payment) {
+            if ($payment->getTransactionIdentifier() === $identifier) {
+                return $payment;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Create a note for this order.
      *
      * @param $type string
@@ -1157,7 +1180,7 @@ class Order extends Base
                 ];
                 Order\State::changeOrderState($this, $params);
             } else {
-                if ($currentStateInfo['state']['name'] !== \CoreShop\Model\Order\State::STATE_PROCESSING) {
+                if ($currentStateInfo['state']['name'] !== Order\State::STATE_PROCESSING) {
                     $params = [
                         'newState'      => Order\State::STATE_PROCESSING,
                         'newStatus'     => Order\State::STATE_PROCESSING,

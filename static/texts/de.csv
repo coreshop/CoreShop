@@ -519,3 +519,6 @@
 "coreshop_message_type_customer","Kundennachricht"
 "coreshop_message_type_customer_reply","Kundennachricht Antwort"
 "coreshop_message_type_contact","Kontakt"
+"coreshop_transaction_id","Transaktion ID"
+"coreshop_show_transaction_notes","Transaktionsinformationen anzeigen"
+"coreshop_no_payment_transactions","Keine Transaktionsinformationen verfügbar"
