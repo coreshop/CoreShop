@@ -29,7 +29,7 @@ class ShippingRule extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'shippingRule';
+    public static $type = 'shippingRule';
 
     /**
      * @var int

@@ -26,6 +26,11 @@ use CoreShop\Model;
 class Amount extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'amount';
+
+    /**
      * @var int
      */
     public $currency;
@@ -39,11 +44,6 @@ class Amount extends AbstractCondition
      * @var float
      */
     public $maxAmount;
-
-    /**
-     * @var string
-     */
-    public $type = 'amount';
 
     /**
      * @return mixed

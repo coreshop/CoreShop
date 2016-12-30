@@ -62,8 +62,8 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
     {
         $this->_helper->json([
             'success' => true,
-            'conditions' => \CoreShop\Model\Carrier\ShippingRule::$availableConditions,
-            'actions' => \CoreShop\Model\Carrier\ShippingRule::$availableActions,
+            'conditions' => \CoreShop\Model\Carrier\ShippingRule::getConditionDispatcher()->getTypeKeys(),
+            'actions' => \CoreShop\Model\Carrier\ShippingRule::getActionDispatcher()->getTypeKeys(),
         ]);
     }
 
@@ -84,7 +84,7 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
         $specificPrice = \CoreShop\Model\Carrier\ShippingRule::getById($id);
 
         if ($specificPrice instanceof \CoreShop\Model\Carrier\ShippingRule) {
-            $this->_helper->json(['success' => true, 'data' => $specificPrice->getObjectVars()]);
+            $this->_helper->json(['success' => true, 'data' => $specificPrice->serialize()]);
         } else {
             $this->_helper->json(['success' => false]);
         }
@@ -102,11 +102,8 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
             $conditions = $data['conditions'];
             $actions = $data['actions'];
 
-            $actionNamespace = 'CoreShop\\Model\\Carrier\\ShippingRule\\Action\\';
-            $conditionNamespace = 'CoreShop\\Model\\Carrier\\ShippingRule\\Condition\\';
-
-            $actionInstances = $shippingRule->prepareActions($actions, $actionNamespace);
-            $conditionInstances = $shippingRule->prepareConditions($conditions, $conditionNamespace);
+            $actionInstances = $shippingRule->prepareActions($actions);
+            $conditionInstances = $shippingRule->prepareConditions($conditions);
 
             $shippingRule->setValues($data['settings']);
             $shippingRule->setActions($actionInstances);

@@ -26,7 +26,7 @@ class AdditionPercent extends DiscountPercent
     /**
      * @var string
      */
-    public $type = 'additionPercent';
+    public static $type = 'additionPercent';
 
 
     /**

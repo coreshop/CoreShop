@@ -14,27 +14,16 @@
 
 namespace CoreShop\Model\Product;
 
+use CoreShop\Model\PriceRule\Condition;
+use CoreShop\Model\PriceRule\Action;
+use CoreShop\Composite\Dispatcher;
+
 /**
  * Class PriceRule
  * @package CoreShop\Model\Product
  */
 class PriceRule extends AbstractProductPriceRule
 {
-    /**
-     * possible types of a condition.
-     *
-     * @var array
-    */
-    public static $availableConditions = ['conditions', 'customers', 'timeSpan', 'quantity', 'countries', 'products', 'categories', 'customerGroups', 'zones', 'personas', 'shops', 'currencies'];
-
-    /**
-     * possible types of a action.
-     *
-     * @var array
-     */
-    public static $availableActions = ['discountAmount', 'discountPercent'];
-
-
     /**
      * @var string
      */
@@ -48,7 +37,7 @@ class PriceRule extends AbstractProductPriceRule
     /**
      * @var string
      */
-    public static $type = "pricerule";
+    public static $type = "productPriceRule";
 
     /**
      * Get al PriceRules.
@@ -62,6 +51,62 @@ class PriceRule extends AbstractProductPriceRule
         $list->setCondition("active = ?", [$active]);
 
         return $list->getData();
+    }
+
+    /**
+     * @param Dispatcher $dispatcher
+     */
+    protected static function initConditionDispatcher(Dispatcher $dispatcher)
+    {
+        $dispatcher->addTypes([
+            Condition\Conditions::class,
+            Condition\Customers::class,
+            Condition\TimeSpan::class,
+            Condition\Quantity::class,
+            Condition\Countries::class,
+            Condition\Products::class,
+            Condition\Categories::class,
+            Condition\Customers::class,
+            Condition\Zones::class,
+            Condition\Personas::class,
+            Condition\Shops::class,
+            Condition\Currencies::class
+        ]);
+    }
+
+    /**
+     * @param Dispatcher $dispatcher
+     */
+    protected static function initActionDispatcher(Dispatcher $dispatcher)
+    {
+        $dispatcher->addTypes([
+            Action\DiscountAmount::class,
+            Action\DiscountPercent::class
+        ]);
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
+     *
+     * @param $condition
+     */
+    public static function addCondition($condition)
+    {
+        $class = '\\CoreShop\\Model\\PriceRule\\Condition\\' . ucfirst($condition);
+
+        static::getConditionDispatcher()->addType($class);
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
+     *
+     * @param $action
+     */
+    public static function addAction($action)
+    {
+        $class = '\\CoreShop\\Model\\PriceRule\\Action\\' . ucfirst($action);
+
+        static::getActionDispatcher()->addType($class);
     }
 
     /**

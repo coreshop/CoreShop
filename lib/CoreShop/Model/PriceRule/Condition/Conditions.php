@@ -28,6 +28,11 @@ use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 class Conditions extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'conditions';
+
+    /**
      * @var AbstractCondition[]
      */
     public $conditions;
@@ -36,11 +41,6 @@ class Conditions extends AbstractCondition
      * @var string
      */
     public $operator;
-
-    /**
-     * @var string
-     */
-    public $type = 'conditions';
 
     /**
      * @return AbstractCondition[]

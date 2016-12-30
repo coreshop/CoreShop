@@ -27,7 +27,7 @@ class Boolean extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'boolean';
+    public static $type = 'boolean';
 
     /**
      * @var mixed

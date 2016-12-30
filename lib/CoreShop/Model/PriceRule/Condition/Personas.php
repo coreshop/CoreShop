@@ -27,14 +27,14 @@ use CoreShop\Model\User;
 class Personas extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'personas';
+
+    /**
      * @var int[]
      */
     public $personas;
-
-    /**
-     * @var string
-     */
-    public $type = 'personas';
 
     /**
      * @return int[]

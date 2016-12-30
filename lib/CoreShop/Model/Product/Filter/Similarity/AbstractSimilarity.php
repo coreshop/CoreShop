@@ -26,17 +26,25 @@ abstract class AbstractSimilarity
     /**
      * @var string
      */
-    public $field;
+    public static $type;
 
     /**
      * @var string
      */
-    public $type;
+    public $field;
 
     /**
      * @var int
      */
     public $weight;
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return static::$type;
+    }
 
     /**
      * @param array $values
@@ -54,14 +62,6 @@ abstract class AbstractSimilarity
                 $this->$setter($value);
             }
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

@@ -26,6 +26,11 @@ use CoreShop\Model\Product as ProductModel;
 class TimeSpan extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'timeSpan';
+
+    /**
      * @var int
      */
     public $dateFrom;
@@ -34,11 +39,6 @@ class TimeSpan extends AbstractCondition
      * @var float
      */
     public $dateTo;
-
-    /**
-     * @var string
-     */
-    public $type = 'timeSpan';
 
     /**
      * @return \Zend_Date

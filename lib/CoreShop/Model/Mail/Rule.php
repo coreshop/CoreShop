@@ -17,6 +17,9 @@ namespace CoreShop\Model\Mail;
 use CoreShop\Exception;
 use CoreShop\Model\Mail\Rule\Action\AbstractAction;
 use CoreShop\Model\Mail\Rule\Condition\AbstractCondition;
+use CoreShop\Model\Mail\Rule\Action;
+use CoreShop\Composite\Dispatcher;
+use CoreShop\Model\Mail\Rule\Condition;
 use CoreShop\Model\Rules\AbstractRule;
 use Pimcore\Cache;
 use Pimcore\Logger;
@@ -36,120 +39,134 @@ class Rule extends AbstractRule
     public static $availableTypes = ['order', 'invoice', 'shipment', 'user', 'messaging'];
 
     /**
-     * possible types of a condition.
-     *
-     * @var array
+     * @var
      */
-    public static $availableConditions = [
-        'externalEvent' => [
-            'order'
-        ],
-        'payment' => [
-            'order'
-        ],
-        'carriers' => [
-            'order'
-        ],
-        'orderState' => [
-            'order'
-        ],
-        'invoiceState' => [
-            'invoice',
-            'order'
-        ],
-        'shipmentState' => [
-            'shipment',
-            'order'
-        ],
-        'userType' => [
-            'user'
-        ],
-        'messageType' => [
-            'messaging'
-        ]
-    ];
+    public static $conditionDispatchers = [];
 
     /**
-     * possible types of a action.
-     *
-     * @var array
+     * @var
      */
-    public static $availableActions = [
-        'mail' => [
-            'user',
-            'order',
-            'messaging',
-            'invoice',
-            'shipment'
-        ]
-    ];
+    public static $actionDispatchers = [];
 
     /**
      * @var string
      */
-    public $mailType;
+    public static $type = 'mailRules';
 
     /**
-     * Add Condition Type.
-     *
-     * @param $condition
-     *
-     * @throws Exception
+     * @param string $type
+     * @param Dispatcher $dispatcher
      */
-    public static function addCondition($condition)
+    protected static function initConditionDispatchers($type, Dispatcher $dispatcher)
     {
-        throw new Exception("You need to call addConditionForType");
+        if($type === 'order') {
+            $dispatcher->addType(Condition\Order\Payment::class);
+            $dispatcher->addType(Condition\Order\Carriers::class);
+            $dispatcher->addType(Condition\Order\OrderState::class);
+            $dispatcher->addType(Condition\Order\InvoiceState::class);
+            $dispatcher->addType(Condition\Order\ShipmentState::class);
+        }
+        else if($type === 'invoice') {
+            $dispatcher->addType(Condition\Invoice\InvoiceState::class);
+        }
+        else if($type === 'messaging') {
+            $dispatcher->addType(Condition\Messaging\MessageType::class);
+        }
+        else if($type === 'user') {
+            $dispatcher->addType(Condition\User\UserType::class);
+        }
+        else if($type === 'shipment') {
+            $dispatcher->addType(Condition\Shipment\ShipmentState::class);
+        }
+
+        $dispatcher->addType(Action\Mail::class);
     }
 
     /**
-     * Add Action Type.
-     *
-     * @param $action
-     *
-     * @throws Exception
+     * @param string $type
+     * @param Dispatcher $dispatcher
      */
-    public static function addAction($action)
+    protected static function initActionDispatchers($type, Dispatcher $dispatcher)
     {
-        throw new Exception("You need to call addActionForType");
+        $dispatcher->addType(Action\Mail::class);
     }
 
     /**
-     * Add Condition Type.
+     * @throws Exception
+     */
+    public static function getActionDispatcher()
+    {
+        throw new Exception("Mail Rules use multiple dispatchers, each for one type");
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function getConditionDispatcher()
+    {
+        throw new Exception("Mail Rules use multiple dispatchers, each for one type");
+    }
+
+    /**
+     * @param $type
+     *
+     * @return Dispatcher
+     */
+    public static function getConditionDispatcherForType($type) {
+        if(!array_key_exists($type, self::$conditionDispatchers)) {
+            self::$conditionDispatchers[$type] = new Dispatcher(self::getType() . ucfirst($type) . '.condition', AbstractCondition::class);
+
+            self::initConditionDispatchers($type, self::$conditionDispatchers[$type]);
+        }
+
+        return self::$conditionDispatchers[$type];
+    }
+
+    /**
+     * @param $type
+     *
+     * @return Dispatcher
+     */
+    public static function getActionDispatcherForType($type) {
+        if(!array_key_exists($type, self::$actionDispatchers)) {
+            self::$actionDispatchers[$type] = new Dispatcher(self::getType() . ucfirst($type) . '.action', AbstractAction::class);
+
+            self::initActionDispatchers($type, self::$actionDispatchers[$type]);
+        }
+
+        return self::$actionDispatchers[$type];
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
      *
      * @param $condition
      * @param $type
      */
     public static function addConditionForType($condition, $type)
     {
-        if (!in_array($condition, static::$availableConditions)) {
-            static::$availableConditions[] = [
-                $condition => []
-            ];
-        }
+        $class = '\\CoreShop\\Model\\PriceRule\\Condition\\' . ucfirst($condition);
 
-        if(!in_array($type, static::$availableConditions[$condition])) {
-            static::$availableConditions[$condition][] = $type;
-        }
+        static::getConditionDispatcherForType($type)->addType($class);
     }
 
     /**
-     * Add Action Type.
+     * @deprecated will be removed with 1.3
      *
      * @param $action
      * @param $type
      */
     public static function addActionForType($action, $type)
     {
-        if (!in_array($action, static::$availableActions)) {
-            static::$availableActions[] = [
-                $action => []
-            ];
-        }
+        $class = '\\CoreShop\\Model\\PriceRule\\Action\\' . ucfirst($action);
 
-        if(!in_array($type, static::$availableActions[$action])) {
-            static::$availableActions[$action][] = $type;
-        }
+        static::getActionDispatcherForType($type)->addType($class);
     }
+
+    /**
+     * @var string
+     */
+    public $mailType;
 
     /**
      * Apply valid Order Rules

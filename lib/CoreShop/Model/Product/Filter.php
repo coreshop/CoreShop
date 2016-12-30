@@ -17,7 +17,14 @@ namespace CoreShop\Model\Product;
 use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product\Filter\Condition\AbstractCondition;
+use CoreShop\Model\Product\Filter\Condition\Boolean;
+use CoreShop\Model\Product\Filter\Condition\Combined;
+use CoreShop\Model\Product\Filter\Condition\Multiselect;
+use CoreShop\Model\Product\Filter\Condition\Range;
+use CoreShop\Model\Product\Filter\Condition\Select;
+use CoreShop\Composite\Dispatcher;
 use CoreShop\Model\Product\Filter\Similarity\AbstractSimilarity;
+use CoreShop\Model\Product\Filter\Similarity\Field;
 use Pimcore\Tool;
 
 /**
@@ -27,62 +34,71 @@ use Pimcore\Tool;
 class Filter extends AbstractModel
 {
     /**
-     * possible types of a condition.
-     *
-     * @var array
+     * @var Dispatcher
      */
-    public static $availableConditions = ['select', 'multiselect', 'range', 'boolean', 'combined'];
+    public static $conditionsDispatcher;
 
     /**
-     * possible types of a condition.
-     *
-     * @var array
+     * @var Dispatcher
      */
-    public static $availableSimilarities = ['field'];
+    public static $similarityDispatcher;
 
+    /**
+     * @return Dispatcher
+     */
+    public static function getConditionDispatcher()
+    {
+        if(is_null(self::$conditionsDispatcher)) {
+            self::$conditionsDispatcher = new Dispatcher('filters.conditions', AbstractCondition::class);
+
+            self::$conditionsDispatcher->addTypes([
+                Select::class,
+                Multiselect::class,
+                Range::class,
+                Boolean::class,
+                Combined::class
+            ]);
+        }
+
+        return self::$conditionsDispatcher;
+    }
+
+    /**
+     * @return Dispatcher
+     */
+    public static function getSimilaritiesDispatcher()
+    {
+        if(is_null(self::$similarityDispatcher)) {
+            self::$similarityDispatcher = new Dispatcher('filters.similarities', AbstractSimilarity::class);
+
+            self::$similarityDispatcher->addTypes([
+                Field::class
+            ]);
+        }
+
+        return self::$similarityDispatcher;
+    }
 
     /**
      * Add Condition Type.
      *
+     * @deprecated will be removed with 1.3
      * @param $condition
      */
     public static function addCondition($condition)
     {
-        if (!in_array($condition, self::$availableConditions)) {
-            self::$availableConditions[] = $condition;
-        }
-    }
-
-    /**
-     * Get Condition Types.
-     *
-     * @return array
-     */
-    public static function getConditions()
-    {
-        return self::$availableConditions;
+        self::getConditionDispatcher()->addType('CoreShop\Model\Product\Filter\Condition\\' . ucfirst($condition));
     }
 
     /**
      * Add Similarity Type.
      *
+     * @deprecated will be removed with 1.3
      * @param $similarity
      */
     public static function addSimilarityType($similarity)
     {
-        if (!in_array($similarity, self::$availableSimilarities)) {
-            self::$availableSimilarities[] = $similarity;
-        }
-    }
-
-    /**
-     * Get Similarity Types.
-     *
-     * @return array
-     */
-    public static function getSimilarityTypes()
-    {
-        return self::$availableSimilarities;
+        self::getSimilaritiesDispatcher()->addType('CoreShop\Model\Product\Filter\Similarity\\' . ucfirst($similarity));
     }
 
     /**
@@ -137,29 +153,29 @@ class Filter extends AbstractModel
 
     /**
      * @param $conditions
-     * @param $conditionNamespace
+     *
      * @return mixed
      * @throws \CoreShop\Exception
      */
-    public function prepareConditions($conditions, $conditionNamespace)
+    public function prepareConditions($conditions)
     {
         $conditionInstances = [];
 
         foreach ($conditions as $condition) {
-            $class = $conditionNamespace.ucfirst($condition['type']);
+            $className = static::getFilterDispatcher()->getClassForType($condition['type']);
 
-            if (Tool::classExists($class)) {
+            if ($className && Tool::classExists($className)) {
                 if ($condition['type'] === "combined") {
-                    $nestedConditions = static::prepareConditions($condition['conditions'], $conditionNamespace);
+                    $nestedConditions = static::prepareConditions($condition['conditions']);
                     $condition['conditions'] = $nestedConditions;
                 }
 
-                $instance = new $class();
+                $instance = new $className();
                 $instance->setValues($condition);
 
                 $conditionInstances[] = $instance;
             } else {
-                throw new \CoreShop\Exception(sprintf('Condition with type %s not found'), $condition['type']);
+                throw new \CoreShop\Exception(sprintf('Condition with type %s and class %s not found', $condition['type'], $className));
             }
         }
 
@@ -168,24 +184,24 @@ class Filter extends AbstractModel
 
     /**
      * @param $similarities
-     * @param $similarityNamespace
+     *
      * @return mixed
      * @throws \CoreShop\Exception
      */
-    public function prepareSimilarities($similarities, $similarityNamespace)
+    public function prepareSimilarities($similarities)
     {
         $instances = [];
 
         foreach ($similarities as $sim) {
-            $class = $similarityNamespace.ucfirst($sim['type']);
+            $className = static::getSimilaritiesDispatcher()->getClassForType($sim['type']);
 
-            if (Tool::classExists($class)) {
-                $instance = new $class();
+            if ($className && Tool::classExists($className)) {
+                $instance = new $className();
                 $instance->setValues($sim);
 
                 $instances[] = $instance;
             } else {
-                throw new \CoreShop\Exception(sprintf('Similarity with type %s not found'), $sim['type']);
+                throw new \CoreShop\Exception(sprintf('Similarity with type %s and class %s not found', $sim['type'], $className));
             }
         }
 

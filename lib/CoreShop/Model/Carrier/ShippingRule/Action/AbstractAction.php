@@ -24,11 +24,6 @@ use CoreShop\Model;
 abstract class AbstractAction extends Model\Rules\Action\AbstractAction
 {
     /**
-     * @var string
-     */
-    public $elementType = 'action';
-
-    /**
      * get addition/discount for shipping
      *
      * @param Model\Carrier $carrier

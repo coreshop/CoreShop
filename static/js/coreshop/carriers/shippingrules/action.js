@@ -14,7 +14,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.action');
 
 pimcore.plugin.coreshop.carrier.shippingrules.action = Class.create(pimcore.plugin.coreshop.rules.action, {
-    getActionClassItem : function (type) {
-        return pimcore.plugin.coreshop.carrier.shippingrules.actions[type];
+    getActionClassNamespace : function() {
+        return pimcore.plugin.coreshop.carrier.shippingrules.actions;
     }
 });

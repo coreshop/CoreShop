@@ -27,7 +27,7 @@ class Multiselect extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'multiselect';
+    public static $type = 'multiselect';
 
     /**
      * @var mixed

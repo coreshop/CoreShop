@@ -26,7 +26,7 @@ class Countries extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'countries';
+    public static $type = 'countries';
 
     /**
      * @var array
@@ -39,7 +39,7 @@ class Countries extends AbstractCondition
      * @param Model\Carrier $carrier
      * @param Model\Cart $cart
      * @param Model\User\Address $address;
-     * @param ShippingRule $shippingRule
+     * @param CarrierShippingRule $shippingRule
      *
      * @return mixed
      */

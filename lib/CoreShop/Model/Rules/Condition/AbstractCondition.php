@@ -25,5 +25,5 @@ abstract class AbstractCondition extends Model\Rules\AbstractActionCondition
     /**
      * @var string
      */
-    public $elementType = 'condition';
+    public static $elementType = 'condition';
 }

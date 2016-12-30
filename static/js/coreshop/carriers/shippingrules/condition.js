@@ -14,7 +14,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.condition');
 
 pimcore.plugin.coreshop.carrier.shippingrules.condition = Class.create(pimcore.plugin.coreshop.rules.condition, {
-    getConditionClassItem : function (type) {
-        return pimcore.plugin.coreshop.carrier.shippingrules.conditions[type];
+    getConditionClassNamespace : function() {
+        return pimcore.plugin.coreshop.carrier.shippingrules.conditions;
     }
 });

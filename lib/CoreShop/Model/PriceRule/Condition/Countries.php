@@ -27,14 +27,14 @@ use CoreShop\Model\Country as CountryModel;
 class Countries extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'countries';
+
+    /**
      * @var int[]
      */
     public $countries;
-
-    /**
-     * @var string
-     */
-    public $type = 'countries';
 
     /**
      * @return int[]

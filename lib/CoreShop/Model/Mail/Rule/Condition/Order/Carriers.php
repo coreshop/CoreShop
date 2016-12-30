@@ -27,7 +27,7 @@ class Carriers extends Rule\Condition\AbstractCondition
     /**
      * @var string
      */
-    public $type = 'carriers';
+    public static $type = 'carriers';
 
     /**
      * @var int[]

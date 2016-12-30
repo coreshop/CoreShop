@@ -27,7 +27,7 @@ class UserType extends Rule\Condition\AbstractCondition
     /**
      * @var string
      */
-    public $type = 'userType';
+    public static $type = 'userType';
 
     /**
      *

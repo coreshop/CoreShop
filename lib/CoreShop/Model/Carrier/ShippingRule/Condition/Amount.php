@@ -26,7 +26,7 @@ class Amount extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'amount';
+    public static $type = 'amount';
 
     /**
      * @var float

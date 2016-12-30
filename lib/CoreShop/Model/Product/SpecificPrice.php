@@ -19,6 +19,9 @@ use CoreShop\Model\Product;
 use Pimcore\Cache;
 use Pimcore\Logger;
 use Pimcore\Model\Object\AbstractObject;
+use CoreShop\Model\PriceRule\Condition;
+use CoreShop\Model\PriceRule\Action;
+use CoreShop\Composite\Dispatcher;
 
 /**
  * Class SpecificPrice
@@ -27,23 +30,9 @@ use Pimcore\Model\Object\AbstractObject;
 class SpecificPrice extends AbstractProductPriceRule
 {
     /**
-     * possible types of a condition.
-     *
-     * @var array
-     */
-    public static $availableConditions = ['conditions', 'customers', 'timeSpan', 'countries', 'customerGroups', 'zones', 'quantity', 'personas', 'shops', 'currencies'];
-
-    /**
-     * possible types of a action.
-     *
-     * @var array
-     */
-    public static $availableActions = ['discountAmount', 'discountPercent', 'newPrice'];
-
-    /**
      * @var string
      */
-    public static $type = "specificprice";
+    public static $type = "specificPrice";
 
     /**
      * @var int
@@ -59,6 +48,59 @@ class SpecificPrice extends AbstractProductPriceRule
      * @var int
      */
     public $priority;
+
+    /**
+     * @param Dispatcher $dispatcher
+     */
+    protected static function initConditionDispatcher(Dispatcher $dispatcher)
+    {
+        $dispatcher->addTypes([
+            Condition\Conditions::class,
+            Condition\Customers::class,
+            Condition\TimeSpan::class,
+            Condition\Countries::class,
+            Condition\CustomerGroups::class,
+            Condition\Zones::class,
+            Condition\Personas::class,
+            Condition\Shops::class,
+            Condition\Currencies::class
+        ]);
+    }
+
+    /**
+     * @param Dispatcher $dispatcher
+     */
+    protected static function initActionDispatcher(Dispatcher $dispatcher) {
+        $dispatcher->addTypes([
+            Action\DiscountAmount::class,
+            Action\DiscountPercent::class,
+            Action\NewPrice::class
+        ]);
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
+     *
+     * @param $condition
+     */
+    public static function addCondition($condition)
+    {
+        $class = '\\CoreShop\\Model\\PriceRule\\Condition\\' . ucfirst($condition);
+
+        static::getConditionDispatcher()->addType($class);
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
+     *
+     * @param $action
+     */
+    public static function addAction($action)
+    {
+        $class = '\\CoreShop\\Model\\PriceRule\\Action\\' . ucfirst($action);
+
+        static::getActionDispatcher()->addType($class);
+    }
 
     /**
      * Get all PriceRules.

@@ -29,7 +29,7 @@ class Mail extends AbstractAction
     /**
      * @var string
      */
-    public $type = 'mail';
+    public static $type = 'mail';
 
     /**
      * @var array

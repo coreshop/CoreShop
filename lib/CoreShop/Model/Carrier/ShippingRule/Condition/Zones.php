@@ -26,7 +26,7 @@ class Zones extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'zones';
+    public static $type = 'zones';
 
     /**
      * @var array

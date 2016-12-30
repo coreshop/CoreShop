@@ -25,5 +25,5 @@ abstract class AbstractAction extends AbstractActionCondition
     /**
      * @var string
      */
-    public $elementType = 'condition';
+    public static $elementType = 'action';
 }

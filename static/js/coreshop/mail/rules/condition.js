@@ -14,7 +14,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.mail.rules.condition');
 
 pimcore.plugin.coreshop.mail.rules.condition = Class.create(pimcore.plugin.coreshop.rules.condition, {
-    getConditionClassItem : function (type) {
-        return pimcore.plugin.coreshop.mail.rules.conditions[type];
+    getConditionClassNamespace : function() {
+        return pimcore.plugin.coreshop.mail.rules.conditions;
     }
 });

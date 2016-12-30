@@ -26,17 +26,17 @@ abstract class AbstractCondition
     /**
      * @var string
      */
+    public static $type = '';
+
+    /**
+     * @var string
+     */
     public $field;
 
     /**
      * @var string
      */
     public $label;
-
-    /**
-     * @var string
-     */
-    public $type;
 
     /**
      * @var mixed
@@ -52,6 +52,14 @@ abstract class AbstractCondition
      *  Zend_View.
      */
     protected $view;
+
+    /**
+     * @return string
+     */
+    public static function getType()
+    {
+        return static::$type;
+    }
 
     /**
      * @param $language
@@ -133,7 +141,7 @@ abstract class AbstractCondition
      */
     protected function getViewScript(Filter $filter, Listing $list, $currentFilter)
     {
-        $script = $this->getType().'.php';
+        $script = static::getType().'.php';
 
         if ($this->getView()->getScriptPath($this->getField().'.php')) {
             $script = $this->getField().'.php';
@@ -158,14 +166,6 @@ abstract class AbstractCondition
                 $this->$setter($value);
             }
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

@@ -26,7 +26,7 @@ class DiscountAmount extends AbstractAction
     /**
      * @var string
      */
-    public $type = 'discountAmount';
+    public static $type = 'discountAmount';
 
     /**
      * @var

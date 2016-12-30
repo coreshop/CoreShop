@@ -25,11 +25,6 @@ use Pimcore\Model\AbstractModel;
 abstract class AbstractAction extends Model\Rules\Action\AbstractAction
 {
     /**
-     * @var string
-     */
-    public $elementType = 'action';
-
-    /**
      * apply action
      *
      * @param AbstractModel $model

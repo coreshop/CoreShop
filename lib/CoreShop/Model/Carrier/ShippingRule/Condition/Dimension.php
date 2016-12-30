@@ -26,7 +26,7 @@ class Dimension extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'dimension';
+    public static $type = 'dimension';
 
     /**
      * @var float
@@ -49,7 +49,7 @@ class Dimension extends AbstractCondition
      * @param Model\Carrier $carrier
      * @param Model\Cart $cart
      * @param Model\User\Address $address;
-     * @param ShippingRule $shippingRule
+     * @param CarrierShippingRule $shippingRule
      *
      * @return mixed
      */

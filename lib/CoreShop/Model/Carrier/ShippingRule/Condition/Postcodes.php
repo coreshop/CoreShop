@@ -26,7 +26,7 @@ class Postcodes extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'postcodes';
+    public static $type = 'postcodes';
 
     /**
      * @var string

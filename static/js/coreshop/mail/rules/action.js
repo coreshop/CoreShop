@@ -14,7 +14,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.mail.rules.action');
 
 pimcore.plugin.coreshop.mail.rules.action = Class.create(pimcore.plugin.coreshop.rules.action, {
-    getActionClassItem : function (type) {
-        return pimcore.plugin.coreshop.mail.rules.actions[type];
+    getActionClassNamespace : function (type) {
+        return pimcore.plugin.coreshop.mail.rules.actions;
     }
 });

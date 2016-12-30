@@ -28,14 +28,14 @@ use CoreShop\Model\User\Address;
 class Categories extends AbstractCondition
 {
     /**
-     * @var int[]
-     */
-    public $categories;
-
-    /**
      * @var string
      */
-    public $type = 'categories';
+    public static $type = 'categories';
+
+    /**
+     * @var int[]
+     */
+    public static $categories;
 
     /**
      * @return int[]

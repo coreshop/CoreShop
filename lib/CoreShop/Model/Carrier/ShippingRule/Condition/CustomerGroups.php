@@ -28,14 +28,14 @@ use CoreShop\Model\User;
 class CustomerGroups extends AbstractCondition
 {
     /**
-     * @var int[]
-     */
-    public $customerGroups;
-
-    /**
      * @var string
      */
-    public $type = 'customerGroups';
+    public static $type = 'customerGroups';
+
+    /**
+     * @var int[]
+     */
+    public static $customerGroups;
 
     /**
      * @return int[]

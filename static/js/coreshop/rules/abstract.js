@@ -27,8 +27,9 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
 
     form : null,
 
-    initialize : function (parent, data) {
+    initialize : function (parent, type, data) {
         this.parent = parent;
+        this.type = type;
         this.data = data;
     },
 
@@ -50,6 +51,10 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
         });
 
         return this.layout;
+    },
+
+    getForm : function() {
+        return {};
     },
 
     getIndex: function (blockElement, container) {

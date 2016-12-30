@@ -27,7 +27,7 @@ class Combined extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'combined';
+    public static $type = 'combined';
 
     /**
      * @var mixed

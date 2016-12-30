@@ -61,14 +61,26 @@ pimcore.plugin.coreshop.rules.action = Class.create({
 
     addAction: function (type, data) {
         var actionClass = this.getActionClassItem(type);
-        var item = new actionClass(this, data);
+        var item = new actionClass(this, type, data);
 
         this.actionsContainer.add(item.getLayout());
         this.actionsContainer.updateLayout();
     },
 
     getActionClassItem : function (type) {
-        return pimcore.plugin.coreshop.rules.actions[type];
+        if(Object.keys(this.getActionClassNamespace()).indexOf(type) >= 0) {
+            return this.getActionClassNamespace()[type];
+        }
+
+        return this.getDefaultActionClassItem();
+    },
+
+    getActionClassNamespace : function() {
+        return pimcore.plugin.coreshop.rules.actions;
+    },
+
+    getDefaultActionClassItem : function() {
+        return pimcore.plugin.coreshop.rules.actions.abstract;
     },
 
     getActionsData : function () {

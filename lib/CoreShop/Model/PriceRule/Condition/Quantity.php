@@ -26,6 +26,11 @@ use CoreShop\Model;
 class Quantity extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'quantity';
+
+    /**
      * @var float
      */
     public $minQuantity;
@@ -34,11 +39,6 @@ class Quantity extends AbstractCondition
      * @var float
      */
     public $maxQuantity;
-
-    /**
-     * @var string
-     */
-    public $type = 'quantity';
 
     /**
      * @return float

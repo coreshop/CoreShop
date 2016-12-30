@@ -26,7 +26,7 @@ class Currencies extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'currencies';
+    public static $type = 'currencies';
 
     /**
      * @var int[]

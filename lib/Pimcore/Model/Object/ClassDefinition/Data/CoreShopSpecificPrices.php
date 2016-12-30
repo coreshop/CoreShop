@@ -74,9 +74,6 @@ class CoreShopSpecificPrices extends Data
                 $conditions = $dataRow['conditions'];
                 $actions = $dataRow['actions'];
 
-                $actionNamespace = 'CoreShop\\Model\\PriceRule\\Action\\';
-                $conditionNamespace = 'CoreShop\\Model\\PriceRule\\Condition\\';
-
                 $specificPrice = null;
 
                 if ($dataRow['id']) {
@@ -89,8 +86,8 @@ class CoreShopSpecificPrices extends Data
                     $specificPrice->setPriority(0);
                 }
 
-                $actionInstances = $specificPrice->prepareActions($actions, $actionNamespace);
-                $conditionInstances = $specificPrice->prepareConditions($conditions, $conditionNamespace);
+                $actionInstances = $specificPrice->prepareActions($actions);
+                $conditionInstances = $specificPrice->prepareConditions($conditions);
 
                 $specificPrice->setValues($dataRow['settings']);
                 $specificPrice->setActions($actionInstances);

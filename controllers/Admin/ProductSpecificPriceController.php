@@ -29,8 +29,8 @@ class CoreShop_Admin_ProductSpecificPriceController extends Admin
     {
         $this->_helper->json([
             'success' => true,
-            'conditions' => \CoreShop\Model\Product\SpecificPrice::$availableConditions,
-            'actions' => \CoreShop\Model\Product\SpecificPrice::$availableActions,
+            'conditions' => \CoreShop\Model\Product\SpecificPrice::getConditionDispatcher()->getTypeKeys(),
+            'actions' => \CoreShop\Model\Product\SpecificPrice::getActionDispatcher()->getTypeKeys(),
         ]);
     }
 }

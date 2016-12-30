@@ -29,14 +29,14 @@ use CoreShop\Model\Product as ProductModel;
 class TotalPerCustomer extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'totalPerCustomer';
+
+    /**
      * @var int
      */
     public $total;
-
-    /**
-     * @var string
-     */
-    public $type = 'totalPerCustomer';
 
     /**
      * @return int

@@ -27,7 +27,7 @@ class Select extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'select';
+    public static $type = 'select';
 
     /**
      * add Condition to Product list.

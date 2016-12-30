@@ -26,7 +26,7 @@ class Gift extends AbstractAction
     /**
      * @var string
      */
-    public $type = 'gift';
+    public static $type = 'gift';
 
     /**
      * @var int

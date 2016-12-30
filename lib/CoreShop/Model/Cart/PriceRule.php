@@ -15,13 +15,15 @@
 namespace CoreShop\Model\Cart;
 
 use CoreShop\Exception;
-use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model\PriceRule\Action\AbstractAction;
 use CoreShop\Model\PriceRule\Condition\AbstractCondition;
 use CoreShop\Model\PriceRule\Item as PriceRuleItem;
+use CoreShop\Model\PriceRule\Condition;
+use CoreShop\Model\PriceRule\Action;
+use CoreShop\Composite\Dispatcher;
 use Pimcore\Db;
 
 /**
@@ -31,23 +33,69 @@ use Pimcore\Db;
 class PriceRule extends AbstractPriceRule
 {
     /**
-     * possible types of a condition.
-     *
-     * @var array
-     */
-    public static $availableConditions = ['conditions', 'customers', 'timeSpan', 'amount', 'totalPerCustomer', 'countries', 'products', 'categories', 'customerGroups', 'zones', 'personas', 'carriers', 'currencies'];
-
-    /**
-     * possible types of a action.
-     *
-     * @var array
-     */
-    public static $availableActions = ['freeShipping', 'discountAmount', 'discountPercent', 'gift'];
-
-    /**
      * @var string
      */
     public static $type = "cartRule";
+
+    /**
+     * @param Dispatcher $dispatcher
+     */
+    protected static function initConditionDispatcher(Dispatcher $dispatcher)
+    {
+        $dispatcher->addTypes([
+            Condition\Conditions::class,
+            Condition\Customers::class,
+            Condition\TimeSpan::class,
+            Condition\Amount::class,
+            Condition\TotalPerCustomer::class,
+            Condition\Countries::class,
+            Condition\Products::class,
+            Condition\Categories::class,
+            Condition\Customers::class,
+            Condition\CustomerGroups::class,
+            Condition\Zones::class,
+            Condition\Personas::class,
+            Condition\Shops::class,
+            Condition\Carriers::class,
+            Condition\Currencies::class
+        ]);
+    }
+
+    /**
+     * @param Dispatcher $dispatcher
+     */
+    protected static function initActionDispatcher(Dispatcher $dispatcher) {
+        $dispatcher->addTypes([
+            Action\FreeShipping::class,
+            Action\DiscountAmount::class,
+            Action\DiscountPercent::class,
+            Action\Gift::class
+        ]);
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
+     *
+     * @param $condition
+     */
+    public static function addCondition($condition)
+    {
+        $class = '\\CoreShop\\Model\\PriceRule\\Condition\\' . ucfirst($condition);
+
+        static::getConditionDispatcher()->addType($class);
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
+     *
+     * @param $action
+     */
+    public static function addAction($action)
+    {
+        $class = '\\CoreShop\\Model\\PriceRule\\Action\\' . ucfirst($action);
+
+        static::getActionDispatcher()->addType($class);
+    }
 
     /**
      * @var string

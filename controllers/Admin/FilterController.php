@@ -104,12 +104,9 @@ class CoreShop_Admin_FilterController extends Admin
         if ($data && $filter instanceof Filter) {
             $data = \Zend_Json::decode($this->getParam('data'));
 
-            $conditionNamespace = 'CoreShop\\Model\\Product\\Filter\\Condition\\';
-            $similarityNamespace = 'CoreShop\\Model\\Product\\Filter\\Similarity\\';
-
-            $filtersInstances = $filter->prepareConditions($data['filters'], $conditionNamespace);
-            $preConditionInstances = $filter->prepareConditions($data['conditions'], $conditionNamespace);
-            $similaritiesInstances = $filter->prepareSimilarities($data['similarities'], $similarityNamespace);
+            $filtersInstances = $filter->prepareConditions($data['filters']);
+            $preConditionInstances = $filter->prepareConditions($data['conditions']);
+            $similaritiesInstances = $filter->prepareSimilarities($data['similarities']);
 
             $filter->setValues($data['settings']);
             $filter->setPreConditions($preConditionInstances);
@@ -141,8 +138,8 @@ class CoreShop_Admin_FilterController extends Admin
     {
         $this->_helper->json([
             'success' => true,
-            'conditions' => Filter::getConditions(),
-            'similarities' => Filter::getSimilarityTypes()
+            'conditions' => Filter::getConditionDispatcher()->getTypeKeys(),
+            'similarities' => Filter::getSimilaritiesDispatcher()->getTypeKeys()
         ]);
     }
 

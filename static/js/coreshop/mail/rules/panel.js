@@ -37,27 +37,22 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
 
     getActionsForType : function(allowedType) {
         var actions = this.getActions();
-        var allowedActions = [];
 
-        Ext.Object.each(actions, function(key, types) {
-            if(Ext.isArray(types) && types.indexOf(allowedType) >= 0) {
-                allowedActions.push(key);
-            }
-        });
+        if(actions.hasOwnProperty(allowedType)) {
+            return actions[allowedType];
+        }
 
-        return allowedActions;
+        return [];
     },
 
     getConditionsForType : function(allowedType) {
         var conditions = this.getConditions();
         var allowedConditions = [];
 
-        Ext.Object.each(conditions, function(key, types) {
-            if(Ext.isArray(types) && types.indexOf(allowedType) >= 0) {
-                allowedConditions.push(key);
-            }
-        });
+        if(conditions.hasOwnProperty(allowedType)) {
+            return conditions[allowedType];
+        }
 
-        return allowedConditions;
+        return [];
     }
 });

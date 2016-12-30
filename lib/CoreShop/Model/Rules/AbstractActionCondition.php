@@ -23,12 +23,12 @@ class AbstractActionCondition
     /**
      * @var string
      */
-    public $elementType;
+    public static $elementType;
 
     /**
      * @var string
      */
-    public $type;
+    public static $type;
 
     /**
      * @param array $values
@@ -59,16 +59,16 @@ class AbstractActionCondition
     /**
      * @return string
      */
-    public function getElementType()
+    public static function getElementType()
     {
-        return $this->elementType;
+        return static::$elementType;
     }
 
     /**
      * @return string
      */
-    public function getType()
+    public static function getType()
     {
-        return $this->type;
+        return static::$type;
     }
 }

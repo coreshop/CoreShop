@@ -14,8 +14,11 @@
 
 namespace CoreShop\Model\Rules;
 
+use CoreShop\Composite\Dispatcher;
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Rules\Action\AbstractAction;
+use CoreShop\Model\Rules\Condition\AbstractCondition;
 use Pimcore\Tool;
 
 /**
@@ -25,18 +28,14 @@ use Pimcore\Tool;
 abstract class AbstractRule extends AbstractModel
 {
     /**
-     * possible types of a condition.
-     *
-     * @var array
+     * @var Dispatcher[]
      */
-    public static $availableConditions = [];
+    public static $conditionDispatcher = [];
 
     /**
-     * possible types of a action.
-     *
-     * @var array
+     * @var Dispatcher[]
      */
-    public static $availableActions = [];
+    public static $actionDispatcher = [];
 
     /**
      * @var string
@@ -61,26 +60,24 @@ abstract class AbstractRule extends AbstractModel
 
     /**
      * @param $actions
-     * @param $actionNamespace
      * @return array
      *
      * @throws \CoreShop\Exception
      */
-    public function prepareActions($actions, $actionNamespace)
+    public function prepareActions($actions)
     {
         $actionInstances = [];
 
-
         foreach ($actions as $action) {
-            $class = $actionNamespace.ucfirst($action['type']);
+            $className = static::getDispatcher()->getClassForActionType($action['type']);
 
-            if (Tool::classExists($class)) {
-                $instance = new $class();
+            if($className && Tool::classExists($className)) {
+                $instance = new $className();
                 $instance->setValues($action);
 
                 $actionInstances[] = $instance;
             } else {
-                throw new Exception(sprintf('Action with type %s in namespace %s not found', $action['type'], $actionNamespace));
+                throw new Exception(sprintf('Action with type %s and class %s not found', $action['type'], $className));
             }
         }
 
@@ -89,29 +86,29 @@ abstract class AbstractRule extends AbstractModel
 
     /**
      * @param $conditions
-     * @param $conditionNamespace
+
      * @return mixed
      * @throws \CoreShop\Exception
      */
-    public function prepareConditions($conditions, $conditionNamespace)
+    public function prepareConditions($conditions)
     {
         $conditionInstances = [];
 
         foreach ($conditions as $condition) {
-            $class = $conditionNamespace.ucfirst($condition['type']);
+            $className = static::getDispatcher()->getClassForConditionType($condition['type']);
 
-            if (Tool::classExists($class)) {
+            if ($className && Tool::classExists($className)) {
                 if ($condition['type'] === "conditions") {
-                    $nestedConditions = static::prepareConditions($condition['conditions'], $conditionNamespace);
+                    $nestedConditions = static::prepareConditions($condition['conditions']);
                     $condition['conditions'] = $nestedConditions;
                 }
 
-                $instance = new $class();
+                $instance = new $className();
                 $instance->setValues($condition);
 
                 $conditionInstances[] = $instance;
             } else {
-                throw new Exception(sprintf('Condition with type %s in namespace %s not found', $condition['type'], $conditionNamespace));
+                throw new Exception(sprintf('Condition with type %s and class %s not found', $condition['type'], $className));
             }
         }
 
@@ -119,44 +116,50 @@ abstract class AbstractRule extends AbstractModel
     }
 
     /**
-     * Add Condition Type.
-     *
-     * @param $condition
+     * @return Dispatcher
      */
-    public static function addCondition($condition)
+    public static function getConditionDispatcher()
     {
-        if (!in_array($condition, static::$availableConditions)) {
-            static::$availableConditions[] = $condition;
+        $calledClass = get_called_class();
+
+        if(is_null(self::$conditionDispatcher[$calledClass])) {
+            self::$conditionDispatcher[$calledClass] = new Dispatcher(static::getType() . '.condition', AbstractCondition::class);
+
+            static::initConditionDispatcher(self::$conditionDispatcher[$calledClass]);
         }
+
+        return self::$conditionDispatcher[$calledClass];
     }
 
     /**
-     * Add Action Type.
-     *
-     * @param $action
+     * @return Dispatcher
      */
-    public static function addAction($action)
+    public static function getActionDispatcher()
     {
-        if (!in_array($action, static::$availableActions)) {
-            static::$availableActions[] = $action;
+        $calledClass = get_called_class();
+
+        if(is_null(self::$actionDispatcher[$calledClass])) {
+            self::$actionDispatcher[$calledClass] = new Dispatcher(static::getType() . '.action', AbstractAction::class);
+
+            static::initActionDispatcher(self::$actionDispatcher[$calledClass]);
         }
+
+        return self::$actionDispatcher[$calledClass];
     }
 
     /**
-     * @return array
+     * Init Dispatcher
+     *
+     * @param $dispatcher
      */
-    public static function getAvailableConditions()
-    {
-        return static::$availableConditions;
-    }
+    protected static function initConditionDispatcher(Dispatcher $dispatcher) {}
 
     /**
-     * @return array
+     * Init Dispatcher
+     *
+     * @param $dispatcher
      */
-    public static function getAvailableActions()
-    {
-        return static::$availableActions;
-    }
+    protected static function initActionDispatcher(Dispatcher $dispatcher) {}
 
     /**
      * @return string
@@ -172,6 +175,31 @@ abstract class AbstractRule extends AbstractModel
     public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return array
+     */
+    public function serialize() {
+        $object = $this->getObjectVars();
+        $object['conditions'] = [];
+        $object['actions'] = [];
+
+        foreach($this->getConditions() as $condition) {
+            $conditionVars = get_object_vars($condition);
+            $conditionVars['type'] = $condition::getType();
+
+            $object['conditions'][] = $conditionVars;
+        }
+
+        foreach($this->getActions() as $action) {
+            $actionVars = get_object_vars($action);
+            $actionVars['type'] = $action::getType();
+
+            $object['actions'][] = $actionVars;
+        }
+
+        return $object;
     }
 
     /**
@@ -191,7 +219,7 @@ abstract class AbstractRule extends AbstractModel
     }
 
     /**
-     * @return array
+     * @return AbstractCondition[]
      */
     public function getConditions()
     {
@@ -199,7 +227,7 @@ abstract class AbstractRule extends AbstractModel
     }
 
     /**
-     * @param array $conditions
+     * @param AbstractCondition[] $conditions
      */
     public function setConditions($conditions)
     {
@@ -207,7 +235,7 @@ abstract class AbstractRule extends AbstractModel
     }
 
     /**
-     * @return array
+     * @return AbstractAction[]
      */
     public function getActions()
     {
@@ -215,7 +243,7 @@ abstract class AbstractRule extends AbstractModel
     }
 
     /**
-     * @param array $actions
+     * @param AbstractAction[] $actions
      */
     public function setActions($actions)
     {

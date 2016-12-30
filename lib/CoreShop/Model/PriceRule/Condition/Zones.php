@@ -27,14 +27,14 @@ use CoreShop\Model\Zone as ZoneModel;
 class Zones extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'zones';
+
+    /**
      * @var int[]
      */
     public $zones;
-
-    /**
-     * @var string
-     */
-    public $type = 'zones';
 
     /**
      * @return int[]

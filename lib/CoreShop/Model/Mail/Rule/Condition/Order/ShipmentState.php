@@ -27,7 +27,7 @@ class ShipmentState extends Rule\Condition\AbstractCondition
     /**
      * @var string
      */
-    public $type = 'shipmentState';
+    public static $type = 'shipmentState';
 
     /**
      *

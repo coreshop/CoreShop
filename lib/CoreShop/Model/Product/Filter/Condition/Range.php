@@ -27,7 +27,7 @@ class Range extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'range';
+    public static $type = 'range';
 
     /**
      * @var mixed

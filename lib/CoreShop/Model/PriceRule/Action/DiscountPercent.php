@@ -25,6 +25,11 @@ use CoreShop\Model\Product;
 class DiscountPercent extends AbstractAction
 {
     /**
+     * @var string
+     */
+    public static $type = 'discountPercent';
+
+    /**
      * @var int
      */
     public $currency_id;
@@ -33,11 +38,6 @@ class DiscountPercent extends AbstractAction
      * @var int
      */
     public $percent;
-
-    /**
-     * @var string
-     */
-    public $type = 'discountPercent';
 
     /**
      * @return mixed

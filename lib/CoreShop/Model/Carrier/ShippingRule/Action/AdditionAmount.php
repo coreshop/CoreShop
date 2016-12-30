@@ -26,7 +26,7 @@ class AdditionAmount extends DiscountAmount
     /**
      * @var string
      */
-    public $type = 'additionAmount';
+    public static $type = 'additionAmount';
 
 
     /**

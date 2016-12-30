@@ -27,7 +27,7 @@ class OrderState extends Rule\Condition\AbstractCondition
     /**
      * @var string
      */
-    public $type = 'orderState';
+    public static $type = 'orderState';
 
     /**
      *

@@ -60,13 +60,25 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
     },
 
     getConditionClassItem : function (type) {
-        return pimcore.plugin.coreshop.rules.conditions[type];
+        if(Object.keys(this.getConditionClassNamespace()).indexOf(type) >= 0) {
+            return this.getConditionClassNamespace()[type];
+        }
+
+        return this.getDefaultConditionClassItem();
+    },
+
+    getConditionClassNamespace : function() {
+        return pimcore.plugin.coreshop.rules.conditions;
+    },
+
+    getDefaultConditionClassItem : function() {
+        return pimcore.plugin.coreshop.rules.conditions.abstract;
     },
 
     addCondition: function (type, data) {
         // create condition
         var conditionClass = this.getConditionClassItem(type);
-        var item = new conditionClass(this, data);
+        var item = new conditionClass(this, type, data);
 
         // add logic for brackets
         var tab = this;

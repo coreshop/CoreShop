@@ -66,11 +66,19 @@ class CoreShop_Admin_MailRuleController extends Admin
 
     public function getConfigAction()
     {
+        $conditions = [];
+        $actions = [];
+
+        foreach(Rule::$availableTypes as $type) {
+            $conditions[$type] = Rule::getConditionDispatcherForType($type)->getTypeKeys();
+            $actions[$type] = Rule::getActionDispatcherForType($type)->getTypeKeys();
+        }
+
         $this->_helper->json([
             'success' => true,
             'types' => \CoreShop\Model\Mail\Rule::$availableTypes,
-            'conditions' => \CoreShop\Model\Mail\Rule::$availableConditions,
-            'actions' => \CoreShop\Model\Mail\Rule::$availableActions,
+            'conditions' => $conditions,
+            'actions' => $actions,
         ]);
     }
 
@@ -97,7 +105,7 @@ class CoreShop_Admin_MailRuleController extends Admin
         $rule = \CoreShop\Model\Mail\Rule::getById($id);
 
         if ($rule instanceof \CoreShop\Model\Mail\Rule) {
-            $this->_helper->json(['success' => true, 'data' => $rule->getObjectVars()]);
+            $this->_helper->json(['success' => true, 'data' => $rule->serialize()]);
         } else {
             $this->_helper->json(['success' => false]);
         }
@@ -115,11 +123,8 @@ class CoreShop_Admin_MailRuleController extends Admin
             $conditions = $data['conditions'];
             $actions = $data['actions'];
 
-            $actionNamespace = 'CoreShop\\Model\\Mail\\Rule\\Action\\';
-            $conditionNamespace = 'CoreShop\\Model\\Mail\\Rule\\Condition\\' . ucfirst($data['settings']['mailType']) . '\\';
-
-            $actionInstances = $rule->prepareActions($actions, $actionNamespace);
-            $conditionInstances = $rule->prepareConditions($conditions, $conditionNamespace);
+            $actionInstances = $rule->prepareActions($actions);
+            $conditionInstances = $rule->prepareConditions($conditions);
 
             $rule->setValues($data['settings']);
             $rule->setActions($actionInstances);

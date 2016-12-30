@@ -16,6 +16,8 @@ namespace CoreShop\Model\Carrier;
 
 use CoreShop\Exception;
 use CoreShop\Model\Carrier;
+use CoreShop\Model\Carrier\ShippingRule\Action;
+use CoreShop\Model\Carrier\ShippingRule\Condition;
 use CoreShop\Model\Carrier\ShippingRule\Action\AbstractAction;
 use CoreShop\Model\Carrier\ShippingRule\Condition\AbstractCondition;
 use CoreShop\Model\Cart;
@@ -23,6 +25,7 @@ use CoreShop\Model\Rules\AbstractRule;
 use CoreShop\Model\User\Address;
 use Pimcore\Cache;
 use Pimcore\Logger;
+use CoreShop\Composite\Dispatcher;
 
 /**
  * Class ShippingRule
@@ -31,18 +34,68 @@ use Pimcore\Logger;
 class ShippingRule extends AbstractRule
 {
     /**
-     * possible types of a condition.
-     *
-     * @var array
+     * @var string
      */
-    public static $availableConditions = ['conditions', 'countries', 'amount', 'weight', 'dimension', 'zones', 'postcodes', 'products', 'categories', 'customerGroups', 'currencies', 'shippingRule'];
+    public static $type = 'shippingRule';
 
     /**
-     * possible types of a action.
-     *
-     * @var array
+     * @param Dispatcher $dispatcher
      */
-    public static $availableActions = ['fixedPrice', 'additionAmount', 'additionPercent', 'discountAmount', 'discountPercent', 'shippingRule'];
+    protected static function initConditionDispatcher(Dispatcher $dispatcher)
+    {
+        $dispatcher->addTypes([
+            Condition\Conditions::class,
+            Condition\Countries::class,
+            Condition\Amount::class,
+            Condition\Weight::class,
+            Condition\Dimension::class,
+            Condition\Zones::class,
+            Condition\Postcodes::class,
+            Condition\Products::class,
+            Condition\Categories::class,
+            Condition\CustomerGroups::class,
+            Condition\Currencies::class,
+            Condition\ShippingRule::class
+        ]);
+    }
+    /**
+     * @param Dispatcher $dispatcher
+     */
+    protected static function initActionDispatcher(Dispatcher $dispatcher)
+    {
+        $dispatcher->addTypes([
+            Action\FixedPrice::class,
+            Action\AdditionAmount::class,
+            Action\AdditionPercent::class,
+            Action\DiscountAmount::class,
+            Action\DiscountPercent::class,
+            Action\ShippingRule::class
+        ]);
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
+     *
+     * @param $condition
+     */
+    public static function addCondition($condition)
+    {
+        $class = '\\CoreShop\\Model\\Carrier\\ShippingRule\\Condition\\' . ucfirst($condition);
+
+        static::getConditionDispatcher()->addType($class);
+    }
+
+    /**
+     * @deprecated will be removed with 1.3
+     *
+     * @param $action
+     */
+    public static function addAction($action)
+    {
+        $class = '\\CoreShop\\Model\\Carrier\\ShippingRule\\Action\\' . ucfirst($action);
+
+        static::getActionDispatcher()->addType($class);
+    }
 
     /**
      * Check if Shipping Rule is valid

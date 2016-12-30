@@ -25,6 +25,11 @@ use CoreShop\Model\Product;
 class NewPrice extends AbstractAction
 {
     /**
+     * @var string
+     */
+    public static $type = 'newPrice';
+
+    /**
      * @var float
      */
     public $newPrice;
@@ -33,11 +38,6 @@ class NewPrice extends AbstractAction
      * @var int
      */
     public $currency;
-
-    /**
-     * @var string
-     */
-    public $type = 'newPrice';
 
     /**
      * Apply Rule to Cart.

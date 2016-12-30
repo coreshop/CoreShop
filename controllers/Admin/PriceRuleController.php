@@ -63,8 +63,8 @@ class CoreShop_Admin_PriceRuleController extends Admin
     {
         $this->_helper->json([
             'success' => true,
-            'conditions' => PriceRule::$availableConditions,
-            'actions' => PriceRule::$availableActions,
+            'conditions' => PriceRule::getConditionDispatcher()->getTypeKeys(),
+            'actions' => PriceRule::getActionDispatcher()->getTypeKeys()
         ]);
     }
 
@@ -93,7 +93,7 @@ class CoreShop_Admin_PriceRuleController extends Admin
         $priceRule = PriceRule::getById($id);
 
         if ($priceRule instanceof PriceRule) {
-            $this->_helper->json(['success' => true, 'data' => $priceRule->getObjectVars()]);
+            $this->_helper->json(['success' => true, 'data' => $priceRule->serialize()]);
         } else {
             $this->_helper->json(['success' => false]);
         }
@@ -111,11 +111,8 @@ class CoreShop_Admin_PriceRuleController extends Admin
             $conditions = $data['conditions'];
             $actions = $data['actions'];
 
-            $actionNamespace = 'CoreShop\\Model\\PriceRule\\Action\\';
-            $conditionNamespace = 'CoreShop\\Model\\PriceRule\\Condition\\';
-
-            $conditionInstances = $priceRule->prepareConditions($conditions, $conditionNamespace);
-            $actionInstances = $priceRule->prepareActions($actions, $actionNamespace);
+            $conditionInstances = $priceRule->prepareConditions($conditions);
+            $actionInstances = $priceRule->prepareActions($actions);
 
             $priceRule->setValues($data['settings']);
             $priceRule->setActions($actionInstances);

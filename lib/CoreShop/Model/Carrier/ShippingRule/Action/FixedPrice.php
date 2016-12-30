@@ -26,7 +26,7 @@ class FixedPrice extends AbstractAction
     /**
      * @var string
      */
-    public $type = 'fixedPrice';
+    public static $type = 'fixedPrice';
 
     /**
      * @var float

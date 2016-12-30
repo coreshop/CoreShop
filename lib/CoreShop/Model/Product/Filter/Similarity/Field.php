@@ -26,5 +26,5 @@ class Field extends AbstractSimilarity
     /**
      * @var string
      */
-    public $type = 'field';
+    public static $type = 'field';
 }

@@ -27,7 +27,7 @@ class Payment extends Rule\Condition\AbstractCondition
     /**
      * @var string
      */
-    public $type = 'payment';
+    public static $type = 'payment';
 
     /**
      * @var array

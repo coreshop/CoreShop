@@ -27,7 +27,7 @@ class ShippingRule extends AbstractAction
     /**
      * @var string
      */
-    public $type = 'shippingRule';
+    public static $type = 'shippingRule';
 
     /**
      * @var int

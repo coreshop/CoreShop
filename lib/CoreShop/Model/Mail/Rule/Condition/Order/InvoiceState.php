@@ -27,7 +27,7 @@ class InvoiceState extends Rule\Condition\AbstractCondition
     /**
      * @var string
      */
-    public $type = 'invoiceState';
+    public static $type = 'invoiceState';
 
     /**
      *

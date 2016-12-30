@@ -26,7 +26,7 @@ class Weight extends AbstractCondition
     /**
      * @var string
      */
-    public $type = 'weight';
+    public static $type = 'weight';
 
     /**
      * @var float

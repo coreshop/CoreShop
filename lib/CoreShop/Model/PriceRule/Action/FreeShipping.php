@@ -26,7 +26,7 @@ class FreeShipping extends AbstractAction
     /**
      * @var string
      */
-    public $type = 'freeShipping';
+    public static $type = 'freeShipping';
 
     /**
      * Apply Rule to Cart.

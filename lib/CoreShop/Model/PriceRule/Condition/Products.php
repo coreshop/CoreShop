@@ -26,14 +26,14 @@ use CoreShop\Model\Product as ProductModel;
 class Products extends AbstractCondition
 {
     /**
+     * @var string
+     */
+    public static $type = 'products';
+
+    /**
      * @var int[]
      */
     public $products;
-
-    /**
-     * @var string
-     */
-    public $type = 'products';
 
     /**
      * @return []

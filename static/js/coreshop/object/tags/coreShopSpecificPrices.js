@@ -157,5 +157,17 @@ pimcore.object.tags.coreShopSpecificPrices = Class.create(pimcore.object.tags.ab
         }
 
         return false;
+    },
+
+    getActions : function() {
+        return this.actions;
+    },
+
+    getConfig : function() {
+        return this.config;
+    },
+
+    getConditions : function() {
+        return this.conditions;
     }
 });
