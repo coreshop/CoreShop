@@ -43,6 +43,7 @@
 "coreshop_cart_create_order","Bestellung erstellen"
 "coreshop_pricerules","Preisregeln"
 "coreshop_cart_pricerules","Warenkorb Preisregeln"
+"coreshop_condition_no_configuration","Kein Konfiguration verfügbar"
 "coreshop_condition_amount","Gesamtwert"
 "coreshop_condition_amount_minAmount","Min Gesamtwert"
 "coreshop_condition_amount_maxAmount","Max Gesamtwert"

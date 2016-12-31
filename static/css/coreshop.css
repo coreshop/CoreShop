@@ -196,6 +196,10 @@
     background: url(/plugins/CoreShop/static/img/flat/shipment.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_orders_externalEvent, .coreshop_rule_icon_condition_externalEvent {
+    background: url(/plugins/CoreShop/static/img/flat/api.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_orders_invoice_pdf, .coreshop_icon_orders_shipment_pdf {
     background: url(/plugins/CoreShop/static/img/flat/pdf.svg) center center no-repeat !important;
 }
