@@ -69,7 +69,7 @@ abstract class AbstractRule extends AbstractModel
         $actionInstances = [];
 
         foreach ($actions as $action) {
-            $className = static::getDispatcher()->getClassForActionType($action['type']);
+            $className = static::getActionDispatcher()->getClassForType($action['type']);
 
             if($className && Tool::classExists($className)) {
                 $instance = new $className();
@@ -95,7 +95,7 @@ abstract class AbstractRule extends AbstractModel
         $conditionInstances = [];
 
         foreach ($conditions as $condition) {
-            $className = static::getDispatcher()->getClassForConditionType($condition['type']);
+            $className = static::getConditionDispatcher()->getClassForType($condition['type']);
 
             if ($className && Tool::classExists($className)) {
                 if ($condition['type'] === "conditions") {
