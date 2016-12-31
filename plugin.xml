@@ -212,6 +212,7 @@
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/user/userType.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/conditions/messaging/messageType.js</path>
       <path>/plugins/CoreShop/static/js/coreshop/mail/rules/actions/mail.js</path>
+      <path>/plugins/CoreShop/static/js/coreshop/mail/rules/actions/orderMail.js</path>
     </pluginJsPaths-extjs6>
     <pluginDocumentEditmodeJsPaths>
       <path>/CoreShop/static/js/coreshop/document/tags/product.js</path>

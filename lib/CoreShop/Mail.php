@@ -84,10 +84,13 @@ class Mail extends PimcoreMail
      * @param $emailDocument
      * @param Order $order
      * @param bool $allowBcc
+     * @param bool $sendInvoices
+     * @param bool $sendShipments
+     *
      * @throws Exception\UnsupportedException
      * @throws \Exception
      */
-    public static function sendOrderMail($emailDocument, Order $order, $allowBcc = false)
+    public static function sendOrderMail($emailDocument, Order $order, $sendInvoices = false, $sendShipments = false, $allowBcc = false)
     {
         if ($emailDocument instanceof Document\Email) {
             //init Template
@@ -108,7 +111,7 @@ class Mail extends PimcoreMail
             $mail->setEnableLayoutOnPlaceholderRendering(false);
             $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname());
 
-            if ((bool)Configuration::get('SYSTEM.INVOICE.CREATE')) {
+            if ($sendInvoices && (bool)Configuration::get('SYSTEM.INVOICE.CREATE')) {
                 $invoices = $order->getInvoices();
 
                 foreach ($invoices as $invoice) {
@@ -117,6 +120,28 @@ class Mail extends PimcoreMail
 
                         if (!$asset instanceof Asset) {
                             $asset = $invoice->generate();
+                        }
+
+                        $attachment = new \Zend_Mime_Part($asset->getData());
+                        $attachment->type = $asset->getMimetype();
+                        $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
+                        $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
+                        $attachment->filename = $asset->getFilename();
+
+                        $mail->addAttachment($attachment);
+                    }
+                }
+            }
+
+            if ($sendShipments && (bool)Configuration::get('SYSTEM.SHIPMENT.CREATE')) {
+                $shipments = $order->getShipments();
+
+                foreach ($shipments as $shipment) {
+                    if ($shipment instanceof Order\Shipment) {
+                        $asset = $shipment->getAsset();
+
+                        if (!$asset instanceof Asset) {
+                            $asset = $shipment->generate();
                         }
 
                         $attachment = new \Zend_Mime_Part($asset->getData());

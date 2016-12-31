@@ -358,7 +358,7 @@
     background: url(/plugins/CoreShop/static/img/flat/mail-rule.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_action_mail {
+.coreshop_rule_icon_action_mail, .coreshop_rule_icon_action_orderMail {
     background: url(/plugins/CoreShop/static/img/flat/mail.svg) center center no-repeat !important;
 }
 

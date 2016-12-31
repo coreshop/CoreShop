@@ -85,8 +85,6 @@ class Rule extends AbstractRule
         else if($type === 'shipment') {
             $dispatcher->addType(Condition\Shipment\ShipmentState::class);
         }
-
-        $dispatcher->addType(Action\Mail::class);
     }
 
     /**
@@ -96,6 +94,10 @@ class Rule extends AbstractRule
     protected static function initActionDispatchers($type, Dispatcher $dispatcher)
     {
         $dispatcher->addType(Action\Mail::class);
+
+        if($type === 'order' || $type === 'shipment' || $type === 'invoice') {
+            $dispatcher->addType(Action\OrderMail::class);
+        }
     }
 
     /**
