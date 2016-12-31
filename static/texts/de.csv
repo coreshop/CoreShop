@@ -528,3 +528,5 @@
 "coreshop_mail_rule_send_invoices","Rechnungen senden"
 "coreshop_mail_rule_send_shipments","Lieferscheine senden"
 "coreshop_mail_rule_send_bcc","BCC senden"
+"coreshop_note_email","Email"
+"coreshop_note_email_description","Bestellungsemail"

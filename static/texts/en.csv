@@ -528,3 +528,5 @@
 "coreshop_mail_rule_send_invoices","Send Invoices"
 "coreshop_mail_rule_send_shipments","Send Shipments"
 "coreshop_mail_rule_send_bcc","Send BCC"
+"coreshop_note_email","Email"
+"coreshop_note_email_description","Ordermail"
