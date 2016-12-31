@@ -790,7 +790,7 @@ class CoreShop_Admin_OrderController extends Admin
 
         foreach ($payments as $payment) {
             $noteList = new \Pimcore\Model\Element\Note\Listing();
-            $noteList->addConditionParam('type = ?', \CoreShop\Model\Order\Payment::TRANSACTION_NOTE_TITLE);
+            $noteList->addConditionParam('type = ?', \CoreShop\Model\Order\Payment::NOTE_TRANSACTION);
             $noteList->addConditionParam('cid = ?', $payment->getId());
             $noteList->setOrderKey('date');
             $noteList->setOrder('desc');
