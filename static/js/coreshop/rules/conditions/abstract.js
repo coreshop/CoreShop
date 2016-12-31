@@ -23,11 +23,15 @@ pimcore.plugin.coreshop.rules.conditions.abstract = Class.create(pimcore.plugin.
             items : [
                 {
                     xtype:'displayfield',
+                    submitValue : false,
                     value:t('coreshop_condition_no_configuration'),
                     cls: 'description',
                     anchor:'100%',
                     width:'100%',
-                    style: 'font-style:italic;background:#f5f5f5;padding:5px;'
+                    style: 'font-style:italic;background:#f5f5f5;padding:0 10px;',
+                    getValue: function() {
+                        return undefined;
+                    }
                 }
             ]
         });
