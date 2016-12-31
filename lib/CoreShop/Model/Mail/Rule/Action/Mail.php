@@ -64,7 +64,13 @@ class Mail extends AbstractAction
 
             if($mailDocument instanceof Document\Email) {
                 $params['object'] = $model;
-                \CoreShop\Mail::sendMail($mailDocument, $params['recipient'], $params);
+
+                if($model instanceof Model\Messaging\Message) {
+                    \CoreShop\Mail::sendMessagingMail($mailDocument, $model, $params['recipient'], $params);
+                }
+                else {
+                    \CoreShop\Mail::sendMail($mailDocument, $params['recipient'], $params);
+                }
             }
         }
     }

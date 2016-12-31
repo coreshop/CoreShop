@@ -765,21 +765,24 @@ class Tools
     /**
      * get CoreShop Translate.
      *
+     * @param $lang
+     *
      * @return \Zend_Translate_Adapter
      */
-    public function getTranslate()
+    public function getTranslate($lang = null)
     {
-        $lang = null;
-        $user = \Pimcore\Tool\Admin::getCurrentUser();
+        if(is_null($lang)) {
+            $user = \Pimcore\Tool\Admin::getCurrentUser();
 
-        if ($user instanceof User) {
-            $lang = $user->getLanguage();
-        } else {
-            $lang = $this->getLocale();
-        }
+            if ($user instanceof User) {
+                $lang = $user->getLanguage();
+            } else {
+                $lang = $this->getLocale();
+            }
 
-        if (!$lang) {
-            $lang = \Pimcore\Tool::getDefaultLanguage();
+            if (!$lang) {
+                $lang = \Pimcore\Tool::getDefaultLanguage();
+            }
         }
 
         return Plugin::getTranslate($lang);

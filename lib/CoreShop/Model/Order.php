@@ -82,6 +82,26 @@ use Pimcore\Tool\Authentication;
 class Order extends Base
 {
     /**
+     * Note Identifier for Payment
+     */
+    const NOTE_PAYMENT = 'Payment';
+
+    /**
+     * Note Identifier for Update Order
+     */
+    const NOTE_UPDATE_ORDER = 'Update Order';
+
+    /**
+     * Note Identifier for Update Order Item
+     */
+    const NOTE_UPDATE_ORDER_ITEM = 'Update Order Item';
+
+    /**
+     * Note Identifier for emails
+     */
+    const NOTE_EMAIL = 'Email';
+
+    /**
      * Pimcore Object Class.
      *
      * @var string
@@ -351,7 +371,7 @@ class Order extends Base
         }
 
         $translate = \CoreShop::getTools()->getTranslate();
-        $note = $item->createNote('coreshop-updateOrderItem');
+        $note = $item->createNote(self::NOTE_UPDATE_ORDER_ITEM);
         $note->setTitle($translate->translate('coreshop_note_updateOrderItem'));
         $note->setDescription($translate->translate('coreshop_note_updateOrderItem_description'));
 
@@ -443,7 +463,7 @@ class Order extends Base
 
         $translate = \CoreShop::getTools()->getTranslate();
 
-        $note = $this->createNote("coreshop-updateOrderSummary");
+        $note = $this->createNote(self::NOTE_UPDATE_ORDER);
         $note->setTitle($translate->translate('coreshop_note_updateOrderSummary'));
         $note->setDescription($translate->translate('coreshop_note_updateOrderSummary_description'));
 
@@ -501,7 +521,7 @@ class Order extends Base
 
         $translate = \CoreShop::getTools()->getTranslate();
 
-        $note = $this->createNote('coreshop-order-payment');
+        $note = $this->createNote(self::NOTE_PAYMENT);
         $note->setTitle(sprintf($translate->translate('coreshop_note_order_payment'), $provider->getName(), \CoreShop::getTools()->formatPrice($amount)));
         $note->setDescription(sprintf($translate->translate('coreshop_note_order_payment_description'), $provider->getName(), \CoreShop::getTools()->formatPrice(($amount))));
         $note->addData('provider', 'text', $provider->getName());
@@ -1061,30 +1081,6 @@ class Order extends Base
         }
 
         return false;
-    }
-
-    /**
-     * Create a note for this order.
-     *
-     * @param $type string
-     *
-     * @return Note $note
-     */
-    public function createNote($type)
-    {
-        $note = new Note();
-        $note->setElement($this);
-        $note->setDate(time());
-        $note->setType($type);
-
-        if (\Pimcore::inAdmin()) {
-            $user = Authentication::authenticateSession();
-            if ($user instanceof PimcoreUser) {
-                $note->setUser($user->getId());
-            }
-        }
-
-        return $note;
     }
 
     /**

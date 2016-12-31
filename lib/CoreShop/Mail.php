@@ -18,9 +18,11 @@ use CoreShop\Model\Configuration;
 use CoreShop\Model\Messaging\Message;
 use CoreShop\Model\Order;
 use CoreShop\Model\Shop;
+use Pimcore\Db;
 use Pimcore\Mail as PimcoreMail;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Document;
+use Pimcore\Model\Tool\Email\Log;
 
 /**
  * Class Mail
@@ -35,8 +37,9 @@ class Mail extends PimcoreMail
      * @param $emailDocument
      * @param Message $message
      * @param string $recipient
+     * @param array $params
      */
-    public static function sendMessagingMail($emailDocument, Message $message, $recipient)
+    public static function sendMessagingMail($emailDocument, Message $message, $recipient, $params = [])
     {
         $thread = $message->getThread();
         $shopId = $thread->getShopId();
@@ -51,10 +54,14 @@ class Mail extends PimcoreMail
         self::mergeDefaultMailSettings($mail, $emailDocument);
 
         $mail->setDocument($emailDocument);
-        $mail->setParams(['message' => $message->getMessage(), 'messageObject' => $message]);
+        $mail->setParams(array_merge($params, ['message' => $mesesage->getMessage(), 'messageObject' => $message]));
         $mail->setEnableLayoutOnPlaceholderRendering(false);
         $mail->addTo($recipient);
         $mail->send();
+
+        if($thread->getOrder() instanceof Order) {
+            static::addOrderNote($thread->getOrder(), $emailDocument, $mail, true);
+        }
     }
 
     /**
@@ -155,7 +162,34 @@ class Mail extends PimcoreMail
             }
 
             $mail->send();
+
+            static::addOrderNote($order, $emailDocument, $mail);
         }
+    }
+
+    /**
+     * @param Order $order
+     * @param Document\Email $emailDocument
+     * @param $mail
+     */
+    private static function addOrderNote(Order $order, Document\Email $emailDocument, Mail $mail) {
+        $translate = \CoreShop::getTools()->getTranslate();
+
+        $note = $order->createNote(Order::NOTE_EMAIL);
+        $note->setTitle($translate->translate('coreshop_note_email'));
+        $note->setDescription($translate->translate('coreshop_note_email_description'));
+
+        $log = Log::getById(Db::get()->lastInsertId());
+
+        if($log instanceof Log) {
+            $note->addData('email-log', 'text', $log->getId());
+        }
+
+        $note->addData('document', 'text', $emailDocument->getId());
+        $note->addData('date', 'text', time());
+        $note->addData('recipient', 'text', explode(', ', $mail->getRecipients()));
+        $note->addData('subject', 'text', $mail->getSubjectRendered());
+        $note->save();
     }
 
     /**

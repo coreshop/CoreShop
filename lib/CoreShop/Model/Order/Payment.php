@@ -33,7 +33,7 @@ use Pimcore\Model\Object;
  */
 class Payment extends Base
 {
-    const TRANSACTION_NOTE_TITLE = 'Payment Transaction';
+    const NOTE_TRANSACTION = 'Payment Transaction';
 
     /**
      * Pimcore Object Class.
@@ -72,7 +72,7 @@ class Payment extends Base
      */
     public function addTransactionNote($status, $code = null, $description = null)
     {
-        $note = $this->createNote(self::TRANSACTION_NOTE_TITLE);
+        $note = $this->createNote(self::NOTE_TRANSACTION);
         $note->setTitle($status);
         $note->setDescription($description);
         $note->addData('provider', 'text', $this->getProvider());
@@ -82,10 +82,13 @@ class Payment extends Base
         return $note;
     }
 
+    /**
+     * @return bool
+     */
     public function getLastTransactionNote()
     {
         $noteList = new \Pimcore\Model\Element\Note\Listing();
-        $noteList->addConditionParam('type = ?', self::TRANSACTION_NOTE_TITLE);
+        $noteList->addConditionParam('type = ?', self::NOTE_TRANSACTION);
         $noteList->addConditionParam('cid = ?', $this->getId());
         $noteList->setOrderKey('date');
         $noteList->setOrder('desc');
