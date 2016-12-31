@@ -14,6 +14,16 @@
 pimcore.registerNS('pimcore.plugin.coreshop.mail.rules.condition');
 
 pimcore.plugin.coreshop.mail.rules.condition = Class.create(pimcore.plugin.coreshop.rules.condition, {
+
+    coreConditions: ['payment','carriers','orderState','invoiceState','shipmentState'],
+
+    getConditionStyleClass: function(condition) {
+        if(!Ext.Array.contains(this.coreConditions, condition)) {
+            return 'coreshop_rule_icon_condition_externalEvent';
+        }
+        return 'coreshop_rule_icon_condition_' + condition;
+    },
+
     getConditionClassNamespace : function() {
         return pimcore.plugin.coreshop.mail.rules.conditions;
     }

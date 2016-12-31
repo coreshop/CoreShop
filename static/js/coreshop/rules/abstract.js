@@ -44,13 +44,17 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
             scrollable : true,
             bodyPadding : 10,
             maxHeight : 500,
-            tbar : this.getTopBar(t('coreshop_' + this.elementType +  '_' + this.type), myId, this.parent, this.data, 'coreshop_rule_icon_' + this.elementType + '_' + this.type),
+            tbar : this.getTopBar(t('coreshop_' + this.elementType +  '_' + this.type), myId, this.parent, this.data, this.getTopBarIconClass()),
             items : [
                 this.getForm()
             ]
         });
 
         return this.layout;
+    },
+
+    getTopBarIconClass: function() {
+        return 'coreshop_rule_icon_' + this.elementType + '_' + this.type;
     },
 
     getForm : function() {

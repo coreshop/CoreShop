@@ -43,6 +43,7 @@
 "coreshop_cart_create_order","Create Order"
 "coreshop_pricerules","Price Rules"
 "coreshop_cart_pricerules","Cart Price Rules"
+"coreshop_condition_no_configuration","No Configuration available"
 "coreshop_condition_amount","Amount"
 "coreshop_condition_amount_minAmount","Min Amount"
 "coreshop_condition_amount_maxAmount","Max Amount"

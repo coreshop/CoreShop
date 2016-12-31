@@ -26,11 +26,11 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
         // show only defined conditions
         Ext.each(this.conditions, function (condition) {
 
-            if (condition == 'abstract')
+            if (condition === 'abstract')
                 return;
 
             addMenu.push({
-                iconCls: 'coreshop_rule_icon_condition_' + condition,
+                iconCls: _this.getConditionStyleClass(condition),
                 text: t('coreshop_condition_' + condition),
                 handler: _this.addCondition.bind(_this, condition, null)
             });
@@ -57,6 +57,10 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
         if(this.conditionsContainer) {
             this.conditionsContainer.destroy();
         }
+    },
+
+    getConditionStyleClass: function(condition) {
+        return 'coreshop_rule_icon_condition_' + condition;
     },
 
     getConditionClassItem : function (type) {
