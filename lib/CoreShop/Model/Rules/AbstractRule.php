@@ -69,7 +69,7 @@ abstract class AbstractRule extends AbstractModel
         $actionInstances = [];
 
         foreach ($actions as $action) {
-            $className = static::getActionDispatcher()->getClassForType($action['type']);
+            $className = $this->getMyActionDispatcher()->getClassForType($action['type']);
 
             if($className && Tool::classExists($className)) {
                 $instance = new $className();
@@ -95,7 +95,7 @@ abstract class AbstractRule extends AbstractModel
         $conditionInstances = [];
 
         foreach ($conditions as $condition) {
-            $className = static::getConditionDispatcher()->getClassForType($condition['type']);
+            $className = $this->getMyConditionDispatcher()->getClassForType($condition['type']);
 
             if ($className && Tool::classExists($className)) {
                 if ($condition['type'] === "conditions") {
@@ -175,6 +175,24 @@ abstract class AbstractRule extends AbstractModel
     public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /*
+     * get Condition dispatcher for instanceof of type
+     *
+     * @return Dispatcher
+     */
+    public function getMyConditionDispatcher() {
+        return static::getConditionDispatcher();
+    }
+
+    /**
+     * get action dispatcher for instance of type
+     *
+     * @return Dispatcher
+     */
+    public function getMyActionDispatcher() {
+        return static::getActionDispatcher();
     }
 
     /**

@@ -123,10 +123,11 @@ class CoreShop_Admin_MailRuleController extends Admin
             $conditions = $data['conditions'];
             $actions = $data['actions'];
 
+            $rule->setValues($data['settings']);
+
             $actionInstances = $rule->prepareActions($actions);
             $conditionInstances = $rule->prepareConditions($conditions);
 
-            $rule->setValues($data['settings']);
             $rule->setActions($actionInstances);
             $rule->setConditions($conditionInstances);
             $rule->save();

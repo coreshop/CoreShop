@@ -24,6 +24,7 @@ use CoreShop\Model\Rules\AbstractRule;
 use Pimcore\Cache;
 use Pimcore\Logger;
 use Pimcore\Model\AbstractModel;
+use Pimcore\Tool;
 
 /**
  * Class Rule
@@ -52,6 +53,12 @@ class Rule extends AbstractRule
      * @var string
      */
     public static $type = 'mailRules';
+
+    /**
+     * @var string
+     */
+    public $mailType;
+
 
     /**
      * @param string $type
@@ -164,11 +171,6 @@ class Rule extends AbstractRule
     }
 
     /**
-     * @var string
-     */
-    public $mailType;
-
-    /**
      * Apply valid Order Rules
      *
      * @param $type
@@ -188,6 +190,22 @@ class Rule extends AbstractRule
                 }
             }
         }
+    }
+
+    /**
+     * @return Dispatcher
+     */
+    public function getMyConditionDispatcher()
+    {
+        return static::getConditionDispatcherForType($this->getMailType());
+    }
+
+    /**
+     * @return Dispatcher
+     */
+    public function getMyActionDispatcher()
+    {
+        return static::getActionDispatcherForType($this->getMailType());
     }
 
     /**
