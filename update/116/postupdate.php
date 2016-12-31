@@ -23,3 +23,6 @@ foreach ($languages as $lang) {
     \CoreShop\Model\Configuration::remove("SYSTEM.MAIL.ORDER.STATES.CONFIRMATION." . strtoupper($lang));
     \CoreShop\Model\Configuration::remove("SYSTEM.MAIL.ORDER.STATES.UPDATE." . strtoupper($lang));
 }
+
+\CoreShop\Model\Configuration::remove("SYSTEM.MAIL.ORDER.BCC");
+\CoreShop\Model\Configuration::remove("SYSTEM.MAIL.ORDER.NOTIFICATION");

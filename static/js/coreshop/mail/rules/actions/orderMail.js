@@ -37,14 +37,7 @@ pimcore.plugin.coreshop.mail.rules.actions.orderMail = Class.create(pimcore.plug
             checked: this.data ? this.data.sendShipments : false
         });
 
-        this.sendBcc = Ext.create({
-            fieldLabel: t('coreshop_mail_rule_send_bcc'),
-            xtype: 'checkbox',
-            name: 'sendBcc',
-            checked: this.data ? this.data.sendBcc : false
-        });
-
-        form.add([this.sendInvoices, this.sendShipments, this.sendBcc]);
+        form.add([this.sendInvoices, this.sendShipments]);
 
         return form;
     },
@@ -54,8 +47,7 @@ pimcore.plugin.coreshop.mail.rules.actions.orderMail = Class.create(pimcore.plug
 
         values = Ext.applyIf({
             'sendInvoices' : this.sendInvoices.getValue(),
-            'sendShipments' : this.sendShipments.getValue(),
-            'sendBcc' : this.sendBcc.getValue()
+            'sendShipments' : this.sendShipments.getValue()
         }, values);
 
         return values;

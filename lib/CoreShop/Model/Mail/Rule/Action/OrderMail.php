@@ -84,7 +84,7 @@ class OrderMail extends Mail
                 if ($mailDocument instanceof Document\Email) {
                     $params['object'] = $model;
 
-                    \CoreShop\Mail::sendOrderMail($mailDocument, $model, $this->getSendInvoices(), $this->getSendShipments(), $this->getSendBcc());
+                    \CoreShop\Mail::sendOrderMail($mailDocument, $model, $this->getSendInvoices(), $this->getSendShipments());
                 }
             }
         }
@@ -120,21 +120,5 @@ class OrderMail extends Mail
     public function setSendShipments($sendShipments)
     {
         $this->sendShipments = $sendShipments;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getSendBcc()
-    {
-        return $this->sendBcc;
-    }
-
-    /**
-     * @param bool $sendBcc
-     */
-    public function setSendBcc($sendBcc)
-    {
-        $this->sendBcc = $sendBcc;
     }
 }

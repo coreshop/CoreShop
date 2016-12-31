@@ -83,14 +83,13 @@ class Mail extends PimcoreMail
      *
      * @param $emailDocument
      * @param Order $order
-     * @param bool $allowBcc
      * @param bool $sendInvoices
      * @param bool $sendShipments
      *
      * @throws Exception\UnsupportedException
      * @throws \Exception
      */
-    public static function sendOrderMail($emailDocument, Order $order, $sendInvoices = false, $sendShipments = false, $allowBcc = false)
+    public static function sendOrderMail($emailDocument, Order $order, $sendInvoices = false, $sendShipments = false)
     {
         if ($emailDocument instanceof Document\Email) {
             //init Template
@@ -152,15 +151,6 @@ class Mail extends PimcoreMail
 
                         $mail->addAttachment($attachment);
                     }
-                }
-            }
-
-            if ($allowBcc === true) {
-                $sendBccToUser = Configuration::get('SYSTEM.MAIL.ORDER.BCC');
-                $adminMailAddress = Configuration::get('SYSTEM.MAIL.ORDER.NOTIFICATION');
-
-                if ($sendBccToUser === true && !empty($adminMailAddress)) {
-                    $mail->addBcc(explode(',', $adminMailAddress));
                 }
             }
 
