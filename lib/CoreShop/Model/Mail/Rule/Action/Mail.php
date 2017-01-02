@@ -47,29 +47,29 @@ class Mail extends AbstractAction
     {
         $language = null;
 
-        if(array_key_exists('language', $params)) {
+        if (array_key_exists('language', $params)) {
             $language = $params['language'];
         }
-        else if(\Zend_Registry::isRegistered("Zend_Locale")) {
-            $language = (string)\Zend_Registry::get("Zend_Locale");
+        elseif (\Zend_Registry::isRegistered('Zend_Locale')) {
+            $language = (string)\Zend_Registry::get('Zend_Locale');
         }
 
-        if(is_null($language)) {
-            throw new Exception("Language is not set");
+        if (is_null($language)) {
+            throw new Exception('Language is not set');
         }
 
-        if(array_key_exists($language, $this->getMails())) {
+        if (array_key_exists($language, $this->getMails())) {
             $mailDocumentId = $this->mails[$language];
             $mailDocument = Document::getById($mailDocumentId);
 
-            if($mailDocument instanceof Document\Email) {
+            if ($mailDocument instanceof Document\Email) {
                 $params['object'] = $model;
 
-                if($model instanceof Model\Messaging\Message) {
+                if ($model instanceof Model\Messaging\Message) {
                     \CoreShop\Mail::sendMessagingMail($mailDocument, $model, $params['recipient'], $params);
                 }
                 else {
-                    \CoreShop\Mail::sendMail($mailDocument, $params['recipient'], $params);
+                    \CoreShop\Mail::sendMail($mailDocument, $model, $params['recipient'], $params);
                 }
             }
         }

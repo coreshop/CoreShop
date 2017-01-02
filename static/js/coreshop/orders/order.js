@@ -132,7 +132,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             this.getOrderInfo(),
             this.getShipmentDetails(),
             this.getInvoiceDetails(),
-            this.getPaymentInfo()
+            this.getPaymentDetails(),
+            this.getMailDetails()
         ];
 
         var visitorInfo = this.getVisitorInfo();
@@ -143,7 +144,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
         var rightItems = [
             this.getCustomerInfo(),
-            this.getMessagesInfo(),
+            this.getMessagesInfo()
         ];
 
         var contentItems = [
@@ -689,6 +690,71 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.invoiceDetails;
     },
 
+    getMailDetails : function () {
+        if (!this.mailCorrespondence) {
+            this.mailCorrespondenceStore = new Ext.data.JsonStore({
+                data : this.order.mailCorrespondence
+            });
+
+            this.mailCorrespondence = Ext.create('Ext.panel.Panel', {
+                title : t('coreshop_mail_correspondence'),
+                border : true,
+                margin : '0 20 20 0',
+                iconCls : 'coreshop_icon_mail',
+                items : [
+                    {
+                        xtype : 'grid',
+                        margin: '5 0 15 0',
+                        cls : 'coreshop-detail-grid',
+                        store : this.mailCorrespondenceStore,
+                        columns : [
+                            {
+                                xtype : 'gridcolumn',
+                                flex : 1,
+                                dataIndex : 'date',
+                                text : t('coreshop_date'),
+                                renderer : function (val) {
+                                    if (val) {
+                                        return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
+                                    }
+                                    return '';
+                                }
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'subject',
+                                text : t('coreshop_mail_correspondence_subject'),
+                                flex : 2
+                            },
+                            {
+                                xtype : 'gridcolumn',
+                                dataIndex : 'recipient',
+                                text : t('coreshop_mail_correspondence_recipient'),
+                                flex : 2
+                            },
+                            {
+                                menuDisabled: true,
+                                sortable: false,
+                                xtype: 'actioncolumn',
+                                flex : 1,
+                                items: [{
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip: t('open'),
+                                    handler : function (grid, rowIndex) {
+                                        var record = grid.getStore().getAt(rowIndex);
+                                        pimcore.helpers.openObject(record.get('emailId'));
+                                    }
+                                }]
+                            }
+                        ]
+                    }
+                ]
+            });
+        }
+
+        return this.mailCorrespondence;
+    },
+
     updatePaymentInfoAlert : function () {
         if (this.paymentInfoAlert) {
             if (this.order.totalPayed < this.order.total || this.order.totalPayed > this.order.total) {
@@ -701,7 +767,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         }
     },
 
-    getPaymentInfo : function () {
+    getPaymentDetails : function () {
         if (!this.paymentInfo) {
             this.paymentsStore = new Ext.data.JsonStore({
                 data : this.order.payments

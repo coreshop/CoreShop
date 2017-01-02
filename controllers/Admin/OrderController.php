@@ -242,9 +242,6 @@ class CoreShop_Admin_OrderController extends Admin
 
         $jsonOrder = $this->getDataForObject($order);
 
-        //$jsonOrder = $order->getObjectVars();
-        //$jsonOrder = [];
-
         if ($jsonOrder['items'] === null) {
             $jsonOrder['items'] = [];
         }
@@ -252,9 +249,19 @@ class CoreShop_Admin_OrderController extends Admin
         $jsonOrder['o_id'] = $order->getId();
         $jsonOrder['customer'] = $order->getCustomer() instanceof \CoreShop\Model\Base ? $this->getDataForObject($order->getCustomer()) : null;
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
-        $jsonOrder['invoice'] = $order->getProperty("invoice");
+        $jsonOrder['invoice'] = $order->getProperty('invoice');
         $jsonOrder['invoices'] = $this->getInvoices($order);
         $jsonOrder['shipments'] = $this->getShipments($order);
+        $jsonOrder['mailCorrespondence'] = $this->getMailCorrespondence($order);
+        $jsonOrder['payments'] = $this->getPayments($order);
+        $jsonOrder['editable'] = count($order->getInvoices()) > 0 ? false : true;
+        $jsonOrder['totalPayed'] = $order->getPayedTotal();
+        $jsonOrder['details'] = $this->getDetails($order);
+        $jsonOrder['summary'] = $this->getSummary($order);
+        $jsonOrder['currency'] = $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop::getTools()->getCurrency());
+        $jsonOrder['shop'] = $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getObjectVars() : null;
+        $jsonOrder['visitor'] = \CoreShop\Model\Visitor::getById($order->getVisitorId());
+
         $jsonOrder['address'] = [
             'shipping' => $this->getDataForObject($order->getShippingAddress()),
             'billing' => $this->getDataForObject($order->getBillingAddress())
@@ -265,15 +272,6 @@ class CoreShop_Admin_OrderController extends Admin
             'cost' => $order->getShipping(),
             'tracking' => $order->getTrackingCode()
         ];
-
-        $jsonOrder['payments'] = $this->getPayments($order);
-        $jsonOrder['editable'] = count($order->getInvoices()) > 0 ? false : true;
-        $jsonOrder['totalPayed'] = $order->getPayedTotal();
-        $jsonOrder['details'] = $this->getDetails($order);
-        $jsonOrder['summary'] = $this->getSummary($order);
-        $jsonOrder['currency'] = $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop::getTools()->getCurrency());
-        $jsonOrder['shop'] = $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getObjectVars() : null;
-        $jsonOrder['visitor'] = \CoreShop\Model\Visitor::getById($order->getVisitorId());
 
         $jsonOrder['priceRule'] = false;
 
@@ -522,15 +520,15 @@ class CoreShop_Admin_OrderController extends Admin
 
     public function getOrderTotalAction()
     {
-        $productIds = \Zend_Json::decode($this->getParam("products"));
-        $customerId = $this->getParam("customerId");
-        $shippingAddressId = $this->getParam("shippingAddress");
-        $billingAddressId = $this->getParam("billingAddress");
-        $carrierId = $this->getParam("carrier");
-        $freeShipping = $this->getParam("freeShipping");
+        $productIds = \Zend_Json::decode($this->getParam('products'));
+        $customerId = $this->getParam('customerId');
+        $shippingAddressId = $this->getParam('shippingAddress');
+        $billingAddressId = $this->getParam('billingAddress');
+        $carrierId = $this->getParam('carrier');
+        $freeShipping = $this->getParam('freeShipping');
 
-        //$language = $this->getParma("language");
-        $currency = \CoreShop\Model\Currency::getById($this->getParam("currency"));
+        //$language = $this->getParma('language');
+        $currency = \CoreShop\Model\Currency::getById($this->getParam('currency'));
 
         $user = \CoreShop\Model\User::getById($customerId);
         $shippingAddress = \CoreShop\Model\User\Address::getById($shippingAddressId);
@@ -560,52 +558,52 @@ class CoreShop_Admin_OrderController extends Admin
 
         $values = [
             [
-                "key" => "subtotal",
-                "value" => $cart->getSubtotal(true)
+                'key' => 'subtotal',
+                'value' => $cart->getSubtotal(true)
             ],
             [
-                "key" => "subtotal_tax",
-                "value" => $cart->getSubtotalTax()
+                'key' => 'subtotal_tax',
+                'value' => $cart->getSubtotalTax()
             ],
             [
-                "key" => "subtotal_without_tax",
-                "value" =>$cart->getSubtotal(false)
+                'key' => 'subtotal_without_tax',
+                'value' =>$cart->getSubtotal(false)
             ],
             [
-                "key" => "shipping_without_tax",
-                "value" =>$cart->getShipping(false)
+                'key' => 'shipping_without_tax',
+                'value' =>$cart->getShipping(false)
             ],
             [
-                "key" => "shipping_tax",
-                "value" => $cart->getShippingTax()
+                'key' => 'shipping_tax',
+                'value' => $cart->getShippingTax()
             ],
             [
-                "key" => "shipping",
-                "value" => $cart->getShipping(true)
+                'key' => 'shipping',
+                'value' => $cart->getShipping(true)
             ],
             [
-                "key" => "discount_without_tax",
-                "value" => -1 * $cart->getDiscount(false)
+                'key' => 'discount_without_tax',
+                'value' => -1 * $cart->getDiscount(false)
             ],
             [
-                "key" => "discount_tax",
-                "value" => -1 * $cart->getDiscountTax()
+                'key' => 'discount_tax',
+                'value' => -1 * $cart->getDiscountTax()
             ],
             [
-                "key" => "discount",
-                "value" => -1 * $cart->getDiscount(true)
+                'key' => 'discount',
+                'value' => -1 * $cart->getDiscount(true)
             ],
             [
-                "key" => "total_without_tax",
-                "value" =>$cart->getTotal(false)
+                'key' => 'total_without_tax',
+                'value' =>$cart->getTotal(false)
             ],
             [
-                "key" => "total_tax",
-                "value" =>$cart->getTotalTax()
+                'key' => 'total_tax',
+                'value' =>$cart->getTotalTax()
             ],
             [
-                "key" => "total",
-                "value" => $cart->getTotal(true)
+                'key' => 'total',
+                'value' => $cart->getTotal(true)
             ]
         ];
 
@@ -616,17 +614,17 @@ class CoreShop_Admin_OrderController extends Admin
 
     public function createOrderAction()
     {
-        $productIds = \Zend_Json::decode($this->getParam("products"));
-        $customerId = $this->getParam("customerId");
-        $shippingAddressId = $this->getParam("shippingAddress");
-        $billingAddressId = $this->getParam("billingAddress");
-        $carrierId = $this->getParam("carrier");
-        $freeShipping = $this->getParam("freeShipping");
-        $paymentModuleName = $this->getParam("paymentProvider");
-        $shopId = $this->getParam("shop");
+        $productIds = \Zend_Json::decode($this->getParam('products'));
+        $customerId = $this->getParam('customerId');
+        $shippingAddressId = $this->getParam('shippingAddress');
+        $billingAddressId = $this->getParam('billingAddress');
+        $carrierId = $this->getParam('carrier');
+        $freeShipping = $this->getParam('freeShipping');
+        $paymentModuleName = $this->getParam('paymentProvider');
+        $shopId = $this->getParam('shop');
 
-        $language = $this->getParam("language");
-        $currency = \CoreShop\Model\Currency::getById($this->getParam("currency"));
+        $language = $this->getParam('language');
+        $currency = \CoreShop\Model\Currency::getById($this->getParam('currency'));
 
         $user = \CoreShop\Model\User::getById($customerId);
         $shippingAddress = \CoreShop\Model\User\Address::getById($shippingAddressId);
@@ -820,16 +818,16 @@ class CoreShop_Admin_OrderController extends Admin
 
         foreach ($details as $detail) {
             $items[] = [
-                "o_id" => $detail->getId(),
-                "product" => $detail->getProduct() instanceof \CoreShop\Model\Product ? $detail->getProduct()->getId() : null,
-                "product_name" => $detail->getProductName(),
-                "product_image" => ($detail->getProductImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProductImage()->getPath() : null,
-                "wholesale_price" => $detail->getWholesalePrice(),
-                "price_without_tax" => $detail->getPriceWithoutTax(),
-                "price" => $detail->getPrice(),
-                "amount" => $detail->getAmount(),
-                "total" => $detail->getTotal(),
-                "total_tax" => $detail->getTotalTax()
+                'o_id' => $detail->getId(),
+                'product' => $detail->getProduct() instanceof \CoreShop\Model\Product ? $detail->getProduct()->getId() : null,
+                'product_name' => $detail->getProductName(),
+                'product_image' => ($detail->getProductImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProductImage()->getPath() : null,
+                'wholesale_price' => $detail->getWholesalePrice(),
+                'price_without_tax' => $detail->getPriceWithoutTax(),
+                'price' => $detail->getPrice(),
+                'amount' => $detail->getAmount(),
+                'total' => $detail->getTotal(),
+                'total_tax' => $detail->getTotalTax()
             ];
         }
 
@@ -847,27 +845,27 @@ class CoreShop_Admin_OrderController extends Admin
 
         if ($order->getDiscount() > 0) {
             $summary[] = [
-                "key" => "discount",
-                "value" => $order->getDiscount()
+                'key' => 'discount',
+                'value' => $order->getDiscount()
             ];
         }
 
         if ($order->getShipping() > 0) {
             $summary[] = [
-                "key" => "shipping",
-                "value" => $order->getShipping()
+                'key' => 'shipping',
+                'value' => $order->getShipping()
             ];
 
             $summary[] = [
-                "key" => "shipping_tax",
-                "value" => $order->getShippingTax()
+                'key' => 'shipping_tax',
+                'value' => $order->getShippingTax()
             ];
         }
 
         if ($order->getPaymentFee() > 0) {
             $summary[] = [
-                "key" => "payment",
-                "value" => $order->getPaymentFee()
+                'key' => 'payment',
+                'value' => $order->getPaymentFee()
             ];
         }
 
@@ -876,20 +874,20 @@ class CoreShop_Admin_OrderController extends Admin
         foreach ($taxes as $tax) {
             if ($tax instanceof \CoreShop\Model\Order\Tax) {
                 $summary[] = [
-                    "key" => "tax_" . $tax->getName(),
-                    "text" => sprintf($this->view->translateAdmin("Tax (%s - %s)"), $tax->getName(), \CoreShop::getTools()->formatTax($tax->getRate())),
-                    "value" => $tax->getAmount()
+                    'key' => 'tax_' . $tax->getName(),
+                    'text' => sprintf($this->view->translateAdmin('Tax (%s - %s)'), $tax->getName(), \CoreShop::getTools()->formatTax($tax->getRate())),
+                    'value' => $tax->getAmount()
                 ];
             }
         }
 
         $summary[] = [
-            "key" => "total_tax",
-            "value" => $order->getTotalTax()
+            'key' => 'total_tax',
+            'value' => $order->getTotalTax()
         ];
         $summary[] = [
-            "key" => "total",
-            "value" => $order->getTotal()
+            'key' => 'total',
+            'value' => $order->getTotal()
         ];
 
         return $summary;
@@ -928,14 +926,55 @@ class CoreShop_Admin_OrderController extends Admin
     }
 
     /**
+     * @param $order
+     *
+     * @return array
+     */
+    protected function getMailCorrespondence($order)
+    {
+        $list = [];
+
+        $noteList = new \Pimcore\Model\Element\Note\Listing();
+        $noteList->addConditionParam('type = ?', \CoreShop\Model\Order::NOTE_EMAIL);
+        $noteList->addConditionParam('cid = ?', $order->getId());
+        $noteList->setOrderKey('date');
+        $noteList->setOrder('desc');
+
+        $objects = $noteList->load();
+
+        foreach ($objects as $note) {
+
+            $subject = null;
+            $recipient = null;
+
+            if( isset($note->data['subject'])) {
+                $subject = $note->data['subject']['data'];
+            }
+            if( isset($note->data['recipient'])) {
+                $recipient = $note->data['recipient']['data'];
+            }
+
+            $list[] = [
+                'emailId' => (int) $note->data['document']['data'],
+                'date' => $note->date,
+                'description' => $note->description,
+                'subject' => $subject,
+                'recipient' => $recipient
+            ];
+        }
+
+        return $list;
+    }
+
+    /**
      * @param \CoreShop\Model\Currency $currency
      * @return array
      */
     protected function getCurrency(CoreShop\Model\Currency $currency)
     {
         return [
-            "name" => $currency->getName(),
-            "symbol" => $currency->getSymbol()
+            'name' => $currency->getName(),
+            'symbol' => $currency->getSymbol()
         ];
     }
 }

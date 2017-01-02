@@ -529,4 +529,7 @@
 "coreshop_mail_rule_send_shipments","Lieferscheine senden"
 "coreshop_mail_rule_send_bcc","BCC senden"
 "coreshop_note_email","Email"
-"coreshop_note_email_description","Bestellungsemail"
+"coreshop_note_email_description","Bestätigung für Bestellung"
+"coreshop_mail_correspondence","Mail Korrespondenz"
+"coreshop_mail_correspondence_subject","Betreff"
+"coreshop_mail_correspondence_recipient","Empfänger"

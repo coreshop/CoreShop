@@ -56,25 +56,23 @@ class OrderMail extends Mail
     {
         $order = null;
 
-        if($model instanceof Model\Order\Invoice) {
+        if ($model instanceof Model\Order\Invoice) {
             $order = $model->getOrder();
-        }
-        else if($model instanceof Model\Order\Shipment) {
+        } elseif ($model instanceof Model\Order\Shipment) {
             $order = $model->getOrder();
-        }
-        else if($model instanceof Model\Order) {
+        } elseif ($model instanceof Model\Order) {
             $order = $model;
         }
 
-        if($order instanceof Model\Order) {
+        if ($order instanceof Model\Order) {
             $language = $model->getLang();
 
-            if (!$language && \Zend_Registry::isRegistered("Zend_Locale")) {
-                $language = (string)\Zend_Registry::get("Zend_Locale");
+            if (!$language && \Zend_Registry::isRegistered('Zend_Locale')) {
+                $language = (string)\Zend_Registry::get('Zend_Locale');
             }
 
             if (is_null($language)) {
-                throw new Exception("Language is not set");
+                throw new Exception('Language is not set');
             }
 
             if (array_key_exists($language, $this->getMails())) {
@@ -82,8 +80,6 @@ class OrderMail extends Mail
                 $mailDocument = Document::getById($mailDocumentId);
 
                 if ($mailDocument instanceof Document\Email) {
-                    $params['object'] = $model;
-
                     \CoreShop\Mail::sendOrderMail($mailDocument, $model, $this->getSendInvoices(), $this->getSendShipments());
                 }
             }
