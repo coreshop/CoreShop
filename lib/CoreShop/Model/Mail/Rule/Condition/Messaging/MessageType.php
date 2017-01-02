@@ -27,7 +27,7 @@ class MessageType extends Rule\Condition\AbstractCondition
     /**
      * @var string
      */
-    public static $type = 'userType';
+    public static $type = 'messageType';
 
     /**
      *

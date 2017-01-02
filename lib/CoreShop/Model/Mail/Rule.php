@@ -182,7 +182,7 @@ class Rule extends AbstractRule
     public static function apply($type, $object, $params = [])
     {
         $list = static::getList();
-        $list->setCondition("mailType = ?", [$type]);
+        $list->setCondition('mailType = ?', [$type]);
         $list->load();
 
         foreach($list->getData() as $rule) {
@@ -308,7 +308,7 @@ class Rule extends AbstractRule
     {
         parent::save();
 
-        Cache::clearTag("coreshop_mail_rule");
+        Cache::clearTag('coreshop_mail_rule');
     }
 
     /**

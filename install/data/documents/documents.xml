@@ -43,46 +43,47 @@
             <path>shop</path>
             <key>email</key>
         </document>
+
         <document>
             <type>email</type>
             <action>email</action>
             <controller>email</controller>
             <module>CoreShop</module>
             <path>shop/email</path>
-            <key>awaiting-check-payment</key>
+            <key>user-registered</key>
             <content>
                 <de>
                     <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Wartung auf Checkzahlung</value>
-                    </field>
-                    <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>de/awaiting-check-payment.html</file>
+                        <file>de/user-registered.html</file>
                     </field>
                     <field>
                         <key>head</key>
                         <type>input</type>
-                        <value>Warten auf Checkzahlung</value>
+                        <value>Registrierung erfolgreich abgeschlossen</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Registrierung erfolgreich abgeschlossen</value>
                     </field>
                 </de>
                 <en>
                     <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Awaiting Check Payment</value>
-                    </field>
-                    <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>en/awaiting-check-payment.html</file>
+                        <file>en/order-registered.html</file>
                     </field>
                     <field>
                         <key>head</key>
                         <type>input</type>
-                        <value>Awaiting Check Payment</value>
+                        <value>Registration was successful.</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Registration was successful;</value>
                     </field>
                 </en>
             </content>
@@ -94,40 +95,85 @@
             <controller>email</controller>
             <module>CoreShop</module>
             <path>shop/email</path>
-            <key>payment-accepted</key>
+            <key>user-reset-password</key>
             <content>
                 <de>
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>de/payment-accepted.html</file>
+                        <file>de/user-reset-password.html</file>
                     </field>
                     <field>
                         <key>head</key>
                         <type>input</type>
-                        <value>Zahlung für die Bestellung %Text(orderNumber);</value>
+                        <value>Passwort zurücksetzen</value>
                     </field>
                     <field>
                         <key>subject</key>
                         <type>objectProperty</type>
-                        <value>Zahlung für die Bestellung %Text(orderNumber);</value>
+                        <value>Passwort zurücksetzen</value>
                     </field>
                 </de>
                 <en>
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>en/payment-accepted.html</file>
+                        <file>en/user-reset-password.html</file>
                     </field>
                     <field>
                         <key>head</key>
                         <type>input</type>
-                        <value>Payment for Order %Text(orderNumber);</value>
+                        <value>reset password</value>
                     </field>
                     <field>
                         <key>subject</key>
                         <type>objectProperty</type>
-                        <value>Payment for Order %Text(orderNumber);</value>
+                        <value>reset password</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
+        <document>
+            <type>email</type>
+            <action>order-confirmation</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>order-confirmation</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/order-confirmation.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Bestellbestätigung %Text(orderNumber);</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Bestellbestätigung %Text(orderNumber);</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/order-confirmation.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Order Confirmation %Text(orderNumber);</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Order Confirmation %Text(orderNumber);</value>
                     </field>
                 </en>
             </content>
@@ -139,58 +185,13 @@
             <controller>email</controller>
             <module>CoreShop</module>
             <path>shop/email</path>
-            <key>preparation-in-progress</key>
+            <key>order-shipped</key>
             <content>
                 <de>
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>de/preparation-in-progress.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Bestellung in Vorbereitung %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Bestellung in Vorbereitung %Text(orderNumber);</value>
-                    </field>
-                </de>
-                <en>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>en/preparation-in-progress.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Preparation in progress %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Preparation in progress %Text(orderNumber);</value>
-                    </field>
-                </en>
-            </content>
-        </document>
-
-        <document>
-            <type>email</type>
-            <action>email</action>
-            <controller>email</controller>
-            <module>CoreShop</module>
-            <path>shop/email</path>
-            <key>shipped</key>
-            <content>
-                <de>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>de/shipped.html</file>
+                        <file>de/order-shipped.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -207,7 +208,7 @@
                     <field>
                         <key>text</key>
                         <type>wysiwyg</type>
-                        <file>en/shipped.html</file>
+                        <file>en/order-shipped.html</file>
                     </field>
                     <field>
                         <key>head</key>
@@ -218,186 +219,6 @@
                         <key>subject</key>
                         <type>objectProperty</type>
                         <value>Your order has been shipped %Text(orderNumber);</value>
-                    </field>
-                </en>
-            </content>
-        </document>
-
-        <document>
-            <type>email</type>
-            <action>email</action>
-            <controller>email</controller>
-            <module>CoreShop</module>
-            <path>shop/email</path>
-            <key>refunded</key>
-            <content>
-                <de>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>de/refunded.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Ihre Bestellung wurde erstattet %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Ihre Bestellung wurde erstattet %Text(orderNumber);</value>
-                    </field>
-                </de>
-                <en>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>en/refunded.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Your order has been refunded %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Your order has been refunded %Text(orderNumber);</value>
-                    </field>
-                </en>
-            </content>
-        </document>
-
-        <document>
-            <type>email</type>
-            <action>email</action>
-            <controller>email</controller>
-            <module>CoreShop</module>
-            <path>shop/email</path>
-            <key>payment-error</key>
-            <content>
-                <de>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>de/payment-error.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Fehler bei der Bezahlung %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Fehler bei der Bezahlung %Text(orderNumber);</value>
-                    </field>
-                </de>
-                <en>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>en/payment-error.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Error on payment %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Error on payment %Text(orderNumber);</value>
-                    </field>
-                </en>
-            </content>
-        </document>
-
-        <document>
-            <type>email</type>
-            <action>email</action>
-            <controller>email</controller>
-            <module>CoreShop</module>
-            <path>shop/email</path>
-            <key>out-of-stock</key>
-            <content>
-                <de>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>de/out-of-stock.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Produkte derzeit nicht auf Lager %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Produkte derzeit nicht auf Lager %Text(orderNumber);</value>
-                    </field>
-                </de>
-                <en>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>en/out-of-stock.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Out of Stock %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Out of Stock %Text(orderNumber);</value>
-                    </field>
-                </en>
-            </content>
-        </document>
-
-        <document>
-            <type>email</type>
-            <action>email</action>
-            <controller>email</controller>
-            <module>CoreShop</module>
-            <path>shop/email</path>
-            <key>bankwire</key>
-            <content>
-                <de>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>de/bankwire.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Bezahlung per Überweisung %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Bezahlung per Überweisung %Text(orderNumber);</value>
-                    </field>
-                </de>
-                <en>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>en/bankwire.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Payment by Bankwire %Text(orderNumber);</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Payment by Bankwire %Text(orderNumber);</value>
                     </field>
                 </en>
             </content>
@@ -533,51 +354,6 @@
                         <key>subject</key>
                         <type>objectProperty</type>
                         <value>Message</value>
-                    </field>
-                </en>
-            </content>
-        </document>
-
-        <document>
-            <type>email</type>
-            <action>order-confirmation</action>
-            <controller>email</controller>
-            <module>CoreShop</module>
-            <path>shop/email</path>
-            <key>order-confirmation</key>
-            <content>
-                <de>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>de/order-confirmation.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Bestellbestätigung</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Bestellbestätigung</value>
-                    </field>
-                </de>
-                <en>
-                    <field>
-                        <key>text</key>
-                        <type>wysiwyg</type>
-                        <file>en/order-confirmation.html</file>
-                    </field>
-                    <field>
-                        <key>head</key>
-                        <type>input</type>
-                        <value>Order Confirmation</value>
-                    </field>
-                    <field>
-                        <key>subject</key>
-                        <type>objectProperty</type>
-                        <value>Order Confirmation</value>
                     </field>
                 </en>
             </content>

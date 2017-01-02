@@ -2,6 +2,7 @@
 
 $db = \Pimcore\Db::get();
 $languages = \Pimcore\Tool::getValidLanguages();
+$install = new \CoreShop\Plugin\Install();
 
 $db->query("DELETE FROM users_permission_definitions WHERE `key`='coreshop_permission_order_states'");
 
@@ -26,3 +27,6 @@ foreach ($languages as $lang) {
 
 \CoreShop\Model\Configuration::remove("SYSTEM.MAIL.ORDER.BCC");
 \CoreShop\Model\Configuration::remove("SYSTEM.MAIL.ORDER.NOTIFICATION");
+
+//now install new mail rules!
+$install->installMailRules();

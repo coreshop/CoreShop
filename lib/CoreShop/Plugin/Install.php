@@ -597,8 +597,8 @@ class Install
      */
     public function installMessagingContacts()
     {
-        Configuration::set("SYSTEM.MESSAGING.CONTACT.SALES", 1);
-        Configuration::set("SYSTEM.MESSAGING.CONTACT.TECHNOLOGY", 2);
+        Configuration::set('SYSTEM.MESSAGING.CONTACT.SALES', 1);
+        Configuration::set('SYSTEM.MESSAGING.CONTACT.TECHNOLOGY', 2);
     }
 
     /**
@@ -652,6 +652,110 @@ class Install
         }
 
         return $workflowConfig['id'];
+    }
+
+    public function installMailRules()
+    {
+        $file = PIMCORE_PLUGINS_PATH .'/CoreShop/install/data/rules/mailRules.xml';
+
+        if (!file_exists($file)) {
+            return false;
+        }
+
+        $config = new \Zend_Config_Xml($file);
+        $config = $config->toArray();
+
+        $objects = $config['objects'];
+
+        if (!is_array($objects['MailRule'])) {
+            return false;
+        }
+
+        foreach ($objects['MailRule'] as $class => $rule) {
+
+            $existingRule = \CoreShop\Model\Mail\Rule::getByField('name', $rule['name']);
+
+            if ($existingRule instanceof \CoreShop\Model\Mail\Rule) {
+                continue;
+            }
+
+            $ruleObj = \CoreShop\Model\Mail\Rule::create();
+            $ruleObj->setName($rule['name']);
+            //$rule->setDescription($rule['description']);
+            $ruleObj->setMailType($rule['mailType']);
+
+            $conditions = isset($rule['conditions']['condition']) ? $rule['conditions']['condition'] : [];
+            $actions = isset($rule['actions']['action']) ? $rule['actions']['action'] : [];
+
+            $_conditions = $conditions;
+            $_actions = $actions;
+
+            foreach ($conditions as $condition => $conditionInfo) {
+                if (!is_numeric($condition)) {
+                    $_conditions = [$conditions];
+                    break;
+                }
+            }
+
+            foreach ($actions as $action => $actionInfo) {
+                if (!is_numeric($action)) {
+                    $_actions = [$actions];
+                    break;
+                }
+            }
+
+            $data = array_merge($_conditions, $_actions);
+
+            $objConditions = [];
+            $objActions = [];
+
+            foreach ($data as $objectInfo) {
+                $class = $objectInfo['class'];
+                $params = $objectInfo['params'];
+
+                $class = '\\CoreShop\\Model\\' . $class;
+                $obj = new $class();
+
+                if (is_array($params)) {
+                    foreach($params as $method => $value) {
+                        $setter = 'set' . ucfirst($method);
+                        if(method_exists($obj, $setter)) {
+
+                            //get linked mails
+                            if ($method === 'mails') {
+                                $_val = [];
+                                foreach($value as $lang => $path) {
+                                    $document = Document::getByPath('/' . $path);
+                                    if($document instanceof \Pimcore\Model\Document) {
+                                        $_val[ $lang ] = $document->getId();
+                                    }
+                                }
+
+                                $value = $_val;
+                                unset($_val);
+
+                            }
+
+                            if (is_string($value) && strpos($value, '|') !== FALSE) {
+                                $value = array_filter(explode('|',$value));
+                            }
+
+                            $obj->$setter($value);
+                        }
+                    }
+                }
+
+                if (is_subclass_of($obj, '\CoreShop\Model\Mail\Rule\Condition\AbstractCondition')) {
+                    $objConditions[] = $obj;
+                } elseif (is_subclass_of($obj, '\CoreShop\Model\Mail\Rule\Action\AbstractAction')) {
+                    $objActions[] = $obj;
+                }
+            }
+
+            $ruleObj->setConditions($objConditions);
+            $ruleObj->setActions($objActions);
+            $ruleObj->save();
+        }
     }
 
     /**
