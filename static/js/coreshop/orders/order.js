@@ -68,7 +68,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 iconCls: 'coreshop_icon_orders',
                 border: false,
                 layout: 'border',
-                autoScroll: true,
+                scrollable: 'y',
                 closable: true,
                 items: this.getItems(),
                 dockedItems: [{
@@ -699,6 +699,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             this.mailCorrespondence = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_mail_correspondence'),
                 border : true,
+                scrollable: 'y',
+                maxHeight:360,
                 margin : '0 20 20 0',
                 iconCls : 'coreshop_icon_mail',
                 items : [
