@@ -515,7 +515,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 xtype : 'gridcolumn',
                                 dataIndex : 'carrier',
                                 text : t('coreshop_carrier'),
-                                flex : 1,
+                                flex : 3,
                                 renderer : function (value) {
                                     var store = pimcore.globalmanager.get('coreshop_carriers');
                                     var carrier = store.getById(value);
@@ -537,7 +537,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 xtype : 'gridcolumn',
                                 dataIndex : 'trackingCode',
                                 text : t('coreshop_carrier_tracking_code'),
-                                flex : 1,
+                                flex : 2,
                                 field: {
                                     xtype: 'textfield'
                                 }
@@ -546,7 +546,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 menuDisabled: true,
                                 sortable: false,
                                 xtype: 'actioncolumn',
-                                width: 50,
+                                flex: 1,
                                 items: [{
                                     iconCls: 'pimcore_icon_edit',
                                     tooltip: t('Edit'),
@@ -560,7 +560,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             },
                             {
                                 xtype: 'widgetcolumn',
-                                width : 200,
+                                flex : 2,
                                 widget: {
                                     xtype: 'button',
                                     margin : '5 0 5 0',
@@ -624,7 +624,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             },
                             {
                                 xtype : 'gridcolumn',
-                                flex : 1,
+                                flex : 2,
                                 dataIndex : 'invoiceDate',
                                 text : t('coreshop_invoice_date'),
                                 renderer : function (val) {
@@ -639,7 +639,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 xtype : 'gridcolumn',
                                 dataIndex : 'totalWithoutTax',
                                 text : t('coreshop_total_without_tax'),
-                                width : 150,
+                                flex : 2,
                                 align : 'right',
                                 renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                             },
@@ -647,13 +647,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 xtype : 'gridcolumn',
                                 dataIndex : 'total',
                                 text : t('coreshop_total'),
-                                width : 150,
+                                flex : 2,
                                 align : 'right',
                                 renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                             },
                             {
                                 xtype: 'widgetcolumn',
-                                width : 200,
+                                flex : 2,
                                 widget: {
                                     xtype: 'button',
                                     margin : '5 0 5 0',
@@ -735,7 +735,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             {
                                 xtype: 'actioncolumn',
                                 sortable: false,
-                                width: 50,
+                                flex: 1,
                                 dataIndex: 'emailLogExistsHtml',
                                 header: t('email_log_html'),
                                 items: [{
@@ -832,7 +832,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         xtype : 'gridcolumn',
                         dataIndex : 'datePayment',
                         text : t('date'),
-                        flex : 1,
+                        flex : 3,
                         renderer : function (val) {
                             if (val) {
                                 return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
@@ -843,7 +843,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     },
                     {
                         xtype : 'gridcolumn',
-                        flex : 1,
+                        flex : 3,
                         dataIndex : 'provider',
                         text : t('coreshop_paymentProvider')
                     },
@@ -865,7 +865,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         menuDisabled: true,
                         sortable: false,
                         xtype: 'actioncolumn',
-                        width: 50,
+                        flex: 1,
                         items: [{
                             iconCls: 'pimcore_icon_object',
                             tooltip: t('coreshop_show_transaction_notes'),
@@ -879,7 +879,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         menuDisabled: true,
                         sortable: false,
                         xtype: 'actioncolumn',
-                        width: 50,
+                        flex: 1,
                         items: [{
                             iconCls: 'pimcore_icon_open',
                             tooltip: t('open'),
