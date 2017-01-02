@@ -742,7 +742,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                     tooltip: t('open'),
                                     handler : function (grid, rowIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
-                                        pimcore.helpers.openObject(record.get('emailId'));
+                                        pimcore.helpers.openDocument(record.get('emailId'), 'email');
                                     }
                                 }]
                             }
