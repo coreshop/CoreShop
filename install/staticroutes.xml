@@ -107,7 +107,7 @@
             <reverse>/%lang/shop/message</reverse>
             <module>CoreShop</module>
             <controller>message</controller>
-            <action>index</action>
+            <action>contact</action>
             <variables>lang,act</variables>
             <priority>1</priority>
         </route>
