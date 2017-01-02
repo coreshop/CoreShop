@@ -151,7 +151,7 @@ class CoreShop_Admin_OrderController extends Admin
             $this->_helper->json(['success' => false, 'message' => 'No Message text set']);
         }
 
-        $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get("SYSTEM.MESSAGING.CONTACT.SALES"));
+        $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.CONTACT.SALES'));
         $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), \CoreShop\Model\Shop::getShop()->getId(), $orderId);
 
         if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
