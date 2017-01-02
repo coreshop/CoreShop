@@ -96,7 +96,6 @@ class Mail extends PimcoreMail
         $params['object'] = $message;
 
         $mail->setDocument($emailDocument);
-        $mail->setParams(array_merge($params, ['message' => $message->getMessage(), 'messageObject' => $message]));
         $mail->setEnableLayoutOnPlaceholderRendering(false);
         $mail->addTo($recipient);
         $mail->send();

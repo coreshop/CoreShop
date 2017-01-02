@@ -44,7 +44,7 @@ class CoreShop_EmailController extends Action
 
     public function messageCustomerReplyAction()
     {
-        $this->view->message = $this->getParam('messageObject');
+        $this->view->message = $this->getParam('object');
 
         if ($this->view->message instanceof \CoreShop\Model\Messaging\Message) {
             $this->view->thread = $this->view->message->getThread();
@@ -53,6 +53,6 @@ class CoreShop_EmailController extends Action
 
     public function orderConfirmationAction()
     {
-        $this->view->order = $this->getParam("order");
+        $this->view->order = $this->getParam('order');
     }
 }
