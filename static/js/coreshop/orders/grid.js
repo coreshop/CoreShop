@@ -223,8 +223,12 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             // paging bar on the bottom
             bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
             listeners : {
-                select : function (grid, record) {
-                    this.openOrder(record);
+                itemclick : function (grid, record) {
+                    grid.setLoading(t('loading'));
+
+                    this.openOrder(record, function() {
+                        grid.setLoading(false);
+                    }.bind(this));
                 }.bind(this)
             }
         });
@@ -232,7 +236,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         return this.grid;
     },
 
-    openOrder : function (record) {
-        coreshop.helpers.openOrder(record.get('o_id'));
+    openOrder : function (record, callback) {
+        coreshop.helpers.openOrder(record.get('o_id'), callback);
     }
 });

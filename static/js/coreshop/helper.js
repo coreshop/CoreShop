@@ -124,8 +124,11 @@ coreshop.helpers.constrastColor = function (color) {
     return (parseInt(color.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
 };
 
-coreshop.helpers.openOrder = function (id) {
+coreshop.helpers.openOrder = function (id, callback) {
     if (pimcore.globalmanager.exists('coreshop_order_' + id) == false) {
+
+        pimcore.globalmanager.add('coreshop_order_' + id, true);
+
         Ext.Ajax.request({
             url: '/plugin/CoreShop/admin_order/detail',
             params: {
@@ -141,11 +144,21 @@ coreshop.helpers.openOrder = function (id) {
                     Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
                 }
 
+                if(Ext.isFunction(callback)) {
+                    callback();
+                }
             }.bind(this)
         });
     } else {
         var tab = pimcore.globalmanager.get('coreshop_order_' + id);
-        tab.activate();
+
+        if(Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
+            tab.activate();
+        }
+
+        if(Ext.isFunction(callback)) {
+            callback();
+        }
     }
 };
 
