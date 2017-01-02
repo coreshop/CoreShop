@@ -92,6 +92,9 @@ class Mail extends PimcoreMail
 
         self::mergeDefaultMailSettings($mail, $emailDocument);
 
+        //always add the model to email!
+        $params['object'] = $message;
+
         $mail->setDocument($emailDocument);
         $mail->setParams(array_merge($params, ['message' => $message->getMessage(), 'messageObject' => $message]));
         $mail->setEnableLayoutOnPlaceholderRendering(false);
@@ -112,13 +115,14 @@ class Mail extends PimcoreMail
      * @param Order $order
      * @param bool $sendInvoices
      * @param bool $sendShipments
+     * @param array $params
      *
      * @throws Exception\UnsupportedException
      * @throws \Exception
      *
      * @return bool
      */
-    public static function sendOrderMail($emailDocument, Order $order, $sendInvoices = false, $sendShipments = false)
+    public static function sendOrderMail($emailDocument, Order $order, $sendInvoices = false, $sendShipments = false, $params = [])
     {
         if (!$emailDocument instanceof Document\Email) {
             return false;
@@ -127,7 +131,7 @@ class Mail extends PimcoreMail
         //init Template
         \CoreShop::getTools()->initTemplateForShop($order->getShop());
 
-        $emailParameters = $order->getCustomer()->getObjectVars();
+        $emailParameters = array_merge($order->getCustomer()->getObjectVars(), $params);
         $emailParameters['orderTotal'] = \CoreShop::getTools()->formatPrice($order->getTotal());
         $emailParameters['orderNumber'] = $order->getOrderNumber();
 
@@ -143,7 +147,10 @@ class Mail extends PimcoreMail
         $mail->setDocument($emailDocument);
         $mail->setParams($emailParameters);
         $mail->setEnableLayoutOnPlaceholderRendering(false);
-        $mail->addTo($order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname());
+        $mail->addTo(
+            $order->getCustomer()->getEmail(),
+            $order->getCustomer()->getFirstname() .' '. $order->getCustomer()->getLastname()
+        );
 
         if ($sendInvoices && (bool)Configuration::get('SYSTEM.INVOICE.CREATE')) {
             $invoices = $order->getInvoices();
@@ -214,7 +221,6 @@ class Mail extends PimcoreMail
         $note->addData('document', 'text', $emailDocument->getId());
         $note->addData('recipient', 'text', implode(', ', (array) $mail->getRecipients()));
         $note->addData('subject', 'text', $mail->getSubjectRendered());
-
 
         //Because logger does not return any id, we need to fetch the last one!
         $listing = new Log\Listing();

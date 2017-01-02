@@ -79,8 +79,10 @@ class OrderMail extends Mail
                 $mailDocumentId = $this->mails[$language];
                 $mailDocument = Document::getById($mailDocumentId);
 
+                $params['mailRule'] = $rule;
+
                 if ($mailDocument instanceof Document\Email) {
-                    \CoreShop\Mail::sendOrderMail($mailDocument, $model, $this->getSendInvoices(), $this->getSendShipments());
+                    \CoreShop\Mail::sendOrderMail($mailDocument, $model, $this->getSendInvoices(), $this->getSendShipments(), $params);
                 }
             }
         }
