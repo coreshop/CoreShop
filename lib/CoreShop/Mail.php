@@ -215,10 +215,17 @@ class Mail extends PimcoreMail
         $note->addData('recipient', 'text', implode(', ', (array) $mail->getRecipients()));
         $note->addData('subject', 'text', $mail->getSubjectRendered());
 
-        //@fixme. very vary.
-        $log = Log::getById(Db::get()->lastInsertId());
-        if ($log instanceof Log) {
-            $note->addData('email-log', 'text', $log->getId());
+
+        //Because logger does not return any id, we need to fetch the last one!
+        $listing = new Log\Listing();
+        $listing->addConditionParam('documentId = ?', $emailDocument->getId());
+        $listing->setOrderKey('sentDate');
+        $listing->setOrder('desc');
+        $listing->setLimit(1);
+        $logData = $listing->load();
+
+        if (isset($logData[0]) && $logData[0] instanceof Log) {
+            $note->addData('email-log', 'text', $logData[0]->getId());
         }
 
         $note->save();

@@ -946,6 +946,7 @@ class CoreShop_Admin_OrderController extends Admin
 
             $subject = null;
             $recipient = null;
+            $mailLogId = null;
 
             if( isset($note->data['subject'])) {
                 $subject = $note->data['subject']['data'];
@@ -953,13 +954,17 @@ class CoreShop_Admin_OrderController extends Admin
             if( isset($note->data['recipient'])) {
                 $recipient = $note->data['recipient']['data'];
             }
+            if( isset($note->data['email-log'])) {
+                $mailLogId = $note->data['email-log']['data'];
+            }
 
             $list[] = [
                 'emailId' => (int) $note->data['document']['data'],
                 'date' => $note->date,
                 'description' => $note->description,
                 'subject' => $subject,
-                'recipient' => $recipient
+                'recipient' => $recipient,
+                'mailLogId' => $mailLogId
             ];
         }
 

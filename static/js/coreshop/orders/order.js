@@ -733,6 +733,43 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 flex : 2
                             },
                             {
+                                xtype: 'actioncolumn',
+                                sortable: false,
+                                width: 50,
+                                dataIndex: 'emailLogExistsHtml',
+                                header: t('email_log_html'),
+                                items: [{
+                                    tooltip: t('email_log_show_html_email'),
+                                    icon: '/pimcore/static6/img/flat-color-icons/feedback.svg',
+                                    handler: function(grid, rowIndex){
+                                        var rec = grid.getStore().getAt(rowIndex),
+                                            iFrameSettings = { width : 700, height : 500},
+                                            iFrame = new Ext.Window(
+                                                {
+                                                    title: t('email_log_iframe_title_html'),
+                                                    width: iFrameSettings.width,
+                                                    height: iFrameSettings.height,
+                                                    layout: 'fit',
+                                                    items : [
+                                                        {
+                                                            xtype : 'box',
+                                                            autoEl: {
+                                                                tag: 'iframe',
+                                                                src: '/admin/email/show-email-log/?id=' + rec.get('mailLogId') + '&type=html'}
+                                                        }
+                                                    ]
+                                                }
+                                            );
+                                        iFrame.show();
+                                    }.bind(this),
+                                    getClass: function(v, meta, rec) {
+                                        if(rec.get('mailLogId') === null){
+                                            return 'pimcore_hidden';
+                                        }
+                                    }
+                                }]
+                            },
+                            {
                                 menuDisabled: true,
                                 sortable: false,
                                 xtype: 'actioncolumn',
