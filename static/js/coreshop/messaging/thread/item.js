@@ -28,7 +28,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
         this.panel = this.getPanel();
 
         this.panel.on('beforedestroy', function () {
-            delete this.parentPanel.panels[this.panelKey];
+            pimcore.globalmanager.remove(this.panelKey);
         }.bind(this));
 
         var tabPanel = Ext.getCmp('pimcore_panel_tabs');

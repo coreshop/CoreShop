@@ -152,7 +152,7 @@ class CoreShop_Admin_OrderController extends Admin
         }
 
         $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.CONTACT.SALES'));
-        $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), \CoreShop\Model\Shop::getShop()->getId(), $orderId);
+        $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), $order->getShop()->getId(), $orderId);
 
         if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
             $thread = CoreShop\Model\Messaging\Thread::create();
@@ -261,6 +261,29 @@ class CoreShop_Admin_OrderController extends Admin
 
             $jsonOrder['priceRule'] = $rules;
         }
+
+        $jsonOrder['threads'] = [];
+        $jsonOrder['unreadMessages'] = 0;
+
+        $threads = \CoreShop\Model\Messaging\Thread::getList();
+        $threads->setCondition("orderId = ?", [$order->getId()]);
+        $threads->load();
+
+        foreach($threads as $thread) {
+            if($thread instanceof \CoreShop\Model\Messaging\Thread) {
+                $threadResult = $thread->getObjectVars();
+
+                $messageList = \CoreShop\Model\Messaging\Message::getList();
+                $messageList->setCondition("threadId = ? AND `read` = '0'", [$thread->getId()]);
+                $messageList->load();
+
+                $threadResult['unread'] = count($messageList->getData());
+                $jsonOrder['unreadMessages'] += $threadResult['unread'];
+
+                $element['threads'][] = $threadResult;
+            }
+        }
+
 
         $this->_helper->json(["success" => true, "order" => $jsonOrder]);
     }
@@ -444,7 +467,6 @@ class CoreShop_Admin_OrderController extends Admin
         $shippingAddressId = $this->getParam("shippingAddress");
         $billingAddressId = $this->getParam("billingAddress");
 
-        //$language = $this->getParma("language");
         $currency = \CoreShop\Model\Currency::getById($this->getParam("currency"));
 
         $user = \CoreShop\Model\User::getById($customerId);
@@ -493,7 +515,6 @@ class CoreShop_Admin_OrderController extends Admin
         $carrierId = $this->getParam('carrier');
         $freeShipping = $this->getParam('freeShipping');
 
-        //$language = $this->getParma('language');
         $currency = \CoreShop\Model\Currency::getById($this->getParam('currency'));
 
         $user = \CoreShop\Model\User::getById($customerId);
@@ -637,6 +658,7 @@ class CoreShop_Admin_OrderController extends Admin
     }
 
     /**
+     * @param $user
      * @param $shippingAddress
      * @param $billingAddress
      * @param $currency
@@ -892,11 +914,11 @@ class CoreShop_Admin_OrderController extends Admin
     }
 
     /**
-     * @param $order
+     * @param \CoreShop\Model\Order $order
      *
      * @return array
      */
-    protected function getMailCorrespondence($order)
+    protected function getMailCorrespondence(\CoreShop\Model\Order $order)
     {
         $list = [];
 
@@ -909,29 +931,16 @@ class CoreShop_Admin_OrderController extends Admin
         $objects = $noteList->load();
 
         foreach ($objects as $note) {
-
-            $subject = null;
-            $recipient = null;
-            $mailLogId = null;
-
-            if( isset($note->data['subject'])) {
-                $subject = $note->data['subject']['data'];
-            }
-            if( isset($note->data['recipient'])) {
-                $recipient = $note->data['recipient']['data'];
-            }
-            if( isset($note->data['email-log'])) {
-                $mailLogId = $note->data['email-log']['data'];
-            }
-
-            $list[] = [
-                'emailId' => (int) $note->data['document']['data'],
+            $noteElement = [
                 'date' => $note->date,
-                'description' => $note->description,
-                'subject' => $subject,
-                'recipient' => $recipient,
-                'mailLogId' => $mailLogId
+                'description' => $note->description
             ];
+
+            foreach($note->data as $key => $noteData) {
+                $noteElement[$key] = $noteData['data'];
+            }
+
+            $list[] = $noteElement;
         }
 
         return $list;

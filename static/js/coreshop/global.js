@@ -58,6 +58,8 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.get('coreshop_currencies').load();
         pimcore.globalmanager.get('coreshop_shops').load();
         pimcore.globalmanager.get('coreshop_carriers').load();
+        pimcore.globalmanager.get('coreshop_messaging_contacts').load();
+        pimcore.globalmanager.get('coreshop_messaging_thread_states').load();
 
         pimcore.globalmanager.add('coreshop_order_states', new Ext.data.JsonStore({
             data : this.settings.orderStates,

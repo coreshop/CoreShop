@@ -234,7 +234,8 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
         if (this.panels[panelKey])
         {
             this.panels[panelKey].activate();
-        } else
+        }
+        else
         {
             Ext.Ajax.request({
                 url: this.url.get,

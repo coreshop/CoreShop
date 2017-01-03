@@ -102,7 +102,7 @@ class Mail extends PimcoreMail
         $mail->send();
 
         if ($thread->getOrder() instanceof Order) {
-            static::addOrderNote($thread->getOrder(), $emailDocument, $mail);
+            static::addOrderNote($thread->getOrder(), $emailDocument, $mail, ['threadId' => $message->getThreadId()]);
         }
 
         return true;
@@ -207,10 +207,11 @@ class Mail extends PimcoreMail
      * @param Order          $order
      * @param Document\Email $emailDocument
      * @param Mail           $mail
+     * @param array          $params
      *
      * @return bool
      */
-    private static function addOrderNote(Order $order, Document\Email $emailDocument, Mail $mail)
+    private static function addOrderNote(Order $order, Document\Email $emailDocument, Mail $mail, $params = [])
     {
         $translate = \CoreShop::getTools()->getTranslate();
 
@@ -221,6 +222,10 @@ class Mail extends PimcoreMail
         $note->addData('document', 'text', $emailDocument->getId());
         $note->addData('recipient', 'text', implode(', ', (array) $mail->getRecipients()));
         $note->addData('subject', 'text', $mail->getSubjectRendered());
+
+        foreach($params as $key => $value) {
+            $note->addData($key, 'text', $value);
+        }
 
         //Because logger does not return any id, we need to fetch the last one!
         $listing = new Log\Listing();

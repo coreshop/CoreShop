@@ -162,6 +162,38 @@ coreshop.helpers.openOrder = function (id, callback) {
     }
 };
 
+coreshop.helpers.openMessagingThread = function(id) {
+    var panelKey = 'coreshop_messaging_thread_' + id;
+
+    if (pimcore.globalmanager.exists(panelKey) == false) {
+
+        pimcore.globalmanager.add(panelKey, true);
+
+        Ext.Ajax.request({
+            url: '/plugin/CoreShop/admin_messaging-thread/get',
+            params: {
+                id: id
+            },
+            success: function (response) {
+                var res = Ext.decode(response.responseText);
+
+                if (res.success) {
+                    pimcore.globalmanager.add(panelKey, new pimcore.plugin.coreshop.messaging.thread.item(null, res.data, panelKey, panelKey, 'thread'));
+                } else {
+                    //TODO: Show messagebox
+                    Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
+                }
+            }.bind(this)
+        });
+    } else {
+        var tab = pimcore.globalmanager.get('coreshop_messaging_thread_' + id);
+
+        if(Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
+            tab.activate();
+        }
+    }
+};
+
 coreshop.helpers.requestNicePathData = function(targets, responseHandler) {
     var elementData = Ext.encode(targets);
 

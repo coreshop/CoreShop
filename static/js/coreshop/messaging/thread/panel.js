@@ -78,6 +78,10 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
         };
     },
 
+    openItem : function(record) {
+        coreshop.helpers.openMessagingThread(record.id);
+    },
+
     getGrid : function () {
         if (!this.grid) {
             //var store = pimcore.globalmanager.get(this.storeId);

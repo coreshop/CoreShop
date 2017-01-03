@@ -225,7 +225,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 },
                 {
                     xtype : 'panel',
-                    html : t('coreshop_messaging_messages') + '<br/><span class="coreshop_order_big">' + 0 + '</span>', //TODO: Add Messages
+                    html : t('coreshop_messaging_messages') + '<br/><span class="coreshop_order_big">' + this.order.unreadMessages + '</span>', //TODO: Add Messages
                     bodyPadding : 20,
                     flex : 1
                 },
@@ -737,12 +737,11 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             {
                                 xtype: 'actioncolumn',
                                 sortable: false,
-                                flex: 1,
+                                width: 50,
                                 dataIndex: 'emailLogExistsHtml',
                                 header: t('email_log_html'),
                                 items: [{
                                     tooltip: t('email_log_show_html_email'),
-                                    icon: '/pimcore/static6/img/flat-color-icons/feedback.svg',
                                     handler: function(grid, rowIndex){
                                         var rec = grid.getStore().getAt(rowIndex),
                                             iFrameSettings = { width : 700, height : 500},
@@ -757,17 +756,19 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                                             xtype : 'box',
                                                             autoEl: {
                                                                 tag: 'iframe',
-                                                                src: '/admin/email/show-email-log/?id=' + rec.get('mailLogId') + '&type=html'}
+                                                                src: '/admin/email/show-email-log/?id=' + rec.get('email-log') + '&type=html'}
                                                         }
                                                     ]
                                                 }
                                             );
                                         iFrame.show();
-                                    }.bind(this),
+                                    },
                                     getClass: function(v, meta, rec) {
-                                        if(rec.get('mailLogId') === null){
+                                        if(!Ext.isDefined(rec.get('email-log')) || rec.get('email-log') === null) {
                                             return 'pimcore_hidden';
                                         }
+
+                                        return 'pimcore_icon_newsletter';
                                     }
                                 }]
                             },
@@ -775,13 +776,37 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 menuDisabled: true,
                                 sortable: false,
                                 xtype: 'actioncolumn',
-                                flex : 1,
+                                width: 50,
                                 items: [{
                                     iconCls: 'pimcore_icon_open',
                                     tooltip: t('open'),
                                     handler : function (grid, rowIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
                                         pimcore.helpers.openDocument(record.get('emailId'), 'email');
+                                    }
+                                }]
+                            },
+                            {
+                                xtype: 'actioncolumn',
+                                width: 50,
+                                sortable: false,
+                                items: [{
+                                    tooltip: t('open'),
+                                    handler: function(grid, rowIndex){
+                                        var rec = grid.getStore().getAt(rowIndex);
+                                        var threadId = rec.get("threadId");
+
+                                        if(threadId) {
+                                            coreshop.helpers.openMessagingThread(threadId);
+                                        }
+
+                                    },
+                                    getClass: function(v, meta, rec) {
+                                        if(!Ext.isDefined(rec.get('threadId')) || rec.get('threadId') === null) {
+                                            return 'pimcore_hidden';
+                                        }
+
+                                        return 'coreshop_icon_messaging_thread';
                                     }
                                 }]
                             }
