@@ -735,6 +735,18 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 flex : 2
                             },
                             {
+                                xtype : 'gridcolumn',
+                                text : t('coreshop_messaging_message_read'),
+                                width : 100,
+                                renderer : function(value, metaData, rec) {
+                                    if(Ext.isDefined(rec.get('read'))) {
+                                        return rec.get('read') ? t('yes') : t('no');
+                                    }
+
+                                    return '';
+                                }
+                            },
+                            {
                                 xtype: 'actioncolumn',
                                 sortable: false,
                                 width: 50,

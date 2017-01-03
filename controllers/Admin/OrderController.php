@@ -940,6 +940,14 @@ class CoreShop_Admin_OrderController extends Admin
                 $noteElement[$key] = $noteData['data'];
             }
 
+            if(array_key_exists('messageId', $noteElement)) {
+                $message = \CoreShop\Model\Messaging\Message::getById($noteElement['messageId']);
+
+                if($message instanceof \CoreShop\Model\Messaging\Message) {
+                    $noteElement['read'] = $message->getRead();
+                }
+            }
+
             $list[] = $noteElement;
         }
 

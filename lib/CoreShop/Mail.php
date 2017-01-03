@@ -102,7 +102,7 @@ class Mail extends PimcoreMail
         $mail->send();
 
         if ($thread->getOrder() instanceof Order) {
-            static::addOrderNote($thread->getOrder(), $emailDocument, $mail, ['threadId' => $message->getThreadId()]);
+            static::addOrderNote($thread->getOrder(), $emailDocument, $mail, ['threadId' => $message->getThreadId(), 'messageId' => $message->getId()]);
         }
 
         return true;
