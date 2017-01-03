@@ -59,6 +59,10 @@ class Rule extends AbstractRule
      */
     public $mailType;
 
+    /**
+     * @var int
+     */
+    public $sort;
 
     /**
      * @param string $type
@@ -326,4 +330,21 @@ class Rule extends AbstractRule
     {
         $this->mailType = $mailType;
     }
+
+    /**
+     * @return int
+     */
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @param int $sort
+     */
+    public function setSort($sort)
+    {
+        $this->sort = $sort;
+    }
+
 }

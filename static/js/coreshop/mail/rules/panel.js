@@ -28,7 +28,8 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
         delete : '/plugin/CoreShop/admin_mail-rule/delete',
         get : '/plugin/CoreShop/admin_mail-rule/get',
         list : '/plugin/CoreShop/admin_mail-rule/list',
-        config : '/plugin/CoreShop/admin_mail-rule/get-config'
+        config : '/plugin/CoreShop/admin_mail-rule/get-config',
+        sort : '/plugin/CoreShop/admin_mail-rule/sort'
     },
 
     getItemClass : function () {
@@ -54,5 +55,86 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
         }
 
         return [];
+    },
+
+    getNavigation: function () {
+        if (!this.grid) {
+
+            this.grid = Ext.create('Ext.grid.Panel', {
+                region: 'west',
+                store: pimcore.globalmanager.get(this.storeId),
+                columns: [
+                    {
+                        text: '',
+                        dataIndex: 'text',
+                        flex : 1,
+                        renderer: function (value, metadata, record)
+                        {
+                            metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
+
+                            return value;
+                        }
+                    }
+                ],
+                listeners : this.getTreeNodeListeners(),
+                useArrows: true,
+                autoScroll: true,
+                animate: true,
+                containerScroll: true,
+                width: 200,
+                split: true,
+                tbar: {
+                    items: [
+                        {
+                            // add button
+                            text: t('add'),
+                            iconCls: 'pimcore_icon_add',
+                            handler: this.addItem.bind(this)
+                        }
+                    ]
+                },
+                bbar : {
+                    items : ['->', {
+                        iconCls: 'pimcore_icon_reload',
+                        scale : 'small',
+                        handler: function() {
+                            this.grid.getStore().load();
+                        }.bind(this)
+                    }]
+                },
+                hideHeaders: true,
+                viewConfig: {
+                    plugins: {
+                        ptype: 'gridviewdragdrop',
+                        dragText: t('coreshop_grid_reorder')
+                    },
+                    listeners: {
+                        drop: function(node, data, dropRec, dropPosition) {
+                            this.grid.setLoading(t('loading'));
+
+                            Ext.Ajax.request({
+                                url: this.url.sort,
+                                method: 'post',
+                                params: {
+                                    rule: data.records[0].getId(),
+                                    toRule: dropRec.getId(),
+                                    position: dropPosition
+                                },
+                                callback: function (request, success, response) {
+                                    this.grid.setLoading(false);
+                                }.bind(this)
+                            });
+                        }.bind(this)
+                    }
+                }
+            });
+
+            this.grid.on('beforerender', function () {
+                this.getStore().load();
+            });
+
+        }
+
+        return this.grid;
     }
 });

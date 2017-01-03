@@ -35,6 +35,8 @@ class CoreShop_Admin_MailRuleController extends Admin
     public function listAction()
     {
         $list = \CoreShop\Model\Mail\Rule::getList();
+        $list->setOrderKey("sort");
+        $list->setOrder("ASC");
         $rules = $list->load();
         $data = [];
 
@@ -92,11 +94,66 @@ class CoreShop_Admin_MailRuleController extends Admin
     {
         $name = $this->getParam('name');
 
+        $count = Rule::getList()->getCount();
+
         $rule = \CoreShop\Model\Mail\Rule::create();
         $rule->setName($name);
+        $rule->setSort($count+1);
         $rule->save();
 
         $this->_helper->json(['success' => true, 'data' => $rule]);
+    }
+
+    public function sortAction() {
+        $rule = $this->getParam("rule");
+        $toRule = $this->getParam("toRule");
+        $position = $this->getParam("position");
+
+        $rule = Rule::getById($rule);
+        $toRule = Rule::getById($toRule);
+
+        $direction = $rule->getSort() < $toRule->getSort() ? 'down' : 'up';
+
+        if($direction === 'down') {
+            //Update all records in between and move one direction up.
+
+            $fromSort = $rule->getSort()+1;
+            $toSort = $toRule->getSort();
+
+            if($position === 'before') {
+                $toSort -= 1;
+            }
+
+            $list = new Rule\Listing();
+            $list->setCondition("sort >= ? AND sort <= ?", [$fromSort, $toSort]);
+
+            foreach($list->getData() as $newRule) {
+                $newRule->setSort($newRule->getSort() - 1);
+                $newRule->save();
+            }
+
+            $rule->setSort($toSort);
+            $rule->save();
+        }
+        else {
+            //Update all records in between and move one direction down.
+
+            $fromSort = $toRule->getSort();
+            $toSort = $rule->getSort();
+
+            $list = new Rule\Listing();
+            $list->setCondition("sort >= ? AND sort <= ?", [$fromSort, $toSort]);
+
+            foreach($list->getData() as $newRule) {
+                $newRule->setSort($newRule->getSort() + 1);
+                $newRule->save();
+            }
+
+            $rule->setSort($fromSort);
+            $rule->save();
+        }
+
+        $this->_helper->json(['success' => true]);
     }
 
     public function getAction()

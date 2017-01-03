@@ -907,6 +907,7 @@ CREATE TABLE `coreshop_visitors_source` (
 DROP TABLE IF EXISTS `coreshop_mail_rules`;
 CREATE TABLE `coreshop_mail_rules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sort` int NOT NULL DEFAULT 1,
   `name` varchar(50) DEFAULT NULL,
   `mailType` varchar(50) DEFAULT NULL,
   `description` text,
