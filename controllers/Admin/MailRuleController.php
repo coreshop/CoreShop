@@ -84,12 +84,6 @@ class CoreShop_Admin_MailRuleController extends Admin
         ]);
     }
 
-    public function getExternalEventsAction()
-    {
-        $events = Rule\Event\EventDispatcher::getExternalEvents();
-        $this->_helper->json(['data' => $events]);
-    }
-
     public function addAction()
     {
         $name = $this->getParam('name');
