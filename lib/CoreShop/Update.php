@@ -438,7 +438,7 @@ class Update
                     include $script;
                 }
             } catch (\Exception $e) {
-                \Logger::error($e);
+                \Pimcore\Logger::error($e);
             }
             $outputMessage = ob_get_clean();
         }
@@ -459,12 +459,17 @@ class Update
     public static function installClass($class)
     {
         if (!self::$dryRun) {
-            $install = new Install();
-            $install->createClass($class, true);
+
+            try {
+                $install = new Install();
+                $install->createClass($class, true);
+            } catch(\Exception $e) {
+                \Pimcore\Logger::err('CoreShop installClass error (' . $class . '): ' . $e->getMessage());
+            }
         }
 
         return [
-            'message' => 'Installed Class '.$class,
+            'message' => 'Installed Class ' . $class,
             'success' => true,
         ];
     }

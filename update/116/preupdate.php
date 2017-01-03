@@ -6,7 +6,204 @@ $db = \Pimcore\Db::get();
 $orderListing = \CoreShop\Model\Order::getList();
 $classId = $orderListing->getClassId();
 
-$workflowConfig = \CoreShop\Model\Order\Workflow::getWorkflowConfig();
+$workflowConfig = [
+    "name" => "OrderState",
+    "id" => null,
+    "workflowSubject" => [
+        "types" => ["object"],
+        "classes" => [8],
+    ],
+    "enabled" => true,
+    "defaultState" => "initialized",
+    "defaultStatus" => "initialized",
+    "allowUnpublished" => true,
+    "states" => [
+        [
+            "name" => "initialized",
+            "label" => "Initialized",
+            "color" => "#4d4a4c"
+        ],
+        [
+            "name" => "new",
+            "label" => "New",
+            "color" => "#9bc4c4"
+        ],
+        [
+            "name" => "pending_payment",
+            "label" => "Pending Payment",
+            "color" => "#d0c31f"
+        ],
+        [
+            "name" => "processing",
+            "label" => "Processing",
+            "color" => "#3081ba"
+        ],
+        [
+            "name" => "complete",
+            "label" => "Complete",
+            "color" => "#73a623"
+        ],
+        [
+            "name" => "closed",
+            "label" => "Closed",
+            "color" => "#ffc301"
+        ],
+        [
+            "name" => "canceled",
+            "label" => "Canceled",
+            "color" => "#c12f30"
+        ],
+        [
+            "name" => "holded",
+            "label" => "On Hold",
+            "color" => "#b9c1bd"
+        ],
+        [
+            "name" => "payment_review",
+            "label" => "Payment Review",
+            "color" => "#ae61db"
+        ]
+    ],
+    "statuses" => [
+        [
+            "name" => "initialized",
+            "label" => "Initialized",
+            "elementPublished" => TRUE
+        ],
+        [
+            "name" => "pending",
+            "label" => "Pending",
+            "elementPublished" => true
+        ],
+        [
+            "name" => "pending_payment",
+            "label" => "Pending Payment",
+            "elementPublished" => true
+        ],
+        [
+            "name" => "processing",
+            "label" => "Processing",
+            "elementPublished" => true
+        ],
+        [
+            "name" => "complete",
+            "label" => "Complete",
+            "elementPublished" => true
+        ],
+        [
+            "name" => "closed",
+            "label" => "Closed",
+            "elementPublished" => true
+        ],
+        [
+            "name" => "canceled",
+            "label" => "Canceled",
+            "elementPublished" => true
+        ],
+        [
+            "name" => "holded",
+            "label" => "On Hold",
+            "elementPublished" => true
+        ],
+        [
+            "name" => "payment_review",
+            "label" => "Payment Review",
+            "elementPublished" => true
+        ]
+    ],
+    "actions" => [
+        [
+            "name" => "change_order_state",
+            "label" => "Change Order State",
+            "transitionTo" => [
+                "initialized" => [
+                    "initialized"
+                ],
+                "new" => [
+                    "pending"
+                ],
+                "pending_payment" => [
+                    "pending_payment"
+                ],
+                "processing" => [
+                    "processing"
+                ],
+                "complete" => [
+                    "complete"
+                ],
+                "closed" => [
+                    "closed"
+                ],
+                "canceled" => [
+                    "canceled"
+                ],
+                "holded" => [
+                    "holded"
+                ],
+                "payment_review" => [
+                    "payment_review"
+                ]
+            ],
+            "events" => [
+                "before" => ["\\CoreShop\\Model\\Order\\Workflow", "beforeDispatchOrderChange"],
+                "success" => ["\\CoreShop\\Model\\Order\\Workflow", "dispatchOrderChange"],
+                "failure" => ["\\CoreShop\\Model\\Order\\Workflow", "dispatchOrderChangeFailed"]
+            ],
+            "notes" => [
+                "type" => "Order State Change",
+                "required" => false
+            ]
+        ]
+    ],
+    "transitionDefinitions" => [
+        "initialized" => [
+            "validActions" => [
+                "change_order_state" => NULL
+            ]
+        ],
+        "pending" => [
+            "validActions" => [
+                "change_order_state" => null,
+            ]
+        ],
+        "pending_payment" => [
+            "validActions" => [
+                "change_order_state" => null,
+            ]
+        ],
+        "processing" => [
+            "validActions" => [
+                "change_order_state" => null,
+            ]
+        ],
+        "complete" => [
+            "validActions" => [
+                "change_order_state" => null,
+            ]
+        ],
+        "closed" => [
+            "validActions" => [
+                "change_order_state" => null,
+            ]
+        ],
+        "canceled" => [
+            "validActions" => [
+                "change_order_state" => null,
+            ]
+        ],
+        "holded" => [
+            "validActions" => [
+                "change_order_state" => null,
+            ]
+        ],
+        "payment_review" => [
+            "validActions" => [
+                "change_order_state" => null,
+            ]
+        ],
+    ]
+];
+
 $systemWorkflowConfig = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
 
 $configFile = PIMCORE_CONFIGURATION_DIRECTORY . '/workflowmanagement.php';
