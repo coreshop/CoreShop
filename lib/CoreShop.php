@@ -171,37 +171,6 @@ class CoreShop
     }
 
     /**
-     * Call a CoreShop hook.
-     *
-     * @param $name
-     * @param array $params
-     *
-     * @return string
-     *
-     * @throws \Zend_Exception
-     *
-     * @deprecated will be removed in Version 1.2
-     */
-    public static function hook($name, $params = [])
-    {
-        $params['language'] = static::getTools()->getLocale();
-
-        $results = \Pimcore::getEventManager()->trigger('coreshop.hook.'.$name, null, $params);
-
-        if (count($results) > 0) {
-            $return = [];
-
-            foreach ($results as $result) {
-                $return[] = $result->render($params);
-            }
-
-            return implode($return, "\n");
-        }
-
-        return false;
-    }
-
-    /**
      * Call an action hook.
      *
      * @param $name
