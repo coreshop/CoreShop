@@ -247,15 +247,13 @@
 "coreshop_more","CoreShop Mehr"
 "coreshop_open_invoice","Rechnung öffnen"
 "coreshop_reports","Auswertung"
-
 "coreshop_report_user_name","Kundenname"
 "coreshop_report_user_email","E-Mail"
 "coreshop_report_creation_date","Erstellungsdatum"
 "coreshop_report_modifiction_date","Modifizierungsdatum"
 "coreshop_report_items_in_cart","Artikel im Warenkorb"
 "coreshop_report_selected_payment","Ausgewählter Bezahldienst"
-
-"coreshop_report_carts","Warenkörbe"
+"coreshop_report_carts","Warenkörbe/Bestellungen Vergleich"
 "coreshop_report_carts_abandoned","Stehen gelassene Warenkörbe"
 "coreshop_report_sales","Verkäufe"
 "coreshop_report_day","Tag"
