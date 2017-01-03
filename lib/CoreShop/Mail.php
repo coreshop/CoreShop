@@ -51,7 +51,9 @@ class Mail extends PimcoreMail
 
         if ($model instanceof Order) {
             $params['orderNumber'] = $model->getOrderNumber();
+            $params = array_merge($model->getCustomer()->getObjectVars(), $params);
             $recipient = $model->getCustomer()->getEmail();
+            unset($params['____pimcore_cache_item__']);
         }
 
         self::mergeDefaultMailSettings($mail, $emailDocument);
