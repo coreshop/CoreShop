@@ -681,6 +681,7 @@ class Install
 
             $ruleObj = \CoreShop\Model\Mail\Rule::create();
             $ruleObj->setName($rule['name']);
+            $ruleObj->setSort(1);
             //$rule->setDescription($rule['description']);
             $ruleObj->setMailType($rule['mailType']);
 
