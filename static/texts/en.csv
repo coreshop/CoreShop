@@ -247,7 +247,16 @@
 "coreshop_more","CoreShop More"
 "coreshop_open_invoice","Open Invoice"
 "coreshop_reports","Reports"
+
+"coreshop_report_user_name","Name"
+"coreshop_report_user_email","Email"
+"coreshop_report_creation_date","Creation Date"
+"coreshop_report_modifiction_date","Modification Date"
+"coreshop_report_items_in_cart","Items in Cart"
+"coreshop_report_selected_payment","Selected Payment"
+
 "coreshop_report_carts","Cart Report"
+"coreshop_report_carts_abandoned","Abandoned Cart Report"
 "coreshop_report_sales","Sales Report"
 "coreshop_report_day","Day"
 "coreshop_report_day_minus","Day -1"

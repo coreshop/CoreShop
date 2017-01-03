@@ -274,6 +274,10 @@
     background: url(/plugins/CoreShop/static/img/flat/cart.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_cart_abandoned, .coreshop_icon_report_carts_abandoned {
+    background: url(/plugins/CoreShop/static/img/flat/cart-abandoned.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_report_sales {
     background: url(/plugins/CoreShop/static/img/flat/sales.svg) center center no-repeat !important;
 }

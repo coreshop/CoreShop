@@ -234,6 +234,74 @@ class CoreShop_Admin_ReportsController extends Admin
     }
 
     /**
+     * Return Abandoned Carts from last 31 Days.
+     */
+    public function getOrdersCartsAbandonedReportAction()
+    {
+
+        $maxToday = new \Pimcore\Date();
+        $minToday = new \Pimcore\Date();
+
+        //abandoned = 48h before today.
+        $maxTo = $maxToday->subDay(2)->addSecond(1);
+        $minFrom = $minToday->subDay(3);
+
+        $filters = $this->getParam('filters', ['from' => $minFrom->get('d.M.y'), 'to' => $maxTo->get('d.M.y')]);
+
+        $page = $this->getParam('page', 1);
+        $limit = $this->getParam('limit', 25);
+        $offset = $this->getParam('offset', $page === 1 ? 0 : ($page-1)*$limit);
+
+        $from = new \Pimcore\Date($filters['from']);
+        $to = new \Pimcore\Date($filters['to']);
+
+        $userClassId = Model\User::classId();
+        $cartClassId = Model\Cart::classId();
+
+        $db = \Pimcore\Db::get();
+
+        $fromTimestamp = $from->getTimestamp();
+        $toTimestamp = $to->getTimestamp();
+
+        if ($from->isLater($minFrom)) {
+            $from = $minFrom;
+            $fromTimestamp = $minFrom->getTimestamp();
+        }
+
+        if ($to->isLater($maxTo)) {
+            $to = $maxTo;
+            $toTimestamp = $to->getTimestamp();
+        }
+
+        $sqlQuery = "SELECT SQL_CALC_FOUND_ROWS
+                         cart.o_creationDate as creationDate,
+                         cart.o_modificationDate as modificationDate,
+                         cart.paymentModule as selectedPayment,
+                         cart.items,
+                         cart.oo_id as cartId,
+                         user.email, CONCAT(user.firstname, ' ', user.lastname) as userName
+                        FROM object_$cartClassId as cart
+                        LEFT JOIN object_$userClassId as user ON user.oo_id = cart.user__id
+                        WHERE cart.items <> ''
+                          AND cart.order__id IS NOT NULL
+                          AND cart.o_creationDate > ?
+                          AND cart.o_creationDate < ?
+                     GROUP BY cart.oo_id LIMIT $offset,$limit";
+
+        $data = $db->fetchAll($sqlQuery, [$fromTimestamp, $toTimestamp]);
+
+        $total = (int) $db->fetchOne('SELECT FOUND_ROWS()');
+
+        foreach ($data as &$entry) {
+
+            $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));
+            unset($entry['items']);
+        }
+
+        $this->_helper->json(['data' => $data, 'count' => count($data), 'total' => $total]);
+    }
+
+    /**
      * Return Sales from last 31 days.
      */
     public function getSalesReportAction()

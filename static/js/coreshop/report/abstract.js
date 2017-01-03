@@ -46,14 +46,34 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
         return this.panel.down('[name=to]');
     },
 
+    getFromStartDate : function() {
+        return new Date(new Date().getFullYear(), 0, 1);
+    },
+
+    getToStartDate : function() {
+        return new Date(new Date().getFullYear(), 11, 31);
+    },
+
+    showPaginator: function () {
+        return false;
+    },
+
     getPanel: function () {
 
         if (!this.panel) {
+
+            var bbar = null;
+
+            if(this.showPaginator() !== false) {
+                bbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.getStore());
+            }
+
             this.panel = new Ext.Panel({
                 title: this.getName(),
                 layout: 'fit',
                 border: false,
                 items: [],
+                bbar: bbar,
                 dockedItems : {
                     xtype: 'toolbar',
                     dock: 'top',
@@ -159,13 +179,13 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
                 xtype: 'datefield',
                 fieldLabel: t('coreshop_report_year_from'),
                 name : 'from',
-                value : new Date(new Date().getFullYear(), 0, 1)
+                value : this.getFromStartDate()
             },
             {
                 xtype: 'datefield',
                 fieldLabel: t('coreshop_report_year_to'),
                 name : 'to',
-                value : new Date(new Date().getFullYear(), 11, 31)
+                value : this.getToStartDate()
             },
             {
                 xtype : 'button',
@@ -179,7 +199,8 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
 
     getStore : function () {
         if (!this.store) {
-            var fields = ['timestamp', 'text', 'data'];
+            var me = this,
+                fields = ['timestamp', 'text', 'data'];
 
             if(Ext.isFunction(this.getStoreFields)) {
                 fields = Ext.apply(fields, this.getStoreFields());
@@ -196,10 +217,15 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
                     },
                     reader: {
                         type: 'json',
-                        rootProperty: 'data'
+                        rootProperty: 'data',
+                        totalProperty : 'total'
                     }
                 },
                 fields: fields
+            });
+
+            this.store.on('beforeload', function(store, operation) {
+                store.getProxy().setExtraParams(me.getFilterParams());
             });
         }
 
@@ -207,9 +233,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
     },
 
     filter : function () {
-        this.getStore().load({
-            params : this.getFilterParams()
-        });
+        this.getStore().load();
     },
 
     getFilterParams : function () {
