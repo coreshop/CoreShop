@@ -1,6 +1,6 @@
 # CoreShop Override Pimcore Classes
 
-All CoreShop Classes (except Carriers) can be extended using Pimcore Classmaps
+All CoreShop Classes can be extended using Pimcore Classmaps
 
 https://www.pimcore.org/wiki/display/PIMCORE4/Class-Mappings+-+Overwrite+pimcore+models
 

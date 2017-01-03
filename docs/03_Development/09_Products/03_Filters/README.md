@@ -76,3 +76,7 @@ Similarity works in CoreShop using a **number**. The number is then sorted and t
 To assign a filter to a category, open a CoreShopCategory object and select one of your filters.
 
 ![Filter Condition Select](img/filter-category.png)
+
+## Create Custom Conditions
+
+[Click here to read more about Custom Filter Conditions](./01_Create_Custom_Conditions.md)

@@ -15,4 +15,5 @@ This section provides a quick getting started tutorial for CoreShop and covers t
 10. [Cart](./10_Cart.md)
 11. [Override Controllers](./11_Override_Controllers.md)
 12. [Override Pimcore Classes](./12_Override_Pimcore_Classes.md)
-13. [Override Controllers](./13_Tracking.md)
+13. [Tracking](./13_Tracking.md)
+14. [Extending Price Rules](./14_Price_Rules.md)
