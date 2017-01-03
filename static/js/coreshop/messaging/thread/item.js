@@ -36,6 +36,11 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
         tabPanel.setActiveItem(this.panel);
     },
 
+    activate : function () {
+        var tabPanel = Ext.getCmp('pimcore_panel_tabs');
+        tabPanel.setActiveItem(this.panel);
+    },
+
     getItems : function () {
         return [this.getThreadPanel()];
     },
