@@ -234,7 +234,7 @@ class CoreShop_Admin_ReportsController extends Admin
     }
 
     /**
-     * Return Abandoned Carts from last 31 Days.
+     * Return Abandoned Carts.
      */
     public function getOrdersCartsAbandonedReportAction()
     {
@@ -283,10 +283,12 @@ class CoreShop_Admin_ReportsController extends Admin
                         FROM object_$cartClassId as cart
                         LEFT JOIN object_$userClassId as user ON user.oo_id = cart.user__id
                         WHERE cart.items <> ''
-                          AND cart.order__id IS NOT NULL
+                          AND cart.order__id IS NULL
                           AND cart.o_creationDate > ?
                           AND cart.o_creationDate < ?
-                     GROUP BY cart.oo_id LIMIT $offset,$limit";
+                     GROUP BY cart.oo_id
+                     ORDER BY cart.o_creationDate DESC
+                     LIMIT $offset,$limit";
 
         $data = $db->fetchAll($sqlQuery, [$fromTimestamp, $toTimestamp]);
 
@@ -295,6 +297,10 @@ class CoreShop_Admin_ReportsController extends Admin
         foreach ($data as &$entry) {
 
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));
+            $entry['userName'] = empty($entry['userName']) ? '--' : $entry['userName'];
+            $entry['email'] = empty($entry['email']) ? '--' : $entry['email'];
+            $entry['selectedPayment'] = empty($entry['selectedPayment']) ? '--' : $entry['selectedPayment'];
+
             unset($entry['items']);
         }
 
