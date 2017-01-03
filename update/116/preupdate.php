@@ -248,9 +248,9 @@ if ($systemWorkflowConfig === null) {
 $orders = \CoreShop\Model\Order::getList();
 
 $data = [];
-if (is_array($orders->getData())) {
+if (is_array($orders->load())) {
     /** @var \CoreShop\Model\Order $order */
-    foreach ($orders->getData() as $order) {
+    foreach ($orders->load() as $order) {
         /** @var \CoreShop\Model\Order\State $order */
         $currentState = $order->getOrderState();
         if ($currentState instanceof \CoreShop\Model\Order\State) {
