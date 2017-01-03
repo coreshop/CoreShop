@@ -51,6 +51,7 @@ class Mail extends PimcoreMail
 
         if ($model instanceof Order) {
             $params['orderNumber'] = $model->getOrderNumber();
+            $recipient = $model->getCustomer()->getEmail();
         }
 
         self::mergeDefaultMailSettings($mail, $emailDocument);
