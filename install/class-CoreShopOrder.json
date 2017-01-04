@@ -507,29 +507,6 @@
 										"invisible":false,
 										"visibleGridView":false,
 										"visibleSearch":false
-									},
-									{
-										"fieldtype":"input",
-										"width":null,
-										"queryColumnType":"varchar",
-										"columnType":"varchar",
-										"columnLength":255,
-										"phpdocType":"string",
-										"regex":"",
-										"name":"trackingCode",
-										"title":"Tracking Code",
-										"tooltip":"",
-										"mandatory":false,
-										"noteditable":false,
-										"index":false,
-										"locked":false,
-										"style":"",
-										"permissions":null,
-										"datatype":"data",
-										"relationType":false,
-										"invisible":false,
-										"visibleGridView":false,
-										"visibleSearch":false
 									}
 								],
 								"locked":false

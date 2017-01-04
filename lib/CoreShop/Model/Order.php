@@ -1325,26 +1325,6 @@ class Order extends Base
      *
      * @throws ObjectUnsupportedException
      */
-    public function getTrackingCode()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param string $trackingCode
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setTrackingCode($trackingCode)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return string
-     *
-     * @throws ObjectUnsupportedException
-     */
     public function getLang()
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
