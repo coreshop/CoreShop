@@ -49,19 +49,13 @@ class Mail extends PimcoreMail
         //always add the model to email!
         $params['object'] = $model;
 
-        if ($model instanceof Order) {
-            $params['orderNumber'] = $model->getOrderNumber();
-            $params = array_merge($model->getCustomer()->getObjectVars(), $params);
-            $recipient = $model->getCustomer()->getEmail();
-            unset($params['____pimcore_cache_item__']);
-        }
-
         self::mergeDefaultMailSettings($mail, $emailDocument);
+        self::addRecipients($mail, $emailDocument, $recipient);
 
         $mail->setDocument($emailDocument);
         $mail->setParams($params);
         $mail->setEnableLayoutOnPlaceholderRendering(false);
-        $mail->addTo($recipient);
+
         $mail->send();
 
         if ($model instanceof Order) {
@@ -143,17 +137,18 @@ class Mail extends PimcoreMail
 
         unset($emailParameters['____pimcore_cache_item__']);
 
+        $recipient = [
+            [$order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()]
+        ];
+
         $mail = new self();
 
         self::mergeDefaultMailSettings($mail, $emailDocument);
+        self::addRecipients($mail, $emailDocument, $recipient);
 
         $mail->setDocument($emailDocument);
         $mail->setParams($emailParameters);
         $mail->setEnableLayoutOnPlaceholderRendering(false);
-        $mail->addTo(
-            $order->getCustomer()->getEmail(),
-            $order->getCustomer()->getFirstname() .' '. $order->getCustomer()->getLastname()
-        );
 
         if ($sendInvoices && (bool)Configuration::get('SYSTEM.INVOICE.CREATE')) {
             $invoices = $order->getInvoices();
@@ -261,5 +256,42 @@ class Mail extends PimcoreMail
 
         $mail->addCc($emailDocument->getCcAsArray());
         $mail->addBcc($emailDocument->getBccAsArray());
+    }
+
+    /**
+     * @param self $mail
+     * @param Document\Email $emailDocument
+     * @param string|array $recipients
+     */
+    private static function addRecipients($mail, $emailDocument, $recipients = '')
+    {
+        $to = [];
+        if( is_array($recipients)) {
+            foreach ($recipients as $_recipient) {
+                if (is_array($_recipient)) {
+                    $to[] = [$_recipient[0], $_recipient[1]];
+                } else {
+                    $multiRecipients = array_filter(explode(';', $_recipient));
+                    foreach ($multiRecipients as $_multiRecipient) {
+                        $to[] = [$_multiRecipient, ''];
+                    }
+                }
+            }
+        } else {
+            $multiRecipients = array_filter(explode(';', $recipients));
+            foreach ($multiRecipients as $_multiRecipient) {
+                $to[] = [$_multiRecipient, ''];
+            }
+        }
+
+        //now add recipients from emailDocument, if given.
+        $storedRecipients = array_filter(explode(';', $emailDocument->getTo()));
+        foreach ($storedRecipients as $_multiRecipient) {
+            $to[] = [$_multiRecipient, ''];
+        }
+
+        foreach ($to as $recipient) {
+            $mail->addTo($recipient[0],  $recipient[1]);
+        }
     }
 }
