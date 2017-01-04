@@ -315,13 +315,34 @@ class CoreShop_Admin_ReportsController extends Admin
         $filters = $this->getParam('filters', ['from' => date('01-m-Y'), 'to' => date('m-t-Y')]);
         $from = new \Pimcore\Date($filters['from']);
         $to = new \Pimcore\Date($filters['to']);
+        $groupBy = $this->getParam('groupBy', 'day');
 
         $data = [];
 
         $classId = Model\Order::classId();
         $db = \Pimcore\Db::get();
 
-        $sqlQuery = "SELECT DATE(FROM_UNIXTIME(orderDate)) as dayDate, orderDate, SUM(total) as total FROM object_query_$classId WHERE orderDate > ? AND orderDate < ? GROUP BY DATE(FROM_UNIXTIME(orderDate))";
+        $dateFormatter = null;
+        $groupSelector = '';
+
+        switch($groupBy) {
+
+            case 'day' :
+                $dateFormatter = \Zend_Date::DATE_LONG;
+                $groupSelector = 'DATE(FROM_UNIXTIME(orderDate))';
+                break;
+            case 'month' :
+                $dateFormatter = \Zend_Date::MONTH_NAME . ' ' . \Zend_DATE::YEAR;
+                $groupSelector = 'MONTH(FROM_UNIXTIME(orderDate))';
+                break;
+            case 'year' :
+                $dateFormatter = \Zend_DATE::YEAR;
+                $groupSelector = 'YEAR(FROM_UNIXTIME(orderDate))';
+                break;
+
+        }
+
+        $sqlQuery = "SELECT DATE(FROM_UNIXTIME(orderDate)) as dayDate, orderDate, SUM(total) as total FROM object_query_$classId WHERE orderDate > ? AND orderDate < ? GROUP BY " . $groupSelector;
         $results = $db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
 
         foreach ($results as $result) {
@@ -329,7 +350,7 @@ class CoreShop_Admin_ReportsController extends Admin
 
             $data[] = [
                 'timestamp' => $date->getTimestamp(),
-                'datetext' => $date->get(\Zend_Date::DATE_LONG),
+                'datetext' => $date->get($dateFormatter),
                 'sales' => $result['total'],
                 'salesFormatted' => \CoreShop::getTools()->formatPrice($result['total'])
             ];

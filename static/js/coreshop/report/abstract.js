@@ -54,8 +54,19 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
         return new Date(new Date().getFullYear(), 11, 31);
     },
 
-    showPaginator: function () {
+    showPaginator: function() {
         return false;
+    },
+
+    getDocketItemsForPanel: function() {
+
+        return [
+            {
+                xtype: 'toolbar',
+                dock: 'top',
+                items: this.getFilterFields()
+            }
+        ];
     },
 
     getPanel: function () {
@@ -74,11 +85,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
                 border: false,
                 items: [],
                 bbar: bbar,
-                dockedItems : {
-                    xtype: 'toolbar',
-                    dock: 'top',
-                    items: this.getFilterFields()
-                }
+                dockedItems: this.getDocketItemsForPanel()
             });
 
             grid = this.getGrid();

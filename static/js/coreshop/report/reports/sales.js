@@ -24,6 +24,55 @@ pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.cores
         return 'coreshop_icon_report_sales';
     },
 
+    getGroupByField: function () {
+        return this.panel.down('[name=groupBy]');
+    },
+
+    getFilterParams: function ($super) {
+        var fields = $super();
+        fields.groupBy = this.getGroupByField().getValue();
+        return fields;
+    },
+
+    getDocketItemsForPanel: function($super) {
+
+        var fields = $super();
+
+        fields.push(
+            {
+                xtype: 'toolbar',
+                dock: 'top',
+                items: this.getAdditionalFilterFields()
+            }
+        );
+
+        return fields;
+
+    },
+
+    getAdditionalFilterFields : function () {
+
+        var fields = [];
+
+        fields.push(
+            {
+                xtype: 'combo',
+                fieldLabel: t('coreshop_report_groups'),
+                name: 'groupBy',
+                value: 'day',
+                width: 250,
+                store: [['day', t('coreshop_report_groups_day')], ['month', t('coreshop_report_groups_month')], ['year', t('coreshop_report_groups_year')]],
+                triggerAction: 'all',
+                typeAhead: false,
+                editable: false,
+                forceSelection: true,
+                queryMode: 'local'
+            }
+        );
+
+        return fields;
+    },
+
     getGrid : function () {
         var panel = new Ext.Panel({
             layout:'fit',
@@ -47,10 +96,10 @@ pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.cores
                     grid: true,
                     minimum: 0
                 }, {
-                        type: 'category',
-                        fields: 'datetext',
-                        position: 'bottom'
-                    }
+                    type: 'category',
+                    fields: 'datetext',
+                    position: 'bottom'
+                }
                 ],
                 series: [
                     {
