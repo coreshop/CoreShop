@@ -97,7 +97,7 @@ class Action extends \Website\Controller\Action
 
         $this->prepareCart();
         $this->enableLayout();
-        $this->setLayout(Plugin::getLayout());
+        $this->setLayout(\CoreShop::getLayout());
     }
 
     /**
