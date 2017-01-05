@@ -1220,7 +1220,11 @@ class Order extends Base
     public function canHaveInvoice($items = null)
     {
         if(is_null($items)) {
-            $items = $this->getAllItemsForDocumentCreation();
+            $items = $this->getInvoiceAbleItems();
+        }
+
+        if(count($this->getInvoiceAbleItems()) === 0) {
+            return false;
         }
 
         foreach ($items as $item) {
@@ -1249,7 +1253,11 @@ class Order extends Base
     public function canHaveShipping($items = null)
     {
         if (is_null($items)) {
-            $items = $this->getAllItemsForDocumentCreation();
+            $items = $this->getShipAbleItems();
+        }
+
+        if(count($this->getShipAbleItems()) === 0) {
+            return false;
         }
 
         foreach ($items as $item) {

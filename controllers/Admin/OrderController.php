@@ -357,7 +357,7 @@ class CoreShop_Admin_OrderController extends Admin
         $jsonOrder['shop'] = $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getObjectVars() : null;
         $jsonOrder['visitor'] = \CoreShop\Model\Visitor::getById($order->getVisitorId());
         $jsonOrder['invoiceCreationAllowed'] = $order->canHaveInvoice() && $order->hasPayments();
-        $jsonOrder['shipmentCreationAllowed'] = $order->canHaveInvoice() && $order->hasPayments();
+        $jsonOrder['shipmentCreationAllowed'] = $order->canHaveShipping() && $order->hasPayments();
 
         $jsonOrder['address'] = [
             'shipping' => $this->getDataForObject($order->getShippingAddress()),
