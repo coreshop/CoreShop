@@ -98,11 +98,11 @@ class AdminStyle extends \Pimcore\Model\Element\AdminStyle
                         %s (%d)
                 </p>',
                 $translate->translate("Subtotal"),
-                \CoreShop::getTools()->formatPrice($this->element->getSubtotal(), null, $this->element->getCurrency()),
+                $this->element->formatPrice($this->element->getSubtotal()),
                 $translate->translate("Tax"),
-                \CoreShop::getTools()->formatPrice($this->element->getTotalTax(), null, $this->element->getCurrency()),
+                $this->element->formatPrice($this->element->getTotalTax()),
                 $translate->translate("Total"),
-                \CoreShop::getTools()->formatPrice($this->element->getTotal(), null, $this->element->getCurrency()),
+                $this->element->formatPrice($this->element->getTotal()),
                 $translate->translate("Invoices"),
                 count($this->element->getInvoices())
             );

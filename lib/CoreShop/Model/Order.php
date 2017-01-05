@@ -522,13 +522,21 @@ class Order extends Base
         $translate = \CoreShop::getTools()->getTranslate();
 
         $note = $this->createNote(self::NOTE_PAYMENT);
-        $note->setTitle(sprintf($translate->translate('coreshop_note_order_payment'), $provider->getName(), \CoreShop::getTools()->formatPrice($amount)));
-        $note->setDescription(sprintf($translate->translate('coreshop_note_order_payment_description'), $provider->getName(), \CoreShop::getTools()->formatPrice(($amount))));
+        $note->setTitle(sprintf($translate->translate('coreshop_note_order_payment'), $provider->getName(), $this->formatPrice($amount)));
+        $note->setDescription(sprintf($translate->translate('coreshop_note_order_payment_description'), $provider->getName(), $this->formatPrice(($amount))));
         $note->addData('provider', 'text', $provider->getName());
-        $note->addData('amount', 'text', \CoreShop::getTools()->formatPrice($amount));
+        $note->addData('amount', 'text', $this->formatPrice($amount));
         $note->save();
 
         return $payment;
+    }
+
+    /**
+     * @param $price
+     * @return string
+     */
+    public function formatPrice($price) {
+        return \CoreShop::getTools()->formatPrice($price, $this->getBillingAddress() instanceof Address ? $this->getBillingAddress()->getCountry() : null, $this->getCurrency());
     }
 
     /**
