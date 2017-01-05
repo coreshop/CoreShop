@@ -162,7 +162,7 @@ class Filter extends AbstractModel
         $conditionInstances = [];
 
         foreach ($conditions as $condition) {
-            $className = static::getFilterDispatcher()->getClassForType($condition['type']);
+            $className = static::getConditionDispatcher()->getClassForType($condition['type']);
 
             if ($className && Tool::classExists($className)) {
                 if ($condition['type'] === "combined") {

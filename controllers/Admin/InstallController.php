@@ -33,7 +33,6 @@ class CoreShop_Admin_InstallController extends Admin
             $install->installDocuments('documents');
             $install->installMessagingMails();
             $install->installMessagingContacts();
-            $install->installWorkflow();
             $install->installMailRules();
 
             $install->createFieldCollection('CoreShopOrderTax');
@@ -84,6 +83,7 @@ class CoreShop_Admin_InstallController extends Admin
             $install->createStaticRoutes();
             // create predefined document types
             //$install->createDocTypes();
+            $install->installWorkflow();
 
             $install->installAdminTranslations(PIMCORE_PLUGINS_PATH.'/CoreShop/install/translations/admin.csv');
 

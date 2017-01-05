@@ -41,7 +41,7 @@ abstract class AbstractSimilarity
     /**
      * @return string
      */
-    public function getType()
+    public static function getType()
     {
         return static::$type;
     }
