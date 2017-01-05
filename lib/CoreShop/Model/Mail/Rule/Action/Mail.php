@@ -49,9 +49,15 @@ class Mail extends AbstractAction
 
         if (array_key_exists('language', $params)) {
             $language = $params['language'];
-        }
-        elseif (\Zend_Registry::isRegistered('Zend_Locale')) {
-            $language = (string)\Zend_Registry::get('Zend_Locale');
+        }  else {
+            if ($model instanceof Model\Order) {
+                $language = $model->getLang();
+                if (!$language && \Zend_Registry::isRegistered('Zend_Locale')) {
+                    $language = (string)\Zend_Registry::get('Zend_Locale');
+                }
+            } elseif (\Zend_Registry::isRegistered('Zend_Locale')) {
+                $language = (string)\Zend_Registry::get('Zend_Locale');
+            }
         }
 
         if (is_null($language)) {
