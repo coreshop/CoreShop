@@ -435,10 +435,6 @@ class Tools
             }
         }
 
-        if (!$cart instanceof Cart && $this->getUser() instanceof User) {
-            $cart = $this->getCartManager()->getByName($name, $this->getUser());
-        }
-
         if ($cart instanceof Cart) {
             //cart does already have a order, reset it!
             if ($cart->getOrder() instanceof Order) {
