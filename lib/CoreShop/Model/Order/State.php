@@ -18,7 +18,6 @@ use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
-use Pimcore\WorkflowManagement\Workflow;
 
 /**
  * Class State
@@ -87,7 +86,7 @@ class State
     public static function changeOrderState(Order $order, $params = [])
     {
         $user = \Pimcore\Model\User::getById(0);
-        $manager = Workflow\Manager\Factory::getManager($order, $user);
+        $manager = \Pimcore\WorkflowManagement\Workflow\Manager\Factory::getManager($order, $user);
 
         if (!\Zend_Registry::isRegistered('pimcore_admin_user')) {
             \Zend_Registry::set('pimcore_admin_user', $user);
@@ -122,7 +121,7 @@ class State
     public static function getOrderCurrentState(Order $order)
     {
         $user = \Pimcore\Model\User::getById(0);
-        $manager = Workflow\Manager\Factory::getManager($order, $user);
+        $manager = \Pimcore\WorkflowManagement\Workflow\Manager\Factory::getManager($order, $user);
 
         $state = $manager->getWorkflowStateForElement()->getState();
         $status = $manager->getWorkflowStateForElement()->getStatus();
@@ -168,7 +167,7 @@ class State
      */
     public static function getValidOrderStates()
     {
-        $config = Workflow\Config::getWorkflowManagementConfig(true);
+        $config = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
         $orderClassId = Order::classId();
 
         foreach($config['workflows'] as $workflow) {
