@@ -136,7 +136,7 @@ class State
         }
 
         if (!is_null($status)) {
-            $info['status'] = $manager->getWorkflow()->getStateConfig($status);
+            $info['status'] = $manager->getWorkflow()->getStatusConfig($status);
             $info['status']['translatedLabel'] = self::_translateWorkflowLabel($info['status']['label']);
         }
 
