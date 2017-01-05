@@ -98,15 +98,7 @@ class Workflow
         if ($currentState !== State::STATE_INITIALIZED && $newState === State::STATE_INITIALIZED) {
             return false;
         } elseif ($newState === State::STATE_COMPLETE) {
-            $items = [];
-            foreach ($order->getItems() as $item) {
-                $items[] = [
-                    'orderItemId' => $item->getId(),
-                    'amount' => $item->getAmount()
-                ];
-            }
-
-            if(!$order->canHaveInvoice($items) && !$order->canHaveShipping($items)) {
+            if(!$order->canHaveInvoice() && !$order->canHaveShipping()) {
                 return true;
             }
 

@@ -31,6 +31,10 @@ class CoreShop_Admin_OrderShipmentController extends Admin
         $items = [];
         $itemsToReturn = [];
 
+        if (!$order->hasPayments()) {
+            $this->_helper->json(['success' => false, 'message' => 'Can\'t create Shipment without valid order payment']);
+        }
+
         try {
             $items = $order->getShipAbleItems();
         } catch (\Exception $e) {

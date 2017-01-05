@@ -32,6 +32,10 @@ class CoreShop_Admin_OrderInvoiceController extends Admin
         $items = [];
         $itemsToReturn = [];
 
+        if (!$order->hasPayments()) {
+            $this->_helper->json(['success' => false, 'message' => 'Can\'t create Invoice without valid order payment']);
+        }
+
         try {
             $items = $order->getInvoiceAbleItems();
         } catch (\Exception $e) {

@@ -61,6 +61,34 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     getLayout: function () {
         if (!this.layout) {
 
+            var buttons = [{
+                iconCls : 'pimcore_icon_reload',
+                text : t('reload'),
+                handler : function () {
+                    this.reload();
+                }.bind(this)
+            }];
+
+            if(this.order.invoiceCreationAllowed) {
+                buttons.push({
+                    iconCls : 'coreshop_icon_orders_invoice',
+                    text : t('coreshop_invoice_create_short'),
+                    handler : function () {
+                        this.createInvoice();
+                    }.bind(this)
+                });
+            }
+
+            if(this.order.shipmentCreationAllowed) {
+                buttons.push({
+                    iconCls : 'coreshop_icon_orders_shipment',
+                    text : t('coreshop_shipment_create_short'),
+                    handler : function () {
+                        this.createShipment();
+                    }.bind(this)
+                });
+            }
+
             // create new panel
             this.layout = new Ext.panel.Panel({
                 id: this.layoutId,
@@ -74,29 +102,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 dockedItems: [{
                     xtype: 'toolbar',
                     dock: 'top',
-                    items: [
-                        {
-                            iconCls : 'pimcore_icon_reload',
-                            text : t('reload'),
-                            handler : function () {
-                                this.reload();
-                            }.bind(this)
-                        },
-                        {
-                            iconCls : 'coreshop_icon_orders_invoice',
-                            text : t('coreshop_invoice_create_short'),
-                            handler : function () {
-                                this.createInvoice();
-                            }.bind(this)
-                        },
-                        {
-                            iconCls : 'coreshop_icon_orders_shipment',
-                            text : t('coreshop_shipment_create_short'),
-                            handler : function () {
-                                this.createShipment();
-                            }.bind(this)
-                        }
-                    ]
+                    items: buttons
                 }]
             });
 
@@ -1009,10 +1015,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         handler : function () {
                             pimcore.plugin.coreshop.orders.createPayment.showWindow(this.order.o_id, this.order, function (result) {
                                 if (result.success) {
-                                    this.paymentsStore.loadData(result.payments);
-                                    this.order.totalPayed = result.totalPayed;
-
-                                    this.updatePaymentInfoAlert();
+                                    this.reload();
                                 }
                             }.bind(this));
                         }.bind(this)

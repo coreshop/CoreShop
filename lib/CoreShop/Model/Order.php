@@ -570,33 +570,16 @@ class Order extends Base
      */
     public function createInvoiceForAllItems()
     {
-        $items = [];
-
-        foreach ($this->getItems() as $item) {
-            $items[] = [
-                'orderItemId' => $item->getId(),
-                'amount' => $item->getAmount()
-            ];
-        }
-
-        return $this->createInvoice($items);
+        return $this->createInvoice($this->getAllItemsForDocumentCreation());
     }
 
     /**
      * get all items that are still invoice-able
 
      * @return array
-     * @throws Exception
-     * @throws ObjectUnsupportedException
      */
     public function getInvoiceAbleItems()
     {
-        $payments = $this->getPayments();
-
-        if (count($payments) === 0) {
-            throw new Exception('Can\'t create invoice without valid order payment');
-        }
-
         $items = $this->getItems();
         $invoicedItems = $this->getInvoicedItems();
         $invoiceAbleItems = [];
@@ -779,33 +762,16 @@ class Order extends Base
      */
     public function createShipmentForAllItems()
     {
-        $items = [];
-
-        foreach ($this->getItems() as $item) {
-            $items[] = [
-                'orderItemId' => $item->getId(),
-                'amount' => $item->getAmount()
-            ];
-        }
-
-        return $this->createShipment($items, $this->getCarrier());
+        return $this->createShipment($this->getAllItemsForDocumentCreation(), $this->getCarrier());
     }
 
     /**
      * get all items that are still ship-able
      *
      * @return array
-     * @throws Exception
-     * @throws ObjectUnsupportedException
      */
     public function getShipAbleItems()
     {
-        $invoices = $this->getInvoices();
-
-        if (count($invoices) === 0) {
-            throw new Exception('Can\'t create shipping without valid invoice');
-        }
-
         $items = $this->getItems();
         $shippedItems = $this->getShippedItems();
         $shipAbleItems = [];
@@ -1017,6 +983,15 @@ class Order extends Base
     }
 
     /**
+     * check if order has payments
+     *
+     * @return bool
+     */
+    public function hasPayments() {
+        return count($this->getPayments()) > 0;
+    }
+
+    /**
      * calculates the total weight of the cart.
      *
      * @todo: Total Weight should be stored in the OrderItem
@@ -1219,15 +1194,33 @@ class Order extends Base
     }
 
     /**
+     * get all items for document creation
+     *
+     * @return array
+     */
+    protected function getAllItemsForDocumentCreation() {
+        $items = [];
+
+        foreach ($this->getItems() as $item) {
+            $items[] = [
+                'orderItemId' => $item->getId(),
+                'amount' => $item->getAmount()
+            ];
+        }
+
+        return $items;
+    }
+
+    /**
      * Check if order can create a new invoice
      *
      * @param $items
      * @return bool
      */
-    public function canHaveInvoice($items)
+    public function canHaveInvoice($items = null)
     {
-        if (!is_array($items)) {
-            return false;
+        if(is_null($items)) {
+            $items = $this->getAllItemsForDocumentCreation();
         }
 
         foreach ($items as $item) {
@@ -1253,10 +1246,10 @@ class Order extends Base
      * @param $items
      * @return bool
      */
-    public function canHaveShipping($items)
+    public function canHaveShipping($items = null)
     {
-        if (!is_array($items)) {
-            return false;
+        if (is_null($items)) {
+            $items = $this->getAllItemsForDocumentCreation();
         }
 
         foreach ($items as $item) {
