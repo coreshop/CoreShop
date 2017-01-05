@@ -763,7 +763,7 @@ class Tools
      *
      * @param $lang
      *
-     * @return \Zend_Translate_Adapter
+     * @return \Zend_Translate
      */
     public function getTranslate($lang = null)
     {
