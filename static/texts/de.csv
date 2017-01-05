@@ -495,6 +495,7 @@
 "coreshop_address","Adresse"
 "coreshop_free_shipping","Kostenloser Versand"
 "coreshop_order_create","Neue Bestellung"
+"coreshop_order_is_guest","Gast-Bestellung"
 "coreshop_creating_order","Bestellung wird erstellt"
 "coreshop_category_variant_mode","Varianten Modus"
 "coreshop_category_variant_mode_hide","Nicht anzeigen"

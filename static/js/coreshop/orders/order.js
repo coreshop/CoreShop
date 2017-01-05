@@ -323,12 +323,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             ];
 
             if(this.order.customer) {
-                if (this.order.customer.isGuest) {
-                    items.push({
-                        xtype: 'label',
-                        text: t('coreshop_order_is_guest')
-                    });
-                } else {
+                if (!this.order.customer.isGuest) {
+
                     items.push({
                         xtype: 'panel',
                         bodyPadding: 10,
@@ -368,8 +364,9 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 ]
             });
 
+            var guestStr = !this.order.customer.isGuest ? ' –  ' + t('coreshop_order_is_guest') : '';
             this.customerInfo = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_customer') + ': ' + (this.order.customer ? this.order.customer.firstname + ' (' + this.order.customer.o_id + ')' : t('unknown')),
+                title : t('coreshop_customer') + ': ' + (this.order.customer ? this.order.customer.firstname + ' (' + this.order.customer.o_id + ')' : t('unknown')) + guestStr,
                 margin : '0 0 20 0',
                 border : true,
                 flex : 6,
