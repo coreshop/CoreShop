@@ -364,7 +364,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 ]
             });
 
-            var guestStr = !this.order.customer.isGuest ? ' –  ' + t('coreshop_order_is_guest') : '';
+            var guestStr = this.order.customer.isGuest ? ' –  ' + t('coreshop_order_is_guest') : '';
             this.customerInfo = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_customer') + ': ' + (this.order.customer ? this.order.customer.firstname + ' (' + this.order.customer.o_id + ')' : t('unknown')) + guestStr,
                 margin : '0 0 20 0',
