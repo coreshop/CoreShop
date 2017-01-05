@@ -949,6 +949,14 @@ class Cart extends Base
     }
 
     /**
+     * @param $price
+     * @return string
+     */
+    public function formatPrice($price) {
+        return \CoreShop::getTools()->formatPrice($price, $this->getBillingAddress() instanceof Address ? $this->getBillingAddress()->getCountry() : null, $this->getCurrency());
+    }
+
+    /**
      * Copy Address to order
      *
      * @param Order $order

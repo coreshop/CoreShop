@@ -60,7 +60,7 @@ class CoreShop_CartListController extends Action
             $this->redirect(\CoreShop::getTools()->url(["lang" => $this->language, "act" => "list"], "coreshop_cart_list"));
         }
 
-        $this->view->cart = $cart;
+        $this->view->displayCart = $cart;
     }
 
     public function activateAction()
