@@ -130,6 +130,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
         var leftItems = [
             this.getOrderInfo(),
+            this.getCarrierAndPaymentDetails(),
             this.getShipmentDetails(),
             this.getInvoiceDetails(),
             this.getPaymentDetails(),
@@ -468,6 +469,74 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         }
 
         return panel;
+    },
+
+    getCarrierAndPaymentDetails : function() {
+        if (!this.carrierPaymentDetails) {
+            var items = [
+
+            ];
+
+            items.push({
+                xtype : 'panel',
+                layout : 'hbox',
+                items : [
+                    {
+                        xtype : 'panel',
+                        flex : 1,
+                        items : [
+                            {
+                                xtype: 'panel',
+                                style: 'display:block',
+                                text: t('coreshop_paymentProvider'),
+                                html : '<span style="font-weight:bold;">'+t('coreshop_paymentProvider')+': </span>' + this.order.shippingPayment.payment
+                            },
+                            {
+                                xtype: 'panel',
+                                style: 'display:block',
+                                text: t('coreshop_currency'),
+                                html : '<span style="font-weight:bold;">'+t('coreshop_currency')+': </span>' + this.order.currency.name
+                            }
+                        ]
+                    },
+                    {
+                        xtype : 'panel',
+                        flex : 1,
+                        items : [
+                            {
+                                xtype: 'panel',
+                                style: 'display:block',
+                                text: t('coreshop_carrier'),
+                                html : '<span style="font-weight:bold;">'+t('coreshop_carrier')+': </span>' + this.order.shippingPayment.carrier
+                            },
+                            {
+                                xtype: 'panel',
+                                style: 'display:block',
+                                text: t('coreshop_carrier_price'),
+                                html : '<span style="font-weight:bold;">'+t('coreshop_carrier_price')+': </span>' + coreshop.util.format.currency(this.order.currency.symbol, this.order.shippingPayment.cost)
+                            },
+                            {
+                                xtype: 'panel',
+                                style: 'display:block',
+                                text: t('coreshop_carrier_shippingMethod_weight'),
+                                html: '<span style="font-weight:bold;">'+t('coreshop_carrier_shippingMethod_weight')+': </span>' + (this.order.shippingPayment.weight ? this.order.shippingPayment.weight : 0)
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            this.carrierPaymentDetails = Ext.create('Ext.panel.Panel', {
+                title : t('coreshop_carrier') + '/' + t('coreshop_paymentProvider'),
+                margin : '0 20 20 0',
+                border : true,
+                flex : 6,
+                iconCls : 'coreshop_icon_carrier',
+                items : items
+            });
+        }
+
+        return this.carrierPaymentDetails;
     },
 
     getShipmentDetails : function () {

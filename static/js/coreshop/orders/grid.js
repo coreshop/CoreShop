@@ -20,16 +20,102 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
 
     store : null,
 
-    initialize: function () {
-        // create layout
-        this.getLayout();
+    columns : [],
+    storeFields : [],
 
+    initialize: function () {
         this.panels = [];
+
+        Ext.Ajax.request({
+            url: '/plugin/CoreShop/admin_order/get-order-grid-configuration',
+            method: 'GET',
+            success: function (result) {
+                var columnConfig = Ext.decode(result.responseText);
+
+                this.prepareConfig(columnConfig.columns);
+
+                this.getLayout();
+            }.bind(this)
+        });
     },
 
     activate: function () {
         var tabPanel = Ext.getCmp('pimcore_panel_tabs');
         tabPanel.setActiveItem(this.layoutId);
+    },
+
+
+    prepareConfig : function(columnConfig) {
+        var gridColumns = [];
+        var storeModelFields = [];
+
+        Ext.each(columnConfig, function(column) {
+            var newColumn = column;
+            var storeModelField = {
+                name : column.dataIndex,
+                type : column.type
+            };
+
+            newColumn.text = t(newColumn.text);
+
+            if(newColumn.hasOwnProperty('renderAs')) {
+                if(newColumn.renderAs === 'currency') {
+                    newColumn.renderer = this.currencyRenderer;
+                }
+                else if(newColumn.renderAs === 'orderState') {
+                    newColumn.renderer = this.orderStateRenderer;
+                }
+                else if(newColumn.renderAs === 'shop') {
+                    newColumn.renderer = this.shopRenderer;
+                }
+            }
+
+            if(newColumn.type === 'date') {
+                newColumn.xtype = 'datecolumn';
+                newColumn.format = t('coreshop_date_time_format');
+
+                storeModelField.dateFormat = 'timestamp';
+            }
+
+            if(newColumn.type === 'integer' || newColumn.type === 'float') {
+                newColumn.xtype = 'numbercolumn';
+            }
+
+            storeModelFields.push(storeModelField);
+            gridColumns.push(newColumn);
+        }.bind(this));
+
+        this.columns = gridColumns;
+        this.storeFields = storeModelFields;
+    },
+
+    currencyRenderer : function(value, metaData, record) {
+        var currency = record.get('currency').symbol;
+
+        return coreshop.util.format.currency(currency, value);
+    },
+
+    orderStateRenderer : function (orderStateInfo) {
+        if (orderStateInfo.state) {
+            var bgColor = orderStateInfo.state.color,
+                textColor = coreshop.helpers.constrastColor(bgColor);
+
+            return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderStateInfo.state.translatedLabel + '</span>';
+        }
+
+        return null;
+    },
+
+    shopRenderer : function (val) {
+        var store = pimcore.globalmanager.get('coreshop_shops');
+        var pos = store.findExact('id', String(val));
+        if (pos >= 0) {
+            var shop = store.getAt(pos);
+
+            return shop.get('name');
+        }
+
+        return null;
     },
 
     getLayout: function () {
@@ -100,124 +186,14 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             },
 
             //alternatively, a Ext.data.Model name can be given (see Ext.data.Store for an example)
-            fields: [
-                'o_id',
-                'orderState',
-                { name:'orderDate', type: 'date', dateFormat: 'timestamp' },
-                'orderNumber',
-                'lang',
-                'carrier',
-                { name : 'discount', type : 'float' },
-                { name : 'subtotal', type : 'float' },
-                { name : 'shipping', type : 'float' },
-                { name : 'paymentFee', type : 'float' },
-                { name : 'totalTax', type : 'float' },
-                { name : 'total', type : 'float' },
-                { name : 'shop', type : 'integer' },
-            ]
+            fields: this.storeFields
         });
-
-        var columns = [
-            {
-                text: t('coreshop_orders_id'),
-                dataIndex: 'o_id',
-                filter: {
-                    type : 'number'
-                }
-            },
-            {
-                text: t('coreshop_orders_orderNumber'),
-                dataIndex: 'orderNumber',
-                filter: {
-                    type: 'string'
-                }
-            },
-            {
-                xtype : 'numbercolumn',
-                align : 'right',
-                text: t('coreshop_orders_total'),
-                dataIndex: 'total',
-                renderer: function (value, metaData, record) {
-                    var currency = record.get('currency').symbol;
-
-                    return coreshop.util.format.currency(currency, value);
-                },
-
-                filter: {
-                    type : 'number'
-                }
-            },
-            {
-                text: t('coreshop_orders_orderState'),
-                dataIndex: 'orderState',
-                renderer : function (orderStateInfo) {
-                    if (orderStateInfo.state) {
-                        var bgColor = orderStateInfo.state.color,
-                            textColor = coreshop.helpers.constrastColor(bgColor);
-
-                        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderStateInfo.state.translatedLabel + '</span>';
-                    }
-
-                    return null;
-                },
-
-                flex : 1,
-                filter: {
-                    type : 'list',
-                    store : pimcore.globalmanager.get('coreshop_orderstates')
-                }
-            },
-            {
-                xtype : 'datecolumn',
-                text: t('coreshop_orders_orderDate'),
-                dataIndex: 'orderDate',
-                format: t('coreshop_date_time_format'),
-                filter: {
-                    type : 'date'
-                },
-                width : 150
-            },
-            {
-                menuDisabled: true,
-                sortable: false,
-                xtype: 'actioncolumn',
-                width: 50,
-                items: [{
-                    iconCls: 'pimcore_icon_open',
-                    tooltip: t('open'),
-                    handler: function (grid, rowIndex, colIndex) {
-                        this.openOrder(grid.getStore().getAt(rowIndex));
-                    }.bind(this)
-                }]
-            }
-        ];
-
-        if (coreshop.settings.multishop) {
-            columns.splice(1, 0, {
-                text: t('coreshop_shop'),
-                dataIndex: 'shop',
-                filter: {
-                    type : 'number'
-                },
-                renderer : function (val) {
-                    var store = pimcore.globalmanager.get('coreshop_shops');
-                    var pos = store.findExact('id', String(val));
-                    if (pos >= 0) {
-                        var shop = store.getAt(pos);
-
-                        return shop.get('name');
-                    }
-
-                    return null;
-                }
-            });
-        }
 
         this.grid = Ext.create('Ext.grid.Panel', {
             title: t('coreshop_orders'),
             store: this.store,
             plugins: 'gridfilters',
-            columns: columns,
+            columns: this.columns,
             region: 'center',
 
             // paging bar on the bottom

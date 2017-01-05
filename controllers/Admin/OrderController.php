@@ -20,6 +20,79 @@ use Pimcore\Model\Object;
  */
 class CoreShop_Admin_OrderController extends Admin
 {
+    public function getOrderGridConfigurationAction() {
+        $defaultConfiguration = [
+            [
+                'text' => 'coreshop_orders_id',
+                'type' => 'string',
+                'dataIndex' => 'o_id',
+                'filter' => [
+                    'type' => 'number'
+                ]
+            ],
+            [
+                'text' => 'coreshop_orders_orderNumber',
+                'type' => 'string',
+                'dataIndex' => 'orderNumber',
+                'filter' => [
+                    'type' => 'string'
+                ]
+            ],
+            [
+                'text' => 'name',
+                'type' => 'string',
+                'dataIndex' => 'customerName',
+                'flex' => 1
+            ],
+            [
+                'text' => 'email',
+                'type' => 'string',
+                'dataIndex' => 'customerEmail',
+                'width' => 200
+            ],
+            [
+                'text' => 'coreshop_orders_total',
+                'type' => 'float',
+                'dataIndex' => 'total',
+                'renderAs' => 'currency',
+                'filter' => [
+                    'type' => 'number'
+                ],
+                'align' => 'right'
+            ],
+            [
+                'text' => 'coreshop_orders_orderState',
+                'type' => null,
+                'dataIndex' => 'orderState',
+                'renderAs' => 'orderState',
+                'width' => 200
+            ],
+            [
+                'text' => 'coreshop_orders_orderDate',
+                'type' => 'date',
+                'dataIndex' => 'orderDate',
+                'filter' => [
+                    'type' => 'date'
+                ],
+                'width' => 150
+            ]
+        ];
+
+        if(\CoreShop\Model\Configuration::multiShopEnabled()) {
+            array_splice($defaultConfiguration, 1, 0, [[
+                'text' => 'coreshop_shop',
+                'type' => 'integer',
+                'dataIndex' => 'shop',
+                'renderAs' => 'shop',
+                'filter' => [
+                    'type' => 'number'
+                ]
+            ]]);
+        }
+
+        $this->_helper->json(["success" => true, "columns" => $defaultConfiguration]);
+    }
+
     public function getOrdersAction()
     {
         $list = \CoreShop\Model\Order::getList();
@@ -82,7 +155,9 @@ class CoreShop_Admin_OrderController extends Admin
             'totalTax' => $order->getTotalTax(),
             'total' => $order->getTotal(),
             'currency' => $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop::getTools()->getCurrency()),
-            'shop' => $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getId() : null
+            'shop' => $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getId() : null,
+            'customerName' => $order->getCustomer() instanceof CoreShop\Model\User ? $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname() : '',
+            'customerEmail' => $order->getCustomer() instanceof CoreShop\Model\User ? $order->getCustomer()->getEmail() : ''
         ];
 
         return $element;
@@ -232,11 +307,13 @@ class CoreShop_Admin_OrderController extends Admin
             'shipping' => $this->getDataForObject($order->getShippingAddress()),
             'billing' => $this->getDataForObject($order->getBillingAddress())
         ];
-        $jsonOrder['shipping'] = [
+        $jsonOrder['shippingPayment'] = [
             'carrier' => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getName() : null,
             'weight' => $order->getTotalWeight(),
             'cost' => $order->getShipping(),
-            'tracking' => $order->getTrackingCode()
+            'payment' => $order->getPaymentProvider(),
+            'paymentToken' => $order->getPaymentProviderToken(),
+            'paymentDescription' => $order->getPaymentProviderDescription()
         ];
 
         $jsonOrder['priceRule'] = false;
