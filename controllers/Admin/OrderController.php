@@ -28,7 +28,9 @@ class CoreShop_Admin_OrderController extends Admin
                 'dataIndex' => 'o_id',
                 'filter' => [
                     'type' => 'number'
-                ]
+                ],
+                'hideable' => false,
+                'draggable' => false
             ],
             [
                 'text' => 'coreshop_orders_orderNumber',
@@ -59,6 +61,53 @@ class CoreShop_Admin_OrderController extends Admin
                     'type' => 'number'
                 ],
                 'align' => 'right'
+            ],
+            [
+                'text' => 'coreshop_discount',
+                'type' => 'float',
+                'dataIndex' => 'discount',
+                'renderAs' => 'currency',
+                'align' => 'right',
+                'hidden' => true
+            ],
+            [
+                'text' => 'coreshop_subtotal',
+                'type' => 'float',
+                'dataIndex' => 'subtotal',
+                'renderAs' => 'currency',
+                'align' => 'right',
+                'hidden' => true
+            ],
+            [
+                'text' => 'coreshop_shipping',
+                'type' => 'float',
+                'dataIndex' => 'shipping',
+                'renderAs' => 'currency',
+                'align' => 'right',
+                'hidden' => true
+            ],
+            [
+                'text' => 'coreshop_paymentFee',
+                'type' => 'float',
+                'dataIndex' => 'paymentFee',
+                'renderAs' => 'currency',
+                'align' => 'right',
+                'hidden' => true
+            ],
+            [
+                'text' => 'coreshop_total_tax',
+                'type' => 'float',
+                'dataIndex' => 'totalTax',
+                'renderAs' => 'currency',
+                'align' => 'right',
+                'hidden' => true
+            ],
+            [
+                'text' => 'coreshop_currency',
+                'type' => 'string',
+                'dataIndex' => 'currencyName',
+                'align' => 'right',
+                'hidden' => true
             ],
             [
                 'text' => 'coreshop_orders_orderState',
@@ -131,6 +180,10 @@ class CoreShop_Admin_OrderController extends Admin
         $this->_helper->json(['success' => true, 'data' => $jsonOrders, 'count' => count($jsonOrders), 'total' => $list->getTotalCount()]);
     }
 
+    /**
+     * @param \CoreShop\Model\Order $order
+     * @return array
+     */
     protected function prepareOrder(\CoreShop\Model\Order $order)
     {
         $date = "";
@@ -155,6 +208,7 @@ class CoreShop_Admin_OrderController extends Admin
             'totalTax' => $order->getTotalTax(),
             'total' => $order->getTotal(),
             'currency' => $this->getCurrency($order->getCurrency() ? $order->getCurrency() : \CoreShop::getTools()->getCurrency()),
+            'currencyName' => $order->getCurrency() instanceof \CoreShop\Model\Currency ? $order->getCurrency()->getName() : '',
             'shop' => $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getId() : null,
             'customerName' => $order->getCustomer() instanceof CoreShop\Model\User ? $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname() : '',
             'customerEmail' => $order->getCustomer() instanceof CoreShop\Model\User ? $order->getCustomer()->getEmail() : ''

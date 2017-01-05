@@ -56,6 +56,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                 type : column.type
             };
 
+            newColumn.id = newColumn.dataIndex;
             newColumn.text = t(newColumn.text);
 
             if(newColumn.hasOwnProperty('renderAs')) {
@@ -195,7 +196,8 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             plugins: 'gridfilters',
             columns: this.columns,
             region: 'center',
-
+            stateful:true,
+            stateId:'coreshop_order_grid',
             // paging bar on the bottom
             bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
             listeners : {
