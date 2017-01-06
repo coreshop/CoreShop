@@ -16,7 +16,9 @@ namespace CoreShop\Controller\Action;
 
 use CoreShop\Controller\Action;
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Order;
+use CoreShop\Model\Product;
 use Pimcore\Model\Document;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 
@@ -184,11 +186,17 @@ class Payment extends Action
             $newItem->setPublished(true);
             $newItem->save();
             $newItems[] = $newItem;
+
+            if($newItem->getProduct() instanceof Product) {
+                $newItem->getProduct()->clearPriceCache();
+            }
         }
 
         $newCart->setItems($newItems);
         $newCart->setOrder(null);
         $newCart->save();
+
+        PriceRule::autoAddToCart($newCart);
 
         $session->cartId = $newCart->getId();
     }
