@@ -22,82 +22,18 @@ class CoreShop_Admin_InstallController extends Admin
 {
     public function installAction()
     {
+        $success = false;
+
         try {
             $install = new Plugin\Install();
 
-            \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, ['installer' => $install]);
-
-            //install Data
-            $install->installObjectData('threadStates', 'Messaging\\Thread\\');
-            $install->installObjectData('threadContacts', 'Messaging\\');
-            $install->installDocuments('documents');
-            $install->installMessagingMails();
-            $install->installMessagingContacts();
-            $install->installMailRules();
-
-            $install->createFieldCollection('CoreShopOrderTax');
-            $install->createFieldCollection('CoreShopPriceRuleItem');
-
-            // create object classes
-            $manufacturer = $install->createClass('CoreShopManufacturer');
-            $categoryClass = $install->createClass('CoreShopCategory');
-            $productClass = $install->createClass('CoreShopProduct');
-            $cartClass = $install->createClass('CoreShopCart');
-            $cartItemClass = $install->createClass('CoreShopCartItem');
-            $userClass = $install->createClass('CoreShopUser');
-            $customerGroupClass = $install->createClass('CoreShopCustomerGroup');
-            $userAddressClass = $install->createClass('CoreShopUserAddress');
-
-            $orderItemClass = $install->createClass('CoreShopOrderItem');
-            $paymentClass = $install->createClass('CoreShopPayment');
-            $orderClass = $install->createClass('CoreShopOrder');
-
-            $invoiceItemClass = $install->createClass('CoreShopOrderInvoiceItem');
-            $invoiceClass = $install->createClass('CoreShopOrderInvoice');
-
-            $shipmentItemClass = $install->createClass('CoreShopOrderShipmentItem');
-            $shipmentClass = $install->createClass('CoreShopOrderShipment');
-
-            // create root object folder with subfolders
-            $coreShopFolder = $install->createFolders();
-            // create custom view for blog objects
-            $install->createCustomView($coreShopFolder, [
-                $productClass->getId(),
-                $categoryClass->getId(),
-                $cartClass->getId(),
-                $cartItemClass->getId(),
-                $userClass->getId(),
-                $userAddressClass->getId(),
-                $customerGroupClass->getId(),
-                $orderItemClass->getId(),
-                $orderClass->getId(),
-                $paymentClass->getId(),
-                $customerGroupClass->getId(),
-                $invoiceClass->getId(),
-                $invoiceItemClass->getId(),
-                $shipmentClass->getId(),
-                $shipmentItemClass->getId(),
-                $manufacturer->getId()
-            ]);
-            // create static routes
-            $install->createStaticRoutes();
-            // create predefined document types
-            //$install->createDocTypes();
-            $install->installWorkflow();
-
-            $install->installAdminTranslations(PIMCORE_PLUGINS_PATH.'/CoreShop/install/translations/admin.csv');
-
-            $install->createImageThumbnails();
-
-            \Pimcore::getEventManager()->trigger('coreshop.install.post', null, ['installer' => $install]);
-
-            $install->setConfigInstalled();
-
-            $success = true;
+            if($install->fullInstall()) {
+                $success = true;
+            }
         } catch (Exception $e) {
             \Pimcore\Logger::crit($e);
+
             throw $e;
-            $success = false;
         }
 
         $this->_helper->json(['success' => $success]);

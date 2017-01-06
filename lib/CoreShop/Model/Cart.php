@@ -535,7 +535,7 @@ class Cart extends Base
      *
      * @param Product $product
      *
-     * @return bool
+     * @return bool|Item
      *
      * @throws Exception
      */

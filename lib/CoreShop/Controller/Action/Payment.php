@@ -16,7 +16,9 @@ namespace CoreShop\Controller\Action;
 
 use CoreShop\Controller\Action;
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Order;
+use CoreShop\Model\Product;
 use Pimcore\Model\Document;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 
@@ -140,6 +142,63 @@ class Payment extends Action
         \CoreShop::getTools()->deleteUserSession();
 
         return $order;
+    }
+
+    /**
+     * Refill Cart.
+     */
+    public function refillCart()
+    {
+        //if a cart already exists, do nothing
+        $session = \CoreShop::getTools()->getSession();
+        if (isset($session->cartId) && !is_null($session->cartId)) {
+            return false;
+        }
+
+        $user = \CoreShop::getTools()->getUser();
+        if (!$user instanceof \CoreShop\Model\User) {
+            return false;
+        }
+
+        $latestCart = $user->getLatestCart();
+        if (!$latestCart instanceof \CoreShop\Model\Cart) {
+            return false;
+        }
+
+        $newCart = \CoreShop::getTools()->getCartManager()->createCart(
+            'default',
+            \CoreShop::getTools()->getUser(),
+            \CoreShop\Model\Shop::getShop(),
+            null,
+            true
+        );
+
+        \CoreShop\Tool\Service::copyObject($latestCart, $newCart);
+
+        $items = $latestCart->getItems();
+        $newItems = [];
+
+        foreach($items as $item) {
+            $newItem = \CoreShop\Model\Cart\Item::create();
+            \CoreShop\Tool\Service::copyObject($item, $newItem);
+            $newItem->setKey(uniqid());
+            $newItem->setParent($newCart);
+            $newItem->setPublished(true);
+            $newItem->save();
+            $newItems[] = $newItem;
+
+            if($newItem->getProduct() instanceof Product) {
+                $newItem->getProduct()->clearPriceCache();
+            }
+        }
+
+        $newCart->setItems($newItems);
+        $newCart->setOrder(null);
+        $newCart->save();
+
+        PriceRule::autoAddToCart($newCart);
+
+        $session->cartId = $newCart->getId();
     }
 
     /**

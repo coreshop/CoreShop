@@ -133,50 +133,10 @@ $autoloader->registerNamespace('CoreShop');
 
 //install CoreShop
 $install = new \CoreShop\Plugin\Install();
-
+$install->executeSQL('CoreShop');
+$install->executeSQL('CoreShop-States');
 $install->createConfig();
-\Pimcore::getEventManager()->trigger('coreshop.install.pre', null, ["installer" => $install]);
-
-$install->executeSQL("CoreShop");
-$install->executeSQL("CoreShop-States");
-
-//install Data
-//$install->installDocuments("documents");
-
-$fcUserAddress = $install->createFieldcollection('CoreShopOrderTax');
-$fcUserAddress = $install->createFieldcollection('CoreShopPriceRuleItem');
-
-// create object classes
-$categoryClass = $install->createClass('CoreShopCategory');
-$productClass = $install->createClass('CoreShopProduct');
-$cartClass = $install->createClass('CoreShopCart');
-$cartItemClass = $install->createClass('CoreShopCartItem');
-$userClass = $install->createClass("CoreShopUser");
-$orderItemClass = $install->createClass("CoreShopOrderItem");
-$paymentClass = $install->createClass("CoreShopPayment");
-$orderClass = $install->createClass("CoreShopOrder");
-$customerGroupClass = $install->createClass("CoreShopCustomerGroup");
-$customerGroupClass = $install->createClass("CoreShopManufacturer");
-$customerGroupClass = $install->createClass("CoreShopUserAddress");
-
-/*$coreShopFolder = $install->createFolders();
-$install->createCustomView($coreShopFolder, array(
-    $productClass->getId(),
-    $categoryClass->getId(),
-    $cartClass->getId(),
-    $cartItemClass->getId(),
-    $userClass->getId(),
-    $orderItemClass->getId(),
-    $orderClass->getId(),
-    $paymentClass->getId()
-));*/
-//$install->createStaticRoutes();
-//$install->installAdminTranslations(PIMCORE_PLUGINS_PATH . "/CoreShop/install/translations/admin.csv");
-//$install->createImageThumbnails();
-
-\Pimcore::getEventManager()->trigger('coreshop.install.post', null, ["installer" => $install]);
-
-$install->setConfigInstalled();
+$install->fullInstall();
 
 \CoreShop\Model\Product::$unitTests = true;
 
