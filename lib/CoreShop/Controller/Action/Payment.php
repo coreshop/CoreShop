@@ -143,6 +143,57 @@ class Payment extends Action
     }
 
     /**
+     * Refill Cart.
+     */
+    public function refillCart()
+    {
+        //if a cart already exists, do nothing
+        $session = \CoreShop::getTools()->getSession();
+        if (isset($session->cartId) && !is_null($session->cartId)) {
+            return false;
+        }
+
+        $user = \CoreShop::getTools()->getUser();
+        if (!$user instanceof \CoreShop\Model\User) {
+            return false;
+        }
+
+        $latestCart = $user->getLatestCart();
+        if (!$latestCart instanceof \CoreShop\Model\Cart) {
+            return false;
+        }
+
+        $newCart = \CoreShop::getTools()->getCartManager()->createCart(
+            'default',
+            \CoreShop::getTools()->getUser(),
+            \CoreShop\Model\Shop::getShop(),
+            null,
+            true
+        );
+
+        \CoreShop\Tool\Service::copyObject($latestCart, $newCart);
+
+        $items = $latestCart->getItems();
+        $newItems = [];
+
+        foreach($items as $item) {
+            $newItem = \CoreShop\Model\Cart\Item::create();
+            \CoreShop\Tool\Service::copyObject($item, $newItem);
+            $newItem->setKey(uniqid());
+            $newItem->setParent($newCart);
+            $newItem->setPublished(true);
+            $newItem->save();
+            $newItems[] = $newItem;
+        }
+
+        $newCart->setItems($newItems);
+        $newCart->setOrder(null);
+        $newCart->save();
+
+        $session->cartId = $newCart->getId();
+    }
+
+    /**
      * @param \CoreShop\Model\Order $order
      * @param null $transactionId
      *
