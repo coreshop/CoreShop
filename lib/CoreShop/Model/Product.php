@@ -739,7 +739,7 @@ class Product extends Base
         $parentVars = parent::__sleep();
 
         $finalVars = [];
-        $notAllowedFields = ['cheapestDeliveryPrice', 'validPriceRules'];
+        $notAllowedFields = ['cheapestDeliveryPrice', 'validPriceRules', 'taxCalculator'];
 
         foreach ($parentVars as $key) {
             if (!in_array($key, $notAllowedFields)) {
