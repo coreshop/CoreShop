@@ -41,6 +41,83 @@ class Install
     protected $_user;
 
     /**
+     * Install CoreShop
+     *
+     * @return bool
+     */
+    public function fullInstall() {
+        \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, ['installer' => $this]);
+
+        //install Data
+        $this->installObjectData('threadStates', 'Messaging\\Thread\\');
+        $this->installObjectData('threadContacts', 'Messaging\\');
+        $this->installDocuments('documents');
+        $this->installMessagingMails();
+        $this->installMessagingContacts();
+        $this->installMailRules();
+
+        $this->createFieldCollection('CoreShopOrderTax');
+        $this->createFieldCollection('CoreShopPriceRuleItem');
+
+        // create object classes
+        $manufacturer = $this->createClass('CoreShopManufacturer');
+        $categoryClass = $this->createClass('CoreShopCategory');
+        $productClass = $this->createClass('CoreShopProduct');
+        $cartClass = $this->createClass('CoreShopCart');
+        $cartItemClass = $this->createClass('CoreShopCartItem');
+        $userClass = $this->createClass('CoreShopUser');
+        $customerGroupClass = $this->createClass('CoreShopCustomerGroup');
+        $userAddressClass = $this->createClass('CoreShopUserAddress');
+
+        $orderItemClass = $this->createClass('CoreShopOrderItem');
+        $paymentClass = $this->createClass('CoreShopPayment');
+        $orderClass = $this->createClass('CoreShopOrder');
+
+        $invoiceItemClass = $this->createClass('CoreShopOrderInvoiceItem');
+        $invoiceClass = $this->createClass('CoreShopOrderInvoice');
+
+        $shipmentItemClass = $this->createClass('CoreShopOrderShipmentItem');
+        $shipmentClass = $this->createClass('CoreShopOrderShipment');
+
+        // create root object folder with subfolders
+        $coreShopFolder = $this->createFolders();
+        // create custom view for blog objects
+        $this->createCustomView($coreShopFolder, [
+            $productClass->getId(),
+            $categoryClass->getId(),
+            $cartClass->getId(),
+            $cartItemClass->getId(),
+            $userClass->getId(),
+            $userAddressClass->getId(),
+            $customerGroupClass->getId(),
+            $orderItemClass->getId(),
+            $orderClass->getId(),
+            $paymentClass->getId(),
+            $customerGroupClass->getId(),
+            $invoiceClass->getId(),
+            $invoiceItemClass->getId(),
+            $shipmentClass->getId(),
+            $shipmentItemClass->getId(),
+            $manufacturer->getId()
+        ]);
+        // create static routes
+        $this->createStaticRoutes();
+        // create predefined document types
+        //$install->createDocTypes();
+        $this->installWorkflow();
+
+        $this->installAdminTranslations(PIMCORE_PLUGINS_PATH.'/CoreShop/install/translations/admin.csv');
+
+        $this->createImageThumbnails();
+
+        \Pimcore::getEventManager()->trigger('coreshop.install.post', null, ['installer' => $this]);
+
+        $this->setConfigInstalled();
+
+        return true;
+    }
+
+    /**
      * executes some install SQL.
      *
      * @param $fileName
