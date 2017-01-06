@@ -98,7 +98,7 @@ class Workflow
         if ($currentState !== State::STATE_INITIALIZED && $newState === State::STATE_INITIALIZED) {
             return false;
         } elseif ($newState === State::STATE_COMPLETE) {
-            if(!$order->canHaveInvoice() && !$order->canHaveShipping()) {
+            if($order->isFullyInvoiced() && $order->isFullyShipped()) {
                 return true;
             }
 
