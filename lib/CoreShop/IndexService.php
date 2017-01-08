@@ -14,7 +14,21 @@
 
 namespace CoreShop;
 
+use CoreShop\Composite\Dispatcher;
 use CoreShop\IndexService\AbstractWorker;
+use CoreShop\IndexService\Elasticsearch;
+use CoreShop\IndexService\Getter\AbstractGetter;
+use CoreShop\IndexService\Getter\Brick;
+use CoreShop\IndexService\Getter\Classificationstore;
+use CoreShop\IndexService\Getter\Fieldcollection;
+use CoreShop\IndexService\Getter\Localizedfield;
+use CoreShop\IndexService\Interpreter\AbstractInterpreter;
+use CoreShop\IndexService\Interpreter\LocalizedInterpreter;
+use CoreShop\IndexService\Interpreter\Object;
+use CoreShop\IndexService\Interpreter\ObjectId;
+use CoreShop\IndexService\Interpreter\ObjectIdSum;
+use CoreShop\IndexService\Interpreter\ObjectProperty;
+use CoreShop\IndexService\Interpreter\Soundex;
 use CoreShop\IndexService\Mysql;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
@@ -26,13 +40,6 @@ use Pimcore\Tool as PimTool;
  */
 class IndexService
 {
-    /**
-     * possible types of an index.
-     *
-     * @var array
-     */
-    public static $types = ['mysql', 'elasticsearch'];
-
     /**
      * IndexService.
      *
@@ -48,25 +55,87 @@ class IndexService
     protected $worker;
 
     /**
-     * Add new Index Tpye.
-     *
-     * @param $type
+     * @var Dispatcher
      */
-    public static function addIndexType($type)
+    public static $indexDispatcher;
+
+    /**
+     * @var Dispatcher
+     */
+    public static $getterDispatcher;
+
+    /**
+     * @var Dispatcher
+     */
+    public static $interpreterDispatcher;
+
+    /**
+     * @return Dispatcher
+     */
+    public static function getIndexDispatcher()
     {
-        if (!in_array($type, self::$types)) {
-            self::$types[] = $type;
+        if(is_null(self::$indexDispatcher)) {
+            self::$indexDispatcher = new Dispatcher('indexService.provider', AbstractWorker::class);
+
+            self::$indexDispatcher->addTypes([
+                Mysql::class,
+                Elasticsearch::class
+            ]);
         }
+
+        return self::$indexDispatcher;
     }
 
     /**
-     * get possible types.
-     *
-     * @return array
+     * @return Dispatcher
      */
-    public static function getTypes()
+    public static function getGetterDispatcher()
     {
-        return self::$types;
+        if(is_null(self::$getterDispatcher)) {
+            self::$getterDispatcher = new Dispatcher('indexService.getter', AbstractGetter::class);
+
+            self::$getterDispatcher->addTypes([
+                Brick::class,
+                Classificationstore::class,
+                Fieldcollection::class,
+                Localizedfield::class
+            ]);
+        }
+
+        return self::$getterDispatcher;
+    }
+
+    /**
+     * @return Dispatcher
+     */
+    public static function getInterpreterDispatcher()
+    {
+        if(is_null(self::$interpreterDispatcher)) {
+            self::$interpreterDispatcher = new Dispatcher('indexService.interpreter', AbstractInterpreter::class);
+
+            self::$interpreterDispatcher->addTypes([
+                LocalizedInterpreter::class,
+                Object::class,
+                ObjectId::class,
+                ObjectIdSum::class,
+                ObjectProperty::class,
+                Soundex::class
+            ]);
+        }
+
+        return self::$interpreterDispatcher;
+    }
+
+    /**
+     * Add new Index Tpye.
+     *
+     * @param $type
+     *
+     * @deprecated will be removed with version 1.3
+     */
+    public static function addIndexType($type)
+    {
+        self::getIndexDispatcher()->addType('CoreShop\IndexService\\' . ucfirst($type));
     }
 
     /**
@@ -92,10 +161,10 @@ class IndexService
         $this->worker = [];
 
         foreach ($indexes as $index) {
-            $class = '\\CoreShop\\IndexService\\'.ucfirst($index->getType());
+            $className = static::getIndexDispatcher()->getClassForType($index->getType());
 
-            if (PimTool::classExists($class)) {
-                $this->worker[] = new $class($index);
+            if (PimTool::classExists($className)) {
+                $this->worker[] = new $className($index);
             }
         }
     }

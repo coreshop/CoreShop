@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\IndexService;
 use CoreShop\Model\Index\Config\Column\AbstractColumn;
 use CoreShop\Model\Product;
 
@@ -25,32 +26,40 @@ use CoreShop\Model\Product;
 class AbstractGetter
 {
     /**
-     * defined getters.
-     *
-     * @var array
+     * @var string
      */
-    protected static $getter = ['Brick', 'Classificationstore', 'Localizedfield', 'Fieldcollection'];
+    public static $type = null;
+
+    /**
+     * @return string
+     */
+    public static function getType()
+    {
+        return static::$type;
+    }
 
     /**
      * Add Getter Class.
      *
      * @param string $getter
+     *
+     * @deprecated will be removed with version 1.3
      */
     public static function addGetter($getter)
     {
-        if (!in_array($getter, self::$getter)) {
-            self::$getter[] = $getter;
-        }
+        IndexService::getGetterDispatcher()->addType('\CoreShop\IndexService\Getter\\' . $getter);
     }
 
     /**
      * Get all Getter Classes.
      *
      * @return array
+     *
+     * @deprecated will be removed with version 1.3
      */
     public static function getGetters()
     {
-        return self::$getter;
+        return IndexService::getGetterDispatcher()->getTypeKeys();
     }
 
     /**

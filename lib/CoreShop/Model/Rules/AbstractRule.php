@@ -123,7 +123,7 @@ abstract class AbstractRule extends AbstractModel
         $calledClass = get_called_class();
 
         if(is_null(self::$conditionDispatcher[$calledClass])) {
-            self::$conditionDispatcher[$calledClass] = new Dispatcher(static::getType() . '.condition', AbstractCondition::class);
+            self::$conditionDispatcher[$calledClass] = new Dispatcher('rules.' . static::getType() . '.condition', AbstractCondition::class);
 
             static::initConditionDispatcher(self::$conditionDispatcher[$calledClass]);
         }
@@ -139,7 +139,7 @@ abstract class AbstractRule extends AbstractModel
         $calledClass = get_called_class();
 
         if(is_null(self::$actionDispatcher[$calledClass])) {
-            self::$actionDispatcher[$calledClass] = new Dispatcher(static::getType() . '.action', AbstractAction::class);
+            self::$actionDispatcher[$calledClass] = new Dispatcher('rules.' . static::getType() . '.action', AbstractAction::class);
 
             static::initActionDispatcher(self::$actionDispatcher[$calledClass]);
         }

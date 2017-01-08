@@ -24,6 +24,11 @@ use Pimcore\Model\Object\AbstractObject;
 class Object extends RelationInterpreter
 {
     /**
+     * @var string
+     */
+    public static $type = 'object';
+
+    /**
      * interpret value.
      *
      * @param mixed $value

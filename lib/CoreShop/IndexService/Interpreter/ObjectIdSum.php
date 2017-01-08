@@ -25,6 +25,11 @@ use Pimcore\Model\Object\AbstractObject;
 class ObjectIdSum extends AbstractInterpreter
 {
     /**
+     * @var string
+     */
+    public static $type = 'objectIdSum';
+
+    /**
      * interpret value.
      *
      * @param mixed $value

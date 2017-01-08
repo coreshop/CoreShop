@@ -26,6 +26,11 @@ use CoreShop\Model\Product;
 class Fieldcollection extends AbstractGetter
 {
     /**
+     * @var string
+     */
+    public static $type = 'fieldcollection';
+
+    /**
      * get value.
      *
      * @param $object

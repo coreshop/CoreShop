@@ -49,7 +49,7 @@ class Filter extends AbstractModel
     public static function getConditionDispatcher()
     {
         if(is_null(self::$conditionsDispatcher)) {
-            self::$conditionsDispatcher = new Dispatcher('filter.condition', AbstractCondition::class);
+            self::$conditionsDispatcher = new Dispatcher('rules.filter.condition', AbstractCondition::class);
 
             self::$conditionsDispatcher->addTypes([
                 Select::class,
@@ -69,7 +69,7 @@ class Filter extends AbstractModel
     public static function getSimilaritiesDispatcher()
     {
         if(is_null(self::$similarityDispatcher)) {
-            self::$similarityDispatcher = new Dispatcher('filter.similarity', AbstractSimilarity::class);
+            self::$similarityDispatcher = new Dispatcher('rules.filter.similarity', AbstractSimilarity::class);
 
             self::$similarityDispatcher->addTypes([
                 Field::class

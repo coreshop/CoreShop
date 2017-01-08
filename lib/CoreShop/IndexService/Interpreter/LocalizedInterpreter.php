@@ -23,6 +23,11 @@ use CoreShop\Exception\UnsupportedException;
 abstract class LocalizedInterpreter extends AbstractInterpreter
 {
     /**
+     * @var string
+     */
+    public static $type = 'localizedInterpreter';
+
+    /**
      * interpret value.
      *
      * @param mixed $value

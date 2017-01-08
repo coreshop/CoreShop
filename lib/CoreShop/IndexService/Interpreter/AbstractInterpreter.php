@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\IndexService;
 
 /**
  * Class AbstractInterpreter
@@ -23,32 +24,40 @@ use CoreShop\Exception\UnsupportedException;
 class AbstractInterpreter
 {
     /**
-     * defined getters.
-     *
-     * @var array
+     * @var string
      */
-    protected static $interpreters = ['Object', 'Soundex', 'ObjectIdSum', 'ObjectId', 'ObjectProperty'];
+    public static $type = null;
+
+    /**
+     * @return string
+     */
+    public static function getType()
+    {
+        return static::$type;
+    }
 
     /**
      * Add Interpreter Class.
      *
      * @param string $interpreter
+     *
+     * @deprecated will be removed with version 1.3
      */
     public static function addInterpreter($interpreter)
     {
-        if (!in_array($interpreter, self::$interpreters)) {
-            self::$interpreters[] = $interpreter;
-        }
+        IndexService::getInterpreterDispatcher()->addType('\CoreShop\IndexService\Interpreter\\' . $interpreter);
     }
 
     /**
      * Get all Interpreter Classes.
      *
      * @return array
+     *
+     * @deprecated will be removed with version 1.3
      */
     public static function getInterpreters()
     {
-        return self::$interpreters;
+        return IndexService::getInterpreterDispatcher()->getTypeKeys();
     }
 
     /**

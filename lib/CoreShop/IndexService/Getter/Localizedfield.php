@@ -25,6 +25,11 @@ use CoreShop\Model\Product;
 class Localizedfield extends AbstractGetter
 {
     /**
+     * @var string
+     */
+    public static $type = 'localizedfield';
+
+    /**
      * get value.
      *
      * @param $object

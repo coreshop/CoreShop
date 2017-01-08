@@ -24,6 +24,11 @@ use Pimcore\Model\Object\AbstractObject;
 class ObjectId extends AbstractInterpreter
 {
     /**
+     * @var string
+     */
+    public static $type = 'objectId';
+
+    /**
      * interpret value.
      *
      * @param mixed $value

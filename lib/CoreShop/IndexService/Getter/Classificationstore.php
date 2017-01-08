@@ -26,6 +26,11 @@ use CoreShop\Model\Product;
 class Classificationstore extends AbstractGetter
 {
     /**
+     * @var string
+     */
+    public static $type = 'classificationstore';
+
+    /**
      * get value.
      *
      * @param $object

@@ -24,6 +24,11 @@ use Pimcore\Model\Object\AbstractObject;
 class Soundex extends AbstractInterpreter
 {
     /**
+     * @var string
+     */
+    public static $type = 'soundex';
+
+    /**
      * interpret value.
      *
      * @param mixed $value

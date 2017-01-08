@@ -209,7 +209,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
     public function getTypesAction()
     {
-        $types = \CoreShop\IndexService::getTypes();
+        $types = \CoreShop\IndexService::getIndexDispatcher()->getTypeKeys();
         $typesObject = [];
 
         foreach ($types as $type) {
@@ -323,6 +323,10 @@ class CoreShop_Admin_IndexesController extends Admin
         $this->_helper->json($result);
     }
 
+    /**
+     * @param Object\Classificationstore\GroupConfig $config
+     * @return array
+     */
     protected function getClassificationStoreGroupConfiguration(Object\Classificationstore\GroupConfig $config)
     {
         $result = [];
@@ -343,6 +347,10 @@ class CoreShop_Admin_IndexesController extends Admin
         return $result;
     }
 
+    /**
+     * @param Object\ClassDefinition\Data $field
+     * @return array
+     */
     protected function getFieldConfiguration(Object\ClassDefinition\Data $field)
     {
         return [
@@ -353,6 +361,11 @@ class CoreShop_Admin_IndexesController extends Admin
         ];
     }
 
+    /**
+     * @param Object\Classificationstore\KeyConfig $field
+     * @param Object\Classificationstore\GroupConfig $groupConfig
+     * @return array
+     */
     protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig)
     {
         return [
@@ -367,7 +380,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
     public function getAvailableGettersAction()
     {
-        $getters = \CoreShop\IndexService\Getter\AbstractGetter::getGetters();
+        $getters = \CoreShop\IndexService::getGetterDispatcher()->getTypeKeys();
         $result = [];
 
         foreach ($getters as $getter) {
@@ -385,7 +398,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
     public function getAvailableInterpretersAction()
     {
-        $interpreters = \CoreShop\IndexService\Interpreter\AbstractInterpreter::getInterpreters();
+        $interpreters = \CoreShop\IndexService::getInterpreterDispatcher()->getTypeKeys();
         $result = [];
 
         foreach ($interpreters as $interpreter) {

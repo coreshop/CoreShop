@@ -28,6 +28,11 @@ use Pimcore\Tool;
 class Mysql extends AbstractWorker
 {
     /**
+     * @var string
+     */
+    public static $type = 'mysql';
+
+    /**
      * Database.
      *
      * @var \Zend_Db_Adapter_Abstract

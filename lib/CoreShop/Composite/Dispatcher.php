@@ -47,7 +47,7 @@ class Dispatcher
         $this->subclassOf = $subclassOf;
 
         // allow to register conditions here (e.g. through plugins)
-        \Pimcore::getEventManager()->trigger('coreshop.rules.' . $this->type . '.init', $this);
+        \Pimcore::getEventManager()->trigger('coreshop.' . $this->type . '.init', $this);
     }
 
     /**

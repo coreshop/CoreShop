@@ -127,7 +127,7 @@ class Rule extends AbstractRule
      */
     public static function getConditionDispatcherForType($type) {
         if(!array_key_exists($type, self::$conditionDispatchers)) {
-            self::$conditionDispatchers[$type] = new Dispatcher(self::getType() . ucfirst($type) . '.condition', AbstractCondition::class);
+            self::$conditionDispatchers[$type] = new Dispatcher('rules.' . self::getType() . ucfirst($type) . '.condition', AbstractCondition::class);
 
             self::initConditionDispatchers($type, self::$conditionDispatchers[$type]);
         }
@@ -142,7 +142,7 @@ class Rule extends AbstractRule
      */
     public static function getActionDispatcherForType($type) {
         if(!array_key_exists($type, self::$actionDispatchers)) {
-            self::$actionDispatchers[$type] = new Dispatcher(self::getType() . ucfirst($type) . '.action', AbstractAction::class);
+            self::$actionDispatchers[$type] = new Dispatcher('rules.' . self::getType() . ucfirst($type) . '.action', AbstractAction::class);
 
             self::initActionDispatchers($type, self::$actionDispatchers[$type]);
         }

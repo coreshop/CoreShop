@@ -26,6 +26,11 @@ use CoreShop\Model\Product;
 class Brick extends AbstractGetter
 {
     /**
+     * @var string
+     */
+    public static $type = 'brick';
+
+    /**
      * get value.
      *
      * @param $object

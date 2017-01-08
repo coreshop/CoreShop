@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService;
 
 use CoreShop\Exception;
+use CoreShop\IndexService;
 use CoreShop\IndexService\Getter\AbstractGetter;
 use CoreShop\IndexService\Interpreter\AbstractInterpreter;
 use CoreShop\IndexService\Interpreter\LocalizedInterpreter;
@@ -32,6 +33,11 @@ use Pimcore\Tool;
 abstract class AbstractWorker
 {
     /**
+     * @var string
+     */
+    public static $type = null;
+
+    /**
      * Index Configuration.
      *
      * @var Index
@@ -46,6 +52,14 @@ abstract class AbstractWorker
     public function __construct(Index $index)
     {
         $this->index = $index;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getType()
+    {
+        return static::$type;
     }
 
     /**
@@ -170,7 +184,7 @@ abstract class AbstractWorker
                         }
                     } else {
                         if (!empty($getter)) {
-                            $getterClass = '\\CoreShop\\IndexService\\Getter\\' . $getter;
+                            $getterClass = IndexService::getGetterDispatcher()->getClassForType($getter);
 
                             if (Tool::classExists($getterClass)) {
                                 $getterObject = new $getterClass();
@@ -252,7 +266,7 @@ abstract class AbstractWorker
         $interpreter = $column->getInterpreter();
 
         if (!empty($interpreter)) {
-            $interpreterClass = '\\CoreShop\\IndexService\\Interpreter\\' . $interpreter;
+            $interpreterClass = IndexService::getInterpreterDispatcher()->getClassForType($interpreter);
 
             if (Tool::classExists($interpreterClass)) {
                 $interpreterObject = new $interpreterClass();

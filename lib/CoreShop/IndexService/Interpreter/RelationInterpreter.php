@@ -20,7 +20,7 @@ use CoreShop\Exception\UnsupportedException;
  * Class RelationInterpreter
  * @package CoreShop\IndexService\Interpreter
  */
-class RelationInterpreter extends AbstractInterpreter
+abstract class RelationInterpreter extends AbstractInterpreter
 {
     /**
      * interpret value.

@@ -29,6 +29,11 @@ use Pimcore\Logger;
 class Elasticsearch extends AbstractWorker
 {
     /**
+     * @var string
+     */
+    public static $type = 'elasticsearch';
+
+    /**
      * Database.
      *
      * @var \Zend_Db_Adapter_Abstract

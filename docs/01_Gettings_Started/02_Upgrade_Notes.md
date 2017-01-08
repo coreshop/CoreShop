@@ -2,6 +2,56 @@
 
 Always check this page for some important upgrade notes before updating to the latest coreshop build.
 
+## Update from Version 1.2.1 (Build 122) to Version 1.2.2 (Build 123)
+
+**Index Service**
+Index Service has been refactored. It now uses the newly introduced Composite\Dispatcher as well. This change also affects custom Interperter and custom Getter. If you use custom
+Getter/Interpreter/IndexType, you need to add a static $type variable as Identifier for your custom class.
+
+For example
+
+```php
+class YourInterpreter extends AbstractInterpreter
+{
+    /**
+     * @var string
+     */
+    public static $type = 'yourInterpreter';
+}
+```
+
+To add new Interpreter/Getter/IndexType use following event:
+
+```php
+
+//Add new Index Service Provider
+\Pimcore::getEventManager()->attach('coreshop.indexService.provider.init', function(\Zend_EventManager_Event $e) {
+    $target = $e->getTarget();
+
+    if($target instanceof \CoreShop\Composite\Dispatcher) {
+        $target->addType(\Website\IndexService\YourProvider::class);
+    }
+});
+
+//Add a new Getter
+\Pimcore::getEventManager()->attach('coreshop.indexService.getter.init', function(\Zend_EventManager_Event $e) {
+    $target = $e->getTarget();
+
+    if($target instanceof \CoreShop\Composite\Dispatcher) {
+        $target->addType(\Website\IndexService\Getter\YourGetter::class);
+    }
+});
+
+//Add a new Interpreter
+\Pimcore::getEventManager()->attach('coreshop.indexService.interpreter.init', function(\Zend_EventManager_Event $e) {
+    $target = $e->getTarget();
+
+    if($target instanceof \CoreShop\Composite\Dispatcher) {
+        $target->addType(\Website\IndexService\Interpreter\YourInterpreter::class);
+    }
+});
+```
+
 ## Update from Version 1.1.2 (Build 106) to Version 1.2 (Build 116)
 
 **Rules**   

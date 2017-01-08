@@ -24,6 +24,11 @@ use Pimcore\Model\Object\AbstractObject;
 class ObjectProperty extends AbstractInterpreter
 {
     /**
+     * @var string
+     */
+    public static $type = 'objectProperty';
+
+    /**
      * interpret value.
      *
      * @param mixed $value
