@@ -828,7 +828,7 @@ class CoreShop_Admin_OrderController extends Admin
 
     /**
      * @param Object\Concrete $data
-     * @return array
+     * @return CoreShop\Model\Order
      */
     private function getDataForObject(Object\Concrete $data)
     {

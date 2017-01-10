@@ -54,7 +54,7 @@ class Currency extends AbstractModel
      */
     public static function getByName($name)
     {
-        return self::getByField("name", $name);
+        return static::getByField("name", $name);
     }
 
     /**
