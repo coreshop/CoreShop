@@ -132,7 +132,7 @@ class Currency extends AbstractModel
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getNumericIsoCode()
     {
@@ -140,7 +140,7 @@ class Currency extends AbstractModel
     }
 
     /**
-     * @param mixed $numericIsoCode
+     * @param int $numericIsoCode
      */
     public function setNumericIsoCode($numericIsoCode)
     {
@@ -148,7 +148,7 @@ class Currency extends AbstractModel
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSymbol()
     {
@@ -156,7 +156,7 @@ class Currency extends AbstractModel
     }
 
     /**
-     * @param mixed $symbol
+     * @param string $symbol
      */
     public function setSymbol($symbol)
     {
@@ -164,7 +164,7 @@ class Currency extends AbstractModel
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getExchangeRate()
     {
@@ -172,7 +172,7 @@ class Currency extends AbstractModel
     }
 
     /**
-     * @param mixed $exchangeRate
+     * @param float $exchangeRate
      */
     public function setExchangeRate($exchangeRate)
     {

@@ -194,8 +194,6 @@ class CreateObjectClassCommand extends AbstractCommand
                 File::put($newPath, $content);
             }
 
-            $config = ExtensionManager::getPluginConfig($name);
-
             ExtensionManager::enable("plugin", $name);
         }
 

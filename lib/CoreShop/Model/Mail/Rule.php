@@ -217,17 +217,13 @@ class Rule extends AbstractRule
     /**
      * @param $object
      * @param array $params
-     *
-     * @return boolean
      */
     public function applyRule($object, $params = []) {
         foreach($this->getActions() as $action) {
             if($action instanceof AbstractAction) {
-                return $action->apply($object, $this, $params);
+                $action->apply($object, $this, $params);
             }
         }
-
-        return false;
     }
 
     /**

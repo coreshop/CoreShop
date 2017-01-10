@@ -217,7 +217,7 @@ class PriceRule extends AbstractPriceRule
     /**
      * Remove default PriceRule from Cart.
      *
-     * @param Cart|null $cart
+     * @param Cart $cart
      */
     public static function autoRemoveFromCart(Cart $cart)
     {
@@ -235,7 +235,7 @@ class PriceRule extends AbstractPriceRule
     /**
      * Add default PriceRule to Cart.
      *
-     * @param Cart|null $cart
+     * @param Cart $cart
      *
      * @return bool
      */
@@ -263,7 +263,7 @@ class PriceRule extends AbstractPriceRule
 
     /**
      * @param $priceRule
-     * @param $voucherCode
+     * @param string $voucherCode
      *
      * @return int
      */

@@ -796,7 +796,7 @@ class CoreShop_Admin_OrderController extends Admin
      * @param $user
      * @param $shippingAddress
      * @param $billingAddress
-     * @param $currency
+     * @param \CoreShop\Model\Currency $currency
      * @param $productIds
      * @return \CoreShop\Model\Cart
      */

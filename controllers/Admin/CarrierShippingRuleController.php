@@ -13,7 +13,6 @@
  */
 
 use CoreShop\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 /**
  * Class CoreShop_Admin_CarrierShippingRuleController
@@ -38,21 +37,25 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
         $data = [];
 
         foreach ($rules as $rule) {
-            $data[] = $this->getPriceRuleTreeNodeConfig($rule);
+            $data[] = $this->getShippingRuleTreeNodeConfig($rule);
         }
 
         $this->_helper->json($data);
     }
 
-    protected function getPriceRuleTreeNodeConfig($price)
+    /**
+     * @param \CoreShop\Model\Carrier\ShippingRule $rule
+     * @return array
+     */
+    protected function getShippingRuleTreeNodeConfig($rule)
     {
         $tmpRule = [
-            'id' => $price->getId(),
-            'text' => $price->getName(),
+            'id' => $rule->getId(),
+            'text' => $rule->getName(),
             'qtipCfg' => [
-                'title' => 'ID: '.$price->getId(),
+                'title' => 'ID: '.$rule->getId(),
             ],
-            'name' => $price->getName(),
+            'name' => $rule->getName(),
         ];
 
         return $tmpRule;

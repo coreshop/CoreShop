@@ -1839,7 +1839,7 @@ class Order extends Base
     }
 
     /**
-     * @param array $payments
+     * @param Payment[] $payments
      *
      * @throws ObjectUnsupportedException
      */
