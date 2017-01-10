@@ -1,0 +1,24 @@
+inherit: true
+tools:
+  external_code_coverage: true
+  php_analyzer:
+    enabled: true
+    config:
+      phpunit_checks:
+        enabled: true
+  php_mess_detector:
+    config:
+      unused_code_rules:
+        unused_private_field: true
+        unused_local_variable: true
+        unused_private_method: true
+        unused_formal_parameter: true
+      code_size_rules:
+        npath_complexity: true
+        excessive_method_length: true
+        excessive_class_length: true
+        excessive_parameter_list: true
+        excessive_public_count: true
+        too_many_fields: true
+        too_many_methods: true
+        excessive_class_complexity: true
