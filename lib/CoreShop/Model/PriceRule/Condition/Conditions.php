@@ -115,7 +115,6 @@ class Conditions extends AbstractCondition
     public function check($checkCondition)
     {
         $operator = $this->getOperator();
-        $valid = null;
 
         foreach ($this->getConditions() as $condition) {
             $valid = $checkCondition($condition);

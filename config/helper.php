@@ -89,7 +89,7 @@ if (!function_exists("objectToArray")) {
         if (is_array($object)) {
             $collections = [];
             foreach ($object as $o) {
-                $collections[] = $this->_objectToArray($o, $fieldDefintions);
+                $collections[] = _objectToArray($o, $fieldDefintions);
             }
 
             return $collections;
@@ -115,7 +115,7 @@ if (!function_exists("objectToArray")) {
                         /* @var $value \Pimcore\Model\Object\Fieldcollection */
                         $def = $value->getItemDefinitions();
                         if (method_exists($def['children'], 'getFieldDefinitions')) {
-                            $collection[$fieldName] = $this->_objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
+                            $collection[$fieldName] = _objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
                         }
                     }
                     break;

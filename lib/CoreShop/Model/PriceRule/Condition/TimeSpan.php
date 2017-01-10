@@ -36,7 +36,7 @@ class TimeSpan extends AbstractCondition
     public $dateFrom;
 
     /**
-     * @var float
+     * @var int
      */
     public $dateTo;
 

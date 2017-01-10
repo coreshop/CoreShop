@@ -26,10 +26,7 @@ class CoreShop_ContentController extends Action
     public function contactAction()
     {
         if ($this->getRequest()->isPost()) {
-            $name = '';
-            $mail = '';
-            $subject = '';
-            $message = '';
+
         }
     }
 }

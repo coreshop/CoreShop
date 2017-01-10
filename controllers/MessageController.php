@@ -23,7 +23,6 @@ class CoreShop_MessageController extends Action
     {
         $this->view->contacts = \CoreShop\Model\Messaging\Contact::getList()->load();
         $this->view->params = $this->getAllParams();
-        $thread = null;
 
         if ($this->view->params['token']) {
             $thread = \CoreShop\Model\Messaging\Thread::getByField('token', $this->view->params['token']);

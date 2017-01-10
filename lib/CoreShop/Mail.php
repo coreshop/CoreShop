@@ -82,8 +82,10 @@ class Mail extends PimcoreMail
 
         $shop = Shop::getById($shopId);
 
-        //init Template
-        \CoreShop::getTools()->initTemplateForShop($shop);
+        if($shop instanceof Shop) {
+            //init Template
+            \CoreShop::getTools()->initTemplateForShop($shop);
+        }
 
         $mail = new self();
 
@@ -209,7 +211,7 @@ class Mail extends PimcoreMail
      *
      * @return bool
      */
-    private static function addOrderNote(Order $order, Document\Email $emailDocument, Mail $mail, $params = [])
+    protected static function addOrderNote(Order $order, Document\Email $emailDocument, Mail $mail, $params = [])
     {
         $translate = \CoreShop::getTools()->getTranslate();
 

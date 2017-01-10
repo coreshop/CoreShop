@@ -322,7 +322,7 @@ class PriceRule extends AbstractPriceRule
             return false;
         }
 
-        if ($this->getUsagePerVoucherCode() > 0 && $voucherCode) {
+        if ($this->getUsagePerVoucherCode() > 0 && !is_null($voucherCode)) {
             $totalUses = self::getTotalUsesForPriceRule($this, $this->getCode() === $voucherCode ? null : $voucherCode);
 
             if ($totalUses >= intval($this->getUsagePerVoucherCode())) {

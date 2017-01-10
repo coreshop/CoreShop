@@ -131,7 +131,7 @@ class CoreShop_Admin_IndexesController extends Admin
                                 $class = $columnClass;
                             }
 
-                            if (!$class) {
+                            if (is_null($class)) {
                                 //Use fallback column
                                 throw new \CoreShop\Exception('No config implementation for column with type ' . $objectType . ' found');
                             }

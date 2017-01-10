@@ -150,6 +150,8 @@ class CoreShop_Admin_PriceRuleController extends Admin
             $list->setOffset($this->getParam('page', 1) - 1);
 
             if ($this->getParam('filter', null)) {
+                $conditionFilters = [];
+
                 $conditionFilters[] = \CoreShop\Model\Service::getFilterCondition($this->getParam('filter'), '\CoreShop\Model\Cart\PriceRule\VoucherCode');
                 $conditionFilters[] = "priceRuleId = ?";
 

@@ -27,6 +27,7 @@ use CoreShop\Model\Shop;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\User;
 use CoreShop\Tool\Wkhtmltopdf;
+use Pimcore\Date;
 use Pimcore\File;
 use Pimcore\Logger;
 use Pimcore\Model\Asset;
@@ -415,7 +416,7 @@ class Invoice extends Base
     }
 
     /**
-     * @param Date\\DateTime $invoiceDate
+     * @param Carbon|Date $invoiceDate
      *
      * @throws ObjectUnsupportedException
      */

@@ -333,7 +333,7 @@ class Filter extends AbstractModel
     }
 
     /**
-     * @param Index $index
+     * @param int|Index $index
      */
     public function setIndex($index)
     {

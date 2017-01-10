@@ -62,7 +62,6 @@ class CoreShop_Admin_ObjectController extends Admin
         }
 
         $className = get_class($object);
-        $brickSetter = 'set'.ucfirst($this->variantsBrick);
         $brickGetter = 'get'.ucfirst($this->variantsBrick);
         $brickTypeSetter = 'set'.ucfirst($brickType);
         $fieldSetter = 'set'.ucfirst($fieldName);
@@ -89,8 +88,6 @@ class CoreShop_Admin_ObjectController extends Admin
 
     public function getVariantBricksAction()
     {
-        $id = intval($this->getParam('id'));
-
         $id = intval($this->getParam('id'));
 
         $object = \Pimcore\Model\Object\AbstractObject::getById($id);

@@ -100,7 +100,6 @@ class Manager
     public function getSessionCart()
     {
         $cartSession = \CoreShop::getTools()->getSession();
-        $cart = null;
 
         if (isset($cartSession->cartId) && $cartSession->cartId !== 0) {
             return Cart::getById($cartSession->cartId);

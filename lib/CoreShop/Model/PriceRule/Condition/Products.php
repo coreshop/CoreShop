@@ -36,7 +36,7 @@ class Products extends AbstractCondition
     public $products;
 
     /**
-     * @return []
+     * @return int[]
      */
     public function getProducts()
     {

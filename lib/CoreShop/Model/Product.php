@@ -26,7 +26,7 @@ use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 use CoreShop\Exception\ObjectUnsupportedException;
-use CoreShop\Tool\Service;
+use CoreShop\Tool\Service as ToolService;
 
 /**
  * Class Product
@@ -274,7 +274,7 @@ class Product extends Base
         $master = $this->getVariantMaster();
 
         if ($master instanceof self) {
-            $differences = Service::getProductVariations($master, $this, $type, $field, $language);
+            $differences = ToolService::getProductVariations($master, $this, $type, $field, $language);
 
             Cache::save($differences, $cacheKey);
 
@@ -610,6 +610,10 @@ class Product extends Base
 
         if ($calculator) {
             return $calculator->getTaxesAmount($this->getPrice(false), $asArray);
+        }
+
+        if($asArray) {
+            return [];
         }
 
         return 0;

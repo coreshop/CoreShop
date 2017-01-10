@@ -14,18 +14,9 @@
 
 namespace CoreShop\Model;
 
-use CoreShop\Model\Cart\Item;
-use CoreShop\Model\Cart\PriceRule;
-use CoreShop\Model\PriceRule\Condition\AbstractCondition;
-use CoreShop\Model\Product\AbstractProductPriceRule;
-use CoreShop\Model\Product\SpecificPrice;
-use CoreShop\Model\User\Address;
-use Pimcore\Cache;
-use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 use Pimcore\Model\Asset\Image;
 use CoreShop\Exception\ObjectUnsupportedException;
-use CoreShop\Tool\Service;
 
 /**
  * Class Manufacturer

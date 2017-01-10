@@ -19,7 +19,6 @@ use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Mail\Rule;
-use CoreShop\Model\Messaging\Contact;
 use CoreShop\Model\Messaging\Thread;
 use CoreShop\Model\Order\Invoice;
 use CoreShop\Model\Order\Item;
@@ -27,18 +26,13 @@ use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Order\Shipment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
-use CoreShop\Tool\Service;
-use Pimcore\Cache;
+use CoreShop\Tool\Service as ToolService;
 use Pimcore\Date;
 use Pimcore\File;
-use Pimcore\Logger;
 use Pimcore\Model\Asset;
-use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Object;
 use Pimcore\Model\User as PimcoreUser;
-use Pimcore\Model\Version;
-use Pimcore\Tool\Authentication;
 
 /**
  * Class Order
@@ -702,7 +696,7 @@ class Order extends Base
             if ($orderItem instanceof Item) {
                 $invoiceItem = Invoice\Item::create();
 
-                Service::copyObject($orderItem, $invoiceItem);
+                ToolService::copyObject($orderItem, $invoiceItem);
 
                 $invoiceItem->setAmount($amount);
                 $invoiceItem->setParent($invoice->getPathForItems());
@@ -871,7 +865,7 @@ class Order extends Base
      * Creates a new Shipment
      *
      * @param $items
-     * @param Carrier $carrier,
+     * @param Carrier $carrier
      * @param string $trackingCode
      *
      * @throws Exception
@@ -920,7 +914,7 @@ class Order extends Base
             if ($orderItem instanceof Item) {
                 $shipmentItem = Shipment\Item::create();
 
-                Service::copyObject($orderItem, $shipmentItem);
+                ToolService::copyObject($orderItem, $shipmentItem);
 
                 $shipmentItem->setAmount($amount);
                 $shipmentItem->setParent($shipment->getPathForItems());

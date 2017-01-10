@@ -330,7 +330,7 @@ class Country extends AbstractModel
     }
 
     /**
-     * @return \int[]
+     * @return int[]
      */
     public function getShopIds()
     {
@@ -338,7 +338,7 @@ class Country extends AbstractModel
     }
 
     /**
-     * @param \int[] $shopIds
+     * @param int[] $shopIds
      */
     public function setShopIds($shopIds)
     {

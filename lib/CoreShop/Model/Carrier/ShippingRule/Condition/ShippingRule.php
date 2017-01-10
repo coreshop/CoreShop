@@ -41,7 +41,7 @@ class ShippingRule extends AbstractCondition
      *
      * @param Carrier $carrier
      * @param Cart $cart
-     * @param Address $address;
+     * @param Address $address
      * @param CarrierShippingRule $shippingRule
      *
      * @return mixed

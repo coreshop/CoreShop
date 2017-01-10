@@ -68,7 +68,7 @@ abstract class AbstractWorker
      * @param Product $object
      * @param boolean $convertArrayToString
      *
-     * @return array("data", "relation")
+     * @return array
      *
      * @throws \CoreShop\Exception\UnsupportedException
      */

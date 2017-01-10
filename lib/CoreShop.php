@@ -310,6 +310,7 @@ class CoreShop
             }
         });
 
+        //Is not needed anymore, is it?
         \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
             $autoloader = \Zend_Loader_Autoloader::getInstance();
             $autoloader->registerNamespace('CoreShopTemplate');

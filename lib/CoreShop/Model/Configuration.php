@@ -203,8 +203,12 @@ class Configuration extends AbstractModel
             return false;
         });
 
-        foreach ($list->getConfigurations() as $config) {
-            $config->delete();
+        $configurations = $list->getConfigurations();
+
+        if(is_array($configurations)) {
+            foreach ($configurations as $config) {
+                $config->delete();
+            }
         }
     }
 

@@ -28,6 +28,7 @@ use CoreShop\Model\Shop;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\User;
 use CoreShop\Tool\Wkhtmltopdf;
+use Pimcore\Date;
 use Pimcore\Logger;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Asset\Service;
@@ -221,7 +222,7 @@ class Shipment extends Base
     }
 
     /**
-     * @param Date\\DateTime $shipmentNumber
+     * @param Carbon|Date $shipmentNumber
      *
      * @throws ObjectUnsupportedException
      */

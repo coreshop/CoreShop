@@ -54,7 +54,6 @@ class Service extends AbstractDao
      */
     public static function generateCodes($priceRule, $amount, $length, $format, $hyphensOn = 0, $prefix = "", $suffix = "")
     {
-        $lettersToUse = "";
         $generatedVouchers = [];
 
         switch ($format) {

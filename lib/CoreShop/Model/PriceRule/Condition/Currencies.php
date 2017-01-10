@@ -37,7 +37,7 @@ class Currencies extends AbstractCondition
     public $currencies;
 
     /**
-     * @return \int[]
+     * @return int[]
      */
     public function getCurrencies()
     {
@@ -45,7 +45,7 @@ class Currencies extends AbstractCondition
     }
 
     /**
-     * @param \int[] $currencies
+     * @param int[] $currencies
      */
     public function setCurrencies($currencies)
     {

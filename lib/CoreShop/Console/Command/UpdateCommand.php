@@ -113,6 +113,8 @@ class UpdateCommand extends AbstractCommand
         if ($input->getOption('update')) {
             $returnMessages = [];
             $build = null;
+            $return = "";
+
             $updateInfo = trim($input->getOption('update'));
             if (is_numeric($updateInfo)) {
                 $build = $updateInfo;
@@ -146,7 +148,7 @@ class UpdateCommand extends AbstractCommand
             $progress->start();
 
             foreach ($packages['parallel'] as $package) {
-                Update::downloadPackage($package['revision'], $package['url'], $package['file']);
+                Update::downloadPackage($package['revision'], $package['url']);
                 $progress->advance();
             }
 

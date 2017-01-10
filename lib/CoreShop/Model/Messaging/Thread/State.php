@@ -120,7 +120,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @return \int[]
+     * @return int[]
      */
     public function getShopIds()
     {
@@ -128,7 +128,7 @@ class State extends AbstractModel
     }
 
     /**
-     * @param \int[] $shopIds
+     * @param int[] $shopIds
      */
     public function setShopIds($shopIds)
     {

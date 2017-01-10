@@ -142,7 +142,7 @@ abstract class Payment implements AbstractPlugin
      * @param Cart $cart
      * @throws UnsupportedException
      *
-     * @return array('module', 'controller', 'action')
+     * @return array
      */
     public function processAsync(Cart $cart)
     {

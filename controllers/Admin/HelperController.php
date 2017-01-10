@@ -41,6 +41,8 @@ class CoreShop_Admin_HelperController extends Admin
     {
         $locales = \Pimcore\Tool::getSupportedLocales();
         $languageOptions = [];
+        $validLanguages = [];
+
         foreach ($locales as $short => $translation) {
             if (!empty($short)) {
                 $languageOptions[] = [

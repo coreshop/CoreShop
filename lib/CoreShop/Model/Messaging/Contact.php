@@ -132,7 +132,7 @@ class Contact extends AbstractModel
     }
 
     /**
-     * @return \int[]
+     * @return int[]
      */
     public function getShopIds()
     {
@@ -140,7 +140,7 @@ class Contact extends AbstractModel
     }
 
     /**
-     * @param \int[] $shopIds
+     * @param int[] $shopIds
      */
     public function setShopIds($shopIds)
     {

@@ -130,7 +130,7 @@ class Category extends Base
      * @param int   $itemsPerPage
      * @param array $sort
      * @param bool  $includeChildCategories
-     * @param string $includeVariants
+     * @param boolean $includeVariants
      *
      * @return \Zend_Paginator
      *

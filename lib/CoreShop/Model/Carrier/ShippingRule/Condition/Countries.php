@@ -38,7 +38,7 @@ class Countries extends AbstractCondition
      *
      * @param Model\Carrier $carrier
      * @param Model\Cart $cart
-     * @param Model\User\Address $address;
+     * @param Model\User\Address $address
      * @param CarrierShippingRule $shippingRule
      *
      * @return mixed

@@ -28,7 +28,7 @@ use Pimcore\Date;
 use Pimcore\Logger;
 use Pimcore\Model\Document;
 use Pimcore\Model\Object\Fieldcollection;
-use Pimcore\Model\Object\Service;
+use Pimcore\Model\Object\Service as ObjectService;
 use CoreShop\Maintenance\CleanUpCart;
 use Pimcore\Model\Object\Listing;
 
@@ -242,8 +242,10 @@ class Cart extends Base
                 if ($shippingTax instanceof TaxCalculator) {
                     $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
 
-                    foreach ($taxesAmount as $id => $amount) {
-                        $addTax(Tax::getById($id), $amount);
+                    if(is_array($taxesAmount)) {
+                        foreach ($taxesAmount as $id => $amount) {
+                            $addTax(Tax::getById($id), $amount);
+                        }
                     }
                 }
             }
@@ -966,7 +968,7 @@ class Cart extends Base
      */
     public function copyAddress(Order $order, Address $address = null, $type = "shipping")
     {
-        Service::loadAllObjectFields($address);
+        ObjectService::loadAllObjectFields($address);
 
         $newAddress = clone $address;
         $newAddress->setId(null);

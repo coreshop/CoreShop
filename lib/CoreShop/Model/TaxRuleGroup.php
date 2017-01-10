@@ -130,7 +130,7 @@ class TaxRuleGroup extends AbstractModel
     }
 
     /**
-     * @return \int[]
+     * @return int[]
      */
     public function getShopIds()
     {
@@ -138,7 +138,7 @@ class TaxRuleGroup extends AbstractModel
     }
 
     /**
-     * @param \int[] $shopIds
+     * @param int[] $shopIds
      */
     public function setShopIds($shopIds)
     {

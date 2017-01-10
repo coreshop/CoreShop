@@ -87,6 +87,7 @@ class Elasticsearch extends AbstractWorker
 
             $this->getElasticsearchClient()->indices()->delete($params);
         } catch (\Exception $ex) {
+            \Pimcore\Logger::error($ex);
         }
 
         $result = $this->getElasticsearchClient()->indices()->exists(['index' => $this->getIndex()->getName()]);
@@ -131,7 +132,7 @@ class Elasticsearch extends AbstractWorker
         ];
 
         try {
-            $result = $this->getElasticsearchClient()->indices()->putMapping($params);
+            $this->getElasticsearchClient()->indices()->putMapping($params);
         } catch (\Exception $e) {
             Logger::info($e->getMessage());
         }

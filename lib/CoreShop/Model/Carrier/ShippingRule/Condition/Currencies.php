@@ -38,8 +38,8 @@ class Currencies extends AbstractCondition
      *
      * @param Model\Carrier $carrier
      * @param Model\Cart $cart
-     * @param Model\User\Address $address;
-     * @param ShippingRule $shippingRule
+     * @param Model\User\Address $address
+     * @param CarrierShippingRule $shippingRule
      *
      * @return mixed
      */
@@ -55,7 +55,7 @@ class Currencies extends AbstractCondition
     }
 
     /**
-     * @return \int[]
+     * @return int[]
      */
     public function getCurrencies()
     {
@@ -63,7 +63,7 @@ class Currencies extends AbstractCondition
     }
 
     /**
-     * @param \int[] $currencies
+     * @param int[] $currencies
      */
     public function setCurrencies($currencies)
     {

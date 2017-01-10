@@ -48,11 +48,15 @@ class CoreShop_Admin_SettingsController extends Admin
                 return false;
             });
 
-            foreach ($config->getConfigurations() as $c) {
-                if (in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
-                    $systemSettings[$c->getKey()] = $c->getData();
-                } else {
-                    $valueArray[$shop->getId()][$c->getKey()] = $c->getData();
+            $configurations = $config->getConfigurations();
+
+            if(is_array($configurations)) {
+                foreach ($configurations as $c) {
+                    if (in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
+                        $systemSettings[$c->getKey()] = $c->getData();
+                    } else {
+                        $valueArray[$shop->getId()][$c->getKey()] = $c->getData();
+                    }
                 }
             }
         }
@@ -103,11 +107,15 @@ class CoreShop_Admin_SettingsController extends Admin
                 return false;
             });
 
-            foreach ($config->getConfigurations() as $c) {
-                if (in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
-                    $systemValues[$c->getKey()] = $c->getData();
-                } else {
-                    $shopValues[$c->getKey()] = $c->getData();
+            $configurations = $config->getConfigurations();
+
+            if(is_array($configurations)) {
+                foreach ($configurations as $c) {
+                    if (in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
+                        $systemValues[$c->getKey()] = $c->getData();
+                    } else {
+                        $shopValues[$c->getKey()] = $c->getData();
+                    }
                 }
             }
 

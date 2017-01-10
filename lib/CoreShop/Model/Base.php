@@ -23,7 +23,7 @@ use Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model\Object\Concrete;
 use Pimcore\Model\Object\Listing;
 use Pimcore\Model\Site;
-use Pimcore\Model\User;
+use Pimcore\Model\User as PimcoreUser;
 use Pimcore\Tool;
 use Pimcore\Tool\Authentication;
 
@@ -273,7 +273,7 @@ class Base extends Concrete
 
         if (\Pimcore::inAdmin()) {
             $user = Authentication::authenticateSession();
-            if ($user instanceof User) {
+            if ($user instanceof PimcoreUser) {
                 $note->setUser($user->getId());
             }
         }

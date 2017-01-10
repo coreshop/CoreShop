@@ -35,7 +35,7 @@ class CustomerGroups extends AbstractCondition
     /**
      * @var int[]
      */
-    public static $customerGroups;
+    public $customerGroups;
 
     /**
      * @return int[]
@@ -58,7 +58,7 @@ class CustomerGroups extends AbstractCondition
      *
      * @param Carrier $carrier
      * @param Cart $cart
-     * @param User\Address $address;
+     * @param User\Address $address
      * @param CarrierShippingRule $shippingRule
      *
      * @return mixed

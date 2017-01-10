@@ -39,7 +39,7 @@ class Deposit
      * set max elements per deposit
      * set 0 for no limit.
      *
-     * @var array
+     * @var int
      */
     public $maxElements = 0;
 

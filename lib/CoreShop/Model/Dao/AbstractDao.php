@@ -75,8 +75,6 @@ abstract class AbstractDao extends Dao\AbstractDao
             $this->model->setId($id);
         }
 
-        $data = null;
-
         if (!is_null($shopId) && $this->model->isMultiShop()) {
             $data = $this->db->fetchRow('SELECT * FROM ' . $this->getTableName() . ' INNER JOIN ' . $this->getShopTableName() . ' ON oId = id AND shopId = ? WHERE id = ?', [$shopId, $this->model->getId()]);
         } else {

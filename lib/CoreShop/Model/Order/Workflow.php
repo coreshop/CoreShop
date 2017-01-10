@@ -70,9 +70,9 @@ class Workflow
         $orderObject = $manager->getElement();
 
         $data = $event->getParam('data');
-        $additional = $data['additional'];
+        /*$additional = $data['additional'];
         $oldStatus = $data['oldStatus'];
-        $newStatus = $data['newStatus'];
+        $newStatus = $data['newStatus'];*/
         $oldState = $data['oldState'];
         $newState = $data['newState'];
 

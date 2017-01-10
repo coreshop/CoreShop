@@ -39,6 +39,7 @@ class CoreShop_Admin_ProductController extends Admin
         $list->setOffset($this->getParam('page', 1) - 1);
 
         if ($this->getParam('filter', null)) {
+            $conditionFilters = [];
             $conditionFilters[] = \Pimcore\Model\Object\Service::getFilterCondition($this->getParam('filter'), \Pimcore\Model\Object\ClassDefinition::getByName('CoreShopProduct'));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));

@@ -149,6 +149,7 @@ class CoreShop_Admin_OrderController extends Admin
         $list->setOffset($this->getParam('page', 1) - 1);
 
         if ($this->getParam('filter', null)) {
+            $conditionFilters = [];
             $conditionFilters[] = \Pimcore\Model\Object\Service::getFilterCondition($this->getParam('filter'), \Pimcore\Model\Object\ClassDefinition::getById(\CoreShop\Model\Order::classId()));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
@@ -296,9 +297,11 @@ class CoreShop_Admin_OrderController extends Admin
             $thread->save();
         }
 
-        $message = $thread->createMessage($messageText);
+        if($thread instanceof \CoreShop\Model\Messaging\Thread) {
+            $message = $thread->createMessage($messageText);
 
-        $message->sendNotification('customer-reply', $thread->getEmail());
+            $message->sendNotification('customer-reply', $thread->getEmail());
+        }
 
         $this->_helper->json(['success' => true]);
     }
@@ -412,8 +415,7 @@ class CoreShop_Admin_OrderController extends Admin
 
                 $threadResult['unread'] = count($messageList->getData());
                 $jsonOrder['unreadMessages'] += $threadResult['unread'];
-
-                $element['threads'][] = $threadResult;
+                $jsonOrder['threads'][] = $threadResult;
             }
         }
 
@@ -878,20 +880,23 @@ class CoreShop_Admin_OrderController extends Admin
         $statesHistory = [];
 
         $date = new \Pimcore\Date();
-        foreach ($history as $note) {
-            $user = \Pimcore\Model\User::getById($note->getUser());
-            $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
 
-            $statesHistory[] = [
-                'icon' => 'coreshop_icon_orderstates',
-                'type' => $note->getType(),
-                'date' => $date->setTimestamp($note->getDate())->get(\Pimcore\Date::DATETIME_MEDIUM),
-                'avatar' => $avatar,
-                'user' => $user ? $user->getName() : null,
-                'description' => $note->getDescription(),
-                'title' => $note->getTitle(),
-                'data' => $note->getData()
-            ];
+        if(is_array($history)) {
+            foreach ($history as $note) {
+                $user = \Pimcore\Model\User::getById($note->getUser());
+                $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
+
+                $statesHistory[] = [
+                    'icon' => 'coreshop_icon_orderstates',
+                    'type' => $note->getType(),
+                    'date' => $date->setTimestamp($note->getDate())->get(\Pimcore\Date::DATETIME_MEDIUM),
+                    'avatar' => $avatar,
+                    'user' => $user ? $user->getName() : null,
+                    'description' => $note->getDescription(),
+                    'title' => $note->getTitle(),
+                    'data' => $note->getData()
+                ];
+            }
         }
 
         return $statesHistory;

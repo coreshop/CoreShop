@@ -96,16 +96,19 @@ class CreateObjectClassCommand extends AbstractCommand
 
         $oldClassNameInfo = $availableClasses[$classType];
         $fullOldClassName = $oldClassNameInfo['pimcoreClass'];
-        $oldClassName = end(explode('\\', $fullOldClassName));
+        $oldClassNameArray = explode('\\', $fullOldClassName);
+        $oldClassName = end($oldClassNameArray);
         $fullNewClassName = str_replace("CoreShop", $prefix, $oldClassNameInfo['pimcoreClass']);
-        $newClassName = end(explode('\\', $fullNewClassName));
+        $newClassNameArray = explode('\\', $fullNewClassName);
+        $newClassName = end($newClassNameArray);
         $coreShopClassName = $oldClassNameInfo['coreShopClass'];
 
         $baseNamespace = str_replace("CoreShop\\Model\\", "", $coreShopClassName);
         $newParentClass = $pluginName . "\\Model\\" . $baseNamespace;
 
         $extendClass = $oldClassNameInfo['coreShopClass'];
-        $className = end(explode('\\', $extendClass));
+        $classNameArray = explode('\\', $extendClass);
+        $className = end($classNameArray);
 
         $namespacePath = explode("\\", $newParentClass);
         array_pop($namespacePath);
@@ -192,7 +195,6 @@ class CreateObjectClassCommand extends AbstractCommand
             }
 
             $config = ExtensionManager::getPluginConfig($name);
-            $className = $config["plugin"]["pluginClassName"];
 
             ExtensionManager::enable("plugin", $name);
         }
