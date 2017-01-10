@@ -15,6 +15,7 @@
 namespace CoreShop\Tool;
 
 use CoreShop\Exception;
+use Pimcore\Logger;
 use Pimcore\Tool;
 use Pimcore\Tool\Console;
 
@@ -66,9 +67,9 @@ class Wkhtmltopdf
 
         $pdfContent = self::convert($bodyHtml['absolutePath'], $config);
 
-        @unlink($bodyHtml['relativePath']);
-        @unlink($headerHtml['relativePath']);
-        @unlink($footerHtml['relativePath']);
+        self::unlinkFile($bodyHtml['relativePath']);
+        self::unlinkFile($headerHtml['relativePath']);
+        self::unlinkFile($footerHtml['relativePath']);
 
         return $pdfContent;
     }
@@ -130,12 +131,21 @@ class Wkhtmltopdf
             $pdfContent = file_get_contents($tmpPdfFile);
 
             // remove temps
-            @unlink($tmpPdfFile);
+            self::unlinkFile($tmpPdfFile);
 
             return $pdfContent;
         }
 
         throw new Exception('wkhtmltopdf not found');
+    }
+
+    /**
+     * @param string $file
+     */
+    protected static function unlinkFile($file) {
+        if(@unlink($file) === false) {
+            Logger::debug("Could not delete tmp WKHTMLTOPDF File");
+        }
     }
 
     /**

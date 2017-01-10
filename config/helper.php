@@ -23,7 +23,11 @@ if (!function_exists("recurse_copy")) {
     function recurse_copy($src, $dst, $overwrite = false)
     {
         $dir = opendir($src);
-        @mkdir($dst);
+
+        if (@mkdir($dst) === false) {
+            throw new \RuntimeException('The directory '.$dst.' could not be created.');
+        }
+
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {

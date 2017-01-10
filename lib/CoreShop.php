@@ -155,7 +155,7 @@ class CoreShop
      *
      * @param $identifier
      *
-     * @return bool
+     * @return bool|Payment
      */
     public static function getPaymentProvider($identifier)
     {

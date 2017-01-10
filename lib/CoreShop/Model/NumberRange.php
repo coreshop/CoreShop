@@ -54,7 +54,7 @@ class NumberRange extends AbstractModel
             $shopId = Shop::getShop()->getId();
         }
 
-        $numberRange = parent::getByField('type', $type, $shopId);
+        $numberRange = static::getByField('type', $type, $shopId);
 
         if (!$numberRange) {
             $numberRange = static::create();

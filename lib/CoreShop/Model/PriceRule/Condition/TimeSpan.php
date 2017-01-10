@@ -41,19 +41,15 @@ class TimeSpan extends AbstractCondition
     public $dateTo;
 
     /**
-     * @return \Zend_Date
+     * @return int
      */
     public function getDateFrom()
     {
-        if (!$this->dateFrom instanceof \Zend_Date) {
-            $this->dateFrom = new \Zend_Date($this->dateFrom / 1000);
-        }
-
         return $this->dateFrom;
     }
 
     /**
-     * @param int|\Zend_Date $dateFrom
+     * @param int $dateFrom
      */
     public function setDateFrom($dateFrom)
     {
@@ -61,19 +57,15 @@ class TimeSpan extends AbstractCondition
     }
 
     /**
-     * @return \Zend_Date
+     * @return int
      */
     public function getDateTo()
     {
-        if (!$this->dateTo instanceof \Zend_Date) {
-            $this->dateTo = new \Zend_Date($this->dateTo / 1000);
-        }
-
         return $this->dateTo;
     }
 
     /**
-     * @param int|\Zend_Date $dateTo
+     * @param int $dateTo
      */
     public function setDateTo($dateTo)
     {
@@ -116,11 +108,13 @@ class TimeSpan extends AbstractCondition
      */
     protected function check($throwException = false)
     {
-        //Check Availability
+        $dateFrom = new \Zend_Date($this->getDateFrom() / 1000);
+        $dateTo = new \Zend_Date($this->getDateTo() / 1000);
+
         $date = \Zend_Date::now();
 
-        if ($this->getDateFrom() instanceof \Zend_Date) {
-            if ($date->get(\Zend_Date::TIMESTAMP) < $this->getDateFrom()->get(\Zend_Date::TIMESTAMP)) {
+        if ($this->getDateFrom() > 0) {
+            if ($date->get(\Zend_Date::TIMESTAMP) < $dateFrom->get(\Zend_Date::TIMESTAMP)) {
                 if ($throwException) {
                     throw new Exception('This voucher has expired');
                 } else {
@@ -129,8 +123,8 @@ class TimeSpan extends AbstractCondition
             }
         }
 
-        if ($this->getDateTo() instanceof \Zend_Date) {
-            if ($date->get(\Zend_Date::TIMESTAMP) > $this->getDateTo()->get(\Zend_Date::TIMESTAMP)) {
+        if ($this->getDateTo() > 0) {
+            if ($date->get(\Zend_Date::TIMESTAMP) > $dateTo->get(\Zend_Date::TIMESTAMP)) {
                 if ($throwException) {
                     throw new Exception('This voucher has expired');
                 } else {

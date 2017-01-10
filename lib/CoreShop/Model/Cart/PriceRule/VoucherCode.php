@@ -61,7 +61,7 @@ class VoucherCode extends AbstractModel
      */
     public static function getByCode($code)
     {
-        return self::getByField("code", $code);
+        return static::getByField("code", $code);
     }
 
     /**

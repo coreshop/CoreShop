@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Index\Config\Column\AbstractColumn;
 use Pimcore\Model\Object\AbstractObject;
 
 /**
@@ -32,7 +33,7 @@ class Object extends RelationInterpreter
      * interpret value.
      *
      * @param mixed $value
-     * @param array $config
+     * @param AbstractColumn $config
      *
      * @return mixed
      *

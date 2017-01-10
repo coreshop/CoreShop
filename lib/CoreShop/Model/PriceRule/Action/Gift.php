@@ -34,19 +34,15 @@ class Gift extends AbstractAction
     public $gift;
 
     /**
-     * @return Product
+     * @return int
      */
     public function getGift()
     {
-        if (!$this->gift instanceof Product) {
-            $this->gift = Product::getById($this->gift);
-        }
-
         return $this->gift;
     }
 
     /**
-     * @param Product $gift
+     * @param int $gift
      */
     public function setGift($gift)
     {
@@ -62,8 +58,10 @@ class Gift extends AbstractAction
      */
     public function applyRule(Cart $cart)
     {
-        if ($this->getGift() instanceof Product) {
-            $item = $cart->updateQuantity($this->getGift(), 1, false, false);
+        $giftProduct = Product::getById($this->getGift());
+
+        if ($giftProduct instanceof Product) {
+            $item = $cart->updateQuantity($giftProduct, 1, false, false);
             $item->setIsGiftItem(true);
             $item->save();
         }
@@ -80,8 +78,10 @@ class Gift extends AbstractAction
      */
     public function unApplyRule(Cart $cart)
     {
-        if ($this->getGift() instanceof Product) {
-            $cart->updateQuantity($this->getGift(), 0, false, false);
+        $giftProduct = Product::getById($this->getGift());
+
+        if ($giftProduct instanceof Product) {
+            $cart->updateQuantity($giftProduct, 0, false, false);
         }
 
         return true;
@@ -93,13 +93,17 @@ class Gift extends AbstractAction
      * @param Cart $cart
      * @param boolean $withTax
      *
-     * @return int
+     * @return float
      */
     public function getDiscountCart(Cart $cart, $withTax = true)
     {
-        $discount = $this->getGift()->getPrice($withTax);
+        $giftProduct = Product::getById($this->getGift());
 
-        return $discount;
+        if ($giftProduct instanceof Product) {
+            return $giftProduct->getPrice($withTax);
+        }
+
+        return 0;
     }
 
     /**

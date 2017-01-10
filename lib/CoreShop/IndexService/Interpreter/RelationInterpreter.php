@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
+use CoreShop\Model\Index\Config\Column\AbstractColumn;
 
 /**
  * Class RelationInterpreter
@@ -26,7 +27,7 @@ abstract class RelationInterpreter extends AbstractInterpreter
      * interpret value.
      *
      * @param mixed $value
-     * @param array $config
+     * @param AbstractColumn $config
      *
      * @return mixed
      *

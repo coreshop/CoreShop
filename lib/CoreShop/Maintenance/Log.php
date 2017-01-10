@@ -34,8 +34,13 @@ class Log
             $data = gzencode(file_get_contents($logFile));
             $response = Tool::getHttpData("https://www.coreshop.org/usage-statistics/", [], ["data" => $data, "hostname" => Tool::getHostname()]);
             if (strpos($response, "true") !== false) {
-                @unlink($logFile);
-                Logger::debug("Usage statistics are transmitted and logfile was cleaned");
+
+                if (@unlink($logFile) === false) {
+                    Logger::debug("Usage statistics are transmitted but logfile could not be deleted");
+                }
+                else {
+                    Logger::debug("Usage statistics are transmitted and logfile was cleaned");
+                }
             } else {
                 Logger::debug("Unable to send usage statistics");
             }
