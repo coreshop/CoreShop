@@ -22,3 +22,7 @@ tools:
         too_many_fields: true
         too_many_methods: true
         excessive_class_complexity: true
+filter:
+  excluded_paths:
+    - "tests/"
+    - "update/"
