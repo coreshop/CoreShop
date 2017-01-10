@@ -77,20 +77,23 @@ class SpecificPrice extends Base
 
     public function testPriceRuleTimeSpan()
     {
-        $today              = strtotime('12:00:00');
-        $yesterday          = strtotime('-1 day', $today);
-        $tomorrow          = strtotime('1 day', $today);
+        $today = strtotime('12:00:00');
+        $yesterday = strtotime('-1 day', $today);
+        $tomorrow = strtotime('1 day', $today);
+
+        $yesterday = new \Zend_Date($yesterday);
+        $tomorrow = new \Zend_Date($tomorrow);
 
         $timeSpan = new TimeSpan();
-        $timeSpan->setDateFrom(new \Zend_Date($yesterday));
-        $timeSpan->setDateTo(new \Zend_Date($tomorrow));
+        $timeSpan->setDateFrom($yesterday->getTimestamp() * 1000);
+        $timeSpan->setDateTo($tomorrow->getTimestamp() * 1000);
 
         $cart = Data::createCartWithProducts();
 
         $this->assertTrue($timeSpan->checkConditionProduct($this->product, $this->specificPrice));
 
-        $timeSpan->setDateFrom($yesterday);
-        $timeSpan->setDateTo($yesterday);
+        $timeSpan->setDateFrom($yesterday->getTimestamp() * 1000);
+        $timeSpan->setDateTo($yesterday->getTimestamp() * 1000);
 
         $this->assertFalse($timeSpan->checkConditionProduct($this->product, $this->specificPrice));
     }
