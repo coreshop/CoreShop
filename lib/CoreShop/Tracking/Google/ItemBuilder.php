@@ -16,7 +16,6 @@ namespace CoreShop\Tracking\Google;
 
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
-use CoreShop\Model\PriceRule\AbstractPriceRule;
 use CoreShop\Model\PriceRule\Item;
 use CoreShop\Model\Product;
 use CoreShop\Tracking\ActionData;

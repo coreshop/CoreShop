@@ -17,7 +17,6 @@ namespace CoreShop\Controller;
 use CoreShop\Exception;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Shop;
-use CoreShop\Plugin;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Tool\Session;
 
@@ -129,9 +128,9 @@ class Action extends \Website\Controller\Action
     }
 
     /**
-     * @param $action
-     * @param null $controller
-     * @param null $module
+     * @param string $action
+     * @param string $controller
+     * @param string $module
      * @param array|null $params
      */
     public function coreShopForward($action, $controller = null, $module = null, array $params = null)

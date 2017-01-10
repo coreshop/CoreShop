@@ -16,7 +16,6 @@ namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
 use Pimcore\Model\Element\ElementInterface;
-use Pimcore\Model\Object\AbstractObject;
 
 /**
  * Class ObjectIdSum

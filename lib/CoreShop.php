@@ -76,7 +76,7 @@ class CoreShop
     }
 
     /**
-     * @param $plugin
+     * @param Plugin $plugin
      */
     public static function bootstrap($plugin)
     {
@@ -173,7 +173,7 @@ class CoreShop
     /**
      * Call an action hook.
      *
-     * @param $name
+     * @param string $name
      * @param array $params
      *
      * @return mixed

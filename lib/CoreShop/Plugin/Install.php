@@ -120,7 +120,7 @@ class Install
     /**
      * executes some install SQL.
      *
-     * @param $fileName
+     * @param string $fileName
      */
     public function executeSQL($fileName)
     {
@@ -201,7 +201,7 @@ class Install
     /**
      * Removes a class definition.
      *
-     * @param $name
+     * @param string $name
      */
     public function removeClass($name)
     {
@@ -276,7 +276,7 @@ class Install
     /**
      * Creates a FieldCollection.
      *
-     * @param $name
+     * @param string $name
      * @param null $jsonPath
      *
      * @return mixed|null|Object\Fieldcollection\Definition
@@ -316,7 +316,7 @@ class Install
     /**
      * Removes a FieldCollection.
      *
-     * @param $name
+     * @param string $name
      *
      * @return bool
      */
@@ -466,7 +466,7 @@ class Install
     /**
      * Install Admin TranslationsFile.
      *
-     * @param $csv string Path to CSV File
+     * @param string $csv string Path to CSV File
      *
      * @return bool
      */
@@ -480,7 +480,7 @@ class Install
     /**
      * installs some data based from an XML File.
      *
-     * @param $xml
+     * @param string $xml
      * @param $namespace
      */
     public function installObjectData($xml, $namespace = '')
@@ -522,7 +522,7 @@ class Install
     /**
      * Creates some Documents with Data based from XML file.
      *
-     * @param $xml
+     * @param string $xml
      *
      * @throws \Exception
      */

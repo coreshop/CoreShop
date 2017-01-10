@@ -18,7 +18,6 @@ use CoreShop\Model\Configuration;
 use CoreShop\Model\Messaging\Message;
 use CoreShop\Model\Order;
 use CoreShop\Model\Shop;
-use Pimcore\Db;
 use Pimcore\Mail as PimcoreMail;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Document;

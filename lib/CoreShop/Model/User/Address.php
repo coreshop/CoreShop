@@ -17,7 +17,6 @@ namespace CoreShop\Model\User;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Country;
-use CoreShop\Model\Object\Fieldcollection\Data\AbstractData;
 use CoreShop\Model\State;
 
 /**

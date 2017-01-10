@@ -206,7 +206,7 @@ class CoreShop_CartController extends Action
     }
 
     /**
-     * @param $view
+     * @param string $view
      *
      * @return string
      *

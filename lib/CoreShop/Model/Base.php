@@ -16,7 +16,6 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use Pimcore\Model\Element\Note;
-use Pimcore\Model\Listing\AbstractListing;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\ClassDefinition\Data;
@@ -207,7 +206,7 @@ class Base extends Concrete
     }
 
     /**
-     * @param $className
+     * @param string $className
      * @param $append
      * @return string
      */
@@ -315,7 +314,7 @@ class Base extends Concrete
     /**
      * @param $language
      * @param $params
-     * @param $route
+     * @param string $route
      * @param bool $reset
      * @param Shop|null $shop
      * @return bool|string

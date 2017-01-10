@@ -461,7 +461,7 @@ QUERY;
     /**
      * Get System Attributes.
      *
-     * @return array
+     * @return string[]
      */
     protected function getSystemAttributes()
     {

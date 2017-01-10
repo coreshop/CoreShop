@@ -16,7 +16,6 @@ namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Index\Config\Column\AbstractColumn;
-use CoreShop\Model\Index\Config\Column\Fieldcollections;
 use CoreShop\Model\Product;
 
 /**

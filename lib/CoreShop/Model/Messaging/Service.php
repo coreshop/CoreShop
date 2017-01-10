@@ -15,12 +15,10 @@
 namespace CoreShop\Model\Messaging;
 
 use CoreShop\Model\Configuration;
-use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use CoreShop\Model\Shop;
 use CoreShop\Model\User;
-use Pimcore\Model\Document\Email;
 
 /**
  * Class Service
@@ -32,7 +30,7 @@ class Service
      * Handles the Request and creates Thread/Message.
      *
      * @param $params
-     * @param $language
+     * @param string $language
      * @param $sendContact
      * @param $sendCustomer
      *

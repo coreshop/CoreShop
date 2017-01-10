@@ -119,7 +119,7 @@ class EnhancedEcommerce extends ClientTracker
 
     /**
      * @param Product $product
-     * @param $action
+     * @param string $action
      * @param int $quantity
      */
     protected function trackProductAction(Product $product, $action, $quantity = 1)

@@ -48,7 +48,7 @@ class Shop extends AbstractModel
     public $siteId;
 
     /**
-     * @return mixed
+     * @return Shop
      * @throws Exception
      * @throws \Exception
      *
@@ -89,7 +89,7 @@ class Shop extends AbstractModel
     /**
      * @note: Copied from Pimcore\Controller\Router\Route\Frontend, probably needs to be changed sometimes
      *
-     * @param $path
+     * @param string|false $path
      * @param bool $ignoreHardlinks
      * @param array $types
      * @return Document|Document\PageSnippet|null|string

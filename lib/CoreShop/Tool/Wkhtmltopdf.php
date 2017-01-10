@@ -42,7 +42,7 @@ class Wkhtmltopdf
     /**
      * Converts HTML from String to pdf.
      *
-     * @param $string
+     * @param string $string
      * @param $header
      * @param $footer
      * @param array $config

@@ -60,7 +60,7 @@ abstract class AbstractRule extends AbstractModel
 
     /**
      * @param $actions
-     * @return array
+     * @return AbstractAction[]
      *
      * @throws \CoreShop\Exception
      */
@@ -87,7 +87,7 @@ abstract class AbstractRule extends AbstractModel
     /**
      * @param $conditions
 
-     * @return mixed
+     * @return AbstractCondition[]
      * @throws \CoreShop\Exception
      */
     public function prepareConditions($conditions)

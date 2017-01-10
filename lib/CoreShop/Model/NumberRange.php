@@ -70,7 +70,7 @@ class NumberRange extends AbstractModel
     /**
      * Returns the next number for a type.
      *
-     * @param $type
+     * @param string $type
      * @param $shopId
      *
      * @return int

@@ -95,7 +95,7 @@ class Shipment extends Base
     /**
      * Converts any Number to a valid ShipmentNumber with Suffix and Prefix.
      *
-     * @param $number
+     * @param integer $number
      *
      * @return string
      */

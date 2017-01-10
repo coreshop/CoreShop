@@ -416,7 +416,7 @@ class Update
      * execute script.
      *
      * @param $revision
-     * @param $type
+     * @param string $type
      *
      * @return array
      */
@@ -492,6 +492,7 @@ class Update
      * get scripts for build.
      *
      * @param $build
+     * @param string $name
      *
      * @return null|string
      */

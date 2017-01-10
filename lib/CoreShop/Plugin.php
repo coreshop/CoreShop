@@ -14,7 +14,6 @@
 
 namespace CoreShop;
 
-use CoreShop\Model\Cart;
 use CoreShop\Model\Configuration;
 use Pimcore\API\Plugin\AbstractPlugin;
 use Pimcore\API\Plugin\PluginInterface;

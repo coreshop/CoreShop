@@ -177,7 +177,7 @@ class AbstractDao extends Listing\Dao\AbstractDao
     /**
      * Handles Exceptions.
      *
-     * @param $e
+     * @param \Exception $e
      *
      * @return array
      *

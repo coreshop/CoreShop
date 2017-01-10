@@ -56,7 +56,7 @@ class Deposit
     /**
      * Set Deposit Namespace.
      *
-     * @param null $namespace
+     * @param string $namespace
      *
      * @return $this
      */
@@ -152,7 +152,7 @@ class Deposit
      *
      * @param $id
      *
-     * @return bool
+     * @return string|boolean
      */
     public function allowedToAdd($id)
     {

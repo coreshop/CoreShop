@@ -13,7 +13,6 @@
  */
 
 use CoreShop\Controller\Action;
-use CoreShop\Model\Cart\PriceRule;
 
 /**
  * Class CoreShop_CartListController

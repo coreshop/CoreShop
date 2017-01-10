@@ -16,7 +16,6 @@ namespace CoreShop\IndexService;
 
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
-use CoreShop\Model\Index\Config\Column\Mysql as Column;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Pimcore\Db;

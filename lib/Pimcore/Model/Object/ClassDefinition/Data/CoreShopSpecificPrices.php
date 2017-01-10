@@ -17,11 +17,8 @@ namespace Pimcore\Model\Object\ClassDefinition\Data;
 use CoreShop\Model\Product;
 use CoreShop\Model\Product\SpecificPrice;
 use Pimcore\Cache;
-use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model\Object\Concrete;
-use Pimcore\Model\Webservice\Data\Object\Element;
-use Pimcore\Tool;
 
 /**
  * Class CoreShopSpecificPrices
@@ -150,7 +147,7 @@ class CoreShopSpecificPrices extends Data
      * Returns the data which should be stored in the query columns
      *
      * @param mixed $data
-     * @return mixed
+     * @return string
     */
     public function getDataForQueryResource($data)
     {
@@ -162,7 +159,7 @@ class CoreShopSpecificPrices extends Data
      * @param null $relatedObject
      * @param mixed $params
      * @param null $idMapper
-     * @return mixed
+     * @return SpecificPrice[]
      * @throws \Exception
      */
     public function getFromWebserviceImport($data, $relatedObject = null, $params = [], $idMapper = null)

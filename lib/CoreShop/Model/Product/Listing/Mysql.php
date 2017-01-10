@@ -603,7 +603,7 @@ class Mysql extends AbstractListing
      * @param $fields
      * @param $objectId
      *
-     * @return Product[]
+     * @return string
      */
     public function buildSimilarityOrderBy($fields, $objectId)
     {

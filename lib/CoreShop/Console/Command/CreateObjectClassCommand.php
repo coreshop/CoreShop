@@ -162,7 +162,7 @@ class CreateObjectClassCommand extends AbstractCommand
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return bool
      */
     protected function createPlugin($name)
@@ -203,11 +203,11 @@ class CreateObjectClassCommand extends AbstractCommand
     }
 
     /**
-     * @param $namespace
+     * @param string $namespace
      * @param $coreShopClass
      * @param $className
      * @param $pimcoreClass
-     * @param $pathForFile
+     * @param string $pathForFile
      */
     protected function createPhpClass($namespace, $coreShopClass, $className, $pimcoreClass, $pathForFile)
     {
@@ -230,7 +230,7 @@ class CreateObjectClassCommand extends AbstractCommand
 
     /**
      * @param $oldPimcoreClass
-     * @param $newParentClass
+     * @param string $newParentClass
      * @param $newPimcoreClassName
      *
      * @return string
@@ -394,7 +394,7 @@ class CreateObjectClassCommand extends AbstractCommand
     }
 
     /**
-     * @param $table
+     * @param string $table
      * @return array
      */
     protected function getColumns($table)

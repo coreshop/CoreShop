@@ -14,7 +14,6 @@
 
 namespace CoreShop\Helper\Zend;
 
-use CoreShop\Controller\Action\Payment;
 use Pimcore\Controller\Action\Helper\ViewRenderer;
 
 /**

@@ -34,7 +34,6 @@ use Pimcore\Model\Asset;
 use Pimcore\Model\Asset\Document;
 use Pimcore\Model\Asset\Service;
 use Pimcore\Model\Object;
-use Pimcore\Model\User as PimcoreUser;
 
 /**
  * Class Invoice

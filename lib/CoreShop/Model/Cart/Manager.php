@@ -14,15 +14,8 @@
 
 namespace CoreShop\Model\Cart;
 
-use CoreShop\Exception;
-use CoreShop\Model\AbstractModel;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Currency;
-use CoreShop\Model\Order;
-use CoreShop\Model\PriceRule\AbstractPriceRule;
-use CoreShop\Model\PriceRule\Action\AbstractAction;
-use CoreShop\Model\PriceRule\Condition\AbstractCondition;
-use CoreShop\Model\PriceRule\Item as PriceRuleItem;
 use CoreShop\Model\Shop;
 use CoreShop\Model\User;
 use Pimcore\Model\Object\Service;

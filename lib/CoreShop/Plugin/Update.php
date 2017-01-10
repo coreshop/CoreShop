@@ -480,7 +480,7 @@ class Update
     }
 
     /**
-     * @param $url
+     * @param string $url
      *
      * @return bool|array
      */

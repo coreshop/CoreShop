@@ -471,7 +471,7 @@ class Product extends Base
      * @param boolean $withTax
      * @param boolean $doCurrencyConvert
      *
-     * @return float|mixed
+     * @return double
      */
     public function getPrice($withTax = true, $doCurrencyConvert = true)
     {

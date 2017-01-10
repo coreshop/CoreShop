@@ -47,7 +47,7 @@ if (!function_exists("recurse_copy")) {
 if (!function_exists("startsWith")) {
     /**
      * @param $haystack
-     * @param $needle
+     * @param string $needle
      * @return bool
      */
     function startsWith($haystack, $needle)

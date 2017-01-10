@@ -154,7 +154,7 @@ class Filter extends AbstractModel
     /**
      * @param $conditions
      *
-     * @return mixed
+     * @return AbstractCondition[]
      * @throws \CoreShop\Exception
      */
     public function prepareConditions($conditions)
@@ -185,7 +185,7 @@ class Filter extends AbstractModel
     /**
      * @param $similarities
      *
-     * @return mixed
+     * @return AbstractSimilarity[]
      * @throws \CoreShop\Exception
      */
     public function prepareSimilarities($similarities)
@@ -257,7 +257,7 @@ class Filter extends AbstractModel
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getOrderKey()
     {

@@ -14,7 +14,6 @@
 
 namespace CoreShop\Model\Product\Filter;
 
-use CoreShop\Model\Configuration;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 use CoreShop\Model\Shop;
