@@ -264,7 +264,6 @@ class CoreShop_Admin_ReportsController extends Admin
         $toTimestamp = $to->getTimestamp();
 
         if ($from->isLater($minFrom)) {
-            $from = $minFrom;
             $fromTimestamp = $minFrom->getTimestamp();
         }
 

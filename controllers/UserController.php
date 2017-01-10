@@ -13,7 +13,7 @@
  */
 
 use CoreShop\Controller\Action;
-use CoreShop\Exception;
+use CoreShop\Exception as CoreShopException;
 use CoreShop\Model\Country;
 use Pimcore\Model\Object;
 
@@ -57,9 +57,6 @@ class CoreShop_UserController extends Action
     {
     }
 
-    /**
-     * @throws Exception\ObjectUnsupportedException
-     */
     public function orderDetailAction()
     {
         $order = $this->getParam('id');
@@ -77,10 +74,6 @@ class CoreShop_UserController extends Action
         $this->view->order = $order;
     }
 
-    /**
-     * @throws Exception
-     * @throws Exception\ObjectUnsupportedException
-     */
     public function orderDetailMessageAction()
     {
         $order = $this->getParam('id');
@@ -130,9 +123,6 @@ class CoreShop_UserController extends Action
         $this->redirect(\CoreShop::getTools()->url(['act' => 'order-detail', 'id' => $order->getId(), 'messageSent' => true], 'coreshop_user', true));
     }
 
-    /**
-     * @throws Exception\ObjectUnsupportedException
-     */
     public function orderReorderAction()
     {
         $order = $this->getParam('id');
@@ -152,7 +142,6 @@ class CoreShop_UserController extends Action
     }
 
     /**
-     * @throws Exception\ObjectUnsupportedException
      * @throws Zend_Controller_Response_Exception
      */
     public function downloadVirtualProductAction()
@@ -252,9 +241,6 @@ class CoreShop_UserController extends Action
         $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language], 'coreshop_index'));
     }
 
-    /**
-     * @throws Exception\ObjectUnsupportedException
-     */
     public function loginAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
@@ -336,7 +322,7 @@ class CoreShop_UserController extends Action
                 $isGuest = intval($this->getParam('isGuest', 0)) === 1;
 
                 if ($isGuest && !\CoreShop\Model\Configuration::isGuestCheckoutActivated()) {
-                    throw new Exception\UnsupportedException('Guest checkout is disabled');
+                    throw new CoreShopException\UnsupportedException('Guest checkout is disabled');
                 }
 
                 //Check User exists
@@ -424,9 +410,6 @@ class CoreShop_UserController extends Action
         }
     }
 
-    /**
-     * @throws Exception\ObjectUnsupportedException
-     */
     public function passwordResetAction()
     {
         if (\CoreShop::getTools()->getUser() instanceof \CoreShop\Model\User) {
@@ -478,11 +461,6 @@ class CoreShop_UserController extends Action
 
     }
 
-    /**
-     * @throws Exception
-     * @throws Exception\ObjectUnsupportedException
-     * @throws Zend_Validate_Exception
-     */
     public function passwordResetRequestAction()
     {
         $message = '';
@@ -527,10 +505,6 @@ class CoreShop_UserController extends Action
     {
     }
 
-    /**
-     * @throws Exception
-     * @throws Exception\ObjectUnsupportedException
-     */
     public function addressAction()
     {
         $this->view->redirect = $this->getParam('redirect', \CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'addresses'], 'coreshop_user', true));
@@ -610,9 +584,6 @@ class CoreShop_UserController extends Action
         }
     }
 
-    /**
-     * @throws Exception\ObjectUnsupportedException
-     */
     public function addressDeleteAction()
     {
         $address = intval($this->getParam('address'));

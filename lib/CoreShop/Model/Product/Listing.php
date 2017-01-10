@@ -251,7 +251,7 @@ abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Pagin
      * @param $fields
      * @param $objectId
      *
-     * @return Product[]
+     * @return string
      */
     abstract public function buildSimilarityOrderBy($fields, $objectId);
 

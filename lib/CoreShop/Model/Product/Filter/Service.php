@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Product\Filter;
 
 use CoreShop\Model\Product\Filter;
-use CoreShop\Model\Product\Listing;
+use CoreShop\Model\Product\Listing as ProductListing;
 
 /**
  * Class Service
@@ -29,12 +29,12 @@ class Service
 
     /**
      * @param Filter  $filterObject
-     * @param Listing $list
+     * @param ProductListing $list
      * @param array   $params
      *
      * @return array $currentFilter
      */
-    public function initFilterService(Filter $filterObject, Listing $list, $params = [])
+    public function initFilterService(Filter $filterObject, ProductListing $list, $params = [])
     {
         $currentFilter = [];
 

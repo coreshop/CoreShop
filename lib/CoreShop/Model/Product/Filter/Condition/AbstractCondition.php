@@ -29,7 +29,7 @@ abstract class AbstractCondition
     public static $type = '';
 
     /**
-     * @var string
+     * @var mixed
      */
     public $field;
 
