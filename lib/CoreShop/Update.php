@@ -18,6 +18,7 @@ use CoreShop\Plugin\Install;
 use Pimcore\Cache;
 use Pimcore\Db;
 use Pimcore\File;
+use Pimcore\Logger;
 
 /**
  * Class Update
@@ -153,6 +154,11 @@ class Update
 
         $updateScripts = [];
         $revisions = [];
+        $jobs = [
+            'parallel' => [
+
+            ]
+        ];
 
         foreach ($builds as $build) {
             $buildNumber = (string) $build['number'];
@@ -160,6 +166,8 @@ class Update
             $changedFiles = self::getChangedFilesForBuild($build['number']);
             $preUpdateScript = self::getScriptForBuild($build['number'], 'preupdate');
             $postUpdateScript = self::getScriptForBuild($build['number'], 'postupdate');
+
+            $updateScripts[$buildNumber] = [];
 
             foreach ($changedFiles as $download) {
                 if (empty($download)) {
@@ -195,7 +203,7 @@ class Update
                 $revisions[] = (int) $buildNumber;
             }
 
-            if ($preUpdateScript) {
+            if (!is_null($preUpdateScript)) {
                 $updateScripts[$buildNumber]['preupdate'] = [
                     'type' => 'preupdate',
                     'revision' => $buildNumber,
@@ -211,7 +219,7 @@ class Update
                 $revisions[] = (int) $buildNumber;
             }
 
-            if ($postUpdateScript) {
+            if (!is_null($postUpdateScript)) {
                 $updateScripts[$buildNumber]['postupdate'] = [
                     'type' => 'postupdate',
                     'revision' => $buildNumber,
@@ -454,7 +462,7 @@ class Update
      *
      * @param $class
      *
-     * @return bool
+     * @return array
      */
     public static function installClass($class)
     {
@@ -498,15 +506,19 @@ class Update
      */
     public static function getScriptForBuild($build, $name)
     {
+        $path = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update/'.$build.'/scripts/'.$name.'.php';
+
         try {
-            $updateScript = @file_get_contents(PIMCORE_SYSTEM_TEMP_DIRECTORY.'/coreshop_update/'.$build.'/scripts/'.$name.'.php');
+            $updateScript = @file_get_contents($path);
 
             if ($updateScript) {
                 return $updateScript;
             }
         } catch (\Exception $ex) {
-            return;
+            Logger::log(sprintf("Unable to get script for build: %s (%s)", $build, $path));
         }
+
+        return null;
     }
 
     /**
@@ -518,15 +530,19 @@ class Update
      */
     public static function getChangedFilesForBuild($build)
     {
+        $path = self::getChangedFilesFileForBuild($build);
+
         try {
-            $changedFiles = @file_get_contents(self::getChangedFilesFileForBuild($build));
+            $changedFiles = @file_get_contents($path);
 
             if ($changedFiles) {
                 return explode(PHP_EOL, $changedFiles);
             }
         } catch (\Exception $ex) {
-            return;
+            Logger::info(sprintf("Couldn't load %s file", $path));
         }
+
+        return null;
     }
 
     /**
@@ -538,15 +554,19 @@ class Update
      */
     public static function getDeletedFilesForBuild($build)
     {
+        $path = self::getDeletedFilesFileForBuild($build);
+
         try {
-            $changedFiles = @file_get_contents(self::getDeletedFilesFileForBuild($build));
+            $changedFiles = @file_get_contents($path);
 
             if ($changedFiles) {
                 return explode(PHP_EOL, $changedFiles);
             }
         } catch (\Exception $ex) {
-            return;
+            Logger::info(sprintf("Couldn't load %s file", $path));
         }
+
+        return null;
     }
 
     /**
@@ -629,7 +649,9 @@ class Update
                 return $builds;
             }
         } catch (\Exception $ex) {
-            return;
+            Logger::info(sprintf("Couldn't load %s file", self::$buildServerInfo));
         }
+
+        return null;
     }
 }

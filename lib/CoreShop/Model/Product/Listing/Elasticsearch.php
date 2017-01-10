@@ -534,8 +534,6 @@ class Elasticsearch extends AbstractListing
     protected function doLoadGroupByValues()
     {
         // create general filters and queries
-        $toExcludeFieldnames = [];
-
         $filters = $this->buildSystemConditions();
 
         //user specific filters

@@ -81,7 +81,7 @@ class Dao
         }
 
         if ($this->model->getVariantMode() == AbstractList::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            if ($orderBy) {
+            if (!is_null($orderBy)) {
                 $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualProductId as o_id FROM '
                     .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
@@ -209,7 +209,7 @@ class Dao
      * @param null $limit
      * @param null $offset
      *
-     * @return string
+     * @return integer
      */
     public function getCount($condition, $orderBy = null, $limit = null, $offset = null)
     {
@@ -263,7 +263,7 @@ class Dao
      * @param $fields
      * @param $objectId
      *
-     * @return mixed;
+     * @return string
      */
     public function buildSimilarityOrderBy($fields, $objectId)
     {

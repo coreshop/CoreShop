@@ -166,7 +166,7 @@ class EnhancedEcommerce extends ClientTracker
      */
     public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
-        $items = $this->getItemBuilder()->buildCheckoutItemsByCart($cart);
+        //$items = $this->getItemBuilder()->buildCheckoutItemsByCart($cart);
 
         $actionData = [];
 

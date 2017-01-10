@@ -35,7 +35,7 @@ class Categories extends AbstractCondition
     /**
      * @var int[]
      */
-    public static $categories;
+    public $categories;
 
     /**
      * @return int[]

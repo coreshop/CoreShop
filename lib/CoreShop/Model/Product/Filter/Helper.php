@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Product\Filter;
 
 use CoreShop\Model\Product\Filter;
-use CoreShop\Model\Product\Listing;
+use CoreShop\Model\Product\Listing as ProductListing;
 use CoreShop\Model\Shop;
 
 /**
@@ -27,14 +27,14 @@ class Helper
     /**
      * Setup Product List.
      *
-     * @param Listing $list
+     * @param ProductListing $list
      * @param $params
      * @param Filter  $filter
      * @param Service $filterService
      *
      * @return array()
      */
-    public static function setupProductList(Listing $list, $params, Filter $filter = null, Service $filterService = null)
+    public static function setupProductList(ProductListing $list, $params, Filter $filter, Service $filterService = null)
     {
         $orderKey = $filter->getOrderKey();
         $orderDirection = $filter->getOrder();

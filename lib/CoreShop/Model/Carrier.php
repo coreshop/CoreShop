@@ -417,12 +417,12 @@ class Carrier extends AbstractModel
      * @param Cart $cart
      * @param bool $withTax
      * @param Address|null $address
-     * @return bool|float|null
+     * @return float
      */
     public function getDeliveryPrice(Cart $cart, $withTax = true, Address $address = null)
     {
-        $price = false;
-        
+        $price = null;
+
         if (is_null($address)) {
             $address = \CoreShop::getTools()->getDeliveryAddress();
         }
@@ -446,8 +446,8 @@ class Carrier extends AbstractModel
             }
         }
 
-        if ($price === false) {
-            if ($this->getRangeBehaviour() === self::RANGE_BEHAVIOUR_LARGEST) {
+        if (is_null($price)) {
+            if ($this->getRangeBehaviour() == self::RANGE_BEHAVIOUR_LARGEST) {
                 $price = $this->getMaxDeliveryPrice($cart, $address);
             }
         }
@@ -468,9 +468,11 @@ class Carrier extends AbstractModel
                     }
                 }
             }
+
+            return $price;
         }
-        
-        return $price;
+
+        return 0;
     }
 
     /**

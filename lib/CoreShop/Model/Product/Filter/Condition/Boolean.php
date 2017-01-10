@@ -63,23 +63,26 @@ class Boolean extends AbstractCondition
     {
         $rawValues = [];
         $currentValues = $currentFilter[\Pimcore\File::getValidFilename($this->getLabel())];
+        $fields = $this->getField();
 
-        foreach ($this->getField() as $field) {
-            $fieldRawValues = $list->getGroupByValues($field, true);
+        if(is_array($fields)) {
+            foreach ($this->getField() as $field) {
+                $fieldRawValues = $list->getGroupByValues($field, true);
 
-            if (!is_array($fieldRawValues) || !isset($currentValues[ $field ])) {
-                continue;
-            }
+                if (!is_array($fieldRawValues) || !isset($currentValues[$field])) {
+                    continue;
+                }
 
-            foreach ($fieldRawValues as $fieldRawValue) {
-                $dbVal = (int) $fieldRawValue['value'];
+                foreach ($fieldRawValues as $fieldRawValue) {
+                    $dbVal = (int)$fieldRawValue['value'];
 
-                if ($dbVal === 1) {
-                    $rawValues[] = [
-                        'value' => $field,
-                        'count' => $fieldRawValue['count'],
-                    ];
-                    break;
+                    if ($dbVal === 1) {
+                        $rawValues[] = [
+                            'value' => $field,
+                            'count' => $fieldRawValue['count'],
+                        ];
+                        break;
+                    }
                 }
             }
         }

@@ -616,7 +616,7 @@ class Product extends Base
             return [];
         }
 
-        return 0;
+        return 0.0;
     }
 
     /**

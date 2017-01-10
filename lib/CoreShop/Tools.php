@@ -142,6 +142,8 @@ class Tools
      * @param Currency $currency
      *
      * @return string
+     *
+     * @throws \Exception
      */
     public function formatPrice($price, $country = null, $currency = null)
     {
@@ -151,15 +153,17 @@ class Tools
             }
 
             if (is_null($currency)) {
-                $currency = self::getCurrency();
+                $currency = static::getCurrency();
             }
 
-            $locale = \Zend_Locale::getLocaleToTerritory($country->getIsoCode());
-            $zCurrency = new \Zend_Currency($locale);
+            if($currency instanceof Currency && $country instanceof Country) {
+                $locale = \Zend_Locale::getLocaleToTerritory($country->getIsoCode());
+                $zCurrency = new \Zend_Currency($locale);
 
-            return $zCurrency->toCurrency($price, ['symbol' => $currency->getSymbol()]);
+                return $zCurrency->toCurrency($price, ['symbol' => $currency->getSymbol()]);
+            }
         } catch (\Exception $ex) {
-            echo $ex;
+            throw $ex;
         }
 
         return $price;
@@ -642,8 +646,14 @@ class Tools
             }
         }
 
-        if ($this->getCountry()->getCurrency() instanceof Currency) {
-            return $this->getCountry()->getCurrency();
+        $country = $this->getCountry();
+
+        if($country instanceof Country) {
+            $currency = $country->getCurrency();
+
+            if($currency instanceof Currency) {
+                return $currency;
+            }
         }
 
         return $this->getBaseCurrency();

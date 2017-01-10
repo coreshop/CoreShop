@@ -59,18 +59,18 @@ class AbstractDao extends Listing\Dao\AbstractDao
                     }
                 }
 
-                if (!$language && \Zend_Registry::isRegistered('Zend_Locale')) {
+                if (is_null($language) && \Zend_Registry::isRegistered('Zend_Locale')) {
                     $locale = \CoreShop::getTools()->getLocale();
                     if (Tool::isValidLanguage((string) $locale)) {
                         $language = (string) $locale;
                     }
                 }
 
-                if (!$language) {
+                if (is_null($language)) {
                     $language = Tool::getDefaultLanguage();
                 }
 
-                if (!$language) {
+                if (is_null($language)) {
                     throw new Exception('No valid language/locale set. Use $list->setLocale() to add a language to the listing, or register a global locale');
                 }
 
@@ -138,8 +138,6 @@ class AbstractDao extends Listing\Dao\AbstractDao
 
         $objects = [];
         foreach ($list as $o_id) {
-            $object = null;
-
             if ($modelClass::isMultiShop() && Tool::isFrontend()) {
                 $object = $modelClass::getByShopId($o_id, Model\Shop::getShop()->getId());
             } else {

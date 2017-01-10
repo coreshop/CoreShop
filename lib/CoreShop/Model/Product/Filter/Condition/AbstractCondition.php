@@ -169,7 +169,7 @@ abstract class AbstractCondition
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getField()
     {
@@ -177,7 +177,7 @@ abstract class AbstractCondition
     }
 
     /**
-     * @param string $field
+     * @param mixed $field
      */
     public function setField($field)
     {

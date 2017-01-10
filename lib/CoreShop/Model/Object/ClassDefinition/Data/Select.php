@@ -83,7 +83,7 @@ class Select extends Model\Object\ClassDefinition\Data\Select
 
     /**
      * @see Object\ClassDefinition\Data::getDataForResource
-     * @param string $data
+     * @param AbstractModel $data
      * @param null|Model\Object\AbstractObject $object
      * @param mixed $params
      * @return string

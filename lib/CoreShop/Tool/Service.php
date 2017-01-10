@@ -165,7 +165,6 @@ class Service
                         }
 
                         $classificationStoreData = $productVariant->$getter();
-                        $value = null;
 
                         if ($classificationStoreData instanceof Classificationstore) {
                             $value = $classificationStoreData->getLocalizedKeyValue($keyData['groupId'], $keyData['keyId'], $language);

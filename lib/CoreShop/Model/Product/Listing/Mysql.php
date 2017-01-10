@@ -529,7 +529,7 @@ class Mysql extends AbstractListing
     protected function buildUserSpecificConditions($excludedFieldName = null)
     {
         $renderedConditions = [];
-        $relationalTableName = $this->worker->getRelationTablename();
+        //$relationalTableName = $this->worker->getRelationTablename();
 
         foreach ($this->relationConditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
@@ -693,10 +693,7 @@ class Mysql extends AbstractListing
      *
      * @link http://php.net/manual/en/countable.count.php
      *
-     * @return int The custom count as an integer.
-     *             </p>
-     *             <p>
-     *             The return value is cast to an integer.
+     * @return integer
      */
     public function count()
     {

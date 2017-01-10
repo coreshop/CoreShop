@@ -82,19 +82,18 @@ class Conditions extends AbstractCondition
      */
     public function checkCondition(Model\Carrier $carrier, Model\Cart $cart, Model\User\Address $address, CarrierShippingRule $shippingRule)
     {
-        return $this->check(function ($condition) use ($carrier, $cart, $address, $shippingRule) {
+        return $this->check(function (AbstractCondition $condition) use ($carrier, $cart, $address, $shippingRule) {
             return $condition->checkCondition($carrier, $cart, $address, $shippingRule);
         });
     }
 
     /**
-     * @param $checkCondition
+     * @param \Closure $checkCondition
      * @return bool
      */
     public function check($checkCondition)
     {
         $operator = $this->getOperator();
-        $valid = null;
 
         foreach ($this->getConditions() as $condition) {
             $valid = $checkCondition($condition);
