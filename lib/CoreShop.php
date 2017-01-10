@@ -167,7 +167,7 @@ class CoreShop
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
