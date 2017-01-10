@@ -46,7 +46,7 @@ class Categories extends AbstractCondition
     }
 
     /**
-     * @param int $categories
+     * @param int[] $categories
      */
     public function setCategories($categories)
     {
