@@ -24,7 +24,9 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
         add : '/plugin/CoreShop/admin_indexes/add',
         delete : '/plugin/CoreShop/admin_indexes/delete',
         get : '/plugin/CoreShop/admin_indexes/get',
-        list : '/plugin/CoreShop/admin_indexes/list'
+        list : '/plugin/CoreShop/admin_indexes/list',
+        config: '/plugin/CoreShop/admin_indexes/get-config',
+        types : '/plugin/CoreShop/admin_indexes/get-types'
     },
 
     typesStore : null,
@@ -34,7 +36,7 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
      */
     initialize: function () {
         var proxy = new Ext.data.HttpProxy({
-            url : '/plugin/CoreShop/admin_indexes/get-types'
+            url : this.url.types
         });
 
         var reader = new Ext.data.JsonReader({}, [
@@ -49,50 +51,45 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
         });
         this.typesStore.load();
 
-        this.getGettersStore();
-        this.getInterpretersStore();
-
-        // create layout
-        this.getLayout();
+        this.getConfig();
 
         this.panels = [];
     },
 
-    getGettersStore : function () {
-        var store = new Ext.data.Store({
-            proxy: {
-                type: 'ajax',
-                url : '/plugin/CoreShop/admin_indexes/get-available-getters',
-                reader: {
-                    type: 'json',
-                    rootProperty : 'data'
+    getConfig : function() {
+        this.getterStore = new Ext.data.JsonStore({
+            data : []
+        });
+
+        this.interpreterStore = new Ext.data.JsonStore({
+            data : []
+        });
+
+        this.fieldTypeStore = new Ext.data.JsonStore({
+            data : []
+        });
+
+        pimcore.globalmanager.add('coreshop_index_getters', this.getterStore);
+        pimcore.globalmanager.add('coreshop_index_interpreters', this.interpreterStore);
+        pimcore.globalmanager.add('coreshop_index_fieldTypes', this.fieldTypeStore);
+
+        Ext.Ajax.request({
+            url: this.url.config,
+            method: 'get',
+            success: function (response) {
+                try {
+                    var res = Ext.decode(response.responseText);
+
+                    this.getterStore.loadData(res.getters);
+                    this.interpreterStore.loadData(res.interpreters);
+                    this.fieldTypeStore.loadData(res.fieldTypes);
+
+                    // create layout
+                    this.getLayout();
+                } catch (e) {
+                    //pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
                 }
-            }
+            }.bind(this)
         });
-
-        store.load(function () {
-            store.insert(0, { type : null, name : t('none') });
-        });
-
-        pimcore.globalmanager.add('coreshop_index_getters', store);
-    },
-
-    getInterpretersStore : function () {
-        var store = new Ext.data.Store({
-            proxy: {
-                type: 'ajax',
-                url : '/plugin/CoreShop/admin_indexes/get-available-interpreters',
-                reader: {
-                    type: 'json',
-                    rootProperty : 'data'
-                }
-            }
-        });
-
-        store.load(function () {
-            store.insert(0, { type : null, name : t('none') });
-        });
-
-        pimcore.globalmanager.add('coreshop_index_interpreters', store);
     }
 });

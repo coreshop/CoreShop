@@ -14,11 +14,13 @@
 
 namespace CoreShop\Model\Index\Config\Column;
 
+use CoreShop\Model\Index\Config\Column as BaseColumn;
+
 /**
  * Class Classificationstore
  * @package CoreShop\Model\Index\Config\Column
  */
-class Classificationstore extends AbstractColumn
+class Classificationstore extends BaseColumn
 {
     /**
      * @var int

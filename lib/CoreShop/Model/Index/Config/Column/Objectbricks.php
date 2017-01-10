@@ -14,11 +14,13 @@
 
 namespace CoreShop\Model\Index\Config\Column;
 
+use CoreShop\Model\Index\Config\Column as BaseColumn;
+
 /**
  * Class Objectbricks
  * @package CoreShop\Model\Index\Config\Column
  */
-class Objectbricks extends AbstractColumn
+class Objectbricks extends BaseColumn
 {
     /**
      * @var string

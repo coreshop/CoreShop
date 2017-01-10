@@ -71,14 +71,16 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
     },
 
     addCondition: function (type, data) {
-        // create condition
-        var item = new pimcore.plugin.coreshop.filters.conditions[type](this, data);
+        if(Object.keys(pimcore.plugin.coreshop.filters.conditions).indexOf(type) >= 0) {
+            // create condition
+            var item = new pimcore.plugin.coreshop.filters.conditions[type](this, data);
 
-        // add logic for brackets
-        var tab = this;
+            // add logic for brackets
+            var tab = this;
 
-        this.fieldsContainer.add(item.getLayout());
-        this.fieldsContainer.updateLayout();
+            this.fieldsContainer.add(item.getLayout());
+            this.fieldsContainer.updateLayout();
+        }
     },
 
     getData : function () {

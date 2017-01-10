@@ -16,7 +16,7 @@ namespace CoreShop\IndexService;
 
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
-use CoreShop\Model\Index\Config\Column\Mysql as Column;
+use CoreShop\Model\Index\Config\Column;
 use Pimcore\Db;
 use Pimcore\Logger;
 use Pimcore\Tool;
@@ -105,37 +105,41 @@ class Mysql extends AbstractWorker
         $columnConfig = $this->getColumnsConfiguration();
 
         foreach ($columnConfig as $column) {
-            if ($column instanceof Index\Config\Column\Localizedfields) {
-                if (!array_key_exists($column->getName(), $localizedColumns)) {
-                    $doAdd = true;
 
-                    if ($doAdd) {
-                        $localizedColumnsToAdd[$column->getName()] = $column->getColumnType();
+            if($column instanceof Column) {
+                $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
+
+                if($column instanceof Column\Localizedfields) {
+                    if (!array_key_exists($column->getName(), $localizedColumns)) {
+                        $doAdd = true;
+
+                        if ($doAdd) {
+                            $localizedColumnsToAdd[$column->getName()] = $columnTypeForIndex;
+                        }
                     }
-                }
+                    unset($localizedColumnsToDelete[$column->getName()]);
+                } else {
+                    if (!array_key_exists($column->getName(), $columns)) {
+                        $doAdd = true;
 
-                unset($localizedColumnsToDelete[$column->getName()]);
-            } else {
-                if (!array_key_exists($column->getName(), $columns)) {
-                    $doAdd = true;
-
-                    if ($doAdd) {
-                        $columnsToAdd[$column->getName()] = $column->getColumnType();
+                        if ($doAdd) {
+                            $columnsToAdd[$column->getName()] = $columnTypeForIndex;
+                        }
                     }
-                }
 
-                unset($columnsToDelete[$column->getName()]);
+                    unset($columnsToDelete[$column->getName()]);
+                }
             }
         }
 
         foreach ($columnsToDelete as $c) {
-            if (!in_array($c, $systemColumns)) {
+            if (!array_key_exists($c, $systemColumns)) {
                 $this->db->query('ALTER TABLE `'.$this->getTablename().'` DROP COLUMN `'.$c.'`;');
             }
         }
 
         foreach ($localizedColumnsToDelete as $c) {
-            if (!in_array($c, $systemColumns)) {
+            if (!array_key_exists($c, $systemColumns)) {
                 $this->db->query('ALTER TABLE `'.$this->getLocalizedTablename().'` DROP COLUMN `'.$c.'`;');
             }
         }
@@ -408,6 +412,37 @@ QUERY;
     }
 
     /**
+     * get type for index
+     *
+     * @param $type
+     * @return string
+     * @throws \Exception
+     */
+    public function renderFieldType($type) {
+        switch($type) {
+            case Column::FIELD_TYPE_INTEGER:
+                return "INT(11)";
+
+            case Column::FIELD_TYPE_BOOLEAN:
+                return "INT(1)";
+
+            case Column::FIELD_TYPE_DATE:
+                return "DATETIME";
+
+            case Column::FIELD_TYPE_DOUBLE:
+                return "DOUBLE";
+
+            case Column::FIELD_TYPE_STRING:
+                return "VARCHAR(255)";
+
+            case Column::FIELD_TYPE_TEXT:
+                return "TEXT";
+        }
+
+        throw new \Exception($type . " is not supported by MySQL Index");
+    }
+
+    /**
      * Return Productlist.
      *
      * @return Product\Listing\Mysql
@@ -456,15 +491,5 @@ QUERY;
     public function getRelationTablename()
     {
         return 'coreshop_index_mysql_relations_'.$this->getIndex()->getName();
-    }
-
-    /**
-     * Get System Attributes.
-     *
-     * @return string[]
-     */
-    protected function getSystemAttributes()
-    {
-        return ['o_id', 'oo_id', 'name', 'language', 'o_key', 'o_classId', 'o_virtualProductId', 'o_virtualProductActive', 'o_type', 'categoryIds', 'parentCategoryIds', 'active', 'shops', 'minPrice', 'maxPrice'];
     }
 }

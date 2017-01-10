@@ -19,7 +19,16 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
     },
 
     getObjectTypeItems : function (record) {
-        return [];
+        return [new Ext.form.ComboBox({
+            fieldLabel : t('coreshop_index_field_type'),
+            name : 'columnType',
+            length : 255,
+            value : record.data.columnType,
+            store : pimcore.globalmanager.get('coreshop_index_fieldTypes'),
+            valueField : 'type',
+            displayField : 'name',
+            queryMode : 'local'
+        })];
     },
 
     getConfigDialog : function (record) {

@@ -155,15 +155,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     },
 
     getConfigElement: function (record) {
-        var element = null;
-
-        if (record.data.objectType) {
-            if (pimcore.plugin.coreshop.indexes.objecttype[this.data.type]) {
-                element = new pimcore.plugin.coreshop.indexes.objecttype[this.data.type].field();
-            }
-        }
-
-        return element;
+        return new pimcore.plugin.coreshop.indexes.objecttype.abstract();
     },
 
     /*

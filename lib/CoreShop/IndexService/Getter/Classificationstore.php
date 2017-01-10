@@ -15,7 +15,7 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Model\Index\Config\Column\AbstractColumn;
+use CoreShop\Model\Index\Config\Column;
 use CoreShop\Model\Product;
 
 /**
@@ -33,22 +33,24 @@ class Classificationstore extends AbstractGetter
      * get value.
      *
      * @param $object
-     * @param AbstractColumn $config
+     * @param Column $config
      *
      * @return mixed
      *
      * @throws UnsupportedException
      */
-    public function get(Product $object, AbstractColumn $config)
+    public function get(Product $object, Column $config)
     {
-        $classificationStore = $config->getGetterConfig()['classificationStoreField'];
-        $classificationStoreGetter = 'get'.ucfirst($classificationStore);
+        if($config instanceof Column\Classificationstore) {
+            $classificationStore = $config->getGetterConfig()['classificationStoreField'];
+            $classificationStoreGetter = 'get' . ucfirst($classificationStore);
 
-        if (method_exists($object, $classificationStoreGetter)) {
-            $classificationStore = $object->$classificationStoreGetter();
+            if (method_exists($object, $classificationStoreGetter)) {
+                $classificationStore = $object->$classificationStoreGetter();
 
-            if ($classificationStore instanceof \Pimcore\Model\Object\Classificationstore) {
-                return $classificationStore->getLocalizedKeyValue($config->getGroupConfigId(), $config->getKeyConfigId());
+                if ($classificationStore instanceof \Pimcore\Model\Object\Classificationstore) {
+                    return $classificationStore->getLocalizedKeyValue($config->getGroupConfigId(), $config->getKeyConfigId());
+                }
             }
         }
 

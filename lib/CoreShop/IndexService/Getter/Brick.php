@@ -15,7 +15,7 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Model\Index\Config\Column\AbstractColumn;
+use CoreShop\Model\Index\Config\Column;
 use CoreShop\Model\Product;
 
 /**
@@ -33,13 +33,13 @@ class Brick extends AbstractGetter
      * get value.
      *
      * @param $object
-     * @param AbstractColumn $config
+     * @param Column $config
      *
      * @return mixed
      *
      * @throws UnsupportedException
      */
-    public function get(Product $object, AbstractColumn $config)
+    public function get(Product $object, Column $config)
     {
         $brickField = $config->getGetterConfig()['brickField'];
 

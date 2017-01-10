@@ -12,14 +12,45 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Model\Index\Config\Column;
+namespace CoreShop\Model\Index\Config;
+use CoreShop\Exception;
 
 /**
- * Class AbstractColumn
+ * Class Column
  * @package CoreShop\Model\Index\Config\Column
  */
-class AbstractColumn
+class Column
 {
+    /**
+     * Field Type Integer for Index
+     */
+    const FIELD_TYPE_INTEGER = "INTEGER";
+
+    /**
+     * Field Type Double for Index
+     */
+    const FIELD_TYPE_DOUBLE = "DOUBLE";
+
+    /**
+     * Field Type String for Index
+     */
+    const FIELD_TYPE_STRING = "STRING";
+
+    /**
+     * Field Type Text for Index
+     */
+    const FIELD_TYPE_TEXT = "TEXT";
+
+    /**
+     * Field Type Boolean for Index
+     */
+    const FIELD_TYPE_BOOLEAN = "BOOLEAN";
+
+    /**
+     * Field Type Date for Index
+     */
+    const FIELD_TYPE_DATE = "DATE";
+
     /**
      * @var string
      */
@@ -59,6 +90,12 @@ class AbstractColumn
      * @var array
      */
     public $interpreterConfig;
+
+    /**
+     * @var string
+     */
+    public $columnType;
+
 
     /**
      * @return string
@@ -189,6 +226,22 @@ class AbstractColumn
     }
 
     /**
+     * @return string
+     */
+    public function getColumnType()
+    {
+        return $this->columnType;
+    }
+
+    /**
+     * @param string $columnType
+     */
+    public function setColumnType($columnType)
+    {
+        $this->columnType = $columnType;
+    }
+
+    /**
      * @param array $values
      */
     public function setValues(array $values)
@@ -207,10 +260,14 @@ class AbstractColumn
     }
 
     /**
-     * @return bool
+     * @throws Exception
      */
     public function validate()
     {
+        if (empty($this->getColumnType())) {
+            throw new Exception(sprintf('Column Type for field "%s" is empty!', $this->getName()));
+        }
+
         return true;
     }
 }

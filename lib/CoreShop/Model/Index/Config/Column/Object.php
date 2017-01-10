@@ -14,10 +14,12 @@
 
 namespace CoreShop\Model\Index\Config\Column;
 
+use CoreShop\Model\Index\Config\Column as BaseColumn;
+
 /**
  * Class Object
  * @package CoreShop\Model\Index\Config\Column
  */
-class Object extends AbstractColumn
+class Object extends BaseColumn
 {
 }

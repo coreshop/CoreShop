@@ -23,12 +23,12 @@ use CoreShop\Model;
 class Config
 {
     /**
-     * @var Model\Index\Config\Column\AbstractColumn[]
+     * @var Model\Index\Config\Column[]
      */
     public $columns;
 
     /**
-     * @return Model\Index\Config\Column\AbstractColumn[]
+     * @return Model\Index\Config\Column[]
      */
     public function getColumns()
     {
@@ -36,7 +36,7 @@ class Config
     }
 
     /**
-     * @param Model\Index\Config\Column\AbstractColumn[] $columns
+     * @param Model\Index\Config\Column[] $columns
      */
     public function setColumns($columns)
     {

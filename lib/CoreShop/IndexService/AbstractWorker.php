@@ -145,7 +145,7 @@ abstract class AbstractWorker
         $columnConfig = $this->getColumnsConfiguration();
 
         foreach ($columnConfig as $column) {
-            if ($column instanceof Index\Config\Column\AbstractColumn) {
+            if ($column instanceof Index\Config\Column) {
                 try {
                     $value = null;
                     $getter = $column->getGetter();
@@ -257,12 +257,11 @@ abstract class AbstractWorker
     }
 
     /**
-     * @param Index\Config\Column\AbstractColumn $column
+     * @param Index\Config\Column $column
      * @return bool|AbstractInterpreter
      * @throws \Exception
      */
-    protected function getInterpreterObject(Index\Config\Column\AbstractColumn $column)
-    {
+    protected function getInterpreterObject(Index\Config\Column $column) {
         $interpreter = $column->getInterpreter();
 
         if (!empty($interpreter)) {
@@ -334,6 +333,40 @@ abstract class AbstractWorker
      * @return mixed
      */
     abstract public function renderCondition(Condition $condition);
+
+    /**
+     * Renders field type for the service
+     *
+     * @param $type
+     * @return mixed
+     */
+    abstract public function renderFieldType($type);
+
+    /**
+     * Get System Attributes.
+     *
+     * @return array
+     */
+    protected function getSystemAttributes()
+    {
+        return array(
+            'o_id' => Index\Config\Column::FIELD_TYPE_INTEGER,
+            'oo_id' => Index\Config\Column::FIELD_TYPE_INTEGER,
+            'name' => Index\Config\Column::FIELD_TYPE_STRING,
+            'language' => Index\Config\Column::FIELD_TYPE_STRING,
+            'o_key' => Index\Config\Column::FIELD_TYPE_STRING,
+            'o_classId' => Index\Config\Column::FIELD_TYPE_INTEGER,
+            'o_virtualProductId' => Index\Config\Column::FIELD_TYPE_INTEGER,
+            'o_virtualProductActive' => Index\Config\Column::FIELD_TYPE_BOOLEAN,
+            'o_type' => Index\Config\Column::FIELD_TYPE_STRING,
+            'categoryIds' => Index\Config\Column::FIELD_TYPE_STRING,
+            'parentCategoryIds' => Index\Config\Column::FIELD_TYPE_STRING,
+            'active' => Index\Config\Column::FIELD_TYPE_BOOLEAN,
+            'shops' => Index\Config\Column::FIELD_TYPE_STRING,
+            'minPrice' => Index\Config\Column::FIELD_TYPE_DOUBLE,
+            'maxPrice' => Index\Config\Column::FIELD_TYPE_DOUBLE
+        );
+    }
 
     /**
      * get index.

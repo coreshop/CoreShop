@@ -15,6 +15,7 @@
 namespace CoreShop\IndexService;
 
 use CoreShop\Model\Index;
+use CoreShop\Model\Index\Config\Column;
 use CoreShop\Model\Product;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
@@ -108,16 +109,18 @@ class Elasticsearch extends AbstractWorker
         $systemColumns = $this->getSystemAttributes();
         $columnConfig = $this->getColumnsConfiguration();
 
-        foreach ($systemColumns as $column => $type) {
-            $properties[$column] = [
-                'type' => $type
-            ];
+        foreach($systemColumns as $column => $type) {
+            $properties[$column] = array(
+                'type' => $this->renderFieldType($type)
+            );
         }
 
         foreach ($columnConfig as $column) {
-            $properties[$column->getName()] = [
-                'type' => $column->getColumnType()
-            ];
+            if($column instanceof Column) {
+                $properties[$column->getName()] = array(
+                    'type' => $this->renderFieldType($column->getColumnType())
+                );
+            }
         }
 
         $params = [
@@ -319,6 +322,37 @@ class Elasticsearch extends AbstractWorker
     }
 
     /**
+     * get type for index
+     *
+     * @param $type
+     * @return string
+     * @throws \Exception
+     */
+    public function renderFieldType($type) {
+        switch($type) {
+            case Column::FIELD_TYPE_INTEGER:
+                return "integer";
+
+            case Column::FIELD_TYPE_BOOLEAN:
+                return "boolean";
+
+            case Column::FIELD_TYPE_DATE:
+                return "date";
+
+            case Column::FIELD_TYPE_DOUBLE:
+                return "dizbke";
+
+            case Column::FIELD_TYPE_STRING:
+                return "text";
+
+            case Column::FIELD_TYPE_TEXT:
+                return "text";
+        }
+
+        throw new \Exception($type . " is not supported by Elasticsearch Index");
+    }
+
+    /**
      * Return Productlist.
      *
      * @return Product\Listing\Elasticsearch
@@ -326,15 +360,5 @@ class Elasticsearch extends AbstractWorker
     public function getProductList()
     {
         return new Product\Listing\Elasticsearch($this->getIndex());
-    }
-
-    /**
-     * Get System Attributes.
-     *
-     * @return array
-     */
-    protected function getSystemAttributes()
-    {
-        return ['o_id' => "long", 'o_key' => 'string', 'o_classId' => "string", 'o_type' => "string", 'categoryIds' => "long", 'parentCategoryIds' => "long", 'active' => "boolean", 'shops' => "long", 'minPrice' => 'double', 'maxPrice' => 'double'];
     }
 }

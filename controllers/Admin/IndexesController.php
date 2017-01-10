@@ -378,39 +378,49 @@ class CoreShop_Admin_IndexesController extends Admin
         ];
     }
 
-    public function getAvailableGettersAction()
-    {
-        $getters = \CoreShop\IndexService::getGetterDispatcher()->getTypeKeys();
-        $result = [];
-
-        foreach ($getters as $getter) {
-            $result[] = [
-                'type' => $getter,
-                'name' => $getter,
-            ];
-        }
-
-        $this->_helper->json([
-            'success' => true,
-            'data' => $result,
-        ]);
-    }
-
-    public function getAvailableInterpretersAction()
-    {
+    public function getConfigAction() {
         $interpreters = \CoreShop\IndexService::getInterpreterDispatcher()->getTypeKeys();
-        $result = [];
+        $interpretersResult = array();
 
         foreach ($interpreters as $interpreter) {
-            $result[] = [
+            $interpretersResult[] = array(
                 'type' => $interpreter,
                 'name' => $interpreter,
-            ];
+            );
         }
 
-        $this->_helper->json([
+        $getters = \CoreShop\IndexService::getGetterDispatcher()->getTypeKeys();
+        $gettersResult = array();
+
+        foreach ($getters as $getter) {
+            $gettersResult[] = array(
+                'type' => $getter,
+                'name' => $getter,
+            );
+        }
+
+        $fieldTypes = [
+            Index\Config\Column::FIELD_TYPE_STRING,
+            Index\Config\Column::FIELD_TYPE_INTEGER,
+            Index\Config\Column::FIELD_TYPE_DOUBLE,
+            Index\Config\Column::FIELD_TYPE_BOOLEAN,
+            Index\Config\Column::FIELD_TYPE_DATE,
+            Index\Config\Column::FIELD_TYPE_TEXT
+        ];
+        $fieldTypesResult = array();
+
+        foreach ($fieldTypes as $type) {
+            $fieldTypesResult[] = array(
+                'type' => $type,
+                'name' => ucfirst(strtolower($type)),
+            );
+        }
+
+        $this->_helper->json(array(
             'success' => true,
-            'data' => $result,
-        ]);
+            'interpreters' => $interpretersResult,
+            'getters' => $gettersResult,
+            'fieldTypes' => $fieldTypesResult
+        ));
     }
 }

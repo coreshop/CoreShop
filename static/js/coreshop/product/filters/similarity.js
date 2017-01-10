@@ -69,14 +69,16 @@ pimcore.plugin.coreshop.filters.similarity = Class.create({
     },
 
     addSimilarity: function (type, data) {
-        // create similarity
-        var item = new pimcore.plugin.coreshop.filters.similarities[type](this, data);
+        if(Object.keys(pimcore.plugin.coreshop.filters.similarities).indexOf(type) >= 0) {
+            // create similarity
+            var item = new pimcore.plugin.coreshop.filters.similarities[type](this, data);
 
-        // add logic for brackets
-        var tab = this;
+            // add logic for brackets
+            var tab = this;
 
-        this.fieldsContainer.add(item.getLayout());
-        this.fieldsContainer.updateLayout();
+            this.fieldsContainer.add(item.getLayout());
+            this.fieldsContainer.updateLayout();
+        }
     },
 
     getData : function () {

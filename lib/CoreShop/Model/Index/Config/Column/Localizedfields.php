@@ -14,10 +14,12 @@
 
 namespace CoreShop\Model\Index\Config\Column;
 
+use CoreShop\Model\Index\Config\Column as BaseColumn;
+
 /**
  * Class Localizedfields
  * @package CoreShop\Model\Index\Config\Column
  */
-class Localizedfields extends AbstractColumn
+class Localizedfields extends BaseColumn
 {
 }

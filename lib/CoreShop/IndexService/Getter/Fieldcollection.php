@@ -15,7 +15,7 @@
 namespace CoreShop\IndexService\Getter;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Model\Index\Config\Column\AbstractColumn;
+use CoreShop\Model\Index\Config\Column;
 use CoreShop\Model\Product;
 
 /**
@@ -33,34 +33,37 @@ class Fieldcollection extends AbstractGetter
      * get value.
      *
      * @param $object
-     * @param AbstractColumn $config
+     * @param Column $config
      *
      * @return mixed
      *
      * @throws UnsupportedException
      */
-    public function get(Product $object, AbstractColumn $config)
+    public function get(Product $object, Column $config)
     {
-        $collectionField = $config->getGetterConfig()['collectionField'];
-
-        $collectionContainerGetter = 'get'.ucfirst($collectionField);
-        $collectionContainer = $object->$collectionContainerGetter();
-        $validItems = [];
         $fieldValues = [];
-        $fieldGetter = 'get' . ucfirst($config->getKey());
 
-        if ($collectionContainer instanceof \Pimcore\Model\Object\Fieldcollection) {
-            foreach ($collectionContainer->getItems() as $item) {
-                $className = 'Pimcore\Model\Object\Fieldcollection\Data\\' . $config->getClassName();
-                if (is_a($item, $className)) {
-                    $validItems[] = $item;
+        if($config instanceof Column\Fieldcollections) {
+            $collectionField = $config->getGetterConfig()['collectionField'];
+
+            $collectionContainerGetter = 'get' . ucfirst($collectionField);
+            $collectionContainer = $object->$collectionContainerGetter();
+            $validItems = [];
+            $fieldGetter = 'get' . ucfirst($config->getKey());
+
+            if ($collectionContainer instanceof \Pimcore\Model\Object\Fieldcollection) {
+                foreach ($collectionContainer->getItems() as $item) {
+                    $className = 'Pimcore\Model\Object\Fieldcollection\Data\\' . $config->getClassName();
+                    if (is_a($item, $className)) {
+                        $validItems[] = $item;
+                    }
                 }
             }
-        }
 
-        foreach ($validItems as $item) {
-            if (method_exists($item, $fieldGetter)) {
-                $fieldValues[] = $item->$fieldGetter();
+            foreach ($validItems as $item) {
+                if (method_exists($item, $fieldGetter)) {
+                    $fieldValues[] = $item->$fieldGetter();
+                }
             }
         }
 
