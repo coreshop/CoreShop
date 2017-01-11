@@ -21,6 +21,7 @@ use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Pimcore\Db;
 use Pimcore\Logger;
+use CoreShop\IndexService\Condition\Elasticsearch as ConditionRenderer;
 
 /**
  * Class Elasticsearch
@@ -211,114 +212,14 @@ class Elasticsearch extends AbstractWorker
      * Renders a condition to MySql
      *
      * @param Condition $condition
-     * @return string
+     * @return array
      * @throws \Exception
      */
     public function renderCondition(Condition $condition)
     {
-        switch ($condition->getType()) {
+        $renderer = new ConditionRenderer();
 
-            case "in":
-                $rendered = ["terms" => [
-                    $condition->getFieldName() => $condition->getValues()
-                ]];
-                break;
-
-            case "range":
-                $values = $condition->getValues();
-
-                $rendered = ["range" => [
-                    $condition->getFieldName() => [
-                        "gte" => $values['from'],
-                        "lte" => $values['to']
-                    ]
-                ]];
-                break;
-
-            case "concat":
-                $values = $condition->getValues();
-                $rendered = [
-                    "filter" => [
-                        $values['operator'] => []
-                    ]
-                ];
-
-                foreach ($values['conditions'] as $cond) {
-                    $rendered["filter"][$values['operator']][] = $this->renderCondition($cond);
-                }
-
-                break;
-
-            case "like":
-                $values = $condition->getValues();
-
-                $pattern = $values["pattern"];
-                $value = $values["value"];
-
-                $patternValue = '';
-
-                switch ($pattern) {
-                    case "left":
-                        $patternValue = '*' . $value;
-                        break;
-                    case "right":
-                        $patternValue = $value . '*';
-                        break;
-                    case "both":
-                        $patternValue = '*' . $value . '*';
-                        break;
-                }
-
-                $rendered = ["wildcard" => [
-                    $condition->getFieldName() => $patternValue
-                ]];
-
-                break;
-
-            case "compare":
-                $values = $condition->getValues();
-                $value = $values['value'];
-                $operator = $values['operator'];
-
-                if ($operator === "=" || $operator === "!=") {
-                    if ($operator === "!=") {
-                        $rendered = ["not" =>
-                            [
-                                "term" => [
-                                    $condition->getFieldName() => $condition->getValues()
-                                ]
-                            ]
-                        ];
-                    } else {
-                        $rendered = ["term" => [
-                            $condition->getFieldName() => $condition->getValues()
-                        ]];
-                    }
-                } else {
-                    $map = [
-                        ">" => "gt",
-                        ">=" => "gte",
-                        "<" => "lt",
-                        "<=" => "lte"
-                    ];
-
-                    if (array_key_exists($operator, $map)) {
-                        $rendered = ["range" => [
-                            $condition->getFieldName() => [
-                                $map[$operator] => $value
-                            ]
-                        ]];
-                    } else {
-                        throw new \Exception($operator . " is not supported for compare method");
-                    }
-                }
-                break;
-
-            default:
-                throw new \Exception($condition->getType() . " is not supported yet");
-        }
-
-        return $rendered;
+        return $renderer->render($condition);
     }
 
     /**

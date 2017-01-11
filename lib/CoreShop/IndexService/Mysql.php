@@ -14,6 +14,8 @@
 
 namespace CoreShop\IndexService;
 
+use CoreShop\Exception;
+use CoreShop\IndexService\Condition\Mysql as ConditionRenderer;
 use CoreShop\Model\Index;
 use CoreShop\Model\Product;
 use CoreShop\Model\Index\Config\Column;
@@ -56,6 +58,130 @@ class Mysql extends AbstractWorker
      */
     public function createOrUpdateIndexStructures()
     {
+        $this->createTables();
+        $this->processTable();
+        $this->processLocalizedTable();
+        $this->createLocalizedViews();
+    }
+
+    /**
+     * Process Table - delete/add missing/new columns
+     */
+    protected function processTable() {
+        $columns = $this->getTableColumns($this->getTablename());
+        $columnsToDelete = $columns;
+        $columnsToAdd = [];
+
+        $columnConfig = $this->getColumnsConfiguration();
+
+        foreach ($columnConfig as $column) {
+            if($column instanceof Column) {
+                $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
+
+                if(!$column instanceof Column\Localizedfields) {
+                    if (!array_key_exists($column->getName(), $columns)) {
+                        $columnsToAdd[$column->getName()] = $columnTypeForIndex;
+                    }
+                }
+
+                unset($columnsToDelete[$column->getName()]);
+            }
+        }
+
+        $this->dropColumns($this->getTablename(), $columnsToDelete);
+        $this->addColumns($this->getTablename(), $columnsToAdd);
+    }
+
+    /**
+     * Process Localized Table - delete/add missing/new columns
+     */
+    protected function processLocalizedTable()
+    {
+        $localizedColumns = $this->getTableColumns($this->getLocalizedTablename());
+        $localizedColumnsToAdd = [];
+        $localizedColumnsToDelete = $localizedColumns;
+
+        $columnConfig = $this->getColumnsConfiguration();
+
+        foreach ($columnConfig as $column) {
+            if ($column instanceof Index\Config\Column\Localizedfields) {
+                $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
+
+                if (!array_key_exists($column->getName(), $localizedColumns)) {
+                    $localizedColumnsToAdd[$column->getName()] = $columnTypeForIndex;
+                }
+
+                unset($localizedColumnsToDelete[$column->getName()]);
+            }
+        }
+
+        $this->dropColumns($this->getLocalizedTablename(), $localizedColumnsToDelete);
+        $this->addColumns($this->getLocalizedTablename(), $localizedColumnsToAdd);
+    }
+
+    /**
+     * get all columns from table
+     *
+     * @param $table
+     * @return array
+     */
+    protected function getTableColumns($table) {
+        $data = $this->db->fetchAll('SHOW COLUMNS FROM '. $table);
+
+        $columns = [];
+
+        foreach ($data as $d) {
+            $columns[$d['Field']] = $d['Field'];
+        }
+
+        return $columns;
+    }
+
+    /**
+     * @param $table
+     * @param $columns
+     */
+    protected function addColumns($table, $columns) {
+        foreach ($columns as $c => $type) {
+            $this->addColumn($table, $c, $type);
+        }
+    }
+
+    /**
+     * @param $table
+     * @param $columns
+     */
+    protected function dropColumns($table, $columns) {
+        $systemColumns = $this->getSystemAttributes();
+
+        foreach ($columns as $c) {
+            if (!array_key_exists($c, $systemColumns)) {
+                $this->dropColumn($table, $c);
+            }
+        }
+    }
+
+    /**
+     * @param $table
+     * @param $column
+     */
+    protected function dropColumn($table, $column) {
+        $this->db->query('ALTER TABLE `' . $table . '` DROP COLUMN `' . $column . '`;');
+    }
+
+    /**
+     * @param $table
+     * @param $column
+     * @param $type
+     */
+    protected function addColumn($table, $column, $type) {
+        $this->db->query('ALTER TABLE `'.$table.'` ADD `'.$column.'` '.$type.';');
+    }
+
+    /**
+     * Create Tables of not exists
+     */
+    protected function createTables() {
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename()."` (
           `o_id` int(11) NOT NULL default '0',
           `o_key` varchar(255) NOT NULL,
@@ -81,77 +207,6 @@ class Mysql extends AbstractWorker
           INDEX `language` (`language`)
 		) DEFAULT CHARSET=utf8;");
 
-        $data = $this->db->fetchAll('SHOW COLUMNS FROM '.$this->getTablename());
-        $localizedData = $this->db->fetchAll('SHOW COLUMNS FROM '.$this->getLocalizedTablename());
-
-        $columns = [];
-        $localizedColumns = [];
-
-        foreach ($data as $d) {
-            $columns[$d['Field']] = $d['Field'];
-        }
-
-        foreach ($localizedData as $d) {
-            $localizedColumns[$d['Field']] = $d['Field'];
-        }
-
-        $systemColumns = $this->getSystemAttributes();
-        $columnsToDelete = $columns;
-        $columnsToAdd = [];
-
-        $localizedColumnsToAdd = [];
-        $localizedColumnsToDelete =$localizedColumns;
-
-        $columnConfig = $this->getColumnsConfiguration();
-
-        foreach ($columnConfig as $column) {
-
-            if($column instanceof Column) {
-                $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
-
-                if($column instanceof Column\Localizedfields) {
-                    if (!array_key_exists($column->getName(), $localizedColumns)) {
-                        $doAdd = true;
-
-                        if ($doAdd) {
-                            $localizedColumnsToAdd[$column->getName()] = $columnTypeForIndex;
-                        }
-                    }
-                    unset($localizedColumnsToDelete[$column->getName()]);
-                } else {
-                    if (!array_key_exists($column->getName(), $columns)) {
-                        $doAdd = true;
-
-                        if ($doAdd) {
-                            $columnsToAdd[$column->getName()] = $columnTypeForIndex;
-                        }
-                    }
-
-                    unset($columnsToDelete[$column->getName()]);
-                }
-            }
-        }
-
-        foreach ($columnsToDelete as $c) {
-            if (!array_key_exists($c, $systemColumns)) {
-                $this->db->query('ALTER TABLE `'.$this->getTablename().'` DROP COLUMN `'.$c.'`;');
-            }
-        }
-
-        foreach ($localizedColumnsToDelete as $c) {
-            if (!array_key_exists($c, $systemColumns)) {
-                $this->db->query('ALTER TABLE `'.$this->getLocalizedTablename().'` DROP COLUMN `'.$c.'`;');
-            }
-        }
-
-        foreach ($columnsToAdd as $c => $type) {
-            $this->db->query('ALTER TABLE `'.$this->getTablename().'` ADD `'.$c.'` '.$type.';');
-        }
-
-        foreach ($localizedColumnsToAdd as $c => $type) {
-            $this->db->query('ALTER TABLE `'.$this->getLocalizedTablename().'` ADD `'.$c.'` '.$type.';');
-        }
-
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getRelationTablename()."` (
           `src` int(11) NOT NULL default '0',
           `src_virtualProductId` int(11) NOT NULL,
@@ -160,8 +215,6 @@ class Mysql extends AbstractWorker
           `type` varchar(20) COLLATE utf8_bin NOT NULL,
           PRIMARY KEY (`src`,`dest`,`fieldname`,`type`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;");
-
-        $this->createLocalizedViews();
     }
 
     /**
@@ -341,74 +394,13 @@ QUERY;
      *
      * @param Condition $condition
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function renderCondition(Condition $condition)
     {
-        switch ($condition->getType()) {
+        $renderer = new ConditionRenderer();
 
-            case "in":
-                $inValues = [];
-
-                foreach ($condition->getValues() as $c => $value) {
-                    $inValues[] = Db::get()->quote($value);
-                }
-
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) IN ('.implode(',', $inValues).')';
-                break;
-
-            case "like":
-                $values = $condition->getValues();
-                $pattern = $values["pattern"];
-
-                $value = $values["value"];
-                $patternValue = '';
-
-                switch ($pattern) {
-                    case "left":
-                        $patternValue = '%' . $value;
-                        break;
-                    case "right":
-                        $patternValue = $value . '%';
-                        break;
-                    case "both":
-                        $patternValue = '%' . $value . '%';
-                        break;
-                }
-
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) LIKE ' . Db::get()->quote($patternValue);
-                break;
-
-            case "range":
-                $values = $condition->getValues();
-
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) >= '.$values['from'].' AND TRIM(`'.$condition->getFieldName().'`) <= '.$values['to'];
-                break;
-
-            case "concat":
-                $values = $condition->getValues();
-                $conditions = [];
-
-                foreach ($values["conditions"] as $cond) {
-                    $conditions[] = $this->renderCondition($cond);
-                }
-
-                $rendered = "(" . implode(" " . trim($values['operator']) . " ", $conditions) . ")";
-                break;
-
-            case "compare":
-                $values = $condition->getValues();
-                $value = $values['value'];
-                $operator = $values['operator'];
-
-                $rendered = 'TRIM(`'.$condition->getFieldName().'`) '.$operator.' '.Db::get()->quote($value);
-                break;
-
-            default:
-                throw new \Exception($condition->getType() . " is not supported yet");
-        }
-
-        return $rendered;
+        return $renderer->render($condition);
     }
 
     /**

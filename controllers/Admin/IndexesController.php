@@ -124,8 +124,8 @@ class CoreShop_Admin_IndexesController extends Admin
                             $class = null;
 
                             //Allow Column-Types to be declared in Template and/or Website
-                            $columnNamespace = '\\CoreShop\\Model\\Index\\Config\\Column\\';
-                            $columnClass = $columnNamespace . $indexType . '\\' . $objectType;
+                            $columnNamespace = '\\CoreShop\\Model\\Index\\Config\\Column';
+                            $columnClass = $columnNamespace . '\\' . $objectType;
 
                             if (\Pimcore\Tool::classExists($columnClass)) {
                                 $class = $columnClass;
@@ -138,7 +138,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
                             $columnObject = new $class();
 
-                            if ($columnObject instanceof \CoreShop\Model\Index\Config\Column\AbstractColumn) {
+                            if ($columnObject instanceof \CoreShop\Model\Index\Config\Column) {
                                 $columnObject->setValues($col);
 
                                 if (in_array($columnObject->getName(), $prohibitedFieldNames)) {
