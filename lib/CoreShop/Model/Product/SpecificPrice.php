@@ -70,7 +70,8 @@ class SpecificPrice extends AbstractProductPriceRule
     /**
      * @param Dispatcher $dispatcher
      */
-    protected static function initActionDispatcher(Dispatcher $dispatcher) {
+    protected static function initActionDispatcher(Dispatcher $dispatcher)
+    {
         $dispatcher->addTypes([
             Action\DiscountAmount::class,
             Action\DiscountPercent::class,

@@ -529,7 +529,8 @@ class Order extends Base
      * @param $price
      * @return string
      */
-    public function formatPrice($price) {
+    public function formatPrice($price)
+    {
         return \CoreShop::getTools()->formatPrice($price, $this->getBillingAddress() instanceof Address ? $this->getBillingAddress()->getCountry() : null, $this->getCurrency());
     }
 
@@ -553,8 +554,9 @@ class Order extends Base
      * @param $items
      * @return bool
      */
-    protected function checkItemsAvailableForShipping($items) {
-        if(!is_array($items)) {
+    protected function checkItemsAvailableForShipping($items)
+    {
+        if (!is_array($items)) {
             return false;
         }
 
@@ -755,7 +757,8 @@ class Order extends Base
      *
      * @return bool
      */
-    public function isFullyInvoiced() {
+    public function isFullyInvoiced()
+    {
         return count($this->getInvoiceAbleItems()) === 0;
     }
 
@@ -975,7 +978,8 @@ class Order extends Base
      *
      * @return array
      */
-    protected function getAllItemsForDocumentCreation() {
+    protected function getAllItemsForDocumentCreation()
+    {
         $items = [];
 
         foreach ($this->getItems() as $item) {
@@ -994,8 +998,9 @@ class Order extends Base
      * @param $items
      * @return bool
      */
-    protected static function checkItemsAvailableForInvoice($items) {
-        if(!is_array($items)) {
+    protected static function checkItemsAvailableForInvoice($items)
+    {
+        if (!is_array($items)) {
             return false;
         }
 
@@ -1021,7 +1026,8 @@ class Order extends Base
      *
      * @return bool
      */
-    public function isFullyShipped() {
+    public function isFullyShipped()
+    {
         return count($this->getShipAbleItems()) === 0;
     }
 
@@ -1079,7 +1085,8 @@ class Order extends Base
      *
      * @return bool
      */
-    public function hasPayments() {
+    public function hasPayments()
+    {
         return count($this->getPayments()) > 0;
     }
 

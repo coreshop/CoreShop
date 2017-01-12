@@ -70,23 +70,19 @@ class Rule extends AbstractRule
      */
     protected static function initConditionDispatchers($type, Dispatcher $dispatcher)
     {
-        if($type === 'order') {
+        if ($type === 'order') {
             $dispatcher->addType(Condition\Order\Payment::class);
             $dispatcher->addType(Condition\Order\Carriers::class);
             $dispatcher->addType(Condition\Order\OrderState::class);
             $dispatcher->addType(Condition\Order\InvoiceState::class);
             $dispatcher->addType(Condition\Order\ShipmentState::class);
-        }
-        else if($type === 'invoice') {
+        } elseif ($type === 'invoice') {
             $dispatcher->addType(Condition\Invoice\InvoiceState::class);
-        }
-        else if($type === 'messaging') {
+        } elseif ($type === 'messaging') {
             $dispatcher->addType(Condition\Messaging\MessageType::class);
-        }
-        else if($type === 'user') {
+        } elseif ($type === 'user') {
             $dispatcher->addType(Condition\User\UserType::class);
-        }
-        else if($type === 'shipment') {
+        } elseif ($type === 'shipment') {
             $dispatcher->addType(Condition\Shipment\ShipmentState::class);
         }
     }
@@ -99,7 +95,7 @@ class Rule extends AbstractRule
     {
         $dispatcher->addType(Action\Mail::class);
 
-        if($type === 'order' || $type === 'shipment' || $type === 'invoice') {
+        if ($type === 'order' || $type === 'shipment' || $type === 'invoice') {
             $dispatcher->addType(Action\OrderMail::class);
         }
     }
@@ -125,8 +121,9 @@ class Rule extends AbstractRule
      *
      * @return Dispatcher
      */
-    public static function getConditionDispatcherForType($type) {
-        if(!array_key_exists($type, self::$conditionDispatchers)) {
+    public static function getConditionDispatcherForType($type)
+    {
+        if (!array_key_exists($type, self::$conditionDispatchers)) {
             self::$conditionDispatchers[$type] = new Dispatcher('rules.' . self::getType() . ucfirst($type) . '.condition', AbstractCondition::class);
 
             self::initConditionDispatchers($type, self::$conditionDispatchers[$type]);
@@ -140,8 +137,9 @@ class Rule extends AbstractRule
      *
      * @return Dispatcher
      */
-    public static function getActionDispatcherForType($type) {
-        if(!array_key_exists($type, self::$actionDispatchers)) {
+    public static function getActionDispatcherForType($type)
+    {
+        if (!array_key_exists($type, self::$actionDispatchers)) {
             self::$actionDispatchers[$type] = new Dispatcher('rules.' . self::getType() . ucfirst($type) . '.action', AbstractAction::class);
 
             self::initActionDispatchers($type, self::$actionDispatchers[$type]);
@@ -189,9 +187,9 @@ class Rule extends AbstractRule
         $list->setCondition('mailType = ?', [$type]);
         $list->load();
 
-        foreach($list->getData() as $rule) {
-            if($rule instanceof static) {
-                if($rule->checkValidity($object, $params)) {
+        foreach ($list->getData() as $rule) {
+            if ($rule instanceof static) {
+                if ($rule->checkValidity($object, $params)) {
                     $rule->applyRule($object, $params);
                 }
             }
@@ -218,9 +216,10 @@ class Rule extends AbstractRule
      * @param $object
      * @param array $params
      */
-    public function applyRule($object, $params = []) {
-        foreach($this->getActions() as $action) {
-            if($action instanceof AbstractAction) {
+    public function applyRule($object, $params = [])
+    {
+        foreach ($this->getActions() as $action) {
+            if ($action instanceof AbstractAction) {
                 $action->apply($object, $this, $params);
             }
         }
@@ -342,5 +341,4 @@ class Rule extends AbstractRule
     {
         $this->sort = $sort;
     }
-
 }

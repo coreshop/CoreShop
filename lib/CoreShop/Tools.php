@@ -156,7 +156,7 @@ class Tools
                 $currency = static::getCurrency();
             }
 
-            if($currency instanceof Currency && $country instanceof Country) {
+            if ($currency instanceof Currency && $country instanceof Country) {
                 $locale = \Zend_Locale::getLocaleToTerritory($country->getIsoCode());
                 $zCurrency = new \Zend_Currency($locale);
 
@@ -648,10 +648,10 @@ class Tools
 
         $country = $this->getCountry();
 
-        if($country instanceof Country) {
+        if ($country instanceof Country) {
             $currency = $country->getCurrency();
 
-            if($currency instanceof Currency) {
+            if ($currency instanceof Currency) {
                 return $currency;
             }
         }
@@ -777,7 +777,7 @@ class Tools
      */
     public function getTranslate($lang = null)
     {
-        if(is_null($lang)) {
+        if (is_null($lang)) {
             $user = \Pimcore\Tool\Admin::getCurrentUser();
 
             if ($user instanceof User) {

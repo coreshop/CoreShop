@@ -43,8 +43,8 @@ class Payment extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order) {
-            if(in_array($object->getPaymentProviderToken(), $this->getProviders())) {
+        if ($object instanceof Model\Order) {
+            if (in_array($object->getPaymentProviderToken(), $this->getProviders())) {
                 return true;
             }
         }

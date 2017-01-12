@@ -205,7 +205,7 @@ class Configuration extends AbstractModel
 
         $configurations = $list->getConfigurations();
 
-        if(is_array($configurations)) {
+        if (is_array($configurations)) {
             foreach ($configurations as $config) {
                 $config->delete();
             }

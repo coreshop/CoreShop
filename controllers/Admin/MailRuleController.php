@@ -71,7 +71,7 @@ class CoreShop_Admin_MailRuleController extends Admin
         $conditions = [];
         $actions = [];
 
-        foreach(Rule::$availableTypes as $type) {
+        foreach (Rule::$availableTypes as $type) {
             $conditions[$type] = Rule::getConditionDispatcherForType($type)->getTypeKeys();
             $actions[$type] = Rule::getActionDispatcherForType($type)->getTypeKeys();
         }
@@ -98,7 +98,8 @@ class CoreShop_Admin_MailRuleController extends Admin
         $this->_helper->json(['success' => true, 'data' => $rule]);
     }
 
-    public function sortAction() {
+    public function sortAction()
+    {
         $rule = $this->getParam("rule");
         $toRule = $this->getParam("toRule");
         $position = $this->getParam("position");
@@ -108,28 +109,27 @@ class CoreShop_Admin_MailRuleController extends Admin
 
         $direction = $rule->getSort() < $toRule->getSort() ? 'down' : 'up';
 
-        if($direction === 'down') {
+        if ($direction === 'down') {
             //Update all records in between and move one direction up.
 
             $fromSort = $rule->getSort()+1;
             $toSort = $toRule->getSort();
 
-            if($position === 'before') {
+            if ($position === 'before') {
                 $toSort -= 1;
             }
 
             $list = new Rule\Listing();
             $list->setCondition("sort >= ? AND sort <= ?", [$fromSort, $toSort]);
 
-            foreach($list->getData() as $newRule) {
+            foreach ($list->getData() as $newRule) {
                 $newRule->setSort($newRule->getSort() - 1);
                 $newRule->save();
             }
 
             $rule->setSort($toSort);
             $rule->save();
-        }
-        else {
+        } else {
             //Update all records in between and move one direction down.
 
             $fromSort = $toRule->getSort();
@@ -138,7 +138,7 @@ class CoreShop_Admin_MailRuleController extends Admin
             $list = new Rule\Listing();
             $list->setCondition("sort >= ? AND sort <= ?", [$fromSort, $toSort]);
 
-            foreach($list->getData() as $newRule) {
+            foreach ($list->getData() as $newRule) {
                 $newRule->setSort($newRule->getSort() + 1);
                 $newRule->save();
             }

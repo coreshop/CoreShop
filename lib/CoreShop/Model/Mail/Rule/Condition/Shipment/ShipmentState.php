@@ -33,7 +33,7 @@ class ShipmentState extends Rule\Condition\Order\ShipmentState
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order\Shipment) {
+        if ($object instanceof Model\Order\Shipment) {
             return parent::checkCondition($object->getOrder(), $params, $rule);
         }
 

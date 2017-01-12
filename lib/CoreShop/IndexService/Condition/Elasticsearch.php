@@ -27,7 +27,8 @@ class Elasticsearch extends AbstractRenderer
      * @param IndexCondition $condition
      * @return array
      */
-    protected function renderIn(IndexCondition $condition) {
+    protected function renderIn(IndexCondition $condition)
+    {
         return ["terms" => [
             $condition->getFieldName() => $condition->getValues()
         ]];
@@ -37,7 +38,8 @@ class Elasticsearch extends AbstractRenderer
      * @param IndexCondition $condition
      * @return array
      */
-    protected function renderLike(IndexCondition $condition) {
+    protected function renderLike(IndexCondition $condition)
+    {
         $values = $condition->getValues();
 
         $pattern = $values["pattern"];
@@ -66,7 +68,8 @@ class Elasticsearch extends AbstractRenderer
      * @param IndexCondition $condition
      * @return array
      */
-    protected function renderRange(IndexCondition $condition) {
+    protected function renderRange(IndexCondition $condition)
+    {
         $values = $condition->getValues();
 
         return ["range" => [
@@ -81,7 +84,8 @@ class Elasticsearch extends AbstractRenderer
      * @param IndexCondition $condition
      * @return array
      */
-    protected function renderConcat(IndexCondition $condition) {
+    protected function renderConcat(IndexCondition $condition)
+    {
         $values = $condition->getValues();
         $rendered = [
             "filter" => [
@@ -101,7 +105,8 @@ class Elasticsearch extends AbstractRenderer
      * @return array
      * @throws Exception
      */
-    protected function renderCompare(IndexCondition $condition) {
+    protected function renderCompare(IndexCondition $condition)
+    {
         $values = $condition->getValues();
         $value = $values['value'];
         $operator = $values['operator'];

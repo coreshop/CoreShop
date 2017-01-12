@@ -74,7 +74,7 @@ class IndexService
      */
     public static function getIndexDispatcher()
     {
-        if(is_null(self::$indexDispatcher)) {
+        if (is_null(self::$indexDispatcher)) {
             self::$indexDispatcher = new Dispatcher('indexService.provider', AbstractWorker::class);
 
             self::$indexDispatcher->addTypes([
@@ -91,7 +91,7 @@ class IndexService
      */
     public static function getGetterDispatcher()
     {
-        if(is_null(self::$getterDispatcher)) {
+        if (is_null(self::$getterDispatcher)) {
             self::$getterDispatcher = new Dispatcher('indexService.getter', AbstractGetter::class);
 
             self::$getterDispatcher->addTypes([
@@ -110,7 +110,7 @@ class IndexService
      */
     public static function getInterpreterDispatcher()
     {
-        if(is_null(self::$interpreterDispatcher)) {
+        if (is_null(self::$interpreterDispatcher)) {
             self::$interpreterDispatcher = new Dispatcher('indexService.interpreter', AbstractInterpreter::class);
 
             self::$interpreterDispatcher->addTypes([

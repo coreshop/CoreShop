@@ -378,25 +378,26 @@ class CoreShop_Admin_IndexesController extends Admin
         ];
     }
 
-    public function getConfigAction() {
+    public function getConfigAction()
+    {
         $interpreters = \CoreShop\IndexService::getInterpreterDispatcher()->getTypeKeys();
-        $interpretersResult = array();
+        $interpretersResult = [];
 
         foreach ($interpreters as $interpreter) {
-            $interpretersResult[] = array(
+            $interpretersResult[] = [
                 'type' => $interpreter,
                 'name' => $interpreter,
-            );
+            ];
         }
 
         $getters = \CoreShop\IndexService::getGetterDispatcher()->getTypeKeys();
-        $gettersResult = array();
+        $gettersResult = [];
 
         foreach ($getters as $getter) {
-            $gettersResult[] = array(
+            $gettersResult[] = [
                 'type' => $getter,
                 'name' => $getter,
-            );
+            ];
         }
 
         $fieldTypes = [
@@ -407,20 +408,20 @@ class CoreShop_Admin_IndexesController extends Admin
             Index\Config\Column::FIELD_TYPE_DATE,
             Index\Config\Column::FIELD_TYPE_TEXT
         ];
-        $fieldTypesResult = array();
+        $fieldTypesResult = [];
 
         foreach ($fieldTypes as $type) {
-            $fieldTypesResult[] = array(
+            $fieldTypesResult[] = [
                 'type' => $type,
                 'name' => ucfirst(strtolower($type)),
-            );
+            ];
         }
 
-        $this->_helper->json(array(
+        $this->_helper->json([
             'success' => true,
             'interpreters' => $interpretersResult,
             'getters' => $gettersResult,
             'fieldTypes' => $fieldTypesResult
-        ));
+        ]);
     }
 }

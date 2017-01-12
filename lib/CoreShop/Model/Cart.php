@@ -242,7 +242,7 @@ class Cart extends Base
                 if ($shippingTax instanceof TaxCalculator) {
                     $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
 
-                    if(is_array($taxesAmount)) {
+                    if (is_array($taxesAmount)) {
                         foreach ($taxesAmount as $id => $amount) {
                             $addTax(Tax::getById($id), $amount);
                         }
@@ -954,7 +954,8 @@ class Cart extends Base
      * @param $price
      * @return string
      */
-    public function formatPrice($price) {
+    public function formatPrice($price)
+    {
         return \CoreShop::getTools()->formatPrice($price, $this->getBillingAddress() instanceof Address ? $this->getBillingAddress()->getCountry() : null, $this->getCurrency());
     }
 

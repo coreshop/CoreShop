@@ -46,7 +46,7 @@ class Workflow
         if ($orderObject instanceof Order) {
             if ($currentState === $newState) {
                 throw new \Exception('Cannot apply same orderState again. (' . $currentState . ' => ' . $newState .')');
-            } elseif (!self::newStateIsValid($orderObject, $currentState, $newState) ) {
+            } elseif (!self::newStateIsValid($orderObject, $currentState, $newState)) {
                 throw new \Exception('New State is not valid.');
             }
         }
@@ -98,7 +98,7 @@ class Workflow
         if ($currentState !== State::STATE_INITIALIZED && $newState === State::STATE_INITIALIZED) {
             return false;
         } elseif ($newState === State::STATE_COMPLETE) {
-            if($order->isFullyInvoiced() && $order->isFullyShipped()) {
+            if ($order->isFullyInvoiced() && $order->isFullyShipped()) {
                 return true;
             }
 
@@ -175,7 +175,7 @@ class Workflow
                 [
                     "name" => "initialized",
                     "label" => "Initialized",
-                    "elementPublished" => TRUE
+                    "elementPublished" => true
                 ],
                 [
                     "name" => "pending",
@@ -265,7 +265,7 @@ class Workflow
             "transitionDefinitions" => [
                 "initialized" => [
                     "validActions" => [
-                        "change_order_state" => NULL
+                        "change_order_state" => null
                     ]
                 ],
                 "pending" => [

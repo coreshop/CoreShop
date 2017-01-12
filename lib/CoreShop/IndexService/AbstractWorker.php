@@ -261,7 +261,8 @@ abstract class AbstractWorker
      * @return bool|AbstractInterpreter
      * @throws \Exception
      */
-    protected function getInterpreterObject(Index\Config\Column $column) {
+    protected function getInterpreterObject(Index\Config\Column $column)
+    {
         $interpreter = $column->getInterpreter();
 
         if (!empty($interpreter)) {
@@ -349,7 +350,7 @@ abstract class AbstractWorker
      */
     protected function getSystemAttributes()
     {
-        return array(
+        return [
             'o_id' => Index\Config\Column::FIELD_TYPE_INTEGER,
             'oo_id' => Index\Config\Column::FIELD_TYPE_INTEGER,
             'name' => Index\Config\Column::FIELD_TYPE_STRING,
@@ -365,7 +366,7 @@ abstract class AbstractWorker
             'shops' => Index\Config\Column::FIELD_TYPE_STRING,
             'minPrice' => Index\Config\Column::FIELD_TYPE_DOUBLE,
             'maxPrice' => Index\Config\Column::FIELD_TYPE_DOUBLE
-        );
+        ];
     }
 
     /**

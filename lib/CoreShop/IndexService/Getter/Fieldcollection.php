@@ -43,7 +43,7 @@ class Fieldcollection extends AbstractGetter
     {
         $fieldValues = [];
 
-        if($config instanceof Column\Fieldcollections) {
+        if ($config instanceof Column\Fieldcollections) {
             $collectionField = $config->getGetterConfig()['collectionField'];
 
             $collectionContainerGetter = 'get' . ucfirst($collectionField);

@@ -33,7 +33,7 @@ class InvoiceState extends Rule\Condition\Order\InvoiceState
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order\Invoice) {
+        if ($object instanceof Model\Order\Invoice) {
             return parent::checkCondition($object->getOrder(), $params, $rule);
         }
 

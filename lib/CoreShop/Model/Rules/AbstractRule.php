@@ -71,7 +71,7 @@ abstract class AbstractRule extends AbstractModel
         foreach ($actions as $action) {
             $className = $this->getMyActionDispatcher()->getClassForType($action['type']);
 
-            if($className && Tool::classExists($className)) {
+            if ($className && Tool::classExists($className)) {
                 $instance = new $className();
                 $instance->setValues($action);
 
@@ -122,7 +122,7 @@ abstract class AbstractRule extends AbstractModel
     {
         $calledClass = get_called_class();
 
-        if(is_null(self::$conditionDispatcher[$calledClass])) {
+        if (is_null(self::$conditionDispatcher[$calledClass])) {
             self::$conditionDispatcher[$calledClass] = new Dispatcher('rules.' . static::getType() . '.condition', AbstractCondition::class);
 
             static::initConditionDispatcher(self::$conditionDispatcher[$calledClass]);
@@ -138,7 +138,7 @@ abstract class AbstractRule extends AbstractModel
     {
         $calledClass = get_called_class();
 
-        if(is_null(self::$actionDispatcher[$calledClass])) {
+        if (is_null(self::$actionDispatcher[$calledClass])) {
             self::$actionDispatcher[$calledClass] = new Dispatcher('rules.' . static::getType() . '.action', AbstractAction::class);
 
             static::initActionDispatcher(self::$actionDispatcher[$calledClass]);
@@ -152,14 +152,18 @@ abstract class AbstractRule extends AbstractModel
      *
      * @param $dispatcher
      */
-    protected static function initConditionDispatcher(Dispatcher $dispatcher) {}
+    protected static function initConditionDispatcher(Dispatcher $dispatcher)
+    {
+    }
 
     /**
      * Init Dispatcher
      *
      * @param $dispatcher
      */
-    protected static function initActionDispatcher(Dispatcher $dispatcher) {}
+    protected static function initActionDispatcher(Dispatcher $dispatcher)
+    {
+    }
 
     /**
      * @return string
@@ -182,7 +186,8 @@ abstract class AbstractRule extends AbstractModel
      *
      * @return Dispatcher
      */
-    public function getMyConditionDispatcher() {
+    public function getMyConditionDispatcher()
+    {
         return static::getConditionDispatcher();
     }
 
@@ -191,26 +196,28 @@ abstract class AbstractRule extends AbstractModel
      *
      * @return Dispatcher
      */
-    public function getMyActionDispatcher() {
+    public function getMyActionDispatcher()
+    {
         return static::getActionDispatcher();
     }
 
     /**
      * @return array
      */
-    public function serialize() {
+    public function serialize()
+    {
         $object = $this->getObjectVars();
         $object['conditions'] = [];
         $object['actions'] = [];
 
-        foreach($this->getConditions() as $condition) {
+        foreach ($this->getConditions() as $condition) {
             $conditionVars = get_object_vars($condition);
             $conditionVars['type'] = $condition::getType();
 
             $object['conditions'][] = $conditionVars;
         }
 
-        foreach($this->getActions() as $action) {
+        foreach ($this->getActions() as $action) {
             $actionVars = get_object_vars($action);
             $actionVars['type'] = $action::getType();
 

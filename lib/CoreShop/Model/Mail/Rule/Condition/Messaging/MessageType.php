@@ -58,20 +58,20 @@ class MessageType extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Messaging\Message) {
+        if ($object instanceof Model\Messaging\Message) {
             $paramsToExist = [
                 'type'
             ];
 
-            foreach($paramsToExist as $paramToExist) {
-                if(!array_key_exists($paramToExist, $params)) {
+            foreach ($paramsToExist as $paramToExist) {
+                if (!array_key_exists($paramToExist, $params)) {
                     return false;
                 }
             }
 
             $type = $params['type'];
 
-            if($this->getMessageType() === $type) {
+            if ($this->getMessageType() === $type) {
                 return true;
             }
         }

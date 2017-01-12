@@ -31,12 +31,13 @@ abstract class AbstractRenderer
      *
      * @throws Exception
      */
-    public function render(Condition $condition) {
+    public function render(Condition $condition)
+    {
         $type = ucfirst($condition->getType());
 
         $functionName = "render" . $type;
 
-        if(method_exists($this, $functionName)) {
+        if (method_exists($this, $functionName)) {
             return $this->$functionName($condition);
         }
 

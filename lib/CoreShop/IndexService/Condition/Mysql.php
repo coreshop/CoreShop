@@ -40,7 +40,8 @@ class Mysql extends AbstractRenderer
      * @param IndexCondition $condition
      * @return string
      */
-    protected function renderIn(IndexCondition $condition) {
+    protected function renderIn(IndexCondition $condition)
+    {
         $inValues = [];
 
         foreach ($condition->getValues() as $c => $value) {
@@ -54,7 +55,8 @@ class Mysql extends AbstractRenderer
      * @param IndexCondition $condition
      * @return string
      */
-    protected function renderLike(IndexCondition $condition) {
+    protected function renderLike(IndexCondition $condition)
+    {
         $values = $condition->getValues();
         $pattern = $values["pattern"];
 
@@ -80,7 +82,8 @@ class Mysql extends AbstractRenderer
      * @param IndexCondition $condition
      * @return string
      */
-    protected function renderRange(IndexCondition $condition) {
+    protected function renderRange(IndexCondition $condition)
+    {
         $values = $condition->getValues();
 
         return 'TRIM(`'.$condition->getFieldName().'`) >= '.$values['from'].' AND TRIM(`'.$condition->getFieldName().'`) <= '.$values['to'];
@@ -90,7 +93,8 @@ class Mysql extends AbstractRenderer
      * @param IndexCondition $condition
      * @return string
      */
-    protected function renderConcat(IndexCondition $condition) {
+    protected function renderConcat(IndexCondition $condition)
+    {
         $values = $condition->getValues();
         $conditions = [];
 
@@ -105,7 +109,8 @@ class Mysql extends AbstractRenderer
      * @param IndexCondition $condition
      * @return string
      */
-    protected function renderCompare(IndexCondition $condition) {
+    protected function renderCompare(IndexCondition $condition)
+    {
         $values = $condition->getValues();
         $value = $values['value'];
         $operator = $values['operator'];

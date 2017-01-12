@@ -49,7 +49,7 @@ class Mail extends AbstractAction
 
         if (array_key_exists('language', $params)) {
             $language = $params['language'];
-        }  else {
+        } else {
             if ($model instanceof Model\Order) {
                 $language = $model->getLang();
                 if (!$language && \Zend_Registry::isRegistered('Zend_Locale')) {

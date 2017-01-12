@@ -206,7 +206,7 @@ class Item extends Base
             $itemTotal = $this->getTotal(false);
             $taxesAmount = $taxCalculator->getTaxesAmount($itemTotal, true);
 
-            if(is_array($taxesAmount)) {
+            if (is_array($taxesAmount)) {
                 foreach ($taxesAmount as $id => $amount) {
                     if ($applyDiscountToTaxValues) {
                         $amount *= $discountPercentage;

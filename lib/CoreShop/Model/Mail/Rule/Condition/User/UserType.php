@@ -53,20 +53,20 @@ class UserType extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\User) {
+        if ($object instanceof Model\User) {
             $paramsToExist = [
                 'type'
             ];
 
-            foreach($paramsToExist as $paramToExist) {
-                if(!array_key_exists($paramToExist, $params)) {
+            foreach ($paramsToExist as $paramToExist) {
+                if (!array_key_exists($paramToExist, $params)) {
                     return false;
                 }
             }
 
             $type = $params['type'];
 
-            if($this->getUserType() === $type) {
+            if ($this->getUserType() === $type) {
                 return true;
             }
         }

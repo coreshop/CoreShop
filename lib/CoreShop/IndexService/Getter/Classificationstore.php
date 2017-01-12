@@ -41,7 +41,7 @@ class Classificationstore extends AbstractGetter
      */
     public function get(Product $object, Column $config)
     {
-        if($config instanceof Column\Classificationstore) {
+        if ($config instanceof Column\Classificationstore) {
             $classificationStore = $config->getGetterConfig()['classificationStoreField'];
             $classificationStoreGetter = 'get' . ucfirst($classificationStore);
 

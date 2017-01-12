@@ -68,7 +68,7 @@ $workflowConfig = [
         [
             "name" => "initialized",
             "label" => "Initialized",
-            "elementPublished" => TRUE
+            "elementPublished" => true
         ],
         [
             "name" => "pending",
@@ -158,7 +158,7 @@ $workflowConfig = [
     "transitionDefinitions" => [
         "initialized" => [
             "validActions" => [
-                "change_order_state" => NULL
+                "change_order_state" => null
             ]
         ],
         "pending" => [

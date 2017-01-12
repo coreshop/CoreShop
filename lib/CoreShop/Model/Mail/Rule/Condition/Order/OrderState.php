@@ -63,14 +63,14 @@ class OrderState extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order) {
+        if ($object instanceof Model\Order) {
             $paramsToExist = [
                 'fromState',
                 'toState'
             ];
 
-            foreach($paramsToExist as $paramToExist) {
-                if(!array_key_exists($paramToExist, $params)) {
+            foreach ($paramsToExist as $paramToExist) {
+                if (!array_key_exists($paramToExist, $params)) {
                     return false;
                 }
             }
@@ -78,18 +78,16 @@ class OrderState extends Rule\Condition\AbstractCondition
             $fromState = $params['fromState'];
             $toState = $params['toState'];
 
-            if($this->getTransitionType() === self::TRANSITION_TO) {
-                if(in_array($toState, $this->getStates())) {
+            if ($this->getTransitionType() === self::TRANSITION_TO) {
+                if (in_array($toState, $this->getStates())) {
                     return true;
                 }
-            }
-            else if($this->getTransitionType() === self::TRANSITION_FROM) {
-                if(in_array($fromState, $this->getStates())) {
+            } elseif ($this->getTransitionType() === self::TRANSITION_FROM) {
+                if (in_array($fromState, $this->getStates())) {
                     return true;
                 }
-            }
-            else if($this->getTransitionType() === self::TRANSITION_ALL) {
-                if(in_array($fromState, $this->getStates()) || in_array($toState, $this->getStates())) {
+            } elseif ($this->getTransitionType() === self::TRANSITION_ALL) {
+                if (in_array($fromState, $this->getStates()) || in_array($toState, $this->getStates())) {
                     return true;
                 }
             }

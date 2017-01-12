@@ -142,8 +142,9 @@ class Wkhtmltopdf
     /**
      * @param string $file
      */
-    protected static function unlinkFile($file) {
-        if(@unlink($file) === false) {
+    protected static function unlinkFile($file)
+    {
+        if (@unlink($file) === false) {
             Logger::debug("Could not delete tmp WKHTMLTOPDF File");
         }
     }

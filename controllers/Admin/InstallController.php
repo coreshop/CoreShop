@@ -27,7 +27,7 @@ class CoreShop_Admin_InstallController extends Admin
         try {
             $install = new Plugin\Install();
 
-            if($install->fullInstall()) {
+            if ($install->fullInstall()) {
                 $success = true;
             }
         } catch (Exception $e) {

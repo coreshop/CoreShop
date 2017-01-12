@@ -178,7 +178,7 @@ class Payment extends Action
         $items = $latestCart->getItems();
         $newItems = [];
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $newItem = \CoreShop\Model\Cart\Item::create();
             \CoreShop\Tool\Service::copyObject($item, $newItem);
             $newItem->setKey(uniqid());
@@ -187,7 +187,7 @@ class Payment extends Action
             $newItem->save();
             $newItems[] = $newItem;
 
-            if($newItem->getProduct() instanceof Product) {
+            if ($newItem->getProduct() instanceof Product) {
                 $newItem->getProduct()->clearPriceCache();
             }
         }
@@ -215,7 +215,6 @@ class Payment extends Action
             return $payment;
         } else {
             $payment = $order->createPayment($this->getModule(), $order->getTotal(), true, $transactionId);
-
         }
         return $payment;
     }

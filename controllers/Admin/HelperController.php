@@ -61,10 +61,10 @@ class CoreShop_Admin_HelperController extends Admin
         $targets = \Zend_Json::decode($this->getParam("targets"));
         $result = [];
 
-        foreach($targets as $target) {
+        foreach ($targets as $target) {
             $element = Pimcore\Model\Element\Service::getElementById($target['type'], $target['id']);
 
-            if($element instanceof Pimcore\Model\Element\AbstractElement) {
+            if ($element instanceof Pimcore\Model\Element\AbstractElement) {
                 $result[$element->getId()] = $element->getFullPath();
             }
         }

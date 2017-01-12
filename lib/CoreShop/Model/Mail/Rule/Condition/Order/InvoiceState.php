@@ -58,17 +58,15 @@ class InvoiceState extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order) {
-            if($this->getInvoiceState() === self::INVOICE_TYPE_ALL) {
+        if ($object instanceof Model\Order) {
+            if ($this->getInvoiceState() === self::INVOICE_TYPE_ALL) {
                 return true;
-            }
-            else if($this->getInvoiceState() === self::INVOICE_TYPE_FULL) {
-                if(count($object->getInvoiceAbleItems()) === 0) {
+            } elseif ($this->getInvoiceState() === self::INVOICE_TYPE_FULL) {
+                if (count($object->getInvoiceAbleItems()) === 0) {
                     return true;
                 }
-            }
-            else if($this->getInvoiceState() === self::INVOICE_TYPE_PARTIAL) {
-                if(count($object->getInvoiceAbleItems()) > 0) {
+            } elseif ($this->getInvoiceState() === self::INVOICE_TYPE_PARTIAL) {
+                if (count($object->getInvoiceAbleItems()) > 0) {
                     return true;
                 }
             }

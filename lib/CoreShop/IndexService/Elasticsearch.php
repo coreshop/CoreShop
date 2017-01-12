@@ -110,17 +110,17 @@ class Elasticsearch extends AbstractWorker
         $systemColumns = $this->getSystemAttributes();
         $columnConfig = $this->getColumnsConfiguration();
 
-        foreach($systemColumns as $column => $type) {
-            $properties[$column] = array(
+        foreach ($systemColumns as $column => $type) {
+            $properties[$column] = [
                 'type' => $this->renderFieldType($type)
-            );
+            ];
         }
 
         foreach ($columnConfig as $column) {
-            if($column instanceof Column) {
-                $properties[$column->getName()] = array(
+            if ($column instanceof Column) {
+                $properties[$column->getName()] = [
                     'type' => $this->renderFieldType($column->getColumnType())
-                );
+                ];
             }
         }
 
@@ -229,8 +229,9 @@ class Elasticsearch extends AbstractWorker
      * @return string
      * @throws \Exception
      */
-    public function renderFieldType($type) {
-        switch($type) {
+    public function renderFieldType($type)
+    {
+        switch ($type) {
             case Column::FIELD_TYPE_INTEGER:
                 return "integer";
 

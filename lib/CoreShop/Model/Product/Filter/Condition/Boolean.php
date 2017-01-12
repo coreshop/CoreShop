@@ -65,7 +65,7 @@ class Boolean extends AbstractCondition
         $currentValues = $currentFilter[\Pimcore\File::getValidFilename($this->getLabel())];
         $fields = $this->getField();
 
-        if(is_array($fields)) {
+        if (is_array($fields)) {
             foreach ($this->getField() as $field) {
                 $fieldRawValues = $list->getGroupByValues($field, true);
 

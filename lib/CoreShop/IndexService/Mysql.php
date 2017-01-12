@@ -67,7 +67,8 @@ class Mysql extends AbstractWorker
     /**
      * Process Table - delete/add missing/new columns
      */
-    protected function processTable() {
+    protected function processTable()
+    {
         $columns = $this->getTableColumns($this->getTablename());
         $columnsToDelete = $columns;
         $columnsToAdd = [];
@@ -75,10 +76,10 @@ class Mysql extends AbstractWorker
         $columnConfig = $this->getColumnsConfiguration();
 
         foreach ($columnConfig as $column) {
-            if($column instanceof Column) {
+            if ($column instanceof Column) {
                 $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
 
-                if(!$column instanceof Column\Localizedfields) {
+                if (!$column instanceof Column\Localizedfields) {
                     if (!array_key_exists($column->getName(), $columns)) {
                         $columnsToAdd[$column->getName()] = $columnTypeForIndex;
                     }
@@ -125,7 +126,8 @@ class Mysql extends AbstractWorker
      * @param $table
      * @return array
      */
-    protected function getTableColumns($table) {
+    protected function getTableColumns($table)
+    {
         $data = $this->db->fetchAll('SHOW COLUMNS FROM '. $table);
 
         $columns = [];
@@ -141,7 +143,8 @@ class Mysql extends AbstractWorker
      * @param $table
      * @param $columns
      */
-    protected function addColumns($table, $columns) {
+    protected function addColumns($table, $columns)
+    {
         foreach ($columns as $c => $type) {
             $this->addColumn($table, $c, $type);
         }
@@ -151,7 +154,8 @@ class Mysql extends AbstractWorker
      * @param $table
      * @param $columns
      */
-    protected function dropColumns($table, $columns) {
+    protected function dropColumns($table, $columns)
+    {
         $systemColumns = $this->getSystemAttributes();
 
         foreach ($columns as $c) {
@@ -165,7 +169,8 @@ class Mysql extends AbstractWorker
      * @param $table
      * @param $column
      */
-    protected function dropColumn($table, $column) {
+    protected function dropColumn($table, $column)
+    {
         $this->db->query('ALTER TABLE `' . $table . '` DROP COLUMN `' . $column . '`;');
     }
 
@@ -174,14 +179,16 @@ class Mysql extends AbstractWorker
      * @param $column
      * @param $type
      */
-    protected function addColumn($table, $column, $type) {
+    protected function addColumn($table, $column, $type)
+    {
         $this->db->query('ALTER TABLE `'.$table.'` ADD `'.$column.'` '.$type.';');
     }
 
     /**
      * Create Tables of not exists
      */
-    protected function createTables() {
+    protected function createTables()
+    {
         $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename()."` (
           `o_id` int(11) NOT NULL default '0',
           `o_key` varchar(255) NOT NULL,
@@ -410,8 +417,9 @@ QUERY;
      * @return string
      * @throws \Exception
      */
-    public function renderFieldType($type) {
-        switch($type) {
+    public function renderFieldType($type)
+    {
+        switch ($type) {
             case Column::FIELD_TYPE_INTEGER:
                 return "INT(11)";
 

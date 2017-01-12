@@ -612,7 +612,7 @@ class Product extends Base
             return $calculator->getTaxesAmount($this->getPrice(false), $asArray);
         }
 
-        if($asArray) {
+        if ($asArray) {
             return [];
         }
 

@@ -33,6 +33,5 @@ abstract class AbstractAction extends Model\Rules\Action\AbstractAction
      */
     public function apply(AbstractModel $model, Model\Mail\Rule $rule, $params = [])
     {
-
     }
 }

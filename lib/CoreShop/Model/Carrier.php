@@ -629,7 +629,8 @@ class Carrier extends AbstractModel
     /**
      * @return Asset\Image|null
      */
-    public function getImageAsset() {
+    public function getImageAsset()
+    {
         return Asset\Image::getById($this->image);
     }
 

@@ -20,7 +20,8 @@ use Pimcore\Model\Object;
  */
 class CoreShop_Admin_OrderController extends Admin
 {
-    public function getOrderGridConfigurationAction() {
+    public function getOrderGridConfigurationAction()
+    {
         $defaultConfiguration = [
             [
                 'text' => 'coreshop_orders_id',
@@ -127,7 +128,7 @@ class CoreShop_Admin_OrderController extends Admin
             ]
         ];
 
-        if(\CoreShop\Model\Configuration::multiShopEnabled()) {
+        if (\CoreShop\Model\Configuration::multiShopEnabled()) {
             array_splice($defaultConfiguration, 1, 0, [[
                 'text' => 'coreshop_shop',
                 'type' => 'integer',
@@ -297,7 +298,7 @@ class CoreShop_Admin_OrderController extends Admin
             $thread->save();
         }
 
-        if($thread instanceof \CoreShop\Model\Messaging\Thread) {
+        if ($thread instanceof \CoreShop\Model\Messaging\Thread) {
             $message = $thread->createMessage($messageText);
 
             $message->sendNotification('customer-reply', $thread->getEmail());
@@ -405,8 +406,8 @@ class CoreShop_Admin_OrderController extends Admin
         $threads->setCondition("orderId = ?", [$order->getId()]);
         $threads->load();
 
-        foreach($threads as $thread) {
-            if($thread instanceof \CoreShop\Model\Messaging\Thread) {
+        foreach ($threads as $thread) {
+            if ($thread instanceof \CoreShop\Model\Messaging\Thread) {
                 $threadResult = $thread->getObjectVars();
 
                 $messageList = \CoreShop\Model\Messaging\Message::getList();
@@ -881,7 +882,7 @@ class CoreShop_Admin_OrderController extends Admin
 
         $date = new \Pimcore\Date();
 
-        if(is_array($history)) {
+        if (is_array($history)) {
             foreach ($history as $note) {
                 $user = \Pimcore\Model\User::getById($note->getUser());
                 $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
@@ -1074,14 +1075,14 @@ class CoreShop_Admin_OrderController extends Admin
                 'description' => $note->description
             ];
 
-            foreach($note->data as $key => $noteData) {
+            foreach ($note->data as $key => $noteData) {
                 $noteElement[$key] = $noteData['data'];
             }
 
-            if(array_key_exists('messageId', $noteElement)) {
+            if (array_key_exists('messageId', $noteElement)) {
                 $message = \CoreShop\Model\Messaging\Message::getById($noteElement['messageId']);
 
-                if($message instanceof \CoreShop\Model\Messaging\Message) {
+                if ($message instanceof \CoreShop\Model\Messaging\Message) {
                     $noteElement['read'] = $message->getRead();
                 }
             }

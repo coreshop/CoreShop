@@ -422,7 +422,7 @@ class CoreShop_UserController extends Action
 
         $hash = trim($this->getParam('hash'));
 
-        if( $this->getParam('success') === '1' ) {
+        if ($this->getParam('success') === '1') {
             $success = true;
         } else {
             if (empty($hash)) {
@@ -445,12 +445,10 @@ class CoreShop_UserController extends Action
                             $user->save();
 
                             $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset', 'success' => true], 'coreshop_user'));
-
                         }
                     }
                 }
             }
-
         }
 
         $this->view->assign([
@@ -458,7 +456,6 @@ class CoreShop_UserController extends Action
             'showForm' => $showForm,
             'success' => $success
         ]);
-
     }
 
     public function passwordResetRequestAction()
@@ -484,13 +481,11 @@ class CoreShop_UserController extends Action
                         'recipient' => $user->getEmail(),
                         'resetLink' => $resetLink,
                     ]);
-
                 }
 
                 $this->redirect(\CoreShop::getTools()->url(['lang' => $this->language, 'act' => 'password-reset-request', 'success' => true], 'coreshop_user'));
-
             }
-        } else if( $this->getParam('success') === '1' ) {
+        } elseif ($this->getParam('success') === '1') {
             $success = true;
         }
 
@@ -498,7 +493,6 @@ class CoreShop_UserController extends Action
             'message' => $message,
             'success' => $success
         ]);
-
     }
 
     public function addressesAction()

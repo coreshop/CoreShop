@@ -90,7 +90,7 @@ class State
 
         if (!\Zend_Registry::isRegistered('pimcore_admin_user')) {
             \Zend_Registry::set('pimcore_admin_user', $user);
-        } else if (is_null(\Zend_Registry::get('pimcore_admin_user'))) {
+        } elseif (is_null(\Zend_Registry::get('pimcore_admin_user'))) {
             \Zend_Registry::set('pimcore_admin_user', $user);
         }
 
@@ -170,12 +170,12 @@ class State
         $config = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
         $orderClassId = Order::classId();
 
-        foreach($config['workflows'] as $workflow) {
-            if(array_key_exists('workflowSubject', $workflow)) {
+        foreach ($config['workflows'] as $workflow) {
+            if (array_key_exists('workflowSubject', $workflow)) {
                 $subject = $workflow['workflowSubject'];
 
-                if(array_key_exists('classes', $subject)) {
-                    if(in_array($orderClassId, $subject['classes'])) {
+                if (array_key_exists('classes', $subject)) {
+                    if (in_array($orderClassId, $subject['classes'])) {
                         return $workflow['states'];
                     }
                 }

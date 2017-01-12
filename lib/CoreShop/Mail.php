@@ -81,7 +81,7 @@ class Mail extends PimcoreMail
 
         $shop = Shop::getById($shopId);
 
-        if($shop instanceof Shop) {
+        if ($shop instanceof Shop) {
             //init Template
             \CoreShop::getTools()->initTemplateForShop($shop);
         }
@@ -222,7 +222,7 @@ class Mail extends PimcoreMail
         $note->addData('recipient', 'text', implode(', ', (array) $mail->getRecipients()));
         $note->addData('subject', 'text', $mail->getSubjectRendered());
 
-        foreach($params as $key => $value) {
+        foreach ($params as $key => $value) {
             $note->addData($key, 'text', $value);
         }
 
@@ -267,7 +267,7 @@ class Mail extends PimcoreMail
     private static function addRecipients($mail, $emailDocument, $recipients = '')
     {
         $to = [];
-        if( is_array($recipients)) {
+        if (is_array($recipients)) {
             foreach ($recipients as $_recipient) {
                 if (is_array($_recipient)) {
                     $to[] = [$_recipient[0], $_recipient[1]];
@@ -292,7 +292,7 @@ class Mail extends PimcoreMail
         }
 
         foreach ($to as $recipient) {
-            $mail->addTo($recipient[0],  $recipient[1]);
+            $mail->addTo($recipient[0], $recipient[1]);
         }
     }
 }

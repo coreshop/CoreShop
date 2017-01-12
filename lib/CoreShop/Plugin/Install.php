@@ -45,7 +45,8 @@ class Install
      *
      * @return bool
      */
-    public function fullInstall() {
+    public function fullInstall()
+    {
         \Pimcore::getEventManager()->trigger('coreshop.install.pre', null, ['installer' => $this]);
 
         //install Data
@@ -749,7 +750,6 @@ class Install
         }
 
         foreach ($objects['MailRule'] as $class => $rule) {
-
             $existingRule = \CoreShop\Model\Mail\Rule::getByField('name', $rule['name']);
 
             if ($existingRule instanceof \CoreShop\Model\Mail\Rule) {
@@ -795,27 +795,26 @@ class Install
                 $obj = new $class();
 
                 if (is_array($params)) {
-                    foreach($params as $method => $value) {
+                    foreach ($params as $method => $value) {
                         $setter = 'set' . ucfirst($method);
-                        if(method_exists($obj, $setter)) {
+                        if (method_exists($obj, $setter)) {
 
                             //get linked mails
                             if ($method === 'mails') {
                                 $_val = [];
-                                foreach($value as $lang => $path) {
+                                foreach ($value as $lang => $path) {
                                     $document = Document::getByPath('/' . $path);
-                                    if($document instanceof \Pimcore\Model\Document) {
+                                    if ($document instanceof \Pimcore\Model\Document) {
                                         $_val[ $lang ] = $document->getId();
                                     }
                                 }
 
                                 $value = $_val;
                                 unset($_val);
-
                             }
 
-                            if (is_string($value) && strpos($value, '|') !== FALSE) {
-                                $value = array_filter(explode('|',$value));
+                            if (is_string($value) && strpos($value, '|') !== false) {
+                                $value = array_filter(explode('|', $value));
                             }
 
                             $obj->$setter($value);

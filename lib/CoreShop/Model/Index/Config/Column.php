@@ -13,6 +13,7 @@
  */
 
 namespace CoreShop\Model\Index\Config;
+
 use CoreShop\Exception;
 
 /**

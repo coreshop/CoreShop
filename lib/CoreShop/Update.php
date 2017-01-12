@@ -467,11 +467,10 @@ class Update
     public static function installClass($class)
     {
         if (!self::$dryRun) {
-
             try {
                 $install = new Install();
                 $install->createClass($class, true);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 \Pimcore\Logger::err('CoreShop installClass error (' . $class . '): ' . $e->getMessage());
             }
         }

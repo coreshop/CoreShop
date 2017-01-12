@@ -69,8 +69,9 @@ class Dispatcher
      * @param $type
      * @return bool|string
      */
-    public function getClassForType($type) {
-        if(array_key_exists($type, $this->types)) {
+    public function getClassForType($type)
+    {
+        if (array_key_exists($type, $this->types)) {
             return $this->types[$type];
         }
 
@@ -80,7 +81,8 @@ class Dispatcher
     /**
      * @return array
      */
-    public function getTypeKeys() {
+    public function getTypeKeys()
+    {
         return array_keys($this->types);
     }
 
@@ -89,8 +91,9 @@ class Dispatcher
      *
      * @param $typeClass
      */
-    public function addType($typeClass) {
-        if(is_subclass_of($typeClass, $this->subclassOf)) {
+    public function addType($typeClass)
+    {
+        if (is_subclass_of($typeClass, $this->subclassOf)) {
             $this->types[$typeClass::getType()] = $typeClass;
         }
     }
@@ -100,8 +103,9 @@ class Dispatcher
      *
      * @param array $types
      */
-    public function addTypes($types) {
-        foreach($types as $type) {
+    public function addTypes($types)
+    {
+        foreach ($types as $type) {
             $this->addType($type);
         }
     }

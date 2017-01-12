@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Index\Config\Column;
 
 use CoreShop\Model\Index\Config\Column as BaseColumn;
+
 /**
  * Class Fieldcollections
  * @package CoreShop\Model\Index\Config\Column

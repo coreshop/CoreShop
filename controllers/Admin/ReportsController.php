@@ -238,7 +238,6 @@ class CoreShop_Admin_ReportsController extends Admin
      */
     public function getOrdersCartsAbandonedReportAction()
     {
-
         $maxToday = new \Pimcore\Date();
         $minToday = new \Pimcore\Date();
 
@@ -294,7 +293,6 @@ class CoreShop_Admin_ReportsController extends Admin
         $total = (int) $db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($data as &$entry) {
-
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));
             $entry['userName'] = empty($entry['userName']) ? '--' : $entry['userName'];
             $entry['email'] = empty($entry['email']) ? '--' : $entry['email'];
@@ -324,17 +322,17 @@ class CoreShop_Admin_ReportsController extends Admin
         $dateFormatter = null;
         $groupSelector = '';
 
-        switch($groupBy) {
+        switch ($groupBy) {
 
-            case 'day' :
+            case 'day':
                 $dateFormatter = \Zend_Date::DATE_LONG;
                 $groupSelector = 'DATE(FROM_UNIXTIME(orderDate))';
                 break;
-            case 'month' :
+            case 'month':
                 $dateFormatter = \Zend_Date::MONTH_NAME . ' ' . \Zend_DATE::YEAR;
                 $groupSelector = 'MONTH(FROM_UNIXTIME(orderDate))';
                 break;
-            case 'year' :
+            case 'year':
                 $dateFormatter = \Zend_DATE::YEAR;
                 $groupSelector = 'YEAR(FROM_UNIXTIME(orderDate))';
                 break;

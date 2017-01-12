@@ -64,7 +64,8 @@ class PriceRule extends AbstractPriceRule
     /**
      * @param Dispatcher $dispatcher
      */
-    protected static function initActionDispatcher(Dispatcher $dispatcher) {
+    protected static function initActionDispatcher(Dispatcher $dispatcher)
+    {
         $dispatcher->addTypes([
             Action\FreeShipping::class,
             Action\DiscountAmount::class,

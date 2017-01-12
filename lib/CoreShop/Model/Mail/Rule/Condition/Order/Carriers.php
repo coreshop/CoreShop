@@ -43,8 +43,8 @@ class Carriers extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if($object instanceof Model\Order) {
-            if($object->getCarrier() instanceof Model\Carrier) {
+        if ($object instanceof Model\Order) {
+            if ($object->getCarrier() instanceof Model\Carrier) {
                 if (in_array($object->getCarrier()->getId(), $this->getCarriers())) {
                     return true;
                 }
