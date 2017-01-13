@@ -67,12 +67,15 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
      *
      * @return static
      */
-    public static function create()
+    public static function create($params = [])
     {
         $pimcoreClass = self::getPimcoreObjectClass();
 
         if (Tool::classExists($pimcoreClass)) {
-            return new $pimcoreClass();
+            $class = new $pimcoreClass();
+            $class->setValues($params);
+
+            return $class;
         }
 
         throw new Exception("Class $pimcoreClass not found");
