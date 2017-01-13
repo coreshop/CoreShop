@@ -18,6 +18,7 @@ use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product;
+use CoreShop\Model\Service;
 use CoreShop\Model\Tax;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\User\Address;
@@ -252,17 +253,9 @@ class Item extends Base
      */
     public function getCart()
     {
-        $parent = $this;
+        $cart = Service::getParentOfType($this, Cart::class);
 
-        do {
-            if ($parent instanceof Cart) {
-                return $parent;
-            }
-
-            $parent = $parent->getParent();
-        } while ($parent != null);
-
-        return null;
+        return $cart instanceof Cart ? $cart : null;
     }
 
     /**

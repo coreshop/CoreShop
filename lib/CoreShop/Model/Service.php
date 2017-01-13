@@ -15,6 +15,7 @@
 namespace CoreShop\Model;
 
 use CoreShop\Exception;
+use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Tool;
 
 /**
@@ -23,6 +24,25 @@ use Pimcore\Tool;
  */
 class Service
 {
+    /**
+     * @param AbstractObject $object
+     * @param string $class
+     *
+     * @return bool|AbstractObject
+     */
+    public static function getParentOfType(AbstractObject $object, $class) {
+        $parent = $object->getParent();
+
+        do {
+            if (is_subclass_of($parent, $class)) {
+                return $parent;
+            }
+            $parent = $parent->getParent();
+        } while ($parent != null);
+
+        return false;
+    }
+
     /**
      * @param string $filterJson
      * @param string $class

@@ -18,6 +18,7 @@ use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
+use CoreShop\Model\Service;
 use Pimcore\Model\Asset\Image;
 use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
@@ -64,17 +65,9 @@ class Item extends Base
      */
     public function getOrder()
     {
-        $parent = $this->getParent();
+        $order = Service::getParentOfType($this, Order::class);
 
-        do {
-            if ($parent instanceof Order) {
-                return $parent;
-            }
-
-            $parent = $parent->getParent();
-        } while ($parent != null);
-
-        return null;
+        return $order instanceof Order ? $order : null;
     }
 
     /**

@@ -17,6 +17,7 @@ namespace CoreShop\Model\Order;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Order;
+use CoreShop\Model\Service;
 use Pimcore\Date;
 use Pimcore\Model\Object;
 
@@ -100,23 +101,15 @@ class Payment extends Base
     }
 
     /**
-     * Get Order for Payment.
+     * Get Order for OrderItem.
      *
-     * @return bool|Object\AbstractObject
+     * @return null|\Pimcore\Model\Object\AbstractObject
      */
     public function getOrder()
     {
-        $parent = $this->getParent();
+        $order = Service::getParentOfType($this, Order::class);
 
-        do {
-            if ($parent instanceof Order) {
-                return $parent;
-            }
-
-            $parent = $parent->getParent();
-        } while ($parent != null);
-
-        return false;
+        return $order instanceof Order ? $order : null;
     }
 
     /**
