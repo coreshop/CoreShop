@@ -617,32 +617,11 @@ class Order extends Base
                 $invoiceItem->setParent($invoice->getPathForItems());
                 $invoiceItem->setTotal($orderItem->getPrice() * $amount);
                 $invoiceItem->setTotalTax(($orderItem->getPrice() - $orderItem->getPriceWithoutTax()) * $amount);
-
-                $invoiceItemTaxes = new Object\Fieldcollection();
-                $totalTax = 0;
-
-                foreach ($orderItem->getTaxes() as $tax) {
-                    if ($tax instanceof Order\Tax) {
-                        $taxRate = Tax::create();
-                        $taxRate->setRate($tax->getRate());
-
-                        $taxCalculator = new TaxCalculator([$taxRate]);
-
-                        $itemTax = Order\Tax::create();
-                        $itemTax->setName($tax->getName());
-                        $itemTax->setRate($tax->getRate());
-                        $itemTax->setAmount($taxCalculator->getTaxesAmount($invoiceItem->getTotalWithoutTax()));
-
-                        $invoiceItemTaxes->add($itemTax);
-
-                        $totalTax += $itemTax->getAmount();
-                    }
-                }
-
+                $this->setDocumentItemTaxes($invoiceItem, $orderItem, $invoiceItem->getTotalWithoutTax());
                 $invoiceItem->setOrderItem($orderItem);
                 $invoiceItem->setKey($orderItem->getKey());
-                $invoiceItem->setTaxes($invoiceItemTaxes);
-                $invoiceItem->setTotalTax($totalTax);
+                //$invoiceItem->setTaxes($invoiceItemTaxes);
+                //$invoiceItem->setTotalTax($totalTax);
                 $invoiceItem->setPublished(true);
                 $invoiceItem->save();
 
@@ -763,33 +742,10 @@ class Order extends Base
                 $shipmentItem->setParent($shipment->getPathForItems());
                 $shipmentItem->setTotal($orderItem->getPrice() * $amount);
                 $shipmentItem->setTotalTax(($orderItem->getPrice() - $orderItem->getPriceWithoutTax()) * $amount);
-
-                $invoiceItemTaxes = new Object\Fieldcollection();
-                $totalTax = 0;
-
-                foreach ($orderItem->getTaxes() as $tax) {
-                    if ($tax instanceof Order\Tax) {
-                        $taxRate = Tax::create();
-                        $taxRate->setRate($tax->getRate());
-
-                        $taxCalculator = new TaxCalculator([$taxRate]);
-
-                        $itemTax = Order\Tax::create();
-                        $itemTax->setName($tax->getName());
-                        $itemTax->setRate($tax->getRate());
-                        $itemTax->setAmount($taxCalculator->getTaxesAmount($shipmentItem->getTotalWithoutTax()));
-
-                        $invoiceItemTaxes->add($itemTax);
-
-                        $totalTax += $itemTax->getAmount();
-                    }
-                }
-
+                $this->setDocumentItemTaxes($shipmentItem, $orderItem, $shipmentItem->getTotalWithoutTax());
                 $shipmentItem->setWeight($orderItem->getProduct()->getWeight() * $orderItem->getAmount());
                 $shipmentItem->setOrderItem($orderItem);
                 $shipmentItem->setKey($orderItem->getKey());
-                $shipmentItem->setTaxes($invoiceItemTaxes);
-                $shipmentItem->setTotalTax($totalTax);
                 $shipmentItem->setPublished(true);
                 $shipmentItem->save();
 
@@ -810,6 +766,42 @@ class Order extends Base
         Rule::apply('shipment', $shipment);
 
         return $shipment;
+    }
+
+    /**
+     * Calculates Item taxes for a specific amount
+     *
+     * @param Document\Item $docItem
+     * @param Item $item
+     * @param $amount
+     */
+    protected function setDocumentItemTaxes(Document\Item $docItem, Item $item, $amount) {
+        $itemTaxes = new Object\Fieldcollection();
+        $totalTax = 0;
+
+        foreach ($item->getTaxes() as $tax) {
+            if ($tax instanceof Order\Tax) {
+                $taxRate = Tax::create();
+                $taxRate->setRate($tax->getRate());
+
+                $taxCalculator = new TaxCalculator([$taxRate]);
+
+                $itemTax = Order\Tax::create([
+                    'name' => $tax->getName(),
+                    'rate' => $tax->getRate(),
+                    'amount' => $taxCalculator->getTaxesAmount($amount)
+                ]);
+
+                $itemTaxes->add($itemTax);
+
+                $totalTax += $itemTax->getAmount();
+            }
+        }
+
+        if($docItem instanceof Invoice\Item || $docItem instanceof Shipment\Item) {
+            $docItem->setTotalTax($totalTax);
+            $docItem->setTaxes($itemTaxes);
+        }
     }
 
     /**
