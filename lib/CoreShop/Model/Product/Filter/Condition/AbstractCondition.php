@@ -16,6 +16,7 @@ namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
+use Pimcore\View;
 
 /**
  * Class AbstractCondition
@@ -49,7 +50,7 @@ abstract class AbstractCondition
     public $quantityUnit;
 
     /**
-     *  Zend_View.
+     *  @var View
      */
     protected $view;
 
@@ -64,7 +65,7 @@ abstract class AbstractCondition
     /**
      * @param $language
      *
-     * @return \Zend_View
+     * @return View
      */
     public function getView($language = null)
     {
@@ -73,7 +74,7 @@ abstract class AbstractCondition
         }
 
         if (!$this->view) {
-            $this->view = new \Zend_View();
+            $this->view = new View();
         }
 
         $this->view->language = (string) $language;

@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Objectbrick\Data;
 
 use Pimcore\Model\Object\Objectbrick\Data\AbstractData;
+use Pimcore\View;
 
 /**
  * Class Objectbrick
@@ -24,7 +25,7 @@ use Pimcore\Model\Object\Objectbrick\Data\AbstractData;
 class Objectbrick extends AbstractData
 {
     /**
-     *  Zend_View.
+     *  @var View
      */
     protected $view;
 
@@ -33,7 +34,7 @@ class Objectbrick extends AbstractData
      *
      * @param $language
      *
-     * @return \Zend_View
+     * @return View
      */
     public function getView($language = null)
     {
@@ -42,7 +43,7 @@ class Objectbrick extends AbstractData
         }
 
         if (!$this->view) {
-            $this->view = new \Zend_View();
+            $this->view = new View();
         }
 
         $this->view->language = (string) $language;

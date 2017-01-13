@@ -17,6 +17,7 @@ namespace CoreShop\Tracking;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
+use Pimcore\View;
 
 /**
  * Class Tracker
@@ -25,11 +26,11 @@ use CoreShop\Model\Product;
 abstract class ClientTracker extends Tracker
 {
     /**
-     * @return \Zend_View
+     * @return View
      */
     protected function buildView()
     {
-        $view = new \Zend_View();
+        $view = new View();
 
         $class = get_class($this);
         $class = explode('\\', $class);
