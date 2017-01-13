@@ -40,6 +40,8 @@ use Pimcore\Model\Object;
  * @method static Object\Listing\Concrete getByDocumentNumber ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByLang ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByItems ($value, $limit = 0)
+ *
+ * @Todo: Does every Document has taxes? Can we somehow refactor this to make it more easier?
  */
 abstract class Document extends Base
 {
