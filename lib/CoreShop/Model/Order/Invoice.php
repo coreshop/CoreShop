@@ -15,24 +15,11 @@
 namespace CoreShop\Model\Order;
 
 use Carbon\Carbon;
-use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
-use CoreShop\Helper\Zend\Action;
-use CoreShop\Model\Base;
-use CoreShop\Model\Configuration;
 use CoreShop\Model\Currency;
-use CoreShop\Model\NumberRange;
 use CoreShop\Model\Order;
-use CoreShop\Model\Shop;
 use CoreShop\Model\TaxCalculator;
-use CoreShop\Model\User;
-use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Date;
-use Pimcore\File;
-use Pimcore\Logger;
-use Pimcore\Model\Asset;
-use Pimcore\Model\Asset\Document;
-use Pimcore\Model\Asset\Service;
 use Pimcore\Model\Object;
 
 /**
@@ -60,16 +47,15 @@ use Pimcore\Model\Object;
  * @method static Object\Listing\Concrete getByTotalTax ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTotal ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTotalPayed ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByShop ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTaxes ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByItems ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByCustomer ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByShippingAddress ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByBillingAddress ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByExtraInformation ($value, $limit = 0)
  */
-class Invoice extends Base
+class Invoice extends Document
 {
+    /**
+     * @var string
+     */
+    public static $documentType = "invoice";
+
     /**
      * Pimcore Object Class.
      *
@@ -80,17 +66,25 @@ class Invoice extends Base
     /**
      * Creates next InvoiceNumber.
      *
+     * @deprecated Use getNextDocumentNumber instead. Will be removed with CoreShop 1.3
      * @return int|string
      */
     public static function getNextInvoiceNumber()
     {
-        $number = NumberRange::getNextNumberForType('invoice');
-
-        return self::getValidInvoiceNumber($number);
+        return static::getNextDocumentNumber();
     }
 
     /**
-     * Get Order by InvoiceNumber
+     * @param $documentNumber
+     * @return null|static
+     */
+    public static function findByDocumentNumber($documentNumber)
+    {
+        return static::findByInvoiceNumber($documentNumber);
+    }
+
+    /**
+     * Get Order by Invoice Number
      *
      * @param $invoiceNumber
      * @return static|null
@@ -111,22 +105,12 @@ class Invoice extends Base
      *
      * @param $number
      *
+     * @deprecated use getValidDocumentNumber instead. Will be removed with CoreShop 1.3
      * @return string
      */
     public static function getValidInvoiceNumber($number)
     {
-        $prefix = Configuration::get('SYSTEM.INVOICE.PREFIX');
-        $suffix = Configuration::get('SYSTEM.INVOICE.SUFFIX');
-
-        if ($prefix) {
-            $number = $prefix.$number;
-        }
-
-        if ($suffix) {
-            $number = $number.$suffix;
-        }
-
-        return $number;
+        return static::getValidDocumentNumber($number);
     }
 
     /**
@@ -135,23 +119,12 @@ class Invoice extends Base
      * @param Order $order
      * @param \DateTime $date
      *
+     * @deprecated use getPathForDocuments instead. Will be removed with CoreShop 1.3
      * @return Object\Folder
      */
     public static function getPathForNewInvoice(Order $order, $date = null)
     {
-        if (is_null($date)) {
-            $date = new Carbon();
-        }
-
-        return Object\Service::createFolderByPath($order->getFullPath() . "/invoices/" . $date->format("Y/m/d"));
-    }
-
-    /**
-     * @return null
-     */
-    public function getPathForItems()
-    {
-        return Object\Service::createFolderByPath($this->getFullPath().'/items/');
+        return static::getPathForDocuments($order, $date);
     }
 
     /**
@@ -166,11 +139,13 @@ class Invoice extends Base
         $taxValues = [];
 
         foreach ($this->getTaxes() as $tax) {
-            $taxValues[] = [
-                'rate' => $tax->getRate(),
-                'name' => $tax->getName(),
-                'value' => $tax->getAmount(),
-            ];
+            if($tax instanceof Tax) {
+                $taxValues[] = [
+                    'rate' => $tax->getRate(),
+                    'name' => $tax->getName(),
+                    'value' => $tax->getAmount(),
+                ];
+            }
         }
 
         foreach ($taxValues as $tax) {
@@ -233,7 +208,7 @@ class Invoice extends Base
         $shippingTax = 0;
 
         $totalShipping = $order->getShipping();
-        $invoicedShipping = $order->getInvoicedValue('shipping');
+        $invoicedShipping = $this->getProcessedValue('shipping');
 
         if ($totalShipping - $invoicedShipping > 0) {
             $shippingTaxRate = $order->getShippingTaxRate();
@@ -261,7 +236,7 @@ class Invoice extends Base
         $paymentFeeTax = 0;
 
         $totalPaymentFee = $order->getPaymentFee();
-        $invoicedPaymentFees = $order->getInvoicedValue('paymentFee');
+        $invoicedPaymentFees = $this->getProcessedValue('paymentFee');
 
         if ($totalPaymentFee - $invoicedPaymentFees > 0) {
             $paymentFeeTaxRate = $order->getPaymentFeeTaxRate();
@@ -289,11 +264,11 @@ class Invoice extends Base
         $discountTax = 0;
 
         $totalDiscount = $order->getDiscount();
-        $invoicedDiscount = $order->getInvoicedValue('discount');
+        $invoicedDiscount = $this->getProcessedValue('discount');
 
         if ($totalDiscount - $invoicedDiscount > 0) {
             $discountWithTax = $totalDiscount - $invoicedDiscount;
-            $discountWithoutTax = $order->getDiscountWithoutTax() - $order->getInvoicedValue('discountWithoutTax');
+            $discountWithoutTax = $order->getDiscountWithoutTax() - $this->getProcessedValue('discountWithoutTax');
             $discountTax = $discountWithTax - $discountWithoutTax;
         }
 
@@ -323,85 +298,35 @@ class Invoice extends Base
     }
 
     /**
-     * @return Asset
+     * @return Carbon
      */
-    public function getAsset()
+    public function getDocumentDate()
     {
-        $path = $this->getOrder()->getPathForInvoices();
-        $fileName = 'invoice-'.$this->getInvoiceNumber().'.pdf';
-
-        return Asset::getByPath($path . "/" . $fileName);
+        return $this->getInvoiceDate();
     }
 
     /**
-     * Renders the Invoice to a PDF
-     *
-     * @throws Exception
-     *
-     * @return Document|bool
+     * @param Carbon|Date $documentDate
      */
-    public function generate()
+    public function setDocumentDate($documentDate)
     {
-        $locale = new \Zend_Locale($this->getOrder()->getLang());
-
-        $params = [
-            "order" => $this->getOrder(),
-            "invoice" => $this,
-            "language" => (string) $locale,
-            "type" => "invoice"
-        ];
-
-        $forward = new Action();
-        $html = $forward->action("invoice", "order-print", "CoreShop", $params);
-        $header = $forward->action("header", "order-print", "CoreShop", $params);
-        $footer = $forward->action("footer", "order-print", "CoreShop", $params);
-
-        try {
-            $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, ['options' => [Configuration::get('SYSTEM.INVOICE.WKHTML')]]);
-
-            if ($pdfContent) {
-                $fileName = 'invoice-'. File::getValidFilename($this->getInvoiceNumber()) . '.pdf';
-                $path = $this->getOrder()->getPathForInvoices();
-
-                $invoice = Document::getByPath($path.'/'.$fileName);
-
-                if ($invoice instanceof Document) {
-                    $invoice->delete();
-                }
-
-                $invoice = new Document();
-                $invoice->setFilename($fileName);
-                $invoice->setParent(Service::createFolderByPath($path));
-                $invoice->setData($pdfContent);
-                $invoice->save();
-
-                return $invoice;
-            }
-        } catch (Exception $ex) {
-            Logger::warn('wkhtmltopdf library not found, no invoice was generated');
-        }
-
-        return false;
+        $this->setInvoiceDate($documentDate);
     }
 
     /**
-     * @return Order
-     *
-     * @throws ObjectUnsupportedException
+     * @return string
      */
-    public function getOrder()
+    public function getDocumentNumber()
     {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+        return $this->getInvoiceNumber();
     }
 
     /**
-     * @param Order $order
-     *
-     * @throws ObjectUnsupportedException
+     * @param string $documentNumber
      */
-    public function setOrder($order)
+    public function setDocumentNumber($documentNumber)
     {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+        $this->setInvoiceNumber($documentNumber);
     }
 
     /**
@@ -440,26 +365,6 @@ class Invoice extends Base
      * @throws ObjectUnsupportedException
      */
     public function setInvoiceNumber($invoiceNumber)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return string
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getLang()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param string $lang
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setLang($lang)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
@@ -825,26 +730,6 @@ class Invoice extends Base
     }
 
     /**
-     * @return Shop
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getShop()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param Shop $shop
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setShop($shop)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
      * @return mixed
      *
      * @throws ObjectUnsupportedException
@@ -860,106 +745,6 @@ class Invoice extends Base
      * @throws ObjectUnsupportedException
      */
     public function setTaxes($taxes)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return Invoice\Item[]
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getItems()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param Invoice\Item[] $items
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setItems($items)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return User
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getCustomer()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param User $customer
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setCustomer($customer)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return mixed
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getShippingAddress()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param mixed $shippingAddress
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setShippingAddress($shippingAddress)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return mixed
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getBillingAddress()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param mixed $billingAddress
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setBillingAddress($billingAddress)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return mixed
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getExtraInformation()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param mixed $extraInformation
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setExtraInformation($extraInformation)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

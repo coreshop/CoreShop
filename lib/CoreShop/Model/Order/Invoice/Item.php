@@ -26,8 +26,6 @@ use Pimcore\Model\Object;
  * Class Item
  * @package CoreShop\Model\Order\Invoice
  *
- * @method static Object\Listing\Concrete getByOrderItem ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByProduct ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByWholesalePrice ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByRetailPrice ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByPrice ($value, $limit = 0)
@@ -35,11 +33,10 @@ use Pimcore\Model\Object;
  * @method static Object\Listing\Concrete getByAmount ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTotalTax ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTotal ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByExtraInformation ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByIsGiftItem ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTaxes ($value, $limit = 0)
  */
-class Item extends Base
+class Item extends Order\Document\Item
 {
     /**
      * Pimcore Object Class.
@@ -61,21 +58,12 @@ class Item extends Base
     /**
      * Get Invoice for InvoiceItem.
      *
+     * @deprecated use getDocument instead. This method will be removed with CoreShop 1.3
      * @return null|\Pimcore\Model\Object\AbstractObject
      */
     public function getInvoice()
     {
-        $parent = $this->getParent();
-
-        do {
-            if ($parent instanceof Order\Invoice) {
-                return $parent;
-            }
-
-            $parent = $parent->getParent();
-        } while ($parent != null);
-
-        return null;
+        return $this->getDocument();
     }
 
     /**
@@ -102,46 +90,6 @@ class Item extends Base
         }
 
         return null;
-    }
-
-    /**
-     * @return Order\Item
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getOrderItem()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param Order\Item $orderItem
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setOrderItem($orderItem)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return Product
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getProduct()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param Product $product
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setProduct($product)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
 
     /**
@@ -280,26 +228,6 @@ class Item extends Base
      * @throws ObjectUnsupportedException
      */
     public function setTotal($total)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return mixed
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getExtraInformation()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param mixed $extraInformation
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setExtraInformation($extraInformation)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

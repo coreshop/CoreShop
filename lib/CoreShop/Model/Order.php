@@ -20,6 +20,7 @@ use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Messaging\Thread;
+use CoreShop\Model\Order\Document;
 use CoreShop\Model\Order\Invoice;
 use CoreShop\Model\Order\Item;
 use CoreShop\Model\Order\Payment;
@@ -483,49 +484,6 @@ class Order extends Base
     }
 
     /**
-     * Create a new Payment.
-     *
-     * @param CorePayment $provider
-     * @param $amount
-     * @param bool $paid
-     * @param $transactionId
-     *
-     * @return Payment
-     */
-    public function createPayment(CorePayment $provider, $amount, $paid = false, $transactionId = null)
-    {
-        $payment = Payment::create();
-        $payment->setKey(uniqid());
-        $payment->setPublished(true);
-        $payment->setParent(Object\Service::createFolderByPath($this->getFullPath().'/payments/'));
-        $payment->setAmount($amount);
-        $payment->setTransactionIdentifier(!is_null($transactionId) ? $transactionId : uniqid());
-        $payment->setProvider($provider->getIdentifier());
-
-        if (\Pimcore\Config::getFlag('useZendDate')) {
-            $payment->setDatePayment(Date::now());
-        } else {
-            $payment->setDatePayment(Carbon::now());
-        }
-
-        $payment->setPayed($paid);
-        $payment->save();
-
-        $this->addPayment($payment);
-
-        $translate = \CoreShop::getTools()->getTranslate();
-
-        $note = $this->createNote(self::NOTE_PAYMENT);
-        $note->setTitle(sprintf($translate->translate('coreshop_note_order_payment'), $provider->getName(), $this->formatPrice($amount)));
-        $note->setDescription(sprintf($translate->translate('coreshop_note_order_payment_description'), $provider->getName(), $this->formatPrice(($amount))));
-        $note->addData('provider', 'text', $provider->getName());
-        $note->addData('amount', 'text', $this->formatPrice($amount));
-        $note->save();
-
-        return $payment;
-    }
-
-    /**
      * @param $price
      * @return string
      */
@@ -535,6 +493,41 @@ class Order extends Base
     }
 
     /***** INVOICING *****/
+
+    /**
+     * @param $type
+     * @return Document[]
+     * @throws Exception
+     */
+    public function getDocumentsForType($type) {
+        if($type === "invoice") {
+            return $this->getInvoices();
+        }
+        else if($type === "shipment") {
+            return $this->getShipments();
+        }
+
+        throw new Exception("Type $type is unknown");
+    }
+
+    /**
+     * get all items for document creation
+     *
+     * @return array
+     */
+    protected function getAllItemsForDocumentCreation()
+    {
+        $items = [];
+
+        foreach ($this->getItems() as $item) {
+            $items[] = [
+                'orderItemId' => $item->getId(),
+                'amount' => $item->getAmount()
+            ];
+        }
+
+        return $items;
+    }
 
     /**
      * @return Invoice[]
@@ -549,35 +542,6 @@ class Order extends Base
     }
 
     /**
-     * Check if Items are available for Shipping
-     *
-     * @param $items
-     * @return bool
-     */
-    protected function checkItemsAvailableForShipping($items)
-    {
-        if (!is_array($items)) {
-            return false;
-        }
-
-        foreach ($items as $item) {
-            $orderItem = Item::getById($item['orderItemId']);
-            $amount = $item['amount'];
-
-            if ($orderItem instanceof Item) {
-                $shippedAmount = $orderItem->getShippedAmount();
-                $newShippedAmount = $shippedAmount + $amount;
-
-                if ($newShippedAmount > $orderItem->getAmount()) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Creates an Invoice for all Items
      *
      * @return Invoice
@@ -589,62 +553,12 @@ class Order extends Base
 
     /**
      * get all items that are still invoice-able
-
+     *
      * @return array
      */
     public function getInvoiceAbleItems()
     {
-        $items = $this->getItems();
-        $invoicedItems = $this->getInvoicedItems();
-        $invoiceAbleItems = [];
-
-        foreach ($items as $item) {
-            if (array_key_exists($item->getId(), $invoicedItems)) {
-                if ($invoicedItems[$item->getId()]['amount'] < $item->getAmount()) {
-                    $invoiceAbleItems[$item->getId()] = [
-                        "amount" => $item->getAmount() - $invoicedItems[$item->getId()]['amount'],
-                        "item" => $item
-                    ];
-                }
-            } else {
-                $invoiceAbleItems[$item->getId()] = [
-                    "amount" => $item->getAmount(),
-                    "item" => $item
-                ];
-            }
-        }
-
-        return $invoiceAbleItems;
-    }
-
-    /**
-     * get all invoiced items with amounts
-     *
-     * @return array
-     */
-    public function getInvoicedItems()
-    {
-        $invoices = $this->getInvoices();
-        $invoicedItems = [];
-
-        foreach ($invoices as $invoice) {
-            foreach ($invoice->getItems() as $invoiceItem) {
-                $orderItem = $invoiceItem->getOrderItem();
-
-                if ($orderItem instanceof Item) {
-                    if (array_key_exists($orderItem->getId(), $invoicedItems)) {
-                        $invoicedItems[$orderItem->getId()]['amount'] += $invoiceItem->getAmount();
-                    } else {
-                        $invoicedItems[$orderItem->getId()] = [
-                            'amount' => $invoiceItem->getAmount(),
-                            'orderItem' => $orderItem
-                        ];
-                    }
-                }
-            }
-        }
-
-        return $invoicedItems;
+        return Invoice::getProcessableItems($this);
     }
 
     /**
@@ -665,26 +579,25 @@ class Order extends Base
             throw new Exception('Invalid Parameters');
         }
 
-        if (!$this->checkItemsAvailableForInvoice($items)) {
+        if(!Invoice::checkItemsAreProcessable($items)) {
             throw new Exception('You cannot invoice more items than sold items');
         }
 
         $invoice = Invoice::create();
 
-        $invoice->setInvoiceNumber(Invoice::getNextInvoiceNumber());
+        $invoice->setInvoiceNumber(Invoice::getNextDocumentNumber());
         $invoice->setOrder($this);
+
         if (\Pimcore\Config::getFlag('useZendDate')) {
             $invoice->setInvoiceDate(Date::now());
-        } else {
+        }
+        else
+        {
             $invoice->setInvoiceDate(Carbon::now());
         }
+
         $invoice->setLang($this->getLang());
         $invoice->setCurrency($this->getCurrency());
-        $invoice->setShop($this->getShop());
-        $invoice->setCustomer($this->getCustomer());
-        $invoice->setShippingAddress($this->getShippingAddress());
-        $invoice->setBillingAddress($this->getBillingAddress());
-        $invoice->setExtraInformation($this->getExtraInformation());
         $invoice->setParent($this->getPathForInvoices());
         $invoice->setKey(\Pimcore\File::getValidFilename($invoice->getInvoiceNumber()));
         $invoice->save();
@@ -759,31 +672,13 @@ class Order extends Base
      */
     public function isFullyInvoiced()
     {
-        return count($this->getInvoiceAbleItems()) === 0;
-    }
-
-    /**
-     * get any accumulated invoiced value for a field
-     *
-     * @param $field
-     * @return float
-     */
-    public function getInvoicedValue($field)
-    {
-        $invoices = $this->getInvoices();
-        $invoicedValue = 0;
-
-        foreach ($invoices as $invoice) {
-            $invoicedValue += $invoice->getValueForFieldName($field);
-        }
-
-        return $invoicedValue;
+        return Invoice::isFullyProcessed($this);
     }
 
     /***** SHIPMENT *****/
 
     /**
-     * @return Invoice[]
+     * @return Shipment[]
      */
     public function getShipments()
     {
@@ -811,57 +706,7 @@ class Order extends Base
      */
     public function getShipAbleItems()
     {
-        $items = $this->getItems();
-        $shippedItems = $this->getShippedItems();
-        $shipAbleItems = [];
-
-        foreach ($items as $item) {
-            if (array_key_exists($item->getId(), $shippedItems)) {
-                if ($shippedItems[$item->getId()]['amount'] < $item->getAmount()) {
-                    $shipAbleItems[$item->getId()] = [
-                        "amount" => $item->getAmount() - $shippedItems[$item->getId()]['amount'],
-                        "item" => $item
-                    ];
-                }
-            } else {
-                $shipAbleItems[$item->getId()] = [
-                    "amount" => $item->getAmount(),
-                    "item" => $item
-                ];
-            }
-        }
-
-        return $shipAbleItems;
-    }
-
-    /**
-     * get all shipped items with amounts
-     *
-     * @return array
-     */
-    public function getShippedItems()
-    {
-        $shipments = $this->getShipments();
-        $shippedItems = [];
-
-        foreach ($shipments as $shipment) {
-            foreach ($shipment->getItems() as $shipmentItem) {
-                $orderItem = $shipmentItem->getOrderItem();
-
-                if ($orderItem instanceof Item) {
-                    if (array_key_exists($orderItem->getId(), $shippedItems)) {
-                        $shippedItems[$orderItem->getId()]['amount'] += $shipmentItem->getAmount();
-                    } else {
-                        $shippedItems[$orderItem->getId()] = [
-                            'amount' => $shipmentItem->getAmount(),
-                            'orderItem' => $orderItem
-                        ];
-                    }
-                }
-            }
-        }
-
-        return $shippedItems;
+        return Shipment::getProcessableItems($this);
     }
 
     /**
@@ -881,13 +726,13 @@ class Order extends Base
             throw new Exception('Invalid Parameters');
         }
 
-        if (!$this->checkItemsAvailableForShipping($items)) {
+        if(!Shipment::checkItemsAreProcessable($items)) {
             throw new Exception('You cannot ship more items than sold items');
         }
 
         $shipment = Shipment::create();
 
-        $shipment->setShipmentNumber(Shipment::getNextShipmentNumber());
+        $shipment->setShipmentNumber(Shipment::getNextDocumentNumber());
         $shipment->setOrder($this);
         if (\Pimcore\Config::getFlag('useZendDate')) {
             $shipment->setShipmentDate(Date::now());
@@ -895,11 +740,6 @@ class Order extends Base
             $shipment->setShipmentDate(Carbon::now());
         }
         $shipment->setLang($this->getLang());
-        $shipment->setShop($this->getShop());
-        $shipment->setCustomer($this->getCustomer());
-        $shipment->setShippingAddress($this->getShippingAddress());
-        $shipment->setBillingAddress($this->getBillingAddress());
-        $shipment->setExtraInformation($this->getExtraInformation());
         $shipment->setParent($this->getPathForShipments());
         $shipment->setKey(\Pimcore\File::getValidFilename($shipment->getShipmentNumber()));
         $shipment->setCarrier($carrier);
@@ -972,55 +812,6 @@ class Order extends Base
         return $shipment;
     }
 
-
-    /**
-     * get all items for document creation
-     *
-     * @return array
-     */
-    protected function getAllItemsForDocumentCreation()
-    {
-        $items = [];
-
-        foreach ($this->getItems() as $item) {
-            $items[] = [
-                'orderItemId' => $item->getId(),
-                'amount' => $item->getAmount()
-            ];
-        }
-
-        return $items;
-    }
-
-    /**
-     * Check if items are available for invoicing
-     *
-     * @param $items
-     * @return bool
-     */
-    protected static function checkItemsAvailableForInvoice($items)
-    {
-        if (!is_array($items)) {
-            return false;
-        }
-
-        foreach ($items as $item) {
-            $orderItem = Item::getById($item['orderItemId']);
-            $amount = $item['amount'];
-
-            if ($orderItem instanceof Item) {
-                $invoicedAmount = $orderItem->getInvoicedAmount();
-                $newInvoicedAmount = $invoicedAmount + $amount;
-
-                if ($newInvoicedAmount > $orderItem->getAmount()) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Check if order is fully shipped
      *
@@ -1028,7 +819,52 @@ class Order extends Base
      */
     public function isFullyShipped()
     {
-        return count($this->getShipAbleItems()) === 0;
+        return Shipment::isFullyProcessed($this);
+    }
+
+    /***** PAYMENT *****/
+
+    /**
+     * Create a new Payment.
+     *
+     * @param CorePayment $provider
+     * @param $amount
+     * @param bool $paid
+     * @param $transactionId
+     *
+     * @return Payment
+     */
+    public function createPayment(CorePayment $provider, $amount, $paid = false, $transactionId = null)
+    {
+        $payment = Payment::create();
+        $payment->setKey(uniqid());
+        $payment->setPublished(true);
+        $payment->setParent(Object\Service::createFolderByPath($this->getFullPath().'/payments/'));
+        $payment->setAmount($amount);
+        $payment->setTransactionIdentifier(!is_null($transactionId) ? $transactionId : uniqid());
+        $payment->setProvider($provider->getIdentifier());
+
+        if (\Pimcore\Config::getFlag('useZendDate')) {
+            $payment->setDatePayment(Date::now());
+        } else {
+            $payment->setDatePayment(Carbon::now());
+        }
+
+        $payment->setPayed($paid);
+        $payment->save();
+
+        $this->addPayment($payment);
+
+        $translate = \CoreShop::getTools()->getTranslate();
+
+        $note = $this->createNote(self::NOTE_PAYMENT);
+        $note->setTitle(sprintf($translate->translate('coreshop_note_order_payment'), $provider->getName(), $this->formatPrice($amount)));
+        $note->setDescription(sprintf($translate->translate('coreshop_note_order_payment_description'), $provider->getName(), $this->formatPrice(($amount))));
+        $note->addData('provider', 'text', $provider->getName());
+        $note->addData('amount', 'text', $this->formatPrice($amount));
+        $note->save();
+
+        return $payment;
     }
 
     /**
@@ -1177,11 +1013,13 @@ class Order extends Base
         $taxValues = [];
 
         foreach ($this->getTaxes() as $tax) {
-            $taxValues[] = [
-                'rate' => $tax->getRate(),
-                'name' => $tax->getName(),
-                'value' => $tax->getAmount(),
-            ];
+            if($tax instanceof Tax) {
+                $taxValues[] = [
+                    'rate' => $tax->getRate(),
+                    'name' => $tax->getName(),
+                    'value' => $tax->getAmount(),
+                ];
+            }
         }
 
         foreach ($taxValues as $tax) {
@@ -1193,22 +1031,6 @@ class Order extends Base
         }
 
         return $taxes;
-    }
-
-    /**
-     * Create Shipping Tracking Url.
-     *
-     * @return string|null
-     */
-    public function getShippingTrackingUrl()
-    {
-        if ($this->getCarrier() instanceof Carrier) {
-            if ($trackingUrl = $this->getCarrier()->getTrackingUrl()) {
-                return sprintf($trackingUrl, $this->getTrackingCode());
-            }
-        }
-
-        return null;
     }
 
     /**

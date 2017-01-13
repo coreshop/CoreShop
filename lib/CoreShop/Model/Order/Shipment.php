@@ -15,23 +15,10 @@
 namespace CoreShop\Model\Order;
 
 use Carbon\Carbon;
-use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
-use CoreShop\Helper\Zend\Action;
-use CoreShop\Model\Base;
 use CoreShop\Model\Carrier;
-use CoreShop\Model\Configuration;
-use CoreShop\Model\Currency;
-use CoreShop\Model\NumberRange;
 use CoreShop\Model\Order;
-use CoreShop\Model\Shop;
-use CoreShop\Model\TaxCalculator;
-use CoreShop\Model\User;
-use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Date;
-use Pimcore\Logger;
-use Pimcore\Model\Asset\Document;
-use Pimcore\Model\Asset\Service;
 use Pimcore\Model\Object;
 use Pimcore\Model\User as PimcoreUser;
 
@@ -44,18 +31,17 @@ use Pimcore\Model\User as PimcoreUser;
  * @method static Object\Listing\Concrete getByShipmentNumber ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByLang ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByCarrier ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByShop ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTaxes ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByItems ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByCustomer ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByShippingAddress ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByBillingAddress ($value, $limit = 0)
- * @method static Object\Listing\Concrete getByExtraInformation ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByTrackingCode ($value, $limit = 0)
  * @method static Object\Listing\Concrete getByWeight ($value, $limit = 0)
  */
-class Shipment extends Base
+class Shipment extends Document
 {
+    /**
+     * @var string
+     */
+    public static $documentType = 'shipment';
+
     /**
      * Pimcore Object Class.
      *
@@ -67,12 +53,20 @@ class Shipment extends Base
      * Creates next Shipment Number.
      *
      * @return int|string
+     * @deprecated Use getNextDocumentNumber instead. Will be removed with CoreShop 1.3
      */
     public static function getNextShipmentNumber()
     {
-        $number = NumberRange::getNextNumberForType('shipment');
+        return static::getNextDocumentNumber();
+    }
 
-        return self::getValidShipmentNumber($number);
+    /**
+     * @param $documentNumber
+     * @return null|static
+     */
+    public static function findByDocumentNumber($documentNumber)
+    {
+        return static::findByShipmentNumber($documentNumber);
     }
 
     /**
@@ -97,22 +91,12 @@ class Shipment extends Base
      *
      * @param integer $number
      *
+     * @deprecated Use getValidDocumentNumber instead. Will be removed with CoreShop 1.3;
      * @return string
      */
     public static function getValidShipmentNumber($number)
     {
-        $prefix = Configuration::get('SYSTEM.SHIPMENT.PREFIX');
-        $suffix = Configuration::get('SYSTEM.SHIPMENT.SUFFIX');
-
-        if ($prefix) {
-            $number = $prefix.$number;
-        }
-
-        if ($suffix) {
-            $number = $number.$suffix;
-        }
-
-        return $number;
+        return static::getValidDocumentNumber($number);
     }
 
     /**
@@ -121,94 +105,61 @@ class Shipment extends Base
      * @param Order $order
      * @param \DateTime $date
      *
+     * @deprecated Use getPathForDocuments instead. Will be removed with CoreShop 1.3
      * @return Object\Folder
      */
     public static function getPathForNewShipment(Order $order, $date = null)
     {
-        if (is_null($date)) {
-            $date = new Carbon();
-        }
-
-        return Object\Service::createFolderByPath($order->getFullPath() . "/shipments/" . $date->format("Y/m/d"));
+        return static::getPathForDocuments($order, $date);
     }
 
     /**
-     * @return null
-     */
-    public function getPathForItems()
-    {
-        return Object\Service::createFolderByPath($this->getFullPath().'/items/');
-    }
-
-    /**
-     * Renders the Shipment to a PDF
+     * Create Shipping Tracking Url.
      *
-     * @throws Exception
-     *
-     * @return Document|bool
+     * @return string|null
      */
-    public function generate()
+    public function getShippingTrackingUrl()
     {
-        $locale = new \Zend_Locale($this->getOrder()->getLang());
-
-        $params = [
-            "order" => $this->getOrder(),
-            "shipment" => $this,
-            "language" => (string) $locale,
-            "type" => "shipment"
-        ];
-
-        $forward = new Action();
-        $html = $forward->action("shipment", "order-print", "CoreShop", $params);
-        $header = $forward->action("header", "order-print", "CoreShop", $params);
-        $footer = $forward->action("footer", "order-print", "CoreShop", $params);
-
-        try {
-            $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, ['options' => [Configuration::get('SYSTEM.SHIPMENT.WKHTML')]]);
-
-            if ($pdfContent) {
-                $fileName = 'shipment-'.$this->getShipmentNumber().'.pdf';
-                $path = $this->getOrder()->getPathForShipments();
-
-                $shipment = Document::getByPath($path.'/'.$fileName);
-
-                if ($shipment instanceof Document) {
-                    $shipment->delete();
-                }
-
-                $shipment = new Document();
-                $shipment->setFilename($fileName);
-                $shipment->setParent(Service::createFolderByPath($path));
-                $shipment->setData($pdfContent);
-                $shipment->save();
-
-                return $shipment;
+        if ($this->getCarrier() instanceof Carrier) {
+            if ($trackingUrl = $this->getCarrier()->getTrackingUrl()) {
+                return sprintf($trackingUrl, $this->getTrackingCode());
             }
-        } catch (Exception $ex) {
-            Logger::warn('wkhtmltopdf library not found, no shipment was generated');
         }
 
-        return false;
+        return null;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getDocumentDate()
+    {
+        return $this->getShipmentDate();
     }
 
     /**
-     * @return Order
-     *
-     * @throws ObjectUnsupportedException
+     * @param Carbon|Date $documentDate
      */
-    public function getOrder()
+    public function setDocumentDate($documentDate)
     {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+        $this->setShipmentDate($documentDate);
     }
 
     /**
-     * @param Order $order
-     *
-     * @throws ObjectUnsupportedException
+     * @return string
      */
-    public function setOrder($order)
+    public function getDocumentNumber()
     {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+        return $this->getShipmentNumber();
+    }
+
+    /**
+     * @param string $documentNumber
+     */
+    public function setDocumentNumber($documentNumber)
+    {
+        $this->setShipmentNumber($documentNumber);
     }
 
     /**
@@ -247,146 +198,6 @@ class Shipment extends Base
      * @throws ObjectUnsupportedException
      */
     public function setShipmentNumber($shipmentNumber)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return string
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getLang()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param string $lang
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setLang($lang)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return Shop
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getShop()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param Shop $shop
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setShop($shop)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return Shipment\Item[]
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getItems()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param Shipment\Item[] $items
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setItems($items)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return User
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getCustomer()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param User $customer
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setCustomer($customer)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return mixed
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getShippingAddress()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param mixed $shippingAddress
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setShippingAddress($shippingAddress)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return mixed
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getBillingAddress()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param mixed $billingAddress
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setBillingAddress($billingAddress)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return mixed
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getExtraInformation()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param mixed $extraInformation
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setExtraInformation($extraInformation)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

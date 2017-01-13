@@ -78,22 +78,21 @@ class Item extends Base
     }
 
     /**
-     * calculates the invoiced amount
+     * @param $type
      *
      * @return int
      */
-    public function getInvoicedAmount()
-    {
+    public function getProcessedAmountForType($type) {
         $order = $this->getOrder();
 
         $amount = 0;
 
         if ($order instanceof Order) {
-            $invoices = $order->getInvoices();
+            $documents = $order->getDocumentsForType($type);
 
-            foreach ($invoices as $invoice) {
-                foreach ($invoice->getItems() as $item) {
-                    if ($item instanceof Invoice\Item) {
+            foreach ($documents as $document) {
+                foreach ($document->getItems() as $item) {
+                    if ($item instanceof Document\Item) {
                         if ($item->getOrderItem()->getId() === $this->getId()) {
                             $amount += $item->getAmount();
                         }
@@ -110,27 +109,19 @@ class Item extends Base
      *
      * @return int
      */
+    public function getInvoicedAmount()
+    {
+        return $this->getProcessedAmountForType(Invoice::getDocumentType());
+    }
+
+    /**
+     * calculates the shipped amount
+     *
+     * @return int
+     */
     public function getShippedAmount()
     {
-        $order = $this->getOrder();
-
-        $amount = 0;
-
-        if ($order instanceof Order) {
-            $shipments = $order->getShipments();
-
-            foreach ($shipments as $shipment) {
-                foreach ($shipment->getItems() as $item) {
-                    if ($item instanceof Shipment\Item) {
-                        if ($item->getOrderItem()->getId() === $this->getId()) {
-                            $amount += $item->getAmount();
-                        }
-                    }
-                }
-            }
-        }
-
-        return $amount;
+        return $this->getProcessedAmountForType(Shipment::getDocumentType());
     }
 
     /**

@@ -111,7 +111,9 @@
                     ],
                     "lazyLoading":true,
                     "classes":[
-                      "CoreShopOrder"
+                      {
+                        "classes":"CoreShopOrder"
+                      }
                     ],
                     "pathFormatterClass":"",
                     "name":"order",
@@ -303,7 +305,9 @@
                 "relationType":true,
                 "lazyLoading":false,
                 "classes":[
-                  "CoreShopOrderShipmentItem"
+                  {
+                    "classes":"CoreShopOrderShipmentItem"
+                  }
                 ],
                 "pathFormatterClass":"",
                 "name":"items",
@@ -400,7 +404,9 @@
                 ],
                 "lazyLoading":true,
                 "classes":[
-                  "CoreShopUserAddress"
+                  {
+                    "classes":"CoreShopUserAddress"
+                  }
                 ],
                 "pathFormatterClass":null,
                 "name":"shippingAddress",
@@ -439,7 +445,9 @@
                 ],
                 "lazyLoading":true,
                 "classes":[
-                  "CoreShopUserAddress"
+                  {
+                    "classes":"CoreShopUserAddress"
+                  }
                 ],
                 "pathFormatterClass":null,
                 "name":"billingAddress",

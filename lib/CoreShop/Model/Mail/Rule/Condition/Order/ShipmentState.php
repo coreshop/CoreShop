@@ -58,17 +58,21 @@ class ShipmentState extends Rule\Condition\AbstractCondition
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if ($object instanceof Model\Order) {
-            if ($this->getShipmentState() === self::SHIPMENT_TYPE_ALL) {
+        if ($object instanceof Model\Order)
+        {
+            if ($this->getShipmentState() === self::SHIPMENT_TYPE_ALL)
+            {
                 return true;
-            } elseif ($this->getShipmentState() === self::SHIPMENT_TYPE_FULL) {
-                if (count($object->getShipAbleItems()) === 0) {
-                    return true;
-                }
-            } elseif ($this->getShipmentState() === self::SHIPMENT_TYPE_PARTIAL) {
-                if (count($object->getShipAbleItems()) > 0) {
-                    return true;
-                }
+            }
+            elseif ($this->getShipmentState() === self::SHIPMENT_TYPE_FULL)
+            {
+                return $object->isFullyShipped();
+            }
+            elseif ($this->getShipmentState() === self::SHIPMENT_TYPE_PARTIAL)
+            {
+                $shipments = $object->getShipAbleItems();
+
+                return count($shipments) > 0;
             }
         }
 
