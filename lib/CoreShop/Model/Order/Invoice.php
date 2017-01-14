@@ -15,10 +15,14 @@
 namespace CoreShop\Model\Order;
 
 use Carbon\Carbon;
+use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
+use CoreShop\Model\Configuration;
 use CoreShop\Model\Currency;
+use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Order;
 use CoreShop\Model\TaxCalculator;
+use CoreShop\Tool\Service;
 use Pimcore\Date;
 use Pimcore\Model\Object;
 
@@ -125,6 +129,73 @@ class Invoice extends Document
     public static function getPathForNewInvoice(Order $order, $date = null)
     {
         return static::getPathForDocuments($order, $date);
+    }
+
+    /**
+     * @param Order $order
+     * @param array $items
+     * @param array $params
+     *
+     * @return static
+     *
+     * @throws Exception
+     */
+    public function fillDocument(Order $order, array $items, array $params = []) {
+
+        if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE') === false) {
+            throw new Exception('Invoicing not allowed');
+        }
+
+        if (!is_array($items)) {
+            throw new Exception('Invalid Parameters');
+        }
+
+        if(!static::checkItemsAreProcessable($items)) {
+            throw new Exception('You cannot invoice more items than sold items');
+        }
+
+        $this->setInvoiceNumber(static::getNextDocumentNumber());
+        $this->setOrder($order);
+
+        if (\Pimcore\Config::getFlag('useZendDate')) {
+            $this->setInvoiceDate(Date::now());
+        }
+        else
+        {
+            $this->setInvoiceDate(Carbon::now());
+        }
+
+        $this->setLang($this->getLang());
+        $this->setCurrency($this->getCurrency());
+        $this->setParent($order->getPathForInvoices());
+        $this->setKey(\Pimcore\File::getValidFilename($this->getInvoiceNumber()));
+        $this->save();
+
+        $invoiceItems = [];
+
+        foreach ($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if ($orderItem instanceof Item) {
+                $invoiceItem = $this->fillDocumentItem($orderItem, Order\Invoice\Item::create(), $amount);
+
+                $invoiceItems[] = $invoiceItem;
+            }
+        }
+
+        $this->setPublished(true);
+        $this->setItems($invoiceItems);
+        $this->save();
+
+        $this->calculatePrices();
+
+        //check orderState
+        $order->checkOrderState();
+
+        Rule::apply('invoice', $this);
+
+        return $this;
     }
 
     /**

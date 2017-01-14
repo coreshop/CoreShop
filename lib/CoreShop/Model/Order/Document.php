@@ -22,6 +22,7 @@ use CoreShop\Model\Base;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\NumberRange;
 use CoreShop\Model\Order;
+use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\User;
 use CoreShop\Tool\Wkhtmltopdf;
 use Pimcore\Date;
@@ -322,6 +323,72 @@ abstract class Document extends Base
         }
 
         return false;
+    }
+
+    /**
+     * @param Order $order
+     * @param array $items
+     * @param array $params
+     *
+     * @return static
+     */
+    public abstract function fillDocument(Order $order, array $items, array $params = []);
+
+    /**
+     * @param Item $orderItem
+     * @param Document\Item $documentItem
+     * @param $amount
+     *
+     * @return Order\Document\Item
+     */
+    public function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount) {
+        \CoreShop\Tool\Service::copyObject($orderItem, $documentItem);
+
+        $documentItem->setAmount($amount);
+        $documentItem->setParent($this->getPathForItems());
+        $documentItem->setTotal($orderItem->getPrice() * $amount);
+        $documentItem->setTotalTax(($orderItem->getPrice() - $orderItem->getPriceWithoutTax()) * $amount);
+        $this->setDocumentItemTaxes($orderItem, $documentItem, $documentItem->getTotalWithoutTax());
+        $documentItem->setOrderItem($orderItem);
+        $documentItem->setKey($orderItem->getKey());
+        $documentItem->setPublished(true);
+        $documentItem->save();
+
+        return $documentItem;
+    }
+
+    /**
+     * Calculates Item taxes for a specific amount
+     *
+     * @param Item $orderItem
+     * @param Document\Item $docItem
+     * @param $amount
+     */
+    protected function setDocumentItemTaxes(Item $orderItem, Document\Item $docItem, $amount) {
+        $itemTaxes = new Object\Fieldcollection();
+        $totalTax = 0;
+
+        foreach ($orderItem->getTaxes() as $tax) {
+            if ($tax instanceof Order\Tax) {
+                $taxRate = Tax::create();
+                $taxRate->setRate($tax->getRate());
+
+                $taxCalculator = new TaxCalculator([$taxRate]);
+
+                $itemTax = Order\Tax::create([
+                    'name' => $tax->getName(),
+                    'rate' => $tax->getRate(),
+                    'amount' => $taxCalculator->getTaxesAmount($amount)
+                ]);
+
+                $itemTaxes->add($itemTax);
+
+                $totalTax += $itemTax->getAmount();
+            }
+        }
+
+        $docItem->setTotalTax($totalTax);
+        $docItem->setTaxes($itemTaxes);
     }
 
     /**

@@ -571,74 +571,8 @@ class Order extends Base
      */
     public function createInvoice($items)
     {
-        if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE') === false) {
-            throw new Exception('Invoicing not allowed');
-        }
-
-        if (!is_array($items)) {
-            throw new Exception('Invalid Parameters');
-        }
-
-        if(!Invoice::checkItemsAreProcessable($items)) {
-            throw new Exception('You cannot invoice more items than sold items');
-        }
-
         $invoice = Invoice::create();
-
-        $invoice->setInvoiceNumber(Invoice::getNextDocumentNumber());
-        $invoice->setOrder($this);
-
-        if (\Pimcore\Config::getFlag('useZendDate')) {
-            $invoice->setInvoiceDate(Date::now());
-        }
-        else
-        {
-            $invoice->setInvoiceDate(Carbon::now());
-        }
-
-        $invoice->setLang($this->getLang());
-        $invoice->setCurrency($this->getCurrency());
-        $invoice->setParent($this->getPathForInvoices());
-        $invoice->setKey(\Pimcore\File::getValidFilename($invoice->getInvoiceNumber()));
-        $invoice->save();
-
-        $invoiceItems = [];
-
-        foreach ($items as $item) {
-            $orderItem = Item::getById($item['orderItemId']);
-            $amount = $item['amount'];
-
-            if ($orderItem instanceof Item) {
-                $invoiceItem = Invoice\Item::create();
-
-                ToolService::copyObject($orderItem, $invoiceItem);
-
-                $invoiceItem->setAmount($amount);
-                $invoiceItem->setParent($invoice->getPathForItems());
-                $invoiceItem->setTotal($orderItem->getPrice() * $amount);
-                $invoiceItem->setTotalTax(($orderItem->getPrice() - $orderItem->getPriceWithoutTax()) * $amount);
-                $this->setDocumentItemTaxes($invoiceItem, $orderItem, $invoiceItem->getTotalWithoutTax());
-                $invoiceItem->setOrderItem($orderItem);
-                $invoiceItem->setKey($orderItem->getKey());
-                //$invoiceItem->setTaxes($invoiceItemTaxes);
-                //$invoiceItem->setTotalTax($totalTax);
-                $invoiceItem->setPublished(true);
-                $invoiceItem->save();
-
-                $invoiceItems[] = $invoiceItem;
-            }
-        }
-
-        $invoice->setPublished(true);
-        $invoice->setItems($invoiceItems);
-        $invoice->save();
-
-        $invoice->calculatePrices();
-
-        //check orderState
-        $this->checkOrderState();
-
-        Rule::apply('invoice', $invoice);
+        $invoice->fillDocument($this, $items);
 
         return $invoice;
     }
@@ -701,107 +635,10 @@ class Order extends Base
      */
     public function createShipment($items, Carrier $carrier, $trackingCode = null)
     {
-        if (!is_array($items)) {
-            throw new Exception('Invalid Parameters');
-        }
-
-        if(!Shipment::checkItemsAreProcessable($items)) {
-            throw new Exception('You cannot ship more items than sold items');
-        }
-
         $shipment = Shipment::create();
-
-        $shipment->setShipmentNumber(Shipment::getNextDocumentNumber());
-        $shipment->setOrder($this);
-        if (\Pimcore\Config::getFlag('useZendDate')) {
-            $shipment->setShipmentDate(Date::now());
-        } else {
-            $shipment->setShipmentDate(Carbon::now());
-        }
-        $shipment->setLang($this->getLang());
-        $shipment->setParent($this->getPathForShipments());
-        $shipment->setKey(\Pimcore\File::getValidFilename($shipment->getShipmentNumber()));
-        $shipment->setCarrier($carrier);
-        $shipment->setTrackingCode($trackingCode);
-        $shipment->save();
-
-        $shipmentItems = [];
-
-        $totalWeight = 0;
-
-        foreach ($items as $item) {
-            $orderItem = Item::getById($item['orderItemId']);
-            $amount = $item['amount'];
-
-            if ($orderItem instanceof Item) {
-                $shipmentItem = Shipment\Item::create();
-
-                ToolService::copyObject($orderItem, $shipmentItem);
-
-                $shipmentItem->setAmount($amount);
-                $shipmentItem->setParent($shipment->getPathForItems());
-                $shipmentItem->setTotal($orderItem->getPrice() * $amount);
-                $shipmentItem->setTotalTax(($orderItem->getPrice() - $orderItem->getPriceWithoutTax()) * $amount);
-                $this->setDocumentItemTaxes($shipmentItem, $orderItem, $shipmentItem->getTotalWithoutTax());
-                $shipmentItem->setWeight($orderItem->getProduct()->getWeight() * $orderItem->getAmount());
-                $shipmentItem->setOrderItem($orderItem);
-                $shipmentItem->setKey($orderItem->getKey());
-                $shipmentItem->setPublished(true);
-                $shipmentItem->save();
-
-                $totalWeight += $shipmentItem->getWeight();
-
-                $shipmentItems[] = $shipmentItem;
-            }
-        }
-
-        $shipment->setWeight($totalWeight);
-        $shipment->setPublished(true);
-        $shipment->setItems($shipmentItems);
-        $shipment->save();
-
-        //check orderState
-        $this->checkOrderState();
-
-        Rule::apply('shipment', $shipment);
+        $shipment->fillDocument($this, $items, ['carrier' => $carrier, 'trackingCode' => $trackingCode]);
 
         return $shipment;
-    }
-
-    /**
-     * Calculates Item taxes for a specific amount
-     *
-     * @param Document\Item $docItem
-     * @param Item $item
-     * @param $amount
-     */
-    protected function setDocumentItemTaxes(Document\Item $docItem, Item $item, $amount) {
-        $itemTaxes = new Object\Fieldcollection();
-        $totalTax = 0;
-
-        foreach ($item->getTaxes() as $tax) {
-            if ($tax instanceof Order\Tax) {
-                $taxRate = Tax::create();
-                $taxRate->setRate($tax->getRate());
-
-                $taxCalculator = new TaxCalculator([$taxRate]);
-
-                $itemTax = Order\Tax::create([
-                    'name' => $tax->getName(),
-                    'rate' => $tax->getRate(),
-                    'amount' => $taxCalculator->getTaxesAmount($amount)
-                ]);
-
-                $itemTaxes->add($itemTax);
-
-                $totalTax += $itemTax->getAmount();
-            }
-        }
-
-        if($docItem instanceof Invoice\Item || $docItem instanceof Shipment\Item) {
-            $docItem->setTotalTax($totalTax);
-            $docItem->setTaxes($itemTaxes);
-        }
     }
 
     /**

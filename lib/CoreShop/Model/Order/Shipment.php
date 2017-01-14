@@ -15,8 +15,10 @@
 namespace CoreShop\Model\Order;
 
 use Carbon\Carbon;
+use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Carrier;
+use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Order;
 use Pimcore\Date;
 use Pimcore\Model\Object;
@@ -127,6 +129,75 @@ class Shipment extends Document
         }
 
         return null;
+    }
+
+    /**
+     * @param Order $order
+     * @param array $items
+     * @param array $params
+     *
+     * @return static
+     *
+     * @throws Exception
+     */
+    public function fillDocument(Order $order, array $items, array $params = []) {
+        if(!array_key_exists("carrier", $params)) {
+            throw new Exception("Carrier does not exist");
+        }
+
+        if (!is_array($items)) {
+            throw new Exception('Invalid Parameters');
+        }
+
+        if(!static::checkItemsAreProcessable($items)) {
+            throw new Exception('You cannot ship more items than sold items');
+        }
+
+        $carrier = $params['carrier'];
+        $trackingCode = array_key_exists('trackingCode', $params) ? $params['trackingCode'] : null;
+
+        $this->setShipmentNumber(static::getNextDocumentNumber());
+        $this->setOrder($order);
+
+        if (\Pimcore\Config::getFlag('useZendDate')) {
+            $this->setShipmentDate(Date::now());
+        } else {
+            $this->setShipmentDate(Carbon::now());
+        }
+
+        $this->setLang($this->getLang());
+        $this->setParent($order->getPathForShipments());
+        $this->setKey(\Pimcore\File::getValidFilename($this->getShipmentNumber()));
+        $this->setCarrier($carrier);
+        $this->setTrackingCode($trackingCode);
+        $this->save();
+
+        $shipmentItems = [];
+
+        $totalWeight = 0;
+
+        foreach ($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if ($orderItem instanceof Item) {
+                $shipmentItem  = $this->fillDocumentItem($orderItem, Order\Shipment\Item::create(), $amount);
+
+                $shipmentItems[] = $shipmentItem;
+            }
+        }
+
+        $this->setWeight($totalWeight);
+        $this->setPublished(true);
+        $this->setItems($shipmentItems);
+        $this->save();
+
+        //check orderState
+        $order->checkOrderState();
+
+        Rule::apply('shipment', $this);
+
+        return $this;
     }
 
 
