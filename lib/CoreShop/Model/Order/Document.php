@@ -335,13 +335,39 @@ abstract class Document extends Base
     public abstract function fillDocument(Order $order, array $items, array $params = []);
 
     /**
+     * @return Order\Document\Item
+     */
+    public abstract function createItemInstance();
+
+    /**
+     * @param array $items
+     * @return Order\Document\Item[]
+     */
+    protected function fillDocumentItems(array $items) {
+        $filledItems = [];
+
+        foreach ($items as $item) {
+            $orderItem = Item::getById($item['orderItemId']);
+            $amount = $item['amount'];
+
+            if ($orderItem instanceof Item) {
+                $filledItem = $this->fillDocumentItem($orderItem, static::createItemInstance(), $amount);
+
+                $filledItems[] = $filledItem;
+            }
+        }
+
+        return $filledItems;
+    }
+
+    /**
      * @param Item $orderItem
      * @param Document\Item $documentItem
      * @param $amount
      *
      * @return Order\Document\Item
      */
-    public function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount) {
+    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount) {
         \CoreShop\Tool\Service::copyObject($orderItem, $documentItem);
 
         $documentItem->setAmount($amount);

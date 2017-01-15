@@ -324,10 +324,20 @@ class Order extends Base
      * @param Item $item
      * @param $amount
      * @param $priceWithoutTax
+     *
      * @throws \Pimcore\Model\Element\ValidationException|Exception
+     * @throws Exception
      */
     public function updateOrderItem(Item $item, $amount, $priceWithoutTax)
     {
+        if(count($this->getInvoices()) > 0) {
+            throw new Exception("Cannot update order items on Order with Invoices");
+        }
+
+        if(count($this->getShipments()) > 0) {
+            throw new Exception("Cannot update order items on Order with Shipments");
+        }
+
         $invoicesCount = count($this->getInvoices());
 
         if ($invoicesCount > 0) {
@@ -344,10 +354,12 @@ class Order extends Base
         $totalTax = 0;
 
         foreach ($item->getTaxes() as $tax) {
-            $taxValue = ((($tax->getRate() / 100) * $item->getPriceWithoutTax())) ;
-            $totalTax += $taxValue;
+            if($tax instanceof Order\Tax) {
+                $taxValue = ((($tax->getRate() / 100) * $item->getPriceWithoutTax()));
+                $totalTax += $taxValue;
 
-            $tax->setAmount($taxValue * $item->getAmount());
+                $tax->setAmount($taxValue * $item->getAmount());
+            }
         }
 
         //$item->setTaxes($taxes);
@@ -576,7 +588,6 @@ class Order extends Base
 
         return $invoice;
     }
-
 
     /**
      * Check if order is fully invoiced
@@ -828,38 +839,6 @@ class Order extends Base
         }
 
         return false;
-    }
-
-    /**
-     * Returns array with key=>value for tax and value.
-     *
-     * @return array
-     */
-    public function getTaxRates()
-    {
-        $taxes = [];
-
-        $taxValues = [];
-
-        foreach ($this->getTaxes() as $tax) {
-            if($tax instanceof Tax) {
-                $taxValues[] = [
-                    'rate' => $tax->getRate(),
-                    'name' => $tax->getName(),
-                    'value' => $tax->getAmount(),
-                ];
-            }
-        }
-
-        foreach ($taxValues as $tax) {
-            if (!array_key_exists($tax['name'], $taxes)) {
-                $taxes[$tax['name']] = 0;
-            }
-
-            $taxes[(string) $tax['name']] += $tax['value'];
-        }
-
-        return $taxes;
     }
 
     /**

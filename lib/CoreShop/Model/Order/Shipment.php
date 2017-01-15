@@ -165,31 +165,25 @@ class Shipment extends Document
             $this->setShipmentDate(Carbon::now());
         }
 
-        $this->setLang($this->getLang());
+        $this->setLang($order->getLang());
         $this->setParent($order->getPathForShipments());
         $this->setKey(\Pimcore\File::getValidFilename($this->getShipmentNumber()));
         $this->setCarrier($carrier);
         $this->setTrackingCode($trackingCode);
         $this->save();
 
-        $shipmentItems = [];
-
         $totalWeight = 0;
+        $items = $this->fillDocumentItems($items);
 
-        foreach ($items as $item) {
-            $orderItem = Item::getById($item['orderItemId']);
-            $amount = $item['amount'];
-
-            if ($orderItem instanceof Item) {
-                $shipmentItem  = $this->fillDocumentItem($orderItem, Order\Shipment\Item::create(), $amount);
-
-                $shipmentItems[] = $shipmentItem;
+        foreach($items as $item) {
+            if($item instanceof Order\Shipment\Item) {
+                $totalWeight += $item->getWeight();
             }
         }
 
+        $this->setItems($items);
         $this->setWeight($totalWeight);
         $this->setPublished(true);
-        $this->setItems($shipmentItems);
         $this->save();
 
         //check orderState
@@ -200,6 +194,31 @@ class Shipment extends Document
         return $this;
     }
 
+    /**
+     * @param Item $orderItem
+     * @param Document\Item $documentItem
+     * @param $amount
+     *
+     * @return Order\Document\Item
+     */
+    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount) {
+        $documentItem = parent::fillDocumentItem($orderItem, $documentItem, $amount);
+
+        if($documentItem instanceof Shipment\Item) {
+            $documentItem->setWeight($orderItem->getProduct()->getWeight() * $documentItem->getAmount());
+            $documentItem->save();
+        }
+
+        return $documentItem;
+    }
+
+    /**
+     * @return Order\Shipment\Item
+     */
+    public function createItemInstance()
+    {
+        return Order\Shipment\Item::create();
+    }
 
     /**
      * @return string

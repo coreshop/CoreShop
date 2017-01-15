@@ -22,7 +22,6 @@ use CoreShop\Model\Currency;
 use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Order;
 use CoreShop\Model\TaxCalculator;
-use CoreShop\Tool\Service;
 use Pimcore\Date;
 use Pimcore\Model\Object;
 
@@ -165,30 +164,17 @@ class Invoice extends Document
             $this->setInvoiceDate(Carbon::now());
         }
 
-        $this->setLang($this->getLang());
-        $this->setCurrency($this->getCurrency());
+        $this->setLang($order->getLang());
+        $this->setCurrency($order->getCurrency());
         $this->setParent($order->getPathForInvoices());
         $this->setKey(\Pimcore\File::getValidFilename($this->getInvoiceNumber()));
-        $this->save();
-
-        $invoiceItems = [];
-
-        foreach ($items as $item) {
-            $orderItem = Item::getById($item['orderItemId']);
-            $amount = $item['amount'];
-
-            if ($orderItem instanceof Item) {
-                $invoiceItem = $this->fillDocumentItem($orderItem, Order\Invoice\Item::create(), $amount);
-
-                $invoiceItems[] = $invoiceItem;
-            }
-        }
+        $this->save(); //We need so save first, to create the items beneath the document
 
         $this->setPublished(true);
-        $this->setItems($invoiceItems);
+        $this->setItems($this->fillDocumentItems($items));
         $this->save();
 
-        $this->calculatePrices();
+        $this->calculateInvoice();
 
         //check orderState
         $order->checkOrderState();
@@ -199,90 +185,45 @@ class Invoice extends Document
     }
 
     /**
-     * Returns array with key=>value for tax and value.
+     * @param Item $orderItem
+     * @param Document\Item $documentItem
+     * @param $amount
      *
-     * @return array
+     * @return Order\Document\Item
      */
-    public function getTaxRates()
-    {
-        $taxes = [];
+    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount) {
+        $documentItem = parent::fillDocumentItem($orderItem, $documentItem, $amount);
 
-        $taxValues = [];
-
-        foreach ($this->getTaxes() as $tax) {
-            if($tax instanceof Tax) {
-                $taxValues[] = [
-                    'rate' => $tax->getRate(),
-                    'name' => $tax->getName(),
-                    'value' => $tax->getAmount(),
-                ];
-            }
+        if($documentItem instanceof Invoice\Item) {
+            $documentItem->setRetailPrice($orderItem->getRetailPrice());
+            $documentItem->setWholesalePrice($orderItem->getWholesalePrice());
+            $documentItem->save();
         }
 
-        foreach ($taxValues as $tax) {
-            if (!array_key_exists($tax['name'], $taxes)) {
-                $taxes[$tax['name']] = 0;
-            }
-
-            $taxes[(string) $tax['name']] += $tax['value'];
-        }
-
-        return $taxes;
+        return $documentItem;
     }
 
     /**
-     * Calculates Prices, Shipping, Discounts and Payment Fees for Invoice
+     * @return Order\Invoice\Item
      */
-    public function calculatePrices()
+    public function createItemInstance()
     {
-        $order = $this->getOrder();
+        return Order\Invoice\Item::create();
+    }
 
-        $discountPercentage = $order->getDiscountPercentage();
-
-        $subtotalWithTax = 0;
-        $subtotalWithoutTax = 0;
-        $subtotalTax = 0;
-
-        $taxes = [];
-
-        $addTax = function ($tax, $rate, $name) use (&$taxes) {
-            if (!array_key_exists($name, $taxes)) {
-                $taxes[$name] = [
-                    'rate' => $rate,
-                    'name' => $name,
-                    'amount' => $tax
-                ];
-            } else {
-                $taxes[$name]['amount'] += $tax;
-            }
-        };
-
-        foreach ($this->getItems() as $item) {
-            $subtotalWithTax += $item->getTotal();
-            $subtotalWithoutTax += $item->getTotalWithoutTax();
-            $subtotalTax += $item->getTotalTax();
-
-            foreach ($item->getTaxes() as $tax) {
-                if ($tax instanceof Tax) {
-                    $addTax($tax->getAmount() * $discountPercentage, $tax->getRate(), $tax->getName());
-                }
-            }
-        }
-
-        $this->setSubtotal($subtotalWithTax);
-        $this->setSubtotalWithoutTax($subtotalWithoutTax);
-        $this->setSubtotalTax($subtotalTax);
-
-        //SHIPPING
+    /**
+     * Caluclate Shipping Prices for invoices
+     */
+    protected function calculateShipping() {
         $shippingWithTax = 0;
         $shippingWithoutTax = 0;
         $shippingTax = 0;
 
-        $totalShipping = $order->getShipping();
+        $totalShipping = $this->getOrder()->getShipping();
         $invoicedShipping = $this->getProcessedValue('shipping');
 
         if ($totalShipping - $invoicedShipping > 0) {
-            $shippingTaxRate = $order->getShippingTaxRate();
+            $shippingTaxRate = $this->getOrder()->getShippingTaxRate();
 
             $taxRate = \CoreShop\Model\Tax::create();
             $taxRate->setRate($shippingTaxRate);
@@ -293,24 +234,28 @@ class Invoice extends Document
             $shippingWithoutTax = $taxCalculator->removeTaxes($shippingWithTax);
             $shippingTax = $shippingWithTax - $shippingWithoutTax;
 
-            $addTax($shippingTax, $shippingTaxRate, 'shipping');
+            $this->addTax('shipping', $shippingTaxRate, $shippingTax);
         }
 
         $this->setShipping($shippingWithTax);
         $this->setShippingWithoutTax($shippingWithoutTax);
         $this->setShippingTax($shippingTax);
-        $this->setShippingTaxRate($order->getShippingTaxRate());
+        $this->setShippingTaxRate($this->getOrder()->getShippingTaxRate());
+    }
 
-        //PAYMENT FEES
+    /**
+     * calculate Payment Fees for Invoice
+     */
+    protected function calculatePaymentFees() {
         $paymentFeeWithTax = 0;
         $paymentFeeWithoutTax = 0;
         $paymentFeeTax = 0;
 
-        $totalPaymentFee = $order->getPaymentFee();
+        $totalPaymentFee = $this->getOrder()->getPaymentFee();
         $invoicedPaymentFees = $this->getProcessedValue('paymentFee');
 
         if ($totalPaymentFee - $invoicedPaymentFees > 0) {
-            $paymentFeeTaxRate = $order->getPaymentFeeTaxRate();
+            $paymentFeeTaxRate = $this->getOrder()->getPaymentFeeTaxRate();
 
             $taxRate = \CoreShop\Model\Tax::create();
             $taxRate->setRate($paymentFeeTaxRate);
@@ -321,50 +266,142 @@ class Invoice extends Document
             $paymentFeeWithoutTax = $taxCalculator->removeTaxes($paymentFeeWithTax);
             $paymentFeeTax = $paymentFeeWithTax - $paymentFeeWithoutTax;
 
-            $addTax($paymentFeeTax, $paymentFeeTaxRate, 'payment');
+            $this->addTax('payment', $paymentFeeTaxRate, $paymentFeeTax);
         }
 
         $this->setPaymentFee($paymentFeeWithTax);
         $this->setPaymentFeeWithoutTax($paymentFeeWithoutTax);
         $this->setPaymentFeeTax($paymentFeeTax);
-        $this->setPaymentFeeTaxRate($order->getShippingTaxRate());
+        $this->setPaymentFeeTaxRate($this->getOrder()->getShippingTaxRate());
+    }
 
-        //DISCOUNT
+    /**
+     * Calculate Discount for Invoice
+     */
+    protected function calculateDiscount() {
         $discountWithTax = 0;
         $discountWithoutTax = 0;
         $discountTax = 0;
 
-        $totalDiscount = $order->getDiscount();
+        $totalDiscount = $this->getOrder()->getDiscount();
         $invoicedDiscount = $this->getProcessedValue('discount');
 
         if ($totalDiscount - $invoicedDiscount > 0) {
             $discountWithTax = $totalDiscount - $invoicedDiscount;
-            $discountWithoutTax = $order->getDiscountWithoutTax() - $this->getProcessedValue('discountWithoutTax');
+            $discountWithoutTax = $this->getOrder()->getDiscountWithoutTax() - $this->getProcessedValue('discountWithoutTax');
             $discountTax = $discountWithTax - $discountWithoutTax;
         }
 
         $this->setDiscount($discountWithTax);
         $this->setDiscountWithoutTax($discountWithoutTax);
+        $this->setDiscountTax($discountTax);
+    }
+
+    /**
+     * Calculate Total for invoice
+     */
+    protected function calculateTotal() {
+        $subtotalTax = $this->getSubtotalTax();
+        $shippingTax = $this->getShippingTax();
+        $paymentFeeTax = $this->getPaymentFeeTax();
+        $discountTax = $this->getDiscountTax();
+
+        $subtotalWithTax = $this->getSubtotal();
+        $shippingWithTax = $this->getShipping();
+        $paymentFeeWithTax = $this->getPaymentFee();
+        $discountWithTax = $this->getDiscount();
+
+        $subtotalWithoutTax = $this->getSubtotalWithoutTax();
+        $shippingWithoutTax = $this->getShippingWithoutTax();
+        $paymentFeeWithoutTax = $this->getPaymentFeeWithoutTax();
+        $discountWithoutTax = $this->getDiscountWithoutTax();
 
         $totalTax = ($subtotalTax + $shippingTax + $paymentFeeTax) - $discountTax;
         $total = ($subtotalWithTax + $shippingWithTax + $paymentFeeWithTax) - $discountWithTax;
         $totalWithoutTax = ($subtotalWithoutTax + $shippingWithoutTax + $paymentFeeWithoutTax) - $discountWithoutTax;
 
-        $itemTaxes = new Object\Fieldcollection();
-
-        foreach ($taxes as $tax) {
-            $taxItem = Tax::create();
-            $taxItem->setRate($tax['rate']);
-            $taxItem->setName($tax['name']);
-            $taxItem->setAmount(\CoreShop::getTools()->roundPrice($tax['amount']));
-
-            $itemTaxes->add($taxItem);
-        }
-
-        $this->setTaxes($itemTaxes);
         $this->setTotal($total);
         $this->setTotalTax($totalTax);
         $this->setTotalWithoutTax($totalWithoutTax);
+    }
+
+
+
+    /**
+     * Calculates and sets taxes into this Document
+     */
+    protected function calculateSubtotal()
+    {
+        $discountPercentage = $this->getOrder()->getDiscountPercentage();
+
+        $subtotalWithTax = 0;
+        $subtotalWithoutTax = 0;
+        $subtotalTax = 0;
+
+        foreach ($this->getItems() as $item) {
+            $subtotalWithTax += $item->getTotal();
+            $subtotalWithoutTax += $item->getTotalWithoutTax();
+            $subtotalTax += $item->getTotalTax();
+
+            foreach ($item->getTaxes() as $tax) {
+                if ($tax instanceof Tax) {
+                    $this->addTax($tax->getName(), $tax->getRate(), $tax->getAmount() * $discountPercentage);
+                }
+            }
+        }
+
+        $this->setSubtotal($subtotalWithTax);
+        $this->setSubtotalWithoutTax($subtotalWithoutTax);
+        $this->setSubtotalTax($subtotalTax);
+    }
+
+    /**
+     * @param $name
+     * @param $rate
+     * @param $amount
+     */
+    public function addTax($name, $rate, $amount) {
+        $taxes = $this->getTaxes();
+
+        if(!$taxes instanceof Object\Fieldcollection) {
+            $taxes = new Object\Fieldcollection();
+        }
+
+        $found = false;
+
+        foreach($taxes as $tax) {
+            if($tax instanceof Tax) {
+                if($tax->getName() === $name) {
+                    $tax->setAmount($tax->getAmount() + $amount);
+                    $found = true;
+                    break;
+                }
+            }
+        }
+
+        if(!$found) {
+            $tax = Tax::create([
+                "name" => $name,
+                "rate" => $rate,
+                "amount" => $amount
+            ]);
+
+            $taxes->add($tax);
+            $this->setTaxes($taxes);
+        }
+    }
+
+    /**
+     * Calculates Prices, Shipping, Discounts and Payment Fees for Invoice
+     */
+    public function calculateInvoice()
+    {
+        $this->calculateSubtotal();
+        $this->calculateShipping();
+        $this->calculatePaymentFees();
+        $this->calculateDiscount();
+        $this->calculateTotal();
+
         $this->save();
     }
 
@@ -491,6 +528,16 @@ class Invoice extends Document
     }
 
     /**
+     * @param double $discount
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setDiscount($discount)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
      * @param double $discountWithoutTax
      *
      * @throws ObjectUnsupportedException
@@ -505,77 +552,28 @@ class Invoice extends Document
      *
      * @throws ObjectUnsupportedException
      */
+    public function getDiscountTax()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+
+    /**
+     * @param double $discountTax
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setDiscountTax($discountTax)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
     public function getDiscountWithoutTax()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param double $discount
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setDiscount($discount)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return double
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getSubtotalTax()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param double $subtotalTax
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setSubtotalTax($subtotalTax)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return double
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getSubtotalWithoutTax()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param double $subtotalWithoutTax
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setSubtotalWithoutTax($subtotalWithoutTax)
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @return double
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function getSubtotal()
-    {
-        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
-    }
-
-    /**
-     * @param double $subtotal
-     *
-     * @throws ObjectUnsupportedException
-     */
-    public function setSubtotal($subtotal)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }
@@ -796,6 +794,67 @@ class Invoice extends Document
      * @throws ObjectUnsupportedException
      */
     public function setTotal($total)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getSubtotalTax()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param double $subtotalTax
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setSubtotalTax($subtotalTax)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getSubtotalWithoutTax()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param double $subtotalWithoutTax
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setSubtotalWithoutTax($subtotalWithoutTax)
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @return double
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function getSubtotal()
+    {
+        throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
+    }
+
+    /**
+     * @param double $subtotal
+     *
+     * @throws ObjectUnsupportedException
+     */
+    public function setSubtotal($subtotal)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

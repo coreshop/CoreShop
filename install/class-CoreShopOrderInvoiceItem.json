@@ -278,28 +278,6 @@
                 "visibleSearch": false
               },
               {
-                "fieldtype": "objectbricks",
-                "phpdocType": "\\Pimcore\\Model\\Object\\Objectbrick",
-                "allowedTypes": [
-                ],
-                "name": "extraInformation",
-                "title": "Extra",
-                "tooltip": "",
-                "mandatory": false,
-                "noteditable": false,
-                "index": false,
-                "locked": false,
-                "style": "",
-                "permissions": null,
-                "datatype": "data",
-                "columnType": null,
-                "queryColumnType": null,
-                "relationType": false,
-                "invisible": false,
-                "visibleGridView": false,
-                "visibleSearch": false
-              },
-              {
                 "fieldtype": "checkbox",
                 "defaultValue": 0,
                 "queryColumnType": "tinyint(1)",

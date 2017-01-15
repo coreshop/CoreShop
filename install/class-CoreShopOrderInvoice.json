@@ -67,30 +67,6 @@
                 "permissions":null,
                 "childs":[
                   {
-                    "fieldtype":"coreShopShop",
-                    "phpdocType":"\\CoreShop\\Model\\Shop",
-                    "queryColumnType":"int(11)",
-                    "columnType":"int(11)",
-                    "allowEmpty":false,
-                    "options":null,
-                    "width":"",
-                    "defaultValue":null,
-                    "name":"shop",
-                    "title":"Shop",
-                    "tooltip":"",
-                    "mandatory":false,
-                    "noteditable":true,
-                    "index":false,
-                    "locked":false,
-                    "style":"",
-                    "permissions":null,
-                    "datatype":"data",
-                    "relationType":false,
-                    "invisible":false,
-                    "visibleGridView":false,
-                    "visibleSearch":false
-                  },
-                  {
                     "fieldtype":"href",
                     "width":"",
                     "assetUploadPath":"",
@@ -111,9 +87,7 @@
                     ],
                     "lazyLoading":true,
                     "classes":[
-                      {
-                        "classes":"CoreShopOrder"
-                      }
+                      "CoreShopOrder"
                     ],
                     "pathFormatterClass":"",
                     "name":"order",
@@ -825,9 +799,7 @@
                 "relationType":true,
                 "lazyLoading":false,
                 "classes":[
-                  {
-                    "classes":"CoreShopOrderInvoiceItem"
-                  }
+                  "CoreShopOrderInvoiceItem"
                 ],
                 "pathFormatterClass":"",
                 "name":"items",
@@ -841,188 +813,6 @@
                 "permissions":null,
                 "datatype":"data",
                 "columnType":null,
-                "invisible":false,
-                "visibleGridView":false,
-                "visibleSearch":false
-              }
-            ],
-            "locked":false
-          },
-          {
-            "fieldtype":"panel",
-            "labelWidth":100,
-            "layout":null,
-            "name":"Customer",
-            "type":null,
-            "region":null,
-            "title":"Customer",
-            "width":"",
-            "height":"",
-            "collapsible":false,
-            "collapsed":false,
-            "bodyStyle":"",
-            "datatype":"layout",
-            "permissions":null,
-            "childs":[
-              {
-                "fieldtype":"href",
-                "width":"",
-                "assetUploadPath":"",
-                "relationType":true,
-                "queryColumnType":{
-                  "id":"int(11)",
-                  "type":"enum('document','asset','object')"
-                },
-                "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
-                "objectsAllowed":true,
-                "assetsAllowed":false,
-                "assetTypes":[
-
-                ],
-                "documentsAllowed":false,
-                "documentTypes":[
-
-                ],
-                "lazyLoading":false,
-                "classes":[
-
-                ],
-                "pathFormatterClass":null,
-                "name":"customer",
-                "title":"Customer",
-                "tooltip":"",
-                "mandatory":false,
-                "noteditable":true,
-                "index":false,
-                "locked":false,
-                "style":"",
-                "permissions":null,
-                "datatype":"data",
-                "columnType":null,
-                "invisible":false,
-                "visibleGridView":false,
-                "visibleSearch":false
-              },
-              {
-                "fieldtype":"href",
-                "width":"",
-                "assetUploadPath":"",
-                "relationType":true,
-                "queryColumnType":{
-                  "id":"int(11)",
-                  "type":"enum('document','asset','object')"
-                },
-                "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
-                "objectsAllowed":true,
-                "assetsAllowed":false,
-                "assetTypes":[
-
-                ],
-                "documentsAllowed":false,
-                "documentTypes":[
-
-                ],
-                "lazyLoading":true,
-                "classes":[
-                  {
-                    "classes":"CoreShopUserAddress"
-                  }
-                ],
-                "pathFormatterClass":null,
-                "name":"shippingAddress",
-                "title":"Shipping Address",
-                "tooltip":"",
-                "mandatory":false,
-                "noteditable":true,
-                "index":false,
-                "locked":false,
-                "style":"",
-                "permissions":null,
-                "datatype":"data",
-                "columnType":null,
-                "invisible":false,
-                "visibleGridView":false,
-                "visibleSearch":false
-              },
-              {
-                "fieldtype":"href",
-                "width":"",
-                "assetUploadPath":"",
-                "relationType":true,
-                "queryColumnType":{
-                  "id":"int(11)",
-                  "type":"enum('document','asset','object')"
-                },
-                "phpdocType":"\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
-                "objectsAllowed":true,
-                "assetsAllowed":false,
-                "assetTypes":[
-
-                ],
-                "documentsAllowed":false,
-                "documentTypes":[
-
-                ],
-                "lazyLoading":true,
-                "classes":[
-                  {
-                    "classes":"CoreShopUserAddress"
-                  }
-                ],
-                "pathFormatterClass":null,
-                "name":"billingAddress",
-                "title":"Billing Address",
-                "tooltip":"",
-                "mandatory":false,
-                "noteditable":true,
-                "index":false,
-                "locked":false,
-                "style":"",
-                "permissions":null,
-                "datatype":"data",
-                "columnType":null,
-                "invisible":false,
-                "visibleGridView":false,
-                "visibleSearch":false
-              }
-            ],
-            "locked":false
-          },
-          {
-            "fieldtype":"panel",
-            "labelWidth":100,
-            "layout":null,
-            "name":"Extra",
-            "type":null,
-            "region":null,
-            "title":"Extra",
-            "width":"",
-            "height":"",
-            "collapsible":false,
-            "collapsed":false,
-            "bodyStyle":"",
-            "datatype":"layout",
-            "permissions":null,
-            "childs":[
-              {
-                "fieldtype":"objectbricks",
-                "phpdocType":"\\Pimcore\\Model\\Object\\Objectbrick",
-                "allowedTypes":[
-
-                ],
-                "name":"extraInformation",
-                "title":"extraInformation",
-                "tooltip":"",
-                "mandatory":false,
-                "noteditable":false,
-                "index":false,
-                "locked":false,
-                "style":"",
-                "permissions":null,
-                "datatype":"data",
-                "columnType":null,
-                "queryColumnType":null,
-                "relationType":false,
                 "invisible":false,
                 "visibleGridView":false,
                 "visibleSearch":false

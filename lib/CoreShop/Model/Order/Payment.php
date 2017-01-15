@@ -14,6 +14,7 @@
 
 namespace CoreShop\Model\Order;
 
+use Carbon\Carbon;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Base;
 use CoreShop\Model\Order;
@@ -203,7 +204,7 @@ class Payment extends Base
     }
 
     /**
-     * @param Date $datePayment
+     * @param Carbon $datePayment
      *
      * @throws ObjectUnsupportedException
      */
