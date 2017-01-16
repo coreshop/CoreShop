@@ -1046,6 +1046,8 @@ class Product extends Base
 
     /**
      * @return mixed
+     *
+     * @throws ObjectUnsupportedException
      */
     public function getWidth()
     {

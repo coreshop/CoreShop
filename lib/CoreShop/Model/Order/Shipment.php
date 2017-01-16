@@ -140,8 +140,9 @@ class Shipment extends Document
      *
      * @throws Exception
      */
-    public function fillDocument(Order $order, array $items, array $params = []) {
-        if(!array_key_exists("carrier", $params)) {
+    public function fillDocument(Order $order, array $items, array $params = [])
+    {
+        if (!array_key_exists("carrier", $params)) {
             throw new Exception("Carrier does not exist");
         }
 
@@ -149,7 +150,7 @@ class Shipment extends Document
             throw new Exception('Invalid Parameters');
         }
 
-        if(!static::checkItemsAreProcessable($items)) {
+        if (!static::checkItemsAreProcessable($items)) {
             throw new Exception('You cannot ship more items than sold items');
         }
 
@@ -175,8 +176,8 @@ class Shipment extends Document
         $totalWeight = 0;
         $items = $this->fillDocumentItems($items);
 
-        foreach($items as $item) {
-            if($item instanceof Order\Shipment\Item) {
+        foreach ($items as $item) {
+            if ($item instanceof Order\Shipment\Item) {
                 $totalWeight += $item->getWeight();
             }
         }
@@ -201,10 +202,11 @@ class Shipment extends Document
      *
      * @return Order\Document\Item
      */
-    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount) {
+    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount)
+    {
         $documentItem = parent::fillDocumentItem($orderItem, $documentItem, $amount);
 
-        if($documentItem instanceof Shipment\Item) {
+        if ($documentItem instanceof Shipment\Item) {
             $documentItem->setWeight($orderItem->getProduct()->getWeight() * $documentItem->getAmount());
             $documentItem->save();
         }

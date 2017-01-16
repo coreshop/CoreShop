@@ -330,11 +330,11 @@ class Order extends Base
      */
     public function updateOrderItem(Item $item, $amount, $priceWithoutTax)
     {
-        if(count($this->getInvoices()) > 0) {
+        if (count($this->getInvoices()) > 0) {
             throw new Exception("Cannot update order items on Order with Invoices");
         }
 
-        if(count($this->getShipments()) > 0) {
+        if (count($this->getShipments()) > 0) {
             throw new Exception("Cannot update order items on Order with Shipments");
         }
 
@@ -354,7 +354,7 @@ class Order extends Base
         $totalTax = 0;
 
         foreach ($item->getTaxes() as $tax) {
-            if($tax instanceof Order\Tax) {
+            if ($tax instanceof Order\Tax) {
                 $taxValue = ((($tax->getRate() / 100) * $item->getPriceWithoutTax()));
                 $totalTax += $taxValue;
 
@@ -362,7 +362,6 @@ class Order extends Base
             }
         }
 
-        //$item->setTaxes($taxes);
         $item->setTotalTax($totalTax * $item->getAmount());
         $item->setPrice($priceWithoutTax + $totalTax);
         $item->setTotal($item->getAmount() * $item->getPrice());
@@ -424,7 +423,6 @@ class Order extends Base
             $newSubTotalWithoutDiscount += $orderItem->getTotalWithoutTax();
         }
 
-        //((100 / 217,92) * (217,91-20,89))/100
         $newSubTotal = $newSubTotalWithoutDiscount - $this->getDiscountWithoutTax();
         $newDiscountPercentage = ((100 / $newSubTotalWithoutDiscount) * $newSubTotal) / 100;
 
@@ -511,11 +509,11 @@ class Order extends Base
      * @return Document[]
      * @throws Exception
      */
-    public function getDocumentsForType($type) {
-        if($type === "invoice") {
+    public function getDocumentsForType($type)
+    {
+        if ($type === "invoice") {
             return $this->getInvoices();
-        }
-        else if($type === "shipment") {
+        } elseif ($type === "shipment") {
             return $this->getShipments();
         }
 

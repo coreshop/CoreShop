@@ -75,7 +75,8 @@ class Item extends Base
      *
      * @return int
      */
-    public function getProcessedAmountForType($type) {
+    public function getProcessedAmountForType($type)
+    {
         $order = $this->getOrder();
 
         $amount = 0;

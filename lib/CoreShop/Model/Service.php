@@ -30,7 +30,8 @@ class Service
      *
      * @return bool|AbstractObject
      */
-    public static function getParentOfType(AbstractObject $object, $class) {
+    public static function getParentOfType(AbstractObject $object, $class)
+    {
         $parent = $object->getParent();
 
         do {

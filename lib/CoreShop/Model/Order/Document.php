@@ -164,7 +164,8 @@ abstract class Document extends Base
      * @param Order $order
      * @return array
      */
-    public static function getProcessedItems(Order $order) {
+    public static function getProcessedItems(Order $order)
+    {
         $documents = $order->getDocumentsForType(static::getDocumentType());
         $processedItems = [];
 
@@ -221,7 +222,8 @@ abstract class Document extends Base
      * @param Order $order
      * @return bool
      */
-    public static function isFullyProcessed(Order $order) {
+    public static function isFullyProcessed(Order $order)
+    {
         return count(static::getProcessableItems($order)) === 0;
     }
 
@@ -261,7 +263,8 @@ abstract class Document extends Base
     /**
      * @return string
      */
-    public function getAssetPath() {
+    public function getAssetPath()
+    {
         $path = static::getPathForDocuments($this->getOrder(), $this->getDocumentDate());
 
         return $path instanceof Asset\Folder ? $path->getFullPath() : $path;
@@ -270,7 +273,8 @@ abstract class Document extends Base
     /**
      * @return string
      */
-    public function getAssetFilename() {
+    public function getAssetFilename()
+    {
         return sprintf('%s-%s.pdf', static::getDocumentType(), File::getValidFilename($this->getDocumentNumber()));
     }
 
@@ -302,8 +306,7 @@ abstract class Document extends Base
             $options = Configuration::get(sprintf('SYSTEM.%s.WKHTML', strtoupper(static::getDocumentType())));
             $pdfContent = Wkhtmltopdf::fromString($html, $header, $footer, ['options' => [$options]]);
 
-            if ($pdfContent)
-            {
+            if ($pdfContent) {
                 $document = Asset\Document::getByPath($this->getAssetPath().'/'.$this->getAssetFilename());
 
                 if ($document instanceof Asset\Document) {
@@ -332,18 +335,19 @@ abstract class Document extends Base
      *
      * @return static
      */
-    public abstract function fillDocument(Order $order, array $items, array $params = []);
+    abstract public function fillDocument(Order $order, array $items, array $params = []);
 
     /**
      * @return Order\Document\Item
      */
-    public abstract function createItemInstance();
+    abstract public function createItemInstance();
 
     /**
      * @param array $items
      * @return Order\Document\Item[]
      */
-    protected function fillDocumentItems(array $items) {
+    protected function fillDocumentItems(array $items)
+    {
         $filledItems = [];
 
         foreach ($items as $item) {
@@ -367,7 +371,8 @@ abstract class Document extends Base
      *
      * @return Order\Document\Item
      */
-    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount) {
+    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount)
+    {
         \CoreShop\Tool\Service::copyObject($orderItem, $documentItem);
 
         $documentItem->setAmount($amount);
@@ -390,7 +395,8 @@ abstract class Document extends Base
      * @param Document\Item $docItem
      * @param $amount
      */
-    protected function setDocumentItemTaxes(Item $orderItem, Document\Item $docItem, $amount) {
+    protected function setDocumentItemTaxes(Item $orderItem, Document\Item $docItem, $amount)
+    {
         $itemTaxes = new Object\Fieldcollection();
         $totalTax = 0;
 
@@ -480,7 +486,7 @@ abstract class Document extends Base
      */
     public function setBillingAddress($billingAddress)
     {
-       return false;
+        return false;
     }
 
     /**

@@ -139,8 +139,8 @@ class Invoice extends Document
      *
      * @throws Exception
      */
-    public function fillDocument(Order $order, array $items, array $params = []) {
-
+    public function fillDocument(Order $order, array $items, array $params = [])
+    {
         if ((bool) Configuration::get('SYSTEM.INVOICE.CREATE') === false) {
             throw new Exception('Invoicing not allowed');
         }
@@ -149,7 +149,7 @@ class Invoice extends Document
             throw new Exception('Invalid Parameters');
         }
 
-        if(!static::checkItemsAreProcessable($items)) {
+        if (!static::checkItemsAreProcessable($items)) {
             throw new Exception('You cannot invoice more items than sold items');
         }
 
@@ -158,9 +158,7 @@ class Invoice extends Document
 
         if (\Pimcore\Config::getFlag('useZendDate')) {
             $this->setInvoiceDate(Date::now());
-        }
-        else
-        {
+        } else {
             $this->setInvoiceDate(Carbon::now());
         }
 
@@ -191,10 +189,11 @@ class Invoice extends Document
      *
      * @return Order\Document\Item
      */
-    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount) {
+    protected function fillDocumentItem(Item $orderItem, Order\Document\Item $documentItem, $amount)
+    {
         $documentItem = parent::fillDocumentItem($orderItem, $documentItem, $amount);
 
-        if($documentItem instanceof Invoice\Item) {
+        if ($documentItem instanceof Invoice\Item) {
             $documentItem->setRetailPrice($orderItem->getRetailPrice());
             $documentItem->setWholesalePrice($orderItem->getWholesalePrice());
             $documentItem->save();
@@ -214,7 +213,8 @@ class Invoice extends Document
     /**
      * Caluclate Shipping Prices for invoices
      */
-    protected function calculateShipping() {
+    protected function calculateShipping()
+    {
         $shippingWithTax = 0;
         $shippingWithoutTax = 0;
         $shippingTax = 0;
@@ -246,7 +246,8 @@ class Invoice extends Document
     /**
      * calculate Payment Fees for Invoice
      */
-    protected function calculatePaymentFees() {
+    protected function calculatePaymentFees()
+    {
         $paymentFeeWithTax = 0;
         $paymentFeeWithoutTax = 0;
         $paymentFeeTax = 0;
@@ -278,7 +279,8 @@ class Invoice extends Document
     /**
      * Calculate Discount for Invoice
      */
-    protected function calculateDiscount() {
+    protected function calculateDiscount()
+    {
         $discountWithTax = 0;
         $discountWithoutTax = 0;
         $discountTax = 0;
@@ -300,7 +302,8 @@ class Invoice extends Document
     /**
      * Calculate Total for invoice
      */
-    protected function calculateTotal() {
+    protected function calculateTotal()
+    {
         $subtotalTax = $this->getSubtotalTax();
         $shippingTax = $this->getShippingTax();
         $paymentFeeTax = $this->getPaymentFeeTax();
@@ -360,18 +363,19 @@ class Invoice extends Document
      * @param $rate
      * @param $amount
      */
-    public function addTax($name, $rate, $amount) {
+    public function addTax($name, $rate, $amount)
+    {
         $taxes = $this->getTaxes();
 
-        if(!$taxes instanceof Object\Fieldcollection) {
+        if (!$taxes instanceof Object\Fieldcollection) {
             $taxes = new Object\Fieldcollection();
         }
 
         $found = false;
 
-        foreach($taxes as $tax) {
-            if($tax instanceof Tax) {
-                if($tax->getName() === $name) {
+        foreach ($taxes as $tax) {
+            if ($tax instanceof Tax) {
+                if ($tax->getName() === $name) {
                     $tax->setAmount($tax->getAmount() + $amount);
                     $found = true;
                     break;
@@ -379,7 +383,7 @@ class Invoice extends Document
             }
         }
 
-        if(!$found) {
+        if (!$found) {
             $tax = Tax::create([
                 "name" => $name,
                 "rate" => $rate,
