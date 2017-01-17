@@ -618,7 +618,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 menuDisabled: true,
                                 sortable: false,
                                 xtype: 'actioncolumn',
-                                flex: 1,
+                                width: 32,
                                 items: [{
                                     iconCls: 'pimcore_icon_edit',
                                     tooltip: t('Edit'),
@@ -976,7 +976,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         menuDisabled: true,
                         sortable: false,
                         xtype: 'actioncolumn',
-                        flex: 1,
+                        width: 32,
                         items: [{
                             iconCls: 'pimcore_icon_object',
                             tooltip: t('coreshop_show_transaction_notes'),
@@ -990,7 +990,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         menuDisabled: true,
                         sortable: false,
                         xtype: 'actioncolumn',
-                        flex: 1,
+                        width: 32,
                         items: [{
                             iconCls: 'pimcore_icon_open',
                             tooltip: t('open'),
@@ -1430,8 +1430,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     },
 
     showPaymentTransactions: function(paymentTransactions) {
-
-        if( paymentTransactions.length === 0) {
+        if (paymentTransactions.length === 0) {
             Ext.Msg.alert(t('error'), t('coreshop_no_payment_transactions'));
             return false;
         }
