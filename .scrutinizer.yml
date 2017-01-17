@@ -1,6 +1,6 @@
 inherit: true
 tools:
-  external_code_coverage: true
+  external_code_coverage: false
   php_analyzer:
     enabled: true
     config:
@@ -19,8 +19,6 @@ tools:
         excessive_class_length: true
         excessive_parameter_list: true
         excessive_public_count: true
-        too_many_fields: true
-        too_many_methods: true
         excessive_class_complexity: true
 filter:
   excluded_paths:
