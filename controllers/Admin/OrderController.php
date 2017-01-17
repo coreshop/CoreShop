@@ -786,7 +786,7 @@ class CoreShop_Admin_OrderController extends Admin
         $cart->setFreeShipping($freeShipping);
         $cart->save();
 
-        $order = $cart->createOrder($paymentModule, 0, $language);
+        $order = $cart->createOrder($paymentModule, $language);
 
         $cart->delete();
 
@@ -810,7 +810,7 @@ class CoreShop_Admin_OrderController extends Admin
         $cart->setBillingAddress($billingAddress);
         $cart->setCurrency($currency);
         $cart->setUser($user);
-        //$cart->setCurrency($currency); needs a CORE Change -> Cart should be responsible for the currency...
+        $cart->setCurrency($currency);
         //$cart->setLanguage($language);
         $cart->save();
 
