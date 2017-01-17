@@ -52,11 +52,11 @@ class State extends AbstractModel
      *
      * @param $isoCode
      *
-     * @return Country|null
+     * @return static|null
      */
     public static function getByIsoCode($isoCode)
     {
-        return parent::getByField('isoCode', $isoCode);
+        return static::getByField('isoCode', $isoCode);
     }
 
     /**

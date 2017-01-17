@@ -256,8 +256,10 @@ class Cart extends Base
             if ($paymentProvider->getPaymentTaxCalculator($this) instanceof TaxCalculator) {
                 $taxesAmount = $paymentProvider->getPaymentTaxCalculator($this)->getTaxesAmount($this->getPaymentFee(false), true);
 
-                foreach ($taxesAmount as $id => $amount) {
-                    $addTax(Tax::getById($id), $amount);
+                if(is_array($taxesAmount)) {
+                    foreach ($taxesAmount as $id => $amount) {
+                        $addTax(Tax::getById($id), $amount);
+                    }
                 }
             }
         }

@@ -338,10 +338,13 @@ class Filter extends AbstractModel
     public function setIndex($index)
     {
         if (!$index instanceof Index) {
-            $this->indexObject = Index::getById($index);
+            $index = Index::getById($index);
         }
 
-        $this->index = $index;
+        if($index instanceof Index) {
+            $this->indexObject = $index;
+            $this->index = $index->getId();
+        }
     }
 
     /**

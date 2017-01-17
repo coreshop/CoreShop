@@ -56,8 +56,8 @@ class TaxRuleGroup extends AbstractModel
     /**
      * Return all TaxRules for a Country.
      *
-     * @param Country $country|null
-     * @param State   $state|null
+     * @param Country $country
+     * @param State $state
      *
      * @return TaxRule[]
      */

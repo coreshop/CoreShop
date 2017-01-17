@@ -376,7 +376,7 @@ class Mysql extends AbstractListing
         $this->products = [];
         foreach ($objectRaws as $raw) {
             $product = $this->loadElementById($raw['o_id']);
-            if ($product) {
+            if ($product instanceof Product) {
                 $this->products[] = $product;
             }
         }
@@ -504,7 +504,7 @@ class Mysql extends AbstractListing
             }
         }
 
-        if ($this->queryConditions) {
+        if (is_array($this->queryConditions)) {
             $searchString = '';
 
             foreach ($this->queryConditions as $condition) {

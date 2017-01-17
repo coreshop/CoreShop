@@ -24,7 +24,7 @@ class Deposit
     /**
      * Deposit Namespace.
      *
-     * @var null
+     * @var string
      */
     public $depositNamespace = null;
 

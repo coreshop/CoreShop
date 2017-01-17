@@ -109,7 +109,7 @@ class Dao extends AbstractDao
             $untouchable = [];
 
             foreach ($this->model->getFields() as $key) {
-                if (!(in_array($key, $untouchable) and !is_array($this->model->$key))) {
+                if (!(in_array($key, $untouchable) && !is_array($this->model->$key))) {
                     $localizedValue = $this->model->getLocalizedValue($key, $language);
                     $insertData = $localizedValue;
 

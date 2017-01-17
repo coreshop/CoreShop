@@ -388,7 +388,7 @@ class Service
         foreach ($fields as $field) {
             $isValid = false;
 
-            if ($restrictTypes == true) {
+            if ($restrictTypes === true) {
                 if (in_array($field->getFieldType(), self::$allowedVariationTypes)) {
                     $isValid = true;
                 }

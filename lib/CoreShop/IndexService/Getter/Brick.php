@@ -41,20 +41,22 @@ class Brick extends AbstractGetter
      */
     public function get(Product $object, Column $config)
     {
-        $brickField = $config->getGetterConfig()['brickField'];
+        if ($config instanceof Column\Objectbricks)
+        {
+            $brickField = $config->getGetterConfig()['brickField'];
 
-        $brickContainerGetter = 'get'.ucfirst($brickField);
-        $brickContainer = $object->$brickContainerGetter();
+            $brickContainerGetter = 'get'.ucfirst($brickField);
+            $brickContainer = $object->$brickContainerGetter();
+            $brickGetter = 'get' . ucfirst($config->getClassName());
 
-        $brickGetter = 'get'.ucfirst($config->getClassName());
+            if ($brickContainer) {
+                $brick = $brickContainer->$brickGetter();
 
-        if ($brickContainer) {
-            $brick = $brickContainer->$brickGetter();
+                if ($brick) {
+                    $fieldGetter = 'get' . ucfirst($config->getKey());
 
-            if ($brick) {
-                $fieldGetter = 'get' . ucfirst($config->getKey());
-
-                return $brick->$fieldGetter();
+                    return $brick->$fieldGetter();
+                }
             }
         }
 

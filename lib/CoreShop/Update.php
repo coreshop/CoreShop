@@ -114,17 +114,19 @@ class Update
 
         $jobs = [];
 
-        foreach ($builds as $build) {
-            $buildNumber = (string) $build['number'];
-            $buildPackage = self::$buildServerData.'/'.$buildNumber.'.zip';
+        if (is_array($builds)) {
+            foreach ($builds as $build) {
+                $buildNumber = (string)$build['number'];
+                $buildPackage = self::$buildServerData . '/' . $buildNumber . '.zip';
 
-            //@fixme: check if package is available!
-            $jobs['parallel'][] = [
-                'type' => 'download',
-                'revision' => $buildNumber,
-                'file' => 'file',
-                'url' => $buildPackage,
-            ];
+                //@fixme: check if package is available!
+                $jobs['parallel'][] = [
+                    'type' => 'download',
+                    'revision' => $buildNumber,
+                    'file' => 'file',
+                    'url' => $buildPackage,
+                ];
+            }
         }
 
         return $jobs;
@@ -160,79 +162,83 @@ class Update
             ]
         ];
 
-        foreach ($builds as $build) {
-            $buildNumber = (string) $build['number'];
+        if (is_array($builds)) {
+            foreach ($builds as $build) {
+                $buildNumber = (string)$build['number'];
 
-            $changedFiles = self::getChangedFilesForBuild($build['number']);
-            $preUpdateScript = self::getScriptForBuild($build['number'], 'preupdate');
-            $postUpdateScript = self::getScriptForBuild($build['number'], 'postupdate');
+                $changedFiles = self::getChangedFilesForBuild($build['number']);
+                $preUpdateScript = self::getScriptForBuild($build['number'], 'preupdate');
+                $postUpdateScript = self::getScriptForBuild($build['number'], 'postupdate');
 
-            $updateScripts[$buildNumber] = [];
+                $updateScripts[$buildNumber] = [];
 
-            foreach ($changedFiles as $download) {
-                if (empty($download)) {
-                    continue;
-                }
+                if (is_array($changedFiles)) {
+                    foreach ($changedFiles as $download) {
+                        if (empty($download)) {
+                            continue;
+                        }
 
-                $jobs['parallel'][] = [
-                    'type' => 'arrange',
-                    'revision' => $buildNumber,
-                    'file' => 'file',
-                    'url' => $download.'.build',
-                ];
+                        $jobs['parallel'][] = [
+                            'type' => 'arrange',
+                            'revision' => $buildNumber,
+                            'file' => 'file',
+                            'url' => $download . '.build',
+                        ];
 
-                if (strpos($download, 'install/class-') === 0) {
-                    if (!is_array($updateScripts[$buildNumber]['installClass'])) {
-                        $updateScripts[$buildNumber]['installClass'] = [];
+                        if (strpos($download, 'install/class-') === 0) {
+                            if (!is_array($updateScripts[$buildNumber]['installClass'])) {
+                                $updateScripts[$buildNumber]['installClass'] = [];
+                            }
+
+                            $updateScripts[$buildNumber]['installClass'][] = [
+                                'type' => 'installClass',
+                                'revision' => $buildNumber,
+                                'class' => str_replace('.json', '', str_replace('install/class-', '', $download)),
+                            ];
+                        }
+
+                        if (strpos($download, 'install/translations/admin.csv') === 0) {
+                            $updateScripts[$buildNumber]['importTranslation'] = [
+                                'type' => 'importTranslations',
+                                'revision' => $buildNumber,
+                            ];
+                        }
+
+                        $revisions[] = (int)$buildNumber;
                     }
-
-                    $updateScripts[$buildNumber]['installClass'][] = [
-                        'type' => 'installClass',
-                        'revision' => $buildNumber,
-                        'class' => str_replace('.json', '', str_replace('install/class-', '', $download)),
-                    ];
                 }
 
-                if (strpos($download, 'install/translations/admin.csv') === 0) {
-                    $updateScripts[$buildNumber]['importTranslation'] = [
-                        'type' => 'importTranslations',
+                if (!is_null($preUpdateScript)) {
+                    $updateScripts[$buildNumber]['preupdate'] = [
+                        'type' => 'preupdate',
                         'revision' => $buildNumber,
                     ];
+
+                    $jobs['parallel'][] = [
+                        'type' => 'arrange',
+                        'revision' => $buildNumber,
+                        'file' => 'script',
+                        'url' => 'preupdate.php',
+                    ];
+
+                    $revisions[] = (int)$buildNumber;
                 }
 
-                $revisions[] = (int) $buildNumber;
-            }
+                if (!is_null($postUpdateScript)) {
+                    $updateScripts[$buildNumber]['postupdate'] = [
+                        'type' => 'postupdate',
+                        'revision' => $buildNumber,
+                    ];
 
-            if (!is_null($preUpdateScript)) {
-                $updateScripts[$buildNumber]['preupdate'] = [
-                    'type' => 'preupdate',
-                    'revision' => $buildNumber,
-                ];
+                    $jobs['parallel'][] = [
+                        'type' => 'arrange',
+                        'revision' => $buildNumber,
+                        'file' => 'script',
+                        'url' => 'postupdate.php',
+                    ];
 
-                $jobs['parallel'][] = [
-                    'type' => 'arrange',
-                    'revision' => $buildNumber,
-                    'file' => 'script',
-                    'url' => 'preupdate.php',
-                ];
-
-                $revisions[] = (int) $buildNumber;
-            }
-
-            if (!is_null($postUpdateScript)) {
-                $updateScripts[$buildNumber]['postupdate'] = [
-                    'type' => 'postupdate',
-                    'revision' => $buildNumber,
-                ];
-
-                $jobs['parallel'][] = [
-                    'type' => 'arrange',
-                    'revision' => $buildNumber,
-                    'file' => 'script',
-                    'url' => 'postupdate.php',
-                ];
-
-                $revisions[] = (int) $buildNumber;
+                    $revisions[] = (int)$buildNumber;
+                }
             }
         }
 

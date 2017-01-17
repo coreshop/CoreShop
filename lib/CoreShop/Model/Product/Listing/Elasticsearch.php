@@ -390,7 +390,7 @@ class Elasticsearch extends AbstractListing
 
         foreach ($objectRaw as $raw) {
             $product = $this->loadElementById($raw);
-            if ($product) {
+            if ($product instanceof Product) {
                 $this->products[] = $product;
                 $i++;
             }
@@ -666,7 +666,7 @@ class Elasticsearch extends AbstractListing
     {
         $filters = [];
 
-        if ($this->queryConditions) {
+        if (is_array($this->queryConditions)) {
             foreach ($this->queryConditions as $queryCondition) {
                 if ($queryCondition instanceof Condition) {
                     $filters[] = ['match' => [$queryCondition->getFieldName() => $queryCondition->getValues()]];
