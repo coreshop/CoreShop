@@ -79,7 +79,7 @@ class Wkhtmltopdf
      *
      * @param $string
      *
-     * @return array( absolutePath, relativePath )
+     * @return array including absolutePath and relativePath
      */
     protected static function createHtmlFile($string)
     {

@@ -16,6 +16,7 @@ namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\IndexService;
+use CoreShop\Model\Index\Config\Column;
 use CoreShop\Model\Index\Config\Column\AbstractColumn;
 
 /**
@@ -65,7 +66,7 @@ class AbstractInterpreter
      * interpret value.
      *
      * @param mixed $value
-     * @param AbstractColumn $config
+     * @param Column $config
      *
      * @return mixed
      *

@@ -169,7 +169,7 @@ class CoreShopSpecificPrices extends Data
 
     /**
      * @param \stdClass[]
-     * @return []
+     * @return array
      */
     protected function arrayCastRecursive($array)
     {

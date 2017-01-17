@@ -32,7 +32,7 @@ class Helper
      * @param Filter  $filter
      * @param Service $filterService
      *
-     * @return array()
+     * @return array
      */
     public static function setupProductList(ProductListing $list, $params, Filter $filter, Service $filterService = null)
     {
