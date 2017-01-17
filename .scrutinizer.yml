@@ -26,3 +26,4 @@ filter:
   excluded_paths:
     - "tests/"
     - "update/"
+    - "static/"
