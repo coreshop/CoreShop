@@ -62,7 +62,7 @@ abstract class Document extends Base
     /**
      * Creates next Document Number.
      *
-     * @return int|string
+     * @return string
      */
     public static function getNextDocumentNumber()
     {
@@ -228,9 +228,9 @@ abstract class Document extends Base
     }
 
     /**
-     * @param $field
+     * @param string $field
      *
-     * @return int|mixed
+     * @return float
      */
     public function getProcessedValue($field)
     {

@@ -23,12 +23,9 @@ class CoreShop_Admin_ProductController extends Admin
     {
         parent::init();
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            //$this->checkPermission("coreshop_permission_priceRules");
-            //TODO
-        }
+        /**
+         * TODO: implement permission
+         */
     }
 
     public function getProductsAction()

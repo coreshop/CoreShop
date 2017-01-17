@@ -811,7 +811,6 @@ class CoreShop_Admin_OrderController extends Admin
         $cart->setCurrency($currency);
         $cart->setUser($user);
         $cart->setCurrency($currency);
-        //$cart->setLanguage($language);
         $cart->save();
 
         foreach ($productIds as $productObject) {

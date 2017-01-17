@@ -18,7 +18,6 @@ use CoreShop\Exception;
 use CoreShop\Model\Carrier;
 use CoreShop\Model\Carrier\ShippingRule as CarrierShippingRule;
 use CoreShop\Model\Cart;
-use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\User;
 
 /**

@@ -14,9 +14,7 @@
 
 namespace CoreShop\Model\Order;
 
-use CoreShop\Model\Configuration;
 use CoreShop\Model\Order;
-use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
 
 /**

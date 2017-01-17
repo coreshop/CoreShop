@@ -14,7 +14,6 @@
 
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 /**
  * Class CoreShop_Admin_PriceRuleController

@@ -310,19 +310,6 @@ class CoreShop
             }
         });
 
-        //Is not needed anymore, is it?
-        \Pimcore::getEventManager()->attach('system.console.init', function (\Zend_EventManager_Event $e) {
-            $autoloader = \Zend_Loader_Autoloader::getInstance();
-            $autoloader->registerNamespace('CoreShopTemplate');
-
-            $includePaths = [
-                get_include_path(),
-                CORESHOP_TEMPLATE_PATH . '/controllers',
-                CORESHOP_TEMPLATE_PATH . '/lib',
-            ];
-            set_include_path(implode(PATH_SEPARATOR, $includePaths) . PATH_SEPARATOR);
-        });
-
         \Pimcore::getEventManager()->attach('system.maintenance', function (\Zend_EventManager_Event $e) {
             $manager = $e->getTarget();
 
@@ -342,7 +329,6 @@ class CoreShop
             }
         });
 
-        //\Pimcore::getEventManager()->attach('object.postAdd', array($this, 'postAddObject'));
         \Pimcore::getEventManager()->attach('object.postUpdate', [$this, 'postUpdateObject']);
         \Pimcore::getEventManager()->attach('object.postDelete', [$this, 'postDeleteObject']);
         \Pimcore::getEventManager()->attach('object.postDelete', [$this, 'preDeleteObject']);

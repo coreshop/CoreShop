@@ -15,11 +15,9 @@
 namespace CoreShop\Controller\Action;
 
 use CoreShop\Controller\Action;
-use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
-use Pimcore\Model\Document;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 
 /**

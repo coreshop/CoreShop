@@ -25,11 +25,9 @@ class CoreShop_Admin_MailRuleController extends Admin
     {
         parent::init();
 
-        // check permissions
-        /*$notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_carriers");
-        }*/
+        /**
+         * TODO: implement permission
+         */
     }
 
     public function listAction()

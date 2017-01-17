@@ -168,7 +168,7 @@ class Elasticsearch extends AbstractListing
     public function addRelationCondition(Condition $condition, $fieldName)
     {
         $this->products = null;
-        $this->relationConditions[$fieldName][] = $condition; //'`fieldname` = '.$this->quote($fieldName).' AND '.$condition;
+        $this->relationConditions[$fieldName][] = $condition;
     }
 
     /**

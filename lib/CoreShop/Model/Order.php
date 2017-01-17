@@ -18,7 +18,6 @@ use Carbon\Carbon;
 use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
-use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Messaging\Thread;
 use CoreShop\Model\Order\Document;
 use CoreShop\Model\Order\Invoice;
@@ -27,7 +26,6 @@ use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Order\Shipment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
-use CoreShop\Tool\Service as ToolService;
 use Pimcore\Date;
 use Pimcore\File;
 use Pimcore\Model\Asset;
@@ -806,7 +804,7 @@ class Order extends Base
     /**
      * Get Payment Provider Object.
      *
-     * @return bool|\CoreShop\Model\Plugin\Payment
+     * @return null|\CoreShop\Model\Plugin\Payment
      *
      * @throws ObjectUnsupportedException
      */
@@ -890,25 +888,6 @@ class Order extends Base
         } catch (\Exception $e) {
             //fail silently.
         }
-    }
-
-    /**
-     * get all order-state changes
-     *
-     * @return Note[]
-     */
-    public function getOrderStateHistory()
-    {
-        $noteList = new Note\Listing();
-        /* @var \Pimcore\Model\Element\Note\Listing $noteList */
-
-        $noteList->addConditionParam('type = ?', 'coreshop-orderstate');
-        $noteList->addConditionParam('cid = ?', $this->getId());
-
-        $noteList->setOrderKey('date');
-        $noteList->setOrder('desc');
-
-        return $noteList->load();
     }
 
     /**
@@ -1338,7 +1317,7 @@ class Order extends Base
      *
      * @throws ObjectUnsupportedException
      */
-    public function setTotalWithtoutTax($totalWithtouTax)
+    public function setTotalWithoutTax($totalWithtouTax)
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
     }

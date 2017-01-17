@@ -15,7 +15,6 @@
 namespace CoreShop\Model\Mail\Rule\Action;
 
 use CoreShop\Exception;
-use CoreShop\Model\Cart;
 use CoreShop\Model;
 use Pimcore\Model\AbstractModel;
 use Pimcore\Model\Document;

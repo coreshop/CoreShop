@@ -364,7 +364,6 @@ QUERY;
     {
         if (is_array($columnsToRemove) && count($columnsToRemove) > 0) {
             foreach ($columnsToRemove as $value) {
-                //if (!in_array($value, $protectedColumns)) {
                 if (!in_array(strtolower($value), array_map('strtolower', $protectedColumns))) {
                     $this->db->query('ALTER TABLE `'.$table.'` DROP COLUMN `'.$value.'`;');
                 }

@@ -459,7 +459,7 @@ class Tools
         }
 
         if ($create) {
-            $cart = Cart::prepare();
+            $cart = Cart::prepare(false, $name);
             $this->getCartManager()->setSessionCart($cart);
 
             return $cart;

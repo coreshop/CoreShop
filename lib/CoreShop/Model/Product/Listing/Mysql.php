@@ -164,7 +164,7 @@ class Mysql extends AbstractListing
     public function addRelationCondition(Condition $condition, $fieldName)
     {
         $this->products = null;
-        $this->relationConditions[$fieldName][] = $condition; //'`fieldname` = '.$this->quote($fieldName).' AND '.$condition;
+        $this->relationConditions[$fieldName][] = $condition;
     }
 
     /**
@@ -529,14 +529,14 @@ class Mysql extends AbstractListing
     protected function buildUserSpecificConditions($excludedFieldName = null)
     {
         $renderedConditions = [];
-        //$relationalTableName = $this->worker->getRelationTablename();
+        $relationalTableName = $this->worker->getRelationTablename();
 
         foreach ($this->relationConditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
                     $cond = $this->worker->renderCondition($cond);
 
-                    $renderedConditions[] = 'a.o_id IN (SELECT DISTINCT src FROM coreshop_product_index_relations WHERE '.$cond.')'; //TODO: Load tablename from any configuration (cause its also used by indexservice)
+                    $renderedConditions[] = 'a.o_id IN (SELECT DISTINCT src FROM '.$relationalTableName.' WHERE '.$cond.')';
                 }
             }
         }

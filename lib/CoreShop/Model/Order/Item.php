@@ -71,7 +71,7 @@ class Item extends Base
     }
 
     /**
-     * @param $type
+     * @param string $type
      *
      * @return int
      */

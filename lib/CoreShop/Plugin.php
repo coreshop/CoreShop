@@ -114,8 +114,6 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             \Pimcore::getEventManager()->trigger('coreshop.uninstall.pre', null, ['installer' => $install]);
 
-            // remove predefined document types
-            //$install->removeDocTypes();
             // remove static routes
             $install->removeStaticRoutes();
 

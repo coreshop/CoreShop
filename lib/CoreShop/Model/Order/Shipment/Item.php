@@ -15,11 +15,9 @@
 namespace CoreShop\Model\Order\Shipment;
 
 use CoreShop\Exception\ObjectUnsupportedException;
-use CoreShop\Model\Base;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use Pimcore\Model\Asset\Image;
-use Pimcore\Model\Asset;
 use Pimcore\Model\Object;
 
 /**

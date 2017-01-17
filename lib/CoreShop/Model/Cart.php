@@ -17,7 +17,6 @@ namespace CoreShop\Model;
 use Carbon\Carbon;
 use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
-use CoreShop\Mail;
 use CoreShop\Model\Cart\Item;
 use CoreShop\Model\Plugin\Payment as PaymentPlugin;
 use CoreShop\Model\Plugin\Payment;
@@ -26,7 +25,6 @@ use CoreShop\Model\User\Address;
 use CoreShop\Model\Cart\PriceRule;
 use Pimcore\Date;
 use Pimcore\Logger;
-use Pimcore\Model\Document;
 use Pimcore\Model\Object\Fieldcollection;
 use Pimcore\Model\Object\Service as ObjectService;
 use CoreShop\Maintenance\CleanUpCart;
@@ -82,17 +80,18 @@ class Cart extends Base
      * Prepare a Cart.
      *
      * @param bool $persist
+     * @param string $name
      *
      * @return Cart
      *
      * @throws Exception
      */
-    public static function prepare($persist = false)
+    public static function prepare($persist = false, $name = 'default')
     {
         $cart = \CoreShop::getTools()->getCartManager()->getSessionCart();
 
         if (!$cart instanceof Cart) {
-            $cart = \CoreShop::getTools()->getCartManager()->createCart("default", \CoreShop::getTools()->getUser(), Shop::getShop());
+            $cart = \CoreShop::getTools()->getCartManager()->createCart($name, \CoreShop::getTools()->getUser(), Shop::getShop());
         }
 
         if ($persist) {

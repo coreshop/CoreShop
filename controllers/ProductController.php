@@ -229,10 +229,6 @@ class CoreShop_ProductController extends Action
             $productList->setLimit(2);
             $productList->setOrder("ASC");
             $productList->addCondition(\CoreShop\IndexService\Condition::notMatch("o_virtualProductId", $product->getId()), "o_virtualProductId");
-            
-            /*if($filterDefinition->getCrossSellingCategory()) {
-                $productList->setCategory($filterDefinition->getCrossSellingCategory());
-            }*/
             $productList->setOrderKey($statement);
 
             return $productList->load();

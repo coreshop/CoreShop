@@ -103,8 +103,8 @@ class Install
         ]);
         // create static routes
         $this->createStaticRoutes();
-        // create predefined document types
-        //$install->createDocTypes();
+
+        //install workflow configuration
         $this->installWorkflow();
 
         $this->installAdminTranslations(PIMCORE_PLUGINS_PATH.'/CoreShop/install/translations/admin.csv');
@@ -147,7 +147,7 @@ class Install
             $jsonFile = PIMCORE_PLUGINS_PATH."/CoreShop/install/class-$className.json";
             $json = file_get_contents($jsonFile);
 
-            $result = \Pimcore::getEventManager()->trigger("coreshop.install.class.getClass.$className", $this, ['className' => $className, 'json' => $json], function ($v) {
+            $result = \Pimcore::getEventManager()->trigger("coreshop.install.class.getClass.$className", $this, ['className' => $className, 'json' => $json], function($v) {
                 return $v instanceof Object\ClassDefinition;
             });
 
@@ -162,7 +162,7 @@ class Install
             $class->setName($className);
             $class->setUserOwner($this->_getUserId());
 
-            $result = \Pimcore::getEventManager()->trigger('coreshop.install.class.preCreate', $this, ['className' => $className, 'json' => $json], function ($v) {
+            $result = \Pimcore::getEventManager()->trigger('coreshop.install.class.preCreate', $this, ['className' => $className, 'json' => $json], function($v) {
                 return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
             });
 
@@ -235,7 +235,7 @@ class Install
 
         $json = file_get_contents($jsonPath);
 
-        $result = \Pimcore::getEventManager()->trigger('coreshop.install.objectbrick.preCreate', $this, ['objectbrickName' => $name, 'json' => $json], function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.install.objectbrick.preCreate', $this, ['objectbrickName' => $name, 'json' => $json], function($v) {
             return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
         });
 
@@ -297,7 +297,7 @@ class Install
 
         $json = file_get_contents($jsonPath);
 
-        $result = \Pimcore::getEventManager()->trigger('coreshop.install.fieldcollection.preCreate', $this, ['fieldcollectionName' => $name, 'json' => $json], function ($v) {
+        $result = \Pimcore::getEventManager()->trigger('coreshop.install.fieldcollection.preCreate', $this, ['fieldcollectionName' => $name, 'json' => $json], function($v) {
             return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $v));
         });
 
@@ -703,7 +703,7 @@ class Install
             $workflowConfig['id'] = 1;
 
             $workflowCompleteData = [
-                'workflows' => [ $workflowConfig ]
+                'workflows' => [$workflowConfig]
             ];
 
             \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($workflowCompleteData));
@@ -722,7 +722,7 @@ class Install
 
                 if ($hasCoreShopWorkflow === false) {
                     //set defaults
-                    $workflowConfig['id'] = $lastId+1;
+                    $workflowConfig['id'] = $lastId + 1;
                     $systemWorkflowConfig['workflows'] = array_merge($systemWorkflowConfig['workflows'], [$workflowConfig]);
                     \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($systemWorkflowConfig));
                 }
@@ -759,7 +759,6 @@ class Install
             $ruleObj = \CoreShop\Model\Mail\Rule::create();
             $ruleObj->setName($rule['name']);
             $ruleObj->setSort(1);
-            //$rule->setDescription($rule['description']);
             $ruleObj->setMailType($rule['mailType']);
 
             $conditions = isset($rule['conditions']['condition']) ? $rule['conditions']['condition'] : [];
@@ -935,7 +934,7 @@ class Install
     public function createConfig()
     {
         Configuration::set('SYSTEM.BASE.CURRENCY', 1); //Euro
-        Configuration::set('SYSTEM.BASE.COUNTRY', 2);  //Austria
+        Configuration::set('SYSTEM.BASE.COUNTRY', 2); //Austria
         Configuration::set('SYSTEM.BASE.CATALOGMODE', false);
         Configuration::set('SYSTEM.BASE.BUILD', Version::getBuildNumber());
         Configuration::set('SYSTEM.BASE.VERSION', (string) Version::getVersion());

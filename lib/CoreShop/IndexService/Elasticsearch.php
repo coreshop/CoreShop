@@ -98,9 +98,6 @@ class Elasticsearch extends AbstractWorker
             if (!$result['acknowledged']) {
                 throw new \Exception("Index creation failed. IndexName: " . $this->getIndex()->getName());
             }
-
-            //index didn't exist -> reset index queue to make sure all products get reindexed
-            //$this->resetIndexingQueue();
         } else {
             $this->getElasticsearchClient()->indices()->delete(['index' => $this->getIndex()->getName()]);
         }
@@ -187,20 +184,13 @@ class Elasticsearch extends AbstractWorker
                     'body' => $preparedData['data']
                 ];
 
-
+                /**
+                 * TODO: Implement Relation Index and Localized Index
+                 */
                 $this->getElasticsearchClient()->index($params);
             } catch (\Exception $e) {
                 Logger::warn('Error during updating index table: '.$e);
             }
-
-            /*try {
-                $this->db->delete($this->getRelationTablename(), 'src = '.$this->db->quote($object->getId()));
-                foreach ($preparedData['relation'] as $rd) {
-                    $this->db->insert($this->getRelationTablename(), $rd);
-                }
-            } catch (\Exception $e) {
-                \Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
-            }*/
         } else {
             Logger::info("Don't adding product ".$object->getId().' to index.');
 

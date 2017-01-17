@@ -258,7 +258,7 @@ class CreateObjectClassCommand extends AbstractCommand
 
         $class = ClassDefinition::create();
         $class->setName($newPimcoreClassName);
-        //$class->setUserOwner($this->_getUserId());
+        $class->setUserOwner(0); //0 = SystemId
 
         ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
 

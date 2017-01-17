@@ -24,7 +24,6 @@ use CoreShop\Model\Rules\AbstractRule;
 use Pimcore\Cache;
 use Pimcore\Logger;
 use Pimcore\Model\AbstractModel;
-use Pimcore\Tool;
 
 /**
  * Class Rule
