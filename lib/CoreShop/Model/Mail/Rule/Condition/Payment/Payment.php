@@ -33,7 +33,7 @@ class Payment extends Rule\Condition\Order\Payment
      */
     public function checkCondition(AbstractModel $object, $params = [], Rule $rule)
     {
-        if ($object instanceof Model\Order\Payment) {
+        if ($object instanceof Model\Order\Payment && $object->getOrder() instanceof Model\Order) {
             return parent::checkCondition($object->getOrder(), $params, $rule);
         }
 

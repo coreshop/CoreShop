@@ -56,24 +56,24 @@ class Dao
      * Load products.
      *
      * @param $condition
-     * @param null $orderBy
-     * @param null $limit
-     * @param null $offset
+     * @param null|string $orderBy
+     * @param null|integer $limit
+     * @param null|integer $offset
      *
      * @return array
      */
     public function load($condition, $orderBy = null, $limit = null, $offset = null)
     {
-        if ($condition) {
+        if (is_string($condition)) {
             $condition = 'WHERE '.$condition;
         }
 
-        if ($orderBy) {
+        if (is_string($orderBy)) {
             $orderBy = ' ORDER BY '.$orderBy;
         }
 
-        if ($limit) {
-            if ($offset) {
+        if (is_integer($limit)) {
+            if (is_integer($offset)){
                 $limit = 'LIMIT '.$offset.', '.$limit;
             } else {
                 $limit = 'LIMIT '.$limit;
