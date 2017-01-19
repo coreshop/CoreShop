@@ -209,6 +209,46 @@ class Filter extends AbstractModel
     }
 
     /**
+     * @return array
+     */
+    public function serialize()
+    {
+        $object = $this->getObjectVars();
+        $object['filters'] = [];
+        $object['preConditions'] = [];
+        $object['similarities'] = [];
+
+        if(is_array($this->getFilters())) {
+            foreach ($this->getFilters() as $filter) {
+                $conditionVars = get_object_vars($filter);
+                $conditionVars['type'] = $filter::getType();
+
+                $object['filters'][] = $conditionVars;
+            }
+        }
+
+        if(is_array($this->getPreConditions())) {
+            foreach ($this->getPreConditions() as $preCondition) {
+                $preConditionVars = get_object_vars($preCondition);
+                $preConditionVars['type'] = $preCondition::getType();
+
+                $object['preConditions'][] = $preConditionVars;
+            }
+        }
+
+        if(is_array($this->getSimilarities())) {
+            foreach ($this->getSimilarities() as $similarity) {
+                $similarityVars = get_object_vars($similarity);
+                $similarityVars['type'] = $similarity::getType();
+
+                $object['similarities'][] = $similarityVars;
+            }
+        }
+
+        return $object;
+    }
+
+    /**
      * @return string
      */
     public function getName()

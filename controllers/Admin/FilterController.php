@@ -86,7 +86,7 @@ class CoreShop_Admin_FilterController extends Admin
         $filter = Filter::getById($id);
 
         if ($filter instanceof Filter) {
-            $data = get_object_vars($filter);
+            $data = $filter->serialize();
             $data['index'] = $filter->getIndex() instanceof \CoreShop\Model\Index ? $filter->getIndex()->getId() : null;
 
             $this->_helper->json(['success' => true, 'data' => $data]);
