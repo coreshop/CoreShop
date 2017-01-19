@@ -36,7 +36,7 @@ class Rule extends AbstractRule
      *
      * @var array
      */
-    public static $availableTypes = ['order', 'invoice', 'shipment', 'user', 'messaging'];
+    public static $availableTypes = ['order', 'invoice', 'shipment', 'user', 'messaging', 'payment'];
 
     /**
      * @var
@@ -75,6 +75,7 @@ class Rule extends AbstractRule
             $dispatcher->addType(Condition\Order\OrderState::class);
             $dispatcher->addType(Condition\Order\InvoiceState::class);
             $dispatcher->addType(Condition\Order\ShipmentState::class);
+            $dispatcher->addType(Condition\Order\PaymentState::class);
         } elseif ($type === 'invoice') {
             $dispatcher->addType(Condition\Invoice\InvoiceState::class);
         } elseif ($type === 'messaging') {
@@ -83,6 +84,9 @@ class Rule extends AbstractRule
             $dispatcher->addType(Condition\User\UserType::class);
         } elseif ($type === 'shipment') {
             $dispatcher->addType(Condition\Shipment\ShipmentState::class);
+        } elseif ($type === 'payment') {
+            $dispatcher->addType(Condition\Payment\PaymentState::class);
+            $dispatcher->addType(Condition\Payment\Payment::class);
         }
     }
 

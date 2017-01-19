@@ -294,7 +294,7 @@
     background: url(/plugins/CoreShop/static/img/flat/stock.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_report_payments, .coreshop_icon_payment, .coreshop_rule_icon_condition_payment {
+.coreshop_icon_report_payments, .coreshop_icon_payment, .coreshop_rule_icon_condition_payment, .coreshop_rule_icon_condition_paymentState {
     background: url(/plugins/CoreShop/static/img/flat/payments.svg) center center no-repeat !important;
 }
 

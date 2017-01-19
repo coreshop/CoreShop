@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use CoreShop\Exception;
 use CoreShop\Exception\ObjectUnsupportedException;
 use CoreShop\Model\Cart\PriceRule;
+use CoreShop\Model\Mail\Rule;
 use CoreShop\Model\Messaging\Thread;
 use CoreShop\Model\Order\Document;
 use CoreShop\Model\Order\Invoice;
@@ -699,6 +700,8 @@ class Order extends Base
         $note->addData('provider', 'text', $provider->getName());
         $note->addData('amount', 'text', $this->formatPrice($amount));
         $note->save();
+
+        Rule::apply('payment', $payment);
 
         return $payment;
     }
