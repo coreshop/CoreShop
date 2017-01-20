@@ -151,6 +151,7 @@
 "coreshop_permission_messaging_contact","CoreShop Customer Service Contacts"
 "coreshop_permission_messaging_thread_state","CoreShop Customer Service State"
 "coreshop_permission_product_price_rules","CoreShop Product Pricerules"
+"coreshop_permission_mail_rules","CoreShop Mail Rules"
 "coreshop_base_catalogmode","Catalog Mode"
 "coreshop_base_guestcheckout","Guest Checkout"
 "coreshop_taxes","Taxes"

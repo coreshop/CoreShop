@@ -12,134 +12,78 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Product\Filter;
 use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_FilterController
  */
-class CoreShop_Admin_FilterController extends Admin
+class CoreShop_Admin_FilterController extends Admin\Data
 {
-    public function init()
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_filters';
+
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Product\Filter::class;
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model)
     {
-        parent::init();
-
-        // check permissions
-        $notRestrictedActions = ['list'];
-
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_filters');
+        if($model instanceof \CoreShop\Model\Product\Filter) {
+            $model->setResultsPerPage(20);
+            $model->setOrder('desc');
+            $model->setOrderKey('name');
+            $model->setPreConditions([]);
+            $model->setFilters([]);
+            $model->setSimilarities([]);
         }
     }
 
-    public function listAction()
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @return array
+     */
+    protected function getReturnValues(\CoreShop\Model\AbstractModel $model)
     {
-        $list = Filter::getList();
+        if($model instanceof \CoreShop\Model\Product\Filter) {
+            $json = $model->serialize();
 
-        $data = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $group) {
-                $data[] = $this->getTreeNodeConfig($group);
-            }
-        }
-        $this->_helper->json($data);
-    }
+            $json['index'] = $model->getIndex() instanceof \CoreShop\Model\Index ? $model->getIndex()->getId() : null;
 
-    protected function getTreeNodeConfig(Filter $filter)
-    {
-        $tmp = [
-            'id' => $filter->getId(),
-            'text' => $filter->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$filter->getId(),
-            ],
-            'name' => $filter->getName(),
-        ];
-        
-        return $tmp;
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $filter = Filter::create();
-            $filter->setName($name);
-            $filter->setResultsPerPage(20);
-            $filter->setOrder('desc');
-            $filter->setOrderKey('name');
-            $filter->setPreConditions([]);
-            $filter->setFilters([]);
-            $filter->setSimilarities([]);
-            $filter->save();
-
-            $this->_helper->json(['success' => true, 'data' => $filter]);
-        }
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $filter = Filter::getById($id);
-
-        if ($filter instanceof Filter) {
-            $data = $filter->serialize();
-            $data['index'] = $filter->getIndex() instanceof \CoreShop\Model\Index ? $filter->getIndex()->getId() : null;
-
-            $this->_helper->json(['success' => true, 'data' => $data]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $filter = Filter::getById($id);
-
-        if ($data && $filter instanceof Filter) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $filtersInstances = $filter->prepareConditions($data['filters']);
-            $preConditionInstances = $filter->prepareConditions($data['conditions']);
-            $similaritiesInstances = $filter->prepareSimilarities($data['similarities']);
-
-            $filter->setValues($data['settings']);
-            $filter->setPreConditions($preConditionInstances);
-            $filter->setFilters($filtersInstances);
-            $filter->setSimilarities($similaritiesInstances);
-            $filter->save();
-
-            $this->_helper->json(['success' => true, 'data' => $filter]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $filter = Filter::getById($id);
-
-        if ($filter instanceof Filter) {
-            $filter->delete();
-
-            $this->_helper->json(['success' => true]);
+            return $json;
         }
 
-        $this->_helper->json(['success' => false]);
+        return parent::getReturnValues($model);
+    }
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @param $data
+     */
+    protected function prepareSave(\CoreShop\Model\AbstractModel $model, $data) {
+        if($model instanceof \CoreShop\Model\Product\Filter) {
+            $filtersInstances = $model->prepareConditions($data['filters']);
+            $preConditionInstances = $model->prepareConditions($data['conditions']);
+            $similaritiesInstances = $model->prepareSimilarities($data['similarities']);
+
+            $model->setValues($data['settings']);
+            $model->setPreConditions($preConditionInstances);
+            $model->setFilters($filtersInstances);
+            $model->setSimilarities($similaritiesInstances);
+        }
     }
 
     public function getConfigAction()
     {
         $this->_helper->json([
             'success' => true,
-            'conditions' => Filter::getConditionDispatcher()->getTypeKeys(),
-            'similarities' => Filter::getSimilaritiesDispatcher()->getTypeKeys()
+            'conditions' => \CoreShop\Model\Product\Filter::getConditionDispatcher()->getTypeKeys(),
+            'similarities' => \CoreShop\Model\Product\Filter::getSimilaritiesDispatcher()->getTypeKeys()
         ]);
     }
 
@@ -187,7 +131,7 @@ class CoreShop_Admin_FilterController extends Admin
                     ];
                 } else {
                     $returnValues[] = [
-                        'value' => Filter\Service::EMPTY_STRING,
+                        'value' => \CoreShop\Model\Product\Filter\Service::EMPTY_STRING,
                         'key' => 'empty',
                     ];
                 }

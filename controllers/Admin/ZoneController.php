@@ -12,112 +12,43 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Zone;
 use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_ZoneController
  */
-class CoreShop_Admin_ZoneController extends Admin
+class CoreShop_Admin_ZoneController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_zones';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_zones');
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Zone::class;
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model) {
+        if($model instanceof \CoreShop\Model\Zone) {
+            $model->setActive(false);
         }
     }
 
-    public function listAction()
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @param $config
+     * @return mixed
+     */
+    protected function prepareTreeNodeConfig(\CoreShop\Model\AbstractModel $model, $config)
     {
-        $list = Zone::getList();
-        $list->setOrder('ASC');
-        $list->load();
-
-        $zones = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $zone) {
-                $zones[] = $this->getTreeNodeConfig($zone);
-            }
-        }
-        $this->_helper->json($zones);
-    }
-
-    protected function getTreeNodeConfig($zone)
-    {
-        $tmpZone = [
-            'id' => $zone->getId(),
-            'text' => $zone->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$zone->getId(),
-            ],
-            'name' => $zone->getName(),
-            'active' => intval($zone->getActive()),
-        ];
-
-        return $tmpZone;
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $zone = Zone::getById($id);
-
-        if ($zone instanceof Zone) {
-            $this->_helper->json(['success' => true, 'data' => $zone]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $zone = Zone::getById($id);
-
-        if ($data && $zone instanceof Zone) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $zone->setValues($data);
-            $zone->save();
-
-            $this->_helper->json(['success' => true, 'data' => $zone]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $zone = Zone::create();
-            $zone->setName($name);
-            $zone->setActive(1);
-            $zone->save();
-
-            $this->_helper->json(['success' => true, 'data' => $zone]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $zone = Zone::getById($id);
-
-        if ($zone instanceof Zone) {
-            $zone->delete();
-
-            $this->_helper->json(['success' => true]);
+        if($model instanceof \CoreShop\Model\Zone) {
+            $config['active'] = intval($model->getActive());
         }
 
-        $this->_helper->json(['success' => false]);
+        return $config;
     }
 }

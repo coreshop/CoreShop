@@ -12,138 +12,82 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_PriceRuleController
  */
-class CoreShop_Admin_PriceRuleController extends Admin
+class CoreShop_Admin_PriceRuleController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_price_rules';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_price_rules');
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Cart\PriceRule::class;
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model)
+    {
+        if($model instanceof \CoreShop\Model\Cart\PriceRule) {
+            $model->setActive(0);
+            $model->setHighlight(0);
+            $model->setUsagePerVoucherCode(0);
+            $model->setUseMultipleVoucherCodes(false);
         }
     }
 
-    public function listAction()
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @return array
+     */
+    protected function getReturnValues(\CoreShop\Model\AbstractModel $model)
     {
-        $list = PriceRule::getList();
-
-        $data = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $pricerule) {
-                $data[] = $this->getTreeNodeConfig($pricerule);
-            }
+        if($model instanceof \CoreShop\Model\Cart\PriceRule) {
+            return $model->serialize();
         }
-        $this->_helper->json($data);
+
+        return parent::getReturnValues($model);
     }
 
-    protected function getTreeNodeConfig($priceRule)
-    {
-        $tmpPriceRule = [
-            'id' => $priceRule->getId(),
-            'text' => $priceRule->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$priceRule->getId(),
-            ],
-            'name' => $priceRule->getName(),
-        ];
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @param $data
+     */
+    protected function prepareSave(\CoreShop\Model\AbstractModel $model, $data) {
+        if($model instanceof \CoreShop\Model\Cart\PriceRule) {
+            $conditions = $data['conditions'];
+            $actions = $data['actions'];
 
-        return $tmpPriceRule;
+            $conditionInstances = $model->prepareConditions($conditions);
+            $actionInstances = $model->prepareActions($actions);
+
+            $model->setValues($data['settings']);
+            $model->setActions($actionInstances);
+            $model->setConditions($conditionInstances);
+        }
     }
 
     public function getConfigAction()
     {
         $this->_helper->json([
             'success' => true,
-            'conditions' => PriceRule::getConditionDispatcher()->getTypeKeys(),
-            'actions' => PriceRule::getActionDispatcher()->getTypeKeys()
+            'conditions' => \CoreShop\Model\Cart\PriceRule::getConditionDispatcher()->getTypeKeys(),
+            'actions' => \CoreShop\Model\Cart\PriceRule::getActionDispatcher()->getTypeKeys()
         ]);
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $priceRule = PriceRule::create();
-            $priceRule->setName($name);
-            $priceRule->setActive(0);
-            $priceRule->setHighlight(0);
-            $priceRule->setUsagePerVoucherCode(0);
-            $priceRule->setUseMultipleVoucherCodes(false);
-            $priceRule->save();
-
-            $this->_helper->json(['success' => true, 'data' => $priceRule]);
-        }
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $priceRule = PriceRule::getById($id);
-
-        if ($priceRule instanceof PriceRule) {
-            $this->_helper->json(['success' => true, 'data' => $priceRule->serialize()]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $priceRule = PriceRule::getById($id);
-
-        if ($data && $priceRule instanceof PriceRule) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $conditions = $data['conditions'];
-            $actions = $data['actions'];
-
-            $conditionInstances = $priceRule->prepareConditions($conditions);
-            $actionInstances = $priceRule->prepareActions($actions);
-
-            $priceRule->setValues($data['settings']);
-            $priceRule->setActions($actionInstances);
-            $priceRule->setConditions($conditionInstances);
-            $priceRule->save();
-
-            $this->_helper->json(['success' => true, 'data' => $priceRule]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $priceRule = PriceRule::getById($id);
-
-        if ($priceRule instanceof PriceRule) {
-            $priceRule->delete();
-
-            $this->_helper->json(['success' => true]);
-        }
-
-        $this->_helper->json(['success' => false]);
     }
 
     public function getVoucherCodesAction()
     {
         $id = $this->getParam('id');
-        $priceRule = PriceRule::getById($id);
+        $priceRule = \CoreShop\Model\Cart\PriceRule::getById($id);
 
-        if ($priceRule instanceof PriceRule) {
+        if ($priceRule instanceof \CoreShop\Model\Cart\PriceRule) {
             $list = \CoreShop\Model\Cart\PriceRule\VoucherCode::getList();
             $list->setLimit($this->getParam('limit', 30));
             $list->setOffset($this->getParam('page', 1) - 1);
@@ -191,10 +135,10 @@ class CoreShop_Admin_PriceRuleController extends Admin
         $suffix = $this->getParam("suffix", "");
         $hyphensOn = $this->getParam("hyphensOn", 0);
         $id = $this->getParam('id');
-        $priceRule = PriceRule::getById($id);
+        $priceRule = \CoreShop\Model\Cart\PriceRule::getById($id);
 
-        if ($priceRule instanceof PriceRule) {
-            PriceRule\VoucherCode\Service::generateCodes($priceRule, $amount, $length, $format, $hyphensOn, $prefix, $suffix);
+        if ($priceRule instanceof \CoreShop\Model\Cart\PriceRule) {
+            \CoreShop\Model\Cart\PriceRule\VoucherCode\Service::generateCodes($priceRule, $amount, $length, $format, $hyphensOn, $prefix, $suffix);
 
             $this->_helper->json(['success' => true]);
         }
@@ -205,9 +149,9 @@ class CoreShop_Admin_PriceRuleController extends Admin
     public function exportVoucherCodesAction()
     {
         $id = $this->getParam('id');
-        $priceRule = PriceRule::getById($id);
+        $priceRule = \CoreShop\Model\Cart\PriceRule::getById($id);
 
-        if ($priceRule instanceof PriceRule) {
+        if ($priceRule instanceof \CoreShop\Model\Cart\PriceRule) {
             $fileName = $priceRule->getName() . "_vouchercodes";
             $csvData = [];
 

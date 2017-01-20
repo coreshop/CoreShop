@@ -13,49 +13,61 @@
  */
 
 use CoreShop\Controller\Action\Admin;
-use Pimcore\Tool as PimTool;
 
 /**
  * Class CoreShop_Admin_ProductPriceRuleController
  */
-class CoreShop_Admin_ProductPriceRuleController extends Admin
+class CoreShop_Admin_ProductPriceRuleController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_product_price_rules';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_product_price_rules");
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Product\PriceRule::class;
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model)
+    {
+        if($model instanceof \CoreShop\Model\Product\PriceRule) {
+            $model->setActive(0);
         }
     }
 
-    public function listAction()
-    {
-        $list = \CoreShop\Model\Product\PriceRule::getList();
-        $rules = $list->load();
-        $data = [];
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @param $data
+     */
+    protected function prepareSave(\CoreShop\Model\AbstractModel $model, $data) {
+        if($model instanceof \CoreShop\Model\Product\PriceRule) {
+            $conditions = $data['conditions'];
+            $actions = $data['actions'];
 
-        foreach ($rules as $rule) {
-            $data[] = $this->getPriceRuleTreeNodeConfig($rule);
+            $conditionInstances = $model->prepareConditions($conditions);
+            $actionInstances = $model->prepareActions($actions);
+
+            $model->setValues($data['settings']);
+            $model->setActions($actionInstances);
+            $model->setConditions($conditionInstances);
         }
-
-        $this->_helper->json(['success' => true, 'data' => $data]);
     }
 
-    protected function getPriceRuleTreeNodeConfig($price)
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @return array
+     */
+    protected function getReturnValues(\CoreShop\Model\AbstractModel $model)
     {
-        $tmpPriceRule = [
-            'id' => $price->getId(),
-            'text' => $price->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$price->getId(),
-            ],
-            'name' => $price->getName(),
-        ];
+        if($model instanceof \CoreShop\Model\Product\PriceRule) {
+            return $model->serialize();
+        }
 
-        return $tmpPriceRule;
+        return parent::getReturnValues($model);
     }
 
     public function getConfigAction()
@@ -65,71 +77,5 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin
             'conditions' => \CoreShop\Model\Product\PriceRule::getConditionDispatcher()->getTypeKeys(),
             'actions' => \CoreShop\Model\Product\PriceRule::getActionDispatcher()->getTypeKeys()
         ]);
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        $priceRule = \CoreShop\Model\Product\PriceRule::create();
-        $priceRule->setName($name);
-        $priceRule->setActive(false);
-        $priceRule->save();
-
-        $this->_helper->json(['success' => true, 'data' => $priceRule]);
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $specificPrice = \CoreShop\Model\Product\PriceRule::getById($id);
-
-        if ($specificPrice instanceof \CoreShop\Model\Product\PriceRule) {
-            $this->_helper->json(['success' => true, 'data' => $specificPrice->serialize()]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $priceRule = \CoreShop\Model\Product\PriceRule::getById($id);
-
-        if ($data && $priceRule instanceof \CoreShop\Model\Product\PriceRule) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $conditions = $data['conditions'];
-            $actions = $data['actions'];
-
-            $conditionInstances = $priceRule->prepareConditions($conditions);
-            $actionInstances = $priceRule->prepareActions($actions);
-
-            $priceRule->setValues($data['settings']);
-            $priceRule->setActions($actionInstances);
-            $priceRule->setConditions($conditionInstances);
-            $priceRule->save();
-
-            \Pimcore\Cache::clearTag('coreshop_product_price');
-
-            $this->_helper->json(['success' => true, 'data' => $priceRule]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $priceRule = \CoreShop\Model\Product\PriceRule::getById($id);
-
-        if ($priceRule instanceof \CoreShop\Model\Product\PriceRule) {
-            $priceRule->delete();
-
-            $this->_helper->json(['success' => true]);
-        }
-
-        $this->_helper->json(['success' => false]);
     }
 }

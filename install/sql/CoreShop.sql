@@ -698,7 +698,8 @@ VALUES
   ('coreshop_permission_messaging_contact'),
   ('coreshop_permission_messaging_thread_state'),
   ('coreshop_permission_product_price_rules'),
-  ('coreshop_permission_shops');
+  ('coreshop_permission_shops'),
+  ('coreshop_permission_mail_rules');
 
 DROP TABLE IF EXISTS `coreshop_product_specificprice`;
 CREATE TABLE `coreshop_product_specificprice` (

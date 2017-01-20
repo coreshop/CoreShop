@@ -13,55 +13,65 @@
  */
 
 use CoreShop\Controller\Action\Admin;
-use CoreShop\Model\Mail\Rule;
-use Pimcore\Tool as PimTool;
 
 /**
  * Class CoreShop_Admin_MailRuleController
  */
-class CoreShop_Admin_MailRuleController extends Admin
+class CoreShop_Admin_MailRuleController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_mail_rules';
 
-        /**
-         * TODO: implement permission
-         */
-    }
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Mail\Rule::class;
 
-    public function listAction()
-    {
-        $list = \CoreShop\Model\Mail\Rule::getList();
-        $list->setOrderKey("sort");
-        $list->setOrder("ASC");
-        $rules = $list->load();
-        $data = [];
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model) {
+        if($model instanceof \CoreShop\Model\Mail\Rule) {
+            $count = \CoreShop\Model\Mail\Rule::getList()->getCount();
 
-        foreach ($rules as $rule) {
-            $data[] = $this->getMailRuleTreeNodeConfig($rule);
+            $model->setSort($count+1);
         }
-
-        $this->_helper->json($data);
     }
 
     /**
-     * @param $rule
+     * @param \CoreShop\Model\AbstractModel $model
      *
+     * @param $data
+     */
+    protected function prepareSave(\CoreShop\Model\AbstractModel $model, $data)
+    {
+        if($model instanceof \CoreShop\Model\Mail\Rule) {
+            $conditions = $data['conditions'];
+            $actions = $data['actions'];
+
+            $model->setValues($data['settings']);
+
+            $actionInstances = $model->prepareActions($actions);
+            $conditionInstances = $model->prepareConditions($conditions);
+
+            $model->setActions($actionInstances);
+            $model->setConditions($conditionInstances);
+        }
+    }
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
      * @return array
      */
-    protected function getMailRuleTreeNodeConfig($rule)
+    protected function getReturnValues(\CoreShop\Model\AbstractModel $model)
     {
-        $tmpRule = [
-            'id' => $rule->getId(),
-            'text' => $rule->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$rule->getId(),
-            ],
-            'name' => $rule->getName(),
-        ];
+        if($model instanceof \CoreShop\Model\Mail\Rule) {
+            return $model->serialize();
+        }
 
-        return $tmpRule;
+        return parent::getReturnValues($model);
     }
 
     public function getConfigAction()
@@ -69,9 +79,9 @@ class CoreShop_Admin_MailRuleController extends Admin
         $conditions = [];
         $actions = [];
 
-        foreach (Rule::$availableTypes as $type) {
-            $conditions[$type] = Rule::getConditionDispatcherForType($type)->getTypeKeys();
-            $actions[$type] = Rule::getActionDispatcherForType($type)->getTypeKeys();
+        foreach (\CoreShop\Model\Mail\Rule::$availableTypes as $type) {
+            $conditions[$type] = \CoreShop\Model\Mail\Rule::getConditionDispatcherForType($type)->getTypeKeys();
+            $actions[$type] = \CoreShop\Model\Mail\Rule::getActionDispatcherForType($type)->getTypeKeys();
         }
 
         $this->_helper->json([
@@ -82,28 +92,14 @@ class CoreShop_Admin_MailRuleController extends Admin
         ]);
     }
 
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        $count = Rule::getList()->getCount();
-
-        $rule = \CoreShop\Model\Mail\Rule::create();
-        $rule->setName($name);
-        $rule->setSort($count+1);
-        $rule->save();
-
-        $this->_helper->json(['success' => true, 'data' => $rule]);
-    }
-
     public function sortAction()
     {
         $rule = $this->getParam("rule");
         $toRule = $this->getParam("toRule");
         $position = $this->getParam("position");
 
-        $rule = Rule::getById($rule);
-        $toRule = Rule::getById($toRule);
+        $rule = \CoreShop\Model\Mail\Rule::getById($rule);
+        $toRule = \CoreShop\Model\Mail\Rule::getById($toRule);
 
         $direction = $rule->getSort() < $toRule->getSort() ? 'down' : 'up';
 
@@ -117,12 +113,14 @@ class CoreShop_Admin_MailRuleController extends Admin
                 $toSort -= 1;
             }
 
-            $list = new Rule\Listing();
+            $list = new \CoreShop\Model\Mail\Rule\Listing();
             $list->setCondition("sort >= ? AND sort <= ?", [$fromSort, $toSort]);
 
             foreach ($list->getData() as $newRule) {
-                $newRule->setSort($newRule->getSort() - 1);
-                $newRule->save();
+                if($newRule instanceof \CoreShop\Model\Mail\Rule) {
+                    $newRule->setSort($newRule->getSort() - 1);
+                    $newRule->save();
+                }
             }
 
             $rule->setSort($toSort);
@@ -133,12 +131,14 @@ class CoreShop_Admin_MailRuleController extends Admin
             $fromSort = $toRule->getSort();
             $toSort = $rule->getSort();
 
-            $list = new Rule\Listing();
+            $list = new \CoreShop\Model\Mail\Rule\Listing();
             $list->setCondition("sort >= ? AND sort <= ?", [$fromSort, $toSort]);
 
             foreach ($list->getData() as $newRule) {
-                $newRule->setSort($newRule->getSort() + 1);
-                $newRule->save();
+                if($newRule instanceof \CoreShop\Model\Mail\Rule) {
+                    $newRule->setSort($newRule->getSort() + 1);
+                    $newRule->save();
+                }
             }
 
             $rule->setSort($fromSort);
@@ -146,58 +146,5 @@ class CoreShop_Admin_MailRuleController extends Admin
         }
 
         $this->_helper->json(['success' => true]);
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $rule = \CoreShop\Model\Mail\Rule::getById($id);
-
-        if ($rule instanceof \CoreShop\Model\Mail\Rule) {
-            $this->_helper->json(['success' => true, 'data' => $rule->serialize()]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $rule = \CoreShop\Model\Mail\Rule::getById($id);
-
-        if ($data && $rule instanceof \CoreShop\Model\Mail\Rule) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $conditions = $data['conditions'];
-            $actions = $data['actions'];
-
-            $rule->setValues($data['settings']);
-
-            $actionInstances = $rule->prepareActions($actions);
-            $conditionInstances = $rule->prepareConditions($conditions);
-
-            $rule->setActions($actionInstances);
-            $rule->setConditions($conditionInstances);
-            $rule->save();
-
-            $this->_helper->json(['success' => true, 'data' => $rule]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $shippingRule = \CoreShop\Model\Mail\Rule::getById($id);
-
-        if ($shippingRule instanceof \CoreShop\Model\Mail\Rule) {
-            $shippingRule->delete();
-
-            $this->_helper->json(['success' => true]);
-        }
-
-        $this->_helper->json(['success' => false]);
     }
 }

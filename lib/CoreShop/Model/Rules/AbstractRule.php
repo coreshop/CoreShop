@@ -17,6 +17,7 @@ namespace CoreShop\Model\Rules;
 use CoreShop\Composite\Dispatcher;
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Carrier\ShippingRule\Condition\Conditions;
 use CoreShop\Model\Rules\Action\AbstractAction;
 use CoreShop\Model\Rules\Condition\AbstractCondition;
 use Pimcore\Tool;
@@ -27,6 +28,8 @@ use Pimcore\Tool;
  */
 abstract class AbstractRule extends AbstractModel
 {
+    use SerializeTrait;
+
     /**
      * @var Dispatcher[]
      */
@@ -207,22 +210,8 @@ abstract class AbstractRule extends AbstractModel
     public function serialize()
     {
         $object = $this->getObjectVars();
-        $object['conditions'] = [];
-        $object['actions'] = [];
-
-        foreach ($this->getConditions() as $condition) {
-            $conditionVars = get_object_vars($condition);
-            $conditionVars['type'] = $condition::getType();
-
-            $object['conditions'][] = $conditionVars;
-        }
-
-        foreach ($this->getActions() as $action) {
-            $actionVars = get_object_vars($action);
-            $actionVars['type'] = $action::getType();
-
-            $object['actions'][] = $actionVars;
-        }
+        $object['conditions'] = $this->serializeRuleEntries($this->getConditions());
+        $object['actions'] = $this->serializeRuleEntries($this->getActions());
 
         return $object;
     }

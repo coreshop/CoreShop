@@ -12,77 +12,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\TaxRuleGroup;
 use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_TaxRuleGroupController
  */
-class CoreShop_Admin_TaxRuleGroupController extends Admin
+class CoreShop_Admin_TaxRuleGroupController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_tax_rules';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_tax_rules');
-        }
-    }
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\TaxRuleGroup::class;
 
-    public function listAction()
-    {
-        $list = TaxRuleGroup::getList();
-
-        $data = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $group) {
-                $data[] = $this->getTreeNodeConfig($group);
-            }
-        }
-        $this->_helper->json($data);
-    }
-
-    protected function getTreeNodeConfig(TaxRuleGroup $group)
-    {
-        $tmp = [
-            'id' => $group->getId(),
-            'text' => $group->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$group->getId(),
-            ],
-            'name' => $group->getName(),
-        ];
-
-        return $tmp;
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $group = TaxRuleGroup::create();
-            $group->setName($name);
-            $group->setActive(1);
-            $group->save();
-
-            $this->_helper->json(['success' => true, 'data' => $group]);
-        }
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $group = TaxRuleGroup::getById($id);
-
-        if ($group instanceof TaxRuleGroup) {
-            $this->_helper->json(['success' => true, 'data' => $group->getObjectVars()]);
-        } else {
-            $this->_helper->json(['success' => false]);
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model) {
+        if($model instanceof \CoreShop\Model\TaxRuleGroup) {
+            $model->setActive(1);
         }
     }
 
@@ -90,9 +42,9 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
     {
         $id = $this->getParam('id');
         $data = $this->getParam('data');
-        $group = TaxRuleGroup::getById($id);
+        $group = \CoreShop\Model\TaxRuleGroup::getById($id);
 
-        if ($data && $group instanceof TaxRuleGroup) {
+        if ($data && $group instanceof \CoreShop\Model\TaxRuleGroup) {
             $data = \Zend_Json::decode($this->getParam('data'));
 
             $group->setValues($data);
@@ -139,26 +91,12 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
         }
     }
 
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $group = TaxRuleGroup::getById($id);
-
-        if ($group instanceof TaxRuleGroup) {
-            $group->delete();
-
-            $this->_helper->json(['success' => true]);
-        }
-
-        $this->_helper->json(['success' => false]);
-    }
-
     public function listRulesAction()
     {
         $id = $this->getParam('id');
-        $group = TaxRuleGroup::getById($id);
+        $group = \CoreShop\Model\TaxRuleGroup::getById($id);
 
-        if ($group instanceof TaxRuleGroup) {
+        if ($group instanceof \CoreShop\Model\TaxRuleGroup) {
             $rules = $group->getRules();
 
             $this->_helper->json(['total' => count($rules), 'data' => $rules]);
@@ -170,9 +108,9 @@ class CoreShop_Admin_TaxRuleGroupController extends Admin
     public function addRuleAction()
     {
         $id = $this->getParam('id');
-        $group = TaxRuleGroup::getById($id);
+        $group = \CoreShop\Model\TaxRuleGroup::getById($id);
 
-        if ($group instanceof TaxRuleGroup) {
+        if ($group instanceof \CoreShop\Model\TaxRuleGroup) {
             $countryId = $this->getParam('countryId');
             $taxId = $this->getParam('taxId');
             $behavior = $this->getParam('behavior');

@@ -12,113 +12,44 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Country;
 use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_CountryController
  */
-class CoreShop_Admin_CountryController extends Admin
+class CoreShop_Admin_CountryController extends Admin\Data
 {
-    public function init()
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_countries';
+
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Country::class;
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @param $config
+     * @return mixed
+     */
+    protected function prepareTreeNodeConfig(\CoreShop\Model\AbstractModel $model, $config)
     {
-        parent::init();
-
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_countries');
-        }
-    }
-
-    public function listAction()
-    {
-        $list = CoreShop\Model\Country::getList();
-        $list->setOrder('ASC');
-        $list->setOrderKey('name');
-        $list->load();
-
-        $countries = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $country) {
-                $countries[] = $this->getTreeNodeConfig($country);
-            }
-        }
-        $this->_helper->json($countries);
-    }
-
-    protected function getTreeNodeConfig(Country $country)
-    {
-        $tmpCountry = [
-            'id' => $country->getId(),
-            'text' => $country->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$country->getId(),
-            ],
-            'name' => $country->getName(),
-            'zone' => $country->getZone() instanceof \CoreShop\Model\Zone ? $country->getZone()->getName() : ''
-        ];
-
-        return $tmpCountry;
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $country = Country::getById($id);
-
-        if ($country instanceof Country) {
-            $this->_helper->json(['success' => true, 'data' => $country]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $country = Country::getById($id);
-
-        if ($data && $country instanceof Country) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $country->setValues($data);
-            $country->save();
-
-            $this->_helper->json(['success' => true, 'data' => $country]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $country = Country::create();
-            $country->setName($name);
-            $country->setActive(1);
-            $country->save();
-
-            $this->_helper->json(['success' => true, 'data' => $country]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $country = Country::getById($id);
-
-        if ($country instanceof Country) {
-            $country->delete();
-
-            $this->_helper->json(['success' => true]);
+        if($model instanceof \CoreShop\Model\Country) {
+            $config['zone'] = $model->getZone() instanceof \CoreShop\Model\Zone ? $model->getZone()->getName() : '';
         }
 
-        $this->_helper->json(['success' => false]);
+        return $config;
+    }
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model) {
+        if($model instanceof \CoreShop\Model\Country) {
+            $model->setActive(true);
+            $model->setUseStoreCurrency(true);
+        }
     }
 }

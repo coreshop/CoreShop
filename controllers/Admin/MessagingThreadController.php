@@ -17,19 +17,17 @@ use CoreShop\Controller\Action\Admin;
 /**
  * Class CoreShop_Admin_MessagingThreadController
  */
-class CoreShop_Admin_MessagingThreadController extends Admin
+class CoreShop_Admin_MessagingThreadController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_messaging_thread';
 
-        // check permissions
-        $notRestrictedActions = [];
-
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_messaging_thread');
-        }
-    }
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Messaging\Thread::class;
 
     public function listAction()
     {
@@ -103,6 +101,21 @@ class CoreShop_Admin_MessagingThreadController extends Admin
         } else {
             $this->_helper->json(['success' => false]);
         }
+    }
+
+    public function saveAction()
+    {
+        throw new Exception("Not allowed");
+    }
+
+    public function addAction()
+    {
+        throw new Exception("Not allowed");
+    }
+
+    public function deleteAction()
+    {
+        throw new Exception("Not allowed");
     }
 
     public function getStatesAction()

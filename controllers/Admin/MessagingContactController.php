@@ -12,109 +12,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Messaging\Contact;
 use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_MessagingContactController
  */
-class CoreShop_Admin_MessagingContactController extends Admin
+class CoreShop_Admin_MessagingContactController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_messaging_contact';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_messaging_contact');
-        }
-    }
-
-    public function listAction()
-    {
-        $list = Contact::getList();
-
-        $data = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $contact) {
-                $data[] = $this->getTreeNodeConfig($contact);
-            }
-        }
-        $this->_helper->json($data);
-    }
-
-    protected function getTreeNodeConfig(Contact $contact)
-    {
-        $tmp = [
-            'id' => $contact->getId(),
-            'text' => $contact->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$contact->getId(),
-            ],
-            'name' => $contact->getName(),
-        ];
-
-        return $tmp;
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $contact = Contact::create();
-            $contact->setName($name);
-            $contact->save();
-
-            $this->_helper->json(['success' => true, 'data' => $contact]);
-        }
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $contact = Contact::getById($id);
-
-        if ($contact instanceof Contact) {
-            $this->_helper->json(['success' => true, 'data' => $contact->getObjectVars()]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $contact = Contact::getById($id);
-
-        if ($data && $contact instanceof Contact) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $contact->setValues($data);
-            $contact->save();
-
-            $this->_helper->json(['success' => true, 'data' => $contact->getObjectVars()]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $contact = Contact::getById($id);
-
-        if ($contact instanceof Contact) {
-            $contact->delete();
-
-            $this->_helper->json(['success' => true]);
-        }
-
-        $this->_helper->json(['success' => false]);
-    }
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Messaging\Contact::class;
 }

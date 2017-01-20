@@ -12,22 +12,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Shop;
 use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_ShopController
  */
-class CoreShop_Admin_ShopController extends Admin
+class CoreShop_Admin_ShopController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_shops';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_shops');
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Shop::class;
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model) {
+        if($model instanceof \CoreShop\Model\Shop) {
+            $model->setTemplate(\CoreShop\Model\Shop::getDefaultShop()->getTemplate());
         }
     }
     
@@ -40,102 +47,15 @@ class CoreShop_Admin_ShopController extends Admin
         $sites = [];
         if (is_array($list->getSites())) {
             foreach ($list->getSites() as $site) {
-                $sites[] = [
-                    'id' => $site->getId(),
-                    'rootId' => $site->getRootId(),
-                    'name' => $site->getMainDomain()
-                ];
+                if($site instanceof Site) {
+                    $sites[] = [
+                        'id' => $site->getId(),
+                        'rootId' => $site->getRootId(),
+                        'name' => $site->getMainDomain()
+                    ];
+                }
             }
         }
         $this->_helper->json($sites);
-    }
-
-    public function listAction()
-    {
-        $list = Shop::getList();
-        $list->setOrder('ASC');
-        $list->load();
-
-        $shops = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $shop) {
-                $shops[] = $this->getTreeNodeConfig($shop);
-            }
-        }
-        $this->_helper->json($shops);
-    }
-
-    protected function getTreeNodeConfig(Shop $shop)
-    {
-        $tmpShop = [
-            'id' => $shop->getId(),
-            'text' => $shop->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$shop->getId(),
-            ],
-            'name' => $shop->getName(),
-        ];
-
-        return $tmpShop;
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $shop = Shop::getById($id);
-
-        if ($shop instanceof Shop) {
-            $this->_helper->json(['success' => true, 'data' => $shop]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $shop = Shop::getById($id);
-
-        if ($data && $shop instanceof Shop) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $shop->setValues($data);
-            $shop->save();
-
-            $this->_helper->json(['success' => true, 'data' => $shop]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $shop = Shop::create();
-            $shop->setName($name);
-            $shop->setTemplate(Shop::getDefaultShop()->getTemplate());
-            $shop->save();
-
-            $this->_helper->json(['success' => true, 'data' => $shop]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $shop = Shop::getById($id);
-
-        if ($shop instanceof Shop) {
-            $shop->delete();
-
-            $this->_helper->json(['success' => true]);
-        }
-
-        $this->_helper->json(['success' => false]);
     }
 }

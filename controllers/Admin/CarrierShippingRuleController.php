@@ -17,48 +17,47 @@ use CoreShop\Controller\Action\Admin;
 /**
  * Class CoreShop_Admin_CarrierShippingRuleController
  */
-class CoreShop_Admin_CarrierShippingRuleController extends Admin
+class CoreShop_Admin_CarrierShippingRuleController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_carriers';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission("coreshop_permission_carriers");
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Carrier\ShippingRule::class;
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @param $data
+     */
+    protected function prepareSave(\CoreShop\Model\AbstractModel $model, $data) {
+        if($model instanceof \CoreShop\Model\Carrier\ShippingRule) {
+            $conditions = $data['conditions'];
+            $actions = $data['actions'];
+
+            $actionInstances = $model->prepareActions($actions);
+            $conditionInstances = $model->prepareConditions($conditions);
+
+            $model->setValues($data['settings']);
+            $model->setActions($actionInstances);
+            $model->setConditions($conditionInstances);
         }
-    }
-
-    public function listAction()
-    {
-        $list = \CoreShop\Model\Carrier\ShippingRule::getList();
-        $rules = $list->load();
-        $data = [];
-
-        foreach ($rules as $rule) {
-            $data[] = $this->getShippingRuleTreeNodeConfig($rule);
-        }
-
-        $this->_helper->json($data);
     }
 
     /**
-     * @param \CoreShop\Model\Carrier\ShippingRule $rule
+     * @param \CoreShop\Model\AbstractModel $model
      * @return array
      */
-    protected function getShippingRuleTreeNodeConfig($rule)
+    protected function getReturnValues(\CoreShop\Model\AbstractModel $model)
     {
-        $tmpRule = [
-            'id' => $rule->getId(),
-            'text' => $rule->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$rule->getId(),
-            ],
-            'name' => $rule->getName(),
-        ];
+        if($model instanceof \CoreShop\Model\Carrier\ShippingRule) {
+            return $model->serialize();
+        }
 
-        return $tmpRule;
+        return parent::getReturnValues($model);
     }
 
     public function getConfigAction()
@@ -68,71 +67,6 @@ class CoreShop_Admin_CarrierShippingRuleController extends Admin
             'conditions' => \CoreShop\Model\Carrier\ShippingRule::getConditionDispatcher()->getTypeKeys(),
             'actions' => \CoreShop\Model\Carrier\ShippingRule::getActionDispatcher()->getTypeKeys(),
         ]);
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        $shippingRule = \CoreShop\Model\Carrier\ShippingRule::create();
-        $shippingRule->setName($name);
-        $shippingRule->save();
-
-        $this->_helper->json(['success' => true, 'data' => $shippingRule]);
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $specificPrice = \CoreShop\Model\Carrier\ShippingRule::getById($id);
-
-        if ($specificPrice instanceof \CoreShop\Model\Carrier\ShippingRule) {
-            $this->_helper->json(['success' => true, 'data' => $specificPrice->serialize()]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $shippingRule = \CoreShop\Model\Carrier\ShippingRule::getById($id);
-
-        if ($data && $shippingRule instanceof \CoreShop\Model\Carrier\ShippingRule) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $conditions = $data['conditions'];
-            $actions = $data['actions'];
-
-            $actionInstances = $shippingRule->prepareActions($actions);
-            $conditionInstances = $shippingRule->prepareConditions($conditions);
-
-            $shippingRule->setValues($data['settings']);
-            $shippingRule->setActions($actionInstances);
-            $shippingRule->setConditions($conditionInstances);
-            $shippingRule->save();
-
-            \Pimcore\Cache::clearTag('coreshop_product_price');
-
-            $this->_helper->json(['success' => true, 'data' => $shippingRule]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $shippingRule = \CoreShop\Model\Carrier\ShippingRule::getById($id);
-
-        if ($shippingRule instanceof \CoreShop\Model\Carrier\ShippingRule) {
-            $shippingRule->delete();
-
-            $this->_helper->json(['success' => true]);
-        }
-
-        $this->_helper->json(['success' => false]);
     }
 
     public function getUsedByCarriersAction()

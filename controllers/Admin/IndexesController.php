@@ -12,95 +12,57 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Index;
 use CoreShop\Controller\Action\Admin;
-use Pimcore\Model\Object;
 
 /**
  * Class CoreShop_Admin_IndexesController
  */
-class CoreShop_Admin_IndexesController extends Admin
+class CoreShop_Admin_IndexesController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_indexes';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Index::class;
 
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_indexes');
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model) {
+        if($model instanceof \CoreShop\Model\Index) {
+            $model->setType('mysql');
+            $model->setConfig(new \CoreShop\Model\Index\Config());
         }
     }
 
-    public function listAction()
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @return array
+     */
+    protected function getReturnValues(\CoreShop\Model\AbstractModel $model)
     {
-        $list = Index::getList();
+        $values = parent::getReturnValues($model);
 
-        $data = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $group) {
-                $data[] = $this->getTreeNodeConfig($group);
-            }
+        if($model instanceof \CoreShop\Model\Index) {
+            $values['classId'] = \CoreShop\Model\Product::classId();
         }
-        $this->_helper->json($data);
-    }
 
-    protected function getTreeNodeConfig(Index $index)
-    {
-        $tmp = [
-            'id' => $index->getId(),
-            'text' => $index->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$index->getId(),
-            ],
-            'name' => $index->getName(),
-        ];
-        
-        return $tmp;
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $group = Index::create();
-            $group->setName($name);
-            $group->setType('mysql');
-            $group->setConfig([]);
-            $group->save();
-
-            $this->_helper->json(['success' => true, 'data' => $group]);
-        }
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $group = Index::getById($id);
-
-        if ($group instanceof Index) {
-            $data = $group->getObjectVars();
-            $data['classId'] = \CoreShop\Model\Product::classId();
-
-            $this->_helper->json(['success' => true, 'data' => $data]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
+        return $values;
     }
 
     public function saveAction()
     {
         $id = $this->getParam('id');
         $data = $this->getParam('data');
-        $index = Index::getById($id);
+        $index = \CoreShop\Model\Index::getById($id);
 
         $prohibitedFieldNames = ["name", "id"];
 
-        if ($data && $index instanceof Index) {
+        if ($data && $index instanceof \CoreShop\Model\Index) {
             try {
                 $data = \Zend_Json::decode($this->getParam('data'));
 
@@ -193,20 +155,6 @@ class CoreShop_Admin_IndexesController extends Admin
         }
     }
 
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $group = Index::getById($id);
-
-        if ($group instanceof Index) {
-            $group->delete();
-
-            $this->_helper->json(['success' => true]);
-        }
-
-        $this->_helper->json(['success' => false]);
-    }
-
     public function getTypesAction()
     {
         $types = \CoreShop\IndexService::getIndexDispatcher()->getTypeKeys();
@@ -223,7 +171,7 @@ class CoreShop_Admin_IndexesController extends Admin
 
     public function getClassDefinitionForFieldSelectionAction()
     {
-        $class = Object\ClassDefinition::getById(intval($this->getParam('id')));
+        $class = \Pimcore\Model\Object\ClassDefinition::getById(intval($this->getParam('id')));
         $fields = $class->getFieldDefinitions();
 
         $result = [
@@ -235,7 +183,7 @@ class CoreShop_Admin_IndexesController extends Admin
         ];
 
         foreach ($fields as $field) {
-            if ($field instanceof Object\ClassDefinition\Data\Localizedfields) {
+            if ($field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Localizedfields) {
                 if (!is_array($result['localizedfields'])) {
                     $result['localizedfields'] = [
                         'nodeLabel' => 'localizedfields',
@@ -249,12 +197,12 @@ class CoreShop_Admin_IndexesController extends Admin
                 foreach ($localizedFields as $localizedField) {
                     $result['localizedfields']['childs'][] = $this->getFieldConfiguration($localizedField);
                 }
-            } elseif ($field instanceof Object\ClassDefinition\Data\Objectbricks) {
-                $list = new Object\Objectbrick\Definition\Listing();
+            } elseif ($field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
+                $list = new \Pimcore\Model\Object\Objectbrick\Definition\Listing();
                 $list = $list->load();
 
                 foreach ($list as $brickDefinition) {
-                    if ($brickDefinition instanceof Object\Objectbrick\Definition) {
+                    if ($brickDefinition instanceof \Pimcore\Model\Object\Objectbrick\Definition) {
                         $key = $brickDefinition->getKey();
                         $classDefs = $brickDefinition->getClassDefinitions();
 
@@ -277,11 +225,9 @@ class CoreShop_Admin_IndexesController extends Admin
                         }
                     }
                 }
-            } elseif ($field instanceof Object\ClassDefinition\Data\Fieldcollections) {
-                //TODO: implement FieldCollection
-
+            } elseif ($field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Fieldcollections) {
                 foreach ($field->getAllowedTypes() as $type) {
-                    $definition = Object\Fieldcollection\Definition::getByKey($type);
+                    $definition = \Pimcore\Model\Object\Fieldcollection\Definition::getByKey($type);
 
                     $fieldDefinition = $definition->getFieldDefinitions();
 
@@ -297,8 +243,8 @@ class CoreShop_Admin_IndexesController extends Admin
                         $result[$key]['childs'][] = $this->getFieldConfiguration($fieldcollectionField);
                     }
                 }
-            } elseif ($field instanceof Object\ClassDefinition\Data\Classificationstore) {
-                $list = new Object\Classificationstore\GroupConfig\Listing();
+            } elseif ($field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Classificationstore) {
+                $list = new \Pimcore\Model\Object\Classificationstore\GroupConfig\Listing();
 
                 $allowedGroupIds = $field->getAllowedGroupIds();
 
@@ -324,10 +270,10 @@ class CoreShop_Admin_IndexesController extends Admin
     }
 
     /**
-     * @param Object\Classificationstore\GroupConfig $config
+     * @param \Pimcore\Model\Object\Classificationstore\GroupConfig $config
      * @return array
      */
-    protected function getClassificationStoreGroupConfiguration(Object\Classificationstore\GroupConfig $config)
+    protected function getClassificationStoreGroupConfiguration(\Pimcore\Model\Object\Classificationstore\GroupConfig $config)
     {
         $result = [];
         $result['nodeLabel'] = $config->getName();
@@ -335,10 +281,10 @@ class CoreShop_Admin_IndexesController extends Admin
         $result['childs'] = [];
 
         foreach ($config->getRelations() as $relation) {
-            if ($relation instanceof Object\Classificationstore\KeyGroupRelation) {
+            if ($relation instanceof \Pimcore\Model\Object\Classificationstore\KeyGroupRelation) {
                 $keyId = $relation->getKeyId();
 
-                $keyConfig = Object\Classificationstore\KeyConfig::getById($keyId);
+                $keyConfig = \Pimcore\Model\Object\Classificationstore\KeyConfig::getById($keyId);
 
                 $result['childs'][] = $this->getClassificationStoreFieldConfiguration($keyConfig, $config);
             }
@@ -348,10 +294,10 @@ class CoreShop_Admin_IndexesController extends Admin
     }
 
     /**
-     * @param Object\ClassDefinition\Data $field
+     * @param \Pimcore\Model\Object\ClassDefinition\Data $field
      * @return array
      */
-    protected function getFieldConfiguration(Object\ClassDefinition\Data $field)
+    protected function getFieldConfiguration(\Pimcore\Model\Object\ClassDefinition\Data $field)
     {
         return [
             'name' => $field->getName(),
@@ -362,11 +308,11 @@ class CoreShop_Admin_IndexesController extends Admin
     }
 
     /**
-     * @param Object\Classificationstore\KeyConfig $field
-     * @param Object\Classificationstore\GroupConfig $groupConfig
+     * @param \Pimcore\Model\Object\Classificationstore\KeyConfig $field
+     * @param \Pimcore\Model\Object\Classificationstore\GroupConfig $groupConfig
      * @return array
      */
-    protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig)
+    protected function getClassificationStoreFieldConfiguration(\Pimcore\Model\Object\Classificationstore\KeyConfig $field, \Pimcore\Model\Object\Classificationstore\GroupConfig $groupConfig)
     {
         return [
             'name' => $field->getName(),
@@ -401,12 +347,12 @@ class CoreShop_Admin_IndexesController extends Admin
         }
 
         $fieldTypes = [
-            Index\Config\Column::FIELD_TYPE_STRING,
-            Index\Config\Column::FIELD_TYPE_INTEGER,
-            Index\Config\Column::FIELD_TYPE_DOUBLE,
-            Index\Config\Column::FIELD_TYPE_BOOLEAN,
-            Index\Config\Column::FIELD_TYPE_DATE,
-            Index\Config\Column::FIELD_TYPE_TEXT
+            \CoreShop\Model\Index\Config\Column::FIELD_TYPE_STRING,
+            \CoreShop\Model\Index\Config\Column::FIELD_TYPE_INTEGER,
+            \CoreShop\Model\Index\Config\Column::FIELD_TYPE_DOUBLE,
+            \CoreShop\Model\Index\Config\Column::FIELD_TYPE_BOOLEAN,
+            \CoreShop\Model\Index\Config\Column::FIELD_TYPE_DATE,
+            \CoreShop\Model\Index\Config\Column::FIELD_TYPE_TEXT
         ];
         $fieldTypesResult = [];
 

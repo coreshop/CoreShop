@@ -25,7 +25,7 @@ class Config
     /**
      * @var Model\Index\Config\Column[]
      */
-    public $columns;
+    public $columns = [];
 
     /**
      * @return Model\Index\Config\Column[]

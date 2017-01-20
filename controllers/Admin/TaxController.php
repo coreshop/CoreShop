@@ -12,114 +12,60 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Tax;
 use CoreShop\Controller\Action\Admin;
 
 /**
  * Class CoreShop_Admin_TaxController
  */
-class CoreShop_Admin_TaxController extends Admin
+class CoreShop_Admin_TaxController extends Admin\Data
 {
-    public function init()
-    {
-        parent::init();
+    /**
+     * @var string
+     */
+    protected $permission = 'coreshop_permission_taxes';
 
-        // check permissions
-        $notRestrictedActions = ['list'];
-        if (!in_array($this->getParam('action'), $notRestrictedActions)) {
-            $this->checkPermission('coreshop_permission_taxes');
+    /**
+     * @var string
+     */
+    protected $model = \CoreShop\Model\Tax::class;
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     */
+    protected function setDefaultValues(\CoreShop\Model\AbstractModel $model) {
+        if($model instanceof \CoreShop\Model\Tax) {
+            $model->setRate(0);
+            $model->setActive(1);
         }
     }
 
-    public function listAction()
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     * @param $config
+     * @return mixed
+     */
+    protected function prepareTreeNodeConfig(\CoreShop\Model\AbstractModel $model, $config)
     {
-        $list = Tax::getList();
-
-        $data = [];
-        if (is_array($list->getData())) {
-            foreach ($list->getData() as $tax) {
-                $data[] = $this->getTreeNodeConfig($tax);
-            }
-        }
-        $this->_helper->json($data);
-    }
-
-    protected function getTreeNodeConfig(Tax $tax)
-    {
-        $tmp = [
-            'id' => $tax->getId(),
-            'text' => $tax->getName(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$tax->getId(),
-            ],
-            'name' => $tax->getName(),
-            'rate' => $tax->getRate(),
-        ];
-
-        return $tmp;
-    }
-
-    public function addAction()
-    {
-        $name = $this->getParam('name');
-
-        if (strlen($name) <= 0) {
-            $this->helper->json(['success' => false, 'message' => $this->getTranslator()->translate('Name must be set')]);
-        } else {
-            $tax = Tax::create();
-            $tax->setName($name);
-            $tax->setRate(0);
-            $tax->setActive(1);
-            $tax->save();
-
-            $this->_helper->json(['success' => true, 'data' => $tax]);
-        }
-    }
-
-    public function getAction()
-    {
-        $id = $this->getParam('id');
-        $tax = Tax::getById($id);
-
-        if ($tax instanceof Tax) {
-            $taxArray = $tax->getObjectVars();
-            $taxArray['title'] = $tax->getName();
-
-            $this->_helper->json(['success' => true, 'data' => $taxArray]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function saveAction()
-    {
-        $id = $this->getParam('id');
-        $data = $this->getParam('data');
-        $tax = Tax::getById($id);
-
-        if ($data && $tax instanceof Tax) {
-            $data = \Zend_Json::decode($this->getParam('data'));
-
-            $tax->setValues($data);
-            $tax->save();
-
-            $this->_helper->json(['success' => true, 'data' => $tax]);
-        } else {
-            $this->_helper->json(['success' => false]);
-        }
-    }
-
-    public function deleteAction()
-    {
-        $id = $this->getParam('id');
-        $tax = Tax::getById($id);
-
-        if ($tax instanceof Tax) {
-            $tax->delete();
-
-            $this->_helper->json(['success' => true]);
+        if($model instanceof \CoreShop\Model\Tax) {
+            $config['rate'] = $model->getRate();
         }
 
-        $this->_helper->json(['success' => false]);
+        return $config;
+    }
+
+    /**
+     * @param \CoreShop\Model\AbstractModel $model
+     *
+     * @return array
+     */
+    protected function getReturnValues(\CoreShop\Model\AbstractModel $model)
+    {
+        $values = parent::getReturnValues($model);
+
+        if($model instanceof \CoreShop\Model\Tax) {
+            $values['title'] = $model->getName();
+        }
+
+        return $values;
     }
 }
