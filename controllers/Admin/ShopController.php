@@ -47,7 +47,7 @@ class CoreShop_Admin_ShopController extends Admin\Data
         $sites = [];
         if (is_array($list->getSites())) {
             foreach ($list->getSites() as $site) {
-                if($site instanceof Site) {
+                if($site instanceof \CoreShop\Model\Shop) {
                     $sites[] = [
                         'id' => $site->getId(),
                         'rootId' => $site->getRootId(),

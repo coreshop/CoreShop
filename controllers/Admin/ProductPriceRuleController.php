@@ -54,6 +54,9 @@ class CoreShop_Admin_ProductPriceRuleController extends Admin\Data
             $model->setValues($data['settings']);
             $model->setActions($actionInstances);
             $model->setConditions($conditionInstances);
+
+
+            \Pimcore\Cache::clearTag('coreshop_product_price');
         }
     }
 
