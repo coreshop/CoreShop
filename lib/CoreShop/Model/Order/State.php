@@ -16,7 +16,6 @@ namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Order;
 use Pimcore\Model\Element\Note;
-use Pimcore\Model\Workflow;
 use Pimcore\Version;
 
 /**
@@ -170,7 +169,7 @@ class State
         $orderClassId = Order::classId();
 
         if(Version::getRevision() >= 4035) {
-            $list = new Workflow\Listing();
+            $list = new \Pimcore\Model\Workflow\Listing();
             $list->load();
 
             foreach($list->getWorkflows() as $workflow) {
