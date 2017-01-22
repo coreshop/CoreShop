@@ -16,6 +16,8 @@ namespace CoreShop\Model\Order;
 
 use CoreShop\Model\Order;
 use Pimcore\Model\Element\Note;
+use Pimcore\Model\Workflow;
+use Pimcore\Version;
 
 /**
  * Class State
@@ -165,16 +167,35 @@ class State
      */
     public static function getValidOrderStates()
     {
-        $config = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
         $orderClassId = Order::classId();
 
-        foreach ($config['workflows'] as $workflow) {
-            if (array_key_exists('workflowSubject', $workflow)) {
-                $subject = $workflow['workflowSubject'];
+        if(Version::getRevision() >= 4035) {
+            $list = new Workflow\Listing();
+            $list->load();
 
-                if (array_key_exists('classes', $subject)) {
-                    if (in_array($orderClassId, $subject['classes'])) {
-                        return $workflow['states'];
+            foreach($list->getWorkflows() as $workflow) {
+                if(is_array($workflow->getWorkflowSubject())) {
+                    $subject = $workflow->getWorkflowSubject();
+
+                    if (array_key_exists('classes', $subject)) {
+                        if (in_array($orderClassId, $subject['classes'])) {
+                            return $workflow->getStates();
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            $config = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
+
+            foreach ($config['workflows'] as $workflow) {
+                if (array_key_exists('workflowSubject', $workflow)) {
+                    $subject = $workflow['workflowSubject'];
+
+                    if (array_key_exists('classes', $subject)) {
+                        if (in_array($orderClassId, $subject['classes'])) {
+                            return $workflow['states'];
+                        }
                     }
                 }
             }
