@@ -25,6 +25,7 @@ use Pimcore\Model\Translation\Admin;
 use Pimcore\Model\User;
 use Pimcore\Model\Staticroute;
 use Pimcore\Model\Tool\Setup;
+use Pimcore\Model\Workflow;
 use Pimcore\Tool;
 
 /**
@@ -685,53 +686,60 @@ class Install
     public function installWorkflow()
     {
         //install workflow data!!
-        $orderListing = \CoreShop\Model\Order::getList();
-        $classId = $orderListing->getClassId();
+        if(\Pimcore\Version::getRevision() > 4030) {
+            $object = \CoreShop\Model\Order\Workflow::getWorkflowObject();
+            $object->save();
 
-        $workflowConfig = \CoreShop\Model\Order\Workflow::getWorkflowConfig();
-        $systemWorkflowConfig = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
+            return $object->getId();
+        }
+        else
+        {
+            $workflowConfig = \CoreShop\Model\Order\Workflow::getWorkflowConfig();
+            $systemWorkflowConfig = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
 
-        $configFile = PIMCORE_CONFIGURATION_DIRECTORY . '/workflowmanagement.php';
+            $configFile = PIMCORE_CONFIGURATION_DIRECTORY . '/workflowmanagement.php';
 
-        //set defaults
-        $workflowConfig['workflowSubject']['classes'] = [$classId];
+            //no workflow file. create it!
+            if ($systemWorkflowConfig === null) {
+                //set defaults
+                $workflowConfig['id'] = 1;
 
-        //no workflow file. create it!
-        if ($systemWorkflowConfig === null) {
+                $workflowCompleteData = [
+                    'workflows' => [$workflowConfig]
+                ];
 
-            //set defaults
-            $workflowConfig['id'] = 1;
+                \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($workflowCompleteData));
+            } else {
+                $hasCoreShopWorkflow = false;
+                $lastId = 1;
 
-            $workflowCompleteData = [
-                'workflows' => [$workflowConfig]
-            ];
-
-            \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($workflowCompleteData));
-        } else {
-            $hasCoreShopWorkflow = false;
-            $lastId = 1;
-
-            if (isset($systemWorkflowConfig['workflows']) && is_array($systemWorkflowConfig['workflows'])) {
-                foreach ($systemWorkflowConfig['workflows'] as $workflow) {
-                    if ($workflow['name'] === 'OrderState') {
-                        $hasCoreShopWorkflow = true;
-                        break;
+                if (isset($systemWorkflowConfig['workflows']) && is_array($systemWorkflowConfig['workflows'])) {
+                    foreach ($systemWorkflowConfig['workflows'] as $workflow) {
+                        if ($workflow['name'] === 'OrderState') {
+                            $hasCoreShopWorkflow = true;
+                            break;
+                        }
+                        $lastId = (int)$workflow['id'];
                     }
-                    $lastId = (int) $workflow['id'];
-                }
 
-                if ($hasCoreShopWorkflow === false) {
-                    //set defaults
-                    $workflowConfig['id'] = $lastId + 1;
-                    $systemWorkflowConfig['workflows'] = array_merge($systemWorkflowConfig['workflows'], [$workflowConfig]);
-                    \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($systemWorkflowConfig));
+                    if ($hasCoreShopWorkflow === false) {
+                        //set defaults
+                        $workflowConfig['id'] = $lastId + 1;
+                        $systemWorkflowConfig['workflows'] = array_merge($systemWorkflowConfig['workflows'], [$workflowConfig]);
+                        \Pimcore\File::putPhpFile($configFile, to_php_data_file_format($systemWorkflowConfig));
+                    }
                 }
             }
-        }
 
-        return $workflowConfig['id'];
+            return $workflowConfig['id'];
+        }
     }
 
+    /**
+     * Install default Mail Rules
+     * 
+     * @return bool
+     */
     public function installMailRules()
     {
         $file = PIMCORE_PLUGINS_PATH .'/CoreShop/install/data/rules/mailRules.xml';
