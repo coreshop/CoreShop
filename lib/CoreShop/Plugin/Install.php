@@ -737,7 +737,7 @@ class Install
 
     /**
      * Install default Mail Rules
-     * 
+     *
      * @return bool
      */
     public function installMailRules()
