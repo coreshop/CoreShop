@@ -400,22 +400,26 @@ abstract class Document extends Base
         $itemTaxes = new Object\Fieldcollection();
         $totalTax = 0;
 
-        foreach ($orderItem->getTaxes() as $tax) {
-            if ($tax instanceof Order\Tax) {
-                $taxRate = Tax::create();
-                $taxRate->setRate($tax->getRate());
+        $orderTaxes = $orderItem->getTaxes();
 
-                $taxCalculator = new TaxCalculator([$taxRate]);
+        if (is_array($orderTaxes)) {
+            foreach ($orderTaxes as $tax) {
+                if ($tax instanceof Order\Tax) {
+                    $taxRate = Tax::create();
+                    $taxRate->setRate($tax->getRate());
 
-                $itemTax = Order\Tax::create([
-                    'name' => $tax->getName(),
-                    'rate' => $tax->getRate(),
-                    'amount' => $taxCalculator->getTaxesAmount($amount)
-                ]);
+                    $taxCalculator = new TaxCalculator([$taxRate]);
 
-                $itemTaxes->add($itemTax);
+                    $itemTax = Order\Tax::create([
+                        'name' => $tax->getName(),
+                        'rate' => $tax->getRate(),
+                        'amount' => $taxCalculator->getTaxesAmount($amount)
+                    ]);
 
-                $totalTax += $itemTax->getAmount();
+                    $itemTaxes->add($itemTax);
+
+                    $totalTax += $itemTax->getAmount();
+                }
             }
         }
 

@@ -997,13 +997,15 @@ class CoreShop_Admin_OrderController extends Admin
 
         $taxes = $order->getTaxes();
 
-        foreach ($taxes as $tax) {
-            if ($tax instanceof \CoreShop\Model\Order\Tax) {
-                $summary[] = [
-                    'key' => 'tax_' . $tax->getName(),
-                    'text' => sprintf($this->view->translateAdmin('Tax (%s - %s)'), $tax->getName(), \CoreShop::getTools()->formatTax($tax->getRate())),
-                    'value' => $tax->getAmount()
-                ];
+        if (is_array($taxes)) {
+            foreach ($taxes as $tax) {
+                if ($tax instanceof \CoreShop\Model\Order\Tax) {
+                    $summary[] = [
+                        'key' => 'tax_' . $tax->getName(),
+                        'text' => sprintf($this->view->translateAdmin('Tax (%s - %s)'), $tax->getName(), \CoreShop::getTools()->formatTax($tax->getRate())),
+                        'value' => $tax->getAmount()
+                    ];
+                }
             }
         }
 
