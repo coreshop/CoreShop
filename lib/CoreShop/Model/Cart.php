@@ -864,7 +864,6 @@ class Cart extends Base
     {
         Logger::info('Create order for cart '.$this->getId());
 
-        $orderNumber = Order::getNextOrderNumber();
 
         if (is_null($language)) {
             if (\Zend_Registry::isRegistered("Zend_Locale")) {
@@ -876,6 +875,7 @@ class Cart extends Base
 
         $orderClass = Order::getPimcoreObjectClass();
         $parentFolder = $orderClass::getPathForNewOrder();
+        $orderNumber = $orderClass::getNextOrderNumber();
 
         $order = Order::create();
         $order->setKey(\Pimcore\File::getValidFilename($orderNumber));

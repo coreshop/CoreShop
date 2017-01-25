@@ -111,7 +111,7 @@ class Order extends Base
     {
         $number = NumberRange::getNextNumberForType('order');
 
-        return self::getValidOrderNumber($number);
+        return static::getValidOrderNumber($number);
     }
 
     /**
