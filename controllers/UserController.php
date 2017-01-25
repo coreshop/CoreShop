@@ -208,9 +208,13 @@ class CoreShop_UserController extends Action
             try {
                 $params = $this->getAllParams();
 
-                if ($params['password']) {
-                    if ($params['password'] !== $params['repassword']) {
-                        throw new Exception($this->view->translate('Passwords do not match!'));
+                if (empty($params['password'])) {
+                    unset($params['password'], $params['repassword']);
+                } else {
+                    if ($params['password']) {
+                        if ($params['password'] !== $params['repassword']) {
+                            throw new Exception($this->view->translate('Passwords do not match!'));
+                        }
                     }
                 }
 
