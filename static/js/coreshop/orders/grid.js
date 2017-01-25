@@ -57,7 +57,9 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             };
 
             newColumn.id = newColumn.dataIndex;
-            newColumn.text = t(newColumn.text);
+            newColumn.text = newColumn.text.split('|').map(function(string) {
+                return t(string);
+            }).join(' ' );
 
             if(newColumn.hasOwnProperty('renderAs')) {
                 if(newColumn.renderAs === 'currency') {
