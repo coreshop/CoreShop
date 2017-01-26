@@ -58,8 +58,9 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
 
             newColumn.id = newColumn.dataIndex;
             newColumn.text = newColumn.text.split('|').map(function(string) {
-                return t(string);
-            }).join(' ' );
+                //text like [foo bar] won't be translated. just remove brackets.
+                return string.match(/\[([^)]+)]/) ? string.replace(/\[|]/gi, '') : t(string);
+            }).join(' ');
 
             if(newColumn.hasOwnProperty('renderAs')) {
                 if(newColumn.renderAs === 'currency') {

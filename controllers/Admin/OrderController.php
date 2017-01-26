@@ -143,8 +143,10 @@ class CoreShop_Admin_OrderController extends Admin
                     continue;
                 }
 
+                $niceName = ucwords(str_replace('_', ' ', $fieldName));
+
                 $fields[] = [
-                    'name' => strtolower( $fieldName ),
+                    'name' => $niceName,
                     'type' => 'string',
                     'dataIndex' => $fieldName,
                     'filter' => [
@@ -156,7 +158,7 @@ class CoreShop_Admin_OrderController extends Admin
             }
 
             $fields[] = [
-                'name' => 'all (concat)',
+                'name' => 'All',
                 'type' => 'string',
                 'dataIndex' => 'All',
                 'filter' => [
@@ -172,7 +174,7 @@ class CoreShop_Admin_OrderController extends Admin
             $name = $fieldElement['name'];
             $dataIndex = $fieldElement['dataIndex'];
 
-            $fieldElement['text'] = 'coreshop_address_shipping|' . $name;
+            $fieldElement['text'] = 'coreshop_address_shipping|['.$name.']';
             $fieldElement['dataIndex'] = 'addressShipping' . $dataIndex;
             unset( $fieldElement['name'] );
 
@@ -185,7 +187,7 @@ class CoreShop_Admin_OrderController extends Admin
             $name = $fieldElement['name'];
             $dataIndex = $fieldElement['dataIndex'];
 
-            $fieldElement['text'] = 'coreshop_address_billing|' . $name;
+            $fieldElement['text'] = 'coreshop_address_billing|['.$name.']';
             $fieldElement['dataIndex'] = 'addressBilling' . $dataIndex;
             unset( $fieldElement['name'] );
 
