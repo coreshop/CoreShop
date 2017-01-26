@@ -446,8 +446,23 @@ class CoreShop_Admin_OrderController extends Admin
 
         $jsonOrder['address'] = [
             'shipping' => $this->getDataForObject($order->getShippingAddress()),
-            'billing' => $this->getDataForObject($order->getBillingAddress())
+            'billing' => $this->getDataForObject($order->getBillingAddress()),
         ];
+
+        if($order->getShippingAddress() instanceof \CoreShop\Model\User\Address && $order->getShippingAddress()->getCountry() instanceof \CoreShop\Model\Country) {
+            $jsonOrder['address']['shipping']['formatted'] = $order->getShippingAddress()->getCountry()->formatAddress($order->getShippingAddress());
+        }
+        else {
+            $jsonOrder['address']['shipping']['formatted'] = '';
+        }
+
+        if($order->getBillingAddress() instanceof \CoreShop\Model\User\Address && $order->getBillingAddress()->getCountry() instanceof \CoreShop\Model\Country) {
+            $jsonOrder['address']['billing']['formatted'] = $order->getBillingAddress()->getCountry()->formatAddress($order->getBillingAddress());
+        }
+        else {
+            $jsonOrder['address']['billing']['formatted'] = '';
+        }
+
         $jsonOrder['shippingPayment'] = [
             'carrier' => $order->getCarrier() instanceof \CoreShop\Model\Carrier ? $order->getCarrier()->getName() : null,
             'weight' => $order->getTotalWeight(),

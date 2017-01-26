@@ -447,12 +447,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 {
                     xtype: 'panel',
                     bodyPadding : 5,
-                    html :
-                    (address.firstname ? address.firstname : '') + ' ' + (address.lastname ? address.lastname  : '') + '<br/>' +
-                    (address.company ? address.company + '<br/>' : '') +
-                    (address.street ? address.street  : '') + ' ' + (address.nr ? address.nr : '') + '<br/>' +
-                    (address.zip ? address.zip : '') + ' ' + (address.city ? address.city : '') + '<br/>' +
-                    country.get("name"),
+                    html : address.formatted,
                     flex : 1
                 }
             ]
