@@ -153,7 +153,7 @@ class CoreShop_Admin_OrderController extends Admin
             }
 
             $addressFields[] = [
-                'fieldName' => 'all (concat)',
+                'fieldName' => 'All',
                 'type' => 'string',
                 'dataIndex' => 'All',
                 'width' => 150,
