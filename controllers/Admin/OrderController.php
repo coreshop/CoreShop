@@ -128,71 +128,49 @@ class CoreShop_Admin_OrderController extends Admin
             ]
         ];
 
-        // addresses
-        $addressBlocks = \CoreShop\Model\User\Address::create();
-        $addressFields = $this->getDataForObject($addressBlocks);
-        $fields = [];
+        $addressClassId = \CoreShop\Model\User\Address::classId();
 
-        if (!empty( $addressFields)) {
+        $addressClassDefinition = \Pimcore\Model\Object\ClassDefinition::getById($addressClassId);
+        $addressFields = [];
 
-            foreach ($addressFields as $fieldName => $field ) {
+        if ($addressClassDefinition instanceof \Pimcore\Model\Object\ClassDefinition) {
+            $invalidFields = array('extra');
 
-                $invalidFields = array('extra');
-
-                if (substr($fieldName, 0, 2) === 'o_' || in_array($fieldName, $invalidFields)) {
+            foreach($addressClassDefinition->getFieldDefinitions() as $fieldDefinition) {
+                if(in_array($fieldDefinition->getName(), $invalidFields)) {
                     continue;
                 }
 
-                $niceName = ucwords(str_replace('_', ' ', $fieldName));
+                $niceName = ucwords(str_replace('_', ' ', $fieldDefinition->getName()));
 
-                $fields[] = [
-                    'name' => $niceName,
+                $addressFields[] = [
+                    'fieldName' => $niceName,
                     'type' => 'string',
-                    'dataIndex' => $fieldName,
-                    'filter' => [
-                        'type' => 'string'
-                    ],
-                    'width' => 150
+                    'dataIndex' => $fieldDefinition->getName(),
+                    'width' => 150,
+                    'hidden' => true
                 ];
-
             }
 
-            $fields[] = [
-                'name' => 'All',
+            $addressFields[] = [
+                'name' => 'all (concat)',
                 'type' => 'string',
                 'dataIndex' => 'All',
-                'filter' => [
-                    'type' => 'string'
-                ],
-                'width' => 150
+                'width' => 150,
+                'hidden' => true
             ];
-
         }
 
-        foreach ($fields as $fieldElement) {
+        foreach (['shipping', 'billing'] as $type) {
+            foreach ($addressFields as $fieldElement) {
+                $name = $fieldElement['fieldName'];
+                $dataIndex = $fieldElement['dataIndex'];
 
-            $name = $fieldElement['name'];
-            $dataIndex = $fieldElement['dataIndex'];
+                $fieldElement['text'] = 'coreshop_address_'.$type.'|[' . $name . ']';
+                $fieldElement['dataIndex'] = 'address' . ucfirst($type) . ucfirst($dataIndex);
 
-            $fieldElement['text'] = 'coreshop_address_shipping|['.$name.']';
-            $fieldElement['dataIndex'] = 'addressShipping' . $dataIndex;
-            unset( $fieldElement['name'] );
-
-            array_push($defaultConfiguration, $fieldElement);
-
-        }
-
-        foreach ($fields as $fieldElement) {
-
-            $name = $fieldElement['name'];
-            $dataIndex = $fieldElement['dataIndex'];
-
-            $fieldElement['text'] = 'coreshop_address_billing|['.$name.']';
-            $fieldElement['dataIndex'] = 'addressBilling' . $dataIndex;
-            unset( $fieldElement['name'] );
-
-            array_push($defaultConfiguration, $fieldElement);
-
+                $defaultConfiguration[] = $fieldElement;
+            }
         }
 
         if (\CoreShop\Model\Configuration::multiShopEnabled()) {
@@ -283,70 +261,43 @@ class CoreShop_Admin_OrderController extends Admin
             'customerEmail' => $order->getCustomer() instanceof CoreShop\Model\User ? $order->getCustomer()->getEmail() : ''
         ];
 
-        //add shipping address
-        $shippingAddress = $this->getDataForObject($order->getShippingAddress());
-        foreach($shippingAddress as $addressItemKey => $addressItemValue)
-        {
-            $value = $addressItemValue;
-            if ($addressItemKey === 'country') {
-                $value = \CoreShop\Model\Country::getById($value)->getName();
-            }
-
-            $element['addressShipping' . $addressItemKey ] = $value;
-        }
-
-        $shippingConcat = '';
-        if (isset($shippingAddress['firstname']) && isset($shippingAddress['lastname'])) {
-            $shippingConcat .= $shippingAddress['firstname'] . ' ' . $shippingAddress['lastname'] . '<br>';
-        }
-        if (isset($shippingAddress['company'])) {
-            $shippingConcat .= $shippingAddress['company'] . '<br>';
-        }
-        if (isset($shippingAddress['street']) && isset($shippingAddress['nr'])) {
-            $shippingConcat .= $shippingAddress['street'] . ' ' . $shippingAddress['nr'] . '<br>';
-        }
-        if (isset($shippingAddress['zip']) && isset($shippingAddress['city'])) {
-            $shippingConcat .= $shippingAddress['zip'] . ' ' . $shippingAddress['city'] . '<br>';
-        }
-        if (isset($element['addressShippingcountry'])) {
-            $shippingConcat .= $element[ 'addressShippingcountry' ];
-        }
-
-        $element['addressShippingAll'] = $shippingConcat;
-
-        //add billing all
-        $billingAddress = $this->getDataForObject($order->getBillingAddress());
-        foreach($billingAddress as $addressItemKey => $addressItemValue)
-        {
-            $value = $addressItemValue;
-            if ($addressItemKey === 'country') {
-                $value = \CoreShop\Model\Country::getById($value)->getName();
-            }
-
-            $element['addressBilling' . $addressItemKey] = $value;
-        }
-
-        $billingConcat = '';
-
-        if (isset($billingAddress['firstname']) && isset($billingAddress['lastname'])) {
-            $billingConcat .= $billingAddress['firstname'] . ' ' . $billingAddress['lastname'] . '<br>';
-        }
-        if (isset($billingAddress['company'])) {
-            $billingConcat .= $billingAddress['company'] . '<br>';
-        }
-        if (isset($billingAddress['street']) && isset($billingAddress['nr'])) {
-            $billingConcat .= $billingAddress['street'] . ' ' . $billingAddress['nr'] . '<br>';
-        }
-        if (isset($billingAddress['zip']) && isset($billingAddress['city'])) {
-            $billingConcat .= $billingAddress['zip'] . ' ' . $billingAddress['city'] . '<br>';
-        }
-        if (isset($element['addressBillingcountry'])) {
-            $billingConcat .= $element['addressBillingcountry'];
-        }
-
-        $element['addressBillingAll'] = $billingConcat;
+        $element = array_merge($element, $this->prepareAddress($order->getShippingAddress(), 'shipping'), $this->prepareAddress($order->getBillingAddress(), 'billing'));
 
         return $element;
+    }
+
+    /**
+     * @param $address
+     * @param $type
+     * @return array
+     */
+    protected function prepareAddress($address, $type) {
+        $prefix = "address" . ucfirst($type);
+        $values = [];
+        $fullAddress = [];
+        $classDefinition = Object\ClassDefinition::getById(\CoreShop\Model\User\Address::classId());
+
+        foreach($classDefinition->getFieldDefinitions() as $fieldDefinition) {
+            $value = "";
+
+            if ($address instanceof \CoreShop\Model\User\Address) {
+                $value = $address->getValueForFieldName($fieldDefinition->getName());
+
+                if($value instanceof \CoreShop\Model\AbstractModel) {
+                    $value = $value->getName();
+                }
+
+                $fullAddress[] = $value;
+            }
+
+            $values[$prefix . ucfirst($fieldDefinition->getName())] = $value;
+        }
+
+        if ($address instanceof \CoreShop\Model\User\Address && $address->getCountry() instanceof \CoreShop\Model\Country) {
+            $values[$prefix . "All"] = $address->getCountry()->formatAddress($address, false);
+        }
+
+        return $values;
     }
 
     public function getPaymentProvidersAction()
