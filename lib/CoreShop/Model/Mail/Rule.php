@@ -84,6 +84,7 @@ class Rule extends AbstractRule
             $dispatcher->addType(Condition\User\UserType::class);
         } elseif ($type === 'shipment') {
             $dispatcher->addType(Condition\Shipment\ShipmentState::class);
+            $dispatcher->addType(Condition\Shipment\Carriers::class);
         } elseif ($type === 'payment') {
             $dispatcher->addType(Condition\Payment\PaymentState::class);
             $dispatcher->addType(Condition\Payment\Payment::class);
