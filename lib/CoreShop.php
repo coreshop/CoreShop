@@ -219,13 +219,13 @@ class CoreShop
             ],
             'order' => [
                 "pimcoreClass" => \CoreShop\Model\Order::getPimcoreObjectClass(),
-                "pimcoreClassId" => \CoreShop\Model\Category::classId(),
-                "coreShopClass" => \CoreShop\Model\Category::class
+                "pimcoreClassId" => \CoreShop\Model\Order::classId(),
+                "coreShopClass" => \CoreShop\Model\Order::class
             ],
             'orderItem' => [
                 "pimcoreClass" => \CoreShop\Model\Order\Item::getPimcoreObjectClass(),
-                "pimcoreClassId" => \CoreShop\Model\Category::classId(),
-                "coreShopClass" => \CoreShop\Model\Category::class
+                "pimcoreClassId" => \CoreShop\Model\Order\Item::classId(),
+                "coreShopClass" => \CoreShop\Model\Order\Item::class
             ],
             'cart' => [
                 "pimcoreClass" => \CoreShop\Model\Cart::getPimcoreObjectClass(),
