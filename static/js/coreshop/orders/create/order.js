@@ -394,7 +394,17 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
                         flex : 1,
                         text : t('name'),
                         renderer: function (value, metaData, record) {
-                            return record.get("localizedfields").data[pimcore.settings.language].name;
+                            if(Object.keys(record.get("localizedfields").data).indexOf(pimcore.settings.language) > 0)
+                                return record.get("localizedfields").data[pimcore.settings.language].name;
+                            else {
+                                var keys = Object.keys(record.get("localizedfields").data);
+
+                                if (keys.length > 0) {
+                                    return record.get("localizedfields").data[keys[0]].name;
+                                }
+                            }
+
+                            return "";
                         }.bind(this)
                     },
                     {
