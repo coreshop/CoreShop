@@ -153,7 +153,7 @@ class CreateObjectClassCommand extends AbstractCommand
         $diPath = \Pimcore\Config::locateConfigFile("di.php");
 
         $this->output->writeln("<comment>PLEASE ADD THIS LINE TO YOUR di.php ($diPath): </comment>");
-        $this->output->writeln("<comment>\"$coreShopClassName\" => DI\Object('$namespace\\$className')</comment>");
+        $this->output->writeln("<comment>'$coreShopClassName' => DI\Object('$namespace\\$className')</comment>");
 
         Cache::clearAll();
 
@@ -375,7 +375,15 @@ class CreateObjectClassCommand extends AbstractCommand
             $oldSqlTable = sprintf($tbl, $oldClassId);
             $newSqlTable = sprintf($tbl, $newClassId);
 
+            if(!$this->tableExists($oldSqlTable)) {
+                continue;
+            }
+
             $columns = $this->getColumns($newSqlTable);
+
+            foreach($columns as &$column) {
+                $column = $db->quoteIdentifier($column);
+            }
 
             $sql = "INSERT INTO $newSqlTable SELECT ".implode(",", $columns)." FROM $oldSqlTable";
 
@@ -407,5 +415,19 @@ class CreateObjectClassCommand extends AbstractCommand
         }
 
         return $columns;
+    }
+
+    /**
+     * Check if table exists
+     *
+     * @param $table
+     * @return bool
+     */
+    protected function tableExists($table) {
+        $db = Db::get();
+
+        $result = $db->fetchAll("SHOW TABLES LIKE '$table'");
+
+        return count($result) > 0;
     }
 }
