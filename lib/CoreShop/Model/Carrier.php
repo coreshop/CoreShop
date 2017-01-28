@@ -353,11 +353,6 @@ class Carrier extends AbstractModel
      */
     public function checkCarrierForCart(Cart $cart = null, Address $address = null)
     {
-        //Carrier has no price, so its invalid!
-        if (!$this->getMaxDeliveryPrice()) {
-            return false;
-        }
-
         $rules = $this->getShippingRules();
 
         foreach ($rules as $rule) {
