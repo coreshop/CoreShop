@@ -73,6 +73,7 @@ class CoreShop_Admin_SettingsController extends Admin
 
             foreach ($classMapping as $key => &$class) {
                 $class = str_replace('Pimcore\\Model\\Object\\', '', $class);
+                $class = str_replace('\\', '', $class);
             }
 
             $result['classMapping'] = $classMapping;
