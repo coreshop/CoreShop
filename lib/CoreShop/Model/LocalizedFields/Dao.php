@@ -241,7 +241,7 @@ class Dao extends AbstractDao
                 $viewQuery = <<<QUERY
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW `{$localizedTable}_{$language}` AS
 
-SELECT {$selectViewFields}e
+SELECT {$selectViewFields}
 FROM `{$this->model->getObject()->getTableName()}`
 QUERY;
 
