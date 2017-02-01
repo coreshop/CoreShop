@@ -48,7 +48,6 @@ class Mail extends PimcoreMail
         //always add the model to email!
         $params['object'] = $model;
 
-        self::mergeDefaultMailSettings($mail, $emailDocument);
         self::addRecipients($mail, $emailDocument, $recipient);
 
         $mail->setDocument($emailDocument);
@@ -87,8 +86,6 @@ class Mail extends PimcoreMail
         }
 
         $mail = new self();
-
-        self::mergeDefaultMailSettings($mail, $emailDocument);
 
         //always add the model to email!
         $params['object'] = $message;
@@ -144,7 +141,6 @@ class Mail extends PimcoreMail
 
         $mail = new self();
 
-        self::mergeDefaultMailSettings($mail, $emailDocument);
         self::addRecipients($mail, $emailDocument, $recipient);
 
         $mail->setDocument($emailDocument);
@@ -241,22 +237,6 @@ class Mail extends PimcoreMail
         $note->save();
 
         return true;
-    }
-
-    /**
-     * @param self $mail
-     * @param Document\Email $emailDocument
-     */
-    private static function mergeDefaultMailSettings($mail, $emailDocument)
-    {
-        $from = $emailDocument->getFrom();
-
-        if (!empty($from)) {
-            $mail->setFrom($from);
-        }
-
-        $mail->addCc($emailDocument->getCcAsArray());
-        $mail->addBcc($emailDocument->getBccAsArray());
     }
 
     /**
