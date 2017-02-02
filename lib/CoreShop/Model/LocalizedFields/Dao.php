@@ -239,7 +239,7 @@ class Dao extends AbstractDao
 
                 // create view
                 $viewQuery = <<<QUERY
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW `{$localizedTable}_{$language}` AS
+CREATE OR REPLACE VIEW `{$localizedTable}_{$language}` AS
 
 SELECT {$selectViewFields}
 FROM `{$this->model->getObject()->getTableName()}`

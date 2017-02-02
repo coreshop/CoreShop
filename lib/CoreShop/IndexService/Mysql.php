@@ -240,7 +240,7 @@ class Mysql extends AbstractWorker
 
                 // create view
                 $viewQuery = <<<QUERY
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW `{$localizedViewName}` AS
+CREATE OR REPLACE VIEW `{$localizedViewName}` AS
 
 SELECT *
 FROM `{$tableName}`
