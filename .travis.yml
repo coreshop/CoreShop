@@ -27,6 +27,7 @@ install:
   - composer self-update
   - cd $TRAVIS_BUILD_DIR/pimcore
   - composer install
+  - composer require "phpunit/phpunit:>=5.6" --dev
   - cd $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop
   - composer install
 
