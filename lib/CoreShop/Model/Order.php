@@ -27,7 +27,6 @@ use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Order\Shipment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
-use CoreShop\Tool\Service;
 use Pimcore\Date;
 use Pimcore\File;
 use Pimcore\Model\Asset;
@@ -291,7 +290,7 @@ class Order extends Base
         $item->setParent($this->getPathForItems());
         $item->setPublished(true);
 
-        Service::copyObject($cartItem, $item);
+        \CoreShop\Tool\Service::copyObject($cartItem, $item);
 
         $item->setProduct($cartItem->getProduct());
         $item->setWholesalePrice($cartItem->getProductWholesalePrice());
