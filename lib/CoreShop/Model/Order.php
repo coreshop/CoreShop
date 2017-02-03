@@ -27,6 +27,7 @@ use CoreShop\Model\Order\Payment;
 use CoreShop\Model\Order\Shipment;
 use CoreShop\Model\Plugin\Payment as CorePayment;
 use CoreShop\Model\User\Address;
+use CoreShop\Tool\Service;
 use Pimcore\Date;
 use Pimcore\File;
 use Pimcore\Model\Asset;
@@ -219,45 +220,7 @@ class Order extends Base
         $i = 1;
 
         foreach ($cart->getItems() as $cartItem) {
-            $item = Item::create();
-            $item->setKey(strval($i));
-            $item->setParent($this->getPathForItems());
-            $item->setPublished(true);
-
-            $item->setProduct($cartItem->getProduct());
-            $item->setWholesalePrice($cartItem->getProductWholesalePrice());
-            $item->setRetailPrice($cartItem->getProductRetailPrice());
-            $item->setPrice($cartItem->getProductPrice(true));
-            $item->setPriceWithoutTax($cartItem->getProductPrice(false));
-            $item->setAmount($cartItem->getAmount());
-            $item->setExtraInformation($cartItem->getExtraInformation());
-            $item->setIsGiftItem($cartItem->getIsGiftItem());
-            $item->setTotal(\CoreShop::getTools()->roundPrice($cartItem->getTotal()));
-            $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getTotalProductTax()));
-            $item->setIsVirtualProduct($cartItem->getIsVirtualProduct());
-
-            if ($cartItem->getVirtualAsset() instanceof Asset) {
-                $item->setVirtualAsset($cartItem->getVirtualAsset());
-            }
-
-            $itemTaxes = new Object\Fieldcollection();
-
-            foreach ($cartItem->getTaxes(false) as $taxes) {
-                $itemTax = Order\Tax::create();
-
-                $tax = $taxes['tax'];
-
-                if ($tax instanceof Tax) {
-                    $itemTax->setName($tax->getName());
-                    $itemTax->setRate($tax->getRate());
-                    $itemTax->setAmount($taxes['amount']);
-
-                    $itemTaxes->add($itemTax);
-                }
-            }
-
-            $item->setTaxes($itemTaxes);
-            $item->save();
+            $item = $this->importCartItem($cartItem);
 
             //Stock Management
             $cartItem->getProduct()->updateQuantity(-$cartItem->getAmount());
@@ -315,6 +278,54 @@ class Order extends Base
         $cart->save();
 
         return true;
+    }
+
+    /**
+     * @param Cart\Item $cartItem
+     *
+     * @return Item
+     */
+    protected function importCartItem(Cart\Item $cartItem) {
+        $item = Item::create();
+        $item->setKey($cartItem->getKey());
+        $item->setParent($this->getPathForItems());
+        $item->setPublished(true);
+
+        Service::copyObject($cartItem, $item);
+
+        $item->setProduct($cartItem->getProduct());
+        $item->setWholesalePrice($cartItem->getProductWholesalePrice());
+        $item->setRetailPrice($cartItem->getProductRetailPrice());
+        $item->setPrice($cartItem->getProductPrice(true));
+        $item->setPriceWithoutTax($cartItem->getProductPrice(false));
+        $item->setTotal(\CoreShop::getTools()->roundPrice($cartItem->getTotal()));
+        $item->setTotalTax(\CoreShop::getTools()->roundPrice($cartItem->getTotalProductTax()));
+        $item->setIsVirtualProduct($cartItem->getIsVirtualProduct());
+
+        if ($cartItem->getVirtualAsset() instanceof Asset) {
+            $item->setVirtualAsset($cartItem->getVirtualAsset());
+        }
+
+        $itemTaxes = new Object\Fieldcollection();
+
+        foreach ($cartItem->getTaxes(false) as $taxes) {
+            $itemTax = Order\Tax::create();
+
+            $tax = $taxes['tax'];
+
+            if ($tax instanceof Tax) {
+                $itemTax->setName($tax->getName());
+                $itemTax->setRate($tax->getRate());
+                $itemTax->setAmount($taxes['amount']);
+
+                $itemTaxes->add($itemTax);
+            }
+        }
+
+        $item->setTaxes($itemTaxes);
+        $item->save();
+
+        return $item;
     }
 
     /**
@@ -1529,7 +1540,7 @@ class Order extends Base
      * @return mixed
      *
      * @throws ObjectUnsupportedException
-    */
+     */
     public function getBillingAddress()
     {
         throw new ObjectUnsupportedException(__FUNCTION__, get_class($this));
