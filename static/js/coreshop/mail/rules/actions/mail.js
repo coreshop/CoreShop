@@ -24,16 +24,9 @@ pimcore.plugin.coreshop.mail.rules.actions.mail = Class.create(pimcore.plugin.co
             tabs = [];
 
         Ext.each(pimcore.settings.websiteLanguages, function (lang) {
-            var shortLang = lang.toLowerCase();
-
-            if (shortLang.indexOf('-') > 0) {
-                shortLang = shortLang.split('-');
-                shortLang = shortLang[0];
-            }
-
             var value = this.data && this.data.mails && this.data.mails.hasOwnProperty(lang) ? this.data.mails[lang] : '';
 
-            this.fields[shortLang] = new pimcore.plugin.coreshop.object.elementHref({
+            this.fields[lang] = new pimcore.plugin.coreshop.object.elementHref({
                 id : value,
                 type : 'document',
                 subtype : 'email'
@@ -42,7 +35,7 @@ pimcore.plugin.coreshop.mail.rules.actions.mail = Class.create(pimcore.plugin.co
                 documentTypes : [{
                     documentTypes : 'email'
                 }],
-                name: 'mails[' + shortLang + ']',
+                name: 'mails[' + lang + ']',
                 title: t('coreshop_email_document')
             });
 
@@ -51,7 +44,7 @@ pimcore.plugin.coreshop.mail.rules.actions.mail = Class.create(pimcore.plugin.co
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout: 'form',
                 items: [
-                    this.fields[shortLang].getLayoutEdit()
+                    this.fields[lang].getLayoutEdit()
                 ]
             });
 
