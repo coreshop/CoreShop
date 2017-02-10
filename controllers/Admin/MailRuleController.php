@@ -79,14 +79,14 @@ class CoreShop_Admin_MailRuleController extends Admin\Data
         $conditions = [];
         $actions = [];
 
-        foreach (\CoreShop\Model\Mail\Rule::$availableTypes as $type) {
+        foreach (\CoreShop\Model\Mail\Rule::getTypes() as $type) {
             $conditions[$type] = \CoreShop\Model\Mail\Rule::getConditionDispatcherForType($type)->getTypeKeys();
             $actions[$type] = \CoreShop\Model\Mail\Rule::getActionDispatcherForType($type)->getTypeKeys();
         }
 
         $this->_helper->json([
             'success' => true,
-            'types' => \CoreShop\Model\Mail\Rule::$availableTypes,
+            'types' => \CoreShop\Model\Mail\Rule::getTypes(),
             'conditions' => $conditions,
             'actions' => $actions,
         ]);
