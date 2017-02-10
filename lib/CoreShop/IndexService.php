@@ -127,7 +127,7 @@ class IndexService
     }
 
     /**
-     * Add new Index Tpye.
+     * Add new Index Type.
      *
      * @param $type
      *
