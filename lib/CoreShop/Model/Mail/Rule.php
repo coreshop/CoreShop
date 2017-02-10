@@ -36,7 +36,7 @@ class Rule extends AbstractRule
      *
      * @var array
      */
-    public static $availableTypes = ['order', 'invoice', 'shipment', 'user', 'messaging', 'payment'];
+    protected static $types = ['order', 'invoice', 'shipment', 'user', 'messaging', 'payment'];
 
     /**
      * @var
@@ -176,6 +176,31 @@ class Rule extends AbstractRule
         $class = '\\CoreShop\\Model\\PriceRule\\Action\\' . ucfirst($action);
 
         static::getActionDispatcherForType($type)->addType($class);
+    }
+
+    /**
+     * Get Available Types
+     *
+     * @return array
+     */
+    public static function getTypes() {
+        $results = \Pimcore::getEventManager()->trigger('coreshop.rules.mailRules.types.init', static::$types);
+
+        foreach ($results as $result) {
+            if (is_string($result)) {
+                $result = [$result];
+            }
+
+            if (is_array($result)) {
+                foreach ($result as $r) {
+                    if (!in_array($r, static::$types)) {
+                        static::$types[] = $r;
+                    }
+                }
+            }
+        }
+
+        return static::$types;
     }
 
     /**
