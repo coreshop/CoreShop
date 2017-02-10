@@ -220,7 +220,7 @@ class CoreShop_UserController extends Action
 
                 CoreShop\Model\User::validate($params);
 
-                \CoreShop::getTools()->getUser()->setValues($params);
+                \CoreShop::getTools()->getUser()->setValuesForFields($params);
                 \CoreShop::getTools()->getUser()->save();
 
                 $this->view->success = true;
@@ -358,11 +358,11 @@ class CoreShop_UserController extends Action
                 $user->setKey($key);
                 $user->setPublished(true);
                 $user->setParent(Pimcore\Model\Object\Service::createFolderByPath($folder));
-                $user->setValues($userParams);
+                $user->setValuesForFields($userParams);
                 $user->save();
 
                 $address = \CoreShop\Model\User\Address::create();
-                $address->setValues($addressParams);
+                $address->setValuesForFields($addressParams);
                 $address->setPublished(true);
                 $address->setCountry(Country::getById($addressParams['country']));
                 $address->setParent($user->getPathForAddresses());
@@ -554,7 +554,7 @@ class CoreShop_UserController extends Action
                     $addresses = [];
                 }
 
-                $this->view->address->setValues($addressParams);
+                $this->view->address->setValuesForFields($addressParams);
                 $this->view->address->setCountry(Country::getById($addressParams['country']));
 
                 if ($this->view->isNew) {
