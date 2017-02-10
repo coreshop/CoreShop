@@ -184,7 +184,7 @@ abstract class AbstractRule extends AbstractModel
         return sprintf("%s (%s)", $this->getName(), $this->getId());
     }
 
-    /*
+    /**
      * get Condition dispatcher for instanceof of type
      *
      * @return Dispatcher
