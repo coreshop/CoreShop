@@ -12,7 +12,7 @@ A filter exists of different settings, pre-conditions, filters and similar produ
 
 ### Filter Settings
 
-![Filter Settings](img/filter-settings.png)
+![Filter Settings](../img/filter-settings.png)
 
 | Field            | Description |
 | ---------------- |-------------|
@@ -24,13 +24,13 @@ A filter exists of different settings, pre-conditions, filters and similar produ
 
 ### Pre-Conditions
 
-![Filter Pre-Conditions](img/filter-preconditions.png)
+![Filter Pre-Conditions](../img/filter-preconditions.png)
 
 You can define pre-filters for the index.
 
 ### Conditions
 
-![Filter Conditions](img/filter-conditions.png)
+![Filter Conditions](../img/filter-conditions.png)
 
 Here you can define different kind of filters. These filters will be displayed on the front-page for customers to find products.
 
@@ -45,37 +45,37 @@ CoreShop currently supports 4 types of filters:
 
 A select condition is basically just a simple dropdown field where customer can select one field.
 
-![Filter Condition Select](img/filter-condition-select.png)
+![Filter Condition Select](../img/filter-condition-select.png)
 
 #### Multiselect Condition
 
 A multi-select condition is basically a list of fields where customer can select multiple entries.
 
-![Filter Condition Select](img/filter-condition-multiselect.png)
+![Filter Condition Select](../img/filter-condition-multiselect.png)
 
 #### Range Condition
 
 A Range Condition is a slider of two ranges. The ranges are calculated automatically using MIN and MAX values.
 
-![Filter Condition Select](img/filter-condition-range.png)
+![Filter Condition Select](../img/filter-condition-range.png)
 
 #### Boolean Condition
 
 Boolean is a Condition where the customer can check different values.
 
-![Filter Condition Select](img/filter-condition-boolean.png)
+![Filter Condition Select](../img/filter-condition-boolean.png)
 
 ### Similarity
 
 Similarity works in CoreShop using a **number**. The number is then sorted and the result is limited. So, for example you could use the [soundex](http://php.net/manual/de/function.soundex.php) function to calculate the similarity index.
 
-![Filter Similarity](img/filter-similarity.png)
+![Filter Similarity](../img/filter-similarity.png)
 
 ## Filter -> Category
 
 To assign a filter to a category, open a CoreShopCategory object and select one of your filters.
 
-![Filter Condition Select](img/filter-category.png)
+![Filter Condition Select](../img/filter-category.png)
 
 ## Create Custom Conditions
 
