@@ -60,16 +60,23 @@ class Base extends Concrete
     /**
      * Create new instance of Pimcore Object.
      *
+     * @param array $params
      * @throws Exception
      *
      * @return static
      */
-    public static function create()
+    public static function create($params = [])
     {
         $pimcoreClass = self::getPimcoreObjectClass();
 
         if (\Pimcore\Tool::classExists($pimcoreClass)) {
-            return new $pimcoreClass();
+            $class = new $pimcoreClass();
+
+            if ($class instanceof static) {
+                $class->setValuesForFields($params);
+            }
+
+            return $class;
         }
 
         throw new Exception("Class $pimcoreClass not found");
@@ -184,6 +191,29 @@ class Base extends Concrete
         return call_user_func_array([$pimcoreClass, $method], $arguments);
     }
 
+    /**
+     * Sets the value for a field in the class field-definition
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setValueForFieldName($key, $value)
+    {
+        if (($fd = $this->getClass()->getFieldDefinition($key)) instanceof Data) {
+            $this->setValue($key, $value);
+        }
+    }
+
+    /**
+     * Sets values for a fields in the class field-definitions
+     *
+     * @param array $data
+     */
+    public function setValuesForFields($data) {
+        foreach ($data as $key => $value) {
+            $this->setValueForFieldName($key, $value);
+        }
+    }
 
     /**
      * Object to Array.
