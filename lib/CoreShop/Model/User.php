@@ -121,11 +121,15 @@ class User extends Base
      */
     public function authenticate($password)
     {
-        if ($this->getPassword() == hash('md5', $password)) {
-            return true;
-        } else {
-            throw new Exception("User and Password doesn't match", 0);
+        $fd = $this->getClass()->getFieldDefinition("password");
+
+        if ($fd instanceof Object\ClassDefinition\Data\Password) {
+            if ($fd->verifyPassword($password, $this)) {
+                return true;
+            }
         }
+
+        throw new Exception("User and Password doesn't match", 0);
     }
 
     /**
