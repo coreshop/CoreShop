@@ -3,11 +3,15 @@
 Create a file in your Plugin or in your Website.
 
 ```
-YourPlugin/lib/CoreShop/IndexService/Interpreter/YourInterpreter.php
+Website/lib/Website/IndexService/Interpreter/YourInterpreter.php
+
+or
+
+YourPlugin/lib/YourPlugin/IndexService/Interpreter/YourInterpreter.php
 ```
 
 ```php
-namespace CoreShop\IndexService\Interpreter;
+namespace Website\IndexService\Interpreter;
 
 class YourInterpreter extends AbstractInterpreter
 {
@@ -23,10 +27,16 @@ class YourInterpreter extends AbstractInterpreter
 You now need to register your new Interpreter to CoreShop:
 
 ```php
-CoreShop\IndexService\Interpreter\AbstractInterpreter::addInterpreter('YourInterpreter');
+\Pimcore::getEventManager()->attach('coreshop.indexService.interpreter.init', function(\Zend_EventManager_Event $e) {
+    $target = $e->getTarget();
+
+    if($target instanceof \CoreShop\Composite\Dispatcher) {
+        $target->addType(Website\IndexService\Interpreter\YourInterpreter::class);
+    }
+});
 ```
 
-## Add Paramters for your Interpreter
+## Add Parameters for your Interpreter
 
 You can also add some parameters to your Interpreter.
 

@@ -1,4 +1,4 @@
-# CoreShop Override Pimcore Classes
+# Override CoreShop Classes
 
 All CoreShop Classes can be extended using Pimcore Classmaps
 
