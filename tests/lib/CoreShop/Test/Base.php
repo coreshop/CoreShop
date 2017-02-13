@@ -27,7 +27,7 @@ class Base extends \PHPUnit_Framework_TestCase
             throw new Exception();
         } catch (\Exception $e) {
             $trace = $e->getTrace();
-            print("### running ...  " . $trace[1]["class"] . "::" . $trace[1]["function"] . " ... good luck!\n");
+            print("### running ...  " . $trace[8]["class"] . "::" . $trace[8]["function"] . " ... good luck!\n"); //get the class and function name when running phpunit from CoreShop/tests directory
         }
     }
 

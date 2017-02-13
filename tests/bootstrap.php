@@ -15,6 +15,9 @@ define("PIMCORE_ADMIN", true);
 define("PIMCORE_DEBUG", true);
 define("PIMCORE_DEVMODE", true);
 define("PIMCORE_WEBSITE_VAR", CORESHOP_TESTS_PATH . "/tmp/var");
+if (!file_exists(PIMCORE_WEBSITE_VAR)) 
+	mkdir(PIMCORE_WEBSITE_VAR, 0777, true); //for first run
+
 
 @mkdir(CORESHOP_TESTS_PATH . "/output", 0777, true);
 
@@ -42,7 +45,6 @@ if (is_file($systemConfigFile)) {
     $testConfig["rest"]["host"] = "pimcore-local-unittest";
 }
 
-$includePathBak = get_include_path();
 $includePaths = [get_include_path()];
 $includePaths[] = CORESHOP_TESTS_PATH . "/CoreShop/Tests";
 array_unshift($includePaths, "/lib/CoreShop");
