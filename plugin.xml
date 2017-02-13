@@ -6,7 +6,7 @@
     <pluginDescription>
             CoreShop eCommerce enhances Pimcore's with eCommerce features
         </pluginDescription>
-    <pluginVersion>1.2.0</pluginVersion>
+    <pluginVersion>1.2.2</pluginVersion>
     <pluginRevision>128</pluginRevision>
     <pluginBuildTimestamp>1486990266</pluginBuildTimestamp>
     <pluginClassName>\CoreShop\Plugin</pluginClassName>
