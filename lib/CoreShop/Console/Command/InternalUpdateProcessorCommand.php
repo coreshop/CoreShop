@@ -76,5 +76,7 @@ class InternalUpdateProcessorCommand extends AbstractCommand
         }
 
         $this->output->write(json_encode($status));
+
+        return 0;
     }
 }

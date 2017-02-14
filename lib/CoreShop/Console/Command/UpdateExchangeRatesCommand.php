@@ -100,7 +100,10 @@ class UpdateExchangeRatesCommand extends AbstractCommand
                 $output->writeLn('Update Exchange Rate for Currency '.$currency->getName().' ('.$currency->getIsoCode().') to: '.$rate);
             } catch (Exception $ex) {
                 $output->writeln('<error>'.$ex->getMessage().'</error>');
+                return 1;
             }
         }
+
+        return 0;
     }
 }

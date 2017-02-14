@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Carrier\ShippingRuleGroup;
 
 use CoreShop\Model\Dao\AbstractDao;
-use Pimcore\Model\Asset;
+
 
 /**
  * Class Dao

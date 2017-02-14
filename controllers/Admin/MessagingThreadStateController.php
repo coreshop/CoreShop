@@ -12,7 +12,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-use CoreShop\Model\Messaging\Thread\State;
+
 use CoreShop\Controller\Action\Admin;
 
 /**

@@ -83,5 +83,7 @@ class IndexCommand extends AbstractCommand
         }
         $this->output->writeln('');
         $this->output->writeln('<info>Done</info>');
+
+        return 0;
     }
 }

@@ -20,5 +20,5 @@ pimcore.plugin.coreshop.messaging.panel = Class.create(pimcore.plugin.coreshop.a
 
     getTitle : function () {
         return t('coreshop_messaging_' + this.type);
-    },
+    }
 });

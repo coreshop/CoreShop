@@ -19,8 +19,8 @@ use CoreShop\Model\Base;
 use CoreShop\Model\Order;
 use CoreShop\Model\Product;
 use CoreShop\Model\Service;
-use Pimcore\Model\Asset\Image;
-use Pimcore\Model\Asset;
+
+
 use Pimcore\Model\Object;
 
 /**

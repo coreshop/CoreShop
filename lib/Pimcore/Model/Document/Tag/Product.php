@@ -115,6 +115,8 @@ class Product extends Model\Document\Tag
                 return $this->getView()->template('coreshop/product/preview.php', ['product' => $this->o]);
             }
         }
+        
+        return '';
     }
 
     /**
@@ -284,7 +286,7 @@ class Product extends Model\Document\Tag
     /**
      * @param int $id
      *
-     * @return Document\Tag\Renderlet
+     * @return static
      */
     public function setId($id)
     {
@@ -304,7 +306,7 @@ class Product extends Model\Document\Tag
     /**
      * @param Asset|Document|object $o
      *
-     * @return Document\Tag\Renderlet
+     * @return static
      */
     public function setO($o)
     {
@@ -324,7 +326,7 @@ class Product extends Model\Document\Tag
     /**
      * @param string $subtype
      *
-     * @return Document\Tag\Renderlet
+     * @return static
      */
     public function setSubtype($subtype)
     {

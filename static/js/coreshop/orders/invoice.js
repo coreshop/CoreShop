@@ -58,11 +58,7 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
             plugins: [cellEditing],
             listeners : {
                 validateedit : function(editor, context) {
-                    if(context.value > context.record.data.maxToInvoice) {
-                        return false;
-                    }
-
-                    return true;
+                    return context.value <= context.record.data.maxToInvoice;
                 }
             },
             columns : [

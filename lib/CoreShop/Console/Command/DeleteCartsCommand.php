@@ -92,6 +92,8 @@ class DeleteCartsCommand extends AbstractCommand
         } else {
             $output->writeln('No carts found.');
         }
+
+        return 0;
     }
 
     /**

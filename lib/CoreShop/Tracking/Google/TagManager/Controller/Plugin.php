@@ -42,13 +42,15 @@ class Plugin extends \Zend_Controller_Plugin_Abstract
 
     /**
      * @param \Zend_Controller_Request_Abstract $request
-     * @return bool|void
+     * @return bool
      */
     public function routeShutdown(\Zend_Controller_Request_Abstract $request)
     {
         if (!Tool::useFrontendOutputFilters($request)) {
             return $this->disable();
         }
+
+        return false;
     }
 
     /**

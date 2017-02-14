@@ -58,11 +58,7 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
             plugins: [cellEditing],
             listeners : {
                 validateedit : function(editor, context) {
-                    if(context.value > context.record.data.maxToShip) {
-                        return false;
-                    }
-
-                    return true;
+                    return context.value <= context.record.data.maxToShip;
                 }
             },
             columns : [

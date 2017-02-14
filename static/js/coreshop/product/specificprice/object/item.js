@@ -94,10 +94,6 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
             return true;
         }
 
-        if(this.actions.isDirty()) {
-            return true;
-        }
-
-        return false;
+        return !!this.actions.isDirty();
     }
 });

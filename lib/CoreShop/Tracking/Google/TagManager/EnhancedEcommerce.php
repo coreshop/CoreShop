@@ -64,7 +64,7 @@ class EnhancedEcommerce extends ClientTracker
     /**
      * @param array $data
      *
-     * @return string
+     * @return void
      */
     public function track($data)
     {
@@ -73,7 +73,8 @@ class EnhancedEcommerce extends ClientTracker
 
     /**
      * @param Product $product
-     * @return mixed
+     *
+     * @return void
      */
     public function trackProductView(Product $product)
     {
@@ -86,7 +87,8 @@ class EnhancedEcommerce extends ClientTracker
 
     /**
      * @param Product $product
-     * @return mixed
+     *
+     * @return void
      */
     public function trackProductImpression(Product $product)
     {
@@ -100,7 +102,8 @@ class EnhancedEcommerce extends ClientTracker
     /**
      * @param Product $product
      * @param int $quantity
-     * @return mixed
+     *
+     * @return void
      */
     public function trackProductActionAdd(Product $product, $quantity = 1)
     {
@@ -110,7 +113,8 @@ class EnhancedEcommerce extends ClientTracker
     /**
      * @param Product $product
      * @param int $quantity
-     * @return mixed
+     *
+     * @return void
      */
     public function trackProductActionRemove(Product $product, $quantity = 1)
     {
@@ -121,6 +125,8 @@ class EnhancedEcommerce extends ClientTracker
      * @param Product $product
      * @param string $action
      * @param int $quantity
+     *
+     * @return void
      */
     protected function trackProductAction(Product $product, $action, $quantity = 1)
     {
@@ -136,7 +142,8 @@ class EnhancedEcommerce extends ClientTracker
      * @param Cart $cart
      * @param null $stepNumber
      * @param null $checkoutOption
-     * @return mixed
+     *
+     * @return void
      */
     public function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
@@ -162,7 +169,8 @@ class EnhancedEcommerce extends ClientTracker
      * @param Cart $cart
      * @param null $stepNumber
      * @param null $checkoutOption
-     * @return mixed
+     *
+     * @return void
      */
     public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
@@ -190,7 +198,8 @@ class EnhancedEcommerce extends ClientTracker
      * @param Cart $cart
      * @param null $stepNumber
      * @param null $checkoutOption
-     * @return mixed
+     *
+     * @return void
      */
     public function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
@@ -223,7 +232,8 @@ class EnhancedEcommerce extends ClientTracker
 
     /**
      * @param Order $order
-     * @return mixed
+     * 
+     * @return void
      */
     public function trackCheckoutComplete(Order $order)
     {

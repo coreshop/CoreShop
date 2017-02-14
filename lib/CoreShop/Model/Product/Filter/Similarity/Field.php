@@ -14,8 +14,8 @@
 
 namespace CoreShop\Model\Product\Filter\Similarity;
 
-use CoreShop\Model\Product\Filter;
-use CoreShop\Model\Product\Listing;
+
+
 
 /**
  * Class Field

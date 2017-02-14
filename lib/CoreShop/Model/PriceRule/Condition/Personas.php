@@ -18,7 +18,7 @@ use CoreShop\Exception;
 use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
-use CoreShop\Model\User;
+
 
 /**
  * Class Personas

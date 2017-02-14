@@ -32,7 +32,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
     },
 
     getPanel: function () {
-        var panel = new Ext.TabPanel({
+        return new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
             closable: true,
@@ -46,8 +46,6 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             }],
             items: this.getItems()
         });
-
-        return panel;
     },
 
     getItems : function () {

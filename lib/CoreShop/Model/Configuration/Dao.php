@@ -16,7 +16,7 @@ namespace CoreShop\Model\Configuration;
 
 use CoreShop\Exception;
 use Pimcore\Model;
-use Pimcore\Tool;
+
 
 /**
  * Class Dao

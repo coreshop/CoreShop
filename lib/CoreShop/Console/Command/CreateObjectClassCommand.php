@@ -120,7 +120,7 @@ class CreateObjectClassCommand extends AbstractCommand
                 $question = new ConfirmationQuestion("Plugin with name $pluginName not found, should I create it? (y/n)", false);
                 if (!$helper->ask($input, $output, $question)) {
                     $this->output->writeln("<error>Aborting due to not creating the plugin!</error>");
-                    return;
+                    return 1;
                 }
 
                 $this->createPlugin($pluginName);
@@ -138,7 +138,7 @@ class CreateObjectClassCommand extends AbstractCommand
         $question = new ConfirmationQuestion("<info>You are going to create a new PHP File $pathForFile and a new Object-Class ($newClassName) for ($oldClassName) Are you sure? (y/n)</info>", true);
 
         if (!$helper->ask($input, $output, $question)) {
-            return;
+            return 1;
         }
 
         $this->createPhpClass($namespace, $coreShopClassName, $className, $newClassName, $pathForFile);
@@ -159,6 +159,8 @@ class CreateObjectClassCommand extends AbstractCommand
 
         $this->output->writeln('');
         $this->output->writeln('<info>Done</info>');
+
+        return 0;
     }
 
     /**
@@ -231,7 +233,6 @@ class CreateObjectClassCommand extends AbstractCommand
      * @param string $newParentClass
      * @param $newPimcoreClassName
      *
-     * @return string
      * @throws Exception
      */
     protected function createClassDefinition($oldPimcoreClass, $newParentClass, $newPimcoreClassName)

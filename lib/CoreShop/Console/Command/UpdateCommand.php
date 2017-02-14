@@ -137,7 +137,7 @@ class UpdateCommand extends AbstractCommand
             $question = new ConfirmationQuestion("You are going to update to build $build! Continue with this action? (y/n)", false);
 
             if (!$helper->ask($input, $output, $question)) {
-                return;
+                return 1;
             }
 
             $this->output->writeln('Starting the update process ...');
@@ -223,5 +223,7 @@ class UpdateCommand extends AbstractCommand
                 }
             }
         }
+
+        return 0;
     }
 }

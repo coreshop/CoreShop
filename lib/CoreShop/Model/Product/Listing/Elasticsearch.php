@@ -614,7 +614,7 @@ class Elasticsearch extends AbstractListing
     /**
      * build system conditions.
      *
-     * @return string
+     * @return array
      */
     protected function buildSystemConditions()
     {

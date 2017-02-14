@@ -282,7 +282,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                             {
                                 xtype: 'label',
                                 text: t('coreshop_currency_exchange_rate_last_update') + ': ' + Ext.Date.format(new Date(this.getSystemValue('SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE') * 1000), Ext.Date.defaultFormat),
-                                hidden: !this.getSystemValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
+                                hidden: !this.getSystemValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES')
                             }
                         ]
                     }

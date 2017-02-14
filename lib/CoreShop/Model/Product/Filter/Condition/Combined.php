@@ -14,7 +14,7 @@
 
 namespace CoreShop\Model\Product\Filter\Condition;
 
-use CoreShop\IndexService\Condition;
+
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
 

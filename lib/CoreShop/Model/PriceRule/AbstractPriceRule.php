@@ -15,7 +15,7 @@
 namespace CoreShop\Model\PriceRule;
 
 use CoreShop\Model\Rules\AbstractRule;
-use Pimcore\Tool;
+
 
 /**
  * Class AbstractPriceRule

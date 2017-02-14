@@ -176,7 +176,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
     },
 
     getPanelForMessage : function (message) {
-        var panel = new Ext.Panel({
+        return new Ext.Panel({
             layout : {
                 type : 'hbox',
                 align : 'stretch'
@@ -207,8 +207,6 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
                 }
             ]
         });
-
-        return panel;
     },
 
     getAdminUsername : function (admin) {

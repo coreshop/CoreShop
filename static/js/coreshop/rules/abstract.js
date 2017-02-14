@@ -173,5 +173,5 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
         ]);
 
         return items;
-    },
+    }
 });

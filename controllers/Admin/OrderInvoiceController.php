@@ -13,7 +13,7 @@
  */
 
 use CoreShop\Controller\Action\Admin;
-use Pimcore\Model\Object;
+
 
 /**
  * Class CoreShop_Admin_OrderInvoiceController

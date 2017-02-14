@@ -15,10 +15,10 @@
 namespace CoreShop\Model\TaxRule;
 
 use CoreShop\Model\Configuration;
-use CoreShop\Model\Country;
+
 use CoreShop\Model\Plugin\TaxManager;
 use CoreShop\Model\Shop;
-use CoreShop\Model\State;
+
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Model\TaxRuleGroup;
 use CoreShop\Model\User\Address;

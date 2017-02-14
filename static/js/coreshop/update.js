@@ -240,8 +240,7 @@ pimcore.plugin.coreshop.update = Class.create({
     },
 
     updateStart: function (type) {
-        var updateId = Ext.getCmp(type).getValue();
-        this.updateId = updateId;
+        this.updateId = Ext.getCmp(type).getValue();
 
         this.window.removeAll();
         this.window.add(new Ext.Panel({

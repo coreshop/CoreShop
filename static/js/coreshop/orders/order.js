@@ -1456,7 +1456,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     xtype : 'gridcolumn',
                     dataIndex : 'title',
                     text : t('coreshop_transaction_id'),
-                    flex: 1,
+                    flex: 1
                 },
                 {
                     xtype : 'gridcolumn',

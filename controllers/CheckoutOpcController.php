@@ -13,7 +13,7 @@
  */
 
 use CoreShop\Controller\Action;
-use CoreShop\Model\Plugin\Payment;
+
 
 /**
  * Class CoreShop_CheckoutController

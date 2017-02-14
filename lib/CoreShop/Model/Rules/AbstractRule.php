@@ -17,7 +17,7 @@ namespace CoreShop\Model\Rules;
 use CoreShop\Composite\Dispatcher;
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
-use CoreShop\Model\Carrier\ShippingRule\Condition\Conditions;
+
 use CoreShop\Model\Rules\Action\AbstractAction;
 use CoreShop\Model\Rules\Condition\AbstractCondition;
 use Pimcore\Tool;

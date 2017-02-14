@@ -26,6 +26,8 @@ class Condition
 
     /**
      * Condition constructor.
+     *
+     * @param string $fieldName
      * @param string $type
      * @param mixed $values
      */

@@ -16,9 +16,9 @@ namespace CoreShop\Model\Plugin;
 
 use CoreShop\Exception\UnsupportedException;
 use CoreShop\Model\Cart;
-use CoreShop\Model\Tax;
+
 use CoreShop\Model\TaxCalculator;
-use CoreShop\Plugin;
+
 
 /**
  * Class Payment

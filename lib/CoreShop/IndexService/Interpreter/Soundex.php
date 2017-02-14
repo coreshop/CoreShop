@@ -15,8 +15,7 @@
 namespace CoreShop\IndexService\Interpreter;
 
 use CoreShop\Exception\UnsupportedException;
-use CoreShop\Model\Index\Config\Column\AbstractColumn;
-use Pimcore\Model\Object\AbstractObject;
+use CoreShop\Model\Index\Config\Column;
 
 /**
  * Class Soundex
@@ -33,7 +32,7 @@ class Soundex extends AbstractInterpreter
      * interpret value.
      *
      * @param mixed $value
-     * @param AbstractColumn $config
+     * @param Column $config
      *
      * @return mixed
      *

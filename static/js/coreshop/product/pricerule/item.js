@@ -45,5 +45,5 @@ pimcore.plugin.coreshop.product.pricerule.item = Class.create(pimcore.plugin.cor
         });
 
         return this.settingsForm;
-    },
+    }
 });

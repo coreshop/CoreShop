@@ -14,7 +14,7 @@
 
 namespace CoreShop\Model\Mail\Rule\Action;
 
-use CoreShop\Model\Cart;
+
 use CoreShop\Model;
 use Pimcore\Model\AbstractModel;
 

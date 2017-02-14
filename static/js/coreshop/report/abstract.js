@@ -19,11 +19,7 @@ pimcore.plugin.coreshop.report.abstract = Class.create(pimcore.report.abstract, 
 
     matchType: function (type) {
         var types = ['global'];
-        if (pimcore.report.abstract.prototype.matchTypeValidate(type, types)) {
-            return true;
-        }
-
-        return false;
+        return !!pimcore.report.abstract.prototype.matchTypeValidate(type, types);
     },
 
     getName: function () {

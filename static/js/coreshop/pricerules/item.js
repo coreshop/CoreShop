@@ -180,7 +180,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                 ],
                 region : 'center',
                 flex : 1,
-                bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store),
+                bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store)
             });
 
             grid.on('beforerender', function () {

@@ -16,7 +16,7 @@ namespace CoreShop\Controller\Action\Helper;
 
 use CoreShop\Controller\Action\Payment;
 use CoreShop\Helper\Zend\Action;
-use Pimcore\Controller\Action\Helper\ViewRenderer;
+
 
 /**
  * Class PaymentForward

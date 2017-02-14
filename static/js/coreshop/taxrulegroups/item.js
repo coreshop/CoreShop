@@ -177,8 +177,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 dataIndex: 'countryId',
                 editor: countryEditor,
                 renderer: function (countryId) {
-                    var store = countryStore;
-                    var record = store.getById(countryId);
+                    var record = countryStore.getById(countryId);
                     if (record) {
                         return record.get('text');
                     }

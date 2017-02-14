@@ -140,8 +140,6 @@ class Elasticsearch extends AbstractWorker
 
     /**
      * deletes necessary index structuers (like database tables).
-     *
-     * @return mixed
      */
     public function deleteIndexStructures()
     {

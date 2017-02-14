@@ -15,7 +15,7 @@
 namespace CoreShop\Model\PriceRule\Action;
 
 use CoreShop\Model\Cart;
-use CoreShop\Model\Currency;
+
 use CoreShop\Model\Product;
 
 /**
@@ -125,7 +125,6 @@ class DiscountPercent extends AbstractAction
      * Calculates the discount and converts it to a specific currency
      *
      * @param $price
-     * @param $currency
      *
      * @return mixed
      */

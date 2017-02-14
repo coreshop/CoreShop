@@ -261,7 +261,7 @@ QUERY;
     /**
      * deletes necessary index structuers (like database tables).
      *
-     * @return mixed
+     * @return void
      */
     public function deleteIndexStructures()
     {

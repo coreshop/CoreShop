@@ -25,7 +25,7 @@ use Pimcore\Model\Translation\Admin;
 use Pimcore\Model\User;
 use Pimcore\Model\Staticroute;
 use Pimcore\Model\Tool\Setup;
-use Pimcore\Model\Workflow;
+
 use Pimcore\Tool;
 
 /**
@@ -694,6 +694,7 @@ class Install
         }
         else
         {
+            /** @noinspection PhpDeprecationInspection */
             $workflowConfig = \CoreShop\Model\Order\Workflow::getWorkflowConfig();
             $systemWorkflowConfig = \Pimcore\WorkflowManagement\Workflow\Config::getWorkflowManagementConfig(true);
 
@@ -738,7 +739,7 @@ class Install
     /**
      * Install default Mail Rules
      *
-     * @return bool
+     * @return boolean
      */
     public function installMailRules()
     {
@@ -840,6 +841,8 @@ class Install
             $ruleObj->setActions($objActions);
             $ruleObj->save();
         }
+        
+        return true;
     }
 
     /**
@@ -877,6 +880,8 @@ class Install
 
     /**
      * Creates CoreShop Static Routes.
+     *
+     * @param string $path
      */
     public function createStaticRoutes($path = null)
     {
@@ -908,9 +913,11 @@ class Install
             }
         }
     }
-    
+
     /**
      * Remove CoreShop Static Routes.
+     *
+     * @param null $path
      */
     public function removeStaticRoutes($path = null)
     {

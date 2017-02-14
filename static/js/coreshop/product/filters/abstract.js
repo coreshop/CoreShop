@@ -199,5 +199,5 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
             }.bind(this, index, parent, container),
             xtype : 'button'
         }];
-    },
+    }
 });

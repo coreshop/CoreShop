@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Shop;
 
 use CoreShop\Model\Dao\AbstractDao;
-use CoreShop\Model;
+
 
 /**
  * Class Dao

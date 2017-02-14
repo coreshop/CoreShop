@@ -76,7 +76,7 @@ class CoreShop
     }
 
     /**
-     * @param Plugin $plugin
+     * @param \CoreShop\Plugin $plugin
      */
     public static function bootstrap($plugin)
     {

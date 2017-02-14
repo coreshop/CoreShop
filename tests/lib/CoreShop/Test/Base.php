@@ -15,9 +15,9 @@
 namespace CoreShop\Test;
 
 use CoreShop\Exception;
-use CoreShop\Model\Carrier;
+
 use CoreShop\Model\Configuration;
-use Pimcore\Model\Object\ClassDefinition;
+
 
 /**
  * Class Base

@@ -16,11 +16,9 @@ namespace CoreShop\Model\Messaging;
 
 use CoreShop\Exception;
 use CoreShop\Model\AbstractModel;
-use CoreShop\Mail;
+
 use CoreShop\Model\Mail\Rule;
-use Pimcore\Logger;
-use Pimcore\Model\Document;
-use Pimcore\Model\Document\Email;
+
 
 /**
  * Class Message

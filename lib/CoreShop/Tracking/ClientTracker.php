@@ -14,9 +14,9 @@
 
 namespace CoreShop\Tracking;
 
-use CoreShop\Model\Cart;
-use CoreShop\Model\Order;
-use CoreShop\Model\Product;
+
+
+
 use Pimcore\View;
 
 /**

@@ -22,7 +22,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
     },
 
     getPanel: function () {
-        var panel = new Ext.TabPanel({
+        return new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
             closable: true,
@@ -36,8 +36,6 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
             }],
             items: this.getItems()
         });
-
-        return panel;
     },
 
     getItems : function () {

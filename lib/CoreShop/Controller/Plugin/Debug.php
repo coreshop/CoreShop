@@ -17,9 +17,9 @@ namespace CoreShop\Controller\Plugin;
 use CoreShop\Model\Configuration;
 use CoreShop\Model\Shop;
 use CoreShop\Plugin;
-use Pimcore\Model\User;
+
 use Pimcore\Tool;
-use Pimcore\Tool\Authentication;
+
 
 /**
  * Class Debug

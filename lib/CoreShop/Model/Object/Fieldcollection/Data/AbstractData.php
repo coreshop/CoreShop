@@ -63,6 +63,8 @@ class AbstractData extends \Pimcore\Model\Object\Fieldcollection\Data\AbstractDa
     /**
      * Create new instance of Pimcore Object.
      *
+     * @params $params directly sets values inside the object
+     *
      * @throws Exception
      *
      * @return static

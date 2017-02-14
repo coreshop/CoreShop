@@ -85,7 +85,7 @@ if (!function_exists("objectToArray")) {
      * @param $object
      * @param null $fieldDefintions
      *
-     * @return array
+     * @return array|boolean
      */
     function _objectToArray($object, $fieldDefintions = null)
     {

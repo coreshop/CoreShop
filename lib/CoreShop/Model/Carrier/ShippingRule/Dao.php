@@ -15,7 +15,7 @@
 namespace CoreShop\Model\Carrier\ShippingRule;
 
 use CoreShop\Model\Dao\AbstractDao;
-use Pimcore\Model\Asset;
+
 use Pimcore\Tool\Serialize;
 
 /**

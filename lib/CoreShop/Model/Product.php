@@ -559,7 +559,7 @@ class Product extends Base
         }
 
         if ($this->getType() == 'object') {
-            $childs = $this->getChilds([self::OBJECT_TYPE_VARIANT]);
+            $childs = $this->getChildren([self::OBJECT_TYPE_VARIANT]);
 
             $prices = [$this->getPrice()];
 

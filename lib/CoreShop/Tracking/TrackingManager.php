@@ -79,7 +79,8 @@ class TrackingManager
 
     /**
      * @param Product $product
-     * @return mixed
+     *
+     * @return void
      */
     public function trackProductView(Product $product)
     {
@@ -88,7 +89,8 @@ class TrackingManager
 
     /**
      * @param Product $product
-     * @return mixed
+     *
+     * @return void
      */
     public function trackProductImpression(Product $product)
     {
@@ -98,7 +100,8 @@ class TrackingManager
     /**
      * @param Product $product
      * @param int $quantity
-     * @return mixed
+     *
+     * @return void
      */
     public function trackProductActionAdd(Product $product, $quantity = 1)
     {
@@ -108,7 +111,8 @@ class TrackingManager
     /**
      * @param Product $product
      * @param int $quantity
-     * @return mixed
+     *
+     * @return void
      */
     public function trackProductActionRemove(Product $product, $quantity = 1)
     {
@@ -119,7 +123,8 @@ class TrackingManager
      * @param Cart $cart
      * @param null $stepNumber
      * @param null $checkoutOption
-     * @return mixed
+     *
+     * @return void
      */
     public function trackCheckout(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
@@ -130,7 +135,8 @@ class TrackingManager
      * @param Cart $cart
      * @param null $stepNumber
      * @param null $checkoutOption
-     * @return mixed
+     *
+     * @return void
      */
     public function trackCheckoutStep(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
@@ -141,7 +147,8 @@ class TrackingManager
      * @param Cart $cart
      * @param null $stepNumber
      * @param null $checkoutOption
-     * @return mixed
+     *
+     * @return void
      */
     public function trackCheckoutAction(Cart $cart, $stepNumber = null, $checkoutOption = null)
     {
@@ -150,7 +157,8 @@ class TrackingManager
 
     /**
      * @param Order $order
-     * @return mixed
+     *
+     * @return void
      */
     public function trackCheckoutComplete(Order $order)
     {

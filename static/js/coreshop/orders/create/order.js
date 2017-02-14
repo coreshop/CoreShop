@@ -415,7 +415,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
                         text : t('coreshop_price'),
                         renderer : function (value, metaData, record) {
                             return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.currency.symbol, value) + '</span>';
-                        }.bind(this),
+                        }.bind(this)
                         /*field : { TODO: Make price editable
                             xtype: 'numberfield',
                             decimalPrecision : 2
@@ -657,7 +657,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
                 + '&key=' + pimcore.settings.google_maps_api_key
                 + '" />',
                 flex: 1,
-                bodyPadding: 5,
+                bodyPadding: 5
             });
         }
 
@@ -806,7 +806,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
                 queryMode: 'local',
                 hidden : !coreshop.settings.multishop,
                 value : 1,
-                labelWidth : 150,
+                labelWidth : 150
             });
 
             this.totalPanel = Ext.create('Ext.panel.Panel', {
@@ -857,7 +857,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
                             }.bind(this)
                         }
                     ]
-                }],
+                }]
             });
         }
 

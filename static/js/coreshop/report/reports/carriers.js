@@ -25,7 +25,7 @@ pimcore.plugin.coreshop.report.reports.carriers = Class.create(pimcore.plugin.co
     },
 
     getGrid : function () {
-        var panel = new Ext.Panel({
+        return new Ext.Panel({
             layout:'fit',
             height: 275,
             items: {
@@ -63,7 +63,5 @@ pimcore.plugin.coreshop.report.reports.carriers = Class.create(pimcore.plugin.co
                 }]
             }
         });
-
-        return panel;
     }
 });

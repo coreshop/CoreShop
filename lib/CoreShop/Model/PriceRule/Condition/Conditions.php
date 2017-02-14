@@ -19,7 +19,7 @@ use CoreShop\Model\Cart\PriceRule;
 use CoreShop\Model\Cart;
 use CoreShop\Model\Product as ProductModel;
 use CoreShop\Model\Country as CountryModel;
-use CoreShop\Model\PriceRule\Condition\AbstractCondition;
+
 
 /**
  * Class Conditions

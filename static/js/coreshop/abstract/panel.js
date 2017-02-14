@@ -197,7 +197,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
                 }.bind(this)
             });
         } else if (button == 'cancel') {
-            return;
+
         } else {
             Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
         }

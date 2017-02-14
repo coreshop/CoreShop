@@ -16,7 +16,7 @@ namespace CoreShop\Model\LocalizedFields;
 
 use CoreShop\Model\Dao\AbstractDao;
 use Pimcore\Logger;
-use Pimcore\Model;
+
 use Pimcore\Model\Object;
 use Pimcore\Tool;
 

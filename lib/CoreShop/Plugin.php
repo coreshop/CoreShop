@@ -141,7 +141,7 @@ class Plugin extends AbstractPlugin implements PluginInterface
 
             return self::getTranslate()->_('coreshop_uninstalled_successfully');
         } catch (Exception $e) {
-            \Logger::crit($e);
+            Logger::crit($e);
 
             return self::getTranslate()->_('coreshop_uninstall_failed');
         }

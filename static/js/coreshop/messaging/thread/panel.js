@@ -242,7 +242,7 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                 },
                 columns: columns,
                 flex : 1,
-                bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
+                bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store)
             });
 
             this.grid.on('beforerender', function () {

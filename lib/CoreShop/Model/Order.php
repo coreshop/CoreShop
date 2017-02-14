@@ -30,7 +30,7 @@ use CoreShop\Model\User\Address;
 use Pimcore\Date;
 use Pimcore\File;
 use Pimcore\Model\Asset;
-use Pimcore\Model\Element\Note;
+
 use Pimcore\Model\Object;
 use Pimcore\Model\User as PimcoreUser;
 

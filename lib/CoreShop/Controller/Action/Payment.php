@@ -144,6 +144,8 @@ class Payment extends Action
 
     /**
      * Refill Cart.
+     *
+     * @return boolean
      */
     public function refillCart()
     {
@@ -197,6 +199,8 @@ class Payment extends Action
         PriceRule::autoAddToCart($newCart);
 
         $session->cartId = $newCart->getId();
+        
+        return true;
     }
 
     /**

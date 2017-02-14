@@ -16,7 +16,7 @@ namespace CoreShop\Model;
 
 use CoreShop\Exception;
 use CoreShop\Model\Configuration\Listing;
-use CoreShop\Model\Index\Config;
+
 use Pimcore\Logger;
 use Pimcore\Tool;
 
@@ -164,6 +164,8 @@ class Configuration extends AbstractModel
 
             return $entry instanceof self ? $entry->getData() : null;
         }
+
+        return null; //Should not happen
     }
 
     /**

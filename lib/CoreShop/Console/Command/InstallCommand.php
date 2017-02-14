@@ -14,11 +14,11 @@
 
 namespace CoreShop\Console\Command;
 
-use CoreShop\IndexService;
-use CoreShop\Model\Product;
+
+
 use CoreShop\Plugin\Install;
 use Pimcore\Console\AbstractCommand;
-use Symfony\Component\Console\Helper\ProgressBar;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -69,7 +69,10 @@ class InstallCommand extends AbstractCommand
                 $this->output->writeln('<info>Done</info>');
             } else {
                 $this->writeError("<error>Error installing CoreShop</error>");
+                return 100;
             }
         }
+
+        return 0;
     }
 }

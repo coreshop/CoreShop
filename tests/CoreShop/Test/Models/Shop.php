@@ -14,11 +14,8 @@
 
 namespace CoreShop\Test\Models;
 
-use CoreShop\Model\Carrier\DeliveryPrice;
-use CoreShop\Model\Carrier\RangePrice;
-use CoreShop\Model\Carrier\RangeWeight;
 use CoreShop\Test\Base;
-use CoreShop\Test\Data;
+
 
 /**
  * Class Shop
