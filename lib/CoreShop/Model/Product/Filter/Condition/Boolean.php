@@ -17,6 +17,7 @@ namespace CoreShop\Model\Product\Filter\Condition;
 use CoreShop\IndexService\Condition;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
+use Pimcore\Model\Object\QuantityValue\Unit;
 
 /**
  * Class Boolean
@@ -94,7 +95,7 @@ class Boolean extends AbstractCondition
             'currentValues' => $currentValues,
             'values' => $rawValues,
             'fieldname' => $this->getField(),
-            'quantityUnit' => $this->getQuantityUnit()
+            'quantityUnit' => Unit::getById($this->getQuantityUnit())
         ]);
     }
 

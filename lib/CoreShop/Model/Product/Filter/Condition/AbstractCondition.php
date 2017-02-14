@@ -16,6 +16,7 @@ namespace CoreShop\Model\Product\Filter\Condition;
 
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
+use Pimcore\Model\Object\QuantityValue\Unit;
 use Pimcore\View;
 
 /**
@@ -45,7 +46,7 @@ abstract class AbstractCondition
     public $preSelect;
 
     /**
-     * @var string
+     * @var int
      */
     public $quantityUnit;
 
@@ -129,7 +130,7 @@ abstract class AbstractCondition
             'currentValue' => $currentFilter[$this->getField()],
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
-            'quantityUnit' => $this->getQuantityUnit()
+            'quantityUnit' => Unit::getById($this->getQuantityUnit())
         ]);
     }
 
@@ -218,7 +219,7 @@ abstract class AbstractCondition
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getQuantityUnit()
     {
@@ -226,7 +227,7 @@ abstract class AbstractCondition
     }
 
     /**
-     * @param string $quantityUnit
+     * @param int $quantityUnit
      */
     public function setQuantityUnit($quantityUnit)
     {

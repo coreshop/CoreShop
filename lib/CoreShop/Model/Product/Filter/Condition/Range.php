@@ -17,6 +17,7 @@ namespace CoreShop\Model\Product\Filter\Condition;
 use CoreShop\IndexService\Condition;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
+use Pimcore\Model\Object\QuantityValue\Unit;
 
 /**
  * Class Range
@@ -118,7 +119,7 @@ class Range extends AbstractCondition
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
             'stepCount' => $this->getStepCount(),
-            'quantityUnit' => $this->getQuantityUnit()
+            'quantityUnit' => Unit::getById($this->getQuantityUnit())
         ]);
     }
 

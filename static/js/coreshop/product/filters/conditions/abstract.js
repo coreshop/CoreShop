@@ -18,6 +18,16 @@ pimcore.plugin.coreshop.filters.conditions.abstract = Class.create(pimcore.plugi
     elementType : 'conditions',
 
     getDefaultItems : function () {
+        var quantityUnitStore = pimcore.helpers.quantityValue.getClassDefinitionStore();
+        quantityUnitStore.on("load", function(store) {
+            store.insert(0,
+                {
+                    'abbreviation' : t('empty'),
+                    'id' : 0
+                }
+            )
+        });
+
         return [
             {
                 xtype : 'textfield',
@@ -27,11 +37,16 @@ pimcore.plugin.coreshop.filters.conditions.abstract = Class.create(pimcore.plugi
                 value : this.data.label
             },
             {
-                xtype : 'textfield',
-                name : 'quantityUnit',
+                xtype: 'combobox',
+                name: 'quantityUnit',
+                triggerAction: "all",
+                editable: false,
                 width : 400,
-                fieldLabel : t('coreshop_product_filters_quantityUnit'),
-                value : this.data.quantityUnit
+                fieldLabel: t('coreshop_product_filters_quantityUnit'),
+                store: quantityUnitStore,
+                value:  this.data.quantityUnit ? this.data.quantityUnit : 0,
+                displayField: 'abbreviation',
+                valueField: 'id'
             },
             this.getFieldsComboBox()
         ];

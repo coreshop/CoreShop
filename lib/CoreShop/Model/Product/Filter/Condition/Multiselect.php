@@ -17,6 +17,7 @@ namespace CoreShop\Model\Product\Filter\Condition;
 use CoreShop\IndexService\Condition;
 use CoreShop\Model\Product\Filter;
 use CoreShop\Model\Product\Listing;
+use Pimcore\Model\Object\QuantityValue\Unit;
 
 /**
  * Class Multiselect
@@ -69,7 +70,7 @@ class Multiselect extends AbstractCondition
             'currentValues' => $currentFilter[$this->getField()],
             'values' => array_values($rawValues),
             'fieldname' => $this->getField(),
-            'quantityUnit' => $this->getQuantityUnit()
+            'quantityUnit' => Unit::getById($this->getQuantityUnit())
         ]);
     }
 
