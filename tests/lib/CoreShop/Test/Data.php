@@ -30,9 +30,12 @@ use CoreShop\Model\Cart;
 use Pimcore\File;
 use Pimcore\Model\Object\Service;
 
+/**
+ * Class Data
+ * @package CoreShop\Test
+ */
 class Data
 {
-
     /**
      * @var Product
      */
@@ -83,6 +86,9 @@ class Data
      */
     public static $shop;
 
+    /**
+     * Create Test Data
+     */
     public static function createData()
     {
         Configuration::set("SYSTEM.BASE.COUNTRY", Country::getById(2)->getId());
@@ -103,6 +109,9 @@ class Data
         \CoreShop::getTools()->setUser(self::$customer1);
     }
 
+    /**
+     * Create Test Tax Rules
+     */
     public static function createTaxRule()
     {
         if (!self::$taxRuleGroup instanceof TaxRuleGroup) {
@@ -130,6 +139,9 @@ class Data
         }
     }
 
+    /**
+     * Create Test Carriers
+     */
     public static function createTestCarrierWeight()
     {
         if (!self::$carrier1 instanceof Carrier) {
@@ -178,6 +190,9 @@ class Data
         }
     }
 
+    /**
+     * Create Test Carriers
+     */
     public static function createTestCarrierPrice()
     {
         if (!self::$carrier2 instanceof Carrier) {
@@ -217,6 +232,9 @@ class Data
         }
     }
 
+    /**
+     * Create Test Products
+     */
     public static function createTestProduct()
     {
         if (!self::$product1 instanceof Product) {
@@ -268,11 +286,17 @@ class Data
         }
     }
 
+    /**
+     * @return Cart
+     */
     public static function createCart()
     {
         return Cart::prepare(true);
     }
 
+    /**
+     * @return Cart
+     */
     public static function createCartWithProducts()
     {
         $cart = self::createCart();
@@ -284,6 +308,9 @@ class Data
         return $cart;
     }
 
+    /**
+     * Create Test Customer Groups
+     */
     public static function createCustomerGroups()
     {
         if (!self::$customerGroup1 instanceof Group) {
@@ -305,6 +332,9 @@ class Data
         }
     }
 
+    /**
+     * Create Test Customer
+     */
     public static function createCustomer()
     {
         if (!self::$customer1 instanceof User) {
@@ -322,6 +352,9 @@ class Data
         }
     }
 
+    /**
+     * Create Test Shop
+     */
     public static function createShop()
     {
         if (!self::$shop instanceof Shop) {

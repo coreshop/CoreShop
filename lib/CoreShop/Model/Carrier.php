@@ -30,21 +30,20 @@ use Pimcore\Tool;
  */
 class Carrier extends AbstractModel
 {
-    const SHIPPING_METHOD_WEIGHT = 'weight';
-    const SHIPPING_METHOD_PRICE = 'price';
-
+    /**
+     * Range Behaviour Deactivate
+     */
     const RANGE_BEHAVIOUR_DEACTIVATE = 'deactivate';
+
+    /**
+     * Range Behaviour Largest
+     */
     const RANGE_BEHAVIOUR_LARGEST = 'largest';
 
     /**
      * @var bool
      */
     protected static $isMultiShop = true;
-
-    /**
-     * @var array
-     */
-    public static $shippingMethods = [self::SHIPPING_METHOD_PRICE, self::SHIPPING_METHOD_WEIGHT];
 
     /**
      * @var array

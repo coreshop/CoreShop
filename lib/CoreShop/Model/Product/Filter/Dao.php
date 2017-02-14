@@ -23,6 +23,9 @@ use Pimcore\Tool\Serialize;
  */
 class Dao extends AbstractDao
 {
+    /**
+     * @var string
+     */
     protected static $tableName = 'coreshop_product_filters';
 
     /**

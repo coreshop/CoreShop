@@ -16,10 +16,11 @@ namespace CoreShop\Test\Models\Product;
 
 use CoreShop\Test\Base;
 
+/**
+ * Class Index
+ * @package CoreShop\Test\Models\Product
+ */
 class Index extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
+
 }

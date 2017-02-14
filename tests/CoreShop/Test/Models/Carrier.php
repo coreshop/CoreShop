@@ -20,13 +20,15 @@ use CoreShop\Model\Carrier\RangeWeight;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
+/**
+ * Class Carrier
+ * @package CoreShop\Test\Models
+ */
 class Carrier extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Carrier Creation
+     */
     public function testCarrierCreation()
     {
         $this->printTestName();
@@ -35,6 +37,9 @@ class Carrier extends Base
         $this->assertNotNull(\CoreShop\Model\Carrier::getById(2));
     }
 
+    /**
+     * Test Carrier Price
+     */
     public function testCarrierPrice()
     {
         $this->printTestName();
@@ -48,6 +53,9 @@ class Carrier extends Base
         $this->assertEquals(24, $price2);
     }
 
+    /**
+     * Test Carrier Taxes
+     */
     public function testCarrierTax()
     {
         $this->printTestName();
@@ -59,6 +67,9 @@ class Carrier extends Base
         $this->assertEquals(4, $tax);
     }
 
+    /**
+     * Test Carrier Carts
+     */
     public function testCarriersForCart()
     {
         $this->printTestName();

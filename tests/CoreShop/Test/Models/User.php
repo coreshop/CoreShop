@@ -16,10 +16,11 @@ namespace CoreShop\Test\Models;
 
 use CoreShop\Test\Base;
 
+/**
+ * Class User
+ * @package CoreShop\Test\Models
+ */
 class User extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
+
 }

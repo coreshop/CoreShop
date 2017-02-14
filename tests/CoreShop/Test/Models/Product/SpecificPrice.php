@@ -22,6 +22,10 @@ use CoreShop\Model\PriceRule\Condition\Zones;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
+/**
+ * Class SpecificPrice
+ * @package CoreShop\Test\Models\Product
+ */
 class SpecificPrice extends Base
 {
     /**
@@ -34,6 +38,9 @@ class SpecificPrice extends Base
      */
     protected $product;
 
+    /**
+     * Setup
+     */
     public function setUp()
     {
         parent::setUp();
@@ -45,6 +52,9 @@ class SpecificPrice extends Base
         $this->product = Data::$product1;
     }
 
+    /**
+     * Test Price Rule Quantity
+     */
     public function testPriceRuleQuantity()
     {
         $quantityCondition = new Quantity();
@@ -60,6 +70,9 @@ class SpecificPrice extends Base
         $this->assertTrue($quantityCondition->checkConditionProduct($this->product, $this->specificPrice));
     }
 
+    /**
+     * Test Price Rule Customer
+     */
     public function testPriceRuleCustomer()
     {
         $customerConditon = new Customers();
@@ -75,6 +88,9 @@ class SpecificPrice extends Base
         $this->assertTrue($customerConditon->checkConditionProduct($this->product, $this->specificPrice));
     }
 
+    /**
+     * Test Price Rule Time Span
+     */
     public function testPriceRuleTimeSpan()
     {
         $today = strtotime('12:00:00');
@@ -98,6 +114,9 @@ class SpecificPrice extends Base
         $this->assertFalse($timeSpan->checkConditionProduct($this->product, $this->specificPrice));
     }
 
+    /**
+     * Test Price Rule Country
+     */
     public function testPriceRuleCountry()
     {
         $country = new Countries();
@@ -112,6 +131,9 @@ class SpecificPrice extends Base
         $this->assertFalse($country->checkConditionProduct($this->product, $this->specificPrice));
     }
 
+    /**
+     * Test Price Rule Customer Group
+     */
     public function testPriceRuleCustomerGroup()
     {
         $customerConditon = new Customers();
@@ -124,6 +146,9 @@ class SpecificPrice extends Base
         $this->assertTrue($customerConditon->checkConditionProduct($this->product, $this->specificPrice));
     }
 
+    /**
+     * Test Price Rule Zone
+     */
     public function testPriceRuleZone()
     {
         $zone = new Zones();

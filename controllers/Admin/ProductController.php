@@ -67,6 +67,10 @@ class CoreShop_Admin_ProductController extends Admin
         $this->_helper->json(['success' => true, 'data' => $jsonProducts, 'count' => count($jsonProducts), 'total' => $list->getTotalCount()]);
     }
 
+    /**
+     * @param \CoreShop\Model\Product $product
+     * @return array
+     */
     protected function prepareProduct(\CoreShop\Model\Product $product)
     {
         $element = [

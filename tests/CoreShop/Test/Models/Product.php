@@ -18,13 +18,15 @@ use CoreShop\Model\Configuration;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
+/**
+ * Class Product
+ * @package CoreShop\Test\Models
+ */
 class Product extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Product Creation
+     */
     public function testProductCreation()
     {
         $this->printTestName();
@@ -32,6 +34,9 @@ class Product extends Base
         $this->assertNotNull(Data::$product1);
     }
 
+    /**
+     * Test Product Price
+     */
     public function testProductPrice()
     {
         $this->printTestName();
@@ -45,6 +50,9 @@ class Product extends Base
         $this->assertEquals(15, Data::$product1->getPrice());
     }
 
+    /**
+     * Test Product Tax
+     */
     public function testProductTax()
     {
         $this->printTestName();
@@ -58,6 +66,9 @@ class Product extends Base
         $this->assertEquals(15 - (15 / 1.2), Data::$product1->getTaxAmount());
     }
 
+    /**
+     * Test Product Delivery Price
+     */
     public function testProductDeliveryPrice()
     {
         $this->printTestName();

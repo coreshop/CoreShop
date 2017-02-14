@@ -17,13 +17,15 @@ namespace CoreShop\Test\Models;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
+/**
+ * Class Cart
+ * @package CoreShop\Test\Models
+ */
 class Cart extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Cart Creation
+     */
     public function testCartCreation()
     {
         $this->printTestName();
@@ -33,6 +35,9 @@ class Cart extends Base
         $this->assertNotNull($cart);
     }
 
+    /**
+     * Test Cart Delivery Price
+     */
     public function testCartDeliveryPrice()
     {
         $this->printTestName();
@@ -52,6 +57,9 @@ class Cart extends Base
         $this->assertEquals(24, $cart3->getShipping());
     }
 
+    /**
+     * Test Cart Subtotal
+     */
     public function testCartSubtotal()
     {
         $this->printTestName();
@@ -67,6 +75,9 @@ class Cart extends Base
         $this->assertEquals($subtotal-$tax, $subTotalWT);
     }
 
+    /**
+     * Test Cart Total
+     */
     public function testCartTotal()
     {
         $this->printTestName();
@@ -83,6 +94,9 @@ class Cart extends Base
         $this->assertEquals($total-$tax, $totalWT);
     }
 
+    /**
+     * Test Cart Add Item
+     */
     public function testCartAddItem()
     {
         $this->printTestName();

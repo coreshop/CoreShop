@@ -20,13 +20,15 @@ use CoreShop\Model\Carrier\RangeWeight;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
+/**
+ * Class Shop
+ * @package CoreShop\Test\Models
+ */
 class Shop extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Shop Creation
+     */
     public function testShopCreation()
     {
         $this->printTestName();

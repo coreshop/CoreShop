@@ -28,6 +28,9 @@ use Pimcore\Tool;
  */
 abstract class Listing implements \Zend_Paginator_Adapter_Interface, \Zend_Paginator_AdapterAggregate, \Iterator
 {
+    /**
+     * Order Key Price
+     */
     const ORDERKEY_PRICE = 'orderkey_price';
 
     /**

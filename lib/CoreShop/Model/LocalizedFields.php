@@ -24,9 +24,6 @@ use Pimcore\Tool;
  */
 class LocalizedFields extends Model\AbstractModel
 {
-    const STRICT_DISABLED = 0;
-    const STRICT_ENABLED = 1;
-
     /**
      * @var bool
      */

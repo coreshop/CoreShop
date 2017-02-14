@@ -17,13 +17,15 @@ namespace CoreShop\Test\Models;
 use CoreShop\Model\TaxCalculator;
 use CoreShop\Test\Base;
 
+/**
+ * Class TaxRule
+ * @package CoreShop\Test\Models
+ */
 class TaxRule extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Tax Creation
+     */
     public function testTaxCreation()
     {
         $this->printTestName();
@@ -32,6 +34,9 @@ class TaxRule extends Base
         $this->assertNotNull(\CoreShop\Model\TaxRule::getById(1));
     }
 
+    /**
+     * Test Tax Calculator
+     */
     public function testTaxCalculator()
     {
         $this->printTestName();

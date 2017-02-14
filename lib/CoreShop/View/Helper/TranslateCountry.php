@@ -15,6 +15,7 @@
 namespace CoreShop\View\Helper;
 
 use CoreShop\Model\Country;
+use Pimcore\View;
 
 /**
  * Class TranslateCountry
@@ -22,6 +23,9 @@ use CoreShop\Model\Country;
  */
 class TranslateCountry
 {
+    /**
+     * @var View
+     */
     public $view;
 
     /**

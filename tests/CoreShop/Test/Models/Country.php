@@ -16,13 +16,15 @@ namespace CoreShop\Test\Models;
 
 use CoreShop\Test\Base;
 
+/**
+ * Class Country
+ * @package CoreShop\Test\Models
+ */
 class Country extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Country Creation
+     */
     public function testCountryCreation()
     {
         $this->printTestName();

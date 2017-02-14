@@ -35,6 +35,9 @@ use Pimcore\Model\Object;
  */
 class Payment extends Base
 {
+    /**
+     * Note Identifier
+     */
     const NOTE_TRANSACTION = 'Payment Transaction';
 
     /**

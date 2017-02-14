@@ -16,13 +16,15 @@ namespace CoreShop\Test\Models;
 
 use CoreShop\Test\Base;
 
+/**
+ * Class Tax
+ * @package CoreShop\Test\Models
+ */
 class Tax extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Tax Creation
+     */
     public function testTaxCreation()
     {
         $this->printTestName();

@@ -138,6 +138,9 @@ class Dao extends Model\Dao\PhpArrayTable
         }
     }
 
+    /**
+     * @param $key
+     */
     public function removeAll($key)
     {
         $data = $this->db->fetchAll();

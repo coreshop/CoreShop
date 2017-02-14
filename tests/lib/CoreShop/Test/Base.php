@@ -19,8 +19,15 @@ use CoreShop\Model\Carrier;
 use CoreShop\Model\Configuration;
 use Pimcore\Model\Object\ClassDefinition;
 
+/**
+ * Class Base
+ * @package CoreShop\Test
+ */
 class Base extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Print Test Name
+     */
     public function printTestName()
     {
         try {
@@ -32,7 +39,7 @@ class Base extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
+     * Setup Test
      */
     public function setUp()
     {

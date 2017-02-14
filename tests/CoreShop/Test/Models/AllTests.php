@@ -16,8 +16,15 @@ namespace CoreShop\Test\Models;
 
 use CoreShop\Test\SuiteBase;
 
+/**
+ * Class AllTests
+ * @package CoreShop\Test\Models
+ */
 class AllTests extends SuiteBase
 {
+    /**
+     * @return AllTests
+     */
     public static function suite()
     {
         $suite = new AllTests('Models');

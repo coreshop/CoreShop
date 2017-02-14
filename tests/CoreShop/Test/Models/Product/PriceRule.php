@@ -26,6 +26,10 @@ use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 use Pimcore\Cache;
 
+/**
+ * Class PriceRule
+ * @package CoreShop\Test\Models\Product
+ */
 class PriceRule extends Base
 {
     /**
@@ -38,6 +42,9 @@ class PriceRule extends Base
      */
     protected $product;
 
+    /**
+     * Setup
+     */
     public function setUp()
     {
         parent::setUp();
@@ -51,6 +58,9 @@ class PriceRule extends Base
         $this->product = Data::$product1;
     }
 
+    /**
+     * Test Price Rule Condition Customer
+     */
     public function testPriceRuleCondCustomer()
     {
         $customerConditon = new Customers();
@@ -66,6 +76,9 @@ class PriceRule extends Base
         $this->assertTrue($customerConditon->checkConditionProduct($this->product, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Condition Time Span
+     */
     public function testPriceRuleCondTimeSpan()
     {
         $today = strtotime('12:00:00');
@@ -87,6 +100,9 @@ class PriceRule extends Base
         $this->assertFalse($timeSpan->checkConditionProduct($this->product, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Condition Country
+     */
     public function testPriceRuleCondCountry()
     {
         $country = new Countries();
@@ -99,6 +115,9 @@ class PriceRule extends Base
         $this->assertFalse($country->checkConditionProduct($this->product, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Condition Zone
+     */
     public function testPriceRuleCondZone()
     {
         $zone = new Zones();
@@ -111,6 +130,9 @@ class PriceRule extends Base
         $this->assertFalse($zone->checkConditionProduct($this->product, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Condition Customer Group
+     */
     public function testPriceRuleCondCustomerGroup()
     {
         $customer = new CustomerGroups();
@@ -126,6 +148,9 @@ class PriceRule extends Base
         $this->assertFalse($customer->checkConditionProduct($this->product, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Action Discount Amount
+     */
     public function testPriceRuleActionDiscountAmount()
     {
         $discount = new DiscountAmount();
@@ -148,6 +173,9 @@ class PriceRule extends Base
         $this->priceRule->save();
     }
 
+    /**
+     * Test Price Rule Action Discount Percent
+     */
     public function testPriceRuleActionDiscountPercent()
     {
         $discount = new DiscountPercent();
@@ -172,6 +200,9 @@ class PriceRule extends Base
         $this->priceRule->save();
     }
 
+    /**
+     * Test Price Rule Action New Price
+     */
     public function testPriceRuleActionNewPrice()
     {
         $newPrice = new NewPrice();

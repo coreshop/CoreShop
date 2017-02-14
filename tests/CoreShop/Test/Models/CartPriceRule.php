@@ -28,6 +28,10 @@ use CoreShop\Model\PriceRule\Condition\Zones;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
+/**
+ * Class CartPriceRule
+ * @package CoreShop\Test\Models
+ */
 class CartPriceRule extends Base
 {
     /**
@@ -35,6 +39,9 @@ class CartPriceRule extends Base
      */
     protected $priceRule;
 
+    /**
+     * Setup Test
+     */
     public function setUp()
     {
         parent::setUp();
@@ -50,6 +57,9 @@ class CartPriceRule extends Base
         $this->priceRule = $priceRule;
     }
 
+    /**
+     * Test Price Rule Condition Customer
+     */
     public function testPriceRuleCondCustomer()
     {
         $customerConditon = new Customers();
@@ -65,6 +75,9 @@ class CartPriceRule extends Base
         $this->assertTrue($customerConditon->checkConditionCart($cart, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Condition Time Span
+     */
     public function testPriceRuleCondTimeSpan()
     {
         $today = strtotime('12:00:00');
@@ -88,6 +101,9 @@ class CartPriceRule extends Base
         $this->assertFalse($timeSpan->checkConditionCart($cart, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Condition Amount
+     */
     public function testPriceRuleCondAmount()
     {
         $amount = new Amount();
@@ -101,7 +117,10 @@ class CartPriceRule extends Base
 
         $this->assertFalse($amount->checkConditionCart($cart, $this->priceRule));
     }
-    
+
+    /**
+     * Test Price Rule Condition Total Per Customer
+     */
     public function testPriceRuleCondTotalPerCustomer()
     {
         $total = new TotalPerCustomer();
@@ -114,6 +133,9 @@ class CartPriceRule extends Base
         //@todo: create order an test pricerule again with assertFalse result
     }
 
+    /**
+     * Test Price Rule Condition Country
+     */
     public function testPriceRuleCondCountry()
     {
         $country = new Countries();
@@ -128,6 +150,9 @@ class CartPriceRule extends Base
         $this->assertFalse($country->checkConditionCart($cart, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Condition Zone
+     */
     public function testPriceRuleCondZone()
     {
         $zone = new Zones();
@@ -142,10 +167,17 @@ class CartPriceRule extends Base
         $this->assertFalse($zone->checkConditionCart($cart, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Condition Category
+     */
     public function testPriceRuleCondCategory()
     {
+        //TODO: implement me
     }
 
+    /**
+     * Test Price Rule Condition Customer Group
+     */
     public function testPriceRuleCondCustomerGroup()
     {
         $customer = new CustomerGroups();
@@ -161,6 +193,9 @@ class CartPriceRule extends Base
         $this->assertFalse($customer->checkConditionCart($cart, $this->priceRule));
     }
 
+    /**
+     * Test Price Rule Action Gift
+     */
     public function testPriceRuleActionGift()
     {
         $gift = new Gift();
@@ -177,6 +212,9 @@ class CartPriceRule extends Base
         $this->assertEquals(Data::$product1->getPrice(), $cart->getDiscount());
     }
 
+    /**
+     * Test Price Rule Action Free Shipping
+     */
     public function testPriceRuleActionFreeShipping()
     {
         $freeShipping = new FreeShipping();
@@ -191,6 +229,9 @@ class CartPriceRule extends Base
         $this->assertEquals(0, $cart->getShipping());
     }
 
+    /**
+     * Test Price Rule Action Discount Amount
+     */
     public function testPriceRuleActionDiscountAmount()
     {
         $discount = new DiscountAmount();
@@ -208,6 +249,9 @@ class CartPriceRule extends Base
         $this->assertEquals($cart2->getTotal() - 10, $cart->getTotal());
     }
 
+    /**
+     * Test Price Rule Action Percent
+     */
     public function testPriceRuleActionDiscountPercent()
     {
         $discount = new DiscountPercent();

@@ -16,13 +16,15 @@ namespace CoreShop\Test\Models;
 
 use CoreShop\Test\Base;
 
+/**
+ * Class Currency
+ * @package CoreShop\Test\Models
+ */
 class Currency extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Currency Creation
+     */
     public function testCurrencyCreation()
     {
         $this->printTestName();
@@ -30,6 +32,9 @@ class Currency extends Base
         $this->assertNotNull(\CoreShop\Model\Currency::getById(1));
     }
 
+    /**
+     * Test Currency Conversion
+     */
     public function testCurrencyConversion()
     {
         $usd = \CoreShop\Model\Currency::getByName("US Dollars");

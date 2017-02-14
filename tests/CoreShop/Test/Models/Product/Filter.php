@@ -16,10 +16,11 @@ namespace CoreShop\Test\Models\Product;
 
 use CoreShop\Test\Base;
 
+/**
+ * Class Filter
+ * @package CoreShop\Test\Models\Product
+ */
 class Filter extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
+
 }

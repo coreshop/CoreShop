@@ -25,6 +25,9 @@ use CoreShop\Model\Product\Listing as ProductListing;
  */
 class Service
 {
+    /**
+     * Const for Empty Value
+     */
     const EMPTY_STRING = '##EMPTY##';
 
     /**

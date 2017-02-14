@@ -16,13 +16,15 @@ namespace CoreShop\Test\Models;
 
 use CoreShop\Test\Base;
 
+/**
+ * Class Zone
+ * @package CoreShop\Test\Models
+ */
 class Zone extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * Test Zone Creation
+     */
     public function testZoneCreation()
     {
         $this->printTestName();

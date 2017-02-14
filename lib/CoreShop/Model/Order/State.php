@@ -24,26 +24,99 @@ use Pimcore\Version;
  */
 class State
 {
+    /**
+     * State for Initialized Order
+     */
     const STATE_INITIALIZED        = 'initialized';
+
+    /**
+     * State for New Order
+     */
     const STATE_NEW                = 'new';
+
+    /**
+     * State for Pending Payment Order
+     */
     const STATE_PENDING_PAYMENT    = 'pending_payment';
+
+    /**
+     * State for Processing Order
+     */
     const STATE_PROCESSING         = 'processing';
+
+    /**
+     * State for Complete Order
+     */
     const STATE_COMPLETE           = 'complete';
+
+    /**
+     * State for Closed Order
+     */
     const STATE_CLOSED             = 'closed';
+
+    /**
+     * State for Canceled Order
+     */
     const STATE_CANCELED           = 'canceled';
+
+    /**
+     * State for Order on Hold
+     */
     const STATE_HOLDED             = 'holded';
+
+    /**
+     * Sate for Payment Review Order
+     */
     const STATE_PAYMENT_REVIEW     = 'payment_review';
 
+    /**
+     * Status for Initialized Order
+     */
     const STATUS_INITIALIZED        = 'initialized';
+
+    /**
+     * Status for Pending Order
+     */
     const STATUS_PENDING            = 'pending';
+
+    /**
+     * Status for Pending Order Payment
+     */
     const STATUS_PENDING_PAYMENT    = 'pending_payment';
+
+    /**
+     * Status for Processing Order
+     */
     const STATUS_PROCESSING         = 'processing';
+
+    /**
+     * Status for Completed Order
+     */
     const STATUS_COMPLETE           = 'complete';
+
+    /**
+     * Status for Closed Order
+     */
     const STATUS_CLOSED             = 'closed';
+
+    /**
+     * Status for Canceled Order
+     */
     const STATUS_CANCELED           = 'canceled';
+
+    /**
+     * Status for Order on Hold
+     */
     const STATUS_HOLDED             = 'holded';
+
+    /**
+     * Status for Payment Review Order
+     */
     const STATUS_PAYMENT_REVIEW     = 'payment_review';
 
+    /**
+     * @var array
+     */
     protected static $STATE_CONFIG = [
 
         self::STATE_INITIALIZED => [

@@ -19,6 +19,9 @@ use CoreShop\Controller\Action\Admin;
  */
 class CoreShop_Admin_ObjectController extends Admin
 {
+    /**
+     * @var string
+     */
     protected $variantsBrick = 'variants';
 
     public function init()
@@ -83,7 +86,7 @@ class CoreShop_Admin_ObjectController extends Admin
             $object->save();
         }
 
-        return $this->_helper->json(['success' => true]);
+        $this->_helper->json(['success' => true]);
     }
 
     public function getVariantBricksAction()

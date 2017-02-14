@@ -16,13 +16,23 @@ namespace CoreShop\Test;
 
 use Pimcore\Model\Object\AbstractObject;
 
+/**
+ * Class SuiteBase
+ * @package CoreShop\Test
+ */
 class SuiteBase extends \PHPUnit_Framework_TestSuite
 {
+    /**
+     * Setup
+     */
     protected function setUp()
     {
         AbstractObject::setHideUnpublished(false);
     }
 
+    /**
+     * Tear Down
+     */
     protected function tearDown()
     {
     }

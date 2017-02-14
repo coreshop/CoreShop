@@ -16,10 +16,11 @@ namespace CoreShop\Test\Models;
 
 use CoreShop\Test\Base;
 
+/**
+ * Class Order
+ * @package CoreShop\Test\Models
+ */
 class Order extends Base
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
+
 }
