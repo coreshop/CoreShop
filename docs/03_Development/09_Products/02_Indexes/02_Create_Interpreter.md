@@ -30,7 +30,7 @@ You now need to register your new Interpreter to CoreShop:
 \Pimcore::getEventManager()->attach('coreshop.indexService.interpreter.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(Website\IndexService\Interpreter\YourInterpreter::class);
     }
 });
@@ -71,7 +71,7 @@ You can now use the parameter in your Interpreter
 
 
 ```php
-namespace CoreShop\IndexService\Interpreter;
+namespace CoreShop\Bundle\LegacyBundle\IndexService\Interpreter;
 
 class YourInterpreter extends AbstractInterpreter
 {

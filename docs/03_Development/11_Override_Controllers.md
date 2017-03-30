@@ -6,7 +6,7 @@ For example we would like to override the CartController. Simply create the file
 
 ```php
 
-\CoreShop\Tool::loadController("Cart");
+\CoreShop\Bundle\LegacyBundle\Tool::loadController("Cart");
 
 class CartController extends CoreShop_CartController {
 

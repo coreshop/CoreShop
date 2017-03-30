@@ -16,9 +16,9 @@ YourPlugin/lib/YourPlugin/Model/Product/Filter/Condition/YourCondition.php
 ```php
 namespace Website\Model\Product\Filter\Condition;
 
-use CoreShop\IndexService\Condition;
-use CoreShop\Model\Product\Filter;
-use CoreShop\Model\Product\Listing;
+use CoreShop\Bundle\LegacyBundle\IndexService\Condition;
+use CoreShop\Bundle\LegacyBundle\Model\Product\Filter;
+use CoreShop\Bundle\LegacyBundle\Model\Product\Listing;
 
 class YourCondition extends Filter\Condition\AbstractCondition
 {
@@ -71,7 +71,7 @@ pimcore.plugin.coreshop.filters.conditions.yourCondition = Class.create(pimcore.
 You also need to register your new Action to CoreShop:
 
 ```php
-\CoreShop\Model\Product\Filter::getConditionDispatcher()->addType(\Website\Model\Product\Filter\Condition\YourCondition::class);
+\CoreShop\Bundle\LegacyBundle\Model\Product\Filter::getConditionDispatcher()->addType(\Website\Model\Product\Filter\Condition\YourCondition::class);
 ```
 
 or even better:
@@ -80,7 +80,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.filter.condition.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\Product\Filter\Condition\YourCondition::class);
     }
 });

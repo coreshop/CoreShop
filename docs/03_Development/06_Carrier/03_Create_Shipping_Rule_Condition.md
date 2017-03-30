@@ -10,11 +10,11 @@ YourPlugin/lib/CoreShop/Model/Carrier/ShippingRule/Condition/YourCondition.php
 ```
 
 ```php
-namespace CoreShop\Model\Carrier\ShippingRule\Condition;
+namespace CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule\Condition;
 
-use CoreShop\Model;
-use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Tool;
+use CoreShop\Bundle\LegacyBundle\Model;
+use CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule;
+use CoreShop\Bundle\LegacyBundle\Tool;
 
 class YourCondition extends AbstractCondition
 {
@@ -56,7 +56,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.yourCondition = Class.c
 You also need to register your new Condition to CoreShop:
 
 ```php
-\CoreShop\Model\Carrier\ShippingRule::addCondition("YourCondition");
+\CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule::addCondition("YourCondition");
 ```
 
 #### After 1.2
@@ -72,9 +72,9 @@ YourPlugin/lib/YourPlugin/Model/Carrier/ShippingRule/Condition/YourCondition.php
 ```php
 namespace Website\Model\Carrier\ShippingRule\Condition;
 
-use CoreShop\Model;
-use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Tool;
+use CoreShop\Bundle\LegacyBundle\Model;
+use CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule;
+use CoreShop\Bundle\LegacyBundle\Tool;
 
 class YourCondition extends AbstractCondition
 {
@@ -116,7 +116,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.yourCondition = Class.c
 You also need to register your new Condition to CoreShop:
 
 ```php
-\CoreShop\Model\Carrier\ShippingRule::getConditionDispatcher()->addType(\Website\Model\Carrier\ShippingRule\Action\YourCondition::class);
+\CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule::getConditionDispatcher()->addType(\Website\Model\Carrier\ShippingRule\Action\YourCondition::class);
 ```
 
 or even better:
@@ -125,7 +125,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.shippingRule.condition.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\Carrier\ShippingRule\Action\YourAction::class);
     }
 });

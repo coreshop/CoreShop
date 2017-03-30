@@ -11,10 +11,10 @@ But if you need some different kind of shipping cost calculation, you can implem
 ```php
 namespace CustomCarrierDemo;
 
-use CoreShop\Model\Carrier as CoreShopCarrier;
-use CoreShop\Model\Cart;
-use CoreShop\Model\User\Address;
-use CoreShop\Model\Zone;
+use CoreShop\Bundle\LegacyBundle\Model\Carrier as CoreShopCarrier;
+use CoreShop\Bundle\LegacyBundle\Model\Cart;
+use CoreShop\Bundle\LegacyBundle\Model\User\Address;
+use CoreShop\Bundle\LegacyBundle\Model\Zone;
 
 class Carrier extends CoreShopCarrier
 {

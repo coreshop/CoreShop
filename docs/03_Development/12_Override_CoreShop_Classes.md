@@ -11,7 +11,7 @@ For Example
 <?php
 
 return [
-    "CoreShop\\Model\\Country" => "Website\\Model\\Country",
+    "CoreShop\Bundle\LegacyBundle\\Model\\Country" => "Website\\Model\\Country",
 ];
 ```
 
@@ -21,7 +21,7 @@ and its implementation
 //website/models/Website/Model/Country.php
 namespace Website\Model;
 
-class Country extends \CoreShop\Model\Country {
+class Country extends \CoreShop\Bundle\LegacyBundle\Model\Country {
 
     /**
      * @var

@@ -19,8 +19,8 @@ YourPlugin/lib/YourPlugin/Model/Mail/Rule/Condition/Order/YourCondition.php
 ```php
 namespace Website\Model\Mail\Rule\Condition\Order;
 
-use CoreShop\Model;
-use CoreShop\Model\Mail\Rule;
+use CoreShop\Bundle\LegacyBundle\Model;
+use CoreShop\Bundle\LegacyBundle\Model\Mail\Rule;
 use Pimcore\Model\AbstractModel;
 
 class YourCondition extends Rule\Condition\AbstractCondition
@@ -64,7 +64,7 @@ pimcore.plugin.coreshop.mail.rules.conditions.yourCondition = Class.create(pimco
 You also need to register your new Condition to CoreShop.
 
 ```php
-\CoreShop\Model\Mail\Rule::getConditionDispatcherForType('order')->addType(\Website\Model\Mail\Rule\Condition\Order\YourCondition::class);
+\CoreShop\Bundle\LegacyBundle\Model\Mail\Rule::getConditionDispatcherForType('order')->addType(\Website\Model\Mail\Rule\Condition\Order\YourCondition::class);
 ```
 
 or even better:
@@ -73,7 +73,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.mailRules.order.condition.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\Mail\Rule\Action\YourAction::class);
     }
 });

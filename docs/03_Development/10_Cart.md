@@ -1,6 +1,6 @@
 # CoreShop Cart
 
-If you need some Extra Informations added with a Product in your Cart, you can do that by creating an ObjectBrick for your CartItem/OrderItem. This ObjectBrick needs to implement CoreShop\Model\Objectbrick\Data\AbstractData.
+If you need some Extra Informations added with a Product in your Cart, you can do that by creating an ObjectBrick for your CartItem/OrderItem. This ObjectBrick needs to implement CoreShop\Bundle\LegacyBundle\Model\Objectbrick\Data\AbstractData.
 
 To render some extra information in your cart/invoice, you need to implement the "renderCart" or "renderInvoice" method.
 
@@ -101,7 +101,7 @@ Hook into "cart.preAdd", "cart.postAdd"
     }
 ```
 
-## CoreShop\Model\Objectbrick\Data\AbstractData
+## CoreShop\Bundle\LegacyBundle\Model\Objectbrick\Data\AbstractData
 
 ```php
 class CoreShopCartItemPersonal extends AbstractData
@@ -141,7 +141,7 @@ class CoreShopCartItemPersonal extends AbstractData
 
 CoreShop supports the use of multiple Carts per User.
 
-The \CoreShop\Model\Cart\Manager helps to manage all the carts.
+The \CoreShop\Bundle\LegacyBundle\Model\Cart\Manager helps to manage all the carts.
 
 ## List all Carts
 ```php
@@ -167,7 +167,7 @@ To activate a specific cart, use following code.
 ## Create a new Cart
 
 ```php
-\CoreShop::getTools()->getCartManager()->setSessionCart(\CoreShop::getTools()->getCartManager()->createCart("default", \CoreShop::getTools()->getUser(), \CoreShop\Model\Shop::getShop(), true));
+\CoreShop::getTools()->getCartManager()->setSessionCart(\CoreShop::getTools()->getCartManager()->createCart("default", \CoreShop::getTools()->getUser(), \CoreShop\Bundle\LegacyBundle\Model\Shop::getShop(), true));
 ```
 
 The last parameter is used to determine if the Cart should be persisted in the database, or in the session. On adding items, the cart will always be persisted in database.

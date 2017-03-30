@@ -1,0 +1,4 @@
+_pimcore_coreshop_backend:
+    resource: "@CoreShopLegacyBundle/Controller/Model/"
+    type:     annotation
+    prefix:   /admin/CoreShop/

@@ -28,7 +28,7 @@ To add new Interpreter/Getter/IndexType use following event:
 \Pimcore::getEventManager()->attach('coreshop.indexService.provider.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\IndexService\YourProvider::class);
     }
 });
@@ -37,7 +37,7 @@ To add new Interpreter/Getter/IndexType use following event:
 \Pimcore::getEventManager()->attach('coreshop.indexService.getter.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\IndexService\Getter\YourGetter::class);
     }
 });
@@ -46,7 +46,7 @@ To add new Interpreter/Getter/IndexType use following event:
 \Pimcore::getEventManager()->attach('coreshop.indexService.interpreter.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\IndexService\Interpreter\YourInterpreter::class);
     }
 });
@@ -62,9 +62,9 @@ Only thing that is important to change: the $type variable was until 1.2 an inst
 You should also change how to register for Actions/Conditions. Until 1.2 it was only possible to register new types by implementing them within the CoreShop namespace.
 This has been changed now, you can use any Namespace you like. For example:
 
-If your Action had the name ```\CoreShop\Model\PriceRule\Action\MyAction``` you could rename it to whatever you like, but you also need to register it diffently:
+If your Action had the name ```\CoreShop\Bundle\LegacyBundle\Model\PriceRule\Action\MyAction``` you could rename it to whatever you like, but you also need to register it diffently:
 
-Until 1.2, register a new type has been done by following ```\CoreShop\Model\Product\PriceRule::addAction('myAction');```. This is now changed to ```\CoreShop\Model\Product\PriceRule::getActionDispatcher()->addType(\CoreShop\Model\PriceRule\Action\MyAction::class)```.
+Until 1.2, register a new type has been done by following ```\CoreShop\Bundle\LegacyBundle\Model\Product\PriceRule::addAction('myAction');```. This is now changed to ```\CoreShop\Bundle\LegacyBundle\Model\Product\PriceRule::getActionDispatcher()->addType(\CoreShop\Bundle\LegacyBundle\Model\PriceRule\Action\MyAction::class)```.
 
 Sometimes it happens, that pimcore loads your plugin before CoreShop is loaded, therefore we now have an event to register new Types:
 
@@ -73,7 +73,7 @@ Sometimes it happens, that pimcore loads your plugin before CoreShop is loaded, 
     $target = $e->getTarget();
 
     if($target instanceof Dispatcher) {
-        $target->addType(\CoreShop\Model\PriceRule\Action\MyAction::class);
+        $target->addType(\CoreShop\Bundle\LegacyBundle\Model\PriceRule\Action\MyAction::class);
     }
 });
 ```

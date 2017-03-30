@@ -4,12 +4,12 @@ To compare some products, the default CoreShop Theme provides already a controll
 
 **Compare Values**
 
-To compare real values you need to add a Hook to your Theme. In your `CoreShop\Controller\Action.php` add:
+To compare real values you need to add a Hook to your Theme. In your `CoreShop\Bundle\LegacyBundle\Controller\Action.php` add:
 
 ```php
- \CoreShop\Plugin::getEventManager()
+ \CoreShop\Bundle\LegacyBundle\Plugin::getEventManager()
        ->attach(
-          'compare.products', array( '\CoreShop\Helper\ProductCompare', 'compareProductParams' )
+          'compare.products', array( '\CoreShop\Bundle\LegacyBundle\Helper\ProductCompare', 'compareProductParams' )
        );
 ```
 
@@ -18,7 +18,7 @@ To compare real values you need to add a Hook to your Theme. In your `CoreShop\C
 ```php
 
 <?php
-namespace CoreShop\Helper;
+namespace CoreShop\Bundle\LegacyBundle\Helper;
 
 class ProductCompare {
 

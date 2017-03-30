@@ -7,8 +7,8 @@ Creating variants is easy.
 - create a objectbrick and call it "sizes" for example.
 
 > **Important**
-> Every objectbrick needs to extend `\CoreShop\Model\BrickVariant` if you want to use its elements as a variant. so add `\CoreShop\Model\BrickVariant` into the ParentClass input field.
-> Otherwise you will get an error like "Objectbrick "getSizes" needs to be a instance of \CoreShop\Model\BrickVariant" on your product detail page.
+> Every objectbrick needs to extend `\CoreShop\Bundle\LegacyBundle\Model\BrickVariant` if you want to use its elements as a variant. so add `\CoreShop\Bundle\LegacyBundle\Model\BrickVariant` into the ParentClass input field.
+> Otherwise you will get an error like "Objectbrick "getSizes" needs to be a instance of \CoreShop\Bundle\LegacyBundle\Model\BrickVariant" on your product detail page.
 
 ![](img/VariantsAddBrick.png)
 

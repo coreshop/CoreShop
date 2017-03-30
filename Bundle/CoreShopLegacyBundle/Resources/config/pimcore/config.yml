@@ -1,0 +1,20 @@
+# Monolog Configuration
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopCarrier: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopCarrier
+                    coreShopCarrierMultiselect: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopCarrierMultiselect
+                    coreShopCountry: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopCountry
+                    coreShopCountryMultiselect: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopCountryMultiselect
+                    coreShopCurrency: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopCurrency
+                    coreShopCurrencyMultiselect: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopCurrencyMultiselect
+                    coreShopFilter: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopFilter
+                    coreShopLanguage: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopLanguage
+                    coreShopPriceRule: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopPriceRule
+                    coreShopShop: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopShop
+                    coreShopShopMultiselect: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopShopMultiselect
+                    coreShopSpecificPrices: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopSpecificPrices
+                    coreShopState: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopState
+                    coreShopTaxRuleGroup: CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data\CoreShopTaxRuleGroup

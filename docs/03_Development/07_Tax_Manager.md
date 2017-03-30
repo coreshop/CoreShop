@@ -1,6 +1,6 @@
 # CoreShop Carrier
 
-CoreShop implements a Taxes using Tax Rules. If you need something different for tax calculation, you can need to implement the class CoreShop\Model\Plugin\TaxManager.
+CoreShop implements a Taxes using Tax Rules. If you need something different for tax calculation, you can need to implement the class CoreShop\Bundle\LegacyBundle\Model\Plugin\TaxManager.
 
 To notify CoreShop that a custom TaxManager is available, you need to hook into "tax.getTaxManager".
 

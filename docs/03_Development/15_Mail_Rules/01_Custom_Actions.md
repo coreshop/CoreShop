@@ -16,8 +16,8 @@ YourPlugin/lib/YourPlugin/Model/Mail/Rule/Action/YourAction.php
 ```php
 namespace Website\Model\Mail\Rule\Action;
 
-use CoreShop\Model\Mail\Rule\Action\AbstractAction;
-use CoreShop\Model;
+use CoreShop\Bundle\LegacyBundle\Model\Mail\Rule\Action\AbstractAction;
+use CoreShop\Bundle\LegacyBundle\Model;
 use Pimcore\Model\AbstractModel;
 
 class YourAction extends AbstractAction
@@ -64,10 +64,10 @@ You also need to register your new Action to CoreShop. You need determine which 
 ```php
 
 //Support for Order type
-\CoreShop\Model\Mail\Rule::getActionDispatcherForType('order')->addType(\Website\Model\Mail\Rule\Action\YourAction::class);
+\CoreShop\Bundle\LegacyBundle\Model\Mail\Rule::getActionDispatcherForType('order')->addType(\Website\Model\Mail\Rule\Action\YourAction::class);
 
 //Support for Payment type
-\CoreShop\Model\Mail\Rule::getActionDispatcherForType('payment')->addType(\Website\Model\Mail\Rule\Action\YourAction::class);
+\CoreShop\Bundle\LegacyBundle\Model\Mail\Rule::getActionDispatcherForType('payment')->addType(\Website\Model\Mail\Rule\Action\YourAction::class);
 ```
 
 or even better:
@@ -77,7 +77,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.mailRules.order.action.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\Mail\Rule\Action\YourAction::class);
     }
 });
@@ -86,7 +86,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.mailRules.payment.action.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\Mail\Rule\Action\YourAction::class);
     }
 });

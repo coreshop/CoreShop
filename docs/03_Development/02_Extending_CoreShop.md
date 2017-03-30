@@ -102,10 +102,10 @@ As example we take the Product Class.
 To do that, you need to create your own Pimcore-Class (eg. Product) and import CoreShops-Product Class Definition into it (located within plugins/CoreShop/install) 
 
 1. Create your "Pimcore Class" called "Product"
-2. Create your custom Product class which inherits from CoreShop\Model\Product. (eg. Website\Model\Product)
+2. Create your custom Product class which inherits from CoreShop\Bundle\LegacyBundle\Model\Product. (eg. Website\Model\Product)
 3. Set the parent class of your Pimcore Class to Website\Model\Product.
 4. Override the static variable $pimcoreClass to your new Class to: 'Pimcore\\Model\\Object\\Product'
-5. add a classmap/di for "CoreShop\Model\Product" to "Website\Model\Product"
+5. add a classmap/di for "CoreShop\Bundle\LegacyBundle\Model\Product" to "Website\Model\Product"
 6. voila, CoreShop is now using your custom Product class.
 
 This procedure works for all CoreShop Pimcore Classes, Field-Collections and Objectbricks.
@@ -116,7 +116,7 @@ This procedure works for all CoreShop Pimcore Classes, Field-Collections and Obj
 //website/models/Website/Model/Product.php
 namespace Website\Model;
 
-class Product extends \CoreShop\Model\Product {
+class Product extends \CoreShop\Bundle\LegacyBundle\Model\Product {
     /**
      * Pimcore Object Class.
      *
@@ -132,7 +132,7 @@ class Product extends \CoreShop\Model\Product {
 <?php
 
 return [
-    "CoreShop\\Model\\Product" => "Website\\Model\\Product",
+    "CoreShop\Bundle\LegacyBundle\\Model\\Product" => "Website\\Model\\Product",
 ];
 ```
 
@@ -142,7 +142,7 @@ return [
 <?php
 
 return [
-    'CoreShop\Model\Product' => DI\object('Website\Model\Product')
+    'CoreShop\Bundle\LegacyBundle\Model\Product' => DI\object('Website\Model\Product')
 ];
 ```
 

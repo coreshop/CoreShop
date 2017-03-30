@@ -16,9 +16,9 @@ YourPlugin/lib/YourPlugin/Model/PriceRule/Action/YourAction.php
 ```php
 namespace Website\Model\PriceRule\Action;
 
-use CoreShop\Model\Cart;
-use CoreShop\Model\PriceRule\Action\AbstractAction;
-use CoreShop\Model\Product;
+use CoreShop\Bundle\LegacyBundle\Model\Cart;
+use CoreShop\Bundle\LegacyBundle\Model\PriceRule\Action\AbstractAction;
+use CoreShop\Bundle\LegacyBundle\Model\Product;
 
 class YourAction extends AbstractAction
 {
@@ -81,13 +81,13 @@ You also need to register your new Action to CoreShop. Here you can choose which
 
 ```php
 //Allows it for Product Price Rules
-\CoreShop\Model\Product\PriceRule::getActionDispatcher()->addType(\Website\Model\PriceRule\Action\YourAction::class);
+\CoreShop\Bundle\LegacyBundle\Model\Product\PriceRule::getActionDispatcher()->addType(\Website\Model\PriceRule\Action\YourAction::class);
 
 //Allows it for Specific Prices
-\CoreShop\Model\Product\SpecificPrice::getActionDispatcher()->addType(\Website\Model\PriceRule\Action\YourAction::class);
+\CoreShop\Bundle\LegacyBundle\Model\Product\SpecificPrice::getActionDispatcher()->addType(\Website\Model\PriceRule\Action\YourAction::class);
 
 //Allows it for Cart Price Rules
-\CoreShop\Model\Cart\PriceRule::getActionDispatcher()->addType(\Website\Model\PriceRule\Action\YourAction::class);
+\CoreShop\Bundle\LegacyBundle\Model\Cart\PriceRule::getActionDispatcher()->addType(\Website\Model\PriceRule\Action\YourAction::class);
 ```
 
 or even better:
@@ -97,7 +97,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.productPriceRule.action.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\PriceRule\Action\YourAction::class);
     }
 });
@@ -106,7 +106,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.specificPriceRule.action.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\PriceRule\Action\YourAction::class);
     }
 });
@@ -115,7 +115,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.cartPriceRule.action.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\PriceRule\Action\YourAction::class);
     }
 });

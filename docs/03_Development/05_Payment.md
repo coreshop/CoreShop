@@ -2,13 +2,13 @@
 
 CoreShop uses Pimcore Plugins for Payment.
 
-You can create your own Payment Plugin by implementing following the class CoreShop\Model\Plugin\Payment and the Controller CoreShop\Controller\Action\Payment.
+You can create your own Payment Plugin by implementing following the class CoreShop\Bundle\LegacyBundle\Model\Plugin\Payment and the Controller CoreShop\Bundle\LegacyBundle\Controller\Action\Payment.
 
 To notify CoreShop that a Payment Plugin is available you need to hook into "payment.getProvider" by:
 
 ```php
 Pimcore::getEventManager()->attach("payment.getProvider", function($e) {
-   return CoreShop\Model\Plugin\Payment; //Your Payment Class
+   return CoreShop\Bundle\LegacyBundle\Model\Plugin\Payment; //Your Payment Class
 });
 ```
 

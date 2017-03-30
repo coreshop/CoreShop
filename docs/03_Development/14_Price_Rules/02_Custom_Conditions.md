@@ -16,9 +16,9 @@ YourPlugin/lib/YourPlugin/Model/PriceRule/Condition/YourCondition.php
 ```php
 namespace Website\Model\PriceRule\Condition;
 
-use CoreShop\Model\Cart;
-use CoreShop\Model\PriceRule\Condition\AbstractCondition;
-use CoreShop\Model\Product;
+use CoreShop\Bundle\LegacyBundle\Model\Cart;
+use CoreShop\Bundle\LegacyBundle\Model\PriceRule\Condition\AbstractCondition;
+use CoreShop\Bundle\LegacyBundle\Model\Product;
 
 class YourCondition extends AbstractCondition
 {
@@ -69,13 +69,13 @@ You also need to register your new Action to CoreShop. Here you can choose which
 
 ```php
 //Allows it for Product Price Rules
-\CoreShop\Model\Product\PriceRule::getConditionDispatcher()->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
+\CoreShop\Bundle\LegacyBundle\Model\Product\PriceRule::getConditionDispatcher()->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
 
 //Allows it for Specific Prices
-\CoreShop\Model\Product\SpecificPrice::getConditionDispatcher()->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
+\CoreShop\Bundle\LegacyBundle\Model\Product\SpecificPrice::getConditionDispatcher()->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
 
 //Allows it for Cart Price Rules
-\CoreShop\Model\Cart\PriceRule::getConditionDispatcher()->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
+\CoreShop\Bundle\LegacyBundle\Model\Cart\PriceRule::getConditionDispatcher()->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
 ```
 
 or even better:
@@ -85,7 +85,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.productPriceRule.condition.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
     }
 });
@@ -94,7 +94,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.specificPriceRule.condition.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
     }
 });
@@ -103,7 +103,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.cartPriceRule.condition.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\PriceRule\Condition\YourCondition::class);
     }
 });

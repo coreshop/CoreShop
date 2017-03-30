@@ -10,11 +10,11 @@ YourPlugin/lib/CoreShop/Model/Carrier/ShippingRule/Action/YourAction.php
 ```
 
 ```php
-namespace CoreShop\Model\Carrier\ShippingRule\Action;
+namespace CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule\Action;
 
-use CoreShop\Model;
-use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Tool;
+use CoreShop\Bundle\LegacyBundle\Model;
+use CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule;
+use CoreShop\Bundle\LegacyBundle\Tool;
 
 class YourAction extends AbstractAction
 {
@@ -62,7 +62,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.actions.yourAction = Class.create(
 You also need to register your new Action to CoreShop:
 
 ```php
-\CoreShop\Model\Carrier\ShippingRule::addAction("YourAction");
+\CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule::addAction("YourAction");
 ```
 
 #### After 1.2
@@ -78,9 +78,9 @@ YourPlugin/lib/YourPlugin/Model/Carrier/ShippingRule/Action/YourAction.php
 ```php
 namespace Website\Model\Carrier\ShippingRule\Action;
 
-use CoreShop\Model;
-use CoreShop\Model\Carrier\ShippingRule;
-use CoreShop\Tool;
+use CoreShop\Bundle\LegacyBundle\Model;
+use CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule;
+use CoreShop\Bundle\LegacyBundle\Tool;
 
 class YourAction extends AbstractAction
 {
@@ -127,7 +127,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.actions.yourAction = Class.create(
 You also need to register your new Action to CoreShop:
 
 ```php
-\CoreShop\Model\Carrier\ShippingRule::getActionDispatcher()->addType(\Website\Model\Carrier\ShippingRule\Action\YourAction::class);
+\CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule::getActionDispatcher()->addType(\Website\Model\Carrier\ShippingRule\Action\YourAction::class);
 ```
 
 or even better:
@@ -136,7 +136,7 @@ or even better:
 \Pimcore::getEventManager()->attach('coreshop.rules.shippingRule.action.init', function(\Zend_EventManager_Event $e) {
     $target = $e->getTarget();
 
-    if($target instanceof \CoreShop\Composite\Dispatcher) {
+    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
         $target->addType(\Website\Model\Carrier\ShippingRule\Action\YourAction::class);
     }
 });
