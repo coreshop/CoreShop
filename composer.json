@@ -14,6 +14,7 @@
     "require": {
         "pimcore/installer-plugin": ">=1",
         "florianv/swap": "^2.4",
-        "elasticsearch/elasticsearch": "~2.0"
+        "elasticsearch/elasticsearch": "~2.0",
+        "doctrine/orm": "^2.5"
     }
 }

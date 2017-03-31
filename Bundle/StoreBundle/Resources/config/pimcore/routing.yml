@@ -1,0 +1,4 @@
+coreshop_admin_store:
+  type: coreshop.model
+  resource: |
+    alias: coreshop.store

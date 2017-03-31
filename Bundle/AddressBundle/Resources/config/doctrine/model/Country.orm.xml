@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\Address\Model\Country" table="coreshop_country">
+        <indexes>
+            <index columns="isoCode" />
+        </indexes>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="isoCode" column="isoCode" type="string" length="2" unique="true"/>
+        <field name="active" column="active" type="boolean" />
+        <field name="useStoreCurrency" column="useStoreCurrency" type="boolean" />
+        <field name="addressFormat" column="addressFormat" type="string" />
+
+        <many-to-one field="zone" target-entity="CoreShop\Component\Address\Model\ZoneInterface" inversed-by="countries">
+            <join-column name="zoneId" referenced-column-name="id" nullable="false" />
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

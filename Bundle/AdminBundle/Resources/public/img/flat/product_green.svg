@@ -1,0 +1,11 @@
+﻿<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<path fill="#4CAF50" d="M39,42H9c-1.1,0-2-0.9-2-2V14h34v26C41,41.1,40.1,42,39,42z"/>
+<g>
+	<rect x="28" y="37" fill="#1B5E20" width="9" height="1"/>
+	<rect x="34" y="32" fill="#1B5E20" width="2" height="4"/>
+	<polygon fill="#1B5E20" points="35,30 33,33 37,33 &#9;"/>
+	<rect x="29" y="32" fill="#1B5E20" width="2" height="4"/>
+	<polygon fill="#1B5E20" points="30,30 28,33 32,33 &#9;"/>
+</g>
+<path fill="#81C784" d="M43,14H5V8c0-1.1,0.9-2,2-2h34c1.1,0,2,0.9,2,2V14z"/>
+</svg>

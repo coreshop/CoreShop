@@ -1,0 +1,2 @@
+imports:
+    - { resource: "@CoreShopAddressBundle/Resources/config/app/coreshop_address.yml" }

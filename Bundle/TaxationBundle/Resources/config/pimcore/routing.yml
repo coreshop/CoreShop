@@ -1,0 +1,14 @@
+coreshop_admin_tax_rates:
+  type: coreshop.model
+  resource: |
+    alias: coreshop.tax_rate
+
+coreshop_admin_tax_rules:
+  type: coreshop.model
+  resource: |
+    alias: coreshop.tax_rule
+
+coreshop_admin_tax_rule_groups:
+  type: coreshop.model
+  resource: |
+    alias: coreshop.tax_rule_group

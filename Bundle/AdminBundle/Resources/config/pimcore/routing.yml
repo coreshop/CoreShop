@@ -1,0 +1,14 @@
+coreshop_admin_settings_get_settings:
+  path: /admin/CoreShop/settings/get-settings
+  methods: [GET]
+  defaults:  { _controller: coreshop.admin_controller.settings:getSettingsAction }
+
+coreshop_admin_settings_get:
+  path: /admin/CoreShop/settings/get
+  methods: [GET]
+  defaults:  { _controller: coreshop.admin_controller.settings:getAction }
+
+coreshop_admin_settings_set:
+  path: /admin/CoreShop/settings/set
+  methods: [POST]
+  defaults:  { _controller: coreshop.admin_controller.settings:setAction }

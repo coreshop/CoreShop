@@ -1,0 +1,114 @@
+<?php
+/**
+ * CoreShop.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
+
+namespace CoreShop\Component\Customer\Model;
+
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\ResourceInterface;
+
+/**
+ * Interface CustomerInterface
+ * @package CoreShop\Component\Customer\Model
+ */
+interface CustomerInterface extends ResourceInterface
+{
+    /**
+     * @return string
+     */
+    public function getFirstname();
+
+    /**
+     * @param $firstname
+     * @return static
+     */
+    public function setFirstname($firstname);
+
+    /**
+     * @return string
+     */
+    public function getLastname();
+
+    /**
+     * @param $lastname
+     * @return static
+     */
+    public function setLastname($lastname);
+
+    /**
+     * @return mixed
+     */
+    public function getGender();
+
+    /**
+     * @param $gender
+     * @return static
+     */
+    public function setGender($gender);
+
+    /**
+     * @return mixed
+     */
+    public function getEmail();
+
+    /**
+     * @param $email
+     * @return static
+     */
+    public function setEmail($email);
+
+    /**
+     * @return mixed
+     */
+    public function getPassword();
+
+    /**
+     * @param $password
+     * @return static
+     */
+    public function setPassword($password);
+
+    /**
+     * @return AddressInterface[]
+     */
+    public function getAddresses();
+
+    /**
+     * @param AddressInterface[] $addresses
+     * @return static
+     */
+    public function setAddresses($addresses);
+
+    /**
+     * @return boolean
+     */
+    public function getIsGuest();
+
+    /**
+     * @param boolean $guest
+     * @return static
+     */
+    public function setIsGuest($guest);
+
+    /**
+     * @return CustomerGroupInterface[]
+     */
+    public function getCustomerGroups();
+
+    /**
+     * @param CustomerGroupInterface[] $customerGroups
+
+     * @return static
+     */
+    public function setCustomerGroups($customerGroups);
+}

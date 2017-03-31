@@ -1,0 +1,8 @@
+imports:
+    - { resource: "services/routing.yml" }
+
+services:
+  coreshop.resource_registry:
+    class: CoreShop\Component\Core\Metadata\Registry
+    public: false
+

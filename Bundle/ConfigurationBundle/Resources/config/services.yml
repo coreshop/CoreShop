@@ -1,0 +1,4 @@
+services:
+    coreshop.configuration.helper:
+        class: CoreShop\Bundle\ConfigurationBundle\Helper\ConfigurationHelper
+        arguments: ['@coreshop.factory.configuration', '@coreshop.repository.configuration']

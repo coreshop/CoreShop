@@ -38,7 +38,7 @@ class Dao extends Model\Dao\PhpArrayTable
      *
      * @param null $id
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getById($id = null)
     {
@@ -51,7 +51,7 @@ class Dao extends Model\Dao\PhpArrayTable
         if (isset($data['id'])) {
             $this->assignVariablesToModel($data);
         } else {
-            throw new Exception('Configuration with id: '.$this->model->getId().' does not exist');
+            throw new \Exception('Configuration with id: '.$this->model->getId().' does not exist');
         }
     }
 
@@ -61,7 +61,7 @@ class Dao extends Model\Dao\PhpArrayTable
      * @param null $key
      * @param null $shopId
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getByKey($key = null, $shopId = null)
     {
@@ -101,7 +101,7 @@ class Dao extends Model\Dao\PhpArrayTable
         if (count($data) && $data[0]['id']) {
             $this->assignVariablesToModel($data[0]);
         } else {
-            throw new Exception('Configuration with key: '.$this->model->getKey().' does not exist');
+            throw new \Exception('Configuration with key: '.$this->model->getKey().' does not exist');
         }
     }
 

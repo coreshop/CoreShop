@@ -1,0 +1,4 @@
+coreshop_admin_country:
+  type: coreshop.resources
+  resource: |
+    alias: coreshop.country
