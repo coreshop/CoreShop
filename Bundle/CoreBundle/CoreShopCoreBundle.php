@@ -46,6 +46,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
      */
     protected function getModelNamespace()
     {
-        return 'Sylius\Component\Core\Model';
+        return 'CoreShop\Component\Core\Model';
     }
 }

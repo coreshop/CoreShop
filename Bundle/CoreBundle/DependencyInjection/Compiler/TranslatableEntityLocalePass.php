@@ -16,6 +16,7 @@ final class TranslatableEntityLocalePass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $translatableEntityLocaleAssignerDefinition = new Definition(TranslatableEntityPimcoreLocaleAssigner::class);
+        $translatableEntityLocaleAssignerDefinition->addArgument(new Reference('pimcore.locale'));
 
         $container->setDefinition('coreshop.translatable_entity_locale_assigner', $translatableEntityLocaleAssignerDefinition);
     }

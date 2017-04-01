@@ -142,6 +142,11 @@ class ResourceController extends AdminController
      */
     public function listAction(Request $request)
     {
+        $taxRate = $this->get("coreshop.factory.tax_rate")->createNew();
+        $taxRate->setName('test');
+        $taxRate->setName('test2', 'de');
+        $this->get('coreshop.repository.tax_rate')->add($taxRate);
+
         $data = $this->repository->getAll();
 
         $models = [];

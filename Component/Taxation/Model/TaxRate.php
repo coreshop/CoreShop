@@ -59,7 +59,7 @@ class TaxRate extends AbstractResource implements TaxRateInterface
      */
     public function setName($name, $language = null)
     {
-        $this->getTranslation($language)->setName($name);
+        $this->getTranslation($language, false)->setName($name);
 
         return $this;
     }

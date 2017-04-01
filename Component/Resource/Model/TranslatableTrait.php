@@ -46,10 +46,11 @@ trait TranslatableTrait
 
     /**
      * @param string $locale
+     * @param boolean $useFallbackTranslation
      *
      * @return TranslationInterface
      */
-    public function getTranslation($locale = null)
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
     {
         $locale = $locale ?: $this->currentLocale;
         if (null === $locale) {
@@ -67,11 +68,13 @@ trait TranslatableTrait
             return $translation;
         }
 
-        $fallbackTranslation = $this->translations->get($this->fallbackLocale);
-        if (null !== $fallbackTranslation) {
-            $this->translationsCache[$this->fallbackLocale] = $fallbackTranslation;
+        if ($useFallbackTranslation) {
+            $fallbackTranslation = $this->translations->get($this->fallbackLocale);
+            if (null !== $fallbackTranslation) {
+                $this->translationsCache[$this->fallbackLocale] = $fallbackTranslation;
 
-            return $fallbackTranslation;
+                return $fallbackTranslation;
+            }
         }
 
         $translation = $this->createTranslation();
