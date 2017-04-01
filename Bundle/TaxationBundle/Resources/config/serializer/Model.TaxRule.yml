@@ -1,0 +1,23 @@
+CoreShop\Component\Taxation\Model\TaxRule:
+  exclusion_policy: ALL
+  xml_root_name: tax_rule
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+    behavior:
+      expose: true
+      type: integer
+    taxRuleGroup:
+      expose: true
+      type: relation
+    country:
+      expose: true
+      type: relation
+    state:
+      expose: true
+      type: relation
+    taxRate:
+      expose: true
+      type: relation

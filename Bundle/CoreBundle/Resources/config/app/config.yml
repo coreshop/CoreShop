@@ -1,10 +1,8 @@
 imports:
-    #- { resource: "@CoreShopAddressBundle/Resources/config/app/config.yml" }
-    #- { resource: "@CoreShopConfiguration/Resources/config/app/config.yml" }
-    #- { resource: "@CoreShopCurrencyBundle/Resources/config/app/config.yml" }
-    #- { resource: "@CoreShopCustomerBundle/Resources/config/app/config.yml" }
-    #- { resource: "@CoreShopStoreBundle/Resources/config/app/config.yml" }
-    #- { resource: "@CoreShopTaxationBundle/Resources/config/app/config.yml" }
+    - { resource: "@CoreShopAddressBundle/Resources/config/app/config.yml" }
+    - { resource: "@CoreShopCurrencyBundle/Resources/config/app/config.yml" }
+    - { resource: "@CoreShopStoreBundle/Resources/config/app/config.yml" }
+    - { resource: "@CoreShopTaxationBundle/Resources/config/app/config.yml" }
 
     - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop.yml" }
 

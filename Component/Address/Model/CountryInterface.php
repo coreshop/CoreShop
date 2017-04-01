@@ -16,6 +16,8 @@ namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Interface CountryInterface
@@ -99,4 +101,31 @@ interface CountryInterface extends ResourceInterface
      * @return static
      */
     public function setAddressFormat($addressFormat);
+
+    /**
+     * @return Collection|StoreInterface[]
+     */
+    public function getStores();
+
+    /**
+     * @return bool
+     */
+    public function hasStores();
+
+    /**
+     * @param StoreInterface $store
+     */
+    public function addStore(StoreInterface $store);
+
+    /**
+     * @param StoreInterface $store
+     */
+    public function removeStore(StoreInterface $store);
+
+    /**
+     * @param StoreInterface $store
+     *
+     * @return bool
+     */
+    public function hasStore(StoreInterface $store);
 }

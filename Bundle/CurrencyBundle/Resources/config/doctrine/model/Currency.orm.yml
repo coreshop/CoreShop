@@ -14,7 +14,7 @@ CoreShop\Component\Currency\Model\Currency:
     isoCode:
       type: string
       column: isoCode
-      length: 2
+      length: 3
       unique: true
     name:
       column: name

@@ -1,0 +1,26 @@
+CoreShop\Component\Store\Model\Store:
+  exclusion_policy: ALL
+  xml_root_name: store
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+    name:
+      expose: true
+      type: string
+    template:
+      expose: true
+      type: string
+    isDefault:
+      expose: true
+      type: boolean
+    siteId:
+      expose: true
+      type: integer
+    exchangeRate:
+      expose: true
+      type: float
+    countries:
+      expose: true
+      type: relation

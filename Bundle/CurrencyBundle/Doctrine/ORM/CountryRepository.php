@@ -3,7 +3,7 @@
 namespace CoreShop\Bundle\CurrencyBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 
 class CurrencyRepository extends EntityRepository implements CountryRepositoryInterface
 {

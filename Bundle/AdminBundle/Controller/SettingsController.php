@@ -15,7 +15,6 @@
 namespace CoreShop\Bundle\AdminBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
-use CoreShop\Bundle\CoreShopLegacyBundle\Model;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Core\Helper\StringHelper;
 use Symfony\Component\HttpFoundation\Request;

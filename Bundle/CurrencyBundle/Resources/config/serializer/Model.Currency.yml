@@ -1,0 +1,26 @@
+CoreShop\Component\Currency\Model\Currency:
+  exclusion_policy: ALL
+  xml_root_name: currency
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+    name:
+      expose: true
+      type: string
+    isoCode:
+      expose: true
+      type: string
+    numericIsoCode:
+      expose: true
+      type: integer
+    symbol:
+      expose: true
+      type: string
+    exchangeRate:
+      expose: true
+      type: float
+    countries:
+      expose: true
+      type: relation

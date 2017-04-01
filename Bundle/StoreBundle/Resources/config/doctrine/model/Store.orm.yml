@@ -1,0 +1,27 @@
+CoreShop\Component\Store\Model\Store:
+  type: mappedSuperclass
+  table: coreshop_store
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      type: string
+      column: name
+    template:
+      type: string
+      column: template
+    isDefault:
+      column: isDefault
+      type: boolean
+    siteId:
+      column: siteId
+      type: integer
+      unique: true
+  manyToMany:
+    countries:
+      targetEntity: CoreShop\Component\Address\Model\CountryInterface
+      mappedBy: stores

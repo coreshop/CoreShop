@@ -1,9 +1,0 @@
-coreshop_admin_configuration:
-  type: coreshop.model
-  resource: |
-    alias: coreshop.configuration
-    no_default_routes: true
-    additional_routes:
-      - {path: get, action: get, methods: ['GET']}
-      - {path: get-settings, action: getSettings, methods: ['GET']}
-      - {path: set, action: set, methods: ['POST']}

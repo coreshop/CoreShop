@@ -63,7 +63,8 @@ abstract class AbstractDriver implements DriverInterface
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
-                new Reference($metadata->getServiceId('manager'))
+                new Reference($metadata->getServiceId('manager')),
+                new Reference('jms_serializer')
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')])
         ;

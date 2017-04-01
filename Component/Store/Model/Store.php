@@ -14,7 +14,10 @@
 
 namespace CoreShop\Component\Store\Model;
 
-use CoreShop\Component\Core\Model\AbstractResource;
+use CoreShop\Component\Address\Model\CountryInterface;
+use CoreShop\Component\Resource\Model\AbstractResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Store extends AbstractResource implements StoreInterface
 {
@@ -37,6 +40,16 @@ class Store extends AbstractResource implements StoreInterface
      * @var int
      */
     public $siteId;
+
+     /**
+     * @var Collection|CountryInterface[]
+     */
+    protected $countries;
+
+    public function __construct()
+    {
+        $this->countries = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -108,5 +121,51 @@ class Store extends AbstractResource implements StoreInterface
     public function setSiteId($siteId)
     {
         $this->siteId = $siteId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCountries()
+    {
+        return $this->countries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCountries()
+    {
+        return !$this->countries->isEmpty();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addCountry(CountryInterface $country)
+    {
+        if (!$this->hasCountry($country)) {
+            $this->countries->add($country);
+            $country->setZone($this);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeCountry(CountryInterface $country)
+    {
+        if ($this->hasCountry($country)) {
+            $this->countries->removeElement($country);
+            $country->setZone(null);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCountry(CountryInterface $country)
+    {
+        return $this->countries->contains($country);
     }
 }

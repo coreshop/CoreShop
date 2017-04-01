@@ -1,0 +1,17 @@
+CoreShop\Component\Addressing\Model\State:
+  exclusion_policy: ALL
+  xml_root_name: state
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+    isoCode:
+      expose: true
+      type: string
+    name:
+      expose: true
+      type: string
+    active:
+      expose: true
+      type: boolean

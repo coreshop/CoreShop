@@ -1,0 +1,32 @@
+CoreShop\Component\Address\Model\Country:
+  exclusion_policy: ALL
+  xml_root_name: country
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+    isoCode:
+      expose: true
+      type: string
+    active:
+      expose: true
+      type: boolean
+    name:
+      expose: true
+      type: string
+    currency:
+      expose: true
+      type: relation
+    useStoreCurrency:
+      expose: true
+      type: boolean
+    stores:
+      expose: true
+      type: array
+    zone:
+      expose: true
+      type: relation
+    addressFormat:
+      expose: true
+      type: string

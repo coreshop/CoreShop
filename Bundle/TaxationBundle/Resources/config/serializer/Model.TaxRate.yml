@@ -1,0 +1,17 @@
+CoreShop\Component\Taxation\Model\TaxRate:
+  exclusion_policy: ALL
+  xml_root_name: tax_rate
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+    name:
+      expose: true
+      type: string
+    active:
+      expose: true
+      type: boolean
+    rate:
+      expose: true
+      type: float

@@ -16,9 +16,12 @@ namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
- * Country
+ * Store
  * @package CoreShop\Component\Address\Model
  */
 class Country extends AbstractResource implements CountryInterface
@@ -57,6 +60,16 @@ class Country extends AbstractResource implements CountryInterface
      * @var string
      */
     private $addressFormat;
+
+     /**
+     * @var Collection|CountryInterface[]
+     */
+    protected $stores;
+
+    public function __construct()
+    {
+        $this->stores = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -197,5 +210,51 @@ class Country extends AbstractResource implements CountryInterface
         $this->zone = $zone;
 
         return $this;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getStores()
+    {
+        return $this->stores;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasStores()
+    {
+        return !$this->stores->isEmpty();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addStore(StoreInterface $store)
+    {
+        if (!$this->hasStore($store)) {
+            $this->stores->add($store);
+            $store->setZone($this);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeStore(StoreInterface $store)
+    {
+        if ($this->hasStore($store)) {
+            $this->stores->removeElement($store);
+            $store->setZone(null);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasStore(StoreInterface $store)
+    {
+        return $this->stores->contains($store);
     }
 }

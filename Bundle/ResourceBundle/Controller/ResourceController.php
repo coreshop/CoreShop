@@ -19,13 +19,12 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Core\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use JMS\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- *
- */
 class ResourceController extends AdminController
 {
     /**
@@ -54,21 +53,29 @@ class ResourceController extends AdminController
     protected $manager;
 
     /**
+     * @var SerializerInterface
+     */
+    protected $serializer;
+
+    /**
      * @param MetadataInterface $metadata
      * @param RepositoryInterface $repository
      * @param FactoryInterface $factory
      * @param ObjectManager $manager
+     * @param SerializerInterface $serializer
      */
     public function __construct(
         MetadataInterface $metadata,
         RepositoryInterface $repository,
         FactoryInterface $factory,
-        ObjectManager $manager
+        ObjectManager $manager,
+        SerializerInterface $serializer
     ) {
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
         $this->manager = $manager;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -138,7 +145,7 @@ class ResourceController extends AdminController
 
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\PimcoreAdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function listAction(Request $request)
     {
@@ -149,15 +156,7 @@ class ResourceController extends AdminController
 
         $data = $this->repository->getAll();
 
-        $models = [];
-
-        if (is_array($data)) {
-            foreach ($data as $model) {
-                $models[] = $this->getTreeNodeConfig($model);
-            }
-        }
-
-        return $this->json($models);
+        return new JsonResponse($this->serializer->serialize($data, 'json'), 200, [], true);
     }
 
     /**

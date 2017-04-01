@@ -14,10 +14,6 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
-/**
- * Class AdminController
- * @package CoreShop\Bundle\CoreShopLegacyBundle\Controller
- */
 abstract class AdminController extends \Pimcore\Bundle\PimcoreAdminBundle\Controller\AdminController
 {
     /**

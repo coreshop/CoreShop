@@ -1,6 +1,0 @@
-services:
-    coreshop.store.pimcore_site_helper:
-        class: CoreShop\Bundle\StoreBundle\Helper\PimcoreSiteHelper
-    coreshop.store.locator:
-        class: CoreShop\Bundle\StoreBundle\Locator\StoreLocator
-        arguments: ['@coreshop.configuration.helper', '@coreshop.store.pimcore_site_helper', '@coreshop.repository.store']

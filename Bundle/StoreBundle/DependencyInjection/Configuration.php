@@ -15,13 +15,8 @@
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Component\Address\Model\Country;
-use CoreShop\Component\Address\Model\CountryInterface;
-use CoreShop\Component\Address\Model\Zone;
-use CoreShop\Component\Address\Model\ZoneInterface;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
-use CoreShop\Component\Core\Factory\ListingFactory;
-use CoreShop\Component\Core\Repository\Repository;
 use CoreShop\Component\Store\Model\Store;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -38,6 +33,11 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('coreshop_store');
 
+        $rootNode
+            ->children()
+                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+            ->end()
+        ;
         $this->addModelsSection($rootNode);
 
         return $treeBuilder;
@@ -50,7 +50,7 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('models')
+                ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('store')
@@ -61,17 +61,15 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue(Store::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('listing')->defaultValue(Store\Listing::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(StoreInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('list_factory')->defaultValue(ListingFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(Repository::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
                         ->end()
-
                     ->end()
                 ->end()
             ->end()
