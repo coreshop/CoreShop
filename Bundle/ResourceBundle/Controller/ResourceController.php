@@ -14,7 +14,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
-use CoreShop\Component\Core\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Core\Repository\RepositoryInterface;
@@ -76,7 +76,7 @@ class ResourceController extends AdminController
      */
     protected function isGrantedOr403()
     {
-        if ($this->getUser()->getPermission($this->getPermission())) {
+        if ($this->getUser()->getPermission($this->permission)) {
             return;
         }
 

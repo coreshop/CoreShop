@@ -14,24 +14,30 @@
 
 namespace CoreShop\Component\Taxation\Model;
 
-use CoreShop\Component\Core\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\AbstractResource;
+use Doctrine\Common\Collections\Collection;
 
 class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
 {
     /**
      * @var string
      */
-    public $name;
+    protected $name;
 
     /**
      * @var bool
      */
-    public $active;
+    protected $active;
 
     /**
      * @var int[]
      */
-    public $shopIds;
+    protected $shopIds;
+
+     /**
+     * @var Collection|TaxRuleInterface[]
+     */
+    protected $taxRules;
 
     /**
      * @return string
@@ -77,5 +83,52 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         $this->active = $active;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaxRules()
+    {
+        return $this->taxRules;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasTaxRules()
+    {
+        return !$this->taxRules->isEmpty();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addTaxRule(TaxRuleInterface $taxRule)
+    {
+        if (!$this->hasTaxRule($taxRule)) {
+            $this->taxRules->add($taxRule);
+
+            $taxRule->setTaxRuleGroup($this);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeTaxRule(TaxRuleInterface $taxRule)
+    {
+        if ($this->hasTaxRule($taxRule)) {
+            $this->taxRules->removeElement($taxRule);
+            $taxRule->setTaxRuleGroup(null);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasTaxRule(TaxRuleInterface $taxRule)
+    {
+        return $this->taxRules->contains($taxRule);
     }
 }

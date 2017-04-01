@@ -16,7 +16,7 @@ namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
-use CoreShop\Component\Core\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\AbstractResource;
 
 /**
  * Class TaxRule
@@ -25,19 +25,9 @@ use CoreShop\Component\Core\Model\AbstractResource;
 class TaxRule extends AbstractResource implements TaxRuleInterface
 {
     /**
-     * @var int
-     */
-    public $taxRuleGroupId;
-
-    /**
      * @var TaxRuleGroupInterface
      */
     public $taxRuleGroup;
-
-    /**
-     * @var int
-     */
-    public $countryId;
 
     /**
      * @var CountryInterface
@@ -45,19 +35,9 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     public $country;
 
     /**
-     * @var int
-     */
-    public $stateId;
-
-    /**
      * @var StateInterface
      */
     public $state;
-
-    /**
-     * @var int
-     */
-    public $taxRateId;
 
     /**
      * @var TaxRateInterface
@@ -76,7 +56,7 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     {
         $country = $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : "none";
         $state = $this->getState() instanceof StateInterface ? $this->getState()->getName() : "none";
-        $tax = $this->getTax() instanceof TaxRateInterface ? $this->getTax()->getName() : "none";
+        $tax = $this->getTaxRate() instanceof TaxRateInterface ? $this->getTaxRate()->getName() : "none";
 
         return sprintf("%s (%s) (%s) (%s)", $tax, $country, $state, $this->getId());
     }
@@ -102,24 +82,6 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function getTaxRuleGroupId()
-    {
-        return $this->taxRuleGroupId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTaxRuleGroupId($taxRuleGroupId)
-    {
-        $this->taxRuleGroupId = $taxRuleGroupId;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRuleGroup()
     {
         return $this->taxRuleGroup;
@@ -131,24 +93,6 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup)
     {
         $this->taxRuleGroup = $taxRuleGroup;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCountryId()
-    {
-        return $this->countryId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCountryId($countryId)
-    {
-        $this->countryId = $countryId;
 
         return $this;
     }
@@ -167,24 +111,6 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     public function setCountry(CountryInterface $country)
     {
         $this->country = $country;
-
-        return $this;
-    }
-
-   /**
-     * {@inheritdoc}
-     */
-    public function getStateId()
-    {
-        return $this->stateId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStateId($stateId)
-    {
-        $this->stateId = $stateId;
 
         return $this;
     }
@@ -210,24 +136,6 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function getTaxRateId()
-    {
-        return $this->taxRateId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTaxRateId($taxRateId)
-    {
-        $this->taxRateId = $taxRateId;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRate()
     {
         return $this->taxRate;
@@ -236,7 +144,7 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function setTaxRate($taxRate)
+    public function setTaxRate(TaxRateInterface $taxRate)
     {
         $this->taxRate = $taxRate;
 

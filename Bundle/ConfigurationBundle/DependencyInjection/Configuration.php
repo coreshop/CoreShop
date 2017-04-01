@@ -15,7 +15,7 @@
 namespace CoreShop\Bundle\ConfigurationBundle\DependencyInjection;
 
 use CoreShop\Bundle\ConfigurationBundle\Controller\ConfigurationController;
-use CoreShop\Component\Core\Factory\Factory;
+use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Core\Factory\ListingFactory;
 use CoreShop\Component\Core\Repository\Repository;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;

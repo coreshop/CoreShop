@@ -14,7 +14,7 @@
 
 namespace CoreShop\Bundle\CustomerBundle\DependencyInjection;
 
-use CoreShop\Component\Core\Factory\Factory;
+use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Core\Repository\Repository;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;

@@ -15,9 +15,8 @@
 namespace CoreShop\Bundle\TaxationBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Component\Core\Factory\Factory;
-use CoreShop\Component\Core\Factory\ListingFactory;
-use CoreShop\Component\Core\Repository\Repository;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Taxation\Model\TaxRate;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use CoreShop\Component\Taxation\Model\TaxRule;
@@ -36,8 +35,13 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_currency');
+        $rootNode = $treeBuilder->root('coreshop_taxation');
 
+        $rootNode
+            ->children()
+                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+            ->end()
+        ;
         $this->addModelsSection($rootNode);
 
         return $treeBuilder;
@@ -50,7 +54,7 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('models')
+                ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('tax_rate')
@@ -61,31 +65,10 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue(TaxRate::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('listing')->defaultValue(TaxRate\Listing::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(TaxRateInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('list_factory')->defaultValue(ListingFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(Repository::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('tax_rule')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue(TaxRule::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('listing')->defaultValue(TaxRule\Listing::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(TaxRuleInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('list_factory')->defaultValue(ListingFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(Repository::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
@@ -99,12 +82,27 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue(TaxRuleGroup::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('listing')->defaultValue(TaxRuleGroup\Listing::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(TaxRuleGroupInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('list_factory')->defaultValue(ListingFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(Repository::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('tax_rule')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(TaxRule::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(TaxRuleInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()

@@ -12,12 +12,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Factory;
+namespace CoreShop\Component\Resource\Factory;
 
-/**
- * Interface FactoryInterface
- * @package CoreShop\Component\Core\Factory
- */
 interface FactoryInterface
 {
     /**

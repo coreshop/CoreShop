@@ -3,7 +3,7 @@
 namespace CoreShop\Bundle\ConfigurationBundle\Helper;
 
 use CoreShop\Component\Configuration\Model\ConfigurationInterface;
-use CoreShop\Component\Core\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Core\Repository\RepositoryInterface;
 
 class ConfigurationHelper implements ConfigurationHelperInterface

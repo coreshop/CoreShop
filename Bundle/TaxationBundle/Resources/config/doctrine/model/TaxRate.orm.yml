@@ -1,0 +1,19 @@
+CoreShop\Component\Taxation\Model\TaxRate:
+  type: mappedSuperclass
+  table: coreshop_tax_rate
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      type: string
+      column: name
+    active:
+      column: active
+      type: boolean
+    rate:
+      column: rate
+      type: float

@@ -14,7 +14,7 @@
 
 namespace CoreShop\Component\Core\Repository;
 
-use CoreShop\Component\Core\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Core\Model\Listing\ListingInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 

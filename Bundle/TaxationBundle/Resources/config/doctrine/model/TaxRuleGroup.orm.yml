@@ -1,0 +1,25 @@
+CoreShop\Component\Taxation\Model\TaxRuleGroup:
+  type: mappedSuperclass
+  table: coreshop_tax_rule_group
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      type: string
+      column: name
+    active:
+      type: boolean
+      column: active
+  oneToMany:
+    taxRules:
+      targetEntity: CoreShop\Component\Taxation\Model\TaxRuleInterface
+      mappedBy: taxRuleGroup
+      orphanRemoval: true
+      cascade:
+        - all
+      orderBy:
+        name: ASC

@@ -14,32 +14,24 @@
 
 namespace CoreShop\Component\Taxation\Model;
 
-use CoreShop\Component\Core\Model\AbstractResource;
-use CoreShop\Component\Core\Model\LocalizableTrait;
+use CoreShop\Component\Resource\Model\AbstractResource;
 
 class TaxRate extends AbstractResource implements TaxRateInterface
 {
-    use LocalizableTrait {
-        LocalizableTrait::__construct as private LocalizableTraitConstruct;
-    }
-
     /**
      * @var float
      */
     public $rate;
 
     /**
+     * @var string
+     */
+    public $name;
+
+    /**
      * @var bool
      */
     public $active;
-
-    /**
-     * TaxRate constructor.
-     */
-    public function __construct()
-    {
-        $this->LocalizableTraitConstruct(['name']);
-    }
 
     /**
      * @return string
@@ -50,23 +42,21 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     }
 
     /**
-     * @param string $language language
-     *
      * @return string
      */
-    public function getName($language = null)
+    public function getName()
     {
-        return $this->getLocalizedFields()->getLocalizedValue('name', $language);
+        return $this->name;
     }
 
     /**
      * @param string $name
-     * @param string $language language
+     *
      * @return static
      */
-    public function setName($name, $language = null)
+    public function setName($name)
     {
-        $this->getLocalizedFields()->setLocalizedValue('name', $name, $language);
+        $this->name = $name;
 
         return $this;
     }

@@ -30,16 +30,6 @@ interface TaxRuleInterface extends ResourceInterface
     public function setBehavior($behavior);
 
     /**
-     * @return int
-     */
-    public function getTaxRuleGroupId();
-
-    /**
-     * @param int $taxRuleGroupId
-     */
-    public function setTaxRuleGroupId($taxRuleGroupId);
-
-    /**
      * @return TaxRuleGroupInterface
      */
     public function getTaxRuleGroup();
@@ -48,16 +38,6 @@ interface TaxRuleInterface extends ResourceInterface
      * @param TaxRuleGroupInterface $taxRuleGroup
      */
     public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup);
-
-    /**
-     * @return int
-     */
-    public function getCountryId();
-
-    /**
-     * @param int $countryId
-     */
-    public function setCountryId($countryId);
 
     /**
      * @return CountryInterface
@@ -70,16 +50,6 @@ interface TaxRuleInterface extends ResourceInterface
     public function setCountry(CountryInterface $country);
 
     /**
-     * @return int
-     */
-    public function getStateId();
-
-    /**
-     * @param int $stateId
-     */
-    public function setStateId($stateId);
-
-    /**
      * @return StateInterface
      */
     public function getState();
@@ -90,16 +60,6 @@ interface TaxRuleInterface extends ResourceInterface
     public function setState(StateInterface $state);
 
     /**
-     * @return int
-     */
-    public function getTaxRateId();
-
-    /**
-     * @param int $taxId
-     */
-    public function setTaxRateId($taxId);
-
-    /**
      * @return TaxRateInterface
      */
     public function getTaxRate();
@@ -107,5 +67,5 @@ interface TaxRuleInterface extends ResourceInterface
     /**
      * @param TaxRateInterface $tax
      */
-    public function setTaxRate($tax);
+    public function setTaxRate(TaxRateInterface $tax);
 }

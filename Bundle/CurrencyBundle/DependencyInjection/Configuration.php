@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\CurrencyBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Component\Core\Factory\Factory;
+use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Currency\Model\Currency;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;

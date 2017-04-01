@@ -19,7 +19,7 @@ use CoreShop\Component\Address\Model\Country;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\Zone;
 use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Core\Factory\Factory;
+use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Core\Factory\ListingFactory;
 use CoreShop\Component\Core\Repository\Repository;
 use CoreShop\Component\Store\Model\Store;

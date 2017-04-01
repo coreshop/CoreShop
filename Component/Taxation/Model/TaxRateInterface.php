@@ -17,20 +17,18 @@ namespace CoreShop\Component\Taxation\Model;
 use CoreShop\Component\Core\Model\LocalizableInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface TaxRateInterface extends ResourceInterface, LocalizableInterface
+interface TaxRateInterface extends ResourceInterface
 {
     /**
-     * @param $language
      * @return string
      */
-    public function getName($language);
+    public function getName();
 
     /**
      * @param $name
-     * @param $language
      * @return static
      */
-    public function setName($name, $language);
+    public function setName($name);
 
     /**
      * @return float

@@ -22,7 +22,7 @@ use CoreShop\Component\Address\Model\State;
 use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Address\Model\Zone;
 use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Core\Factory\Factory;
+use CoreShop\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

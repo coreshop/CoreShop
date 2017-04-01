@@ -26,44 +26,44 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * @var string
      */
-    public $isoCode;
+    private $isoCode;
 
     /**
      * @var string
      */
-    public $name;
+    private $name;
 
     /**
      * @var int
      */
-    public $active;
+    private $active;
 
     /**
      * @var CurrencyInterface
      */
-    public $currency;
+    private $currency;
 
     /**
      * @var bool
      */
-    public $useStoreCurrency;
+    private $useStoreCurrency;
 
     /**
      * @var ZoneInterface
      */
-    public $zone;
+    private $zone;
 
     /**
      * @var string
      */
-    public $addressFormat;
+    private $addressFormat;
 
     /**
      * @return string
      */
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getName(), $this->getId());
+        return $this->getName();
     }
 
     /**

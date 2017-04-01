@@ -1,14 +1,15 @@
-coreshop_admin_tax_rates:
-  type: coreshop.model
+coreshop_admin_country:
+  type: coreshop.resources
   resource: |
-    alias: coreshop.tax_rate
+    alias: coreshop.country
 
-coreshop_admin_tax_rules:
-  type: coreshop.model
+coreshop_admin_zone:
+  type: coreshop.resources
   resource: |
-    alias: coreshop.tax_rule
+    alias: coreshop.zone
 
-coreshop_admin_tax_rule_groups:
-  type: coreshop.model
+coreshop_admin_state:
+  type: coreshop.resources
   resource: |
-    alias: coreshop.tax_rule_group
+    alias: coreshop.state
+
