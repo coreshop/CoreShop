@@ -1,4 +1,4 @@
 coreshop_admin_currency:
-  type: coreshop.model
+  type: coreshop.resources
   resource: |
     alias: coreshop.currency

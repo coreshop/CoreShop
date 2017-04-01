@@ -2,7 +2,7 @@ CoreShop\Component\Address\Model\Country:
   type: mappedSuperclass
   table: coreshop_country
   indexes:
-    isocode:
+    isoCode:
       columns: [ isoCode ]
   fields:
     id:
@@ -31,5 +31,13 @@ CoreShop\Component\Address\Model\Country:
       inversedBy: countries
       joinColumn:
         name: zoneId
+        referencedColumnName: id
+        nullable: false
+  manyToOne:
+    zone:
+      targetEntity: CoreShop\Component\Address\Model\CurrencyInterface
+      inversedBy: countries
+      joinColumn:
+        name: currencyId
         referencedColumnName: id
         nullable: false

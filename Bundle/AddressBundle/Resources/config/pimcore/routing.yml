@@ -2,3 +2,14 @@ coreshop_admin_country:
   type: coreshop.resources
   resource: |
     alias: coreshop.country
+
+coreshop_admin_zone:
+  type: coreshop.resources
+  resource: |
+    alias: coreshop.zone
+
+coreshop_admin_state:
+  type: coreshop.resources
+  resource: |
+    alias: coreshop.state
+

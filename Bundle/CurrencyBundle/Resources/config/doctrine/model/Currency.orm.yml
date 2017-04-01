@@ -1,0 +1,39 @@
+CoreShop\Component\Currency\Model\Currency:
+  type: mappedSuperclass
+  table: coreshop_currency
+  indexes:
+    isoCode:
+      columns: [ isoCode ]
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    isoCode:
+      type: string
+      column: isoCode
+      length: 2
+      unique: true
+    name:
+      column: name
+      type: string
+    numericIsoCode:
+      column: numericIsoCode
+      type: integer
+    symbol:
+      column: symbol
+      type: string
+    exchangeRate:
+      column: exchangeRate
+      type: float
+  oneToMany:
+    countries:
+      targetEntity: CoreShop\Component\Address\Model\CountryInterface
+      mappedBy: currency
+      orphanRemoval: true
+      cascade:
+        - all
+      orderBy:
+        name: ASC

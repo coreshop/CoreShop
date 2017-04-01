@@ -44,11 +44,6 @@ class Country extends AbstractResource implements CountryInterface
     public $currency;
 
     /**
-     * @var int
-     */
-    public $currencyId;
-
-    /**
      * @var bool
      */
     public $useStoreCurrency;
@@ -143,7 +138,6 @@ class Country extends AbstractResource implements CountryInterface
     public function setCurrency($currency)
     {
         $this->currency = $currency;
-        $this->currencyId = $currency->getId();
 
         return $this;
     }

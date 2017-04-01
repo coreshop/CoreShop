@@ -12,12 +12,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-
 namespace CoreShop\Bundle\CurrencyBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 
-final class CoreShopCurrencyBundle extends Bundle
+final class CoreShopCurrencyBundle extends AbstractResourceBundle
 {
+/**
+     * {@inheritdoc}
+     */
+    public function getSupportedDrivers()
+    {
+        return [
+            CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
+        ];
+    }
 
+        /**
+     * {@inheritdoc}
+     */
+    protected function getModelNamespace()
+    {
+        return 'CoreShop\Component\Currency\Model';
+    }
 }

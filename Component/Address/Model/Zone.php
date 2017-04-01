@@ -120,7 +120,7 @@ class Zone extends AbstractResource implements ZoneInterface
     {
         if ($this->hasCountry($country)) {
             $this->countries->removeElement($country);
-            $country->setCountry(null);
+            $country->setZone(null);
         }
     }
 
