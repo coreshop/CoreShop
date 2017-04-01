@@ -22,32 +22,37 @@ use CoreShop\Component\Resource\Model\AbstractResource;
  * Class TaxRule
  * @package CoreShop\Model
  */
-class TaxRule extends AbstractResource implements TaxRuleInterface
+class TaxRule implements TaxRuleInterface
 {
+    /**
+     * @var integer
+     */
+    protected $id;
+
     /**
      * @var TaxRuleGroupInterface
      */
-    public $taxRuleGroup;
+    protected $taxRuleGroup;
 
     /**
      * @var CountryInterface
      */
-    public $country;
+    protected $country;
 
     /**
      * @var StateInterface
      */
-    public $state;
+    protected $state;
 
     /**
      * @var TaxRateInterface
      */
-    public $taxRate;
+    protected $taxRate;
 
     /**
      * @var int
      */
-    public $behavior;
+    protected $behavior;
 
     /**
      * @return string
@@ -59,6 +64,14 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
         $tax = $this->getTaxRate() instanceof TaxRateInterface ? $this->getTaxRate()->getName() : "none";
 
         return sprintf("%s (%s) (%s) (%s)", $tax, $country, $state, $this->getId());
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

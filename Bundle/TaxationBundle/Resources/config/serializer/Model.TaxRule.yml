@@ -6,18 +6,24 @@ CoreShop\Component\Taxation\Model\TaxRule:
       expose: true
       type: integer
       xml_attribute: true
+      groups: [List, Detailed]
     behavior:
       expose: true
       type: integer
+      groups: [List, Detailed]
     taxRuleGroup:
       expose: true
       type: relation
+      groups: [List, Detailed]
     country:
       expose: true
       type: relation
+      groups: [List, Detailed]
     state:
       expose: true
       type: relation
+      groups: [List, Detailed]
     taxRate:
       expose: true
       type: relation
+      groups: [List, Detailed]

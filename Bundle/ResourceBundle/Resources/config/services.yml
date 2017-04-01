@@ -1,5 +1,6 @@
 imports:
     - { resource: "services/routing.yml" }
+    - { resource: "services/controller.yml" }
 
 services:
   coreshop.resource_registry:

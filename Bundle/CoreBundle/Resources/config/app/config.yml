@@ -1,4 +1,5 @@
 imports:
+    - { resource: "@CoreShopResourceBundle/Resources/config/app/config.yml" }
     - { resource: "@CoreShopAddressBundle/Resources/config/app/config.yml" }
     - { resource: "@CoreShopCurrencyBundle/Resources/config/app/config.yml" }
     - { resource: "@CoreShopStoreBundle/Resources/config/app/config.yml" }
@@ -12,3 +13,10 @@ doctrine:
         entity_managers:
             default:
                 auto_mapping: true
+
+jms_serializer:
+    metadata:
+        directories:
+            core-shop-core:
+                namespace_prefix: "CoreShop\\Component\\Core"
+                path: "@CoreShopCoreBundle/Resources/config/serializer"

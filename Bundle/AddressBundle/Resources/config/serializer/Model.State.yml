@@ -6,12 +6,16 @@ CoreShop\Component\Addressing\Model\State:
       expose: true
       type: integer
       xml_attribute: true
+      groups: [List, Detailed]
     isoCode:
       expose: true
       type: string
+      groups: [Detailed]
     name:
       expose: true
       type: string
+      groups: [List, Detailed]
     active:
       expose: true
       type: boolean
+      groups: [List, Detailed]

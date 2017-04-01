@@ -16,32 +16,37 @@ namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 
-class State extends AbstractResource implements StateInterface
+class State implements StateInterface
 {
     /**
-     * @var string
+     * @var integer
      */
-    public $isoCode;
+    protected $id;
 
     /**
      * @var string
      */
-    public $name;
+    protected $isoCode;
+
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @var int
      */
-    public $active;
+    protected $active;
 
     /**
      * @var Country
      */
-    public $country;
+    protected $country;
 
     /**
      * @var int
      */
-    public $countryId;
+    protected $countryId;
 
 
     /**
@@ -50,6 +55,14 @@ class State extends AbstractResource implements StateInterface
     public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

@@ -18,17 +18,22 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Zone extends AbstractResource implements ZoneInterface
+class Zone implements ZoneInterface
 {
+    /**
+     * @var integer
+     */
+    protected $id;
+
     /**
      * @var string
      */
-    public $name;
+    protected $name;
 
     /**
      * @var int
      */
-    public $active;
+    protected $active;
 
     /**
      * @var Collection|CountryInterface[]
@@ -46,6 +51,14 @@ class Zone extends AbstractResource implements ZoneInterface
     public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

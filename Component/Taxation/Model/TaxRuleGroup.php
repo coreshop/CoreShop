@@ -17,8 +17,13 @@ namespace CoreShop\Component\Taxation\Model;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\Collection;
 
-class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
+class TaxRuleGroup implements TaxRuleGroupInterface
 {
+    /**
+     * @var integer
+     */
+    protected $id;
+
     /**
      * @var string
      */
@@ -28,11 +33,6 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
      * @var bool
      */
     protected $active;
-
-    /**
-     * @var int[]
-     */
-    protected $shopIds;
 
      /**
      * @var Collection|TaxRuleInterface[]
@@ -45,6 +45,14 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

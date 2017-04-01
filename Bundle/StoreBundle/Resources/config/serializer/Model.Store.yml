@@ -6,21 +6,20 @@ CoreShop\Component\Store\Model\Store:
       expose: true
       type: integer
       xml_attribute: true
+      groups: [List, Detailed]
     name:
       expose: true
       type: string
+      groups: [List, Detailed]
     template:
       expose: true
       type: string
+      groups: [Detailed]
     isDefault:
       expose: true
       type: boolean
+      groups: [List, Detailed]
     siteId:
       expose: true
       type: integer
-    exchangeRate:
-      expose: true
-      type: float
-    countries:
-      expose: true
-      type: relation
+      groups: [List, Detailed]

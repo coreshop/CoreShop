@@ -24,42 +24,47 @@ use Doctrine\Common\Collections\Collection;
  * Store
  * @package CoreShop\Component\Address\Model
  */
-class Country extends AbstractResource implements CountryInterface
+class Country implements CountryInterface
 {
     /**
-     * @var string
+     * @var integer
      */
-    private $isoCode;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $isoCode;
+
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @var int
      */
-    private $active;
+    protected $active;
 
     /**
      * @var CurrencyInterface
      */
-    private $currency;
+    protected $currency;
 
     /**
      * @var bool
      */
-    private $useStoreCurrency;
+    protected $useStoreCurrency;
 
     /**
      * @var ZoneInterface
      */
-    private $zone;
+    protected $zone;
 
     /**
      * @var string
      */
-    private $addressFormat;
+    protected $addressFormat;
 
      /**
      * @var Collection|CountryInterface[]
@@ -77,6 +82,14 @@ class Country extends AbstractResource implements CountryInterface
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

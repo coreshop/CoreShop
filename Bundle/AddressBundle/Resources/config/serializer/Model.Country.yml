@@ -5,28 +5,36 @@ CoreShop\Component\Address\Model\Country:
     id:
       expose: true
       type: integer
-      xml_attribute: true
+      groups: [List, Detailed]
     isoCode:
       expose: true
       type: string
+      groups: [Detailed]
     active:
       expose: true
       type: boolean
+      groups: [Detailed]
     name:
       expose: true
       type: string
+      groups: [List, Detailed]
     currency:
       expose: true
       type: relation
+      groups: [Detailed]
     useStoreCurrency:
       expose: true
       type: boolean
+      groups: [Detailed]
     stores:
       expose: true
       type: array
+      groups: [Detailed]
     zone:
       expose: true
       type: relation
+      groups: [Detailed]
     addressFormat:
       expose: true
       type: string
+      groups: [Detailed]

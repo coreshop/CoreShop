@@ -6,12 +6,16 @@ CoreShop\Component\Taxation\Model\TaxRuleGroup:
       expose: true
       type: integer
       xml_attribute: true
+      groups: [List, Detailed]
     name:
       expose: true
       type: string
+      groups: [List, Detailed]
     active:
       expose: true
       type: boolean
+      groups: [Detailed]
     taxRules:
       expose: true
       type: relation
+      groups: [Detailed]

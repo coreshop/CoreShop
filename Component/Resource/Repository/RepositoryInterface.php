@@ -15,12 +15,13 @@
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * Interface RepositoryInterface
  * @package CoreShop\Component\Core\Repository
  */
-interface RepositoryInterface {
+interface RepositoryInterface extends ObjectRepository {
     const ORDER_ASCENDING = 'ASC';
     const ORDER_DESCENDING = 'DESC';
 

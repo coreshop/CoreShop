@@ -17,25 +17,38 @@ namespace CoreShop\Component\Taxation\Model;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
-class TaxRate extends AbstractResource implements TaxRateInterface
+class TaxRate implements TaxRateInterface
 {
      use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
     }
 
     /**
+     * @var integer
+     */
+    protected $id;
+
+    /**
      * @var float
      */
-    public $rate = 0;
+    protected  $rate = 0;
 
     /**
      * @var bool
      */
-    public $active = false;
+    protected  $active = false;
 
     public function __construct()
     {
         $this->initializeTranslationsCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

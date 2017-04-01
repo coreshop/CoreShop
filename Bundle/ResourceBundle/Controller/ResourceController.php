@@ -53,29 +53,29 @@ class ResourceController extends AdminController
     protected $manager;
 
     /**
-     * @var SerializerInterface
+     * @var ViewHandler
      */
-    protected $serializer;
+    protected $viewHandler;
 
     /**
      * @param MetadataInterface $metadata
      * @param RepositoryInterface $repository
      * @param FactoryInterface $factory
      * @param ObjectManager $manager
-     * @param SerializerInterface $serializer
+     * @param ViewHandler $viewHandler
      */
     public function __construct(
         MetadataInterface $metadata,
         RepositoryInterface $repository,
         FactoryInterface $factory,
         ObjectManager $manager,
-        SerializerInterface $serializer
+        ViewHandler $viewHandler
     ) {
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->serializer = $serializer;
+        $this->viewHandler = $viewHandler;
     }
 
     /**
@@ -91,88 +91,25 @@ class ResourceController extends AdminController
     }
 
     /**
-     * @param ResourceInterface $model
+     * @param Request $request
+     * @return JsonResponse
      */
-    protected function setDefaultValues(ResourceInterface $model) {
-
-    }
-
-    /**
-     * @param ResourceInterface $model
-     * @return array
-     */
-    protected function getReturnValues(ResourceInterface $model) {
-        $values = get_object_vars($model);
-
-        return $values;
-    }
-
-    /**
-     * @param ResourceInterface $model
-     * @param $data
-     */
-    protected function prepareSave(ResourceInterface $model, $data) {
-
-    }
-
-    /**
-     * @param ResourceInterface $model
-     * @param $config
-     * @return mixed
-     */
-    protected function prepareTreeNodeConfig(ResourceInterface $model, $config) {
-        return $config;
-    }
-
-    /**
-     * @param ResourceInterface $model
-     *
-     * @return array
-     */
-    protected function getTreeNodeConfig(ResourceInterface $model)
+    public function listAction(Request $request)
     {
-        $config = [
-            'id' => $model->getId(),
-            'text' => method_exists($model, "getName") ? $model->getName() : $model->getId(),
-            'qtipCfg' => [
-                'title' => 'ID: '.$model->getId(),
-            ],
-            'name' => method_exists($model, "getName") ? $model->getName() : $model->getId()
-        ];
+        $data = $this->repository->getAll();
 
-        return $this->prepareTreeNodeConfig($model, $config);
+        return $this->viewHandler->handle($data, ["group" => "List"]);
     }
 
     /**
      * @param Request $request
      * @return JsonResponse
      */
-    public function listAction(Request $request)
-    {
-        $taxRate = $this->get("coreshop.factory.tax_rate")->createNew();
-        $taxRate->setName('test');
-        $taxRate->setName('test2', 'de');
-        $this->get('coreshop.repository.tax_rate')->add($taxRate);
-
-        $data = $this->repository->getAll();
-
-        return new JsonResponse($this->serializer->serialize($data, 'json'), 200, [], true);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Pimcore\Bundle\PimcoreAdminBundle\HttpFoundation\JsonResponse
-     */
     public function getAction(Request $request)
     {
-        $id = $request->get('id');
-        $model = $this->getById($id);
+        $model = $this->findOr404($request->get("id"));
 
-        if ($model !== null) {
-            return $this->json(['success' => true, 'data' => $this->getReturnValues($model)]);
-        } else {
-            return $this->json(['success' => false]);
-        }
+        return $this->viewHandler->handle($model, ["group" => "Detailed"]);
     }
 
     /**
@@ -249,8 +186,10 @@ class ResourceController extends AdminController
      */
     protected function findOr404($id)
     {
-        if (null === $model = $this->getById($id)) {
-            throw new NotFoundHttpException(sprintf('The "%s" has not been found', $this->modelName));
+        $model = $this->repository->find($id);
+
+        if (null === $model || !$model instanceof ResourceInterface) {
+            throw new NotFoundHttpException(sprintf('The "%s" has not been found', $id));
         }
 
         return $model;

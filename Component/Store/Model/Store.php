@@ -19,27 +19,32 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Store extends AbstractResource implements StoreInterface
+class Store implements StoreInterface
 {
+    /**
+     * @var integer
+     */
+    protected $id;
+
      /**
      * @var string
      */
-    public $name;
+    protected $name;
 
     /**
      * @var string
      */
-    public $template;
+    protected $template;
 
     /**
      * @var boolean
      */
-    public $isDefault;
+    protected $isDefault;
 
     /**
      * @var int
      */
-    public $siteId;
+    protected $siteId;
 
      /**
      * @var Collection|CountryInterface[]
@@ -57,6 +62,22 @@ class Store extends AbstractResource implements StoreInterface
     public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)
+    {
+        $this->id = $id;
     }
 
     /**

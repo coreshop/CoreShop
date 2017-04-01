@@ -18,32 +18,37 @@ use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\Collection;
 
-class Currency extends AbstractResource implements CurrencyInterface
+class Currency implements CurrencyInterface
 {
     /**
-     * @var string
+     * @var integer
      */
-    public $name;
+    protected $id;
 
     /**
      * @var string
      */
-    public $isoCode;
+    protected $name;
+
+    /**
+     * @var string
+     */
+    protected $isoCode;
 
     /**
      * @var int
      */
-    public $numericIsoCode;
+    protected $numericIsoCode;
 
     /**
      * @var string
      */
-    public $symbol;
+    protected $symbol;
 
     /**
      * @var float
      */
-    public $exchangeRate;
+    protected $exchangeRate;
 
     /**
      * @var Collection|CountryInterface[]
@@ -56,6 +61,14 @@ class Currency extends AbstractResource implements CurrencyInterface
     public function __toString()
     {
         return sprintf("%s (%s)", $this->getName(), $this->getId());
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
