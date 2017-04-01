@@ -12,7 +12,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Metadata;
+namespace CoreShop\Component\Resource\Metadata;
 
 use Doctrine\Common\Inflector\Inflector;
 

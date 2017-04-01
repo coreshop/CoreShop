@@ -14,7 +14,7 @@
 
 namespace CoreShop\Component\Address\Model;
 
-use CoreShop\Component\Core\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

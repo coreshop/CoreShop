@@ -2,8 +2,8 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Routing;
 
-use CoreShop\Component\Core\Metadata\MetadataInterface;
-use CoreShop\Component\Core\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;

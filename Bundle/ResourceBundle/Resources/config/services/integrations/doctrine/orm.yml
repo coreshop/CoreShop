@@ -1,0 +1,15 @@
+parameters:
+    coreshop.orm.repository.class: CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository
+    coreshop.translation.translatable_listener.doctrine.orm.class: CoreShop\Bundle\ResourceBundle\EventListener\ORMTranslatableListener
+
+services:
+    coreshop.event_subscriber.orm_mapped_super_class:
+        class: CoreShop\Bundle\ResourceBundle\EventListener\ORMMappedSuperClassSubscriber
+        tags:
+            - { name: doctrine.event_subscriber, priority: 8192 }
+        arguments: ['@coreshop.resource_registry']
+    coreshop.event_subscriber.orm_repository_class:
+        class: CoreShop\Bundle\ResourceBundle\EventListener\ORMRepositoryClassSubscriber
+        tags:
+            - { name: doctrine.event_subscriber, priority: 8192 }
+        arguments: ['@coreshop.resource_registry']

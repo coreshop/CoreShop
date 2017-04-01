@@ -3,8 +3,8 @@
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\CoreBundle\Doctrine\ORM\EntityRepository;
-use CoreShop\Component\Core\Metadata\MetadataInterface;
+use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;

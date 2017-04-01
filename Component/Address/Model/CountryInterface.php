@@ -14,8 +14,7 @@
 
 namespace CoreShop\Component\Address\Model;
 
-use CoreShop\Component\Core\Model\ResourceInterface;
-use CoreShop\Component\Core\Model\MultishopInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 /**

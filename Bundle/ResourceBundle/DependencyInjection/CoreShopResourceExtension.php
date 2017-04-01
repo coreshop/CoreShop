@@ -5,8 +5,9 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
 final class CoreShopResourceExtension extends AbstractModelExtension
 {
@@ -19,5 +20,24 @@ final class CoreShopResourceExtension extends AbstractModelExtension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');
+
+        $this->loadPersistence($config['drivers'], $config['resources'], $loader);
+    }
+
+    private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)
+    {
+        foreach ($resources as $alias => $resource) {
+            if (!in_array($resource['driver'], $drivers, true)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Resource "%s" uses driver "%s", but this driver has not been enabled.',
+                    $alias,
+                    $resource['driver']
+                ));
+            }
+        }
+
+        foreach ($drivers as $driver) {
+            $loader->load(sprintf('services/integrations/%s.yml', $driver));
+        }
     }
 }

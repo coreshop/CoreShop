@@ -2,12 +2,10 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
-use CoreShop\Component\Core\Factory\Factory;
-use CoreShop\Component\Core\Metadata\Metadata;
-use CoreShop\Component\Core\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Metadata\Metadata;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 
 abstract class AbstractDriver implements DriverInterface

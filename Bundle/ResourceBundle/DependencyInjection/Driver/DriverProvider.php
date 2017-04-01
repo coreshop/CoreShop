@@ -5,7 +5,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine\DoctrineORMDriver;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Exception\UnknownDriverException;
-use CoreShop\Component\Core\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
 
 final class DriverProvider
 {

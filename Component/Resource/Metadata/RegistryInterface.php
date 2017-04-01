@@ -1,8 +1,7 @@
 <?php
 
 
-
-namespace CoreShop\Component\Core\Metadata;
+namespace CoreShop\Component\Resource\Metadata;
 
 interface RegistryInterface
 {

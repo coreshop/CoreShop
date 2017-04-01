@@ -15,13 +15,11 @@
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use CoreShop\Component\Core\Factory\FactoryInterface;
-use CoreShop\Component\Core\Metadata\MetadataInterface;
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Core\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 

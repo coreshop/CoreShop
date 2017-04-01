@@ -12,7 +12,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\Resource\Model;
 
 use Pimcore\Model\Object\Concrete;
 

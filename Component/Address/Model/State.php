@@ -14,10 +14,7 @@
 
 namespace CoreShop\Component\Address\Model;
 
-use CoreShop\Component\Core\Model\AbstractResource;
-use CoreShop\Component\Core\Model\MultishopTrait;
-use CoreShop\Component\CurrencyBundle\Model\CurrencyInterface;
-use Symfony\Component\Validator\Constraints\Count;
+use CoreShop\Component\Resource\Model\AbstractResource;
 
 class State extends AbstractResource implements StateInterface
 {

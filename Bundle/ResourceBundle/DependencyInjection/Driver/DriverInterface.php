@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
-use CoreShop\Component\Core\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 interface DriverInterface

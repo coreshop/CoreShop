@@ -14,9 +14,7 @@
 
 namespace CoreShop\Component\Address\Model;
 
-use CoreShop\Component\Core\Model\ResourceInterface;
-use CoreShop\Component\Core\Model\MultishopInterface;
-use CoreShop\Component\CurrencyBundle\Model\CurrencyInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface StateInterface extends ResourceInterface
 {

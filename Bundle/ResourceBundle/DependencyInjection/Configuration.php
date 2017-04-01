@@ -14,14 +14,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Component\Address\Model\Country;
-use CoreShop\Component\Address\Model\CountryInterface;
-use CoreShop\Component\Address\Model\Zone;
-use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Core\Factory\Factory;
-use CoreShop\Component\Core\Factory\ListingFactory;
-use CoreShop\Component\Core\Repository\Repository;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -34,8 +27,47 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_core');
+        $rootNode = $treeBuilder->root('coreshop_resource');
+
+        $this->addResourcesSection($rootNode);
+        $this->addDriversSection($rootNode);
 
         return $treeBuilder;
+    }
+
+     /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addResourcesSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('resources')
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                            ->variableNode('options')->end()
+                            ->scalarNode('templates')->cannotBeEmpty()->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addDriversSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('drivers')
+                    ->defaultValue([CoreShopResourceBundle::DRIVER_DOCTRINE_ORM])
+                    ->prototype('enum')->values(CoreShopResourceBundle::getAvailableDrivers())->end()
+                ->end()
+            ->end()
+        ;
     }
 }

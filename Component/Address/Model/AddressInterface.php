@@ -14,7 +14,7 @@
 
 namespace CoreShop\Component\Address\Model;
 
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 /**
  * Interface AddressInterface
