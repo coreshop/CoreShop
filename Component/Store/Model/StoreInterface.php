@@ -14,7 +14,7 @@
 
 namespace CoreShop\Component\Store\Model;
 
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface StoreInterface extends ResourceInterface
 {

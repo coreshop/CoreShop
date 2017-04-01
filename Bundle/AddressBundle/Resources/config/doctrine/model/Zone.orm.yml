@@ -1,0 +1,22 @@
+CoreShop\Component\Address\Model\Zone:
+  type: mappedSuperclass
+  table: coreshop_zone
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    active:
+      column: active
+      type: boolean
+  oneToMany:
+    countries:
+      targetEntity: CoreShop\Component\Address\Model\CountryInterface
+      mappedBy: zone
+      orphanRemoval: true
+      cascade:
+        - all
+      orderBy:
+        name: ASC

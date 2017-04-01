@@ -1,0 +1,35 @@
+CoreShop\Component\Address\Model\Country:
+  type: mappedSuperclass
+  table: coreshop_country
+  indexes:
+    isocode:
+      columns: [ isoCode ]
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    isoCode:
+      type: string
+      column: isoCode
+      length: 2
+      unique: true
+    active:
+      column: active
+      type: boolean
+    useStoreCurrency:
+      column: useStoreCurrency
+      type: boolean
+    addressFormat:
+      column: addressFormat
+      type: string
+  manyToOne:
+    zone:
+      targetEntity: CoreShop\Component\Address\Model\ZoneInterface
+      inversedBy: countries
+      joinColumn:
+        name: zoneId
+        referencedColumnName: id
+        nullable: false

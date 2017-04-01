@@ -15,7 +15,7 @@
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface CustomerGroupInterface extends ResourceInterface
 {

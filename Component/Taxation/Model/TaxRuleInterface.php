@@ -16,7 +16,7 @@ namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface TaxRuleInterface extends ResourceInterface
 {

@@ -15,7 +15,7 @@
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Core\Exception\ObjectUnsupportedException;
-use CoreShop\Component\Core\Model\AbstractObject;
+use CoreShop\Component\Resource\Model\AbstractObject;
 use Pimcore\Model\Object;
 
 class Customer extends AbstractObject implements CustomerInterface

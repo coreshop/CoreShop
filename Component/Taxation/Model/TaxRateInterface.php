@@ -15,7 +15,7 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Core\Model\LocalizableInterface;
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface TaxRateInterface extends ResourceInterface, LocalizableInterface
 {

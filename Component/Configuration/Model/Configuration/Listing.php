@@ -15,7 +15,7 @@
 namespace CoreShop\Component\Configuration\Model\Configuration;
 
 use CoreShop\Component\Core\Model\Listing\JsonListingInterface;
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use Pimcore\Model\Listing\JsonListing;
 
 class Listing extends JsonListing implements JsonListingInterface

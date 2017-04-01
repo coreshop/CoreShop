@@ -14,7 +14,7 @@
 
 namespace CoreShop\Component\Configuration\Model;
 
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface ConfigurationInterface extends ResourceInterface
 {

@@ -14,7 +14,7 @@
 
 namespace CoreShop\Component\Taxation\Model;
 
-use CoreShop\Component\Core\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface TaxRuleGroupInterface extends ResourceInterface
 {

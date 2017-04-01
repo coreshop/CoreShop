@@ -1,0 +1,16 @@
+CoreShop\Component\Address\Model\State:
+  type: mappedSuperclass
+  table: coreshop_state
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      type: string
+      column: name
+    active:
+      column: active
+      type: boolean
