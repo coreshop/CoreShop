@@ -17,8 +17,11 @@ namespace CoreShop\Bundle\TaxationBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
+use CoreShop\Component\Resource\Factory\TranslatableFactory;
 use CoreShop\Component\Taxation\Model\TaxRate;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
+use CoreShop\Component\Taxation\Model\TaxRateTranslation;
+use CoreShop\Component\Taxation\Model\TaxRateTranslationInterface;
 use CoreShop\Component\Taxation\Model\TaxRule;
 use CoreShop\Component\Taxation\Model\TaxRuleGroup;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
@@ -67,9 +70,25 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(TaxRate::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(TaxRateInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(TaxRateTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(TaxRateTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()

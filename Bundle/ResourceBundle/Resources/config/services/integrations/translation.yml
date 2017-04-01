@@ -1,0 +1,12 @@
+services:
+    coreshop.translation_locale_provider.immutable:
+        class: CoreShop\Component\Resource\Translation\Provider\ImmutableTranslationLocaleProvider
+        arguments: [['%locale%'], '%locale%']
+    coreshop.translation.translatable_listener.doctrine.orm:
+        class: CoreShop\Bundle\ResourceBundle\EventListener\ORMTranslatableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default, priority: 99 }
+        arguments: ['@coreshop.resource_registry', '@service_container']
+    coreshop.translatable_entity_locale_assigner:
+        class: CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner
+        arguments: ['@coreshop.translation_locale_provider']

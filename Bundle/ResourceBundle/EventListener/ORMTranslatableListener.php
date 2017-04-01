@@ -1,15 +1,6 @@
 <?php
 
-/*
- * This file is part of the Sylius package.
- *
- * (c) Paweł Jędrzejewski
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Sylius\Bundle\ResourceBundle\EventListener;
+namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -17,19 +8,14 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Sylius\Component\Resource\Metadata\MetadataInterface;
-use Sylius\Component\Resource\Metadata\RegistryInterface;
-use Sylius\Component\Resource\Model\TranslatableInterface;
-use Sylius\Component\Resource\Model\TranslationInterface;
-use Sylius\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
-use Sylius\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Model\TranslatableInterface;
+use CoreShop\Component\Resource\Model\TranslationInterface;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
+use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
- * @author Prezent Internet B.V. <info@prezent.nl>
- * @author Paweł Jędrzejewski <pawel@sylius.org>
- */
 final class ORMTranslatableListener implements EventSubscriber
 {
     /**
@@ -51,7 +37,7 @@ final class ORMTranslatableListener implements EventSubscriber
         ContainerInterface $container
     ) {
         $this->resourceMetadataRegistry = $resourceMetadataRegistry;
-        $this->translatableEntityLocaleAssigner = $container->get('sylius.translatable_entity_locale_assigner');
+        $this->translatableEntityLocaleAssigner = $container->get('coreshop.translatable_entity_locale_assigner');
     }
 
     /**
@@ -170,6 +156,7 @@ final class ORMTranslatableListener implements EventSubscriber
                 'fieldName' => 'locale',
                 'type' => 'string',
                 'nullable' => false,
+                'length' => 5
             ]);
         }
 

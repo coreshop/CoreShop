@@ -43,6 +43,19 @@ abstract class AbstractModelExtension extends Extension
             $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
 
             DriverProvider::get($metadata)->load($container, $metadata);
+
+            if ($metadata->hasParameter('translation')) {
+                $alias = $alias.'_translation';
+                $resourceConfig = array_merge(['driver' => $driver], $resourceConfig['translation']);
+
+                $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
+                $resources = array_merge($resources, [$alias => $resourceConfig]);
+                $container->setParameter('coreshop.resources', $resources);
+
+                $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
+
+                DriverProvider::get($metadata)->load($container, $metadata);
+            }
         }
     }
 

@@ -14,6 +14,7 @@
 
 namespace CoreShop\Bundle\CoreBundle;
 
+use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -36,6 +37,8 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
+
+        $container->addCompilerPass(new TranslatableEntityLocalePass());
     }
 
     /**

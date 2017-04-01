@@ -8,9 +8,6 @@ CoreShop\Component\Taxation\Model\TaxRate:
       id: true
       generator:
         strategy: AUTO
-    name:
-      type: string
-      column: name
     active:
       column: active
       type: boolean

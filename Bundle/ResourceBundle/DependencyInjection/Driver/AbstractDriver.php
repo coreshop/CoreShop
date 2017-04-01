@@ -2,6 +2,8 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
+use CoreShop\Component\Resource\Factory\Factory;
+use CoreShop\Component\Resource\Factory\TranslatableFactoryInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -81,12 +83,12 @@ abstract class AbstractDriver implements DriverInterface
         $definition = new Definition($factoryClass);
 
         $definitionArgs = [$modelClass];
-        /*if (in_array(TranslatableFactoryInterface::class, class_implements($factoryClass))) {
+        if (in_array(TranslatableFactoryInterface::class, class_implements($factoryClass))) {
             $decoratedDefinition = new Definition(Factory::class);
             $decoratedDefinition->setArguments($definitionArgs);
 
-            $definitionArgs = [$decoratedDefinition, new Reference('sylius.translation_locale_provider')];
-        }*/
+            $definitionArgs = [$decoratedDefinition, new Reference('coreshop.translation_locale_provider')];
+        }
 
         $definition->setArguments($definitionArgs);
 

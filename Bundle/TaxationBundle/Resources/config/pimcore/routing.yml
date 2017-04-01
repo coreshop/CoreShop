@@ -1,15 +1,4 @@
-coreshop_admin_country:
+coreshop_admin_tax_rate:
   type: coreshop.resources
   resource: |
-    alias: coreshop.country
-
-coreshop_admin_zone:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.zone
-
-coreshop_admin_state:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.state
-
+    alias: coreshop.tax_rate

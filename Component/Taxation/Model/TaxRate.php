@@ -15,54 +15,57 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class TaxRate extends AbstractResource implements TaxRateInterface
 {
+     use TranslatableTrait {
+        __construct as private initializeTranslationsCollection;
+    }
+
     /**
      * @var float
      */
-    public $rate;
-
-    /**
-     * @var string
-     */
-    public $name;
+    public $rate = 0;
 
     /**
      * @var bool
      */
-    public $active;
+    public $active = false;
+
+    public function __construct()
+    {
+        $this->initializeTranslationsCollection();
+    }
 
     /**
      * @return string
      */
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getName(), $this->getId());
+        return sprintf("%s (%s)", $this->getName('en'), $this->getId());
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getName($language = null)
     {
-        return $this->name;
+        return $this->getTranslation($language)->getName();
     }
 
     /**
-     * @param string $name
-     *
-     * @return static
+     * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName($name, $language = null)
     {
-        $this->name = $name;
+        $this->getTranslation($language)->setName($name);
 
         return $this;
     }
 
     /**
-     * @return float
+     * {@inheritdoc}
      */
     public function getRate()
     {
@@ -70,8 +73,7 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     }
 
     /**
-     * @param float $rate
-     * @return static
+     * {@inheritdoc}
      */
     public function setRate($rate)
     {
@@ -81,7 +83,7 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function getActive()
     {
@@ -89,13 +91,20 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     }
 
     /**
-     * @param bool $active
-     * @return static
+     * {@inheritdoc}
      */
     public function setActive($active)
     {
         $this->active = $active;
 
         return $this;
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    protected function createTranslation()
+    {
+        return new TaxRateTranslation();
     }
 }
