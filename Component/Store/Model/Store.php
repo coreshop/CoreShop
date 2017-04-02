@@ -19,7 +19,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Store implements StoreInterface
+class Store extends AbstractResource implements StoreInterface
 {
     /**
      * @var integer
@@ -67,17 +67,19 @@ class Store implements StoreInterface
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @param int $id
+     * {@inheritdoc}
      */
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**

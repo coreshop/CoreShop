@@ -14,7 +14,7 @@
 
 namespace CoreShop\Component\Customer\Repository;
 
-use CoreShop\Component\Core\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 /**
  * Interface RepositoryInterface

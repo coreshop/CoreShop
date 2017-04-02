@@ -18,7 +18,7 @@ use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\Collection;
 
-class Currency implements CurrencyInterface
+class Currency extends AbstractResource implements CurrencyInterface
 {
     /**
      * @var integer
@@ -69,6 +69,16 @@ class Currency implements CurrencyInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

@@ -25,14 +25,14 @@ CoreShop\Component\Taxation\Model\TaxRule:
       joinColumn:
         name: countryId
         referencedColumnName: id
-        nullable: false
+        nullable: true
     state:
       targetEntity: CoreShop\Component\Address\Model\StateInterface
       inversedBy: taxRules
       joinColumn:
         name: stateId
         referencedColumnName: id
-        nullable: false
+        nullable: true
     taxRate:
       targetEntity: CoreShop\Component\Taxation\Model\TaxRateInterface
       inversedBy: taxRules

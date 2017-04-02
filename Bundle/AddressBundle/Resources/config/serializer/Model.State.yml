@@ -1,4 +1,4 @@
-CoreShop\Component\Addressing\Model\State:
+CoreShop\Component\Address\Model\State:
   exclusion_policy: ALL
   xml_root_name: state
   properties:
@@ -18,4 +18,12 @@ CoreShop\Component\Addressing\Model\State:
     active:
       expose: true
       type: boolean
+      groups: [List, Detailed]
+    country:
+      expose: true
+      type: relation<CoreShop\Component\Address\Model\Country>
+      groups: [Detailed]
+  virtual_properties:
+    getCountryName:
+      serialized_name: countryName
       groups: [List, Detailed]

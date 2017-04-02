@@ -41,10 +41,10 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
                 layout:'form',
                 items: [{
                     xtype: 'textfield',
-                    name: 'name.' + lang,
+                    name: 'translations.'+lang+'.name',
                     fieldLabel: t('name'),
                     width: 400,
-                    value: data.localizedFields.items[lang] ? data.localizedFields.items[lang].name : ''
+                    value: data.translations[lang] ? data.translations[lang].name : ''
                 }]
             };
 
@@ -109,34 +109,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
 
     getSaveData : function () {
         return {
-            data : Ext.encode(this.formPanel.getForm().getFieldValues())
+            data : this.formPanel.getForm().getFieldValues()
         };
-    },
-
-    save: function ()
-    {
-        var values = this.formPanel.getForm().getFieldValues();
-
-        Ext.Ajax.request({
-            url: '/admin/CoreShop/tax/save',
-            method: 'post',
-            params: {
-                data: Ext.encode(values),
-                id : this.data.id
-            },
-            success: function (response) {
-                try {
-                    var res = Ext.decode(response.responseText);
-                    if (res.success) {
-                        pimcore.helpers.showNotification(t('success'), t('coreshop_tax_saved_successfully'), 'success');
-                    } else {
-                        pimcore.helpers.showNotification(t('error'), t('coreshop_tax_saved_error'),
-                            'error', t(res.message));
-                    }
-                } catch (e) {
-                    pimcore.helpers.showNotification(t('error'), t('coreshop_tax_saved_error'), 'error');
-                }
-            }
-        });
     }
 });

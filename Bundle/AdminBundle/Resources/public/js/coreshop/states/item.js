@@ -63,13 +63,13 @@ pimcore.plugin.coreshop.states.item = Class.create(pimcore.plugin.coreshop.abstr
                             xtype : 'checkbox',
                             fieldLabel: t('coreshop_state_active'),
                             name: 'active',
-                            checked: this.data.active === '1'
+                            checked: this.data.active
                         },
                         {
                             xtype:'combo',
                             fieldLabel:t('coreshop_state_country'),
                             typeAhead:true,
-                            value:this.data.countryId,
+                            value:this.data.country,
                             mode:'local',
                             listWidth:100,
                             store:pimcore.globalmanager.get('coreshop_countries'),
@@ -77,7 +77,7 @@ pimcore.plugin.coreshop.states.item = Class.create(pimcore.plugin.coreshop.abstr
                             valueField:'id',
                             forceSelection:true,
                             triggerAction:'all',
-                            name:'countryId',
+                            name:'country',
                             listeners: {
                                 change: function () {
                                     this.forceReloadOnSave = true;
@@ -97,7 +97,7 @@ pimcore.plugin.coreshop.states.item = Class.create(pimcore.plugin.coreshop.abstr
 
     getSaveData : function () {
         return {
-            data: Ext.encode(this.formPanel.getForm().getFieldValues())
+            data: this.formPanel.getForm().getFieldValues()
         };
     }
 });

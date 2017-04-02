@@ -32,9 +32,13 @@ CoreShop\Component\Address\Model\Country:
       groups: [Detailed]
     zone:
       expose: true
-      type: relation
+      type: relation<CoreShop\Component\Address\Model\ZoneInterface>
       groups: [Detailed]
     addressFormat:
       expose: true
       type: string
       groups: [Detailed]
+  virtual_properties:
+    getZoneName:
+      serialized_name: zoneName
+      groups: [List, Detailed]

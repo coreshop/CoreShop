@@ -11,6 +11,18 @@ CoreShop\Component\Address\Model\State:
     name:
       type: string
       column: name
+    isoCode:
+      type: string
+      column: isoCode
+      length: 4
+      unique: true
     active:
       column: active
       type: boolean
+  manyToOne:
+    country:
+      targetEntity: CoreShop\Component\Address\Model\CountryInterface
+      joinColumn:
+        name: countryId
+        referencedColumnName: id
+        nullable: true

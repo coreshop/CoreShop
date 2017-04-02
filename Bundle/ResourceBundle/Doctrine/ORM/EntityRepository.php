@@ -4,7 +4,7 @@ namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Core\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 class EntityRepository extends BaseEntityRepository implements RepositoryInterface
 {

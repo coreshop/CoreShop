@@ -47,8 +47,8 @@ final class ResourceLoader implements LoaderInterface
             'get' => ['GET'],
             'list' => ['GET'],
             'add' => ['POST'],
-            'update' => ['POST'],
-            'delete' => ['POST']
+            'save' => ['POST'],
+            'delete' => ['DELETE']
         ];
         $routesToGenerate = [];
 

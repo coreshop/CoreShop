@@ -16,7 +16,7 @@ namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 
-class State implements StateInterface
+class State extends AbstractResource implements StateInterface
 {
     /**
      * @var integer
@@ -36,17 +36,12 @@ class State implements StateInterface
     /**
      * @var int
      */
-    protected $active;
+    protected $active = false;
 
     /**
      * @var Country
      */
     protected $country;
-
-    /**
-     * @var int
-     */
-    protected $countryId;
 
 
     /**
@@ -138,18 +133,8 @@ class State implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function getCountryId()
+    public function getCountryName()
     {
-        return $this->countryId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCountryId($countryId)
-    {
-        $this->countryId = $countryId;
-
-        return $this;
+        return $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : '';
     }
 }

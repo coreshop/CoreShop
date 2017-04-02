@@ -18,7 +18,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Zone implements ZoneInterface
+class Zone extends AbstractResource implements ZoneInterface
 {
     /**
      * @var integer

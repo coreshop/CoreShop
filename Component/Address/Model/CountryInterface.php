@@ -81,6 +81,11 @@ interface CountryInterface extends ResourceInterface
     public function setZone(ZoneInterface $zone = null);
 
     /**
+     * @return string
+     */
+    public function getZoneName();
+
+    /**
      * @return bool
      */
     public function getUseStoreCurrency();

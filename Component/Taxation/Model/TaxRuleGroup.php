@@ -17,7 +17,7 @@ namespace CoreShop\Component\Taxation\Model;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\Collection;
 
-class TaxRuleGroup implements TaxRuleGroupInterface
+class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
 {
     /**
      * @var integer

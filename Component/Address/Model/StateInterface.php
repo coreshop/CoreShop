@@ -59,12 +59,7 @@ interface StateInterface extends ResourceInterface
     public function setCountry(CountryInterface $country);
 
     /**
-     * @return int
+     * @return string
      */
-    public function getCountryId();
-
-    /**
-     * @param $countryId
-     */
-    public function setCountryId($countryId);
+    public function getCountryName();
 }

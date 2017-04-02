@@ -22,7 +22,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
  * Class TaxRule
  * @package CoreShop\Model
  */
-class TaxRule implements TaxRuleInterface
+class TaxRule extends AbstractResource implements TaxRuleInterface
 {
     /**
      * @var integer

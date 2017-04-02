@@ -2,3 +2,10 @@ coreshop_admin_tax_rate:
   type: coreshop.resources
   resource: |
     alias: coreshop.tax_rate
+
+coreshop_admin_tax_rule_group:
+  type: coreshop.resources
+  resource: |
+    alias: coreshop.tax_rule_group
+    additional_routes:
+      - {path: /list-rules, action: listRules, methods: [GET]}

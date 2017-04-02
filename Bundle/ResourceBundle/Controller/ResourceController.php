@@ -1,36 +1,39 @@
 <?php
-/**
- * CoreShop.
- *
- * LICENSE
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use FOS\RestBundle\View\View;
+use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
+use CoreShop\Component\Resource\Exception\UpdateHandlingException;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Core\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use JMS\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\ResourceActions;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class ResourceController extends AdminController
+class ResourceController extends Controller
 {
     /**
-     * @var string
+     * @var MetadataInterface
      */
-    protected $permission;
+    protected $metadata;
+
+    /**
+     * @var RequestConfigurationFactoryInterface
+     */
+    protected $requestConfigurationFactory;
+
+    /**
+     * @var ViewHandlerInterface
+     */
+    protected $viewHandler;
 
     /**
      * @var RepositoryInterface
@@ -38,14 +41,14 @@ class ResourceController extends AdminController
     protected $repository;
 
     /**
-     * @var MetadataInterface
-     */
-    protected $metadata;
-
-    /**
      * @var FactoryInterface
      */
     protected $factory;
+
+    /**
+     * @var NewResourceFactoryInterface
+     */
+    protected $newResourceFactory;
 
     /**
      * @var ObjectManager
@@ -53,145 +56,409 @@ class ResourceController extends AdminController
     protected $manager;
 
     /**
-     * @var ViewHandler
+     * @var SingleResourceProviderInterface
      */
-    protected $viewHandler;
+    protected $singleResourceProvider;
+
+    /**
+     * @var ResourcesCollectionProviderInterface
+     */
+    protected $resourcesCollectionProvider;
+
+    /**
+     * @var ResourceFormFactoryInterface
+     */
+    protected $resourceFormFactory;
+
+    /**
+     * @var RedirectHandlerInterface
+     */
+    protected $redirectHandler;
+
+    /**
+     * @var FlashHelperInterface
+     */
+    protected $flashHelper;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @var ResourceUpdateHandlerInterface
+     */
+    protected $resourceUpdateHandler;
 
     /**
      * @param MetadataInterface $metadata
+     * @param RequestConfigurationFactoryInterface $requestConfigurationFactory
+     * @param ViewHandlerInterface $viewHandler
      * @param RepositoryInterface $repository
      * @param FactoryInterface $factory
+     * @param NewResourceFactoryInterface $newResourceFactory
      * @param ObjectManager $manager
-     * @param ViewHandler $viewHandler
+     * @param SingleResourceProviderInterface $singleResourceProvider
+     * @param ResourcesCollectionProviderInterface $resourcesFinder
+     * @param ResourceFormFactoryInterface $resourceFormFactory
+     * @param RedirectHandlerInterface $redirectHandler
+     * @param FlashHelperInterface $flashHelper
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ResourceUpdateHandlerInterface $resourceUpdateHandler
      */
     public function __construct(
         MetadataInterface $metadata,
+        RequestConfigurationFactoryInterface $requestConfigurationFactory,
+        ViewHandlerInterface $viewHandler,
         RepositoryInterface $repository,
         FactoryInterface $factory,
+        NewResourceFactoryInterface $newResourceFactory,
         ObjectManager $manager,
-        ViewHandler $viewHandler
+        SingleResourceProviderInterface $singleResourceProvider,
+        ResourcesCollectionProviderInterface $resourcesFinder,
+        ResourceFormFactoryInterface $resourceFormFactory,
+        RedirectHandlerInterface $redirectHandler,
+        FlashHelperInterface $flashHelper,
+        EventDispatcherInterface $eventDispatcher,
+        ResourceUpdateHandlerInterface $resourceUpdateHandler
     ) {
         $this->metadata = $metadata;
+        $this->requestConfigurationFactory = $requestConfigurationFactory;
+        $this->viewHandler = $viewHandler;
         $this->repository = $repository;
         $this->factory = $factory;
+        $this->newResourceFactory = $newResourceFactory;
         $this->manager = $manager;
-        $this->viewHandler = $viewHandler;
-    }
-
-    /**
-     * @throws AccessDeniedException
-     */
-    protected function isGrantedOr403()
-    {
-        if ($this->getUser()->getPermission($this->permission)) {
-            return;
-        }
-
-        throw new AccessDeniedException();
+        $this->singleResourceProvider = $singleResourceProvider;
+        $this->resourcesCollectionProvider = $resourcesFinder;
+        $this->resourceFormFactory = $resourceFormFactory;
+        $this->redirectHandler = $redirectHandler;
+        $this->flashHelper = $flashHelper;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->resourceUpdateHandler = $resourceUpdateHandler;
     }
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     *
+     * @return Response
      */
     public function listAction(Request $request)
     {
-        $data = $this->repository->getAll();
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        return $this->viewHandler->handle($data, ["group" => "List"]);
-    }
+        $this->isGrantedOr403($configuration, ResourceActions::SHOW);
+        $resource = $this->findOr404($configuration);
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getAction(Request $request)
-    {
-        $model = $this->findOr404($request->get("id"));
+        $this->eventDispatcher->dispatch(ResourceActions::SHOW, $configuration, $resource);
 
-        return $this->viewHandler->handle($model, ["group" => "Detailed"]);
-    }
+        $view = View::create($resource);
 
-    /**
-     * @param Request $request
-     * @return \Pimcore\Bundle\PimcoreAdminBundle\HttpFoundation\JsonResponse
-     */
-    public function saveAction(Request $request)
-    {
-        $id = $request->get('id');
-        $data = $request->get('data');
-        $model = $this->getById($id);
-
-        if ($data && $model instanceof ResourceInterface) {
-            $data = $this->encodeJson($request->get('data'));
-
-            $model->setValues($data);
-
-            $this->prepareSave($model, $data);
-
-            $model->save();
-
-            return $this->json(['success' => true, 'data' => $this->getReturnValues($model)]);
-        } else {
-            return $this->json(['success' => false]);
+        if ($configuration->isHtmlRequest()) {
+            $view
+                ->setTemplate($configuration->getTemplate(ResourceActions::SHOW . '.html'))
+                ->setTemplateVar($this->metadata->getName())
+                ->setData([
+                    'configuration' => $configuration,
+                    'metadata' => $this->metadata,
+                    'resource' => $resource,
+                    $this->metadata->getName() => $resource,
+                ])
+            ;
         }
+
+        return $this->viewHandler->handle($configuration, $view);
     }
 
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\PimcoreAdminBundle\HttpFoundation\JsonResponse
+     *
+     * @return Response
      */
-    public function addAction(Request $request)
+    public function indexAction(Request $request)
     {
-        $name = $request->get('name');
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        if (strlen($name) <= 0) {
-            return $this->json(['success' => false, 'message' => $this->get('translator')->trans('Name must be set')]);
-        } else {
-            $model = $this->create();
-            $model->setValues($request->request->all());
+        $this->isGrantedOr403($configuration, ResourceActions::INDEX);
+        $resources = $this->resourcesCollectionProvider->get($configuration, $this->repository);
 
-            $this->setDefaultValues($model);
+        $view = View::create($resources);
 
-            $model->save();
-
-            return $this->json(['success' => true, 'data' => $this->getReturnValues($model)]);
+        if ($configuration->isHtmlRequest()) {
+            $view
+                ->setTemplate($configuration->getTemplate(ResourceActions::INDEX . '.html'))
+                ->setTemplateVar($this->metadata->getPluralName())
+                ->setData([
+                    'configuration' => $configuration,
+                    'metadata' => $this->metadata,
+                    'resources' => $resources,
+                    $this->metadata->getPluralName() => $resources,
+                ])
+            ;
         }
+
+        return $this->viewHandler->handle($configuration, $view);
     }
 
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\PimcoreAdminBundle\HttpFoundation\JsonResponse
+     *
+     * @return Response
+     */
+    public function createAction(Request $request)
+    {
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
+
+        $this->isGrantedOr403($configuration, ResourceActions::CREATE);
+        $newResource = $this->newResourceFactory->create($configuration, $this->factory);
+
+        $form = $this->resourceFormFactory->create($configuration, $newResource);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $newResource = $form->getData();
+
+            $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::CREATE, $configuration, $newResource);
+
+            if ($event->isStopped() && !$configuration->isHtmlRequest()) {
+                throw new HttpException($event->getErrorCode(), $event->getMessage());
+            }
+            if ($event->isStopped()) {
+                $this->flashHelper->addFlashFromEvent($configuration, $event);
+
+                return $this->redirectHandler->redirectToIndex($configuration, $newResource);
+            }
+
+            $this->repository->add($newResource);
+            $this->eventDispatcher->dispatchPostEvent(ResourceActions::CREATE, $configuration, $newResource);
+
+            if (!$configuration->isHtmlRequest()) {
+                return $this->viewHandler->handle($configuration, View::create($newResource, Response::HTTP_CREATED));
+            }
+
+            $this->flashHelper->addSuccessFlash($configuration, ResourceActions::CREATE, $newResource);
+
+            return $this->redirectHandler->redirectToResource($configuration, $newResource);
+        }
+
+        if (!$configuration->isHtmlRequest()) {
+            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
+        }
+
+        $this->eventDispatcher->dispatchInitializeEvent(ResourceActions::CREATE, $configuration, $newResource);
+
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $newResource,
+                $this->metadata->getName() => $newResource,
+                'form' => $form->createView(),
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
+        ;
+
+        return $this->viewHandler->handle($configuration, $view);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function updateAction(Request $request)
+    {
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
+
+        $this->isGrantedOr403($configuration, ResourceActions::UPDATE);
+        $resource = $this->findOr404($configuration);
+
+        $form = $this->resourceFormFactory->create($configuration, $resource);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $form->handleRequest($request)->isValid()) {
+            $resource = $form->getData();
+
+            /** @var ResourceControllerEvent $event */
+            $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::UPDATE, $configuration, $resource);
+
+            if ($event->isStopped() && !$configuration->isHtmlRequest()) {
+                throw new HttpException($event->getErrorCode(), $event->getMessage());
+            }
+            if ($event->isStopped()) {
+                $this->flashHelper->addFlashFromEvent($configuration, $event);
+
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
+                }
+
+                return $this->redirectHandler->redirectToResource($configuration, $resource);
+            }
+
+            try {
+                $this->resourceUpdateHandler->handle($resource, $configuration, $this->manager);
+            } catch (UpdateHandlingException $exception) {
+                if (!$configuration->isHtmlRequest()) {
+                    return $this->viewHandler->handle(
+                        $configuration,
+                        View::create($form, $exception->getApiResponseCode())
+                    );
+                }
+
+                $this->flashHelper->addErrorFlash($configuration, $exception->getFlash());
+
+                return $this->redirectHandler->redirectToReferer($configuration);
+            }
+
+            $postEvent = $this->eventDispatcher->dispatchPostEvent(ResourceActions::UPDATE, $configuration, $resource);
+
+            if (!$configuration->isHtmlRequest()) {
+                $view = $configuration->getParameters()->get('return_content', false) ? View::create($resource, Response::HTTP_OK) : View::create(null, Response::HTTP_NO_CONTENT);
+
+                return $this->viewHandler->handle($configuration, $view);
+            }
+
+            $this->flashHelper->addSuccessFlash($configuration, ResourceActions::UPDATE, $resource);
+
+            if ($postEvent->hasResponse()) {
+                return $postEvent->getResponse();
+            }
+
+            return $this->redirectHandler->redirectToResource($configuration, $resource);
+        }
+
+        if (!$configuration->isHtmlRequest()) {
+            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
+        }
+
+        $this->eventDispatcher->dispatchInitializeEvent(ResourceActions::UPDATE, $configuration, $resource);
+
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $resource,
+                $this->metadata->getName() => $resource,
+                'form' => $form->createView(),
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
+        ;
+
+        return $this->viewHandler->handle($configuration, $view);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
      */
     public function deleteAction(Request $request)
     {
-        $id = $request->get('id');
-        $model = $this->getById($id);
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        if ($model !== null) {
-            $model->delete();
+        $this->isGrantedOr403($configuration, ResourceActions::DELETE);
+        $resource = $this->findOr404($configuration);
 
-            return $this->json(['success' => true]);
+        if ($configuration->isCsrfProtectionEnabled() && !$this->isCsrfTokenValid($resource->getId(), $request->request->get('_csrf_token'))) {
+            throw new HttpException(Response::HTTP_FORBIDDEN, 'Invalid csrf token.');
         }
 
-        return $this->json(['success' => false]);
+        $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::DELETE, $configuration, $resource);
+
+        if ($event->isStopped() && !$configuration->isHtmlRequest()) {
+            throw new HttpException($event->getErrorCode(), $event->getMessage());
+        }
+        if ($event->isStopped()) {
+            $this->flashHelper->addFlashFromEvent($configuration, $event);
+
+            return $this->redirectHandler->redirectToIndex($configuration, $resource);
+        }
+
+        $this->repository->remove($resource);
+        $this->eventDispatcher->dispatchPostEvent(ResourceActions::DELETE, $configuration, $resource);
+
+        if (!$configuration->isHtmlRequest()) {
+            return $this->viewHandler->handle($configuration, View::create(null, Response::HTTP_NO_CONTENT));
+        }
+
+        $this->flashHelper->addSuccessFlash($configuration, ResourceActions::DELETE, $resource);
+
+        return $this->redirectHandler->redirectToIndex($configuration, $resource);
     }
-    
+
     /**
-     * @param int $id
+     * @param Request $request
      *
-     * @return ResourceInterface
+     * @return RedirectResponse
+     */
+    public function applyStateMachineTransitionAction(Request $request)
+    {
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
+
+        $this->isGrantedOr403($configuration, ResourceActions::UPDATE);
+        $resource = $this->findOr404($configuration);
+
+        $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::UPDATE, $configuration, $resource);
+
+        if ($event->isStopped() && !$configuration->isHtmlRequest()) {
+            throw new HttpException($event->getErrorCode(), $event->getMessage());
+        }
+        if ($event->isStopped()) {
+            $this->flashHelper->addFlashFromEvent($configuration, $event);
+
+            return $this->redirectHandler->redirectToResource($configuration, $resource);
+        }
+
+        try {
+            $this->resourceUpdateHandler->handle($resource, $configuration, $this->manager);
+        } catch (UpdateHandlingException $exception) {
+            if (!$configuration->isHtmlRequest()) {
+                return $this->viewHandler->handle(
+                    $configuration,
+                    View::create($resource, $exception->getApiResponseCode())
+                );
+            }
+
+            $this->flashHelper->addErrorFlash($configuration, $exception->getFlash());
+
+            return $this->redirectHandler->redirectToReferer($configuration);
+        }
+
+        $this->eventDispatcher->dispatchPostEvent(ResourceActions::UPDATE, $configuration, $resource);
+
+        if (!$configuration->isHtmlRequest()) {
+            $view = $configuration->getParameters()->get('return_content', true) ? View::create($resource, Response::HTTP_OK) : View::create(null, Response::HTTP_NO_CONTENT);
+
+            return $this->viewHandler->handle($configuration, $view);
+        }
+
+        $this->flashHelper->addSuccessFlash($configuration, ResourceActions::UPDATE, $resource);
+
+        return $this->redirectHandler->redirectToResource($configuration, $resource);
+    }
+
+    /**
+     * @param RequestConfiguration $configuration
+     * @param string $permission
+     *
+     * @throws AccessDeniedException
+     */
+    protected function isGrantedOr403(RequestConfiguration $configuration, $permission)
+    {
+        return;
+    }
+
+    /**
+     * @param RequestConfiguration $configuration
+     *
+     * @return \CoreShop\Component\Resource\Model\ResourceInterface
      *
      * @throws NotFoundHttpException
      */
-    protected function findOr404($id)
+    protected function findOr404(RequestConfiguration $configuration)
     {
-        $model = $this->repository->find($id);
-
-        if (null === $model || !$model instanceof ResourceInterface) {
-            throw new NotFoundHttpException(sprintf('The "%s" has not been found', $id));
+        if (null === $resource = $this->singleResourceProvider->get($configuration, $this->repository)) {
+            throw new NotFoundHttpException(sprintf('The "%s" has not been found', $this->metadata->getHumanizedName()));
         }
 
-        return $model;
+        return $resource;
     }
 }

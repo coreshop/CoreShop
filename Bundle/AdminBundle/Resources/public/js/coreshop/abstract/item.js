@@ -79,39 +79,46 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         return {};
     },
 
-    getMultishopSettings : function () {
-        if (coreshop.settings.multishop) {
-            if (!this.multiShopSettings) {
-                this.multiShopSettings = Ext.create({
-                    xtype: 'combo',
-                    fieldLabel: t('coreshop_mulitshop_select'),
-                    name: 'shopIds',
-                    width: 400,
-                    store: pimcore.globalmanager.get('coreshop_stores'),
-                    displayField: 'name',
-                    multiSelect: true,
-                    valueField: 'id',
-                    triggerAction: 'all',
-                    typeAhead: false,
-                    editable: false,
-                    forceSelection: true,
-                    queryMode: 'local',
-                    value: this.data.shopIds
-                });
-            }
-
-            return this.multiShopSettings;
+    getMultishopSettings : function ()
+    {
+        if (!this.multiShopSettings) {
+            this.multiShopSettings = Ext.create({
+                xtype: 'combo',
+                fieldLabel: t('coreshop_mulitshop_select'),
+                name: 'stores',
+                width: 400,
+                store: pimcore.globalmanager.get('coreshop_stores'),
+                displayField: 'name',
+                multiSelect: true,
+                valueField: 'id',
+                triggerAction: 'all',
+                typeAhead: false,
+                editable: false,
+                forceSelection: true,
+                queryMode: 'local',
+                value: this.data.stores
+            });
         }
 
-        return false;
+        return this.multiShopSettings;
     },
 
     save: function ()
     {
+        var me = this,
+            data;
+
         if(this.isValid()) {
             var saveData = this.getSaveData();
 
             saveData['id'] = this.data.id;
+
+            data = saveData['data'];
+
+            data = this.convertDotNotationToObject(data);
+            data['id'] = this.data.id;
+
+            saveData['data'] = Ext.JSON.encode(data);
 
             Ext.Ajax.request({
                 url: this.url.save,
@@ -153,5 +160,24 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
 
     isValid : function() {
         return true;
+    },
+
+    convertDotNotationToObject: function (data) {
+        var obj = {};
+
+        Object.keys(data).forEach( function (key) {  //loop through the keys in the object
+            var val = data[key];  //grab the value of this key
+            var step = obj;  //reference the object that holds the values
+            key.split(".").forEach(function(part, index, arr){   //split the parts and loop
+                if(index === arr.length-1){  //If we are at the last index, than we set the value
+                    step[part] = val;
+                } else if(step[part]===undefined) {  //If we have not seen this key before, create an object
+                    step[part] = {};
+                }
+                step = step[part];  //Step up the object we are referencing
+            });
+        } );
+
+        return obj;
     }
 });

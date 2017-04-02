@@ -57,14 +57,23 @@ abstract class AbstractDriver implements DriverInterface
      */
     protected function addController(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $definition = new Definition($metadata->getClass('admin_controller'));
+       $definition = new Definition($metadata->getClass('admin_controller'));
         $definition
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
+                new Reference('coreshop.resource_controller.request_configuration_factory'),
+                new Reference('coreshop.resource_controller.view_handler'),
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
+                new Reference('coreshop.resource_controller.new_resource_factory'),
                 new Reference($metadata->getServiceId('manager')),
-                new Reference('coreshop.resource_controller.view_handler')
+                new Reference('coreshop.resource_controller.single_resource_provider'),
+                new Reference('coreshop.resource_controller.resources_collection_provider'),
+                new Reference('coreshop.resource_controller.form_factory'),
+                new Reference('coreshop.resource_controller.redirect_handler'),
+                new Reference('coreshop.resource_controller.flash_helper'),
+                new Reference('coreshop.resource_controller.event_dispatcher'),
+                new Reference('coreshop.resource_controller.resource_update_handler'),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')])
         ;

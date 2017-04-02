@@ -1,0 +1,5 @@
+core_shop_taxation:
+    resources:
+        tax_rule:
+            classes:
+                repository: CoreShop\Bundle\TaxationBundle\Doctrine\ORM\TaxRuleRepository

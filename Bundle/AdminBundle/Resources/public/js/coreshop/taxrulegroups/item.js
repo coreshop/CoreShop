@@ -102,7 +102,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             listeners: listeners,
             proxy: {
                 type: 'ajax',
-                url: '/admin/CoreShop/tax-rule-group/list-rules',
+                url: '/admin/CoreShop/tax_rule_groups/list-rules',
                 reader: {
                     type: 'json',
                     rootProperty : 'data'

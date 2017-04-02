@@ -4,7 +4,7 @@ namespace CoreShop\Component\Address\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use CoreShop\Component\Address\Model\CountryInterface;
-use CoreShop\Component\Core\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface CountryRepositoryInterface extends RepositoryInterface
 {

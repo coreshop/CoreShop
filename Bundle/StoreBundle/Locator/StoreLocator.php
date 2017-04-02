@@ -4,7 +4,7 @@ namespace CoreShop\Bundle\StoreBundle\Locator;
 
 use CoreShop\Bundle\ConfigurationBundle\Helper\ConfigurationHelperInterface;
 use CoreShop\Bundle\StoreBundle\Helper\PimcoreSiteHelperInterface;
-use CoreShop\Component\Core\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Store\Model\Store;
 use Pimcore\Cache;
 use Pimcore\Logger;

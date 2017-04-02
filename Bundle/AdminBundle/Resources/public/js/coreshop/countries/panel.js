@@ -36,13 +36,15 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
                 proxy:      new Ext.data.HttpProxy({
                     url : this.url.list
                 }),
-                reader:     new Ext.data.JsonReader({}, [
+                reader:     new Ext.data.JsonReader({
+                    rootProperty: 'data'
+                }, [
                     { name:'id' },
                     { name:'name' },
-                    { name:'zone' }
+                    { name:'zoneName' }
                 ]),
                 autoload:   true,
-                groupField: 'zone',
+                groupField: 'zoneName',
                 groupDir: 'ASC'
             });
 
@@ -52,7 +54,7 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
                 columns: [
                     {
                         text: '',
-                        dataIndex: 'text',
+                        dataIndex: 'name',
                         flex : 1,
                         renderer: function (value, metadata, record)
                         {
@@ -69,7 +71,7 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
                 containerScroll: true,
                 width: 200,
                 split: true,
-                groupField: 'zone',
+                groupField: 'zoneName',
                 groupDir: 'ASC',
                 features: [{
                     ftype: 'grouping',

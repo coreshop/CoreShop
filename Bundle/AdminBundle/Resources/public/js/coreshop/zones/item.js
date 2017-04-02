@@ -60,7 +60,7 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
                             xtype : 'checkbox',
                             fieldLabel: t('coreshop_zone_active'),
                             name: 'active',
-                            checked: intval(this.data.active) === 1
+                            checked: this.data.active
                         }
                     ]
                 }
@@ -72,7 +72,7 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
 
     getSaveData : function () {
         return {
-            data : Ext.encode(this.formPanel.getForm().getFieldValues())
+            data: this.formPanel.getForm().getFieldValues()
         };
     }
 });

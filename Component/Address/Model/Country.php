@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\Collection;
  * Store
  * @package CoreShop\Component\Address\Model
  */
-class Country implements CountryInterface
+class Country extends AbstractResource implements CountryInterface
 {
     /**
      * @var integer
@@ -85,7 +85,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -93,7 +93,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getIsoCode()
     {
@@ -101,8 +101,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @param $isoCode
-     * @return static
+     * {@inheritdoc}
      */
     public function setIsoCode($isoCode)
     {
@@ -112,7 +111,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -120,8 +119,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @param $name
-     * @return static
+     * {@inheritdoc}
      */
     public function setName($name)
     {
@@ -131,7 +129,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getActive()
     {
@@ -139,8 +137,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @param $active
-     * @return static
+     * {@inheritdoc}
      */
     public function setActive($active)
     {
@@ -150,7 +147,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return CurrencyInterface
+     * {@inheritdoc}
      */
     public function getCurrency()
     {
@@ -158,8 +155,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @param $currency
-     * @return static
+     * {@inheritdoc}
      */
     public function setCurrency($currency)
     {
@@ -169,7 +165,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function getUseStoreCurrency()
     {
@@ -177,8 +173,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @param bool $useStoreCurrency
-     * @return static
+     * {@inheritdoc}
      */
     public function setUseStoreCurrency($useStoreCurrency)
     {
@@ -188,7 +183,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getAddressFormat()
     {
@@ -196,8 +191,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @param string $addressFormat
-     * @return static
+     * {@inheritdoc}
      */
     public function setAddressFormat($addressFormat)
     {
@@ -207,7 +201,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return ZoneInterface
+     * {@inheritdoc}
      */
     public function getZone()
     {
@@ -215,8 +209,7 @@ class Country implements CountryInterface
     }
 
     /**
-     * @param ZoneInterface $zone
-     * @return static
+     * {@inheritdoc}
      */
     public function setZone(ZoneInterface $zone = null)
     {
@@ -224,7 +217,14 @@ class Country implements CountryInterface
 
         return $this;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getZoneName() {
+        return $this->getZone() instanceof ZoneInterface ? $this->getZone()->getName() : '';
+    }
+
     /**
      * {@inheritdoc}
      */

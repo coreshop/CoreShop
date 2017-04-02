@@ -12,15 +12,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Repository;
+namespace CoreShop\Component\Resource\Repository;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
-/**
- * Interface RepositoryInterface
- * @package CoreShop\Component\Core\Repository
- */
 interface RepositoryInterface extends ObjectRepository {
     const ORDER_ASCENDING = 'ASC';
     const ORDER_DESCENDING = 'DESC';
@@ -30,14 +26,9 @@ interface RepositoryInterface extends ObjectRepository {
      */
     public function add(ResourceInterface $resource);
 
+
     /**
      * @param ResourceInterface $resource
      */
     public function remove(ResourceInterface $resource);
-
-
-    /**
-     * @return array
-     */
-    public function getAll();
 }

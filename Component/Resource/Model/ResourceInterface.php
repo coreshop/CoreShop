@@ -20,4 +20,17 @@ interface ResourceInterface {
      * @return int
      */
     public function getId();
+
+    /**
+     * @param array $data
+     * @return $this
+     */
+    public function setValues($data = []);
+
+    /**
+     * @param  $key
+     * @param  $value
+     * @return $this
+     */
+    public function setValue($key, $value);
 }

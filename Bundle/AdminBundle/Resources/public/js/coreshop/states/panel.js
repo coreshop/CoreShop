@@ -34,15 +34,15 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
             this.store = new Ext.data.Store({
                 restful:    false,
                 proxy:      new Ext.data.HttpProxy({
-                    url : '/admin/CoreShop/state/list'
+                    url : this.url.list
                 }),
                 reader:     new Ext.data.JsonReader({}, [
                     { name:'id' },
                     { name:'name' },
-                    { name:'country' }
+                    { name:'countryName' }
                 ]),
                 autoload:   true,
-                groupField: 'country',
+                groupField: 'countryName',
                 groupDir: 'ASC'
             });
 
@@ -52,7 +52,7 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
                 columns: [
                     {
                         text: '',
-                        dataIndex: 'text',
+                        dataIndex: 'name',
                         flex : 1,
                         renderer: function (value, metadata, record)
                         {
@@ -69,7 +69,7 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
                 containerScroll: true,
                 width: 200,
                 split: true,
-                groupField: 'country',
+                groupField: 'countryName',
                 groupDir: 'ASC',
                 features: [{
                     ftype: 'grouping',

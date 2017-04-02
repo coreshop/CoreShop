@@ -11,6 +11,9 @@ CoreShop\Component\Address\Model\Zone:
     active:
       column: active
       type: boolean
+    name:
+      column: name
+      type: string
   oneToMany:
     countries:
       targetEntity: CoreShop\Component\Address\Model\CountryInterface

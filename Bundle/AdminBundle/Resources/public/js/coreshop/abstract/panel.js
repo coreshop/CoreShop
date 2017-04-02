@@ -94,7 +94,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
                 columns: [
                     {
                         text: '',
-                        dataIndex: 'text',
+                        dataIndex: 'name',
                         flex : 1,
                         renderer: function (value, metadata, record)
                         {
@@ -207,6 +207,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
     deleteItem: function (record) {
         Ext.Ajax.request({
             url: this.url.delete,
+            method: 'DELETE',
             params: {
                 id: record.id
             },

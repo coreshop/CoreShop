@@ -4,6 +4,7 @@ namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\Context;
+use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
@@ -18,7 +19,9 @@ class RelationsHandler
      *
      * @param EntityManagerInterface $manager
      */
-    public function __construct(EntityManagerInterface $manager) { $this->manager = $manager; }
+    public function __construct(EntityManagerInterface $manager) {
+        $this->manager = $manager;
+    }
 
 
     public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
@@ -32,6 +35,36 @@ class RelationsHandler
         }
 
         return $this->getSingleEntityRelation($relation);
+    }
+
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    {
+        $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
+
+        $metadata = $this->manager->getClassMetadata($className);
+
+        if (!is_array($relation)) {
+            return $this->manager->getReference($metadata->getName(), $relation);
+        }
+
+        $single = false;
+        if ($metadata->isIdentifierComposite) {
+            $single = true;
+            foreach ($metadata->getIdentifierFieldNames() as $idName) {
+                $single = $single && array_key_exists($idName, $relation);
+            }
+        }
+
+        if ($single) {
+            return $this->manager->getReference($className, $relation);
+        }
+
+        $objects = [];
+        foreach ($relation as $idSet) {
+            $objects[] = $this->manager->getReference($className, $idSet);
+        }
+
+        return $objects;
     }
 
     /**

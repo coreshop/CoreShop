@@ -40,13 +40,13 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                 xtype : 'checkbox',
                 fieldLabel: t('coreshop_country_active'),
                 name: 'active',
-                checked: this.data.active === '1'
+                checked: this.data.active
             },
             {
                 xtype : 'checkbox',
                 fieldLabel: t('coreshop_country_use_default_store_currency'),
                 name: 'useStoreCurrency',
-                checked: parseInt(this.data.useStoreCurrency) === 1,
+                checked: this.data.useStoreCurrency,
                 listeners : {
                     change : function (checkbox, newValue) {
                         if (newValue) {
@@ -61,7 +61,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                 xtype:'combo',
                 fieldLabel:t('coreshop_country_currency'),
                 typeAhead:true,
-                value:this.data.currencyId,
+                value:this.data.currency,
                 mode:'local',
                 listWidth:100,
                 store:pimcore.globalmanager.get('coreshop_currencies'),
@@ -69,8 +69,8 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                 valueField:'id',
                 forceSelection:true,
                 triggerAction:'all',
-                name:'currencyId',
-                disabled : parseInt(this.data.useStoreCurrency) === 1,
+                name:'currency',
+                disabled : this.data.useStoreCurrency,
                 listeners: {
                     change: function () {
                         this.forceReloadOnSave = true;
@@ -84,7 +84,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                 xtype:'combo',
                 fieldLabel:t('coreshop_country_zone'),
                 typeAhead:true,
-                value:this.data.zoneId,
+                value:this.data.zone,
                 mode:'local',
                 listWidth:100,
                 store:pimcore.globalmanager.get('coreshop_zones'),
@@ -92,7 +92,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                 valueField:'id',
                 forceSelection:true,
                 triggerAction:'all',
-                name:'zoneId',
+                name:'zone',
                 listeners: {
                     change: function () {
                         this.forceReloadOnSave = true;
@@ -147,7 +147,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
 
     getSaveData : function () {
         return {
-            data: Ext.encode(this.formPanel.getForm().getFieldValues())
+            data: this.formPanel.getForm().getFieldValues()
         };
     }
 });

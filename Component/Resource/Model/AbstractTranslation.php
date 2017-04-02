@@ -4,6 +4,8 @@ namespace CoreShop\Component\Resource\Model;
 
 class AbstractTranslation implements TranslationInterface
 {
+    use SetValuesTrait;
+
     /**
      * @var string
      */

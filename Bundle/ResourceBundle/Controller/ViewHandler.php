@@ -27,6 +27,7 @@ final class ViewHandler implements ViewHandlerInterface
     public function handle($data, $options = [])
     {
         $context = SerializationContext::create();
+        $context->setSerializeNull(true);
 
         if (array_key_exists('group', $options)) {
             $context->setGroups($options['group']);
