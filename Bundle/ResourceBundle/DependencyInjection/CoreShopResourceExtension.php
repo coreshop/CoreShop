@@ -27,8 +27,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             $container->setAlias('coreshop.translation_locale_provider', $config['translation']['locale_provider']);
         }
 
-        $container->setParameter('coreshop.resource.settings', []);
-
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
     }
 

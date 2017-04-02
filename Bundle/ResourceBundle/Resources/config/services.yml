@@ -2,14 +2,7 @@ imports:
     - { resource: "services/routing.yml" }
     - { resource: "services/controller.yml" }
 
-
 services:
-  jms_serializer.cache_naming_strategy:
-    class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
-
-  jms_serializer.object_constructor:
-    alias: jms_serializer.doctrine_object_constructor
-
   coreshop.resource_registry:
     class: CoreShop\Component\Resource\Metadata\Registry
     public: false
@@ -24,29 +17,7 @@ services:
       - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation}
       - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation}
       - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation}
-      - { name: jms_serializer.handler, type: translation, direction: deserialization, format: json, method: deserializeRelation}
-      - { name: jms_serializer.handler, type: translation<?>, direction: deserialization, format: json, method: deserializeRelation}
 
-  coreshop.resource_registry:
-      class: CoreShop\Component\Resource\Metadata\Registry
-      public: false
-
-  coreshop.expression_language:
-      class: CoreShop\Bundle\ResourceBundle\ExpressionLanguage\ExpressionLanguage
-      public: false
-
-  coreshop.form.type.default:
-      class: CoreShop\Bundle\ResourceBundle\Form\Type\DefaultResourceType
-      tags:
-          - { name: form.type }
-      arguments: ['@coreshop.resource_registry', '@coreshop.registry.form_builder']
-
-  coreshop.registry.resource_repository:
-      class: CoreShop\Component\Registry\ServiceRegistry
-      public: false
-      arguments: [CoreShop\Component\Resource\Repository\RepositoryInterface, 'resource repository']
-
-  coreshop.registry.form_builder:
-      class: CoreShop\Component\Registry\ServiceRegistry
-      public: false
-      arguments: [CoreShop\Bundle\ResourceBundle\Form\Builder\DefaultFormBuilderInterface, 'form builder']
+  jms_serializer.object_constructor:
+    alias: jms_serializer.doctrine_object_constructor
+    public: false
