@@ -13,17 +13,17 @@ CoreShop\Component\Taxation\Model\TaxRule:
       groups: [List, Detailed]
     taxRuleGroup:
       expose: true
-      type: relation
+      type: relation<CoreShop\Component\Taxation\Model\TaxRuleGroupInterface>
       groups: [List, Detailed]
     country:
       expose: true
-      type: relation
+      type: relation<CoreShop\Component\Address\Model\CountryInterface>
       groups: [List, Detailed]
     state:
       expose: true
-      type: relation
+      type: relation<CoreShop\Component\Address\Model\StateInterface>
       groups: [List, Detailed]
     taxRate:
       expose: true
-      type: relation
+      type: relation<CoreShop\Component\Taxation\Model\TaxRateInterface>
       groups: [List, Detailed]

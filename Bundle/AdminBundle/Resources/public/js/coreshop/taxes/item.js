@@ -41,7 +41,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
                 layout:'form',
                 items: [{
                     xtype: 'textfield',
-                    name: 'translations.'+lang+'.name',
+                    name: '_translations.'+lang+'.name',
                     fieldLabel: t('name'),
                     width: 400,
                     value: data.translations[lang] ? data.translations[lang].name : ''

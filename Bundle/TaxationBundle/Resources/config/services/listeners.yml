@@ -1,0 +1,12 @@
+services:
+  ‌coreshop.listeners.tax_rule_group.pre_save:
+    class: CoreShop\Bundle\TaxationBundle\EventListener\TaxRuleGroupPreSaveListener
+    arguments:
+      - '@coreshop.factory.tax_rule'
+      - '@coreshop.repository.tax_rule'
+      - '@doctrine.orm.entity_manager'
+      - '@coreshop.repository.country'
+      - '@coreshop.repository.state'
+      - '@coreshop.repository.tax_rate'
+    tags:
+      - { name: kernel.event_listener, event: coreshop.tax_rule_group.pre_save, method: onTaxRuleGroupPreSave }

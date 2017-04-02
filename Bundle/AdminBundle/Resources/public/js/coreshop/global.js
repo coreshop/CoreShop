@@ -36,7 +36,7 @@ pimcore.plugin.coreshop.global = {
             { name:'name' },
             { name:'rate' }
         ]);
-        this._createStore('coreshop_taxrulegroups', 'tax-rule-groups');
+        this._createStore('coreshop_taxrulegroups', 'tax_rule_groups');
         this._createStore('coreshop_customergroups', 'customer-groups');
         this._createStore('coreshop_carriers', 'carriers');
         this._createStore('coreshop_pricerules', 'price-rules');

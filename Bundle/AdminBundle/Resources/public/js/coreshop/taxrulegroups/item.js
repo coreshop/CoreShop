@@ -89,7 +89,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         if (!Ext.ClassManager.get(modelName)) {
             Ext.define(modelName, {
                     extend: 'Ext.data.Model',
-                    fields: ['id', 'taxRuleGroupId', 'countryId', 'taxId', 'behavior']
+                    fields: ['id', 'taxRuleGroup', 'country', 'tax', 'behavior']
                 }
             );
         }
@@ -97,20 +97,9 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         this.store = new Ext.data.Store({
             restful: false,
             idProperty: 'id',
-            remoteSort: true,
             model : modelName,
             listeners: listeners,
-            proxy: {
-                type: 'ajax',
-                url: '/admin/CoreShop/tax_rule_groups/list-rules',
-                reader: {
-                    type: 'json',
-                    rootProperty : 'data'
-                },
-                extraParams : {
-                    id : this.data.id
-                }
-            }
+            data: this.data.taxRules
         });
 
         var statesStore = new Ext.data.Store({
@@ -128,6 +117,8 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 load: function (store) {
                     var rec = { id: 0, name: t('coreshop_all') };
                     store.insert(0, rec);
+
+                    this.grid.getView().refresh()
                 }
             }
         });
@@ -156,7 +147,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         var countryEditor = new Ext.form.ComboBox({
             store: countryStore,
             valueField: 'id',
-            displayField: 'text',
+            displayField: 'name',
             queryMode : 'local',
             disabled : false
         });
@@ -166,7 +157,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 var rec = { id: 0, text: t('coreshop_all') };
                 countryStore.insert(0, rec);
 
-                this.grid.store.load();
+                this.grid.getView().refresh()
             }.bind(this)
         });
 
@@ -174,12 +165,12 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             {
                 header: t('coreshop_tax_rule_country'),
                 width: 200,
-                dataIndex: 'countryId',
+                dataIndex: 'country',
                 editor: countryEditor,
-                renderer: function (countryId) {
-                    var record = countryStore.getById(countryId);
+                renderer: function (country) {
+                    var record = countryStore.getById(country);
                     if (record) {
-                        return record.get('text');
+                        return record.get('name');
                     }
 
                     return null;
@@ -188,11 +179,11 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             {
                 header: t('coreshop_tax_rule_state'),
                 width: 200,
-                dataIndex: 'stateId',
+                dataIndex: 'state',
                 editor: stateEditor,
-                renderer: function (stateId) {
+                renderer: function (state) {
                     var store = statesStore;
-                    var pos = store.findExact('id', stateId);
+                    var pos = store.findExact('id', state);
                     if (pos >= 0) {
                         return store.getAt(pos).get('name');
                     }
@@ -203,18 +194,18 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             {
                 header: t('coreshop_tax_rule_tax'),
                 width: 200,
-                dataIndex: 'taxId',
+                dataIndex: 'taxRate',
                 editor: new Ext.form.ComboBox({
                     store: pimcore.globalmanager.get('coreshop_tax_rates'),
                     valueField: 'id',
                     displayField: 'name',
                     queryMode : 'local'
                 }),
-                renderer: function (countryId) {
-                    var store = pimcore.globalmanager.get('coreshop_tax_rates');
-                    var pos = store.findExact('id', countryId);
-                    if (pos >= 0) {
-                        return store.getAt(pos).get('name');
+                renderer: function (taxRate) {
+                    var record = pimcore.globalmanager.get('coreshop_tax_rates').getById(taxRate);
+
+                    if (record) {
+                        return record.get('name');
                     }
 
                     return null;
@@ -262,13 +253,13 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             listeners: {
                 beforeedit : function (editor, context) {
                     if (context.record) {
-                        if (context.record.get('countryId')) {
+                        if (context.record.get('country')) {
                             stateEditor.enable();
-                            stateEditor.getStore().load({
+                            /*stateEditor.getStore().load({
                                 params : {
-                                    countryId : context.record.get('countryId')
+                                    country : context.record.get('country')
                                 }
-                            });
+                            });*/
                         }
                     }
                 }
@@ -294,9 +285,9 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                     handler: function () {
                         this.store.add({
                             id : null,
-                            taxRuleGroupId : this.data.id,
-                            countryId : null,
-                            taxId : null,
+                            taxRuleGroup : this.data.id,
+                            country : null,
+                            tax : null,
                             behavior : 0
                         });
                     }.bind(this),
@@ -322,12 +313,8 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         });
 
         return {
-            data : Ext.encode(values),
+            data : values,
             taxRules : Ext.encode(taxRules)
         };
-    },
-
-    postSave: function () {
-        this.store.load();
     }
 });

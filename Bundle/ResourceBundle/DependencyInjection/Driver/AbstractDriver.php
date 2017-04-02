@@ -65,7 +65,8 @@ abstract class AbstractDriver implements DriverInterface
                 new Reference($metadata->getServiceId('factory')),
                 new Reference($metadata->getServiceId('manager')),
                 new Reference('coreshop.resource_controller.view_handler'),
-                new Reference('doctrine.orm.default_entity_manager')
+                new Reference('doctrine.orm.default_entity_manager'),
+                new Reference('coreshop.resource_controller.event_dispatcher'),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')])
         ;

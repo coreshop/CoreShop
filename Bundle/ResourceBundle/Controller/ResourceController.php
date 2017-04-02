@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,12 +64,18 @@ class ResourceController extends AdminController
     protected $entityManager;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @param MetadataInterface $metadata
      * @param RepositoryInterface $repository
      * @param FactoryInterface $factory
      * @param ObjectManager $manager
      * @param ViewHandler $viewHandler
      * @param EntityManagerInterface $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         MetadataInterface $metadata,
@@ -76,7 +83,8 @@ class ResourceController extends AdminController
         FactoryInterface $factory,
         ObjectManager $manager,
         ViewHandler $viewHandler,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->metadata = $metadata;
         $this->repository = $repository;
@@ -84,6 +92,7 @@ class ResourceController extends AdminController
         $this->manager = $manager;
         $this->viewHandler = $viewHandler;
         $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -127,9 +136,28 @@ class ResourceController extends AdminController
     public function saveAction(Request $request)
     {
         $data = $request->get('data');
+        $jsonData = $this->decodeJson($data);
         $dataModel = $this->get('jms_serializer')->deserialize($data, $this->metadata->getClass('model'), 'json');
 
         if ($this->entityManager->contains($dataModel)) {
+            if ($dataModel instanceof TranslatableInterface) {
+                if (array_key_exists('_translations', $jsonData)) {
+                    foreach ($jsonData['_translations'] as $lang => $values) {
+                        $translation = $dataModel->getTranslation($lang);
+
+                        foreach ($values as $key => $val) {
+                            $setter = "set" . ucfirst($key);
+
+                            if (method_exists($translation, $setter)) {
+                                $translation->$setter($val);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $dataModel, $request);
+
             $this->entityManager->flush();
 
             return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ["group" => "Detailed"]);
@@ -140,23 +168,26 @@ class ResourceController extends AdminController
 
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\PimcoreAdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function addAction(Request $request)
     {
         $name = $request->get('name');
 
         if (strlen($name) <= 0) {
-            return $this->json(['success' => false, 'message' => $this->get('translator')->trans('Name must be set')]);
+            return $this->viewHandler->handle(['success' => false]);
         } else {
-            $model = $this->create();
-            $model->setValues($request->request->all());
+            $dataModel = $this->factory->createNew();
 
-            $this->setDefaultValues($model);
+            if ($dataModel instanceof ResourceInterface) {
+                $dataModel->setValue('name', $name);
+            }
 
-            $model->save();
+            $this->entityManager->persist($dataModel);
+            $this->entityManager->flush();
 
-            return $this->json(['success' => true, 'data' => $this->getReturnValues($model)]);
+
+            return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ["group" => "Detailed"]);
         }
     }
 
@@ -167,15 +198,17 @@ class ResourceController extends AdminController
     public function deleteAction(Request $request)
     {
         $id = $request->get('id');
-        $model = $this->getById($id);
 
-        if ($model !== null) {
-            $model->delete();
+        $dataModel = $this->repository->find($id);
 
-            return $this->json(['success' => true]);
+        if ($dataModel instanceof ResourceInterface) {
+            $this->entityManager->remove($dataModel);
+            $this->entityManager->flush();
+
+            return $this->viewHandler->handle(['success' => true]);
         }
 
-        return $this->json(['success' => false]);
+        return $this->viewHandler->handle(['success' => false]);
     }
 
     /**

@@ -21,5 +21,3 @@ CoreShop\Component\Taxation\Model\TaxRuleGroup:
       orphanRemoval: true
       cascade:
         - all
-      orderBy:
-        name: ASC
