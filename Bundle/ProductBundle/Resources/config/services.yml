@@ -11,10 +11,10 @@ services:
   coreshop.form_registry.product_price_rule.conditions:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-  coreshop.registry.product_price_rule.action:
+  coreshop.registry.product_price_rule.actions:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:
-      - CoreShop\Component\Product\Rule\Action\ProductPriceActionInterface
+      - CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
       - product-price-rule-actions
 
   coreshop.form_registry.product_price_rule.actions:
@@ -30,13 +30,13 @@ services:
   coreshop.product_price_rule.condition.quantity:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\QuantityConditionChecker
     tags:
-      - { name: coreshop.product_price_rule.condition, type: quantity, label: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\QuantityConfigurationType }
+      - { name: coreshop.product_price_rule.condition, type: quantity, label: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\QuantityConfigurationType }
 
   # Product Price Rule ACTIONS
   coreshop.product_price_rule.action.discount:
     class: CoreShop\Bundle\ProductBundle\Rule\Action\NewPriceActionProcessor
     tags:
-      - { name: coreshop.product_price_rule.action, type: new_price, label: new-price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Action\DiscountAmountConfigurationType }
+      - { name: coreshop.product_price_rule.action, type: new_price, label: new-price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\NewPriceConfigurationType }
 
 
   # Price Calculators
@@ -45,7 +45,7 @@ services:
     arguments:
       - '@coreshop.repository.product_price_rule'
       - '@coreshop.product_price_rule.processor'
-      - '@coreshop.registry.product_price_rule.action'
+      - '@coreshop.registry.product_price_rule.actions'
 
   coreshop.product.price_calculator.property_price:
     class: CoreShop\Bundle\ProductBundle\Calculator\PropertyPriceCalculator

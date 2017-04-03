@@ -2,10 +2,12 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Rule\Model\AbstractRule;
+use CoreShop\Component\Rule\Model\RuleTrait;
 
-class ProductPriceRule extends AbstractRule implements ProductPriceRuleInterface
+class ProductPriceRule implements ProductPriceRuleInterface
 {
+    use RuleTrait;
+
     /**
      * @var integer
      */
@@ -19,7 +21,7 @@ class ProductPriceRule extends AbstractRule implements ProductPriceRuleInterface
     /**
      * @var boolean
      */
-    protected $active;
+    protected $active = false;
 
     /**
      * {@inheritdoc}

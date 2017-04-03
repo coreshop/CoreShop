@@ -14,6 +14,7 @@
 
 namespace CoreShop\Bundle\ProductBundle;
 
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleActionPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleConditionPass;
@@ -36,6 +37,7 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         parent::build($container);
 
         $container->addCompilerPass(new ProductPriceRuleConditionPass());
+        $container->addCompilerPass(new ProductPriceRuleActionPass());
     }
 
 

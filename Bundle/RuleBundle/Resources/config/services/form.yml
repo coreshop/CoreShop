@@ -1,0 +1,42 @@
+parameters:
+    coreshop.form.type.rule.validation_groups: [coreshop]
+    coreshop.form.type.rule_action.validation_groups: [coreshop]
+    coreshop.form.type.rule_condition.validation_groups: [coreshop]
+    coreshop.form.type.promotion_coupon.validation_groups: [coreshop]
+
+services:
+    coreshop.form.type.rule_action:
+        class: CoreShop\Bundle\RuleBundle\Form\Type\RuleActionType
+        tags:
+            - { name: form.type }
+        arguments: ['%coreshop.model.rule_action.class%', '%coreshop.form.type.rule_action.validation_groups%', '@coreshop.form_registry.product_price_rule.actions']
+
+    coreshop.form.type.rule_condition:
+        class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionType
+        tags:
+            - { name: form.type }
+        arguments: ['%coreshop.model.rule_condition.class%', '%coreshop.form.type.rule_condition.validation_groups%', '@coreshop.form_registry.product_price_rule.conditions']
+
+    coreshop.form.type.rule_action.collection:
+        class: CoreShop\Bundle\RuleBundle\Form\Type\RuleActionCollectionType
+        tags:
+            - { name: form.type }
+        arguments: ['@coreshop.registry.product_price_rule.actions']
+
+    coreshop.form.type.rule_condition.collection:
+        class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionCollectionType
+        tags:
+            - { name: form.type }
+        arguments: ['@coreshop.registry.product_price_rule.conditions']
+
+    coreshop.form.type.rule_action_choice:
+        class: CoreShop\Bundle\RuleBundle\Form\Type\RuleActionChoiceType
+        tags:
+            - { name: form.type }
+        arguments: ['%coreshop.product_price_rule.actions%']
+
+    coreshop.form.type.rule_condition_choice:
+        class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionChoiceType
+        tags:
+            - { name: form.type }
+        arguments: ['%coreshop.product_price_rule.conditions%']

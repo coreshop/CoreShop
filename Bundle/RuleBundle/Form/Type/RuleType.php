@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\PromotionBundle\Form\Type;
+namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -18,10 +18,10 @@ class RuleType extends AbstractResourceType
             ->add('name', TextType::class, [
                 'label' => 'coreshop.form.rule.name',
             ])
-            ->add('conditions', CollectionType::class, [
+            ->add('conditions', RuleConditionCollectionType::class, [
                 'label' => 'coreshop.form.rule.conditions'
             ])
-            ->add('actions', CollectionType::class, [
+            ->add('actions', RuleActionCollectionType::class, [
                 'label' => 'coreshop.form.rule.actions'
             ])
         ;

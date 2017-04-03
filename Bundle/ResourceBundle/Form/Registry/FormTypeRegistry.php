@@ -2,9 +2,6 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Form\Registry;
 
-/**
- * @author Kamil Kokot <kamil.kokot@lakion.com>
- */
 final class FormTypeRegistry implements FormTypeRegistryInterface
 {
     /**

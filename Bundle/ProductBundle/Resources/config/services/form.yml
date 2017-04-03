@@ -1,18 +1,9 @@
 parameters:
-  coreshop.form.type.currency.validation_groups: [coreshop]
+  coreshop.form.type.product_price_rule.validation_groups: [coreshop]
 
 services:
-  coreshop.form.type.currency_choice:
-    class: CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType
-    arguments:
-      - '@coreshop.repository.currency'
+  coreshop.form.type.product_price_rule:
+    class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType
     tags:
-      -  { name: form.type }
-
-  coreshop.form.type.currency:
-    class: CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType
-    arguments:
-      - '%coreshop.model.currency.class%'
-      - '%coreshop.form.type.currency.validation_groups%'
-    tags:
-      -  { name: form.type }
+        - { name: form.type }
+    arguments: ['%coreshop.model.product_price_rule.class%', '%coreshop.form.type.product_price_rule.validation_groups%']

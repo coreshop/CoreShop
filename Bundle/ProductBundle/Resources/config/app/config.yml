@@ -1,6 +1,6 @@
 jms_serializer:
     metadata:
         directories:
-            coreshop-address:
-                namespace_prefix: "CoreShop\\Component\\Currency"
-                path: "@CoreShopCurrencyBundle/Resources/config/serializer"
+            coreshop-product:
+                namespace_prefix: "CoreShop\\Component\\Product"
+                path: "@CoreShopProductBundle/Resources/config/serializer"

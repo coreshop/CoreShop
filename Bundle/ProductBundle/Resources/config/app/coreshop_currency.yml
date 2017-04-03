@@ -1,5 +1,0 @@
-core_shop_currency:
-    resources:
-        currency:
-            classes:
-                repository: CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\CurrencyRepository

@@ -8,7 +8,7 @@ final class ProductPriceRuleActionPass extends RegisterActionConditionPass
 {
     protected function getIdentifier()
     {
-        return 'coreshop.product_price_rule.action';
+        return 'coreshop.product_price_rule.actions';
     }
 
     protected function getTagIdentifier()

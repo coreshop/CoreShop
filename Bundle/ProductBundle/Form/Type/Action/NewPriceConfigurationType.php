@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
-final class QuantityConfigurationType extends AbstractType
+final class NewPriceConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,8 +16,8 @@ final class QuantityConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('amount', IntegerType::class, [
-                'label' => 'coreshop.form.product_price_rule.condition.quantity_configuration.amount',
+            ->add('price', IntegerType::class, [
+                'label' => 'coreshop.form.product_price_rule.action.new_price_configuration.price',
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
@@ -31,6 +31,6 @@ final class QuantityConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_price_rule_condition_quantity';
+        return 'coreshop_product_price_rule_action_new_price';
     }
 }

@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\ProductBundle\Form\Type;
 
-use CoreShop\Bundle\PromotionBundle\Form\Type\RuleType;
+use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
 
 final class ProductPriceRuleType extends RuleType
 {

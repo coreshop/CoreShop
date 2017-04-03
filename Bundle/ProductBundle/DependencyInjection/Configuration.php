@@ -4,6 +4,7 @@ namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use CoreShop\Bundle\ProductBundle\Controller\ProductController;
+use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreResourceController;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -61,7 +62,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
-                                        //->scalarNode('form')->defaultValue(CurrencyType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(ProductPriceRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

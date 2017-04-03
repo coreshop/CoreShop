@@ -30,7 +30,7 @@ final class ViewHandler implements ViewHandlerInterface
         $context->setSerializeNull(true);
 
         if (array_key_exists('group', $options)) {
-            $context->setGroups($options['group']);
+            $context->setGroups(['Default', $options['group']]);
         }
 
         return new JsonResponse($this->serializer->serialize($data, 'json', $context), 200, [], true);

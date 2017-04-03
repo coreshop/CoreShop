@@ -21,6 +21,8 @@ CoreShop\Component\Product\Model\ProductPriceRule:
   manyToMany:
     conditions:
       targetEntity: CoreShop\Component\Rule\Model\ConditionInterface
+      cascade:
+        - all
       joinTable:
         name: coreshop_product_price_rule_conditions
         joinColumns:
@@ -31,8 +33,11 @@ CoreShop\Component\Product\Model\ProductPriceRule:
           condition_id:
             referencedColumnName: id
             nullable: false
+
     actions:
       targetEntity: CoreShop\Component\Rule\Model\ActionInterface
+      cascade:
+        - all
       joinTable:
         name: coreshop_product_price_rule_action
         joinColumns:

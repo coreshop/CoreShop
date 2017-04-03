@@ -6,7 +6,7 @@ use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-abstract class AbstractRule implements RuleInterface
+trait RuleTrait
 {
     use SetValuesTrait;
 
