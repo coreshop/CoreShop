@@ -2,11 +2,11 @@
 
 namespace CoreShop\Component\Product\Pimcore\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 use Pimcore\Model\Element\ElementInterface;
 
-interface ProductInterface extends ResourceInterface, ElementInterface
+interface ProductInterface extends PimcoreModelInterface, ElementInterface
 {
     /**
      * @param null $language

@@ -1,15 +1,14 @@
 <?php
 
-namespace CoreShop\Bundle\ProductBundle\Pimcore\Model;
+namespace CoreShop\Component\Product\Pimcore\Model;
 
 use CoreShop\Bundle\CoreBundle\ImplementedByPimcoreException;
 use CoreShop\Component\Product\Calculator\ProductPriceRuleCalculatorInterface;
-use CoreShop\Component\Product\Pimcore\Model\ProductInterface;
+use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Rule\Model\RuleSubjectInterface;
-use Pimcore\Model\Object\Concrete;
 
-class Product extends Concrete implements RuleSubjectInterface, ProductInterface {
+class Product extends AbstractPimcoreModel implements RuleSubjectInterface, ProductInterface {
 
     /**
      * {@inheritdoc}
@@ -18,11 +17,10 @@ class Product extends Concrete implements RuleSubjectInterface, ProductInterface
         /**
          * @var $calculator ProductPriceRuleCalculatorInterface
          */
-        $calculator = \Pimcore::getContainer()->get('coreshop.product.price_calculator');
+        $calculator = $this->container->get('coreshop.product.price_calculator');
 
         return $calculator->getPrice($this);
     }
-
 
     /**
      * {@inheritdoc}

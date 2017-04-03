@@ -2,7 +2,6 @@
 
 namespace CoreShop\Component\Product\Calculator;
 
-use CoreShop\Component\Rule\Action\RuleApplicatorInterface;
 use CoreShop\Component\Rule\Model\RuleSubjectInterface;
 
 interface ProductPriceRuleCalculatorInterface
