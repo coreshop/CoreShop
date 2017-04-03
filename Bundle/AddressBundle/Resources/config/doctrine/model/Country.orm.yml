@@ -18,7 +18,7 @@ CoreShop\Component\Address\Model\Country:
       type: string
       column: isoCode
       length: 2
-      unique: true
+      nullable: true
     active:
       column: active
       type: boolean
@@ -35,7 +35,7 @@ CoreShop\Component\Address\Model\Country:
       joinColumn:
         name: zoneId
         referencedColumnName: id
-        nullable: false
+        nullable: true
     currency:
       targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
       inversedBy: countries

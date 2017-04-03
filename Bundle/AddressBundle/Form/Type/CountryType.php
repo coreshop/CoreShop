@@ -25,7 +25,7 @@ final class CountryType extends AbstractResourceType
             ->add('useStoreCurrency', CheckboxType::class)
             ->add('zone', ZoneChoiceType::class, [
                 'label' => 'coreshop.form.address.zone',
-                'active' => false
+                'active' => null
             ])
             ->add('addressFormat', TextareaType::class)
             ->add('stores', StoreChoiceType::class, [

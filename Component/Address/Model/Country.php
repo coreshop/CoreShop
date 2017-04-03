@@ -44,7 +44,7 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * @var int
      */
-    protected $active;
+    protected $active = true;
 
     /**
      * @var CurrencyInterface
@@ -54,7 +54,7 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * @var bool
      */
-    protected $useStoreCurrency;
+    protected $useStoreCurrency = true;
 
     /**
      * @var ZoneInterface
@@ -64,7 +64,7 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * @var string
      */
-    protected $addressFormat;
+    protected $addressFormat = "";
 
      /**
      * @var Collection|CountryInterface[]
