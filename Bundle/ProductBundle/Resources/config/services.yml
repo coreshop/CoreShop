@@ -14,7 +14,7 @@ services:
   coreshop.registry.product_price_rule.action:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:
-      - CoreShop\Component\Product\Rule\Action\ProductActionCommandInterface
+      - CoreShop\Component\Product\Rule\Action\ProductPriceActionInterface
       - product-price-rule-actions
 
   coreshop.form_registry.product_price_rule.actions:
@@ -28,23 +28,24 @@ services:
 
   # Product Price Rule CONDITIONS
   coreshop.product_price_rule.condition.quantity:
-    class: CoreShop\Bundle\ProductBundle\Rule\Checker\QuantityConditionChecker
+    class: CoreShop\Bundle\ProductBundle\Rule\Condition\QuantityConditionChecker
     tags:
       - { name: coreshop.product_price_rule.condition, type: quantity, label: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\QuantityConfigurationType }
 
   # Product Price Rule ACTIONS
-  #coreshop.product_price_rule.action.discount:
-  #  class: CoreShop\Component\Product\Rule\Action\DiscountAmountActionCommand
-  #  tags:
-  #    - { name: coreshop.product_price_rule.action, type: discount-amount, label: discount-amount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Action\DiscountAmountConfigurationType }
+  coreshop.product_price_rule.action.discount:
+    class: CoreShop\Bundle\ProductBundle\Rule\Action\NewPriceActionProcessor
+    tags:
+      - { name: coreshop.product_price_rule.action, type: new_price, label: new-price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Action\DiscountAmountConfigurationType }
 
 
   # Price Calculators
-
   coreshop.product.price_calculator.product_price_rules:
     class: CoreShop\Bundle\ProductBundle\Calculator\ProductPriceRuleCalculator
     arguments:
       - '@coreshop.repository.product_price_rule'
+      - '@coreshop.product_price_rule.processor'
+      - '@coreshop.registry.product_price_rule.action'
 
   coreshop.product.price_calculator.property_price:
     class: CoreShop\Bundle\ProductBundle\Calculator\PropertyPriceCalculator

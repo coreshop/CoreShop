@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ProductBundle\Rule\Checker;
+namespace CoreShop\Bundle\ProductBundle\Rule\Condition;
 
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 

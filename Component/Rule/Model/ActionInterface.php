@@ -15,4 +15,14 @@ interface ActionInterface extends ResourceInterface
      * @param array $configuration
      */
     public function setConfiguration(array $configuration);
+
+    /**
+     * @return string
+     */
+    public function getType();
+
+    /**
+     * @return array
+     */
+    public function getConfiguration();
 }

@@ -12,9 +12,8 @@ interface ProductPriceCalculatorInterface
 
     /**
      * @param $subject
-     * @param $price
-     * @param bool $withTax
+     * @param $withTax
      * @return mixed
      */
-    public function getDiscount($subject, $price, $withTax = true);
+    public function getDiscount($subject, $withTax = true);
 }
