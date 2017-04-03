@@ -21,3 +21,8 @@ jms_serializer:
             core-shop-core:
                 namespace_prefix: "CoreShop\\Component\\Core"
                 path: "@CoreShopCoreBundle/Resources/config/serializer"
+
+fos_rest:
+    format_listener:
+        rules:
+            - { path: '^/admin/CoreShop', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: true }
