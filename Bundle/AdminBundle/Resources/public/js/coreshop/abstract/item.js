@@ -85,7 +85,7 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
             this.multiShopSettings = Ext.create({
                 xtype: 'combo',
                 fieldLabel: t('coreshop_mulitshop_select'),
-                name: 'stores[]',
+                name: 'stores',
                 width: 400,
                 store: pimcore.globalmanager.get('coreshop_stores'),
                 displayField: 'name',
@@ -113,12 +113,20 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
 
             saveData['id'] = this.data.id;
 
-            data = saveData['data'];
+            if (saveData.hasOwnProperty('stores')) {
+                var stores = [];
+
+                saveData.stores.forEach(function(store) {
+                    stores.push(store + "");
+                });
+
+                saveData.stores = stores;
+            }
 
             Ext.Ajax.request({
                 url: this.url.save,
                 method: 'post',
-                params: saveData,
+                jsonData: saveData,
                 success: function (response) {
                     try {
                         if (this.parentPanel.store) {

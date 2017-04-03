@@ -315,24 +315,22 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 delete data['id'];
             }
 
+            if (data.state === 0) {
+                delete data.state;
+            }
+
+            if (data.country === 0) {
+                delete data.country;
+            }
+
             taxRules.push(data);
-
-            Ext.Object.each(data, function(key, value) {
-                if (key === 'country' && value === 0) {
-                    return;
-                }
-
-                if (key === 'state' && value === 0) {
-                    return;
-                }
-
-                values['taxRules['+index+']['+key+']'] = value;
-            });
         });
 
         if (!values['active']) {
             delete values['active'];
         }
+
+        values['taxRules'] = taxRules;
 
         return values;
     }
