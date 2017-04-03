@@ -20,7 +20,7 @@ class TaxRateType extends AbstractResourceType
             ->add('rate', NumberType::class, [
                 'label' => 'coreshop.form.tax_rate.rate',
             ])
-            ->add('active', CheckboxType::class);;
+            ->add('active', CheckboxType::class);
     }
 
     public function getBlockPrefix()

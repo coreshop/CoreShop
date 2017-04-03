@@ -321,7 +321,11 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 values['taxRules['+index+']['+key+']'] = value;
             });
         });
-debugger;
+
+        if (!values['active']) {
+            delete values['active'];
+        }
+
         return values;
     }
 });

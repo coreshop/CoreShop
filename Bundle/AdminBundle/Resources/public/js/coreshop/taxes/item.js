@@ -26,7 +26,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
     },
 
     getTitleText : function () {
-        return this.data.title;
+        return this.data.name;
     },
 
     getFormPanel : function ()
@@ -108,6 +108,12 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
     },
 
     getSaveData : function () {
-        return this.formPanel.getForm().getFieldValues()
+        var values = this.formPanel.getForm().getFieldValues();
+
+        if (!values['active']) {
+            delete values['active'];
+        }
+
+        return values;
     }
 });
