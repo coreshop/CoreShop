@@ -2,14 +2,13 @@
 
 namespace CoreShop\Bundle\ProductBundle\Calculator;
 
-use CoreShop\Component\Product\Calculator\ProductPriceRuleCalculatorInterface;
+use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Component\Rule\Model\RuleSubjectInterface;
 
 /**
  * TODO: Add Checker as Interface and check rules
  */
-class ProductPriceRuleCalculator implements ProductPriceRuleCalculatorInterface
+class ProductPriceCalculator implements ProductPriceCalculatorInterface
 {
     /**
      * @var RepositoryInterface
@@ -24,7 +23,7 @@ class ProductPriceRuleCalculator implements ProductPriceRuleCalculatorInterface
         $this->productPriceRuleRepository = $productPriceRuleRepository;
     }
 
-    public function getPrice(RuleSubjectInterface $subject)
+    public function getPrice($subject)
     {
         $rules = $this->productPriceRuleRepository->findAll();
 
@@ -33,7 +32,7 @@ class ProductPriceRuleCalculator implements ProductPriceRuleCalculatorInterface
         }
     }
 
-    public function getDiscount(RuleSubjectInterface $subject, $price, $withTax = true)
+    public function getDiscount($subject, $price, $withTax = true)
     {
         // TODO: Implement getDiscount() method.
     }

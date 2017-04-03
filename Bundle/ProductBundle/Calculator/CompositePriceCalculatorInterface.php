@@ -2,25 +2,24 @@
 
 namespace CoreShop\Bundle\ProductBundle\Calculator;
 
-use CoreShop\Component\Product\Calculator\ProductPriceRuleCalculatorInterface;
-use CoreShop\Component\Rule\Model\RuleSubjectInterface;
+use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 
-class CompositePriceCalculator implements ProductPriceRuleCalculatorInterface
+class CompositePriceCalculatorInterface implements ProductPriceCalculatorInterface
 {
     /**
-     * @var ProductPriceRuleCalculatorInterface[]
+     * @var ProductPriceCalculatorInterface[]
      */
     protected $priceRuleCalculators;
 
     /**
-     * @param ProductPriceRuleCalculatorInterface[] $priceRuleCalculators
+     * @param ProductPriceCalculatorInterface[] $priceRuleCalculators
      */
     public function __construct(array $priceRuleCalculators)
     {
         $this->priceRuleCalculators = $priceRuleCalculators;
     }
 
-    public function getPrice(RuleSubjectInterface $subject)
+    public function getPrice($subject)
     {
         $price = false;
 
@@ -35,7 +34,7 @@ class CompositePriceCalculator implements ProductPriceRuleCalculatorInterface
         return $price;
     }
 
-    public function getDiscount(RuleSubjectInterface $subject, $price, $withTax = true)
+    public function getDiscount($subject, $price, $withTax = true)
     {
         $discount = 0;
 

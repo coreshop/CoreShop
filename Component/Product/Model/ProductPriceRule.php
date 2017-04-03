@@ -3,7 +3,6 @@
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Rule\Model\AbstractRule;
-use CoreShop\Component\Rule\Model\RuleSubjectInterface;
 
 class ProductPriceRule extends AbstractRule implements ProductPriceRuleInterface
 {

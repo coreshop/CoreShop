@@ -3,19 +3,18 @@
 namespace CoreShop\Component\Product\Pimcore\Model;
 
 use CoreShop\Bundle\CoreBundle\ImplementedByPimcoreException;
-use CoreShop\Component\Product\Calculator\ProductPriceRuleCalculatorInterface;
+use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use CoreShop\Component\Rule\Model\RuleSubjectInterface;
 
-class Product extends AbstractPimcoreModel implements RuleSubjectInterface, ProductInterface {
+class Product extends AbstractPimcoreModel implements ProductInterface {
 
     /**
      * {@inheritdoc}
      */
     public function getPrice() {
         /**
-         * @var $calculator ProductPriceRuleCalculatorInterface
+         * @var $calculator ProductPriceCalculatorInterface
          */
         $calculator = $this->container->get('coreshop.product.price_calculator');
 

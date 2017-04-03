@@ -50,4 +50,20 @@ class Condition implements ConditionInterface
 
         return $this;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
 }

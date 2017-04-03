@@ -5,7 +5,7 @@ services:
   coreshop.registry.product_price_rule.conditions:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:
-      - CoreShop\Component\Product\Rule\Checker\ProductPriceRuleConditionCheckerInterface
+      - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
       - product-price-rule-conditions
 
   coreshop.form_registry.product_price_rule.conditions:
@@ -20,17 +20,23 @@ services:
   coreshop.form_registry.product_price_rule.actions:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
+  # Price Rule Processor
+  coreshop.product_price_rule.processor:
+    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
+    arguments:
+      - '@coreshop.registry.product_price_rule.conditions'
+
   # Product Price Rule CONDITIONS
   coreshop.product_price_rule.condition.quantity:
-    class: CoreShop\Component\Product\Rule\Checker\QuantityConditionChecker
+    class: CoreShop\Bundle\ProductBundle\Rule\Checker\QuantityConditionChecker
     tags:
       - { name: coreshop.product_price_rule.condition, type: quantity, label: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\QuantityConfigurationType }
 
   # Product Price Rule ACTIONS
-  coreshop.product_price_rule.action.discount:
-    class: CoreShop\Component\Product\Rule\Action\DiscountAmountActionCommand
-    tags:
-      - { name: coreshop.product_price_rule.action, type: discount-amount, label: discount-amount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Action\DiscountAmountConfigurationType }
+  #coreshop.product_price_rule.action.discount:
+  #  class: CoreShop\Component\Product\Rule\Action\DiscountAmountActionCommand
+  #  tags:
+  #    - { name: coreshop.product_price_rule.action, type: discount-amount, label: discount-amount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Action\DiscountAmountConfigurationType }
 
 
   # Price Calculators

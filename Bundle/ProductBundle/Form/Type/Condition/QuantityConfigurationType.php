@@ -16,7 +16,7 @@ final class QuantityConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('count', IntegerType::class, [
+            ->add('amount', IntegerType::class, [
                 'label' => 'coreshop.form.product_price_rule.quantity_configuration.count',
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
