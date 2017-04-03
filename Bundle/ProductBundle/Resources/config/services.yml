@@ -1,0 +1,52 @@
+imports:
+  - { resource: "services/form.yml" }
+
+services:
+  coreshop.registry.product_price_rule.conditions:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Product\Rule\Checker\ProductPriceRuleConditionCheckerInterface
+      - product-price-rule-conditions
+
+  coreshop.form_registry.product_price_rule.conditions:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  coreshop.registry.product_price_rule.action:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Product\Rule\Action\ProductActionCommandInterface
+      - product-price-rule-actions
+
+  coreshop.form_registry.product_price_rule.actions:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  # Product Price Rule CONDITIONS
+  coreshop.product_price_rule.condition.quantity:
+    class: CoreShop\Component\Product\Rule\Checker\QuantityConditionChecker
+    tags:
+      - { name: coreshop.product_price_rule.condition, type: quantity, label: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\QuantityConfigurationType }
+
+  # Product Price Rule ACTIONS
+  coreshop.product_price_rule.action.discount:
+    class: CoreShop\Component\Product\Rule\Action\DiscountAmountActionCommand
+    tags:
+      - { name: coreshop.product_price_rule.action, type: discount-amount, label: discount-amount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Action\DiscountAmountConfigurationType }
+
+
+  # Price Calculators
+
+  coreshop.product.price_calculator.product_price_rules:
+    class: CoreShop\Bundle\ProductBundle\Calculator\ProductPriceRuleCalculator
+    arguments:
+      - '@coreshop.repository.product_price_rule'
+
+  coreshop.product.price_calculator.property_price:
+    class: CoreShop\Bundle\ProductBundle\Calculator\PropertyPriceCalculator
+
+  coreshop.product.price_calculator.default:
+    class: CoreShop\Bundle\ProductBundle\Calculator\CompositePriceCalculator
+    arguments:
+      - ['@coreshop.product.price_calculator.property_price', '@coreshop.product.price_calculator.product_price_rules']
+
+  coreshop.product.price_calculator:
+    alias: coreshop.product.price_calculator.default

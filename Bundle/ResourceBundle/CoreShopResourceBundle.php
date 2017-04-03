@@ -15,6 +15,7 @@
 namespace CoreShop\Bundle\ResourceBundle;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreResourcesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterResourcesPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 final class CoreShopResourceBundle extends Bundle
 {
      const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
+     const DRIVER_DOCTRINE_PIMCORE = 'pimcore';
 
     /**
      * {@inheritdoc}
@@ -31,6 +33,7 @@ final class CoreShopResourceBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterResourcesPass());
+        $container->addCompilerPass(new RegisterPimcoreResourcesPass());
         $container->addCompilerPass(new DoctrineTargetEntitiesResolverPass());
     }
 

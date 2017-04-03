@@ -27,7 +27,7 @@ abstract class AbstractModelExtension extends Extension
      * @param array $resources
      * @param ContainerBuilder $container
      */
-    protected function registerModels($applicationName, $driver, array $resources, ContainerBuilder $container)
+    protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container)
     {
         $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), $driver), true);
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), $driver);
@@ -59,4 +59,21 @@ abstract class AbstractModelExtension extends Extension
         }
     }
 
+    protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container) {
+        $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), 'pimcore'), true);
+        $container->setParameter(sprintf('%s.driver', $this->getAlias()), 'pimcore');
+
+        foreach ($models as $modelName => $modelConfig) {
+            $alias = $applicationName . '.' . $modelName;
+            $modelConfig = array_merge(['driver' => 'pimcore'], $modelConfig);
+
+            $models = $container->hasParameter('coreshop.pimcore') ? $container->get('coreshop.pimcore') : [];
+            $models = array_merge($models, [$alias => $modelConfig]);
+            $container->setParameter('coreshop.pimcore', $models);
+
+            $metadata = Metadata::fromAliasAndConfiguration($alias, $modelConfig);
+
+            DriverProvider::get($metadata)->load($container, $metadata);
+        }
+    }
 }

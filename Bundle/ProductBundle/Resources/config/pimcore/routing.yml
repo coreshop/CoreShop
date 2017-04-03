@@ -1,0 +1,3 @@
+test:
+  path:      /test
+  defaults:  { _controller: 'coreshop.pimcore_controller.product:testAction' }

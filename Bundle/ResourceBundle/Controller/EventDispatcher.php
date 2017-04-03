@@ -8,9 +8,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author Paweł Jędrzejewski <pawel@sylius.org>
- */
 final class EventDispatcher implements EventDispatcherInterface
 {
     /**

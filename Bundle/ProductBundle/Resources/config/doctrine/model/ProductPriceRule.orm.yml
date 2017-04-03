@@ -1,0 +1,45 @@
+CoreShop\Component\Product\Model\ProductPriceRule:
+  type: mappedSuperclass
+  table: coreshop_product_price_rule
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      column: name
+      type: string
+    description:
+      column: description
+      type: string
+      nullable: true
+    active:
+      column: active
+      type: boolean
+  manyToMany:
+    conditions:
+      targetEntity: CoreShop\Component\Rule\Model\ConditionInterface
+      joinTable:
+        name: coreshop_product_price_rule_conditions
+        joinColumns:
+          price_rule_id:
+            referencedColumnName: id
+            nullable: false
+        inverseJoinColumns:
+          condition_id:
+            referencedColumnName: id
+            nullable: false
+    actions:
+      targetEntity: CoreShop\Component\Rule\Model\ActionInterface
+      joinTable:
+        name: coreshop_product_price_rule_action
+        joinColumns:
+          price_rule_id:
+            referencedColumnName: id
+            nullable: false
+        inverseJoinColumns:
+          condition_id:
+            referencedColumnName: id
+            nullable: false

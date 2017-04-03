@@ -29,7 +29,7 @@ final class CoreShopStoreExtension extends AbstractModelExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $this->registerModels('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
 
         $loader->load('services.yml');
     }

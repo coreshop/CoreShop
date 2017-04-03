@@ -6,9 +6,6 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author Paweł Jędrzejewski <pawel@sylius.org>
- */
 interface EventDispatcherInterface
 {
     /**

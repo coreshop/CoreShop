@@ -15,7 +15,7 @@ final class TaxRateTranslationType extends AbstractResourceType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'sylius.form.product.name',
+                'label' => 'coreshop.form.product.name',
             ])
         ;
     }
