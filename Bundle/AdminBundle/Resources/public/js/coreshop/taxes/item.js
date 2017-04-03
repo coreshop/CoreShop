@@ -41,7 +41,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
                 layout:'form',
                 items: [{
                     xtype: 'textfield',
-                    name: '_translations.'+lang+'.name',
+                    name: 'translations['+lang+'][name]',
                     fieldLabel: t('name'),
                     width: 400,
                     value: data.translations[lang] ? data.translations[lang].name : ''
@@ -108,8 +108,6 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
     },
 
     getSaveData : function () {
-        return {
-            data : this.formPanel.getForm().getFieldValues()
-        };
+        return this.formPanel.getForm().getFieldValues()
     }
 });

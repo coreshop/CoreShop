@@ -308,13 +308,20 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         var values = this.formPanel.getForm().getFieldValues();
         var taxRules = [];
 
-        this.store.getRange().forEach(function (range) {
-            taxRules.push(range.data);
-        });
+        this.store.getRange().forEach(function (range, index) {
+            var data = range.data;
 
-        return {
-            data : values,
-            taxRules : Ext.encode(taxRules)
-        };
+            if (range.phantom) {
+                delete data['id'];
+            }
+
+            taxRules.push(data);
+
+            Ext.Object.each(data, function(key, value) {
+                values['taxRules['+index+']['+key+']'] = value;
+            });
+        });
+debugger;
+        return values;
     }
 });

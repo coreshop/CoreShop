@@ -115,11 +115,6 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
 
             data = saveData['data'];
 
-            data = this.convertDotNotationToObject(data);
-            data['id'] = this.data.id;
-
-            saveData['data'] = Ext.JSON.encode(data);
-
             Ext.Ajax.request({
                 url: this.url.save,
                 method: 'post',
@@ -160,24 +155,5 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
 
     isValid : function() {
         return true;
-    },
-
-    convertDotNotationToObject: function (data) {
-        var obj = {};
-
-        Object.keys(data).forEach( function (key) {  //loop through the keys in the object
-            var val = data[key];  //grab the value of this key
-            var step = obj;  //reference the object that holds the values
-            key.split(".").forEach(function(part, index, arr){   //split the parts and loop
-                if(index === arr.length-1){  //If we are at the last index, than we set the value
-                    step[part] = val;
-                } else if(step[part]===undefined) {  //If we have not seen this key before, create an object
-                    step[part] = {};
-                }
-                step = step[part];  //Step up the object we are referencing
-            });
-        } );
-
-        return obj;
     }
 });
