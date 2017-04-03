@@ -15,6 +15,8 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Store\Model\StoreInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
@@ -38,6 +40,17 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
      * @var Collection|TaxRuleInterface[]
      */
     protected $taxRules;
+
+     /**
+     * @var Collection|StoreInterface[]
+     */
+    protected $stores;
+
+    public function __construct()
+    {
+        $this->stores = new ArrayCollection();
+        $this->taxRules = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -138,5 +151,49 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     public function hasTaxRule(TaxRuleInterface $taxRule)
     {
         return $this->taxRules->contains($taxRule);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStores()
+    {
+        return $this->stores;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasStores()
+    {
+        return !$this->stores->isEmpty();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addStore(StoreInterface $store)
+    {
+        if (!$this->hasStore($store)) {
+            $this->stores->add($store);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeStore(StoreInterface $store)
+    {
+        if ($this->hasStore($store)) {
+            $this->stores->removeElement($store);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasStore(StoreInterface $store)
+    {
+        return $this->stores->contains($store);
     }
 }

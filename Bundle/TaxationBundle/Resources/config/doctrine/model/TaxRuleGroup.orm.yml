@@ -21,3 +21,16 @@ CoreShop\Component\Taxation\Model\TaxRuleGroup:
       orphanRemoval: true
       cascade:
         - all
+  manyToMany:
+    stores:
+      targetEntity: CoreShop\Component\Store\Model\StoreInterface
+      joinTable:
+        name: coreshop_tax_rule_group_stores
+        joinColumns:
+          store_id:
+            referencedColumnName: id
+            nullable: false
+        inverseJoinColumns:
+          tax_rule_group_id:
+            referencedColumnName: id
+            nullable: false

@@ -67,7 +67,7 @@ class Country extends AbstractResource implements CountryInterface
     protected $addressFormat = "";
 
      /**
-     * @var Collection|CountryInterface[]
+     * @var Collection|StoreInterface[]
      */
     protected $stores;
 

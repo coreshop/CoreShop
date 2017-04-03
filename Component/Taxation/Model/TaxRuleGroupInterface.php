@@ -15,6 +15,7 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface TaxRuleGroupInterface extends ResourceInterface
@@ -68,4 +69,31 @@ interface TaxRuleGroupInterface extends ResourceInterface
      * @return bool
      */
     public function hasTaxRule(TaxRuleInterface $taxRule);
+
+    /**
+     * @return Collection|StoreInterface[]
+     */
+    public function getStores();
+
+    /**
+     * @return bool
+     */
+    public function hasStores();
+
+    /**
+     * @param StoreInterface $store
+     */
+    public function addStore(StoreInterface $store);
+
+    /**
+     * @param StoreInterface $store
+     */
+    public function removeStore(StoreInterface $store);
+
+    /**
+     * @param StoreInterface $store
+     *
+     * @return bool
+     */
+    public function hasStore(StoreInterface $store);
 }
