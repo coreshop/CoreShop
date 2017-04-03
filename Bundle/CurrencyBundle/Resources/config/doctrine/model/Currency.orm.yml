@@ -15,16 +15,18 @@ CoreShop\Component\Currency\Model\Currency:
       type: string
       column: isoCode
       length: 3
-      unique: true
+      nullable: true
     name:
       column: name
       type: string
     numericIsoCode:
       column: numericIsoCode
       type: integer
+      nullable: true
     symbol:
       column: symbol
       type: string
+      nullable: true
     exchangeRate:
       column: exchangeRate
       type: float

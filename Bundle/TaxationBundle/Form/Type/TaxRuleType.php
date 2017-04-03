@@ -15,17 +15,17 @@ class TaxRuleType extends AbstractResourceType
         $builder
             ->add('country', CountryChoiceType::class, [
                 'label' => 'coreshop.form.address.country',
-                'active' => true,
+                'active' => null,
                 'required' => false
             ])
             ->add('state', StateChoiceType::class, [
                 'label' => 'coreshop.form.address.country',
-                'active' => true,
+                'active' => null,
                 'required' => false
             ])
             ->add('taxRate', TaxRateChoiceType::class, [
                 'label' => 'coreshop.form.taxation.tax_rule',
-                'active' => true
+                'active' => null
             ])
             ->add('behavior', ChoiceType::class, [
                 'choices' => [

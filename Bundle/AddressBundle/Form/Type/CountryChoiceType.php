@@ -52,7 +52,7 @@ final class CountryChoiceType extends AbstractType
                 'choice_translation_domain' => false,
                 'active' => true,
                 'label' => 'coreshop.form.address.country',
-                'placeholder' => 'coreshop.form.country.select',
+                'placeholder' => 'coreshop.form.country.select'
             ])
         ;
     }

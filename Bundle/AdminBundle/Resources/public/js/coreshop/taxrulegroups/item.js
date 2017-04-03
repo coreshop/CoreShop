@@ -318,6 +318,14 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
             taxRules.push(data);
 
             Ext.Object.each(data, function(key, value) {
+                if (key === 'country' && value === 0) {
+                    return;
+                }
+
+                if (key === 'state' && value === 0) {
+                    return;
+                }
+
                 values['taxRules['+index+']['+key+']'] = value;
             });
         });

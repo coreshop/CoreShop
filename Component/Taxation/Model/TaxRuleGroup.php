@@ -32,7 +32,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     /**
      * @var bool
      */
-    protected $active;
+    protected $active = true;
 
      /**
      * @var Collection|TaxRuleInterface[]

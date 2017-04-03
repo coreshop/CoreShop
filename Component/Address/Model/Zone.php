@@ -33,7 +33,7 @@ class Zone extends AbstractResource implements ZoneInterface
     /**
      * @var int
      */
-    protected $active;
+    protected $active = true;
 
     /**
      * @var Collection|CountryInterface[]

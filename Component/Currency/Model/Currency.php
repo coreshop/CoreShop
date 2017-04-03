@@ -48,7 +48,7 @@ class Currency extends AbstractResource implements CurrencyInterface
     /**
      * @var float
      */
-    protected $exchangeRate;
+    protected $exchangeRate = 1;
 
     /**
      * @var Collection|CountryInterface[]

@@ -15,7 +15,7 @@ CoreShop\Component\Address\Model\State:
       type: string
       column: isoCode
       length: 4
-      unique: true
+      nullable: true
     active:
       column: active
       type: boolean
