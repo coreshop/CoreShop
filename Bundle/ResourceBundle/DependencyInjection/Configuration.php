@@ -96,7 +96,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('translation')
                     ->canBeDisabled()
                     ->children()
-                        ->scalarNode('locale_provider')->defaultValue('coreshop.translation_locale_provider.immutable')->cannotBeEmpty()->end()
+                        ->scalarNode('locale_provider')->defaultValue('coreshop.translation_locale_provider.pimcore')->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ;

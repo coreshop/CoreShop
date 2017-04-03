@@ -8,3 +8,8 @@ services:
     class: CoreShop\Bundle\ResourceBundle\Controller\EventDispatcher
     public: false
     arguments: ['@event_dispatcher']
+
+  coreshop.resource_controller.form_factory:
+    class: CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactory
+    arguments:
+       - '@form.factory'

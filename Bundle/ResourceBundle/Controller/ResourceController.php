@@ -69,6 +69,11 @@ class ResourceController extends AdminController
     protected $eventDispatcher;
 
     /**
+     * @var ResourceFormFactoryInterface
+     */
+    protected $resourceFormFactory;
+
+    /**
      * @param MetadataInterface $metadata
      * @param RepositoryInterface $repository
      * @param FactoryInterface $factory
@@ -76,6 +81,7 @@ class ResourceController extends AdminController
      * @param ViewHandler $viewHandler
      * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ResourceFormFactoryInterface $resourceFormFactory
      */
     public function __construct(
         MetadataInterface $metadata,
@@ -84,7 +90,8 @@ class ResourceController extends AdminController
         ObjectManager $manager,
         ViewHandler $viewHandler,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ResourceFormFactoryInterface $resourceFormFactory
     ) {
         $this->metadata = $metadata;
         $this->repository = $repository;
@@ -93,6 +100,7 @@ class ResourceController extends AdminController
         $this->viewHandler = $viewHandler;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->resourceFormFactory = $resourceFormFactory;
     }
 
     /**
@@ -135,35 +143,20 @@ class ResourceController extends AdminController
      */
     public function saveAction(Request $request)
     {
-        $data = $request->get('data');
-        $jsonData = $this->decodeJson($data);
-        $dataModel = $this->get('jms_serializer')->deserialize($data, $this->metadata->getClass('model'), 'json');
+        $resource = $this->findOr404($request->get('id'));
 
-        if ($this->entityManager->contains($dataModel)) {
-            if ($dataModel instanceof TranslatableInterface) {
-                if (array_key_exists('_translations', $jsonData)) {
-                    foreach ($jsonData['_translations'] as $lang => $values) {
-                        $translation = $dataModel->getTranslation($lang);
+        $form = $this->resourceFormFactory->create($this->metadata, $resource);
+        $handledForm = $form->handleRequest($request);
 
-                        foreach ($values as $key => $val) {
-                            $setter = "set" . ucfirst($key);
-
-                            if (method_exists($translation, $setter)) {
-                                $translation->$setter($val);
-                            }
-                        }
-                    }
-                }
-            }
-
-            $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $dataModel, $request);
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
+            $resource = $form->getData();
 
             $this->entityManager->flush();
 
-            return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ["group" => "Detailed"]);
+            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ["group" => "Detailed"]);
         }
 
-        return $this->viewHandler->handle(['success' => false]);
+        return $this->viewHandler->handle(['success' => false, "message" => $handledForm->getErrors()]);
     }
 
     /**

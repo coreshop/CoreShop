@@ -24,3 +24,9 @@ services:
   jms_serializer.object_constructor:
     alias: jms_serializer.doctrine_object_constructor
     public: false
+
+  coreshop.form.type_extension.form.request_handler:
+    class: CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
+    decorates: form.type_extension.form.request_handler
+    decoration_priority: 256
+    public: false

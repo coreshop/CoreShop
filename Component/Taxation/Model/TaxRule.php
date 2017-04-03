@@ -121,7 +121,7 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function setCountry(CountryInterface $country)
+    public function setCountry($country = null)
     {
         $this->country = $country;
 
@@ -139,7 +139,7 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function setState(StateInterface $state)
+    public function setState($state = null)
     {
         $this->state = $state;
 

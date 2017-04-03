@@ -47,7 +47,7 @@ interface TaxRuleInterface extends ResourceInterface
     /**
      * @param CountryInterface $country
      */
-    public function setCountry(CountryInterface $country);
+    public function setCountry($country = null);
 
     /**
      * @return StateInterface
@@ -57,7 +57,7 @@ interface TaxRuleInterface extends ResourceInterface
     /**
      * @param StateInterface $state
      */
-    public function setState(StateInterface $state);
+    public function setState($state = null);
 
     /**
      * @return TaxRateInterface

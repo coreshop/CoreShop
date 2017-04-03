@@ -1,0 +1,14 @@
+services:
+  coreshop.form.type.country_choice:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType
+    arguments:
+      - '@coreshop.repository.country'
+    tags:
+      -  { name: form.type }
+
+  coreshop.form.type.state_choice:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\StateChoiceType
+    arguments:
+      - '@coreshop.repository.state'
+    tags:
+      -  { name: form.type }
