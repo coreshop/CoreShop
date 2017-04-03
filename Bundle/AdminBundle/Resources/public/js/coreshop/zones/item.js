@@ -71,8 +71,12 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
     },
 
     getSaveData : function () {
-        return {
-            data: this.formPanel.getForm().getFieldValues()
-        };
+        var values = this.formPanel.getForm().getFieldValues();
+
+        if (!values['active']) {
+            delete values['active'];
+        }
+
+        return values;
     }
 });

@@ -1,3 +1,8 @@
+parameters:
+  coreshop.form.type.zone.validation_groups: [coreshop]
+  coreshop.form.type.country.validation_groups: [coreshop]
+  coreshop.form.type.state.validation_groups: [coreshop]
+
 services:
   coreshop.form.type.country_choice:
     class: CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType
@@ -6,9 +11,41 @@ services:
     tags:
       -  { name: form.type }
 
+  coreshop.form.type.country:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\CountryType
+    arguments:
+      - '%coreshop.model.country.class%'
+      - '%coreshop.form.type.country.validation_groups%'
+    tags:
+      -  { name: form.type }
+
   coreshop.form.type.state_choice:
     class: CoreShop\Bundle\AddressBundle\Form\Type\StateChoiceType
     arguments:
       - '@coreshop.repository.state'
+    tags:
+      -  { name: form.type }
+
+  coreshop.form.type.state:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\StateType
+    arguments:
+      - '%coreshop.model.state.class%'
+      - '%coreshop.form.type.state.validation_groups%'
+    tags:
+      -  { name: form.type }
+
+
+  coreshop.form.type.zone_choice:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\ZoneChoiceType
+    arguments:
+      - '@coreshop.repository.zone'
+    tags:
+      -  { name: form.type }
+
+  coreshop.form.type.zone:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\ZoneType
+    arguments:
+      - '%coreshop.model.zone.class%'
+      - '%coreshop.form.type.zone.validation_groups%'
     tags:
       -  { name: form.type }

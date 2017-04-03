@@ -84,8 +84,6 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
     },
 
     getSaveData : function () {
-        return {
-            data: Ext.encode(this.formPanel.getForm().getFieldValues())
-        };
+        return this.formPanel.getForm().getFieldValues();
     }
 });

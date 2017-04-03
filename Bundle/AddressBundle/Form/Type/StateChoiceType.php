@@ -32,20 +32,20 @@ final class StateChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => function (Options $options) {
                     if (null === $options['active']) {
-                        $countries = $this->countryRepository->findAll();
+                        $states = $this->countryRepository->findAll();
                     } else {
-                        $countries = $this->countryRepository->findBy(['active' => $options['active']]);
+                        $states = $this->countryRepository->findBy(['active' => $options['active']]);
                     }
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($countries, function($a, $b) {
+                    @usort($states, function($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 
-                    return $countries;
+                    return $states;
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',

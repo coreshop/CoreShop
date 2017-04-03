@@ -96,8 +96,12 @@ pimcore.plugin.coreshop.states.item = Class.create(pimcore.plugin.coreshop.abstr
     },
 
     getSaveData : function () {
-        return {
-            data: this.formPanel.getForm().getFieldValues()
-        };
+        var values = this.formPanel.getForm().getFieldValues();
+
+        if (!values['active']) {
+            delete values['active'];
+        }
+
+        return values;
     }
 });

@@ -98,8 +98,8 @@ pimcore.plugin.coreshop.shops.item = Class.create(pimcore.plugin.coreshop.abstra
     },
 
     getSaveData : function () {
-        return {
-            data: Ext.encode(this.formPanel.getForm().getFieldValues())
-        };
+         var values = this.formPanel.getForm().getFieldValues();
+
+        return values;
     }
 });

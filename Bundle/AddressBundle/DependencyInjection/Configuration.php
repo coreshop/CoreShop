@@ -14,6 +14,9 @@
 
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
+use CoreShop\Bundle\AddressBundle\Form\Type\CountryType;
+use CoreShop\Bundle\AddressBundle\Form\Type\StateType;
+use CoreShop\Bundle\AddressBundle\Form\Type\ZoneType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Address\Model\Country;
@@ -70,6 +73,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(CountryType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -87,6 +91,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(ZoneType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -104,6 +109,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(StateType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

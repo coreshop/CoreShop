@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\TaxationBundle\Form\Type;
+namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractType;
@@ -8,19 +8,19 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class TaxRateChoiceType extends AbstractType
+final class ZoneChoiceType extends AbstractType
 {
     /**
      * @var RepositoryInterface
      */
-    private $countryRepository;
+    private $zoneRepository;
 
     /**
-     * @param RepositoryInterface $countryRepository
+     * @param RepositoryInterface $zoneRepository
      */
-    public function __construct(RepositoryInterface $countryRepository)
+    public function __construct(RepositoryInterface $zoneRepository)
     {
-        $this->countryRepository = $countryRepository;
+        $this->zoneRepository = $zoneRepository;
     }
 
     /**
@@ -32,27 +32,27 @@ final class TaxRateChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => function (Options $options) {
                     if (null === $options['active']) {
-                        $taxRates = $this->countryRepository->findAll();
+                        $zones = $this->zoneRepository->findAll();
                     } else {
-                        $taxRates = $this->countryRepository->findBy(['active' => $options['active']]);
+                        $zones = $this->zoneRepository->findBy(['active' => $options['active']]);
                     }
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($taxRates, function($a, $b) {
+                    @usort($zones, function($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 
-                    return $taxRates;
+                    return $zones;
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'choice_translation_domain' => false,
                 'active' => true,
-                'label' => 'coreshop.form.taxation.tax_rule',
-                'placeholder' => 'coreshop.form.tax_rule.select',
+                'label' => 'coreshop.form.address.zone',
+                'placeholder' => 'coreshop.form.zone.select',
             ])
         ;
     }
@@ -70,6 +70,6 @@ final class TaxRateChoiceType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_tax_rule_choice';
+        return 'coreshop_zone_choice';
     }
 }

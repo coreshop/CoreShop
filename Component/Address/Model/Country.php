@@ -248,7 +248,6 @@ class Country extends AbstractResource implements CountryInterface
     {
         if (!$this->hasStore($store)) {
             $this->stores->add($store);
-            $store->setZone($this);
         }
     }
 
@@ -259,7 +258,6 @@ class Country extends AbstractResource implements CountryInterface
     {
         if ($this->hasStore($store)) {
             $this->stores->removeElement($store);
-            $store->setZone(null);
         }
     }
 

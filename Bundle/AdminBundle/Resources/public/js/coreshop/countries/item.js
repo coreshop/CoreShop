@@ -110,9 +110,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
             }
         ];
 
-        if (this.getMultishopSettings()) {
-            items.push(this.getMultishopSettings());
-        }
+        items.push(this.getMultishopSettings());
 
         this.formPanel = new Ext.form.Panel({
             bodyStyle:'padding:20px 5px 20px 5px;',
@@ -146,8 +144,16 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
     },
 
     getSaveData : function () {
-        return {
-            data: this.formPanel.getForm().getFieldValues()
-        };
+        var values = this.formPanel.getForm().getFieldValues();
+
+        if (!values['active']) {
+            delete values['active'];
+        }
+
+        if (!values['useStoreCurrency']) {
+            delete values['useStoreCurrency'];
+        }
+
+        return values;
     }
 });

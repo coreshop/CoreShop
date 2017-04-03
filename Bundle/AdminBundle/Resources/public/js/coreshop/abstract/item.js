@@ -85,7 +85,7 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
             this.multiShopSettings = Ext.create({
                 xtype: 'combo',
                 fieldLabel: t('coreshop_mulitshop_select'),
-                name: 'stores',
+                name: 'stores[]',
                 width: 400,
                 store: pimcore.globalmanager.get('coreshop_stores'),
                 displayField: 'name',
