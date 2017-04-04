@@ -297,9 +297,9 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
 
             coreShopMenuItems.push({
-                text: t('coreshop_shops'),
-                iconCls: 'coreshop_icon_shop',
-                handler: this.openShops
+                text: t('coreshop_stores'),
+                iconCls: 'coreshop_icon_store',
+                handler: this.openStores
             });
 
             coreShopMenuItems.push({
@@ -703,12 +703,12 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openShops : function () {
+    openStores : function () {
         try {
-            pimcore.globalmanager.get('coreshop_shops_panel').activate();
+            pimcore.globalmanager.get('coreshop_stores_panel').activate();
         }
         catch (e) {
-            pimcore.globalmanager.add('coreshop_shops_panel', new pimcore.plugin.coreshop.shops.panel());
+            pimcore.globalmanager.add('coreshop_stores_panel', new pimcore.plugin.coreshop.stores.panel());
         }
     },
 

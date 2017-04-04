@@ -1,0 +1,8 @@
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopCountry: CoreShop\Bundle\AddressBundle\CoreExtension\Country
+                    coreShopState: CoreShop\Bundle\AddressBundle\CoreExtension\State
+                    coreShopCountryMultiselect: CoreShop\Bundle\AddressBundle\CoreExtension\CountryMultiselect

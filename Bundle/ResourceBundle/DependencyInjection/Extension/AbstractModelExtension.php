@@ -67,7 +67,7 @@ abstract class AbstractModelExtension extends Extension
             $alias = $applicationName . '.' . $modelName;
             $modelConfig = array_merge(['driver' => 'pimcore'], $modelConfig);
 
-            $models = $container->hasParameter('coreshop.pimcore') ? $container->get('coreshop.pimcore') : [];
+            $models = $container->hasParameter('coreshop.pimcore') ? $container->getParameter('coreshop.pimcore') : [];
             $models = array_merge($models, [$alias => $modelConfig]);
             $container->setParameter('coreshop.pimcore', $models);
 

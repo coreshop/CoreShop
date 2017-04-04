@@ -1,0 +1,3 @@
+cart_test:
+  path:      /cart
+  defaults:  { _controller: 'coreshop.pimcore_controller.cart:testAction' }

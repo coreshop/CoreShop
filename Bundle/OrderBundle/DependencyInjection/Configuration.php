@@ -1,14 +1,17 @@
 <?php
 
-namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
+namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType;
+use CoreShop\Bundle\OrderBundle\Controller\CartController;
 use CoreShop\Bundle\ProductBundle\Controller\ProductController;
 use CoreShop\Bundle\ProductBundle\Controller\ProductPriceRuleController;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreFrontendController;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductPriceRule;
 use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -28,7 +31,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_product');
+        $rootNode = $treeBuilder->root('coreshop_order');
 
         $rootNode
             ->children()
@@ -47,46 +50,38 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('resources')
+                ->arrayNode('pimcore')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('product_price_rule')
+                        ->arrayNode('cart')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(ProductPriceRule::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(ProductPriceRuleInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ProductPriceRuleController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\Object\TestCart')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(CartInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_controller')->defaultValue(CartController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
-                                        ->scalarNode('form')->defaultValue(ProductPriceRuleType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
                         ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('pimcore')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('product')
+                        ->arrayNode('cart_item')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue('Pimcore\Model\Object\TestProduct')->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('pimcore_controller')->defaultValue(ProductController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\Object\TestCartItem')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(CartItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
-                                        //->scalarNode('form')->defaultValue(CurrencyType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

@@ -2,13 +2,13 @@
 
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Controller\PimcoreResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\PimcoreFrontendController;
 use CoreShop\Component\Product\Model\ProductPriceRule;
-use CoreShop\Component\Product\Pimcore\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\Condition;
 
-class ProductController extends PimcoreResourceController {
+class ProductController extends PimcoreFrontendController {
 
     public function testAction() {
         /**

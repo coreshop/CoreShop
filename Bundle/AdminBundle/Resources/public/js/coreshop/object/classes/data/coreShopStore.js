@@ -1,6 +1,5 @@
-<?php
 /**
- * CoreShop.
+ * CoreShop
  *
  * LICENSE
  *
@@ -12,18 +11,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data;
+pimcore.registerNS('pimcore.object.classes.data.coreShopStore');
+pimcore.object.classes.data.coreShopStore = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {
 
-/**
- * Class CoreShopCurrencyMultiselect
- * @package CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data
- */
-class CoreShopCurrencyMultiselect extends CoreShopMultiselect
-{
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCurrencyMultiselect';
-}
+    type: 'coreShopStore',
+
+    getTypeName: function () {
+        return t('coreshop_store');
+    },
+
+    getGroup: function () {
+        return 'coreshop';
+    },
+
+    getIconClass: function () {
+        return 'coreshop_icon_store';
+    }
+});

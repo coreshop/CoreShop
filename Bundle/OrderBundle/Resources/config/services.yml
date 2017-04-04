@@ -1,0 +1,17 @@
+parameters:
+  coreshop.order.cart_folder_path: /%coreshop.core.object_path%/cart
+
+services:
+    coreshop.order.configurator.session_cart:
+        class: CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator
+        tags:
+            - { name: pimcore.session.configurator }
+
+    coreshop.cart.manager:
+      class: CoreShop\Bundle\OrderBundle\Manager\CartManager
+      arguments:
+        - '@coreshop.repository.cart'
+        - '@coreshop.factory.cart'
+        - '@session'
+        - '@coreshop.core.object_service'
+        - '%coreshop.order.cart_folder_path%'

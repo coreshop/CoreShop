@@ -330,7 +330,7 @@
     background: url(/bundles/coreshoplegacy/img/flat/similarities-field.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_shop, .pimcore_icon_coreShopShopMultiselect, .pimcore_icon_coreShopShop, .coreshop_rule_icon_condition_shops {
+.coreshop_icon_store, .pimcore_icon_coreShopStoreMultiselect, .pimcore_icon_coreShopStore, .coreshop_rule_icon_condition_stores {
     background: url(/bundles/coreshoplegacy/img/flat/shop.svg) center center no-repeat !important;
 }
 

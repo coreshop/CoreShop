@@ -11,20 +11,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.object.classes.data.coreShopShop');
-pimcore.object.classes.data.coreShopShop = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {
+pimcore.registerNS('pimcore.object.classes.data.coreShopStoreMultiselect');
+pimcore.object.classes.data.coreShopStoreMultiselect = Class.create(pimcore.plugin.coreshop.object.classes.data.dataMultiselect, {
 
-    type: 'coreShopShop',
+    type: 'coreShopStoreMultiselect',
 
     getTypeName: function () {
-        return t('coreshop_stores');
-    },
-
-    getGroup: function () {
-        return 'coreshop';
+        return t('coreshop_store_multiselect');
     },
 
     getIconClass: function () {
         return 'coreshop_icon_store';
+    },
+
+    getGroup: function () {
+        return 'coreshop';
     }
 });

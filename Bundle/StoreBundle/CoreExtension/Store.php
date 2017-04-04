@@ -12,27 +12,32 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data;
+namespace CoreShop\Bundle\StoreBundle\CoreExtension;
 
-use CoreShop\Bundle\CoreShopLegacyBundle\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 
-/**
- * Class CoreShopState
- * @package CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data
- */
-class CoreShopState extends CoreShopSelect
+class Store extends Select
 {
     /**
      * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = 'coreShopState';
+    public $fieldtype = 'coreShopStore';
 
     /**
-     * Type for the generated phpdoc.
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    public $phpdocType = '\\CoreShop\Bundle\CoreShopLegacyBundle\\Model\\State';
+    protected function getRepository()
+    {
+        return \Pimcore::getContainer()->get('coreshop.repository.store');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getModel()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.model.store.class');
+    }
 }

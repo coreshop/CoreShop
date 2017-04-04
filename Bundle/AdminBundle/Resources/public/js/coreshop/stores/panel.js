@@ -11,16 +11,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.shops.panel');
-
-pimcore.plugin.coreshop.shops.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
+pimcore.registerNS('pimcore.plugin.coreshop.stores.panel');
+pimcore.plugin.coreshop.stores.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     /**
      * @var string
      */
     layoutId: 'coreshop_stores_panel',
     storeId : 'coreshop_stores',
-    iconCls : 'coreshop_icon_shop',
+    iconCls : 'coreshop_icon_store',
     type : 'stores',
 
     url : {

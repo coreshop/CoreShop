@@ -1,0 +1,6 @@
+parameters:
+  coreshop.core.object_path: '/coreshop'
+
+services:
+  coreshop.core.object_service:
+    class: CoreShop\Component\Core\Pimcore\ObjectService

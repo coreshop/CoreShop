@@ -11,13 +11,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.shops.item');
-pimcore.plugin.coreshop.shops.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
+pimcore.registerNS('pimcore.plugin.coreshop.stores.item');
+pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    iconCls : 'coreshop_icon_shop',
+    iconCls : 'coreshop_icon_store',
 
     url : {
-        save : '/admin/CoreShop/shop/save'
+        save : '/admin/CoreShop/stores/save'
     },
 
     getItems : function () {
@@ -31,7 +31,7 @@ pimcore.plugin.coreshop.shops.item = Class.create(pimcore.plugin.coreshop.abstra
             remoteSort: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/CoreShop/shop/list-sites',
+                url: '/admin/CoreShop/stores/list-sites',
                 reader: {
                     type: 'json'
                 }
@@ -70,7 +70,7 @@ pimcore.plugin.coreshop.shops.item = Class.create(pimcore.plugin.coreshop.abstra
                             value: this.data.name
                         },
                         {
-                            fieldLabel: t('coreshop_shop_site'),
+                            fieldLabel: t('coreshop_store_site'),
                             xtype: 'combo',
                             name: 'siteId',
                             width: 400,
@@ -85,7 +85,7 @@ pimcore.plugin.coreshop.shops.item = Class.create(pimcore.plugin.coreshop.abstra
                             value: this.data.siteId
                         },
                         {
-                            fieldLabel: t('coreshop_shop_template'),
+                            fieldLabel: t('coreshop_store_template'),
                             name: 'template',
                             value: this.data.template
                         }

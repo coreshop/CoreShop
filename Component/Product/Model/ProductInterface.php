@@ -1,12 +1,12 @@
 <?php
 
-namespace CoreShop\Component\Product\Pimcore\Model;
+namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 use Pimcore\Model\Element\ElementInterface;
 
-interface ProductInterface extends PimcoreModelInterface, ElementInterface
+interface ProductInterface extends PimcoreModelInterface
 {
     /**
      * @param null $language
@@ -22,20 +22,33 @@ interface ProductInterface extends PimcoreModelInterface, ElementInterface
     public function setName($name, $language = null);
 
     /**
-     * @return mixed
+     * @param bool $withTax
+     * @return float
      */
-    public function getPrice();
+    public function getPrice($withTax = true);
 
     /**
+     * @param bool $withTax
      * @return mixed
      */
-    public function getBasePrice();
+    public function getBasePrice($withTax = true);
 
     /**
      * @param $basePrice
      * @return mixed
      */
     public function setBasePrice($basePrice);
+
+    /**
+     * @return mixed
+     */
+    public function getWholesalePrice();
+
+    /**
+     * @param $wholesalePrice
+     * @return mixed
+     */
+    public function setWholesalePrice($wholesalePrice);
 
     /**
      * @return mixed

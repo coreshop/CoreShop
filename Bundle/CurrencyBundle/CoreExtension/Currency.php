@@ -12,27 +12,32 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data;
+namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
-use CoreShop\Bundle\CoreShopLegacyBundle\Model\Object\ClassDefinition\Data\Select as CoreShopSelect;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 
-/**
- * Class CoreShopCountry
- * @package CoreShop\Bundle\CoreShopLegacyBundle\CoreExtensions\ClassDefinition\Data
- */
-class CoreShopCountry extends CoreShopSelect
+class Currency extends Select
 {
     /**
      * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = 'coreShopCountry';
+    public $fieldtype = 'coreShopCurrency';
 
     /**
-     * Type for the generated phpdoc.
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    public $phpdocType = '\\CoreShop\Bundle\CoreShopLegacyBundle\\Model\\Country';
+    protected function getRepository()
+    {
+        return \Pimcore::getContainer()->get('coreshop.repository.currency');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getModel()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.model.currency.class');
+    }
 }

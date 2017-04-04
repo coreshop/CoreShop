@@ -4,6 +4,7 @@ namespace CoreShop\Component\Product\Pimcore\Model;
 
 use CoreShop\Bundle\CoreBundle\ImplementedByPimcoreException;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
@@ -12,7 +13,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface {
     /**
      * {@inheritdoc}
      */
-    public function getPrice() {
+    public function getPrice($withTax = true) {
         /**
          * @var $calculator ProductPriceCalculatorInterface
          */
@@ -68,9 +69,9 @@ class Product extends AbstractPimcoreModel implements ProductInterface {
     /**
      * {@inheritdoc}
      */
-    public function getBasePrice()
+    public function getBasePrice($withTax = true)
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        return $this->getPimcoreBasePrice();
     }
 
     /**
@@ -78,6 +79,36 @@ class Product extends AbstractPimcoreModel implements ProductInterface {
      */
     public function setBasePrice($basePrice)
     {
+        $this->setBasePrice($basePrice);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWholesalePrice()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setWholesalePrice($wholesalePrice)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPimcoreBasePrice() {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPimcoreBasePrice($basePrice) {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
