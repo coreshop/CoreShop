@@ -19,6 +19,7 @@ use CoreShop\Bundle\AddressBundle\Form\Type\StateType;
 use CoreShop\Bundle\AddressBundle\Form\Type\ZoneType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\Country;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\State;
@@ -26,6 +27,7 @@ use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Address\Model\Zone;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Factory\Factory;
+use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -116,6 +118,27 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('pimcore')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->arrayNode('address')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->variableNode('options')->end()
+                                    ->arrayNode('classes')
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopAddress')->cannotBeEmpty()->end()
+                                            ->scalarNode('interface')->defaultValue(AddressInterface::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('repository')->cannotBeEmpty()->end()
+                                            ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
             ->end()
         ;
     }

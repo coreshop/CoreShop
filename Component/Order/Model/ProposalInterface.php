@@ -3,10 +3,12 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Pimcore\Resource;
 
-interface ProposalInterface extends PimcoreModelInterface {
+interface ProposalInterface extends ResourceInterface {
 
     /**
      * @return CurrencyInterface
@@ -54,7 +56,7 @@ interface ProposalInterface extends PimcoreModelInterface {
      * @param StoreInterface $store
      * @return static
      */
-    public function setStore(StoreInterface $store);
+    public function setStore($store);
 
     /**
      * @return mixed

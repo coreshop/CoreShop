@@ -1,5 +1,5 @@
 parameters:
-  coreshop.order.cart_folder_path: /%coreshop.core.object_path%/cart
+  coreshop.order.cart.folder_path: /%coreshop.core.object_path%/cart
 
 services:
     coreshop.order.configurator.session_cart:
@@ -14,4 +14,4 @@ services:
         - '@coreshop.factory.cart'
         - '@session'
         - '@coreshop.core.object_service'
-        - '%coreshop.order.cart_folder_path%'
+        - '%coreshop.order.cart.folder_path%'

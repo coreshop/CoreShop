@@ -3,9 +3,10 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface ProposalItemInterface extends PimcoreModelInterface
+interface ProposalItemInterface extends ResourceInterface
 {
     /**
      * @return ProductInterface

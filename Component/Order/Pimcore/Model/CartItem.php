@@ -6,8 +6,9 @@ use CoreShop\Bundle\CoreBundle\ImplementedByPimcoreException;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-class CartItem extends AbstractPimcoreModel implements CartItemInterface
+class CartItem extends AbstractPimcoreModel implements CartItemInterface, PimcoreModelInterface
 {
     /**
      * {@inheritdoc}

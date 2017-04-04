@@ -3,12 +3,11 @@
 namespace CoreShop\Component\Order\Pimcore\Model;
 
 use CoreShop\Bundle\CoreBundle\ImplementedByPimcoreException;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-class Cart extends AbstractPimcoreModel implements CartInterface
+class Cart extends AbstractPimcoreModel implements CartInterface, PimcoreModelInterface
 {
     /**
      * {@inheritdoc}
@@ -197,7 +196,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function setStore(StoreInterface $store)
+    public function setStore($store)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

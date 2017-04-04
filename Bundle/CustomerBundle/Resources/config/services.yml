@@ -1,0 +1,8 @@
+imports:
+  - { resource: "services/form.yml" }
+
+parameters:
+  coreshop.customer.folder_path: /%coreshop.core.object_path%/customers
+  coreshop.address.folder_path: addresses
+  coreshop.customer_groups.folder_path: /%coreshop.core.object_path%/customer-groups
+
