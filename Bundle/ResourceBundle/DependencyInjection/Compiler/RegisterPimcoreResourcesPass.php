@@ -23,7 +23,8 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
         }
 
         foreach ($resources as $alias => $configuration) {
-            $this->validateCoreShopPimcoreModel($configuration['classes']['model'], $configuration['classes']['interface']);
+            //Causes installation problems
+            //$this->validateCoreShopPimcoreModel($configuration['classes']['model'], $configuration['classes']['interface']);
             $registry->addMethodCall('addFromAliasAndConfiguration', [$alias, $configuration]);
         }
     }
