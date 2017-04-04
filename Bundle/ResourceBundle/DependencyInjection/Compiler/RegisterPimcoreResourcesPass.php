@@ -24,7 +24,7 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
 
         foreach ($resources as $alias => $configuration) {
             //Causes installation problems
-            //$this->validateCoreShopPimcoreModel($configuration['classes']['model'], $configuration['classes']['interface']);
+            $this->validateCoreShopPimcoreModel($configuration['classes']['model'], $configuration['classes']['interface']);
             $registry->addMethodCall('addFromAliasAndConfiguration', [$alias, $configuration]);
         }
     }
@@ -35,20 +35,22 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
      */
     private function validateCoreShopPimcoreModel($class, $interface)
     {
-        if (!in_array($interface, class_implements($class), true)) {
-            throw new InvalidArgumentException(sprintf(
-                'Class "%s" must implement "%s" to be registered as a CoreShop Pimcore model.',
-                $class,
-                $interface
-            ));
-        }
+        if (class_exists($class)) {
+            if (!in_array($interface, class_implements($class), true)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Class "%s" must implement "%s" to be registered as a CoreShop Pimcore model.',
+                    $class,
+                    $interface
+                ));
+            }
 
-        if (!in_array(PimcoreModelInterface::class, class_implements($class), true)) {
-            throw new InvalidArgumentException(sprintf(
-                'Class "%s" must implement "%s" to be registered as a CoreShop Pimcore model.',
-                $class,
-                PimcoreModelInterface::class
-            ));
+            if (!in_array(PimcoreModelInterface::class, class_implements($class), true)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Class "%s" must implement "%s" to be registered as a CoreShop Pimcore model.',
+                    $class,
+                    PimcoreModelInterface::class
+                ));
+            }
         }
     }
 }
