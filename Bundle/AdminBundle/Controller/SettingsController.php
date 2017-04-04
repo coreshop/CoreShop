@@ -14,6 +14,7 @@
 
 namespace CoreShop\Bundle\AdminBundle\Controller;
 
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Core\Helper\StringHelper;
@@ -58,7 +59,11 @@ class SettingsController extends AdminController
         }
 
         $settings = [
-            'classMapping' => $classMapping
+            'classMapping' => $classMapping,
+            'bundle' => [
+                'version' => Version::getVersion(),
+                'build' => Version::getBuild()
+            ]
         ];
 
         return $this->json($settings);
