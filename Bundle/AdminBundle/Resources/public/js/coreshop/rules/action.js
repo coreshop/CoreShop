@@ -90,23 +90,24 @@ pimcore.plugin.coreshop.rules.action = Class.create({
         for (var i = 0; i < actions.length; i++)
         {
             var action = {};
+            var configuration = {};
 
             var actionItem = actions[i];
             var actionClass = actionItem.xparent;
             var form = actionClass.form;
 
             if (Ext.isFunction(actionClass['getValues'])) {
-                action = actionClass.getValues();
+                configuration = actionClass.getValues();
             } else {
                 if (Ext.isFunction(form.getValues)) {
-                    action = form.getValues();
+                    configuration = form.getValues();
                 }
                 else {
                     for (var c = 0; c < form.items.length; c++) {
                         var item = form.items.get(c);
 
                         try {
-                            action[item.getName()] = item.getValue();
+                            configuration[item.getName()] = item.getValue();
                         }
                         catch (e) {
 
@@ -116,6 +117,11 @@ pimcore.plugin.coreshop.rules.action = Class.create({
                 }
             }
 
+            if (actionClass.data.id) {
+                action['id'] = actionClass.data.id;
+            }
+
+            action['configuration'] = configuration;
             action['type'] = actions[i].xparent.type;
             actionData.push(action);
         }

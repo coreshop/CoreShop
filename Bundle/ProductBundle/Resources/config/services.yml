@@ -30,13 +30,13 @@ services:
   coreshop.product_price_rule.condition.quantity:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\QuantityConditionChecker
     tags:
-      - { name: coreshop.product_price_rule.condition, type: quantity, label: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\QuantityConfigurationType }
+      - { name: coreshop.product_price_rule.condition, type: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\QuantityConfigurationType }
 
   # Product Price Rule ACTIONS
   coreshop.product_price_rule.action.discount:
     class: CoreShop\Bundle\ProductBundle\Rule\Action\NewPriceActionProcessor
     tags:
-      - { name: coreshop.product_price_rule.action, type: new_price, label: new-price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\NewPriceConfigurationType }
+      - { name: coreshop.product_price_rule.action, type: newPrice, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\NewPriceConfigurationType }
 
 
   # Price Calculators

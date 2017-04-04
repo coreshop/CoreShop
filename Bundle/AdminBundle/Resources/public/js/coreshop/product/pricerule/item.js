@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.product.pricerule.item = Class.create(pimcore.plugin.cor
     iconCls : 'coreshop_icon_price_rule',
 
     url : {
-        save : '/admin/CoreShop/product-price-rule/save'
+        save : '/admin/CoreShop/product_price_rules/save'
     },
 
     getSettings: function () {
@@ -40,7 +40,7 @@ pimcore.plugin.coreshop.product.pricerule.item = Class.create(pimcore.plugin.cor
                 xtype: 'checkbox',
                 name: 'active',
                 fieldLabel: t('active'),
-                checked: this.data.active == '1'
+                checked: this.data.active
             }]
         });
 

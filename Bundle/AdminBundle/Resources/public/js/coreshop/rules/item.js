@@ -55,15 +55,10 @@ pimcore.plugin.coreshop.rules.item = Class.create(pimcore.plugin.coreshop.abstra
     },
 
     getSaveData : function () {
-        var saveData = {};
-
-        // general settings
-        saveData['settings'] = this.settingsForm.getForm().getFieldValues();
+        saveData = this.settingsForm.getForm().getFieldValues();
         saveData['conditions'] = this.conditions.getConditionsData();
         saveData['actions'] = this.actions.getActionsData();
 
-        return {
-            data : Ext.encode(saveData)
-        };
+        return saveData;
     }
 });

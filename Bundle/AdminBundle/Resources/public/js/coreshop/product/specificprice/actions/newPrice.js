@@ -18,48 +18,22 @@ pimcore.plugin.coreshop.rules.actions.newPrice = Class.create(pimcore.plugin.cor
     type : 'newPrice',
 
     getForm : function () {
-        var newPriceValue = 0;
-        var currencyValue = null;
-        var me = this;
+        var priceValue = 0;
 
         if (this.data) {
-            newPriceValue = this.data.newPrice;
-            currencyValue = this.data.currency;
+            priceValue = this.data.price;
         }
 
-        var newPrice = new Ext.form.NumberField({
+        var price = new Ext.form.NumberField({
             fieldLabel:t('coreshop_action_newPrice'),
-            name:'newPrice',
-            value : newPriceValue,
+            name:'price',
+            value : priceValue,
             decimalPrecision : 2
         });
 
-        var currency = {
-            xtype: 'combo',
-            fieldLabel: t('coreshop_action_discountAmount_currency'),
-            typeAhead: true,
-            value: currencyValue,
-            mode: 'local',
-            listWidth: 100,
-            width : 200,
-            store: pimcore.globalmanager.get('coreshop_currencies'),
-            displayField: 'name',
-            valueField: 'id',
-            forceSelection: true,
-            triggerAction: 'all',
-            hiddenName:'currency',
-            listeners: {
-                listeners: {
-                    beforerender: function () {
-                        this.setValue(me.data.currency);
-                    }
-                }
-            }
-        };
-
         this.form = new Ext.form.Panel({
             items : [
-                newPrice, currency
+                price
             ]
         });
 

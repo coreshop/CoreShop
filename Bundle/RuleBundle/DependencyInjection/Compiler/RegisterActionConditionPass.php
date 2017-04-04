@@ -40,18 +40,18 @@ abstract class RegisterActionConditionPass implements CompilerPassInterface
         $registry = $container->getDefinition($this->getRegistryIdentifier());
         $formRegistry = $container->getDefinition($this->getFormRegistryIdentifier());
 
-        $typeToLabelMap = [];
+        $map = [];
         foreach ($container->findTaggedServiceIds($this->getTagIdentifier()) as $id => $attributes) {
-            if (!isset($attributes[0]['type'], $attributes[0]['label'], $attributes[0]['form-type'])) {
+            if (!isset($attributes[0]['type'], $attributes[0]['form-type'])) {
                 throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type`, `form-type` and `label` attributes.');
             }
 
-            $typeToLabelMap[$attributes[0]['type']] = $attributes[0]['label'];
+            $map[$attributes[0]['type']] = $attributes[0]['type'];
 
             $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
             $formRegistry->addMethodCall('add', [$attributes[0]['type'], 'default', $attributes[0]['form-type']]);
         }
 
-        $container->setParameter($this->getIdentifier(), $typeToLabelMap);
+        $container->setParameter($this->getIdentifier(), $map);
     }
 }

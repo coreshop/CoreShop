@@ -38,7 +38,7 @@ pimcore.plugin.coreshop.product.pricerule.panel = Class.create(pimcore.plugin.co
         var me = this;
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/product-price-rule/get-config',
+            url: '/admin/CoreShop/product_price_rules/get-config',
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);
@@ -48,10 +48,10 @@ pimcore.plugin.coreshop.product.pricerule.panel = Class.create(pimcore.plugin.co
         });
 
         this.url = {
-            add : '/admin/CoreShop/product-price-rule/add',
-            delete : '/admin/CoreShop/product-price-rule/delete',
-            get : '/admin/CoreShop/product-price-rule/get',
-            list : '/admin/CoreShop/product-price-rule/list'
+            add : '/admin/CoreShop/product_price_rules/add',
+            delete : '/admin/CoreShop/product_price_rules/delete',
+            get : '/admin/CoreShop/product_price_rules/get',
+            list : '/admin/CoreShop/product_price_rules/list'
         };
 
         this.panels = [];
@@ -70,7 +70,7 @@ pimcore.plugin.coreshop.product.pricerule.panel = Class.create(pimcore.plugin.co
                 ],
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/CoreShop/product-price-rule/list',
+                    url: this.url.list,
                     reader: {
                         type: 'json',
                         rootProperty : 'data'
@@ -84,7 +84,7 @@ pimcore.plugin.coreshop.product.pricerule.panel = Class.create(pimcore.plugin.co
                 columns: [
                     {
                         text: '',
-                        dataIndex: 'text',
+                        dataIndex: 'name',
                         flex : 1,
                         renderer: function (value, metadata, record)
                         {

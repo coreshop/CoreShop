@@ -83,7 +83,7 @@ final class ResourceLoader implements LoaderInterface
         //$identifier = sprintf('{%s}', $configuration['identifier']);
 
         $rootPath = $this->urlBase;
-        $rootPath .= $metadata->getPluralName() . "/";
+        $rootPath .= '/' . $metadata->getPluralName() . "/";
 
         foreach ($routesToGenerate as $route) {
             $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $route['path'], $route['action'], $route['methods']);

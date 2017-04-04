@@ -30,7 +30,8 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
     initialize : function (parent, type, data) {
         this.parent = parent;
         this.type = type;
-        this.data = data;
+        this.id = data && data.hasOwnProperty('id') ? data.id : data;
+        this.data = data && data.hasOwnProperty('configuration') ? data.configuration : {};
     },
 
     getLayout : function () {
