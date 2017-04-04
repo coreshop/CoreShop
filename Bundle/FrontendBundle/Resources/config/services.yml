@@ -1,0 +1,5 @@
+services:
+  coreshop.frontend.theme.listener:
+    class: CoreShop\Bundle\FrontendBundle\EventListener\ThemeSetListener
+    tags:
+        - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
