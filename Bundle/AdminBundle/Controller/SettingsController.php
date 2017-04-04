@@ -44,63 +44,24 @@ class SettingsController extends AdminController
      */
     public function getSettingsAction(Request $request)
     {
-        $result = [];
-        $shops = Model\Shop::getList();
-        $valueArray = [];
-        $systemSettings = [];
+        $classes = $this->getParameter('coreshop.pimcore');
+        $classMapping = [];
 
-        foreach ($shops as $shop) {
-            $config = new Model\Configuration\Listing();
-            $config->setFilter(function ($entry) use ($shop) {
-                if (StringHelper::startsWith($entry['key'], 'SYSTEM.') && (array_key_exists('shop', $entry) && ($entry['shop'] === null || $entry['shop'] === $shop->getId()))) {
-                    return true;
-                }
+        foreach ($classes as $key => $definition) {
+            $alias = explode('.', $key);
+            $alias = $alias[1];
 
-                return false;
-            });
+            $class = str_replace('Pimcore\\Model\\Object\\', '', $definition['classes']['model']);
+            $class = str_replace('\\', '', $class);
 
-            $configurations = $config->getConfigurations();
-
-            if (is_array($configurations)) {
-                foreach ($configurations as $c) {
-                    if (in_array($c->getKey(), Model\Configuration::getSystemKeys())) {
-                        $systemSettings[$c->getKey()] = $c->getData();
-                    } else {
-                        $valueArray[$shop->getId()][$c->getKey()] = $c->getData();
-                    }
-                }
-            }
+            $classMapping[$alias] = $class;
         }
 
-        $result['systemSettings'] = $systemSettings;
-
-        if (Model\Configuration::get("SYSTEM.ISINSTALLED")) {
-            $pimcoreClasses = \CoreShop\Bundle\CoreShopLegacyBundle\CoreShop::getPimcoreClasses();
-            $classMapping = [];
-
-            foreach ($pimcoreClasses as $key=>$value) {
-                $classMapping[$key] = $value['pimcoreClass'];
-            }
-
-            foreach ($classMapping as $key => &$class) {
-                $class = str_replace('Pimcore\\Model\\Object\\', '', $class);
-                $class = str_replace('\\', '', $class);
-            }
-
-            $result['classMapping'] = $classMapping;
-            $result['multishop'] = Model\Configuration::multiShopEnabled();
-            $result['defaultShop'] = Model\Shop::getDefaultShop()->getId();
-            $result['coreshop'] = $valueArray;
-            $result['orderStates'] = Model\Order\State::getValidOrderStates();
-        }
-
-        //TODO
-        $result['plugin'] = [
-            'pluginVersion' => 'TODO',
-            'pluginRevision' => 'TODO'
+        $settings = [
+            'classMapping' => $classMapping
         ];
 
-        return $this->json($result);
+        return $this->json($settings);
     }
 
     /**

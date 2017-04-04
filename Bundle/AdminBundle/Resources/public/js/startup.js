@@ -34,23 +34,18 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
     pimcoreReady: function (params, broker) {
         Ext.get('pimcore_status').insertHtml('beforeEnd', '<div id="coreshop_status" class="loading" data-menu-tooltip="' + t('coreshop_loading') + '"></div>');
 
-        /*Ext.Ajax.request({
-            url: '/admin/CoreShop/configurations/get-settings',
+        Ext.Ajax.request({
+            url: '/admin/CoreShop/settings/get-settings',
             success: function (response)
             {
-                var resp = Ext.decode(response.responseText);
-
+                resp = Ext.decode(response.responseText);
 
                 this.settings = resp;
                 coreshop.settings = this.settings;
 
-                if (intval(this.settings.systemSettings['SYSTEM.ISINSTALLED'])) {
-                    this.initializeCoreShop();
-                }
+                this.initializeCoreShop();
             }.bind(this)
-        });*/
-
-        this.initializeCoreShop();
+        });
     },
 
     initializeCoreShop: function() {

@@ -6,7 +6,7 @@ use CoreShop\Component\Core\Assert\Assert;
 use CoreShop\Component\Product\Pimcore\Model\ProductInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
-class QuantityConditionChecker implements ConditionCheckerInterface
+class ProductsConditionChecker implements ConditionCheckerInterface
 {
     /**
      * {@inheritdoc}
@@ -15,8 +15,6 @@ class QuantityConditionChecker implements ConditionCheckerInterface
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        //TODO: Get Cart somehow! Maybe get Cart-Manager via DI?
-
-        return true;
+        return in_array($subject->getId(), $configuration['products']);
     }
 }
