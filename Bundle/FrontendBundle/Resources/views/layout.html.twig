@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="{{ app.request.locale|slice(0, 2) }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>{% block title %}CoreShop{% endblock %}</title>
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    {% block metatags %}
+    {% endblock %}
+
+    {% block stylesheets %}
+        <!--TODO-->
+    {% endblock %}
+</head>
+
+<body class="pushable">
+<div class="pusher">
+    <div class="ui container">
+        {% block header %}
+            <header>
+                {% include '@CoreShopFrontend/_header.html.twig' %}
+
+                <!-- TODO: Render Url -->
+            </header>
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+        {% include '@CoreShopFrontend/_footer'
+    {% endblock %}
+</div>
+
+{% block javascripts %}
+    TODO: javascript
+{% endblock %}
+
+</body>
+</html>

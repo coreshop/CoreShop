@@ -1,0 +1,33 @@
+CoreShop\Component\Index\Model\Index:
+  type: mappedSuperclass
+  table: coreshop_index
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    class:
+      column: class
+      type: string
+    name:
+      column: name
+      type: string
+      nullable: false
+    type:
+      column: type
+      type: string
+      nullable: true
+    config:
+      column: config
+      type: string
+  oneToMany:
+    columns:
+      targetEntity: CoreShop\Component\Index\Model\IndexColumnInterface
+      mappedBy: index
+      orphanRemoval: true
+      cascade:
+        - all
+      orderBy:
+        name: ASC

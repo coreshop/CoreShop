@@ -1,0 +1,50 @@
+CoreShop\Component\Index\Model\IndexColumn:
+  type: mappedSuperclass
+  table: coreshop_index_column
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    key:
+      column: key
+      type: string
+      nullable: true
+    name:
+      column: name
+      type: string
+      nullable: false
+    objectType:
+      column: objectType
+      type: string
+    getter:
+      column: getter
+      type: string
+    getterConfig:
+      column: getterConfig
+      type: array
+    dataType:
+      column: dataType
+      type: string
+    interpreter:
+      column: interpreter
+      type: string
+    interpreterConfig:
+      column: interpreterConfig
+      type: array
+    columnType:
+      column: columnType
+      type: string
+    configuration:
+      column: configuration
+      type: string
+  manyToOne:
+    index:
+      targetEntity: CoreShop\Component\Index\Model\IndexInterface
+      inversedBy: columns
+      joinColumn:
+        name: indexId
+        referencedColumnName: id
+        nullable: true

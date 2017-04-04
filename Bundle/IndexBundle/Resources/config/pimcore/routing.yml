@@ -1,0 +1,4 @@
+coreshop_admin_index:
+  type: coreshop.resources
+  resource: |
+    alias: coreshop.index

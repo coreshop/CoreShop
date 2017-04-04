@@ -1,0 +1,39 @@
+imports:
+  - { resource: "services/form.yml" }
+
+services:
+  coreshop.registry.index.column_types:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - Symfony\Component\Form\FormTypeInterface
+      - index-column-types
+
+  coreshop.form_registry.index_column_types:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+
+  # Index Column Types
+  coreshop.index.column_type.classification_store:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType
+    tags:
+      - { name: coreshop.index.column_type, type: classificationstore, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType}
+
+  coreshop.index.column_type.field_collection:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType
+    tags:
+      - { name: coreshop.index.column_type, type: fieldcollection, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType }
+
+  coreshop.index.column_type.localized_fields:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType
+    tags:
+      - { name: coreshop.index.column_type, type: localizedfields, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType }
+
+  coreshop.index.column_type.object_brick:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType
+    tags:
+      - { name: coreshop.index.column_type, type: objectbrick, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType }
+
+  coreshop.index.column_type.object:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType
+    tags:
+      - { name: coreshop.index.column_type, type: object, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType }

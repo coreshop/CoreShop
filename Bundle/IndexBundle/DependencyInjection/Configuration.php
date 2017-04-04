@@ -1,13 +1,15 @@
 <?php
 
-namespace CoreShop\Bundle\CurrencyBundle\DependencyInjection;
+namespace CoreShop\Bundle\IndexBundle\DependencyInjection;
 
-use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType;
+use CoreShop\Bundle\IndexBundle\Form\Type\IndexType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Index\Model\Index;
+use CoreShop\Component\Index\Model\IndexColumn;
+use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Factory\Factory;
-use CoreShop\Component\Currency\Model\Currency;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -20,7 +22,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_currency');
+        $rootNode = $treeBuilder->root('coreshop_index');
 
         $rootNode
             ->children()
@@ -42,20 +44,38 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('currency')
+                        ->arrayNode('index')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(Currency::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(CurrencyInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(Index::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(IndexInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
-                                        ->scalarNode('form')->defaultValue(CurrencyType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(IndexType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('index_column')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(IndexColumn::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(IndexColumnInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
+                                        //->scalarNode('form')->defaultValue(CurrencyType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

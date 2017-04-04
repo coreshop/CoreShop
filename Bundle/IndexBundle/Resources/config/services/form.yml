@@ -1,0 +1,31 @@
+parameters:
+  coreshop.form.type.index.validation_groups: [coreshop]
+  coreshop.form.type.index.column.validation_groups: [coreshop]
+  coreshop.form.type.index.column_type.validation_groups: [coreshop]
+  coreshop.form.type.index.columns.validation_groups: [coreshop]
+
+services:
+
+  coreshop.form.type.index:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\IndexType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.index.class%', '%coreshop.form.type.index.validation_groups%']
+
+  coreshop.form.type.index_column:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.index_column.class%', '%coreshop.form.type.index.column_type.validation_groups%', '@coreshop.form_registry.index_column_types']
+
+  coreshop.form.type.index.index_column_choice:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnChoiceType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.index.column_types%']
+
+  coreshop.form.type.index_column.type_collection:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnCollectionType
+    tags:
+        - { name: form.type }
+    arguments: ['@coreshop.registry.index.column_types']

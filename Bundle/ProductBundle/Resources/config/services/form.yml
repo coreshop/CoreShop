@@ -18,12 +18,6 @@ services:
         - { name: form.type }
     arguments: ['%coreshop.model.rule_action.class%', '%coreshop.form.type.product_price_rule.rule_action.validation_groups%', '@coreshop.form_registry.product_price_rule.actions']
 
-  coreshop.form.product_price_rule.type.rule_condition:
-    class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionType
-    tags:
-        - { name: form.type }
-    arguments: ['%coreshop.model.rule_condition.class%', '%coreshop.form.type.product_price_rule.rule_condition.validation_groups%', '@coreshop.form_registry.product_price_rule.conditions']
-
   coreshop.form.product_price_rule.type.rule_action.collection:
     class: CoreShop\Bundle\RuleBundle\Form\Type\RuleActionCollectionType
     tags:
@@ -41,6 +35,12 @@ services:
     tags:
         - { name: form.type }
     arguments: ['%coreshop.product_price_rule.actions%']
+
+  coreshop.form.product_price_rule.type.rule_condition:
+    class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.rule_condition.class%', '%coreshop.form.type.product_price_rule.rule_condition.validation_groups%', '@coreshop.form_registry.product_price_rule.conditions']
 
   coreshop.form.product_price_rule.type.rule_condition_choice:
     class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionChoiceType

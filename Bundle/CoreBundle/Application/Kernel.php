@@ -7,6 +7,7 @@ use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
 use CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle;
+use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
 use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -33,6 +34,7 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopCurrencyBundle(),
             new CoreShopTaxationBundle(),
             new CoreShopStoreBundle(),
+            new CoreShopIndexBundle(),
 
             new CoreShopCoreBundle(),
             new CoreShopFrontendBundle(),
