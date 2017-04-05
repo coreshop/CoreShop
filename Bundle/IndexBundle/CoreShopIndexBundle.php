@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\IndexBundle;
 
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,6 +25,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterColumnTypePass());
+        $container->addCompilerPass(new RegisterIndexWorkerPass());
     }
 
 

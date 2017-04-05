@@ -19,7 +19,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     /**
      * @var string
      */
-    public $key;
+    public $objectKey;
 
     /**
      * @var string
@@ -90,17 +90,17 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getObjectKey()
     {
-        return $this->key;
+        return $this->objectKey;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setKey($key)
+    public function setObjectKey($objectKey)
     {
-        $this->key = $key;
+        $this->objectKey = $objectKey;
 
         return $this;
     }

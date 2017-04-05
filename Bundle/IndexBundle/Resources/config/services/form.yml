@@ -3,6 +3,7 @@ parameters:
   coreshop.form.type.index.column.validation_groups: [coreshop]
   coreshop.form.type.index.column_type.validation_groups: [coreshop]
   coreshop.form.type.index.columns.validation_groups: [coreshop]
+  coreshop.form.type.index.worker.validation_groups: [coreshop]
 
 services:
 
@@ -10,7 +11,7 @@ services:
     class: CoreShop\Bundle\IndexBundle\Form\Type\IndexType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.model.index.class%', '%coreshop.form.type.index.validation_groups%']
+    arguments: ['%coreshop.model.index.class%', '%coreshop.form.type.index.validation_groups%', '@coreshop.form_registry.index.worker']
 
   coreshop.form.type.index_column:
     class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnType
@@ -29,3 +30,9 @@ services:
     tags:
         - { name: form.type }
     arguments: ['@coreshop.registry.index.column_types']
+
+  coreshop.form.type.index.worker_choice:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\IndexWorkerChoiceType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.index.workers%']

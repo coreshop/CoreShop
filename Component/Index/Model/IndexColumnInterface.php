@@ -50,12 +50,12 @@ interface IndexColumnInterface extends ResourceInterface
     /**
      * @return string
      */
-    public function getKey();
+    public function getObjectKey();
 
     /**
-     * @param string $key
+     * @param string $objectKey
      */
-    public function setKey($key);
+    public function setObjectKey($objectKey);
 
     /**
      * @return string

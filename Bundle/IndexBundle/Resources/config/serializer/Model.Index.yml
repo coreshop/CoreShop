@@ -1,6 +1,6 @@
-CoreShop\Component\Currency\Model\Currency:
+CoreShop\Component\Index\Model\Index:
   exclusion_policy: ALL
-  xml_root_name: currency
+  xml_root_name: index
   properties:
     id:
       expose: true
@@ -11,23 +11,19 @@ CoreShop\Component\Currency\Model\Currency:
       expose: true
       type: string
       groups: [List, Detailed]
-    isoCode:
+    class:
       expose: true
       type: string
       groups: [Detailed]
-    numericIsoCode:
-      expose: true
-      type: integer
-      groups: [Detailed]
-    symbol:
+    worker:
       expose: true
       type: string
+      groups: [Detailed]
+    configuration:
+      expose: true
+      type: array
       groups: [List, Detailed]
-    exchangeRate:
+    columns:
       expose: true
-      type: float
-      groups: [Detailed]
-    countries:
-      expose: true
-      type: relation
+      type: array
       groups: [Detailed]

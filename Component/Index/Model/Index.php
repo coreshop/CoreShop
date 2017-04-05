@@ -26,12 +26,12 @@ class Index extends AbstractResource implements IndexInterface
     /**
      * @var string
      */
-    protected $type = "";
+    protected $worker = "";
 
     /**
      * @var array
      */
-    protected $config = [];
+    protected $configuration = [];
 
     /**
      * @var Collection|IndexColumnInterface[]
@@ -54,17 +54,17 @@ class Index extends AbstractResource implements IndexInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getWorker()
     {
-        return $this->type;
+        return $this->worker;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setType($type)
+    public function setWorker($worker)
     {
-        $this->type = $type;
+        $this->worker = $worker;
     }
 
     /**
@@ -102,17 +102,17 @@ class Index extends AbstractResource implements IndexInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfig()
+    public function getConfiguration()
     {
-        return $this->config;
+        return $this->configuration;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setConfig($config)
+    public function setConfiguration($configuration)
     {
-        $this->config = $config;
+        $this->configuration = $configuration;
     }
 
     /**

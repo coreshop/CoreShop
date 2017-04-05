@@ -20,13 +20,13 @@ interface IndexInterface extends ResourceInterface {
     /**
      * @return string
      */
-    public function getType();
+    public function getWorker();
 
     /**
-     * @param string $type
+     * @param string $worker
      * @return static
      */
-    public function setType($type);
+    public function setWorker($worker);
 
     /**
      * @return string
@@ -38,17 +38,6 @@ interface IndexInterface extends ResourceInterface {
      * @return static
      */
     public function setClass($class);
-
-    /**
-     * @return array
-     */
-    public function getConfig();
-
-    /**
-     * @param array $config
-     * @return static
-     */
-    public function setConfig($config);
 
      /**
      * @return Collection|IndexColumnInterface[]
@@ -76,4 +65,15 @@ interface IndexInterface extends ResourceInterface {
      * @return bool
      */
     public function hasColumn(IndexColumnInterface $column);
+
+    /**
+     * @return array
+     */
+    public function getConfiguration();
+
+    /**
+     * @param $configuration
+     * @return mixed
+     */
+    public function setConfiguration($configuration);
 }

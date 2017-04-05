@@ -15,13 +15,13 @@ CoreShop\Component\Index\Model\Index:
       column: name
       type: string
       nullable: false
-    type:
-      column: type
+    worker:
+      column: worker
       type: string
       nullable: true
-    config:
-      column: config
-      type: string
+    configuration:
+      column: configuration
+      type: array
   oneToMany:
     columns:
       targetEntity: CoreShop\Component\Index\Model\IndexColumnInterface

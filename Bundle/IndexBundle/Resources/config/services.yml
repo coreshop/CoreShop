@@ -2,6 +2,8 @@ imports:
   - { resource: "services/form.yml" }
 
 services:
+
+  # Index Column Registry
   coreshop.registry.index.column_types:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:
@@ -10,6 +12,37 @@ services:
 
   coreshop.form_registry.index_column_types:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  # Index Worker Registry
+  coreshop.registry.index.worker:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Index\Worker\WorkerInterface
+      - index-workers
+
+  coreshop.form_registry.index.worker:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  coreshop.registry.index.getter:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Index\Getter\GetterInterface
+      - index-getters
+
+  coreshop.registry.index.interpreter:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Index\Interpreter\InterpreterInterface
+      - index-interpreters
+
+  # Index Workers
+  coreshop.index.worker.mysql:
+    class: CoreShop\Bundle\IndexBundle\Worker\MysqlWorker
+    arguments:
+      - '@coreshop.registry.index.getter'
+      - '@coreshop.registry.index.interpreter'
+    tags:
+      - { name: coreshop.index.worker, type: mysql, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Worker\MysqlWorkerType}
 
 
   # Index Column Types

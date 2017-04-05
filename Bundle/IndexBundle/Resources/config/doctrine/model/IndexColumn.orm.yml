@@ -8,8 +8,12 @@ CoreShop\Component\Index\Model\IndexColumn:
       id: true
       generator:
         strategy: AUTO
-    key:
-      column: key
+    type:
+      column: type
+      type: string
+      nullable: true
+    objectKey:
+      column: objectKey
       type: string
       nullable: true
     name:
@@ -22,24 +26,30 @@ CoreShop\Component\Index\Model\IndexColumn:
     getter:
       column: getter
       type: string
+      nullable: true
     getterConfig:
       column: getterConfig
       type: array
+      nullable: true
     dataType:
       column: dataType
       type: string
+      nullable: true
     interpreter:
       column: interpreter
       type: string
+      nullable: true
     interpreterConfig:
       column: interpreterConfig
       type: array
+      nullable: true
     columnType:
       column: columnType
       type: string
     configuration:
       column: configuration
-      type: string
+      type: array
+      nullable: true
   manyToOne:
     index:
       targetEntity: CoreShop\Component\Index\Model\IndexInterface
