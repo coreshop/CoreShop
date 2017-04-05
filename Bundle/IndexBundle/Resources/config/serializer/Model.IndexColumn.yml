@@ -25,6 +25,10 @@ CoreShop\Component\Index\Model\IndexColumn:
       groups: [Detailed]
     getter:
       expose: true
+      type: string
+      groups: [Detailed]
+    getterConfig:
+      expose: true
       type: array
       groups: [Detailed]
     dataType:

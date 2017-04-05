@@ -17,7 +17,12 @@ services:
     class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.model.index_column.class%', '%coreshop.form.type.index.column_type.validation_groups%', '@coreshop.form_registry.index_column_types']
+    arguments:
+      - '%coreshop.model.index_column.class%'
+      - '%coreshop.form.type.index.column_type.validation_groups%'
+      - '@coreshop.form_registry.index_column_types'
+      - '@coreshop.form_registry.index.getter'
+      - '@coreshop.form_registry.index.interpreter'
 
   coreshop.form.type.index.index_column_choice:
     class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnChoiceType
@@ -36,3 +41,9 @@ services:
     tags:
         - { name: form.type }
     arguments: ['%coreshop.index.workers%']
+
+  coreshop.form.type.index.getter_choice:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnGetterChoiceType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.index.getters%']

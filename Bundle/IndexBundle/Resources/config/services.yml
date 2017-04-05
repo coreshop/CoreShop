@@ -23,17 +23,25 @@ services:
   coreshop.form_registry.index.worker:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
+  # -index Getter Registry
   coreshop.registry.index.getter:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:
       - CoreShop\Component\Index\Getter\GetterInterface
       - index-getters
 
+  coreshop.form_registry.index.getter:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  # Interpreter Registry
   coreshop.registry.index.interpreter:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:
       - CoreShop\Component\Index\Interpreter\InterpreterInterface
       - index-interpreters
+
+  coreshop.form_registry.index.interpreter:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
   # Index Workers
   coreshop.index.worker.mysql:
@@ -43,6 +51,18 @@ services:
       - '@coreshop.registry.index.interpreter'
     tags:
       - { name: coreshop.index.worker, type: mysql, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Worker\MysqlWorkerType}
+
+  # Index Getter
+  coreshop.index.getter.brickfield:
+    class: CoreShop\Bundle\IndexBundle\Getter\BrickGetter
+    tags:
+     - { name: coreshop.index.getter, type: brick, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\BrickGetterFormType}
+
+  # Index Getter
+  coreshop.index.interpreter.soundex:
+    class: CoreShop\Bundle\IndexBundle\Interpreter\Soundex
+    tags:
+     - { name: coreshop.index.interpreter, type: soundex, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\EmptyConfigurationFormType}
 
 
   # Index Column Types
