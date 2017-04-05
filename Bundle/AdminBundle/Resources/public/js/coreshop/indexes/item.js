@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
     iconCls : 'coreshop_icon_indexes',
 
     url : {
-        save : '/admin/CoreShop/indexes/save'
+        save : '/admin/CoreShop/indices/save'
     },
 
     getPanel: function () {
@@ -86,7 +86,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
                                     xtype:'combo',
                                     fieldLabel:t('coreshop_indexes_type'),
                                     typeAhead:true,
-                                    value:this.data.type,
+                                    value:this.data.worker,
                                     mode:'local',
                                     listWidth:100,
                                     store: this.parentPanel.typesStore,
@@ -94,7 +94,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
                                     valueField:'name',
                                     forceSelection:true,
                                     triggerAction:'all',
-                                    name:'type',
+                                    name:'worker',
                                     listeners : {
                                         change: function (combo, value) {
                                             this.getIndexTypeConfig(value);
@@ -113,7 +113,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
     },
 
     getIndexFields : function () {
-        this.fieldsPanel = new pimcore.plugin.coreshop.indexes.fields(this.data);
+        this.fieldsPanel = new pimcore.plugin.coreshop.indexes.fields(this.data, this.parentPanel.classId);
 
         this.indexFields = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_indexes_fields',
@@ -155,14 +155,11 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
 
     getSaveData : function () {
         var saveData = this.formPanel.down("form").getForm().getFieldValues();
-        var config = this.indexTypeSettings.getForm().getFieldValues();
 
-        // general settings
-        saveData['config'] = Ext.apply({}, this.fieldsPanel.getData(), config);
+        saveData['configuration'] = this.indexTypeSettings.getForm().getFieldValues();
+        saveData['columns'] = this.fieldsPanel.getData();
 
-        return {
-            data : Ext.encode(saveData)
-        };
+        return saveData;
     },
 
     isValid : function() {

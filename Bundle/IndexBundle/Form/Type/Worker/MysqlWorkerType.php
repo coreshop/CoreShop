@@ -16,13 +16,7 @@ final class MysqlWorkerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('test', TextType::class, [
-                'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']])
-                ]
-            ])
-        ;
+
     }
 
     /**

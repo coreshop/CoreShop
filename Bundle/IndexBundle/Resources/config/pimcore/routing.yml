@@ -2,3 +2,15 @@ coreshop_admin_index:
   type: coreshop.resources
   resource: |
     alias: coreshop.index
+
+coreshop_admin_indices_config:
+  path: /%coreshop.admin.route.base%/indices/get-config
+  defaults: { _controller: 'coreshop.admin_controller.index:getConfigAction'}
+
+coreshop_admin_indices_types:
+  path: /%coreshop.admin.route.base%/indices/get-types
+  defaults: { _controller: 'coreshop.admin_controller.index:getTypesAction'}
+
+coreshop_admin_indices_class_definition:
+  path: /%coreshop.admin.route.base%/indices/get-class-definition-for-field-selection
+  defaults: { _controller: 'coreshop.admin_controller.index:getClassDefinitionForFieldSelectionAction'}

@@ -36,29 +36,29 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
-                $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
-                if (null === $type) {
+                $objectType = $this->getRegistryIdentifier($event->getForm(), $event->getData());
+                if (null === $objectType) {
                     return;
                 }
 
-                $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
+                $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($objectType, 'default'));
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
-                if (null === $type) {
+                $objectType = $this->getRegistryIdentifier($event->getForm(), $event->getData());
+                if (null === $objectType) {
                     return;
                 }
 
-                $event->getForm()->get('type')->setData($type);
+                $event->getForm()->get('objectType')->setData($objectType);
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
                 $data = $event->getData();
 
-                if (!isset($data['type'])) {
+                if (!isset($data['objectType'])) {
                     return;
                 }
 
-                $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['type'], 'default'));
+                $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['objectType'], 'default'));
             })
         ;
     }
@@ -95,8 +95,8 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null)
     {
-        if (null !== $data && null !== $data->getType()) {
-            return $data->getType();
+        if (null !== $data && null !== $data->getObjectType()) {
+            return $data->getObjectType();
         }
 
         if (null !== $form->getConfig()->hasOption('configuration_type')) {

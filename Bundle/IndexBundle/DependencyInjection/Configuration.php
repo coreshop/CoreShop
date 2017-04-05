@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection;
 
+use CoreShop\Bundle\IndexBundle\Controller\IndexController;
 use CoreShop\Bundle\IndexBundle\Form\Type\IndexType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -53,7 +54,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(Index::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(IndexInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(IndexController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()

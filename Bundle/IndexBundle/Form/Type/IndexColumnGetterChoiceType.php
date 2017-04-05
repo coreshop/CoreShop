@@ -27,7 +27,7 @@ final class IndexColumnGetterChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => array_flip($this->getters),
+            'choices' => array_flip($this->getters)
         ]);
     }
 

@@ -26,6 +26,8 @@ class Kernel extends \Pimcore\Kernel
     public function registerBundles()
     {
         $bundles = [
+            new JMSSerializerBundle(),
+
             new CoreShopOrderBundle(),
             new CoreShopCustomerBundle(),
             new CoreShopRuleBundle(),
@@ -39,7 +41,6 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopCoreBundle(),
             new CoreShopFrontendBundle(),
             new CoreShopResourceBundle(),
-            new JMSSerializerBundle(),
             new FOSRestBundle(),
             new LiipThemeBundle()
         ];

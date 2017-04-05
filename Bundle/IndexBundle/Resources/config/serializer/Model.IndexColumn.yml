@@ -15,11 +15,11 @@ CoreShop\Component\Index\Model\IndexColumn:
       expose: true
       type: string
       groups: [Detailed]
-    type:
+    objectType:
       expose: true
       type: string
       groups: [Detailed]
-    objectType:
+    dataType:
       expose: true
       type: string
       groups: [Detailed]
@@ -30,10 +30,6 @@ CoreShop\Component\Index\Model\IndexColumn:
     getterConfig:
       expose: true
       type: array
-      groups: [Detailed]
-    dataType:
-      expose: true
-      type: string
       groups: [Detailed]
     interpreter:
       expose: true

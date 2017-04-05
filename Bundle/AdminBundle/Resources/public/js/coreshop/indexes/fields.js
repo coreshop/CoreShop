@@ -17,9 +17,9 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     data: {},
     brickKeys: [],
 
-    initialize: function (data) {
+    initialize: function (data, classId) {
         this.data = data;
-        this.config = data.config;
+        this.classId = classId;
     },
 
     getLayout : function () {
@@ -34,36 +34,71 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
     getData: function () {
 
-        var data = {};
-        if (this.languageField) {
-            data.language = this.languageField.getValue();
-        }
+        var columns = [];
 
         if (this.selectionPanel) {
-            data.columns = [];
-            this.selectionPanel.getRootNode().eachChild(function (child) {
-                var obj = Ext.Object.merge(child.data, {}); //Removes unneeded nested data
+            var allowedColumns = [
+                'name', 'getter', 'getterConfig', 'interpreter', 'interpreterConfig', 'columnType', 'configuration', 'objectType', 'dataType'
+            ];
 
-                data.columns.push(obj);
+            this.selectionPanel.getRootNode().eachChild(function (child) {
+                var obj = {
+                    type: child.data.objectType,
+                    objectKey: child.data.key
+                };
+
+                Ext.Object.each(Ext.Object.merge(child.data, {}), function(key, value) {
+
+                    if (key === 'configuration') {
+                        var configuration = {};
+
+                        Ext.Object.each(value, function(ckey, cvalue) {
+                            if (cvalue) {
+                                configuration[ckey] = cvalue;
+                            }
+                        });
+
+                        value = configuration;
+
+                        if (Object.keys(configuration).length === 0) {
+                            return;
+                        }
+                    }
+
+                    if (value && allowedColumns.indexOf(key) >= 0) {
+                        obj[key] = value;
+                    }
+                });
+
+                if (!obj.hasOwnProperty('getter') && obj.hasOwnProperty('getterConfig')) {
+                    delete obj['getterConfig'];
+                }
+
+                if (!obj.hasOwnProperty('interpreter') && obj.hasOwnProperty('interpreterConfig')) {
+                    delete obj['interpreterConfig'];
+                }
+
+                columns.push(obj);
             }.bind(this));
         }
 
-        return data;
+        return columns;
     },
 
     getSelectionPanel: function () {
         if (!this.selectionPanel) {
 
             var childs = [];
-            if (this.config.hasOwnProperty('columns')) {
-                for (var i = 0; i < this.config.columns.length; i++) {
-                    var nodeConf = this.config.columns[i];
+            if (this.data.hasOwnProperty('columns')) {
+                for (var i = 0; i < this.data.columns.length; i++) {
+                    var nodeConf = this.data.columns[i];
                     var child = Ext.Object.merge(nodeConf,
                         {
                             text: nodeConf.name,
                             type: 'data',
                             leaf: true,
-                            iconCls: 'pimcore_icon_' + nodeConf.dataType
+                            iconCls: 'pimcore_icon_' + nodeConf.dataType,
+                            key: nodeConf.objectKey
                         }
                     );
 
@@ -166,7 +201,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
-            this.classDefinitionTreePanel = this.getClassTree('/admin/CoreShop/indexes/get-class-definition-for-field-selection', this.data.classId);
+            this.classDefinitionTreePanel = this.getClassTree('/admin/CoreShop/indices/get-class-definition-for-field-selection', this.classId);
         }
 
         return this.classDefinitionTreePanel;
@@ -281,7 +316,8 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
 
             var newNode = Ext.Object.merge(initData, {
                 text :  key,
-                key : initData.name,
+                objectKey : initData.name,
+                key: initData.name,
                 type : 'data',
                 layout : initData,
                 leaf : isLeaf,
@@ -290,7 +326,10 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                 iconCls: 'pimcore_icon_' + type,
                 expanded: true,
                 objectType : objectType,
-                className : className
+                className : className,
+                configuration: {
+                    className: className
+                }
             });
 
             newNode = this.appendChild(newNode);

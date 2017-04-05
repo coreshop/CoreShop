@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 {
@@ -40,14 +41,17 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('type', IndexColumnChoiceType::class)
-            ->add('objectType', TextType::class)
+            ->add('objectType', IndexColumnChoiceType::class)
+            ->add('dataType', TextType::class)
             ->add('name', TextType::class)
             ->add('objectKey', TextType::class)
-            ->add('columnType', TextType::class)
+            ->add('columnType', TextType::class, [
+                'constraints' => [
+                    new NotBlank(['groups' => ['coreshop']])
+                ],
+            ])
             ->add('getter', IndexColumnGetterChoiceType::class)
             ->add('interpreter', TextType::class)
-            ->add('dataType', TextType::class)
         ;
 
         /**

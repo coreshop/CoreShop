@@ -21,12 +21,12 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
     type : 'indexes',
 
     url : {
-        add : '/admin/CoreShop/indexes/add',
-        delete : '/admin/CoreShop/indexes/delete',
-        get : '/admin/CoreShop/indexes/get',
-        list : '/admin/CoreShop/indexes/list',
-        config: '/admin/CoreShop/indexes/get-config',
-        types : '/admin/CoreShop/indexes/get-types'
+        add : '/admin/CoreShop/indices/add',
+        delete : '/admin/CoreShop/indices/delete',
+        get : '/admin/CoreShop/indices/get',
+        list : '/admin/CoreShop/indices/list',
+        config: '/admin/CoreShop/indices/get-config',
+        types : '/admin/CoreShop/indices/get-types'
     },
 
     typesStore : null,
@@ -83,6 +83,7 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
                     this.getterStore.loadData(res.getters);
                     this.interpreterStore.loadData(res.interpreters);
                     this.fieldTypeStore.loadData(res.fieldTypes);
+                    this.classId = res.classId;
 
                     // create layout
                     this.getLayout();

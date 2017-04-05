@@ -62,7 +62,7 @@ services:
   coreshop.index.interpreter.soundex:
     class: CoreShop\Bundle\IndexBundle\Interpreter\Soundex
     tags:
-     - { name: coreshop.index.interpreter, type: soundex, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\EmptyConfigurationFormType}
+     - { name: coreshop.index.interpreter, type: soundex, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
 
   # Index Column Types
