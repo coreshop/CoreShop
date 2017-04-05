@@ -18,6 +18,7 @@ use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\IndexService\AbstractWorker;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use Pimcore\Logger;
@@ -33,11 +34,18 @@ class MysqlWorker extends AbstractWorker
      */
     protected $db;
 
+    public function __construct(
+        ServiceRegistryInterface $getterServiceRegistry,
+        ServiceRegistryInterface $interpreterServiceRegistry
+    )
+    {
+        parent::__construct($getterServiceRegistry, $interpreterServiceRegistry);
+
+        $this->db = \Pimcore\Db::get();
+    }
 
     /**
-     * Create Database index table.
-     *
-     * @param IndexInterface $index
+     * {@inheritdoc}
      */
     public function createOrUpdateIndexStructures(IndexInterface $index)
     {
@@ -49,8 +57,6 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * Process Table - delete/add missing/new columns
-     *
-     * @param IndexInterface $index
      */
     protected function processTable(IndexInterface $index)
     {
@@ -81,8 +87,6 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * Process Localized Table - delete/add missing/new columns
-     *
-     * @param IndexInterface $index
      */
     protected function processLocalizedTable(IndexInterface $index)
     {
@@ -177,7 +181,7 @@ class MysqlWorker extends AbstractWorker
     /**
      * Create Tables of not exists
      *
-     * @param IndexInterface $index
+     * @param 
      */
     protected function createTables(IndexInterface $index)
     {
@@ -219,7 +223,7 @@ class MysqlWorker extends AbstractWorker
     /**
      * Create Localized Views.
      *
-     * @param IndexInterface $index
+     * @param 
      */
     protected function createLocalizedViews(IndexInterface $index)
     {
@@ -268,8 +272,8 @@ QUERY;
             }
 
             $this->db->query('DROP TABLE IF EXISTS `'.$this->getTablename($index).'`');
-            $this->db->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index).'`');
-            $this->db->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index).'`');
+            $this->db->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index, $index).'`');
+            $this->db->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index, $index).'`');
         } catch (\Exception $e) {
             Logger::error($e);
         }

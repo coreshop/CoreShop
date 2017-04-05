@@ -1,0 +1,7 @@
+services:
+  ‌coreshop.listeners.index.post_save:
+    class: CoreShop\Bundle\IndexBundle\EventListener\CreateIndexListener
+    arguments:
+      - '@coreshop.registry.index.worker'
+    tags:
+      - { name: kernel.event_listener, event: coreshop.index.post_save, method: onIndexSavePost }

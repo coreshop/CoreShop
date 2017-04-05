@@ -43,7 +43,6 @@ interface WorkerInterface {
      * returns product list implementation valid and configured for this worker/tenant.
      *
      * @param IndexInterface $index
-     *
      * @return AbstractListing
      */
     public function getList(IndexInterface $index);

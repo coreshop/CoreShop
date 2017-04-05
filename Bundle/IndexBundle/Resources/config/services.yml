@@ -1,5 +1,6 @@
 imports:
   - { resource: "services/form.yml" }
+  - { resource: "services/listeners.yml" }
 
 services:
 
@@ -49,6 +50,7 @@ services:
     arguments:
       - '@coreshop.registry.index.getter'
       - '@coreshop.registry.index.interpreter'
+    shared: false
     tags:
       - { name: coreshop.index.worker, type: mysql, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Worker\MysqlWorkerType}
 

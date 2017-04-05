@@ -151,7 +151,12 @@ class ResourceController extends AdminController
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
             $resource = $form->getData();
 
+            $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
+
             $this->entityManager->flush();
+
+            $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
+
 
             return $this->viewHandler->handle(['data' => $resource, 'success' => true], ["group" => "Detailed"]);
         }
