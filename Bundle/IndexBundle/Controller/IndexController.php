@@ -60,7 +60,7 @@ class IndexController extends ResourceController {
             ];
         }
 
-        $productClass = $this->getParameter('coreshop.model.product.pimcore_class_id');
+        $productClass = $this->getParameter('coreshop.model.product.class');
 
         return $this->viewHandler->handle(
             [
@@ -68,14 +68,14 @@ class IndexController extends ResourceController {
                 'interpreters' => $interpretersResult,
                 'getters' => $gettersResult,
                 'fieldTypes' => $fieldTypesResult,
-                'classId' => $productClass
+                'class' => str_replace('Pimcore\\Model\\Object\\', '', $productClass)
             ]
         );
     }
 
     public function getClassDefinitionForFieldSelectionAction(Request $request)
     {
-        $class = \Pimcore\Model\Object\ClassDefinition::getById(intval($request->get('id')));
+        $class = \Pimcore\Model\Object\ClassDefinition::getByName(intval($request->get('class')));
         $fields = $class->getFieldDefinitions();
 
         $result = [

@@ -60,14 +60,12 @@ abstract class AbstractWorker implements WorkerInterface
         AbstractObject::setHideUnpublished(false);
 
         $categories = [];
+        $categoryIds = [];
         $parentCategoryIds = [];
 
         //TODO: Should be refactored?
         if (method_exists($object, 'getCategories') && method_exists($object, 'getHierarchy')) {
             $categories = $object->getCategories();
-
-            $categoryIds = [];
-            $parentCategoryIds = [];
 
             if ($categories) {
                 foreach ($categories as $c) {
@@ -149,7 +147,7 @@ abstract class AbstractWorker implements WorkerInterface
 
 
                     if ($column->getType() === "localizedfields") {
-                        $getter = 'get' . ucfirst($column->getKey());
+                        $getter = 'get' . ucfirst($column->getObjectKey());
 
                         if (method_exists($object, $getter)) {
                             foreach ($validLanguages as $language) {
@@ -196,7 +194,7 @@ abstract class AbstractWorker implements WorkerInterface
                                 }
                             }
                         } else {
-                            $getter = 'get' . ucfirst($column->getKey());
+                            $getter = 'get' . ucfirst($column->getObjectKey());
 
                             if (method_exists($object, $getter)) {
                                 $value = $object->$getter();

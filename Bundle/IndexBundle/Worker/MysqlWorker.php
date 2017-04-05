@@ -322,7 +322,7 @@ QUERY;
             }
 
             try {
-                $this->db->delete($this->getRelationTablename($index), 'src = '.$this->db->quote($object->getId()));
+                $this->db->delete($this->getRelationTablename($index), ['src' => $this->db->quote($object->getId())]);
                 foreach ($preparedData['relation'] as $rd) {
                     $this->db->insert($this->getRelationTablename($index), $rd);
                 }

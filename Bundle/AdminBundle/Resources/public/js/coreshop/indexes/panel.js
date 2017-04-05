@@ -83,7 +83,7 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
                     this.getterStore.loadData(res.getters);
                     this.interpreterStore.loadData(res.interpreters);
                     this.fieldTypeStore.loadData(res.fieldTypes);
-                    this.classId = res.classId;
+                    this.class = res.class;
 
                     // create layout
                     this.getLayout();

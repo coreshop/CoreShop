@@ -17,9 +17,9 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     data: {},
     brickKeys: [],
 
-    initialize: function (data, classId) {
+    initialize: function (data, klass) {
         this.data = data;
-        this.classId = classId;
+        this.class = klass;
     },
 
     getLayout : function () {
@@ -201,13 +201,13 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
-            this.classDefinitionTreePanel = this.getClassTree('/admin/CoreShop/indices/get-class-definition-for-field-selection', this.classId);
+            this.classDefinitionTreePanel = this.getClassTree('/admin/CoreShop/indices/get-class-definition-for-field-selection', this.class);
         }
 
         return this.classDefinitionTreePanel;
     },
 
-    getClassTree: function (url, classId) {
+    getClassTree: function (url, klass) {
 
         var tree = new Ext.tree.TreePanel({
             title: t('class_definitions'),
@@ -237,7 +237,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         Ext.Ajax.request({
             url: url,
             params: {
-                id: classId
+                class: klass
             },
             success: this.initLayoutFields.bind(this, tree)
         });

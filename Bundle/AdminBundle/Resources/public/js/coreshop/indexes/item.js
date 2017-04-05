@@ -113,7 +113,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
     },
 
     getIndexFields : function () {
-        this.fieldsPanel = new pimcore.plugin.coreshop.indexes.fields(this.data, this.parentPanel.classId);
+        this.fieldsPanel = new pimcore.plugin.coreshop.indexes.fields(this.data, this.parentPanel.class);
 
         this.indexFields = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_indexes_fields',
@@ -156,6 +156,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
     getSaveData : function () {
         var saveData = this.formPanel.down("form").getForm().getFieldValues();
 
+        saveData['class'] = this.parentPanel.class;
         saveData['configuration'] = this.indexTypeSettings.getForm().getFieldValues();
         saveData['columns'] = this.fieldsPanel.getData();
 
