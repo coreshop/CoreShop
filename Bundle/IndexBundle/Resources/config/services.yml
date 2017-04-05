@@ -4,6 +4,11 @@ imports:
 
 services:
 
+  coreshop.factory.index.list:
+    class: CoreShop\Bundle\IndexBundle\ListingFactory
+    arguments:
+      - '@coreshop.registry.index.worker'
+
   # Index Column Registry
   coreshop.registry.index.column_types:
     class: CoreShop\Component\Registry\ServiceRegistry
@@ -24,7 +29,7 @@ services:
   coreshop.form_registry.index.worker:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-  # -index Getter Registry
+  # Index Getter Registry
   coreshop.registry.index.getter:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:

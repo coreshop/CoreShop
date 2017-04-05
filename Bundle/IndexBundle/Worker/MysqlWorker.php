@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\IndexBundle\Worker;
 use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\IndexService\AbstractWorker;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
@@ -30,7 +31,7 @@ class MysqlWorker extends AbstractWorker
     /**
      * Database.
      *
-     * @var \Zend_Db_Adapter_Abstract
+     * @var \Pimcore\Db\Connection
      */
     protected $db;
 
@@ -57,6 +58,8 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * Process Table - delete/add missing/new columns
+     *
+     * @param IndexInterface $index
      */
     protected function processTable(IndexInterface $index)
     {
@@ -87,6 +90,8 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * Process Localized Table - delete/add missing/new columns
+     *
+     * @param IndexInterface $index
      */
     protected function processLocalizedTable(IndexInterface $index)
     {
@@ -181,7 +186,7 @@ class MysqlWorker extends AbstractWorker
     /**
      * Create Tables of not exists
      *
-     * @param 
+     * @param IndexInterface $index
      */
     protected function createTables(IndexInterface $index)
     {
@@ -223,7 +228,7 @@ class MysqlWorker extends AbstractWorker
     /**
      * Create Localized Views.
      *
-     * @param 
+     * @param IndexInterface $index
      */
     protected function createLocalizedViews(IndexInterface $index)
     {
@@ -257,10 +262,7 @@ QUERY;
     }
 
     /**
-     * deletes necessary index structuers (like database tables).
-     *
-     * @param $index
-     * @return void
+     * {@inheritdoc}
      */
     public function deleteIndexStructures(IndexInterface $index)
     {
@@ -280,10 +282,7 @@ QUERY;
     }
 
     /**
-     * Delete Product from index.
-     *
-     * @param IndexInterface $index
-     * @param PimcoreModelInterface $object
+     * {@inheritdoc}
      */
     public function deleteFromIndex(IndexInterface $index, PimcoreModelInterface $object)
     {
@@ -293,10 +292,7 @@ QUERY;
     }
 
     /**
-     * Update or create product in index.
-     *
-     * @param IndexInterface $index
-     * @param PimcoreModelInterface $object
+     * {@inheritdoc}
      */
     public function updateIndex(IndexInterface $index, PimcoreModelInterface $object)
     {
@@ -406,10 +402,7 @@ QUERY;
     }
 
     /**
-     * Renders a condition to MySql
-     *
-     * @param ConditionInterface $condition
-     * @return string
+     * {@inheritdoc}
      */
     public function renderCondition(ConditionInterface $condition)
     {
@@ -419,11 +412,7 @@ QUERY;
     }
 
     /**
-     * get type for index
-     *
-     * @param $type
-     * @return string
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function renderFieldType($type)
     {
@@ -451,15 +440,11 @@ QUERY;
     }
 
     /**
-     * Return List.
-     *
-     * @param IndexInterface $index
-     * @return AbstractListing
+     * {@inheritdoc}
      */
     public function getList(IndexInterface $index)
     {
-        //TODO: Implement Generic List
-        //return new Product\Listing\Mysql($this->getIndex());
+        return new MysqlWorker\Listing($index, $this);
     }
 
     /**
