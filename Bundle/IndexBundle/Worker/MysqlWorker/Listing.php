@@ -330,14 +330,14 @@ class Listing extends AbstractListing
 
         $objectRaws = $this->dao->load($this->buildQueryFromConditions(), $this->buildOrderBy(), $this->getLimit(), $this->getOffset());
         $this->totalCount = $this->dao->getLastRecordCount();
-        $classId = $this->index->getClass();
+        $className = $this->index->getClass();
 
         $this->objects = [];
         foreach ($objectRaws as $raw) {
             $object = $this->loadElementById($raw['o_id']);
 
             if ($object instanceof Concrete) {
-                if ($object->getClassId() === $classId) {
+                if ($object->getClassName() === $className) {
                     $this->objects[] = $object;
                 }
             }

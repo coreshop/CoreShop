@@ -1,0 +1,3 @@
+coreshop_index_test:
+  path: /test/index
+  defaults: { _controller: CoreShopFrontendBundle:Test:testIndex}

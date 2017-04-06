@@ -1,9 +1,8 @@
 <?php
 
-namespace CoreShop\Bundle\IndexBundle;
+namespace CoreShop\Bundle\IndexBundle\Factory;
 
 use CoreShop\Component\Index\Factory\ListingFactoryInterface;
-use CoreShop\Component\Index\Model\Index;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -39,6 +38,6 @@ class ListingFactory implements ListingFactoryInterface {
          */
         $worker = $this->workerServiceRegistry->get($worker);
 
-        return $worker->getList($index, $worker);
+        return $worker->getList($index);
     }
 }
