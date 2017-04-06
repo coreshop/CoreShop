@@ -9,6 +9,17 @@ services:
     arguments:
       - '@coreshop.registry.index.worker'
 
+  coreshop.filter.processor:
+    class: CoreShop\Bundle\IndexBundle\Filter\FilterProcessor
+    arguments:
+      - '@coreshop.registry.filter.condition_types'
+
+  coreshop.factory.filter.list:
+    class: CoreShop\Bundle\IndexBundle\Factory\FilteredListingFactory
+    arguments:
+      - '@coreshop.factory.index.list'
+      - '@coreshop.filter.processor'
+
   # Index Column Registry
   coreshop.registry.index.column_types:
     class: CoreShop\Component\Registry\ServiceRegistry
@@ -27,6 +38,16 @@ services:
       - index-workers
 
   coreshop.form_registry.index.worker:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  # Filter Registry
+  coreshop.registry.filter.condition_types:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Index\Filter\FilterConditionProcessorInterface
+      - filter-processor
+
+  coreshop.form_registry.filter.condition_types:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
   # Index Getter Registry
@@ -97,3 +118,9 @@ services:
     class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType
     tags:
       - { name: coreshop.index.column_type, type: object, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType }
+
+  # Filter Condition Types
+  coreshop.filter.condition_type.select:
+    class: CoreShop\Bundle\IndexBundle\Filter\SelectFilterConditionProcessor
+    tags:
+      - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType}

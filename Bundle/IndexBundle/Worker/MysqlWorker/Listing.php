@@ -16,11 +16,11 @@ namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 
 use CoreShop\Bundle\IndexBundle\Worker\AbstractListing;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing\Dao;
+use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Concrete;

@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\IndexBundle;
 
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterConditionTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
@@ -30,6 +31,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterIndexWorkerPass());
         $container->addCompilerPass(new RegisterInterpreterPass());
         $container->addCompilerPass(new RegisterGetterPass());
+        $container->addCompilerPass(new RegisterFilterConditionTypesPass());
     }
 
 

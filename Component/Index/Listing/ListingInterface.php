@@ -2,10 +2,10 @@
 
 namespace CoreShop\Component\Index\Listing;
 
+use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Zend\Paginator\Adapter\AdapterInterface;
 use Zend\Paginator\AdapterAggregateInterface;

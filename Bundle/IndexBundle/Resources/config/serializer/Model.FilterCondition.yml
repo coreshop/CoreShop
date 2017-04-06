@@ -1,0 +1,33 @@
+CoreShop\Component\Index\Model\FilterCondition:
+  exclusion_policy: ALL
+  xml_root_name: filter_condition
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+      groups: [List, Detailed]
+    type:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    field:
+      expose: true
+      type: string
+      groups: [Detailed]
+    label:
+      expose: true
+      type: string
+      groups: [Detailed]
+    quantityUnit:
+      expose: true
+      type: integer
+      groups: [Detailed]
+    configuration:
+      expose: true
+      type: array
+      groups: [Detailed]
+    filter:
+      expose: true
+      type: relation
+      groups: [Detailed]

@@ -14,3 +14,8 @@ coreshop_admin_indices_types:
 coreshop_admin_indices_class_definition:
   path: /%coreshop.admin.route.base%/indices/get-class-definition-for-field-selection
   defaults: { _controller: 'coreshop.admin_controller.index:getClassDefinitionForFieldSelectionAction'}
+
+coreshop_admin_filter:
+  type: coreshop.resources
+  resource: |
+    alias: coreshop.filter

@@ -15,15 +15,13 @@
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
+use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\IndexService\AbstractWorker;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Index\Condition\ConditionInterface;
 use Pimcore\Logger;
-use Pimcore\Model\Listing\AbstractListing;
 use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker

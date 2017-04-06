@@ -1,0 +1,30 @@
+CoreShop\Component\Index\Model\FilterCondition:
+  type: mappedSuperclass
+  table: coreshop_filter_condition
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    field:
+      column: field
+      type: string
+      nullable: false
+    type:
+      column: type
+      type: string
+      nullable: false
+    label:
+      column: label
+      type: string
+      nullable: true
+    quantityUnit:
+      column: quantityUnit
+      type: integer
+      nullable: true
+    configuration:
+      column: configuration
+      type: array
+      nullable: true
