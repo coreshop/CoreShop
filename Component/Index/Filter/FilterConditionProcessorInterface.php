@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 interface FilterConditionProcessorInterface
 {
     /**
+     * Const for Empty Value
+     */
+    const EMPTY_STRING = '##EMPTY##';
+
+    /**
      * @param FilterConditionInterface $condition
      * @param FilterInterface $filter
      * @param ListingInterface $list
