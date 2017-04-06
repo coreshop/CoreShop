@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection;
 
+use CoreShop\Bundle\IndexBundle\Controller\FilterController;
 use CoreShop\Bundle\IndexBundle\Controller\IndexController;
 use CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionType;
 use CoreShop\Bundle\IndexBundle\Form\Type\FilterType;
@@ -97,7 +98,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(Filter::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(FilterInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(FilterController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()

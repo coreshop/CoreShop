@@ -100,7 +100,7 @@ coreshop.util.format.currency = function (currency, v) {
 coreshop.helpers.showAbout = function () {
 
     var html = '<div class="pimcore_about_window">';
-    html += '<br><img src="/bundles/coreshoplegacy/img/logo.svg" style="width: 60px;"><br>';
+    html += '<br><img src="/bundles/coreshopadmin/img/logo.svg" style="width: 60px;"><br>';
     html += '<br><b>Version: ' + coreshop.settings.bundle.version + '</b>';
     html += '<br><b>Build: ' + coreshop.settings.bundle.build + '</b>';
     html += '<br><br>&copy; by Dominik Pfaffenbauer, Wels, Austria (<a href="https://www.coreshop.org/" target="_blank">coreshop.org</a>)';

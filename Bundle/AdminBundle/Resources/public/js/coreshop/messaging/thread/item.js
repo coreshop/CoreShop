@@ -187,7 +187,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
                 {
                     bodyPadding : 10,
                     width: 100,
-                    html : '<img src="/bundles/coreshoplegacy/img/messaging_' + (message.adminUserId ? 'admin' : 'user') + '.svg" />'
+                    html : '<img src="/bundles/coreshopadmin/img/messaging_' + (message.adminUserId ? 'admin' : 'user') + '.svg" />'
                 },
                 {
                     flex : 1,

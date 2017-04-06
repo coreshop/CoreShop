@@ -34,10 +34,6 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
 
         // show only defined conditions
         Ext.each(this.conditions, function (condition) {
-
-            if (condition == 'abstract')
-                return;
-
             addMenu.push({
                 iconCls: 'coreshop_product_filters_icon_conditions_' + condition,
                 text: t('coreshop_product_filters_' + condition),
@@ -101,6 +97,9 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
                 condition = form.form.getFieldValues();
             }
 
+            if (conditionClass.data.id) {
+                condition['id'] = conditionClass.data.id;
+            }
 
             condition['type'] = conditions[i].xparent.type;
 

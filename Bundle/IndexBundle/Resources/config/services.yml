@@ -133,9 +133,9 @@ services:
   coreshop.filter.condition_type.multiselect:
     class: CoreShop\Bundle\IndexBundle\Filter\MultiselectFilterConditionProcessor
     tags:
-      - { name: coreshop.filter.condition_type, type: range, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
+      - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
 
   coreshop.filter.condition_type.boolean:
     class: CoreShop\Bundle\IndexBundle\Filter\BooleanFilterConditionProcessor
     tags:
-      - { name: coreshop.filter.condition_type, type: range, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionBooleanType}
+      - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionBooleanType}

@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     iconCls : 'coreshop_icon_product_filters',
 
     url : {
-        save : '/admin/CoreShop/filter/save'
+        save : '/admin/CoreShop/filters/save'
     },
 
     indexFieldsStore : null,
@@ -43,42 +43,42 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     },
 
     getItems : function () {
-        this.conditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'preconditions');
-        this.filters = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'filters');
-        this.similarities = new pimcore.plugin.coreshop.filters.similarity(this, this.parentPanel.similarities);
+        this.preConditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'preConditions');
+        this.conditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'conditions');
+        //this.similarities = new pimcore.plugin.coreshop.filters.similarity(this, this.parentPanel.similarities);
 
         var items = [
             this.getSettings(),
-            this.conditions.getLayout(),
-            this.filters.getLayout(),
-            this.similarities.getLayout()
+            this.preConditions.getLayout(),
+            this.conditions.getLayout()
+            //this.similarities.getLayout()
         ];
 
         // add saved conditions
         if (this.data.preConditions)
         {
             Ext.each(this.data.preConditions, function (condition) {
+                this.preConditions.addCondition(condition.type, condition);
+            }.bind(this));
+        }
+
+        if (this.data.conditions) {
+            Ext.each(this.data.conditions, function (condition) {
                 this.conditions.addCondition(condition.type, condition);
             }.bind(this));
         }
 
-        if (this.data.filters) {
-            Ext.each(this.data.filters, function (condition) {
-                this.filters.addCondition(condition.type, condition);
-            }.bind(this));
-        }
-
-        if (this.data.similarities) {
+        /*if (this.data.similarities) {
             Ext.each(this.data.similarities, function (similarity) {
                 this.similarities.addSimilarity(similarity.type, similarity);
             }.bind(this));
-        }
+        }*/
 
         this.indexCombo.setValue(this.data.index);
 
         if (!this.data.index) {
+            this.preConditions.disable();
             this.conditions.disable();
-            this.filters.disable();
         }
 
         return items;
@@ -87,7 +87,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     getFieldsForIndex : function (forceReload) {
         if (!this.indexFieldsStore) {
             var proxy = new Ext.data.HttpProxy({
-                url : '/admin/CoreShop/filter/get-fields-for-index'
+                url : '/admin/CoreShop/filters/get-fields-for-index'
             });
 
             var reader = new Ext.data.JsonReader({}, [
@@ -160,8 +160,8 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
             }, this.indexCombo, {
                 xtype: 'combo',
                 fieldLabel: t('coreshop_product_filters_order'),
-                name: 'order',
-                value: data.order,
+                name: 'orderDirection',
+                value: data.orderDirection,
                 width: 250,
                 store: [['desc', t('coreshop_product_filters_order_desc')], ['asc', t('coreshop_product_filters_order_asc')]],
                 triggerAction: 'all',
@@ -176,31 +176,13 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
                 width: 250,
                 value: data.orderKey
             }, {
-                fieldLabel: t('coreshop_product_filters_use_shop_paging_settings'),
-                xtype: 'checkbox',
-                name: 'useShopPagingSettings',
-                checked: data.useShopPagingSettings,
-                listeners : {
-                    change: function (checkbox, newValue) {
-                        var resultsPerPage = checkbox.up("form").down("[name='resultsPerPage']");
-
-                        if (newValue) {
-                            resultsPerPage.disable();
-                        }
-                        else {
-                            resultsPerPage.enable();
-                        }
-                    }
-                }
-            }, {
                 xtype : 'numberfield',
                 fieldLabel:t('coreshop_product_filters_resultsPerPage'),
                 name:'resultsPerPage',
                 value : data.resultsPerPage,
                 minValue : 1,
                 decimalPrecision : 0,
-                step : 1,
-                disabled : data.useShopPagingSettings
+                step : 1
             }]
         });
 
@@ -208,16 +190,12 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     },
 
     getSaveData : function () {
-        var saveData = {};
+        var saveData = this.settingsForm.getForm().getFieldValues();
 
-        // general settings
-        saveData['settings'] = this.settingsForm.getForm().getFieldValues();
+        saveData['preConditions'] = this.preConditions.getData();
         saveData['conditions'] = this.conditions.getData();
-        saveData['filters'] = this.filters.getData();
-        saveData['similarities'] = this.similarities.getData();
+        //saveData['similarities'] = this.similarities.getData();
 
-        return {
-            data : Ext.encode(saveData)
-        };
+        return saveData;
     }
 });

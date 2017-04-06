@@ -60,7 +60,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
 
             this.valueStore = new Ext.data.ArrayStore({
                 proxy: new Ext.data.HttpProxy({
-                    url: '/admin/CoreShop/filter/get-values-for-filter-field'
+                    url: '/admin/CoreShop/filters/get-values-for-filter-field'
                 }),
                 reader: new Ext.data.JsonReader({}, [
                     { name: 'value' }

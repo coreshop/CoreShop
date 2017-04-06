@@ -19,3 +19,16 @@ coreshop_admin_filter:
   type: coreshop.resources
   resource: |
     alias: coreshop.filter
+
+coreshop_admin_filter_config:
+  path: /%coreshop.admin.route.base%/filters/get-config
+  defaults: { _controller: 'coreshop.admin_controller.filter:getConfigAction'}
+
+coreshop_admin_filter_get_fields:
+  path: /%coreshop.admin.route.base%/filters/get-fields-for-index
+  defaults: { _controller: 'coreshop.admin_controller.filter:getFieldsForIndexAction'}
+
+coreshop_admin_filter_get_values:
+  path: /%coreshop.admin.route.base%/filters/get-values-for-filter-field
+  defaults: { _controller: 'coreshop.admin_controller.filter:getValuesForFilterFieldAction'}
+
