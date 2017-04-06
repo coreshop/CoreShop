@@ -14,7 +14,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
-abstract class AdminController extends \Pimcore\Bundle\PimcoreAdminBundle\Controller\AdminController
+abstract class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
 {
     /**
      * Extract the action name.

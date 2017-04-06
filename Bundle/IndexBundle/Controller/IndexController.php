@@ -8,6 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends ResourceController {
 
+    /**
+     * Get Worker Types
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function getTypesAction() {
         $types = $this->getWorkerTypes();
 
@@ -22,6 +27,11 @@ class IndexController extends ResourceController {
         return $this->viewHandler->handle($typesObject);
     }
 
+    /**
+     * Get Index Configurations
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function getConfigAction() {
         $interpreters = $this->getInterpreterTypes();
         $interpretersResult = [];
@@ -73,6 +83,12 @@ class IndexController extends ResourceController {
         );
     }
 
+    /**
+     * Get Pimcore Class Definition
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function getClassDefinitionForFieldSelectionAction(Request $request)
     {
         $class = \Pimcore\Model\Object\ClassDefinition::getByName(intval($request->get('class')));
