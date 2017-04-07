@@ -2,9 +2,9 @@
 
 namespace CoreShop\Bundle\ProductBundle\Rule\Condition;
 
-use CoreShop\Component\Core\Assert\Assert;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use Webmozart\Assert\Assert;
 
 class QuantityConditionChecker implements ConditionCheckerInterface
 {

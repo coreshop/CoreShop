@@ -21,7 +21,3 @@ CoreShop\Component\Store\Model\Store:
       column: siteId
       type: integer
       unique: true
-  manyToMany:
-    countries:
-      targetEntity: CoreShop\Component\Address\Model\CountryInterface
-      mappedBy: stores

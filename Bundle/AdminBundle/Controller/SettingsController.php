@@ -20,7 +20,6 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Core\Helper\StringHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class SettingsController.

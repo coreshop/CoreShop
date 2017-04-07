@@ -72,7 +72,7 @@ class Listing extends AbstractListing
     protected $dao;
 
     /**
-     * @var
+     * @var string
      */
     protected $order;
 
@@ -585,18 +585,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     *  -----------------------------------------------------------------------------------------
-     *   Methods for AdapterInterface, AdapterAggregateInterface
-     *  -----------------------------------------------------------------------------------------.
-     */
-
-    /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Count elements of an object.
-     *
-     * @see http://php.net/manual/en/countable.count.php
-     *
-     * @return int
+     * @return int|null
      */
     public function count()
     {
@@ -608,12 +597,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Return the current element.
-     *
-     * @see http://php.net/manual/en/iterator.current.php
-     *
-     * @return mixed can return any type
+     * @return PimcoreModelInterface|mixed
      */
     public function current()
     {
@@ -624,12 +608,9 @@ class Listing extends AbstractListing
     }
 
     /**
-     * Returns an collection of items for a page.
-     *
-     * @param int $offset           Page offset
-     * @param int $itemCountPerPage Number of items per page
-     *
-     * @return array
+     * @param int $offset
+     * @param int $itemCountPerPage
+     * @return PimcoreModelInterface[]|null
      */
     public function getItems($offset, $itemCountPerPage)
     {
@@ -650,13 +631,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Return the key of the current element.
-     *
-     * @see http://php.net/manual/en/iterator.key.php
-     *
-     * @return mixed scalar scalar on success, integer
-     *               0 on failure
+     * @return mixed
      */
     public function key()
     {
@@ -667,10 +642,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Move forward to next element.
-     *
-     * @see http://php.net/manual/en/iterator.next.php
+     * @return PimcoreModelInterface|mixed
      */
     public function next()
     {
@@ -681,10 +653,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Rewind the Iterator to the first element.
      *
-     * @see http://php.net/manual/en/iterator.rewind.php
      */
     public function rewind()
     {
@@ -693,13 +662,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Checks if current position is valid.
-     *
-     * @see http://php.net/manual/en/iterator.valid.php
-     *
-     * @return bool The return value will be casted to boolean and then evaluated.
-     *              Returns true on success or false on failure.
+     * @return bool
      */
     public function valid()
     {

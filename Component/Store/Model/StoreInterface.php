@@ -14,7 +14,6 @@
 
 namespace CoreShop\Component\Store\Model;
 
-use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\Collection;
 
@@ -59,31 +58,4 @@ interface StoreInterface extends ResourceInterface
      * @param int $siteId
      */
     public function setSiteId($siteId);
-
-    /**
-     * @return Collection|CountryInterface[]
-     */
-    public function getCountries();
-
-    /**
-     * @return bool
-     */
-    public function hasCountries();
-
-    /**
-     * @param CountryInterface $country
-     */
-    public function addCountry(CountryInterface $country);
-
-    /**
-     * @param CountryInterface $country
-     */
-    public function removeCountry(CountryInterface $country);
-
-    /**
-     * @param CountryInterface $country
-     *
-     * @return bool
-     */
-    public function hasCountry(CountryInterface $country);
 }

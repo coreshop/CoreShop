@@ -1,22 +1,8 @@
 <?php
-/**
- * CoreShop.
- *
- * LICENSE
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 namespace CoreShop\Component\Currency\Model;
 
-use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\AbstractResource;
-use Doctrine\Common\Collections\Collection;
 
 class Currency extends AbstractResource implements CurrencyInterface
 {
@@ -49,11 +35,6 @@ class Currency extends AbstractResource implements CurrencyInterface
      * @var float
      */
     protected $exchangeRate = 1;
-
-    /**
-     * @var Collection|CountryInterface[]
-     */
-    protected $countries;
 
     /**
      * @return string
@@ -179,51 +160,5 @@ class Currency extends AbstractResource implements CurrencyInterface
         $this->exchangeRate = $exchangeRate;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCountries()
-    {
-        return $this->countries;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCountries()
-    {
-        return !$this->countries->isEmpty();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addCountry(CountryInterface $country)
-    {
-        if (!$this->hasCountry($country)) {
-            $this->countries->add($country);
-            $country->setCurrency($this);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeCountry(CountryInterface $country)
-    {
-        if ($this->hasCountry($country)) {
-            $this->countries->removeElement($country);
-            $country->setCurrency(null);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCountry(CountryInterface $country)
-    {
-        return $this->countries->contains($country);
     }
 }

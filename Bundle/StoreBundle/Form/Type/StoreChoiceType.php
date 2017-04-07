@@ -57,9 +57,7 @@ final class StoreChoiceType extends AbstractType
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
-                'choice_translation_domain' => false,
-                'label' => 'coreshop.form.address.zone',
-                'placeholder' => 'coreshop.form.zone.select',
+                'choice_translation_domain' => false
             ])
         ;
     }
