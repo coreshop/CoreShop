@@ -2,7 +2,6 @@
 
 namespace CoreShop\Component\IndexService;
 
-use CoreShop\Component\Core\Exception\ObjectUnsupportedException;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
@@ -46,8 +45,6 @@ abstract class AbstractWorker implements WorkerInterface
      * @param bool                  $convertArrayToString
      *
      * @return array
-     *
-     * @throws ObjectUnsupportedException
      */
     protected function prepareData(IndexInterface $index, PimcoreModelInterface $object, $convertArrayToString = true)
     {
