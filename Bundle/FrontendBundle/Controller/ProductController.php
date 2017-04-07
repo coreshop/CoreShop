@@ -2,22 +2,17 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Product\Repository\ProductRepositoryInterface;
+use CoreShop\Bundle\ResourceBundle\Controller\PimcoreFrontendController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProductController extends FrontendController
+class ProductController extends PimcoreFrontendController
 {
     public function latestAction(Request $request)
     {
-        /**
-         * @var $productRepository ProductRepositoryInterface
-         */
-        $productRepository = $this->get('coreshop.repository.product');
         $storeRepository = $this->get('coreshop.repository.store');
 
         return $this->render('CoreShopFrontendBundle:Product:_latest.html.twig', [
-            'products' => $productRepository->getLatestByShop($storeRepository->find(1))
+            'products' => $this->repository->getLatestByShop($storeRepository->find(1))
         ]);
     }
 }

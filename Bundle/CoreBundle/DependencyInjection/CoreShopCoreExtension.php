@@ -22,6 +22,21 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 final class CoreShopCoreExtension extends AbstractModelExtension
 {
     /**
+     * @var array
+     */
+    private static $bundles = [
+        'coreshop_address',
+        'coreshop_currency',
+        'coreshop_customer',
+        'coreshop_index',
+        'coreshop_order',
+        'coreshop_product',
+        'coreshop_rule',
+        'coreshop_store',
+        'coreshop_taxation'
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function load(array $config, ContainerBuilder $container)
@@ -29,6 +44,23 @@ final class CoreShopCoreExtension extends AbstractModelExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+        //$this->registerResources('sylius', $config['driver'], $config['resources'], $container);
+
         $loader->load('services.yml');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $config = $container->getExtensionConfig($this->getAlias());
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+
+        foreach ($container->getExtensions() as $name => $extension) {
+            if (in_array($name, self::$bundles, true)) {
+                $container->prependExtensionConfig($name, ['driver' => $config['driver']]);
+            }
+        }
     }
 }

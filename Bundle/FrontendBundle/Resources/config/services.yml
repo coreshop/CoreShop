@@ -25,11 +25,7 @@ services:
             - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.category:
-    class: CoreShop\Bundle\FrontendBundle\Controller\CategoryController
-    calls:
-            - [setContainer, ['@service_container']]
+    alias: coreshop.pimcore_controller.category
 
   coreshop.frontend.controller.product:
-    class: CoreShop\Bundle\FrontendBundle\Controller\ProductController
-    calls:
-            - [setContainer, ['@service_container']]
+    alias: coreshop.pimcore_controller.product
