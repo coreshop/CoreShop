@@ -78,7 +78,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -89,7 +89,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

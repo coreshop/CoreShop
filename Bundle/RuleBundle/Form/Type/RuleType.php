@@ -19,10 +19,10 @@ class RuleType extends AbstractResourceType
                 'label' => 'coreshop.form.rule.name',
             ])
             ->add('conditions', RuleConditionCollectionType::class, [
-                'label' => 'coreshop.form.rule.conditions'
+                'label' => 'coreshop.form.rule.conditions',
             ])
             ->add('actions', RuleActionCollectionType::class, [
-                'label' => 'coreshop.form.rule.actions'
+                'label' => 'coreshop.form.rule.actions',
             ])
             ->add('active', CheckboxType::class, [
                 'label' => 'coreshop.form.rule.name',

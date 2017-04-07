@@ -14,6 +14,7 @@ interface RuleInterface extends ResourceInterface
 
     /**
      * @param $name
+     *
      * @return mixed
      */
     public function setName($name);

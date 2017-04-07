@@ -22,8 +22,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class CoreShopResourceBundle extends Bundle
 {
-     const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
-     const DRIVER_DOCTRINE_PIMCORE = 'pimcore';
+    const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
+    const DRIVER_DOCTRINE_PIMCORE = 'pimcore';
 
     /**
      * {@inheritdoc}
@@ -37,13 +37,13 @@ final class CoreShopResourceBundle extends Bundle
         $container->addCompilerPass(new DoctrineTargetEntitiesResolverPass());
     }
 
-        /**
+    /**
      * @return string[]
      */
     public static function getAvailableDrivers()
     {
         return [
-            self::DRIVER_DOCTRINE_ORM
+            self::DRIVER_DOCTRINE_ORM,
         ];
     }
 }

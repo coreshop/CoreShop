@@ -2,7 +2,6 @@
 
 namespace CoreShop\Bundle\IndexBundle\Filter;
 
-use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
@@ -52,9 +51,11 @@ class FilterProcessor implements FilterProcessorInterface
 
     /**
      * @param FilterConditionInterface $condition
+     *
      * @return FilterConditionProcessorInterface
      */
-    private function getConditionProcessorForCondition(FilterConditionInterface $condition) {
+    private function getConditionProcessorForCondition(FilterConditionInterface $condition)
+    {
         return $this->conditionProcessors->get($condition->getType());
     }
 }

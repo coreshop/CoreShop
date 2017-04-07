@@ -17,7 +17,8 @@ namespace CoreShop\Component\Resource\Repository;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
-interface RepositoryInterface extends ObjectRepository {
+interface RepositoryInterface extends ObjectRepository
+{
     const ORDER_ASCENDING = 'ASC';
     const ORDER_DESCENDING = 'DESC';
 
@@ -25,7 +26,6 @@ interface RepositoryInterface extends ObjectRepository {
      * @param ResourceInterface $resource
      */
     public function add(ResourceInterface $resource);
-
 
     /**
      * @param ResourceInterface $resource

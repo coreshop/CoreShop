@@ -6,8 +6,8 @@ use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-class BrickGetter implements GetterInterface {
-
+class BrickGetter implements GetterInterface
+{
     /**
      * {@inheritdoc}
      */
@@ -21,13 +21,13 @@ class BrickGetter implements GetterInterface {
 
             $brickContainerGetter = 'get'.ucfirst($brickField);
             $brickContainer = $object->$brickContainerGetter();
-            $brickGetter = 'get' . ucfirst($columnConfig['className']);
+            $brickGetter = 'get'.ucfirst($columnConfig['className']);
 
             if ($brickContainer) {
                 $brick = $brickContainer->$brickGetter();
 
                 if ($brick) {
-                    $fieldGetter = 'get' . ucfirst($columnConfig['key']);
+                    $fieldGetter = 'get'.ucfirst($columnConfig['key']);
 
                     return $brick->$fieldGetter();
                 }

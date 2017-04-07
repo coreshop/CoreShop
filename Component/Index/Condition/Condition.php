@@ -4,11 +4,10 @@ namespace CoreShop\Component\Index\Condition;
 
 class Condition implements ConditionInterface
 {
-
     /**
      * @var string
      */
-    protected $type = "";
+    protected $type = '';
 
     /**
      * @var string
@@ -25,7 +24,7 @@ class Condition implements ConditionInterface
      *
      * @param string $fieldName
      * @param string $type
-     * @param mixed $values
+     * @param mixed  $values
      */
     public function __construct($fieldName, $type, $values)
     {
@@ -35,19 +34,20 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * IN Condition (in)
+     * IN Condition (in).
      *
      * @param $fieldName
      * @param $array
+     *
      * @return Condition
      */
     public static function in($fieldName, $array)
     {
-        return new Condition($fieldName, "in", $array);
+        return new self($fieldName, 'in', $array);
     }
 
     /**
-     * Range Condition (>=, <=)
+     * Range Condition (>=, <=).
      *
      * @param $fieldName
      * @param $from
@@ -57,40 +57,43 @@ class Condition implements ConditionInterface
      */
     public static function range($fieldName, $from, $to)
     {
-        return new Condition($fieldName, "range", ["from" => $from, "to" => $to]);
+        return new self($fieldName, 'range', ['from' => $from, 'to' => $to]);
     }
 
     /**
-     * Concat Conditions with "AND" or "OR"
+     * Concat Conditions with "AND" or "OR".
      *
      * @param $fieldName
      * @param Condition[] $conditions
-     * @param string $operator ("AND", "OR")
+     * @param string      $operator   ("AND", "OR")
+     *
      * @return Condition
      */
     public static function concat($fieldName, $conditions, $operator)
     {
-        return new Condition($fieldName, "concat", ["operator" => $operator, "conditions" => $conditions]);
+        return new self($fieldName, 'concat', ['operator' => $operator, 'conditions' => $conditions]);
     }
 
     /**
-     * Like Condition (%)
+     * Like Condition (%).
      *
      * @param $fieldName
      * @param $value
      * @param $patternPosition ("left", "right", "both")
+     *
      * @return Condition
      */
     public static function like($fieldName, $value, $patternPosition)
     {
-        return new Condition($fieldName, "like", ["value" => $value, "pattern" => $patternPosition]);
+        return new self($fieldName, 'like', ['value' => $value, 'pattern' => $patternPosition]);
     }
 
     /**
-     * Match Condition (=)
+     * Match Condition (=).
      *
      * @param $fieldName
      * @param $value
+     *
      * @return Condition
      */
     public static function match($fieldName, $value)
@@ -99,10 +102,11 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * Match Condition (=)
+     * Match Condition (=).
      *
      * @param $fieldName
      * @param $value
+     *
      * @return Condition
      */
     public static function notMatch($fieldName, $value)
@@ -111,10 +115,11 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * Lower Than Condition (<)
+     * Lower Than Condition (<).
      *
      * @param $fieldName
      * @param $value
+     *
      * @return Condition
      */
     public static function lt($fieldName, $value)
@@ -123,10 +128,11 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * Lower Than Equal Condition (<=)
+     * Lower Than Equal Condition (<=).
      *
      * @param $fieldName
      * @param $value
+     *
      * @return Condition
      */
     public static function lte($fieldName, $value)
@@ -135,10 +141,11 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * Greater Than Condition (>)
+     * Greater Than Condition (>).
      *
      * @param $fieldName
      * @param $value
+     *
      * @return Condition
      */
     public static function gt($fieldName, $value)
@@ -147,10 +154,11 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * Greater Than Equal Condition (<=)
+     * Greater Than Equal Condition (<=).
      *
      * @param $fieldName
      * @param $value
+     *
      * @return Condition
      */
     public static function gte($fieldName, $value)
@@ -159,16 +167,17 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * Compare Condition ($operator)
+     * Compare Condition ($operator).
      *
      * @param $fieldName
      * @param $value
      * @param $operator
+     *
      * @return Condition
      */
     public static function compare($fieldName, $value, $operator)
     {
-        return new Condition($fieldName, "compare", ["value" => $value, "operator" => $operator]);
+        return new self($fieldName, 'compare', ['value' => $value, 'operator' => $operator]);
     }
 
     /**

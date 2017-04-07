@@ -17,17 +17,18 @@ namespace CoreShop\Component\Core\Assert;
 use Symfony\Component\Intl\Exception\UnexpectedTypeException;
 
 /**
- * Class Assert
- * @package CoreShop\Component\Core\Assert
+ * Class Assert.
  */
 class Assert
 {
     /**
      * @param $class
      * @param $type
+     *
      * @throws UnexpectedTypeException
      */
-    public static function isInstanceOf($class, $type) {
+    public static function isInstanceOf($class, $type)
+    {
         if (!$class instanceof $type) {
             throw new UnexpectedTypeException($class, $type);
         }

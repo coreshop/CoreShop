@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class SessionCartConfigurator implements SessionConfiguratorInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function configure(SessionInterface $session)
     {
@@ -19,4 +19,3 @@ class SessionCartConfigurator implements SessionConfiguratorInterface
         $session->registerBag($bag);
     }
 }
-

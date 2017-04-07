@@ -17,13 +17,12 @@ class IndexType extends AbstractResourceType
      */
     private $formTypeRegistry;
 
-
     /**
      * {@inheritdoc}
      */
     public function __construct($dataClass, array $validationGroups = [], FormTypeRegistryInterface $formTypeRegistry)
     {
-         parent::__construct($dataClass, $validationGroups);
+        parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
     }
@@ -44,7 +43,7 @@ class IndexType extends AbstractResourceType
                 'label' => 'coreshop.form.index.class',
             ])
             ->add('columns', IndexColumnCollectionType::class, [
-                'label' => 'coreshop.form.index.columns'
+                'label' => 'coreshop.form.index.columns',
             ])
         ;
 
@@ -79,7 +78,7 @@ class IndexType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -90,7 +89,7 @@ class IndexType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

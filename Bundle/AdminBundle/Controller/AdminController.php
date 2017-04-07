@@ -29,6 +29,6 @@ abstract class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\Ad
         // use this line if you want to remove the trailing "Action" string
         //return isset($action[1]) ? preg_replace('/Action$/', '', $action[1]) : false;
 
-        return str_replace("Action", "", $action[1]);
+        return str_replace('Action', '', $action[1]);
     }
 }

@@ -47,14 +47,14 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
             ->add('objectKey', TextType::class)
             ->add('columnType', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']])
+                    new NotBlank(['groups' => ['coreshop']]),
                 ],
             ])
             ->add('getter', IndexColumnGetterChoiceType::class)
             ->add('interpreter', TextType::class)
         ;
 
-        /**
+        /*
          * Getter Configurations
          */
         $builder
@@ -85,7 +85,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
             })
         ;
 
-        /**
+        /*
          * Interpreter Configurations
          */
         $builder
@@ -119,7 +119,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addGetterConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -128,7 +128,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -137,7 +137,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */
@@ -150,9 +150,9 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
         return null;
     }
 
-     /**
+    /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

@@ -22,11 +22,11 @@ use Doctrine\Common\Collections\Collection;
 class Store extends AbstractResource implements StoreInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
-     /**
+    /**
      * @var string
      */
     protected $name;
@@ -37,7 +37,7 @@ class Store extends AbstractResource implements StoreInterface
     protected $template;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isDefault;
 
@@ -46,7 +46,7 @@ class Store extends AbstractResource implements StoreInterface
      */
     protected $siteId;
 
-     /**
+    /**
      * @var Collection|CountryInterface[]
      */
     protected $countries;
@@ -61,7 +61,7 @@ class Store extends AbstractResource implements StoreInterface
      */
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getName(), $this->getId());
+        return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
     /**
@@ -115,7 +115,7 @@ class Store extends AbstractResource implements StoreInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsDefault()
     {
@@ -123,7 +123,7 @@ class Store extends AbstractResource implements StoreInterface
     }
 
     /**
-     * @param boolean $isDefault
+     * @param bool $isDefault
      */
     public function setIsDefault($isDefault)
     {

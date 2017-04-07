@@ -27,16 +27,15 @@ class ProductPriceRuleCalculator implements ProductPriceCalculatorInterface
     protected $actionServiceRegistry;
 
     /**
-     * @param RepositoryInterface $productPriceRuleRepository
+     * @param RepositoryInterface              $productPriceRuleRepository
      * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param ServiceRegistryInterface $actionServiceRegistry
+     * @param ServiceRegistryInterface         $actionServiceRegistry
      */
     public function __construct(
         RepositoryInterface $productPriceRuleRepository,
         RuleValidationProcessorInterface $ruleValidationProcessor,
         ServiceRegistryInterface $actionServiceRegistry
-    )
-    {
+    ) {
         $this->productPriceRuleRepository = $productPriceRuleRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->actionServiceRegistry = $actionServiceRegistry;
@@ -50,7 +49,7 @@ class ProductPriceRuleCalculator implements ProductPriceCalculatorInterface
         $price = 0;
 
         /**
-         * @var $rules RuleInterface[]
+         * @var RuleInterface[]
          */
         $rules = $this->productPriceRuleRepository->findAll();
 
@@ -81,7 +80,7 @@ class ProductPriceRuleCalculator implements ProductPriceCalculatorInterface
         $discount = 0;
 
         /**
-         * @var $rules RuleInterface[]
+         * @var RuleInterface[]
          */
         $rules = $this->productPriceRuleRepository->findAll();
 
@@ -99,5 +98,4 @@ class ProductPriceRuleCalculator implements ProductPriceCalculatorInterface
 
         return $discount;
     }
-
 }

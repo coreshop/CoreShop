@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -74,13 +73,13 @@ class ResourceController extends AdminController
     protected $resourceFormFactory;
 
     /**
-     * @param MetadataInterface $metadata
-     * @param RepositoryInterface $repository
-     * @param FactoryInterface $factory
-     * @param ObjectManager $manager
-     * @param ViewHandler $viewHandler
-     * @param EntityManagerInterface $entityManager
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param MetadataInterface            $metadata
+     * @param RepositoryInterface          $repository
+     * @param FactoryInterface             $factory
+     * @param ObjectManager                $manager
+     * @param ViewHandler                  $viewHandler
+     * @param EntityManagerInterface       $entityManager
+     * @param EventDispatcherInterface     $eventDispatcher
      * @param ResourceFormFactoryInterface $resourceFormFactory
      */
     public function __construct(
@@ -117,28 +116,31 @@ class ResourceController extends AdminController
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function listAction(Request $request)
     {
         $data = $this->repository->findAll();
 
-        return $this->viewHandler->handle($data, ["group" => "List"]);
+        return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function getAction(Request $request)
     {
-        $dataModel = $this->findOr404($request->get("id"));
+        $dataModel = $this->findOr404($request->get('id'));
 
-        return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ["group" => "Detailed"]);
+        return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ['group' => 'Detailed']);
     }
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function saveAction(Request $request)
@@ -157,15 +159,15 @@ class ResourceController extends AdminController
 
             $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
 
-
-            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ["group" => "Detailed"]);
+            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
 
-        return $this->viewHandler->handle(['success' => false, "message" => $handledForm->getErrors()]);
+        return $this->viewHandler->handle(['success' => false, 'message' => $handledForm->getErrors()]);
     }
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function addAction(Request $request)
@@ -184,13 +186,13 @@ class ResourceController extends AdminController
             $this->entityManager->persist($dataModel);
             $this->entityManager->flush();
 
-
-            return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ["group" => "Detailed"]);
+            return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ['group' => 'Detailed']);
         }
     }
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function deleteAction(Request $request)

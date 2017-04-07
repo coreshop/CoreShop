@@ -14,7 +14,6 @@
 
 namespace CoreShop\Component\Taxation\Model;
 
-use CoreShop\Component\Core\Model\LocalizableInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 
@@ -22,6 +21,7 @@ interface TaxRateInterface extends ResourceInterface, TranslatableInterface
 {
     /**
      * @param $language
+     *
      * @return mixed
      */
     public function getName($language = null);
@@ -29,6 +29,7 @@ interface TaxRateInterface extends ResourceInterface, TranslatableInterface
     /**
      * @param $name
      * @param $language
+     *
      * @return mixed
      */
     public function setName($name, $language = null);
@@ -40,6 +41,7 @@ interface TaxRateInterface extends ResourceInterface, TranslatableInterface
 
     /**
      * @param float $rate
+     *
      * @return static
      */
     public function setRate($rate);
@@ -51,6 +53,7 @@ interface TaxRateInterface extends ResourceInterface, TranslatableInterface
 
     /**
      * @param bool $active
+     *
      * @return static
      */
     public function setActive($active);

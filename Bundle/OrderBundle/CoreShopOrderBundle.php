@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopOrderBundle extends AbstractResourceBundle
 {
-/**
+    /**
      * {@inheritdoc}
      */
     public function getSupportedDrivers()
@@ -34,7 +34,6 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
     {
         parent::build($container);
     }
-
 
     /**
      * {@inheritdoc}

@@ -22,9 +22,9 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 abstract class AbstractModelExtension extends Extension
 {
     /**
-     * @param string $applicationName
-     * @param string $driver
-     * @param array $resources
+     * @param string           $applicationName
+     * @param string           $driver
+     * @param array            $resources
      * @param ContainerBuilder $container
      */
     protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container)
@@ -59,12 +59,13 @@ abstract class AbstractModelExtension extends Extension
         }
     }
 
-    protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container) {
+    protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container)
+    {
         $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), 'pimcore'), true);
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), 'pimcore');
 
         foreach ($models as $modelName => $modelConfig) {
-            $alias = $applicationName . '.' . $modelName;
+            $alias = $applicationName.'.'.$modelName;
             $modelConfig = array_merge(['driver' => 'pimcore'], $modelConfig);
 
             $models = $container->hasParameter('coreshop.pimcore') ? $container->getParameter('coreshop.pimcore') : [];

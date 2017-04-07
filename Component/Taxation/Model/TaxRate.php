@@ -19,24 +19,24 @@ use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class TaxRate extends AbstractResource implements TaxRateInterface
 {
-     use TranslatableTrait {
+    use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
     }
 
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
     /**
      * @var float
      */
-    protected  $rate = 0;
+    protected $rate = 0;
 
     /**
      * @var bool
      */
-    protected  $active = false;
+    protected $active = false;
 
     public function __construct()
     {
@@ -56,7 +56,7 @@ class TaxRate extends AbstractResource implements TaxRateInterface
      */
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getName('en'), $this->getId());
+        return sprintf('%s (%s)', $this->getName('en'), $this->getId());
     }
 
     /**
@@ -113,7 +113,7 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         return $this;
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     protected function createTranslation()

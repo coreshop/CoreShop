@@ -17,7 +17,6 @@ final class ZoneType extends AbstractResourceType
         $builder
             ->add('name', TextType::class)
             ->add('active', CheckboxType::class);
-        ;
     }
 
     /**

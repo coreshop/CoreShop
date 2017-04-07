@@ -19,13 +19,12 @@ use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Resource\Model\AbstractResource;
 
 /**
- * Class TaxRule
- * @package CoreShop\Model
+ * Class TaxRule.
  */
 class TaxRule extends AbstractResource implements TaxRuleInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -59,11 +58,11 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
      */
     public function __toString()
     {
-        $country = $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : "none";
-        $state = $this->getState() instanceof StateInterface ? $this->getState()->getName() : "none";
-        $tax = $this->getTaxRate() instanceof TaxRateInterface ? $this->getTaxRate()->getName() : "none";
+        $country = $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : 'none';
+        $state = $this->getState() instanceof StateInterface ? $this->getState()->getName() : 'none';
+        $tax = $this->getTaxRate() instanceof TaxRateInterface ? $this->getTaxRate()->getName() : 'none';
 
-        return sprintf("%s (%s) (%s) (%s)", $tax, $country, $state, $this->getId());
+        return sprintf('%s (%s) (%s) (%s)', $tax, $country, $state, $this->getId());
     }
 
     /**

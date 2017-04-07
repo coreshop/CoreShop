@@ -4,17 +4,18 @@ namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class FilterController extends ResourceController {
+class FilterController extends ResourceController
+{
     /**
-     * Get Index Configurations
+     * Get Index Configurations.
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getConfigAction() {
+    public function getConfigAction()
+    {
         return $this->viewHandler->handle(
             [
                 'success' => true,
@@ -25,16 +26,15 @@ class FilterController extends ResourceController {
 
     public function getFieldsForIndexAction(Request $request)
     {
-        $index = $this->get("coreshop.repository.index")->find($request->get('index'));
+        $index = $this->get('coreshop.repository.index')->find($request->get('index'));
 
         if ($index instanceof IndexInterface) {
             $columns = [
-
             ];
 
             foreach ($index->getColumns() as $col) {
                 $columns[] = [
-                    'name' => $col->getName()
+                    'name' => $col->getName(),
                 ];
             }
 
@@ -46,10 +46,10 @@ class FilterController extends ResourceController {
 
     public function getValuesForFilterFieldAction(Request $request)
     {
-        $index = $this->get("coreshop.repository.index")->find($request->get('index'));
+        $index = $this->get('coreshop.repository.index')->find($request->get('index'));
 
         if ($index instanceof IndexInterface) {
-            $list = $this->get("coreshop.factory.index.list")->createList($index);
+            $list = $this->get('coreshop.factory.index.list')->createList($index);
 
             $values = $list->getGroupByValues($request->get('field'));
             $returnValues = [];
@@ -77,7 +77,8 @@ class FilterController extends ResourceController {
     /**
      * @return array
      */
-    protected function getConditionTypes() {
+    protected function getConditionTypes()
+    {
         return $this->getParameter('coreshop.filter.condition_types');
     }
 }

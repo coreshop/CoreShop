@@ -12,7 +12,6 @@ final class IndexColumnTypeObjectType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
     }
 
     /**

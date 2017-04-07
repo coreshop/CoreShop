@@ -17,7 +17,7 @@ class ServiceRegistry implements ServiceRegistryInterface
     private $interface;
 
     /**
-     * Human readable context for these services, e.g. "grid field"
+     * Human readable context for these services, e.g. "grid field".
      *
      * @var string
      */

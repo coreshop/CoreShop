@@ -27,8 +27,7 @@ use Pimcore\Model\Object\Concrete;
 use Zend\Paginator\Adapter\AdapterInterface;
 
 /**
- * Class Mysql
- * @package CoreShop\Model\Product\Listing
+ * Class Mysql.
  */
 class Listing extends AbstractListing
 {
@@ -437,7 +436,7 @@ class Listing extends AbstractListing
 
             foreach ($this->queryConditions as $condition) {
                 if ($condition instanceof ConditionInterface) {
-                    $searchString .= '+' . $condition->getValues() . '+ ';
+                    $searchString .= '+'.$condition->getValues().'+ ';
                 }
             }
 
@@ -473,7 +472,7 @@ class Listing extends AbstractListing
             }
         }
 
-        return implode(" AND ", $renderedConditions);
+        return implode(' AND ', $renderedConditions);
     }
 
     /**
@@ -595,9 +594,9 @@ class Listing extends AbstractListing
      * (PHP 5 &gt;= 5.1.0)<br/>
      * Count elements of an object.
      *
-     * @link http://php.net/manual/en/countable.count.php
+     * @see http://php.net/manual/en/countable.count.php
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
@@ -612,9 +611,9 @@ class Listing extends AbstractListing
      * (PHP 5 &gt;= 5.1.0)<br/>
      * Return the current element.
      *
-     * @link http://php.net/manual/en/iterator.current.php
+     * @see http://php.net/manual/en/iterator.current.php
      *
-     * @return mixed Can return any type.
+     * @return mixed can return any type
      */
     public function current()
     {
@@ -654,10 +653,10 @@ class Listing extends AbstractListing
      * (PHP 5 &gt;= 5.1.0)<br/>
      * Return the key of the current element.
      *
-     * @link http://php.net/manual/en/iterator.key.php
+     * @see http://php.net/manual/en/iterator.key.php
      *
      * @return mixed scalar scalar on success, integer
-     *               0 on failure.
+     *               0 on failure
      */
     public function key()
     {
@@ -671,7 +670,7 @@ class Listing extends AbstractListing
      * (PHP 5 &gt;= 5.1.0)<br/>
      * Move forward to next element.
      *
-     * @link http://php.net/manual/en/iterator.next.php
+     * @see http://php.net/manual/en/iterator.next.php
      */
     public function next()
     {
@@ -685,7 +684,7 @@ class Listing extends AbstractListing
      * (PHP 5 &gt;= 5.1.0)<br/>
      * Rewind the Iterator to the first element.
      *
-     * @link http://php.net/manual/en/iterator.rewind.php
+     * @see http://php.net/manual/en/iterator.rewind.php
      */
     public function rewind()
     {
@@ -697,7 +696,7 @@ class Listing extends AbstractListing
      * (PHP 5 &gt;= 5.1.0)<br/>
      * Checks if current position is valid.
      *
-     * @link http://php.net/manual/en/iterator.valid.php
+     * @see http://php.net/manual/en/iterator.valid.php
      *
      * @return bool The return value will be casted to boolean and then evaluated.
      *              Returns true on success or false on failure.

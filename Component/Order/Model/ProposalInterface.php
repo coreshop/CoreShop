@@ -4,12 +4,10 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Pimcore\Resource;
 
-interface ProposalInterface extends ResourceInterface {
-
+interface ProposalInterface extends ResourceInterface
+{
     /**
      * @return CurrencyInterface
      */
@@ -17,6 +15,7 @@ interface ProposalInterface extends ResourceInterface {
 
     /**
      * @param CurrencyInterface $currency
+     *
      * @return static
      */
     public function setCurrency($currency);
@@ -43,6 +42,7 @@ interface ProposalInterface extends ResourceInterface {
 
     /**
      * @param $item
+     *
      * @return bool
      */
     public function hasItem($item);
@@ -54,6 +54,7 @@ interface ProposalInterface extends ResourceInterface {
 
     /**
      * @param StoreInterface $store
+     *
      * @return static
      */
     public function setStore($store);
@@ -65,6 +66,7 @@ interface ProposalInterface extends ResourceInterface {
 
     /**
      * @param $customer
+     *
      * @return static
      */
     public function setCustomer($customer);
@@ -76,6 +78,7 @@ interface ProposalInterface extends ResourceInterface {
 
     /**
      * @param $shippingAddress
+     *
      * @return static
      */
     public function setShippingAddress($shippingAddress);
@@ -87,6 +90,7 @@ interface ProposalInterface extends ResourceInterface {
 
     /**
      * @param $invoiceAddress
+     *
      * @return static
      */
     public function setInvoiceAddress($invoiceAddress);

@@ -16,7 +16,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
      */
     public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
     {
-        return "";
+        return '';
     }
 
     /**
@@ -24,7 +24,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
      */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
-        $definedValues = (array)$condition->getField(); //Todo: Don't think that this works...
+        $definedValues = (array) $condition->getField(); //Todo: Don't think that this works...
 
         $values = [];
         $sqlFilter = [];
@@ -51,7 +51,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
             $currentFilter[$name][$valueName] = $boolValue;
 
             if ($boolValue == 1) {
-                $sqlFilter[ $valueName ] = 1;
+                $sqlFilter[$valueName] = 1;
             }
         }
 
@@ -59,7 +59,6 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
             $fieldName = $isPrecondition ? 'PRECONDITION_'.$name : $name;
 
             $conditions = [];
-
 
             $c = 0;
 
@@ -69,7 +68,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
             }
 
             if (count($conditions) > 0) {
-                $list->addCondition(Condition::concat($fieldName, $conditions, "AND"), $fieldName);
+                $list->addCondition(Condition::concat($fieldName, $conditions, 'AND'), $fieldName);
             }
         }
 
@@ -79,6 +78,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
     /**
      * @param $definedValues
      * @param ParameterBag $parameterBag
+     *
      * @return bool
      */
     private function isInFilterMode($definedValues, $parameterBag)

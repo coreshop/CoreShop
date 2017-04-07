@@ -8,13 +8,13 @@
 <div class="Homepage">
     <div class="HomepageTitle container">
         <?php if ($params['tagline']) {
-    echo '<h2>' . $params['tagline'] . '</h2>';
+    echo '<h2>'.$params['tagline'].'</h2>';
 } ?>
     </div>
 
     <div class="HomepageImage container">
         <?php if ($params['image']) {
-    echo '<img class="homepage-image img-responsive" src="' . $params['image'] . '" alt="' . $params['title'] . '">';
+    echo '<img class="homepage-image img-responsive" src="'.$params['image'].'" alt="'.$params['title'].'">';
 } ?>
     </div>
 
@@ -22,10 +22,10 @@
         <div class="container">
             <?php
             if ($params['html']['repo']) {
-                echo '<a href="https://github.com/' . $params['html']['repo'] . '" class="Button Button--secondary Button--hero">View On GitHub</a>';
+                echo '<a href="https://github.com/'.$params['html']['repo'].'" class="Button Button--secondary Button--hero">View On GitHub</a>';
             }
             foreach ($page['entry_page'] as $key => $node) {
-                echo '<a href="' . $node . '" class="Button Button--primary Button--hero">' . $key . '</a>';
+                echo '<a href="'.$node.'" class="Button Button--primary Button--hero">'.$key.'</a>';
             }
             ?>
             <div class="clearfix"></div>
@@ -50,7 +50,7 @@
                 ?>
                 <ul class="HomepageFooter__links">
                     <?php foreach ($params['html']['links'] as $name => $url) {
-                    echo '<li><a href="' . $url . '" target="_blank">' . $name . '</a></li>';
+                    echo '<li><a href="'.$url.'" target="_blank">'.$name.'</a></li>';
                 } ?>
                 </ul>
             <?php

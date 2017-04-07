@@ -21,7 +21,7 @@ use Doctrine\Common\Collections\Collection;
 class Zone extends AbstractResource implements ZoneInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -50,7 +50,7 @@ class Zone extends AbstractResource implements ZoneInterface
      */
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getName(), $this->getId());
+        return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
     /**
@@ -71,6 +71,7 @@ class Zone extends AbstractResource implements ZoneInterface
 
     /**
      * @param $name
+     *
      * @return static
      */
     public function setName($name)
@@ -90,6 +91,7 @@ class Zone extends AbstractResource implements ZoneInterface
 
     /**
      * @param $active
+     *
      * @return static
      */
     public function setActive($active)

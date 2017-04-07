@@ -32,7 +32,7 @@ class Action implements ActionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setType($type)
     {
@@ -42,7 +42,7 @@ class Action implements ActionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setConfiguration(array $configuration)
     {
@@ -52,7 +52,7 @@ class Action implements ActionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -60,7 +60,7 @@ class Action implements ActionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {

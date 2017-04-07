@@ -14,14 +14,11 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
-use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Controller\Controller;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PimcoreFrontendController extends Controller
@@ -52,10 +49,10 @@ class PimcoreFrontendController extends Controller
     protected $resourceFormFactory;
 
     /**
-     * @param MetadataInterface $metadata
-     * @param PimcoreRepositoryInterface $repository
-     * @param FactoryInterface $factory
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param MetadataInterface            $metadata
+     * @param PimcoreRepositoryInterface   $repository
+     * @param FactoryInterface             $factory
+     * @param EventDispatcherInterface     $eventDispatcher
      * @param ResourceFormFactoryInterface $resourceFormFactory
      */
     public function __construct(
@@ -64,7 +61,6 @@ class PimcoreFrontendController extends Controller
         FactoryInterface $factory,
         EventDispatcherInterface $eventDispatcher,
         ResourceFormFactoryInterface $resourceFormFactory
-
     ) {
         $this->metadata = $metadata;
         $this->repository = $repository;

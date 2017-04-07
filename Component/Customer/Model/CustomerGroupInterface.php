@@ -2,7 +2,6 @@
 
 namespace CoreShop\Component\Customer\Model;
 
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface CustomerGroupInterface extends ResourceInterface
@@ -14,6 +13,7 @@ interface CustomerGroupInterface extends ResourceInterface
 
     /**
      * @param $name
+     *
      * @return static
      */
     public function setName($name);
@@ -25,6 +25,7 @@ interface CustomerGroupInterface extends ResourceInterface
 
     /**
      * @param $shops
+     *
      * @return mixed
      */
     public function setShops($shops);

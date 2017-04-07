@@ -6,5 +6,4 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface PriceRuleInterface extends RuleInterface
 {
-
 }

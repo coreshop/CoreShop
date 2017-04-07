@@ -24,22 +24,20 @@ class IndexObjectListener
     private $workerServiceRegistry;
 
     /**
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface      $indexRepository
      * @param ServiceRegistryInterface $workerServiceRegistry
      */
     public function __construct(
         RepositoryInterface $indexRepository,
         ServiceRegistryInterface $workerServiceRegistry
-    )
-    {
+    ) {
         $this->indexRepository = $indexRepository;
         $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
-
-    public function onPostUpdate (ElementEventInterface $e) {
-
-         if ($e instanceof ObjectEvent) {
+    public function onPostUpdate(ElementEventInterface $e)
+    {
+        if ($e instanceof ObjectEvent) {
             $indices = $this->indexRepository->findAll();
             $object = $e->getObject();
 
@@ -50,11 +48,11 @@ class IndexObjectListener
                             $worker = $index->getWorker();
 
                             if (!$this->workerServiceRegistry->has($worker)) {
-                                 throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
+                                throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
                             }
 
                             /**
-                             * @var $worker WorkerInterface
+                             * @var WorkerInterface
                              */
                             $worker = $this->workerServiceRegistry->get($worker);
                             $worker->updateIndex($index, $object);

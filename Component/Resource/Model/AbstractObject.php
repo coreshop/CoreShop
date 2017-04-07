@@ -18,5 +18,4 @@ use Pimcore\Model\Object\Concrete;
 
 abstract class AbstractObject extends Concrete implements ResourceInterface
 {
-
 }

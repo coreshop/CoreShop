@@ -2,7 +2,6 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
-interface RelationInterpreterInterface extends InterpreterInterface {
-
-
+interface RelationInterpreterInterface extends InterpreterInterface
+{
 }

@@ -5,7 +5,8 @@ namespace CoreShop\Component\Index\Model;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface IndexInterface extends ResourceInterface {
+interface IndexInterface extends ResourceInterface
+{
     /**
      * @return string
      */
@@ -13,6 +14,7 @@ interface IndexInterface extends ResourceInterface {
 
     /**
      * @param $name
+     *
      * @return static
      */
     public function setName($name);
@@ -24,6 +26,7 @@ interface IndexInterface extends ResourceInterface {
 
     /**
      * @param string $worker
+     *
      * @return static
      */
     public function setWorker($worker);
@@ -35,11 +38,12 @@ interface IndexInterface extends ResourceInterface {
 
     /**
      * @param string $class
+     *
      * @return static
      */
     public function setClass($class);
 
-     /**
+    /**
      * @return Collection|IndexColumnInterface[]
      */
     public function getColumns();
@@ -73,6 +77,7 @@ interface IndexInterface extends ResourceInterface {
 
     /**
      * @param $configuration
+     *
      * @return mixed
      */
     public function setConfiguration($configuration);

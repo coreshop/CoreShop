@@ -16,7 +16,7 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
      */
     public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
     {
-        return "";
+        return '';
     }
 
     /**
@@ -46,5 +46,4 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
 
         return $currentFilter;
     }
-
 }

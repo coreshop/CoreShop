@@ -9,6 +9,7 @@ abstract class Multiselect extends Model\Object\ClassDefinition\Data\Multiselect
     /**
      * @param $object
      * @param array $params
+     *
      * @return string
      */
     public function preGetData($object, $params = [])

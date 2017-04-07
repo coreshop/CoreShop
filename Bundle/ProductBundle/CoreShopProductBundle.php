@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopProductBundle extends AbstractResourceBundle
 {
-/**
+    /**
      * {@inheritdoc}
      */
     public function getSupportedDrivers()
@@ -39,7 +39,6 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductPriceRuleConditionPass());
         $container->addCompilerPass(new ProductPriceRuleActionPass());
     }
-
 
     /**
      * {@inheritdoc}

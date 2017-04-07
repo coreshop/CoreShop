@@ -6,6 +6,7 @@ interface ProductPriceCalculatorInterface
 {
     /**
      * @param $subject
+     *
      * @return mixed
      */
     public function getPrice($subject);
@@ -13,6 +14,7 @@ interface ProductPriceCalculatorInterface
     /**
      * @param $subject
      * @param $withTax
+     *
      * @return mixed
      */
     public function getDiscount($subject, $withTax = true);

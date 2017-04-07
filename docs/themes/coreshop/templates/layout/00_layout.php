@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
     <title><?= $page['title']; ?> <?php if ($page['title'] != $params['title']) {
-    echo '- ' . $params['title'];
+    echo '- '.$params['title'];
 } ?></title>
     <meta name="description" content="<?= $params['tagline']; ?>" />
     <meta name="author" content="<?= $params['author']; ?>">
@@ -58,7 +58,7 @@
 
     <!-- JS -->
     <?php foreach ($params['theme']['js'] as $js) {
-        echo '<script src="' . $js . '"></script>';
+        echo '<script src="'.$js.'"></script>';
     } ?>
 
     <script src="<?= $base_url; ?>themes/coreshop/js/daux.js"></script>

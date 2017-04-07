@@ -63,7 +63,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string $key
+     * @param string           $key
      *
      * @return string
      *
@@ -86,7 +86,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string $key
+     * @param string           $key
      *
      * @return string
      *

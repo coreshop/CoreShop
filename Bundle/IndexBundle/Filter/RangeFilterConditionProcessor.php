@@ -16,7 +16,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
      */
     public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
     {
-        return "";
+        return '';
     }
 
     /**
@@ -25,10 +25,10 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
         if ($parameterBag->has($condition->getField())) {
-            $values = explode(",", $parameterBag->get($condition->getField()));
+            $values = explode(',', $parameterBag->get($condition->getField()));
 
-            $parameterBag->set($condition->getField() . '-min', $values[0]);
-            $parameterBag->set($condition->getField() . '-max', $values[0]);
+            $parameterBag->set($condition->getField().'-min', $values[0]);
+            $parameterBag->set($condition->getField().'-max', $values[0]);
         }
 
         $valueMin = $parameterBag->get($condition->getField().'-min');
@@ -57,7 +57,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             $fieldName = $condition->getField();
 
             if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_' . $fieldName;
+                $fieldName = 'PRECONDITION_'.$fieldName;
             }
 
             $list->addCondition(Condition::range($condition->getField(), $valueMin, $valueMax), $fieldName);
@@ -65,5 +65,4 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
 
         return $currentFilter;
     }
-
 }

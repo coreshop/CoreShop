@@ -21,7 +21,7 @@ use Doctrine\Common\Collections\Collection;
 class Currency extends AbstractResource implements CurrencyInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -60,7 +60,7 @@ class Currency extends AbstractResource implements CurrencyInterface
      */
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getName(), $this->getId());
+        return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
     /**
@@ -91,6 +91,7 @@ class Currency extends AbstractResource implements CurrencyInterface
 
     /**
      * @param $name
+     *
      * @return static
      */
     public function setName($name)
@@ -110,6 +111,7 @@ class Currency extends AbstractResource implements CurrencyInterface
 
     /**
      * @param mixed $isoCode
+     *
      * @return static
      */
     public function setIsoCode($isoCode)
@@ -129,6 +131,7 @@ class Currency extends AbstractResource implements CurrencyInterface
 
     /**
      * @param int $numericIsoCode
+     *
      * @return static
      */
     public function setNumericIsoCode($numericIsoCode)
@@ -148,6 +151,7 @@ class Currency extends AbstractResource implements CurrencyInterface
 
     /**
      * @param string $symbol
+     *
      * @return static
      */
     public function setSymbol($symbol)
@@ -167,6 +171,7 @@ class Currency extends AbstractResource implements CurrencyInterface
 
     /**
      * @param float $exchangeRate
+     *
      * @return static
      */
     public function setExchangeRate($exchangeRate)

@@ -14,15 +14,13 @@
 
 namespace CoreShop\Bundle\CustomerBundle;
 
-use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleActionPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleConditionPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCustomerBundle extends AbstractResourceBundle
 {
-/**
+    /**
      * {@inheritdoc}
      */
     public function getSupportedDrivers()
@@ -36,7 +34,6 @@ final class CoreShopCustomerBundle extends AbstractResourceBundle
     {
         parent::build($container);
     }
-
 
     /**
      * {@inheritdoc}

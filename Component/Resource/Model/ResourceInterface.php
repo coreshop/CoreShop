@@ -14,8 +14,8 @@
 
 namespace CoreShop\Component\Resource\Model;
 
-interface ResourceInterface {
-
+interface ResourceInterface
+{
     /**
      * @return int
      */
@@ -23,6 +23,7 @@ interface ResourceInterface {
 
     /**
      * @param array $data
+     *
      * @return $this
      */
     public function setValues($data = []);
@@ -30,6 +31,7 @@ interface ResourceInterface {
     /**
      * @param  $key
      * @param  $value
+     *
      * @return $this
      */
     public function setValue($key, $value);

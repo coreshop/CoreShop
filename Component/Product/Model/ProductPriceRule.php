@@ -9,7 +9,7 @@ class ProductPriceRule implements ProductPriceRuleInterface
     use RuleTrait;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -19,7 +19,7 @@ class ProductPriceRule implements ProductPriceRuleInterface
     protected $description;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $active = false;
 

@@ -14,6 +14,7 @@ interface FilterInterface extends ResourceInterface
 
     /**
      * @param $name
+     *
      * @return static
      */
     public function setName($name);
@@ -25,6 +26,7 @@ interface FilterInterface extends ResourceInterface
 
     /**
      * @param int $resultsPerPage
+     *
      * @return static
      */
     public function setResultsPerPage($resultsPerPage);
@@ -36,6 +38,7 @@ interface FilterInterface extends ResourceInterface
 
     /**
      * @param string $orderDirection
+     *
      * @return static
      */
     public function setOrderDirection($orderDirection);
@@ -47,6 +50,7 @@ interface FilterInterface extends ResourceInterface
 
     /**
      * @param string $orderKey
+     *
      * @return static
      */
     public function setOrderKey($orderKey);
@@ -112,6 +116,7 @@ interface FilterInterface extends ResourceInterface
 
     /**
      * @param IndexInterface $index
+     *
      * @return static
      */
     public function setIndex(IndexInterface $index);

@@ -21,12 +21,12 @@ class Index extends AbstractResource implements IndexInterface
     /**
      * @var string
      */
-    protected $class = "";
+    protected $class = '';
 
     /**
      * @var string
      */
-    protected $worker = "";
+    protected $worker = '';
 
     /**
      * @var array

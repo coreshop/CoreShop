@@ -24,7 +24,7 @@ class Condition implements ConditionInterface
     protected $configuration;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -32,7 +32,7 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setType($type)
     {
@@ -42,7 +42,7 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setConfiguration(array $configuration)
     {
@@ -52,7 +52,7 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -60,7 +60,7 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {

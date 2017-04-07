@@ -37,7 +37,7 @@ final class IndexChoiceType extends AbstractType
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($indices, function($a, $b) {
+                    @usort($indices, function ($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 
@@ -45,7 +45,7 @@ final class IndexChoiceType extends AbstractType
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
-                'choice_translation_domain' => false
+                'choice_translation_domain' => false,
             ])
         ;
     }

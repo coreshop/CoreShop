@@ -9,7 +9,8 @@ interface GetterInterface
 {
     /**
      * @param PimcoreModelInterface $object
-     * @param IndexColumnInterface $column
+     * @param IndexColumnInterface  $column
+     *
      * @return mixed
      */
     public function get(PimcoreModelInterface $object, IndexColumnInterface $column);

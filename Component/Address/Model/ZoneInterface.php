@@ -18,8 +18,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Interface ZoneInterface
- * @package CoreShop\Component\Address\Model
+ * Interface ZoneInterface.
  */
 interface ZoneInterface extends ResourceInterface
 {
@@ -30,21 +29,23 @@ interface ZoneInterface extends ResourceInterface
 
     /**
      * @param $name
+     *
      * @return static
      */
     public function setName($name);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getActive();
 
     /**
-     * @param boolean $active
+     * @param bool $active
+     *
      * @return static
      */
     public function setActive($active);
-    
+
     /**
      * @return Collection|CountryInterface[]
      */

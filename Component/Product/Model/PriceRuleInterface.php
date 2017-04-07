@@ -13,17 +13,19 @@ interface PriceRuleInterface extends RuleInterface
 
     /**
      * @param string $description
+     *
      * @return static
      */
     public function setDescription($description);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getActive();
 
     /**
-     * @param boolean $active
+     * @param bool $active
+     *
      * @return static
      */
     public function setActive($active);

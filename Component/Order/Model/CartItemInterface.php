@@ -5,12 +5,12 @@ namespace CoreShop\Component\Order\Model;
 interface CartItemInterface extends ProposalItemInterface
 {
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsGiftItem();
 
     /**
-     * @param boolean $isGiftItem
+     * @param bool $isGiftItem
      */
     public function setIsGiftItem($isGiftItem);
 }

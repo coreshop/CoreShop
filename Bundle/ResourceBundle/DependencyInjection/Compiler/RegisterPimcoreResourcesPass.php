@@ -2,7 +2,6 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

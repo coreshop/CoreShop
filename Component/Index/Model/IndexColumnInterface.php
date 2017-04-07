@@ -7,34 +7,34 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface IndexColumnInterface extends ResourceInterface
 {
     /**
-     * Field Type Integer for Index
+     * Field Type Integer for Index.
      */
-    const FIELD_TYPE_INTEGER = "INTEGER";
+    const FIELD_TYPE_INTEGER = 'INTEGER';
 
     /**
-     * Field Type Double for Index
+     * Field Type Double for Index.
      */
-    const FIELD_TYPE_DOUBLE = "DOUBLE";
+    const FIELD_TYPE_DOUBLE = 'DOUBLE';
 
     /**
-     * Field Type String for Index
+     * Field Type String for Index.
      */
-    const FIELD_TYPE_STRING = "STRING";
+    const FIELD_TYPE_STRING = 'STRING';
 
     /**
-     * Field Type Text for Index
+     * Field Type Text for Index.
      */
-    const FIELD_TYPE_TEXT = "TEXT";
+    const FIELD_TYPE_TEXT = 'TEXT';
 
     /**
-     * Field Type Boolean for Index
+     * Field Type Boolean for Index.
      */
-    const FIELD_TYPE_BOOLEAN = "BOOLEAN";
+    const FIELD_TYPE_BOOLEAN = 'BOOLEAN';
 
     /**
-     * Field Type Date for Index
+     * Field Type Date for Index.
      */
-    const FIELD_TYPE_DATE = "DATE";
+    const FIELD_TYPE_DATE = 'DATE';
 
     /**
      * @return IndexInterface
@@ -43,6 +43,7 @@ interface IndexColumnInterface extends ResourceInterface
 
     /**
      * @param IndexInterface $index
+     *
      * @return static
      */
     public function setIndex(IndexInterface $index);
@@ -154,6 +155,7 @@ interface IndexColumnInterface extends ResourceInterface
 
     /**
      * @param array $configuration
+     *
      * @return static
      */
     public function setConfiguration($configuration);

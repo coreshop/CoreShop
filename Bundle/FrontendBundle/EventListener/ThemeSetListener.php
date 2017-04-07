@@ -22,7 +22,7 @@ class ThemeSetListener
 
         if ($controller[0] instanceof PimcoreFrontendController) {
             $activeTheme = $controller[0]->container->get('liip_theme.active_theme');
-            $activeTheme->setName("default2");
+            $activeTheme->setName('default2');
         }
     }
 }

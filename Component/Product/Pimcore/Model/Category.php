@@ -23,5 +23,4 @@ class Category extends AbstractPimcoreModel implements CategoryInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
 }

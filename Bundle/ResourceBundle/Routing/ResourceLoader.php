@@ -28,9 +28,9 @@ final class ResourceLoader implements LoaderInterface
     private $urlBase;
 
     /**
-     * @param RegistryInterface $modelRegistry
+     * @param RegistryInterface     $modelRegistry
      * @param RouteFactoryInterface $routeFactory
-     * @param string $urlBase
+     * @param string                $urlBase
      */
     public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory, $urlBase)
     {
@@ -55,7 +55,7 @@ final class ResourceLoader implements LoaderInterface
             'list' => ['GET'],
             'add' => ['POST'],
             'save' => ['POST'],
-            'delete' => ['DELETE']
+            'delete' => ['DELETE'],
         ];
         $routesToGenerate = [];
 
@@ -67,7 +67,7 @@ final class ResourceLoader implements LoaderInterface
             $routesToGenerate[] = [
                 'path' => $route,
                 'action' => $route,
-                'methods' => $methods
+                'methods' => $methods,
             ];
         }
 
@@ -83,13 +83,12 @@ final class ResourceLoader implements LoaderInterface
         //$identifier = sprintf('{%s}', $configuration['identifier']);
 
         $rootPath = $this->urlBase;
-        $rootPath .= '/' . $metadata->getPluralName() . "/";
+        $rootPath .= '/'.$metadata->getPluralName().'/';
 
         foreach ($routesToGenerate as $route) {
-            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $route['path'], $route['action'], $route['methods']);
+            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath.$route['path'], $route['action'], $route['methods']);
             $routes->add($this->getRouteName($metadata, $configuration, $route['action']), $indexRoute);
         }
-
 
         return $routes;
     }
@@ -120,10 +119,10 @@ final class ResourceLoader implements LoaderInterface
 
     /**
      * @param MetadataInterface $metadata
-     * @param array $configuration
-     * @param string $path
-     * @param string $actionName
-     * @param array $methods
+     * @param array             $configuration
+     * @param string            $path
+     * @param string            $actionName
+     * @param array             $methods
      *
      * @return Route
      */
@@ -138,8 +137,8 @@ final class ResourceLoader implements LoaderInterface
 
     /**
      * @param MetadataInterface $metadata
-     * @param array $configuration
-     * @param string $actionName
+     * @param array             $configuration
+     * @param string            $actionName
      *
      * @return string
      */

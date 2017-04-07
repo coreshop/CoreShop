@@ -10,8 +10,8 @@ use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class CartManager implements CartManagerInterface {
-
+class CartManager implements CartManagerInterface
+{
     const CART_ID_IDENTIFIER = 'cartId';
     const CART_OBJ_IDENTIFIER = 'cartObj';
 
@@ -47,10 +47,10 @@ class CartManager implements CartManagerInterface {
 
     /**
      * @param PimcoreRepositoryInterface $cartRepository
-     * @param FactoryInterface $cartFactory
-     * @param SessionInterface $session
-     * @param ObjectServiceInterface $objectService
-     * @param string $cartFolderPath
+     * @param FactoryInterface           $cartFactory
+     * @param SessionInterface           $session
+     * @param ObjectServiceInterface     $objectService
+     * @param string                     $cartFolderPath
      */
     public function __construct(
         PimcoreRepositoryInterface $cartRepository,
@@ -84,23 +84,25 @@ class CartManager implements CartManagerInterface {
     /**
      * {@inheritdoc}
      */
-    public function hasCart() {
+    public function hasCart()
+    {
         return $this->getSessionCart() instanceof CartInterface;
     }
 
     /**
      * @return CartInterface|null
      */
-    private function getSessionCart() {
+    private function getSessionCart()
+    {
         $cart = null;
 
-        if ($this->session->has(CartManager::CART_ID_IDENTIFIER) && $this->session->get(CartManager::CART_ID_IDENTIFIER) !== 0) {
-            $cart = $this->cartRepository->find($this->session->get(CartManager::CART_ID_IDENTIFIER));
+        if ($this->session->has(self::CART_ID_IDENTIFIER) && $this->session->get(self::CART_ID_IDENTIFIER) !== 0) {
+            $cart = $this->cartRepository->find($this->session->get(self::CART_ID_IDENTIFIER));
         }
 
-        if (!$cart instanceof CartInterface && $this->sessionBag->has(CartManager::CART_OBJ_IDENTIFIER)) {
-            if ($this->sessionBag->get(CartManager::CART_OBJ_IDENTIFIER) instanceof CartInterface) {
-                $cart = $this->sessionBag->get(CartManager::CART_OBJ_IDENTIFIER);
+        if (!$cart instanceof CartInterface && $this->sessionBag->has(self::CART_OBJ_IDENTIFIER)) {
+            if ($this->sessionBag->get(self::CART_OBJ_IDENTIFIER) instanceof CartInterface) {
+                $cart = $this->sessionBag->get(self::CART_OBJ_IDENTIFIER);
             }
         }
 
@@ -113,10 +115,9 @@ class CartManager implements CartManagerInterface {
     public function setCurrentCart(CartInterface $cart)
     {
         if ($cart->getId() > 0) {
-            $this->sessionBag->set(CartManager::CART_ID_IDENTIFIER, $cart->getId());
-        }
-        else {
-            $this->sessionBag->set(CartManager::CART_OBJ_IDENTIFIER, $cart);
+            $this->sessionBag->set(self::CART_ID_IDENTIFIER, $cart->getId());
+        } else {
+            $this->sessionBag->set(self::CART_OBJ_IDENTIFIER, $cart);
         }
     }
 
@@ -126,7 +127,7 @@ class CartManager implements CartManagerInterface {
     public function createCart($name, $customer = null, $store = null, $currency = null, $persist = false)
     {
         /**
-         * @var $cart CartInterface
+         * @var CartInterface
          */
         $cart = $this->cartFactory->createNew();
 
@@ -145,6 +146,8 @@ class CartManager implements CartManagerInterface {
 
     /**
      * {@inheritdoc}
+     *
+     * todo: refactor, should be done by the repository
      */
     public function getStoredCarts($customer)
     {
@@ -157,11 +160,13 @@ class CartManager implements CartManagerInterface {
 
     /**
      * {@inheritdoc}
+     *
+     * todo: refactor, should be done by the repository
      */
     public function getByName($customer, $name)
     {
         $list = $this->cartRepository->getListingClass();
-        $list->setCondition("user__id = ? AND name = ? AND order__id is null", [$customer->getId(), $name]);
+        $list->setCondition('user__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
         $list->load();
 
         if ($list->getTotalCount() > 0) {

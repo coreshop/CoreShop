@@ -31,8 +31,9 @@ class EntityRepository extends BaseEntityRepository implements RepositoryInterfa
     /**
      * @return array
      */
-    public function getAll() {
-       return $this->createQueryBuilder('o')
+    public function getAll()
+    {
+        return $this->createQueryBuilder('o')
             ->getQuery()
             ->getResult()
         ;

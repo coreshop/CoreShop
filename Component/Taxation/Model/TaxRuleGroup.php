@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\Collection;
 class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -36,12 +36,12 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
      */
     protected $active = true;
 
-     /**
+    /**
      * @var Collection|TaxRuleInterface[]
      */
     protected $taxRules;
 
-     /**
+    /**
      * @var Collection|StoreInterface[]
      */
     protected $stores;
@@ -57,7 +57,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
      */
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getName(), $this->getId());
+        return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
     /**
@@ -78,6 +78,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
 
     /**
      * @param string $name
+     *
      * @return static
      */
     public function setName($name)
@@ -97,6 +98,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
 
     /**
      * @param bool $active
+     *
      * @return static
      */
     public function setActive($active)

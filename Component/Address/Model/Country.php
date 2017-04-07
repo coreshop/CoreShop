@@ -21,13 +21,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Store
- * @package CoreShop\Component\Address\Model
+ * Store.
  */
 class Country extends AbstractResource implements CountryInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -64,9 +63,9 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * @var string
      */
-    protected $addressFormat = "";
+    protected $addressFormat = '';
 
-     /**
+    /**
      * @var Collection|StoreInterface[]
      */
     protected $stores;
@@ -221,7 +220,8 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * {@inheritdoc}
      */
-    public function getZoneName() {
+    public function getZoneName()
+    {
         return $this->getZone() instanceof ZoneInterface ? $this->getZone()->getName() : '';
     }
 

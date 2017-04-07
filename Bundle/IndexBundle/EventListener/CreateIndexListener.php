@@ -43,11 +43,11 @@ final class CreateIndexListener
         $worker = $resource->getWorker();
 
         if (!$this->workerServiceRegistry->has($worker)) {
-             throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
+            throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
         }
 
         /**
-         * @var $worker WorkerInterface
+         * @var WorkerInterface
          */
         $worker = $this->workerServiceRegistry->get($worker);
         $worker->createOrUpdateIndexStructures($resource);

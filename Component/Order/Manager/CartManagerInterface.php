@@ -4,10 +4,11 @@ namespace CoreShop\Component\Order\Manager;
 
 use CoreShop\Component\Order\Model\CartInterface;
 
-interface CartManagerInterface {
-
+interface CartManagerInterface
+{
     /**
      * @param CartInterface $cart
+     *
      * @return mixed
      */
     public function setCurrentCart(CartInterface $cart);
@@ -18,12 +19,13 @@ interface CartManagerInterface {
     public function getCart();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasCart();
 
     /**
      * @param CartInterface $cart
+     *
      * @return mixed
      */
     public function persistCart(CartInterface $cart);
@@ -49,15 +51,15 @@ interface CartManagerInterface {
     /**
      * @param $customer
      * @param $name
+     *
      * @return CartInterface|null
      */
     public function getByName($customer, $name);
 
     /**
-     * @param integer $id
+     * @param int $id
      *
-     * @return boolean
+     * @return bool
      */
     public function deleteCart($id);
-
 }

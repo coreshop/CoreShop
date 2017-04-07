@@ -2,12 +2,8 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
-
-interface CartInterface extends ProposalInterface {
-
+interface CartInterface extends ProposalInterface
+{
     /**
      * @return mixed
      */
@@ -15,6 +11,7 @@ interface CartInterface extends ProposalInterface {
 
     /**
      * @param $carrier
+     *
      * @return mixed
      */
     public function setCarrier($carrier);
@@ -41,6 +38,7 @@ interface CartInterface extends ProposalInterface {
 
     /**
      * @param $priceRule
+     *
      * @return bool
      */
     public function hasPriceRule($priceRule);

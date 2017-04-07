@@ -6,12 +6,10 @@ use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class FilteredListingFactory implements FilteredListingFactoryInterface {
-
+class FilteredListingFactory implements FilteredListingFactoryInterface
+{
     /**
      * @var ListingFactoryInterface
      */
@@ -23,7 +21,7 @@ class FilteredListingFactory implements FilteredListingFactoryInterface {
     private $filterProcessor;
 
     /**
-     * @param ListingFactoryInterface $listingFactory
+     * @param ListingFactoryInterface  $listingFactory
      * @param FilterProcessorInterface $filterProcessor
      */
     public function __construct(ListingFactoryInterface $listingFactory, FilterProcessorInterface $filterProcessor)

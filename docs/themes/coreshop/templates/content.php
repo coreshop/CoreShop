@@ -6,7 +6,7 @@
         <?php if ($params['html']['date_modified']) {
     ?>
         <span style="float: left; font-size: 10px; color: gray;">
-            <?= date("l, F j, Y g:i A", $page['modified_time']); ?>
+            <?= date('l, F j, Y g:i A', $page['modified_time']); ?>
         </span>
         <?php 
 } ?>
@@ -29,11 +29,11 @@
     <nav>
         <ul class="Pager">
             <?php if (!empty($page['prev'])) {
-        ?><li class=Pager--prev><a href="<?= $base_url . $page['prev']->getUrl() ?>">Previous</a></li><?php
+        ?><li class=Pager--prev><a href="<?= $base_url.$page['prev']->getUrl() ?>">Previous</a></li><?php
 
     } ?>
             <?php if (!empty($page['next'])) {
-        ?><li class=Pager--next><a href="<?= $base_url . $page['next']->getUrl() ?>">Next</a></li><?php
+        ?><li class=Pager--next><a href="<?= $base_url.$page['next']->getUrl() ?>">Next</a></li><?php
 
     } ?>
         </ul>

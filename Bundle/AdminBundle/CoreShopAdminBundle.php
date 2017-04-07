@@ -12,7 +12,7 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
     public function getCssPaths()
     {
         return [
-            '/bundles/coreshopadmin/css/coreshop.css'
+            '/bundles/coreshopadmin/css/coreshop.css',
         ];
     }
 
@@ -215,7 +215,7 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/mail/rules/conditions/messaging/messageType.js',
             '/bundles/coreshopadmin/js/coreshop/mail/rules/actions/mail.js',
             '/bundles/coreshopadmin/js/coreshop/mail/rules/actions/orderMail.js',
-            '/bundles/coreshopadmin/js/coreshop/mail/rules/conditions/payment/paymentState.js'
+            '/bundles/coreshopadmin/js/coreshop/mail/rules/conditions/payment/paymentState.js',
         ];
     }
 }

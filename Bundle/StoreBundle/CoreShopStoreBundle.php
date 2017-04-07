@@ -29,7 +29,7 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         ];
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     protected function getModelNamespace()

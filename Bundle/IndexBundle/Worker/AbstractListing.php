@@ -23,8 +23,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Tool;
 
 /**
- * Class Listing
- * @package CoreShop\Model\Product
+ * Class Listing.
  */
 abstract class AbstractListing implements ListingInterface
 {
@@ -207,8 +206,8 @@ abstract class AbstractListing implements ListingInterface
         if (is_null($this->locale)) {
             $language = null;
 
-            if (\Zend_Registry::isRegistered("Zend_Locale")) {
-                $language = \Zend_Registry::get("Zend_Locale");
+            if (\Zend_Registry::isRegistered('Zend_Locale')) {
+                $language = \Zend_Registry::get('Zend_Locale');
                 if (Tool::isValidLanguage((string) $language)) {
                     $language = (string) $language;
                 }

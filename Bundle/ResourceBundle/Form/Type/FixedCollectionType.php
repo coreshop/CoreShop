@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +20,7 @@ final class FixedCollectionType extends AbstractType
             $entryOptions = $options['entry_options']($entry);
 
             $builder->add($entryName, $entryType, array_replace([
-                'property_path' => '[' . $entryName . ']',
+                'property_path' => '['.$entryName.']',
                 'block_name' => 'entry',
             ], $entryOptions));
         }
@@ -42,7 +41,9 @@ final class FixedCollectionType extends AbstractType
         $resolver->setRequired('entry_name');
         $resolver->setAllowedTypes('entry_name', ['callable']);
 
-        $resolver->setDefault('entry_options', function () { return []; });
+        $resolver->setDefault('entry_options', function () {
+            return [];
+        });
         $resolver->setAllowedTypes('entry_options', ['array', 'callable']);
         $resolver->setNormalizer('entry_options', $this->optionalCallableNormalizer());
     }
@@ -65,7 +66,9 @@ final class FixedCollectionType extends AbstractType
                 return $value;
             }
 
-            return function () use ($value) { return $value; };
+            return function () use ($value) {
+                return $value;
+            };
         };
     }
 }

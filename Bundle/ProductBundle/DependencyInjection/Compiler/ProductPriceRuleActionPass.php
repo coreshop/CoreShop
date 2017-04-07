@@ -25,5 +25,4 @@ final class ProductPriceRuleActionPass extends RegisterActionConditionPass
     {
         return 'coreshop.form_registry.product_price_rule.actions';
     }
-
 }

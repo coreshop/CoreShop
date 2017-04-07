@@ -2,7 +2,6 @@
 
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
-use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class RuleConditionType extends AbstractConfigurableRuleElementType

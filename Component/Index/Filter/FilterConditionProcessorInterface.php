@@ -10,26 +10,28 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 interface FilterConditionProcessorInterface
 {
     /**
-     * Const for Empty Value
+     * Const for Empty Value.
      */
     const EMPTY_STRING = '##EMPTY##';
 
     /**
      * @param FilterConditionInterface $condition
-     * @param FilterInterface $filter
-     * @param ListingInterface $list
-     * @param ParameterBag $parameterBag
+     * @param FilterInterface          $filter
+     * @param ListingInterface         $list
+     * @param ParameterBag             $parameterBag
+     *
      * @return mixed
      */
     public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag);
 
     /**
      * @param FilterConditionInterface $condition
-     * @param FilterInterface $filter
-     * @param ListingInterface $list
+     * @param FilterInterface          $filter
+     * @param ListingInterface         $list
      * @param $currentFilter
      * @param ParameterBag $parameterBag
-     * @param bool $isPrecondition
+     * @param bool         $isPrecondition
+     *
      * @return mixed
      */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false);

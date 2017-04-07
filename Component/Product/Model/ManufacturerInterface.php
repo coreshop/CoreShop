@@ -8,6 +8,7 @@ interface ManufacturerInterface extends PimcoreModelInterface
 {
     /**
      * @param null $language
+     *
      * @return mixed
      */
     public function getName($language = null);
@@ -15,6 +16,7 @@ interface ManufacturerInterface extends PimcoreModelInterface
     /**
      * @param $name
      * @param null $language
+     *
      * @return mixed
      */
     public function setName($name, $language = null);

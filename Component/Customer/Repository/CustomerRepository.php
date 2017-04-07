@@ -13,13 +13,13 @@
  */
 
 namespace CoreShop\Component\Customer\Repository;
+
 use Pimcore\Model\Object\Listing;
 
 /**
- * Class CustomerRepository
- * @package CoreShop\Component\Customer\Repository
+ * Class CustomerRepository.
  */
-Class CustomerRepository implements CustomerRepositoryInterface
+class CustomerRepository implements CustomerRepositoryInterface
 {
     /**
      * @var string
@@ -37,18 +37,21 @@ Class CustomerRepository implements CustomerRepositoryInterface
     /**
      * @return Listing
      */
-    private function createList() {
-        return new $this->customerListClass;
+    private function createList()
+    {
+        return new $this->customerListClass();
     }
 
     /**
-     * Find Customer by email
+     * Find Customer by email.
      *
      * @param $email
      * @param $isGuest
+     *
      * @return mixed
      */
-    public function getUniqueByEmail($email, $isGuest) {
+    public function getUniqueByEmail($email, $isGuest)
+    {
         $list = $this->createList();
 
         $conditions = ['email = ?'];
@@ -73,22 +76,26 @@ Class CustomerRepository implements CustomerRepositoryInterface
     }
 
     /**
-     * Find Guest Customer by Email
+     * Find Guest Customer by Email.
      *
      * @param $email
+     *
      * @return mixed
      */
-    public function getGuestByEmail($email) {
+    public function getGuestByEmail($email)
+    {
         return $this->$this->getUniqueByEmail($email, true);
     }
 
     /**
-     * Find Customer by Email
+     * Find Customer by Email.
      *
      * @param $email
+     *
      * @return mixed
      */
-    public function getCustomerByEmail($email) {
+    public function getCustomerByEmail($email)
+    {
         return $this->$this->getUniqueByEmail($email, false);
     }
 }

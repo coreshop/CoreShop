@@ -9,6 +9,7 @@ interface ListingFactoryInterface
 {
     /**
      * @param IndexInterface $index
+     *
      * @return ListingInterface
      */
     public function createList(IndexInterface $index);

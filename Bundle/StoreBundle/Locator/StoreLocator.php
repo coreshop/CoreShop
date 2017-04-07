@@ -12,8 +12,8 @@ use Pimcore\Model\Document;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
 
-class StoreLocator implements StoreLocatorInterface {
-
+class StoreLocator implements StoreLocatorInterface
+{
     /**
      * @var ConfigurationHelperInterface
      */
@@ -31,23 +31,22 @@ class StoreLocator implements StoreLocatorInterface {
 
     /**
      * @param ConfigurationHelperInterface $configurationHelper
-     * @param PimcoreSiteHelperInterface $pimcoreSiteHelper
-     * @param RepositoryInterface $repository
+     * @param PimcoreSiteHelperInterface   $pimcoreSiteHelper
+     * @param RepositoryInterface          $repository
      */
     public function __construct(
         ConfigurationHelperInterface $configurationHelper,
         PimcoreSiteHelperInterface $pimcoreSiteHelper,
         RepositoryInterface $repository
-    )
-    {
+    ) {
         $this->configurationHelper = $configurationHelper;
         $this->pimcoreSiteHelper = $pimcoreSiteHelper;
         $this->repository = $repository;
     }
 
-
     /**
      * @throws \Exception
+     *
      * @return Store
      */
     public function getStore()
@@ -86,19 +85,20 @@ class StoreLocator implements StoreLocatorInterface {
      * @note: Copied from Pimcore\Controller\Router\Route\Frontend, probably needs to be changed sometimes
      *
      * @param string|false $path
-     * @param bool $ignoreHardlinks
-     * @param array $types
+     * @param bool         $ignoreHardlinks
+     * @param array        $types
+     *
      * @return Document|Document\PageSnippet|null|string
      */
     private function getNearestDocumentByPath($path, $ignoreHardlinks = false, $types = [])
     {
         $document = null;
-        $pathes[] = "/";
-        $pathParts = explode("/", $path);
+        $pathes[] = '/';
+        $pathParts = explode('/', $path);
         $tmpPathes = [];
         foreach ($pathParts as $pathPart) {
             $tmpPathes[] = $pathPart;
-            $t = implode("/", $tmpPathes);
+            $t = implode('/', $tmpPathes);
             if (!empty($t)) {
                 $pathes[] = $t;
             }
@@ -117,7 +117,7 @@ class StoreLocator implements StoreLocatorInterface {
                 $documentService = new Document\Service();
 
                 // undo the changed made by the site detection in self::match()
-                $originalPath = preg_replace("@^" . $site->getRootPath() . "@", "", $p);
+                $originalPath = preg_replace('@^'.$site->getRootPath().'@', '', $p);
 
                 $sitePrettyDocId = $documentService->getDocumentIdByPrettyUrlInSite($site, $originalPath);
                 if ($sitePrettyDocId) {
@@ -128,7 +128,6 @@ class StoreLocator implements StoreLocatorInterface {
                 }
             }
         }
-
 
         if ($document) {
             if (!$ignoreHardlinks) {
@@ -149,14 +148,16 @@ class StoreLocator implements StoreLocatorInterface {
 
     /**
      * @param Site $site
+     *
      * @return mixed
+     *
      * @throws \Exception
      *
      * @returns Store
      */
     public function getStoreForSite(Site $site)
     {
-        $cacheKey = "coreshop_store_site_" . $site->getId();
+        $cacheKey = 'coreshop_store_site_'.$site->getId();
 
         try {
             $object = \Zend_Registry::get($cacheKey);
@@ -169,14 +170,14 @@ class StoreLocator implements StoreLocatorInterface {
             try {
                 if (!$object = Cache::load($cacheKey)) {
                     $list = $this->repository->getList();
-                    $data = $list->setCondition("siteId = ?", [$site->getId()])->getData();
+                    $data = $list->setCondition('siteId = ?', [$site->getId()])->getData();
 
                     if (count($data) > 1) {
-                        throw new \Exception("More that one store for this site is configured!");
+                        throw new \Exception('More that one store for this site is configured!');
                     }
 
                     if (count($data) === 0) {
-                        throw new \Exception("No store for this site is configured!");
+                        throw new \Exception('No store for this site is configured!');
                     }
 
                     $object = $data[0];
@@ -197,16 +198,17 @@ class StoreLocator implements StoreLocatorInterface {
     }
 
     /**
-     * Returns the default store
+     * Returns the default store.
      *
      * @return mixed
+     *
      * @throws \Exception
      *
      * @returns Site
      */
     public function getDefaultStore()
     {
-        $cacheKey = "coreshop_site_site_default";
+        $cacheKey = 'coreshop_site_site_default';
 
         try {
             $object = \Zend_Registry::get($cacheKey);
@@ -219,14 +221,14 @@ class StoreLocator implements StoreLocatorInterface {
             try {
                 if (!$object = Cache::load($cacheKey)) {
                     $list = $this->repository->getList();
-                    $data = $list->setCondition("isDefault = 1")->getData();
+                    $data = $list->setCondition('isDefault = 1')->getData();
 
                     if (count($data) > 1) {
-                        throw new \Exception("More that one default store is configured!");
+                        throw new \Exception('More that one default store is configured!');
                     }
 
                     if (count($data) === 0) {
-                        throw new \Exception("No default store is configured!");
+                        throw new \Exception('No default store is configured!');
                     }
 
                     $object = $data[0];
@@ -243,6 +245,6 @@ class StoreLocator implements StoreLocatorInterface {
             }
         }
 
-        throw new \Exception("No default store is configured!");
+        throw new \Exception('No default store is configured!');
     }
 }

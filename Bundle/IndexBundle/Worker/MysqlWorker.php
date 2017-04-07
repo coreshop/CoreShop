@@ -36,8 +36,7 @@ class MysqlWorker extends AbstractWorker
     public function __construct(
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry
-    )
-    {
+    ) {
         parent::__construct($getterServiceRegistry, $interpreterServiceRegistry);
 
         $this->db = \Pimcore\Db::get();
@@ -55,7 +54,7 @@ class MysqlWorker extends AbstractWorker
     }
 
     /**
-     * Process Table - delete/add missing/new columns
+     * Process Table - delete/add missing/new columns.
      *
      * @param IndexInterface $index
      */
@@ -87,7 +86,7 @@ class MysqlWorker extends AbstractWorker
     }
 
     /**
-     * Process Localized Table - delete/add missing/new columns
+     * Process Localized Table - delete/add missing/new columns.
      *
      * @param IndexInterface $index
      */
@@ -118,14 +117,15 @@ class MysqlWorker extends AbstractWorker
     }
 
     /**
-     * get all columns from table
+     * get all columns from table.
      *
      * @param $table
+     *
      * @return array
      */
     protected function getTableColumns($table)
     {
-        $data = $this->db->fetchAll('SHOW COLUMNS FROM '. $table);
+        $data = $this->db->fetchAll('SHOW COLUMNS FROM '.$table);
 
         $columns = [];
 
@@ -168,7 +168,7 @@ class MysqlWorker extends AbstractWorker
      */
     protected function dropColumn($table, $column)
     {
-        $this->db->query('ALTER TABLE `' . $table . '` DROP COLUMN `' . $column . '`;');
+        $this->db->query('ALTER TABLE `'.$table.'` DROP COLUMN `'.$column.'`;');
     }
 
     /**
@@ -182,7 +182,7 @@ class MysqlWorker extends AbstractWorker
     }
 
     /**
-     * Create Tables of not exists
+     * Create Tables of not exists.
      *
      * @param IndexInterface $index
      */
@@ -357,7 +357,6 @@ QUERY;
         $this->db->query($insert, array_merge($updateData, $insertData));
     }
 
-
     /**
      * Insert data into mysql-table.
      *
@@ -369,19 +368,19 @@ QUERY;
         foreach ($data['values'] as $language => $values) {
             $dataKeys = [
                 'oo_id' => '?',
-                'language' => '?'
+                'language' => '?',
             ];
             $updateData = [
                 $data['oo_id'],
-                $language
+                $language,
             ];
             $insertStatement = [
                 'oo_id=?',
-                'language=?'
+                'language=?',
             ];
             $insertData = [
                 $data['oo_id'],
-                $language
+                $language,
             ];
 
             foreach ($values as $key => $d) {
@@ -416,25 +415,25 @@ QUERY;
     {
         switch ($type) {
             case IndexColumnInterface::FIELD_TYPE_INTEGER:
-                return "INT(11)";
+                return 'INT(11)';
 
             case IndexColumnInterface::FIELD_TYPE_BOOLEAN:
-                return "INT(1)";
+                return 'INT(1)';
 
             case IndexColumnInterface::FIELD_TYPE_DATE:
-                return "DATETIME";
+                return 'DATETIME';
 
             case IndexColumnInterface::FIELD_TYPE_DOUBLE:
-                return "DOUBLE";
+                return 'DOUBLE';
 
             case IndexColumnInterface::FIELD_TYPE_STRING:
-                return "VARCHAR(255)";
+                return 'VARCHAR(255)';
 
             case IndexColumnInterface::FIELD_TYPE_TEXT:
-                return "TEXT";
+                return 'TEXT';
         }
 
-        throw new \Exception($type . " is not supported by MySQL Index");
+        throw new \Exception($type.' is not supported by MySQL Index');
     }
 
     /**
@@ -449,6 +448,7 @@ QUERY;
      * get table name.
      *
      * @param IndexInterface $index
+     *
      * @return string
      */
     public function getTablename(IndexInterface $index)
@@ -460,6 +460,7 @@ QUERY;
      * get table name.
      *
      * @param IndexInterface $index
+     *
      * @return string
      */
     public function getLocalizedTablename(IndexInterface $index)
@@ -468,21 +469,23 @@ QUERY;
     }
 
     /**
-     * get localized view name
+     * get localized view name.
      *
      * @param IndexInterface $index
      * @param $language
+     *
      * @return string
      */
     public function getLocalizedViewName(IndexInterface $index, $language)
     {
-        return $this->getLocalizedTablename($index) . "_" . $language;
+        return $this->getLocalizedTablename($index).'_'.$language;
     }
 
     /**
      * get tablename for relations.
      *
      * @param IndexInterface $index
+     *
      * @return string
      */
     public function getRelationTablename(IndexInterface $index)

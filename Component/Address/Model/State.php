@@ -19,7 +19,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 class State extends AbstractResource implements StateInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -43,13 +43,12 @@ class State extends AbstractResource implements StateInterface
      */
     protected $country;
 
-
     /**
      * @return string
      */
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getName(), $this->getId());
+        return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
     /**

@@ -6,14 +6,15 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IndexController extends ResourceController {
-
+class IndexController extends ResourceController
+{
     /**
-     * Get Worker Types
+     * Get Worker Types.
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getTypesAction() {
+    public function getTypesAction()
+    {
         $types = $this->getWorkerTypes();
 
         $typesObject = [];
@@ -28,11 +29,12 @@ class IndexController extends ResourceController {
     }
 
     /**
-     * Get Index Configurations
+     * Get Index Configurations.
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getConfigAction() {
+    public function getConfigAction()
+    {
         $interpreters = $this->getInterpreterTypes();
         $interpretersResult = [];
 
@@ -59,7 +61,7 @@ class IndexController extends ResourceController {
             IndexColumnInterface::FIELD_TYPE_INTEGER,
             IndexColumnInterface::FIELD_TYPE_BOOLEAN,
             IndexColumnInterface::FIELD_TYPE_DATE,
-            IndexColumnInterface::FIELD_TYPE_TEXT
+            IndexColumnInterface::FIELD_TYPE_TEXT,
         ];
         $fieldTypesResult = [];
 
@@ -78,15 +80,16 @@ class IndexController extends ResourceController {
                 'interpreters' => $interpretersResult,
                 'getters' => $gettersResult,
                 'fieldTypes' => $fieldTypesResult,
-                'class' => str_replace('Pimcore\\Model\\Object\\', '', $productClass)
+                'class' => str_replace('Pimcore\\Model\\Object\\', '', $productClass),
             ]
         );
     }
 
     /**
-     * Get Pimcore Class Definition
+     * Get Pimcore Class Definition.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getClassDefinitionForFieldSelectionAction(Request $request)
@@ -154,9 +157,9 @@ class IndexController extends ResourceController {
                     $key = $definition->getKey();
 
                     $result[$key] = [];
-                    $result[$key]["nodeLabel"] = $key;
-                    $result[$key]["className"] = $key;
-                    $result[$key]["nodeType"] = "fieldcollections";
+                    $result[$key]['nodeLabel'] = $key;
+                    $result[$key]['className'] = $key;
+                    $result[$key]['nodeType'] = 'fieldcollections';
                     $result[$key]['childs'] = [];
 
                     foreach ($fieldDefinition as $fieldcollectionField) {
@@ -192,26 +195,30 @@ class IndexController extends ResourceController {
     /**
      * @return array
      */
-    protected function getInterpreterTypes() {
+    protected function getInterpreterTypes()
+    {
         return $this->getParameter('coreshop.index.interpreters');
     }
 
     /**
      * @return array
      */
-    protected function getGetterTypes() {
+    protected function getGetterTypes()
+    {
         return $this->getParameter('coreshop.index.getters');
     }
 
     /**
      * @return array
      */
-    protected function getWorkerTypes() {
+    protected function getWorkerTypes()
+    {
         return $this->getParameter('coreshop.index.workers');
     }
 
-     /**
+    /**
      * @param \Pimcore\Model\Object\Classificationstore\GroupConfig $config
+     *
      * @return array
      */
     protected function getClassificationStoreGroupConfiguration(\Pimcore\Model\Object\Classificationstore\GroupConfig $config)
@@ -236,6 +243,7 @@ class IndexController extends ResourceController {
 
     /**
      * @param \Pimcore\Model\Object\ClassDefinition\Data $field
+     *
      * @return array
      */
     protected function getFieldConfiguration(\Pimcore\Model\Object\ClassDefinition\Data $field)
@@ -249,8 +257,9 @@ class IndexController extends ResourceController {
     }
 
     /**
-     * @param \Pimcore\Model\Object\Classificationstore\KeyConfig $field
+     * @param \Pimcore\Model\Object\Classificationstore\KeyConfig   $field
      * @param \Pimcore\Model\Object\Classificationstore\GroupConfig $groupConfig
+     *
      * @return array
      */
     protected function getClassificationStoreFieldConfiguration(\Pimcore\Model\Object\Classificationstore\KeyConfig $field, \Pimcore\Model\Object\Classificationstore\GroupConfig $groupConfig)

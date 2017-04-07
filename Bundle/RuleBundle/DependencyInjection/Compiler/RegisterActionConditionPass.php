@@ -11,22 +11,22 @@ abstract class RegisterActionConditionPass implements CompilerPassInterface
     /**
      * @return string
      */
-    protected abstract function getIdentifier();
+    abstract protected function getIdentifier();
 
     /**
      * @return string
      */
-    protected abstract function getTagIdentifier();
+    abstract protected function getTagIdentifier();
 
     /**
      * @return string
      */
-    protected abstract function getRegistryIdentifier();
+    abstract protected function getRegistryIdentifier();
 
     /**
      * @return string
      */
-    protected abstract function getFormRegistryIdentifier();
+    abstract protected function getFormRegistryIdentifier();
 
     /**
      * {@inheritdoc}

@@ -28,7 +28,7 @@ abstract class AbstractPimcoreModel extends Concrete implements ResourceInterfac
     public static function getById($id, $force = false)
     {
         /**
-         * @var $model static
+         * @var static
          */
         $model = parent::getById($id, $force);
 

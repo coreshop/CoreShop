@@ -6,7 +6,6 @@ use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use Pimcore\Db;
 
-
 class Dao
 {
     /**
@@ -40,8 +39,8 @@ class Dao
      *
      * @param $condition
      * @param null|string $orderBy
-     * @param null|integer $limit
-     * @param null|integer $offset
+     * @param null|int    $limit
+     * @param null|int    $offset
      *
      * @return array
      */
@@ -56,7 +55,7 @@ class Dao
         }
 
         if (is_integer($limit)) {
-            if (is_integer($offset)){
+            if (is_integer($offset)) {
                 $limit = 'LIMIT '.$offset.', '.$limit;
             } else {
                 $limit = 'LIMIT '.$limit;
@@ -108,12 +107,12 @@ class Dao
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualProductId) as `count` FROM "
                     .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
-                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY ' . $this->db->quoteIdentifier($fieldname);
+                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->db->quoteIdentifier($fieldname);
             } else {
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(*) as `count` FROM "
                     .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
-                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY ' . $this->db->quoteIdentifier($fieldname);
+                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->db->quoteIdentifier($fieldname);
             }
 
             $result = $this->db->fetchAll($query);
@@ -123,7 +122,7 @@ class Dao
             $query = 'SELECT '.$this->db->quoteIdentifier($fieldname).' FROM '
                 .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
-                .$condition.' GROUP BY '.$this->db->quoteIdentifier($fieldname) . ' ORDER BY ' . $this->db->quoteIdentifier($fieldname);
+                .$condition.' GROUP BY '.$this->db->quoteIdentifier($fieldname).' ORDER BY '.$this->db->quoteIdentifier($fieldname);
 
             $result = $this->db->fetchCol($query);
 
@@ -192,7 +191,7 @@ class Dao
      * @param null $limit
      * @param null $offset
      *
-     * @return integer
+     * @return int
      */
     public function getCount($condition, $orderBy = null, $limit = null, $offset = null)
     {
@@ -293,7 +292,7 @@ class Dao
                 }
 
                 if (count($subStatement) > 0) {
-                    $statement = 'ABS(' . implode(' + ', $subStatement) . ')';
+                    $statement = 'ABS('.implode(' + ', $subStatement).')';
 
                     return $statement;
                 }

@@ -42,7 +42,7 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopFrontendBundle(),
             new CoreShopResourceBundle(),
             new FOSRestBundle(),
-            new LiipThemeBundle()
+            new LiipThemeBundle(),
         ];
 
         return array_merge($bundles, parent::registerBundles());

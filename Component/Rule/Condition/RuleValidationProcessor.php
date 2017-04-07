@@ -21,13 +21,14 @@ class RuleValidationProcessor implements RuleValidationProcessorInterface
         $this->ruleRegistry = $ruleRegistry;
     }
 
-   /**
+    /**
      * @param $subject
      * @param RuleInterface $rule
      *
      * @return bool
      */
-    public function isValid($subject, RuleInterface $rule) {
+    public function isValid($subject, RuleInterface $rule)
+    {
         if (!$rule->hasConditions()) {
             return true;
         }
@@ -44,6 +45,7 @@ class RuleValidationProcessor implements RuleValidationProcessorInterface
     /**
      * @param $subject
      * @param ConditionInterface $condition
+     *
      * @return bool
      */
     protected function isConditionValid($subject, ConditionInterface $condition)

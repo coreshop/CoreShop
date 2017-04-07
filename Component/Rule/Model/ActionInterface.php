@@ -6,7 +6,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface ActionInterface extends ResourceInterface
 {
-/**
+    /**
      * @param string $type
      */
     public function setType($type);

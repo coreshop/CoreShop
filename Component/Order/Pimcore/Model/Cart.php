@@ -67,7 +67,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface, PimcoreModelIn
     {
         $items = $this->getItems();
 
-        for ($i = 0; $i < count($items); $i++) {
+        for ($i = 0; $i < count($items); ++$i) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {
@@ -86,7 +86,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface, PimcoreModelIn
     {
         $items = $this->getItems();
 
-        for ($i = 0; $i < count($items); $i++) {
+        for ($i = 0; $i < count($items); ++$i) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {
@@ -155,7 +155,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface, PimcoreModelIn
     {
         $items = $this->getPriceRules();
 
-        for ($i = 0; $i < count($items); $i++) {
+        for ($i = 0; $i < count($items); ++$i) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $priceRule->getId()) {
@@ -174,7 +174,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface, PimcoreModelIn
     {
         $items = $this->getPriceRules();
 
-        for ($i = 0; $i < count($items); $i++) {
+        for ($i = 0; $i < count($items); ++$i) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $priceRule->getId()) {

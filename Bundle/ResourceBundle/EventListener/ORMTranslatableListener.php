@@ -12,7 +12,6 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Model\TranslationInterface;
-use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -29,7 +28,7 @@ final class ORMTranslatableListener implements EventSubscriber
     private $translatableEntityLocaleAssigner;
 
     /**
-     * @param RegistryInterface $resourceMetadataRegistry
+     * @param RegistryInterface  $resourceMetadataRegistry
      * @param ContainerInterface $container
      */
     public function __construct(
@@ -52,7 +51,7 @@ final class ORMTranslatableListener implements EventSubscriber
     }
 
     /**
-     * Add mapping to translatable entities
+     * Add mapping to translatable entities.
      *
      * @param LoadClassMetadataEventArgs $eventArgs
      */
@@ -156,7 +155,7 @@ final class ORMTranslatableListener implements EventSubscriber
                 'fieldName' => 'locale',
                 'type' => 'string',
                 'nullable' => false,
-                'length' => 5
+                'length' => 5,
             ]);
         }
 

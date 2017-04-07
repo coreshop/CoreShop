@@ -15,8 +15,7 @@
 namespace CoreShop\Component\Core\Factory;
 
 /**
- * Class Factory
- * @package CoreShop\Component\Core\Factory
+ * Class Factory.
  */
 final class ListingFactory implements FactoryInterface
 {

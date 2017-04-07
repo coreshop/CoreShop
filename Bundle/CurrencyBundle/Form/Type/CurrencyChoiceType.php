@@ -25,7 +25,7 @@ final class CurrencyChoiceType extends AbstractType
         $this->currencyRepository = $currencyRepository;
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -48,7 +48,7 @@ final class CurrencyChoiceType extends AbstractType
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($currencies, function($a, $b) {
+                    @usort($currencies, function ($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 

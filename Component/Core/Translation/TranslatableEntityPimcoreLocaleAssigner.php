@@ -35,7 +35,8 @@ final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntit
     /**
      * @return null|string
      */
-    private function getPimcoreLanguage() {
+    private function getPimcoreLanguage()
+    {
         $locale = null;
 
         if (Runtime::isRegistered('model.locale')) {

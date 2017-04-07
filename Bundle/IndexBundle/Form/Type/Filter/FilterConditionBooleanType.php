@@ -4,10 +4,7 @@ namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
 
 final class FilterConditionBooleanType extends AbstractType
 {
@@ -18,7 +15,6 @@ final class FilterConditionBooleanType extends AbstractType
     {
         $builder
             ->add('preSelects', CollectionType::class, [
-
             ])
         ;
     }

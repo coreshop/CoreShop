@@ -14,11 +14,9 @@
 
 namespace CoreShop\Component\Resource\Metadata;
 
-use Doctrine\Common\Inflector\Inflector;
-
 interface MetadataInterface
 {
-   /**
+    /**
      * @return string
      */
     public function getAlias();

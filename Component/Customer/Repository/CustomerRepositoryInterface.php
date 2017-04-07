@@ -17,32 +17,34 @@ namespace CoreShop\Component\Customer\Repository;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 /**
- * Interface RepositoryInterface
- * @package CoreShop\Component\Core\Repository
+ * Interface RepositoryInterface.
  */
-interface CustomerRepositoryInterface extends RepositoryInterface 
+interface CustomerRepositoryInterface extends RepositoryInterface
 {
     /**
-     * Find Customer by email
-     * 
+     * Find Customer by email.
+     *
      * @param $email
      * @param $isGuest
+     *
      * @return mixed
      */
     public function getUniqueByEmail($email, $isGuest);
 
     /**
-     * Find Guest Customer by Email
+     * Find Guest Customer by Email.
      *
      * @param $email
+     *
      * @return mixed
      */
     public function getGuestByEmail($email);
 
     /**
-     * Find Customer by Email
+     * Find Customer by Email.
      *
      * @param $email
+     *
      * @return mixed
      */
     public function getCustomerByEmail($email);

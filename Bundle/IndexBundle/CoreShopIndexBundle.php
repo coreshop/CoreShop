@@ -13,7 +13,7 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypeP
 
 final class CoreShopIndexBundle extends AbstractResourceBundle
 {
-/**
+    /**
      * {@inheritdoc}
      */
     public function getSupportedDrivers()
@@ -33,7 +33,6 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterGetterPass());
         $container->addCompilerPass(new RegisterFilterConditionTypesPass());
     }
-
 
     /**
      * {@inheritdoc}

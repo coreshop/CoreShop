@@ -21,10 +21,10 @@ class TaxRuleGroupType extends AbstractResourceType
                 'entry_type' => TaxRuleType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false
+                'by_reference' => false,
             ])
             ->add('stores', StoreChoiceType::class, [
-                "multiple" => true
+                'multiple' => true,
             ])
         ;
     }

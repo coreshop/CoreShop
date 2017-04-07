@@ -6,7 +6,7 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface RuleValidationProcessorInterface
 {
-   /**
+    /**
      * @param $subject
      * @param RuleInterface $rule
      *

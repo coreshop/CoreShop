@@ -3,7 +3,6 @@
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Doctrine\Common\Collections\Collection;
 
 interface FilterConditionInterface extends ResourceInterface
 {
@@ -14,6 +13,7 @@ interface FilterConditionInterface extends ResourceInterface
 
     /**
      * @param string $type
+     *
      * @return static
      */
     public function setType($type);
@@ -25,6 +25,7 @@ interface FilterConditionInterface extends ResourceInterface
 
     /**
      * @param string $field
+     *
      * @return static
      */
     public function setField($field);
@@ -36,6 +37,7 @@ interface FilterConditionInterface extends ResourceInterface
 
     /**
      * @param string $label
+     *
      * @return static
      */
     public function setLabel($label);
@@ -47,6 +49,7 @@ interface FilterConditionInterface extends ResourceInterface
 
     /**
      * @param int $quantityUnit
+     *
      * @return static
      */
     public function setQuantityUnit($quantityUnit);
@@ -58,6 +61,7 @@ interface FilterConditionInterface extends ResourceInterface
 
     /**
      * @param array $configuration
+     *
      * @return static
      */
     public function setConfiguration($configuration);
@@ -69,6 +73,7 @@ interface FilterConditionInterface extends ResourceInterface
 
     /**
      * @param FilterInterface $filter
+     *
      * @return static
      */
     public function setFilter(FilterInterface $filter);

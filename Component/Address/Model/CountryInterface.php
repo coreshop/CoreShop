@@ -20,8 +20,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Interface CountryInterface
- * @package CoreShop\Component\Address\Model
+ * Interface CountryInterface.
  */
 interface CountryInterface extends ResourceInterface
 {
@@ -32,6 +31,7 @@ interface CountryInterface extends ResourceInterface
 
     /**
      * @param $isoCode
+     *
      * @return static
      */
     public function setIsoCode($isoCode);
@@ -43,17 +43,19 @@ interface CountryInterface extends ResourceInterface
 
     /**
      * @param $name
+     *
      * @return static
      */
     public function setName($name);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getActive();
 
     /**
-     * @param boolean $active
+     * @param bool $active
+     *
      * @return static
      */
     public function setActive($active);
@@ -65,6 +67,7 @@ interface CountryInterface extends ResourceInterface
 
     /**
      * @param CurrencyInterface $currency
+     *
      * @return static
      */
     public function setCurrency($currency);
@@ -76,6 +79,7 @@ interface CountryInterface extends ResourceInterface
 
     /**
      * @param ZoneInterface $zone
+     *
      * @return static
      */
     public function setZone(ZoneInterface $zone = null);
@@ -92,6 +96,7 @@ interface CountryInterface extends ResourceInterface
 
     /**
      * @param bool $useStoreCurrency
+     *
      * @return static
      */
     public function setUseStoreCurrency($useStoreCurrency);
@@ -103,6 +108,7 @@ interface CountryInterface extends ResourceInterface
 
     /**
      * @param string $addressFormat
+     *
      * @return static
      */
     public function setAddressFormat($addressFormat);

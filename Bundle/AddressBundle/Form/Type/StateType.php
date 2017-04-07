@@ -22,7 +22,6 @@ final class StateType extends AbstractResourceType
                 'active' => null,
                 'label' => 'coreshop.form.address.country',
             ]);
-        ;
     }
 
     /**

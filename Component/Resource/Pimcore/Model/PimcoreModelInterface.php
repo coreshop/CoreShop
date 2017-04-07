@@ -19,12 +19,12 @@ interface PimcoreModelInterface extends ResourceInterface, ContainerAwareInterfa
     public function getKey();
 
     /**
-     * @param boolean $published
+     * @param bool $published
      */
     public function setPublished($published);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPublished();
 

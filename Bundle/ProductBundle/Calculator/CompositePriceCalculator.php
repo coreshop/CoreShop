@@ -50,5 +50,4 @@ class CompositePriceCalculator implements ProductPriceCalculatorInterface
 
         return $discount;
     }
-
 }

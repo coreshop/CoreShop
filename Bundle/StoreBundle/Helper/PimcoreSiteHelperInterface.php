@@ -4,10 +4,10 @@ namespace CoreShop\Bundle\StoreBundle\Helper;
 
 use Pimcore\Model\Site;
 
-interface PimcoreSiteHelperInterface {
-
+interface PimcoreSiteHelperInterface
+{
     /**
-     * @return boolean
+     * @return bool
      */
     public function isSiteRequest();
 

@@ -19,7 +19,7 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 
 final class CoreShopAddressBundle extends AbstractResourceBundle
 {
-/**
+    /**
      * {@inheritdoc}
      */
     public function getSupportedDrivers()
@@ -29,7 +29,7 @@ final class CoreShopAddressBundle extends AbstractResourceBundle
         ];
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     protected function getModelNamespace()

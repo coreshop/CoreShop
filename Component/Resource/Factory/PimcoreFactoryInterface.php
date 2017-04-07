@@ -16,5 +16,4 @@ namespace CoreShop\Component\Resource\Factory;
 
 interface PimcoreFactoryInterface extends FactoryInterface
 {
-
 }

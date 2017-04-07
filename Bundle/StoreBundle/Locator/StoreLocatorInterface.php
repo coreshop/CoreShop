@@ -5,8 +5,8 @@ namespace CoreShop\Bundle\StoreBundle\Locator;
 use CoreShop\Component\Store\Model\Store;
 use Pimcore\Model\Site;
 
-interface StoreLocatorInterface {
-
+interface StoreLocatorInterface
+{
     /**
      * @return Store
      */

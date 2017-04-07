@@ -65,7 +65,8 @@ final class EventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request) {
+    public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request)
+    {
         $event = $this->getEvent($resource, $request);
 
         $this->eventDispatcher->dispatch(
@@ -76,12 +77,12 @@ final class EventDispatcher implements EventDispatcherInterface
 
     /**
      * @param ResourceInterface $resource
-     * @param Request $request
+     * @param Request           $request
      *
      * @return ResourceControllerEvent
      */
     private function getEvent(ResourceInterface $resource, Request $request)
     {
-        return new ResourceControllerEvent($resource, ["request" => $request]);
+        return new ResourceControllerEvent($resource, ['request' => $request]);
     }
 }

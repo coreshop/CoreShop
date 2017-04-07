@@ -33,8 +33,7 @@ abstract class AbstractWorker implements WorkerInterface
     public function __construct(
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry
-    )
-    {
+    ) {
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
     }
@@ -42,9 +41,9 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * prepares Data for index.
      *
-     * @param IndexInterface $index
+     * @param IndexInterface        $index
      * @param PimcoreModelInterface $object
-     * @param boolean $convertArrayToString
+     * @param bool                  $convertArrayToString
      *
      * @return array
      *
@@ -114,21 +113,20 @@ abstract class AbstractWorker implements WorkerInterface
             'o_virtualProductActive' => $virtualProductActive === null ? false : $virtualProductActive,
             'o_type' => $object->getType(),
             'categoryIds' => $convertArrayToString ? ','.implode(',', $categoryIds).',' : $categoryIds,
-            'parentCategoryIds' => $convertArrayToString ? ','.implode(',', $parentCategoryIds).',' : $parentCategoryIds
+            'parentCategoryIds' => $convertArrayToString ? ','.implode(',', $parentCategoryIds).',' : $parentCategoryIds,
         ];
 
-        if (method_exists($object, "getEnabled")) {
+        if (method_exists($object, 'getEnabled')) {
             $data['active'] = $object->getEnabled();
         }
 
-        if (method_exists($object, "getShops")) {
+        if (method_exists($object, 'getShops')) {
             $data['shops'] = $convertArrayToString ? ','.@implode(',', $object->getShops()).',' : $object->getShops();
         }
 
-
         $localizedData = [
             'oo_id' => $object->getId(),
-            'values' => []
+            'values' => [],
         ];
 
         foreach ($validLanguages as $language) {
@@ -145,9 +143,8 @@ abstract class AbstractWorker implements WorkerInterface
                     $value = null;
                     $getter = $column->getGetter();
 
-
-                    if ($column->getType() === "localizedfields") {
-                        $getter = 'get' . ucfirst($column->getObjectKey());
+                    if ($column->getType() === 'localizedfields') {
+                        $getter = 'get'.ucfirst($column->getObjectKey());
 
                         if (method_exists($object, $getter)) {
                             foreach ($validLanguages as $language) {
@@ -172,7 +169,7 @@ abstract class AbstractWorker implements WorkerInterface
                                 }
 
                                 if (is_array($value) && $convertArrayToString) {
-                                    $value = ',' . implode($value, ',') . ',';
+                                    $value = ','.implode($value, ',').',';
                                 }
 
                                 $localizedData['values'][$language][$column->getName()] = $value;
@@ -194,7 +191,7 @@ abstract class AbstractWorker implements WorkerInterface
                                 }
                             }
                         } else {
-                            $getter = 'get' . ucfirst($column->getObjectKey());
+                            $getter = 'get'.ucfirst($column->getObjectKey());
 
                             if (method_exists($object, $getter)) {
                                 $value = $object->$getter();
@@ -228,7 +225,7 @@ abstract class AbstractWorker implements WorkerInterface
 
                         if ($value) {
                             if (is_array($value) && $convertArrayToString) {
-                                $value = ',' . implode($value, ',') . ',';
+                                $value = ','.implode($value, ',').',';
                             }
 
                             $data[$column->getName()] = $value;
@@ -250,13 +247,15 @@ abstract class AbstractWorker implements WorkerInterface
         return [
             'data' => $data,
             'relation' => $relationData,
-            'localizedData' => $localizedData
+            'localizedData' => $localizedData,
         ];
     }
 
     /**
      * @param IndexColumnInterface $column
+     *
      * @return bool|InterpreterInterface
+     *
      * @throws \Exception
      */
     protected function getInterpreterObject(IndexColumnInterface $column)
@@ -293,8 +292,8 @@ abstract class AbstractWorker implements WorkerInterface
     abstract public function deleteIndexStructures(IndexInterface $index);
 
    /**
-     * {@inheritdoc}
-     */
+    * {@inheritdoc}
+    */
    abstract public function deleteFromIndex(IndexInterface $index, PimcoreModelInterface $object);
 
     /**
@@ -339,7 +338,7 @@ abstract class AbstractWorker implements WorkerInterface
             'active' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
             'shops' => IndexColumnInterface::FIELD_TYPE_STRING,
             'minPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
-            'maxPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE
+            'maxPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
         ];
     }
 }

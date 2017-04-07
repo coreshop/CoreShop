@@ -8,11 +8,12 @@ use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\Condition;
 
-class ProductController extends PimcoreFrontendController {
-
-    public function testAction() {
+class ProductController extends PimcoreFrontendController
+{
+    public function testAction()
+    {
         /**
-         * @var $product ProductInterface
+         * @var ProductInterface
          */
         $product = $this->repository->find(65);
 
@@ -32,5 +33,4 @@ class ProductController extends PimcoreFrontendController {
 
         exit;
     }
-
 }

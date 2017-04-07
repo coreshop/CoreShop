@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class FilterConditionType extends AbstractResourceType
 {
@@ -88,7 +87,7 @@ final class FilterConditionType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -99,7 +98,7 @@ final class FilterConditionType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

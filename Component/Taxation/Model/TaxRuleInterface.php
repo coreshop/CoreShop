@@ -24,6 +24,7 @@ interface TaxRuleInterface extends ResourceInterface
      * @return int
      */
     public function getBehavior();
+
     /**
      * @param int $behavior
      */

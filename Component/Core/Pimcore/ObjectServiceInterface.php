@@ -8,6 +8,7 @@ interface ObjectServiceInterface
 {
     /**
      * @param $path
+     *
      * @return ElementInterface
      */
     public function createFolderByPath($path);

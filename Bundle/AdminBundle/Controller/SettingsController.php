@@ -23,12 +23,13 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class SettingsController
+ * Class SettingsController.
  */
 class SettingsController extends AdminController
 {
     /**
      * @param FilterControllerEvent $event
+     *
      * @throws \Exception
      */
     public function onKernelController(FilterControllerEvent $event)
@@ -62,8 +63,8 @@ class SettingsController extends AdminController
             'classMapping' => $classMapping,
             'bundle' => [
                 'version' => Version::getVersion(),
-                'build' => Version::getBuild()
-            ]
+                'build' => Version::getBuild(),
+            ],
         ];
 
         return $this->json($settings);
@@ -77,7 +78,7 @@ class SettingsController extends AdminController
         $shops = Model\Shop::getList();
         $valueArray = [];
         $systemValues = [];
-            
+
         foreach ($shops as $shop) {
             $shopValues = [];
 
@@ -107,7 +108,7 @@ class SettingsController extends AdminController
 
         $response = [
             'values' => $valueArray,
-            'systemValues' => $systemValues
+            'systemValues' => $systemValues,
         ];
 
         return $this->json($response);
@@ -124,9 +125,8 @@ class SettingsController extends AdminController
         $diff = [];
 
         if (Model\Configuration::multiShopEnabled()) {
-            $diff = call_user_func_array("array_diff_assoc_recursive", $values);
+            $diff = call_user_func_array('array_diff_assoc_recursive', $values);
         }
-
 
         if (Model\Configuration::multiShopEnabled()) {
             foreach ($values as $shop => $shopValues) {
@@ -158,7 +158,8 @@ class SettingsController extends AdminController
     /**
      * @return FactoryInterface
      */
-    public function getShopFactory() {
-        return $this->get("coreshop.factory.shop");
+    public function getShopFactory()
+    {
+        return $this->get('coreshop.factory.shop');
     }
 }

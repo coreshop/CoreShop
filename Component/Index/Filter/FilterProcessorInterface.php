@@ -6,14 +6,14 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-interface FilterProcessorInterface {
-
+interface FilterProcessorInterface
+{
     /**
-     * @param FilterInterface $filter
+     * @param FilterInterface  $filter
      * @param ListingInterface $list
-     * @param ParameterBag $parameterBag
+     * @param ParameterBag     $parameterBag
+     *
      * @return mixed
      */
     public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag);
-
 }

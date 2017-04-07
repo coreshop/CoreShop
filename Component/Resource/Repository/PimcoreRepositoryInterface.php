@@ -14,6 +14,7 @@ interface PimcoreRepositoryInterface
 
     /**
      * @param $id
+     *
      * @return Concrete
      */
     public function find($id);

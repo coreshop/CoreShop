@@ -4,30 +4,30 @@ namespace CoreShop\Component\Core\Helper;
 
 use Pimcore\Model\Object\AbstractObject;
 
-class ArrayHelper {
-
+class ArrayHelper
+{
     /**
      * @return array
      */
     public static function array_diff_assoc_recursive()
     {
         $args = func_get_args();
-        $diff =  [ ];
+        $diff = [];
         foreach (array_shift($args) as $key => $val) {
-            for ($i = 0, $j = 0, $tmp =  [ $val ], $count = count($args); $i < $count; $i++) {
+            for ($i = 0, $j = 0, $tmp = [$val], $count = count($args); $i < $count; ++$i) {
                 if (is_array($val)) {
                     if (!isset($args[$i][$key]) || !is_array($args[$i][$key]) || empty($args[$i][$key])) {
-                        $j++;
+                        ++$j;
                     } else {
                         $tmp[] = $args[$i][$key];
                     }
-                } elseif (! array_key_exists($key, $args[$i]) || $args[$i][$key] !== $val) {
-                    $j++;
+                } elseif (!array_key_exists($key, $args[$i]) || $args[$i][$key] !== $val) {
+                    ++$j;
                 }
             }
             if (is_array($val)) {
-                $tmp = call_user_func_array(array(__CLASS__, __FUNCTION__), $tmp);
-                if (! empty($tmp)) {
+                $tmp = call_user_func_array([__CLASS__, __FUNCTION__], $tmp);
+                if (!empty($tmp)) {
                     $diff[$key] = $tmp;
                 } elseif ($j == $count) {
                     $diff[$key] = $val;
@@ -42,7 +42,8 @@ class ArrayHelper {
 
     /**
      * @param AbstractObject $object
-     * @param null $fieldDefintions
+     * @param null           $fieldDefintions
+     *
      * @return array|bool
      */
     public static function objectToArray(AbstractObject $object, $fieldDefintions = null)
@@ -98,5 +99,4 @@ class ArrayHelper {
 
         return $collection;
     }
-
 }

@@ -19,10 +19,10 @@ class RelationsHandler
      *
      * @param EntityManagerInterface $manager
      */
-    public function __construct(EntityManagerInterface $manager) {
+    public function __construct(EntityManagerInterface $manager)
+    {
         $this->manager = $manager;
     }
-
 
     public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
     {

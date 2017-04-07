@@ -41,12 +41,12 @@ interface StoreInterface extends ResourceInterface
     public function setTemplate($template);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsDefault();
 
     /**
-     * @param boolean $isDefault
+     * @param bool $isDefault
      */
     public function setIsDefault($isDefault);
 

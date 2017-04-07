@@ -4,7 +4,8 @@ namespace CoreShop\Bundle\IndexBundle\Interpreter;
 
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 
-class Soundex implements InterpreterInterface {
+class Soundex implements InterpreterInterface
+{
     /**
      * {@inheritdoc}
      */
@@ -16,13 +17,13 @@ class Soundex implements InterpreterInterface {
 
         if (is_array($value)) {
             sort($value);
-            $string = implode(" ", $value);
+            $string = implode(' ', $value);
         } else {
-            $string = (string)$value;
+            $string = (string) $value;
         }
 
         $soundEx = soundex($string);
 
-        return intval(ord(substr($soundEx, 0, 1)) . substr($soundEx, 1));
+        return intval(ord(substr($soundEx, 0, 1)).substr($soundEx, 1));
     }
 }

@@ -31,17 +31,18 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     /**
      * @return RepositoryInterface
      */
-    protected abstract function getRepository();
+    abstract protected function getRepository();
 
     /**
      * @return string
      */
-    protected abstract function getModel();
+    abstract protected function getModel();
 
     /**
      * @param $object
      * @param $data
      * @param array $params
+     *
      * @return string
      */
     public function preSetData($object, $data, $params = [])
@@ -58,6 +59,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     /**
      * @param $object
      * @param array $params
+     *
      * @return string
      */
     public function preGetData($object, $params = [])
@@ -78,9 +80,11 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
 
     /**
      * @see Object\ClassDefinition\Data::getDataForResource
-     * @param ResourceInterface $data
+     *
+     * @param ResourceInterface                $data
      * @param null|Model\Object\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                            $params
+     *
      * @return string
      */
     public function getDataForResource($data, $object = null, $params = [])
@@ -94,9 +98,11 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
 
     /**
      * @see Object\ClassDefinition\Data::getDataFromResource
-     * @param string $data
+     *
+     * @param string                           $data
      * @param null|Model\Object\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                            $params
+     *
      * @return string
      */
     public function getDataFromResource($data, $object = null, $params = [])
@@ -113,9 +119,9 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
      *
      * @see Object\ClassDefinition\Data::getDataForQueryResource
      *
-     * @param ResourceInterface $data
+     * @param ResourceInterface                $data
      * @param null|Model\Object\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                            $params
      *
      * @return int|null
      */
@@ -133,9 +139,9 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
      *
      * @see Object\ClassDefinition\Data::getDataForEditmode
      *
-     * @param ResourceInterface $data
+     * @param ResourceInterface                $data
      * @param null|Model\Object\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                            $params
      *
      * @return int
      */
@@ -188,7 +194,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAllowEmpty()
     {
@@ -196,7 +202,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * @param boolean $allowEmpty
+     * @param bool $allowEmpty
      */
     public function setAllowEmpty($allowEmpty)
     {

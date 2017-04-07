@@ -2,14 +2,10 @@
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
-use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 
 class FilterType extends AbstractResourceType
 {

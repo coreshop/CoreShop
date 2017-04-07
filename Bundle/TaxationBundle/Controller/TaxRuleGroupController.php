@@ -22,16 +22,18 @@ class TaxRuleGroupController extends ResourceController
 {
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function listRulesAction(Request $request)
     {
-        $data = $this->getTaxRulesRepository()->getByGroupId($request->get("id"));
+        $data = $this->getTaxRulesRepository()->getByGroupId($request->get('id'));
 
         return $this->viewHandler->handle($data);
     }
 
-    protected function getTaxRulesRepository() {
-        return $this->get("coreshop.repository.tax_rule");
+    protected function getTaxRulesRepository()
+    {
+        return $this->get('coreshop.repository.tax_rule');
     }
 }

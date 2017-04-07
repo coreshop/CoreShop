@@ -27,10 +27,10 @@ interface TaxRuleGroupInterface extends ResourceInterface
 
     /**
      * @param $name
+     *
      * @return static
      */
     public function setName($name);
-
 
     /**
      * @return bool
@@ -39,11 +39,12 @@ interface TaxRuleGroupInterface extends ResourceInterface
 
     /**
      * @param bool $active
+     *
      * @return static
      */
     public function setActive($active);
 
-     /**
+    /**
      * @return Collection|TaxRuleInterface[]
      */
     public function getTaxRules();

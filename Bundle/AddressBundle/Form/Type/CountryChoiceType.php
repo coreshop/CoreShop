@@ -41,7 +41,7 @@ final class CountryChoiceType extends AbstractType
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($countries, function($a, $b) {
+                    @usort($countries, function ($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 
@@ -52,7 +52,7 @@ final class CountryChoiceType extends AbstractType
                 'choice_translation_domain' => false,
                 'active' => true,
                 'label' => 'coreshop.form.address.country',
-                'placeholder' => 'coreshop.form.country.select'
+                'placeholder' => 'coreshop.form.country.select',
             ])
         ;
     }

@@ -28,7 +28,7 @@ trait TranslatableTrait
     protected $currentLocale;
 
     /**
-     * Cache current translation. Useful in Doctrine 2.4+
+     * Cache current translation. Useful in Doctrine 2.4+.
      *
      * @var TranslationInterface
      */
@@ -46,7 +46,7 @@ trait TranslatableTrait
 
     /**
      * @param string $locale
-     * @param boolean $useFallbackTranslation
+     * @param bool   $useFallbackTranslation
      *
      * @return TranslationInterface
      */

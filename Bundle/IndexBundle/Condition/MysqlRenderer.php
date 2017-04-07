@@ -23,6 +23,7 @@ class MysqlRenderer extends AbstractRenderer
 
     /**
      * @param ConditionInterface $condition
+     *
      * @return string
      */
     protected function renderIn(ConditionInterface $condition)
@@ -38,33 +39,35 @@ class MysqlRenderer extends AbstractRenderer
 
     /**
      * @param ConditionInterface $condition
+     *
      * @return string
      */
     protected function renderLike(ConditionInterface $condition)
     {
         $values = $condition->getValues();
-        $pattern = $values["pattern"];
+        $pattern = $values['pattern'];
 
-        $value = $values["value"];
+        $value = $values['value'];
         $patternValue = '';
 
         switch ($pattern) {
-            case "left":
-                $patternValue = '%' . $value;
+            case 'left':
+                $patternValue = '%'.$value;
                 break;
-            case "right":
-                $patternValue = $value . '%';
+            case 'right':
+                $patternValue = $value.'%';
                 break;
-            case "both":
-                $patternValue = '%' . $value . '%';
+            case 'both':
+                $patternValue = '%'.$value.'%';
                 break;
         }
 
-        return 'TRIM(`'.$condition->getFieldName().'`) LIKE ' . $this->db->quote($patternValue);
+        return 'TRIM(`'.$condition->getFieldName().'`) LIKE '.$this->db->quote($patternValue);
     }
 
     /**
      * @param ConditionInterface $condition
+     *
      * @return string
      */
     protected function renderRange(ConditionInterface $condition)
@@ -76,6 +79,7 @@ class MysqlRenderer extends AbstractRenderer
 
     /**
      * @param ConditionInterface $condition
+     *
      * @return string
      */
     protected function renderConcat(ConditionInterface $condition)
@@ -83,15 +87,16 @@ class MysqlRenderer extends AbstractRenderer
         $values = $condition->getValues();
         $conditions = [];
 
-        foreach ($values["conditions"] as $cond) {
+        foreach ($values['conditions'] as $cond) {
             $conditions[] = $this->render($cond);
         }
 
-        return "(" . implode(" " . trim($values['operator']) . " ", $conditions) . ")";
+        return '('.implode(' '.trim($values['operator']).' ', $conditions).')';
     }
 
     /**
      * @param ConditionInterface $condition
+     *
      * @return string
      */
     protected function renderCompare(ConditionInterface $condition)

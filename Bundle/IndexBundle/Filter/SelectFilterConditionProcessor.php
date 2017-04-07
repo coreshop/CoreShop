@@ -7,7 +7,6 @@ use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class SelectFilterConditionProcessor implements FilterConditionProcessorInterface
@@ -17,7 +16,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
      */
     public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
     {
-        return "";
+        return '';
     }
 
     /**
@@ -39,7 +38,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
             $fieldName = $condition->getField();
 
             if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_' . $fieldName;
+                $fieldName = 'PRECONDITION_'.$fieldName;
             }
 
             $list->addCondition(Condition::match($condition->getField(), $value), $fieldName);
@@ -47,5 +46,4 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
 
         return $currentFilter;
     }
-
 }

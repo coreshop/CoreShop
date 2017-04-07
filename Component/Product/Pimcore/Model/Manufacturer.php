@@ -23,5 +23,4 @@ class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
 }

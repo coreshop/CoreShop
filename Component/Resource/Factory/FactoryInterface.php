@@ -17,7 +17,7 @@ namespace CoreShop\Component\Resource\Factory;
 interface FactoryInterface
 {
     /**
-     * @return mixed
-     */
+    * @return mixed
+    */
    public function createNew();
 }

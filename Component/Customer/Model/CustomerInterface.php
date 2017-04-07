@@ -14,6 +14,7 @@ interface CustomerInterface extends ResourceInterface
 
     /**
      * @param $firstname
+     *
      * @return static
      */
     public function setFirstname($firstname);
@@ -25,6 +26,7 @@ interface CustomerInterface extends ResourceInterface
 
     /**
      * @param $lastname
+     *
      * @return static
      */
     public function setLastname($lastname);
@@ -36,6 +38,7 @@ interface CustomerInterface extends ResourceInterface
 
     /**
      * @param $gender
+     *
      * @return static
      */
     public function setGender($gender);
@@ -47,6 +50,7 @@ interface CustomerInterface extends ResourceInterface
 
     /**
      * @param $email
+     *
      * @return static
      */
     public function setEmail($email);
@@ -58,6 +62,7 @@ interface CustomerInterface extends ResourceInterface
 
     /**
      * @param $password
+     *
      * @return static
      */
     public function setPassword($password);
@@ -69,17 +74,19 @@ interface CustomerInterface extends ResourceInterface
 
     /**
      * @param AddressInterface[] $addresses
+     *
      * @return static
      */
     public function setAddresses($addresses);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsGuest();
 
     /**
-     * @param boolean $guest
+     * @param bool $guest
+     *
      * @return static
      */
     public function setIsGuest($guest);
@@ -91,7 +98,7 @@ interface CustomerInterface extends ResourceInterface
 
     /**
      * @param CustomerGroupInterface[] $customerGroups
-
+     *
      * @return static
      */
     public function setCustomerGroups($customerGroups);

@@ -46,7 +46,7 @@ final class Metadata implements MetadataInterface
     /**
      * @param string $name
      * @param string $applicationName
-     * @param array $parameters
+     * @param array  $parameters
      */
     private function __construct($name, $applicationName, array $parameters)
     {
@@ -61,7 +61,7 @@ final class Metadata implements MetadataInterface
 
     /**
      * @param string $alias
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return self
      */
