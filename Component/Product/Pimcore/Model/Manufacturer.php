@@ -2,7 +2,7 @@
 
 namespace CoreShop\Component\Product\Pimcore\Model;
 
-use CoreShop\Component\Core\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
