@@ -5,6 +5,9 @@ namespace CoreShop\Component\Product\Model;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 
+/**
+ * @todo: lot of stuff, including images
+ */
 interface ProductInterface extends PimcoreModelInterface
 {
     /**

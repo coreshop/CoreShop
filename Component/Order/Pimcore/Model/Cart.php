@@ -11,6 +11,26 @@ class Cart extends AbstractPimcoreModel implements CartInterface, PimcoreModelIn
 {
     /**
      * {@inheritdoc}
+     *
+     * TODO: implement me
+     */
+    public function getTotal($withTax = true)
+    {
+        return 120;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TOOD: implement me
+     */
+    public function getSubtotal($withTax = true)
+    {
+        return 100;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getCurrency()
     {

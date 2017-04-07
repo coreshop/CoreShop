@@ -1,0 +1,18 @@
+{% if not catalogMode %}
+<div class="col-md-2 col-sm-6">
+    <h5>{{ 'my_account'|trans }}</h5>
+    <ul>
+        {% if customer %}
+            <li><a href="#">{{ 'my_account'|trans }}</a></li>
+            <li><a href="#">{{ 'my_orders'|trans }}</a></li>
+            <li><a href="#">{{ 'my_addresses'|trans }}</a></li>
+            <li><a href="#">{{ 'my_personal_info'|trans }}</a></li>
+        {% else %}
+            <!-- TODO: URL -->
+            <li><a href="#">{{ 'register'|trans }}</a></li>
+            <li><a href="#">{{ 'login'|trans }}</a></li>
+            <li><a href="#">{{ 'product_compare'|trans }}</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}

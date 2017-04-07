@@ -2,7 +2,10 @@
 
 namespace CoreShop\Component\Currency\Model;
 
+use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use Doctrine\Common\Collections\Collection;
+
 
 interface CurrencyInterface extends ResourceInterface
 {
@@ -55,4 +58,31 @@ interface CurrencyInterface extends ResourceInterface
      * @param float $exchangeRate
      */
     public function setExchangeRate($exchangeRate);
+
+        /**
+     * @return Collection|CountryInterface[]
+     */
+    public function getCountries();
+
+    /**
+     * @return bool
+     */
+    public function hasCountries();
+
+    /**
+     * @param CountryInterface $country
+     */
+    public function addCountry(CountryInterface $country);
+
+    /**
+     * @param CountryInterface $country
+     */
+    public function removeCountry(CountryInterface $country);
+
+    /**
+     * @param CountryInterface $country
+     *
+     * @return bool
+     */
+    public function hasCountry(CountryInterface $country);
 }

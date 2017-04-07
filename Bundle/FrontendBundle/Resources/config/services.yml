@@ -1,5 +1,35 @@
 services:
-  coreshop.frontend.theme.listener:
-    class: CoreShop\Bundle\FrontendBundle\EventListener\ThemeSetListener
-    tags:
-        - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+  coreshop.frontend.controller.customer:
+    class: CoreShop\Bundle\FrontendBundle\Controller\CustomerController
+    calls:
+            - [setContainer, ['@service_container']]
+
+  coreshop.frontend.controller.currency:
+    class: CoreShop\Bundle\FrontendBundle\Controller\CurrencyController
+    calls:
+            - [setContainer, ['@service_container']]
+
+  coreshop.frontend.controller.language:
+    class: CoreShop\Bundle\FrontendBundle\Controller\LanguageController
+    calls:
+            - [setContainer, ['@service_container']]
+
+  coreshop.frontend.controller.search:
+    class: CoreShop\Bundle\FrontendBundle\Controller\SearchController
+    calls:
+            - [setContainer, ['@service_container']]
+
+  coreshop.frontend.controller.cart:
+    class: CoreShop\Bundle\FrontendBundle\Controller\CartController
+    calls:
+            - [setContainer, ['@service_container']]
+
+  coreshop.frontend.controller.category:
+    class: CoreShop\Bundle\FrontendBundle\Controller\CategoryController
+    calls:
+            - [setContainer, ['@service_container']]
+
+  coreshop.frontend.controller.product:
+    class: CoreShop\Bundle\FrontendBundle\Controller\ProductController
+    calls:
+            - [setContainer, ['@service_container']]

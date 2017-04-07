@@ -14,6 +14,7 @@
 
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
+use CoreShop\Bundle\AddressBundle\Doctrine\ORM\CountryRepository;
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryType;
 use CoreShop\Bundle\AddressBundle\Form\Type\StateType;
 use CoreShop\Bundle\AddressBundle\Form\Type\ZoneType;
@@ -73,7 +74,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(CountryInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(CountryRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(CountryType::class)->cannotBeEmpty()->end()
                                     ->end()

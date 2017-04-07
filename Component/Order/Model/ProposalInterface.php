@@ -9,6 +9,18 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface ProposalInterface extends ResourceInterface
 {
     /**
+     * @param boolean $withTax
+     * @return float
+     */
+    public function getTotal($withTax = true);
+
+    /**
+     * @param bool $withTax
+     * @return float
+     */
+    public function getSubtotal($withTax = true);
+
+    /**
      * @return CurrencyInterface
      */
     public function getCurrency();

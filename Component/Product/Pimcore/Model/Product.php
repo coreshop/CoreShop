@@ -18,7 +18,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
         /**
          * @var ProductPriceCalculatorInterface
          */
-        $calculator = $this->container->get('coreshop.product.price_calculator');
+        $calculator = \Pimcore::getContainer()->get('coreshop.product.price_calculator');
 
         return $calculator->getPrice($this);
     }

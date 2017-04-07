@@ -1,8 +1,3 @@
-test:
-  path:      /test
-  defaults:  { _controller: 'coreshop.pimcore_controller.product:testAction' }
-
-
 coreshop_admin_product_price_rule:
   type: coreshop.resources
   resource: |

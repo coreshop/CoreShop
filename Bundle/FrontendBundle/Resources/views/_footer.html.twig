@@ -1,16 +1,80 @@
-<footer id="footer" class="ui inverted vertical footer segment">
-    <div class="ui container">
-        <div class="ui inverted divided equal height stackable grid">
-            <div class="three wide column">
+<footer id="footer-area">
+    <div class="footer-links">
 
-            </div>
-            <div class="three wide column">
+        <div class="container">
 
+            <div class="col-md-2 col-sm-6">
+                <h5>{{ 'CoreShop' }}</h5>
+                <ul>
+                    <li>{{ 'static link1 TODO' }}</li>
+                    <li>{{ 'static link2 TODO' }}</li>
+                    <li>{{ 'static link3 TODO' }}</li>
+                    <li>{{ 'static link4 TODO' }}</li>
+                </ul>
             </div>
-            <div class="eight wide column">
-                <h4 class="ui inverted header">&copy; {{ 'coreshop.ui.your_store'|trans }}</h4>
-                <p>{{ 'coreshop.ui.powered_by'|trans }} <a href="http://coreshop.org" target="_blank" style="color: #1abb9c;">CoreShop</a>.</p>
+
+            {{ render(controller('coreshop.frontend.controller.customer:footerAction')) }}
+
+            <div class="col-md-2 col-sm-6">
+                <h5>{{ 'service'|trans }}</h5>
+                <ul>
+                    <li>{{ 'static link1 TODO' }}</li>
+                    <li>{{ 'static link2 TODO' }}</li>
+                    <li>{{ 'static link3 TODO' }}</li>
+                    <li>{{ 'static link4 TODO' }}</li>
+                </ul>
             </div>
+
+            <div class="col-md-2 col-sm-6">
+                <h5>{{ 'follow_me' }}</h5>
+                <ul>
+                    <li><a href="https://www.facebook.com/dominik.pfaffenbauer" target="_blank">Facebook</a></li>
+                    <li><a href="https://www.linkedin.com/profile/view?id=341821585" target="_blank">LinkedIn</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-4 col-sm-12 last">
+                <h5>{{ 'contact_us'|trans }}</h5>
+                <ul>
+                    <li>{{ 'company_name'|trans }}</li>
+                    <li>
+                        <li>{{ 'company_address'|trans }}</li>
+                    </li>
+                    <li>
+                        <li>{{ 'company_email'|trans }}</li>
+                    </li>
+                </ul>
+                <h4 class="lead">
+                    {{ 'phone'|trans }}: <span>{{ 'company_phone'|trans }}</span>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright">
+        <div class="container">
+
+            <p class="pull-left">
+                &copy; 2017 lineofcode <a href="https://www.pfaffebauer.at">Dominik Pfaffenbauer</a>.
+            </p>
+
+            <ul class="pull-right list-inline">
+                <li>
+                    <img src="/static/coreshop/images/payment-icon/cirrus.png" alt="PaymentGateway" />
+                </li>
+                <li>
+                    <img src="/static/coreshop/images/payment-icon/paypal.png" alt="PaymentGateway" />
+                </li>
+                <li>
+                    <img src="/static/coreshop/images/payment-icon/visa.png" alt="PaymentGateway" />
+                </li>
+                <li>
+                    <img src="/static/coreshop/images/payment-icon/mastercard.png" alt="PaymentGateway" />
+                </li>
+                <li>
+                    <img src="/static/coreshop/images/payment-icon/americanexpress.png" alt="PaymentGateway" />
+                </li>
+            </ul>
         </div>
     </div>
 </footer>

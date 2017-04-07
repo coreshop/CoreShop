@@ -13,7 +13,7 @@
     {% endblock %}
 
     {% block stylesheets %}
-        <!--TODO-->
+        {% include '@CoreShopFrontend/_stylesheets.html.twig' with {'path': 'static/coreshop/css/shop.css'} %}
     {% endblock %}
 </head>
 
@@ -33,7 +33,7 @@
     </div>
 
     {% block footer %}
-        {% include '@CoreShopFrontend/_footer'
+        {% include '@CoreShopFrontend/_footer.html.twig' %}
     {% endblock %}
 </div>
 

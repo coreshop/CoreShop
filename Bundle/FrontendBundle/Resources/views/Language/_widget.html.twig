@@ -1,0 +1,14 @@
+<div class="btn-group">
+    <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+        {{ 'language'|trans }}
+        <i class="fa fa-caret-down"></i>
+    </button>
+    <ul class="pull-right dropdown-menu">
+        {% for language in languages %}
+        <li>
+            <!-- TODO: URL -->
+            <a tabindex="-1" href="">{{ 'locale_' ~ language|trans }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

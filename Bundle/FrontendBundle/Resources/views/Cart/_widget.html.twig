@@ -1,1 +1,69 @@
-{{ cart.getFullPath() }}
+<div id="cart" class="btn-group btn-block">
+    <button type="button" data-toggle="dropdown" class="btn btn-block btn-lg dropdown-toggle">
+        <i class="fa fa-shopping-cart"></i>
+        <!-- TODO: Currency Format and Conversion!!!! -->
+        <span id="cart-overview-total">
+            <span class="cart-badge">{% if cart.getItems() %} {{ cart.getItems()|length }} {% else %} 0 {% endif %}</span> {{ 'items'|trans }} -
+            <span class="cart-total"> {{ cart.getTotal() }}</span></span>
+        <i class="fa fa-caret-down"></i>
+    </button>
+    <ul class="dropdown-menu pull-right">
+        <li>
+            {% if cart.hasItems() %}
+            <table class="table hcart cart-items">
+                {% for item in cart.getItems() %}
+                    <tr>
+                        <td class="text-center">
+                            <!-- TODO: URL -->
+                            <a href="#">
+                                {% if item.getProduct() and item.getProduct().getImage() %}
+                                    {{ item.product.image.thumbnail("coreshop_productCartPreview").html({'class': 'img-thumbnail img-responsive', 'title': item.getProduct().getName(), 'alt': item.getProduct().getName()}) }}
+                                {% endif %}
+                            </a>
+                        </td>
+                        <td class="text-left">
+                            <!-- TODO: URL -->
+                            <a href="#">
+                                {{ item.getProduct().getName() }}
+                            </a>
+                        </td>
+                        <td class="text-right">x {{ item.getQuantity() }}</td>
+                        <!-- TODO: Price Format and Conversion -->
+                        <td class="text-right">{{ item.getTotal() }}</td>
+                        <td class="text-center">
+                            {% if not item.isGiftItem %}
+                                <a href="#" class="removeFromCart" data-id="{{ item.getId() }}" data-refresh="true">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </li>
+        <li>
+            <table class="table table-bordered total">
+                <tbody>
+                <tr>
+                    <td class="text-right"><strong>{{ 'subotal'|trans }}<?=$this->translate("Subtotal")?></strong></td>
+                    <td class="text-left cart-subtotal">{{ cart.subtotal }}</td>
+                </tr>
+                <tr>
+                    <td class="text-right"><strong>{{ 'total'|trans }}</strong></td>
+                    <td class="text-left cart-total">{{ cart.total }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="text-right btn-block1">
+                <!-- TODO
+                <a href="<?=\CoreShop::getTools()->url(array("lang" => $this->language, "act" => "list"), "coreshop_cart", false, false)?>">
+                    <?=$this->translate("View Cart")?>
+                </a>
+                <a href="<?=\CoreShop::getTools()->url(array("lang" => $this->language, "act" => "index"), "coreshop_checkout", false, false)?>">
+                    <?=$this->translate("Checkout")?>
+                </a>-->
+            </p>
+        </li>
+    </ul>
+</div>
