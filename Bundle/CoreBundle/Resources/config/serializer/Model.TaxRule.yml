@@ -1,0 +1,12 @@
+CoreShop\Component\Core\Model\TaxRule:
+  exclusion_policy: ALL
+  xml_root_name: tax_rule
+  properties:
+    country:
+      expose: true
+      type: relation
+      groups: [List, Detailed]
+    state:
+      expose: true
+      type: relation
+      groups: [List, Detailed]

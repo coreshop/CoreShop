@@ -2,8 +2,6 @@
 
 namespace CoreShop\Bundle\TaxationBundle\Form\Type;
 
-use CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType;
-use CoreShop\Bundle\AddressBundle\Form\Type\StateChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,16 +11,6 @@ class TaxRuleType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('country', CountryChoiceType::class, [
-                'label' => 'coreshop.form.address.country',
-                'active' => null,
-                'required' => false,
-            ])
-            ->add('state', StateChoiceType::class, [
-                'label' => 'coreshop.form.address.country',
-                'active' => null,
-                'required' => false,
-            ])
             ->add('taxRate', TaxRateChoiceType::class, [
                 'label' => 'coreshop.form.taxation.tax_rule',
                 'active' => null,

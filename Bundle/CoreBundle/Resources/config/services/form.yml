@@ -3,3 +3,13 @@ services:
     class: CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension
     tags:
       - { name: form.type_extension, extended_type: CoreShop\Bundle\StoreBundle\Form\Type\StoreType }
+
+  coreshop.form.extension.type.tax_rule:
+    class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleTypeExtension
+    tags:
+      - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType }
+
+  coreshop.form.extension.type.tax_rule_group:
+    class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleGroupTypeExtension
+    tags:
+      - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType }

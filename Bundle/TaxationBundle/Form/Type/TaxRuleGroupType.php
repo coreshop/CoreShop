@@ -3,7 +3,6 @@
 namespace CoreShop\Bundle\TaxationBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,9 +21,6 @@ class TaxRuleGroupType extends AbstractResourceType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-            ])
-            ->add('stores', StoreChoiceType::class, [
-                'multiple' => true,
             ])
         ;
     }

@@ -18,7 +18,6 @@ final class StoreType extends AbstractResourceType
         $builder
             ->add('name', TextType::class)
             ->add('template', TextType::class)
-            ->add('isDefault', CheckboxType::class)
             ->add('siteId', NumberType::class)
         ;
     }

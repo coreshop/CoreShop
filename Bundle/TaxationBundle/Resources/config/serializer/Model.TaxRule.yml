@@ -15,14 +15,6 @@ CoreShop\Component\Taxation\Model\TaxRule:
       expose: true
       type: relation<CoreShop\Component\Taxation\Model\TaxRuleGroupInterface>
       groups: [List, Detailed]
-    country:
-      expose: true
-      type: relation<CoreShop\Component\Address\Model\CountryInterface>
-      groups: [List, Detailed]
-    state:
-      expose: true
-      type: relation<CoreShop\Component\Address\Model\StateInterface>
-      groups: [List, Detailed]
     taxRate:
       expose: true
       type: relation<CoreShop\Component\Taxation\Model\TaxRateInterface>
