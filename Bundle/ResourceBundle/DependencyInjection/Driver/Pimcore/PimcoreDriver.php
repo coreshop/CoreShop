@@ -83,5 +83,7 @@ final class PimcoreDriver extends AbstractDriver
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
     {
         //No Manager needed for Pimcore
+        //Maybe we could create a manager for pimcore stuff? we just implement the same interface
+        //as doctrine does?
     }
 }

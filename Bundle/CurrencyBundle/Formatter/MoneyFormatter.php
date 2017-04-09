@@ -13,7 +13,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
-        $result = $formatter->formatCurrency(abs($amount / 100), $currency);
+        $result = $formatter->formatCurrency(abs($amount), $currency);
         Assert::notSame(
             false,
             $result,
