@@ -22,7 +22,7 @@ services:
 
   # Price Rule Processor
   coreshop.product_price_rule.processor:
-    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
+    class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
     arguments:
       - '@coreshop.registry.product_price_rule.conditions'
 

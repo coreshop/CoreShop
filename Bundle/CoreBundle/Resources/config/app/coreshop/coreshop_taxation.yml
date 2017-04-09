@@ -3,3 +3,6 @@ core_shop_taxation:
     tax_rule:
       classes:
         model: CoreShop\Component\Core\Model\TaxRule
+    tax_rule_group:
+      classes:
+        model: CoreShop\Component\Core\Model\TaxRuleGroup

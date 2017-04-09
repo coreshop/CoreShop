@@ -2,10 +2,7 @@
 
 namespace CoreShop\Component\Currency\Model;
 
-use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Doctrine\Common\Collections\Collection;
-
 
 interface CurrencyInterface extends ResourceInterface
 {

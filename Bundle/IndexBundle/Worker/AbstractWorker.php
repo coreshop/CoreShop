@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\IndexService;
+namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;

@@ -2,9 +2,7 @@
 
 namespace CoreShop\Component\Currency\Model;
 
-use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\AbstractResource;
-use Doctrine\Common\Collections\Collection;
 
 class Currency extends AbstractResource implements CurrencyInterface
 {
