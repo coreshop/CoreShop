@@ -4,7 +4,7 @@ namespace CoreShop\Component\Core\Currency\Context;
 
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 
@@ -46,21 +46,19 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
      */
     public function getCurrencyCode()
     {
-        /** @var StoreInterface $channel */
+        /** @var StoreInterface $store */
         $store = $this->storeContext->getStore();
 
         try {
             $currencyCode = $this->currencyContext->getCurrencyCode();
 
             if (!$this->isAvailableCurrency($currencyCode, $store)) {
-                //TODO: return Base Currency
-                return 'EUR';
+                return $store->getBaseCurrency()->getIsoCode();
             }
 
             return $currencyCode;
         } catch (CurrencyNotFoundException $exception) {
-            //TODO: return Base Currency
-                return 'EUR';
+            return $store->getBaseCurrency()->getIsoCode();
         }
     }
 
