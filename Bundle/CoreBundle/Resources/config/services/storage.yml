@@ -1,0 +1,9 @@
+services:
+    coreshop.storage.session:
+        class: CoreShop\Bundle\CoreBundle\Storage\SessionStorage
+        arguments: ['@session']
+
+    coreshop.storage.cookie:
+        class: CoreShop\Bundle\CoreBundle\Storage\CookieStorage
+        tags:
+            - { name: kernel.event_subscriber }

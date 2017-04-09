@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\StoreBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
+use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeStoreContextPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopStoreBundle extends AbstractResourceBundle
 {
@@ -28,6 +31,18 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new CompositeStoreContextPass());
+        $container->addCompilerPass(new CompositeRequestResolverPass());
+    }
+
 
     /**
      * {@inheritdoc}

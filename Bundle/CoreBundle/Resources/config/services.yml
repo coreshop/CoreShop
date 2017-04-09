@@ -1,3 +1,7 @@
+imports:
+  - { resource: "services/context.yml" }
+  - { resource: "services/storage.yml" }
+
 parameters:
   coreshop.core.object_path: '/coreshop'
 

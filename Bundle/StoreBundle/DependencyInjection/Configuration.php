@@ -17,9 +17,11 @@ namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
+use CoreShop\Bundle\StoreBundle\Repository\StoreRepository;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Store\Model\Store;
 use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -65,7 +67,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(StoreInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(StoreRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(StoreType::class)->cannotBeEmpty()->end()
                                     ->end()

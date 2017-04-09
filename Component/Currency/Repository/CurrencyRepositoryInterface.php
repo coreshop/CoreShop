@@ -17,4 +17,10 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
      * @return CurrencyInterface[]
      */
     public function findActive();
+
+    /**
+     * @param $currencyCode
+     * @return CurrencyInterface
+     */
+    public function getByCode($currencyCode);
 }

@@ -1,2 +1,58 @@
 imports:
   - { resource: "services/form.yml" }
+
+services:
+  coreshop.money_formatter:
+    class: CoreShop\Bundle\CurrencyBundle\Formatter\MoneyFormatter
+
+  coreshop.templating.helper.format_money:
+    class: CoreShop\Bundle\CurrencyBundle\Templating\Helper\FormatMoneyHelper
+    tags:
+        - { name: templating.helper, alias: coreshop_format_money }
+    lazy: true
+    arguments: ['@coreshop.money_formatter']
+
+  coreshop.twig.extension.money:
+    class: CoreShop\Bundle\CurrencyBundle\Twig\FormatMoneyExtension
+    public: false
+    tags:
+        - { name: twig.extension }
+    arguments: ['@coreshop.templating.helper.format_money']
+
+  coreshop.currency_converter:
+    class: CoreShop\Component\Currency\Converter\CurrencyConverter
+    arguments: ['@coreshop.repository.currency']
+
+  coreshop.templating.helper.convert_money:
+    class: CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertMoneyHelper
+    tags:
+        - { name: templating.helper, alias: coreshop_convert_money }
+    lazy: true
+    arguments: ['@coreshop.currency_converter']
+
+  coreshop.twig.extension.convert_amount:
+    class: CoreShop\Bundle\CurrencyBundle\Twig\ConvertMoneyExtension
+    public: false
+    tags:
+        - { name: twig.extension }
+    arguments: ['@coreshop.templating.helper.convert_money']
+
+  coreshop.templating.helper.currency:
+    class: CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelper
+    tags:
+      - { name: templating.helper, alias: coreshop_currency }
+    lazy: true
+
+  coreshop.twig.extension.currency:
+    class: CoreShop\Bundle\CurrencyBundle\Twig\CurrencyExtension
+    public: false
+    tags:
+      - { name: twig.extension }
+    arguments: ['@coreshop.templating.helper.currency']
+
+
+  coreshop.context.currency.composite:
+    class: CoreShop\Component\Currency\Context\CompositeCurrencyContext
+    decorates: coreshop.context.currency
+    decoration_priority: 256
+    public: false

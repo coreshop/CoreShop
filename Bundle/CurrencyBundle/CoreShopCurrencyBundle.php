@@ -14,8 +14,10 @@
 
 namespace CoreShop\Bundle\CurrencyBundle;
 
+use CoreShop\Bundle\CurrencyBundle\DependencyInjection\Compiler\CompositeCurrencyContextPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCurrencyBundle extends AbstractResourceBundle
 {
@@ -27,6 +29,16 @@ final class CoreShopCurrencyBundle extends AbstractResourceBundle
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new CompositeCurrencyContextPass());
     }
 
     /**
