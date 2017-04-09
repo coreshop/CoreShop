@@ -3,3 +3,4 @@ core_shop_address:
     country:
       classes:
         model: CoreShop\Component\Core\Model\Country
+        repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CountryRepository

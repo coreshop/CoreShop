@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\StoreBundle\Repository;
+namespace CoreShop\Bundle\StoreBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;

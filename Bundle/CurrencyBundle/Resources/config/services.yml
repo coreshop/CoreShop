@@ -50,7 +50,6 @@ services:
       - { name: twig.extension }
     arguments: ['@coreshop.templating.helper.currency']
 
-
   coreshop.context.currency.composite:
     class: CoreShop\Component\Currency\Context\CompositeCurrencyContext
     decorates: coreshop.context.currency

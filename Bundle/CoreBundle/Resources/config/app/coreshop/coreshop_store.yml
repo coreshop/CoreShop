@@ -1,0 +1,5 @@
+core_shop_store:
+  resources:
+    store:
+      classes:
+        repository: CoreShop\Bundle\StoreBundle\Doctrine\ORM\StoreRepository
