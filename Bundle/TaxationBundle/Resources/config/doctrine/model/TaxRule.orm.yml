@@ -19,20 +19,6 @@ CoreShop\Component\Taxation\Model\TaxRule:
         name: taxRuleGroupId
         referencedColumnName: id
         nullable: false
-    country:
-      targetEntity: CoreShop\Component\Address\Model\CountryInterface
-      inversedBy: taxRules
-      joinColumn:
-        name: countryId
-        referencedColumnName: id
-        nullable: true
-    state:
-      targetEntity: CoreShop\Component\Address\Model\StateInterface
-      inversedBy: taxRules
-      joinColumn:
-        name: stateId
-        referencedColumnName: id
-        nullable: true
     taxRate:
       targetEntity: CoreShop\Component\Taxation\Model\TaxRateInterface
       inversedBy: taxRules

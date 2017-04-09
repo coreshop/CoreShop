@@ -1,0 +1,5 @@
+core_shop_address:
+  resources:
+    country:
+      classes:
+        model: CoreShop\Component\Core\Model\Country

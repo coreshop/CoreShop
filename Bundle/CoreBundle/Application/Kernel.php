@@ -38,8 +38,9 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopStoreBundle(),
             new CoreShopIndexBundle(),
 
-            new CoreShopCoreBundle(),
             new CoreShopFrontendBundle(),
+
+            new CoreShopCoreBundle(),
             new CoreShopResourceBundle(),
             new FOSRestBundle(),
             new LiipThemeBundle(),

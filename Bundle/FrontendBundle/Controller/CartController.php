@@ -12,6 +12,12 @@ class CartController extends FrontendController
         $cartManager = $this->get('coreshop.cart.manager');
         $cart = $cartManager->getCart();
 
+        if ( $this->get('templating')->exists('CoreShopFrontendBundle:Cart:_widget.html.twig') ) {
+
+        }
+
+        //@AppBundle:Sola
+
         return $this->render('CoreShopFrontendBundle:Cart:_widget.html.twig', [
             'cart' => $cart
         ]);

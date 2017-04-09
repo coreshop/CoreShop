@@ -39,12 +39,6 @@ class Currency extends AbstractResource implements CurrencyInterface
     protected $exchangeRate = 1;
 
     /**
-     * @var Collection|CountryInterface[]
-     */
-    protected $countries;
-
-
-    /**
      * @return string
      */
     public function __toString()
@@ -168,51 +162,5 @@ class Currency extends AbstractResource implements CurrencyInterface
         $this->exchangeRate = $exchangeRate;
 
         return $this;
-    }
-
-        /**
-     * {@inheritdoc}
-     */
-    public function getCountries()
-    {
-        return $this->countries;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCountries()
-    {
-        return !$this->countries->isEmpty();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addCountry(CountryInterface $country)
-    {
-        if (!$this->hasCountry($country)) {
-            $this->countries->add($country);
-            $country->setCurrency($this);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeCountry(CountryInterface $country)
-    {
-        if ($this->hasCountry($country)) {
-            $this->countries->removeElement($country);
-            $country->setCurrency(null);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCountry(CountryInterface $country)
-    {
-        return $this->countries->contains($country);
     }
 }

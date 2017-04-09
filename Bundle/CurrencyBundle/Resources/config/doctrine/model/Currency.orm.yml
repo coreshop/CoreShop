@@ -30,12 +30,3 @@ CoreShop\Component\Currency\Model\Currency:
     exchangeRate:
       column: exchangeRate
       type: float
-  oneToMany:
-    countries:
-      targetEntity: CoreShop\Component\Address\Model\CountryInterface
-      mappedBy: currency
-      orphanRemoval: true
-      cascade:
-        - all
-      orderBy:
-        name: ASC

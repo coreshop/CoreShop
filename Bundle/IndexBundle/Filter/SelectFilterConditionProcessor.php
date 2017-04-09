@@ -14,14 +14,6 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
         $value = $parameterBag->get($condition->getField());

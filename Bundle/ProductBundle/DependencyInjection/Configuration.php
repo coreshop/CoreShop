@@ -34,6 +34,7 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
             ->end()
         ;
+        
         $this->addModelsSection($rootNode);
 
         return $treeBuilder;

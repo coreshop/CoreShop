@@ -1,0 +1,12 @@
+CoreShop\Component\Core\Model\Currency:
+  type: mappedSuperclass
+  table: coreshop_currency
+  oneToMany:
+    countries:
+      targetEntity: CoreShop\Component\Address\Model\CountryInterface
+      mappedBy: currency
+      orphanRemoval: true
+      cascade:
+        - all
+      orderBy:
+        name: ASC

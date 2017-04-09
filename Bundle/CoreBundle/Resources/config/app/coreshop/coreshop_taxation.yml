@@ -1,0 +1,5 @@
+core_shop_taxation:
+  resources:
+    tax_rule:
+      classes:
+        model: CoreShop\Component\Core\Model\TaxRule

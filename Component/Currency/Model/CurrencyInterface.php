@@ -58,31 +58,4 @@ interface CurrencyInterface extends ResourceInterface
      * @param float $exchangeRate
      */
     public function setExchangeRate($exchangeRate);
-
-        /**
-     * @return Collection|CountryInterface[]
-     */
-    public function getCountries();
-
-    /**
-     * @return bool
-     */
-    public function hasCountries();
-
-    /**
-     * @param CountryInterface $country
-     */
-    public function addCountry(CountryInterface $country);
-
-    /**
-     * @param CountryInterface $country
-     */
-    public function removeCountry(CountryInterface $country);
-
-    /**
-     * @param CountryInterface $country
-     *
-     * @return bool
-     */
-    public function hasCountry(CountryInterface $country);
 }

@@ -1,4 +1,3 @@
 imports:
-    - { resource: "@CoreShopAddressBundle/Resources/config/app/coreshop_address.yml" }
-    - { resource: "@CoreShopCurrencyBundle/Resources/config/app/coreshop_currency.yml" }
-    - { resource: "@CoreShopTaxationBundle/Resources/config/app/coreshop_taxation.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_address.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_taxation.yml" }

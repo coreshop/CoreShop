@@ -15,11 +15,6 @@ use Pimcore\Tool;
 class StoreLocator implements StoreLocatorInterface
 {
     /**
-     * @var ConfigurationHelperInterface
-     */
-    private $configurationHelper;
-
-    /**
      * @var PimcoreSiteHelperInterface
      */
     private $pimcoreSiteHelper;
@@ -30,16 +25,13 @@ class StoreLocator implements StoreLocatorInterface
     private $repository;
 
     /**
-     * @param ConfigurationHelperInterface $configurationHelper
      * @param PimcoreSiteHelperInterface   $pimcoreSiteHelper
      * @param RepositoryInterface          $repository
      */
     public function __construct(
-        ConfigurationHelperInterface $configurationHelper,
         PimcoreSiteHelperInterface $pimcoreSiteHelper,
         RepositoryInterface $repository
     ) {
-        $this->configurationHelper = $configurationHelper;
         $this->pimcoreSiteHelper = $pimcoreSiteHelper;
         $this->repository = $repository;
     }
@@ -51,29 +43,27 @@ class StoreLocator implements StoreLocatorInterface
      */
     public function getStore()
     {
-        if ($this->configurationHelper->isMultiStoreEnabled()) {
-            if ($this->pimcoreSiteHelper->isSiteRequest()) {
-                $site = $this->pimcoreSiteHelper->getCurrentSite();
+        if ($this->pimcoreSiteHelper->isSiteRequest()) {
+            $site = $this->pimcoreSiteHelper->getCurrentSite();
 
-                return $this->getStoreForSite($site);
-            } else {
-                if (Tool::isFrontentRequestByAdmin()) {
-                    $document = $this->getNearestDocumentByPath(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+            return $this->getStoreForSite($site);
+        } else {
+            if (Tool::isFrontentRequestByAdmin()) {
+                $document = $this->getNearestDocumentByPath(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
-                    if ($document instanceof Document) {
-                        do {
-                            try {
-                                $site = Site::getByRootId($document->getId());
+                if ($document instanceof Document) {
+                    do {
+                        try {
+                            $site = Site::getByRootId($document->getId());
 
-                                if ($site instanceof Site) {
-                                    return $this->getStoreForSite($site);
-                                }
-                            } catch (\Exception $x) {
+                            if ($site instanceof Site) {
+                                return $this->getStoreForSite($site);
                             }
+                        } catch (\Exception $x) {
+                        }
 
-                            $document = $document->getParent();
-                        } while ($document instanceof Document);
-                    }
+                        $document = $document->getParent();
+                    } while ($document instanceof Document);
                 }
             }
         }

@@ -18,16 +18,6 @@ interface FilterConditionProcessorInterface
      * @param FilterConditionInterface $condition
      * @param FilterInterface          $filter
      * @param ListingInterface         $list
-     * @param ParameterBag             $parameterBag
-     *
-     * @return mixed
-     */
-    public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag);
-
-    /**
-     * @param FilterConditionInterface $condition
-     * @param FilterInterface          $filter
-     * @param ListingInterface         $list
      * @param $currentFilter
      * @param ParameterBag $parameterBag
      * @param bool         $isPrecondition

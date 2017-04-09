@@ -86,7 +86,7 @@ services:
     tags:
      - { name: coreshop.index.getter, type: brick, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\BrickGetterFormType}
 
-  # Index Getter
+  # Index Interpreter
   coreshop.index.interpreter.soundex:
     class: CoreShop\Bundle\IndexBundle\Interpreter\Soundex
     tags:

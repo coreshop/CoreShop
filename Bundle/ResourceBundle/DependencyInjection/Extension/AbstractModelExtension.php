@@ -33,7 +33,7 @@ abstract class AbstractModelExtension extends Extension
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), $driver);
 
         foreach ($resources as $resourceName => $resourceConfig) {
-            $alias = $applicationName.'.'.$resourceName;
+            $alias = $applicationName . '.' . $resourceName;
             $resourceConfig = array_merge(['driver' => $driver], $resourceConfig);
 
             $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
@@ -45,7 +45,7 @@ abstract class AbstractModelExtension extends Extension
             DriverProvider::get($metadata)->load($container, $metadata);
 
             if ($metadata->hasParameter('translation')) {
-                $alias = $alias.'_translation';
+                $alias = $alias . '_translation';
                 $resourceConfig = array_merge(['driver' => $driver], $resourceConfig['translation']);
 
                 $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];

@@ -29,6 +29,8 @@ services:
   # Product Price Rule CONDITIONS
   coreshop.product_price_rule.condition.quantity:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\QuantityConditionChecker
+    arguments:
+      - '@coreshop.cart.manager'
     tags:
       - { name: coreshop.product_price_rule.condition, type: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\QuantityConfigurationType }
 
@@ -36,6 +38,11 @@ services:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\ProductsConditionChecker
     tags:
       - { name: coreshop.product_price_rule.condition, type: products, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+
+  coreshop.product_price_rule.condition.nested:
+    class: CoreShop\Bundle\ProductBundle\Rule\Condition\NestedConditionChecker
+    tags:
+      - { name: coreshop.product_price_rule.condition, type: conditions, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
   # Product Price Rule ACTIONS
   coreshop.product_price_rule.action.discount:

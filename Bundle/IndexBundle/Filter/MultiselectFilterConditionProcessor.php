@@ -14,14 +14,6 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
     /**
      * {@inheritdoc}
      */
-    public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
         $values = $parameterBag->get($condition->getField());

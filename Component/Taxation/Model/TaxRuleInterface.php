@@ -14,8 +14,6 @@
 
 namespace CoreShop\Component\Taxation\Model;
 
-use CoreShop\Component\Address\Model\CountryInterface;
-use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface TaxRuleInterface extends ResourceInterface
@@ -39,26 +37,6 @@ interface TaxRuleInterface extends ResourceInterface
      * @param TaxRuleGroupInterface $taxRuleGroup
      */
     public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup);
-
-    /**
-     * @return CountryInterface
-     */
-    public function getCountry();
-
-    /**
-     * @param CountryInterface $country
-     */
-    public function setCountry($country = null);
-
-    /**
-     * @return StateInterface
-     */
-    public function getState();
-
-    /**
-     * @param StateInterface $state
-     */
-    public function setState($state = null);
 
     /**
      * @return TaxRateInterface

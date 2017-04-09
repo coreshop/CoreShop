@@ -17,9 +17,10 @@ namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopCoreExtension extends AbstractModelExtension
+final class CoreShopCoreExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     /**
      * @var array
@@ -44,7 +45,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        //$this->registerResources('sylius', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', $config['driver'], [], $container);
 
         $loader->load('services.yml');
     }

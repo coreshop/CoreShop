@@ -22,9 +22,6 @@ CoreShop\Component\Address\Model\Country:
     active:
       column: active
       type: boolean
-    useStoreCurrency:
-      column: useStoreCurrency
-      type: boolean
     addressFormat:
       column: addressFormat
       type: string
@@ -36,23 +33,3 @@ CoreShop\Component\Address\Model\Country:
         name: zoneId
         referencedColumnName: id
         nullable: true
-    currency:
-      targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
-      inversedBy: countries
-      joinColumn:
-        name: currencyId
-        referencedColumnName: id
-        nullable: true
-  manyToMany:
-    stores:
-      targetEntity: CoreShop\Component\Store\Model\StoreInterface
-      joinTable:
-        name: coreshop_country_stores
-        joinColumns:
-          store_id:
-            referencedColumnName: id
-            nullable: false
-        inverseJoinColumns:
-          country_id:
-            referencedColumnName: id
-            nullable: false

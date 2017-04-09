@@ -1,28 +1,9 @@
 <?php
-/**
- * CoreShop.
- *
- * LICENSE
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
-/**
- * Store.
- */
 class Country extends AbstractResource implements CountryInterface
 {
     /**
@@ -46,16 +27,6 @@ class Country extends AbstractResource implements CountryInterface
     protected $active = true;
 
     /**
-     * @var CurrencyInterface
-     */
-    protected $currency;
-
-    /**
-     * @var bool
-     */
-    protected $useStoreCurrency = true;
-
-    /**
      * @var ZoneInterface
      */
     protected $zone;
@@ -64,16 +35,6 @@ class Country extends AbstractResource implements CountryInterface
      * @var string
      */
     protected $addressFormat = '';
-
-    /**
-     * @var Collection|StoreInterface[]
-     */
-    protected $stores;
-
-    public function __construct()
-    {
-        $this->stores = new ArrayCollection();
-    }
 
     /**
      * @return string
@@ -148,42 +109,6 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUseStoreCurrency()
-    {
-        return $this->useStoreCurrency;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUseStoreCurrency($useStoreCurrency)
-    {
-        $this->useStoreCurrency = $useStoreCurrency;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAddressFormat()
     {
         return $this->addressFormat;
@@ -223,49 +148,5 @@ class Country extends AbstractResource implements CountryInterface
     public function getZoneName()
     {
         return $this->getZone() instanceof ZoneInterface ? $this->getZone()->getName() : '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStores()
-    {
-        return $this->stores;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStores()
-    {
-        return !$this->stores->isEmpty();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addStore(StoreInterface $store)
-    {
-        if (!$this->hasStore($store)) {
-            $this->stores->add($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeStore(StoreInterface $store)
-    {
-        if ($this->hasStore($store)) {
-            $this->stores->removeElement($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStore(StoreInterface $store)
-    {
-        return $this->stores->contains($store);
     }
 }
