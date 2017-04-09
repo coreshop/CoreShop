@@ -18,15 +18,23 @@ class ShopperContext implements ShopperContextInterface
     private $currencyContext;
 
     /**
+     * @var LocaleContextInterface
+     */
+    private $localeContext;
+
+    /**
      * @param StoreContextInterface $storeContext
      * @param CurrencyContextInterface $currencyContext
+     * @param LocaleContextInterface $localeContext
      */
     public function __construct(
         StoreContextInterface $storeContext,
-        CurrencyContextInterface $currencyContext
+        CurrencyContextInterface $currencyContext,
+        LocaleContextInterface $localeContext
     ) {
         $this->storeContext = $storeContext;
         $this->currencyContext = $currencyContext;
+        $this->localeContext = $localeContext;
     }
 
     /**
@@ -43,5 +51,13 @@ class ShopperContext implements ShopperContextInterface
     public function getCurrencyCode()
     {
         return $this->currencyContext->getCurrencyCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocaleCode()
+    {
+        return $this->localeContext->getLocaleCode();
     }
 }

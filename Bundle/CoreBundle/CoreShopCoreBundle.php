@@ -14,6 +14,7 @@
 
 namespace CoreShop\Bundle\CoreBundle;
 
+use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\CompositeLocaleContextPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -38,6 +39,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(new CompositeLocaleContextPass());
         $container->addCompilerPass(new TranslatableEntityLocalePass());
     }
 

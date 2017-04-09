@@ -9,3 +9,15 @@ parameters:
 services:
   coreshop.core.object_service:
     class: CoreShop\Component\Core\Pimcore\ObjectService
+
+  coreshop.context.locale.composite:
+    class: CoreShop\Component\Core\Context\CompositeLocaleContext
+    decorates: coreshop.context.locale
+    decoration_priority: 256
+    public: false
+
+  coreshop.context.locale.pimcore:
+    class: CoreShop\Component\Core\Context\PimcoreLocaleContext
+    arguments: ['@pimcore.locale']
+    tags:
+      - { name: coreshop.context.locale }

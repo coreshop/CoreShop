@@ -16,6 +16,7 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 interface ShopperContextInterface extends
     StoreContextInterface,
-    CurrencyContextInterface
+    CurrencyContextInterface,
+    LocaleContextInterface
 {
 }

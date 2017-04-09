@@ -1,5 +1,5 @@
 {%- macro format(amount, currency_code) -%}
-    {{ amount|coreshop_format_money(currency_code, 'de') }}
+    {{ amount|coreshop_format_money(currency_code, coreshop.localeCode) }}
 {%- endmacro -%}
 
 {%- macro convertAndFormat(amount) -%}
