@@ -1,0 +1,5 @@
+services:
+  coreshop.form.extension.type.store:
+    class: CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension
+    tags:
+      - { name: form.type_extension, extended_type: CoreShop\Bundle\StoreBundle\Form\Type\StoreType }

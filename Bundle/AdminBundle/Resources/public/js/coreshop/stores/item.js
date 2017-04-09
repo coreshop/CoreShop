@@ -88,6 +88,20 @@ pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstr
                             fieldLabel: t('coreshop_store_template'),
                             name: 'template',
                             value: this.data.template
+                        },
+                        {
+                            xtype: 'combo',
+                            fieldLabel: t('coreshop_base_currency'),
+                            typeAhead: true,
+                            value: this.data.baseCurrency,
+                            mode: 'local',
+                            listWidth: 100,
+                            store: pimcore.globalmanager.get('coreshop_currencies'),
+                            displayField: 'name',
+                            valueField: 'id',
+                            forceSelection: true,
+                            triggerAction: 'all',
+                            name: 'baseCurrency'
                         }
                     ]
                 }

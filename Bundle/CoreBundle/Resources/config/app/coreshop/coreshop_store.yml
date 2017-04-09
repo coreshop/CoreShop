@@ -3,3 +3,4 @@ core_shop_store:
     store:
       classes:
         repository: CoreShop\Bundle\StoreBundle\Doctrine\ORM\StoreRepository
+        model: CoreShop\Component\Core\Model\Store
