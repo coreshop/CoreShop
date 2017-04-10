@@ -21,7 +21,6 @@ CoreShop\Component\Taxation\Model\TaxRule:
         nullable: false
     taxRate:
       targetEntity: CoreShop\Component\Taxation\Model\TaxRateInterface
-      inversedBy: taxRules
       joinColumn:
         name: taxRateId
         referencedColumnName: id

@@ -6,8 +6,10 @@ use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Pimcore\Model\Object\ClassDefinition\Data\Password;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class Customer extends AbstractPimcoreModel implements CustomerInterface, PimcoreModelInterface
+class Customer extends AbstractPimcoreModel implements CustomerInterface, PimcoreModelInterface, UserInterface
 {
     /**
      * {@inheritdoc}
@@ -135,5 +137,44 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, Pimcor
     public function setCustomerGroups($customerGroups)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+        // user has no salt as we use password_hash
+        // which handles the salt by itself
+        return null;
+    }
+
+    /**
+     * Trigger the hash calculation to remove the plain text password from the instance. This
+     * is necessary to make sure no plain text passwords are serialized.
+     *
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+        /** @var Password $field */
+        $field = $this->getClass()->getFieldDefinition('password');
+        $field->getDataForResource($this->getPassword(), $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles()
+    {
+        return $this->getCustomerGroups();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsername()
+    {
+        return $this->getEmail();
     }
 }

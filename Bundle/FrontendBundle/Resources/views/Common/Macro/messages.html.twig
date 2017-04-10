@@ -1,0 +1,20 @@
+{% macro default(message, type) %}
+    <div class="alert alert-{{ type|default('') }}" role="alert">
+        <p>{{ message|trans }}</p>
+    </div>
+{% endmacro %}
+
+{% macro info(message) %}
+    {% import _self as messages %}
+    {{ messages.default(message, 'info') }}
+{% endmacro %}
+
+{% macro success(message) %}
+    {% import _self as messages %}
+    {{ messages.default(message, 'success') }}
+{% endmacro %}
+
+{% macro error(message) %}
+    {% import _self as messages %}
+    {{ messages.default(message, 'danger') }}
+{% endmacro %}

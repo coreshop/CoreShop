@@ -6,7 +6,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use Pimcore\Model\Element\ElementInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-interface PimcoreModelInterface extends ResourceInterface, ContainerAwareInterface, ElementInterface
+interface PimcoreModelInterface extends ResourceInterface, ElementInterface
 {
     /**
      * @param $key

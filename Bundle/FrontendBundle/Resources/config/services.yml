@@ -32,3 +32,13 @@ services:
 
   coreshop.frontend.controller.product:
     alias: coreshop.pimcore_controller.product
+
+
+  coreshop.frontend.controller.security:
+    class: CoreShop\Bundle\FrontendBundle\Controller\SecurityController
+    arguments:
+      - '@security.authentication_utils'
+      - '@form.factory'
+      - '@templating'
+    calls:
+      - [setContainer, ['@service_container']]

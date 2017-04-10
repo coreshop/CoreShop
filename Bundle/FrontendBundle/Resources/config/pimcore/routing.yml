@@ -37,3 +37,17 @@ coreshop_shop_product_detail:
   defaults: { _controller: coreshop.frontend.controller.product:detailAction}
   requirements:
       productId: \d+
+
+coreshop_shop_login:
+  path: %coreshop.frontend.base.url%/login
+  defaults: { _controller: coreshop.frontend.controller.security:loginAction }
+
+coreshop_shop_logout:
+  path: %coreshop.frontend.base.url%/logout
+  methods: [GET]
+
+coreshop_shop_login_check:
+    path: %coreshop.frontend.base.url%/login-check
+    methods: [POST]
+    defaults:
+        _controller: coreshop.frontend.controller.security:checkAction

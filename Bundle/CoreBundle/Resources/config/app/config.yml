@@ -7,8 +7,11 @@ imports:
   - { resource: "@CoreShopProductBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopIndexBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopFrontendBundle/Resources/config/app/config.yml" }
+  - { resource: "@CoreShopCustomerBundle/Resources/config/app/config.yml" }
 
   - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop.yml" }
+  - { resource: "@CoreShopCoreBundle/Resources/config/app/security.yml" }
+
 
 doctrine:
   orm:
