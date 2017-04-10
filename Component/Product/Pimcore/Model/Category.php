@@ -2,6 +2,7 @@
 
 namespace CoreShop\Component\Product\Pimcore\Model;
 
+use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
@@ -26,51 +27,51 @@ class Category extends AbstractPimcoreModel implements CategoryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: implement me
+     */
+    public function getFilter()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFilter($filter)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getChildCategories()
     {
-        return [];
+        return $this->getChildren();
     }
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: implement me
      */
     public function hasChildCategories()
     {
-        return false;
+        return count($this->getChildren());
     }
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: implement me
      */
-    public function addChildCategory($category)
+    public function getHierarchy()
     {
+        $hierarchy = [];
 
-    }
+        $category = $this;
 
-    /**
-     * {@inheritdoc}
-     *
-     * TODO: implement me
-     */
-    public function removeChildCategory($category)
-    {
+        do {
+            $hierarchy[] = $category;
 
-    }
+            $category = $category->getParent();
+        } while ($category instanceof self);
 
-    /**
-     * {@inheritdoc}
-     *
-     * TODO: implement me
-     */
-    public function hasChildCategory($category)
-    {
-        return false;
+        return array_reverse($hierarchy);
     }
 }

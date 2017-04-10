@@ -57,7 +57,7 @@ class FilteredListingFactory implements FilteredListingFactoryInterface
         $list->setOrder($orderDirection);
         $list->setLimit($limit);
 
-        $this->filterProcessor->processConditions($filter, $list, $parameterBag);
+        //$this->filterProcessor->processConditions($filter, $list, $parameterBag);
 
         return $list;
     }

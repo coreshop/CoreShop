@@ -1,0 +1,25 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% set currentRouteParams = app.request.attributes.get('_route_params') %}
+
+{% if paginator.getPages().pageCount > 1 %}
+    <div class="row">
+        <div class="col-sm-6 pagination-block">
+            <ul class="pagination">
+                {% if paginator.getPages().previous %}
+                    <li><a href="{{ path(currentRoute, currentRouteParams|merge({'page': paginator.getPages().first}))  }}">«</a></li>
+                {% endif %}
+                {% for page in paginator.getPages().pagesInRange %}
+                    <li class="{% if page == paginator.getPages().current  %} active {% endif %}"><a href="{{ path(currentRoute, currentRouteParams|merge({'page': page}))  }}">{{ page }}</a></li>
+                {% endfor %}
+
+                {% if paginator.getPages().next %}
+                    <li><a href="{{ path(currentRoute, currentRouteParams|merge({'page': paginator.getPages().last}))  }}">«</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="col-sm-6 results">
+            {{ "Showing %d to %d of %d (%d Pages)"|format(paginator.firstItemNumber, paginator.lastItemNumber, paginator.totalItemCount, paginator.pageCount) }}
+        </div>
+    </div>
+{% endif %}

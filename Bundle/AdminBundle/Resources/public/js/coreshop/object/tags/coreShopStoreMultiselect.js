@@ -11,19 +11,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.object.tags.coreShopShop');
-pimcore.object.tags.coreShopShop = Class.create(pimcore.plugin.coreshop.object.tags.select, {
+pimcore.registerNS('pimcore.object.tags.coreShopStoreMultiselect');
+pimcore.object.tags.coreShopStoreMultiselect = Class.create(pimcore.plugin.coreshop.object.tags.multiselect, {
 
-    type: 'coreShopShop',
-    storeName : 'shops',
-
-    getLayoutEdit: function ($super) {
-        var component = $super();
-
-        if(!coreshop.settings.multishop) {
-            component.hide();
-        }
-
-        return component;
-    }
+    type: 'coreShopStoreMultiselect',
+    storeName : 'stores'
 });

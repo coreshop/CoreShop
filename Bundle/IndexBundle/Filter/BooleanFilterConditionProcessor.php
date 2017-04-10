@@ -7,6 +7,7 @@ use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
+use Pimcore\Model\Object\QuantityValue\Unit;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class BooleanFilterConditionProcessor implements FilterConditionProcessorInterface
@@ -14,9 +15,42 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
     /**
      * {@inheritdoc}
      */
-    public function render(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
-        return '';
+        $rawValues = [];
+        $currentValues = $currentFilter[\Pimcore\File::getValidFilename($condition->getLabel())];
+        $fields = $condition->getField();
+
+        if (is_array($fields)) {
+            foreach ($condition->getField() as $field) {
+                $fieldRawValues = $list->getGroupByValues($field, true);
+
+                if (!is_array($fieldRawValues) || !isset($currentValues[$field])) {
+                    continue;
+                }
+
+                foreach ($fieldRawValues as $fieldRawValue) {
+                    $dbVal = (int)$fieldRawValue['value'];
+
+                    if ($dbVal === 1) {
+                        $rawValues[] = [
+                            'value' => $field,
+                            'count' => $fieldRawValue['count'],
+                        ];
+                        break;
+                    }
+                }
+            }
+        }
+
+        return [
+            'type' => 'boolean',
+            'label' => $condition->getLabel(),
+            'currentValues' => $currentValues,
+            'values' => $rawValues,
+            'fieldName' => $condition->getField(),
+            'quantityUnit' => Unit::getById($condition->getQuantityUnit())
+        ];
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface CategoryInterface extends PimcoreModelInterface
@@ -22,6 +23,16 @@ interface CategoryInterface extends PimcoreModelInterface
     public function setName($name, $language = null);
 
     /**
+     * @return FilterInterface
+     */
+    public function getFilter();
+
+    /**
+     * @param FilterInterface $filter
+     */
+    public function setFilter($filter);
+
+    /**
      * @return CategoryInterface[]
      */
     public function getChildCategories();
@@ -32,19 +43,7 @@ interface CategoryInterface extends PimcoreModelInterface
     public function hasChildCategories();
 
     /**
-     * @param CategoryInterface $category
+     * @return CategoryInterface[]
      */
-    public function addChildCategory($category);
-
-    /**
-     * @param $category
-     */
-    public function removeChildCategory($category);
-
-    /**
-     * @param $category
-     *
-     * @return bool
-     */
-    public function hasChildCategory($category);
+    public function getHierarchy();
 }

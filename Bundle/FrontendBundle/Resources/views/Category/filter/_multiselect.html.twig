@@ -1,0 +1,18 @@
+{% if values|length > 0 %}
+<div class="list-group">
+    <div class="list-group-item">
+        {{ label|trans }}
+    </div>
+
+    <div class="list-group-item">
+        <div class="filter-group filter-group-checkbox">
+            {% for value in values if value %}
+                <label class="checkbox">
+                    <input name="{{ fieldName }}[]" type="checkbox" value="{{ value['value'] }}">
+                    {{ value['value']|trans }} {% if quantityUnit %} {{ quantityUnit.getAbbreviation }} {% endif %}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}

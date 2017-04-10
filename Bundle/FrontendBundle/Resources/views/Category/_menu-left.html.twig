@@ -1,0 +1,12 @@
+<h3 class="side-heading">{{ 'categories'|trans }}</h3>
+{% if categories %}
+<div class="list-group categories">
+    {% for category in categories %}
+        {# TODO: URL, ACTIVE #}
+        <a href="#" class="list-group-item">
+            <i class="fa fa-chevron-right"></i>
+            {{ category.getName }}
+        </a>
+    {% endfor %}
+</div>
+{% endif %}

@@ -60,17 +60,19 @@ abstract class AbstractWorker implements WorkerInterface
         $parentCategoryIds = [];
 
         //TODO: Should be refactored?
-        if (method_exists($object, 'getCategories') && method_exists($object, 'getHierarchy')) {
+        if (method_exists($object, 'getCategories')) {
             $categories = $object->getCategories();
 
             if ($categories) {
                 foreach ($categories as $c) {
                     $categoryIds[$c->getId()] = $c->getId();
 
-                    $parents = $c->getHierarchy();
+                    if (method_exists($c, 'getHierarchy')) {
+                        $parents = $c->getHierarchy();
 
-                    foreach ($parents as $p) {
-                        $parentCategoryIds[] = $p->getId();
+                        foreach ($parents as $p) {
+                            $parentCategoryIds[] = $p->getId();
+                        }
                     }
                 }
             }

@@ -46,6 +46,7 @@ final class PimcoreDriver extends AbstractDriver
                 new Reference($metadata->getServiceId('factory')),
                 new Reference('coreshop.resource_controller.event_dispatcher'),
                 new Reference('coreshop.resource_controller.form_factory'),
+                new Reference('coreshop.context.shopper')
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')])
         ;

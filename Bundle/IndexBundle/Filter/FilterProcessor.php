@@ -50,6 +50,23 @@ class FilterProcessor implements FilterProcessorInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter)
+    {
+        $conditions = $filter->getConditions();
+        $preparedConditions = [];
+
+        if ($filter->hasConditions()) {
+            foreach ($conditions as $condition) {
+                $preparedConditions[$condition->getId()] = $this->getConditionProcessorForCondition($condition)->prepareValuesForRendering($condition, $filter, $list, $currentFilter);
+            }
+        }
+
+        return $preparedConditions;
+    }
+
+    /**
      * @param FilterConditionInterface $condition
      *
      * @return FilterConditionProcessorInterface

@@ -14,6 +14,7 @@
 
     {% block stylesheets %}
         {% include '@CoreShopFrontend/_stylesheets.html.twig' with {'path': 'static/coreshop/css/shop.css'} %}
+        {% include '@CoreShopFrontend/_stylesheets.html.twig' with {'path': 'static/coreshop/css/owl.carousel.css'} %}
     {% endblock %}
 </head>
 
@@ -38,7 +39,10 @@
 </div>
 
 {% block javascripts %}
-    TODO: javascript
+    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'static/coreshop/js/vendor/jquery-1.11.1.min.js'} %}
+    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'static/coreshop/js/vendor/bootstrap.min.js'} %}
+    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'static/coreshop/js/vendor/owl.carousel.min.js'} %}
+    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'static/coreshop/js/custom.js'} %}
 {% endblock %}
 {{ coreshop.store }}
 {{ coreshop.currencyCode }}

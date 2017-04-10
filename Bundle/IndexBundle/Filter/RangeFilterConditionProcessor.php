@@ -7,10 +7,35 @@ use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
+use Pimcore\Model\Object\QuantityValue\Unit;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    {
+        $rawValues = $list->getGroupByValues($condition->getField(), true);
+
+        $minValue = count($rawValues) > 0 ? $rawValues[0]['value'] : 0;
+        $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues)-1]['value'] : 0;
+
+        return [
+            'type' => 'range',
+            'label' => $condition->getLabel(),
+            'minValue' => $minValue,
+            'maxValue' => $maxValue,
+            'currentValueMin' => $currentFilter[$condition->getField().'-min'] ? $currentFilter[$condition->getField().'-min'] : $minValue,
+            'currentValueMax' => $currentFilter[$condition->getField().'-max'] ? $currentFilter[$condition->getField().'-max'] : $maxValue,
+            'values' => array_values($rawValues),
+            'fieldName' => $condition->getField(),
+            'stepCount' => $condition->getConfiguration()['stepCount'],
+            'quantityUnit' => Unit::getById($condition->getQuantityUnit())
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */

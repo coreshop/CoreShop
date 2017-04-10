@@ -14,6 +14,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -49,24 +50,32 @@ class PimcoreFrontendController extends Controller
     protected $resourceFormFactory;
 
     /**
+     * @var ShopperContextInterface
+     */
+    protected $shopperContext;
+
+    /**
      * @param MetadataInterface            $metadata
      * @param PimcoreRepositoryInterface   $repository
      * @param FactoryInterface             $factory
      * @param EventDispatcherInterface     $eventDispatcher
      * @param ResourceFormFactoryInterface $resourceFormFactory
+     * @param ShopperContextInterface $shopperContext
      */
     public function __construct(
         MetadataInterface $metadata,
         PimcoreRepositoryInterface $repository,
         FactoryInterface $factory,
         EventDispatcherInterface $eventDispatcher,
-        ResourceFormFactoryInterface $resourceFormFactory
+        ResourceFormFactoryInterface $resourceFormFactory,
+        ShopperContextInterface $shopperContext
     ) {
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
         $this->eventDispatcher = $eventDispatcher;
         $this->resourceFormFactory = $resourceFormFactory;
+        $this->shopperContext = $shopperContext;
     }
 
     /**

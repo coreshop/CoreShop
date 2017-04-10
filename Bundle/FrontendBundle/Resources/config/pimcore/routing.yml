@@ -1,7 +1,6 @@
-coreshop_index_test:
+coreshop_shop_index:
   path: %coreshop.frontend.base.url%
   defaults: { _controller: CoreShopFrontendBundle:Test:testIndex}
-
 
 coreshop_shop_switch_currency:
     path: %coreshop.frontend.base.url%/currency-switch/{currencyCode}
@@ -26,3 +25,9 @@ coreshop_shop_remove_cart_item:
     methods: [GET]
     defaults:
         _controller: coreshop.frontend.controller.cart:removeItemAction
+
+coreshop_shop_category_index:
+  path: %coreshop.frontend.base.url%/{name}~c{categoryId}
+  defaults: { _controller: coreshop.frontend.controller.category:indexAction}
+  requirements:
+      categoryId: \d+

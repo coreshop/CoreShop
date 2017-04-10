@@ -25,4 +25,13 @@ interface FilterConditionProcessorInterface
      * @return mixed
      */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false);
+
+    /**
+     * @param FilterConditionInterface $condition
+     * @param FilterInterface $filter
+     * @param ListingInterface $list
+     * @param $currentFilter
+     * @return array
+     */
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter);
 }

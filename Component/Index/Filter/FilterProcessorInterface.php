@@ -16,4 +16,12 @@ interface FilterProcessorInterface
      * @return mixed
      */
     public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag);
+
+    /**
+     * @param FilterInterface $filter
+     * @param ListingInterface $list
+     * @param $currentFilter
+     * @return mixed
+     */
+    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter);
 }

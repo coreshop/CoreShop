@@ -1,0 +1,19 @@
+{% extends '@CoreShopFrontend/layout.html.twig' %}
+
+{% block content %}
+<div id="main-container-home" class="container">
+    <div class="row">
+        <div class="col-md-3">
+            {{ render(controller('coreshop.frontend.controller.category:menuLeftAction')) }}
+
+            {% block left %}
+            {% endblock %}
+        </div>
+
+        <div class="col-md-9">
+            {% block center %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

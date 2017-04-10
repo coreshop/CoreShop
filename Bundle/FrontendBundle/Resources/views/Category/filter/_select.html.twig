@@ -1,0 +1,19 @@
+{% if values|length > 0 %}
+<div class="list-group">
+    <div class="list-group-item">
+        {% if label %}
+            {{ label|trans }}
+        {% endif %}
+    </div>
+    <div class="list-group-item">
+        <div class="filter-group filter-group-checkbox">
+            {% for value in values %}
+                <label class="radio">
+                    <input name="{{ fieldName }}" type="radio" value="{{ value['value'] }}" {% if currentValue == value['value'] %} checked="checked" {% endif %}>
+                    {{ value['value']|trans }} {% if quantityUnit %} {{ quantityUnit.getAbbreviation }} {% endif %}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
