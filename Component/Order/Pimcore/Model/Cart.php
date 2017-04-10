@@ -31,7 +31,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
      */
     public function getTotalTax($withTax = true)
     {
-        return 0;
+        return $this->getTotal(true) - $this->getTotal(false);
     }
 
     /**
