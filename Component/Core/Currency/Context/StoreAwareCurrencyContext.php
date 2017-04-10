@@ -2,7 +2,9 @@
 
 namespace CoreShop\Component\Core\Currency\Context;
 
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
@@ -21,24 +23,24 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
     private $storeContext;
 
     /**
-     * @var CountryRepositoryInterface
+     * @var CurrencyRepositoryInterface
      */
-    private $countryRepository;
+    private $currencyRepository;
 
     /**
      * @param CurrencyContextInterface $currencyContext
      * @param StoreContextInterface $storeContext
-     * @param CountryRepositoryInterface $countryRepository
+     * @param CurrencyRepositoryInterface $currencyRepository
      */
     public function __construct(
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
-        CountryRepositoryInterface $countryRepository
+        CurrencyRepositoryInterface $currencyRepository
     )
     {
         $this->currencyContext = $currencyContext;
         $this->storeContext = $storeContext;
-        $this->countryRepository = $countryRepository;
+        $this->currencyRepository = $currencyRepository;
     }
 
     /**
@@ -70,7 +72,9 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
      */
     private function isAvailableCurrency($currencyCode, StoreInterface $store)
     {
-        return in_array($currencyCode, $this->getCurrenciesForStore($store), true);
+        return in_array($currencyCode, array_map(function (CurrencyInterface $currency) {
+            return $currency->getIsoCode();
+        }, $this->getCurrenciesForStore($store)));
     }
 
     /**
@@ -78,13 +82,6 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
      * @return array
      */
     private function getCurrenciesForStore(StoreInterface $store) {
-        $countries = $this->countryRepository->findForStore($store);
-        $currencies = [];
-
-        foreach ($countries as $country) {
-            $currencies[]  = $country->getCurrency()->getId();
-        }
-
-        return $currencies;
+        return $this->currencyRepository->findActiveForStore($store);
     }
 }

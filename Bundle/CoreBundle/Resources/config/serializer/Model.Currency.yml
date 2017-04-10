@@ -1,0 +1,8 @@
+CoreShop\Component\Core\Model\Currency:
+  exclusion_policy: ALL
+  xml_root_name: currency
+  properties:
+    stores:
+      expose: true
+      type: array
+      groups: [Detailed]

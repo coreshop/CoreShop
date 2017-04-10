@@ -1,3 +1,10 @@
 coreshop_index_test:
   path: /test/index
   defaults: { _controller: CoreShopFrontendBundle:Test:testIndex}
+
+
+coreshop_shop_switch_currency:
+    path: /test/index/currency-switch/{currencyCode}
+    methods: [GET]
+    defaults:
+        _controller: coreshop.frontend.controller.currency:switchAction

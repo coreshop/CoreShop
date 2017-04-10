@@ -8,7 +8,7 @@ services:
     class: CoreShop\Component\Core\Currency\CurrencyStorage
     arguments:
       - '@coreshop.storage.cookie'
-      - '@coreshop.repository.country'
+      - '@coreshop.repository.currency'
 
   coreshop.context.currency.storage_based:
     class: CoreShop\Component\Core\Currency\Context\StorageBasedCurrencyContext
@@ -22,4 +22,4 @@ services:
     class: CoreShop\Component\Core\Currency\Context\StoreAwareCurrencyContext
     decorates: coreshop.context.currency
     decoration_priority: 256
-    arguments: ['@coreshop.context.currency.store_aware.inner', '@coreshop.context.store', '@coreshop.repository.country']
+    arguments: ['@coreshop.context.currency.store_aware.inner', '@coreshop.context.store', '@coreshop.repository.currency']

@@ -2,7 +2,9 @@
 
 namespace CoreShop\Component\Core\Currency;
 
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Resource\Storage\StorageInterface;
 
@@ -17,18 +19,18 @@ final class CurrencyStorage implements CurrencyStorageInterface
     private $storage;
 
     /**
-     * @var CountryRepositoryInterface
+     * @var CurrencyRepositoryInterface
      */
-    private $countryRepository;
+    private $currencyRepository;
 
     /**
      * @param StorageInterface $storage
-     * @param CountryRepositoryInterface $countryRepository
+     * @param CurrencyRepositoryInterface $currencyRepository
      */
-    public function __construct(StorageInterface $storage, CountryRepositoryInterface $countryRepository)
+    public function __construct(StorageInterface $storage, CurrencyRepositoryInterface $currencyRepository)
     {
         $this->storage = $storage;
-        $this->countryRepository = $countryRepository;
+        $this->currencyRepository = $currencyRepository;
     }
 
     /**
@@ -69,8 +71,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
      */
     private function isBaseCurrency($currencyCode, StoreInterface $store)
     {
-        //TODO:
-        return true;
+        return $store->getBaseCurrency()->getIsoCode() === $currencyCode;
     }
 
     /**
@@ -81,7 +82,9 @@ final class CurrencyStorage implements CurrencyStorageInterface
      */
     private function isAvailableCurrency($currencyCode, StoreInterface $store)
     {
-        return in_array($currencyCode, $this->getCurrenciesForStore($store), true);
+        return in_array($currencyCode, array_map(function (CurrencyInterface $currency) {
+            return $currency->getIsoCode();
+        }, $this->getCurrenciesForStore($store)));
     }
 
     /**
@@ -89,13 +92,6 @@ final class CurrencyStorage implements CurrencyStorageInterface
      * @return array
      */
     private function getCurrenciesForStore(StoreInterface $store) {
-        $countries = $this->countryRepository->findForStore($store);
-        $currencies = [];
-
-        foreach ($countries as $country) {
-            $currencies[]  = $country->getCurrency()->getId();
-        }
-
-        return $currencies;
+        return $this->currencyRepository->findActiveForStore($store);
     }
 }
