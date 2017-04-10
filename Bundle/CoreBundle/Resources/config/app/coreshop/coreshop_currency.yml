@@ -3,3 +3,4 @@ core_shop_currency:
     currency:
       classes:
         model: CoreShop\Component\Core\Model\Currency
+        repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CurrencyRepository

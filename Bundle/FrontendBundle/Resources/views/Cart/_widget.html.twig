@@ -32,7 +32,7 @@
                         </td>
                         <td class="text-right">x {{ item.getQuantity() }}</td>
                         <!-- TODO: Price Format and Conversion -->
-                        <td class="text-right">{{ item.getTotal() }}</td>
+                        <td class="text-right">{{ currency.convertAndFormat(item.getTotal) }}</td>
                         <td class="text-center">
                             {% if not item.isGiftItem %}
                                 <a href="#" class="removeFromCart" data-id="{{ item.getId() }}" data-refresh="true">
@@ -50,11 +50,11 @@
                 <tbody>
                 <tr>
                     <td class="text-right"><strong>{{ 'subotal'|trans }}<?=$this->translate("Subtotal")?></strong></td>
-                    <td class="text-left cart-subtotal">{{ cart.subtotal }}</td>
+                    <td class="text-left cart-subtotal">{{ currency.convertAndFormat(cart.subtotal) }}</td>
                 </tr>
                 <tr>
                     <td class="text-right"><strong>{{ 'total'|trans }}</strong></td>
-                    <td class="text-left cart-total">{{ cart.total }}</td>
+                    <td class="text-left cart-total">{{ currency.convertAndFormat(cart.getTotal) }}</td>
                 </tr>
                 </tbody>
             </table>

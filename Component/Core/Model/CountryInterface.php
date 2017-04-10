@@ -22,18 +22,6 @@ interface CountryInterface extends BaseCountryInterface
     public function setCurrency($currency);
 
     /**
-     * @return bool
-     */
-    public function getUseStoreCurrency();
-
-    /**
-     * @param bool $useStoreCurrency
-     *
-     * @return static
-     */
-    public function setUseStoreCurrency($useStoreCurrency);
-
-    /**
      * @return Collection|StoreInterface[]
      */
     public function getStores();

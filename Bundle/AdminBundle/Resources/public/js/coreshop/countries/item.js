@@ -43,21 +43,6 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                 checked: this.data.active
             },
             {
-                xtype : 'checkbox',
-                fieldLabel: t('coreshop_country_use_default_store_currency'),
-                name: 'useStoreCurrency',
-                checked: this.data.useStoreCurrency,
-                listeners : {
-                    change : function (checkbox, newValue) {
-                        if (newValue) {
-                            this.nextSibling().disable();
-                        } else {
-                            this.nextSibling().enable();
-                        }
-                    }
-                }
-            },
-            {
                 xtype:'combo',
                 fieldLabel:t('coreshop_country_currency'),
                 typeAhead:true,
@@ -70,7 +55,6 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
                 forceSelection:true,
                 triggerAction:'all',
                 name:'currency',
-                disabled : this.data.useStoreCurrency,
                 listeners: {
                     change: function () {
                         this.forceReloadOnSave = true;
@@ -148,10 +132,6 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
 
         if (!values['active']) {
             delete values['active'];
-        }
-
-        if (!values['useStoreCurrency']) {
-            delete values['useStoreCurrency'];
         }
 
         return values;

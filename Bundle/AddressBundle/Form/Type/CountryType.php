@@ -22,7 +22,6 @@ final class CountryType extends AbstractResourceType
             ->add('isoCode', TextType::class)
             ->add('active', CheckboxType::class)
             ->add('currency', CurrencyChoiceType::class)
-            ->add('useStoreCurrency', CheckboxType::class)
             ->add('zone', ZoneChoiceType::class, [
                 'label' => 'coreshop.form.address.zone',
                 'active' => null,

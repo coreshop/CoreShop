@@ -13,7 +13,13 @@ class CountryRepository extends BaseCountryRepository implements CountryReposito
      */
     public function findForStore(StoreInterface $store)
     {
-        //TODO
-        return $this->find(1);
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.stores', 's')
+            ->andWhere('o.active = true')
+            ->andWhere('o.id = :storeId')
+            ->setParameter('storeId', $store->getId())
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

@@ -16,11 +16,6 @@ class Country extends BaseCountry implements CountryInterface
     protected $currency;
 
     /**
-     * @var bool
-     */
-    protected $useStoreCurrency = true;
-
-    /**
      * @var Collection|StoreInterface[]
      */
     protected $stores;
@@ -44,24 +39,6 @@ class Country extends BaseCountry implements CountryInterface
     public function setCurrency($currency)
     {
         $this->currency = $currency;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUseStoreCurrency()
-    {
-        return $this->useStoreCurrency;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUseStoreCurrency($useStoreCurrency)
-    {
-        $this->useStoreCurrency = $useStoreCurrency;
 
         return $this;
     }
