@@ -109,7 +109,10 @@ class Product extends AbstractPimcoreModel implements ProductInterface
 
             if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
                 $address = $this->getContainer()->get('coreshop.factory.address')->createNew();
-                //TODO: Load Address from Context?
+                $country = $this->getContainer()->get('coreshop.context.country')->getCountry();
+
+                $address->setCountry($country);
+
                 $this->taxCalculator = $factory->getTaxCalculatorForAddress($taxRuleGroup, $address);
             }
             else {
