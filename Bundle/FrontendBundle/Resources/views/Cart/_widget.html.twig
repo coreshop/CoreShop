@@ -36,7 +36,7 @@
                         <td class="text-right">{{ currency.convertAndFormat(item.getTotal) }}</td>
                         <td class="text-center">
                             {% if not item.isGiftItem %}
-                                <a href="#" class="removeFromCart" data-id="{{ item.getId() }}" data-refresh="true">
+                                <a href="{{ path('coreshop_shop_remove_cart_item', {cartItemId: item.getId}) }}" class="removeFromCart" data-id="{{ item.getId() }}" data-refresh="true">
                                     <i class="fa fa-times"></i>
                                 </a>
                             {% endif %}

@@ -28,7 +28,25 @@ class CartController extends FrontendController
 
         $this->addCartItem($product, $quantity);
 
-        $this->addFlash('coreshop.cart', 'added');
+        //TODO: Flashes
+
+        return $this->redirectToRoute('coreshop_shop_add_cart_summary');
+    }
+
+    public function removeItemAction(Request $request, $cartItemId) {
+        $cartItem = $this->get('coreshop.repository.cart_item')->find($cartItemId);
+
+        if (!$cartItem instanceof CartItemInterface) {
+            return $this->redirectToRoute('coreshop_shop_index');
+        }
+
+        if ($cartItem->getCart()->getId() !== $this->getCart()->getId()) {
+            return $this->redirectToRoute('coreshop_shop_index');
+        }
+
+        //TODO: add flash
+
+        $this->removeCartItem($cartItem);
 
         return $this->redirectToRoute('coreshop_shop_add_cart_summary');
     }

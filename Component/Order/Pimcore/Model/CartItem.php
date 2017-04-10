@@ -94,7 +94,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * @return CartInterface
      */
-    private function getCart() {
+    public function getCart() {
         /**
          * @var $cart CartInterface
          */

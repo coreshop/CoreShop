@@ -95,9 +95,9 @@
                     {% if editAllowed %}
                         <td class="text-center">
                             {% if not item.getIsGiftItem %}
-                                <button type="button" title="{{ 'remove'|trans }}" class="btn btn-default tool-tip removeFromCart" data-id="{{ item.getId }}">
+                                <a href="{{ path('coreshop_shop_remove_cart_item', {cartItemId: item.getId}) }}" type="button" title="{{ 'remove'|trans }}" class="btn btn-default tool-tip removeFromCart" data-id="{{ item.getId }}">
                                     <i class="fa fa-times-circle"></i>
-                                </button>
+                                </a>
                             {% endif %}
                         </td>
                     {% endif %}

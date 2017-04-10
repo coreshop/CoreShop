@@ -15,4 +15,9 @@ interface CartItemInterface extends ProposalItemInterface, PimcoreModelInterface
      * @param bool $isGiftItem
      */
     public function setIsGiftItem($isGiftItem);
+
+    /**
+     * @return CartInterface
+     */
+    public function getCart();
 }
