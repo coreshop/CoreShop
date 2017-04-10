@@ -31,3 +31,10 @@ services:
     tags:
         - { name: coreshop.context.country.request_based.resolver, priority: 100 } #Highest Priority, is more like the fallback
     arguments: ['@coreshop.context.store']
+
+  coreshop.context.country.request_based.resolver.cart_based:
+    class: CoreShop\Component\Core\Context\CartBasedCountryResolver
+    public: false
+    tags:
+        - { name: coreshop.context.country.request_based.resolver, priority: 1 } #Highest Priority, is more like the fallback
+    arguments: ['@coreshop.cart.manager']
