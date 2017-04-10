@@ -108,7 +108,7 @@ class Address extends AbstractPimcoreModel implements AddressInterface, PimcoreM
     /**
      * {@inheritdoc}
      */
-    public function geCountry()
+    public function getCountry()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

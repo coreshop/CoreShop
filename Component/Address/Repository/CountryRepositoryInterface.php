@@ -20,4 +20,10 @@ interface CountryRepositoryInterface extends RepositoryInterface
      * @return CountryInterface[]
      */
     public function findByName($name, $locale);
+
+    /**
+     * @param $code
+     * @return CountryInterface
+     */
+    public function findByCode($code);
 }

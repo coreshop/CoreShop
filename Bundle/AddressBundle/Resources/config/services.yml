@@ -1,2 +1,25 @@
 imports:
   - { resource: "services/form.yml" }
+
+services:
+  coreshop.context.country.composite:
+      class: CoreShop\Component\Address\Context\CompositeCountryContext
+      public: false
+
+  coreshop.context.country.request_based:
+      class: CoreShop\Component\Address\Context\RequestBased\CountryContext
+      public: false
+      tags:
+          - { name: coreshop.context.country }
+      arguments: ['@coreshop.context.country.request_based.resolver', '@request_stack']
+
+  coreshop.context.country.request_based.resolver.composite:
+      class: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
+      public: false
+
+  coreshop.context.country.request_based.resolver.geo_lite:
+      class: CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver
+      public: false
+      tags:
+          - { name: coreshop.context.country.request_based.resolver, priority: 10 } #Highest Priority, is more like the fallback
+      arguments: ['@coreshop.repository.country']

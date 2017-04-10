@@ -102,6 +102,20 @@ pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstr
                             forceSelection: true,
                             triggerAction: 'all',
                             name: 'baseCurrency'
+                        },
+                        {
+                            xtype: 'combo',
+                            fieldLabel: t('coreshop_base_country'),
+                            typeAhead: true,
+                            value: this.data.baseCountry,
+                            mode: 'local',
+                            listWidth: 100,
+                            store: pimcore.globalmanager.get('coreshop_countries'),
+                            displayField: 'name',
+                            valueField: 'id',
+                            forceSelection: true,
+                            triggerAction: 'all',
+                            name: 'baseCountry'
                         }
                     ]
                 }

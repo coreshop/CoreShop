@@ -2,6 +2,7 @@
 
 namespace CoreShop\Component\Core\Context;
 
+use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 
@@ -23,18 +24,26 @@ class ShopperContext implements ShopperContextInterface
     private $localeContext;
 
     /**
+     * @var CountryContextInterface
+     */
+    private $countryContext;
+
+    /**
      * @param StoreContextInterface $storeContext
      * @param CurrencyContextInterface $currencyContext
      * @param LocaleContextInterface $localeContext
+     * @param CountryContextInterface $countryContext
      */
     public function __construct(
         StoreContextInterface $storeContext,
         CurrencyContextInterface $currencyContext,
-        LocaleContextInterface $localeContext
+        LocaleContextInterface $localeContext,
+        CountryContextInterface $countryContext
     ) {
         $this->storeContext = $storeContext;
         $this->currencyContext = $currencyContext;
         $this->localeContext = $localeContext;
+        $this->countryContext = $countryContext;
     }
 
     /**
@@ -59,5 +68,13 @@ class ShopperContext implements ShopperContextInterface
     public function getLocaleCode()
     {
         return $this->localeContext->getLocaleCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCountry()
+    {
+        return $this->countryContext->getCountry();
     }
 }

@@ -11,7 +11,7 @@ class PropertyPriceCalculator implements ProductPriceCalculatorInterface
      */
     public function getPrice($subject)
     {
-        return $subject->getBasePrice();
+        return $subject->getBasePrice(false);
     }
 
     /**

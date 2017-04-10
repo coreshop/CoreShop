@@ -2,7 +2,10 @@
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 
 /**
@@ -76,9 +79,15 @@ interface ProductInterface extends PimcoreModelInterface
     public function getTaxRule();
 
     /**
-     * @param TaxRuleInterface $taxRule
+     * @param TaxRuleGroupInterface $taxRule
      *
      * @return mixed
      */
     public function setTaxRule($taxRule);
+
+    /**
+     * @param AddressInterface|null $address
+     * @return TaxCalculatorInterface
+     */
+    public function getTaxCalculator(AddressInterface $address = null);
 }

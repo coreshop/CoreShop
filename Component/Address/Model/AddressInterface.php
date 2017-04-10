@@ -69,7 +69,7 @@ interface AddressInterface extends ResourceInterface
     /**
      * @return CountryInterface
      */
-    public function geCountry();
+    public function getCountry();
 
     /**
      * @param $country

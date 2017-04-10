@@ -68,7 +68,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
 
         if ($data instanceof ResourceInterface) {
             //Reload from Database, but only if available
-            $tmpData = $data::getById($data->getId());
+            $tmpData = $this->getRepository()->find($data->getId());
 
             if ($tmpData instanceof ResourceInterface) {
                 return $tmpData;

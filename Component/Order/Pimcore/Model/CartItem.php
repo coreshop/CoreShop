@@ -2,11 +2,13 @@
 
 namespace CoreShop\Component\Order\Pimcore\Model;
 
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class CartItem extends AbstractPimcoreModel implements CartItemInterface
 {
@@ -105,7 +107,40 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      */
     public function getItemTax()
     {
+        $product = $this->getProduct();
+
+        if ($product instanceof ProductInterface) {
+            $taxCalculator = $this->getItemTaxCalculator();
+
+            return $taxCalculator->applyTaxes($this->getItemPrice());
+        }
+
         return 0;
+    }
+
+    /**
+     * @return TaxCalculatorInterface
+     */
+    private function getItemTaxCalculator() {
+        $product = $this->getProduct();
+
+        if ($product instanceof ProductInterface) {
+            return $product->getTaxCalculator($this->getCart()->getShippingAddress()); //TODO: Taxation Address should be configurable
+        }
+
+        return null;
+    }
+
+    /**
+     * @return CartInterface
+     */
+    private function getCart() {
+        /**
+         * @var $cart CartInterface
+         */
+        $cart = $this->getParent();
+
+        return $cart;
     }
 
     /**

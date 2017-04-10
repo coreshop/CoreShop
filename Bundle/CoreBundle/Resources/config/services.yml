@@ -21,3 +21,7 @@ services:
     arguments: ['@pimcore.locale']
     tags:
       - { name: coreshop.context.locale }
+
+  coreshop.taxation.factory.tax_calculator:
+    class: CoreShop\Bundle\CoreBundle\Taxation\TaxCalculatorFactory
+    arguments: ['@coreshop.repository.tax_rule']

@@ -2,7 +2,7 @@ services:
   coreshop.context.shopper:
     class: CoreShop\Component\Core\Context\ShopperContext
     lazy: true
-    arguments: ['@coreshop.context.store', '@coreshop.context.currency', '@coreshop.context.locale']
+    arguments: ['@coreshop.context.store', '@coreshop.context.currency', '@coreshop.context.locale', '@coreshop.context.country']
 
   coreshop.storage.currency:
     class: CoreShop\Component\Core\Currency\CurrencyStorage
@@ -23,3 +23,11 @@ services:
     decorates: coreshop.context.currency
     decoration_priority: 256
     arguments: ['@coreshop.context.currency.store_aware.inner', '@coreshop.context.store', '@coreshop.repository.currency']
+
+  # country store resolver
+  coreshop.context.country.request_based.resolver.store_based:
+    class: CoreShop\Component\Core\Context\StoreBasedCountryResolver
+    public: false
+    tags:
+        - { name: coreshop.context.country.request_based.resolver, priority: 100 } #Highest Priority, is more like the fallback
+    arguments: ['@coreshop.context.store']

@@ -2,14 +2,22 @@
 
 namespace CoreShop\Component\Product\Pimcore\Model;
 
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Rule\Model\RuleInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class Product extends AbstractPimcoreModel implements ProductInterface
 {
+    /**
+     * @var TaxCalculatorInterface
+     */
+    private $taxCalculator;
+
     /**
      * {@inheritdoc}
      */
@@ -18,9 +26,19 @@ class Product extends AbstractPimcoreModel implements ProductInterface
         /**
          * @var ProductPriceCalculatorInterface
          */
-        $calculator = \Pimcore::getContainer()->get('coreshop.product.price_calculator');
+        $calculator = $this->getContainer()->get('coreshop.product.price_calculator');
 
-        return $calculator->getPrice($this);
+        $netPrice = $calculator->getPrice($this);
+
+        if ($withTax) {
+            $taxCalculator = $this->getTaxCalculator();
+
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
+                $netPrice = $taxCalculator->applyTaxes($netPrice);
+            }
+        }
+
+        return $netPrice;
     }
 
     /**
@@ -56,6 +74,62 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getBasePrice($withTax = true)
+    {
+        $netPrice = $this->getPimcoreBasePrice();
+
+        if ($withTax) {
+            $taxCalculator = $this->getTaxCalculator();
+
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
+                $netPrice = $taxCalculator->applyTaxes($netPrice);
+            }
+        }
+
+        return $netPrice;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBasePrice($basePrice)
+    {
+        $this->setBasePrice($basePrice);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaxCalculator(AddressInterface $address = null)
+    {
+        if (is_null($this->taxCalculator)) {
+            $factory = $this->getContainer()->get('coreshop.taxation.factory.tax_calculator');
+
+            $taxRuleGroup = $this->getTaxRule();
+
+            if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
+                $address = $this->getContainer()->get('coreshop.factory.address')->createNew();
+                //TODO: Load Address from Context?
+                $this->taxCalculator = $factory->getTaxCalculatorForAddress($taxRuleGroup, $address);
+            }
+            else {
+                $this->taxCalculator = null;
+            }
+        }
+
+        return $this->taxCalculator;
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private function getContainer() {
+        return \Pimcore::getContainer();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName($language = null)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -67,22 +141,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     public function setName($name, $language = null)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBasePrice($withTax = true)
-    {
-        return $this->getPimcoreBasePrice();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBasePrice($basePrice)
-    {
-        $this->setBasePrice($basePrice);
     }
 
     /**

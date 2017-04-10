@@ -15,4 +15,14 @@ interface StoreInterface extends BaseStoreInterface {
      * @param CurrencyInterface $baseCurrency
      */
     public function setBaseCurrency(CurrencyInterface $baseCurrency);
+
+    /**
+     * @return CountryInterface
+     */
+    public function getBaseCountry();
+
+    /**
+     * @param CountryInterface $baseCurrency
+     */
+    public function setBaseCountry(CountryInterface $baseCurrency);
 }

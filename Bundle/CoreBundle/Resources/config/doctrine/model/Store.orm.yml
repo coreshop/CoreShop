@@ -5,6 +5,12 @@ CoreShop\Component\Core\Model\Store:
     baseCurrency:
       targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
       joinColumn:
-        name: countryId
+        name: baseCurrencyId
+        referencedColumnName: id
+        nullable: true
+    baseCountry:
+      targetEntity: CoreShop\Component\Address\Model\CountryInterface
+      joinColumn:
+        name: baseCountryId
         referencedColumnName: id
         nullable: true
