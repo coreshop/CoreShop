@@ -8,7 +8,7 @@
         <div class="filter-group filter-group-checkbox">
             {% for value in values if value %}
                 <label class="checkbox">
-                    <input name="{{ fieldName }}[]" type="checkbox" value="{{ value['value'] }}">
+                    <input name="{{ fieldName }}[]" type="checkbox" value="{{ value['value'] }}" {% if currentValues is iterable and value['value'] in currentValues %} checked="checked" {% endif %}>
                     {{ value['value']|trans }} {% if quantityUnit %} {{ quantityUnit.getAbbreviation }} {% endif %}
                 </label>
             {% endfor %}

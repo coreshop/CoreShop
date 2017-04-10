@@ -30,11 +30,17 @@ class MysqlRenderer extends AbstractRenderer
     {
         $inValues = [];
 
-        foreach ($condition->getValues() as $c => $value) {
-            $inValues[] = $this->db->quote($value);
+        if (is_array($condition->getValues())) {
+            foreach ($condition->getValues() as $c => $value) {
+                $inValues[] = $this->db->quote($value);
+            }
         }
 
-        return 'TRIM(`'.$condition->getFieldName().'`) IN ('.implode(',', $inValues).')';
+        if (count($inValues) > 0) {
+            return 'TRIM(`' . $condition->getFieldName() . '`) IN (' . implode(',', $inValues) . ')';
+        }
+
+        return '';
     }
 
     /**

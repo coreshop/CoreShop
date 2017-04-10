@@ -78,8 +78,8 @@ class CategoryController extends PimcoreFrontendController
             $list = $this->get('coreshop.repository.product')->getListingClass();
 
             $condition = "enabled = 1";
-            //$condition .= " AND categories LIKE '%,".$category->getId().",%'";
-            //$condition .= " AND stores LIKE '%,".$this->shopperContext->getStore()->getId().",%'";
+            $condition .= " AND categories LIKE '%,".$category->getId().",%'";
+            $condition .= " AND stores LIKE '%,".$this->shopperContext->getStore()->getId().",%'";
 
             $list->setCondition($condition);
             $list->setOrderKey($sortParsed['name']);
