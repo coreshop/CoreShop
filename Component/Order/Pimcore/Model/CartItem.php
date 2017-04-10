@@ -15,54 +15,6 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProduct($product)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getQuantity()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQuantity($quantity)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIsGiftItem()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIsGiftItem($isGiftItem)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getItemPrice($withTax = true)
     {
         $product = $this->getProduct();
@@ -119,6 +71,14 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getTaxes($applyDiscountToTaxValues = true)
+    {
+        return \Pimcore::getContainer()->get('coreshop.collector.taxes')->collectTaxes($this->getItemTaxCalculator(), $this->getTotal(false));
+    }
+
+    /**
      * @return TaxCalculatorInterface
      */
     private function getItemTaxCalculator() {
@@ -157,5 +117,53 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     public function getTotalTax()
     {
         return $this->getItemTax() * $this->getQuantity();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProduct()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProduct($product)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQuantity()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQuantity($quantity)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIsGiftItem()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsGiftItem($isGiftItem)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 }

@@ -250,6 +250,16 @@
                     </td>
                 </tr>
             {% endif %}
+            {% for tax in taxes %}
+                 <tr>
+                    <td class="text-right cart-tax-detail">
+                        <strong>{{ "tax_name"|trans|format(tax['tax'].getName) }}:</strong>
+                    </td>
+                    <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-tax-detail">
+                        {{ currency.convertAndFormat(tax['amount']) }}
+                    </td>
+                </tr>
+            {% endfor %}
             {#TODO
             <?php foreach($taxes as $tax) { ?>
                 <tr>

@@ -54,6 +54,12 @@ interface ProposalItemInterface extends ResourceInterface
     public function getItemTax();
 
     /**
+     * @param boolean $applyDiscountToTaxValues
+     * @return mixed
+     */
+    public function getTaxes($applyDiscountToTaxValues = true);
+
+    /**
      * @param bool $withTax
      *
      * @return float

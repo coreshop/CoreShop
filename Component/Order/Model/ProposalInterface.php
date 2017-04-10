@@ -46,9 +46,10 @@ interface ProposalInterface extends ResourceInterface
     public function getDiscount($withTax = true);
 
     /**
+     * @param boolean $applyDiscountToTaxValues
      * @return mixed
      */
-    public function getTaxes();
+    public function getTaxes($applyDiscountToTaxValues = true);
 
     /**
      * @param bool $withTax

@@ -8,6 +8,7 @@ use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
 class Cart extends AbstractPimcoreModel implements CartInterface
 {
@@ -53,9 +54,50 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getTaxes()
+    public function getTaxes($applyDiscountToTaxValues = true)
     {
-        return [];
+        $usedTaxes = [];
+        $taxCollector = \Pimcore::getContainer()->get('coreshop.collector.taxes');
+
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof CartItemInterface) {
+                $usedTaxes = $taxCollector->mergeTaxes($item->getTaxes(), $usedTaxes);
+            }
+        }
+
+        /* TODO: collect taxes of this stuff as well if (!$this->getFreeShipping()) {
+            $shippingProvider = $this->getShippingProvider();
+
+            if ($shippingProvider instanceof Carrier) {
+                $shippingTax = $this->getShippingProvider()->getTaxCalculator();
+
+                if ($shippingTax instanceof TaxCalculator) {
+                    $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
+
+                    if (is_array($taxesAmount)) {
+                        foreach ($taxesAmount as $id => $amount) {
+                            $addTax(Tax::getById($id), $amount);
+                        }
+                    }
+                }
+            }
+        }
+
+        $paymentProvider = $this->getPaymentProvider();
+
+        if ($paymentProvider instanceof PaymentPlugin) {
+            if ($paymentProvider->getPaymentTaxCalculator($this) instanceof TaxCalculator) {
+                $taxesAmount = $paymentProvider->getPaymentTaxCalculator($this)->getTaxesAmount($this->getPaymentFee(false), true);
+
+                if(is_array($taxesAmount)) {
+                    foreach ($taxesAmount as $id => $amount) {
+                        $addTax(Tax::getById($id), $amount);
+                    }
+                }
+            }
+        }*/
+
+        return $usedTaxes;
     }
 
     /**
