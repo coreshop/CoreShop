@@ -79,6 +79,8 @@ class CartManager implements CartManagerInterface
         $cart = $this->createCart('default');
 
         $this->setCurrentCart($cart);
+
+        return $cart;
     }
 
     /**
@@ -96,8 +98,8 @@ class CartManager implements CartManagerInterface
     {
         $cart = null;
 
-        if ($this->session->has(self::CART_ID_IDENTIFIER) && $this->session->get(self::CART_ID_IDENTIFIER) !== 0) {
-            $cart = $this->cartRepository->find($this->session->get(self::CART_ID_IDENTIFIER));
+        if ($this->sessionBag->has(self::CART_ID_IDENTIFIER) && $this->sessionBag->get(self::CART_ID_IDENTIFIER) !== 0) {
+            $cart = $this->cartRepository->find($this->sessionBag->get(self::CART_ID_IDENTIFIER));
         }
 
         if (!$cart instanceof CartInterface && $this->sessionBag->has(self::CART_OBJ_IDENTIFIER)) {
@@ -193,8 +195,14 @@ class CartManager implements CartManagerInterface
      */
     public function persistCart(CartInterface $cart)
     {
+        if ($this->sessionBag->has(self::CART_OBJ_IDENTIFIER)) {
+            $this->sessionBag->remove(self::CART_OBJ_IDENTIFIER);
+        }
+
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
         $cart->setParent($cartsFolder);
         $cart->save();
+
+        $this->setCurrentCart($cart);
     }
 }

@@ -1,10 +1,28 @@
 coreshop_index_test:
-  path: /test/index
+  path: %coreshop.frontend.base.url%
   defaults: { _controller: CoreShopFrontendBundle:Test:testIndex}
 
 
 coreshop_shop_switch_currency:
-    path: /test/index/currency-switch/{currencyCode}
+    path: %coreshop.frontend.base.url%/currency-switch/{currencyCode}
     methods: [GET]
     defaults:
         _controller: coreshop.frontend.controller.currency:switchAction
+
+coreshop_shop_add_cart_summary:
+    path: %coreshop.frontend.base.url%/cart
+    methods: [GET]
+    defaults:
+        _controller: coreshop.frontend.controller.cart:summaryAction
+
+coreshop_shop_add_cart_item:
+    path: %coreshop.frontend.base.url%/cart/add/{productId}
+    methods: [GET]
+    defaults:
+        _controller: coreshop.frontend.controller.cart:addItemAction
+
+coreshop_shop_remove_cart_item:
+    path: %coreshop.frontend.base.url%/cart/remove/{cartItemId}
+    methods: [GET]
+    defaults:
+        _controller: coreshop.frontend.controller.cart:removeItemAction

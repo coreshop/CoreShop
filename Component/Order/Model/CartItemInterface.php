@@ -2,7 +2,9 @@
 
 namespace CoreShop\Component\Order\Model;
 
-interface CartItemInterface extends ProposalItemInterface
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+
+interface CartItemInterface extends ProposalItemInterface, PimcoreModelInterface
 {
     /**
      * @return bool

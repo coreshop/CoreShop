@@ -64,4 +64,9 @@ interface ProposalItemInterface extends ResourceInterface
      * @return float
      */
     public function getTotalTax();
+
+    /**
+     * @return boolean
+     */
+    public function getIsGiftItem();
 }

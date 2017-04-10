@@ -2,7 +2,9 @@
 
 namespace CoreShop\Component\Order\Model;
 
-interface CartInterface extends ProposalInterface
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+
+interface CartInterface extends ProposalInterface, PimcoreModelInterface
 {
     /**
      * @return mixed

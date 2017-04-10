@@ -3,11 +3,18 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 interface ProposalInterface extends ResourceInterface
 {
+    /**
+     * @param ProductInterface $product
+     * @return CartItemInterface|null
+     */
+    public function getItemForProduct(ProductInterface $product);
+
     /**
      * @param boolean $withTax
      * @return float
@@ -15,10 +22,39 @@ interface ProposalInterface extends ResourceInterface
     public function getTotal($withTax = true);
 
     /**
+     * @param boolean $withTax
+     * @return float
+     */
+    public function getTotalTax($withTax = true);
+
+    /**
      * @param bool $withTax
      * @return float
      */
     public function getSubtotal($withTax = true);
+
+    /**
+     * @param bool $withTax
+     * @return float
+     */
+    public function getShipping($withTax = true);
+
+    /**
+     * @param bool $withTax
+     * @return float
+     */
+    public function getDiscount($withTax = true);
+
+    /**
+     * @return mixed
+     */
+    public function getTaxes();
+
+    /**
+     * @param bool $withTax
+     * @return float
+     */
+    public function getPaymentFee($withTax = true);
 
     /**
      * @return CurrencyInterface

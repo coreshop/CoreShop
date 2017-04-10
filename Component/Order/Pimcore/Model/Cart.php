@@ -2,31 +2,110 @@
 
 namespace CoreShop\Component\Order\Pimcore\Model;
 
+use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-class Cart extends AbstractPimcoreModel implements CartInterface, PimcoreModelInterface
+class Cart extends AbstractPimcoreModel implements CartInterface
 {
-    /**
+     /**
      * {@inheritdoc}
-     *
-     * TODO: implement me
      */
-    public function getTotal($withTax = true)
-    {
-        return 120;
+    public function getItemForProduct(ProductInterface $product) {
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof CartItemInterface) {
+                if ($item->getProduct() instanceof ProductInterface && $item->getProduct()->getId() === $product->getId()) {
+                    return $item;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
      * {@inheritdoc}
+     */
+    public function getTotalTax($withTax = true)
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShipping($withTax = true)
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscount($withTax = true)
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaxes()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentFee($withTax = true)
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotal($withTax = true)
+    {
+        $total = $this->getTotalWithoutDiscount($withTax);
+        $discount = $this->getDiscount($withTax);
+
+        return $total - $discount;
+    }
+
+    /**
+     * calculates the total without discount
      *
-     * TOOD: implement me
+     * @param bool $withTax
+     * @return float
+     */
+    private function getTotalWithoutDiscount($withTax = true)
+    {
+        $subtotal = $this->getSubtotal($withTax);
+        $shipping = $this->getShipping($withTax);
+        $payment = $this->getPaymentFee($withTax);
+
+        return $subtotal + $shipping + $payment;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getSubtotal($withTax = true)
     {
-        return 100;
+        $subtotal = 0;
+
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof CartItemInterface) {
+                $subtotal += $item->getTotal($withTax);
+            }
+        }
+
+        return $subtotal;
     }
 
     /**
@@ -77,7 +156,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface, PimcoreModelIn
         $items = $this->getItems();
         $items[] = $item;
 
-        $this->setItems($item);
+        $this->setItems($items);
     }
 
     /**

@@ -19,10 +19,10 @@
         </div>
 
         <div class="cart-button">
-            <button type="button" class="btn btn-cart" data-id="{{ product.getId() }}" data-img="image{{ product.getId() }}">
+            <a href="{{ path('coreshop_shop_add_cart_item', {'productId': product.id}) }}" type="button" class="btn btn-cart">
                 {{ 'add_to_cart'|trans }}
                 <i class="fa fa-shopping-cart"></i>
-            </button>
+            </a>
         </div>
     </div>
 </div>

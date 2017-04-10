@@ -8,7 +8,7 @@ use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-class CartItem extends AbstractPimcoreModel implements CartItemInterface, PimcoreModelInterface
+class CartItem extends AbstractPimcoreModel implements CartItemInterface
 {
     /**
      * {@inheritdoc}
