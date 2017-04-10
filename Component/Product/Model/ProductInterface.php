@@ -90,4 +90,117 @@ interface ProductInterface extends PimcoreModelInterface
      * @return TaxCalculatorInterface
      */
     public function getTaxCalculator(AddressInterface $address = null);
+
+    /**
+     * @return CategoryInterface[]
+     */
+    public function getCategories();
+
+    /**
+     * @param CategoryInterface[] $categories
+     * @return mixed
+     */
+    public function setCategories($categories);
+
+    /**
+     * @return mixed
+     */
+    public function getImage();
+
+    /**
+     * @return mixed
+     */
+    public function getImages();
+
+    /**
+     * @param $images
+     */
+    public function setImages($images);
+
+    /**
+     * @return ManufacturerInterface
+     */
+    public function getManufacturer();
+
+    /**
+     * @param ManufacturerInterface $manufacturer
+     */
+    public function setManufacturer($manufacturer);
+
+    /**
+     * @return string
+     */
+    public function getEan();
+
+    /**
+     * @param string $ean
+     */
+    public function setEan($ean);
+
+    /**
+     * @return int
+     */
+    public function getQuantity();
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity($quantity);
+
+    /**
+     * @return boolean
+     */
+    public function getIsAvailableWhenOutOfStock();
+
+    /**
+     * @param boolean $isAvailableWhenOutOfStock
+     */
+    public function setIsAvailableWhenOutOfStock($isAvailableWhenOutOfStock);
+
+    /**
+     * Get all Variants Differences.
+     *
+     * @param $language
+     * @param $type
+     * @param $field
+     *
+     * @return array|boolean
+     */
+    public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
+
+    /**
+     * @return float
+     */
+    public function getTaxRate();
+
+    /**
+     * Get Product Tax Amount.
+     *
+     * @return float
+     */
+    public function getTaxAmount();
+
+    /**
+     * @param string $language
+     * @return string
+     */
+    public function getShortDescription($language = null);
+
+    /**
+     * @param string $shortDescription
+     * @param string $language
+     */
+    public function setShortDescription($shortDescription, $language = null);
+
+    /**
+     * @param string $language
+     * @return string
+     */
+    public function getDescription($language = null);
+
+    /**
+     * @param string $description
+     * @param string $language
+     */
+    public function setDescription($description, $language = null);
 }

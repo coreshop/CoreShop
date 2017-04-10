@@ -31,3 +31,9 @@ coreshop_shop_category_index:
   defaults: { _controller: coreshop.frontend.controller.category:indexAction}
   requirements:
       categoryId: \d+
+
+coreshop_shop_product_detail:
+  path: %coreshop.frontend.base.url%/{name}~p{productId}
+  defaults: { _controller: coreshop.frontend.controller.product:detailAction}
+  requirements:
+      productId: \d+

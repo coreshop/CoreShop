@@ -5,7 +5,9 @@
 {% block center %}
     <ol class="breadcrumb">
         <li><a href="{{ path('coreshop_shop_index') }}">{{ 'home'|trans }}</a></li>
-        {# TODO: Render Category Breadcrump #}
+        {% for cat in category.getHierarchy() %}
+            <li class="active"><a href="{{ path('coreshop_shop_category_index', {name: cat.getName, categoryId: cat.getId}) }}">{{ cat.getName }}</a></li>
+        {% endfor %}
     </ol>
 
     <h2 class="main-heading2">

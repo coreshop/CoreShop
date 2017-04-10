@@ -1,0 +1,144 @@
+{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+
+{% extends '@CoreShopFrontend/layout-column.html.twig' %}
+
+{% block center %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('coreshop_shop_index') }}">{{ 'home'|trans }}</a></li>
+        {% if product.getCategories|length > 0 %}
+            {% for cat in product.getCategories|first.getHierarchy() %}
+                <li class="active"><a href="{{ path('coreshop_shop_category_index', {name: cat.getName, categoryId: cat.getId}) }}">{{ cat.getName }}</a></li>
+            {% endfor %}
+        {% endif %}
+
+        <li class="active"><a href="{{ path('coreshop_shop_product_detail', {name: product.getName, productId: product.getId}) }}">{{ product.getName }}</a></li>
+    </ol>
+
+
+    <div class="row product-info">
+
+        <div class="col-sm-5 images-block">
+             {% if product.getImage %}
+                 {{ product.getImage().getThumbnail("coreshop_productList").getHtml({"class": "img-responsive"})|raw }}
+            {% endif %}
+
+            {% if product.getImages|length > 0 %}
+                <ul class="list-unstyled list-inline">
+                    {% for image in product.getImages %}
+                        <li>
+                            {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-responsive"})|raw }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <div class="col-sm-7 product-details">
+
+            <h2>{{ product.getName }}</h2>
+            <hr />
+
+            {% if product.getShortDescription|length > 0 %}
+                <div class="description">
+                    {{ product.getShortDescription }}
+                </div>
+                <hr />
+            {% endif %}
+
+            <ul class="list-unstyled manufacturer">
+                {% if product.getManufacturer %}
+                    <li>
+                        <span>{{ 'brand'|trans }}:</span> {{ product.getManufacturer.getName }}
+                    </li>
+                {% endif %}
+
+                {% if product.getEan %}
+                    <li><span>{{ 'model'|trans }}:</span> {{ product.getEan }}
+                {% endif %}
+                <li>
+                    <span>{{ 'availability'|trans }}:</span>
+                    {%  if product.getQuantity > 0 %}
+                        <strong class="label label-success"> <?=$this->translate("In Stock")?></strong>
+                    {% elseif product.getIsAvailableWhenOutOfStock %}
+                        <div class="label label-warning">
+                            {{ 'out_of_stock_but_on_backorder'|trans }}
+                        </div>
+                    {% else %}
+                        <div class="label label-danger">
+                            {{ 'out_of_stock'|trans }}
+                        </div>
+                    {% endif %}
+                </li>
+            </ul>
+            <hr/>
+
+            {% set variants = product.getVariantDifferences(coreshop.localeCode, 'classificationstore', 'classificationStore') %}
+            {# {% set variants = product->getVariantDifferences(coreshop.localeCode); //Use this for bricks %} #}
+
+            {% if variants %}
+                {% for variant in variants %}
+                    <h4>{{ variant['variantName'] }}</h4>
+                    <div class="form-group">
+                        <select name="variant" class="form-control selectpicker btn-white">
+                            {% for variantValue in variant['variantValues'] %}
+                                <option data-href="{{ path('coreshop_shop_product_detail', {name: variant['variantName'], productId: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endfor %}
+                <hr/>
+            {% endif %}
+
+
+            <div class="price">
+                <span class="price-head">{{ 'price'|trans }}:</span>
+                <span class="price-new">{{ currency.convertAndFormat(product.getPrice) }}</span>
+                {#TODO: savings#}
+            </div>
+            <div class="tax">
+                {{ 'incl. %s%% Tax'|format(product.getTaxRate) }} ({{ currency.convertAndFormat(product.getTaxAmount) }})
+            </div>
+
+            <hr/>
+
+            <div class="options">
+                <div class="cart-button button-group">
+                    <button type="button" title="{{ 'wishlist'|trans }}" class="btn btn-wishlist" data-id="{{ product.getId }}">
+                        <i class="fa fa-heart"></i>
+                    </button>
+                    <button type="button" title="{{ 'compare'|trans }}" class="btn btn-compare" data-id="{{ product.getId }}">
+                        <i class="fa fa-bar-chart-o"></i>
+                    </button>
+
+
+                    <a href="{{ path('coreshop_shop_add_cart_item', {'productId': product.id}) }}" type="button" class="btn btn-cart">
+                        {{ 'add_to_cart'|trans }}
+                        <i class="fa fa-shopping-cart"></i>
+                    </a>
+                </div>
+            </div>
+
+            <hr />
+        </div>
+    </div>
+
+    <div class="tabs-panel panel-smart">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tab-description">{{ 'description'|trans }}</a>
+            </li>
+        </ul>
+
+        <div class="tab-content clearfix">
+            <div class="tab-pane active" id="tab-description">
+                {% if product.getDescription|length > 0  %}
+                    {{ product.getDescription|raw }}
+                {% else %}
+                    {{ 'no_description_available'|trans }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <br/>
+{% endblock %}

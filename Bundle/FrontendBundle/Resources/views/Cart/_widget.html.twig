@@ -17,21 +17,22 @@
                 {% for item in cart.getItems() %}
                     <tr>
                         <td class="text-center">
-                            <!-- TODO: URL -->
-                            <a href="#">
+                            {% if item.getProduct() %}
+                            <a href="{{ path('coreshop_shop_product_detail', {name: item.getProduct().getName, productId: item.getProduct().getId}) }}">
                                 {% if item.getProduct() and item.getProduct().getImage() %}
-                                    {{ item.product.image.thumbnail("coreshop_productCartPreview").html({'class': 'img-thumbnail img-responsive', 'title': item.getProduct().getName(), 'alt': item.getProduct().getName()}) }}
+                                    {{ item.product.image.thumbnail("coreshop_productCartPreview").html({'class': 'img-thumbnail img-responsive', 'title': item.getProduct().getName(), 'alt': item.getProduct().getName()})|raw }}
                                 {% endif %}
                             </a>
+                            {% endif %}
                         </td>
                         <td class="text-left">
-                            <!-- TODO: URL -->
-                            <a href="#">
+                            {% if item.getProduct() %}
+                            <a href="{{ path('coreshop_shop_product_detail', {name: item.getProduct().getName, productId: item.getProduct().getId}) }}">
                                 {{ item.getProduct().getName() }}
                             </a>
+                            {% endif %}
                         </td>
                         <td class="text-right">x {{ item.getQuantity() }}</td>
-                        <!-- TODO: Price Format and Conversion -->
                         <td class="text-right">{{ currency.convertAndFormat(item.getTotal) }}</td>
                         <td class="text-center">
                             {% if not item.isGiftItem %}
@@ -49,7 +50,7 @@
             <table class="table table-bordered total">
                 <tbody>
                 <tr>
-                    <td class="text-right"><strong>{{ 'subotal'|trans }}<?=$this->translate("Subtotal")?></strong></td>
+                    <td class="text-right"><strong>{{ 'subotal'|trans }}</strong></td>
                     <td class="text-left cart-subtotal">{{ currency.convertAndFormat(cart.subtotal) }}</td>
                 </tr>
                 <tr>
