@@ -1,10 +1,12 @@
+{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+
 <div class="product-col">
     <div class="image">
 
         {% if product.getImage() %}
             <!-- TODO: URL -->
             <a href="#">
-                {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-responsive', 'alt': product.getName(), 'id': 'image' ~ product.getId()}) }}
+                {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-responsive', 'alt': product.getName(), 'id': 'image' ~ product.getId()})|raw }}
             </a>
         {% endif %}
     </div>
@@ -15,7 +17,7 @@
         </div>
 
         <div class="price">
-            <span class="price-new">{{ product.getPrice() }}</span>
+            <span class="price-new">{{ currency.convertAndFormat(product.getPrice) }}</span>
         </div>
 
         <div class="cart-button">
