@@ -18,8 +18,7 @@ class PriceActionType extends AbstractType
         $builder
             ->add('price', NumberType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => ['coreshop']])
                 ],
             ])
         ;

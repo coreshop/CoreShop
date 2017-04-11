@@ -17,16 +17,14 @@ pimcore.plugin.coreshop.rules.conditions.amount = Class.create(pimcore.plugin.co
 
     type : 'amount',
 
-    getForm : function () {
-
+    getForm : function ()
+    {
         var minAmountValue = null;
         var maxAmountValue = 0;
-        var currencyValue = null;
         var me = this;
 
         if (this.data && this.data.minAmount) {
             minAmountValue = this.data.minAmount;
-            currencyValue = this.data.currency;
         }
 
         if (this.data && this.data.maxAmount) {
@@ -51,36 +49,9 @@ pimcore.plugin.coreshop.rules.conditions.amount = Class.create(pimcore.plugin.co
             step : 1
         });
 
-        var currency = {
-            xtype: 'combo',
-            fieldLabel: t('coreshop_condition_amount_currency'),
-            typeAhead: true,
-            mode: 'local',
-            listWidth: 100,
-            width : 200,
-            store: pimcore.globalmanager.get('coreshop_currencies'),
-            displayField: 'name',
-            valueField: 'id',
-            forceSelection: true,
-            triggerAction: 'all',
-            hiddenName:'currency',
-            value : currencyValue,
-            listeners: {
-                listeners: {
-                    beforerender: function () {
-                        this.setValue(me.data.currency);
-                    }
-                }
-            }
-        };
-
-        if (this.data && this.data.currency) {
-            currency.value = this.data.currency;
-        }
-
         this.form = Ext.create('Ext.form.Panel', {
             items : [
-                minAmount, maxAmount, currency
+                minAmount, maxAmount
             ]
         });
 
