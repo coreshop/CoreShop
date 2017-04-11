@@ -1,19 +1,18 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% set href = path('coreshop_shop_product_detail', {name: product.getName, productId: product.getId}) %}
 
 <div class="product-col">
     <div class="image">
-
         {% if product.getImage() %}
-            <!-- TODO: URL -->
-            <a href="#">
+            <a href="{{ href }}">
                 {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-responsive', 'alt': product.getName(), 'id': 'image' ~ product.getId()})|raw }}
             </a>
         {% endif %}
     </div>
     <div class="caption">
-        <h4><a href="#">{{ product.getName() }}</a></h4>
+        <h4><a href="{{ href }}">{{ product.getName() }}</a></h4>
         <div class="description">
-            <!-- TODO: add description -->
+            {{ product.getShortDescription() }}
         </div>
 
         <div class="price">

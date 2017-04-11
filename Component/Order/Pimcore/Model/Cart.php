@@ -389,4 +389,20 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCurrentStep()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCurrentStep($name)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

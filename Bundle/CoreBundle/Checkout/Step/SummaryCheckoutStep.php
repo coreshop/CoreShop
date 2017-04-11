@@ -1,13 +1,30 @@
 <?php
 
-namespace CoreShop\Component\Order\Checkout;
+namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class SummaryCheckoutStep implements CheckoutStepInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifier()
+    {
+        return 'summary';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function doAutoForward()
+    {
+        return false;
+    }
+
     /**
      * {@inheritdoc}
      */

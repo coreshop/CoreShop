@@ -30,7 +30,7 @@ class CartController extends FrontendController
 
         //TODO: Flashes
 
-        return $this->redirectToRoute('coreshop_shop_add_cart_summary');
+        return $this->redirectToRoute('coreshop_shop_cart_summary');
     }
 
     public function removeItemAction(Request $request, $cartItemId) {
@@ -48,13 +48,15 @@ class CartController extends FrontendController
 
         $this->removeCartItem($cartItem);
 
-        return $this->redirectToRoute('coreshop_shop_add_cart_summary');
+        return $this->redirectToRoute('coreshop_shop_cart_summary');
     }
 
     public function summaryAction(Request $request) {
         return $this->render('CoreShopFrontendBundle:Cart:summary.html.twig', [
             'cart' => $this->getCart(),
-            'editAllowed' => true
+            'editAllowed' => true,
+            'checkoutSteps' => $this->get('coreshop.checkout_manager')->getSteps(),
+            'currentCheckoutStep' => 0
         ]);
     }
 

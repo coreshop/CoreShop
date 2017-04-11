@@ -2,9 +2,10 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Order\Checkout\CheckoutAwareInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface CartInterface extends ProposalInterface, PimcoreModelInterface
+interface CartInterface extends ProposalInterface, PimcoreModelInterface, CheckoutAwareInterface
 {
     /**
      * @return mixed

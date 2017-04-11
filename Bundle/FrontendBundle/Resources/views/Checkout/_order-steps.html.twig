@@ -1,0 +1,16 @@
+<div class="row bs-wizard" style="border-bottom:0;">
+    {% set stepCount = steps|length %}
+    {% set columnWidth = (12 / stepCount)|round(0, 'floor') %}
+    {% set columnsLeft = (12 % stepCount) / 2 %}
+
+    {% for step in steps %}
+        <div class="{% if loop.index == 1 and columnsLeft >= 1 %} col-sm-offset-{{ columnsLeft }} {% endif %} col-sm-{{ columnWidth }} bs-wizard-step {% if currentStep == loop.index %} active  {% elseif currentStep >= loop.index %} complete {% elseif loop.index > 1 %} disabled {% endif %}">
+            <div class="text-center bs-wizard-stepnum">{{ step|trans }}</div>
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+            <a href="#" class="bs-wizard-dot"></a>
+            <div class="bs-wizard-info text-center"></div>
+        </div>
+    {% endfor %}
+</div>

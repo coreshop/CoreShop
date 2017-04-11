@@ -60,13 +60,12 @@
                 </tbody>
             </table>
             <p class="text-right btn-block1">
-                <!-- TODO
-                <a href="<?=\CoreShop::getTools()->url(array("lang" => $this->language, "act" => "list"), "coreshop_cart", false, false)?>">
-                    <?=$this->translate("View Cart")?>
+                <a href="{{ path('coreshop_shop_cart_summary') }}">
+                    {{ 'cart'|trans }}
                 </a>
-                <a href="<?=\CoreShop::getTools()->url(array("lang" => $this->language, "act" => "index"), "coreshop_checkout", false, false)?>">
-                    <?=$this->translate("Checkout")?>
-                </a>-->
+                <a href="{{ path('coreshop_shop_checkout', {'stepIdentifier': 'cart'}) }}">
+                    {{ 'checkout'|trans }}
+                </a>
             </p>
         </li>
     </ul>

@@ -1,0 +1,78 @@
+{% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block checkout %}
+
+    {% for address in addresses %}
+     <div class="hidden" id="address-{{ address.getId }}">
+         {{ address.getStreet }}
+    </div>
+    {% endfor %}
+
+    <div class="panel">
+        <div class="panel-body">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        {{ form_row(form.shippingAddress) }}
+                    </div>
+
+                    <div class="col-xs-6 invoice-address-selector" style="display:none">
+                        {{ form_row(form.invoiceAddress) }}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{ form_row(form.useShippingAsInvoice) }}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="panel panel-smart">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    {{ 'shipping_address'|trans }}
+                                </h4>
+                            </div>
+                            <div class="panel-body panel-shipping-address">
+                                {{ addresses|first.getStreet }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="panel panel-smart">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    {{ 'invoice_address'|trans }}
+                                </h4>
+                            </div>
+                            <div class="panel-body panel-invoice-address">
+                                {{ addresses|first.getStreet }} {#TODO, use FormatAddress somehow#}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="#" class="btn btn-default pull-left">
+                            {{ 'add_new_address'|trans }} TODO
+                        </a>
+
+                        <button type="submit" class="btn btn-default pull-right">
+                            {{ 'proceed'|trans }}
+                        </button>
+                    </div>
+                </div>
+
+            {{ form_end(form, {'render_rest': false}) }}
+        </div>
+    </div>
+
+{% endblock %}

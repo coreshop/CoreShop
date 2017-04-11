@@ -2,6 +2,7 @@ imports:
   - { resource: "services/context.yml" }
   - { resource: "services/storage.yml" }
   - { resource: "services/form.yml" }
+  - { resource: "services/checkout.yml" }
 
 parameters:
   coreshop.core.object_path: '/coreshop'

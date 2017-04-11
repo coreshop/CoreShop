@@ -1,0 +1,50 @@
+services:
+  coreshop.registry.checkout.steps:
+    class: CoreShop\Component\Registry\PrioritizedServiceRegistry
+    arguments:
+      - CoreShop\Component\Order\Checkout\CheckoutStepInterface
+      - checkout-steps
+
+  coreshop.checkout_manager:
+    class: CoreShop\Bundle\CoreBundle\Checkout\CheckoutManager
+    arguments: ['@coreshop.registry.checkout.steps']
+
+
+  #default steps
+  coreshop.checkout.step.cart:
+    class: CoreShop\Bundle\CoreBundle\Checkout\Step\CartCheckoutStep
+    tags:
+      - {name: coreshop.registry.checkout.step, type: cart, priority: 10}
+
+  coreshop.checkout.step.customer:
+    class: CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep
+    arguments: ['@security.authorization_checker']
+    tags:
+      - {name: coreshop.registry.checkout.step, type: customer, priority: 20}
+
+  coreshop.checkout.step.address:
+    class: CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep
+    arguments: ['@form.factory', '@security.token_storage']
+    tags:
+      - {name: coreshop.registry.checkout.step, type: address, priority: 30}
+
+  coreshop.checkout.step.shipping:
+    class: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
+    tags:
+      - {name: coreshop.registry.checkout.step, type: shipping, priority: 40}
+
+  coreshop.checkout.step.payment:
+    class: CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep
+    tags:
+      - {name: coreshop.registry.checkout.step, type: payment, priority: 50}
+
+  coreshop.checkout.step.summary:
+    class: CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep
+    tags:
+      - {name: coreshop.registry.checkout.step, type: summary, priority: 60}
+
+
+  coreshop.form.type.checkout_address:
+    class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType
+    tags:
+      - {name: form.type}

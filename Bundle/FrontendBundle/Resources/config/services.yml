@@ -27,6 +27,12 @@ services:
     calls:
             - [setContainer, ['@service_container']]
 
+  coreshop.frontend.controller.checkout:
+    class: CoreShop\Bundle\FrontendBundle\Controller\CheckoutController
+    arguments: ['@coreshop.checkout_manager']
+    calls:
+            - [setContainer, ['@service_container']]
+
   coreshop.frontend.controller.category:
     alias: coreshop.pimcore_controller.category
 

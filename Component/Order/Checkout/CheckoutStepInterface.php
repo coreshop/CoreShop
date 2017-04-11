@@ -8,6 +8,18 @@ use Symfony\Component\HttpFoundation\Request;
 interface CheckoutStepInterface {
 
     /**
+     * @return string
+     */
+    public function getIdentifier();
+
+    /**
+     * Determines if this step should be forward if valid
+     *
+     * @return boolean
+     */
+    public function doAutoForward();
+
+    /**
      * Check if Checkout Step is valid
      *
      * @param CartInterface $cart
