@@ -30,6 +30,7 @@ services:
 
   coreshop.checkout.step.shipping:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
+    arguments: ['@coreshop.carrier.cart.processor', '@coreshop.carrier.price_calculator.default']
     tags:
       - {name: coreshop.registry.checkout.step, type: shipping, priority: 40}
 

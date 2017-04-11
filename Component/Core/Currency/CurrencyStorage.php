@@ -53,7 +53,10 @@ final class CurrencyStorage implements CurrencyStorageInterface
      */
     public function get(StoreInterface $store)
     {
-        return $this->currencyRepository->find($this->storage->get($this->provideKey($store)));
+        if ($this->storage->get($this->provideKey($store)))
+            return $this->currencyRepository->find($this->storage->get($this->provideKey($store)));
+
+        return null;
     }
 
     /**

@@ -32,3 +32,5 @@ CoreShop\Component\Shipping\Model\Carrier:
       orphanRemoval: true
       cascade:
         - all
+      orderBy:
+        priority: ASC

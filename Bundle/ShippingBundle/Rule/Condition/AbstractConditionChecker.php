@@ -19,7 +19,7 @@ abstract class AbstractConditionChecker implements ShippingConditionCheckerInter
             throw new \InvalidArgumentException('Shipping Rule Condition $subject needs to be an array with values cart, address and carrier');
         }
 
-        if (!in_array('carrier', $subject) || !in_array('cart', $subject) || !in_array('address', $subject)) {
+        if (!array_key_exists('carrier', $subject) || !array_key_exists('cart', $subject) || !array_key_exists('address', $subject)) {
             throw new \InvalidArgumentException('Shipping Rule Condition $subject needs to be an array with values cart, address and carrier');
         }
 

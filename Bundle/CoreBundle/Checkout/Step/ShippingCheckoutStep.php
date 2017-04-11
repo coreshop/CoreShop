@@ -2,13 +2,35 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessorInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ShippingCheckoutStep implements CheckoutStepInterface
 {
+    /**
+     * @var CartCarrierProcessorInterface
+     */
+    private $cartCarrierProcessor;
+
+    /**
+     * @var CarrierPriceCalculatorInterface
+     */
+    private $carrierPriceCalculator;
+
+    /**
+     * @param CartCarrierProcessorInterface $cartCarrierProcessor
+     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     */
+    public function __construct(CartCarrierProcessorInterface $cartCarrierProcessor, CarrierPriceCalculatorInterface $carrierPriceCalculator)
+    {
+        $this->cartCarrierProcessor = $cartCarrierProcessor;
+        $this->carrierPriceCalculator = $carrierPriceCalculator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,10 +52,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        //return $cart->getCarrier() instanceof CarrierInterface;
-
-        //TODO: Implement Carrier stuff
-        return true;
+        return $cart->getCarrier() instanceof CarrierInterface;
     }
 
     /**
@@ -49,6 +68,22 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     public function prepareStep(CartInterface $cart)
     {
-        //TODO Implement Shipping/Carrier Form Type and return here
+        //Get Carriers
+        $carriers = $this->cartCarrierProcessor->getCarriersForCart($cart, $cart->getShippingAddress());
+        $availableCarriers = [];
+
+        foreach ($carriers as $carrier) {
+            $carrierPrice = $this->carrierPriceCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
+
+            $availableCarriers[$carrier->getId()] = [
+                'carrier' => $carrier,
+                'price' => $carrierPrice
+            ];
+        }
+
+        //TODO: Create Form?!
+        return [
+            'carriers' => $availableCarriers
+        ];
     }
 }

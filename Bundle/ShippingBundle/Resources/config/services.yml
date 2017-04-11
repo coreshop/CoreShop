@@ -34,3 +34,28 @@ services:
 
 
   # Shipping Rule ACTIONS
+
+  # Carrier Price Calculator
+  coreshop.carrier.price_calculator.shipping_rules:
+    class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierShippingRulePriceCalculator
+    arguments:
+      - '@coreshop.carrier.cart.checker'
+      - '@coreshop.registry.shipping_rule.actions'
+
+  coreshop.carrier.price_calculator.default:
+    class: CoreShop\Bundle\ShippingBundle\Calculator\CompositePriceCalculator
+    arguments: [['@coreshop.carrier.price_calculator.shipping_rules']]
+
+  coreshop.product.price_calculator:
+    alias: coreshop.product.price_calculator.default
+
+
+  # Carrier Shipping Rule Validator
+  coreshop.carrier.cart.checker:
+    class: CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleChecker
+    arguments: ['@coreshop.shipping_rule.processor']
+
+  # Carrier Processor
+  coreshop.carrier.cart.processor:
+    class: CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessor
+    arguments: ['@coreshop.repository.carrier', '@coreshop.carrier.cart.checker']
