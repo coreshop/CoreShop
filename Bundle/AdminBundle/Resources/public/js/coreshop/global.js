@@ -46,7 +46,7 @@ pimcore.plugin.coreshop.global = {
         //this._createStore('coreshop_messaging_contacts', 'messaging-contacts');
         //this._createStore('coreshop_messaging_thread_states', 'messaging-thread-states');
         this._createStore('coreshop_stores', 'stores');
-        //this._createStore('coreshop_carrier_shipping_rules', 'carrier-shipping-rules');
+        this._createStore('coreshop_carrier_shipping_rules', 'shipping_rules');
         this._createStore('coreshop_mail_rules', 'mail-rules');
 
         pimcore.globalmanager.get('coreshop_tax_rates').load();

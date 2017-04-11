@@ -18,13 +18,13 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
     iconCls : 'coreshop_icon_carrier_shipping_rule',
 
     url : {
-        save : '/admin/CoreShop/carrier-shipping-rule/save'
+        save : '/admin/CoreShop/shipping_rules/save'
     },
 
     getPanel: function () {
         var items = this.getItems();
 
-        items.push(this.getUsedByPanel());
+        //items.push(this.getUsedByPanel()); TODO!!
 
         this.panel = new Ext.TabPanel({
             activeTab: 0,

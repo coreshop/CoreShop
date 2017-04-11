@@ -22,11 +22,11 @@ pimcore.plugin.coreshop.carrier.shippingrules.panel = Class.create(pimcore.plugi
     type : 'carriers_shipping_rules',
 
     url : {
-        add : '/admin/CoreShop/carrier-shipping-rule/add',
-        delete : '/admin/CoreShop/carrier-shipping-rule/delete',
-        get : '/admin/CoreShop/carrier-shipping-rule/get',
-        list : '/admin/CoreShop/carrier-shipping-rule/list',
-        config : '/admin/CoreShop/carrier-shipping-rule/get-config'
+        add : '/admin/CoreShop/shipping_rules/add',
+        delete : '/admin/CoreShop/shipping_rules/delete',
+        get : '/admin/CoreShop/shipping_rules/get',
+        list : '/admin/CoreShop/shipping_rules/list',
+        config : '/admin/CoreShop/shipping_rules/get-config'
     },
 
     getItemClass : function () {
