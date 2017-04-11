@@ -20,6 +20,8 @@ class Carrier extends BaseCarrier implements CarrierInterface
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->stores = new ArrayCollection();
     }
 
@@ -72,7 +74,7 @@ class Carrier extends BaseCarrier implements CarrierInterface
      */
     public function getTaxRule()
     {
-        return $this->getTaxRule();
+        return $this->taxRule;
     }
 
     /**

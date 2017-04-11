@@ -25,7 +25,7 @@ CoreShop\Component\Shipping\Model\Carrier:
       groups: [Detailed]
     rangeBehaviour:
       expose: true
-      type: integer
+      type: string
       groups: [Detailed]
     shippingRules:
       expose: true

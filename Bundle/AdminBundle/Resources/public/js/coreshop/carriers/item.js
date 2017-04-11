@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
     iconCls : 'coreshop_icon_carrier',
 
     url : {
-        save : '/admin/CoreShop/carrier/save'
+        save : '/admin/CoreShop/carriers/save'
     },
 
     initialize: function (parentPanel, data, panelKey, type) {
@@ -68,34 +68,17 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             border:false,
             items: [{
                 xtype: 'textfield',
+                name: 'name',
+                fieldLabel: t('coreshop_carrier_name'),
+                width: 250,
+                value: this.data.name
+            }, {
+                xtype: 'textfield',
                 name: 'label',
                 fieldLabel: t('coreshop_carrier_label'),
                 width: 250,
                 value: this.data.label
             }, {
-                xtype: 'textfield',
-                name: 'delay',
-                fieldLabel: t('coreshop_carrier_delay'),
-                width: 250,
-                value: this.data.delay
-            }, {
-                xtype: 'spinnerfield',
-                name: 'grade',
-                fieldLabel: t('coreshop_carrier_grade'),
-                width: 250,
-                value: this.data.grade
-            }, new pimcore.plugin.coreshop.object.elementHref({
-                id : this.data ? this.data.image : null,
-                type : 'asset',
-                subtype : 'image'
-            }, {
-                assetsAllowed : true,
-                assetTypes : [{
-                    assetTypes : 'image'
-                }],
-                name: 'image',
-                title: t('coreshop_carrier_image')
-            }).getLayoutEdit(), {
                 xtype: 'textfield',
                 name: 'trackingUrl',
                 fieldLabel: t('coreshop_carrier_trackingUrl'),
@@ -104,9 +87,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             }]
         });
 
-        if (this.getMultishopSettings()) {
-            this.settingsForm.add(this.getMultishopSettings());
-        }
+        this.settingsForm.add(this.getMultishopSettings());
 
         return this.settingsForm;
     },
@@ -116,19 +97,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             restful: false,
             idProperty: 'id',
             sorters : 'priority',
-            proxy: {
-                type: 'ajax',
-                url: '/admin/CoreShop/carrier/get-shipping-rule-groups',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                },
-                extraParams: {
-                    carrier: this.data.id
-                }
-            }
+            data: this.data.shippingRules
         });
-        this.shippingRuleGroupsStore.load();
 
         this.shippingRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
             store: this.shippingRuleGroupsStore,
@@ -136,16 +106,16 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 {
                     header: t('coreshop_carriers_shipping_rule'),
                     flex: 1,
-                    dataIndex: 'shippingRuleId',
+                    dataIndex: 'shippingRule',
                     editor: new Ext.form.ComboBox({
                         store: pimcore.globalmanager.get('coreshop_carrier_shipping_rules'),
                         valueField: 'id',
                         displayField: 'name',
                         queryMode : 'local'
                     }),
-                    renderer: function (shippingRuleId) {
+                    renderer: function (shippingRule) {
                         var store = pimcore.globalmanager.get('coreshop_carrier_shipping_rules');
-                        var pos = store.findExact('id', shippingRuleId);
+                        var pos = store.findExact('id', shippingRule);
                         if (pos >= 0) {
                             return store.getAt(pos).get('name');
                         }
@@ -182,8 +152,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                     handler: function () {
                         this.shippingRuleGroupsStore.add({
                             id : null,
-                            carrierId : this.data.id,
-                            shippingRuleId : null,
+                            carrier : this.data.id,
+                            shippingRule : null,
                             priority : 100
                         });
                     }.bind(this),
@@ -216,9 +186,9 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 value: parseInt(this.data.isFree)
             }, {
                 xtype:'combo',
-                fieldLabel:t('coreshop_carrier_tax_rule_group'),
+                fieldLabel:t('coreshop_carrier_tax_rule'),
                 typeAhead:true,
-                value:this.data.taxRuleGroupId,
+                value:this.data.taxRule,
                 mode:'local',
                 listWidth:100,
                 store:pimcore.globalmanager.get('coreshop_taxrulegroups'),
@@ -226,7 +196,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 valueField:'id',
                 forceSelection:true,
                 triggerAction:'all',
-                name:'taxRuleGroupId',
+                name:'taxRule',
                 listeners : {
                     beforerender : function () {
                         if (!this.getStore().isLoaded() && !this.getStore().isLoading())
@@ -253,30 +223,24 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
 
     getSaveData : function () {
         var data = {
-            settings : {},
-            groups : []
+            shippingRules : []
         };
 
-        Ext.apply(data.settings, this.settingsForm.getForm().getFieldValues());
-        Ext.apply(data.settings, this.shippingLocationAndCosts.getForm().getFieldValues());
+        Ext.apply(data, this.settingsForm.getForm().getFieldValues());
+        Ext.apply(data, this.shippingLocationAndCosts.getForm().getFieldValues());
 
         var ruleGroups = this.shippingRuleGroupsStore.getRange();
 
         Ext.each(ruleGroups, function (group) {
             var rule = {
                 priority : group.get('priority'),
-                shippingRuleId : group.get('shippingRuleId')
+                shippingRule : group.get('shippingRule'),
+                carrier: this.data.id
             };
 
-            data.groups.push(rule);
+            data.shippingRules.push(rule);
         }.bind(this));
 
-        return {
-            data : Ext.encode(data)
-        };
-    },
-
-    postSave : function () {
-        this.shippingRuleGroupsStore.load();
+        return data;
     }
 });

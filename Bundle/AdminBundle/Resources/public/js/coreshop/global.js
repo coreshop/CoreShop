@@ -38,7 +38,7 @@ pimcore.plugin.coreshop.global = {
         ]);
         this._createStore('coreshop_taxrulegroups', 'tax_rule_groups');
         this._createStore('coreshop_customergroups', 'customer-groups');
-        //this._createStore('coreshop_carriers', 'carriers');
+        this._createStore('coreshop_carriers', 'carriers');
         this._createStore('coreshop_pricerules', 'price-rules');
         this._createStore('coreshop_indexes', 'indices');
         this._createStore('coreshop_product_filters', 'filters');
@@ -55,7 +55,7 @@ pimcore.plugin.coreshop.global = {
         pimcore.globalmanager.get('coreshop_zones').load();
         pimcore.globalmanager.get('coreshop_currencies').load();
         pimcore.globalmanager.get('coreshop_stores').load();
-        //pimcore.globalmanager.get('coreshop_carriers').load();
+        pimcore.globalmanager.get('coreshop_carriers').load();
         //pimcore.globalmanager.get('coreshop_messaging_contacts').load();
         //pimcore.globalmanager.get('coreshop_messaging_thread_states').load();
 

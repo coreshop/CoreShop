@@ -28,6 +28,13 @@ services:
     tags:
       -  { name: form.type }
 
+  coreshop.form.type.tax_rule_group_choice:
+    class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupChoiceType
+    arguments:
+      - '@coreshop.repository.tax_rule_group'
+    tags:
+      -  { name: form.type }
+
   coreshop.form.type.tax_rate_translation:
     class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateTranslationType
     arguments:

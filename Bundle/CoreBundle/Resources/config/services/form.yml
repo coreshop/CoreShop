@@ -14,6 +14,10 @@ services:
     tags:
       - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType }
 
+  coreshop.form.extension.type.carrier:
+    class: CoreShop\Bundle\CoreBundle\Form\Extension\CarrierTypeExtension
+    tags:
+      - { name: form.type_extension, extended_type: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType }
 
   coreshop.form.type.address_choice:
     class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
