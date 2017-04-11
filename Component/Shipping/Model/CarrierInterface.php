@@ -7,6 +7,16 @@ use Doctrine\Common\Collections\Collection;
 
 interface CarrierInterface extends ResourceInterface {
     /**
+     * Range Behaviour Deactivate
+     */
+    const RANGE_BEHAVIOUR_DEACTIVATE = 'deactivate';
+
+    /**
+     * Range Behaviour Largest
+     */
+    const RANGE_BEHAVIOUR_LARGEST = 'largest';
+
+    /**
      * @return string
      */
     public function getName();

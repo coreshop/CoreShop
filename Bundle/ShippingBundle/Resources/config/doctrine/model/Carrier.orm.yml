@@ -14,15 +14,17 @@ CoreShop\Component\Shipping\Model\Carrier:
     label:
       column: label
       type: string
+      nullable: true
     trackingUrl:
       column: trackingUrl
       type: string
+      nullable: true
     isFree:
       column: isFree
       type: boolean
     rangeBehaviour:
       column: rangeBehaviour
-      type: integer
+      type: string
   oneToMany:
     shippingRules:
       targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleGroup

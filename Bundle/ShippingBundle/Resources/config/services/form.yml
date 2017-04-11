@@ -1,5 +1,7 @@
 parameters:
+  coreshop.form.type.carrier.validation_groups: [coreshop]
   coreshop.form.type.shipping_rule.validation_groups: [coreshop]
+  coreshop.form.type.shipping_rule_group.validation_groups: [coreshop]
   coreshop.form.type.shipping_rule.rule.validation_groups: [coreshop]
   coreshop.form.type.shipping_rule.rule_action.validation_groups: [coreshop]
   coreshop.form.type.shipping_rule.rule_condition.validation_groups: [coreshop]
@@ -10,6 +12,35 @@ services:
     tags:
         - { name: form.type }
     arguments: ['%coreshop.model.shipping_rule.class%', '%coreshop.form.type.shipping_rule.validation_groups%']
+
+  coreshop.form.type.shipping_rule_choice:
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType
+    tags:
+      - { name: form.type }
+    arguments: ['@coreshop.repository.shipping_rule']
+
+  coreshop.form.type.shipping_rule_chollection:
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleGroupCollectionType
+    tags:
+      - { name: form.type }
+
+  coreshop.form.type.shipping_rule_group:
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleGroupType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.shipping_rule_group.class%', '%coreshop.form.type.shipping_rule_group.validation_groups%']
+
+  coreshop.form.type.carrier:
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType
+    tags:
+      - { name: form.type }
+    arguments: ['%coreshop.model.carrier.class%', '%coreshop.form.type.carrier.validation_groups%']
+
+  coreshop.form.type.carrier_choice:
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierChoiceType
+    tags:
+      - { name: form.type }
+    arguments: ['@coreshop.repository.carrier']
 
   coreshop.form.type.shipping_rule.rule_action:
     class: CoreShop\Bundle\RuleBundle\Form\Type\RuleActionType

@@ -13,7 +13,7 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
       column: priority
   manyToOne:
     carrier:
-      targetEntity: CoreShop\Component\Shipping\Model\Carrier
+      targetEntity: CoreShop\Component\Shipping\Model\CarrierInterface
       inversedBy: shippingRules
       joinColumn:
         name: carrierId

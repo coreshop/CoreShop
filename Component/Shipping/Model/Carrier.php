@@ -33,12 +33,12 @@ class Carrier implements CarrierInterface
     /**
      * @var bool
      */
-    private $isFree;
+    private $isFree = false;
 
     /**
      * @var int
      */
-    private $rangeBehaviour;
+    private $rangeBehaviour = self::RANGE_BEHAVIOUR_DEACTIVATE;
 
     /**
      * @var Collection|ShippingRuleGroupInterface[]

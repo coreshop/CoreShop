@@ -1,6 +1,6 @@
 CoreShop\Component\Shipping\Model\Carrier:
   exclusion_policy: ALL
-  xml_root_name: filter
+  xml_root_name: carrier
   properties:
     id:
       expose: true
@@ -26,4 +26,8 @@ CoreShop\Component\Shipping\Model\Carrier:
     rangeBehaviour:
       expose: true
       type: integer
+      groups: [Detailed]
+    shippingRules:
+      expose: true
+      type: array
       groups: [Detailed]
