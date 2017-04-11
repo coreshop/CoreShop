@@ -19,6 +19,7 @@
         "jms/serializer-bundle": "^1.3",
         "friendsofsymfony/rest-bundle": "^2.1",
         "liip/theme-bundle": "^1.4",
-        "webmozart/assert": "^1.2"
+        "webmozart/assert": "^1.2",
+        "doctrine/doctrine-cache-bundle": "^1.3"
     }
 }

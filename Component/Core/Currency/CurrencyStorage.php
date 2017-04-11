@@ -2,6 +2,7 @@
 
 namespace CoreShop\Component\Core\Currency;
 
+use CoreShop\Component\Core\Model\Currency;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
@@ -36,15 +37,15 @@ final class CurrencyStorage implements CurrencyStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function set(StoreInterface $store, $currencyCode)
+    public function set(StoreInterface $store, CurrencyInterface $currency)
     {
-        if ($this->isBaseCurrency($currencyCode, $store) || !$this->isAvailableCurrency($currencyCode, $store)) {
+        if ($this->isBaseCurrency($currency, $store) || !$this->isAvailableCurrency($currency, $store)) {
             $this->storage->remove($this->provideKey($store));
 
             return;
         }
 
-        $this->storage->set($this->provideKey($store), $currencyCode);
+        $this->storage->set($this->provideKey($store), $currency->getId());
     }
 
     /**
@@ -52,7 +53,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
      */
     public function get(StoreInterface $store)
     {
-        return $this->storage->get($this->provideKey($store));
+        return $this->currencyRepository->find($this->storage->get($this->provideKey($store)));
     }
 
     /**
@@ -64,25 +65,25 @@ final class CurrencyStorage implements CurrencyStorageInterface
     }
 
     /**
-     * @param string$currencyCode
+     * @param CurrencyInterface $currency
      * @param StoreInterface $store
      *
      * @return bool
      */
-    private function isBaseCurrency($currencyCode, StoreInterface $store)
+    private function isBaseCurrency(CurrencyInterface $currency, StoreInterface $store)
     {
-        return $store->getBaseCurrency()->getIsoCode() === $currencyCode;
+        return $store->getBaseCurrency()->getId() === $currency->getId();
     }
 
     /**
-     * @param string $currencyCode
+     * @param CurrencyInterface $currency
      * @param StoreInterface $store
      *
      * @return bool
      */
-    private function isAvailableCurrency($currencyCode, StoreInterface $store)
+    private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store)
     {
-        return in_array($currencyCode, array_map(function (CurrencyInterface $currency) {
+        return in_array($currency->getIsoCode(), array_map(function (CurrencyInterface $currency) {
             return $currency->getIsoCode();
         }, $this->getCurrenciesForStore($store)));
     }

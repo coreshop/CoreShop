@@ -14,6 +14,7 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
+use Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle;
 use FOS\RestBundle\FOSRestBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Liip\ThemeBundle\LiipThemeBundle;
@@ -44,6 +45,7 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopResourceBundle(),
             new FOSRestBundle(),
             new LiipThemeBundle(),
+            new DoctrineCacheBundle()
         ];
 
         return array_merge($bundles, parent::registerBundles());

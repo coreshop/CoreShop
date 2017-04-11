@@ -36,17 +36,17 @@ final class StorageBasedCurrencyContext implements CurrencyContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrencyCode()
+    public function getCurrency()
     {
         /** @var StoreInterface $store */
-        $channel = $this->storeContext->getStore();
+        $store = $this->storeContext->getStore();
 
-        $currencyCode = $this->currencyStorage->get($channel);
+        $currency = $this->currencyStorage->get($store);
 
-        if (null === $currencyCode) {
-            throw CurrencyNotFoundException::notFound($currencyCode);
+        if (null === $currency) {
+            throw CurrencyNotFoundException::notFound($currency);
         }
 
-        return $currencyCode;
+        return $currency;
     }
 }

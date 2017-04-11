@@ -2,7 +2,7 @@
 
 namespace CoreShop\Component\Core\Currency\Context;
 
-use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
@@ -46,33 +46,33 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrencyCode()
+    public function getCurrency()
     {
         /** @var StoreInterface $store */
         $store = $this->storeContext->getStore();
 
         try {
-            $currencyCode = $this->currencyContext->getCurrencyCode();
+            $currency = $this->currencyContext->getCurrency();
 
-            if (!$this->isAvailableCurrency($currencyCode, $store)) {
-                return $store->getBaseCurrency()->getIsoCode();
+            if (!$currency instanceof CurrencyInterface || !$this->isAvailableCurrency($currency, $store)) {
+                return $store->getBaseCurrency();
             }
 
-            return $currencyCode;
+            return $currency;
         } catch (CurrencyNotFoundException $exception) {
-            return $store->getBaseCurrency()->getIsoCode();
+            return $store->getBaseCurrency();
         }
     }
 
     /**
-     * @param string $currencyCode
+     * @param CurrencyInterface $currency
      * @param StoreInterface $store
      *
      * @return bool
      */
-    private function isAvailableCurrency($currencyCode, StoreInterface $store)
+    private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store)
     {
-        return in_array($currencyCode, array_map(function (CurrencyInterface $currency) {
+        return in_array($currency->getIsoCode(), array_map(function (CurrencyInterface $currency) {
             return $currency->getIsoCode();
         }, $this->getCurrenciesForStore($store)));
     }

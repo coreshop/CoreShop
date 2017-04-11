@@ -45,7 +45,7 @@
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'static/coreshop/js/custom.js'} %}
 {% endblock %}
 {{ coreshop.store }}
-{{ coreshop.currencyCode }}
+{{ coreshop.currency.isoCode }}
 {{ coreshop.localeCode }}
 {{ coreshop.country }}
 </body>

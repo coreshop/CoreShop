@@ -57,9 +57,9 @@ class ShopperContext implements ShopperContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrencyCode()
+    public function getCurrency()
     {
-        return $this->currencyContext->getCurrencyCode();
+        return $this->currencyContext->getCurrency();
     }
 
     /**

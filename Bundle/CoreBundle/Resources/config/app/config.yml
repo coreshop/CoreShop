@@ -20,6 +20,13 @@ doctrine:
       default:
         auto_mapping: true
 
+doctrine_cache:
+    providers:
+        coreshop:
+          type: file_system
+          namespace: coreshop
+
+
 jms_serializer:
   metadata:
     directories:

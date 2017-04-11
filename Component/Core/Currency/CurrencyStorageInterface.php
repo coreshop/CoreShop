@@ -2,6 +2,7 @@
 
 namespace CoreShop\Component\Core\Currency;
 
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Store\Model\StoreInterface;
 
@@ -9,9 +10,9 @@ interface CurrencyStorageInterface
 {
     /**
      * @param StoreInterface $store
-     * @param string $currencyCode
+     * @param CurrencyInterface $currency
      */
-    public function set(StoreInterface $store, $currencyCode);
+    public function set(StoreInterface $store, CurrencyInterface $currency);
 
     /**
      * @param StoreInterface $store

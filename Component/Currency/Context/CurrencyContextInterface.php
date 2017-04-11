@@ -2,12 +2,14 @@
 
 namespace CoreShop\Component\Currency\Context;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
+
 interface CurrencyContextInterface
 {
     /**
-     * @return string
+     * @return CurrencyInterface
      *
      * @throws CurrencyNotFoundException
      */
-    public function getCurrencyCode();
+    public function getCurrency();
 }

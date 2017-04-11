@@ -55,3 +55,9 @@ services:
     decorates: coreshop.context.currency
     decoration_priority: 256
     public: false
+
+  coreshop.currency_collector:
+    class: CoreShop\Bundle\CurrencyBundle\Collector\CurrencyCollector
+    arguments: ['@coreshop.repository.currency', '@coreshop.context.currency', '@coreshop.context.store', false]
+    tags:
+      - { name: data_collector, template: 'CoreShopCurrencyBundle:Collector:currency.html.twig', id: coreshop.currency_collector}
