@@ -1,0 +1,36 @@
+imports:
+  - { resource: "services/form.yml" }
+
+services:
+  coreshop.registry.shipping_rule.conditions:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Bundle\ShippingBundle\Rule\Condition\ShippingConditionCheckerInterface
+      - shipping-rule-conditions
+
+  coreshop.form_registry.shipping_rule.conditions:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  coreshop.registry.shipping_rule.actions:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Bundle\ShippingBundle\Rule\Action\CarrierPriceActionProcessorInterface
+      - shipping-actions
+
+  coreshop.form_registry.shipping_rule.actions:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  # Shipping Rule Processor
+  coreshop.shipping_rule.processor:
+    class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
+    arguments:
+      - '@coreshop.registry.shipping_rule.conditions'
+
+  # Shipping CONDITIONS
+  coreshop.shipping_rule.condition.amount:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Condition\AmountConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: amount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType }
+
+
+  # Shipping Rule ACTIONS

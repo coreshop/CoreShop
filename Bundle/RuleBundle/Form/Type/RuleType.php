@@ -24,9 +24,6 @@ class RuleType extends AbstractResourceType
             ->add('actions', RuleActionCollectionType::class, [
                 'label' => 'coreshop.form.rule.actions',
             ])
-            ->add('active', CheckboxType::class, [
-                'label' => 'coreshop.form.rule.name',
-            ])
         ;
     }
 

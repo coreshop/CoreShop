@@ -1,0 +1,27 @@
+CoreShop\Component\Shipping\Model\ShippingRuleGroup:
+  type: mappedSuperclass
+  table: coreshop_shipping_rule_group
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    priority:
+      type: integer
+      column: priority
+  manyToOne:
+    carrier:
+      targetEntity: CoreShop\Component\Shipping\Model\Carrier
+      inversedBy: shippingRules
+      joinColumn:
+        name: carrierId
+        referencedColumnName: id
+        nullable: false
+  oneToOne:
+    shippingRule:
+      targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleInterface
+      joinColumn:
+        name: shippingRuleId
+        referencedColumnName: id

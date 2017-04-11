@@ -12,6 +12,7 @@ use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
+use CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
 use Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle;
@@ -38,6 +39,7 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopTaxationBundle(),
             new CoreShopStoreBundle(),
             new CoreShopIndexBundle(),
+            new CoreShopShippingBundle(),
 
             new CoreShopFrontendBundle(),
 

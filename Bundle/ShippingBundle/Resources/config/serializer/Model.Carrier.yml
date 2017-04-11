@@ -1,0 +1,29 @@
+CoreShop\Component\Shipping\Model\Carrier:
+  exclusion_policy: ALL
+  xml_root_name: filter
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+      groups: [List, Detailed]
+    name:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    label:
+      expose: true
+      type: string
+      groups: [Detailed]
+    trackingUrl:
+      expose: true
+      type: string
+      groups: [Detailed]
+    isFree:
+      expose: true
+      type: boolean
+      groups: [Detailed]
+    rangeBehaviour:
+      expose: true
+      type: integer
+      groups: [Detailed]

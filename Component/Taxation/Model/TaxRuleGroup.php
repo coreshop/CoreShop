@@ -41,14 +41,8 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
      */
     protected $taxRules;
 
-    /**
-     * @var Collection|StoreInterface[]
-     */
-    protected $stores;
-
     public function __construct()
     {
-        $this->stores = new ArrayCollection();
         $this->taxRules = new ArrayCollection();
     }
 
@@ -153,49 +147,5 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     public function hasTaxRule(TaxRuleInterface $taxRule)
     {
         return $this->taxRules->contains($taxRule);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStores()
-    {
-        return $this->stores;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStores()
-    {
-        return !$this->stores->isEmpty();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addStore(StoreInterface $store)
-    {
-        if (!$this->hasStore($store)) {
-            $this->stores->add($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeStore(StoreInterface $store)
-    {
-        if ($this->hasStore($store)) {
-            $this->stores->removeElement($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStore(StoreInterface $store)
-    {
-        return $this->stores->contains($store);
     }
 }

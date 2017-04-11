@@ -1,0 +1,43 @@
+CoreShop\Component\Shipping\Model\ShippingRule:
+  type: mappedSuperclass
+  table: coreshop_shipping_rule
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      column: name
+      type: string
+  manyToMany:
+    conditions:
+      targetEntity: CoreShop\Component\Rule\Model\ConditionInterface
+      cascade:
+        - all
+      joinTable:
+        name: coreshop_shipping_rule_conditions
+        joinColumns:
+          shipping_rule_id:
+            referencedColumnName: id
+            nullable: false
+        inverseJoinColumns:
+          condition_id:
+            referencedColumnName: id
+            nullable: false
+
+    actions:
+      targetEntity: CoreShop\Component\Rule\Model\ActionInterface
+      cascade:
+        - all
+      joinTable:
+        name: coreshop_shipping_rule_actions
+        joinColumns:
+          shipping_rule_id:
+            referencedColumnName: id
+            nullable: false
+        inverseJoinColumns:
+          action_id:
+            referencedColumnName: id
+            nullable: false

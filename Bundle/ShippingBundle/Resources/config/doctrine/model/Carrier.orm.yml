@@ -1,0 +1,32 @@
+CoreShop\Component\Shipping\Model\Carrier:
+  type: mappedSuperclass
+  table: coreshop_carrier
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      column: name
+      type: string
+    label:
+      column: label
+      type: string
+    trackingUrl:
+      column: trackingUrl
+      type: string
+    isFree:
+      column: isFree
+      type: boolean
+    rangeBehaviour:
+      column: rangeBehaviour
+      type: integer
+  oneToMany:
+    shippingRules:
+      targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleGroup
+      mappedBy: carrier
+      orphanRemoval: true
+      cascade:
+        - all
