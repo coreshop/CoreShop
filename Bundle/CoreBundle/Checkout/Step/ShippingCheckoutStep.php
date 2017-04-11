@@ -2,12 +2,19 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
+use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType;
+use CoreShop\Bundle\CurrencyBundle\Formatter\MoneyFormatterInterface;
 use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessorInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ShippingCheckoutStep implements CheckoutStepInterface
 {
@@ -20,15 +27,42 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      * @var CarrierPriceCalculatorInterface
      */
     private $carrierPriceCalculator;
+    
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var CurrencyContextInterface
+     */
+    private $currencyContext;
+
+    /**
+     * @var MoneyFormatterInterface
+     */
+    private $moneyFormatter;
 
     /**
      * @param CartCarrierProcessorInterface $cartCarrierProcessor
      * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     * @param FormFactoryInterface $formFactory
+     * @param CurrencyContextInterface $currencyContext
+     * @param MoneyFormatterInterface $moneyFormatter
      */
-    public function __construct(CartCarrierProcessorInterface $cartCarrierProcessor, CarrierPriceCalculatorInterface $carrierPriceCalculator)
+    public function __construct(
+        CartCarrierProcessorInterface $cartCarrierProcessor,
+        CarrierPriceCalculatorInterface $carrierPriceCalculator,
+        FormFactoryInterface $formFactory,
+        CurrencyContextInterface $currencyContext,
+        MoneyFormatterInterface $moneyFormatter
+    )
     {
         $this->cartCarrierProcessor = $cartCarrierProcessor;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
+        $this->formFactory = $formFactory;
+        $this->currencyContext = $currencyContext;
+        $this->moneyFormatter = $moneyFormatter;
     }
 
     /**
@@ -75,15 +109,25 @@ class ShippingCheckoutStep implements CheckoutStepInterface
         foreach ($carriers as $carrier) {
             $carrierPrice = $this->carrierPriceCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
 
-            $availableCarriers[$carrier->getId()] = [
-                'carrier' => $carrier,
-                'price' => $carrierPrice
-            ];
+            $availableCarriers[$carrier->getId()] = new \stdClass();
+            $availableCarriers[$carrier->getId()]->carrier = $carrier;
+            $availableCarriers[$carrier->getId()]->price = $carrierPrice;
         }
 
-        //TODO: Create Form?!
+        $form = $this->formFactory->createNamed('', FormType::class);
+
+        $form->add('carrier', ChoiceType::class, [
+            'constraints' => [new Valid()],
+            'choices' => $availableCarriers,
+            'expanded' => true,
+            'choice_label' => function($carrier) {
+                return $carrier->carrier->getLabel() . " " . $this->moneyFormatter->format($carrier->price, $this->currencyContext->getCurrency()->getIsoCode());
+            }
+        ]);
+
         return [
-            'carriers' => $availableCarriers
+            'carriers' => $availableCarriers,
+            'form' => $form->createView()
         ];
     }
 }
