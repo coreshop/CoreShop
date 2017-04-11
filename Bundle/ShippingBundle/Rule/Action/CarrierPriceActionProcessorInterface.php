@@ -9,11 +9,15 @@ use CoreShop\Component\Order\Model\CartInterface;
 interface CarrierPriceActionProcessorInterface
 {
     /**
-     * @param CarrierInterface $carrier
-     * @param CartInterface $cart
-     * @param AddressInterface $address
      * @param array $configuration
      * @return mixed
      */
-    public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, array $configuration);
+    public function getPrice(array $configuration);
+
+    /**
+     * @param $price
+     * @param array $configuration
+     * @return mixed
+     */
+    public function getModification($price, array $configuration);
 }

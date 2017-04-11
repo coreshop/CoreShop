@@ -11,30 +11,30 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.actions.fixedPrice');
+pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.actions.price');
 
-pimcore.plugin.coreshop.carrier.shippingrules.actions.fixedPrice = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
+pimcore.plugin.coreshop.carrier.shippingrules.actions.price = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
 
-    type : 'fixedPrice',
+    type : 'price',
 
     getForm : function () {
-        var fixedPriceValue = 0;
+        var priceValue = 0;
         var me = this;
 
         if (this.data) {
-            fixedPriceValue = this.data.fixedPrice;
+            priceValue = this.data.price;
         }
 
-        var fixedPrice = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_action_fixedPrice'),
-            name:'fixedPrice',
-            value : fixedPriceValue,
+        var price = new Ext.form.NumberField({
+            fieldLabel:t('coreshop_action_price'),
+            name:'price',
+            value : priceValue,
             decimalPrecision : 2
         });
 
         this.form = new Ext.form.FieldSet({
             items : [
-                fixedPrice
+                price
             ]
         });
 

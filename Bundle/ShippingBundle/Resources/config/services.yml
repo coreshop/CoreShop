@@ -30,10 +30,14 @@ services:
   coreshop.shipping_rule.condition.amount:
     class: CoreShop\Bundle\ShippingBundle\Rule\Condition\AmountConditionChecker
     tags:
-      - { name: coreshop.shipping_rule.condition, type: amount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType }
+      - { name: coreshop.shipping_rule.condition, type: amount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConditionType }
 
 
   # Shipping Rule ACTIONS
+  coreshop.shipping_rule.action.price:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Action\PriceActionProcessor
+    tags:
+      - { name: coreshop.shipping_rule.action, type: price, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionType }
 
   # Carrier Price Calculator
   coreshop.carrier.price_calculator.shipping_rules:

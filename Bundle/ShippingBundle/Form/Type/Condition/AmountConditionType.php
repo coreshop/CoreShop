@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
-final class AmountConfigurationType extends AbstractType
+final class AmountConditionType extends AbstractType
 {
     /**
      * {@inheritdoc}

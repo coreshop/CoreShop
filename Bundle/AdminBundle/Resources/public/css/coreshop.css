@@ -123,7 +123,7 @@
 .coreshop_rule_icon_action_newPrice,
 .coreshop_rule_icon_action_additionAmount,
 .coreshop_rule_icon_action_additionPercent,
-.coreshop_rule_icon_action_fixedPrice,
+.coreshop_rule_icon_action_price,
 .coreshop_rule_icon_condition_currencies {
     background: url(/bundles/coreshopadmin/img/flat/currencies.svg) center center no-repeat !important;
 }

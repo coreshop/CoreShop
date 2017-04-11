@@ -181,7 +181,7 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/actions/additionPercent.js',
             '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/actions/discountAmount.js',
             '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/actions/discountPercent.js',
-            '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/actions/fixedPrice.js',
+            '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/actions/price.js',
             '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/actions/shippingRule.js',
             '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/conditions/shippingRule.js',
             '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/conditions/conditions.js',
