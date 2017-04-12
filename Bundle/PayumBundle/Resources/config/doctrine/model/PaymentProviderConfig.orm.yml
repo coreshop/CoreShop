@@ -1,0 +1,10 @@
+CoreShop\Bundle\PayumBundle\Model\PaymentProviderConfig:
+  type: mappedSuperclass
+  table: coreshop_payment_provider_config
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO

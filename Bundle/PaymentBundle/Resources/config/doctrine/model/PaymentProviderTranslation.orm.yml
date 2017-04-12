@@ -1,0 +1,19 @@
+CoreShop\Component\Payment\Model\PaymentProviderTranslation:
+  type: mappedSuperclass
+  table: coreshop_payment_provider_translation
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      type: string
+      column: name
+    description:
+      type: text
+      column: description
+    instructions:
+      type: text
+      column: instructions

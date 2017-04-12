@@ -1,0 +1,7 @@
+imports:
+    - { resource: "services/form.yml" }
+
+services:
+  coreshop.collector.taxes:
+    class: CoreShop\Component\Taxation\Collector\TaxCollector
+    arguments: ['@coreshop.repository.tax_rate']

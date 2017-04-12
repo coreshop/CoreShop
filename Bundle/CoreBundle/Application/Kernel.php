@@ -9,6 +9,8 @@ use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
 use CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
 use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
+use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
+use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
@@ -19,6 +21,7 @@ use Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle;
 use FOS\RestBundle\FOSRestBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Liip\ThemeBundle\LiipThemeBundle;
+use Payum\Bundle\PayumBundle\PayumBundle;
 
 class Kernel extends \Pimcore\Kernel
 {
@@ -40,14 +43,17 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopStoreBundle(),
             new CoreShopIndexBundle(),
             new CoreShopShippingBundle(),
+            new CoreShopPaymentBundle(),
 
             new CoreShopFrontendBundle(),
+            new CoreShopPayumBundle(),
 
             new CoreShopCoreBundle(),
             new CoreShopResourceBundle(),
             new FOSRestBundle(),
             new LiipThemeBundle(),
-            new DoctrineCacheBundle()
+            new DoctrineCacheBundle(),
+            //new PayumBundle()
         ];
 
         return array_merge($bundles, parent::registerBundles());
