@@ -4,5 +4,13 @@
 {% block checkout %}
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
         {{ form_row(form.carrier) }}
+
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-default pull-right">
+                    {{ 'proceed'|trans }}
+                </button>
+            </div>
+        </div>
     {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}

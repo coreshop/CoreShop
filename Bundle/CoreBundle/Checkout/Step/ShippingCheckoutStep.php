@@ -8,6 +8,7 @@ use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessorInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -94,7 +95,24 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        //TODO: Implement Shipping/Carrier Form Type, validate here and apply carrier to cart
+        $form = $this->createForm($this->getCarriers($cart));
+
+        $form->handleRequest($request);
+        $formData = $form->getData();
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $cart->setCarrier($formData['carrier']->carrier);
+                $cart->save();
+
+                return true;
+            }
+            else {
+                throw new CheckoutException('Address Form is invalid', 'coreshop_checkout_shipping_form_invalid');
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -103,6 +121,19 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     public function prepareStep(CartInterface $cart)
     {
         //Get Carriers
+        $carriers = $this->getCarriers($cart);
+
+        return [
+            'carriers' => $carriers,
+            'form' => $this->createForm($carriers)->createView()
+        ];
+    }
+
+    /**
+     * @param CartInterface $cart
+     * @return array
+     */
+    private function getCarriers(CartInterface $cart) {
         $carriers = $this->cartCarrierProcessor->getCarriersForCart($cart, $cart->getShippingAddress());
         $availableCarriers = [];
 
@@ -114,20 +145,25 @@ class ShippingCheckoutStep implements CheckoutStepInterface
             $availableCarriers[$carrier->getId()]->price = $carrierPrice;
         }
 
+        return $availableCarriers;
+    }
+
+    /**
+     * @param $carriers
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function createForm($carriers) {
         $form = $this->formFactory->createNamed('', FormType::class);
 
         $form->add('carrier', ChoiceType::class, [
             'constraints' => [new Valid()],
-            'choices' => $availableCarriers,
+            'choices' => $carriers,
             'expanded' => true,
             'choice_label' => function($carrier) {
                 return $carrier->carrier->getLabel() . " " . $this->moneyFormatter->format($carrier->price, $this->currencyContext->getCurrency()->getIsoCode());
             }
         ]);
 
-        return [
-            'carriers' => $availableCarriers,
-            'form' => $form->createView()
-        ];
+        return $form;
     }
 }
