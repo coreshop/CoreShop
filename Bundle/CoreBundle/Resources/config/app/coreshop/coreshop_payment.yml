@@ -1,0 +1,5 @@
+core_shop_payment:
+  resources:
+    payment_provider:
+      classes:
+        model: CoreShop\Component\Core\Model\PaymentProvider

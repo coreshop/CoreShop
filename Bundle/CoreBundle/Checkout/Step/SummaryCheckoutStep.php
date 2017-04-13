@@ -30,8 +30,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        //This step should never return false, should it?
-        return false;
+        return true;
     }
 
     /**
@@ -39,7 +38,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        //TODO Implement Summary Form Type and validate here
+        //Nothing to do here
     }
 
     /**
@@ -47,6 +46,6 @@ class SummaryCheckoutStep implements CheckoutStepInterface
      */
     public function prepareStep(CartInterface $cart)
     {
-        //TODO Implement Address Form Type and return here
+        //Nothing to do here
     }
 }

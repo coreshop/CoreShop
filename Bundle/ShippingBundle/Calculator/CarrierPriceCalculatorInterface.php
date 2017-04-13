@@ -12,7 +12,8 @@ interface CarrierPriceCalculatorInterface
      * @param CarrierInterface $carrier
      * @param CartInterface $cart
      * @param AddressInterface $address
+     * @param boolean $withTax
      * @return mixed
      */
-    public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address);
+    public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, $withTax = true);
 }

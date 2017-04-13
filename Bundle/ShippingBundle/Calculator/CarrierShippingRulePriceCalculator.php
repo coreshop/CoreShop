@@ -38,7 +38,7 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address)
+    public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, $withTax = true)
     {
         /**
          * First valid price rule wins. so, we loop through all ShippingRuleGroups
@@ -55,7 +55,7 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
                 $processor = $this->actionServiceRegistry->get($action->getType());
 
                 if ($processor instanceof CarrierPriceActionProcessorInterface) {
-                    $price += $processor->getPrice($action->getConfiguration());
+                    $price += $processor->getPrice($carrier, $address, $action->getConfiguration(), $withTax);
                 }
             }
 
@@ -63,7 +63,7 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
                 $processor = $this->actionServiceRegistry->get($action->getType());
 
                 if ($processor instanceof CarrierPriceActionProcessorInterface) {
-                    $modifications += $processor->getModification($price, $action->getConfiguration());
+                    $modifications += $processor->getModification($carrier, $address, $price, $action->getConfiguration());
                 }
             }
 

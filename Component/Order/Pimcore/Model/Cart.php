@@ -2,13 +2,14 @@
 
 namespace CoreShop\Component\Order\Pimcore\Model;
 
+use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Taxation\Model\TaxRateInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class Cart extends AbstractPimcoreModel implements CartInterface
 {
@@ -37,17 +38,42 @@ class Cart extends AbstractPimcoreModel implements CartInterface
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Do we actually need the container here?
+     * Can't we just save shipping via shipping step?
      */
     public function getShipping($withTax = true)
     {
+        if ($this->getCarrier() instanceof CarrierInterface) {
+            return $this->getContainer()->get('coreshop.carrier.price_calculator.default')->getPrice($this->getCarrier(), $this, $this->getShippingAddress(), $withTax);
+        }
+
         return 0;
     }
 
     /**
-     * {@inheritdoc}
+     *  {@inheritdoc}
      */
-    public function getDiscount($withTax = true)
+    public function getShippingTaxRate()
     {
+        if ($this->getCarrier() instanceof CarrierInterface && $this->getCarrier()->getTaxRule() instanceof TaxRuleGroupInterface) {
+            $taxCalculator = $this->getContainer()->get('coreshop.taxation.factory.tax_calculator')->getTaxCalculatorForAddress($this->getCarrier()->getTaxRule(), $this->getShippingAddress());
+
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
+                return $taxCalculator->getTotalRate();
+            }
+        }
+
+        return 0;
+    }
+
+
+    /**
+     *  {@inheritdoc}
+     */
+    public function getPaymentFeeTaxRate()
+    {
+        //TODO: Use PaymentProvider TaxRule (still not implemented) to determine TaxRate
         return 0;
     }
 
@@ -105,7 +131,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
      */
     public function getPaymentFee($withTax = true)
     {
-        return 0;
+        return $withTax ? $this->getPaymentFeeGross() : $this->getPaymentFeeNet();
     }
 
     /**
@@ -153,33 +179,9 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrency()
+    public function getSubtotalTax()
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCurrency($currency)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItems()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setItems($items)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        return $this->getSubtotal(true) - $this->getSubtotal(false);
     }
 
     /**
@@ -241,33 +243,10 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getCarrier()
+    public function getDiscount($withTax = true)
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCarrier($carrier)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriceRules()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPriceRules($priceRules)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        //TODO: Price Rules
+        return 0;
     }
 
     /**
@@ -324,6 +303,37 @@ class Cart extends AbstractPimcoreModel implements CartInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private function getContainer() {
+        return \Pimcore::getContainer();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentProvider()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentProvider($paymentProvider)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
@@ -402,6 +412,118 @@ class Cart extends AbstractPimcoreModel implements CartInterface
      * {@inheritdoc}
      */
     public function setCurrentStep($name)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentFeeNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentFeeNet($paymentFeeNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function getPaymentFeeGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentFeeGross($paymentFeeGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCarrier()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCarrier($carrier)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriceRules()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPriceRules($priceRules)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrder($order)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrder()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCurrency()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCurrency($currency)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItems()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItems($items)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

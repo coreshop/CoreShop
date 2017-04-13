@@ -1,0 +1,13 @@
+{% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
+
+{% block checkout %}
+    {% include '@CoreShopFrontend/Cart/_summary.html.twig' with {cart: cart, editAllowed: false} only %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-1 col-sm-push-9">
+            <a href="{{ path('coreshop_shop_perform_checkout') }}" class="btn btn-main w-100">
+                {{ 'buy'|trans }}
+            </a>
+        </div>
+    </div>
+{% endblock %}

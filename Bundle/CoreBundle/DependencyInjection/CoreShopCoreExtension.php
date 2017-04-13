@@ -34,7 +34,9 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         'coreshop_product',
         'coreshop_rule',
         'coreshop_store',
-        'coreshop_taxation'
+        'coreshop_taxation',
+        'coreshop_payment',
+        'coreshop_sequence'
     ];
 
     /**

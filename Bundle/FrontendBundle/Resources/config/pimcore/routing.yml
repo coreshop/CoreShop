@@ -58,3 +58,9 @@ coreshop_shop_checkout:
   methods: [GET,POST]
   defaults:
     _controller: coreshop.frontend.controller.checkout:processAction
+
+coreshop_shop_perform_checkout:
+  path: %coreshop.frontend.base.url%/perform-checkout
+  methods: [GET]
+  defaults:
+    _controller: coreshop.frontend.controller.checkout:doCheckoutAction

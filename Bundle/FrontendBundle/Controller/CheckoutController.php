@@ -72,6 +72,44 @@ class CheckoutController extends FrontendController
         return $this->render(sprintf('@CoreShopFrontend/Checkout/steps/%s.html.twig', $stepIdentifier), $dataForStep);
     }
 
+    public function doCheckoutAction(Request $request) {
+        /**
+         * after the last step, we come here
+         *
+         * what are we doing here?
+         *  1. Create Order with Workflow State: initialized, pending-payment
+         *  2. Use Payum and redirect to Payment Provider
+         *  3. Return to PaymentController with afterCapture
+         *  4. Payment Controller changes the state of the Order to "payment-done"?
+         *  5. PaymentController redirects us back here to "thankYouAction"
+         *
+         *
+         * therefore we need the CartToOrderTransformerInterface here
+         */
+
+        //Check all previous steps if they are valid, if not, redirect back
+        /**
+         * @var $step CheckoutStepInterface
+         */
+        foreach ($this->checkoutManager->getSteps() as $stepIdentifier) {
+            $step = $this->checkoutManager->getStep($stepIdentifier);
+
+            if (!$step->validate($this->getCart())) {
+                return $this->redirectToRoute('coreshop_shop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
+            }
+        }
+
+        /**
+         * If everything is valid, we continue with Order-Creation
+         */
+        $order = $this->getOrderFactory()->createNew();
+        $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
+
+        var_dump($order->getId());
+
+        exit;
+    }
+
     /**
      * @return \CoreShop\Component\Order\Model\CartInterface
      */
@@ -86,5 +124,19 @@ class CheckoutController extends FrontendController
     private function getCartManager()
     {
         return $this->get('coreshop.cart.manager');
+    }
+
+    /**
+     * @return \CoreShop\Component\Core\Transformer\CartToOrderTransformer
+     */
+    private function getCartToOrderTransformer() {
+        return $this->get('coreshop.order.transformer.cart_to_order');
+    }
+
+    /**
+     * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
+     */
+    private function getOrderFactory() {
+        return $this->get('coreshop.factory.order');
     }
 }

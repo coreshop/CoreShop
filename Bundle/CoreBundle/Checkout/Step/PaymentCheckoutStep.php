@@ -2,13 +2,29 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType;
+use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaymentCheckoutStep implements CheckoutStepInterface
 {
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @param FormFactoryInterface $formFactory
+     */
+    public function __construct(FormFactoryInterface $formFactory)
+    {
+        $this->formFactory = $formFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,10 +46,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        //TODO: Implement Payment Stuff
-        //return $cart->getPaymentProvider();
-
-        return false;
+        return $cart->getPaymentProvider() instanceof PaymentProviderInterface;
     }
 
     /**
@@ -41,7 +54,24 @@ class PaymentCheckoutStep implements CheckoutStepInterface
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        //TODO: Implement Payment Form Type and validate here
+        $form = $this->createForm($cart);
+
+        $form->handleRequest($request);
+        $formData = $form->getData();
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $cart->setPaymentProvider($formData['paymentProvider']);
+                $cart->save();
+
+                return true;
+            }
+            else {
+                throw new CheckoutException('Payment Form is invalid', 'coreshop_checkout_payment_form_invalid');
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -49,6 +79,20 @@ class PaymentCheckoutStep implements CheckoutStepInterface
      */
     public function prepareStep(CartInterface $cart)
     {
-        //TODO Implement Payment Form Type and return here
+        return [
+            'form' => $this->createForm($cart)->createView()
+        ];
+    }
+
+    /**
+     * @param CartInterface $cart
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function createForm(CartInterface $cart) {
+        $form = $this->formFactory->createNamed('', PaymentType::class, [
+            'paymentProvider' => $cart->getPaymentProvider()
+        ]);
+
+        return $form;
     }
 }

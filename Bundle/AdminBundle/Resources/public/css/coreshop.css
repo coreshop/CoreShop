@@ -362,6 +362,11 @@
     background: url(/bundles/coreshopadmin/img/flat/address.svg) center center no-repeat !important;
 }
 
+.pimcore_icon_coreShopPaymentProvider,
+.coreshop_icon_payment_provider {
+    background: url(/bundles/coreshopadmin/img/flat/payment-provider.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_mail_rule {
     background: url(/bundles/coreshopadmin/img/flat/mail-rule.svg) center center no-repeat !important;
 }

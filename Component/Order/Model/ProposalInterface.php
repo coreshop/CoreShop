@@ -22,10 +22,9 @@ interface ProposalInterface extends ResourceInterface
     public function getTotal($withTax = true);
 
     /**
-     * @param boolean $withTax
      * @return float
      */
-    public function getTotalTax($withTax = true);
+    public function getTotalTax();
 
     /**
      * @param bool $withTax
@@ -34,10 +33,20 @@ interface ProposalInterface extends ResourceInterface
     public function getSubtotal($withTax = true);
 
     /**
+     * @return float
+     */
+    public function getSubtotalTax();
+
+    /**
      * @param bool $withTax
      * @return float
      */
     public function getShipping($withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getShippingTaxRate();
 
     /**
      * @param bool $withTax
@@ -58,16 +67,9 @@ interface ProposalInterface extends ResourceInterface
     public function getPaymentFee($withTax = true);
 
     /**
-     * @return CurrencyInterface
+     * @return float
      */
-    public function getCurrency();
-
-    /**
-     * @param CurrencyInterface $currency
-     *
-     * @return static
-     */
-    public function setCurrency($currency);
+    public function getPaymentFeeTaxRate();
 
     /**
      * @return array
@@ -96,17 +98,6 @@ interface ProposalInterface extends ResourceInterface
      */
     public function hasItem($item);
 
-    /**
-     * @return StoreInterface
-     */
-    public function getStore();
-
-    /**
-     * @param StoreInterface $store
-     *
-     * @return static
-     */
-    public function setStore($store);
 
     /**
      * @return mixed

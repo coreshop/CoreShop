@@ -41,6 +41,7 @@ services:
 
   coreshop.checkout.step.payment:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep
+    arguments: ['@form.factory']
     tags:
       - {name: coreshop.registry.checkout.step, type: payment, priority: 50}
 
@@ -50,7 +51,13 @@ services:
       - {name: coreshop.registry.checkout.step, type: summary, priority: 60}
 
 
+  # Forms
   coreshop.form.type.checkout_address:
     class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType
+    tags:
+      - {name: form.type}
+
+  coreshop.form.type.checkout_payment:
+    class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType
     tags:
       - {name: form.type}

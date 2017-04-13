@@ -6,6 +6,8 @@ use CoreShop\Bundle\OrderBundle\Controller\CartController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -68,6 +70,38 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopCartItem')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CartItemInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('order')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopOrder')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(OrderInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('order_item')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopOrderItem')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(OrderItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()

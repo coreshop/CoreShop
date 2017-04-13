@@ -1,0 +1,746 @@
+<?php
+
+namespace CoreShop\Component\Order\Pimcore\Model;
+
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+
+class Order extends AbstractPimcoreModel implements OrderInterface
+{
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function getPaymentFee($withTax = true)
+    {
+        return $withTax ? $this->getPaymentFeeGross() : $this->getPaymentFeeNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function setPaymentFee($paymentFee, $withTax = true)
+    {
+        return $withTax ? $this->setPaymentFeeGross($paymentFee) : $this->setPaymentFeeNet($paymentFee);
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function getDiscount($withTax = true)
+    {
+        return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function setDiscount($discount, $withTax = true)
+    {
+        return $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function getSubtotal($withTax = true)
+    {
+        return $withTax ? $this->getSubtotalGross() : $this->getSubtotalNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function setSubtotal($subtotal, $withTax = true)
+    {
+        return $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function getTotal($withTax = true)
+    {
+        return $withTax ? $this->getTotalGross() : $this->getTotalNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function setTotal($total, $withTax = true)
+    {
+        return $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function getShipping($withTax = true)
+    {
+        return $withTax ? $this->getShippingGross() : $this->getShippingNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object
+     *
+     * {@inheritdoc}
+     */
+    public function setShipping($shipping, $withTax = true)
+    {
+        return $withTax ? $this->setShippingGross($shipping) : $this->setShippingNet($shipping);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderLanguage()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrderLanguage($orderLanguage)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalNet($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalGross($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalTax()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalTax($totalTax)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubtotalNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSubtotalNet($subTotalNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubtotalGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSubtotalGross($subTotalGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubtotalTax()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSubtotalTax($subtotalTax)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingNet($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingGross($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function getShippingTax()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingTax($shippingTax)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingTaxRate()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingTaxRate($taxRate)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscountNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscountNet($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscountGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscountGross($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaxes($applyDiscountToTaxValues = true)
+    {
+        throw new \Exception("implement me");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTaxes($taxes)
+    {
+        throw new \Exception("implement me");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentFeeNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentFeeNet($paymentFeeNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentFeeGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentFeeGross($paymentFeGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentFeeTaxRate()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentFeeTaxRate($taxRate)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderDate()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrderDate($orderDate)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderNumber()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCarrier()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCarrier($carrier)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriceRules()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPriceRules($priceRules)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasPriceRules()
+    {
+        return is_array($this->getPriceRules()) && count($this->getPriceRules()) > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addPriceRule($priceRule)
+    {
+        $items = $this->getPriceRules();
+        $items[] = $priceRule;
+
+        $this->setPriceRules($items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removePriceRule($priceRule)
+    {
+         $items = $this->getPriceRules();
+
+        for ($i = 0; $i < count($items); ++$i) {
+            $arrayItem = $items[$i];
+
+            if ($arrayItem->getId() === $priceRule->getId()) {
+                unset($items[$i]);
+                break;
+            }
+        }
+
+        $this->setPriceRules($items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasPriceRule($priceRule)
+    {
+         $items = $this->getPriceRules();
+
+        for ($i = 0; $i < count($items); ++$i) {
+            $arrayItem = $items[$i];
+
+            if ($arrayItem->getId() === $priceRule->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPayments()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPayments($payments)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasPayments()
+    {
+        return is_array($this->getPayments()) && count($this->getPayments()) > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addPayment($payment)
+    {
+        $items = $this->getPayments();
+        $items[] = $payment;
+
+        $this->setPayments($items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removePayment($payment)
+    {
+        $items = $this->getPayments();
+
+        for ($i = 0; $i < count($items); ++$i) {
+            $arrayItem = $items[$i];
+
+            if ($arrayItem->getId() === $payment->getId()) {
+                unset($items[$i]);
+                break;
+            }
+        }
+
+        $this->setPayments($items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasPayment($payment)
+    {
+        $items = $this->getPayments();
+
+        for ($i = 0; $i < count($items); ++$i) {
+            $arrayItem = $items[$i];
+
+            if ($arrayItem->getId() === $payment->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemForProduct(ProductInterface $product)
+    {
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof OrderItemInterface) {
+                if ($item->getProduct() instanceof ProductInterface && $item->getProduct()->getId() === $product->getId()) {
+                    return $item;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCurrency()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCurrency($currency)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItems()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItems($items)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasItems()
+    {
+        return is_array($this->getItems()) && count($this->getItems()) > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addItem($item)
+    {
+        $items = $this->getItems();
+        $items[] = $item;
+
+        $this->setItems($items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeItem($item)
+    {
+        $items = $this->getItems();
+
+        for ($i = 0; $i < count($items); ++$i) {
+            $arrayItem = $items[$i];
+
+            if ($arrayItem->getId() === $item->getId()) {
+                unset($items[$i]);
+                break;
+            }
+        }
+
+        $this->setItems($items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasItem($item)
+    {
+        $items = $this->getItems();
+
+        for ($i = 0; $i < count($items); ++$i) {
+            $arrayItem = $items[$i];
+
+            if ($arrayItem->getId() === $item->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStore()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStore($store)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomer()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomer($customer)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingAddress()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingAddress($shippingAddress)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInvoiceAddress()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setInvoiceAddress($invoiceAddress)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+}

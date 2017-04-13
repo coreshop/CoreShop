@@ -48,6 +48,7 @@ pimcore.plugin.coreshop.global = {
         this._createStore('coreshop_stores', 'stores');
         this._createStore('coreshop_carrier_shipping_rules', 'shipping_rules');
         this._createStore('coreshop_mail_rules', 'mail-rules');
+        this._createStore('coreshop_payment_provider', 'payment_providers');
 
         pimcore.globalmanager.get('coreshop_tax_rates').load();
         pimcore.globalmanager.get('coreshop_countries').load();

@@ -14,6 +14,7 @@ use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
+use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
 use CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
@@ -44,6 +45,7 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopIndexBundle(),
             new CoreShopShippingBundle(),
             new CoreShopPaymentBundle(),
+            new CoreShopSequenceBundle(),
 
             new CoreShopFrontendBundle(),
             new CoreShopPayumBundle(),

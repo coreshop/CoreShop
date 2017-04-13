@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Manager;
 
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -9,6 +10,8 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class CartManager implements CartManagerInterface
 {
@@ -46,10 +49,16 @@ class CartManager implements CartManagerInterface
     private $cartFolderPath;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * @param PimcoreRepositoryInterface $cartRepository
      * @param FactoryInterface           $cartFactory
      * @param SessionInterface           $session
      * @param ObjectServiceInterface     $objectService
+     * @param TokenStorageInterface      $tokenStorage
      * @param string                     $cartFolderPath
      */
     public function __construct(
@@ -57,6 +66,7 @@ class CartManager implements CartManagerInterface
         FactoryInterface $cartFactory,
         SessionInterface $session,
         ObjectServiceInterface $objectService,
+        TokenStorageInterface $tokenStorage,
         $cartFolderPath)
     {
         $this->cartRepository = $cartRepository;
@@ -64,6 +74,7 @@ class CartManager implements CartManagerInterface
         $this->cartFactory = $cartFactory;
         $this->sessionBag = $session->getBag('cart');
         $this->objectService = $objectService;
+        $this->tokenStorage = $tokenStorage;
         $this->cartFolderPath = $cartFolderPath;
     }
 
@@ -200,6 +211,11 @@ class CartManager implements CartManagerInterface
         }
 
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
+
+        if ($this->tokenStorage->getToken()->getUser() instanceof CustomerInterface) {
+            $cart->setCustomer($this->tokenStorage->getToken()->getUser());
+        }
+
         $cart->setParent($cartsFolder);
         $cart->save();
 

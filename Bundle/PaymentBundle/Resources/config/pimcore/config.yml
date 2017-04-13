@@ -3,5 +3,5 @@ pimcore:
         class_definitions:
             data:
                 map:
-
+                  coreShopPaymentProvider: CoreShop\Bundle\PaymentBundle\CoreExtension\PaymentProvider
 ##TODO: PaymentProvider Extension

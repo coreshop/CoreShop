@@ -3,4 +3,4 @@ jms_serializer:
         directories:
             coreshop-payment:
                 namespace_prefix: "CoreShop\\Component\\Payment"
-                path: "@CoreShopTaxationBundle/Resources/config/serializer"
+                path: "@CoreShopPaymentBundle/Resources/config/serializer"

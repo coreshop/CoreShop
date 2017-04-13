@@ -38,6 +38,7 @@ services:
     class: CoreShop\Bundle\ShippingBundle\Rule\Action\PriceActionProcessor
     tags:
       - { name: coreshop.shipping_rule.action, type: price, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\PriceActionType }
+    arguments: ['@coreshop.taxation.factory.tax_calculator']
 
   # Carrier Price Calculator
   coreshop.carrier.price_calculator.shipping_rules:

@@ -8,6 +8,16 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 interface CartInterface extends ProposalInterface, PimcoreModelInterface, CheckoutAwareInterface
 {
     /**
+     * @param $order
+     */
+    public function setOrder($order);
+
+    /**
+     * @return mixed
+     */
+    public function getOrder();
+
+    /**
      * @return mixed
      */
     public function getCarrier();
@@ -18,6 +28,18 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Checko
      * @return mixed
      */
     public function setCarrier($carrier);
+
+    /**
+     * @return mixed
+     */
+    public function getPaymentProvider();
+
+    /**
+     * @param $paymentProvider
+     *
+     * @return mixed
+     */
+    public function setPaymentProvider($paymentProvider);
 
     /**
      * @return array

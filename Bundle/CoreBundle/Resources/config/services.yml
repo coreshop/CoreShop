@@ -3,6 +3,8 @@ imports:
   - { resource: "services/storage.yml" }
   - { resource: "services/form.yml" }
   - { resource: "services/checkout.yml" }
+  - { resource: "services/sequence.yml" }
+  - { resource: "services/order.yml" }
 
 parameters:
   coreshop.core.object_path: '/coreshop'
@@ -10,6 +12,9 @@ parameters:
 services:
   coreshop.core.object_service:
     class: CoreShop\Component\Core\Pimcore\ObjectService
+
+  coreshop.core.key_transformer:
+    class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer
 
   coreshop.context.locale.composite:
     class: CoreShop\Component\Core\Context\CompositeLocaleContext

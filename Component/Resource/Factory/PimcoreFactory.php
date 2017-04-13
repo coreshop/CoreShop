@@ -14,7 +14,7 @@
 
 namespace CoreShop\Component\Resource\Factory;
 
-final class PimcoreFactory implements FactoryInterface
+final class PimcoreFactory implements FactoryInterface, PimcoreFactoryInterface
 {
     /**
      * @var string
