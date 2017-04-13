@@ -1,0 +1,7 @@
+services:
+  coreshop.payum.storage.pimcore:
+      class: Payum\Bundle\PayumBundle\Storage\PayumPimcoreStorage
+      arguments:
+        - '%coreshop.model.payment.class%'
+        - '@coreshop.factory.payment'
+        - '@coreshop.repository.payment'

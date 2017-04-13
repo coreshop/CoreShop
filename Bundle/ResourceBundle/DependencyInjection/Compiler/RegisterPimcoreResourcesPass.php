@@ -43,6 +43,9 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
      */
     private function validateCoreShopPimcoreModel($class, $interface)
     {
+        //TODO: Needs to be solved different. Everytime you make a mistake on class-creation
+        //this stops pimcore from being functional :/
+
         if (class_exists($class)) {
             if (!in_array($interface, class_implements($class), true)) {
                 throw new InvalidArgumentException(sprintf(

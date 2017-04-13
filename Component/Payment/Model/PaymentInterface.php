@@ -47,4 +47,14 @@ interface PaymentInterface
      * @return mixed
      */
     public function setDetails($details);
+
+     /**
+     * @return int
+     */
+    public function getAmount();
+
+    /**
+     * @param int $amount
+     */
+    public function setAmount($amount);
 }

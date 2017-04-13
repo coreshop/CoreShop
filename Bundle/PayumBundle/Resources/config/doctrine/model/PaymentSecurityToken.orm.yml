@@ -1,0 +1,25 @@
+CoreShop\Bundle\PayumBundle\Model\PaymentSecurityToken:
+  type: mappedSuperclass
+  table: coreshop_payment_security_token
+  fields:
+    hash:
+      type: string
+      column: hash
+      id: true
+    details:
+      column: details
+      type: object
+      nullable: true
+    afterUrl:
+      column: afterUrl
+      type: text
+      nullable: true
+    targetUrl:
+      column: targetUrl
+      type: text
+      nullable: false
+    providerName:
+      column: providerName
+      type: string
+      length: 255
+      nullable: false

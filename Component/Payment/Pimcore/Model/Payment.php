@@ -4,8 +4,9 @@ namespace CoreShop\Component\Payment\Pimcore\Model;
 
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
-class Payment implements PaymentInterface {
+class Payment extends AbstractPimcoreModel implements PaymentInterface {
 
     /**
      * {@inheritdoc}
@@ -60,6 +61,22 @@ class Payment implements PaymentInterface {
      * {@inheritdoc}
      */
     public function setDetails($details) {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAmount()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAmount($amount)
+    {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 }

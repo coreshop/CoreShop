@@ -3,6 +3,7 @@
 namespace CoreShop\Bundle\PayumBundle\DependencyInjection;
 
 use CoreShop\Bundle\PayumBundle\Model\PaymentProviderConfig;
+use CoreShop\Bundle\PayumBundle\Model\PaymentSecurityToken;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -53,6 +54,20 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->end()
                                         //->scalarNode('form')->defaultValue(PaymentProviderConfigType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('payment_security_token')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(PaymentSecurityToken::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->end()
                                     ->end()
                                 ->end()
                             ->end()

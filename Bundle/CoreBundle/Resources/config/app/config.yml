@@ -45,3 +45,19 @@ fos_rest:
 twig:
   globals:
     coreshop: "@coreshop.context.shopper"
+
+payum:
+    storages:
+        "%coreshop.model.payment.class%": { custom: coreshop.payum.storage.pimcore }
+
+    security:
+        token_storage:
+            CoreShop\Bundle\PayumBundle\Model\PaymentSecurityToken: { doctrine: orm }
+
+    dynamic_gateways:
+        config_storage:
+            CoreShop\Bundle\PayumBundle\Model\PaymentProviderConfig: { doctrine: orm }
+
+    gateways:
+        offline:
+            factory: offline

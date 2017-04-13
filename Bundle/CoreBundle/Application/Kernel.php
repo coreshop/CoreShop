@@ -55,7 +55,7 @@ class Kernel extends \Pimcore\Kernel
             new FOSRestBundle(),
             new LiipThemeBundle(),
             new DoctrineCacheBundle(),
-            //new PayumBundle()
+            new PayumBundle()
         ];
 
         return array_merge($bundles, parent::registerBundles());
