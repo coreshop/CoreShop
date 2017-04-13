@@ -3,7 +3,6 @@ imports:
   - { resource: "services/storage.yml" }
   - { resource: "services/form.yml" }
   - { resource: "services/checkout.yml" }
-  - { resource: "services/sequence.yml" }
   - { resource: "services/order.yml" }
 
 parameters:

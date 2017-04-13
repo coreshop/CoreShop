@@ -4,6 +4,7 @@ namespace CoreShop\Component\Sequence\Generator;
 
 use CoreShop\Component\Sequence\Factory\SequenceFactoryInterface;
 use CoreShop\Component\Sequence\Repository\SequenceRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SequenceGenerator implements SequenceGeneratorInterface
 {
@@ -18,13 +19,20 @@ class SequenceGenerator implements SequenceGeneratorInterface
     private $sequenceFactory;
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * @param SequenceRepositoryInterface $sequenceRepository
      * @param SequenceFactoryInterface $sequenceFactory
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(SequenceRepositoryInterface $sequenceRepository, SequenceFactoryInterface $sequenceFactory)
+    public function __construct(SequenceRepositoryInterface $sequenceRepository, SequenceFactoryInterface $sequenceFactory, EntityManagerInterface $entityManager)
     {
         $this->sequenceRepository = $sequenceRepository;
         $this->sequenceFactory = $sequenceFactory;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -34,6 +42,9 @@ class SequenceGenerator implements SequenceGeneratorInterface
     {
         $sequence = $this->getSequence($type);
         $sequence->incrementIndex();
+
+        $this->entityManager->persist($sequence);
+        $this->entityManager->flush();
 
         return $sequence->getIndex();
     }
