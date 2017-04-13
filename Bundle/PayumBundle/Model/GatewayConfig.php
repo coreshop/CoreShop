@@ -6,7 +6,7 @@ use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Payum\Core\Model\GatewayConfig as BaseGatewayConfig;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
-class PaymentProviderConfig extends BaseGatewayConfig implements ResourceInterface
+class GatewayConfig extends BaseGatewayConfig implements ResourceInterface
 {
     use SetValuesTrait;
 

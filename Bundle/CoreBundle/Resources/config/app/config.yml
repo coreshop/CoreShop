@@ -56,7 +56,7 @@ payum:
 
     dynamic_gateways:
         config_storage:
-            CoreShop\Bundle\PayumBundle\Model\PaymentProviderConfig: { doctrine: orm }
+            CoreShop\Bundle\PayumBundle\Model\GatewayConfig: { doctrine: orm }
 
     gateways:
         offline:

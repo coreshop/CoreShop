@@ -2,7 +2,7 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Bundle\PayumBundle\Model\PaymentProviderConfig;
+use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use CoreShop\Component\Store\Model\StoreInterface as BaseStoreInterface;
@@ -16,9 +16,9 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     protected $stores;
 
     /**
-     * @var PaymentProviderConfig
+     * @var GatewayConfig
      */
-    protected $paymentProviderConfig;
+    protected $gatewayConfig;
 
     public function __construct()
     {
@@ -66,16 +66,16 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     /**
      * {@inheritdoc}
      */
-    public function setPaymentProviderConfig(PaymentProviderConfig $paymentProviderConfig)
+    public function setGatewayConfig(GatewayConfig $gatewayConfig)
     {
-        $this->paymentProviderConfig = $paymentProviderConfig;
+        $this->gatewayConfig = $gatewayConfig;
     }
 
     /**
-     * @return PaymentProviderConfig
+     * @return GatewayConfig
      */
-    public function getPaymentProviderConfig()
+    public function getGatewayConfig()
     {
-        return $this->paymentProviderConfig;
+        return $this->gatewayConfig;
     }
 }

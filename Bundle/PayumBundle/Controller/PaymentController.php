@@ -46,13 +46,20 @@ class PaymentController extends Controller
     private $currencyContext;
 
     /**
+     * PaymentController constructor.
      * @param PimcoreFactoryInterface $paymentFactory
-     * @param PimcoreRepositoryInterface $orderFactory
+     * @param PimcoreRepositoryInterface $orderRepository
      * @param $paymentPath
      * @param ObjectServiceInterface $pimcoreObjectService
      * @param CurrencyContextInterface $currencyContext
      */
-    public function __construct(PimcoreFactoryInterface $paymentFactory, PimcoreRepositoryInterface $orderRepository, $paymentPath, ObjectServiceInterface $pimcoreObjectService, CurrencyContextInterface $currencyContext)
+    public function __construct(
+        PimcoreFactoryInterface $paymentFactory,
+        PimcoreRepositoryInterface $orderRepository,
+        $paymentPath,
+        ObjectServiceInterface $pimcoreObjectService,
+        CurrencyContextInterface $currencyContext
+    )
     {
         $this->paymentFactory = $paymentFactory;
         $this->orderRepository = $orderRepository;
@@ -91,7 +98,7 @@ class PaymentController extends Controller
         $storage->update($payment);
 
         $captureToken = $this->getPayum()->getTokenFactory()->createCaptureToken(
-            $payment->getPaymentProvider()->getPaymentProviderConfig()->getGatewayName(),
+            $payment->getPaymentProvider()->getGatewayConfig()->getGatewayName(),
             $payment,
             'coreshop_shop_payment_after_pay',
             []
@@ -117,6 +124,10 @@ class PaymentController extends Controller
         } catch (RequestNotSupportedException $e) {}
 
         $gateway->execute($status = new GetHumanStatus($token));
+
+        /**
+         * Further process the status here, kick-off the pimcore workflow for orders?
+         */
 
         return $this->redirectToRoute('coreshop_shop_order_thank_you');
     }

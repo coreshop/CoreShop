@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\PayumBundle\DependencyInjection;
 
-use CoreShop\Bundle\PayumBundle\Model\PaymentProviderConfig;
+use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Bundle\PayumBundle\Model\PaymentSecurityToken;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -19,7 +19,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sylius_payum');
+        $rootNode = $treeBuilder->root('coreshop_payum');
 
         $rootNode
             ->addDefaultsIfNotSet()
@@ -43,17 +43,16 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('payment_provider_config')
+                        ->arrayNode('gateway_config')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(PaymentProviderConfig::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(GatewayConfig::class)->cannotBeEmpty()->end()
                                         ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->end()
-                                        //->scalarNode('form')->defaultValue(PaymentProviderConfigType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

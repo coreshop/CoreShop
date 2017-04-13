@@ -19,6 +19,6 @@ final class RuleActionCollectionType extends AbstractConfigurationCollectionType
      */
     public function getBlockPrefix()
     {
-        return 'sylius_promotion_action_collection';
+        return 'coreshop_rule_action_collection';
     }
 }

@@ -2,15 +2,8 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
-use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Resource\Factory\PimcoreFactory;
-use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,6 +111,10 @@ class CheckoutController extends FrontendController
          */
         $order = $this->getOrderFactory()->createNew();
         $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
+
+        /**
+         * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/
+         */
 
         return $this->redirectToRoute('coreshop_shop_payment', ['orderId' => $order->getId()]);
     }

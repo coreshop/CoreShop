@@ -1,6 +1,6 @@
-CoreShop\Bundle\PayumBundle\Model\PaymentProviderConfig:
+CoreShop\Bundle\PayumBundle\Model\GatewayConfig:
   type: mappedSuperclass
-  table: coreshop_payment_provider_config
+  table: coreshop_payment_gateway_config
   fields:
     id:
       type: integer

@@ -6,6 +6,7 @@ CoreShop\Bundle\PayumBundle\Model\PaymentSecurityToken:
       type: string
       column: hash
       id: true
+      length: 100
     details:
       column: details
       type: object
@@ -18,8 +19,8 @@ CoreShop\Bundle\PayumBundle\Model\PaymentSecurityToken:
       column: targetUrl
       type: text
       nullable: false
-    providerName:
-      column: providerName
+    gatewayName:
+      column: gatewayName
       type: string
       length: 255
       nullable: false
