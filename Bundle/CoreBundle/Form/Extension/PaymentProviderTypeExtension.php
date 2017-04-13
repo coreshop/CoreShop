@@ -18,22 +18,24 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $gatewayFactory = $options['data']->getGatewayConfig();
-
         $builder
             ->add('stores', StoreChoiceType::class, [
                 'multiple' => true,
                 'expanded' => true
             ])
             ->add('gatewayConfig', GatewayConfigType::class, [
-                'label' => false,
-                'data' => $gatewayFactory,
+                'label' => false
             ])
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 $paymentMethod = $event->getData();
 
                 if (!$paymentMethod instanceof PaymentProviderInterface) {
                     return;
+                }
+
+                $gatewayConfig = $paymentMethod->getGatewayConfig();
+                if (null === $gatewayConfig->getGatewayName()) {
+                    $gatewayConfig->setGatewayName($paymentMethod->getIdentifier());
                 }
             })
         ;

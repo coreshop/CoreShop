@@ -51,6 +51,7 @@ final class GatewayConfigType extends AbstractResourceType
                 }
 
                 $configType = $this->gatewayConfigurationTypeRegistry->get('gateway_config', $gatewayConfig->getFactoryName());
+
                 $event->getForm()->add('config', $configType, [
                     'label' => false,
                     'auto_initialize' => false,
