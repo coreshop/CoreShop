@@ -64,3 +64,21 @@ coreshop_shop_perform_checkout:
   methods: [GET]
   defaults:
     _controller: coreshop.frontend.controller.checkout:doCheckoutAction
+
+coreshop_shop_payment:
+  path: %coreshop.frontend.base.url%/pay/{orderId}
+  methods: [GET]
+  defaults:
+    _controller: coreshop.frontend.controller.payment:prepareCaptureAction
+
+coreshop_shop_payment_after_pay:
+  path: %coreshop.frontend.base.url%/after-pay
+  methods: [GET, POST]
+  defaults:
+    _controller: coreshop.frontend.controller.payment:afterCaptureAction
+
+coreshop_shop_order_thank_you:
+  path: %coreshop.frontend.base.url%/thank-you
+  methods: [GET]
+  defaults:
+    _controller: coreshop.frontend.controller.checkout:thankYouAction

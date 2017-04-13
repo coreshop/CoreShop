@@ -2,11 +2,19 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Resource\Factory\PimcoreFactory;
+use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
 {
@@ -23,6 +31,11 @@ class CheckoutController extends FrontendController
         $this->checkoutManager = $checkoutManager;
     }
 
+    /**
+     * @param Request $request
+     * @param $stepIdentifier
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function processAction(Request $request, $stepIdentifier)
     {
         /**
@@ -77,17 +90,18 @@ class CheckoutController extends FrontendController
          * after the last step, we come here
          *
          * what are we doing here?
-         *  1. Create Order with Workflow State: initialized, pending-payment
+         *  1. Create Order with Workflow State: initialized
          *  2. Use Payum and redirect to Payment Provider
-         *  3. Return to PaymentController with afterCapture
-         *  4. Payment Controller changes the state of the Order to "payment-done"?
-         *  5. PaymentController redirects us back here to "thankYouAction"
-         *
+         *  3. PayumBundle takes care about payment stuff
+         *  4. After Payment is done, we return to PayumBundle PaymentController and further process it
          *
          * therefore we need the CartToOrderTransformerInterface here
          */
 
-        //Check all previous steps if they are valid, if not, redirect back
+        /**
+         * Before we do anything else, lets check if the checkout is still valid
+         * Check all previous steps if they are valid, if not, redirect back
+         */
         /**
          * @var $step CheckoutStepInterface
          */
@@ -105,9 +119,28 @@ class CheckoutController extends FrontendController
         $order = $this->getOrderFactory()->createNew();
         $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
 
-        var_dump($order->getId());
+        return $this->redirectToRoute('coreshop_shop_payment', ['orderId' => $order->getId()]);
+    }
 
-        exit;
+    /**
+     * @param Request $request
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function thankYouAction(Request $request)
+    {
+        $orderId = $request->getSession()->get('coreshop_order_id', null);
+
+        if (null === $orderId) {
+            return $this->redirectToRoute('coreshop_shop_index');
+        }
+
+        $request->getSession()->remove('coreshop_order_id');
+        $order = $this->get('coreshop.repository.order')->find($orderId);
+        Assert::notNull($order);
+
+        return $this->render('@CoreShopFrontend/Checkout/thank-you.html.twig', [
+            'order' => $order
+        ]);
     }
 
     /**
@@ -138,5 +171,13 @@ class CheckoutController extends FrontendController
      */
     private function getOrderFactory() {
         return $this->get('coreshop.factory.order');
+    }
+
+    /**
+     * @return Payum
+     */
+    protected function getPayum()
+    {
+        return $this->get('payum');
     }
 }

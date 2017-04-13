@@ -29,7 +29,8 @@ services:
 
   coreshop.frontend.controller.checkout:
     class: CoreShop\Bundle\FrontendBundle\Controller\CheckoutController
-    arguments: ['@coreshop.checkout_manager']
+    arguments:
+      - '@coreshop.checkout_manager'
     calls:
             - [setContainer, ['@service_container']]
 

@@ -2,12 +2,12 @@
 
 namespace CoreShop\Component\Payment\Model;
 
-use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 interface PaymentInterface
 {
     /**
-     * @return mixed
+     * @return PaymentProviderInterface
      */
     public function getPaymentProvider();
 
