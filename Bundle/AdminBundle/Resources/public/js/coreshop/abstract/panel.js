@@ -111,16 +111,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
                 containerScroll: true,
                 width: 200,
                 split: true,
-                tbar: {
-                    items: [
-                        {
-                            // add button
-                            text: t('add'),
-                            iconCls: 'pimcore_icon_add',
-                            handler: this.addItem.bind(this)
-                        }
-                    ]
-                },
+                tbar: this.getTopBar(),
                 bbar : {
                     items : ['->', {
                         iconCls: 'pimcore_icon_reload',
@@ -140,6 +131,17 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
         }
 
         return this.grid;
+    },
+
+    getTopBar : function() {
+        return [
+            {
+                // add button
+                text: t('add'),
+                iconCls: 'pimcore_icon_add',
+                handler: this.addItem.bind(this)
+            }
+        ];
     },
 
     getTreeNodeListeners: function () {
@@ -169,17 +171,22 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
     },
 
     addItem: function () {
-        Ext.MessageBox.prompt(t('add'), t('coreshop_enter_the_name'),
-            this.addItemComplete.bind(this), null, null, '');
+        Ext.MessageBox.prompt(t('add'), t('coreshop_enter_the_name'), this.addItemComplete.bind(this), null, null, '');
     },
 
     addItemComplete: function (button, value, object) {
-        if (button == 'ok' && value.length > 2) {
+        var jsonData = {
+            name: value
+        };
+
+        if (Ext.isFunction(this.prepareAdd)) {
+            jsonData = this.prepareAdd(jsonData);
+        }
+
+        if (button === 'ok' && value.length > 2) {
             Ext.Ajax.request({
                 url: this.url.add,
-                params: {
-                    name: value
-                },
+                jsonData: jsonData,
                 method : 'post',
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
@@ -197,8 +204,6 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
                     }
                 }.bind(this)
             });
-        } else if (button == 'cancel') {
-
         } else {
             Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
         }

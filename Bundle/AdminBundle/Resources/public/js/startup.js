@@ -295,6 +295,11 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                 handler: this.openMailRules
             });
 
+            coreShopMenuItems.push({
+                text: t('coreshop_payment_providers'),
+                iconCls: 'coreshop_icon_payment_provider',
+                handler: this.openPaymentProviders
+            });
 
             coreShopMenuItems.push({
                 text: t('coreshop_stores'),
@@ -727,6 +732,15 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_mail_rule_panel', new pimcore.plugin.coreshop.mail.rules.panel());
+        }
+    },
+
+    openPaymentProviders: function() {
+        try {
+            pimcore.globalmanager.get('coreshop_payment_providers_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_payment_providers_panel', new pimcore.plugin.coreshop.payment.provider.panel());
         }
     }
 });

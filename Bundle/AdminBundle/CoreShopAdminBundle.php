@@ -3,6 +3,8 @@
 namespace CoreShop\Bundle\AdminBundle;
 
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 
 class CoreShopAdminBundle extends AbstractPimcoreBundle
 {
@@ -218,6 +220,10 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/mail/rules/actions/mail.js',
             '/bundles/coreshopadmin/js/coreshop/mail/rules/actions/orderMail.js',
             '/bundles/coreshopadmin/js/coreshop/mail/rules/conditions/payment/paymentState.js',
+            '/bundles/coreshopadmin/js/coreshop/payment/provider/item.js',
+            '/bundles/coreshopadmin/js/coreshop/payment/provider/panel.js',
+            '/bundles/coreshopadmin/js/coreshop/payment/provider/gateways/abstract.js',
+            '/bundles/coreshopadmin/js/coreshop/payment/provider/gateways/paypal_express_checkout.js',
         ];
     }
 }

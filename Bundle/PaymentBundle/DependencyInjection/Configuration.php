@@ -2,6 +2,8 @@
 
 namespace CoreShop\Bundle\PaymentBundle\DependencyInjection;
 
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Payment\Model\PaymentProvider;
@@ -11,6 +13,7 @@ use CoreShop\Component\Payment\Model\PaymentProviderTranslation;
 use CoreShop\Component\Payment\Model\PaymentProviderTranslationInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
+use CoreShop\Component\Resource\Factory\TranslatableFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -28,6 +31,10 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->arrayNode('gateways')
+                    ->useAttributeAsKey('name')
+                    ->prototype('scalar')
+                ->end()
             ->end()
         ;
         $this->addModelsSection($rootNode);
@@ -55,10 +62,10 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(PaymentProvider::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(PaymentProviderInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
-                                        //->scalarNode('form')->defaultValue(::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(PaymentProviderType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                                 ->arrayNode('translation')
@@ -73,7 +80,7 @@ final class Configuration implements ConfigurationInterface
                                                 ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                                 ->scalarNode('repository')->cannotBeEmpty()->end()
                                                 ->scalarNode('factory')->defaultValue(Factory::class)->end()
-                                                //->scalarNode('form')->defaultValue(::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('form')->defaultValue(PaymentProviderTranslationType::class)->cannotBeEmpty()->end()
                                             ->end()
                                         ->end()
                                     ->end()

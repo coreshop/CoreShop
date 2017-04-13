@@ -16,7 +16,7 @@ interface PaymentProviderInterface extends
     public function getIdentifier();
 
     /**
-     * @param null $language
+     * @param null $identifier
      */
     public function setIdentifier($identifier);
 

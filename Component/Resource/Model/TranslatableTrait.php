@@ -5,11 +5,6 @@ namespace CoreShop\Component\Resource\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;
 
-/**
- * @see TranslatableInterface
- *
- * @author Gonzalo Vilaseca <gvilaseca@reiss.co.uk>
- */
 trait TranslatableTrait
 {
     /**

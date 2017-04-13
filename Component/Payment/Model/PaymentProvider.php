@@ -2,13 +2,13 @@
 
 namespace CoreShop\Component\Payment\Model;
 
-use CoreShop\Component\Resource\Model\SetValuesTrait;
+use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
-class PaymentProvider implements PaymentProviderInterface
+class PaymentProvider extends AbstractResource implements PaymentProviderInterface
 {
-    use ToggleableTrait, SetValuesTrait;
+    use ToggleableTrait;
     use TranslatableTrait {
         __construct as initializeTranslationsCollection;
     }
@@ -24,14 +24,9 @@ class PaymentProvider implements PaymentProviderInterface
     protected $identifier;
 
     /**
-     * @var string
-     */
-    protected $code;
-
-    /**
      * @var int
      */
-    protected $position;
+    protected $position = 1;
 
     public function __construct()
     {
@@ -68,22 +63,6 @@ class PaymentProvider implements PaymentProviderInterface
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
     }
 
     /**

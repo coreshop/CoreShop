@@ -19,7 +19,7 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
     /**
      * @var string
      */
-    protected $description;
+    protected $description = "";
 
     /**
      * @var string

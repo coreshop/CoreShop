@@ -182,6 +182,10 @@ class ResourceController extends AdminController
             if ($dataModel instanceof ResourceInterface) {
                 $dataModel->setValue('name', $name);
             }
+            
+            foreach ($request->request->all() as $key => $value) {
+                $dataModel->setValue($key, $value);
+            }
 
             $this->entityManager->persist($dataModel);
             $this->entityManager->flush();

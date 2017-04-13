@@ -19,6 +19,11 @@ services:
     tags:
       - { name: form.type_extension, extended_type: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType }
 
+  coreshop.form.extension.type.payment_provider:
+    class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderTypeExtension
+    tags:
+      - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
+
   coreshop.form.type.address_choice:
     class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
     arguments: ['@coreshop.repository.customer']
