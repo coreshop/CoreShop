@@ -1,3 +1,7 @@
+payum_all:
+    resource: "@PayumBundle/Resources/config/routing/all.xml"
+
+
 coreshop_admin_payment_provider_config:
   path: /%coreshop.admin.route.base%/payment_providers/get-config
   defaults: { _controller: 'coreshop.admin_controller.payment_provider:getConfigAction'}

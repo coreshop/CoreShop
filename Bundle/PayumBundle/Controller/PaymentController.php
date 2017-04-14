@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
+use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -87,9 +88,11 @@ class PaymentController extends Controller
         $payment = $this->paymentFactory->createNew();
         $payment->setParent($this->pimcoreObjectService->createFolderByPath($order->getFullPath() . "/" . $this->paymentPath));
         $payment->setKey(uniqid("payment"));
+        $payment->setNumber($payment->getKey());
         $payment->setPaymentProvider($this->getCart()->getPaymentProvider());
         $payment->setCurrency($this->currencyContext->getCurrency());
         $payment->setAmount($order->getTotal());
+        $payment->setState('initialized');
         $payment->save(); //Not sure if we need a save here, the storage would do it anyway for us, but just to be save
 
         $request->getSession()->set('coreshop_order_id', $order->getId());
@@ -124,12 +127,20 @@ class PaymentController extends Controller
         } catch (RequestNotSupportedException $e) {}
 
         $gateway->execute($status = new GetHumanStatus($token));
+        $resolveNextRoute = new ResolveNextRoute($status->getFirstModel());
+        $this->getPayum()->getGateway($token->getGatewayName())->execute($resolveNextRoute);
+
+        $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
+
+        //if (PaymentInterface::STATE_NEW !== $status->getValue()) {
+        //    $request->getSession()->getBag('flashes')->add('info', sprintf('payment.%s', $status->getValue()));
+        //}
 
         /**
          * Further process the status here, kick-off the pimcore workflow for orders?
          */
 
-        return $this->redirectToRoute('coreshop_shop_order_thank_you');
+        return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }
 
     /**

@@ -1,21 +1,15 @@
 <?php
 
-namespace Payum\Bundle\PayumBundle\Storage;
+namespace CoreShop\Bundle\PayumBundle\Storage;
 
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Model\Identity;
-use Payum\Core\Storage\StorageInterface;
-use Pimcore\Model\Object\Concrete;
+use Payum\Core\Storage\AbstractStorage;
 
-class PayumPimcoreStorage implements StorageInterface
+class PayumPimcoreStorage extends AbstractStorage
 {
-    /**
-     * @var string
-     */
-    private $className;
-
     /**
      * @var PimcoreFactoryInterface
      */
@@ -33,74 +27,38 @@ class PayumPimcoreStorage implements StorageInterface
      */
     public function __construct($className, PimcoreFactoryInterface $paymentFactory, PimcoreRepositoryInterface $paymentRepository)
     {
-        $this->className = $className;
+        parent::__construct($className);
+
         $this->paymentFactory = $paymentFactory;
         $this->paymentRepository = $paymentRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function create()
+    protected function doUpdateModel($model)
     {
-        return $this->paymentFactory->createNew();
+        $model->save();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function support($model)
+    protected function doDeleteModel($model)
     {
-        return $model instanceof $this->className;
+        $model->delete();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function update($model)
+    protected function doGetIdentity($model)
     {
-        if ($model instanceof Concrete) {
-            $model->setKey(uniqid());
-            $model->setParentId(1);
-            $model->save();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($model)
-    {
-        if ($model instanceof Concrete) {
-            $model->delete();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function find($id)
-    {
-        return $this->paymentRepository->find($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findBy(array $criteria)
-    {
-        throw new LogicException('Method is not supported by the storage.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function identify($model)
-    {
-        if ($model->getId() <= 0) {
+        if (!$model->getId()) {
             throw new LogicException('The model must be persisted before usage of this method');
         }
 
         return new Identity($model->getId(), $model);
+    }
+
+    protected function doFind($id)
+    {
+        return $this->paymentRepository->find($id);
+    }
+
+    public function findBy(array $criteria)
+    {
+        throw new LogicException('Method is not supported by the storage.');
     }
 }

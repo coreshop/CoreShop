@@ -4,7 +4,7 @@ namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 
-interface PaymentInterface
+interface PaymentInterface extends \Payum\Core\Model\PaymentInterface
 {
     /**
      * @return PaymentProviderInterface
@@ -57,4 +57,9 @@ interface PaymentInterface
      * @param int $amount
      */
     public function setAmount($amount);
+
+    /**
+     * @param $number
+     */
+    public function setNumber($number);
 }

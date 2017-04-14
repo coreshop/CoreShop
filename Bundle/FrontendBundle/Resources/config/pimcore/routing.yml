@@ -82,3 +82,9 @@ coreshop_shop_order_thank_you:
   methods: [GET]
   defaults:
     _controller: coreshop.frontend.controller.checkout:thankYouAction
+
+coreshop_shop_checkout_error:
+  path: %coreshop.frontend.base.url%/error
+  methods: [GET]
+  defaults:
+    _controller: coreshop.frontend.controller.checkout:errorAction

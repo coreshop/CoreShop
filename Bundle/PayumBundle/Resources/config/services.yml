@@ -3,7 +3,7 @@ imports:
 
 services:
   coreshop.payum.storage.pimcore:
-      class: Payum\Bundle\PayumBundle\Storage\PayumPimcoreStorage
+      class: CoreShop\Bundle\PayumBundle\Storage\PayumPimcoreStorage
       arguments:
         - '%coreshop.model.payment.class%'
         - '@coreshop.factory.payment'
@@ -15,3 +15,14 @@ services:
   coreshop.payum.http_client:
     class: Payum\Core\HttpClientInterface
     factory: [Payum\Core\Bridge\Guzzle\HttpClientFactory, create]
+
+
+  coreshop.payum_action.resolve_next_route:
+    class: CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction
+    tags:
+      - { name: payum.action, all: true, alias: coreshop.resolve_next_route }
+
+  coreshop.payum_action.offine.resolve_next_route:
+    class: CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction
+    tags:
+      - { name: payum.action, factory: offline, alias: coreshop.offline.resolve_next_route }
