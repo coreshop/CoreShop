@@ -23,3 +23,20 @@ services:
       tags:
           - { name: coreshop.context.country.request_based.resolver, priority: 10 } #Highest Priority, is more like the fallback
       arguments: ['@coreshop.repository.country']
+
+  coreshop.address.formatter:
+    class: CoreShop\Component\Address\Formatter\AddressFormatter
+
+  coreshop.templating.helper.format_address:
+    class: CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper
+    tags:
+        - { name: templating.helper, alias: coreshop_format_address }
+    lazy: true
+    arguments: ['@coreshop.address.formatter']
+
+  coreshop.twig.extension.address:
+    class: CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension
+    public: false
+    tags:
+        - { name: twig.extension }
+    arguments: ['@coreshop.templating.helper.format_address']

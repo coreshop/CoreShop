@@ -5,7 +5,7 @@
 
     {% for address in addresses %}
      <div class="hidden" id="address-{{ address.getId }}">
-         {{ address.getStreet }}
+         {{ address|coreshop_format_address }}
     </div>
     {% endfor %}
 
@@ -39,7 +39,7 @@
                                 </h4>
                             </div>
                             <div class="panel-body panel-shipping-address">
-                                {{ addresses|first.getStreet }}
+                                {{ addresses|first|coreshop_format_address }}
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                                 </h4>
                             </div>
                             <div class="panel-body panel-invoice-address">
-                                {{ addresses|first.getStreet }} {#TODO, use FormatAddress somehow#}
+                                {{ addresses|first|coreshop_format_address }}
                             </div>
                         </div>
 

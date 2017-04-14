@@ -19,6 +19,9 @@ use Pimcore\Model\Object\Concrete;
 use Pimcore\Model\Object;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @todo: maybe we should move this one to the AdminBundle?
+ */
 class OrderController extends AdminController
 {
     public function getOrderGridConfigurationAction()
@@ -286,7 +289,7 @@ class OrderController extends AdminController
         }
 
         if ($address instanceof AddressInterface && $address->getCountry() instanceof CountryInterface) {
-            //$values[$prefix . "All"] = $address->getCountry()->formatAddress($address, false); //TODO: Add format service
+            $values[$prefix . "All"] = $this->getAddressFormatter()->formatAddress($address, false);
         }
 
         return $values;
@@ -331,14 +334,14 @@ class OrderController extends AdminController
         ];
 
         if($order->getShippingAddress() instanceof AddressInterface && $order->getShippingAddress()->getCountry() instanceof CountryInterface) {
-            //TODO: AddressFormat Service $jsonOrder['address']['shipping']['formatted'] = $order->getShippingAddress()->getCountry()->formatAddress($order->getShippingAddress());
+            $jsonOrder['address']['shipping']['formatted'] = $this->getAddressFormatter()->formatAddress($order->getShippingAddress());
         }
         else {
             $jsonOrder['address']['shipping']['formatted'] = '';
         }
 
         if($order->getInvoiceAddress() instanceof AddressInterface && $order->getInvoiceAddress()->getCountry() instanceof CountryInterface) {
-            //TODO: AddressFormat Service $jsonOrder['address']['billing']['formatted'] = $order->getInvoiceAddress()->getCountry()->formatAddress($order->getInvoiceAddress());
+            $jsonOrder['address']['billing']['formatted'] = $this->getAddressFormatter()->formatAddress($order->getInvoiceAddress());
         }
         else {
             $jsonOrder['address']['billing']['formatted'] = '';
@@ -580,5 +583,9 @@ class OrderController extends AdminController
 
     private function getOrderList() {
         return $this->getOrderRepository()->getListingClass();
+    }
+
+    private function getAddressFormatter() {
+        return $this->get('coreshop.address.formatter');
     }
 }
