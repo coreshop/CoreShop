@@ -511,7 +511,7 @@ class OrderController extends AdminController
             $return[] = [
                 'id' => $payment->getId(),
                 'datePayment' => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
-                'provider' => $payment->getPaymentProvider()->getIdentifier(),
+                'provider' => $payment->getPaymentProvider()->getName(),
                 'transactionIdentifier' => $payment->getNumber(),
                 //'transactionNotes' => $noteList->load(),
                 'amount' => $payment->getAmount()

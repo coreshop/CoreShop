@@ -105,7 +105,7 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
         };
 
         var trackingCode = Ext.create('Ext.form.TextField', {
-            fieldLabel:t('coreshop_carrier_tracking_code'),
+            fieldLabel:t('coreshop_tracking_code'),
             name : 'trackingCode'
         });
 

@@ -136,7 +136,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
         var leftItems = [
             this.getOrderInfo(),
-            this.getCarrierAndPaymentDetails(),
+            this.getCarrierDetails(),
             this.getShipmentDetails(),
             this.getInvoiceDetails(),
             this.getPaymentDetails(),
@@ -226,7 +226,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 },
                 {
                     xtype : 'panel',
-                    html : t('coreshop_orders_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.order.currency.symbol, this.order.total) + '</span>',
+                    html : t('coreshop_orders_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.order.currency.symbol, this.order.totalGross) + '</span>',
                     bodyPadding : 20,
                     flex : 1
                 },
@@ -469,8 +469,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return panel;
     },
 
-    getCarrierAndPaymentDetails : function() {
-        if (!this.carrierPaymentDetails) {
+    getCarrierDetails : function() {
+        if (!this.carrierDetails) {
             var items = [
 
             ];
@@ -486,14 +486,14 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             {
                                 xtype: 'panel',
                                 style: 'display:block',
-                                text: t('coreshop_paymentProvider'),
-                                html : '<span style="font-weight:bold;">'+t('coreshop_paymentProvider')+': </span>' + this.order.shippingPayment.payment
+                                text: t('coreshop_currency'),
+                                html : '<span style="font-weight:bold;">'+t('coreshop_currency')+': </span>' + this.order.currency.name
                             },
                             {
                                 xtype: 'panel',
                                 style: 'display:block',
-                                text: t('coreshop_currency'),
-                                html : '<span style="font-weight:bold;">'+t('coreshop_currency')+': </span>' + this.order.currency.name
+                                text: t('coreshop_weight'),
+                                html: '<span style="font-weight:bold;">'+t('coreshop_weight')+': </span>' + (this.order.shippingPayment.weight ? this.order.shippingPayment.weight : 0)
                             }
                         ]
                     },
@@ -512,19 +512,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 style: 'display:block',
                                 text: t('coreshop_carrier_price'),
                                 html : '<span style="font-weight:bold;">'+t('coreshop_carrier_price')+': </span>' + coreshop.util.format.currency(this.order.currency.symbol, this.order.shippingPayment.cost)
-                            },
-                            {
-                                xtype: 'panel',
-                                style: 'display:block',
-                                text: t('coreshop_carrier_shippingMethod_weight'),
-                                html: '<span style="font-weight:bold;">'+t('coreshop_carrier_shippingMethod_weight')+': </span>' + (this.order.shippingPayment.weight ? this.order.shippingPayment.weight : 0)
                             }
                         ]
                     }
                 ]
             });
 
-            this.carrierPaymentDetails = Ext.create('Ext.panel.Panel', {
+            this.carrierDetails = Ext.create('Ext.panel.Panel', {
                 title : t('coreshop_carrier') + '/' + t('coreshop_paymentProvider'),
                 margin : '0 20 20 0',
                 border : true,
@@ -534,7 +528,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             });
         }
 
-        return this.carrierPaymentDetails;
+        return this.carrierDetails;
     },
 
     getShipmentDetails : function () {
@@ -598,12 +592,12 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 xtype : 'gridcolumn',
                                 flex : 1,
                                 dataIndex : 'weight',
-                                text : t('coreshop_carrier_shippingMethod_weight')
+                                text : t('coreshop_weight')
                             },
                             {
                                 xtype : 'gridcolumn',
                                 dataIndex : 'trackingCode',
-                                text : t('coreshop_carrier_tracking_code'),
+                                text : t('coreshop_tracking_code'),
                                 flex : 2,
                                 field: {
                                     xtype: 'textfield'
@@ -901,7 +895,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     updatePaymentInfoAlert : function () {
         if (this.paymentInfoAlert) {
             if (this.order.totalPayed < this.order.total || this.order.totalPayed > this.order.total) {
-                this.paymentInfoAlert.update(t('coreshop_order_payment_paid_warning').format(coreshop.util.format.currency(this.order.currency.symbol, this.order.totalPayed), coreshop.util.format.currency(this.order.currency.symbol, this.order.total)));
+                this.paymentInfoAlert.update(t('coreshop_order_payment_paid_warning').format(coreshop.util.format.currency(this.order.currency.symbol, this.order.totalPayed), coreshop.util.format.currency(this.order.currency.symbol, this.order.totalGross)));
                 this.paymentInfoAlert.show();
             } else {
                 this.paymentInfoAlert.update('');
@@ -1197,7 +1191,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                         this.detailsStore.loadData(res.details);
                                         this.summaryStore.loadData(res.summary);
 
-                                        this.order.total = res.total;
+                                        this.order.totalGross = res.totalGross;
 
                                         this.updatePaymentInfoAlert();
                                     } else {

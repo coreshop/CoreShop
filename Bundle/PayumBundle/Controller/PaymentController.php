@@ -88,6 +88,7 @@ class PaymentController extends Controller
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setParent($this->pimcoreObjectService->createFolderByPath($order->getFullPath() . "/" . $this->paymentPath));
+        $payment->setPublished(true);
         $payment->setKey(uniqid("payment-"));
         $payment->setNumber($payment->getKey());
         $payment->setPaymentProvider($this->getCart()->getPaymentProvider());
@@ -96,6 +97,8 @@ class PaymentController extends Controller
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(Carbon::now());
         $payment->save(); //Not sure if we need a save here, the storage would do it anyway for us, but just to be save
+
+        $order->addPayment($payment);
 
         $request->getSession()->set('coreshop_order_id', $order->getId());
 
