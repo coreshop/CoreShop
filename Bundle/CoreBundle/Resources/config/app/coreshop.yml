@@ -5,3 +5,4 @@ imports:
     - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_store.yml" }
     - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_shipping.yml" }
     - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_payment.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_order.yml" }

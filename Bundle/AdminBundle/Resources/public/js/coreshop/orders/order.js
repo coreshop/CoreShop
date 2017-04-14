@@ -46,7 +46,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     getObjectInfo : function () {
 
         Ext.Ajax.request({
-            url: '/admin/object/get/',
+            url: '/admin/object/get',
             params: {id: this.order.o_id},
             success: function(response) {
                 try {
@@ -1116,7 +1116,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
     },
 
     getPaymentPluginInfo : function () {
-        var pluginInfo = coreshop.plugin.broker.fireEvent('orderDetailPayment' + this.order.paymentProvider.ucfirst(), this);
+        /*var pluginInfo = coreshop.plugin.broker.fireEvent('orderDetailPayment' + this.order.paymentProvider.ucfirst(), this);
 
         if (pluginInfo) {
             return {
@@ -1129,13 +1129,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 },
                 items: pluginInfo
             };
-        }
+        }*/
 
         return null;
     },
 
     getVisitorInfo : function() {
-        if(this.order.visitor) {
+        /*if(this.order.visitor) {
             if (!this.visitorInfo) {
                 var visitor = this.order.visitor;
 
@@ -1159,7 +1159,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             }
 
             return this.visitorInfo;
-        }
+        }*/
 
         return false;
     },
@@ -1177,7 +1177,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
                 listeners : {
                     edit : function (editor, context, eOpts) {
-                        if (context.originalValue != context.value) {
+                        if (context.originalValue !== context.value) {
                             Ext.Ajax.request({
                                 url: '/admin/CoreShop/order/change-order-item',
                                 params: {

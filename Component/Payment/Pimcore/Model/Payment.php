@@ -146,6 +146,22 @@ class Payment extends AbstractPimcoreModel implements PaymentInterface {
     /**
      * {@inheritdoc}
      */
+    public function getDatePayment()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDatePayment($datePayment)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTotalAmount()
     {
         return $this->getAmount();

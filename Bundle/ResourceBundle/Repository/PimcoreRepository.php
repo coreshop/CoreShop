@@ -22,6 +22,8 @@ class PimcoreRepository implements PimcoreRepositoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @todo: rename to getList
      */
     public function getListingClass()
     {

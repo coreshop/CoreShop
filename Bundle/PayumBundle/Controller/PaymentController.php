@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
+use Carbon\Carbon;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
@@ -93,6 +94,7 @@ class PaymentController extends Controller
         $payment->setCurrency($this->currencyContext->getCurrency());
         $payment->setAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
+        $payment->setDatePayment(Carbon::now());
         $payment->save(); //Not sure if we need a save here, the storage would do it anyway for us, but just to be save
 
         $request->getSession()->set('coreshop_order_id', $order->getId());

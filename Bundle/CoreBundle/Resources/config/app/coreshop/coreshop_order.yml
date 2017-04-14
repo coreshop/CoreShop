@@ -1,0 +1,5 @@
+core_shop_order:
+  pimcore:
+    order:
+      classes:
+        pimcore_controller: CoreShop\Bundle\CoreBundle\Controller\OrderController

@@ -5,3 +5,15 @@ payum_all:
 coreshop_admin_payment_provider_config:
   path: /%coreshop.admin.route.base%/payment_providers/get-config
   defaults: { _controller: 'coreshop.admin_controller.payment_provider:getConfigAction'}
+
+coreshop_order_get_grid_configuration:
+  path: /%coreshop.admin.route.base%/order/get-order-grid-configuration
+  defaults: { _controller: 'coreshop.pimcore_controller.order:getOrderGridConfigurationAction'}
+
+coreshop_order_get_orders:
+  path: /%coreshop.admin.route.base%/order/get-orders
+  defaults: { _controller: 'coreshop.pimcore_controller.order:getOrders'}
+
+coreshop_order_get_order:
+  path: /%coreshop.admin.route.base%/order/detail
+  defaults: { _controller: 'coreshop.pimcore_controller.order:detailAction'}

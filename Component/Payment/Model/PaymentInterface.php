@@ -3,8 +3,9 @@
 namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface PaymentInterface extends \Payum\Core\Model\PaymentInterface
+interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, PimcoreModelInterface
 {
     const STATE_NEW = 'new';
     const STATE_PROCESSING = 'processing';
@@ -24,6 +25,16 @@ interface PaymentInterface extends \Payum\Core\Model\PaymentInterface
      * @return mixed
      */
     public function setPaymentProvider($paymentProvider);
+
+    /**
+     * @return mixed
+     */
+    public function getDatePayment();
+
+    /**
+     * @param $datePayment
+     */
+    public function setDatePayment($datePayment);
 
     /**
      * @return mixed

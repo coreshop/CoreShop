@@ -3,6 +3,7 @@
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\OrderBundle\Controller\CartController;
+use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
@@ -89,6 +90,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_controller')->defaultValue(OrderController::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
