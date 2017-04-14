@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
