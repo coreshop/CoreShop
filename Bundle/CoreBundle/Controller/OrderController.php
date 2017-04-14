@@ -517,7 +517,7 @@ class OrderController extends AdminController
                 'provider' => $payment->getPaymentProvider()->getName(),
                 'transactionIdentifier' => $payment->getNumber(),
                 //'transactionNotes' => $noteList->load(),
-                'amount' => $payment->getAmount()
+                'amount' => $payment->getTotalAmount()
             ];
         }
 

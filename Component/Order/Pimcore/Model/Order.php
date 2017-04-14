@@ -4,6 +4,7 @@ namespace CoreShop\Component\Order\Pimcore\Model;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
@@ -505,75 +506,18 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
+     * @return PaymentRepositoryInterface
+     */
+    private function getPaymentRepository() {
+        return \Pimcore::getContainer()->get('coreshop.repository.payment');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getPayments()
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPayments($payments)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasPayments()
-    {
-        return is_array($this->getPayments()) && count($this->getPayments()) > 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addPayment($payment)
-    {
-        $items = $this->getPayments();
-        $items[] = $payment;
-
-        $this->setPayments($items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removePayment($payment)
-    {
-        $items = $this->getPayments();
-
-        for ($i = 0; $i < count($items); ++$i) {
-            $arrayItem = $items[$i];
-
-            if ($arrayItem->getId() === $payment->getId()) {
-                unset($items[$i]);
-                break;
-            }
-        }
-
-        $this->setPayments($items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasPayment($payment)
-    {
-        $items = $this->getPayments();
-
-        for ($i = 0; $i < count($items); ++$i) {
-            $arrayItem = $items[$i];
-
-            if ($arrayItem->getId() === $payment->getId()) {
-                return true;
-            }
-        }
-
-        return false;
+        $this->getPaymentRepository()->findForOrderId($this->getId());
     }
 
     /**

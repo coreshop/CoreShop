@@ -8,9 +8,11 @@ use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Model\DetailsAggregateInterface;
 use Payum\Core\Payum;
@@ -23,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class PaymentController extends Controller
 {
     /**
-     * @var PimcoreFactoryInterface
+     * @var FactoryInterface
      */
     private $paymentFactory;
 
@@ -31,11 +33,6 @@ class PaymentController extends Controller
      * @var PimcoreRepositoryInterface
      */
     private $orderRepository;
-
-    /**
-     * @var string
-     */
-    private $paymentPath;
 
     /**
      * @var ObjectServiceInterface
@@ -48,26 +45,31 @@ class PaymentController extends Controller
     private $currencyContext;
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * PaymentController constructor.
-     * @param PimcoreFactoryInterface $paymentFactory
+     * @param FactoryInterface $paymentFactory
      * @param PimcoreRepositoryInterface $orderRepository
-     * @param $paymentPath
      * @param ObjectServiceInterface $pimcoreObjectService
      * @param CurrencyContextInterface $currencyContext
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        PimcoreFactoryInterface $paymentFactory,
+        FactoryInterface $paymentFactory,
         PimcoreRepositoryInterface $orderRepository,
-        $paymentPath,
         ObjectServiceInterface $pimcoreObjectService,
-        CurrencyContextInterface $currencyContext
+        CurrencyContextInterface $currencyContext,
+        EntityManagerInterface $entityManager
     )
     {
         $this->paymentFactory = $paymentFactory;
         $this->orderRepository = $orderRepository;
-        $this->paymentPath = $paymentPath;
         $this->pimcoreObjectService = $pimcoreObjectService;
         $this->currencyContext = $currencyContext;
+        $this->entityManager = $entityManager;
     }
 
     public function prepareCaptureAction(Request $request, $orderId) {
@@ -87,18 +89,16 @@ class PaymentController extends Controller
          * @var $payment PaymentInterface|PimcoreModelInterface
          */
         $payment = $this->paymentFactory->createNew();
-        $payment->setParent($this->pimcoreObjectService->createFolderByPath($order->getFullPath() . "/" . $this->paymentPath));
-        $payment->setPublished(true);
-        $payment->setKey(uniqid("payment-"));
-        $payment->setNumber($payment->getKey());
+        $payment->setNumber(uniqid('payment-'));
         $payment->setPaymentProvider($this->getCart()->getPaymentProvider());
         $payment->setCurrency($this->currencyContext->getCurrency());
-        $payment->setAmount($order->getTotal());
+        $payment->setTotalAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(Carbon::now());
-        $payment->save(); //Not sure if we need a save here, the storage would do it anyway for us, but just to be save
+        $payment->setOrderId($order->getId());
 
-        $order->addPayment($payment);
+        $this->entityManager->persist($payment);
+        $this->entityManager->flush();
 
         $request->getSession()->set('coreshop_order_id', $order->getId());
 

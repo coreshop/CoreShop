@@ -167,26 +167,4 @@ interface OrderInterface extends ProposalInterface, PimcoreModelInterface
      * @return PaymentInterface[]
      */
     public function getPayments();
-
-    /**
-     * @return bool
-     */
-    public function hasPayments();
-
-    /**
-     * @param $payment
-     */
-    public function addPayment($payment);
-
-    /**
-     * @param $payment
-     */
-    public function removePayment($payment);
-
-    /**
-     * @param $payment
-     *
-     * @return bool
-     */
-    public function hasPayment($payment);
 }

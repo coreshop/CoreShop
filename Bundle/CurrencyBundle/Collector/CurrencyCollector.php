@@ -31,11 +31,16 @@ final class CurrencyCollector extends DataCollector
     ) {
         $this->currencyContext = $currencyContext;
 
-        $this->data = [
-            'currency' => null,
-            'currencies' => $currencyRepository->findActiveForStore($storeContext->getStore()),
-            'currency_change_support' => $currencyChangeSupport,
-        ];
+        try {
+            $this->data = [
+                'currency' => null,
+                'currencies' => $currencyRepository->findActiveForStore($storeContext->getStore()),
+                'currency_change_support' => $currencyChangeSupport,
+            ];
+        }
+        catch (\Exception $ex) {
+
+        }
     }
 
     /**
@@ -69,7 +74,8 @@ final class CurrencyCollector extends DataCollector
     {
         try {
             $this->data['currency'] = $this->currencyContext->getCurrency();
-        } catch (CurrencyNotFoundException $exception) {
+        } catch (\Exception $exception) {
+
         }
     }
 

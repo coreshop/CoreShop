@@ -18,7 +18,7 @@ final class CoreShopPaymentExtension extends AbstractModelExtension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
-        $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
+        //$this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
 
         $loader->load('services.yml');
 

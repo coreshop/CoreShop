@@ -2,13 +2,6 @@ imports:
   - { resource: "services/form.yml" }
 
 services:
-  coreshop.payum.storage.pimcore:
-      class: CoreShop\Bundle\PayumBundle\Storage\PayumPimcoreStorage
-      arguments:
-        - '%coreshop.model.payment.class%'
-        - '@coreshop.factory.payment'
-        - '@coreshop.repository.payment'
-
   coreshop.form_registry.payum_gateway_config:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 

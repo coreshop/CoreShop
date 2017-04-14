@@ -13,9 +13,15 @@ imports:
 
   - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop.yml" }
   - { resource: "@CoreShopCoreBundle/Resources/config/app/security.yml" }
+  - { resource: "@CoreShopCoreBundle/Resources/config/app/payum.yml" }
 
+framework:
+    form: true
 
 doctrine:
+  dbal:
+    mapping_types:
+      enum: string
   orm:
     auto_generate_proxy_classes: "%kernel.debug%"
     entity_managers:
@@ -45,19 +51,3 @@ fos_rest:
 twig:
   globals:
     coreshop: "@coreshop.context.shopper"
-
-payum:
-    storages:
-        "%coreshop.model.payment.class%": { custom: coreshop.payum.storage.pimcore }
-
-    security:
-        token_storage:
-            CoreShop\Bundle\PayumBundle\Model\PaymentSecurityToken: { doctrine: orm }
-
-    dynamic_gateways:
-        config_storage:
-            CoreShop\Bundle\PayumBundle\Model\GatewayConfig: { doctrine: orm }
-
-    gateways:
-        offline:
-            factory: offline

@@ -2,10 +2,12 @@
 
 namespace CoreShop\Bundle\PaymentBundle\DependencyInjection;
 
+use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentRepository;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Payment\Model\Payment;
 use CoreShop\Component\Payment\Model\PaymentProvider;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
@@ -87,11 +89,6 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('pimcore')
-                    ->addDefaultsIfNotSet()
-                    ->children()
                         ->arrayNode('payment')
                             ->addDefaultsIfNotSet()
                             ->children()
@@ -99,12 +96,12 @@ final class Configuration implements ConfigurationInterface
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopPayment')->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(Payment::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(PaymentInterface::class)->cannotBeEmpty()->end()
-                                        //->scalarNode('pimcore_controller')->defaultValue(CartController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(PaymentRepository::class)->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

@@ -2,9 +2,8 @@
 
 namespace CoreShop\Bundle\AdminBundle;
 
+use CoreShop\Bundle\AdminBundle\Pimcore\Install;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 
 class CoreShopAdminBundle extends AbstractPimcoreBundle
 {
@@ -225,5 +224,13 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/payment/provider/gateways/abstract.js',
             '/bundles/coreshopadmin/js/coreshop/payment/provider/gateways/paypal_express_checkout.js',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInstaller()
+    {
+        return new Install();
     }
 }
