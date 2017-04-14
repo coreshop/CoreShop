@@ -18,7 +18,7 @@ services:
 
   coreshop.checkout.step.customer:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep
-    arguments: ['@security.authorization_checker']
+    arguments: ['@security.authorization_checker', '@form.factory']
     tags:
       - {name: coreshop.registry.checkout.step, type: customer, priority: 20}
 

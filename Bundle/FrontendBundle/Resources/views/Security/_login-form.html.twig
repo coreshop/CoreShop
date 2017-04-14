@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-sm-6">
+        <div class="panel panel-smart">
+            <div class="panel-heading">
+                <h3 class="panel-title">Login</h3>
+            </div>
+            <div class="panel-body">
+                {% if last_error %}
+                    {{ messages.error(last_error.messageKey|trans(last_error.messageData, 'security')) }}
+                {% endif %}
+                <p>
+                    Please login using your existing account
+                </p>
+                {{ form_start(form, {'action': path('coreshop_shop_login_check'), 'attr': {'novalidate': 'novalidate'}}) }}
+
+                    {{ form_row(form._username) }}
+                    {{ form_row(form._password) }}
+                    {{ form_row(form._remember_me) }}
+
+                    {% if target is defined  %}
+                        <input type="hidden" name="_target_path" value="{{ target }}" />
+                    {% endif %}
+
+                    <button type="submit" class="ui blue submit button">{{ 'login'|trans }}</button>
+                {{ form_end(form, {'render_rest': false}) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-smart">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Create new account
+                </h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Registration allows you to avoid filling in billing and shipping forms every time you checkout on this website
+                </p>
+                {# TODO: Register #}
+            </div>
+        </div>
+    </div>
+</div>

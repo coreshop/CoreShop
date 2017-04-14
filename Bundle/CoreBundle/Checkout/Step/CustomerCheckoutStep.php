@@ -2,9 +2,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
+use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
@@ -16,11 +18,18 @@ class CustomerCheckoutStep implements CheckoutStepInterface
     private $authorizationChecker;
 
     /**
-     * @param AuthorizationChecker $authorizationChecker
+     * @var FormFactoryInterface
      */
-    public function __construct(AuthorizationChecker $authorizationChecker)
+    private $formFactory;
+
+    /**
+     * @param AuthorizationChecker $authorizationChecker
+     * @param FormFactoryInterface $formFactory
+     */
+    public function __construct(AuthorizationChecker $authorizationChecker, FormFactoryInterface $formFactory)
     {
         $this->authorizationChecker = $authorizationChecker;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -53,7 +62,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface
     public function commitStep(CartInterface $cart, Request $request)
     {
         if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw new CheckoutException("no customer found");
+            throw new CheckoutException("no customer found", 'coreshop_checkout_customer_invalid');
         }
     }
 
@@ -62,6 +71,8 @@ class CustomerCheckoutStep implements CheckoutStepInterface
      */
     public function prepareStep(CartInterface $cart)
     {
-        //Nothing to do here
+        return [
+
+        ];
     }
 }
