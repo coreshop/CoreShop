@@ -79,7 +79,7 @@ class PaymentController extends Controller
             throw new NotFoundHttpException(sprintf('Order with id "%s" does not exist.', $orderId));
         }
         /**
-         * We now have our Order -> So lets to Payment -> Yeah :)
+         * We now have our Order -> So lets do Payment -> Yeah :)
          */
 
         /**
@@ -87,12 +87,12 @@ class PaymentController extends Controller
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setParent($this->pimcoreObjectService->createFolderByPath($order->getFullPath() . "/" . $this->paymentPath));
-        $payment->setKey(uniqid("payment"));
+        $payment->setKey(uniqid("payment-"));
         $payment->setNumber($payment->getKey());
         $payment->setPaymentProvider($this->getCart()->getPaymentProvider());
         $payment->setCurrency($this->currencyContext->getCurrency());
         $payment->setAmount($order->getTotal());
-        $payment->setState('initialized');
+        $payment->setState(PaymentInterface::STATE_NEW);
         $payment->save(); //Not sure if we need a save here, the storage would do it anyway for us, but just to be save
 
         $request->getSession()->set('coreshop_order_id', $order->getId());
@@ -135,6 +135,8 @@ class PaymentController extends Controller
         //if (PaymentInterface::STATE_NEW !== $status->getValue()) {
         //    $request->getSession()->getBag('flashes')->add('info', sprintf('payment.%s', $status->getValue()));
         //}
+
+        //Start Workflow with $status->getStatus()
 
         /**
          * Further process the status here, kick-off the pimcore workflow for orders?
