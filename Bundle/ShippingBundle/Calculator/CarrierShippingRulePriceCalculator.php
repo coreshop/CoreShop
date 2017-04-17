@@ -3,6 +3,7 @@
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
+use CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessorInterface;
 use CoreShop\Bundle\ShippingBundle\Rule\Action\CarrierPriceActionProcessorInterface;
 use CoreShop\Bundle\ShippingBundle\Rule\Condition\ShippingConditionCheckerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -19,20 +20,20 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
     protected $carrierShippingRuleChecker;
 
     /**
-     * @var ServiceRegistryInterface
+     * @var ShippingRuleActionProcessorInterface
      */
-    protected $actionServiceRegistry;
+    protected $shippingRuleProcessor;
 
     /**
      * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
-     * @param ServiceRegistryInterface $actionServiceRegistry
+     * @param ShippingRuleActionProcessorInterface $shippingRuleProcessor
      */
     public function __construct(
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
-        ServiceRegistryInterface $actionServiceRegistry
+        ShippingRuleActionProcessorInterface $shippingRuleProcessor
     ) {
         $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
-        $this->actionServiceRegistry = $actionServiceRegistry;
+        $this->shippingRuleProcessor = $shippingRuleProcessor;
     }
 
     /**
@@ -47,25 +48,8 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
         $shippingRuleGroup = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $cart, $address);
 
         if ($shippingRuleGroup instanceof ShippingRuleGroupInterface) {
-            $price = 0;
-            $modifications = 0;
-            $shippingRule = $shippingRuleGroup->getShippingRule();
-
-            foreach ($shippingRule->getActions() as $action) {
-                $processor = $this->actionServiceRegistry->get($action->getType());
-
-                if ($processor instanceof CarrierPriceActionProcessorInterface) {
-                    $price += $processor->getPrice($carrier, $address, $action->getConfiguration(), $withTax);
-                }
-            }
-
-            foreach ($shippingRule->getActions() as $action) {
-                $processor = $this->actionServiceRegistry->get($action->getType());
-
-                if ($processor instanceof CarrierPriceActionProcessorInterface) {
-                    $modifications += $processor->getModification($carrier, $address, $price, $action->getConfiguration());
-                }
-            }
+            $price = $this->shippingRuleProcessor->getPrice($shippingRuleGroup->getShippingRule(), $carrier, $address, $withTax);
+            $modifications = $this->shippingRuleProcessor->getModification($shippingRuleGroup->getShippingRule(), $carrier, $address, $price);
 
             return $price + $modifications;
         }

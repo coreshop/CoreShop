@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class PriceActionType extends AbstractType
+class DiscountPercentActionConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,7 +16,7 @@ class PriceActionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('price', NumberType::class, [
+            ->add('percent', NumberType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']])
                 ],
@@ -29,6 +29,6 @@ class PriceActionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_shipping_rule_action_price';
+        return 'coreshop_shipping_rule_action_discount_percent';
     }
 }

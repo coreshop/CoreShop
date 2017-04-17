@@ -37,15 +37,47 @@ services:
   coreshop.shipping_rule.action.price:
     class: CoreShop\Bundle\ShippingBundle\Rule\Action\PriceActionProcessor
     tags:
-      - { name: coreshop.shipping_rule.action, type: price, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\PriceActionType }
+      - { name: coreshop.shipping_rule.action, type: price, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\PriceActionConfigurationType }
     arguments: ['@coreshop.taxation.factory.tax_calculator']
 
+  coreshop.shipping_rule.action.addition_amount:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Action\AdditionAmountActionProcessor
+    tags:
+      - { name: coreshop.shipping_rule.action, type: additionAmount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\AdditionAmountActionConfigurationType }
+
+  coreshop.shipping_rule.action.discount_amount:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Action\DiscountAmountActionProcessor
+    tags:
+      - { name: coreshop.shipping_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\DiscountAmountActionConfigurationType }
+
+  coreshop.shipping_rule.action.addition_percent:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Action\AdditionPercentActionProcessor
+    tags:
+      - { name: coreshop.shipping_rule.action, type: additionPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\AdditionPercentActionConfigurationType }
+
+  coreshop.shipping_rule.action.discount_percent:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Action\DiscountPercentActionProcessor
+    tags:
+      - { name: coreshop.shipping_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\DiscountPercentActionConfigurationType }
+
+  coreshop.shipping_rule.action.shipping_rule:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Action\ShippingRuleActionProcessor
+    arguments: ['@coreshop.carrier.processor.shipping_rules', '@coreshop.repository.shipping_rule']
+    tags:
+      - { name: coreshop.shipping_rule.action, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\ShippingRuleActionConfigurationType }
+
+
   # Carrier Price Calculator
+  coreshop.carrier.processor.shipping_rules:
+    class: CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessor
+    arguments:
+      - '@coreshop.registry.shipping_rule.actions'
+
   coreshop.carrier.price_calculator.shipping_rules:
     class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierShippingRulePriceCalculator
     arguments:
       - '@coreshop.carrier.cart.checker'
-      - '@coreshop.registry.shipping_rule.actions'
+      - '@coreshop.carrier.processor.shipping_rules'
 
   coreshop.carrier.price_calculator.default:
     class: CoreShop\Bundle\ShippingBundle\Calculator\CompositePriceCalculator
