@@ -19,7 +19,7 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
         name: carrierId
         referencedColumnName: id
         nullable: false
-  oneToOne:
+  manyToOne:
     shippingRule:
       targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleInterface
       joinColumn:
