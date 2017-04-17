@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ProductBundle\Rule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Product\ProductPriceRule\Condition;
 
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;

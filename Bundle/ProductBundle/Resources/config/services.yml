@@ -27,13 +27,6 @@ services:
       - '@coreshop.registry.product_price_rule.conditions'
 
   # Product Price Rule CONDITIONS
-  coreshop.product_price_rule.condition.quantity:
-    class: CoreShop\Bundle\ProductBundle\Rule\Condition\QuantityConditionChecker
-    arguments:
-      - '@coreshop.cart.manager'
-    tags:
-      - { name: coreshop.product_price_rule.condition, type: quantity, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\QuantityConfigurationType }
-
   coreshop.product_price_rule.condition.products:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\ProductsConditionChecker
     tags:

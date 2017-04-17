@@ -1,0 +1,14 @@
+services:
+  coreshop.product_price_rule.condition.quantity:
+    class: CoreShop\Bundle\CoreBundle\Product\ProductPriceRule\Condition\QuantityConditionChecker
+    arguments:
+      - '@coreshop.cart.manager'
+    tags:
+      - { name: coreshop.product_price_rule.condition, type: quantity, form-type: CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType }
+
+  coreshop.product_price_rule.condition.customers:
+    class: CoreShop\Bundle\CoreBundle\Product\ProductPriceRule\Condition\CustomersConditionChecker
+    arguments:
+      ['@security.token_storage']
+    tags:
+      - { name: coreshop.product_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\CustomersConfigurationType }

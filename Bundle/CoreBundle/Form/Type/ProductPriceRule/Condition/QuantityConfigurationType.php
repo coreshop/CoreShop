@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

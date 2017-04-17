@@ -67,7 +67,7 @@ coreshop.helpers.createOrder = function() {
                 object : ['object']
             },
             specific: {
-                classes : [coreshop.settings.classMapping.user]
+                classes : [coreshop.settings.classMapping.customer]
             }
         }
     );

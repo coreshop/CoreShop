@@ -22,7 +22,7 @@ pimcore.plugin.coreshop.rules.conditions.customers = Class.create(pimcore.plugin
     getForm : function () {
         this.customers = new pimcore.plugin.coreshop.object.objectMultihref(this.data ? this.data.customers : [], {
             classes: [
-                { classes: coreshop.settings.classMapping.user }
+                { classes: coreshop.settings.classMapping.customer }
             ],
             name: 'customers',
             title: '',

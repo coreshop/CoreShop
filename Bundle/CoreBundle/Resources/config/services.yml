@@ -5,6 +5,7 @@ imports:
   - { resource: "services/checkout.yml" }
   - { resource: "services/order.yml" }
   - { resource: "services/listeners.yml" }
+  - { resource: "services/product.yml" }
 
 parameters:
   coreshop.core.object_path: '/coreshop'
