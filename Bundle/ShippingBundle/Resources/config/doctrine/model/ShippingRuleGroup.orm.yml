@@ -19,7 +19,6 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
         name: carrierId
         referencedColumnName: id
         nullable: false
-  manyToOne:
     shippingRule:
       targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleInterface
       joinColumn:
