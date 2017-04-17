@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
-final class NewPriceConfigurationType extends AbstractType
+final class PriceConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -17,7 +17,6 @@ final class NewPriceConfigurationType extends AbstractType
     {
         $builder
             ->add('price', IntegerType::class, [
-                'label' => 'coreshop.form.product_price_rule.action.new_price_configuration.price',
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
@@ -31,6 +30,6 @@ final class NewPriceConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_price_rule_action_new_price';
+        return 'coreshop_product_price_rule_action_price';
     }
 }

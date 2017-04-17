@@ -43,37 +43,37 @@ services:
     arguments: ['@coreshop.repository.carrier']
 
   coreshop.form.type.shipping_rule.rule_action:
-    class: CoreShop\Bundle\RuleBundle\Form\Type\RuleActionType
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType
     tags:
         - { name: form.type }
     arguments: ['%coreshop.model.rule_action.class%', '%coreshop.form.type.shipping_rule.rule_action.validation_groups%', '@coreshop.form_registry.shipping_rule.actions']
 
   coreshop.form.shipping_rule.type.rule_action.collection:
-    class: CoreShop\Bundle\RuleBundle\Form\Type\RuleActionCollectionType
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionCollectionType
     tags:
         - { name: form.type }
     arguments: ['@coreshop.registry.shipping_rule.actions']
 
   coreshop.form.shipping_rule.type.rule_condition.collection:
-    class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionCollectionType
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionCollectionType
     tags:
         - { name: form.type }
     arguments: ['@coreshop.registry.shipping_rule.conditions']
 
   coreshop.form.shipping_rule.type.rule_action_choice:
-    class: CoreShop\Bundle\RuleBundle\Form\Type\RuleActionChoiceType
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionChoiceType
     tags:
         - { name: form.type }
     arguments: ['%coreshop.shipping_rule.actions%']
 
   coreshop.form.shipping_rule.type.rule_condition:
-    class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionType
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType
     tags:
         - { name: form.type }
     arguments: ['%coreshop.model.rule_condition.class%', '%coreshop.form.type.shipping_rule.rule_condition.validation_groups%', '@coreshop.form_registry.shipping_rule.conditions']
 
   coreshop.form.shipping_rule.type.rule_condition_choice:
-    class: CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionChoiceType
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionChoiceType
     tags:
         - { name: form.type }
     arguments: ['%coreshop.shipping_rule.conditions%']

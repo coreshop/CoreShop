@@ -75,7 +75,7 @@ class ProductPriceRuleCalculator implements ProductPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($subject, $withTax = true)
+    public function getDiscount($subject, $price)
     {
         $discount = 0;
 
@@ -90,7 +90,7 @@ class ProductPriceRuleCalculator implements ProductPriceCalculatorInterface
                     $processor = $this->actionServiceRegistry->get($action->getType());
 
                     if ($processor instanceof ProductPriceActionProcessorInterface) {
-                        $discount += $processor->getDiscount($subject, $action->getConfiguration(), $withTax);
+                        $discount += $processor->getDiscount($subject, $price, $action->getConfiguration());
                     }
                 }
             }

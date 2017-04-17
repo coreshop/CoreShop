@@ -45,10 +45,20 @@ services:
       - { name: coreshop.product_price_rule.condition, type: conditions, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
   # Product Price Rule ACTIONS
-  coreshop.product_price_rule.action.discount:
-    class: CoreShop\Bundle\ProductBundle\Rule\Action\NewPriceActionProcessor
+  coreshop.product_price_rule.action.price:
+    class: CoreShop\Bundle\ProductBundle\Rule\Action\PriceActionProcessor
     tags:
-      - { name: coreshop.product_price_rule.action, type: newPrice, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\NewPriceConfigurationType }
+      - { name: coreshop.product_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
+
+  coreshop.product_price_rule.action.discount_amount:
+    class: CoreShop\Bundle\ProductBundle\Rule\Action\DiscountAmountActionProcessor
+    tags:
+      - { name: coreshop.product_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
+
+  coreshop.product_price_rule.action.discount_percent:
+    class: CoreShop\Bundle\ProductBundle\Rule\Action\DiscountPercentActionProcessor
+    tags:
+      - { name: coreshop.product_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
 
   # Price Calculators

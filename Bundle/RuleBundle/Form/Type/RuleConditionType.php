@@ -4,7 +4,7 @@ namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class RuleConditionType extends AbstractConfigurableRuleElementType
+class RuleConditionType extends AbstractConfigurableRuleElementType
 {
     /**
      * {@inheritdoc}
@@ -12,15 +12,6 @@ final class RuleConditionType extends AbstractConfigurableRuleElementType
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
         parent::buildForm($builder, $options);
-
-        $builder
-            ->add('type', RuleConditionChoiceType::class, [
-                'label' => 'coreshop.form.rule.condition.type',
-                'attr' => [
-                    'data-form-collection' => 'update',
-                ],
-            ])
-        ;
     }
 
     /**

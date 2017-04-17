@@ -19,12 +19,10 @@ pimcore.plugin.coreshop.rules.actions.discountPercent = Class.create(pimcore.plu
 
     getForm : function () {
         var percentValue = 0;
-        var currencyValue = null;
         var me = this;
 
         if (this.data) {
             percentValue = this.data.percent;
-            currencyValue = this.data.currency;
         }
 
         var percent = new Ext.form.NumberField({
@@ -35,33 +33,9 @@ pimcore.plugin.coreshop.rules.actions.discountPercent = Class.create(pimcore.plu
             maxValue : 100,
             decimalPrecision : 0
         });
-
-        var currency = {
-            xtype: 'combo',
-            fieldLabel: t('coreshop_action_discountPercent_currency'),
-            typeAhead: true,
-            value: currencyValue,
-            mode: 'local',
-            listWidth: 100,
-            width : 200,
-            store: pimcore.globalmanager.get('coreshop_currencies'),
-            displayField: 'name',
-            valueField: 'id',
-            forceSelection: true,
-            triggerAction: 'all',
-            name:'currency',
-            listeners: {
-                listeners: {
-                    beforerender: function () {
-                        this.setValue(me.data.currency);
-                    }
-                }
-            }
-        };
-
         this.form = new Ext.form.Panel({
             items : [
-                percent, currency
+                percent
             ]
         });
 

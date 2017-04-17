@@ -6,12 +6,11 @@ interface ProductPriceActionProcessorInterface
 {
     /**
      * @param $subject
+     * @param $price
      * @param array $configuration
-     * @param bool  $withTax
-     *
      * @return mixed
      */
-    public function getDiscount($subject, array $configuration, $withTax = true);
+    public function getDiscount($subject, $price, array $configuration);
 
     /**
      * @param $subject

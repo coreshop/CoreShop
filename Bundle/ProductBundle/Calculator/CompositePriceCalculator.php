@@ -40,12 +40,12 @@ class CompositePriceCalculator implements ProductPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($subject, $withTax = true)
+    public function getDiscount($subject, $price)
     {
         $discount = 0;
 
         foreach ($this->priceRuleCalculators as $calculator) {
-            $discount += $calculator->getDiscount($subject, $withTax);
+            $discount += $calculator->getDiscount($subject, $price);
         }
 
         return $discount;

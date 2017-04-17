@@ -1,15 +1,18 @@
 <?php
 
-namespace CoreShop\Bundle\RuleBundle\Form\Type;
+namespace CoreShop\Bundle\ProductBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\Core\AbstractConfigurationCollectionType;
+use CoreShop\Bundle\RuleBundle\Form\Type\RuleActionCollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RuleConditionCollectionType extends AbstractConfigurationCollectionType
+final class ProductPriceRuleActionCollectionType extends RuleActionCollectionType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+
+        $resolver->setDefault('entry_type', ProductPriceRuleActionType::class);
     }
 
     /**
@@ -17,6 +20,6 @@ class RuleConditionCollectionType extends AbstractConfigurationCollectionType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_rule_condition_collection';
+        return 'coreshop_product_price_rule_action_collection';
     }
 }

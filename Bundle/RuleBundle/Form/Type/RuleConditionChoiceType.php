@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class RuleConditionChoiceType extends AbstractType
+class RuleConditionChoiceType extends AbstractType
 {
     /**
      * @var array

@@ -19,17 +19,17 @@ class Store extends AbstractResource implements StoreInterface
     /**
      * @var string
      */
-    protected $template;
+    protected $template = "standard";
 
     /**
      * @var bool
      */
-    protected $isDefault;
+    protected $isDefault = false;
 
     /**
      * @var int
      */
-    protected $siteId;
+    protected $siteId = 0;
 
     /**
      * @return string

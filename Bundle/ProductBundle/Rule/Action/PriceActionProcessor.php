@@ -4,12 +4,12 @@ namespace CoreShop\Bundle\ProductBundle\Rule\Action;
 
 use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 
-class NewPriceActionProcessor implements ProductPriceActionProcessorInterface
+class PriceActionProcessor implements ProductPriceActionProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($subject, array $configuration, $withTax = true)
+    public function getDiscount($subject, $price, array $configuration)
     {
         return null;
     }

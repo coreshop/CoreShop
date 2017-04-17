@@ -51,10 +51,6 @@ services:
     class: CoreShop\Bundle\ShippingBundle\Calculator\CompositePriceCalculator
     arguments: [['@coreshop.carrier.price_calculator.shipping_rules']]
 
-  coreshop.product.price_calculator:
-    alias: coreshop.product.price_calculator.default
-
-
   # Carrier Shipping Rule Validator
   coreshop.carrier.cart.checker:
     class: CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleChecker

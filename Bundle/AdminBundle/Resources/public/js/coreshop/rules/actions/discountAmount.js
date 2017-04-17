@@ -19,12 +19,10 @@ pimcore.plugin.coreshop.rules.actions.discountAmount = Class.create(pimcore.plug
 
     getForm : function () {
         var amountValue = 0;
-        var currencyValue = null;
         var me = this;
 
         if (this.data) {
             amountValue = this.data.amount;
-            currencyValue = this.data.currency;
         }
 
         var amount = new Ext.form.NumberField({
@@ -34,32 +32,9 @@ pimcore.plugin.coreshop.rules.actions.discountAmount = Class.create(pimcore.plug
             decimalPrecision : 2
         });
 
-        var currency = {
-            xtype: 'combo',
-            fieldLabel: t('coreshop_action_discountAmount_currency'),
-            typeAhead: true,
-            value: currencyValue,
-            mode: 'local',
-            listWidth: 100,
-            width : 200,
-            store: pimcore.globalmanager.get('coreshop_currencies'),
-            displayField: 'name',
-            valueField: 'id',
-            forceSelection: true,
-            triggerAction: 'all',
-            name:'currency',
-            listeners: {
-                listeners: {
-                    beforerender: function () {
-                        this.setValue(me.data.currency);
-                    }
-                }
-            }
-        };
-
         this.form = new Ext.form.Panel({
             items : [
-                amount, currency
+                amount
             ]
         });
 

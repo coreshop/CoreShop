@@ -103,7 +103,7 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/object/objectMultihref.js',
             '/bundles/coreshopadmin/js/coreshop/object/elementHref.js',
             '/bundles/coreshopadmin/js/coreshop/object/variantGenerator.js',
-            '/bundles/coreshopadmin/js/coreshop/product/specificprice/actions/newPrice.js',
+            '/bundles/coreshopadmin/js/coreshop/product/specificprice/actions/price.js',
             '/bundles/coreshopadmin/js/coreshop/orders/grid.js',
             '/bundles/coreshopadmin/js/coreshop/indexes/item.js',
             '/bundles/coreshopadmin/js/coreshop/indexes/panel.js',

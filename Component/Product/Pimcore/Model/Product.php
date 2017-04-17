@@ -33,16 +33,18 @@ class Product extends AbstractPimcoreModel implements ProductInterface
         $calculator = $this->getContainer()->get('coreshop.product.price_calculator');
 
         $netPrice = $calculator->getPrice($this);
+        $discount = $calculator->getDiscount($this, $netPrice);
+        $price = $netPrice - $discount;
 
         if ($withTax) {
             $taxCalculator = $this->getTaxCalculator();
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
-                $netPrice = $taxCalculator->applyTaxes($netPrice);
+                $price = $taxCalculator->applyTaxes($price);
             }
         }
 
-        return $netPrice;
+        return $price;
     }
 
     /**

@@ -11,11 +11,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.rules.actions.newPrice');
+pimcore.registerNS('pimcore.plugin.coreshop.rules.actions.price');
 
-pimcore.plugin.coreshop.rules.actions.newPrice = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
+pimcore.plugin.coreshop.rules.actions.price = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
 
-    type : 'newPrice',
+    type : 'price',
 
     getForm : function () {
         var priceValue = 0;
@@ -25,7 +25,7 @@ pimcore.plugin.coreshop.rules.actions.newPrice = Class.create(pimcore.plugin.cor
         }
 
         var price = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_action_newPrice'),
+            fieldLabel:t('coreshop_action_price'),
             name:'price',
             value : priceValue,
             decimalPrecision : 2
