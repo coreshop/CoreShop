@@ -12,3 +12,10 @@ services:
       ['@security.token_storage']
     tags:
       - { name: coreshop.product_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\CustomersConfigurationType }
+
+  coreshop.product_price_rule.condition.countries:
+    class: CoreShop\Bundle\CoreBundle\Product\ProductPriceRule\Condition\CountriesConditionChecker
+    arguments:
+      ['@coreshop.context.country']
+    tags:
+      - { name: coreshop.product_price_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\CountriesConfigurationType }
