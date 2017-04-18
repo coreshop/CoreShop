@@ -75,4 +75,9 @@ interface ProposalItemInterface extends ResourceInterface
      * @return boolean
      */
     public function getIsGiftItem();
+
+    /**
+     * @return float
+     */
+    public function getWeight();
 }

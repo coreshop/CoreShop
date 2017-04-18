@@ -304,7 +304,21 @@ class Cart extends AbstractPimcoreModel implements CartInterface
 
         return false;
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalWeight()
+    {
+        $weight = 0;
+        
+        foreach ($this->getItems() as $item) {
+            $weight += $item->getWeight();
+        }
+        
+        return $weight;
+    }
+    
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */

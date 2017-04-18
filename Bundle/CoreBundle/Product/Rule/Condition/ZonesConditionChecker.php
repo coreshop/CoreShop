@@ -1,14 +1,15 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Product\ProductPriceRule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Product\Rule\Condition;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use Webmozart\Assert\Assert;
 
-class CountriesConditionChecker implements ConditionCheckerInterface
+class ZonesConditionChecker implements ConditionCheckerInterface
 {
     /**
      * @var CountryContextInterface
@@ -28,14 +29,16 @@ class CountriesConditionChecker implements ConditionCheckerInterface
      */
     public function isValid($subject, array $configuration)
     {
-        Assert::isInstanceOf($subject, ProductInterface::class);
-
         $country = $this->countryContext->getCountry();
 
         if (!$country instanceof CountryInterface) {
             return false;
         }
 
-        return in_array($country->getId(), $configuration['countries']);
+        if (!$country->getZone() instanceof ZoneInterface) {
+            return false;
+        }
+
+        return in_array($country->getZone()->getId(), $configuration['zones']);
     }
 }

@@ -6,6 +6,8 @@ imports:
   - { resource: "services/order.yml" }
   - { resource: "services/listeners.yml" }
   - { resource: "services/product.yml" }
+  - { resource: "services/shipping.yml" }
+  - { resource: "services/rules.yml" }
 
 parameters:
   coreshop.core.object_path: '/coreshop'

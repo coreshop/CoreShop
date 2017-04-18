@@ -5,7 +5,7 @@ services:
   coreshop.registry.shipping_rule.conditions:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:
-      - CoreShop\Bundle\ShippingBundle\Rule\Condition\ShippingConditionCheckerInterface
+      - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
       - shipping-rule-conditions
 
   coreshop.form_registry.shipping_rule.conditions:
@@ -30,8 +30,39 @@ services:
   coreshop.shipping_rule.condition.amount:
     class: CoreShop\Bundle\ShippingBundle\Rule\Condition\AmountConditionChecker
     tags:
-      - { name: coreshop.shipping_rule.condition, type: amount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Condition\AmountConditionType }
+      - { name: coreshop.shipping_rule.condition, type: amount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Condition\AmountConfigurationType }
 
+  coreshop.shipping_rule.condition.categories:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Condition\CategoriesConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: categories, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Condition\CategoriesConfigurationType }
+
+  coreshop.shipping_rule.condition.products:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Condition\ProductsConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: products, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Condition\ProductsConfigurationType }
+
+  coreshop.shipping_rule.condition.postcodes:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Condition\PostcodeConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: postcodes, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Condition\PostcodesConfigurationType }
+
+  coreshop.shipping_rule.condition.weight:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Condition\WeightConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: weight, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Condition\WeightConfigurationType }
+
+  coreshop.shipping_rule.condition.nested:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Condition\NestedConditionChecker
+    arguments: ['@coreshop.shipping_rule.processor', '@coreshop.repository.shipping_rule']
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: conditions, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Condition\NestedConfigurationType }
+
+  coreshop.shipping_rule.condition.shipping_rule:
+    class: CoreShop\Bundle\ShippingBundle\Rule\Condition\ShippingRuleConditionChecker
+    arguments: ['@coreshop.shipping_rule.processor', '@coreshop.repository.shipping_rule']
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Condition\ShippingRuleConfigurationType }
 
   # Shipping Rule ACTIONS
   coreshop.shipping_rule.action.price:

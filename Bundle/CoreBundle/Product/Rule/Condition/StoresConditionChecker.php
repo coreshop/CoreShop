@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Product\ProductPriceRule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Product\Rule\Condition;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
@@ -28,8 +28,6 @@ class StoresConditionChecker implements ConditionCheckerInterface
      */
     public function isValid($subject, array $configuration)
     {
-        Assert::isInstanceOf($subject, ProductInterface::class);
-
         $store = $this->storeContext->getStore();
 
         if (!$store instanceof StoreInterface) {

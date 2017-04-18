@@ -1,12 +1,12 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class CountriesConfigurationType extends AbstractType
+final class CurrenciesConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -14,7 +14,7 @@ final class CountriesConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('countries', CollectionType::class, [
+            ->add('currencies', CollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
@@ -26,6 +26,6 @@ final class CountriesConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_price_rule_condition_countries';
+        return 'coreshop_rule_condition_currencies';
     }
 }

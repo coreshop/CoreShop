@@ -203,4 +203,14 @@ interface ProductInterface extends PimcoreModelInterface
      * @param string $language
      */
     public function setDescription($description, $language = null);
+
+    /**
+     * @return float
+     */
+    public function getWeight();
+
+    /**
+     * @param float $weight
+     */
+    public function setWeight($weight);
 }

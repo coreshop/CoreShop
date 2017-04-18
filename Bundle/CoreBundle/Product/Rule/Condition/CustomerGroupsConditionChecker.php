@@ -1,14 +1,15 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Product\ProductPriceRule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Product\Rule\Condition;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
 
-class CustomersConditionChecker implements ConditionCheckerInterface
+class CustomerGroupsConditionChecker implements ConditionCheckerInterface
 {
     /**
      * @var TokenStorageInterface
@@ -28,14 +29,20 @@ class CustomersConditionChecker implements ConditionCheckerInterface
      */
     public function isValid($subject, array $configuration)
     {
-        Assert::isInstanceOf($subject, ProductInterface::class);
-
         $customer = $this->tokenStorage->getToken()->getUser();
 
         if (!$customer instanceof CustomerInterface) {
             return false;
         }
 
-        return in_array($customer->getId(), $configuration['customers']);
+        foreach ($customer->getCustomerGroups() as $group) {
+            if ($group instanceof ResourceInterface) {
+                if (in_array($group->getId(), $configuration['customerGroups'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

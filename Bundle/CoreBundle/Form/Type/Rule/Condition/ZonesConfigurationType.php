@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -26,6 +26,6 @@ final class ZonesConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_price_rule_condition_zones';
+        return 'coreshop_rule_condition_zones';
     }
 }

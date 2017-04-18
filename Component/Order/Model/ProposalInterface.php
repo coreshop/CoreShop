@@ -134,4 +134,9 @@ interface ProposalInterface extends ResourceInterface
      * @return static
      */
     public function setInvoiceAddress($invoiceAddress);
+
+    /**
+     * @return float
+     */
+    public function getTotalWeight();
 }

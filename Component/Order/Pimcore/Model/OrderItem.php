@@ -77,6 +77,14 @@ class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
     /**
      * {@inheritdoc}
      */
+    public function getWeight()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIsGiftItem()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
