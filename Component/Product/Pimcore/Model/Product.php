@@ -36,6 +36,10 @@ class Product extends AbstractPimcoreModel implements ProductInterface
         $discount = $calculator->getDiscount($this, $netPrice);
         $price = $netPrice - $discount;
 
+        if ($price < 0) {
+            $price = 0;
+        }
+
         if ($withTax) {
             $taxCalculator = $this->getTaxCalculator();
 
