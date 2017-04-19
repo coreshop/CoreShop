@@ -1,0 +1,6 @@
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopProductSpecificPriceRules: CoreShop\Bundle\ProductBundle\CoreExtension\ProductSpecificPriceRules

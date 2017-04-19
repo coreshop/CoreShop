@@ -1,0 +1,83 @@
+parameters:
+  coreshop.form.type.product_specific_price_rule.validation_groups: [coreshop]
+  coreshop.form.type.product_specific_price_rule.rule.validation_groups: [coreshop]
+  coreshop.form.type.product_specific_price_rule.rule_action.validation_groups: [coreshop]
+  coreshop.form.type.product_specific_price_rule.rule_condition.validation_groups: [coreshop]
+  coreshop.form.type.product_specific_price_rule.promotion_coupon.validation_groups: [coreshop]
+
+services:
+  # Forms
+  coreshop.form.type.product_specific_price_rule:
+    class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.product_specific_price_rule.class%', '%coreshop.form.type.product_specific_price_rule.validation_groups%']
+
+  coreshop.form.type.product_specific_price_rule.rule_action:
+    class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.rule_action.class%', '%coreshop.form.type.product_specific_price_rule.rule_action.validation_groups%', '@coreshop.form_registry.product_specific_price_rule.actions']
+
+  coreshop.form.product_specific_price_rule.type.rule_action.collection:
+    class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionCollectionType
+    tags:
+        - { name: form.type }
+    arguments: ['@coreshop.registry.product_specific_price_rule.actions']
+
+  coreshop.form.product_specific_price_rule.type.rule_condition.collection:
+    class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionCollectionType
+    tags:
+        - { name: form.type }
+    arguments: ['@coreshop.registry.product_specific_price_rule.conditions']
+
+  coreshop.form.product_specific_price_rule.type.rule_action_choice:
+    class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionChoiceType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.product_specific_price_rule.actions%']
+
+  coreshop.form.product_specific_price_rule.type.rule_condition:
+    class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.rule_condition.class%', '%coreshop.form.type.product_specific_price_rule.rule_condition.validation_groups%', '@coreshop.form_registry.product_specific_price_rule.conditions']
+
+  coreshop.form.product_specific_price_rule.type.rule_condition_choice:
+    class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionChoiceType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.product_specific_price_rule.conditions%']
+
+  # Services
+  coreshop.registry.product_specific_price_rule.conditions:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
+      - specific-product-price-rule-conditions
+
+  coreshop.form_registry.product_specific_price_rule.conditions:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  coreshop.registry.product_specific_price_rule.actions:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
+      - product-price-rule-actions
+
+  coreshop.form_registry.product_specific_price_rule.actions:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  # Price Rule Processor
+  coreshop.product_specific_price_rule.processor:
+    class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
+    arguments:
+      - '@coreshop.registry.product_specific_price_rule.conditions'
+
+  # Price Calculators
+  coreshop.product.price_calculator.product_specific_price_rules:
+    class: CoreShop\Bundle\ProductBundle\Calculator\ProductSpecificPriceRuleCalculator
+    arguments:
+      - '@coreshop.repository.product_specific_price_rule'
+      - '@coreshop.product_specific_price_rule.processor'
+      - '@coreshop.registry.product_specific_price_rule.actions'

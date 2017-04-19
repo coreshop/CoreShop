@@ -11,10 +11,10 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.object.classes.data.coreShopSpecificPrices');
-pimcore.object.classes.data.coreShopSpecificPrices = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
+pimcore.registerNS('pimcore.object.classes.data.coreShopProductSpecificPriceRules');
+pimcore.object.classes.data.coreShopProductSpecificPriceRules = Class.create(pimcore.plugin.coreshop.object.classes.data.data, {
 
-    type: 'coreShopSpecificPrices',
+    type: 'coreShopProductSpecificPriceRules',
     /**
      * define where this datatype is allowed
      */
@@ -40,7 +40,7 @@ pimcore.object.classes.data.coreShopSpecificPrices = Class.create(pimcore.plugin
     },
 
     getTypeName: function () {
-        return t('coreshop_specific_prices');
+        return t('coreshop_product_specific_price_rules');
     },
 
     getGroup: function () {
@@ -48,6 +48,6 @@ pimcore.object.classes.data.coreShopSpecificPrices = Class.create(pimcore.plugin
     },
 
     getIconClass: function () {
-        return 'coreshop_icon_specific_prices';
+        return 'coreshop_icon_product_specific_price_rules';
     }
 });

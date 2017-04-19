@@ -11,10 +11,10 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS("pimcore.object.tags.coreShopSpecificPrices");
-pimcore.object.tags.coreShopSpecificPrices = Class.create(pimcore.object.tags.abstract, {
+pimcore.registerNS("pimcore.object.tags.coreShopProductSpecificPriceRules");
+pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.object.tags.abstract, {
 
-    type: "coreShopSpecificPrices",
+    type: "coreShopProductSpecificPriceRules",
     panels : [],
 
     /**
@@ -80,14 +80,14 @@ pimcore.object.tags.coreShopSpecificPrices = Class.create(pimcore.object.tags.ab
                         type: 'coreshop-add',
                         tooltip: t('add'),
                         handler : function () {
-                            this.panels.push(new pimcore.plugin.coreshop.product.specificprice.object.item(this, {}, -1, 'productSpecificPrice'));
+                            this.panels.push(new pimcore.plugin.coreshop.product.specificprice.object.item(this, {}, -1, 'productSpecificPriceRule'));
                         }.bind(this)
                     }
                 ]
             });
 
             Ext.Ajax.request({
-                url: '/admin/CoreShop/product-specific-price/get-config',
+                url: '/admin/CoreShop/product_specific_price_rules/get-config',
                 method: 'GET',
                 success: function (result) {
                     var config = Ext.decode(result.responseText);
@@ -105,7 +105,7 @@ pimcore.object.tags.coreShopSpecificPrices = Class.create(pimcore.object.tags.ab
 
     showPriceRules : function() {
         Ext.each(this.data, function(data) {
-            var panel = new pimcore.plugin.coreshop.product.specificprice.object.item(this, data, data.id, 'productSpecificPrice');
+            var panel = new pimcore.plugin.coreshop.product.specificprice.object.item(this, data, data.id, 'productSpecificPriceRule');
 
             this.panels.push(panel);
 

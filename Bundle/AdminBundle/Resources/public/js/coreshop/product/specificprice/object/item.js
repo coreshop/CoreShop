@@ -71,13 +71,13 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
 
     getSaveData : function () {
         if(this.settingsForm.getEl()) {
-            var saveData = {};
-
-            // general settings
-            saveData['id'] = this.data.id;
-            saveData['settings'] = this.settingsForm.getForm().getFieldValues();
+            saveData = this.settingsForm.getForm().getFieldValues();
             saveData['conditions'] = this.conditions.getConditionsData();
             saveData['actions'] = this.actions.getActionsData();
+
+            if (this.data.id) {
+                saveData['id'] = this.data.id;
+            }
 
             return saveData;
         }

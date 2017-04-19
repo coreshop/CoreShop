@@ -1,31 +1,9 @@
 imports:
   - { resource: "services/form.yml" }
+  - { resource: "services/price-rules.yml" }
+  - { resource: "services/specific-price-rules.yml" }
 
 services:
-  coreshop.registry.product_price_rule.conditions:
-    class: CoreShop\Component\Registry\ServiceRegistry
-    arguments:
-      - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
-      - product-price-rule-conditions
-
-  coreshop.form_registry.product_price_rule.conditions:
-    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
-
-  coreshop.registry.product_price_rule.actions:
-    class: CoreShop\Component\Registry\ServiceRegistry
-    arguments:
-      - CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
-      - product-price-rule-actions
-
-  coreshop.form_registry.product_price_rule.actions:
-    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
-
-  # Price Rule Processor
-  coreshop.product_price_rule.processor:
-    class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
-    arguments:
-      - '@coreshop.registry.product_price_rule.conditions'
-
   # Product Price Rule CONDITIONS
   coreshop.product_price_rule.condition.products:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\ProductsConditionChecker
@@ -36,6 +14,7 @@ services:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\NestedConditionChecker
     tags:
       - { name: coreshop.product_price_rule.condition, type: conditions, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\NestedConfigurationType }
+      - { name: coreshop.product_specific_price_rule.condition, type: conditions, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
   coreshop.product_price_rule.condition.categories:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\CategoriesConditionChecker
@@ -46,39 +25,35 @@ services:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\TimeSpanConditionChecker
     tags:
       - { name: coreshop.product_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+      - { name: coreshop.product_specific_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
   # Product Price Rule ACTIONS
   coreshop.product_price_rule.action.price:
     class: CoreShop\Bundle\ProductBundle\Rule\Action\PriceActionProcessor
     tags:
       - { name: coreshop.product_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
+      - { name: coreshop.product_specific_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
 
   coreshop.product_price_rule.action.discount_amount:
     class: CoreShop\Bundle\ProductBundle\Rule\Action\DiscountAmountActionProcessor
     tags:
       - { name: coreshop.product_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
+      - { name: coreshop.product_specific_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
 
   coreshop.product_price_rule.action.discount_percent:
     class: CoreShop\Bundle\ProductBundle\Rule\Action\DiscountPercentActionProcessor
     tags:
       - { name: coreshop.product_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
-
+      - { name: coreshop.product_specific_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
   # Price Calculators
-  coreshop.product.price_calculator.product_price_rules:
-    class: CoreShop\Bundle\ProductBundle\Calculator\ProductPriceRuleCalculator
-    arguments:
-      - '@coreshop.repository.product_price_rule'
-      - '@coreshop.product_price_rule.processor'
-      - '@coreshop.registry.product_price_rule.actions'
-
   coreshop.product.price_calculator.property_price:
     class: CoreShop\Bundle\ProductBundle\Calculator\PropertyPriceCalculator
 
   coreshop.product.price_calculator.default:
     class: CoreShop\Bundle\ProductBundle\Calculator\CompositePriceCalculator
     arguments:
-      - ['@coreshop.product.price_calculator.property_price', '@coreshop.product.price_calculator.product_price_rules']
+      - ['@coreshop.product.price_calculator.property_price', '@coreshop.product.price_calculator.product_price_rules', '@coreshop.product.price_calculator.product_specific_price_rules']
 
   coreshop.product.price_calculator:
     alias: coreshop.product.price_calculator.default

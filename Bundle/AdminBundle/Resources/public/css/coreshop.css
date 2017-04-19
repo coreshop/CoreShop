@@ -54,7 +54,7 @@
     background: url(/bundles/coreshopadmin/img/flat/order-create.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_price_rule, .pimcore_icon_coreShopSpecificPrices {
+.coreshop_icon_price_rule, .pimcore_icon_coreShopProductSpecificPriceRules {
     background: url(/bundles/coreshopadmin/img/flat/price-rules.svg) center center no-repeat !important;
 }
 
