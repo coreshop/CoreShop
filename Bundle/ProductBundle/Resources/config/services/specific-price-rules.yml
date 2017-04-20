@@ -81,3 +81,5 @@ services:
       - '@coreshop.repository.product_specific_price_rule'
       - '@coreshop.product_specific_price_rule.processor'
       - '@coreshop.registry.product_specific_price_rule.actions'
+    tags:
+      - { name: coreshop.product.price_calculator, type: product_specific_price_rules, priority: 30 }

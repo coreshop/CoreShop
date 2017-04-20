@@ -47,13 +47,24 @@ services:
       - { name: coreshop.product_specific_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
   # Price Calculators
+  coreshop.registry.product.price_calculators:
+    class: CoreShop\Component\Registry\PrioritizedServiceRegistry
+    arguments:
+      - CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface
+      - product-price-calculators
+
   coreshop.product.price_calculator.property_price:
     class: CoreShop\Bundle\ProductBundle\Calculator\PropertyPriceCalculator
+    tags:
+      - { name: coreshop.product.price_calculator, type: property, priority: 10 }
 
-  coreshop.product.price_calculator.default:
+  coreshop.product.price_calculator.tagged:
+    class: CoreShop\Bundle\ProductBundle\Calculator\ProductPriceCalculator
+    arguments: ['@coreshop.registry.product.price_calculators']
+
+  coreshop.product.price_calculator.composite:
     class: CoreShop\Bundle\ProductBundle\Calculator\CompositePriceCalculator
-    arguments:
-      - ['@coreshop.product.price_calculator.property_price', '@coreshop.product.price_calculator.product_price_rules', '@coreshop.product.price_calculator.product_specific_price_rules']
+    arguments: [['@coreshop.product.price_calculator.tagged']]
 
   coreshop.product.price_calculator:
-    alias: coreshop.product.price_calculator.default
+    alias: coreshop.product.price_calculator.composite
