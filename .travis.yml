@@ -16,7 +16,7 @@ matrix:
 before_install:
  - mkdir $TRAVIS_BUILD_DIR/plugin
  - mv !(plugin) plugin
- - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/pimcore
+ - git clone -b pimcore4 https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/pimcore
  - cd $TRAVIS_BUILD_DIR/pimcore
 # - git checkout 4.0.0-RC1
  - cd $TRAVIS_BUILD_DIR
