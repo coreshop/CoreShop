@@ -96,6 +96,12 @@ class CoreShop_Admin_OrderController extends Admin
                 'hidden' => true
             ],
             [
+                'text' => 'coreshop_paymentProvider',
+                'type' => 'string',
+                'dataIndex' => 'paymentProvider',
+                'width' => 150
+            ],
+            [
                 'text' => 'coreshop_total_tax',
                 'type' => 'float',
                 'dataIndex' => 'totalTax',
@@ -258,7 +264,8 @@ class CoreShop_Admin_OrderController extends Admin
             'currencyName' => $order->getCurrency() instanceof \CoreShop\Model\Currency ? $order->getCurrency()->getName() : '',
             'shop' => $order->getShop() instanceof \CoreShop\Model\Shop ? $order->getShop()->getId() : null,
             'customerName' => $order->getCustomer() instanceof CoreShop\Model\User ? $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname() : '',
-            'customerEmail' => $order->getCustomer() instanceof CoreShop\Model\User ? $order->getCustomer()->getEmail() : ''
+            'customerEmail' => $order->getCustomer() instanceof CoreShop\Model\User ? $order->getCustomer()->getEmail() : '',
+            'paymentProvider' => $order->getPaymentProvider()
         ];
 
         $element = array_merge($element, $this->prepareAddress($order->getShippingAddress(), 'shipping'), $this->prepareAddress($order->getBillingAddress(), 'billing'));
