@@ -20,13 +20,10 @@ class ProductSpecificPriceRuleCalculator extends AbstractPriceRuleCalculator
     protected function getPriceRules($subject)
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
-        Assert::isInstanceOf($this->productPriceRuleRepository, ProductSpecificPriceRuleRepositoryInterface::class);
 
         /**
-         * @var $productPriceRuleRepository ProductSpecificPriceRuleRepositoryInterface
+         * @var $subject ProductInterface
          */
-        $productPriceRuleRepository = $this->productPriceRuleRepository;
-
-        return $productPriceRuleRepository->findForProduct($subject);
+        return $subject->getSpecificPriceRules();
     }
 }

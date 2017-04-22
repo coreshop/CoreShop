@@ -54,36 +54,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getRules()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasRule(RuleInterface $rule)
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addRule(RuleInterface $rule)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeRule(RuleInterface $rule)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBasePrice($withTax = true)
     {
         $netPrice = $this->getPimcoreBasePrice();
@@ -225,6 +195,22 @@ class Product extends AbstractPimcoreModel implements ProductInterface
      * {@inheritdoc}
      */
     public function setName($name, $language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSpecificPriceRules()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSpecificPriceRules($specificPriceRules)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

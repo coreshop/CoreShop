@@ -5,6 +5,7 @@ namespace CoreShop\Component\Product\Model;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 
@@ -213,4 +214,14 @@ interface ProductInterface extends PimcoreModelInterface
      * @param float $weight
      */
     public function setWeight($weight);
+
+    /**
+     * @return RuleInterface[]
+     */
+    public function getSpecificPriceRules();
+
+    /**
+     * @param RuleInterface[] $specificPriceRules
+     */
+    public function setSpecificPriceRules($specificPriceRules);
 }

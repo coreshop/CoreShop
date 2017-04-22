@@ -6,9 +6,11 @@ use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\Object\ClassDefinition\Data;
 use Pimcore\Model\Object\Concrete;
+use Webmozart\Assert\Assert;
 
 class ProductSpecificPriceRules extends Data
 {
@@ -57,6 +59,16 @@ class ProductSpecificPriceRules extends Data
      */
     private function getSerializer() {
         return $this->getContainer()->get('jms_serializer');
+    }
+
+    /**
+     * @param $object
+     * @return ProductSpecificPriceRuleInterface[]
+     */
+    public function preGetData($object) {
+        Assert::isInstanceOf($object, ProductInterface::class);
+
+        return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
     }
 
     /**
