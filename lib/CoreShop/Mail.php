@@ -133,7 +133,7 @@ class Mail extends PimcoreMail
         //always add the model to email!
         $emailParameters['object'] = $order;
 
-        unset($emailParameters['____pimcore_cache_item__']);
+        unset($emailParameters['____pimcore_cache_item__'], $emailParameters['__dataVersionTimestamp']);
 
         $recipient = [
             [$order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()]
