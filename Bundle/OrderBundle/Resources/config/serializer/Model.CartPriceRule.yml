@@ -11,7 +11,15 @@ CoreShop\Component\Order\Model\CartPriceRule:
       expose: true
       type: string
       groups: [List, Detailed]
+    description:
+      expose: true
+      type: string
+      groups: [Detailed]
     highlight:
+      expose: true
+      type: boolean
+      groups: [Detailed]
+    active:
       expose: true
       type: boolean
       groups: [Detailed]

@@ -27,12 +27,14 @@ interface ProposalCartPriceRuleItemInterface extends ResourceInterface
     public function setVoucherCode($voucherCode);
 
     /**
+     * @param bool $withTax
      * @return float
      */
-    public function getDiscount();
+    public function getDiscount($withTax = true);
 
     /**
      * @param float $discount
+     * @param boolean $withTax
      */
-    public function setDiscount($discount);
+    public function setDiscount($discount, $withTax = true);
 }

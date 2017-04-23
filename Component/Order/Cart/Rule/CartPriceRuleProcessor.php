@@ -6,8 +6,10 @@ use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterf
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Rule\Model\ActionInterface;
 
 class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 {
@@ -22,13 +24,24 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     private $cartPriceRuleItemFactory;
 
     /**
+     * @var ServiceRegistryInterface
+     */
+    private $actionServiceRegistry;
+
+    /**
      * @param RuleValidationProcessorInterface $cartPriceRuleValidator
      * @param FactoryInterface $cartPriceRuleItemFactory
+     * @param ServiceRegistryInterface $actionServiceRegistry
      */
-    public function __construct(RuleValidationProcessorInterface $cartPriceRuleValidator, FactoryInterface $cartPriceRuleItemFactory)
+    public function __construct(
+        RuleValidationProcessorInterface $cartPriceRuleValidator,
+        FactoryInterface $cartPriceRuleItemFactory,
+        ServiceRegistryInterface $actionServiceRegistry
+    )
     {
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
         $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
+        $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
     /**
@@ -37,26 +50,31 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart) {
         $priceRuleItem = null;
         
-        foreach ($cart->getPriceRules() as $rule) {
+        foreach ($cart->getPriceRuleItems() as $rule) {
             if ($rule instanceof ProposalCartPriceRuleItemInterface) {
                 $cartPriceRule = $rule->getCartPriceRule();
 
                 if ($cartPriceRule instanceof CartPriceRuleInterface) {
                     if ($cartPriceRule->getId() === $cartPriceRule->getId()) {
                         $priceRuleItem = $rule;
+                        break;
                     }
                 }
             }
         }
         
         if ($this->cartPriceRuleValidator->isValid($cart, $cartPriceRule)) {
-            $discount = 0;
+            $discountNet = 0;
+            $discountGross = 0;
 
             foreach ($cartPriceRule->getActions() as $action) {
-                if ($action instanceof CartPriceRuleActionProcessorInterface) {
-                    $action->applyRule($cart, $action->getConfiguration());
+                if ($action instanceof ActionInterface) {
+                    $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
-                    $discount += $action->getDiscount($cart, false, $action->getConfiguration());
+                    $actionCommand->applyRule($cart, $action->getConfiguration());
+
+                    $discountNet += $actionCommand->getDiscount($cart, false, $action->getConfiguration());
+                    $discountGross += $actionCommand->getDiscount($cart, true, $action->getConfiguration());
                 }
             }
 
@@ -69,7 +87,8 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 
             $priceRuleItem->setCartPriceRule($cartPriceRule);
             $priceRuleItem->setVoucherCode($usedCode);
-            $priceRuleItem->setDiscount($discount);
+            $priceRuleItem->setDiscount($discountNet, false);
+            $priceRuleItem->setDiscount($discountGross, true);
             
             $cart->addPriceRule($priceRuleItem);
 

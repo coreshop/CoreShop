@@ -11,11 +11,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.timeSpan');
+pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.timespan');
 
-pimcore.plugin.coreshop.rules.conditions.timeSpan = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
+pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'timeSpan',
+    type : 'timespan',
 
     getForm : function () {
 

@@ -100,40 +100,37 @@
                 {% endif %}
             </tr>
         {% endfor %}
-        {# TODO
-        <?php foreach($this->cart->getPriceRules() as $rule) {
-            if($rule->getPriceRule() instanceof \CoreShop\Model\Cart\PriceRule && $rule->getPriceRule()->getDiscount($this->cart) > 0) {
-                ?>
+        {% if cart.hasPriceRules %}
+            {% for priceRule in cart.getPriceRuleItems %}
                 <tr>
                     <td colspan="2" class="text-center">
-                        <?=$rule->getPriceRule()->getLabel() ? $rule->getPriceRule()->getLabel() : $rule->getPriceRule()->getName()?> <?=$rule->getVoucherCode() ? '(' . $rule->getVoucherCode() . ')' : '' ?>
+                        {{ priceRule.cartPriceRule.getName }}
                     </td>
                     <td class="text-center">
 
                     </td>
                     <td class="text-right">
-                        -<?=$this->cart->formatPrice($rule->getPriceRule()->getDiscount($this->cart))?>
+                        -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
                     </td>
                     <td class="text-right">
-                        -<?=$this->cart->formatPrice($rule->getPriceRule()->getDiscount($this->cart))?>
+                        -{{ currency.convertAndFormat(priceRule.getDiscount(false)) }}
                     </td>
-                    <?php if($this->edit) { ?>
+                    {% if editAllowed %}
                         <td colspan="1" class="text-left cart-sub-total">
-                            <a title="<?=$this->translate("Remove")?>" class="btn btn-default tool-tip removeFromCart" href="<?=\CoreShop::getTools()->url(array("act" => "removepricerule", "id" => $rule->getPriceRule()->getId()), "coreshop_cart")?>">
+                            <a title="{{ 'remove'|trans }}" class="btn btn-default tool-tip removeFromCart" href="#">
                                 <i class="fa fa-times-circle"></i>
                             </a>
                         </td>
-                    <?php } ?>
+                    {% endif %}
                 </tr>
-                <?php
-            }
-        } ?>
-        #}
+            {% endfor %}
+        {% endif %}
+
         </tbody>
         <tfoot>
         {% set shipping = cart.getShipping(false) %}
         {% set shippingIt = cart.getShipping(true) %}
-        {% set discount = cart.getDiscount(true) %}
+        {% set discount = cart.getDiscount(false) %}
         {% set discountIt = cart.getDiscount(true) %}
         {% set payment = cart.getPaymentFee() %}
         {% set taxes = cart.getTaxes %}

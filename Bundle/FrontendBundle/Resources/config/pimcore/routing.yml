@@ -21,6 +21,12 @@ coreshop_shop_add_cart_item:
   defaults:
     _controller: coreshop.frontend.controller.cart:addItemAction
 
+coreshop_shop_add_cart_price_rule:
+  path: "%coreshop.frontend.base.url%/cart/add-price-rule"
+  methods: [GET]
+  defaults:
+    _controller: coreshop.frontend.controller.cart:cartPriceRuleAction
+
 coreshop_shop_remove_cart_item:
   path: "%coreshop.frontend.base.url%/cart/remove/{cartItemId}"
   methods: [GET]

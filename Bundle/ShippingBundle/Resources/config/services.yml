@@ -23,6 +23,7 @@ services:
   # Shipping Rule Processor
   coreshop.shipping_rule.processor:
     class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
+    shared: false
     arguments:
       - '@coreshop.registry.shipping_rule.conditions'
 
@@ -101,6 +102,7 @@ services:
   # Carrier Price Calculator
   coreshop.carrier.processor.shipping_rules:
     class: CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessor
+    shared: false
     arguments:
       - '@coreshop.registry.shipping_rule.actions'
 

@@ -45,7 +45,7 @@ class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
 
         /**
          * @var $subject CartInterface
-         * @var RuleInterface[]
+         * @var $rules RuleInterface[]
          */
         $rules = $subject->getPriceRules();
 

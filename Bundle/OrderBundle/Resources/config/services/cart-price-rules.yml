@@ -118,3 +118,4 @@ services:
     arguments:
       - '@coreshop.cart_price_rule.rule_validation.processor'
       - '@coreshop.factory.cart_price_rule_item'
+      - '@coreshop.registry.cart_price_rule.actions'

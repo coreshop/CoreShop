@@ -76,7 +76,7 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/rules/conditions/customerGroups.js',
             '/bundles/coreshopadmin/js/coreshop/rules/conditions/carriers.js',
             '/bundles/coreshopadmin/js/coreshop/rules/conditions/products.js',
-            '/bundles/coreshopadmin/js/coreshop/rules/conditions/timeSpan.js',
+            '/bundles/coreshopadmin/js/coreshop/rules/conditions/timespan.js',
             '/bundles/coreshopadmin/js/coreshop/rules/conditions/totalPerCustomer.js',
             '/bundles/coreshopadmin/js/coreshop/rules/conditions/zones.js',
             '/bundles/coreshopadmin/js/coreshop/rules/conditions/currencies.js',

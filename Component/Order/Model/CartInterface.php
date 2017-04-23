@@ -44,6 +44,16 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Checko
     /**
      * @return array
      */
+    public function getPriceRuleItems();
+
+    /**
+     * @param array $priceRuleItems
+     */
+    public function setPriceRuleItems($priceRuleItems);
+
+    /**
+     * @return array
+     */
     public function getPriceRules();
 
     /**

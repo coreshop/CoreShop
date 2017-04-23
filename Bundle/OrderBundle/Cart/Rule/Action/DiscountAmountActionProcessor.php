@@ -28,6 +28,17 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
      */
     public function getDiscount(CartInterface $cart, $withTax = true, array $configuration)
     {
-        return $configuration['amount'];
+        $amount = $configuration['amount'];
+
+        if ($withTax) {
+            $subTotalTe = $cart->getSubtotal(false);
+            $subTotalTax = $cart->getSubtotalTax();
+
+            $cartAverageTax = $subTotalTax / $subTotalTe;
+
+            $amount *= 1 + $cartAverageTax;
+        }
+
+        return $amount;
     }
 }

@@ -37,9 +37,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
             items: this.getItems()
         });
 
-        if (this.data && this.data.useMultipleVoucherCodes) {
-            this.addVoucherCodes();
-        }
+        this.addVoucherCodes();
 
         return this.panel;
     },
@@ -60,42 +58,13 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                 width: 250,
                 value: data.name
             }, {
-                xtype: 'textfield',
-                name: 'code',
-                fieldLabel: t('code'),
-                width: 250,
-                value: data.code,
-                disabled : this.data.useMultipleVoucherCodes
-            }, {
-                xtype: 'checkbox',
-                name: 'useMultipleVoucherCodes',
-                fieldLabel: t('coreshop_cart_pricerule_useMultipleVoucherCodes'),
-                checked: this.data.useMultipleVoucherCodes,
-                listeners : {
-                    change : function (cb, newValue, oldValue) {
-                        if (newValue) {
-                            this.addVoucherCodes();
-                            cb.up('form').down('[name="code"]').disable();
-                        } else {
-                            this.destroyVoucherCodes();
-                            cb.up('form').down('[name="code"]').enable();
-                        }
-                    }.bind(this)
-                }
-            }, {
                 xtype: 'textarea',
                 name: 'description',
                 fieldLabel: t('description'),
                 width: 400,
                 height: 100,
                 value: data.description
-            }, /*{
-                xtype: 'numberfield',
-                name: 'usagePerVoucherCode',
-                fieldLabel: t('coreshop_cart_pricerule_usagePerVoucherCode'),
-                width: 250,
-                value: data.usagePerVoucherCode
-            },*/ {
+            }, {
                 xtype: 'checkbox',
                 name: 'active',
                 fieldLabel: t('active'),

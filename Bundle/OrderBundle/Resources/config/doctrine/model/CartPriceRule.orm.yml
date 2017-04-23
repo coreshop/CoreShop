@@ -18,6 +18,9 @@ CoreShop\Component\Order\Model\CartPriceRule:
     highlight:
       column: highlight
       type: boolean
+    active:
+      column: active
+      type: boolean
   oneToMany:
     voucherCodes:
       targetEntity: CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface

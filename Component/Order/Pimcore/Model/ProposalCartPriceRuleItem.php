@@ -51,7 +51,23 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
     /**
      * {@inheritdoc}
      */
-    public function getDiscount()
+    public function getDiscount($withTax = true)
+    {
+        return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscount($discount, $withTax = true)
+    {
+        return $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscountNet()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -59,9 +75,24 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
     /**
      * {@inheritdoc}
      */
-    public function setDiscount($discount)
+    public function setDiscountNet($discountNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscountGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscountGross($discountGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }
