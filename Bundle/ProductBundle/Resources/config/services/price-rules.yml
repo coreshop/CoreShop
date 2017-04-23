@@ -72,6 +72,12 @@ services:
   coreshop.product_price_rule.processor:
     class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
     arguments:
+      - '@coreshop.product_price_rule.conditions.processor'
+
+  coreshop.product_price_rule.conditions.processor:
+    class: CoreShop\Component\RuleBundle\Condition\RuleConditionsValidationProcessor
+    shared: false
+    arguments:
       - '@coreshop.registry.product_price_rule.conditions'
 
   # Price Calculators

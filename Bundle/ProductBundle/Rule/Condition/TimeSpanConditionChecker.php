@@ -16,8 +16,8 @@ class TimeSpanConditionChecker implements ConditionCheckerInterface
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
         
-        $dateFrom = new Carbon($configuration['dateFrom'] / 1000);
-        $dateTo = new Carbon($configuration['dateTo'] / 1000);
+        $dateFrom = Carbon::createFromTimestamp($configuration['dateFrom'] / 1000);
+        $dateTo = Carbon::createFromTimestamp($configuration['dateTo'] / 1000);
 
         $date = Carbon::now();
 

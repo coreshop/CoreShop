@@ -21,11 +21,17 @@ services:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
   # Shipping Rule Processor
+  coreshop.shipping_rule.conditions.processor:
+    class: CoreShop\Component\RuleBundle\Condition\RuleConditionsValidationProcessor
+    shared: false
+    arguments:
+      - '@coreshop.registry.shipping_rule.conditions'
+
   coreshop.shipping_rule.processor:
     class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
     shared: false
     arguments:
-      - '@coreshop.registry.shipping_rule.conditions'
+      - '@coreshop.shipping_rule.conditions.processor'
 
   # Shipping CONDITIONS
   coreshop.shipping_rule.condition.amount:

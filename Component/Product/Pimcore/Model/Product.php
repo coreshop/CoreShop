@@ -23,10 +23,26 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     private $taxCalculator;
 
     /**
+     * @var float
+     */
+    private $priceNet = null;
+
+    /**
+     * @var float
+     */
+    private $priceGross = null;
+
+    /**
      * {@inheritdoc}
      */
     public function getPrice($withTax = true)
     {
+        $variable = "price" . ($withTax ? "Gross" : "Net");
+
+        if ($this->$variable) {
+            return $this->$variable;
+        }
+
         /**
          * @var ProductPriceCalculatorInterface
          */
@@ -48,7 +64,9 @@ class Product extends AbstractPimcoreModel implements ProductInterface
             }
         }
 
-        return $price;
+        $this->$variable = $price;
+
+        return $this->$variable;
     }
 
     /**

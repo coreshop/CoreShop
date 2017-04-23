@@ -69,10 +69,16 @@ services:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
   # Price Rule Processor
+  coreshop.product_specific_price_rule.conditions.processor:
+    class: CoreShop\Component\RuleBundle\Condition\RuleConditionsValidationProcessor
+    shared: false
+    arguments:
+      - '@coreshop.registry.product_specific_price_rule.conditions'
+
   coreshop.product_specific_price_rule.processor:
     class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
     arguments:
-      - '@coreshop.registry.product_specific_price_rule.conditions'
+      - '@coreshop.product_specific_price_rule.conditions.processor'
 
   # Price Calculators
   coreshop.product.price_calculator.product_specific_price_rules:

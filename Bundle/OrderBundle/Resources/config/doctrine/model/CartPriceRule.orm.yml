@@ -36,10 +36,12 @@ CoreShop\Component\Order\Model\CartPriceRule:
           price_rule_id:
             referencedColumnName: id
             nullable: false
+            onDelete: CASCADE
         inverseJoinColumns:
           condition_id:
             referencedColumnName: id
             nullable: false
+            onDelete: CASCADE
 
     actions:
       targetEntity: CoreShop\Component\Rule\Model\ActionInterface
@@ -51,7 +53,9 @@ CoreShop\Component\Order\Model\CartPriceRule:
           price_rule_id:
             referencedColumnName: id
             nullable: false
+            onDelete: CASCADE
         inverseJoinColumns:
           condition_id:
             referencedColumnName: id
             nullable: false
+            onDelete: CASCADE

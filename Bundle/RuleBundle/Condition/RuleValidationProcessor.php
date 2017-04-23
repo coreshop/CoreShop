@@ -4,6 +4,7 @@ namespace CoreShop\Component\RuleBundle\Condition;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -11,16 +12,16 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 class RuleValidationProcessor implements RuleValidationProcessorInterface
 {
     /**
-     * @var ServiceRegistryInterface
+     * @var RuleConditionsValidationProcessor
      */
-    private $ruleRegistry;
+    private $ruleConditionsValidationProcessor;
 
     /**
-     * @param ServiceRegistryInterface $ruleRegistry
+     * @param RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor
      */
-    public function __construct(ServiceRegistryInterface $ruleRegistry)
+    public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
-        $this->ruleRegistry = $ruleRegistry;
+        $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
     }
 
     /**
@@ -31,30 +32,6 @@ class RuleValidationProcessor implements RuleValidationProcessorInterface
      */
     public function isValid($subject, RuleInterface $rule)
     {
-        if (!$rule->hasConditions()) {
-            return true;
-        }
-
-        foreach ($rule->getConditions() as $condition) {
-            if (!$this->isConditionValid($subject, $condition)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param $subject
-     * @param ConditionInterface $condition
-     *
-     * @return bool
-     */
-    protected function isConditionValid($subject, ConditionInterface $condition)
-    {
-        /** @var ConditionCheckerInterface $checker */
-        $checker = $this->ruleRegistry->get($condition->getType());
-
-        return $checker->isValid($subject, $condition->getConfiguration());
+        return $this->ruleConditionsValidationProcessor->isValid($subject, $rule->getConditions());
     }
 }

@@ -131,8 +131,8 @@ class ProductSpecificPriceRules extends Data
     public function save($object, $params = [])
     {
         if ($object instanceof ProductInterface) {
-            $getter = "get" . ucfirst($this->getName());
-            $existingPriceRules =$object->$getter();
+            $getter = $this->getName();
+            $existingPriceRules = $object->$getter;
 
             $all = $this->load($object, $params);
             $founds = [];

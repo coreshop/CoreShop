@@ -32,10 +32,14 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
           price_rule_id:
             referencedColumnName: id
             nullable: false
+            onDelete: CASCADE
         inverseJoinColumns:
           condition_id:
             referencedColumnName: id
             nullable: false
+            onDelete: CASCADE
+      cascade:
+        - all
 
     actions:
       targetEntity: CoreShop\Component\Rule\Model\ActionInterface
@@ -47,7 +51,11 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
           price_rule_id:
             referencedColumnName: id
             nullable: false
+            onDelete: CASCADE
         inverseJoinColumns:
           condition_id:
             referencedColumnName: id
             nullable: false
+            onDelete: CASCADE
+      cascade:
+        - all

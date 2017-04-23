@@ -69,10 +69,16 @@ services:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
   # Price Rule Processor
+  coreshop.cart_price_rule.conditions.validation.processor:
+    class: CoreShop\Component\RuleBundle\Condition\RuleConditionsValidationProcessor
+    shared: false
+    arguments:
+      - '@coreshop.registry.cart_price_rule.conditions'
+
   coreshop.cart_price_rule.rule_validation.processor:
     class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
     arguments:
-      - '@coreshop.registry.cart_price_rule.conditions'
+      - '@coreshop.cart_price_rule.conditions.validation.processor'
 
   # Cart Price Rule CONDITIONS
   coreshop.cart_price_rule.condition.products:

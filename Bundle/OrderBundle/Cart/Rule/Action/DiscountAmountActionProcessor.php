@@ -34,9 +34,11 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
             $subTotalTe = $cart->getSubtotal(false);
             $subTotalTax = $cart->getSubtotalTax();
 
-            $cartAverageTax = $subTotalTax / $subTotalTe;
+            if ($subTotalTax > 0) {
+                $cartAverageTax = $subTotalTax / $subTotalTe;
 
-            $amount *= 1 + $cartAverageTax;
+                $amount *= 1 + $cartAverageTax;
+            }
         }
 
         return $amount;

@@ -59,16 +59,18 @@ abstract class AbstractPriceRuleCalculator implements ProductPriceCalculatorInte
          */
         $rules = $this->getPriceRules($subject);
 
-        foreach ($rules as $rule) {
-            if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
-                foreach ($rule->getActions() as $action) {
-                    $processor = $this->actionServiceRegistry->get($action->getType());
+        if (is_array($rules)) {
+            foreach ($rules as $rule) {
+                if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
+                    foreach ($rule->getActions() as $action) {
+                        $processor = $this->actionServiceRegistry->get($action->getType());
 
-                    if ($processor instanceof ProductPriceActionProcessorInterface) {
-                        $actionPrice = $processor->getPrice($subject, $action->getConfiguration());
+                        if ($processor instanceof ProductPriceActionProcessorInterface) {
+                            $actionPrice = $processor->getPrice($subject, $action->getConfiguration());
 
-                        if (!empty($actionPrice)) {
-                            $price = $actionPrice;
+                            if (!empty($actionPrice)) {
+                                $price = $actionPrice;
+                            }
                         }
                     }
                 }
@@ -90,13 +92,15 @@ abstract class AbstractPriceRuleCalculator implements ProductPriceCalculatorInte
          */
         $rules = $this->getPriceRules($subject);
 
-        foreach ($rules as $rule) {
-            if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
-                foreach ($rule->getActions() as $action) {
-                    $processor = $this->actionServiceRegistry->get($action->getType());
+        if (is_array($rules)) {
+            foreach ($rules as $rule) {
+                if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
+                    foreach ($rule->getActions() as $action) {
+                        $processor = $this->actionServiceRegistry->get($action->getType());
 
-                    if ($processor instanceof ProductPriceActionProcessorInterface) {
-                        $discount += $processor->getDiscount($subject, $price, $action->getConfiguration());
+                        if ($processor instanceof ProductPriceActionProcessorInterface) {
+                            $discount += $processor->getDiscount($subject, $price, $action->getConfiguration());
+                        }
                     }
                 }
             }
