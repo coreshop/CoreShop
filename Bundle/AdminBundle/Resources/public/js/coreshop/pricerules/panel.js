@@ -19,16 +19,16 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
      * @var string
      */
     layoutId: 'coreshop_price_rules_panel',
-    storeId : 'coreshop_pricerules',
+    storeId : 'coreshop_cart_price_rules',
     iconCls : 'coreshop_icon_price_rule',
     type : 'cart_pricerules',
 
     url : {
-        add : '/admin/CoreShop/price-rule/add',
-        delete : '/admin/CoreShop/price-rule/delete',
-        get : '/admin/CoreShop/price-rule/get',
-        list : '/admin/CoreShop/price-rule/list',
-        config : '/admin/CoreShop/price-rule/get-config'
+        add : '/admin/CoreShop/cart_price_rules/add',
+        delete : '/admin/CoreShop/cart_price_rules/delete',
+        get : '/admin/CoreShop/cart_price_rules/get',
+        list : '/admin/CoreShop/cart_price_rules/list',
+        config : '/admin/CoreShop/cart_price_rules/get-config'
     },
 
     getItemClass : function () {

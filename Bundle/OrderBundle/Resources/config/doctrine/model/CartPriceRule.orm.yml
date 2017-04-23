@@ -1,0 +1,60 @@
+CoreShop\Component\Order\Model\CartPriceRule:
+  type: mappedSuperclass
+  table: coreshop_cart_price_rule
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      column: name
+      type: string
+    description:
+      column: description
+      type: string
+      nullable: true
+    highlight:
+      column: highlight
+      type: boolean
+    code:
+      column: code
+      type: string
+    useMultipleVoucherCodes:
+      column: useMultipleVoucherCodes
+      type: boolean
+  oneToMany:
+    voucherCodes:
+      targetEntity: CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface
+      mappedBy: cartPriceRule
+  manyToMany:
+    conditions:
+      targetEntity: CoreShop\Component\Rule\Model\ConditionInterface
+      cascade:
+        - all
+      joinTable:
+        name: coreshop_cart_price_rule_conditions
+        joinColumns:
+          price_rule_id:
+            referencedColumnName: id
+            nullable: false
+        inverseJoinColumns:
+          condition_id:
+            referencedColumnName: id
+            nullable: false
+
+    actions:
+      targetEntity: CoreShop\Component\Rule\Model\ActionInterface
+      cascade:
+        - all
+      joinTable:
+        name: coreshop_cart_price_rule_action
+        joinColumns:
+          price_rule_id:
+            referencedColumnName: id
+            nullable: false
+        inverseJoinColumns:
+          condition_id:
+            referencedColumnName: id
+            nullable: false

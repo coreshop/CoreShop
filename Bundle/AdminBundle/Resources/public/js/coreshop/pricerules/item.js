@@ -18,7 +18,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
     iconCls : 'coreshop_icon_price_rule',
 
     url : {
-        save : '/admin/CoreShop/price-rule/save'
+        save : '/admin/CoreShop/cart_price_rules/save'
     },
 
     getPanel: function () {
@@ -55,22 +55,22 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
             border:false,
             items: [{
                 xtype: 'textfield',
-                name: 'label',
-                fieldLabel: t('label'),
+                name: 'name',
+                fieldLabel: t('name'),
                 width: 250,
-                value: data.label
+                value: data.name
             }, {
                 xtype: 'textfield',
                 name: 'code',
                 fieldLabel: t('code'),
                 width: 250,
                 value: data.code,
-                disabled : this.data.useMultipleVoucherCodes == '1'
+                disabled : this.data.useMultipleVoucherCodes
             }, {
                 xtype: 'checkbox',
                 name: 'useMultipleVoucherCodes',
                 fieldLabel: t('coreshop_cart_pricerule_useMultipleVoucherCodes'),
-                checked: this.data.useMultipleVoucherCodes == '1',
+                checked: this.data.useMultipleVoucherCodes,
                 listeners : {
                     change : function (cb, newValue, oldValue) {
                         if (newValue) {
@@ -89,22 +89,22 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                 width: 400,
                 height: 100,
                 value: data.description
-            }, {
+            }, /*{
                 xtype: 'numberfield',
                 name: 'usagePerVoucherCode',
                 fieldLabel: t('coreshop_cart_pricerule_usagePerVoucherCode'),
                 width: 250,
                 value: data.usagePerVoucherCode
-            }, {
+            },*/ {
                 xtype: 'checkbox',
                 name: 'active',
                 fieldLabel: t('active'),
-                checked: this.data.active == '1'
+                checked: this.data.active
             }, {
                 xtype: 'checkbox',
                 name: 'highlight',
                 fieldLabel: t('highlight'),
-                checked: this.data.highlight == '1'
+                checked: this.data.highlight
             }]
         });
 
@@ -132,7 +132,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                 pageSize: pimcore.helpers.grid.getDefaultPageSize(),
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/CoreShop/price-rule/get-voucher-codes',
+                    url: '/admin/CoreShop/cart_price_rules/get-voucher-codes',
                     reader: {
                         type: 'json',
                         rootProperty: 'data',
@@ -212,7 +212,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
                             handler : function () {
-                                pimcore.helpers.download('/admin/CoreShop/price-rule/export-voucher-codes?id=' + this.data.id);
+                                pimcore.helpers.download('/admin/CoreShop/cart_price_rules/export-voucher-codes?id=' + this.data.id);
                             }.bind(this)
                         }
                     ]
@@ -284,7 +284,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                         params['id'] = this.data.id;
 
                         Ext.Ajax.request({
-                            url: '/admin/CoreShop/price-rule/generate-voucher-codes',
+                            url: '/admin/CoreShop/cart_price_rules/generate-voucher-codes',
                             method: 'post',
                             params : params,
                             success: function (response) {

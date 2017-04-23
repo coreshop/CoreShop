@@ -1,0 +1,6 @@
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-order:
+                namespace_prefix: "CoreShop\\Component\\Order"
+                path: "@CoreShopOrderBundle/Resources/config/serializer"

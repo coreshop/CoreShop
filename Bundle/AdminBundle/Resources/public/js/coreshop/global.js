@@ -39,7 +39,7 @@ pimcore.plugin.coreshop.global = {
         this._createStore('coreshop_taxrulegroups', 'tax_rule_groups');
         this._createStore('coreshop_customergroups', 'customer-groups');
         this._createStore('coreshop_carriers', 'carriers');
-        this._createStore('coreshop_pricerules', 'price-rules');
+        this._createStore('coreshop_cart_price_rules', 'cart_price_rules');
         this._createStore('coreshop_indexes', 'indices');
         this._createStore('coreshop_product_filters', 'filters');
         this._createStore('coreshop_states', 'states');

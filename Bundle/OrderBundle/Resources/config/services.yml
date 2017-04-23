@@ -1,20 +1,23 @@
+imports:
+  - { resource: "services/cart-price-rules.yml" }
+
 parameters:
   coreshop.order.cart.folder_path: /%coreshop.core.object_path%/cart
   coreshop.order.order.folder_path: /%coreshop.core.object_path%/order
   coreshop.order.order_item.folder_path: items
 
 services:
-    coreshop.order.configurator.session_cart:
-        class: CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator
-        tags:
-            - { name: pimcore.session.configurator }
+  coreshop.order.configurator.session_cart:
+    class: CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator
+    tags:
+        - { name: pimcore.session.configurator }
 
-    coreshop.cart.manager:
-      class: CoreShop\Bundle\OrderBundle\Manager\CartManager
-      arguments:
-        - '@coreshop.repository.cart'
-        - '@coreshop.factory.cart'
-        - '@session'
-        - '@coreshop.core.object_service'
-        - '@security.token_storage'
-        - '%coreshop.order.cart.folder_path%'
+  coreshop.cart.manager:
+    class: CoreShop\Bundle\OrderBundle\Manager\CartManager
+    arguments:
+      - '@coreshop.repository.cart'
+      - '@coreshop.factory.cart'
+      - '@session'
+      - '@coreshop.core.object_service'
+      - '@security.token_storage'
+      - '%coreshop.order.cart.folder_path%'

@@ -1,0 +1,25 @@
+CoreShop\Component\Order\Model\CartPriceRule:
+  exclusion_policy: ALL
+  xml_root_name: cart_price_rule
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+      groups: [List, Detailed]
+    name:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    highlight:
+      expose: true
+      type: boolean
+      groups: [Detailed]
+    conditions:
+      expose: true
+      type: array
+      groups: [Detailed]
+    actions:
+      expose: true
+      type: array
+      groups: [Detailed]

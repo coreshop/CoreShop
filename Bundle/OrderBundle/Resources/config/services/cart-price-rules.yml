@@ -1,0 +1,113 @@
+parameters:
+  coreshop.form.type.cart_price_rule.validation_groups: [coreshop]
+  coreshop.form.type.cart_price_rule.rule.validation_groups: [coreshop]
+  coreshop.form.type.cart_price_rule.rule_action.validation_groups: [coreshop]
+  coreshop.form.type.cart_price_rule.rule_condition.validation_groups: [coreshop]
+  coreshop.form.type.cart_price_rule.promotion_coupon.validation_groups: [coreshop]
+
+services:
+  # Forms
+  coreshop.form.type.cart_price_rule:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.cart_price_rule.class%', '%coreshop.form.type.cart_price_rule.validation_groups%']
+
+  coreshop.form.type.cart_price_rule.rule_action:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.rule_action.class%', '%coreshop.form.type.cart_price_rule.rule_action.validation_groups%', '@coreshop.form_registry.cart_price_rule.actions']
+
+  coreshop.form.cart_price_rule.type.rule_action.collection:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionCollectionType
+    tags:
+        - { name: form.type }
+    arguments: ['@coreshop.registry.cart_price_rule.actions']
+
+  coreshop.form.cart_price_rule.type.rule_condition.collection:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionCollectionType
+    tags:
+        - { name: form.type }
+    arguments: ['@coreshop.registry.cart_price_rule.conditions']
+
+  coreshop.form.cart_price_rule.type.rule_action_choice:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionChoiceType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.cart_price_rule.actions%']
+
+  coreshop.form.cart_rule.type.rule_condition:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.model.rule_condition.class%', '%coreshop.form.type.cart_price_rule.rule_condition.validation_groups%', '@coreshop.form_registry.cart_price_rule.conditions']
+
+  coreshop.form.cart_price_rule.type.rule_condition_choice:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionChoiceType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.cart_price_rule.conditions%']
+
+  # Services
+  coreshop.registry.cart_price_rule.conditions:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
+      - product-price-rule-conditions
+
+  coreshop.form_registry.cart_price_rule.conditions:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  coreshop.registry.cart_price_rule.actions:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface
+      - product-price-rule-actions
+
+  coreshop.form_registry.cart_price_rule.actions:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  # Price Rule Processor
+  coreshop.cart_price_rule.processor:
+    class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
+    arguments:
+      - '@coreshop.registry.cart_price_rule.conditions'
+
+  # Cart Price Rule CONDITIONS
+  coreshop.cart_price_rule.condition.products:
+    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\ProductsConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: products, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+
+  coreshop.cart_price_rule.condition.nested:
+    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\NestedConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: conditions, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType }
+
+  coreshop.cart_price_rule.condition.categories:
+    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\CategoriesConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: categories, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+
+  coreshop.cart_price_rule.condition.timespan:
+    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\TimeSpanConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+
+  # Product Price Rule ACTIONS
+
+  coreshop.cart_price_rule.action.discount_amount:
+    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Action\DiscountAmountActionProcessor
+    tags:
+      - { name: coreshop.cart_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
+
+  coreshop.cart_price_rule.action.discount_percent:
+    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Action\DiscountPercentActionProcessor
+    tags:
+      - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
+
+  # Voucher Code Generator
+  coreshop.generator.cart_price_rule_voucher_codes:
+    class: CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator
+    arguments: ['@coreshop.factory.cart_price_rule_voucher_code']

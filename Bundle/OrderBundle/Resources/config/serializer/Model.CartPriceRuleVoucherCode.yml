@@ -1,0 +1,25 @@
+CoreShop\Component\Order\Model\CartPriceRuleVoucherCode:
+  exclusion_policy: ALL
+  xml_root_name: cart_price_rule_voucher_code
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+      groups: [List, Detailed]
+    code:
+      expose: true
+      type: string
+      groups: [Detailed]
+    creationDate:
+      expose: true
+      type: datetime
+      groups: [Detailed]
+    used:
+      expose: true
+      type: boolean
+      groups: [Detailed]
+    uses:
+      expose: true
+      type: int
+      groups: [Detailed]
