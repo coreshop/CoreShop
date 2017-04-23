@@ -26,7 +26,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     /**
      * {@inheritdoc}
      */
-    public function getDiscountCart(CartInterface $cart, $withTax = true, array $configuration)
+    public function getDiscount(CartInterface $cart, $withTax = true, array $configuration)
     {
         return $configuration['amount'];
     }

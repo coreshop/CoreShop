@@ -18,12 +18,6 @@ CoreShop\Component\Order\Model\CartPriceRule:
     highlight:
       column: highlight
       type: boolean
-    code:
-      column: code
-      type: string
-    useMultipleVoucherCodes:
-      column: useMultipleVoucherCodes
-      type: boolean
   oneToMany:
     voucherCodes:
       targetEntity: CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface

@@ -245,8 +245,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
      */
     public function getDiscount($withTax = true)
     {
-        //TODO: Price Rules
-        return 0;
+        return $this->getContainer()->get('coreshop.cart.discount_calculator')->getDiscount($this, $withTax);
     }
 
     /**

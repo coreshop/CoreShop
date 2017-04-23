@@ -42,26 +42,6 @@ interface CartPriceRuleInterface extends RuleInterface
     public function setHighlight($highlight);
 
     /**
-     * @return string
-     */
-    public function getCode();
-
-    /**
-     * @param string $code
-     */
-    public function setCode($code);
-
-    /**
-     * @return boolean
-     */
-    public function getUseMultipleVoucherCodes();
-
-    /**
-     * @param boolean $useMultipleVoucherCodes
-     */
-    public function setUseMultipleVoucherCodes($useMultipleVoucherCodes);
-
-    /**
      * @return Collection|CartPriceRuleVoucherCodeInterface[]
      */
     public function getVoucherCodes();

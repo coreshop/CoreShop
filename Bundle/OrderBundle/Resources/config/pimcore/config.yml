@@ -1,0 +1,6 @@
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopCartPriceRule: CoreShop\Bundle\OrderBundle\CoreExtension\CartPriceRule

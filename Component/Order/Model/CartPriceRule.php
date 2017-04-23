@@ -31,19 +31,9 @@ class CartPriceRule implements CartPriceRuleInterface
     protected $highlight = false;
 
     /**
-     * @var string
-     */
-    protected $code = '';
-
-    /**
      * @var int
      */
     protected $usagePerVoucherCode = 1;
-
-    /**
-     * @var bool
-     */
-    protected $useMultipleVoucherCodes = false;
 
     /**
      * @var Collection|CartPriceRuleVoucherCodeInterface[]
@@ -115,38 +105,6 @@ class CartPriceRule implements CartPriceRuleInterface
         $this->highlight = $highlight;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUseMultipleVoucherCodes()
-    {
-        return $this->useMultipleVoucherCodes;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUseMultipleVoucherCodes($useMultipleVoucherCodes)
-    {
-        $this->useMultipleVoucherCodes = $useMultipleVoucherCodes;
     }
 
     /**

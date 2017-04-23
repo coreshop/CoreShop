@@ -69,7 +69,7 @@ services:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
   # Price Rule Processor
-  coreshop.cart_price_rule.processor:
+  coreshop.cart_price_rule.rule_validation.processor:
     class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
     arguments:
       - '@coreshop.registry.cart_price_rule.conditions'
@@ -111,3 +111,10 @@ services:
   coreshop.generator.cart_price_rule_voucher_codes:
     class: CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator
     arguments: ['@coreshop.factory.cart_price_rule_voucher_code']
+
+  # Processor
+  coreshop.cart_price_rule.processor:
+    class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessor
+    arguments:
+      - '@coreshop.cart_price_rule.rule_validation.processor'
+      - '@coreshop.factory.cart_price_rule_item'

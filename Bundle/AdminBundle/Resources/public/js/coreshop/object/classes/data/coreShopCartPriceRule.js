@@ -11,10 +11,10 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.object.classes.data.coreShopPriceRule');
-pimcore.object.classes.data.coreShopPriceRule = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {
+pimcore.registerNS('pimcore.object.classes.data.coreShopCartPriceRule');
+pimcore.object.classes.data.coreShopCartPriceRule = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {
 
-    type: 'coreShopPriceRule',
+    type: 'coreShopCartPriceRule',
 
     getTypeName: function () {
         return t('coreshop_priceRule');

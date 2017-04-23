@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 use CoreShop\Bundle\OrderBundle\Controller\CartController;
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
+use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -15,6 +16,7 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -80,7 +82,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(CartPriceRuleVoucherCodeInterface::class)->cannotBeEmpty()->end()
                                         //->scalarNode('admin_controller')->defaultValue(CartPriceRuleController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(CartPriceRuleVoucherRepository::class)->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         //TODO: ->scalarNode('form')->defaultValue(CartPriceRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
@@ -151,6 +153,22 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopOrderItem')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(OrderItemInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('cart_price_rule_item')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopProposalCartPriceRuleItem')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ProposalCartPriceRuleItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
