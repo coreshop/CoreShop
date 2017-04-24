@@ -11,16 +11,38 @@ use Pimcore\Model\User;
 use Pimcore\Model\Staticroute;
 use Pimcore\Model\Tool\Setup;
 use Pimcore\Tool;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
 
 class InstallHelper
 {
-    public static function runDoctrineOrmSchemaUpdate() {
+    /**
+     * Runs Doctrine Schema Create
+     */
+    public static function runFixturesCommand()
+    {
+        static::runCommand('okvpn:migration:data:load');
+    }
+
+    /**
+     * Runs Doctrine Schema Create
+     */
+    public static function runDoctrineOrmSchemaCreate()
+    {
+        static::runCommand('doctrine:schema:create', ["--force" => true]);
+    }
+
+    /**
+     * @param string $command
+     * @param array $params
+     */
+    protected static function runCommand($command, $params = []) {
         $kernel = \Pimcore::getKernel();
-        $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+        $application = new Application($kernel);
         $application->setAutoExit(false);
-        //Create de Schema
-        $options = array('command' => 'doctrine:schema:update',"--force" => true);
-        $application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+        $options = ['command' => $command];
+        $options = array_merge($options, $params);
+        $application->run(new ArrayInput($options));
     }
 
     /**

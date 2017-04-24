@@ -1,0 +1,8 @@
+services:
+  coreshop.installer.checker.command_directory:
+    class: CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker
+    arguments: ['@filesystem']
+
+  coreshop.commands_provider.database_setup:
+    class: CoreShop\Bundle\CoreBundle\Installer\Provider\DatabaseSetupCommandsProvider
+    arguments: ['@doctrine']
