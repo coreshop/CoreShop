@@ -105,22 +105,11 @@ services:
       - { name: coreshop.shipping_rule.action, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Action\ShippingRuleActionConfigurationType }
 
 
-  # Carrier Price Calculator
   coreshop.carrier.processor.shipping_rules:
     class: CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessor
     shared: false
     arguments:
       - '@coreshop.registry.shipping_rule.actions'
-
-  coreshop.carrier.price_calculator.shipping_rules:
-    class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierShippingRulePriceCalculator
-    arguments:
-      - '@coreshop.carrier.cart.checker'
-      - '@coreshop.carrier.processor.shipping_rules'
-
-  coreshop.carrier.price_calculator.default:
-    class: CoreShop\Bundle\ShippingBundle\Calculator\CompositePriceCalculator
-    arguments: [['@coreshop.carrier.price_calculator.shipping_rules']]
 
   # Carrier Shipping Rule Validator
   coreshop.carrier.cart.checker:
@@ -131,3 +120,26 @@ services:
   coreshop.carrier.cart.processor:
     class: CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessor
     arguments: ['@coreshop.repository.carrier', '@coreshop.carrier.cart.checker']
+
+  # Carrier Price Calculator
+  coreshop.registry.shipping.price_calculators:
+    class: CoreShop\Component\Registry\PrioritizedServiceRegistry
+    arguments:
+      - CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface
+      - shipping-price-calculators
+
+  coreshop.carrier.price_calculator.tagged:
+    class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculator
+    arguments: ['@coreshop.registry.shipping.price_calculators']
+
+  coreshop.carrier.price_calculator.shipping_rules:
+    class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierShippingRulePriceCalculator
+    arguments:
+      - '@coreshop.carrier.cart.checker'
+      - '@coreshop.carrier.processor.shipping_rules'
+    tags:
+      - { name: coreshop.shipping.price_calculator, type: shipping-rule, priority: 256 }
+
+  coreshop.carrier.price_calculator.default:
+    class: CoreShop\Bundle\ShippingBundle\Calculator\CompositePriceCalculator
+    arguments: [['@coreshop.carrier.price_calculator.tagged']]

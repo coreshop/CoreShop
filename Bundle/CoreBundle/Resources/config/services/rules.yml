@@ -88,3 +88,9 @@ services:
     class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CarriersConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: carriers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType }
+
+
+  coreshop.rule.cart_price_rule.action.free_shipping:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Action\FreeShippingActionProcessor
+    tags:
+      - { name: coreshop.cart_price_rule.action, type: freeShipping, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType }

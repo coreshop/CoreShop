@@ -255,7 +255,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
      */
     public function hasPriceRules()
     {
-        return is_array($this->getPriceRuleItems()) && count($this->getPriceRuleItems()) > 0;
+        return $this->getPriceRuleItems() instanceof Fieldcollection && $this->getPriceRuleItems()->getCount() > 0;
     }
 
     /**

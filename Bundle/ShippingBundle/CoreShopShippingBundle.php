@@ -4,6 +4,7 @@ namespace CoreShop\Bundle\ShippingBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingPriceCalculatorsPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleActionPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleConditionPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,6 +27,7 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
 
         $container->addCompilerPass(new ShippingRuleConditionPass());
         $container->addCompilerPass(new ShippingRuleActionPass());
+        $container->addCompilerPass(new ShippingPriceCalculatorsPass());
     }
 
     /**
