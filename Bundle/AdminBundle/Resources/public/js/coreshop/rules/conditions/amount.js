@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.rules.conditions.amount = Class.create(pimcore.plugin.co
 
     getForm : function ()
     {
-        var minAmountValue = null;
+        var minAmountValue = 0;
         var maxAmountValue = 0;
         var me = this;
 

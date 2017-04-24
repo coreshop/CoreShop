@@ -52,3 +52,39 @@ services:
       - { name: coreshop.shipping_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
       - { name: coreshop.product_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
       - { name: coreshop.product_specific_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
+
+  # Cart Price Rules
+  coreshop.rule.cart_price_rule.condition.customers:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CustomersConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
+
+  coreshop.rule.cart_price_rule.condition.customer_groups:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CustomerGroupsConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
+
+  coreshop.rule.cart_price_rule.condition.countries:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CountriesConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
+
+  coreshop.rule.cart_price_rule.condition.zones:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\ZonesConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
+
+  coreshop.rule.cart_price_rule.condition.stores:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\StoresConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
+
+  coreshop.rule.cart_price_rule.condition.currencies:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CurrenciesConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
+
+  coreshop.rule.cart_price_rule.condition.carriers:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CarriersConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: carriers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType }
