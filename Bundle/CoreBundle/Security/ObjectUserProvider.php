@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class ObjectUserProvider extends UserProviderInterface {
+class ObjectUserProvider implements UserProviderInterface {
     /**
      * The pimcore class name to be used. Needs to be a fully qualified class
      * name (e.g. Pimcore\Model\Object\User or your custom user class extending
