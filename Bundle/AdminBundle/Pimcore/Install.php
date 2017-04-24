@@ -83,6 +83,6 @@ class Install extends AbstractInstaller
      */
     public function update()
     {
-        InstallHelper::runDoctrineOrmSchemaUpdate();
+        //InstallHelper::runDoctrineOrmSchemaUpdate();
     }
 }
