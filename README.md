@@ -1,46 +1,47 @@
-# CoreShop eCommerce Legacy - Pimcore 5 Bundle
+# CoreShop e-commerce Bundle for Pimcore 5
 
 [![Join the chat at https://gitter.im/dpfaffenbauer/pimcore-coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dpfaffenbauer/pimcore-coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/coreshop/CoreShop.svg?branch=master)](https://travis-ci.org/coreshop/CoreShop)
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 [![Latest Stable Version](https://poser.pugx.org/coreshop/core-shop/v/stable)](https://packagist.org/packages/coreshop/core-shop)
 
-CoreShop is a Plugin for [Pimcore](http://www.pimcore.org). It enhances Pimcore with eCommerce features.
+CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore with e-commerce features.
 
 ![CoreShop Interface](docs/img/screenshot.png)
 
-* [Getting started](https://www.coreshop.org/docs/latest/Gettings_Started/Installation.html)
-* [Documentation](https://www.coreshop.org/docs/latest)
-* Website: [www.coreshop.org](https://www.coreshop.org/) - Learn more about CoreShop
-* Demo: [demo.coreshop.org](https://demo.coreshop.org/) - See CoreShop in Action
-* API-Documentation: [api.coreshop.org](https://api.coreshop.org/)
+# Installation
+    1. Install with composer ```composer require coreshop/coreshop dev:master```
+    2. Add Following Bundles to AppKernel.php
+        ```
+            new \JMS\SerializerBundle\JMSSerializerBundle(),
+            new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
-## Getting started
+            new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(),
+            new \CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle(),
+            new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(),
+            new \CoreShop\Bundle\ProductBundle\CoreShopProductBundle(),
+            new \CoreShop\Bundle\AddressBundle\CoreShopAddressBundle(),
+            new \CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle(),
+            new \CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle(),
+            new \CoreShop\Bundle\StoreBundle\CoreShopStoreBundle(),
+            new \CoreShop\Bundle\IndexBundle\CoreShopIndexBundle(),
+            new \CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle(),
+            new \CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle(),
+            new \CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle(),
 
-* Download Plugin and place it in your plugins directory
-* Download Example Template and place it in your website folder (https://github.com/coreshop/website-example)
-* Open Extension Manager in Pimcore and enable/install Plugin
-* After Installation within Pimcore Extension Manager, you have to reload Pimcore
-* Now the CoreShop Icon will appear in the Menu
-* You now have to let CoreShop install itself
-* finished
-* Go To http://yourdomain/en/shop
+            new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(),
+            new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(),
 
-or install it via composer on an existing pimcore installation
-
-```
-composer require coreshop/core-shop
-```
-
-or for the nightly dev version
-
-```
-composer require coreshop/core-shop dev-master
-```
-
-## CoreShop Demo Data
-
-To install demo products, add the [CoreShopDemo](https://github.com/coreshop/CoreShop-Demo) Plugin to Pimcore and install it through CoreShop -> Plugins -> CoreShop Demo Installer.
+            new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(),
+            new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
+            new \FOS\RestBundle\FOSRestBundle(),
+            new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+            new \Payum\Bundle\PayumBundle\PayumBundle()
+        ```
+    2. Alternatively, you could extend your AppKernel from CoreShop\Bundle\CoreBundle\Application\Kernel
+    3. Import ```"@CoreShopCoreBundle/Resources/config/app/config.yml"``` in your app/config/config.yml
+    4. Activate Admin Bundle in Pimcore Extension Manager
+    5. Run Install from Pimcore Extension Manager
 
 ## Copyright and license 
 Copyright: [Dominik Pfaffenbauer](https://www.pfaffenbauer.at)
