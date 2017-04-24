@@ -38,8 +38,6 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
             referencedColumnName: id
             nullable: false
             onDelete: CASCADE
-      cascade:
-        - all
 
     actions:
       targetEntity: CoreShop\Component\Rule\Model\ActionInterface
@@ -57,5 +55,3 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
             referencedColumnName: id
             nullable: false
             onDelete: CASCADE
-      cascade:
-        - all
