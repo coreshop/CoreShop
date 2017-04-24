@@ -5,6 +5,8 @@ namespace CoreShop\Bundle\AdminBundle\Pimcore;
 use Pimcore\Bundle\AdminBundle\Pimcore\InstallHelper;
 use Pimcore\Extension\Bundle\Installer\AbstractInstaller;
 use Pimcore\Model\Object\Service;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
 
 class Install extends AbstractInstaller
 {
@@ -13,47 +15,20 @@ class Install extends AbstractInstaller
      */
     public function install()
     {
-        $installFileDir = __DIR__ . '/../Resources/install';
+        $kernel = \Pimcore::getKernel();
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $options = ['command' => 'coreshop:install'];
+        $options = array_merge($options, ['--no-interaction' => true]);
+        $application->run(new ArrayInput($options));
 
-        $classes = [
-            'CoreShopCategory',
-            'CoreShopProduct',
-            'CoreShopCart',
-            'CoreShopCartItem',
-            'CoreShopCustomer',
-            'CoreShopCustomerGroup',
-            'CoreShopOrderItem',
-            'CoreShopPayment',
-            'CoreShopOrder',
-            'CoreShopAddress'
-        ];
-
-        $folders = [
-            '/coreshop/cart',
-            '/coreshop/product',
-            '/coreshop/customer',
-            '/coreshop/order'
-        ];
-
-        InstallHelper::runCoreShopInstallCommand();
-
-        foreach ($folders as $folder) {
-            Service::createFolderByPath($folder);
-        }
-
-        foreach ($classes as $class) {
-            InstallHelper::createClass($installFileDir . sprintf('/class_%s_export.json', $class), $class);
-        }
-
-        //TODO: Could this task actually run a sub task to install the database?
-        //TODO: Create Routes, however we actually use routes then, currently we use symfony routing stuff
-        //TODO: Create Configuration, however configuration looks like in the future, probably just a Doctirne Entity
-        //TODO: Install Order Workflow
-        //TODO: Install E-Mail Documents
-        //TODO: Install Mail Rules, not implemented yet
+        //TODO: Create Routes, however we actually use routes then, currently we use Symfony routing stuff
+        //TODO: Create Configuration, however configuration looks like in the future, probably just a Doctrine Entity -> therefore Fixtures!
+        //TODO: Install Order Workflow -> done via Fixtures!
+        //TODO: Install E-Mail Documents -> done via Fixtures!
+        //TODO: Install Mail Rules, not implemented yet -> done via Fixtures!
         //TODO: Install Bricks
-        //TODO: Install Field Collections
-        //TODO: Install Customer Service Stuff, not implemented yet
+        //TODO: Install Customer Service Stuff, not implemented yet -> done via Fixtures
     }
 
     /**
