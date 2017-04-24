@@ -1,134 +1,79 @@
 
-#### CoreShop Custom Shipping Rule Condition
+#### CoreShop Extend Shipping Rule Condition
 
-Create a file in your Plugin (or Website, I recommend creating a Plugin):
-
-#### Before 1.2
+1. We need to create 2 new files:
+    - FormType for processing the Input Data
+    - And a ShippingConditionCheckerInterface, which checks if a cart fulfills the condition.
 
 ```
-YourPlugin/lib/CoreShop/Model/Carrier/ShippingRule/Condition/YourCondition.php
-```
+//AcmeBundle/Shipping/Form/Type/Condition/MyRuleConfigurationType.php
 
-```php
-namespace CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule\Condition;
+namespace AcmeBundle\Shipping\Form\Type\Condition;
 
-use CoreShop\Bundle\LegacyBundle\Model;
-use CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule;
-use CoreShop\Bundle\LegacyBundle\Tool;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
-class YourCondition extends AbstractCondition
+final class MyRuleConfigurationType extends AbstractType
 {
-    public $type = 'yourCondition';
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('myData', IntegerType::class, [
+                'constraints' => [
+                    new NotBlank(['groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                ],
+            ])
+        ;
+    }
 
-    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule) {
-        //Do something here to check the condition.
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'acme_shipping_rule_condition_my_rule';
+    }
+}
 
-        return true;
+```
+
+```
+//AcmeBundle/Shipping/Rule/Condition/MyRuleConditionChecker.php
+
+namespace AcmeBundle\Shipping\Rule\Condition;
+
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Order\Model\CartInterface;
+
+class MyRuleConditionChecker extends AbstractConditionChecker
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, array $configuration)
+    {
+        $minAmount = $configuration['myData'];
+
+        //Check cart here and return true or false;
+
+        return true || false;
     }
 }
 ```
 
-You also need to create a js file for the ShippingRule UI.
+2. Register MyRuleConditionChecker as service with tag ```coreshop.shipping_rule.condition```, type and form
 
 ```
-YourPlugin/static/js/coreshop/carrier/shippingRule/condition/yourCondition.js
+acme.coreshop.shipping_rule.condition.my_rule:
+    class: AcmeBundle\Shipping\Rule\Condition\MyRuleConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: my_rule, form-type: AcmeBundle\Shipping\Form\Type\Condition\MyRuleConfigurationType }
 ```
-
-```js
-pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.conditions.yourCondition');
-
-pimcore.plugin.coreshop.carrier.shippingrules.conditions.yourCondition = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-    type : 'yourCondition',
-
-    getForm : function () {
-        this.form = Ext.create('Ext.form.FieldSet', {
-            items : [
-                //add some extjs fields here
-            ]
-        });
-
-        return this.form;
-    }
-});
-
-```
-
-You also need to register your new Condition to CoreShop:
-
-```php
-\CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule::addCondition("YourCondition");
-```
-
-#### After 1.2
-
-```
-website/lib/Website/Model/Carrier/ShippingRule/Condition/YourCondition.php
-
-OR
-
-YourPlugin/lib/YourPlugin/Model/Carrier/ShippingRule/Condition/YourCondition.php
-```
-
-```php
-namespace Website\Model\Carrier\ShippingRule\Condition;
-
-use CoreShop\Bundle\LegacyBundle\Model;
-use CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule;
-use CoreShop\Bundle\LegacyBundle\Tool;
-
-class YourCondition extends AbstractCondition
-{
-    public static $type = 'yourCondition';
-
-    public function checkCondition(Model\Cart $cart, Model\User\Address $address, ShippingRule $shippingRule) {
-        //Do something here to check the condition.
-
-        return true;
-    }
-}
-```
-
-You also need to create a js file for the ShippingRule UI.
-
-```
-YourPlugin/static/js/coreshop/carrier/shippingRule/condition/yourCondition.js
-```
-
-```js
-pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.conditions.yourCondition');
-
-pimcore.plugin.coreshop.carrier.shippingrules.conditions.yourCondition = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-    type : 'yourCondition',
-
-    getForm : function () {
-        this.form = Ext.create('Ext.form.FieldSet', {
-            items : [
-                //add some extjs fields here
-            ]
-        });
-
-        return this.form;
-    }
-});
-
-```
-
-You also need to register your new Condition to CoreShop:
-
-```php
-\CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule::getConditionDispatcher()->addType(\Website\Model\Carrier\ShippingRule\Action\YourCondition::class);
-```
-
-or even better:
-
-```php
-\Pimcore::getEventManager()->attach('coreshop.rules.shippingRule.condition.init', function(\Zend_EventManager_Event $e) {
-    $target = $e->getTarget();
-
-    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
-        $target->addType(\Website\Model\Carrier\ShippingRule\Action\YourAction::class);
-    }
-});
-```
-
-You can find more examples in the CoreShopExamples Project [https://github.com/coreshop/CoreShopExamples](https://github.com/coreshop/CoreShopExamples)

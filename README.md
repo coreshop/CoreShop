@@ -10,8 +10,8 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
 ![CoreShop Interface](docs/img/screenshot.png)
 
 # Installation
-    1. Install with composer ```composer require coreshop/coreshop dev:master```
-    2. Add Following Bundles to AppKernel.php
+    - Install with composer ```composer require coreshop/coreshop dev:master```
+    - Add Following Bundles to AppKernel.php
         ```
             new \JMS\SerializerBundle\JMSSerializerBundle(),
             new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
@@ -38,10 +38,10 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new \Payum\Bundle\PayumBundle\PayumBundle()
         ```
-    2. Alternatively, you could extend your AppKernel from CoreShop\Bundle\CoreBundle\Application\Kernel
-    3. Import ```"@CoreShopCoreBundle/Resources/config/app/config.yml"``` in your app/config/config.yml
-    4. Activate Admin Bundle in Pimcore Extension Manager
-    5. Run Install from Pimcore Extension Manager
+    - Alternatively, you could extend your AppKernel from CoreShop\Bundle\CoreBundle\Application\Kernel
+    - Import ```"@CoreShopCoreBundle/Resources/config/app/config.yml"``` in your app/config/config.yml
+    - Activate Admin Bundle in Pimcore Extension Manager
+    - Run Install from Pimcore Extension Manager
 
 ## Copyright and license 
 Copyright: [Dominik Pfaffenbauer](https://www.pfaffenbauer.at)

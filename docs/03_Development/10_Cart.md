@@ -1,5 +1,7 @@
 # CoreShop Cart
 
+# TODO
+
 If you need some Extra Informations added with a Product in your Cart, you can do that by creating an ObjectBrick for your CartItem/OrderItem. This ObjectBrick needs to implement CoreShop\Bundle\LegacyBundle\Model\Objectbrick\Data\AbstractData.
 
 To render some extra information in your cart/invoice, you need to implement the "renderCart" or "renderInvoice" method.

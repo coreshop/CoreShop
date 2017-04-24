@@ -9,7 +9,7 @@ Todo that, you need to open "Product" > "Indexes".
 CoreShop currently supports two type of indexes:
 
  - Mysql
- - Elasticsearch
+ - ~~Elasticsearch~~
 
 ### Add Fields
 

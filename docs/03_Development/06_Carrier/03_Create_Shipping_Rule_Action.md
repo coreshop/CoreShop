@@ -1,145 +1,82 @@
 
-#### CoreShop Custom Shipping Rule Action
+#### CoreShop Extend Shipping Rule Action
 
-Create a file in your Plugin (or Website, I recommend creating a Plugin):
-
-#### Before 1.2
+1. We need to create 2 new files:
+    - FormType for processing the Input Data
+    - And a CarrierPriceActionProcessorInterface, which calculates the shipping price
 
 ```
-YourPlugin/lib/CoreShop/Model/Carrier/ShippingRule/Action/YourAction.php
-```
+//AcmeBundle/Shipping/Form/Type/Action/MyActionConfigurationType.php
 
-```php
-namespace CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule\Action;
+namespace AcmeBundle\Shipping\Form\Type\Action;
 
-use CoreShop\Bundle\LegacyBundle\Model;
-use CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule;
-use CoreShop\Bundle\LegacyBundle\Tool;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
-class YourAction extends AbstractAction
+final class MyActionConfigurationType extends AbstractType
 {
-    public $type = 'yourAction';
-
-    public function getPriceModification(Model\Carrier $carrier, Cart $cart, Model\User\Address $address, $price)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //You can return some kind of modification here
-        return 0;
+        $builder
+            ->add('myActionData', IntegerType::class, [
+                'constraints' => [
+                    new NotBlank(['groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                ],
+            ])
+        ;
     }
 
-    public function getPrice(Model\Carrier $carrier, Cart $cart, Model\User\Address $address)
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
-        //You can return a fixed price here
+        return 'acme_shipping_rule_action_my_rule';
+    }
+}
+
+```
+
+```
+//AcmeBundle/Shipping/Rule/Action/MyActionConditionChecker.php
+
+namespace AcmeBundleShippingBundle\Rule\Action;
+
+class MyActionConditionChecker implements CarrierPriceActionProcessorInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration, $withTax = true)
+    {
+        //You can either return a float here, or false, false means no price and determines the price somewhere else
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getModification(CarrierInterface $carrier, AddressInterface $address, $price, array $configuration)
+    {
+        //You can return any float value here, positiv or negative
+
+        return $configuration['myActionData'];
     }
 }
 ```
 
-You also need to create a js file for the ShippingRule UI.
+2. Register MyRuleConditionChecker as service with tag ```coreshop.shipping_rule.condition```, type and form
 
 ```
-YourPlugin/static/js/coreshop/carrier/shippingRule/action/yourAction.js
+acme.coreshop.shipping_rule.condition.my_rule:
+    class: AcmeBundle\Shipping\Rule\Action\MyActionConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.action, type: my_action, form-type: AcmeBundle\Shipping\Form\Type\ACtion\MyActionConditionChecker }
 ```
-
-```js
-pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.actions.yourAction');
-
-pimcore.plugin.coreshop.carrier.shippingrules.actions.yourAction = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
-    type : 'yourAction',
-
-    getForm : function () {
-        this.form = Ext.create('Ext.form.FieldSet', {
-            items : [
-                //add some extjs fields here
-            ]
-        });
-
-        return this.form;
-    }
-});
-
-```
-
-You also need to register your new Action to CoreShop:
-
-```php
-\CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule::addAction("YourAction");
-```
-
-#### After 1.2
-
-```
-website/lib/Website/CoreShop/Model/Carrier/ShippingRule/Action/YourAction.php
-
-OR
-
-YourPlugin/lib/YourPlugin/Model/Carrier/ShippingRule/Action/YourAction.php
-```
-
-```php
-namespace Website\Model\Carrier\ShippingRule\Action;
-
-use CoreShop\Bundle\LegacyBundle\Model;
-use CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule;
-use CoreShop\Bundle\LegacyBundle\Tool;
-
-class YourAction extends AbstractAction
-{
-    public static $type = 'yourAction';
-
-    public function getPriceModification(Model\Carrier $carrier, Cart $cart, Model\User\Address $address, $price)
-    {
-        //You can return some kind of modification here
-        return 0;
-    }
-
-    public function getPrice(Model\Carrier $carrier, Cart $cart, Model\User\Address $address)
-    {
-        //You can return a fixed price here
-        return false;
-    }
-}
-```
-If you need some configuration, you can create a JS file for the Shipping Rule UI.
-
-```
-YourPlugin/static/js/coreshop/carrier/shippingRule/action/yourAction.js
-```
-
-```js
-pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.actions.yourAction');
-
-pimcore.plugin.coreshop.carrier.shippingrules.actions.yourAction = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
-    type : 'yourAction',
-
-    getForm : function () {
-        this.form = Ext.create('Ext.form.FieldSet', {
-            items : [
-                //add some extjs fields here
-            ]
-        });
-
-        return this.form;
-    }
-});
-
-```
-
-You also need to register your new Action to CoreShop:
-
-```php
-\CoreShop\Bundle\LegacyBundle\Model\Carrier\ShippingRule::getActionDispatcher()->addType(\Website\Model\Carrier\ShippingRule\Action\YourAction::class);
-```
-
-or even better:
-
-```php
-\Pimcore::getEventManager()->attach('coreshop.rules.shippingRule.action.init', function(\Zend_EventManager_Event $e) {
-    $target = $e->getTarget();
-
-    if($target instanceof \CoreShop\Bundle\LegacyBundle\Composite\Dispatcher) {
-        $target->addType(\Website\Model\Carrier\ShippingRule\Action\YourAction::class);
-    }
-});
-```
-
-You can find more examples in the CoreShopExamples Project [https://github.com/coreshop/CoreShopExamples](https://github.com/coreshop/CoreShopExamples)

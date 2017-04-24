@@ -9,23 +9,15 @@ Following Actions are available:
  - Discount Percent
 
 Following Conditions are available:
- - Customer
  - Customers
  - Time Span
  - Quantity
  - Total Available
  - Total per Customer
- - Country
  - Countries
- - Product
  - Products
- - Category
  - Categories
- - Persona
- - Personas
- - Customer Group
+ - ~~Personas~~
  - Customer Groups
- - Zone
  - Zones
- - Shop
  - Shops

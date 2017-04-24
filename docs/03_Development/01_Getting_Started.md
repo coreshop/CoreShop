@@ -4,5 +4,4 @@ CoreShop is a Plugin for Pimcore. So it heavily depends on Pimcore itself. The m
 
 So, the most important documentation is there:
 
-- [Old Pimcore-Wiki](https://www.pimcore.org/wiki/display/PIMCORE4/Pimcore+Version+4.x+Documentation)
-- [New Pimcore Documentation on Github](https://www.pimcore.org/docs/latest/)
+- [Pimcore 5 Documentation](https://www.pimcore.org/docs/5.0.0/)

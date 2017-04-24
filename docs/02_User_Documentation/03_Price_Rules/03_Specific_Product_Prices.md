@@ -10,21 +10,14 @@ Following Actions are available:
  - New Price
 
 Following Conditions are available:
- - Customer
  - Customers
  - Time Span
  - Quantity
  - Total Available
  - Total per Customer
- - Customer Group
  - Customer Groups
- - Country
  - Countries
- - Product
  - Products
- - Category
  - Categories
- - Persona
  - Personas
- - Shop
  - Shops

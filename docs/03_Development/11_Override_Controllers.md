@@ -1,19 +1,15 @@
 # CoreShop Override Controller
 
-CoreShop implements a default behavior for Checkout, Cart, User, etc. If you need to change some of this behavior, you can override the Controller using your Website.
+CoreShop uses services for controllers, if you need to extend a controller, simply override the service:
 
-For example we would like to override the CartController. Simply create the file "website/controllers/CartController.php" with following code:
+```
+services:
+    coreshop.frontend.controller.category:
+        class: AcmeBundle\Controller\CategoryController
 
-```php
-
-\CoreShop\Bundle\LegacyBundle\Tool::loadController("Cart");
-
-class CartController extends CoreShop_CartController {
-
-    public function init()
-    {
-        parent::init();
-    }
-}
-
+paramters:
+    coreshop:
+        model:
+            order:
+                pimcore_controller: AcmeBundle\Controller\CategoryController
 ```

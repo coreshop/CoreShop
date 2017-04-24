@@ -1,5 +1,7 @@
 # CoreShop Magic Parameters
 
+# TODO
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | coreshop_country  | Set country to specific one (only works in debug mode)   |

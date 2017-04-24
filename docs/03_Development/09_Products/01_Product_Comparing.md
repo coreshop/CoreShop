@@ -1,4 +1,5 @@
 # CoreShop Product Compare
+# TODO
 
 To compare some products, the default CoreShop Theme provides already a controller and some interactivity. 
 
