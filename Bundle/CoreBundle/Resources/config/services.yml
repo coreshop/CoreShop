@@ -37,7 +37,7 @@ services:
     arguments: ['@coreshop.repository.tax_rule']
 
   coreshop.security.customer.user_provider:
-    class: Pimcore\Security\User\ObjectUserProvider
+    class: CoreShop\Bundle\CoreBundle\ObjectUserProvider
     arguments: ['%coreshop.model.customer.class%', 'email']
 
   coreshop.security.customer.password_encoder_factory:
