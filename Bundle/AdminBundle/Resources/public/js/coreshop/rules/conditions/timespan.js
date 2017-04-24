@@ -61,7 +61,7 @@ pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.
 
         this.dateFromFieldContainer = new Ext.form.FieldContainer({
             xtype:'fieldcontainer',
-            fieldLabel: t('coreshop_condition_timeSpan_dateFrom'),
+            fieldLabel: t('coreshop_condition_timespan_dateFrom'),
             combineErrors:true,
             layout: 'hbox',
             items:[this.dateFromField, this.timeFromField],
@@ -88,7 +88,7 @@ pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.
 
         this.dateToFieldContainer = new Ext.form.FieldContainer({
             xtype: 'fieldcontainer',
-            fieldLabel: t('coreshop_condition_timeSpan_dateTo'),
+            fieldLabel: t('coreshop_condition_timespan_dateTo'),
             combineErrors: true,
             layout: 'hbox',
             items: [this.dateToField, this.timeToField],
