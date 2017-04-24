@@ -9,6 +9,7 @@ imports:
   - { resource: "services/shipping.yml" }
   - { resource: "services/rules.yml" }
   - { resource: "services/installer.yml" }
+  - { resource: "services/profiler.yml" }
 
 parameters:
   coreshop.folder.objects: '/coreshop'
