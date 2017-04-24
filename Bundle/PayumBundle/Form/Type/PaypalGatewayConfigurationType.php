@@ -21,21 +21,21 @@ final class PaypalGatewayConfigurationType extends AbstractType
             ->add('username', TextType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'groups' => 'sylius',
+                        'groups' => 'coreshop',
                     ])
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'groups' => 'sylius',
+                        'groups' => 'coreshop',
                     ])
                 ],
             ])
             ->add('signature', TextType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'groups' => 'sylius',
+                        'groups' => 'coreshop',
                     ])
                 ],
             ])
