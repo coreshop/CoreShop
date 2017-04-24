@@ -1,3 +1,6 @@
+parameters:
+  coreshop.installer.resources: '@@CoreShopAdminBundle/Resources/install'
+
 services:
   coreshop.installer.checker.command_directory:
     class: CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker
@@ -6,3 +9,11 @@ services:
   coreshop.commands_provider.database_setup:
     class: CoreShop\Bundle\CoreBundle\Installer\Provider\DatabaseSetupCommandsProvider
     arguments: ['@doctrine']
+
+  coreshop.installer.executor.class_installer:
+    class: CoreShop\Bundle\CoreBundle\Installer\Executor\ClassesInstallProvider
+    arguments: ['%coreshop.installer.resources%', '@kernel']
+
+  coreshop.installer.executor.folder_installer:
+    class: CoreShop\Bundle\CoreBundle\Installer\Executor\FolderInstallerProvider
+    arguments: ['%coreshop.folder.cart%', '%coreshop.folder.product%', '%coreshop.folder.customer%', '%coreshop.folder.customer_groups%', '%coreshop.folder.order%']

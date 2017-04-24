@@ -11,7 +11,7 @@ imports:
   - { resource: "services/installer.yml" }
 
 parameters:
-  coreshop.core.object_path: '/coreshop'
+  coreshop.folder.objects: '/coreshop'
 
 services:
   coreshop.core.object_service:

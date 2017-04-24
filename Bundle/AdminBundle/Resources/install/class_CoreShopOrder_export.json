@@ -3460,6 +3460,53 @@
                                     }
                                 ],
                                 "locked": false
+                            },
+                            {
+                                "fieldtype": "fieldset",
+                                "labelWidth": 100,
+                                "name": "Price Rules",
+                                "type": null,
+                                "region": null,
+                                "title": "Price Rules",
+                                "width": null,
+                                "height": null,
+                                "collapsible": false,
+                                "collapsed": false,
+                                "bodyStyle": "",
+                                "datatype": "layout",
+                                "permissions": null,
+                                "childs": [
+                                    {
+                                        "fieldtype": "fieldcollections",
+                                        "phpdocType": "\\Pimcore\\Model\\Object\\Fieldcollection",
+                                        "allowedTypes": [
+                                            "CoreShopProposalCartPriceRuleItem"
+                                        ],
+                                        "lazyLoading": true,
+                                        "maxItems": "",
+                                        "disallowAddRemove": false,
+                                        "disallowReorder": false,
+                                        "collapsed": false,
+                                        "collapsible": false,
+                                        "name": "priceRuleItems",
+                                        "title": "Price Rule Items",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": true,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "columnType": null,
+                                        "queryColumnType": null,
+                                        "relationType": false,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false
+                                    }
+                                ],
+                                "locked": false
                             }
                         ],
                         "locked": false

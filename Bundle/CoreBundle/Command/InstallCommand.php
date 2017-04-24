@@ -16,6 +16,14 @@ final class InstallCommand extends AbstractInstallCommand
         [
             'command' => 'database',
             'message' => 'Setting up the database.',
+        ],
+        [
+            'command' => 'folders',
+            'message' => 'Install CoreShop Object Folders.',
+        ],
+        [
+            'command' => 'classes',
+            'message' => 'Install Pimcore Classes.',
         ]
     ];
 

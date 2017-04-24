@@ -17,19 +17,11 @@ use Symfony\Component\Console\Input\ArrayInput;
 class InstallHelper
 {
     /**
-     * Runs Doctrine Schema Create
+     * Runs CoreShop Install Command
      */
-    public static function runFixturesCommand()
+    public static function runCoreShopInstallCommand()
     {
-        static::runCommand('okvpn:migration:data:load');
-    }
-
-    /**
-     * Runs Doctrine Schema Create
-     */
-    public static function runDoctrineOrmSchemaCreate()
-    {
-        static::runCommand('doctrine:schema:create', ["--force" => true]);
+        static::runCommand('coreshop:install', ['--no-interaction' => true]);
     }
 
     /**

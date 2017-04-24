@@ -3,6 +3,9 @@ imports:
   - { resource: "services/price-rules.yml" }
   - { resource: "services/specific-price-rules.yml" }
 
+parameters:
+  coreshop.folder.product: '%coreshop.folder.'
+
 services:
   # Product Price Rule CONDITIONS
   coreshop.product_price_rule.condition.products:

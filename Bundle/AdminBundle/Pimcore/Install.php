@@ -35,7 +35,7 @@ class Install extends AbstractInstaller
             '/coreshop/order'
         ];
 
-        InstallHelper::runDoctrineOrmSchemaUpdate();
+        InstallHelper::runCoreShopInstallCommand();
 
         foreach ($folders as $folder) {
             Service::createFolderByPath($folder);

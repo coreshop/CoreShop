@@ -7,7 +7,7 @@ services:
     class: CoreShop\Component\Core\Transformer\CartItemToOrderItemTransformer
     arguments:
       - '@coreshop.core.object_service'
-      - '%coreshop.order.order_item.folder_path%'
+      - '%coreshop.folder.order_item%'
 
   coreshop.order.transformer.cart_to_order:
     class: CoreShop\Component\Core\Transformer\CartToOrderTransformer
@@ -15,7 +15,7 @@ services:
       - '@coreshop.order.transformer.cart_item_to_order_item'
       - '@coreshop.core.key_transformer'
       - '@coreshop.order.number_generator.default'
-      - '%coreshop.order.order.folder_path%'
+      - '%coreshop.folder.order%'
       - '@coreshop.core.object_service'
       - '@coreshop.context.locale'
       - '@coreshop.factory.order_item'
