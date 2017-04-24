@@ -22,6 +22,7 @@ use Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle;
 use FOS\RestBundle\FOSRestBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Liip\ThemeBundle\LiipThemeBundle;
+use Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle;
 use Payum\Bundle\PayumBundle\PayumBundle;
 
 class Kernel extends \Pimcore\Kernel
@@ -33,6 +34,7 @@ class Kernel extends \Pimcore\Kernel
     {
         $bundles = [
             new JMSSerializerBundle(),
+            new OkvpnMigrationBundle(),
 
             new CoreShopOrderBundle(),
             new CoreShopCustomerBundle(),
@@ -53,7 +55,6 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopCoreBundle(),
             new CoreShopResourceBundle(),
             new FOSRestBundle(),
-            new LiipThemeBundle(),
             new DoctrineCacheBundle(),
             new PayumBundle()
         ];

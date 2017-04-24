@@ -32,11 +32,14 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         'coreshop_index',
         'coreshop_order',
         'coreshop_product',
-        'coreshop_rule',
-        'coreshop_store',
-        'coreshop_taxation',
         'coreshop_payment',
-        'coreshop_sequence'
+        'coreshop_payum',
+        'coreshop_product',
+        'coreshop_rule',
+        'coreshop_sequence',
+        'coreshop_store',
+        'coreshop_shipping',
+        'coreshop_taxation'
     ];
 
     /**
@@ -50,6 +53,8 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         $this->registerResources('coreshop', $config['driver'], [], $container);
 
         $loader->load('services.yml');
+
+
     }
 
     /**
