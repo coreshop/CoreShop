@@ -13,24 +13,22 @@ class RegisterCheckoutStepPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('coreshop.registry.checkout.steps')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.checkout.steps');
-
         $map = [];
         foreach ($container->findTaggedServiceIds('coreshop.registry.checkout.step') as $id => $attributes) {
-            if (!isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type`.');
+            if (!isset($attributes[0]['type']) || !isset($attributes[0]['manager'])) {
+                throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type` and `manager`.');
+            }
+
+            $manager = $container->getDefinition($attributes[0]['manager']);
+
+            if (!$manager) {
+                throw new \InvalidArgumentException(sprintf('Cart Manager with identifier %s not found', $attributes[0]['manager']));
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];
             $priority = isset($attributes[0]['priority']) ? (int) $attributes[0]['priority'] : 0;
 
-            $registry->addMethodCall('register', [$attributes[0]['type'], $priority, new Reference($id)]);
+            $manager->addMethodCall('addCheckoutStep', [new Reference($id), $priority]);
         }
-
-        $container->setParameter('coreshop.checkout.steps', $map);
     }
 }

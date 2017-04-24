@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\CoreBundle\Checkout;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Registry\PrioritizedServiceRegistry;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,19 +21,19 @@ class CheckoutManager implements CheckoutManagerInterface
      */
     private $steps;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $serviceRegistry
-     */
-    public function __construct(PrioritizedServiceRegistryInterface $serviceRegistry)
+    public function __construct()
     {
-        $this->serviceRegistry = $serviceRegistry;
+        $this->serviceRegistry = new PrioritizedServiceRegistry(CheckoutStepInterface::class, 'checkout-manager');
         $this->steps = [];
+    }
 
-        foreach ($this->serviceRegistry->all() as $service) {
-            if ($service instanceof CheckoutStepInterface) {
-                $this->steps[] = $service->getIdentifier();
-            }
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function addCheckoutStep(CheckoutStepInterface $step, $priority)
+    {
+        $this->serviceRegistry->register($step->getIdentifier(), $priority, $step);
+        $this->steps[] = $step->getIdentifier();
     }
 
     /**

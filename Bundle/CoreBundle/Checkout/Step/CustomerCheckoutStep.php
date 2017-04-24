@@ -54,7 +54,14 @@ class CustomerCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        return ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY'));
+        try {
+            return ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY'));
+        }
+        catch (\Exception $ex) {
+
+        }
+
+        return false;
     }
 
     /**

@@ -1,6 +1,6 @@
 imports:
   - { resource: "services/form.yml" }
-
+  - { resource: "services/profiler.yml" }
 
 services:
   coreshop.context.store.composite:

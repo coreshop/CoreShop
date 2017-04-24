@@ -1,3 +1,0 @@
-imports:
-  - { resource: "@CoreShopStoreBundle/Resources/config/services/profiler.yml" }
-  - { resource: "@CoreShopCurrencyBundle/Resources/config/services/profiler.yml" }

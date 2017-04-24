@@ -8,6 +8,12 @@ use Symfony\Component\HttpFoundation\Request;
 interface CheckoutManagerInterface {
 
     /**
+     * @param CheckoutStepInterface $step
+     * @param $priority
+     */
+    public function addCheckoutStep(CheckoutStepInterface $step, $priority);
+
+    /**
      * @return mixed
      */
     public function getSteps();

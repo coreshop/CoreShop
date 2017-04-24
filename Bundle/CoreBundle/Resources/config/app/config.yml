@@ -13,6 +13,7 @@ imports:
   - { resource: "@CoreShopOrderBundle/Resources/config/app/config.yml" }
 
   - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop.yml" }
+  - { resource: "@CoreShopCoreBundle/Resources/config/app/security.yml" }
   - { resource: "@CoreShopCoreBundle/Resources/config/app/payum.yml" }
 
 framework:
