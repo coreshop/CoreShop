@@ -7,9 +7,11 @@ use CoreShop\Component\Core\Context\LocaleContextInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
@@ -67,6 +69,11 @@ class CartToOrderTransformer implements ProposalTransformerInterface
     protected $orderItemFactory;
 
     /**
+     * @var CartPriceRuleOrderProcessorInterface
+     */
+    protected $cartPriceRuleOrderProcessor;
+
+    /**
      * @param ProposalItemTransformerInterface $cartItemToOrderItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -76,6 +83,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
      * @param PimcoreFactoryInterface $orderItemFactory
      * @param CurrencyContextInterface $currencyContext
      * @param StoreContextInterface $storeContext
+     * @param CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
      */
     public function __construct(
         ProposalItemTransformerInterface $cartItemToOrderItemTransformer,
@@ -86,7 +94,8 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         LocaleContextInterface $localeContext,
         PimcoreFactoryInterface $orderItemFactory,
         CurrencyContextInterface $currencyContext,
-        StoreContextInterface $storeContext
+        StoreContextInterface $storeContext,
+        CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
     )
     {
         $this->cartItemToOrderItemTransformer = $cartItemToOrderItemTransformer;
@@ -98,6 +107,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $this->orderItemFactory = $orderItemFactory;
         $this->currencyContext = $currencyContext;
         $this->storeContext = $storeContext;
+        $this->cartPriceRuleOrderProcessor = $cartPriceRuleOrderProcessor;
     }
 
 
@@ -156,6 +166,12 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $order->setShippingAddress($cart->getShippingAddress());
         $order->setInvoiceAddress($cart->getInvoiceAddress());
 
+        foreach ($cart->getPriceRuleItems() as $priceRule) {
+            if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
+                $this->cartPriceRuleOrderProcessor->process($priceRule->getCartPriceRule(), $priceRule->getVoucherCode(), $cart, $order);
+            }
+        }
+
         /**
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
@@ -171,7 +187,6 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         }
 
         //TODO: Collect taxes
-        //TODO: PriceRules
 
         $order->save();
 

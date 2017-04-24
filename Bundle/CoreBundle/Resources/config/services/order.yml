@@ -21,3 +21,4 @@ services:
       - '@coreshop.factory.order_item'
       - '@coreshop.context.currency'
       - '@coreshop.context.store'
+      - '@coreshop.cart_price_rule.order.processor'

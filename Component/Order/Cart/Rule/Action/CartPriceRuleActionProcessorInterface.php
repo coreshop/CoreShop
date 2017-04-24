@@ -3,6 +3,7 @@
 namespace CoreShop\Component\Order\Cart\Rule\Action;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartPriceRuleActionProcessorInterface
 {

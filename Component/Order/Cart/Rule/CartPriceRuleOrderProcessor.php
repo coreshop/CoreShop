@@ -2,7 +2,6 @@
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
-use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
@@ -11,20 +10,20 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
-class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
+class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterface
 {
     /**
-     * @var RuleValidationProcessorInterface
+     * @var CartPriceRuleVoucherRepositoryInterface
      */
-    private $cartPriceRuleValidator;
+    private $voucherCodeRepository;
 
     /**
-     * @var FactoryInterface
+     * @var EntityManagerInterface
      */
-    private $cartPriceRuleItemFactory;
+    private $entityManager;
 
     /**
      * @var ServiceRegistryInterface
@@ -32,51 +31,49 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     private $actionServiceRegistry;
 
     /**
-     * @param RuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param FactoryInterface $cartPriceRuleItemFactory
+     * @var FactoryInterface
+     */
+    private $cartPriceRuleItemFactory;
+
+    /**
+     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param EntityManagerInterface $entityManager
      * @param ServiceRegistryInterface $actionServiceRegistry
+     * @param FactoryInterface $cartPriceRuleItemFactory
      */
     public function __construct(
-        RuleValidationProcessorInterface $cartPriceRuleValidator,
-        FactoryInterface $cartPriceRuleItemFactory,
-        ServiceRegistryInterface $actionServiceRegistry
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        EntityManagerInterface $entityManager,
+        ServiceRegistryInterface $actionServiceRegistry,
+        FactoryInterface $cartPriceRuleItemFactory
     )
     {
-        $this->cartPriceRuleValidator = $cartPriceRuleValidator;
-        $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
+        $this->voucherCodeRepository = $voucherCodeRepository;
+        $this->entityManager = $entityManager;
         $this->actionServiceRegistry = $actionServiceRegistry;
+        $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart) {
-        $priceRuleItem = null;
+    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart, OrderInterface $order)
+    {
+        $voucherCode = $this->voucherCodeRepository->findByCode($usedCode);
 
-        if ($cart->hasPriceRules()) {
-            foreach ($cart->getPriceRuleItems() as $rule) {
-                if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                    $cartPriceRule = $rule->getCartPriceRule();
+        if ($voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
+            $voucherCode->setUses($voucherCode->getUses() + 1);
+            $voucherCode->setUsed(true);
 
-                    if ($cartPriceRule instanceof CartPriceRuleInterface) {
-                        if ($cartPriceRule->getId() === $cartPriceRule->getId()) {
-                            $priceRuleItem = $rule;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        
-        if ($this->cartPriceRuleValidator->isValid($cart, $cartPriceRule)) {
+            $this->entityManager->persist($voucherCode);
+            $this->entityManager->flush();
+
             $discountNet = 0;
             $discountGross = 0;
 
             foreach ($cartPriceRule->getActions() as $action) {
                 if ($action instanceof ActionInterface) {
                     $actionCommand = $this->actionServiceRegistry->get($action->getType());
-
-                    $actionCommand->applyRule($cart, $action->getConfiguration());
 
                     $discountNet += $actionCommand->getDiscount($cart, false, $action->getConfiguration());
                     $discountGross += $actionCommand->getDiscount($cart, true, $action->getConfiguration());
@@ -94,17 +91,10 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
             $priceRuleItem->setVoucherCode($usedCode);
             $priceRuleItem->setDiscount($discountNet, false);
             $priceRuleItem->setDiscount($discountGross, true);
-            
-            $cart->addPriceRule($priceRuleItem);
 
-            //TODO: Shouldn't this do the cart-manager?
-            if ($cart->getId()) {
-                $cart->save();
-            }
+            $order->addPriceRule($priceRuleItem);
 
             return true;
         }
-
-        return false;
     }
 }

@@ -8,6 +8,7 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use Pimcore\Model\Object\Fieldcollection;
 
 class Order extends AbstractPimcoreModel implements OrderInterface
 {
@@ -443,7 +444,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getPriceRules()
+    public function getPriceRuleItems()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -451,7 +452,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function setPriceRules($priceRules)
+    public function setPriceRuleItems($priceRuleItems)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -462,7 +463,35 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function hasPriceRules()
     {
-        return is_array($this->getPriceRules()) && count($this->getPriceRules()) > 0;
+        return is_array($this->getPriceRuleItems()) && count($this->getPriceRuleItems()) > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriceRules()
+    {
+        $rules = [];
+
+        if ($this->getPriceRuleItems() instanceof Fieldcollection) {
+            foreach ($this->getPriceRuleItems() as $ruleItem) {
+                if ($ruleItem instanceof ProposalCartPriceRuleItem) {
+                    $rules[] = $ruleItem->getCartPriceRule();
+                }
+            }
+        }
+
+        return $rules;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPriceRules($priceRules)
+    {
+        if ($priceRules instanceof Fieldcollection) {
+            $this->setPriceRuleItems($priceRules);
+        }
     }
 
     /**
@@ -470,10 +499,17 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function addPriceRule($priceRule)
     {
-        $items = $this->getPriceRules();
-        $items[] = $priceRule;
+        if (!$this->hasPriceRule($priceRule)) {
+            $items = $this->getPriceRuleItems();
 
-        $this->setPriceRules($items);
+            if (!$items instanceof Fieldcollection) {
+                $items = new Fieldcollection();
+            }
+
+            $items->add($priceRule);
+
+            $this->setPriceRules($items);
+        }
     }
 
     /**
@@ -481,18 +517,20 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function removePriceRule($priceRule)
     {
-         $items = $this->getPriceRules();
+        $items = $this->getPriceRuleItems();
 
-        for ($i = 0; $i < count($items); ++$i) {
-            $arrayItem = $items[$i];
+        if ($items instanceof Fieldcollection) {
+            for ($i = 0; $i < count($items); ++$i) {
+                $arrayItem = $items[$i];
 
-            if ($arrayItem->getId() === $priceRule->getId()) {
-                unset($items[$i]);
-                break;
+                if ($arrayItem->getId() === $priceRule->getId()) {
+                    $items->remove($i);
+                    break;
+                }
             }
-        }
 
-        $this->setPriceRules($items);
+            $this->setPriceRules($items);
+        }
     }
 
     /**
@@ -500,18 +538,19 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function hasPriceRule($priceRule)
     {
-         $items = $this->getPriceRules();
+        $items = $this->getPriceRuleItems();
 
-        for ($i = 0; $i < count($items); ++$i) {
-            $arrayItem = $items[$i];
-
-            if ($arrayItem->getId() === $priceRule->getId()) {
-                return true;
+        if ($items instanceof Fieldcollection) {
+            foreach ($items as $item) {
+                if ($item->getId() === $priceRule->getId()) {
+                    return true;
+                }
             }
         }
 
         return false;
     }
+
 
     /**
      * @return PaymentRepositoryInterface
