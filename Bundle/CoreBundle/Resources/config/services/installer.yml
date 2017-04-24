@@ -1,5 +1,5 @@
 parameters:
-  coreshop.installer.resources: '@@CoreShopAdminBundle/Resources/install'
+  coreshop.installer.resources: '@@CoreShopCoreBundle/Resources/install'
 
 services:
   coreshop.installer.checker.command_directory:
