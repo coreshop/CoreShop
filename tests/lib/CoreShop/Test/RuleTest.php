@@ -3,8 +3,8 @@
 namespace CoreShop\Test;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
-use CoreShop\Component\Product\Model\PriceRuleInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -28,6 +28,21 @@ abstract class RuleTest extends Base
     abstract protected function getConditionFormClass();
 
     /**
+     * @return string
+     */
+    abstract protected function getActionFormRegistryName();
+
+    /**
+     * @return string
+     */
+    abstract protected function getActionProcessorName();
+
+    /**
+     * @return string
+     */
+    abstract protected function getActionFormClass();
+
+    /**
      * @return RuleInterface
      */
     abstract protected function createRule();
@@ -44,6 +59,13 @@ abstract class RuleTest extends Base
      */
     protected function getConditionFormRegistry() {
         return $this->get($this->getConditionFormRegistryName());
+    }
+
+    /**
+     * @return FormTypeRegistryInterface
+     */
+    protected function getActionFormRegistry() {
+        return $this->get($this->getActionFormRegistryName());
     }
 
     /**
@@ -64,6 +86,19 @@ abstract class RuleTest extends Base
         }
 
         return $this->getFormFactory()->createNamed('', $this->getConditionFormRegistry()->get($type, 'default'));
+    }
+
+    /**
+     * @param $type
+     * @return \Symfony\Component\Form\FormInterface
+     * @throws \Exception
+     */
+    protected function getActionForm($type) {
+        if (!$this->getActionFormRegistry()->has($type, 'default')) {
+            throw new \Exception("Form not found for $type");
+        }
+
+        return $this->getFormFactory()->createNamed('', $this->getActionFormRegistry()->get($type, 'default'));
     }
 
     /**
@@ -125,5 +160,38 @@ abstract class RuleTest extends Base
         $rule->addCondition($condition);
 
         $this->assertPriceRuleCondition($subject, $rule, $trueOrFalse);
+    }
+    /**
+     * @param $class
+     * @param $type
+     */
+    protected function assertActionForm($class, $type) {
+        $conditionForm = $this->getActionForm($type);
+
+        $this->assertInstanceOf(FormInterface::class, $conditionForm);
+        $this->assertTrue($this->getActionFormRegistry()->has($type, 'default'));
+        $this->assertSame($class, $this->getActionFormRegistry()->get($type, 'default'));
+    }
+
+    /**
+     * @param $type
+     * @param $data
+     * @return ActionInterface
+     */
+    protected function createActionWithForm($type, $data) {
+        $form = $this->getFormFactory()->createNamed('', $this->getActionFormClass());
+
+        $formData = [
+            'type' => $type,
+            'configuration' => $data
+        ];
+
+        $form->submit($formData);
+
+        $action = $form->getData();
+
+        $this->assertInstanceOf(ActionInterface::class, $action);
+
+        return $action;
     }
 }

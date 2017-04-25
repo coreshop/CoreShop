@@ -9,6 +9,7 @@ use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
@@ -40,6 +41,16 @@ class Data
      * @var ProductInterface
      */
     public static $product3;
+
+    /**
+     * @var CategoryInterface
+     */
+    public static $category1;
+
+    /**
+     * @var CategoryInterface
+     */
+    public static $category2;
 
     /**
      * @var CarrierInterface
@@ -89,13 +100,6 @@ class Data
      */
     public static function createData()
     {
-        //Configuration::set("SYSTEM.BASE.COUNTRY", Country::getById(2)->getId());
-
-        //$session = \CoreShop::getTools()->getSession();
-        //$session->countryId = Country::getById(2)->getId();
-
-        //$session->stateId = State::getById(23)->getId();
-
         self::$store = $standardStore = self::get('coreshop.repository.store')->findStandard();
 
         self::createTaxRule();
@@ -110,6 +114,8 @@ class Data
         \Pimcore::getKernel()->getContainer()->get('security.token_storage')->setToken($token);
 
         self::get('coreshop.context.country.cached')->setCountry(self::$store->getBaseCountry());
+        self::get('coreshop.context.currency.cached')->setCurrency(self::$store->getBaseCurrency());
+        self::get('coreshop.context.store.cached')->setStore(self::$store);
     }
 
     /**
@@ -233,6 +239,33 @@ class Data
     public static function createTestProduct()
     {
         $productFactory = self::get('coreshop.factory.product');
+        $categoryFactory = self::get('coreshop.factory.category');
+
+        if (!self::$category1 instanceof CategoryInterface) {
+            /**
+             * @var $category1 CategoryInterface
+             */
+            $category1 = $categoryFactory->createNew();
+            $category1->setName('test');
+            $category1->setKey("test-category");
+            $category1->setParent(Service::createFolderByPath("/coreshop/categories"));
+            $category1->save();
+
+            self::$category1 = $category1;
+        }
+
+        if (!self::$category2 instanceof CategoryInterface) {
+            /**
+             * @var $category2 CategoryInterface
+             */
+            $category2 = $categoryFactory->createNew();
+            $category2->setName('test2');
+            $category2->setKey("test-category2");
+            $category2->setParent(Service::createFolderByPath("/coreshop/categories"));
+            $category2->save();
+
+            self::$category2 = $category2;
+        }
 
         if (!self::$product1 instanceof ProductInterface) {
             /**
@@ -242,6 +275,7 @@ class Data
             $product1->setName("test1");
             $product1->setWholesalePrice(10);
             $product1->setBasePrice(15);
+            $product1->setCategories([self::$category1]);
             //$product1->setHeight(50);
             //$product1->setWidth(50);
             //$product1->setDepth(50);
@@ -263,6 +297,7 @@ class Data
             $product2->setName("test2");
             $product2->setWholesalePrice(100);
             $product2->setBasePrice(150);
+            $product2->setCategories([self::$category2]);
             //$product2->setHeight(500);
             //$product2->setWidth(500);
             //$product2->setDepth(500);
