@@ -39,10 +39,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     {
         $variable = "price" . ($withTax ? "Gross" : "Net");
 
-        if ($this->$variable) {
-            return $this->$variable;
-        }
-
         /**
          * @var ProductPriceCalculatorInterface
          */
