@@ -1,0 +1,144 @@
+<?php
+
+namespace CoreShop\Test\Models;
+
+use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Core\Model\TaxRuleInterface;
+use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
+use CoreShop\Component\Taxation\Model\TaxRateInterface;
+use CoreShop\Test\Base;
+
+class Taxation extends Base
+{
+    /**
+     * Test Tax Creation
+     */
+    public function testTaxRateCreation()
+    {
+        $this->printTestName();
+
+        /**
+         * @var $taxRate TaxRateInterface
+         */
+        $taxRate = $this->getFactory('tax_rate')->createNew();
+        $taxRate->setRate(20);
+        $taxRate->setActive(true);
+
+        $this->getEntityManager()->persist($taxRate);
+        $this->getEntityManager()->flush();
+
+        $this->assertNotNull($taxRate->getId());
+
+        $this->getEntityManager()->remove($taxRate);
+        $this->getEntityManager()->flush();
+
+        $this->assertNull($taxRate->getId());
+    }
+
+    /**
+     * Test TaxRule Creation
+     */
+    public function testTaxRuleCreation()
+    {
+        $this->printTestName();
+
+        /**
+         * @var $taxRuleGroup TaxRuleGroupInterface
+         */
+        $taxRuleGroup = $this->getFactory('tax_rule_group')->createNew();
+        $taxRuleGroup->setName('test');
+
+        /**
+         * @var $taxRate TaxRateInterface
+         */
+        $taxRate = $this->getFactory('tax_rate')->createNew();
+        $taxRate->setRate(10);
+        $taxRate->setName("AT10", "de");
+
+        /**
+         * @var $taxRule TaxRuleInterface
+         */
+        $taxRule = $this->getFactory('tax_rule')->createNew();
+        $taxRule->setBehavior(TaxCalculatorInterface::COMBINE_METHOD);
+        $taxRule->setTaxRuleGroup($taxRuleGroup);
+        $taxRule->setTaxRate($taxRate);
+
+        $this->getEntityManager()->persist($taxRate);
+        $this->getEntityManager()->persist($taxRuleGroup);
+        $this->getEntityManager()->persist($taxRule);
+        $this->getEntityManager()->flush();
+
+        $this->assertNotNull($taxRule->getId());
+
+        $this->getEntityManager()->remove($taxRule);
+        $this->getEntityManager()->flush();
+
+        $this->assertNull($taxRule->getId());
+    }
+
+    /**
+     * Test TaxRule Creation
+     */
+    public function testTaxRuleGroupCreation()
+    {
+        $this->printTestName();
+
+        /**
+         * @var $taxRuleGroup TaxRuleGroupInterface
+         */
+        $taxRuleGroup = $this->getFactory('tax_rule_group')->createNew();
+        $taxRuleGroup->setName('test');
+
+        $this->getEntityManager()->persist($taxRuleGroup);
+        $this->getEntityManager()->flush();
+
+        $this->assertNotNull($taxRuleGroup->getId());
+
+        $this->getEntityManager()->remove($taxRuleGroup);
+        $this->getEntityManager()->flush();
+
+        $this->assertNull($taxRuleGroup->getId());
+    }
+
+    /**
+     * Test Tax Calculator
+     */
+    public function testTaxCalculator()
+    {
+        $this->printTestName();
+
+        /**
+         * @var $tax10 TaxRateInterface
+         * @var $tax20 TaxRateInterface
+         */
+        $tax10 = $this->getFactory('tax_rate')->createNew();
+        $tax10->setRate(10);
+
+        $tax20 = $this->getFactory('tax_rate')->createNew();
+        $tax20->setRate(20);
+
+        /**
+         * @var $taxCalculator TaxCalculatorInterface
+         */
+        $taxCalculator = new TaxRulesTaxCalculator([$tax10], TaxCalculatorInterface::DISABLE_METHOD);
+
+        $this->assertEquals(11, $taxCalculator->applyTaxes(10));
+        $this->assertEquals(13.2, $taxCalculator->applyTaxes(12));
+
+        $taxCalculator = new TaxRulesTaxCalculator([$tax10, $tax20], TaxCalculatorInterface::COMBINE_METHOD);
+
+        $this->assertEquals(13, $taxCalculator->applyTaxes(10));
+        $this->assertEquals(15.6, $taxCalculator->applyTaxes(12));
+
+        $taxCalculator = new TaxRulesTaxCalculator([$tax10, $tax20], TaxCalculatorInterface::ONE_AFTER_ANOTHER_METHOD);
+
+        $this->assertEquals(13.2, round($taxCalculator->applyTaxes(10), 2));
+        $this->assertEquals(15.84, round($taxCalculator->applyTaxes(12), 2));
+    }
+
+    public function testTaxCalculatorFactoryService() {
+        $this->assertInstanceOf(TaxCalculatorFactoryInterface::class, $this->get('coreshop.taxation.factory.tax_calculator'));
+    }
+}

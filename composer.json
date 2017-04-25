@@ -26,5 +26,8 @@
         "php-http/guzzle6-adapter": "^1.1",
         "okvpn/migration-bundle": "^1.0",
         "rinvex/country": "^3.1"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^3.2"
     }
 }

@@ -52,3 +52,5 @@ tests/tmp
 generate-and-copy.sh
 docs/generate-api.sh
 docs/generate-docs.sh
+output/
+tmp/
