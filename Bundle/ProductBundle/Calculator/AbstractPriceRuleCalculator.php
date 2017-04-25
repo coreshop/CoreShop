@@ -7,6 +7,7 @@ use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
 abstract class AbstractPriceRuleCalculator implements ProductPriceCalculatorInterface
@@ -62,13 +63,16 @@ abstract class AbstractPriceRuleCalculator implements ProductPriceCalculatorInte
         if (is_array($rules)) {
             foreach ($rules as $rule) {
                 if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
+                    /**
+                     * @var $action ActionInterface
+                     */
                     foreach ($rule->getActions() as $action) {
                         $processor = $this->actionServiceRegistry->get($action->getType());
 
                         if ($processor instanceof ProductPriceActionProcessorInterface) {
                             $actionPrice = $processor->getPrice($subject, $action->getConfiguration());
 
-                            if (!empty($actionPrice)) {
+                            if (false !== $actionPrice && null !== $actionPrice) {
                                 $price = $actionPrice;
                             }
                         }
