@@ -19,6 +19,7 @@ use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\File;
 use Pimcore\Model\Object\Service;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @TODO: This should be created using fixtures!!
@@ -76,11 +77,6 @@ class Data
     public static $store;
 
     /**
-     * @var KernelInterface
-     */
-    public static $kernel;
-
-    /**
      * @param $serviceId
      * @return object
      */
@@ -108,9 +104,12 @@ class Data
         self::createTestProduct();
         self::createCustomerGroups();
         self::createCustomer();
-
-        self::get("doctrine.orm.entity_manager")->flush();
         //\CoreShop::getTools()->setUser(self::$customer1);
+
+        $token = new UsernamePasswordToken(self::$customer1, null, 'coreshop_frontend');
+        \Pimcore::getKernel()->getContainer()->get('security.token_storage')->setToken($token);
+
+        self::get('coreshop.context.country.cached')->setCountry(self::$store->getBaseCountry());
     }
 
     /**
@@ -153,6 +152,7 @@ class Data
             $entityManager->persist($taxRate);
             $entityManager->persist($taxRuleGroup);
             $entityManager->persist($taxRule);
+            $entityManager->flush();
 
             self::$taxRuleGroup = $taxRuleGroup;
         }
@@ -221,6 +221,7 @@ class Data
 
             $entityManager->persist($rule1);
             $entityManager->persist($ruleGroup);
+            $entityManager->flush();
 
             self::$carrier1 = $carrier;
         }
@@ -244,7 +245,7 @@ class Data
             //$product1->setHeight(50);
             //$product1->setWidth(50);
             //$product1->setDepth(50);
-            $product1->setWeight(50);
+            //$product1->setWeight(50);
             $product1->setTaxRule(self::$taxRuleGroup);
             $product1->setParent(Service::createFolderByPath("/coreshop/products"));
             $product1->setKey(File::getValidFilename("test1"));
@@ -265,7 +266,7 @@ class Data
             //$product2->setHeight(500);
             //$product2->setWidth(500);
             //$product2->setDepth(500);
-            $product2->setWeight(500);
+            //$product2->setWeight(500);
             $product2->setTaxRule(self::$taxRuleGroup);
             $product2->setParent(Service::createFolderByPath("/coreshop/products"));
             $product2->setKey(File::getValidFilename("test2"));
@@ -286,7 +287,7 @@ class Data
             //$product3->setHeight(100);
             //$product3->setWidth(100);
             //$product3->setDepth(100);
-            $product3->setWeight(100);
+            //$product3->setWeight(100);
             $product3->setTaxRule(self::$taxRuleGroup);
             $product3->setParent(Service::createFolderByPath("/coreshop/products"));
             $product3->setKey(File::getValidFilename("test3"));
@@ -370,10 +371,10 @@ class Data
             $customer = $customerFactory->createNew();
             $customer->setKey("customer1");
             $customer->setParent(Service::createFolderByPath("/users"));
-            $customer->setFirstname("customer");
-            $customer->setLastname("1");
-            $customer->setGender("m");
-            $customer->setEmail("test@coreshop.org");
+            $customer->setFirstname("Max");
+            $customer->setLastname("Mustermann");
+            //$customer->setGender("m"); TODO
+            $customer->setEmail("mus@coreshop.org");
             $customer->setCustomerGroups([self::$customerGroup1]);
             $customer->save();
 

@@ -28,13 +28,14 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
             $this->validateCoreShopPimcoreModel($configuration['classes']['model'], $configuration['classes']['interface']);
             $registry->addMethodCall('addFromAliasAndConfiguration', [$alias, $configuration]);
 
-            if (class_exists($configuration['classes']['model'])) {
+            if (\Pimcore\Tool::classExists($configuration['classes']['model'])) {
                 $class = $configuration['classes']['model'];
 
-                if (method_exists($class, 'classId'))
-                $classId = $class::classId();
+                if (method_exists($class, 'classId')) {
+                    $classId = $class::classId();
 
-                $container->setParameter(sprintf('%s.model.%s.pimcore_class_id', $applicationName, $resourceName), $classId);
+                    $container->setParameter(sprintf('%s.model.%s.pimcore_class_id', $applicationName, $resourceName), $classId);
+                }
             }
         }
     }
@@ -48,7 +49,7 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
         //TODO: Needs to be solved different. Everytime you make a mistake on class-creation
         //this stops pimcore from being functional :/
 
-        if (class_exists($class)) {
+        if (\Pimcore\Tool::classExists($class)) {
             if (!in_array($interface, class_implements($class), true)) {
                 throw new InvalidArgumentException(sprintf(
                     'Class "%s" must implement "%s" to be registered as a CoreShop Pimcore model.',

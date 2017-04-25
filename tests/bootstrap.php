@@ -35,16 +35,35 @@ require_once '../../../pimcore/config/constants.php';
 $loader = require_once PIMCORE_PATH . '/config/autoload.php';
 include_once 'app/AppKernel.php';
 
+/**
+ * @var $loader \Composer\Autoload\ClassLoader
+ */
 $loader->add('CoreShop\Test', [__DIR__ . "/lib", __DIR__ . "/"]);
+$loader->addPsr4('Pimcore\\Model\\Object\\', PIMCORE_CLASS_DIRECTORY . '/Object', true);
+
+//Actually, only needed
+foreach (['CoreShopAddress',
+    'CoreShopCart',
+    'CoreShopCartItem',
+    'CoreShopCategory',
+    'CoreShopCustomer',
+    'CoreShopCustomerGroup',
+    'CoreShopOrder',
+    'CoreShopOrderItem',
+    'CoreShopProduct'] as $class) {
+    $loader->addClassMap([sprintf('Pimcore\Model\Object\%s', $class) => sprintf('%s/Object/%s.php', PIMCORE_CLASS_DIRECTORY, $class)]);
+    $loader->addClassMap([sprintf('Pimcore\Model\Object\%s\Listing', $class) => sprintf('%s/Object/%s/Listing.php', PIMCORE_CLASS_DIRECTORY, $class)]);
+}
+
+foreach (['CoreShopProposalCartPriceItem'] as $fc) {
+    $loader->addClassMap([sprintf('Pimcore\Model\Object\Fieldcollection\Data\%s', $class) => sprintf('%s/Object/Fieldcollection/Data/%s.php', PIMCORE_CLASS_DIRECTORY, $class)]);
+}
 
 $phpLog = PIMCORE_LOG_DIRECTORY . '/php.log';
 if (is_writable(PIMCORE_LOG_DIRECTORY)) {
     ini_set('error_log', $phpLog);
     ini_set('log_errors', '1');
 }
-
-$date = date('m/d/Y h:i:s a', time());
-print($date . "\n");
 
 // some general pimcore definition overwrites
 define('PIMCORE_ORIG_PRIVATE_VAR', PIMCORE_PROJECT_ROOT . '/var/config');
@@ -110,9 +129,7 @@ if (defined('HHVM_VERSION')) {
     $dbConfig["adapter"] = "Pdo_Mysql";
 }
 
-echo "\n\nDatabase Config: ". print_r($dbConfig, true) . "\n\n";
 
-echo "\n\nInstalling Pimcore Config";
 $setup = new \Pimcore\Model\Tool\Setup();
 $setup->config([
     "database" => $dbConfig,
@@ -120,10 +137,12 @@ $setup->config([
     "general" => ["validLanguages" => "en,de"]
 ]);
 
-echo "\n\nBootstrap Kernel";
 $kernel = new AppKernel('dev', true);
 $kernel->boot();
 Pimcore::setKernel($kernel);
+
+//Start Session before output started
+$kernel->getContainer()->get('session')->start();
 
 \Pimcore::initConfiguration();
 
@@ -181,7 +200,7 @@ $install->install();
 //Zend_Session::$_unitTestEnabled = true;
 //\Zend_Registry::set("Zend_Locale", new \Zend_Locale("en"));
 
-//\CoreShop\Test\Data::createData();
+\CoreShop\Test\Data::createData(); //TODO: will be done using Fixtures in future
 
 /**
  * bootstrap is done, phpunit_pimcore is up and running.

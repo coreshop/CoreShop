@@ -3,10 +3,9 @@
 namespace CoreShop\Bundle\CoreBundle\Product\Rule\Condition;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Webmozart\Assert\Assert;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class CustomersConditionChecker implements ConditionCheckerInterface
 {
@@ -28,7 +27,7 @@ class CustomersConditionChecker implements ConditionCheckerInterface
      */
     public function isValid($subject, array $configuration)
     {
-        $customer = $this->tokenStorage->getToken()->getUser();
+        $customer = $this->tokenStorage->getToken() instanceof TokenInterface ? $this->tokenStorage->getToken()->getUser() : null;
 
         if (!$customer instanceof CustomerInterface) {
             return false;

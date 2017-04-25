@@ -92,7 +92,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
      */
     public function setBasePrice($basePrice)
     {
-        $this->setBasePrice($basePrice);
+        $this->setPimcoreBasePrice($basePrice);
     }
 
     /**

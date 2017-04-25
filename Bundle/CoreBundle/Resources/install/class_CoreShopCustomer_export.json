@@ -289,13 +289,17 @@
                                 "queryColumnType": "text",
                                 "phpdocType": "array",
                                 "relationType": true,
-                                "objectsAllowed": false,
+                                "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
                                 "documentsAllowed": false,
                                 "documentTypes": [],
                                 "lazyLoading": true,
-                                "classes": [],
+                                "classes": [
+                                    {
+                                        "classes": "CoreShopCustomerGroup"
+                                    }
+                                ],
                                 "pathFormatterClass": "",
                                 "name": "customerGroups",
                                 "title": "Customer Groups",

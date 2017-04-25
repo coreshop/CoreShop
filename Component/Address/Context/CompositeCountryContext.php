@@ -9,20 +9,20 @@ final class CompositeCountryContext implements CountryContextInterface
     /**
      * @var PriorityQueue|CountryContextInterface[]
      */
-    private $channelContexts;
+    private $countryContexts;
 
     public function __construct()
     {
-        $this->channelContexts = new PriorityQueue();
+        $this->countryContexts = new PriorityQueue();
     }
 
     /**
-     * @param CountryContextInterface $channelContext
+     * @param CountryContextInterface $countryContexts
      * @param int $priority
      */
-    public function addContext(CountryContextInterface $channelContext, $priority = 0)
+    public function addContext(CountryContextInterface $countryContexts, $priority = 0)
     {
-        $this->channelContexts->insert($channelContext, $priority);
+        $this->countryContexts->insert($countryContexts, $priority);
     }
 
     /**
@@ -30,9 +30,9 @@ final class CompositeCountryContext implements CountryContextInterface
      */
     public function getCountry()
     {
-        foreach ($this->channelContexts as $channelContext) {
+        foreach ($this->countryContexts as $countryContexts) {
             try {
-                return $channelContext->getCountry();
+                return $countryContexts->getCountry();
             } catch (CountryNotFoundException $exception) {
                 continue;
             }

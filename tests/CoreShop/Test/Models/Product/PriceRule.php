@@ -2,13 +2,26 @@
 
 namespace CoreShop\Test\Models\Product;
 
+use Carbon\Carbon;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
+use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
+use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
+use CoreShop\Test\RuleTest;
 use Pimcore\Cache;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
-class PriceRule extends Base
+class PriceRule extends RuleTest
 {
     /**
      * @var ProductPriceRuleInterface
@@ -27,97 +40,123 @@ class PriceRule extends Base
     {
         parent::setUp();
 
-       /* $priceRule = \CoreShop\Model\Product\PriceRule::create();
-        $priceRule->setName("test-rule");
-        $priceRule->setActive(true);
-        $priceRule->setDescription("");
+        $this->product = Data::$product1;
+    }
 
-        $this->priceRule = $priceRule;
-        $this->product = Data::$product1;*/
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormRegistryName()
+    {
+        return 'coreshop.form_registry.product_price_rule.conditions';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionValidatorName()
+    {
+        return 'coreshop.product_price_rule.processor';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormClass()
+    {
+        return ProductPriceRuleConditionType::class;
+    }
+
+
+    /**
+     * @return ProductPriceRuleInterface
+     */
+    protected function createRule() {
+        /**
+         * @var $priceRule ProductPriceRuleInterface
+         */
+        $priceRule = $this->getFactory('product_price_rule')->createNew();
+        $priceRule->setName('test-rule');
+        $priceRule->setActive(true);
+        $priceRule->setDescription('');
+
+        return $priceRule;
     }
 
     /**
      * Test Price Rule Condition Customer
      */
-    public function testPriceRuleCondCustomer()
+    public function testPriceRuleConditionCustomer()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
-        /*$customerConditon = new Customers();
-        $customerConditon->setCustomers([Data::$customer1->getId()]);
-
-        $this->priceRule->setConditions([
-            $customerConditon
+        $condition = $this->createConditionWithForm('customers', [
+            'customers' => [Data::$customer1->getId()]
         ]);
 
-        $cart = Data::createCartWithProducts();
-        $cart->setUser(Data::$customer1);
-
-        $this->assertTrue($customerConditon->checkConditionProduct($this->product, $this->priceRule));*/
+        $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
      * Test Price Rule Condition Time Span
      */
-    public function testPriceRuleCondTimeSpan()
+    public function testPriceRuleConditionTimeSpan()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
 
-        /*$today = strtotime('12:00:00');
+        $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
+
+        $today = strtotime('12:00:00');
         $yesterday = strtotime('-1 day', $today);
         $tomorrow = strtotime('1 day', $today);
 
-        $yesterday = new \Zend_Date($yesterday);
-        $tomorrow = new \Zend_Date($tomorrow);
+        $yesterday = Carbon::createFromTimestamp($yesterday);
+        $tomorrow = Carbon::createFromTimestamp($tomorrow);
 
-        $timeSpan = new TimeSpan();
-        $timeSpan->setDateFrom($yesterday->getTimestamp() * 1000);
-        $timeSpan->setDateTo($tomorrow->getTimestamp() * 1000);
+        $condition = $this->createConditionWithForm('timespan', [
+            'dateFrom' => $yesterday->getTimestamp() * 1000,
+            'dateTo' => $tomorrow->getTimestamp() * 1000
+        ]);
 
-        $this->assertTrue($timeSpan->checkConditionProduct($this->product, $this->priceRule));
+        $this->assertRuleCondition($this->product, $condition);
 
-        $timeSpan->setDateFrom($yesterday->getTimestamp() * 1000);
-        $timeSpan->setDateTo($yesterday->getTimestamp() * 1000);
+        $condition = $this->createConditionWithForm('timespan', [
+            'dateFrom' => $yesterday->getTimestamp() * 1000,
+            'dateTo' => $yesterday->getTimestamp() * 1000
+        ]);
 
-        $this->assertFalse($timeSpan->checkConditionProduct($this->product, $this->priceRule));*/
+        $this->assertRuleCondition($this->product, $condition, false);
     }
 
     /**
      * Test Price Rule Condition Country
      */
-    public function testPriceRuleCondCountry()
+    public function testPriceRuleConditionCountry()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
-        /*$country = new Countries();
-        $country->setCountries([2]);
+        $condition = $this->createConditionWithForm('countries', [
+            'countries' => [Data::$store->getBaseCountry()->getId()]
+        ]);
 
-        $this->assertTrue($country->checkConditionProduct($this->product, $this->priceRule));
-
-        $country->setCountries([1]);
-
-        $this->assertFalse($country->checkConditionProduct($this->product, $this->priceRule));*/
+        $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
      * Test Price Rule Condition Zone
      */
-    public function testPriceRuleCondZone()
+    public function testPriceRuleConditionZone()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
-        /*$zone = new Zones();
-        $zone->setZones([2]);
+        $condition = $this->createConditionWithForm('zones', [
+            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()]
+        ]);
 
-        $this->assertTrue($zone->checkConditionProduct($this->product, $this->priceRule));
-
-        $zone->setZones([1]);
-
-        $this->assertFalse($zone->checkConditionProduct($this->product, $this->priceRule));*/
+        $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
