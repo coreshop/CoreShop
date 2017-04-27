@@ -2,11 +2,25 @@
 
 namespace CoreShop\Test\Models;
 
+use Carbon\Carbon;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionType;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
+use CoreShop\Component\Order\Cart\Calculator\CartDiscountCalculatorInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
-use CoreShop\Test\Base;
 use CoreShop\Test\Data;
+use CoreShop\Test\RuleTest;
 
-class CartPriceRule extends Base
+class CartPriceRule extends RuleTest
 {
     /**
      * @var CartPriceRuleInterface
@@ -14,263 +28,248 @@ class CartPriceRule extends Base
     protected $priceRule;
 
     /**
-     * Setup Test
+     * @var CartInterface
+     */
+    protected $cart;
+
+    /**
+     * Setup
      */
     public function setUp()
     {
         parent::setUp();
 
-        /*$priceRule = \CoreShop\Model\Cart\PriceRule::create();
-        $priceRule->setName("test-rule");
-        $priceRule->setActive(true);
-        $priceRule->setHighlight(false);
-        $priceRule->setCode("");
-        $priceRule->setLabel("test-rule");
-        $priceRule->setDescription("");
+        $this->cart = Data::createCartWithProducts();
+        $this->cart->setCustomer(Data::$customer1);
+        $this->cart->setShippingAddress(Data::$customer1->getAddresses()[0]);
+        $this->cart->setInvoiceAddress(Data::$customer1->getAddresses()[0]);
+    }
 
-        $this->priceRule = $priceRule;*/
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormRegistryName()
+    {
+        return 'coreshop.form_registry.cart_price_rule.conditions';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionValidatorName()
+    {
+        return 'coreshop.cart_price_rule.rule_validation.processor';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormClass()
+    {
+        return CartPriceRuleConditionType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormRegistryName()
+    {
+        return 'coreshop.form_registry.cart_price_rule.actions';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionProcessorName()
+    {
+        return 'coreshop.cart_price_rule.processor';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormClass()
+    {
+        return CartPriceRuleActionType::class;
+    }
+
+    /**
+     * @return CartDiscountCalculatorInterface
+     */
+    protected function getPriceCalculator() {
+        return $this->get('coreshop.cart.discount_calculator.price_rules');
+    }
+
+    /**
+     * @return CartPriceRuleInterface
+     */
+    protected function createRule() {
+        /**
+         * @var $priceRule CartPriceRuleInterface
+         */
+        $priceRule = $this->getFactory('cart_price_rule')->createNew();
+        $priceRule->setName('test-rule');
+
+        return $priceRule;
     }
 
     /**
      * Test Price Rule Condition Customer
      */
-    public function testPriceRuleCondCustomer()
+    public function testPriceRuleConditionCustomer()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
-        /*$customerConditon = new Customers();
-        $customerConditon->setCustomers([Data::$customer1->getId()]);
-
-        $this->priceRule->setConditions([
-            $customerConditon
+        $condition = $this->createConditionWithForm('customers', [
+            'customers' => [Data::$customer1->getId()]
         ]);
 
-        $cart = Data::createCartWithProducts();
-        $cart->setUser(Data::$customer1);
-
-        $this->assertTrue($customerConditon->checkConditionCart($cart, $this->priceRule));*/
+        $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
      * Test Price Rule Condition Time Span
      */
-    public function testPriceRuleCondTimeSpan()
+    public function testPriceRuleConditionTimeSpan()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
 
-        /*$today = strtotime('12:00:00');
+        $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
+
+        $today = strtotime('12:00:00');
         $yesterday = strtotime('-1 day', $today);
         $tomorrow = strtotime('1 day', $today);
 
-        $yesterday = new \Zend_Date($yesterday);
-        $tomorrow = new \Zend_Date($tomorrow);
+        $yesterday = Carbon::createFromTimestamp($yesterday);
+        $tomorrow = Carbon::createFromTimestamp($tomorrow);
 
-        $timeSpan = new TimeSpan();
-        $timeSpan->setDateFrom($yesterday->getTimestamp() * 1000);
-        $timeSpan->setDateTo($tomorrow->getTimestamp() * 1000);
+        $condition = $this->createConditionWithForm('timespan', [
+            'dateFrom' => $yesterday->getTimestamp() * 1000,
+            'dateTo' => $tomorrow->getTimestamp() * 1000
+        ]);
 
-        $cart = Data::createCartWithProducts();
+        $this->assertRuleCondition($this->cart, $condition);
 
-        $this->assertTrue($timeSpan->checkConditionCart($cart, $this->priceRule));
+        $condition = $this->createConditionWithForm('timespan', [
+            'dateFrom' => $yesterday->getTimestamp() * 1000,
+            'dateTo' => $yesterday->getTimestamp() * 1000
+        ]);
 
-        $timeSpan->setDateFrom($yesterday->getTimestamp() * 1000);
-        $timeSpan->setDateTo($yesterday->getTimestamp() * 1000);
-
-        $this->assertFalse($timeSpan->checkConditionCart($cart, $this->priceRule));*/
-    }
-
-    /**
-     * Test Price Rule Condition Amount
-     */
-    public function testPriceRuleCondAmount()
-    {
-        $this->printTodoTestName();
-        //TODO
-
-        /*$amount = new Amount();
-        $amount->setMinAmount(2);
-
-        $cart = Data::createCartWithProducts();
-
-        $this->assertTrue($amount->checkConditionCart($cart, $this->priceRule));
-
-        $amount->setMinAmount(10000);
-
-        $this->assertFalse($amount->checkConditionCart($cart, $this->priceRule));*/
-    }
-
-    /**
-     * Test Price Rule Condition Total Per Customer
-     */
-    public function testPriceRuleCondTotalPerCustomer()
-    {
-        $this->printTodoTestName();
-        //TODO
-        /*$total = new TotalPerCustomer();
-        $total->setTotal(1);
-
-        $cart = Data::createCartWithProducts();
-
-        $this->assertTrue($total->checkConditionCart($cart, $this->priceRule));*/
+        $this->assertRuleCondition($this->cart, $condition, false);
     }
 
     /**
      * Test Price Rule Condition Country
      */
-    public function testPriceRuleCondCountry()
+    public function testPriceRuleConditionCountry()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
-        /*$country = new Countries();
-        $country->setCountries([2]);
+        $condition = $this->createConditionWithForm('countries', [
+            'countries' => [Data::$store->getBaseCountry()->getId()]
+        ]);
 
-        $cart = Data::createCartWithProducts();
-
-        $this->assertTrue($country->checkConditionCart($cart, $this->priceRule));
-
-        $country->setCountries([1]);
-
-        $this->assertFalse($country->checkConditionCart($cart, $this->priceRule));*/
+        $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
      * Test Price Rule Condition Zone
      */
-    public function testPriceRuleCondZone()
+    public function testPriceRuleConditionZone()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
-        /*$zone = new Zones();
-        $zone->setZones([2]);
+        $condition = $this->createConditionWithForm('zones', [
+            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()]
+        ]);
 
-        $cart = Data::createCartWithProducts();
-
-        $this->assertTrue($zone->checkConditionCart($cart, $this->priceRule));
-
-        $zone->setZones([1]);
-
-        $this->assertFalse($zone->checkConditionCart($cart, $this->priceRule));*/
-    }
-
-    /**
-     * Test Price Rule Condition Category
-     */
-    public function testPriceRuleCondCategory()
-    {
-        $this->printTodoTestName();
-        //TODO
+        $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
      * Test Price Rule Condition Customer Group
      */
-    public function testPriceRuleCondCustomerGroup()
+    public function testPriceRuleConditionCustomerGroup()
     {
-        //TODO
-        $this->printTodoTestName();
+        $this->printTestName();
+        $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
-        /*$customer = new CustomerGroups();
-        $customer->setCustomerGroups([Data::$customerGroup1->getId()]);
+        $condition = $this->createConditionWithForm('customerGroups', [
+            'customerGroups' => [Data::$customerGroup1->getId()]
+        ]);
 
-        $cart = Data::createCartWithProducts();
-        $cart->setUser(Data::$customer1);
-
-        $this->assertTrue($customer->checkConditionCart($cart, $this->priceRule));
-
-        $customer->setCustomerGroups([Data::$customerGroup2->getId()]);
-
-        $this->assertFalse($customer->checkConditionCart($cart, $this->priceRule));*/
+        $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Action Gift
+     * Test Price Rule Condition Stores
      */
-    public function testPriceRuleActionGift()
+    public function testPriceRuleConditionStores()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
-        /*$gift = new Gift();
-        $gift->setGift(Data::$product1->getId());
+        $condition = $this->createConditionWithForm('stores', [
+            'stores' => [Data::$store->getId()]
+        ]);
 
-        $cart = Data::createCart();
-        $cart->addItem(Data::$product2);
-
-        $this->priceRule->setActions([$gift]);
-
-        $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
-
-        $this->assertEquals(150 + 24, $cart->getTotal());
-        $this->assertEquals(Data::$product1->getPrice(), $cart->getDiscount());*/
+        $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Action Free Shipping
+     * Test Price Rule Condition Currencies
      */
-    public function testPriceRuleActionFreeShipping()
+    public function testPriceRuleConditionCurrencies()
     {
-        $this->printTodoTestName();
-        //TODO
-        /*
-        $freeShipping = new FreeShipping();
+        $this->printTestName();
+        $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
-        $cart = Data::createCart();
-        $cart->addItem(Data::$product2);
+        $condition = $this->createConditionWithForm('currencies', [
+            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+        ]);
 
-        $this->priceRule->setActions([$freeShipping]);
-
-        $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
-
-        $this->assertEquals(0, $cart->getShipping());*/
+        $this->assertRuleCondition($this->cart, $condition);
     }
+
 
     /**
      * Test Price Rule Action Discount Amount
      */
     public function testPriceRuleActionDiscountAmount()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
-        /*$discount = new DiscountAmount();
-        $discount->setAmount(10);
+        $action = $this->createActionWithForm('discountAmount', [
+            'amount' => 5
+        ]);
 
-        $this->priceRule->setActions([$discount]);
+        $rule = $this->createRule();
+        $rule->addAction($action);
 
-        $cart = Data::createCart();
-        $cart->addItem(Data::$product2);
-        $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
+        $this->getEntityManager()->persist($rule);
+        $this->getEntityManager()->flush();
 
-        $cart2 = Data::createCart();
-        $cart2->addItem(Data::$product2);
 
-        $this->assertEquals($cart2->getTotal() - 10, $cart->getTotal());*/
     }
 
     /**
-     * Test Price Rule Action Percent
+     * Test Price Rule Action Discount Percent
      */
     public function testPriceRuleActionDiscountPercent()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
+        $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
-        /*$discount = new DiscountPercent();
-        $discount->setPercent(10);
+        $action = $this->createActionWithForm('discountPercent', [
+            'percent' => 10
+        ]);
 
-        $this->priceRule->setActions([$discount]);
-
-        $cart = Data::createCart();
-        $cart->addItem(Data::$product2);
-        $cart->addPriceRule($this->priceRule, $this->priceRule->getCode());
-
-        $cart2 = Data::createCart();
-        $cart2->addItem(Data::$product2);
-
-        $this->assertEquals($cart2->getSubtotal() * 0.1, $this->priceRule->getDiscount($cart));*/
+        $rule = $this->createRule();
+        $rule->addAction($action);
     }
+
 }

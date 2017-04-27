@@ -103,7 +103,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopCart')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CartInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('pimcore_controller')->defaultValue(CartController::class)->cannotBeEmpty()->end()
+                                        //->scalarNode('pimcore_controller')->defaultValue(CartController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()

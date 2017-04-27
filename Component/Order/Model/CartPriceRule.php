@@ -8,7 +8,9 @@ use Doctrine\Common\Collections\Collection;
 
 class CartPriceRule implements CartPriceRuleInterface
 {
-    use RuleTrait;
+    use RuleTrait {
+        __construct as private initializeRuleTrait;
+    }
 
     /**
      * @var int
@@ -42,6 +44,8 @@ class CartPriceRule implements CartPriceRuleInterface
 
     public function __construct()
     {
+        $this->initializeRuleTrait();
+
         $this->voucherCodes = new ArrayCollection();
     }
 

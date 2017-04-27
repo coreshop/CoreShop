@@ -22,3 +22,10 @@ services:
       - '@coreshop.context.currency'
       - '@coreshop.context.store'
       - '@coreshop.cart_price_rule.order.processor'
+
+  coreshop.factory.cart:
+    class: CoreShop\Bundle\CoreBundle\Factory\CartFactory
+    arguments:
+      - '%coreshop.model.cart.class%'
+      - '@coreshop.context.currency'
+      - '@coreshop.context.store'

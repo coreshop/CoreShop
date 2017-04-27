@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Order\Pimcore\Model;
+namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;

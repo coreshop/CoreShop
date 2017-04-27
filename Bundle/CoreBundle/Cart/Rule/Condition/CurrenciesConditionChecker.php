@@ -2,7 +2,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Cart\Rule\Condition;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use Webmozart\Assert\Assert;
 
@@ -18,8 +19,10 @@ class CurrenciesConditionChecker implements ConditionCheckerInterface
          */
         Assert::isInstanceOf($subject, CartInterface::class);
 
-        //TODO: Cart needs to be CurrencyAware
+        if (!$subject->getCurrency() instanceof CurrencyInterface) {
+            return false;
+        }
 
-        return false;
+        return in_array($subject->getCurrency()->getId(), $configuration['currencies']);
     }
 }

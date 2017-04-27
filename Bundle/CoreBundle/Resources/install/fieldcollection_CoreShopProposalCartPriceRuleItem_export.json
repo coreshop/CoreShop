@@ -1,5 +1,5 @@
 {
-    "parentClass": "CoreShop\\Component\\Order\\Pimcore\\Model\\ProposalCartPriceRuleItem",
+    "parentClass": "CoreShop\\Component\\Order\\Model\\ProposalCartPriceRuleItem",
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
