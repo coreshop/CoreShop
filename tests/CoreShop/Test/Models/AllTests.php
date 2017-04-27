@@ -30,7 +30,8 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\Models\\Product\\Index',
             '\\CoreShop\\Test\\Models\\Product\\SpecificPrice',
             '\\CoreShop\\Test\\Models\\Product\\PriceRule',
-            '\\CoreShop\\Test\\Models\\Store'
+            '\\CoreShop\\Test\\Models\\Store',
+            '\\CoreShop\\Test\\Models\\Configuration'
         ];
 
         shuffle($tests);
