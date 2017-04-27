@@ -33,7 +33,7 @@ services:
     tags:
       - { name: coreshop.shipping_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
       - { name: coreshop.product_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
-      - { name: coreshop.product_specific_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
+      - { name: coreshop.product_specific_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
 
   coreshop.rule.condition.stores:
     class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\StoresConditionChecker
