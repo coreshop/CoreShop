@@ -19,6 +19,16 @@ interface AddressInterface extends ResourceInterface
     /**
      * @return string
      */
+    public function getLastname();
+
+    /**
+     * @param $lastname
+     */
+    public function setLastname($lastname);
+
+    /**
+     * @return string
+     */
     public function getCompany();
 
     /**

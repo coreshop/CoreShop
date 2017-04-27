@@ -28,6 +28,22 @@ class Address extends AbstractPimcoreModel implements AddressInterface, PimcoreM
     /**
      * {@inheritdoc}
      */
+    public function getLastname()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLastname($lastname)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCompany()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
