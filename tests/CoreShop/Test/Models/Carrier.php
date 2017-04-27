@@ -67,7 +67,7 @@ class Carrier extends RuleTest
      */
     protected function getPriceCalculator()
     {
-        return $this->get('coreshop.carrier.price_calculator.shipping_rules');
+        return $this->get('coreshop.carrier.price_calculator.tagged');
     }
 
     /**
@@ -158,35 +158,5 @@ class Carrier extends RuleTest
 
         $this->assertEquals(10, $price);
         $this->assertEquals(12, $priceWithTax);
-    }
-
-    /**
-     * Test Carrier Taxes
-     */
-    public function testCarrierTax()
-    {
-        $this->printTodoTestName();
-
-        /*$cart = Data::createCartWithProducts();
-
-        $tax = Data::$carrier2->getTaxAmount($cart);
-
-        $this->assertEquals(4, $tax);*/
-        //TODO
-    }
-
-    /**
-     * Test Carrier Carts
-     */
-    public function testCarriersForCart()
-    {
-        $this->printTodoTestName();
-
-        /*$cart = Data::createCartWithProducts();
-        $carriersForCart = \CoreShop\Model\Carrier::getCarriersForCart($cart);
-
-        $this->assertEquals(1, count($carriersForCart));
-        $this->assertEquals(Data::$carrier2->getId(), $carriersForCart[0]->getId());*/
-        //TODO
     }
 }

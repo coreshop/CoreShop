@@ -3,6 +3,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
@@ -12,31 +13,41 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartController extends FrontendController
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function widgetAction(Request $request)
     {
-        if ( $this->get('templating')->exists('CoreShopFrontendBundle:Cart:_widget.html.twig') ) {
-
-        }
-
-        //@AppBundle:Sola
-
         return $this->render('CoreShopFrontendBundle:Cart:_widget.html.twig', [
             'cart' => $this->getCart()
         ]);
     }
 
-    public function addItemAction(Request $request, $productId) {
+    /**
+     * @param Request $request
+     * @param $productId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function addItemAction(Request $request, $productId)
+    {
         $product = $this->get('coreshop.repository.product')->find($productId);
         $quantity = 1;
 
-        $this->addCartItem($product, $quantity);
+        $this->getCartModifier()->addCartItem($this->getCart(), $product, $quantity);
 
         //TODO: Flashes
 
         return $this->redirectToRoute('coreshop_shop_cart_summary');
     }
 
-    public function removeItemAction(Request $request, $cartItemId) {
+    /**
+     * @param Request $request
+     * @param $cartItemId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeItemAction(Request $request, $cartItemId)
+    {
         $cartItem = $this->get('coreshop.repository.cart_item')->find($cartItemId);
 
         if (!$cartItem instanceof CartItemInterface) {
@@ -49,12 +60,17 @@ class CartController extends FrontendController
 
         //TODO: add flash
 
-        $this->removeCartItem($cartItem);
+        $this->getCartModifier()->removeCartItem($this->getCart(), $cartItem);
 
         return $this->redirectToRoute('coreshop_shop_cart_summary');
     }
 
-    public function summaryAction(Request $request) {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function summaryAction(Request $request)
+    {
         return $this->render('CoreShopFrontendBundle:Cart:summary.html.twig', [
             'cart' => $this->getCart(),
             'editAllowed' => true,
@@ -64,57 +80,9 @@ class CartController extends FrontendController
     }
 
     /**
-     * @param ProductInterface $product
-     * @param int $quantity
-     * @param bool $increaseAmount
-     * @return bool|CartItemInterface|null
-     *
-     * @todo: move to service?
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    private function updateCartItemQuantity(ProductInterface $product, $quantity = 0, $increaseAmount = false) {
-        $cart = $this->getCart();
-
-        $item = $cart->getItemForProduct($product);
-
-        if ($item instanceof CartItemInterface) {
-            if ($quantity <= 0) {
-                $this->removeCartItem($item);
-
-                return false;
-            }
-
-            $newQuantity = $quantity;
-
-            if ($increaseAmount) {
-                $currentQuantity = $item->getQuantity();
-
-                if (is_int($currentQuantity)) {
-                    $newQuantity = $currentQuantity + $quantity;
-                }
-            }
-
-            $item->setQuantity($newQuantity);
-            $item->save();
-        }
-        else {
-            /**
-             * @var $item CartItemInterface
-             */
-            $item = $this->get('coreshop.factory.cart_item')->createNew();
-            $item->setKey(uniqid());
-            $item->setParent($cart);
-            $item->setQuantity($quantity);
-            $item->setProduct($product);
-            $item->setPublished(true);
-            $item->save();
-
-            $cart->addItem($item);
-            $cart->save();
-        }
-        
-        return $item;
-    }
-
     public function cartPriceRuleAction(Request $request) {
         $code = $request->get('code');
         $cart = $this->getCartManager()->getCart();
@@ -151,28 +119,17 @@ class CartController extends FrontendController
     }
 
     /**
+     * @return CartModifierInterface
+     */
+    protected function getCartModifier() {
+        return $this->get('coreshop.cart.modifier');
+    }
+
+    /**
      * @return CartPriceRuleVoucherRepositoryInterface
      */
     protected function getCartPriceRuleVoucherRepository() {
         return $this->get('coreshop.repository.cart_price_rule_voucher_code');
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param int $quantity
-     * @return CartItemInterface|null
-     */
-    private function addCartItem(ProductInterface $product, $quantity = 1) {
-        $this->getCartManager()->persistCart($this->getCart());
-
-        return $this->updateCartItemQuantity($product, $quantity, true);
-    }
-
-    /**
-     * @param CartItemInterface $cartItem
-     */
-    private function removeCartItem(CartItemInterface $cartItem) {
-        $cartItem->delete();
     }
 
     /**

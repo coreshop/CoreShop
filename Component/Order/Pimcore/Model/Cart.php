@@ -12,6 +12,7 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use Pimcore\Model\Object\ClassDefinition\Data\Fieldcollections;
 use Pimcore\Model\Object\Fieldcollection;
+use Webmozart\Assert\Assert;
 
 class Cart extends AbstractPimcoreModel implements CartInterface
 {
@@ -199,6 +200,8 @@ class Cart extends AbstractPimcoreModel implements CartInterface
      */
     public function addItem($item)
     {
+        Assert::isInstanceOf($item, CartItemInterface::class);
+        
         $items = $this->getItems();
         $items[] = $item;
 

@@ -1,15 +1,14 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type\Action;
+namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
-use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType;
+use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ShippingRuleActionConfigurationType extends AbstractType
+class PriceActionConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -17,10 +16,10 @@ class ShippingRuleActionConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('shippingRule', TextType::class, [ //TODO: Should be ShippingRuleChoiceType, but would't save ID to database, instead it saves the whole object
+            ->add('price', NumberType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']])
-                ]
+                ],
             ])
         ;
     }
@@ -30,6 +29,6 @@ class ShippingRuleActionConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_shipping_rule_action_shipping_rule';
+        return 'coreshop_shipping_rule_action_price';
     }
 }

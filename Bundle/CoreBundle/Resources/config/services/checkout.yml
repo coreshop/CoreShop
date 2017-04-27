@@ -28,6 +28,7 @@ services:
     arguments:
       - '@coreshop.carrier.cart.processor'
       - '@coreshop.carrier.price_calculator.default'
+      - '@coreshop.carrier.cart.checker'
       - '@form.factory'
       - '@coreshop.context.currency'
       - '@coreshop.money_formatter'

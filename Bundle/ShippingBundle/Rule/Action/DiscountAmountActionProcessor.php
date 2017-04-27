@@ -23,6 +23,6 @@ class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterf
      */
     public function getModification(CarrierInterface $carrier, AddressInterface $address, $price, array $configuration)
     {
-        return -1 * $configuration['addition'];
+        return -1 * $configuration['amount'];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type\Action;
+namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
 use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Form\AbstractType;

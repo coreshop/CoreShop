@@ -216,6 +216,36 @@ interface ProductInterface extends PimcoreModelInterface
     public function setWeight($weight);
 
     /**
+     * @return float
+     */
+    public function getWidth();
+
+    /**
+     * @param float $width
+     */
+    public function setWidth($width);
+
+    /**
+     * @return float
+     */
+    public function getHeight();
+
+    /**
+     * @param float $height
+     */
+    public function setHeight($height);
+
+    /**
+     * @return float
+     */
+    public function getDepth();
+
+    /**
+     * @param float $depth
+     */
+    public function setDepth($depth);
+
+    /**
      * @return RuleInterface[]
      */
     public function getSpecificPriceRules();

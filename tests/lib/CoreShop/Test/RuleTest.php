@@ -154,6 +154,7 @@ abstract class RuleTest extends Base
 
         $this->assertPriceRuleCondition($subject, $rule, $trueOrFalse);
     }
+
     /**
      * @param $class
      * @param $type

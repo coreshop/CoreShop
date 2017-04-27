@@ -19,8 +19,12 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
         name: carrierId
         referencedColumnName: id
         nullable: false
+      cascade:
+        - persist
     shippingRule:
       targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleInterface
       joinColumn:
         name: shippingRuleId
         referencedColumnName: id
+      cascade:
+        - all

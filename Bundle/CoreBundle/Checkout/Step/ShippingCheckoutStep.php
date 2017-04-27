@@ -5,12 +5,14 @@ namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType;
 use CoreShop\Bundle\CurrencyBundle\Formatter\MoneyFormatterInterface;
 use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessorInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -28,6 +30,11 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      * @var CarrierPriceCalculatorInterface
      */
     private $carrierPriceCalculator;
+
+    /**
+     * @var CarrierShippingRuleCheckerInterface
+     */
+    private $carrierShippingRuleChecker;
     
     /**
      * @var FormFactoryInterface
@@ -47,6 +54,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     /**
      * @param CartCarrierProcessorInterface $cartCarrierProcessor
      * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
      * @param FormFactoryInterface $formFactory
      * @param CurrencyContextInterface $currencyContext
      * @param MoneyFormatterInterface $moneyFormatter
@@ -54,6 +62,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     public function __construct(
         CartCarrierProcessorInterface $cartCarrierProcessor,
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
+        CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
         FormFactoryInterface $formFactory,
         CurrencyContextInterface $currencyContext,
         MoneyFormatterInterface $moneyFormatter
@@ -87,7 +96,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        return $cart->getCarrier() instanceof CarrierInterface;
+        return
+            $cart->getCarrier() instanceof CarrierInterface &&
+            $this->carrierShippingRuleChecker->isShippingRuleValid($cart->getCarrier(), $cart, $cart->getShippingAddress()) instanceof ShippingRuleGroupInterface;
     }
 
     /**

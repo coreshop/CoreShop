@@ -1,0 +1,482 @@
+<?php
+
+namespace CoreShop\Test\Models;
+
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionAmountActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Rule\Model\ConditionInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
+use CoreShop\Test\Data;
+use CoreShop\Test\RuleTest;
+
+class ShippingRule extends RuleTest
+{
+    /**
+     * @var ShippingRuleInterface
+     */
+    protected $priceRule;
+
+    /**
+     * @var CartInterface
+     */
+    protected $cart;
+
+    /**
+     * @var AddressInterface
+     */
+    protected $address;
+
+    /**
+     * Setup
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->cart = Data::createCartWithProducts();
+        $this->cart->setCustomer(Data::$customer1);
+
+        $this->address = Data::$customer1->getAddresses()[0];
+    }
+
+    /**
+     * @return CarrierInterface
+     */
+    private function createCarrier() {
+        /**
+         * @var $carrier CarrierInterface
+         */
+        $carrier = $this->getFactory('carrier')->createNew();
+        $carrier->setName('test');
+        $carrier->setTaxRule(Data::$taxRuleGroup);
+        $carrier->setRangeBehaviour(CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
+
+        $this->getEntityManager()->persist($carrier);
+        $this->getEntityManager()->flush();
+
+        return $carrier;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormRegistryName()
+    {
+        return 'coreshop.form_registry.shipping_rule.conditions';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionValidatorName()
+    {
+        return 'coreshop.shipping_rule.processor';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormClass()
+    {
+        return ShippingRuleConditionType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormRegistryName()
+    {
+        return 'coreshop.form_registry.shipping_rule.actions';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionProcessorName()
+    {
+        return 'coreshop.shipping.processor';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormClass()
+    {
+        return ShippingRuleActionType::class;
+    }
+
+    /**
+     * @return CarrierPriceCalculatorInterface
+     */
+    protected function getPriceCalculator() {
+        return $this->get('coreshop.carrier.price_calculator.default');
+    }
+
+    /**
+     * @return ShippingRuleInterface
+     */
+    protected function createRule() {
+        /**
+         * @var $shippingRule ShippingRuleInterface
+         */
+        $shippingRule = $this->getFactory('shipping_rule')->createNew();
+        $shippingRule->setName('test-rule');
+
+        return $shippingRule;
+    }
+
+    /**
+     * @param ShippingRuleInterface $rule
+     * @return ShippingRuleGroupInterface
+     */
+    protected function createShippingRuleGroup(ShippingRuleInterface $rule) {
+        /**
+         * @var $shippingRuleGroup ShippingRuleGroupInterface
+         */
+        $shippingRuleGroup = $this->getFactory('shipping_rule_group')->createNew();
+        $shippingRuleGroup->setPriority(1);
+        $shippingRuleGroup->setShippingRule($rule);
+
+        return $shippingRuleGroup;
+    }
+
+    /**
+     * Test Price Rule Condition Customer
+     */
+    public function testPriceRuleConditionCustomer()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
+
+        $condition = $this->createConditionWithForm('customers', [
+            'customers' => [Data::$customer1->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
+
+    /**
+     * @param $subject
+     * @param ConditionInterface $condition
+     * @param bool $trueOrFalse
+     */
+    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true) {
+        $rule = $this->createRule();
+        $rule->addCondition($condition);
+
+        $carrier = $this->createCarrier();
+        $group = $this->createShippingRuleGroup($rule);
+        $carrier->addShippingRule($group);
+
+        $this->getEntityManager()->persist($group);
+        $this->getEntityManager()->flush();
+
+        $this->assertPriceRuleCondition(['cart' => $this->cart, 'carrier' => $carrier, 'address' => $this->address], $rule, $trueOrFalse);
+    }
+
+    /**
+     * Test Price Rule Condition Country
+     */
+    public function testPriceRuleConditionCountry()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
+
+        $condition = $this->createConditionWithForm('countries', [
+            'countries' => [Data::$store->getBaseCountry()->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
+
+    /**
+     * Test Price Rule Condition Zone
+     */
+    public function testPriceRuleConditionZone()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
+
+        $condition = $this->createConditionWithForm('zones', [
+            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
+
+    /**
+     * Test Price Rule Condition Customer Group
+     */
+    public function testPriceRuleConditionCustomerGroup()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
+
+        $condition = $this->createConditionWithForm('customerGroups', [
+            'customerGroups' => [Data::$customerGroup1->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
+
+    /**
+     * Test Price Rule Condition Products
+     */
+    public function testPriceRuleConditionProducts()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $condition = $this->createConditionWithForm('products', [
+            'products' => [Data::$product1->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+
+        $condition = $this->createConditionWithForm('products', [
+            'products' => [Data::$product2->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
+
+    /**
+     * Test Price Rule Condition Categories
+     */
+    public function testPriceRuleConditionCategories()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
+
+        $condition = $this->createConditionWithForm('categories', [
+            'categories' => [Data::$category1->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+
+        $condition = $this->createConditionWithForm('categories', [
+            'categories' => [Data::$category2->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
+
+    /**
+     * Test Price Rule Condition Stores
+     */
+    public function testPriceRuleConditionStores()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(StoresConfigurationType::class, 'stores');
+
+        $condition = $this->createConditionWithForm('stores', [
+            'stores' => [Data::$store->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
+
+    /**
+     * Test Price Rule Condition Currencies
+     */
+    public function testPriceRuleConditionCurrencies()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
+
+        $condition = $this->createConditionWithForm('currencies', [
+            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
+
+
+    /**
+     * Test Price Rule Action Discount Amount
+     */
+    public function testPriceRuleActionDiscountAmount()
+    {
+        $this->printTestName();
+        $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
+
+        $action1 = $this->createActionWithForm('price', [
+            'price' => 100
+        ]);
+
+        $action2 = $this->createActionWithForm('discountAmount', [
+            'amount' => 5
+        ]);
+
+        $rule = $this->createRule();
+        $rule->addAction($action1);
+        $rule->addAction($action2);
+
+        $this->getEntityManager()->persist($rule);
+
+        $group = $this->createShippingRuleGroup($rule);
+
+        $carrier = $this->createCarrier();
+        $carrier->addShippingRule($group);
+
+        $this->getEntityManager()->persist($carrier);
+        $this->getEntityManager()->flush();
+
+        $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
+
+        $this->assertEquals(114, $price);
+    }
+
+    /**
+     * Test Price Rule Action Discount Percent
+     */
+    public function testPriceRuleActionDiscountPercent()
+    {
+        $this->printTestName();
+        $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
+
+        $action1 = $this->createActionWithForm('price', [
+            'price' => 100
+        ]);
+
+        $action2 = $this->createActionWithForm('discountPercent', [
+            'percent' => 10
+        ]);
+
+        $rule = $this->createRule();
+        $rule->addAction($action1);
+        $rule->addAction($action2);
+
+        $this->getEntityManager()->persist($rule);
+
+        $group = $this->createShippingRuleGroup($rule);
+
+        $carrier = $this->createCarrier();
+        $carrier->addShippingRule($group);
+
+        $this->getEntityManager()->persist($carrier);
+        $this->getEntityManager()->flush();
+
+        $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
+
+        $this->assertEquals(108, $price);
+    }
+
+    /**
+     * Test Price Rule Action New Price
+     */
+    public function testPriceRuleActionPrice()
+    {
+        $this->printTestName();
+        $this->assertActionForm(PriceActionConfigurationType::class, 'price');
+
+        $action = $this->createActionWithForm('price', [
+            'price' => 100
+        ]);
+
+        $rule = $this->createRule();
+        $rule->addAction($action);
+
+        $this->getEntityManager()->persist($rule);
+
+        $group = $this->createShippingRuleGroup($rule);
+
+        $carrier = $this->createCarrier();
+        $carrier->addShippingRule($group);
+
+        $this->getEntityManager()->persist($carrier);
+        $this->getEntityManager()->flush();
+
+        $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
+
+        $this->assertEquals(120, $price);
+    }
+
+     /**
+     * Test Price Rule Action Addition Amount
+     */
+    public function testPriceRuleActionAdditionAmount()
+    {
+        $this->printTestName();
+        $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
+
+        $action1 = $this->createActionWithForm('price', [
+            'price' => 100
+        ]);
+
+        $action2 = $this->createActionWithForm('additionAmount', [
+            'amount' => 5
+        ]);
+
+        $rule = $this->createRule();
+        $rule->addAction($action1);
+        $rule->addAction($action2);
+
+        $this->getEntityManager()->persist($rule);
+
+        $group = $this->createShippingRuleGroup($rule);
+
+        $carrier = $this->createCarrier();
+        $carrier->addShippingRule($group);
+
+        $this->getEntityManager()->persist($carrier);
+        $this->getEntityManager()->flush();
+
+        $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
+
+        $this->assertEquals(126, $price);
+    }
+
+    /**
+     * Test Price Rule Action Addition Percent
+     */
+    public function testPriceRuleActionAdditionPercent()
+    {
+        $this->printTestName();
+        $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
+
+        $action1 = $this->createActionWithForm('price', [
+            'price' => 100
+        ]);
+
+        $action2 = $this->createActionWithForm('additionPercent', [
+            'percent' => 10
+        ]);
+
+        $rule = $this->createRule();
+        $rule->addAction($action1);
+        $rule->addAction($action2);
+
+        $this->getEntityManager()->persist($rule);
+
+        $group = $this->createShippingRuleGroup($rule);
+
+        $carrier = $this->createCarrier();
+        $carrier->addShippingRule($group);
+
+        $this->getEntityManager()->persist($carrier);
+        $this->getEntityManager()->flush();
+
+        $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
+
+        $this->assertEquals(132, $price);
+    }
+}

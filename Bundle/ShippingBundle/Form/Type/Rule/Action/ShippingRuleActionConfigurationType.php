@@ -1,14 +1,15 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
-use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionCollectionType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class NestedConfigurationType extends AbstractType
+class ShippingRuleActionConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,11 +17,10 @@ final class NestedConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('conditions', RuleConditionCollectionType::class)
-            ->add('operator', TextType::class, [ //TODO: Change to ChoiceType with and && or
+            ->add('shippingRule', TextType::class, [ //TODO: Should be ShippingRuleChoiceType, but would't save ID to database, instead it saves the whole object
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']])
-                ],
+                ]
             ])
         ;
     }
@@ -30,6 +30,6 @@ final class NestedConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_shipping_rule_condition_nested';
+        return 'coreshop_shipping_rule_action_shipping_rule';
     }
 }

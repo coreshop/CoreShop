@@ -199,7 +199,7 @@ class Data
              */
             $zoneCond = $conditionFactory->createNew();
             $zoneCond->setType('zones');
-            $zoneCond->setConfiguration(['zones' => [1]]);
+            $zoneCond->setConfiguration(['zones' => [self::$store->getBaseCountry()->getZone()->getId()]]);
 
             $weightCond = $conditionFactory->createNew();
             $weightCond->setType('weight');
@@ -226,8 +226,11 @@ class Data
             $ruleGroup->setShippingRule($rule1);
             $ruleGroup->setPriority(1);
 
+            $carrier->addShippingRule($ruleGroup);
+
             $entityManager->persist($rule1);
             $entityManager->persist($ruleGroup);
+            $entityManager->persist($carrier);
             $entityManager->flush();
 
             self::$carrier1 = $carrier;
@@ -277,14 +280,14 @@ class Data
             $product1->setWholesalePrice(10);
             $product1->setBasePrice(15);
             $product1->setCategories([self::$category1]);
-            //$product1->setHeight(50);
-            //$product1->setWidth(50);
-            //$product1->setDepth(50);
-            //$product1->setWeight(50);
+            $product1->setHeight(50);
+            $product1->setWidth(50);
+            $product1->setDepth(50);
+            $product1->setWeight(50);
             $product1->setTaxRule(self::$taxRuleGroup);
             $product1->setParent(Service::createFolderByPath("/coreshop/products"));
             $product1->setKey(File::getValidFilename("test1"));
-            //$product1->addStore([Shop::getDefaultShop()->getId()]);
+            //$product1->setStore([Shop::getDefaultShop()->getId()]);
             $product1->save();
 
             self::$product1 = $product1;
@@ -299,10 +302,10 @@ class Data
             $product2->setWholesalePrice(100);
             $product2->setBasePrice(150);
             $product2->setCategories([self::$category2]);
-            //$product2->setHeight(500);
-            //$product2->setWidth(500);
-            //$product2->setDepth(500);
-            //$product2->setWeight(500);
+            $product2->setHeight(500);
+            $product2->setWidth(500);
+            $product2->setDepth(500);
+            $product2->setWeight(500);
             $product2->setTaxRule(self::$taxRuleGroup);
             $product2->setParent(Service::createFolderByPath("/coreshop/products"));
             $product2->setKey(File::getValidFilename("test2"));
@@ -320,10 +323,10 @@ class Data
             $product3->setName("test3");
             $product3->setWholesalePrice(50);
             $product3->setBasePrice(75);
-            //$product3->setHeight(100);
-            //$product3->setWidth(100);
-            //$product3->setDepth(100);
-            //$product3->setWeight(100);
+            $product3->setHeight(100);
+            $product3->setWidth(100);
+            $product3->setDepth(100);
+            $product3->setWeight(100);
             $product3->setTaxRule(self::$taxRuleGroup);
             $product3->setParent(Service::createFolderByPath("/coreshop/products"));
             $product3->setKey(File::getValidFilename("test3"));
@@ -339,7 +342,11 @@ class Data
      */
     public static function createCart()
     {
-        return self::get('coreshop.cart.manager')->getCart();
+        $cart =  self::get('coreshop.factory.cart')->createNew();
+        $cart->setKey(uniqid());
+        $cart->setParent(Service::createFolderByPath("/"));
+
+        return $cart;
     }
 
     /**
@@ -349,9 +356,9 @@ class Data
     {
         $cart = self::createCart();
 
-        $cart->addItem(self::$product1);
-        $cart->addItem(self::$product2);
-        $cart->addItem(self::$product3);
+        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product1);
+        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product2);
+        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product3);
 
         return $cart;
     }
