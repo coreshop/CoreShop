@@ -1,7 +1,7 @@
 services:
   coreshop.order.number_generator.default:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SequenceNumberGenerator
-    arguments: ['@coreshop.sequence.generator', 'order']
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderNumberGenerator
+    arguments: ['@coreshop.sequence.generator', 'order', '@coreshop.configuration.service']
 
   coreshop.order.transformer.cart_item_to_order_item:
     class: CoreShop\Component\Core\Transformer\CartItemToOrderItemTransformer

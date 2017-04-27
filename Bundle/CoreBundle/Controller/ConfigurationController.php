@@ -14,7 +14,7 @@ class ConfigurationController extends ResourceController
      */
     public function saveAllAction(Request $request)
     {
-        $values = $request->get('values');
+        $values = $this->decodeJson($request->get('values'));
         $values = array_htmlspecialchars($values);
 
         $diff = call_user_func_array([$this, "array_diff_assoc_recursive"], $values);

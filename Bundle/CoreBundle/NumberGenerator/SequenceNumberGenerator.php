@@ -12,12 +12,12 @@ class SequenceNumberGenerator implements NumberGeneratorInterface
     /**
      * @var SequenceGeneratorInterface
      */
-    private $sequenceNumberGenerator;
+    protected $sequenceNumberGenerator;
 
     /**
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * @param SequenceGeneratorInterface $sequenceNumberGenerator

@@ -186,7 +186,7 @@ pimcore.plugin.coreshop.settings = Class.create({
         }
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/configurations/set',
+            url: '/admin/CoreShop/configurations/save-all',
             method: 'post',
             params: {
                 values: Ext.encode(values),
