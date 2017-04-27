@@ -1,0 +1,18 @@
+CoreShop\Component\Configuration\Model\Configuration:
+  type: mappedSuperclass
+  table: coreshop_configuration
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    key:
+      column: configKey
+      type: string
+      length: 100
+      nullable: false
+    data:
+      column: data
+      type: object

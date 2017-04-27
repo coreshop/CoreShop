@@ -1,0 +1,4 @@
+coreshop_admin_configuration:
+  type: coreshop.resources
+  resource: |
+    alias: coreshop.configuration

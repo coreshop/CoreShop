@@ -33,7 +33,7 @@ define('PIMCORE_PRIVATE_VAR', CORESHOP_TESTS_PATH . "/tmp/var");
 
 require_once '../../../pimcore/config/constants.php';
 $loader = require_once PIMCORE_PATH . '/config/autoload.php';
-include_once 'app/AppKernel.php';
+include_once 'app/TestAppKernel.php';
 
 /**
  * @var $loader \Composer\Autoload\ClassLoader
@@ -137,7 +137,7 @@ $setup->config([
     "general" => ["validLanguages" => "en,de"]
 ]);
 
-$kernel = new AppKernel('dev', true);
+$kernel = new TestAppKernel('dev', true);
 $kernel->boot();
 Pimcore::setKernel($kernel);
 

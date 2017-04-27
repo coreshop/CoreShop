@@ -20,4 +20,3 @@ CoreShop\Component\Store\Model\Store:
     siteId:
       column: siteId
       type: integer
-      unique: true

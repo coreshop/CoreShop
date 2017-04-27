@@ -17,3 +17,7 @@ coreshop_order_get_orders:
 coreshop_order_get_order:
   path: /%coreshop.admin.route.base%/order/detail
   defaults: { _controller: 'coreshop.pimcore_controller.order:detailAction'}
+
+coreshop_admin_configuration_save_all:
+  path: /%coreshop.admin.route.base%/configurations/save-all
+  defaults: { _controller: 'coreshop.admin_controller.configuration:saveAllAction'}

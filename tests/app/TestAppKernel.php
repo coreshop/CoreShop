@@ -2,7 +2,7 @@
 
 use Pimcore\Kernel;
 
-class AppKernel extends Kernel
+class TestAppKernel extends Kernel
 {
     /**
      * AppKernel constructor.
@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new \JMS\SerializerBundle\JMSSerializerBundle(),
             new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
+            new \CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle(),
             new \CoreShop\Bundle\AdminBundle\CoreShopAdminBundle(),
             new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(),
             new \CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle(),

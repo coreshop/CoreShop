@@ -1,0 +1,12 @@
+CoreShop\Component\Core\Model\Configuration:
+  type: mappedSuperclass
+  table: coreshop_configuration
+  manyToOne:
+    store:
+      targetEntity: CoreShop\Component\Store\Model\StoreInterface
+      joinTable:
+        name: coreshop_carrier_stores
+        joinColumns:
+          store_id:
+            referencedColumnName: id
+            nullable: true
