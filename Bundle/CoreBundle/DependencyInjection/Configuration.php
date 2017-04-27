@@ -31,6 +31,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->scalarNode('send_usage_log')->defaultValue(true)->end()
             ->end()
         ;
 

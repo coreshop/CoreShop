@@ -23,10 +23,10 @@ pimcore.plugin.coreshop.settings = Class.create({
 
     getData: function () {
         Ext.Ajax.request({
-            url: '/admin/CoreShop/configurations/get',
+            url: '/admin/CoreShop/configurations/get-all',
             success: function (response) {
 
-                this.data = Ext.decode(response.responseText);
+                this.data = Ext.decode(response.responseText).data;
 
                 this.getTabPanel();
 
@@ -37,8 +37,8 @@ pimcore.plugin.coreshop.settings = Class.create({
     getValue: function (shopId, key) {
         var current = null;
 
-        if (this.data.values.hasOwnProperty(shopId)) {
-            var shopValues = this.data.values[shopId];
+        if (this.data.hasOwnProperty(shopId)) {
+            var shopValues = this.data[shopId];
 
             if (shopValues.hasOwnProperty(key)) {
                 current = shopValues[key];
@@ -46,20 +46,6 @@ pimcore.plugin.coreshop.settings = Class.create({
         }
 
         if (current != null && typeof current != 'function') {
-            return current;
-        }
-
-        return '';
-    },
-
-    getSystemValue : function (key) {
-        var current = null;
-
-        if (this.data.systemValues.hasOwnProperty(key)) {
-            current = this.data.systemValues[key];
-        }
-
-        if (typeof current != 'object' && typeof current != 'array' && typeof current != 'function') {
             return current;
         }
 
@@ -74,8 +60,8 @@ pimcore.plugin.coreshop.settings = Class.create({
             fromCurrentValues = false;
         }
 
-        for (var shopId in this.data.values) {
-            if (!this.data.values.hasOwnProperty(shopId)) {
+        for (var shopId in this.data) {
+            if (!this.data.hasOwnProperty(shopId)) {
                 return;
             }
 
@@ -133,7 +119,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                 pimcore.globalmanager.remove('coreshop_settings');
             }.bind(this));
 
-            this.exchangeRatesStore = new Ext.data.Store({
+            /*this.exchangeRatesStore = new Ext.data.Store({
                 proxy: {
                     type: 'ajax',
                     url : '/admin/CoreShop/currency/get-exchange-rate-providers',
@@ -144,10 +130,10 @@ pimcore.plugin.coreshop.settings = Class.create({
                 }
             });
 
-            this.exchangeRatesStore.load();
+            this.exchangeRatesStore.load();*/
 
-            this.messagingContactStore = pimcore.globalmanager.get('coreshop_messaging_contacts');
-            this.messagingContactStore.load();
+            /*this.messagingContactStore = pimcore.globalmanager.get('coreshop_messaging_contacts');
+            this.messagingContactStore.load();*/
 
             this.layout = Ext.create('Ext.tab.Panel', {
                 bodyStyle: 'padding:20px 5px 20px 5px;',
@@ -166,148 +152,14 @@ pimcore.plugin.coreshop.settings = Class.create({
                 ]
             });
 
-            this.systemSettingsPanel = Ext.create('Ext.form.Panel', {
-
-                title: t('coreshop_system_settings'),
-                border: false,
-                autoScroll: true,
-                forceLayout: true,
-                defaults: {
-                    forceLayout: true
-                },
-                items : [
-                    {
-                        xtype: 'fieldset',
-                        title: t('coreshop_multishop'),
-                        collapsible: true,
-                        collapsed: true,
-                        autoHeight: true,
-                        labelWidth: 250,
-                        defaultType: 'textfield',
-                        defaults: { width: 600 },
-                        items: [
-                            {
-                                fieldLabel: t('coreshop_multishop_enabled'),
-                                xtype: 'checkbox',
-                                name: 'SYSTEM.MULTISHOP.ENABLED',
-                                checked: this.getSystemValue('SYSTEM.MULTISHOP.ENABLED')
-                            }
-                        ]
-                    },
-                    {
-                        xtype: 'fieldset',
-                        title: t('coreshop_system_settings'),
-                        collapsible: true,
-                        collapsed: true,
-                        autoHeight: true,
-                        labelWidth: 250,
-                        defaultType: 'textfield',
-                        defaults: { width: 600 },
-                        items: [
-                            {
-                                fieldLabel: t('coreshop_send_usagelog'),
-                                xtype: 'checkbox',
-                                name: 'SYSTEM.LOG.USAGESTATISTICS',
-                                checked: this.getSystemValue('SYSTEM.LOG.USAGESTATISTICS')
-                            }
-                        ]
-                    },
-                    {
-                        xtype: 'fieldset',
-                        title: t('coreshop_visitor_settings'),
-                        collapsible: true,
-                        collapsed: true,
-                        autoHeight: true,
-                        labelWidth: 250,
-                        defaultType: 'textfield',
-                        defaults: { width: 600 },
-                        items: [
-                            {
-                                fieldLabel: t('coreshop_visitors_track'),
-                                xtype: 'checkbox',
-                                name: 'SYSTEM.VISITORS.TRACK',
-                                checked: this.getSystemValue('SYSTEM.VISITORS.TRACK')
-                            },
-                            {
-                                fieldLabel: t('coreshop_visitors_keep_days'),
-                                xtype : 'numberfield',
-                                name : 'SYSTEM.VISITORS.KEEP_TRACKS_DAYS',
-                                value : this.getSystemValue('SYSTEM.VISITORS.KEEP_TRACKS_DAYS'),
-                                width: 500,
-                                decimalPrecision: 0,
-                                step: 1
-                            }
-                        ]
-                    },
-                    {
-                        xtype: 'fieldset',
-                        title: t('coreshop_currency'),
-                        collapsible: true,
-                        collapsed: true,
-                        autoHeight: true,
-                        labelWidth: 250,
-                        defaultType: 'textfield',
-                        defaults: { width: 600 },
-                        items: [
-                            {
-                                fieldLabel: t('coreshop_currency_automatic_exchange_rates'),
-                                xtype: 'checkbox',
-                                name: 'SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES',
-                                checked: this.getSystemValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
-                                listeners: {
-                                    change: function (checkbox, newValue) {
-                                        checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setHidden(!newValue);
-                                        checkbox.up('fieldset').down('[name="SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER"]').setDisabled(!newValue);
-                                        checkbox.up('fieldset').down('label').setHidden(!newValue);
-                                    }
-                                }
-                            },
-                            {
-                                xtype: 'combo',
-                                fieldLabel: t('coreshop_currency_exchange_rate_provider'),
-                                name: 'SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER',
-                                value: this.getSystemValue('SYSTEM.CURRENCY.EXCHANGE_RATE_PROVIDER'),
-                                width: 500,
-                                hidden: !this.getSystemValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
-                                disabled: !this.getSystemValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES'),
-                                store: this.exchangeRatesStore,
-                                triggerAction: 'all',
-                                typeAhead: false,
-                                editable: false,
-                                forceSelection: true,
-                                queryMode: 'local',
-                                displayField: 'name',
-                                valueField: 'name'
-                            },
-                            {
-                                xtype: 'label',
-                                text: t('coreshop_currency_exchange_rate_last_update') + ': ' + Ext.Date.format(new Date(this.getSystemValue('SYSTEM.CURRENCY.LAST_EXCHANGE_UPDATE') * 1000), Ext.Date.defaultFormat),
-                                hidden: !this.getSystemValue('SYSTEM.CURRENCY.AUTO_EXCHANGE_RATES')
-                            }
-                        ]
-                    }
-                ]
-            });
-
-            if (coreshop.settings.multishop) {
-                for (var shopId in this.data.values) {
-                    if (!this.data.values.hasOwnProperty(shopId)) {
-                        return;
-                    }
-
-                    this.shopPanels[shopId] = this.getConfigFormForShop(shopId);
-                    this.layout.add(this.shopPanels[shopId]);
+            for (var shopId in this.data) {
+                if (!this.data.hasOwnProperty(shopId)) {
+                    return;
                 }
-            } else {
-                var shopPanel = this.getConfigFormForShop(coreshop.settings.defaultShop);
 
-                this.shopPanels[coreshop.settings.defaultShop] = shopPanel;
-
-                this.layout.add(shopPanel);
+                this.shopPanels[shopId] = this.getConfigFormForShop(shopId);
+                this.layout.add(this.shopPanels[shopId]);
             }
-
-            this.layout.add(this.systemSettingsPanel);
-            this.layout.add(this.mailPanel);
 
             this.panel.add(this.layout);
 
@@ -333,14 +185,11 @@ pimcore.plugin.coreshop.settings = Class.create({
             }
         }
 
-        var systemSettingsFieldValues = this.systemSettingsPanel.getForm().getFieldValues();
-
         Ext.Ajax.request({
             url: '/admin/CoreShop/configurations/set',
             method: 'post',
             params: {
                 values: Ext.encode(values),
-                systemValues : Ext.encode( systemSettingsFieldValues )
             },
             success: function (response) {
                 try {
@@ -426,24 +275,6 @@ pimcore.plugin.coreshop.settings = Class.create({
             items: [
                 {
                     xtype: 'fieldset',
-                    title: t('coreshop_debug'),
-                    collapsible: true,
-                    collapsed: true,
-                    autoHeight: true,
-                    labelWidth: 250,
-                    defaultType: 'textfield',
-                    defaults: { width: 600 },
-                    items: [
-                        {
-                            fieldLabel: t('coreshop_show_debug'),
-                            xtype: 'checkbox',
-                            name: 'SYSTEM.BASE.SHOWDEBUG',
-                            checked: this.getValue(shopId, 'SYSTEM.BASE.SHOWDEBUG')
-                        }
-                    ]
-                },
-                {
-                    xtype: 'fieldset',
                     title: t('coreshop_base'),
                     collapsible: true,
                     collapsed: true,
@@ -453,42 +284,20 @@ pimcore.plugin.coreshop.settings = Class.create({
                     defaults: { width: 600 },
                     items: [
                         {
-                            xtype: 'combo',
-                            fieldLabel: t('coreshop_base_country'),
-                            typeAhead: true,
-                            value: this.getValue(shopId, 'SYSTEM.BASE.COUNTRY'),
-                            mode: 'local',
-                            listWidth: 100,
-                            store: pimcore.globalmanager.get('coreshop_countries'),
-                            displayField: 'name',
-                            valueField: 'id',
-                            forceSelection: true,
-                            triggerAction: 'all',
-                            name: 'SYSTEM.BASE.COUNTRY',
-                            listeners: {
-                                change: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this),
-                                select: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this)
-                            }
-                        },
-                        {
                             fieldLabel: t('coreshop_base_catalogmode'),
                             xtype: 'checkbox',
-                            name: 'SYSTEM.BASE.CATALOGMODE',
-                            checked: this.getValue(shopId, 'SYSTEM.BASE.CATALOGMODE')
+                            name: 'system.catalog.mode',
+                            checked: this.getValue(shopId, 'system.catalog.mode')
                         },
                         {
                             fieldLabel: t('coreshop_base_guestcheckout'),
                             xtype: 'checkbox',
-                            name: 'SYSTEM.BASE.GUESTCHECKOUT',
-                            checked: this.getValue(shopId, 'SYSTEM.BASE.GUESTCHECKOUT')
+                            name: 'system.guest.checkout',
+                            checked: this.getValue(shopId, 'system.guest.checkout')
                         }
                     ]
                 },
-                {
+                /*{
                     xtype: 'fieldset',
                     title: t('coreshop_messaging'),
                     collapsible: true,
@@ -529,7 +338,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                             valueField: 'id'
                         }
                     ]
-                },
+                },*/
                 {
                     xtype: 'fieldset',
                     title: t('coreshop_stock'),
@@ -542,8 +351,8 @@ pimcore.plugin.coreshop.settings = Class.create({
                     items: [
                         {
                             fieldLabel: t('coreshop_stock_defaultoutofstock_behavior'),
-                            name: 'SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR',
-                            value: this.getValue(shopId, 'SYSTEM.STOCK.DEFAULTOUTOFSTOCKBEHAVIOUR'),
+                            name: 'system.stock.default_out_of_stock.behaviour',
+                            value: this.getValue(shopId, 'system.stock.default_out_of_stock.behaviour'),
                             width: 500,
                             xtype: 'combo',
                             store: [[0, t('coreshop_stock_deny_order')], [1, t('coreshop_stock_allow_order')]],
@@ -566,69 +375,17 @@ pimcore.plugin.coreshop.settings = Class.create({
                     defaults: { width: 600 },
                     items: [
                         {
-                            fieldLabel: t('coreshop_base_tax_enabled'),
-                            xtype: 'checkbox',
-                            name: 'SYSTEM.BASE.TAX.ENABLED',
-                            checked: this.getValue(shopId, 'SYSTEM.BASE.TAX.ENABLED')
-                        },
-                        {
-                            fieldLabel: t('coreshop_base_checkvat'),
-                            xtype: 'checkbox',
-                            name: 'SYSTEM.BASE.CHECKVAT',
-                            checked: this.getValue(shopId, 'SYSTEM.BASE.CHECKVAT')
-                        },
-                        {
-                            fieldLabel: t('coreshop_base_disablevatforbasecountry'),
-                            xtype: 'checkbox',
-                            name: 'SYSTEM.BASE.DISABLEVATFORBASECOUNTRY',
-                            checked: this.getValue(shopId, 'SYSTEM.BASE.DISABLEVATFORBASECOUNTRY')
-                        },
-                        {
                             fieldLabel: t('coreshop_taxation_address'),
-                            name: 'SYSTEM.BASE.TAXATION.ADDRESS',
-                            value: this.getValue(shopId, 'SYSTEM.BASE.TAXATION.ADDRESS') ? this.getValue(shopId, 'SYSTEM.BASE.TAXATION.ADDRESS') : 'shipping',
+                            name: 'system.taxation.address',
+                            value: this.getValue(shopId, 'system.taxation.address') ? this.getValue(shopId, 'system.taxation.address') : 'shipping',
                             width: 500,
                             xtype: 'combo',
-                            store: [['shipping', t('coreshop_taxation_address_shipping')], ['billing', t('coreshop_taxation_address_billing')]],
+                            store: [['shipping', t('coreshop_taxation_address_shipping')], ['invoice', t('coreshop_taxation_address_invoice')]],
                             triggerAction: 'all',
                             typeAhead: false,
                             editable: false,
                             forceSelection: true,
                             queryMode: 'local'
-                        }
-                    ]
-                },
-                {
-                    xtype: 'fieldset',
-                    title: t('coreshop_currency'),
-                    collapsible: true,
-                    collapsed: true,
-                    autoHeight: true,
-                    labelWidth: 250,
-                    defaultType: 'textfield',
-                    defaults: { width: 600 },
-                    items: [
-                        {
-                            xtype: 'combo',
-                            fieldLabel: t('coreshop_base_currency'),
-                            typeAhead: true,
-                            value: this.getValue(shopId, 'SYSTEM.BASE.CURRENCY'),
-                            mode: 'local',
-                            listWidth: 100,
-                            store: pimcore.globalmanager.get('coreshop_currencies'),
-                            displayField: 'name',
-                            valueField: 'id',
-                            forceSelection: true,
-                            triggerAction: 'all',
-                            name: 'SYSTEM.BASE.CURRENCY',
-                            listeners: {
-                                change: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this),
-                                select: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this)
-                            }
                         }
                     ]
                 },
@@ -645,8 +402,8 @@ pimcore.plugin.coreshop.settings = Class.create({
                         {
                             fieldLabel: t('coreshop_prices_are_gross'),
                             xtype: 'checkbox',
-                            name: 'SYSTEM.BASE.PRICES.GROSS',
-                            checked: this.getValue(shopId, 'SYSTEM.BASE.PRICES.GROSS')
+                            name: 'system.prices.gross',
+                            checked: this.getValue(shopId, 'system.prices.gross')
                         }
                     ]
                 },
@@ -661,56 +418,25 @@ pimcore.plugin.coreshop.settings = Class.create({
                     defaults: { width: 600 },
                     items: [
                         {
-                            xtype: 'numberfield',
-                            name: 'SYSTEM.SHIPPING.FREESHIPPING_WEIGHT',
-                            fieldLabel: t('coreshop_freeshipping_weight'),
-                            width: 500,
-                            value: this.getValue(shopId, 'SYSTEM.SHIPPING.FREESHIPPING_WEIGHT'),
-                            decimalPrecision: 2,
-                            step: 1
-                        },
-                        {
-                            xtype: 'numberfield',
-                            name: 'SYSTEM.SHIPPING.FREESHIPPING_PRICE',
-                            fieldLabel: t('coreshop_freeshipping_price'),
-                            width: 500,
-                            value: this.getValue(shopId, 'SYSTEM.SHIPPING.FREESHIPPING_PRICE'),
-                            decimalPrecision: 2,
-                            step: 1
-                        },
-                        {
-                            fieldLabel: t('coreshop_carrier_sort'),
-                            name: 'SYSTEM.SHIPPING.CARRIER_SORT',
-                            value: this.getValue(shopId, 'SYSTEM.SHIPPING.CARRIER_SORT'),
-                            width: 500,
-                            xtype: 'combo',
-                            store: [['price', t('coreshop_carrier_sort_price')], ['grade', t('coreshop_carrier_sort_grade')]],
-                            triggerAction: 'all',
-                            typeAhead: false,
-                            editable: false,
-                            forceSelection: true,
-                            queryMode: 'local'
-                        },
-                        {
                             fieldLabel: t('coreshop_shipment_create'),
                             xtype: 'checkbox',
-                            name: 'SYSTEM.SHIPMENT.CREATE',
-                            checked: this.getValue(shopId, 'SYSTEM.SHIPMENT.CREATE')
+                            name: 'system.shipment.create',
+                            checked: this.getValue(shopId, 'system.shipment.create')
                         },
                         {
                             fieldLabel: t('coreshop_prefix'),
-                            name: 'SYSTEM.SHIPMENT.PREFIX',
-                            value: this.getValue(shopId, 'SYSTEM.SHIPMENT.PREFIX')
+                            name: 'system.shipment.prefix',
+                            value: this.getValue(shopId, 'system.shipment.prefix')
                         },
                         {
                             fieldLabel: t('coreshop_suffix'),
-                            name: 'SYSTEM.SHIPMENT.SUFFIX',
-                            value: this.getValue(shopId, 'SYSTEM.SHIPMENT.SUFFIX')
+                            name: 'system.shipment.suffix',
+                            value: this.getValue(shopId, 'system.shipment.suffix')
                         },
                         {
                             fieldLabel: t('coreshop_wkhtmltopdf_params'),
-                            name: 'SYSTEM.SHIPMENT.WKHTML',
-                            value: this.getValue(shopId, 'SYSTEM.SHIPMENT.WKHTML')
+                            name: 'system.shipment.wkhtml',
+                            value: this.getValue(shopId, 'system.shipment.wkhtml')
                         }
                     ]
                 },
@@ -725,7 +451,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     defaults: { minWidth: 600 },
                     items: [
                         new pimcore.plugin.coreshop.object.elementHref({
-                            id : me.getValue(shopId, 'SYSTEM.PRODUCT.DEFAULTIMAGE'),
+                            id : me.getValue(shopId, 'system.product.fallback_image'),
                             type : 'asset',
                             subtype : 'image'
                         }, {
@@ -733,16 +459,9 @@ pimcore.plugin.coreshop.settings = Class.create({
                             assetTypes : [{
                                 assetTypes : 'image'
                             }],
-                            name: 'SYSTEM.PRODUCT.DEFAULTIMAGE',
+                            name: 'system.product.fallback_image',
                             title: t('coreshop_default_image')
-                        }).getLayoutEdit(),
-                        {
-                            fieldLabel: t('coreshop_product_daysasnew'),
-                            name: 'SYSTEM.PRODUCT.DAYSASNEW',
-                            value: this.getValue(shopId, 'SYSTEM.PRODUCT.DAYSASNEW'),
-                            xtype: 'spinnerfield',
-                            enableKeyEvents: true
-                        }
+                        }).getLayoutEdit()
                     ]
                 },
                 {
@@ -756,7 +475,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                     defaults: { minWidth: 600 },
                     items: [
                         new pimcore.plugin.coreshop.object.elementHref({
-                            id : me.getValue(shopId, 'SYSTEM.CATEGORY.DEFAULTIMAGE'),
+                            id : me.getValue(shopId, 'system.category.fallback_image'),
                             type : 'asset',
                             subtype : 'image'
                         }, {
@@ -764,13 +483,13 @@ pimcore.plugin.coreshop.settings = Class.create({
                             assetTypes : [{
                                 assetTypes : 'image'
                             }],
-                            name: 'SYSTEM.CATEGORY.DEFAULTIMAGE',
+                            name: 'system.category.fallback_image',
                             title: t('coreshop_default_image')
                         }).getLayoutEdit(),
                         {
                             fieldLabel: t('coreshop_category_list_mode'),
-                            name: 'SYSTEM.CATEGORY.LIST.MODE',
-                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.LIST.MODE'),
+                            name: 'system.category.list.mode',
+                            value: this.getValue(shopId, 'system.category.list.mode'),
                             width: 500,
                             xtype: 'combo',
                             store: [['list', t('coreshop_category_list_mode_list')], ['grid', t('coreshop_category_list_mode_grid')]],
@@ -791,8 +510,8 @@ pimcore.plugin.coreshop.settings = Class.create({
 
                                 ]
                             }),
-                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.LIST.PER_PAGE'),
-                            name: 'SYSTEM.CATEGORY.LIST.PER_PAGE',
+                            value: this.getValue(shopId, 'system.category.list.per_page'),
+                            name: 'system.category.list.per_page',
                             createNewOnEnter: true,
                             createNewOnBlur: true,
                             queryMode: 'local',
@@ -802,10 +521,10 @@ pimcore.plugin.coreshop.settings = Class.create({
                         },
                         {
                             fieldLabel: t('coreshop_category_list_per_page_default'),
-                            name: 'SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT',
+                            name: 'system.category.list.per_page.default',
                             xtype: 'numberfield',
                             minValue: 1,
-                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.LIST.PER_PAGE_DEFAULT')
+                            value: this.getValue(shopId, 'system.category.list.per_page.default')
                         },
                         {
                             xtype: 'tagfield',
@@ -818,8 +537,8 @@ pimcore.plugin.coreshop.settings = Class.create({
 
                                 ]
                             }),
-                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.GRID.PER_PAGE'),
-                            name: 'SYSTEM.CATEGORY.GRID.PER_PAGE',
+                            value: this.getValue(shopId, 'system.category.grid.per_page'),
+                            name: 'system.category.grid.per_page',
                             createNewOnEnter: true,
                             createNewOnBlur: true,
                             queryMode: 'local',
@@ -829,15 +548,15 @@ pimcore.plugin.coreshop.settings = Class.create({
                         },
                         {
                             fieldLabel: t('coreshop_category_grid_per_page_default'),
-                            name: 'SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT',
+                            name: 'system.category.grid.per_page.default',
                             xtype: 'numberfield',
                             minValue: 1,
-                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.GRID.PER_PAGE_DEFAULT')
+                            value: this.getValue(shopId, 'system.category.grid.per_page.default')
                         },
                         {
                             fieldLabel: t('coreshop_category_variant_mode'),
-                            name: 'SYSTEM.CATEGORY.VARIANT_MODE',
-                            value: this.getValue(shopId, 'SYSTEM.CATEGORY.VARIANT_MODE'),
+                            name: 'system.category.variant_mode',
+                            value: this.getValue(shopId, 'system.category.variant_mode'),
                             width: 500,
                             xtype: 'combo',
                             store: [['hide', t('coreshop_category_variant_mode_hide')], ['include', t('coreshop_category_variant_mode_include')], ['include_parent_object', t('coreshop_category_variant_mode_include_parent_object')]],
@@ -861,13 +580,13 @@ pimcore.plugin.coreshop.settings = Class.create({
                     items: [
                         {
                             fieldLabel: t('coreshop_prefix'),
-                            name: 'SYSTEM.ORDER.PREFIX',
-                            value: this.getValue(shopId, 'SYSTEM.ORDER.PREFIX')
+                            name: 'system.order.prefix',
+                            value: this.getValue(shopId, 'system.order.prefix')
                         },
                         {
                             fieldLabel: t('coreshop_suffix'),
-                            name: 'SYSTEM.ORDER.SUFFIX',
-                            value: this.getValue(shopId, 'SYSTEM.ORDER.SUFFIX')
+                            name: 'system.order.suffix',
+                            value: this.getValue(shopId, 'system.order.suffix')
                         }
                     ]
                 },
@@ -884,27 +603,27 @@ pimcore.plugin.coreshop.settings = Class.create({
                         {
                             fieldLabel: t('coreshop_invoice_create'),
                             xtype: 'checkbox',
-                            name: 'SYSTEM.INVOICE.CREATE',
-                            checked: this.getValue(shopId, 'SYSTEM.INVOICE.CREATE')
+                            name: 'system.invoice.create',
+                            checked: this.getValue(shopId, 'system.invoice.create')
                         },
                         {
                             fieldLabel: t('coreshop_prefix'),
-                            name: 'SYSTEM.INVOICE.PREFIX',
-                            value: this.getValue(shopId, 'SYSTEM.INVOICE.PREFIX')
+                            name: 'system.invoice.prefix',
+                            value: this.getValue(shopId, 'system.invoice.prefix')
                         },
                         {
                             fieldLabel: t('coreshop_suffix'),
-                            name: 'SYSTEM.INVOICE.SUFFIX',
-                            value: this.getValue(shopId, 'SYSTEM.INVOICE.SUFFIX')
+                            name: 'system.invoice.suffix',
+                            value: this.getValue(shopId, 'system.invoice.suffix')
                         },
                         {
                             fieldLabel: t('coreshop_wkhtmltopdf_params'),
-                            name: 'SYSTEM.INVOICE.WKHTML',
-                            value: this.getValue(shopId, 'SYSTEM.INVOICE.WKHTML')
+                            name: 'system.invoice.wktml',
+                            value: this.getValue(shopId, 'system.invoice.wkhtml')
                         }
                     ]
-                },
-                {
+                }
+                /*{ //TODO: Use Symfony Configuration for this?!
                     xtype: 'fieldset',
                     title: t('coreshop_cart'),
                     collapsible: true,
@@ -966,7 +685,7 @@ pimcore.plugin.coreshop.settings = Class.create({
                         }
 
                     ]
-                }
+                }*/
             ]
         });
 

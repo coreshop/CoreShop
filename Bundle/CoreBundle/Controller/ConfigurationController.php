@@ -8,10 +8,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ConfigurationController extends ResourceController
 {
+    /**
+     * @param Request $request
+     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function saveAllAction(Request $request)
     {
         $values = $request->get('values');
-        $systemValues = $request->get('systemValues');
         $values = array_htmlspecialchars($values);
 
         $diff = call_user_func_array([$this, "array_diff_assoc_recursive"], $values);
@@ -36,11 +39,31 @@ class ConfigurationController extends ResourceController
             }
         }
 
-        foreach ($systemValues as $key => $value) {
-             $this->getConfigurationService()->set($key, $value);
+        return $this->viewHandler->handle(['success' => true]);
+    }
+
+    /**
+     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getAllAction() {
+        $stores = $this->get('coreshop.repository.store')->findAll();
+        $valueArray = [];
+
+        foreach ($stores as $store) {
+            $storeValues = [];
+
+            $configurations = $this->repository->findBy(['store' => [$store, null]]);
+
+            if (is_array($configurations)) {
+                foreach ($configurations as $c) {
+                    $storeValues[$c->getKey()] = $c->getData();
+                }
+            }
+
+            $valueArray[$store->getId()] = $storeValues;
         }
 
-        return $this->viewHandler->handle(['success' => true]);
+        return $this->viewHandler->handle(['success' => true, 'data' => $valueArray]);
     }
 
     /**

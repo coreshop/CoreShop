@@ -21,3 +21,7 @@ coreshop_order_get_order:
 coreshop_admin_configuration_save_all:
   path: /%coreshop.admin.route.base%/configurations/save-all
   defaults: { _controller: 'coreshop.admin_controller.configuration:saveAllAction'}
+
+coreshop_admin_configuration_get_all:
+  path: /%coreshop.admin.route.base%/configurations/get-all
+  defaults: { _controller: 'coreshop.admin_controller.configuration:getAllAction'}

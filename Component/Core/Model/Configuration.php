@@ -12,7 +12,7 @@ class Configuration extends BaseConfiguration implements ConfigurationInterface
     protected $store;
 
     /**
-     * @return StoreInterface
+     * {@inheritdoc}
      */
     public function getStore()
     {
@@ -20,7 +20,7 @@ class Configuration extends BaseConfiguration implements ConfigurationInterface
     }
 
     /**
-     * @param StoreInterface $store
+     * {@inheritdoc}
      */
     public function setStore(StoreInterface $store)
     {
