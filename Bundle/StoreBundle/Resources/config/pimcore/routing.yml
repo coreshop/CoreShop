@@ -2,3 +2,7 @@ coreshop_admin_store:
   type: coreshop.resources
   resource: |
     alias: coreshop.store
+
+coreshop_admin_stores_sites:
+  path: /%coreshop.admin.route.base%/stores/list-sites
+  defaults: { _controller: 'coreshop.admin_controller.store:listSitesAction'}
