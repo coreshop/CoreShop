@@ -6,6 +6,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ShippingBundle\Controller\ShippingRuleController;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleGroupType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleType;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Shipping\Model\Carrier;
@@ -97,7 +98,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
-                                        //->scalarNode('form')->defaultValue(ShippingRuleType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(ShippingRuleGroupType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

@@ -2,10 +2,14 @@
 
 namespace CoreShop\Test;
 
+use CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class Base extends \PHPUnit_Framework_TestCase
 {
@@ -76,6 +80,42 @@ class Base extends \PHPUnit_Framework_TestCase
         }
 
         return $repo;
+    }
+
+    /**
+     * @return FormFactoryInterface
+     */
+    protected function getFormFactory() {
+        return $this->get('form.factory');
+    }
+
+    /**
+     * @param $alias
+     * @return MetadataInterface
+     */
+    protected function getMetadata($alias) {
+        return $this->get('coreshop.resource_registry')->get($alias);
+    }
+
+    /**
+     * @param $resourceAlias
+     * @param $expectedClass
+     * @param $data
+     * @return ResourceInterface
+     */
+    protected function createResourceWithForm($resourceAlias, $expectedClass, $data) {
+        $metadata = $this->getMetadata('coreshop.' . $resourceAlias);
+        $formType = $metadata->getClass('form');
+
+        $form = $this->getFormFactory()->createNamed('', $formType);
+
+        $form->submit($data);
+
+        $resourceModel = $form->getData();
+
+        $this->assertInstanceOf($expectedClass, $resourceModel);
+
+        return $resourceModel;
     }
 
     /**

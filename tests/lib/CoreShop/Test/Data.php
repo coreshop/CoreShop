@@ -2,6 +2,7 @@
 
 namespace CoreShop\Test;
 
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
@@ -397,7 +398,7 @@ class Data
     public static function createCustomer()
     {
         $customerFactory = self::get('coreshop.factory.customer');
-
+        $addressFactory = self::get('coreshop.factory.address');
 
         if (!self::$customer1 instanceof CustomerInterface) {
             /**
@@ -411,6 +412,23 @@ class Data
             //$customer->setGender("m"); TODO
             $customer->setEmail("mus@coreshop.org");
             $customer->setCustomerGroups([self::$customerGroup1]);
+            $customer->save();
+
+            /**
+             * @var $address AddressInterface
+             */
+            $address = $addressFactory->createNew();
+            $address->setCity('Wels');
+            $address->setCountry(Data::$store->getBaseCountry());
+            $address->setStreet('Freiung 9-11/N3');
+            $address->setPostcode('4600');
+            $address->setFirstname('Dominik');
+            $address->setLastname('Pfaffenbauer');
+            $address->setKey('test-address-customer1');
+            $address->setParent(Service::createFolderByPath('/'));
+            $address->save();
+
+            $customer->setAddresses([$address]);
             $customer->save();
 
             self::$customer1 = $customer;

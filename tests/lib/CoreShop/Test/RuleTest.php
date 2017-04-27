@@ -69,13 +69,6 @@ abstract class RuleTest extends Base
     }
 
     /**
-     * @return FormFactoryInterface
-     */
-    protected function getFormFactory() {
-        return $this->get('form.factory');
-    }
-
-    /**
      * @param $type
      * @return \Symfony\Component\Form\FormInterface
      * @throws \Exception

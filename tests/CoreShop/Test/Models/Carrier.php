@@ -2,14 +2,88 @@
 
 namespace CoreShop\Test\Models;
 
-use CoreShop\Model\Carrier\DeliveryPrice;
-use CoreShop\Model\Carrier\RangePrice;
-use CoreShop\Model\Carrier\RangeWeight;
+use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
+use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
+use CoreShop\Test\RuleTest;
 
-class Carrier extends Base
+class Carrier extends RuleTest
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormRegistryName()
+    {
+        return 'coreshop.form_registry.shipping_rule.conditions';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionValidatorName()
+    {
+        return 'coreshop.shipping_rule.processor';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormClass()
+    {
+        return ShippingRuleConditionType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormRegistryName()
+    {
+        return 'coreshop.form_registry.shipping_rule.actions';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionProcessorName()
+    {
+        return 'coreshop.shipping_rule.processor';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormClass()
+    {
+        return ShippingRuleActionType::class;
+    }
+
+    /**
+     * @return CarrierPriceCalculatorInterface
+     */
+    protected function getPriceCalculator()
+    {
+        return $this->get('coreshop.carrier.price_calculator.shipping_rules');
+    }
+
+    /**
+     * @return ShippingRuleInterface
+     */
+    protected function createRule()
+    {
+        /**
+         * @var $shippingRule ShippingRuleInterface
+         */
+        $shippingRule = $this->getFactory('shipping_rule')->createNew();
+        $shippingRule->setName('test-rule');
+
+        return $shippingRule;
+    }
+
     /**
      * Test Carrier Creation
      */
@@ -17,7 +91,18 @@ class Carrier extends Base
     {
         $this->printTodoTestName();
 
-        //TODO
+        $carrier = $this->createResourceWithForm('carrier', CarrierInterface::class, [
+            'label' => 'Test',
+            'name' => 'Test',
+            'rangeBehaviour' => 'deactivate'
+        ]);
+
+        $this->assertNull($carrier->getId());
+
+        $this->getEntityManager()->persist($carrier);
+        $this->getEntityManager()->flush();
+
+        $this->assertNotNull($carrier->getId());
     }
 
     /**
@@ -25,15 +110,54 @@ class Carrier extends Base
      */
     public function testCarrierPrice()
     {
-        $this->printTodoTestName();
+        $this->printTestName();
 
-        /*$cart = Data::createCartWithProducts();
+        $cart = Data::createCartWithProducts();
+        /**
+         * @var $carrier CarrierInterface
+         */
+        $carrier = $this->createResourceWithForm('carrier', CarrierInterface::class, [
+            'label' => 'Test',
+            'name' => 'Test',
+            'rangeBehaviour' => 'deactivate',
+            'taxRule' => Data::$taxRuleGroup->getId()
+        ]);
 
-        $price1 = Data::$carrier1->getDeliveryPrice($cart, true);
-        $price2 = Data::$carrier2->getDeliveryPrice($cart, true);
+        $this->getEntityManager()->persist($carrier);
+        $this->getEntityManager()->flush();
 
-        $this->assertEquals(false, $price1);
-        $this->assertEquals(24, $price2);*/
+        /**
+         * @var $shippingRule ShippingRuleInterface
+         */
+        $shippingRule = $this->createResourceWithForm('shipping_rule', ShippingRuleInterface::class, [
+            'name' => 'test->true'
+        ]);
+        $shippingRule->addAction($this->createActionWithForm('price', [
+            'price' => 10
+        ]));
+
+        $this->getEntityManager()->persist($shippingRule);
+        $this->getEntityManager()->flush();
+
+        /**
+         * @var $shippingRuleGroup ShippingRuleGroupInterface
+         */
+        $shippingRuleGroup = $this->createResourceWithForm('shipping_rule_group', ShippingRuleGroupInterface::class, [
+            'carrier' => $carrier->getId(),
+            'priority' => 1,
+            'shippingRule' => $shippingRule->getId()
+        ]);
+
+        $this->getEntityManager()->persist($shippingRuleGroup);
+        $this->getEntityManager()->flush();
+
+        $carrier->addShippingRule($shippingRuleGroup);
+
+        $price = $this->getPriceCalculator()->getPrice($carrier, $cart, Data::$customer1->getAddresses()[0], false);
+        $priceWithTax = $this->getPriceCalculator()->getPrice($carrier, $cart, Data::$customer1->getAddresses()[0], true);
+
+        $this->assertEquals(10, $price);
+        $this->assertEquals(12, $priceWithTax);
     }
 
     /**
