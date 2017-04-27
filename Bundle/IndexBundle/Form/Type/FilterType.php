@@ -17,7 +17,7 @@ class FilterType extends AbstractResourceType
         $builder
             ->add('name', TextType::class)
             ->add('orderKey', TextType::class)
-            ->add('orderDirection', TextType::class) //Make ChoiceType with ASC and DESC
+            ->add('orderDirection', TextType::class) //TODO: Make ChoiceType with ASC and DESC
             ->add('preConditions', FilterConditionCollectionType::class)
             ->add('conditions', FilterConditionCollectionType::class)
             ->add('resultsPerPage', NumberType::class)
