@@ -5,3 +5,31 @@ parameters:
   coreshop.folder.customer: /%coreshop.folder.objects%/customers
   coreshop.address.folder_path: addresses
   coreshop.folder.customer_groups: /%coreshop.folder.objects%/customer-groups
+
+services:
+  coreshop.context.customer.composite:
+    class: CoreShop\Component\Customer\Context\CompositeCustomerContext
+    public: false
+
+  coreshop.context.customer.request_based:
+    class: CoreShop\Component\Customer\Context\RequestBased\CustomerContext
+    public: false
+    arguments: ['@coreshop.context.customer.request_based.resolver', '@request_stack']
+    tags:
+        - { name: coreshop.context.customer }
+
+  coreshop.context.customer.cached:
+    class: CoreShop\Component\Customer\Context\CachedCustomerContext
+    tags:
+        - { name: coreshop.context.customer }
+
+  coreshop.context.customer.request_based.resolver.composite:
+    class: CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver
+    public: false
+
+  coreshop.context.customer.request_based.resolver.token_based:
+    class: CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver
+    public: false
+    tags:
+        - { name: coreshop.context.customer.request_based.resolver }
+    arguments: ['@security.token_storage']

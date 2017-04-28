@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Store\Context\RequestBased;
+namespace CoreShop\Component\Customer\Context\RequestBased;
 
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Stdlib\PriorityQueue;
@@ -29,13 +29,13 @@ final class CompositeRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findStore(Request $request)
+    public function findCustomer(Request $request)
     {
         foreach ($this->requestResolvers as $requestResolver) {
-            $store = $requestResolver->findStore($request);
+            $customer = $requestResolver->findCustomer($request);
 
-            if (null !== $store) {
-                return $store;
+            if (null !== $customer) {
+                return $customer;
             }
         }
 

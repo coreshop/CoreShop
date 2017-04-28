@@ -9,20 +9,20 @@ final class CompositeStoreContext implements StoreContextInterface
     /**
      * @var PriorityQueue|StoreContextInterface[]
      */
-    private $channelContexts;
+    private $storeContexts;
 
     public function __construct()
     {
-        $this->channelContexts = new PriorityQueue();
+        $this->storeContexts = new PriorityQueue();
     }
 
     /**
-     * @param StoreContextInterface $channelContext
+     * @param StoreContextInterface $storeContext
      * @param int $priority
      */
-    public function addContext(StoreContextInterface $channelContext, $priority = 0)
+    public function addContext(StoreContextInterface $storeContext, $priority = 0)
     {
-        $this->channelContexts->insert($channelContext, $priority);
+        $this->storeContexts->insert($storeContext, $priority);
     }
 
     /**
@@ -30,9 +30,9 @@ final class CompositeStoreContext implements StoreContextInterface
      */
     public function getStore()
     {
-        foreach ($this->channelContexts as $channelContext) {
+        foreach ($this->storeContexts as $storeContext) {
             try {
-                return $channelContext->getStore();
+                return $storeContext->getStore();
             } catch (StoreNotFoundException $exception) {
                 continue;
             }

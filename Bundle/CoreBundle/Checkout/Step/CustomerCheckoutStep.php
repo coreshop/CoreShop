@@ -3,6 +3,9 @@
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Customer\Context\CustomerNotFoundException;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
@@ -14,9 +17,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 class CustomerCheckoutStep implements CheckoutStepInterface
 {
     /**
-     * @var AuthorizationChecker
+     * @var CustomerContextInterface
      */
-    private $authorizationChecker;
+    private $customerContext;
 
     /**
      * @var FormFactoryInterface
@@ -24,12 +27,12 @@ class CustomerCheckoutStep implements CheckoutStepInterface
     private $formFactory;
 
     /**
-     * @param AuthorizationChecker $authorizationChecker
+     * @param CustomerContextInterface $customerContext
      * @param FormFactoryInterface $formFactory
      */
-    public function __construct(AuthorizationChecker $authorizationChecker, FormFactoryInterface $formFactory)
+    public function __construct(CustomerContextInterface $customerContext, FormFactoryInterface $formFactory)
     {
-        $this->authorizationChecker = $authorizationChecker;
+        $this->customerContext = $customerContext;
         $this->formFactory = $formFactory;
     }
 
@@ -55,9 +58,11 @@ class CustomerCheckoutStep implements CheckoutStepInterface
     public function validate(CartInterface $cart)
     {
         try {
-            return ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY'));
+            $customer = $this->customerContext->getCustomer();
+
+            return $customer instanceof CustomerInterface;
         }
-        catch (\Exception $ex) {
+        catch (CustomerNotFoundException $ex) {
 
         }
 
@@ -69,7 +74,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->validate($cart)) {
             throw new CheckoutException("no customer found", 'coreshop_checkout_customer_invalid');
         }
     }

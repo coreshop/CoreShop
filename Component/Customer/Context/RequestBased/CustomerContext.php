@@ -1,14 +1,14 @@
 <?php
 
-namespace CoreShop\Component\Store\Context\RequestBased;
+namespace CoreShop\Component\Customer\Context\RequestBased;
 
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Customer\Context\CustomerNotFoundException;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class StoreContext implements StoreContextInterface
+final class CustomerContext implements CustomerContextInterface
 {
     /**
      * @var RequestResolverInterface
@@ -33,27 +33,27 @@ final class StoreContext implements StoreContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getStore()
+    public function getCustomer()
     {
         try {
-            return $this->getStoreForRequest($this->getMasterRequest());
+            return $this->getCustomerForRequest($this->getMasterRequest());
         } catch (\UnexpectedValueException $exception) {
-            throw new StoreNotFoundException($exception);
+            throw new CustomerNotFoundException($exception);
         }
     }
 
     /**
      * @param Request $request
      *
-     * @return StoreInterface
+     * @return CustomerInterface
      */
-    private function getStoreForRequest(Request $request)
+    private function getCustomerForRequest(Request $request)
     {
-        $store = $this->requestResolver->findStore($request);
+        $customer = $this->requestResolver->findCustomer($request);
 
-        $this->assertStoreWasFound($store);
+        $this->assertCustomerWasFound($customer);
 
-        return $store;
+        return $customer;
     }
 
     /**
@@ -70,12 +70,12 @@ final class StoreContext implements StoreContextInterface
     }
 
     /**
-     * @param StoreInterface|null $store
+     * @param CustomerInterface $customer $store
      */
-    private function assertStoreWasFound(StoreInterface $store = null)
+    private function assertCustomerWasFound(CustomerInterface $customer = null)
     {
-        if (null === $store) {
-            throw new \UnexpectedValueException('Store was not found for given request');
+        if (null === $customer) {
+            throw new \UnexpectedValueException('Customer was not found for given request');
         }
     }
 }

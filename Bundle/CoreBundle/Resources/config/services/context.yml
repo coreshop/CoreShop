@@ -2,7 +2,12 @@ services:
   coreshop.context.shopper:
     class: CoreShop\Component\Core\Context\ShopperContext
     lazy: true
-    arguments: ['@coreshop.context.store', '@coreshop.context.currency', '@coreshop.context.locale', '@coreshop.context.country']
+    arguments:
+      - '@coreshop.context.store'
+      - '@coreshop.context.currency'
+      - '@coreshop.context.locale'
+      - '@coreshop.context.country'
+      - '@coreshop.context.customer'
 
   coreshop.storage.currency:
     class: CoreShop\Component\Core\Currency\CurrencyStorage
