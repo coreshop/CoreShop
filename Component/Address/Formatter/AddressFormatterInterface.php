@@ -2,14 +2,14 @@
 
 namespace CoreShop\Component\Address\Formatter;
 
-use CoreShop\Component\Address\Pimcore\Model\Address;
+use CoreShop\Component\Address\Model\AddressInterface;
 
 interface AddressFormatterInterface {
     /**
-     * @param Address $address
+     * @param AddressInterface $address
      * @param boolean $asHtml
      * @return mixed
      */
-    public function formatAddress(Address $address, $asHtml = true);
+    public function formatAddress(AddressInterface $address, $asHtml = true);
 
 }

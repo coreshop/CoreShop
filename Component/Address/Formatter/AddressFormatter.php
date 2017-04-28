@@ -2,7 +2,7 @@
 
 namespace CoreShop\Component\Address\Formatter;
 
-use CoreShop\Component\Address\Pimcore\Model\Address;
+use CoreShop\Component\Address\Model\AddressInterface;
 use Pimcore\Placeholder;
 
 class AddressFormatter implements AddressFormatterInterface
@@ -10,7 +10,7 @@ class AddressFormatter implements AddressFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function formatAddress(Address $address, $asHtml = true) {
+    public function formatAddress(AddressInterface $address, $asHtml = true) {
         $objectVars = get_object_vars($address);
 
         $placeHolder = new Placeholder();

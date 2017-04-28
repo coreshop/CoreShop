@@ -1,6 +1,6 @@
 {
     "description": null,
-    "parentClass": "CoreShop\\Component\\Address\\Pimcore\\Model\\Address",
+    "parentClass": "CoreShop\\Component\\Address\\Model\\Address",
     "useTraits": null,
     "allowInherit": false,
     "allowVariants": false,

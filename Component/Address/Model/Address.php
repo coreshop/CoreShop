@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Address\Pimcore\Model;
+namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Address\Model\AddressInterface;
