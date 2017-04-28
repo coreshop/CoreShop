@@ -2,7 +2,7 @@ services:
   coreshop.rule.condition.customers:
     class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\CustomersConditionChecker
     arguments:
-      ['@security.token_storage']
+      ['@coreshop.context.customer']
     tags:
       - { name: coreshop.shipping_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
       - { name: coreshop.product_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
@@ -11,7 +11,7 @@ services:
   coreshop.rule.condition.customer_groups:
     class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\CustomerGroupsConditionChecker
     arguments:
-      ['@security.token_storage']
+      ['@coreshop.context.customer']
     tags:
       - { name: coreshop.shipping_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
       - { name: coreshop.product_price_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }

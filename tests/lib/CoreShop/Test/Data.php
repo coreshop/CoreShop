@@ -111,12 +111,10 @@ class Data
         self::createCustomer();
         //\CoreShop::getTools()->setUser(self::$customer1);
 
-        $token = new UsernamePasswordToken(self::$customer1, null, 'coreshop_frontend');
-        \Pimcore::getKernel()->getContainer()->get('security.token_storage')->setToken($token);
-
         self::get('coreshop.context.country.cached')->setCountry(self::$store->getBaseCountry());
         self::get('coreshop.context.currency.cached')->setCurrency(self::$store->getBaseCurrency());
         self::get('coreshop.context.store.cached')->setStore(self::$store);
+        self::get('coreshop.context.customer.cached')->setCustomer(Data::$customer1);
     }
 
     /**

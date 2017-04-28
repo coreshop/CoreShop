@@ -2,26 +2,25 @@
 
 namespace CoreShop\Bundle\CoreBundle\Product\Rule\Condition;
 
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Webmozart\Assert\Assert;
 
 class CustomerGroupsConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var TokenStorageInterface
+     * @var CustomerContextInterface
      */
-    private $tokenStorage;
+    private $customerContext;
 
     /**
-     * @param TokenStorageInterface $tokenStorage
+     * @param CustomerContextInterface $customerContext
      */
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(CustomerContextInterface $customerContext)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->customerContext = $customerContext;
     }
 
     /**
@@ -29,18 +28,22 @@ class CustomerGroupsConditionChecker implements ConditionCheckerInterface
      */
     public function isValid($subject, array $configuration)
     {
-        $customer = $this->tokenStorage->getToken()->getUser();
+        try {
+            /**
+             * @var $customer CustomerInterface
+             */
+            $customer = $this->customerContext->getCustomer();
 
-        if (!$customer instanceof CustomerInterface) {
-            return false;
-        }
-
-        foreach ($customer->getCustomerGroups() as $group) {
-            if ($group instanceof ResourceInterface) {
-                if (in_array($group->getId(), $configuration['customerGroups'])) {
-                    return true;
+            foreach ($customer->getCustomerGroups() as $group) {
+                if ($group instanceof ResourceInterface) {
+                    if (in_array($group->getId(), $configuration['customerGroups'])) {
+                        return true;
+                    }
                 }
             }
+
+        } catch (CustomerNotFoundException $ex) {
+
         }
 
         return false;
