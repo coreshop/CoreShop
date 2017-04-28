@@ -3,6 +3,7 @@
 namespace CoreShop\Test\Models;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
@@ -253,7 +254,15 @@ class CartPriceRule extends RuleTest
         $this->getEntityManager()->persist($rule);
         $this->getEntityManager()->flush();
 
+        $cart = Data::createCartWithProducts();
 
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, "", $cart));
+
+        $discount = $this->getPriceCalculator()->getDiscount($cart, false);
+        $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
+
+        $this->assertEquals(5, $discount);
+        $this->assertEquals(6, $discountWt);
     }
 
     /**
@@ -270,6 +279,57 @@ class CartPriceRule extends RuleTest
 
         $rule = $this->createRule();
         $rule->addAction($action);
+
+        $this->getEntityManager()->persist($rule);
+        $this->getEntityManager()->flush();
+
+        $cart = Data::createCartWithProducts();
+
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, "", $cart));
+
+        $discount = $this->getPriceCalculator()->getDiscount($cart, false);
+        $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
+
+        $this->assertEquals(24, $discount);
+        $this->assertEquals(28.8, $discountWt);
     }
 
+    /**
+     * Test Price Rule Action Discount Percent
+     */
+    public function testPriceRuleActionFreeShipping()
+    {
+        $this->printTestName();
+        $this->assertActionForm(FreeShippingConfigurationType::class, 'freeShipping');
+
+        $action = $this->createActionWithForm('freeShipping');
+
+        $rule = $this->createRule();
+        $rule->addAction($action);
+
+        $this->getEntityManager()->persist($rule);
+        $this->getEntityManager()->flush();
+
+        $cart = Data::createCartWithProducts();
+        $cart->setCarrier(Data::$carrier1);
+        $cart->setCustomer(Data::$customer1);
+        $cart->setShippingAddress(Data::$customer1->getAddresses()[0]);
+
+        $shipping = $cart->getShipping(false);
+        $shippingWt = $cart->getShipping(true);
+
+        $this->assertEquals(10, $shipping);
+        $this->assertEquals(12, $shippingWt);
+
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, "", $cart));
+
+        $discount = $this->getPriceCalculator()->getDiscount($cart, false);
+        $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
+
+        $this->assertEquals(0, $discount);
+        $this->assertEquals(0, $discountWt);
+
+        $this->assertEquals(0, $cart->getShipping());
+        $this->assertEquals(0, $cart->getShipping(false));
+    }
 }

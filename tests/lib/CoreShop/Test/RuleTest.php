@@ -172,7 +172,7 @@ abstract class RuleTest extends Base
      * @param $data
      * @return ActionInterface
      */
-    protected function createActionWithForm($type, $data) {
+    protected function createActionWithForm($type, $data = []) {
         $form = $this->getFormFactory()->createNamed('', $this->getActionFormClass());
 
         $formData = [
