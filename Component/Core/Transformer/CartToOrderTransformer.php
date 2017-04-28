@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class CartToOrderTransformer implements ProposalTransformerInterface
@@ -166,9 +167,11 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $order->setShippingAddress($cart->getShippingAddress());
         $order->setInvoiceAddress($cart->getInvoiceAddress());
 
-        foreach ($cart->getPriceRuleItems() as $priceRule) {
-            if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
-                $this->cartPriceRuleOrderProcessor->process($priceRule->getCartPriceRule(), $priceRule->getVoucherCode(), $cart, $order);
+        if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
+            foreach ($cart->getPriceRuleItems() as $priceRule) {
+                if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
+                    $this->cartPriceRuleOrderProcessor->process($priceRule->getCartPriceRule(), $priceRule->getVoucherCode(), $cart, $order);
+                }
             }
         }
 
