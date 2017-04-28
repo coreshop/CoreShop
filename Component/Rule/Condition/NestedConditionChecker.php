@@ -1,9 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ProductBundle\Rule\Condition;
-
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
+namespace CoreShop\Component\Rule\Condition;
 
 class NestedConditionChecker implements ConditionCheckerInterface
 {
@@ -26,10 +23,10 @@ class NestedConditionChecker implements ConditionCheckerInterface
     public function isValid($subject, array $configuration)
     {
         $operator = $configuration['operator'];
-        
+
         foreach ($configuration['conditions'] as $condition) {
             $valid = $this->ruleConditionsValidationProcessor->isValid($subject, [$condition]);
-            
+
             if ($operator === "and") {
                 if (!$valid) {
                     return false;
@@ -40,7 +37,7 @@ class NestedConditionChecker implements ConditionCheckerInterface
                 }
             }
         }
-        
+
         return true;
     }
 }

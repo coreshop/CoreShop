@@ -14,16 +14,16 @@ services:
       - { name: coreshop.product_price_rule.condition, type: products, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
 
   coreshop.product_price_rule.condition.nested:
-    class: CoreShop\Bundle\ProductBundle\Rule\Condition\NestedConditionChecker
+    class: CoreShop\Component\Rule\Condition\NestedConditionChecker
     arguments: ['@coreshop.product_price_rule.conditions.processor']
     tags:
-      - { name: coreshop.product_price_rule.condition, type: conditions, form-type: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRule\Condition\NestedConfigurationType }
+      - { name: coreshop.product_price_rule.condition, type: nested, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductPriceNestedConfigurationType }
 
   coreshop.product_specific_price_rule.condition.nested:
-    class: CoreShop\Bundle\ProductBundle\Rule\Condition\NestedConditionChecker
+    class: CoreShop\Component\Rule\Condition\NestedConditionChecker
     arguments: ['@coreshop.product_specific_price_rule.conditions.processor']
     tags:
-      - { name: coreshop.product_specific_price_rule.condition, type: conditions, form-type: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRule\Condition\NestedConfigurationType }
+      - { name: coreshop.product_specific_price_rule.condition, type: nested, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductSpecificPriceNestedConfigurationType }
 
   coreshop.product_price_rule.condition.categories:
     class: CoreShop\Bundle\ProductBundle\Rule\Condition\CategoriesConditionChecker

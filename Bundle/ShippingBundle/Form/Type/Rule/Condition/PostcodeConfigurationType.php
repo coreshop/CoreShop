@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Rule\Condition;
+namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionCollectionType;
 use Symfony\Component\Form\AbstractType;

@@ -11,11 +11,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.conditions');
+pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.nested');
 
-pimcore.plugin.coreshop.rules.conditions.conditions = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
+pimcore.plugin.coreshop.rules.conditions.nested = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'conditions',
+    type : 'nested',
 
     operatorCombo : null,
     conditions : null,

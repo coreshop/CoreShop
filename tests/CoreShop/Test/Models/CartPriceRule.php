@@ -14,6 +14,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Component\Order\Cart\Calculator\CartDiscountCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -235,6 +236,29 @@ class CartPriceRule extends RuleTest
         $this->assertRuleCondition($this->cart, $condition);
     }
 
+    /**
+     * Test Price Rule Condition Nested
+     */
+    public function testPriceRuleConditionNested()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(NestedConfigurationType::class, 'nested');
+
+        $categoriesCondition = $this->createConditionWithForm('categories', [
+            'categories' => [Data::$category1->getId()]
+        ]);
+
+        $currencyCondition = $this->createConditionWithForm('currencies', [
+            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+        ]);
+
+        $condition = $this->createConditionWithForm('nested', [
+            'nested' => [$categoriesCondition, $currencyCondition],
+            'operator' => 'AND'
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
 
     /**
      * Test Price Rule Action Discount Amount

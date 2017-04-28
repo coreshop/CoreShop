@@ -14,6 +14,7 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionCo
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
@@ -32,7 +33,7 @@ class ShippingRule extends RuleTest
     /**
      * @var ShippingRuleInterface
      */
-    protected $priceRule;
+    protected $ShippingRule;
 
     /**
      * @var CartInterface
@@ -161,7 +162,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Condition Customer
      */
-    public function testPriceRuleConditionCustomer()
+    public function testShippingRuleConditionCustomer()
     {
         $this->printTestName();
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
@@ -195,7 +196,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Condition Country
      */
-    public function testPriceRuleConditionCountry()
+    public function testShippingRuleConditionCountry()
     {
         $this->printTestName();
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
@@ -210,7 +211,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Condition Zone
      */
-    public function testPriceRuleConditionZone()
+    public function testShippingRuleConditionZone()
     {
         $this->printTestName();
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
@@ -225,7 +226,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Condition Customer Group
      */
-    public function testPriceRuleConditionCustomerGroup()
+    public function testShippingRuleConditionCustomerGroup()
     {
         $this->printTestName();
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
@@ -240,7 +241,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Condition Products
      */
-    public function testPriceRuleConditionProducts()
+    public function testShippingRuleConditionProducts()
     {
         $this->printTestName();
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -261,7 +262,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Condition Categories
      */
-    public function testPriceRuleConditionCategories()
+    public function testShippingRuleConditionCategories()
     {
         $this->printTestName();
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -282,7 +283,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Condition Stores
      */
-    public function testPriceRuleConditionStores()
+    public function testShippingRuleConditionStores()
     {
         $this->printTestName();
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
@@ -297,7 +298,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Condition Currencies
      */
-    public function testPriceRuleConditionCurrencies()
+    public function testShippingRuleConditionCurrencies()
     {
         $this->printTestName();
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
@@ -309,11 +310,34 @@ class ShippingRule extends RuleTest
         $this->assertRuleCondition($this->cart, $condition);
     }
 
+    /**
+     * Test Price Rule Condition Nested
+     */
+    public function testShippingRuleConditionNested()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(NestedConfigurationType::class, 'nested');
+
+        $categoriesCondition = $this->createConditionWithForm('categories', [
+            'categories' => [Data::$category1->getId()]
+        ]);
+
+        $currencyCondition = $this->createConditionWithForm('currencies', [
+            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+        ]);
+
+        $condition = $this->createConditionWithForm('nested', [
+            'nested' => [$categoriesCondition, $currencyCondition],
+            'operator' => 'AND'
+        ]);
+
+        $this->assertRuleCondition($this->cart, $condition);
+    }
 
     /**
      * Test Price Rule Action Discount Amount
      */
-    public function testPriceRuleActionDiscountAmount()
+    public function testShippingRuleActionDiscountAmount()
     {
         $this->printTestName();
         $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
@@ -352,7 +376,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Action Discount Percent
      */
-    public function testPriceRuleActionDiscountPercent()
+    public function testShippingRuleActionDiscountPercent()
     {
         $this->printTestName();
         $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
@@ -391,7 +415,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Action New Price
      */
-    public function testPriceRuleActionPrice()
+    public function testShippingRuleActionPrice()
     {
         $this->printTestName();
         $this->assertActionForm(PriceActionConfigurationType::class, 'price');
@@ -425,7 +449,7 @@ class ShippingRule extends RuleTest
      /**
      * Test Price Rule Action Addition Amount
      */
-    public function testPriceRuleActionAdditionAmount()
+    public function testShippingRuleActionAdditionAmount()
     {
         $this->printTestName();
         $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
@@ -464,7 +488,7 @@ class ShippingRule extends RuleTest
     /**
      * Test Price Rule Action Addition Percent
      */
-    public function testPriceRuleActionAdditionPercent()
+    public function testShippingRuleActionAdditionPercent()
     {
         $this->printTestName();
         $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');

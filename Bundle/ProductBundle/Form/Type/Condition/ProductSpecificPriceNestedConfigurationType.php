@@ -1,19 +1,18 @@
 <?php
 
-namespace CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRule\Condition;
+namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionCollectionType;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\AbstractNestedConfigurationType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class NestedConfigurationType extends \CoreShop\Bundle\ProductBundle\Form\Type\Condition\NestedConfigurationType
+final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedConfigurationType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
         $builder
             ->add('conditions', ProductSpecificPriceRuleConditionCollectionType::class)
         ;
@@ -24,6 +23,6 @@ final class NestedConfigurationType extends \CoreShop\Bundle\ProductBundle\Form\
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_specific_price_rule_condition_products';
+        return 'coreshop_rule_condition_nested';
     }
 }

@@ -11,7 +11,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.conditions.conditions');
+pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.conditions.nested');
 
-pimcore.plugin.coreshop.carrier.shippingrules.conditions.conditions = Class.create(pimcore.plugin.coreshop.rules.conditions.conditions, {
+pimcore.plugin.coreshop.carrier.shippingrules.conditions.nested = Class.create(pimcore.plugin.coreshop.rules.conditions.nested, {
 });

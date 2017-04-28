@@ -65,10 +65,10 @@ services:
       - { name: coreshop.shipping_rule.condition, type: dimension, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType }
 
   coreshop.shipping_rule.condition.nested:
-    class: CoreShop\Bundle\ShippingBundle\Rule\Condition\NestedConditionChecker
-    arguments: ['@coreshop.shipping_rule.processor', '@coreshop.repository.shipping_rule']
+    class: CoreShop\Component\Rule\Condition\NestedConditionChecker
+    arguments: ['@coreshop.shipping_rule.conditions.processor']
     tags:
-      - { name: coreshop.shipping_rule.condition, type: conditions, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType }
+      - { name: coreshop.shipping_rule.condition, type: nested, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
   coreshop.shipping_rule.condition.shipping_rule:
     class: CoreShop\Bundle\ShippingBundle\Rule\Condition\ShippingRuleConditionChecker

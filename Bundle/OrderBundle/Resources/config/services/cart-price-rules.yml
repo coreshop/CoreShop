@@ -87,10 +87,10 @@ services:
       - { name: coreshop.cart_price_rule.condition, type: products, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
 
   coreshop.cart_price_rule.condition.nested:
-    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\NestedConditionChecker
+    class: CoreShop\Component\Rule\Condition\NestedConditionChecker
     arguments: ['@coreshop.cart_price_rule.conditions.validation.processor']
     tags:
-      - { name: coreshop.cart_price_rule.condition, type: conditions, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType }
+      - { name: coreshop.cart_price_rule.condition, type: nested, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
   coreshop.cart_price_rule.condition.categories:
     class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\CategoriesConditionChecker
