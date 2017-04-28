@@ -59,4 +59,10 @@ class Country extends Base
 
         $this->assertSame(" \n Dominik Pfaffenbauer\nFreiung 9-11/N3 \n \nAustria ", $addressFormatted);
     }
+
+    public function testCountryContext() {
+        $this->printTestName();
+
+        $this->assertEquals($this->get('coreshop.context.country')->getCountry()->getId(), Data::$store->getBaseCountry()->getId());
+    }
 }

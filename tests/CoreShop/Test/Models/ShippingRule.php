@@ -343,6 +343,10 @@ class ShippingRule extends RuleTest
         $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
 
         $this->assertEquals(114, $price);
+
+        $this->getEntityManager()->remove($group);
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -378,6 +382,10 @@ class ShippingRule extends RuleTest
         $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
 
         $this->assertEquals(108, $price);
+
+        $this->getEntityManager()->remove($group);
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -408,6 +416,10 @@ class ShippingRule extends RuleTest
         $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
 
         $this->assertEquals(120, $price);
+
+        $this->getEntityManager()->remove($group);
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
     }
 
      /**
@@ -443,6 +455,10 @@ class ShippingRule extends RuleTest
         $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
 
         $this->assertEquals(126, $price);
+
+        $this->getEntityManager()->remove($group);
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -478,5 +494,9 @@ class ShippingRule extends RuleTest
         $price = $this->getPriceCalculator()->getPrice($carrier, $this->cart, $this->address, true);
 
         $this->assertEquals(132, $price);
+
+        $this->getEntityManager()->remove($group);
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
     }
 }

@@ -13,10 +13,9 @@ class Product extends Base
      */
     public function testProductCreation()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
 
-        /*$this->assertNotNull(Data::$product1);*/
+        $this->assertNotNull(Data::$product1);
     }
 
     /**
@@ -24,16 +23,9 @@ class Product extends Base
      */
     public function testProductPrice()
     {
-        $this->printTodoTestName();
-        //TODO
-
-        /*Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);
+        $this->printTestName();
 
         $this->assertEquals(15 * 1.2, Data::$product1->getPrice());
-
-        Configuration::set("SYSTEM.BASE.PRICES.GROSS", true);
-
-        $this->assertEquals(15, Data::$product1->getPrice());*/
     }
 
     /**
@@ -41,30 +33,8 @@ class Product extends Base
      */
     public function testProductTax()
     {
-        $this->printTodoTestName();
-        //TODO
-
-        /*Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);
+        $this->printTestName();
 
         $this->assertEquals(15 * 1.2 - 15, Data::$product1->getTaxAmount());
-
-        Configuration::set("SYSTEM.BASE.PRICES.GROSS", true);
-
-        $this->assertEquals(15 - (15 / 1.2), Data::$product1->getTaxAmount());*/
-    }
-
-    /**
-     * Test Product Delivery Price
-     */
-    public function testProductDeliveryPrice()
-    {
-        $this->printTodoTestName();
-        //TODO
-
-        /*Configuration::set("SYSTEM.BASE.PRICES.GROSS", false);
-
-        $this->assertEquals(12, Data::$product1->getCheapestDeliveryPrice());
-        $this->assertEquals(24, Data::$product2->getCheapestDeliveryPrice());
-        $this->assertEquals(12, Data::$product3->getCheapestDeliveryPrice());*/
     }
 }

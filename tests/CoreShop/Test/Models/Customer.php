@@ -4,9 +4,6 @@ namespace CoreShop\Test\Models;
 
 use CoreShop\Test\Base;
 
-/**
- * TOOD: Implement Me
- */
 class Customer extends Base
 {
     public function testCustomerCreation() {

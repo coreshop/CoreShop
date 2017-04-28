@@ -2,7 +2,9 @@
 
 namespace CoreShop\Test\Models;
 
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Test\Base;
+use CoreShop\Test\Data;
 
 class Currency extends Base
 {
@@ -11,28 +13,27 @@ class Currency extends Base
      */
     public function testCurrencyCreation()
     {
-        $this->printTodoTestName();
-        //TODO
+        $this->printTestName();
 
-        /*$this->assertNotNull(\CoreShop\Model\Currency::getById(1));*/
+        /**
+         * @var $currency CurrencyInterface
+         */
+        $currency = $this->getFactory('currency')->createNew();
+
+        $currency->setName('test-country');
+        $currency->setIsoCode('TEC');
+
+        $this->assertNull($currency->getId());
+
+        $this->getEntityManager()->persist($currency);
+        $this->getEntityManager()->flush();
+
+        $this->assertNotNull($currency->getId());
     }
 
-    /**
-     * Test Currency Conversion
-     */
-    public function testCurrencyConversion()
-    {
-        $this->printTodoTestName();
-        //TODO
+    public function testCurrencyContext() {
+        $this->printTestName();
 
-        /*$usd = \CoreShop\Model\Currency::getByName("US Dollars");
-        $euro = \CoreShop\Model\Currency::getByName("Euro");
-        $asd = \CoreShop\Model\Currency::getByName("Australian Dollars");
-
-        $usd->setExchangeRate(1.2);
-        $asd->setExchangeRate(2);
-
-        $this->assertEquals(12, \CoreShop::getTools()->convertToCurrency(10, $usd, $euro));
-        $this->assertEquals(20, \CoreShop::getTools()->convertToCurrency(10, $asd, $euro));*/
+        $this->assertEquals($this->get('coreshop.context.currency')->getCurrency()->getId(), Data::$store->getBaseCurrency()->getId());
     }
 }

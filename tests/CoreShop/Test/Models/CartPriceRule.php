@@ -263,6 +263,9 @@ class CartPriceRule extends RuleTest
 
         $this->assertEquals(5, $discount);
         $this->assertEquals(6, $discountWt);
+
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -292,6 +295,9 @@ class CartPriceRule extends RuleTest
 
         $this->assertEquals(24, $discount);
         $this->assertEquals(28.8, $discountWt);
+
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -331,5 +337,8 @@ class CartPriceRule extends RuleTest
 
         $this->assertEquals(0, $cart->getShipping());
         $this->assertEquals(0, $cart->getShipping(false));
+
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
     }
 }
