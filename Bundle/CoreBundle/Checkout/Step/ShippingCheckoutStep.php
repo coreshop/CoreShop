@@ -70,6 +70,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     {
         $this->cartCarrierProcessor = $cartCarrierProcessor;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
+        $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
         $this->formFactory = $formFactory;
         $this->currencyContext = $currencyContext;
         $this->moneyFormatter = $moneyFormatter;
