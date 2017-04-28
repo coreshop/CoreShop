@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Customer\Pimcore\Model;
+namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;

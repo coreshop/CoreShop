@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Product\Pimcore\Model;
+namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;

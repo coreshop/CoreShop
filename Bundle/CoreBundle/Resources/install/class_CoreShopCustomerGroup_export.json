@@ -1,6 +1,6 @@
 {
     "description": null,
-    "parentClass": "CoreShop\\Component\\Customer\\Pimcore\\Model\\CustomerGroup",
+    "parentClass": "CoreShop\\Component\\Customer\\Model\\CustomerGroup",
     "useTraits": null,
     "allowInherit": false,
     "allowVariants": false,

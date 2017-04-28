@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Product\Pimcore\Model;
+namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
