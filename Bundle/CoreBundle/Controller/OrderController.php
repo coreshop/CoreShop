@@ -129,13 +129,13 @@ class OrderController extends AdminController
                 'align' => 'right',
                 'hidden' => true
             ],
-            /*[
+            [
                 'text' => 'coreshop_orders_orderState',
                 'type' => null,
                 'dataIndex' => 'orderState',
                 'renderAs' => 'orderState',
                 'width' => 200
-            ],*/
+            ],
             [
                 'text' => 'coreshop_orders_orderDate',
                 'type' => 'date',
@@ -244,7 +244,7 @@ class OrderController extends AdminController
 
         $element = [
             'o_id' => $order->getId(),
-            //'orderState' => \CoreShop\Model\Order\State::getOrderCurrentState($order), //TODO: Order States
+            'orderState' => $this->getOrderStateManager()->getCurrentState($order),
             'orderDate' => $date,
             'orderNumber' => $order->getOrderNumber(),
             'lang' => $order->getOrderLanguage(),
