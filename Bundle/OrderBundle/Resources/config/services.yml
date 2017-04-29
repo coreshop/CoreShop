@@ -1,5 +1,6 @@
 imports:
   - { resource: "services/cart-price-rules.yml" }
+  - { resource: "services/workflow.yml" }
 
 parameters:
   coreshop.folder.cart: /%coreshop.folder.objects%/cart

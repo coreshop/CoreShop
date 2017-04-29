@@ -1,0 +1,36 @@
+services:
+  coreshop.workflow.manager.registry:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - 'CoreShop\Component\Order\Workflow\WorkflowManagerInterface'
+      - 'workflow-managers'
+
+  coreshop.workflow.manager.order.validators:
+    class: CoreShop\Component\Registry\PrioritizedServiceRegistry
+    arguments:
+      - 'CoreShop\Component\Order\Workflow\ProposalValidatorInterface'
+      - 'workflow-order-manager-validators'
+
+  coreshop.workflow.manager.order:
+    class: CoreShop\Component\Order\Workflow\WorkflowManager
+    arguments:
+      - '@coreshop.workflow.manager.order.validators'
+      - '@event_dispatcher'
+      - 'CoreShop\Component\Order\Model\OrderInterface'
+    tags:
+      - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
+
+  coreshop.workflow.manager.order.validator.payment:
+    class: CoreShop\Component\Order\Workflow\Order\PaymentValidator
+    tags:
+        - {name: coreshop.workflow.validator, type: payment, priority: 10, manager: coreshop.workflow.manager.order}
+
+  coreshop.workflow.manager.order.validator.invoice:
+    class: CoreShop\Component\Order\Workflow\Order\InvoicedValidator
+    tags:
+        - {name: coreshop.workflow.validator, type: invoice, priority: 20, manager: coreshop.workflow.manager.order}
+
+  coreshop.workflow.manager.order.validator.shipment:
+    class: CoreShop\Component\Order\Workflow\Order\ShipmentValidator
+    tags:
+        - {name: coreshop.workflow.validator, type: shipment, priority: 30, manager: coreshop.workflow.manager.order}

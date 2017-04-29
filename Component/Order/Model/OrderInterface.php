@@ -167,4 +167,14 @@ interface OrderInterface extends ProposalInterface, PimcoreModelInterface
      * @return PaymentInterface[]
      */
     public function getPayments();
+
+    /**
+     * @return float
+     */
+    public function getTotalPayed();
+
+    /**
+     * @return boolean
+     */
+    public function getIsPayed();
 }
