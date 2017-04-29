@@ -142,6 +142,11 @@ interface OrderInterface extends ProposalInterface, PimcoreModelInterface
     public function getPriceRules();
 
     /**
+     * @return array
+     */
+    public function getPriceRuleItems();
+
+    /**
      * @return bool
      */
     public function hasPriceRules();

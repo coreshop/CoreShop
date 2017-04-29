@@ -11,8 +11,10 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -317,7 +319,6 @@ class OrderController extends AdminController
         $jsonOrder['o_id'] = $order->getId();
         $jsonOrder['customer'] = $order->getCustomer() instanceof PimcoreModelInterface ? $this->getDataForObject($order->getCustomer()) : null;
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
-        //$jsonOrder['invoice'] = $order->getProperty('invoice');
         $jsonOrder['invoices'] = []; //$this->getInvoices($order); TODO: invoices
         $jsonOrder['shipments'] = []; //$this->getShipments($order); TODO: Shipments
         $jsonOrder['mailCorrespondence'] = []; //$this->getMailCorrespondence($order); TODO: Mail Correspondence
@@ -363,14 +364,14 @@ class OrderController extends AdminController
 
         $jsonOrder['priceRule'] = false;
 
-        /*if ($order->getPriceRuleFieldCollection() instanceof Object\Fieldcollection) {
+        if ($order->getPriceRuleItems() instanceof Object\Fieldcollection) {
             $rules = [];
 
-            foreach ($order->getPriceRuleFieldCollection()->getItems() as $ruleItem) {
-                if ($ruleItem instanceof \CoreShop\Model\PriceRule\Item) {
-                    $rule = $ruleItem->getPriceRule();
+            foreach ($order->getPriceRuleItems()->getItems() as $ruleItem) {
+                if ($ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+                    $rule = $ruleItem->getCartPriceRule();
 
-                    if ($rule instanceof \CoreShop\Model\Cart\PriceRule) {
+                    if ($rule instanceof CartPriceRuleInterface) {
                         $rules[] = [
                             'id' => $rule->getId(),
                             'name' => $rule->getName(),
@@ -382,7 +383,7 @@ class OrderController extends AdminController
             }
 
             $jsonOrder['priceRule'] = $rules;
-        }*/
+        }
 
         /*$jsonOrder['threads'] = [];
         $jsonOrder['unreadMessages'] = 0;
