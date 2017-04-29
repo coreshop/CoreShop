@@ -1,3 +1,6 @@
+parameters:
+  coreshop.workflow.manager.order.state_identifier: 'Order State Change'
+
 services:
   coreshop.workflow.manager.registry:
     class: CoreShop\Component\Registry\ServiceRegistry
@@ -17,6 +20,8 @@ services:
       - '@coreshop.workflow.manager.order.validators'
       - '@event_dispatcher'
       - 'CoreShop\Component\Order\Model\OrderInterface'
+      - '@pimcore.translator'
+      - '%coreshop.workflow.manager.order.state_identifier%'
     tags:
       - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
 

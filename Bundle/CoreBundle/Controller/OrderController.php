@@ -2,7 +2,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
+use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
@@ -11,9 +13,11 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\Concrete;
 use Pimcore\Model\Object;
@@ -312,7 +316,7 @@ class OrderController extends AdminController
 
         $jsonOrder['o_id'] = $order->getId();
         $jsonOrder['customer'] = $order->getCustomer() instanceof PimcoreModelInterface ? $this->getDataForObject($order->getCustomer()) : null;
-        //$jsonOrder['statesHistory'] = $this->getStatesHistory($order);
+        $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
         //$jsonOrder['invoice'] = $order->getProperty('invoice');
         $jsonOrder['invoices'] = []; //$this->getInvoices($order); TODO: invoices
         $jsonOrder['shipments'] = []; //$this->getShipments($order); TODO: Shipments
@@ -403,6 +407,42 @@ class OrderController extends AdminController
 
 
         return $this->json(["success" => true, "order" => $jsonOrder]);
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @return array
+     */
+    protected function getStatesHistory(OrderInterface $order)
+    {
+        //Get History
+        $manager = $this->getOrderStateManager();
+        $history = $manager->getStateHistory($order);
+
+        // create timeline
+        $statesHistory = [];
+
+        $date = Carbon::now();
+
+        if (is_array($history)) {
+            foreach ($history as $note) {
+                $user = \Pimcore\Model\User::getById($note->getUser());
+                $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
+
+                $statesHistory[] = [
+                    'icon' => 'coreshop_icon_orderstates',
+                    'type' => $note->getType(),
+                    'date' => $date->formatLocalized('%A %d %B %Y'),
+                    'avatar' => $avatar,
+                    'user' => $user ? $user->getName() : null,
+                    'description' => $note->getDescription(),
+                    'title' => $note->getTitle(),
+                    'data' => $note->getData()
+                ];
+            }
+        }
+
+        return $statesHistory;
     }
 
     /**
@@ -577,15 +617,31 @@ class OrderController extends AdminController
         ];
     }
 
+    /**
+     * @return PimcoreRepositoryInterface
+     */
     private function getOrderRepository() {
         return $this->get('coreshop.repository.order');
     }
 
+    /**
+     * @return \Pimcore\Model\Listing\AbstractListing
+     */
     private function getOrderList() {
         return $this->getOrderRepository()->getListingClass();
     }
 
+    /**
+     * @return AddressFormatterInterface
+     */
     private function getAddressFormatter() {
         return $this->get('coreshop.address.formatter');
+    }
+
+    /**
+     * @return WorkflowManagerInterface
+     */
+    private function getOrderStateManager() {
+        return $this->get('coreshop.workflow.manager.order');
     }
 }
