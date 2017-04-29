@@ -15,27 +15,34 @@ services:
       - 'workflow-order-manager-validators'
 
   coreshop.workflow.manager.order:
-    class: CoreShop\Component\Order\Workflow\WorkflowManager
+    class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowManager
     arguments:
       - '@coreshop.workflow.manager.order.validators'
       - '@event_dispatcher'
       - 'CoreShop\Component\Order\Model\OrderInterface'
       - '@pimcore.translator'
       - '%coreshop.workflow.manager.order.state_identifier%'
+      - '@security.token_storage'
     tags:
       - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
 
   coreshop.workflow.manager.order.validator.payment:
-    class: CoreShop\Component\Order\Workflow\Order\PaymentValidator
+    class: CoreShop\Bundle\OrderBundle\Workflow\Order\PaymentValidator
     tags:
         - {name: coreshop.workflow.validator, type: payment, priority: 10, manager: coreshop.workflow.manager.order}
 
   coreshop.workflow.manager.order.validator.invoice:
-    class: CoreShop\Component\Order\Workflow\Order\InvoicedValidator
+    class: CoreShop\Bundle\OrderBundle\Workflow\Order\InvoicedValidator
     tags:
         - {name: coreshop.workflow.validator, type: invoice, priority: 20, manager: coreshop.workflow.manager.order}
 
   coreshop.workflow.manager.order.validator.shipment:
-    class: CoreShop\Component\Order\Workflow\Order\ShipmentValidator
+    class: CoreShop\Bundle\OrderBundle\Workflow\Order\ShipmentValidator
     tags:
         - {name: coreshop.workflow.validator, type: shipment, priority: 30, manager: coreshop.workflow.manager.order}
+
+  coreshop.workflow.payment.listener:
+    class: CoreShop\Bundle\OrderBundle\EventListener\PaymentPersistListener
+    arguments: ['@coreshop.repository.order', '@coreshop.workflow.manager.order']
+    tags:
+        - { name: doctrine.event_listener, event: postPersist }

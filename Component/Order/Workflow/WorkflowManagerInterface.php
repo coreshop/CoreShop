@@ -65,12 +65,22 @@ interface WorkflowManagerInterface
     public function failureWorkflowDispatch(ProposalInterface $proposal, $newState, $oldState);
 
     /**
-     * {@inheritdoc}
+     * @param ProposalInterface $proposal
+     * @return mixed
      */
     public function getStateHistory(ProposalInterface $proposal);
 
     /**
-     * {@inheritdoc}
+     * @param ProposalInterface $proposal
+     * @return mixed
      */
     public function getCurrentState(ProposalInterface $proposal);
+
+    /**
+     * @param ProposalInterface $proposal
+     * @param string $action
+     * @param array $params
+     * @return mixed
+     */
+    public function changeState(ProposalInterface $proposal, $action, $params = []);
 }

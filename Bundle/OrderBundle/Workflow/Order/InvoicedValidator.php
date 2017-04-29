@@ -1,11 +1,11 @@
 <?php
 
-namespace CoreShop\Component\Order\Workflow\Order;
+namespace CoreShop\Bundle\OrderBundle\Workflow\Order;
 
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Workflow\ProposalValidatorInterface;
 
-class ShipmentValidator implements ProposalValidatorInterface
+class InvoicedValidator implements ProposalValidatorInterface
 {
     /**
      * {@inheritdoc}

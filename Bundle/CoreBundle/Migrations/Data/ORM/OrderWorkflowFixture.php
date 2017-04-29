@@ -3,7 +3,7 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
 
 use CoreShop\Bundle\OrderBundle\Workflow\WorkflowHelper;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
+use CoreShop\Bundle\OrderBundle\Workflow\WorkflowManagerInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;

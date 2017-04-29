@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Order\Workflow\Order;
+namespace CoreShop\Bundle\OrderBundle\Workflow\Order;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;

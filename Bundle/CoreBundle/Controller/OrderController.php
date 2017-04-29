@@ -15,7 +15,7 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
+use CoreShop\Bundle\OrderBundle\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;

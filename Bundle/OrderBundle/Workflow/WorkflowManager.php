@@ -1,15 +1,20 @@
 <?php
 
-namespace CoreShop\Component\Order\Workflow;
+namespace CoreShop\Bundle\OrderBundle\Workflow;
 
 use CoreShop\Component\Order\Model\ProposalInterface;
+use CoreShop\Component\Order\Workflow\ProposalValidatorInterface;
+use CoreShop\Component\Order\Workflow\ProposalWorkflowEvent;
+use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
+use Pimcore\Bundle\AdminBundle\Security\User\User;
 use Pimcore\Model\Element\Note;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
-class WorkflowManager implements WorkflowManagerInterface
+final class WorkflowManager implements WorkflowManagerInterface
 {
     /**
      * @var PrioritizedServiceRegistryInterface
@@ -37,18 +42,25 @@ class WorkflowManager implements WorkflowManagerInterface
     private $noteIdentifier;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * @param PrioritizedServiceRegistryInterface $serviceRegistry
      * @param EventDispatcherInterface $eventDispatcher
      * @param string $class
      * @param TranslatorInterface $translator
      * @param string $noteIdentifier
+     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         PrioritizedServiceRegistryInterface $serviceRegistry,
         EventDispatcherInterface $eventDispatcher,
         $class,
         TranslatorInterface $translator,
-        $noteIdentifier
+        $noteIdentifier,
+        TokenStorageInterface $tokenStorage
     )
     {
         $this->serviceRegistry = $serviceRegistry;
@@ -56,6 +68,7 @@ class WorkflowManager implements WorkflowManagerInterface
         $this->class = $class;
         $this->translator = $translator;
         $this->noteIdentifier = $noteIdentifier;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -162,5 +175,40 @@ class WorkflowManager implements WorkflowManagerInterface
         $noteList->setOrder('desc');
 
         return $noteList->load();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function changeState(ProposalInterface $proposal, $action, $params = [])
+    {
+        Assert::isInstanceOf($proposal, $this->class);
+
+        $user = \Pimcore\Model\User::getById(0);
+        $proxyUser = new User($user);
+        $manager = \Pimcore\WorkflowManagement\Workflow\Manager\Factory::getManager($proposal, $user);
+
+        /**
+         * This is so stupid, Pimcores Workflow needs a valid token storage :/
+         */
+        $originalUser = $this->tokenStorage->getToken()->getUser();
+        $this->tokenStorage->getToken()->setUser($proxyUser);
+
+        $params['action'] = $action;
+
+        if ($manager->validateAction($params['action'], $params['newState'], $params['newStatus'])) {
+            try {
+                $manager->performAction($params['action'], $params);
+                \Pimcore\Logger::debug('CoreShop State update. ID: ' . $proposal->getId() . ', newState: "' . $params['newState'] . '", newStatus: "' . $params['newStatus'] .'"');
+            } catch (\Exception $e) {
+                throw new \Exception('changeOrderState Error: ' . $e->getMessage());
+            }
+        } else {
+            throw new \Exception('changeOrderState Error: ' . $manager->getError());
+        }
+
+        $this->tokenStorage->getToken()->setUser($originalUser);
+
+        return true;
     }
 }
