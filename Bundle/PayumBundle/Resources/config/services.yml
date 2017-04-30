@@ -1,5 +1,6 @@
 imports:
   - { resource: "services/form.yml" }
+  - { resource: "services/extension.yml" }
 
 services:
   coreshop.form_registry.payum_gateway_config:

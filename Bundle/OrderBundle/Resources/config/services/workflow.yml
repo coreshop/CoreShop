@@ -40,9 +40,3 @@ services:
     class: CoreShop\Bundle\OrderBundle\Workflow\Order\ShipmentValidator
     tags:
         - {name: coreshop.workflow.validator, type: shipment, priority: 30, manager: coreshop.workflow.manager.order}
-
-  coreshop.workflow.payment.listener:
-    class: CoreShop\Bundle\OrderBundle\EventListener\PaymentPersistListener
-    arguments: ['@coreshop.repository.order', '@coreshop.workflow.manager.order']
-    tags:
-        - { name: doctrine.event_listener, event: postPersist }

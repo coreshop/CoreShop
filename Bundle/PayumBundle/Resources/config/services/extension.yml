@@ -1,0 +1,6 @@
+services:
+  coreshop.payum_extension.update_order_workflow_extension:
+    class: CoreShop\Bundle\PayumBundle\Extension\UpdateOrderWorkflowExtension
+    arguments: ['@coreshop.repository.order', '@coreshop.workflow.manager.order']
+    tags:
+        - { name: payum.extension, all: true, prepend: true }
