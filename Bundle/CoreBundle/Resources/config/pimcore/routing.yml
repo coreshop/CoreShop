@@ -1,6 +1,5 @@
 payum_all:
-    resource: "@PayumBundle/Resources/config/routing/all.xml"
-
+  resource: "@PayumBundle/Resources/config/routing/all.xml"
 
 coreshop_admin_payment_provider_config:
   path: /%coreshop.admin.route.base%/payment_providers/get-config
@@ -18,6 +17,18 @@ coreshop_order_get_order:
   path: /%coreshop.admin.route.base%/order/detail
   defaults: { _controller: 'coreshop.pimcore_controller.order:detailAction'}
 
+coreshop_order_update_payment:
+  path: /%coreshop.admin.route.base%/order/update-payment
+  defaults: { _controller: 'coreshop.pimcore_controller.order:updatePaymentAction'}
+
+coreshop_order_add_payment:
+  path: /%coreshop.admin.route.base%/order/update-payment
+  defaults: { _controller: 'coreshop.pimcore_controller.order:addPaymentAction'}
+
+coreshop_order_get_payment_providres:
+  path: /%coreshop.admin.route.base%/order/get-payment-providers
+  defaults: { _controller: 'coreshop.pimcore_controller.order:getPaymentProvidersAction'}
+
 coreshop_admin_configuration_save_all:
   path: /%coreshop.admin.route.base%/configurations/save-all
   defaults: { _controller: 'coreshop.admin_controller.configuration:saveAllAction'}
@@ -25,3 +36,11 @@ coreshop_admin_configuration_save_all:
 coreshop_admin_configuration_get_all:
   path: /%coreshop.admin.route.base%/configurations/get-all
   defaults: { _controller: 'coreshop.admin_controller.configuration:getAllAction'}
+
+coreshop_order_invoice_get_processable_items:
+  path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items
+  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:getInvoiceAbleItemsAction'}
+
+coreshop_order_invoice_create:
+  path: /%coreshop.admin.route.base%/order-invoice/create-invoice
+  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:createInvoiceAction'}

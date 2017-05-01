@@ -43,6 +43,8 @@ final class ClassesInstallProvider
             'CoreShopCustomerGroup',
             'CoreShopOrderItem',
             'CoreShopOrder',
+            'CoreShopOrderInvoice',
+            'CoreShopOrderInvoiceItem',
         ];
 
         $fieldCollections = [

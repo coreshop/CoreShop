@@ -932,7 +932,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         xtype : 'gridcolumn',
                         dataIndex : 'datePayment',
                         text : t('date'),
-                        flex : 3,
+                        flex : 1,
                         renderer : function (val) {
                             if (val) {
                                 return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
@@ -943,9 +943,22 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     },
                     {
                         xtype : 'gridcolumn',
-                        flex : 3,
+                        flex : 1,
                         dataIndex : 'provider',
                         text : t('coreshop_paymentProvider')
+                    },
+                    {
+                        xtype : 'gridcolumn',
+                        flex : 1,
+                        dataIndex : 'state',
+                        text : t('state'),
+                        renderer : function (val) {
+                            if (val) {
+                                return t('coreshop_payment_state_' + val);
+                            }
+
+                            return '';
+                        }
                     },
                     {
                         xtype : 'gridcolumn',
@@ -961,7 +974,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         flex : 1,
                         renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                     },
-                    {
+                    /*{
                         menuDisabled: true,
                         sortable: false,
                         xtype: 'actioncolumn',
@@ -974,7 +987,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 this.showPaymentTransactions(record.get('transactionNotes'));
                             }.bind(this)
                         }]
-                    },
+                    },*/
                     {
                         menuDisabled: true,
                         sortable: false,
@@ -984,9 +997,12 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             iconCls: 'pimcore_icon_open',
                             tooltip: t('open'),
                             handler : function (grid, rowIndex) {
-                                var record = grid.getStore().getAt(rowIndex);
-                                pimcore.helpers.openObject(record.get('id'));
-                            }
+                                pimcore.plugin.coreshop.orders.editPayment.showWindow(grid.getStore().getAt(rowIndex), function (result) {
+                                    if (result.success) {
+                                        this.reload();
+                                    }
+                                }.bind(this));
+                            }.bind(this)
                         }]
                     }
                 ]

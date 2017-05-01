@@ -182,4 +182,9 @@ interface OrderInterface extends ProposalInterface, PimcoreModelInterface
      * @return boolean
      */
     public function getIsPayed();
+
+    /**
+     * @return float
+     */
+    public function getDiscountPercentage();
 }

@@ -3,3 +3,6 @@ core_shop_order:
     order:
       classes:
         pimcore_controller: CoreShop\Bundle\CoreBundle\Controller\OrderController
+    order_invoice:
+      classes:
+        pimcore_controller: CoreShop\Bundle\CoreBundle\Controller\OrderInvoiceController

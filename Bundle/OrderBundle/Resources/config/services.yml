@@ -6,6 +6,8 @@ parameters:
   coreshop.folder.cart: /%coreshop.folder.objects%/cart
   coreshop.folder.order: /%coreshop.folder.objects%/order
   coreshop.folder.order_item: items
+  coreshop.folder.invoice: invoices
+  coreshop.folder.invoice_item: items
 
 services:
   coreshop.order.configurator.session_cart:
@@ -40,3 +42,7 @@ services:
   coreshop.cart.modifier:
     class: CoreShop\Component\Order\Cart\CartModifier
     arguments: ['@coreshop.cart.manager', '@coreshop.factory.cart_item']
+
+  coreshop.order.invoice.processable:
+    class: CoreShop\Component\Order\Processable\ProcessableOrderItems
+    arguments: ['@coreshop.repository.order_invoice']

@@ -6,7 +6,7 @@ use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;
 
-class OrderNumberGenerator extends SequenceNumberGenerator
+class OrderInvoiceNumberGenerator extends SequenceNumberGenerator
 {
     /**
      * @var ConfigurationServiceInterface
@@ -32,6 +32,6 @@ class OrderNumberGenerator extends SequenceNumberGenerator
     {
         $number = parent::generate($model);
 
-        return sprintf('%s%s%s', $this->configurationService->getForStore('system.order.prefix'), $number, $this->configurationService->getForStore('system.order.suffix'));
+        return sprintf('%s%s%s', $this->configurationService->getForStore('system.invoice.prefix'), $number, $this->configurationService->getForStore('system.invoice.suffix'));
     }
 }

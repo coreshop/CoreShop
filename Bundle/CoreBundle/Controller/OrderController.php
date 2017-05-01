@@ -9,17 +9,23 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
-use CoreShop\Bundle\OrderBundle\Workflow\WorkflowManagerInterface;
+use CoreShop\Component\Order\Processable\ProcessableInterface;
+use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\Concrete;
 use Pimcore\Model\Object;
@@ -330,7 +336,7 @@ class OrderController extends AdminController
         $jsonOrder['currency'] = $this->getCurrency($order->getCurrency() ? $order->getCurrency() : $this->get('coreshop.context.currency')->getCurrency());
         $jsonOrder['shop'] = $order->getStore() instanceof StoreInterface ? $order->getStore() : null;
         //TODO: $jsonOrder['visitor'] = \CoreShop\Model\Visitor::getById($order->getVisitorId());
-        $jsonOrder['invoiceCreationAllowed'] = false; //TODO: !$order->isFullyInvoiced() && $order->hasPayments();
+        $jsonOrder['invoiceCreationAllowed'] = !$this->getInvoiceProcessableHelper()->isFullyProcessed($order) && count($order->getPayments()) !== 0;
         $jsonOrder['shipmentCreationAllowed'] = false; //TODO: !$order->isFullyShipped() && $order->hasPayments();
 
         $jsonOrder['address'] = [
@@ -408,6 +414,91 @@ class OrderController extends AdminController
 
 
         return $this->json(["success" => true, "order" => $jsonOrder]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     */
+    public function updatePaymentAction(Request $request) {
+        $payment = $this->getPaymentRepository()->find($request->get('id'));
+
+        if (!$payment instanceof PaymentInterface) {
+            return $this->json(['success' => false]);
+        }
+
+        $payment->setValues($request->request->all());
+
+        $this->getEntityManager()->persist($payment);
+        $this->getEntityManager()->flush();
+
+        return $this->json(['success' => true]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     */
+    public function addPaymentAction(Request $request) {
+        $orderId = $request->get('o_id');
+        $order = $this->getOrderRepository()->find($orderId);
+        $amount = doubleval($request->get('amount', 0));
+        $transactionId = $request->get('transactionNumber');
+        $paymentProviderId = $request->get('paymentProvider');
+
+        if (!$order instanceof OrderInterface) {
+            return $this->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
+        }
+
+        $paymentProvider = $this->getPaymentRepository()->find($paymentProviderId);
+
+        if ($paymentProvider instanceof PaymentProviderInterface) {
+            $payedTotal = $order->getTotalPayed();
+
+            $payedTotal += $amount;
+
+            if ($payedTotal > $order->getTotal()) {
+                return $this->json(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
+            } else {
+                /**
+                 * @var $payment PaymentInterface|PimcoreModelInterface
+                 */
+                $payment = $this->getPaymentFactory()->createNew();
+                $payment->setNumber($transactionId);
+                $payment->setPaymentProvider($paymentProvider);
+                $payment->setCurrency($order->getCurrency());
+                $payment->setTotalAmount($order->getTotal());
+                $payment->setState(PaymentInterface::STATE_NEW);
+                $payment->setDatePayment(Carbon::now());
+                $payment->setOrderId($order->getId());
+
+                $this->getEntityManager()->persist($payment);
+                $this->getEntityManager()->flush();
+
+                return $this->json(['success' => true, 'payments' => $this->getPayments($order), 'totalPayed' => $order->getTotalPayed()]);
+            }
+        } else {
+            return $this->json(['success' => false, 'message' => "Payment Provider '$paymentProvider' not found"]);
+        }
+    }
+
+    /**
+     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     */
+    public function getPaymentProvidersAction() {
+        $providers = $this->getPaymentRepository()->findAll();
+        $result = [];
+
+        foreach ($providers as $provider) {
+            if ($provider instanceof PaymentProviderInterface) {
+                $result[] = [
+                    'name' => $provider->getName(),
+                    'id' => $provider->getId(),
+                ];
+            }
+        }
+
+        return $this->json(['success' => true, 'data' => $result]);
     }
 
     /**
@@ -558,7 +649,8 @@ class OrderController extends AdminController
                 'provider' => $payment->getPaymentProvider()->getName(),
                 'transactionIdentifier' => $payment->getNumber(),
                 //'transactionNotes' => $noteList->load(),
-                'amount' => $payment->getTotalAmount()
+                'amount' => $payment->getTotalAmount(),
+                'state' => $payment->getState()
             ];
         }
 
@@ -619,6 +711,13 @@ class OrderController extends AdminController
     }
 
     /**
+     * @return ProcessableInterface
+     */
+    private function getInvoiceProcessableHelper() {
+        return $this->get('coreshop.order.invoice.processable');
+    }
+
+    /**
      * @return PimcoreRepositoryInterface
      */
     private function getOrderRepository() {
@@ -644,5 +743,33 @@ class OrderController extends AdminController
      */
     private function getOrderStateManager() {
         return $this->get('coreshop.workflow.manager.order');
+    }
+
+    /**
+     * @return RepositoryInterface
+     */
+    private function getPaymentRepository() {
+        return $this->get('coreshop.repository.payment');
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager|object
+     */
+    private function getEntityManager() {
+        return $this->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * @return PaymentRepositoryInterface
+     */
+    private function getPaymentProviderRepository() {
+        return $this->get('coreshop.repository.payment_provider');
+    }
+
+    /**
+     * @return FactoryInterface
+     */
+    private function getPaymentFactory() {
+        return $this->get('coreshop.factory.payment');
     }
 }

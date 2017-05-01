@@ -78,22 +78,22 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
                 },
                 {
                     xtype : 'gridcolumn',
-                    dataIndex : 'amount',
-                    text : t('coreshop_amount'),
+                    dataIndex : 'quantity',
+                    text : t('coreshop_quantity'),
                     width : 100,
                     align : 'right'
                 },
                 {
                     xtype : 'gridcolumn',
-                    dataIndex : 'amountInvoiced',
-                    text : t('coreshop_invoiced_amount'),
+                    dataIndex : 'quantityInvoiced',
+                    text : t('coreshop_invoiced_quantity'),
                     width : 120,
                     align : 'right'
                 },
                 {
                     xtype : 'gridcolumn',
                     dataIndex : 'toInvoice',
-                    text : t('coreshop_amount_to_invoice'),
+                    text : t('coreshop_quantity_to_invoice'),
                     width : 100,
                     align : 'right',
                     field : {
@@ -146,7 +146,7 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
                             if(item.get("toInvoice") > 0) {
                                 itemsToInvoice.push({
                                     orderItemId : item.get("orderItemId"),
-                                    amount : item.get("toInvoice")
+                                    quantity : item.get("toInvoice")
                                 });
                             }
                         });

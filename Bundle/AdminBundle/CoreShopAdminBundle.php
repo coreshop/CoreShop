@@ -136,6 +136,7 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/object/tags/coreShopLanguage.js',
             '/bundles/coreshopadmin/js/coreshop/object/classes/data/coreShopLanguage.js',
             '/bundles/coreshopadmin/js/coreshop/orders/createPayment.js',
+            '/bundles/coreshopadmin/js/coreshop/orders/editPayment.js',
             '/bundles/coreshopadmin/js/coreshop/report/abstract.js',
             '/bundles/coreshopadmin/js/coreshop/report/reports/sales.js',
             '/bundles/coreshopadmin/js/coreshop/report/reports/carts.js',

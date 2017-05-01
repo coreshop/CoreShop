@@ -66,6 +66,8 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
         $orderItem->setTotal($cartItem->getTotal(false), false);
         $orderItem->setItemPrice($cartItem->getItemPrice(true), true);
         $orderItem->setItemPrice($cartItem->getItemPrice(false), false);
+        $orderItem->setTotalTax($cartItem->getTotalTax());
+        $orderItem->setItemTax($cartItem->getItemTax());
 
         $orderItem->save();
 

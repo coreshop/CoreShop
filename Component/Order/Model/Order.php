@@ -139,6 +139,17 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
+    public function getDiscountPercentage()
+    {
+        $totalWithoutDiscount = $this->getSubtotal(false);
+        $totalWithDiscount = $this->getSubtotal(false) - $this->getDiscount(false);
+
+        return ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTotalWeight()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -588,7 +599,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function getPayments()
     {
-        $this->getPaymentRepository()->findForOrderId($this->getId());
+        return $this->getPaymentRepository()->findForOrderId($this->getId());
     }
 
     /**
