@@ -13,6 +13,8 @@ final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedCo
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
+
         $builder
             ->add('conditions', ProductSpecificPriceRuleConditionCollectionType::class)
         ;
