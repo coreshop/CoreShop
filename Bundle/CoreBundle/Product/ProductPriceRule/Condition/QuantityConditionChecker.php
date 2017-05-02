@@ -28,6 +28,9 @@ class QuantityConditionChecker implements ConditionCheckerInterface
      */
     public function isValid($subject, array $configuration)
     {
+        /**
+         * @var $subject ProductInterface
+         */
         Assert::isInstanceOf($subject, ProductInterface::class);
 
         $cart = $this->cartManager->getCart();
