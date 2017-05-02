@@ -94,7 +94,7 @@ class Shops extends AbstractCondition
             $found = false;
 
             foreach ($this->getShops() as $shop) {
-                if ($shop !== $currentShop->getId()) {
+                if ($shop == $currentShop->getId()) {
                     $found = true;
                     break;
                 }
