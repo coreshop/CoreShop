@@ -354,7 +354,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
         $weight = 0;
         
         foreach ($this->getItems() as $item) {
-            $weight += $item->getWeight();
+            $weight += $item->getTotalWeight();
         }
         
         return $weight;

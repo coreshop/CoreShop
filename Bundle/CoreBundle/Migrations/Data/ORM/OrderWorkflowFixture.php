@@ -3,7 +3,7 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
 
 use CoreShop\Bundle\OrderBundle\Workflow\WorkflowHelper;
-use CoreShop\Bundle\OrderBundle\Workflow\WorkflowManagerInterface;
+use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
@@ -47,11 +47,13 @@ class OrderWorkflowFixture extends AbstractFixture implements ContainerAwareInte
      */
     private function getWorkflowObject()
     {
+        $pimClass = $this->container->getParameter('coreshop.model.order.class');
+
         $workflowObject = new \Pimcore\Model\Workflow();
         $workflowObject->setName("OrderState");
         $workflowObject->setWorkflowSubject([
             "types" => ["object"],
-            "classes" => [$this->container->getParameter('coreshop.model.order.pimcore_class_id')]
+            "classes" => [$pimClass::classId()]
         ]);
         $workflowObject->setDefaultState(WorkflowManagerInterface::ORDER_STATE_INITIALIZED);
         $workflowObject->setDefaultStatus(WorkflowManagerInterface::ORDER_STATUS_INITIALIZED);

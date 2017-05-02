@@ -14,16 +14,16 @@ final class InstallCommand extends AbstractInstallCommand
      */
     private $commands = [
         [
+            'command' => 'classes',
+            'message' => 'Install Pimcore Classes.',
+        ],
+        [
             'command' => 'database',
             'message' => 'Setting up the database.',
         ],
         [
             'command' => 'folders',
             'message' => 'Install CoreShop Object Folders.',
-        ],
-        [
-            'command' => 'classes',
-            'message' => 'Install Pimcore Classes.',
         ]
     ];
 

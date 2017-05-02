@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Resource\Helper\Tool;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,7 +29,7 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
             $this->validateCoreShopPimcoreModel($configuration['classes']['model'], $configuration['classes']['interface']);
             $registry->addMethodCall('addFromAliasAndConfiguration', [$alias, $configuration]);
 
-            if (\Pimcore\Tool::classExists($configuration['classes']['model'])) {
+            if (Tool::classExists($configuration['classes']['model'])) {
                 $class = $configuration['classes']['model'];
 
                 if (method_exists($class, 'classId')) {
@@ -49,7 +50,7 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
         //TODO: Needs to be solved different. Everytime you make a mistake on class-creation
         //this stops pimcore from being functional :/
 
-        if (\Pimcore\Tool::classExists($class)) {
+        if (Tool::classExists($class)) {
             if (!in_array($interface, class_implements($class), true)) {
                 throw new InvalidArgumentException(sprintf(
                     'Class "%s" must implement "%s" to be registered as a CoreShop Pimcore model.',
