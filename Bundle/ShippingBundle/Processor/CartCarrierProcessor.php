@@ -38,7 +38,7 @@ class CartCarrierProcessor implements  CartCarrierProcessorInterface
      */
     public function getCarriersForCart(CartInterface $cart, AddressInterface $address = null)
     {
-        $carriers = $this->carrierRepository->findAll(); //TODO: restrict to store
+        $carriers = $this->carrierRepository->findAll(); //TODO: restrict to store, but needs to be moved to CoreBundle to make it work
         $availableCarriers = [];
 
         //First: Get all available carriers
