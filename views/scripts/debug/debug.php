@@ -71,8 +71,7 @@
                     <?php
                     $priceRules = $this->product->getValidSpecificPriceRules();
 
-    if (count($priceRules) > 0) {
-        ?>
+                        if (count($priceRules) > 0) { ?>
                         <tr>
                             <td><?=$this->translate("coreshop_price_rules")?></td>
                             <td>
@@ -88,56 +87,49 @@
                                     <?php
                                     $specificPrice = $this->product->getSpecificPrice();
 
-        foreach ($priceRules as $rule) {
-            ?>
+                                        foreach ($priceRules as $rule) { ?>
                                         <tr>
                                             <td><?=$rule->getName()?></td>
-                                            <td><?=\CoreShop::getTools()->formatPrice($rule->getPrice($this->product))?></td>
+                                            <?php if ($rule->getPrice($this->product)) { ?>
+                                                <td><?=\CoreShop::getTools()->formatPrice($rule->getPrice($this->product))?></td>
+                                            <?php } else { ?>
+                                                <td>-</td>
+                                            <?php } ?>
                                             <td><?=\CoreShop::getTools()->formatPrice($rule->getDiscount($specificPrice, $this->product))?></td>
                                         </tr>
-                                        <?php
-
-        } ?>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
-                    <?php 
-    } ?>
+                    <?php } ?>
 
-                    <?php if ($this->product->getTaxRule() instanceof \CoreShop\Model\TaxRuleGroup) {
-        ?>
+                    <?php if ($this->product->getTaxRule() instanceof \CoreShop\Model\TaxRuleGroup) { ?>
                         <tr>
                             <td><?=$this->translate("coreshop_taxrulegroups")?></td>
                             <td><?=$this->product->getTaxRule()->getName()?> (<?=$this->product->getTaxRule()->getId()?>)</td>
                         </tr>
-                    <?php 
-    } ?>
+                    <?php } ?>
                     <tr>
                         <td><?=$this->translate("coreshop_tax_rate")?></td>
                         <td><?=\CoreShop::getTools()->formatTax($this->product->getTaxRate())?></td>
                     </tr>
 
-                <?php 
-} ?>
+                <?php } ?>
 
-                <?php if (\CoreShop::getTools()->getCart()->getId()) {
-    ?>
+                <?php if (\CoreShop::getTools()->getCart()->getId()) { ?>
                     <tr>
                         <td><?=$this->translate("coreshop_cart")?></td>
                         <td><?=\CoreShop::getTools()->getCart()->getId()?></td>
                     </tr>
-                <?php 
-} ?>
+                <?php } ?>
 
-                <?php if (\CoreShop::getTools()->getVisitor() instanceof \CoreShop\Model\Visitor) {
-    ?>
+                <?php if (\CoreShop::getTools()->getVisitor() instanceof \CoreShop\Model\Visitor) { ?>
                     <tr>
                         <td><?=$this->translate("coreshop_visitor")?></td>
                         <td><?=\CoreShop::getTools()->getVisitor()->getId()?></td>
                     </tr>
-                <?php 
-} ?>
+                <?php } ?>
             </table>
         </div>
     </div>
