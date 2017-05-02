@@ -807,11 +807,10 @@ class Tools
             die("No template configured");
         }
 
-        $templateBasePath = '';
+        $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/scripts/coreshop/template";
         $templateResources = '';
 
         if (is_dir(PIMCORE_WEBSITE_PATH . '/views/scripts/coreshop/template/' . $template)) {
-            $templateBasePath = PIMCORE_WEBSITE_PATH . "/views/scripts/coreshop/template";
             $templateResources = "/website/views/scripts/coreshop/template/" . $template . "/static/";
         }
 
