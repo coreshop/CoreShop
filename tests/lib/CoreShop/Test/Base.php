@@ -27,7 +27,7 @@ class Base extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Print Todo Test Name
+     * Print TO-DO Test Name
      */
     public function printTodoTestName()
     {
