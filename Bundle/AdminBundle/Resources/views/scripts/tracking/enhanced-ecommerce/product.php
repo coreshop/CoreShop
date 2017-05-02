@@ -13,5 +13,5 @@
  */
 ?>
 
-ga('ec:addProduct', <?= \Zend_Json::encode($this->productData) ?>);
+ga('ec:addProduct', <?= json_encode($this->productData) ?>);
 ga('ec:setAction', 'detail');

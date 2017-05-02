@@ -111,7 +111,6 @@ try {
         }
     }
 
-    // use mysqli for that, because Zend_Db requires a DB for a connection
     $db = new \PDO('mysql:host=' . $dbConfig["params"]["host"] . ';port=' . (int) $dbConfig["params"]["port"] . ';', $dbConfig["params"]["username"], $dbConfig["params"]["password"]);
     $db->query("SET NAMES utf8");
 
@@ -196,9 +195,6 @@ $install->install();
 
 //\Pimcore\ExtensionManager::enable("plugin", "CoreShop");
 //\Pimcore\API\Plugin\Broker::getInstance()->registerPlugin(new \CoreShop\Plugin());
-
-//Zend_Session::$_unitTestEnabled = true;
-//\Zend_Registry::set("Zend_Locale", new \Zend_Locale("en"));
 
 \CoreShop\Test\Data::createData(); //TODO: will be done using Fixtures in future
 

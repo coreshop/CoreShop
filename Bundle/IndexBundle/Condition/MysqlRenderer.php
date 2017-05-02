@@ -9,7 +9,7 @@ use Pimcore\Db;
 class MysqlRenderer extends AbstractRenderer
 {
     /**
-     * @var \Zend_Db_Adapter_Abstract
+     * @var \Pimcore\Db\Connection
      */
     protected $db;
 

@@ -206,13 +206,6 @@ abstract class AbstractListing implements ListingInterface
         if (is_null($this->locale)) {
             $language = null;
 
-            if (\Zend_Registry::isRegistered('Zend_Locale')) {
-                $language = \Zend_Registry::get('Zend_Locale');
-                if (Tool::isValidLanguage((string) $language)) {
-                    $language = (string) $language;
-                }
-            }
-
             if (!$language) {
                 $language = Tool::getDefaultLanguage();
             }

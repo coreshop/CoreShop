@@ -15,7 +15,7 @@
 
 <?php foreach ($this->products as $prData) {
     ?>
-    ga('ec:addProduct', <?= \Zend_Json::encode($prData) ?>);
+    ga('ec:addProduct', <?= json_encode($prData) ?>);
 <?php 
 } ?>
 

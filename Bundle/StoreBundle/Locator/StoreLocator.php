@@ -150,7 +150,7 @@ class StoreLocator implements StoreLocatorInterface
         $cacheKey = 'coreshop_store_site_'.$site->getId();
 
         try {
-            $object = \Zend_Registry::get($cacheKey);
+            $object = Cache\Runtime::get($cacheKey);
             if (!$object) {
                 throw new \Exception($cacheKey.' in registry is null');
             }
@@ -172,10 +172,10 @@ class StoreLocator implements StoreLocatorInterface
 
                     $object = $data[0];
 
-                    \Zend_Registry::set($cacheKey, $object);
+                    Cache\Runtime::set($cacheKey, $object);
                     Cache::save($object, $cacheKey);
                 } else {
-                    \Zend_Registry::set($cacheKey, $object);
+                    Cache\Runtime::set($cacheKey, $object);
                 }
 
                 return $object;
@@ -201,7 +201,7 @@ class StoreLocator implements StoreLocatorInterface
         $cacheKey = 'coreshop_site_site_default';
 
         try {
-            $object = \Zend_Registry::get($cacheKey);
+            $object = Cache\Runtime::get($cacheKey);
             if (!$object) {
                 throw new \Exception($cacheKey.' in registry is null');
             }
@@ -223,10 +223,10 @@ class StoreLocator implements StoreLocatorInterface
 
                     $object = $data[0];
 
-                    \Zend_Registry::set($cacheKey, $object);
+                    Cache\Runtime::set($cacheKey, $object);
                     Cache::save($object, $cacheKey);
                 } else {
-                    \Zend_Registry::set($cacheKey, $object);
+                    Cache\Runtime::set($cacheKey, $object);
                 }
 
                 return $object;
