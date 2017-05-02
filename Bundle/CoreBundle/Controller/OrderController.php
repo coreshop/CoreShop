@@ -634,6 +634,8 @@ class OrderController extends AdminController
 
         foreach ($payments as $payment) {
             //TODO: Whatever this was for
+            //TODO: Actually, this was not bad at all, it saved history for payments, but needs to be different now
+            //TODO: Payment Model has a detail array, where it can store any info
             /*$noteList = new \Pimcore\Model\Element\Note\Listing();
             $noteList->addConditionParam('type = ?', \CoreShop\Model\Order\Payment::NOTE_TRANSACTION);
             $noteList->addConditionParam('cid = ?', $payment->getId());
