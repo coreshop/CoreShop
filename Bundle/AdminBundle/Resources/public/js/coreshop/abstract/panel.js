@@ -257,7 +257,6 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
 
                         this.panels[panelKey] = new itemClass(this, res.data, panelKey, this.type, this.storeId);
                     } else {
-                        //TODO: Show messagebox
                         Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
                     }
 
