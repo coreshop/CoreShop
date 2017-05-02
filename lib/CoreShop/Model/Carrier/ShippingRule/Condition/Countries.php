@@ -47,7 +47,7 @@ class Countries extends AbstractCondition
     {
         if ($address->getCountry() instanceof Model\Country) {
             foreach ($this->getCountries() as $country) {
-                if ($address->getCountry()->getId() === $country) {
+                if (intval($address->getCountry()->getId()) === intval($country)) {
                     return true;
                 }
             }
