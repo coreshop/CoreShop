@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Type;
 
 final class DiscountPercentConfigurationType extends AbstractType
@@ -19,7 +20,8 @@ final class DiscountPercentConfigurationType extends AbstractType
             ->add('percent', IntegerType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]), //TODO: Should be from 0 to 100 max
+                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new Range(['min' => 0, 'max' => 100])
                 ],
             ])
         ;
