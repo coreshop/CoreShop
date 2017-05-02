@@ -111,11 +111,10 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
     },
 
     shopRenderer : function (val) {
-        var store = pimcore.globalmanager.get('coreshop_shops');
-        var pos = store.findExact('id', String(val));
-        if (pos >= 0) {
-            var shop = store.getAt(pos);
+        var stores = pimcore.globalmanager.get('coreshop_shops');
+        var shop = stores.getById(val);
 
+        if (shop) {
             return shop.get('name');
         }
 
