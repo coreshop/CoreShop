@@ -750,7 +750,7 @@ class OrderController extends AdminController
      * @return \Pimcore\Model\Listing\AbstractListing
      */
     private function getOrderList() {
-        return $this->getOrderRepository()->getListingClass();
+        return $this->getOrderRepository()->getList();
     }
 
     /**

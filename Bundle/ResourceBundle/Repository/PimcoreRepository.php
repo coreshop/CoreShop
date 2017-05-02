@@ -22,10 +22,8 @@ class PimcoreRepository implements PimcoreRepositoryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @todo: rename to getList
      */
-    public function getListingClass()
+    public function getList()
     {
         $className = $this->metadata->getClass('model');
 

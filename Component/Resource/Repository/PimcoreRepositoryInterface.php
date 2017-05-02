@@ -10,7 +10,7 @@ interface PimcoreRepositoryInterface
     /**
      * @return AbstractListing
      */
-    public function getListingClass();
+    public function getList();
 
     /**
      * @param $id

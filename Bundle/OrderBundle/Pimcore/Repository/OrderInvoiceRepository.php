@@ -10,7 +10,7 @@ class OrderInvoiceRepository extends PimcoreRepository implements OrderInvoiceRe
 {
     public function getDocuments(OrderInterface $order)
     {
-        $list = $this->getListingClass();
+        $list = $this->getList();
         $list->setCondition("order__id = ?", [$order->getId()]);
         $list->load();
 

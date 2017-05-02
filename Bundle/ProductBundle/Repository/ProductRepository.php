@@ -13,7 +13,7 @@ class ProductRepository extends PimcoreRepository implements ProductRepositoryIn
      */
     public function getLatestByShop(StoreInterface $store, $count = 8)
     {
-        $list = $this->getListingClass();
+        $list = $this->getList();
         $list->setCondition('enabled = 1');
         $list->setLimit($count);
         $list->setOrderKey('o_creationDate');

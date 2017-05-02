@@ -165,7 +165,7 @@ class CartManager implements CartManagerInterface
      */
     public function getStoredCarts($customer)
     {
-        $list = $this->cartRepository->getListingClass();
+        $list = $this->cartRepository->getList();
         $list->setCondition('customer__id = ? AND order__id is null', [$customer->getId()]);
         $list->load();
 
@@ -179,7 +179,7 @@ class CartManager implements CartManagerInterface
      */
     public function getByName($customer, $name)
     {
-        $list = $this->cartRepository->getListingClass();
+        $list = $this->cartRepository->getList();
         $list->setCondition('user__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
         $list->load();
 

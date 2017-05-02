@@ -399,7 +399,7 @@ class VariantHelper
      */
     private static function getAllChildren(ProductInterface $object)
     {
-        $list = \Pimcore::getContainer()->get('coreshop.repository.product')->getListingClass();
+        $list = \Pimcore::getContainer()->get('coreshop.repository.product')->getList();
 
         $condition = 'o_path LIKE ?';
         $conditionParams = [$object->getFullPath() . '/%'];

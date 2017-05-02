@@ -15,7 +15,7 @@ class CategoryController extends PimcoreFrontendController
 {
     public function menuAction(Request $request)
     {
-        $categoryList = $this->repository->getListingClass();
+        $categoryList = $this->repository->getList();
         $categoryList->setLimit(5);
 
         return $this->render('CoreShopFrontendBundle:Category:_menu.html.twig', [
@@ -24,7 +24,7 @@ class CategoryController extends PimcoreFrontendController
     }
 
     public function menuLeftAction(Request $request) {
-        $categoryList = $this->repository->getListingClass();
+        $categoryList = $this->repository->getList();
         $categoryList->setCondition("parentCategory__id is null AND stores LIKE '%,".$this->getStoreContext()->getStore()->getId().",%'");
 
         return $this->render('CoreShopFrontendBundle:Category:_menu-left.html.twig', [
@@ -75,7 +75,7 @@ class CategoryController extends PimcoreFrontendController
         }
         else {
             //Classic Listing Mode
-            $list = $this->get('coreshop.repository.product')->getListingClass();
+            $list = $this->get('coreshop.repository.product')->getList();
 
             $condition = "enabled = 1";
             $condition .= " AND categories LIKE '%,".$category->getId().",%'";
