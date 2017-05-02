@@ -17,6 +17,7 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
+use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
@@ -325,7 +326,7 @@ class OrderController extends AdminController
         $jsonOrder['o_id'] = $order->getId();
         $jsonOrder['customer'] = $order->getCustomer() instanceof PimcoreModelInterface ? $this->getDataForObject($order->getCustomer()) : null;
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
-        $jsonOrder['invoices'] = []; //$this->getInvoices($order); TODO: invoices
+        $jsonOrder['invoices'] = $this->getInvoices($order);
         $jsonOrder['shipments'] = []; //$this->getShipments($order); TODO: Shipments
         $jsonOrder['mailCorrespondence'] = []; //$this->getMailCorrespondence($order); TODO: Mail Correspondence
         $jsonOrder['payments'] = $this->getPayments($order);
@@ -711,6 +712,22 @@ class OrderController extends AdminController
     }
 
     /**
+     * @param OrderInterface $order
+     * @return array
+     */
+    protected function getInvoices($order)
+    {
+        $invoices = $this->getOrderInvoiceRepository()->getDocuments($order);
+        $invoiceArray = [];
+
+        foreach ($invoices as $invoice) {
+            $invoiceArray[] = $this->getDataForObject($invoice);
+        }
+
+        return $invoiceArray;
+    }
+
+    /**
      * @return ProcessableInterface
      */
     private function getInvoiceProcessableHelper() {
@@ -722,6 +739,13 @@ class OrderController extends AdminController
      */
     private function getOrderRepository() {
         return $this->get('coreshop.repository.order');
+    }
+
+    /**
+     * @return OrderInvoiceRepositoryInterface
+     */
+    private function getOrderInvoiceRepository() {
+        return $this->get('coreshop.repository.order_invoice');
     }
 
     /**

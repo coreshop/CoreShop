@@ -698,7 +698,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             },
                             {
                                 xtype : 'gridcolumn',
-                                dataIndex : 'totalWithoutTax',
+                                dataIndex : 'totalNet',
                                 text : t('coreshop_total_without_tax'),
                                 flex : 2,
                                 align : 'right',
@@ -706,7 +706,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                             },
                             {
                                 xtype : 'gridcolumn',
-                                dataIndex : 'total',
+                                dataIndex : 'totalGross',
                                 text : t('coreshop_total'),
                                 flex : 2,
                                 align : 'right',
