@@ -3507,6 +3507,51 @@
                                     }
                                 ],
                                 "locked": false
+                            },
+                            {
+                                "fieldtype": "fieldset",
+                                "labelWidth": 100,
+                                "name": "weight",
+                                "type": null,
+                                "region": null,
+                                "title": "Weight",
+                                "width": null,
+                                "height": null,
+                                "collapsible": false,
+                                "collapsed": false,
+                                "bodyStyle": "",
+                                "datatype": "layout",
+                                "permissions": null,
+                                "childs": [
+                                    {
+                                        "fieldtype": "numeric",
+                                        "width": "",
+                                        "defaultValue": null,
+                                        "queryColumnType": "double",
+                                        "columnType": "double",
+                                        "phpdocType": "float",
+                                        "integer": false,
+                                        "unsigned": false,
+                                        "minValue": null,
+                                        "maxValue": null,
+                                        "decimalPrecision": null,
+                                        "name": "totalWeight",
+                                        "title": "Total Weight",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": false,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "relationType": false,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false
+                                    }
+                                ],
+                                "locked": false
                             }
                         ],
                         "locked": false

@@ -330,8 +330,8 @@ class OrderController extends AdminController
         $jsonOrder['shipments'] = []; //$this->getShipments($order); TODO: Shipments
         $jsonOrder['mailCorrespondence'] = []; //$this->getMailCorrespondence($order); TODO: Mail Correspondence
         $jsonOrder['payments'] = $this->getPayments($order);
-        $jsonOrder['editable'] = false; //TODO: count($order->getInvoices()) > 0 ? false : true;
-        $jsonOrder['totalPayed'] = 0; //TODO: $order->getPayedTotal();
+        $jsonOrder['editable'] = count($this->getInvoices($order)) > 0 ? false : true;
+        $jsonOrder['totalPayed'] = $order->getTotalPayed();
         $jsonOrder['details'] = $this->getDetails($order);
         $jsonOrder['summary'] = $this->getSummary($order);
         $jsonOrder['currency'] = $this->getCurrency($order->getCurrency() ? $order->getCurrency() : $this->get('coreshop.context.currency')->getCurrency());
@@ -361,12 +361,8 @@ class OrderController extends AdminController
 
         $jsonOrder['shippingPayment'] = [
             'carrier' => $order->getCarrier() instanceof CarrierInterface ? $order->getCarrier()->getName() : null,
-            'weight' => 0, //TODO: $order->getTotalWeight(),
-            'cost' => $order->getShipping(),
-            //TODO: is this still necessary? I mean, a Order could have multiple different providers
-            //'payment' => $order->getPaymentProvider(),
-            //'paymentToken' => $order->getPaymentProviderToken(),
-            //'paymentDescription' => $order->getPaymentProviderDescription()
+            'weight' => $order->getTotalWeight(),
+            'cost' => $order->getShipping()
         ];
 
         $jsonOrder['priceRule'] = false;

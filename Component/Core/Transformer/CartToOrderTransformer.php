@@ -166,6 +166,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $order->setDiscount($cart->getDiscount(false), false);
         $order->setShippingAddress($cart->getShippingAddress());
         $order->setInvoiceAddress($cart->getInvoiceAddress());
+        $order->setTotalWeight($cart->getTotalWeight());
 
         if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($cart->getPriceRuleItems() as $priceRule) {

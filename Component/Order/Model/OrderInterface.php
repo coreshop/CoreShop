@@ -187,4 +187,9 @@ interface OrderInterface extends ProposalInterface, PimcoreModelInterface
      * @return float
      */
     public function getDiscountPercentage();
+
+    /**
+     * @param float $totalWeight
+     */
+    public function setTotalWeight($totalWeight);
 }

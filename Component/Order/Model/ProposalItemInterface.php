@@ -79,5 +79,10 @@ interface ProposalItemInterface extends ResourceInterface
     /**
      * @return float
      */
-    public function getWeight();
+    public function getItemWeight();
+
+    /**
+     * @return float
+     */
+    public function getTotalWeight();
 }
