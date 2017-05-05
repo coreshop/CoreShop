@@ -12,6 +12,7 @@ imports:
   - { resource: "@CoreShopPaymentBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopOrderBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopConfigurationBundle/Resources/config/app/config.yml" }
+  - { resource: "@CoreShopNotificationBundle/Resources/config/app/config.yml" }
 
   - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop.yml" }
   - { resource: "@CoreShopCoreBundle/Resources/config/app/security.yml" }
