@@ -1,8 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\IndexBundle\Interpreter;
-
-use CoreShop\Component\Index\Interpreter\InterpreterInterface;
+namespace CoreShop\Component\Index\Interpreter;
 
 class Soundex implements InterpreterInterface
 {

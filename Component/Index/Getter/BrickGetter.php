@@ -1,8 +1,7 @@
 <?php
 
-namespace CoreShop\Bundle\IndexBundle\Getter;
+namespace CoreShop\Component\Index\Getter;
 
-use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 

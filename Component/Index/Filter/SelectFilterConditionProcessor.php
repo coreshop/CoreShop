@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\IndexBundle\Filter;
+namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;

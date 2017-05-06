@@ -3,14 +3,13 @@ imports:
   - { resource: "services/listeners.yml" }
 
 services:
-
   coreshop.factory.index.list:
     class: CoreShop\Bundle\IndexBundle\Factory\ListingFactory
     arguments:
       - '@coreshop.registry.index.worker'
 
   coreshop.filter.processor:
-    class: CoreShop\Bundle\IndexBundle\Filter\FilterProcessor
+    class: CoreShop\Component\Index\Filter\FilterProcessor
     arguments:
       - '@coreshop.registry.filter.condition_types'
 
@@ -82,13 +81,13 @@ services:
 
   # Index Getter
   coreshop.index.getter.brickfield:
-    class: CoreShop\Bundle\IndexBundle\Getter\BrickGetter
+    class: CoreShop\Component\Index\Getter\BrickGetter
     tags:
      - { name: coreshop.index.getter, type: brick, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\BrickGetterFormType}
 
   # Index Interpreter
   coreshop.index.interpreter.soundex:
-    class: CoreShop\Bundle\IndexBundle\Interpreter\Soundex
+    class: CoreShop\Component\Index\Interpreter\Soundex
     tags:
      - { name: coreshop.index.interpreter, type: soundex, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
@@ -121,21 +120,21 @@ services:
 
   # Filter Condition Types
   coreshop.filter.condition_type.select:
-    class: CoreShop\Bundle\IndexBundle\Filter\SelectFilterConditionProcessor
+    class: CoreShop\Component\Index\Filter\SelectFilterConditionProcessor
     tags:
       - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType}
 
   coreshop.filter.condition_type.range:
-    class: CoreShop\Bundle\IndexBundle\Filter\RangeFilterConditionProcessor
+    class: CoreShop\Component\Index\Filter\RangeFilterConditionProcessor
     tags:
       - { name: coreshop.filter.condition_type, type: range, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionRangeType}
 
   coreshop.filter.condition_type.multiselect:
-    class: CoreShop\Bundle\IndexBundle\Filter\MultiselectFilterConditionProcessor
+    class: CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor
     tags:
       - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
 
   coreshop.filter.condition_type.boolean:
-    class: CoreShop\Bundle\IndexBundle\Filter\BooleanFilterConditionProcessor
+    class: CoreShop\Component\Index\Filter\BooleanFilterConditionProcessor
     tags:
       - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionBooleanType}
