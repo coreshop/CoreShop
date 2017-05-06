@@ -1,12 +1,11 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Rule\Condition;
+namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
 
 class ProductsConditionChecker extends AbstractConditionChecker
 {

@@ -39,6 +39,7 @@ class TestAppKernel extends Kernel
             new \CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle(),
             new \CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle(),
             new \CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle(),
+            new \CoreShop\Bundle\NotificationBundle\CoreShopNotificationBundle(),
 
             new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(),
             new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(),

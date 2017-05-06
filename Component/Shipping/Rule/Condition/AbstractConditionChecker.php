@@ -1,12 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Rule\Condition;
-
-use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
+namespace CoreShop\Component\Shipping\Rule\Condition;
 
 abstract class AbstractConditionChecker implements ShippingConditionCheckerInterface
 {

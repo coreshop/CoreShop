@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Rule\Action;
+namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;

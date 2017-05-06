@@ -1,14 +1,11 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Rule\Action;
+namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
-class AdditionAmountActionProcessor implements CarrierPriceActionProcessorInterface
+class AdditionPercentActionProcessor implements CarrierPriceActionProcessorInterface
 {
     /**
      * {@inheritdoc}
@@ -23,6 +20,6 @@ class AdditionAmountActionProcessor implements CarrierPriceActionProcessorInterf
      */
     public function getModification(CarrierInterface $carrier, AddressInterface $address, $price, array $configuration)
     {
-        return $configuration['amount'];
+        return ($price * ($configuration['percent'] / 100));
     }
 }

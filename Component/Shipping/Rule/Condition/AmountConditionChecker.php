@@ -1,30 +1,30 @@
 <?php
 
-namespace CoreShop\Bundle\ShippingBundle\Rule\Condition;
+namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 
-class WeightConditionChecker extends AbstractConditionChecker
+class AmountConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
     public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, array $configuration)
     {
-        $minWeight = $configuration['minWeight'];
-        $maxWeight = $configuration['maxWeight'];
-        $totalWeight = $cart->getTotalWeight();
+        $minAmount = $configuration['minAmount'];
+        $maxAmount = $configuration['maxAmount'];
+        $totalAmount = $cart->getSubtotal(true);
 
-        if ($minWeight > 0) {
-            if ($totalWeight <= $minWeight) {
+        if ($minAmount > 0) {
+            if ($totalAmount <= $minAmount) {
                 return false;
             }
         }
 
-        if ($maxWeight > 0) {
-            if ($totalWeight >= $maxWeight) {
+        if ($maxAmount > 0) {
+            if ($totalAmount >= $maxAmount) {
                 return false;
             }
         }

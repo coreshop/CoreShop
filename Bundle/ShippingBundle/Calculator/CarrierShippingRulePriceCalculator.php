@@ -4,8 +4,8 @@ namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessorInterface;
-use CoreShop\Bundle\ShippingBundle\Rule\Action\CarrierPriceActionProcessorInterface;
-use CoreShop\Bundle\ShippingBundle\Rule\Condition\ShippingConditionCheckerInterface;
+use CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface;
+use CoreShop\Component\Shipping\Rule\Condition\ShippingConditionCheckerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Model\CartInterface;
