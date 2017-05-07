@@ -8,6 +8,8 @@ parameters:
   coreshop.folder.order_item: items
   coreshop.folder.invoice: invoices
   coreshop.folder.invoice_item: items
+  coreshop.folder.shipment: shipments
+  coreshop.folder.shipment_item: items
 
 services:
   coreshop.order.configurator.session_cart:
@@ -46,3 +48,7 @@ services:
   coreshop.order.invoice.processable:
     class: CoreShop\Component\Order\Processable\ProcessableOrderItems
     arguments: ['@coreshop.repository.order_invoice']
+
+  coreshop.order.shipment.processable:
+    class: CoreShop\Component\Order\Processable\ProcessableOrderItems
+    arguments: ['@coreshop.repository.order_shipment']

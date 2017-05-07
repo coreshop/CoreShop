@@ -78,22 +78,22 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
                 },
                 {
                     xtype : 'gridcolumn',
-                    dataIndex : 'amount',
-                    text : t('coreshop_amount'),
+                    dataIndex : 'quantity',
+                    text : t('coreshop_quantity'),
                     width : 100,
                     align : 'right'
                 },
                 {
                     xtype : 'gridcolumn',
-                    dataIndex : 'amountShipped',
-                    text : t('coreshop_shipped_amount'),
+                    dataIndex : 'quantityShipped',
+                    text : t('coreshop_shipped_quantity'),
                     width : 120,
                     align : 'right'
                 },
                 {
                     xtype : 'gridcolumn',
                     dataIndex : 'toShip',
-                    text : t('coreshop_amount_to_ship'),
+                    text : t('coreshop_quantity_to_ship'),
                     width : 100,
                     align : 'right',
                     field : {
@@ -162,7 +162,7 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
                             if(item.get("toShip") > 0) {
                                 itemsToShip.push({
                                     orderItemId : item.get("orderItemId"),
-                                    amount : item.get("toShip")
+                                    quantity : item.get("toShip")
                                 });
                             }
                         });

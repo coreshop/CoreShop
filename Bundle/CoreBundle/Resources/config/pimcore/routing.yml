@@ -44,3 +44,11 @@ coreshop_order_invoice_get_processable_items:
 coreshop_order_invoice_create:
   path: /%coreshop.admin.route.base%/order-invoice/create-invoice
   defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:createInvoiceAction'}
+
+coreshop_order_shipment_get_processable_items:
+  path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
+  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:getShipAbleItemsAction'}
+
+coreshop_order_shipment_create:
+  path: /%coreshop.admin.route.base%/order-shipment/create-shipment
+  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:createShipmentAction'}

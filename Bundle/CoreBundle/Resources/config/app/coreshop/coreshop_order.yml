@@ -6,3 +6,6 @@ core_shop_order:
     order_invoice:
       classes:
         pimcore_controller: CoreShop\Bundle\CoreBundle\Controller\OrderInvoiceController
+    order_shipment:
+      classes:
+        pimcore_controller: CoreShop\Bundle\CoreBundle\Controller\OrderShipmentController

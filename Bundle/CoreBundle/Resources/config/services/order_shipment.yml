@@ -1,0 +1,21 @@
+services:
+  coreshop.order_shipment.number_generator.default:
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderShipmentNumberGenerator
+    arguments: ['@coreshop.sequence.generator', 'shipment', '@coreshop.configuration.service']
+
+  coreshop.order_shipment.transformer.order_item_to_shipment_item:
+    class: CoreShop\Component\Core\Transformer\OrderItemToShipmentItemTransformer
+    arguments:
+      - '@coreshop.core.object_service'
+      - '%coreshop.folder.shipment_item%'
+
+  coreshop.order.transformer.order_to_shipment:
+    class: CoreShop\Component\Core\Transformer\OrderToShipmentTransformer
+    arguments:
+      - '@coreshop.order_shipment.transformer.order_item_to_shipment_item'
+      - '@coreshop.core.key_transformer'
+      - '@coreshop.order_shipment.number_generator.default'
+      - '%coreshop.folder.shipment%'
+      - '@coreshop.core.object_service'
+      - '@coreshop.repository.order_item'
+      - '@coreshop.factory.order_shipment_item'

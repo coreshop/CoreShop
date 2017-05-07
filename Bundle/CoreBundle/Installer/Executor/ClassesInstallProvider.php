@@ -45,6 +45,8 @@ final class ClassesInstallProvider
             'CoreShopOrder',
             'CoreShopOrderInvoice',
             'CoreShopOrderInvoiceItem',
+            'CoreShopOrderShipment',
+            'CoreShopOrderShipmentItem',
         ];
 
         $fieldCollections = [

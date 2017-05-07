@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
@@ -327,7 +328,7 @@ class OrderController extends AdminController
         $jsonOrder['customer'] = $order->getCustomer() instanceof PimcoreModelInterface ? $this->getDataForObject($order->getCustomer()) : null;
         $jsonOrder['statesHistory'] = $this->getStatesHistory($order);
         $jsonOrder['invoices'] = $this->getInvoices($order);
-        $jsonOrder['shipments'] = []; //$this->getShipments($order); TODO: Shipments
+        $jsonOrder['shipments'] = $this->getShipments($order);
         $jsonOrder['mailCorrespondence'] = []; //$this->getMailCorrespondence($order); TODO: Mail Correspondence
         $jsonOrder['payments'] = $this->getPayments($order);
         $jsonOrder['editable'] = count($this->getInvoices($order)) > 0 ? false : true;
@@ -338,7 +339,7 @@ class OrderController extends AdminController
         $jsonOrder['shop'] = $order->getStore() instanceof StoreInterface ? $order->getStore() : null;
         //TODO: $jsonOrder['visitor'] = \CoreShop\Model\Visitor::getById($order->getVisitorId());
         $jsonOrder['invoiceCreationAllowed'] = !$this->getInvoiceProcessableHelper()->isFullyProcessed($order) && count($order->getPayments()) !== 0;
-        $jsonOrder['shipmentCreationAllowed'] = false; //TODO: !$order->isFullyShipped() && $order->hasPayments();
+        $jsonOrder['shipmentCreationAllowed'] = !$this->getShipmentProcessableHelper()->isFullyProcessed($order) && count($order->getPayments()) !== 0;
 
         $jsonOrder['address'] = [
             'shipping' => $this->getDataForObject($order->getShippingAddress()),
@@ -726,10 +727,33 @@ class OrderController extends AdminController
     }
 
     /**
+     * @param OrderInterface $order
+     * @return array
+     */
+    protected function getShipments($order)
+    {
+        $invoices = $this->getOrderShipmentRepository()->getDocuments($order);
+        $invoiceArray = [];
+
+        foreach ($invoices as $invoice) {
+            $invoiceArray[] = $this->getDataForObject($invoice);
+        }
+
+        return $invoiceArray;
+    }
+
+    /**
      * @return ProcessableInterface
      */
     private function getInvoiceProcessableHelper() {
         return $this->get('coreshop.order.invoice.processable');
+    }
+
+    /**
+     * @return ProcessableInterface
+     */
+    private function getShipmentProcessableHelper() {
+        return $this->get('coreshop.order.shipment.processable');
     }
 
     /**
@@ -744,6 +768,13 @@ class OrderController extends AdminController
      */
     private function getOrderInvoiceRepository() {
         return $this->get('coreshop.repository.order_invoice');
+    }
+
+    /**
+     * @return OrderShipmentRepositoryInterface
+     */
+    private function getOrderShipmentRepository() {
+        return $this->get('coreshop.repository.order_shipment');
     }
 
     /**
