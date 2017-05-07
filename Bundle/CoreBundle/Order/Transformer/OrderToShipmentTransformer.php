@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Core\Transformer;
+namespace CoreShop\Bundle\CoreBundle\Order\Transformer;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Context\LocaleContextInterface;
@@ -69,6 +69,11 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
     protected $shipmentItemFactory;
 
     /**
+     * @var TransformerEventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @param OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -76,6 +81,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
      * @param ObjectServiceInterface $objectService
      * @param PimcoreRepositoryInterface $orderItemRepository
      * @param PimcoreFactoryInterface $shipmentItemFactory
+     * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
@@ -84,7 +90,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $shipmentFolderPath,
         ObjectServiceInterface $objectService,
         PimcoreRepositoryInterface $orderItemRepository,
-        PimcoreFactoryInterface $shipmentItemFactory
+        PimcoreFactoryInterface $shipmentItemFactory,
+        TransformerEventDispatcherInterface $eventDispatcher
     )
     {
         $this->orderItemToShipmentItemTransformer = $orderItemToShipmentItemTransformer;
@@ -94,6 +101,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $this->objectService = $objectService;
         $this->orderItemRepository = $orderItemRepository;
         $this->shipmentItemFactory = $shipmentItemFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -107,6 +115,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
          */
         Assert::isInstanceOf($order, OrderInterface::class);
         Assert::isInstanceOf($shipment, OrderShipmentInterface::class);
+
+        $this->eventDispatcher->dispatchPreEvent('shipment', $shipment, ['order' => $order, 'items' => $itemsToTransform]);
 
         $shipmentFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->shipmentFolderPath));
 
@@ -144,6 +154,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
         $shipment->setItems($items);
         $shipment->save();
+
+        $this->eventDispatcher->dispatchPostEvent('shipment', $shipment, ['order' => $order, 'items' => $itemsToTransform]);
 
         return $shipment;
     }

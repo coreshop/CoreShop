@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Core\Transformer;
+namespace CoreShop\Bundle\CoreBundle\Order\Transformer;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Context\LocaleContextInterface;
@@ -73,6 +73,11 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     protected $invoiceRepository;
 
     /**
+     * @var TransformerEventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -81,6 +86,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * @param PimcoreRepositoryInterface $orderItemRepository
      * @param PimcoreFactoryInterface $invoiceItemFactory
      * @param OrderInvoiceRepositoryInterface $invoiceRepository
+     * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
@@ -90,7 +96,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         ObjectServiceInterface $objectService,
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $invoiceItemFactory,
-        OrderInvoiceRepositoryInterface $invoiceRepository
+        OrderInvoiceRepositoryInterface $invoiceRepository,
+        TransformerEventDispatcherInterface $eventDispatcher
     )
     {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
@@ -101,6 +108,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->orderItemRepository = $orderItemRepository;
         $this->invoiceItemFactory = $invoiceItemFactory;
         $this->invoiceRepository = $invoiceRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -114,6 +122,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
          */
         Assert::isInstanceOf($order, OrderInterface::class);
         Assert::isInstanceOf($invoice, OrderInvoiceInterface::class);
+
+        $this->eventDispatcher->dispatchPreEvent('invoice', $invoice, ['order' => $order, 'items' => $itemsToTransform]);
 
         $invoiceFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->invoiceFolderPath));
 
@@ -153,13 +163,15 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $this->calculateInvoice($invoice);
 
+        $this->eventDispatcher->dispatchPostEvent('invoice', $invoice, ['order' => $order, 'items' => $itemsToTransform]);
+
         return $invoice;
     }
 
     /**
      * @param OrderInvoiceInterface $invoice
      */
-    private function calculateInvoice(OrderInvoiceInterface  $invoice)
+    private function calculateInvoice(OrderInvoiceInterface $invoice)
     {
         $this->calculateSubtotal($invoice);
         $this->calculateShipping($invoice);

@@ -4,13 +4,14 @@ services:
     arguments: ['@coreshop.sequence.generator', 'order', '@coreshop.configuration.service']
 
   coreshop.order.transformer.cart_item_to_order_item:
-    class: CoreShop\Component\Core\Transformer\CartItemToOrderItemTransformer
+    class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartItemToOrderItemTransformer
     arguments:
       - '@coreshop.core.object_service'
       - '%coreshop.folder.order_item%'
+      - '@coreshop.transformer.event_dispatcher'
 
   coreshop.order.transformer.cart_to_order:
-    class: CoreShop\Component\Core\Transformer\CartToOrderTransformer
+    class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartToOrderTransformer
     arguments:
       - '@coreshop.order.transformer.cart_item_to_order_item'
       - '@coreshop.core.key_transformer'
@@ -22,6 +23,7 @@ services:
       - '@coreshop.context.currency'
       - '@coreshop.context.store'
       - '@coreshop.cart_price_rule.order.processor'
+      - '@coreshop.transformer.event_dispatcher'
 
   coreshop.factory.cart:
     class: CoreShop\Bundle\CoreBundle\Factory\CartFactory

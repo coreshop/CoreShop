@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Core\Transformer;
+namespace CoreShop\Bundle\CoreBundle\Order\Transformer;
 
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
@@ -9,6 +9,8 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
 class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
@@ -24,16 +26,24 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
     private $pathForItems;
 
     /**
+     * @var TransformerEventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
+     * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectServiceInterface $objectService,
-        $pathForItems
+        $pathForItems,
+        TransformerEventDispatcherInterface $eventDispatcher
     )
     {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -49,6 +59,8 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
         Assert::isInstanceOf($cartItem, CartItemInterface::class);
         Assert::isInstanceOf($orderItem, OrderItemInterface::class);
         Assert::isInstanceOf($order, OrderInterface::class);
+
+        $this->eventDispatcher->dispatchPreEvent('order_item', $cartItem, ['order' => $order, 'cart' => $cartItem->getCart(), 'order_item' => $orderItem]);
 
         $itemFolder = $this->objectService->createFolderByPath($order->getFullPath() . '/' . $this->pathForItems);
 
@@ -75,5 +87,7 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
 
         $order->addItem($orderItem);
         //TODO: Collect all Taxes
+
+        $this->eventDispatcher->dispatchPostEvent('order_item', $cartItem, ['order' => $order, 'cart' => $cartItem->getCart(), 'order_item' => $orderItem]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Core\Transformer;
+namespace CoreShop\Bundle\CoreBundle\Order\Transformer;
 
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
@@ -31,16 +31,24 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
     private $pathForItems;
 
     /**
+     * @var TransformerEventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
+     * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectServiceInterface $objectService,
-        $pathForItems
+        $pathForItems,
+        TransformerEventDispatcherInterface $eventDispatcher
     )
     {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -57,6 +65,8 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         Assert::isInstanceOf($shipment, OrderDocumentInterface::class);
         Assert::isInstanceOf($shipmentItem, OrderDocumentItemInterface::class);
 
+        $this->eventDispatcher->dispatchPreEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
+
         $itemFolder = $this->objectService->createFolderByPath($shipment->getFullPath() . '/' . $this->pathForItems);
 
         $shipmentItem->setKey($orderItem->getKey());
@@ -70,6 +80,8 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         $shipmentItem->setWeight($orderItem->getTotalWeight());
 
         $shipmentItem->save();
+
+        $this->eventDispatcher->dispatchPostEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
         return $shipmentItem;
     }

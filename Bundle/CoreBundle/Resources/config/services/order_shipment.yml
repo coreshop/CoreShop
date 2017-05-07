@@ -4,13 +4,14 @@ services:
     arguments: ['@coreshop.sequence.generator', 'shipment', '@coreshop.configuration.service']
 
   coreshop.order_shipment.transformer.order_item_to_shipment_item:
-    class: CoreShop\Component\Core\Transformer\OrderItemToShipmentItemTransformer
+    class: CoreShop\Bundle\CoreBundle\Order\Transformer\OrderItemToShipmentItemTransformer
     arguments:
       - '@coreshop.core.object_service'
       - '%coreshop.folder.shipment_item%'
+      - '@coreshop.transformer.event_dispatcher'
 
   coreshop.order.transformer.order_to_shipment:
-    class: CoreShop\Component\Core\Transformer\OrderToShipmentTransformer
+    class: CoreShop\Bundle\CoreBundle\Order\Transformer\OrderToShipmentTransformer
     arguments:
       - '@coreshop.order_shipment.transformer.order_item_to_shipment_item'
       - '@coreshop.core.key_transformer'
@@ -19,3 +20,4 @@ services:
       - '@coreshop.core.object_service'
       - '@coreshop.repository.order_item'
       - '@coreshop.factory.order_shipment_item'
+      - '@coreshop.transformer.event_dispatcher'

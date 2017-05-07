@@ -44,3 +44,25 @@ services:
     tags:
       - { name: coreshop.notification_rule.action, type: orderMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
       - { name: coreshop.notification_rule.action, type: orderMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
+
+  # Listeners -> here the actual magic happens
+  coreshop.notification.listener.invoice:
+    class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\InvoiceListener
+    arguments:
+      - '@coreshop.notification_rule.processor'
+    tags:
+      - { name: kernel.event_listener, event: coreshop.invoice.postTransform, method: applyRule }
+
+  coreshop.notification.listener.shipment:
+    class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\ShipmentListener
+    arguments:
+      - '@coreshop.notification_rule.processor'
+    tags:
+      - { name: kernel.event_listener, event: coreshop.shipment.postTransform, method: applyRule }
+
+  coreshop.notification.listsener.order:
+    class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderWorkflowListener
+    arguments:
+      - '@coreshop.notification_rule.processor'
+    tags:
+      - { name: kernel.event_listener, event: coreshop.workflow_manager.success, method: applyRule }

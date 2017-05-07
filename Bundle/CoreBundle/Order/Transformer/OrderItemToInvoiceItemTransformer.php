@@ -1,19 +1,14 @@
 <?php
 
-namespace CoreShop\Component\Core\Transformer;
+namespace CoreShop\Bundle\CoreBundle\Order\Transformer;
 
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
-use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
 use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -30,16 +25,24 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     private $pathForItems;
 
     /**
+     * @var TransformerEventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
+     * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectServiceInterface $objectService,
-        $pathForItems
+        $pathForItems,
+        TransformerEventDispatcherInterface $eventDispatcher
     )
     {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -56,6 +59,8 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         Assert::isInstanceOf($invoice, OrderDocumentInterface::class);
         Assert::isInstanceOf($invoiceItem, OrderDocumentItemInterface::class);
 
+        $this->eventDispatcher->dispatchPreEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
+
         $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath() . '/' . $this->pathForItems);
 
         $invoiceItem->setKey($orderItem->getKey());
@@ -71,6 +76,8 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false));
 
         $invoiceItem->save();
+
+        $this->eventDispatcher->dispatchPostEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
         return $invoiceItem;
     }

@@ -157,7 +157,7 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @return \CoreShop\Component\Core\Transformer\CartToOrderTransformer
+     * @return \CoreShop\Bundle\CoreBundle\Order\Transformer\CartToOrderTransformer
      */
     private function getCartToOrderTransformer() {
         return $this->get('coreshop.order.transformer.cart_to_order');

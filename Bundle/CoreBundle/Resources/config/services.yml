@@ -59,3 +59,8 @@ services:
 
   coreshop.renderer.pdf:
     class: CoreShop\Bundle\CoreBundle\Renderer\Pdf\WkHtmlToPdf
+
+  coreshop.transformer.event_dispatcher:
+    class: CoreShop\Bundle\CoreBundle\Order\Transformer\TransformerEventDispatcher
+    public: false
+    arguments: ['@event_dispatcher']

@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Component\Core\Transformer;
+namespace CoreShop\Bundle\CoreBundle\Order\Transformer;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Context\LocaleContextInterface;
@@ -20,6 +20,8 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Pimcore\Model\Object\Fieldcollection;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
 class CartToOrderTransformer implements ProposalTransformerInterface
@@ -75,6 +77,11 @@ class CartToOrderTransformer implements ProposalTransformerInterface
     protected $cartPriceRuleOrderProcessor;
 
     /**
+     * @var TransformerEventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param ProposalItemTransformerInterface $cartItemToOrderItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -85,6 +92,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
      * @param CurrencyContextInterface $currencyContext
      * @param StoreContextInterface $storeContext
      * @param CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
+     * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ProposalItemTransformerInterface $cartItemToOrderItemTransformer,
@@ -96,7 +104,8 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         PimcoreFactoryInterface $orderItemFactory,
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
-        CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
+        CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor,
+        TransformerEventDispatcherInterface $eventDispatcher
     )
     {
         $this->cartItemToOrderItemTransformer = $cartItemToOrderItemTransformer;
@@ -109,6 +118,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $this->currencyContext = $currencyContext;
         $this->storeContext = $storeContext;
         $this->cartPriceRuleOrderProcessor = $cartPriceRuleOrderProcessor;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -122,6 +132,8 @@ class CartToOrderTransformer implements ProposalTransformerInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($order, OrderInterface::class);
+
+        $this->eventDispatcher->dispatchPreEvent('order', $order, ['cart' => $cart]);
 
         $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath, date('Y/m/d')));
 
@@ -191,6 +203,8 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         }
 
         //TODO: Collect taxes
+
+        $this->eventDispatcher->dispatchPostEvent('order', $order, ['cart' => $cart]);
 
         $order->save();
 
