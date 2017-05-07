@@ -122,8 +122,8 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
         var allowedActions = this.parentPanel.getActionsForType(type);
         var allowedConditions = this.parentPanel.getConditionsForType(type);
 
-        this.actions = new actionContainerClass(allowedActions);
-        this.conditions = new conditionContainerClass(allowedConditions);
+        this.actions = new actionContainerClass(allowedActions, type);
+        this.conditions = new conditionContainerClass(allowedConditions, type);
 
         var items = [
             this.conditions.getLayout(),
@@ -134,8 +134,10 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
         if (this.data.conditions)
         {
             Ext.each(this.data.conditions, function (condition) {
-                if(allowedConditions.indexOf(condition.type) >= 0) {
-                    this.conditions.addCondition(condition.type, condition);
+                var conditionType = condition.type.replace(type + '.', '');
+
+                if(allowedConditions.indexOf(conditionType) >= 0) {
+                    this.conditions.addCondition(conditionType, condition);
                 }
             }.bind(this));
         }
@@ -144,8 +146,10 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
         if (this.data.actions)
         {
             Ext.each(this.data.actions, function (action) {
-                if(allowedActions.indexOf(action.type) >= 0) {
-                    this.actions.addAction(action.type, action);
+                var actionType = action.type.replace(type + '.', '');
+
+                if(allowedActions.indexOf(actionType) >= 0) {
+                    this.actions.addAction(actionType, action);
                 }
             }.bind(this));
         }

@@ -124,6 +124,10 @@ pimcore.plugin.coreshop.rules.action = Class.create({
             action['configuration'] = configuration;
             action['type'] = actions[i].xparent.type;
             actionData.push(action);
+
+            if (Ext.isFunction(this.prepareAction)) {
+                action = this.prepareAction(action);
+            }
         }
 
         return actionData;

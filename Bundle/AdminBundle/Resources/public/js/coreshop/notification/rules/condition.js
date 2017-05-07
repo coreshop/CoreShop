@@ -14,11 +14,22 @@
 pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.condition');
 
 pimcore.plugin.coreshop.notification.rules.condition = Class.create(pimcore.plugin.coreshop.rules.condition, {
+    initialize : function (conditions, type) {
+        this.conditions = conditions;
+        this.type = type;
+    },
+
     getConditionStyleClass: function(condition) {
         return 'coreshop_rule_icon_condition_' + condition;
     },
 
     getConditionClassNamespace : function() {
         return pimcore.plugin.coreshop.notification.rules.conditions;
+    },
+
+    prepareCondition : function(condition) {
+        condition['type'] = this.type + '.' + condition['type'];
+
+        return condition;
     }
 });

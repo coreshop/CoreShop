@@ -61,15 +61,15 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
 
                 $map[$tag['notification-type']][$tag['type']] = $tag['type'];
 
+                $fqtn = sprintf('%s.%s', $type, $tag['type']);
+
                 $registries[$type]->addMethodCall('register', [$tag['type'], new Reference($id)]);
                 $formRegistries[$type]->addMethodCall('add', [$tag['type'], 'default', $tag['form-type']]);
 
-                if (!in_array($tag['type'], $registeredTypes)) {
-                    $registry->addMethodCall('register', [$tag['type'], new Reference($id)]);
-                    $formRegistry->addMethodCall('add', [$tag['type'], 'default', $tag['form-type']]);
+                $registry->addMethodCall('register', [$fqtn, new Reference($id)]);
+                $formRegistry->addMethodCall('add', [$fqtn, 'default', $tag['form-type']]);
 
-                    $registeredTypes[$tag['type']] = $tag['type'];
-                }
+                $registeredTypes[$fqtn] = $fqtn;
             }
         }
 

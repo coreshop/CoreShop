@@ -3,11 +3,12 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
-final class OrderStateConfigurationType extends AbstractType
+final class ShipmentStateConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -15,11 +16,7 @@ final class OrderStateConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('transitionType', IntegerType::class) //TODO: Should be a choice with list of values
-            ->add('states', CollectionType::class, [
-                'allow_add' => true,
-                'allow_delete' => true,
-            ])
+            ->add('shipmentState', IntegerType::class) //TODO: Should be a choice with list of values
         ;
     }
 
@@ -28,6 +25,6 @@ final class OrderStateConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_notification_condition_order_state';
+        return 'coreshop_notification_condition_shipment_state';
     }
 }

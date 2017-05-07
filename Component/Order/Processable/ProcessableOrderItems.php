@@ -32,18 +32,22 @@ class ProcessableOrderItems implements ProcessableInterface
         $processAbleItems = [];
 
         foreach ($items as $item) {
-            if (array_key_exists($item->getId(), $processedItems)) {
-                if ($processedItems[$item->getId()]['quantity'] < $item->getQuantity()) {
+            if ($item instanceof OrderItemInterface) {
+                if (array_key_exists($item->getId(), $processedItems)) {
+                    if ($processedItems[$item->getId()]['quantity'] < $item->getQuantity()) {
+                        $processAbleItems[$item->getId()] = [
+                            "quantity" => $item->getQuantity() - $processedItems[$item->getId()]['amount'],
+                            "item" => $item,
+                            "orderItemId" => $item->getId()
+                        ];
+                    }
+                } else {
                     $processAbleItems[$item->getId()] = [
-                        "quantity" => $item->getQuantity() - $processedItems[$item->getId()]['amount'],
-                        "item" => $item
+                        "quantity" => $item->getQuantity(),
+                        "item" => $item,
+                        "orderItemId" => $item->getId()
                     ];
                 }
-            } else {
-                $processAbleItems[$item->getId()] = [
-                    "quantity" => $item->getQuantity(),
-                    "item" => $item
-                ];
             }
         }
 

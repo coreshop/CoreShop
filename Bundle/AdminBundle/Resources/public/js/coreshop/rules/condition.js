@@ -130,6 +130,11 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
 
             condition['configuration'] = configuration;
             condition['type'] = conditions[i].xparent.type;
+
+            if (Ext.isFunction(this.prepareCondition)) {
+                condition = this.prepareCondition(condition);
+            }
+
             conditionsData.push(condition);
         }
 

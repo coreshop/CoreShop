@@ -1,0 +1,63 @@
+<?php
+
+namespace CoreShop\Test\Models;
+
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderShipmentInterface;
+use CoreShop\Test\Base;
+use CoreShop\Test\Data;
+
+class OrderShipment extends Base
+{
+    public function testOrdeShipmentCreation()
+    {
+        $this->printTestName();
+
+        /**
+         * @var $shipment OrderShipmentInterface
+         */
+        $shipment = $this->getFactory('order_shipment')->createNew();
+
+        $this->assertNotNull($shipment);
+    }
+
+    public function testProcessableOrderItemShipment()
+    {
+        $this->printTestName();
+
+        $cart = Data::createCartWithProducts();
+        /**
+         * @var $order OrderInterface
+         */
+        $order = $this->getFactory('order')->createNew();
+        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
+
+        $processableItems = $this->get('coreshop.order.shipment.processable')->getProcessableItems($order);
+
+        $this->assertNotNull($processableItems);
+        $this->assertTrue(is_array($processableItems));
+        $this->assertEquals(3, count($processableItems));
+    }
+
+    public function testOrderToShipmentTransformer()
+    {
+        $this->printTestName();
+
+        $cart = Data::createCartWithProducts();
+        /**
+         * @var $order OrderInterface
+         */
+        $order = $this->getFactory('order')->createNew();
+        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
+
+        $processableItems = $this->get('coreshop.order.shipment.processable')->getProcessableItems($order);
+
+        /**
+         * @var $shipment OrderShipmentInterface
+         */
+        $shipment = $this->getFactory('order_shipment')->createNew();
+        $shipment = $this->get('coreshop.order.transformer.order_to_shipment')->transform($order, $shipment, $processableItems);
+
+        $this->assertEquals(3, count($shipment->getItems()));
+    }
+}

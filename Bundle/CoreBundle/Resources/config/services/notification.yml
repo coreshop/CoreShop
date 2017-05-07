@@ -6,6 +6,12 @@ services:
     tags:
       - { name: coreshop.notification_rule.condition, type: invoiceState, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\InvoiceStateConfigurationType }
 
+  coreshop.notification_rule.condition.order.shipment_state:
+    class: CoreShop\Component\Core\Notification\Rule\Condition\Order\ShipmentStateChecker
+    arguments: ['@coreshop.order.shipment.processable']
+    tags:
+      - { name: coreshop.notification_rule.condition, type: shipmentState, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ShipmentStateConfigurationType }
+
   coreshop.notification_rule.condition.order.order_state:
     class: CoreShop\Component\Core\Notification\Rule\Condition\Order\OrderStateChecker
     tags:
@@ -27,6 +33,12 @@ services:
     tags:
       - { name: coreshop.notification_rule.condition, type: invoiceState, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\InvoiceStateConfigurationType }
 
+  coreshop.notification_rule.condition.shipment.shipment:
+    class: CoreShop\Component\Core\Notification\Rule\Condition\Shipment\ShipmentStateChecker
+    arguments: ['@coreshop.order.shipment.processable']
+    tags:
+      - { name: coreshop.notification_rule.condition, type: shipmentState, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ShipmentStateConfigurationType }
+
   coreshop.notification_rule.condition.payment.payment_state:
     class: CoreShop\Component\Core\Notification\Rule\Condition\Payment\PaymentStateChecker
     arguments: ['@coreshop.repository.order']
@@ -44,6 +56,7 @@ services:
     tags:
       - { name: coreshop.notification_rule.action, type: orderMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
       - { name: coreshop.notification_rule.action, type: orderMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
+      - { name: coreshop.notification_rule.action, type: orderMail, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
 
   # Listeners -> here the actual magic happens
   coreshop.notification.listener.invoice:

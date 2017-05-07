@@ -50,6 +50,10 @@ foreach (['CoreShopAddress',
     'CoreShopCustomerGroup',
     'CoreShopOrder',
     'CoreShopOrderItem',
+    'CoreShopOrderInvoice',
+    'CoreShopOrderInvoiceItem',
+    'CoreShopOrderShipment',
+    'CoreShopOrderShipmentItem',
     'CoreShopProduct'] as $class) {
     $loader->addClassMap([sprintf('Pimcore\Model\Object\%s', $class) => sprintf('%s/Object/%s.php', PIMCORE_CLASS_DIRECTORY, $class)]);
     $loader->addClassMap([sprintf('Pimcore\Model\Object\%s\Listing', $class) => sprintf('%s/Object/%s/Listing.php', PIMCORE_CLASS_DIRECTORY, $class)]);

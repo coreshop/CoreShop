@@ -6,22 +6,22 @@ use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 
-class InvoiceStateChecker extends AbstractConditionChecker
+class ShipmentStateChecker extends AbstractConditionChecker
 {
     /**
      *
      */
-    const INVOICE_TYPE_PARTIAL = 1;
+    const SHIPMENT_TYPE_PARTIAL = 1;
 
     /**
      *
      */
-    const INVOICE_TYPE_FULL = 2;
+    const SHIPMENT_TYPE_FULL = 2;
 
     /**
      *
      */
-    const INVOICE_TYPE_ALL = 3;
+    const SHIPMENT_TYPE_ALL = 3;
 
     /**
      * @var ProcessableInterface
@@ -41,16 +41,16 @@ class InvoiceStateChecker extends AbstractConditionChecker
      */
     public function isNotificationRuleValid($subject, $params, array $configuration)
     {
-        $invoiceType = $configuration['invoiceState'];
+        $shipmentState = $configuration['shipmentState'];
 
         if ($subject instanceof OrderInterface) {
-            if ($invoiceType === self::INVOICE_TYPE_ALL) {
+            if ($shipmentState === self::SHIPMENT_TYPE_ALL) {
                 return true;
-            } elseif ($invoiceType === self::INVOICE_TYPE_FULL) {
+            } elseif ($shipmentState === self::SHIPMENT_TYPE_FULL) {
                 if (count($this->processableHelper->getProcessableItems($subject)) === 0) {
                     return true;
                 }
-            } elseif ($invoiceType === self::INVOICE_TYPE_PARTIAL) {
+            } elseif ($shipmentState === self::SHIPMENT_TYPE_PARTIAL) {
                 if (count($this->processableHelper->getProcessableItems($subject)) > 0) {
                     return true;
                 }

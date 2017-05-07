@@ -14,7 +14,18 @@
 pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.action');
 
 pimcore.plugin.coreshop.notification.rules.action = Class.create(pimcore.plugin.coreshop.rules.action, {
-    getActionClassNamespace : function (type) {
+    initialize : function (actions, type) {
+        this.actions = actions;
+        this.type = type;
+    },
+
+    getActionClassNamespace : function () {
         return pimcore.plugin.coreshop.notification.rules.actions;
+    },
+
+    prepareAction : function(action) {
+        action['type'] = this.type + '.' + action['type'];
+
+        return action;
     }
 });
