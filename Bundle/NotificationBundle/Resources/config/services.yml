@@ -1,6 +1,5 @@
 imports:
   - { resource: "services/form.yml" }
-  - { resource: "services/notification-rules.yml" }
 
 services:
   coreshop.notification_rule.applier:
@@ -48,7 +47,7 @@ services:
 
   # Notification Rule ACTIONS
   coreshop.notification_rule.action.mail:
-    class: CoreShop\Bundle\NotificationBundle\Rule\Action\MailActionProcessor
+    class: CoreShop\Component\Notification\Rule\Action\MailActionProcessor
     tags:
       - { name: coreshop.notification_rule.action, type: mail, notification-type: order, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
       - { name: coreshop.notification_rule.action, type: mail, notification-type: invoice, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }

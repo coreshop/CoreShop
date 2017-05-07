@@ -367,8 +367,8 @@
     background: url(/bundles/coreshopadmin/img/flat/payment-provider.svg) center center no-repeat !important;
 }
 
-.coreshop_icon_mail_rule {
-    background: url(/bundles/coreshopadmin/img/flat/mail-rule.svg) center center no-repeat !important;
+.coreshop_icon_notification_rule {
+    background: url(/bundles/coreshopadmin/img/flat/notification-rule.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_action_mail, .coreshop_rule_icon_action_orderMail {

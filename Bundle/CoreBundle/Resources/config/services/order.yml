@@ -29,3 +29,7 @@ services:
       - '%coreshop.model.cart.class%'
       - '@coreshop.context.currency'
       - '@coreshop.context.store'
+
+  coreshop.mail.processor.order:
+    class: CoreShop\Component\Core\Order\OrderMailProcessor
+    arguments: ['@coreshop.money_formatter', '@coreshop.repository.order_invoice']

@@ -14,6 +14,7 @@ CoreShop\Component\Notification\Model\NotificationRule:
     type:
       column: type
       type: string
+      nullable: true
     active:
       column: active
       type: boolean

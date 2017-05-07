@@ -290,9 +290,9 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         if (user.admin) {
 
             coreShopMenuItems.push({
-                text: t('coreshop_mail_rules'),
-                iconCls: 'coreshop_icon_mail_rule',
-                handler: this.openMailRules
+                text: t('coreshop_notification_rules'),
+                iconCls: 'coreshop_icon_notification_rule',
+                handler: this.openNotificationRules
             });
 
             coreShopMenuItems.push({
@@ -726,12 +726,12 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openMailRules : function () {
+    openNotificationRules : function () {
         try {
-            pimcore.globalmanager.get('coreshop_mail_rule_panel').activate();
+            pimcore.globalmanager.get('coreshop_notification_rule_panel').activate();
         }
         catch (e) {
-            pimcore.globalmanager.add('coreshop_mail_rule_panel', new pimcore.plugin.coreshop.mail.rules.panel());
+            pimcore.globalmanager.add('coreshop_notification_rule_panel', new pimcore.plugin.coreshop.notification.rules.panel());
         }
     },
 
