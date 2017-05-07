@@ -15,7 +15,6 @@ final class ProductsConfigurationType extends AbstractType
     {
         $builder
             ->add('products', CollectionType::class, [
-                'label' => 'coreshop.form.product_price_rule.condition.products',
                 'allow_add' => true,
                 'allow_delete' => true,
             ])

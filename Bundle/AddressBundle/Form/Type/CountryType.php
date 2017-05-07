@@ -23,7 +23,6 @@ final class CountryType extends AbstractResourceType
             ->add('active', CheckboxType::class)
             ->add('currency', CurrencyChoiceType::class)
             ->add('zone', ZoneChoiceType::class, [
-                'label' => 'coreshop.form.address.zone',
                 'active' => null,
             ])
             ->add('addressFormat', TextareaType::class)

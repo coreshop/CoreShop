@@ -16,7 +16,6 @@ final class ProductPriceRuleActionType extends RuleActionType
 
         $builder
             ->add('type', ProductPriceRuleActionChoiceType::class, [
-                'label' => 'coreshop.form.rule_action.type',
                 'attr' => [
                     'data-form-collection' => 'update',
                 ],

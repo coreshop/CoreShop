@@ -17,7 +17,6 @@ final class IndexColumnTypeFieldCollectionType extends AbstractType
     {
         $builder
             ->add('className', IntegerType::class, [
-                'label' => 'coreshop.form.index.column_type.field_collection.class_name',
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),

@@ -17,14 +17,12 @@ final class QuantityConfigurationType extends AbstractType
     {
         $builder
             ->add('minQuantity', IntegerType::class, [
-                'label' => 'coreshop.form.product_price_rule.condition.quantity_configuration.amount',
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
             ])
             ->add('maxQuantity', IntegerType::class, [
-                'label' => 'coreshop.form.product_price_rule.condition.quantity_configuration.amount',
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),

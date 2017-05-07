@@ -19,8 +19,7 @@ final class StateType extends AbstractResourceType
             ->add('isoCode', TextType::class)
             ->add('active', CheckboxType::class)
             ->add('country', CountryChoiceType::class, [
-                'active' => null,
-                'label' => 'coreshop.form.address.country',
+                'active' => null
             ]);
     }
 

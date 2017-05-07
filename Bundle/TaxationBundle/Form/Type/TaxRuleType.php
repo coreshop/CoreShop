@@ -12,7 +12,6 @@ class TaxRuleType extends AbstractResourceType
     {
         $builder
             ->add('taxRate', TaxRateChoiceType::class, [
-                'label' => 'coreshop.form.taxation.tax_rule',
                 'active' => null,
             ])
             ->add('behavior', ChoiceType::class, [
@@ -21,9 +20,7 @@ class TaxRuleType extends AbstractResourceType
                     'coreshop.form.tax_rule.behaviour.combine' => 1,
                     'coreshop.form.tax_rule.behaviour.one_after_another' => 2,
                 ],
-                'choice_translation_domain' => false,
-                'label' => 'coreshop.form.taxation.tax_rule',
-                'placeholder' => 'coreshop.form.tax_rule.select',
+                'choice_translation_domain' => false
             ]);
     }
 

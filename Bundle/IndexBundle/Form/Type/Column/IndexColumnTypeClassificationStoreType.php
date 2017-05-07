@@ -17,14 +17,12 @@ final class IndexColumnTypeClassificationStoreType extends AbstractType
     {
         $builder
             ->add('keyConfigId', IntegerType::class, [
-                'label' => 'coreshop.form.index.column_type.classification_store.key_config_id',
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
             ])
             ->add('groupConfigId', IntegerType::class, [
-                'label' => 'coreshop.form.index.column_type.classification_store.group_config_id',
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),

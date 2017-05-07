@@ -50,9 +50,7 @@ final class ZoneChoiceType extends AbstractType
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'choice_translation_domain' => false,
-                'active' => true,
-                'label' => 'coreshop.form.address.zone',
-                'placeholder' => 'coreshop.form.zone.select',
+                'active' => true
             ])
         ;
     }

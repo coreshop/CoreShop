@@ -50,9 +50,7 @@ final class StateChoiceType extends AbstractType
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'choice_translation_domain' => false,
-                'active' => true,
-                'label' => 'coreshop.form.address.state',
-                'placeholder' => 'coreshop.form.state.select',
+                'active' => true
             ])
         ;
     }

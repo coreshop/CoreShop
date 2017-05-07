@@ -15,11 +15,8 @@ class TaxRateType extends AbstractResourceType
         $builder
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => TaxRateTranslationType::class,
-                'label' => 'coreshop.form.tax_rate.translations',
             ])
-            ->add('rate', NumberType::class, [
-                'label' => 'coreshop.form.tax_rate.rate',
-            ])
+            ->add('rate', NumberType::class)
             ->add('active', CheckboxType::class);
     }
 

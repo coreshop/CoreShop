@@ -82,9 +82,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
-        $form->add('configuration', $configurationType, [
-            'label' => false,
-        ]);
+        $form->add('configuration', $configurationType);
     }
 
     /**

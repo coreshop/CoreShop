@@ -23,9 +23,7 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
                 'multiple' => true,
                 'expanded' => true
             ])
-            ->add('gatewayConfig', GatewayConfigType::class, [
-                'label' => false
-            ])
+            ->add('gatewayConfig', GatewayConfigType::class)
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 $paymentMethod = $event->getData();
 

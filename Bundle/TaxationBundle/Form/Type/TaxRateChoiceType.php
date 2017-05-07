@@ -50,9 +50,7 @@ final class TaxRateChoiceType extends AbstractType
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'choice_translation_domain' => false,
-                'active' => true,
-                'label' => 'coreshop.form.taxation.tax_rule',
-                'placeholder' => 'coreshop.form.tax_rule.select',
+                'active' => true
             ])
         ;
     }

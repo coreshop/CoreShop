@@ -33,18 +33,10 @@ class IndexType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'coreshop.form.index.name',
-            ])
-            ->add('worker', IndexWorkerChoiceType::class, [
-                'label' => 'coreshop.form.index.worker',
-            ])
-            ->add('class', TextType::class, [ //TODO: Make this configurable using tags
-                'label' => 'coreshop.form.index.class',
-            ])
-            ->add('columns', IndexColumnCollectionType::class, [
-                'label' => 'coreshop.form.index.columns',
-            ])
+            ->add('name', TextType::class)
+            ->add('worker', IndexWorkerChoiceType::class)
+            ->add('class', TextType::class) //TODO: Make this configurable using tags
+            ->add('columns', IndexColumnCollectionType::class)
         ;
 
         $builder
@@ -82,9 +74,7 @@ class IndexType extends AbstractResourceType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
-        $form->add('configuration', $configurationType, [
-            'label' => false,
-        ]);
+        $form->add('configuration', $configurationType);
     }
 
     /**

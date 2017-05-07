@@ -91,9 +91,7 @@ final class FilterConditionType extends AbstractResourceType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
-        $form->add('configuration', $configurationType, [
-            'label' => false,
-        ]);
+        $form->add('configuration', $configurationType);
     }
 
     /**

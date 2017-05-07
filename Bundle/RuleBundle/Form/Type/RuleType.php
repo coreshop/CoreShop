@@ -15,15 +15,9 @@ class RuleType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'coreshop.form.rule.name',
-            ])
-            ->add('conditions', RuleConditionCollectionType::class, [
-                'label' => 'coreshop.form.rule.conditions',
-            ])
-            ->add('actions', RuleActionCollectionType::class, [
-                'label' => 'coreshop.form.rule.actions',
-            ])
+            ->add('name', TextType::class)
+            ->add('conditions', RuleConditionCollectionType::class)
+            ->add('actions', RuleActionCollectionType::class)
         ;
     }
 
