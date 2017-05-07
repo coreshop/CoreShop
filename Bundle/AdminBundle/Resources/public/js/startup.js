@@ -503,7 +503,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                     }
                 );
             }
-        } else if (tab.data.general.o_className === coreshop.settings.classMapping.invoice) {
+        } else if (tab.data.general.o_className === coreshop.settings.classMapping.order_invoice) {
             var resetChangesFunction = tab.resetChanges;
 
             var renderTab = new pimcore.plugin.coreshop.invoice.render(tab);
@@ -515,7 +515,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
                 renderTab.reload();
             };
-        } else if (tab.data.general.o_className === coreshop.settings.classMapping.shipment) {
+        } else if (tab.data.general.o_className === coreshop.settings.classMapping.order_shipment) {
             var resetChangesFunction = tab.resetChanges;
 
             var renderTab = new pimcore.plugin.coreshop.shipment.render(tab);

@@ -56,3 +56,6 @@ services:
       - '@coreshop.repository.configuration'
       - '@coreshop.factory.configuration'
       - '@coreshop.context.store'
+
+  coreshop.renderer.pdf:
+    class: CoreShop\Bundle\CoreBundle\Renderer\Pdf\WkHtmlToPdf

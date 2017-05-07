@@ -8,6 +8,11 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 interface OrderDocumentInterface extends ResourceInterface, PimcoreModelInterface
 {
     /**
+     * @return string
+     */
+    public static function getDocumentType();
+
+    /**
      * @return OrderInterface
      */
     public function getOrder();
@@ -47,4 +52,14 @@ interface OrderDocumentInterface extends ResourceInterface, PimcoreModelInterfac
      * @return mixed
      */
     public function setItems($items);
+
+    /**
+     * @return mixed
+     */
+    public function getRenderedAsset();
+
+    /**
+     * @param $renderedAsset
+     */
+    public function setRenderedAsset($renderedAsset);
 }

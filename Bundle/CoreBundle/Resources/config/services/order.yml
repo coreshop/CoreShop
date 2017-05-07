@@ -33,3 +33,15 @@ services:
   coreshop.mail.processor.order:
     class: CoreShop\Component\Core\Order\OrderMailProcessor
     arguments: ['@coreshop.money_formatter', '@coreshop.repository.order_invoice']
+
+  coreshop.renderer.order.pdf:
+    class: CoreShop\Bundle\CoreBundle\Order\Renderer\OrderDocumentPdfRenderer
+    arguments:
+      - '@fragment.renderer.inline'
+      - '@coreshop.configuration.service'
+      - '@coreshop.renderer.pdf'
+
+  coreshop.renderer.order.pdf.asset:
+    class: CoreShop\Bundle\CoreBundle\Order\Renderer\AssetOrderDocumentPdfRenderer
+    decorates: coreshop.renderer.order.pdf
+    arguments: ['@coreshop.renderer.order.pdf.asset.inner']

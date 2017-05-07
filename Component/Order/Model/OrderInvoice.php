@@ -10,6 +10,14 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
+    public static function getDocumentType()
+    {
+        return 'invoice';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getOrder()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -21,6 +29,22 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     public function setOrder($order)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRenderedAsset()
+    {
+        return $this->getProperty("rendered_asset");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRenderedAsset($renderedAsset)
+    {
+        $this->setProperty('rendered_asset', 'asset', $renderedAsset);
     }
 
     /**

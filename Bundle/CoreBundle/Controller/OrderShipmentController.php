@@ -8,16 +8,23 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
+use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @todo: maybe we should move this one to the AdminBundle?
  */
 class OrderShipmentController extends AdminController
 {
+    /**
+     * @param Request $request
+     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     */
     public function getShipAbleItemsAction(Request $request)
     {
         $orderId = $request->get('id');
@@ -96,6 +103,45 @@ class OrderShipmentController extends AdminController
         } catch (\Exception $ex) {
             return $this->json(['success' => false, 'message' => $ex->getMessage()]);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function renderAction(Request $request)
+    {
+        $invoiceId = $request->get('id');
+        $invoice = $this->getOrderShipmentRepository()->find($invoiceId);
+
+        if ($invoice instanceof OrderShipmentInterface) {
+            return new Response(
+                $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
+                200,
+                array(
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"'
+                )
+            );
+        }
+
+        throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));
+    }
+
+    /**
+     * @return OrderDocumentRendererInterface
+     */
+    private function getOrderDocumentRenderer()
+    {
+        return $this->get('coreshop.renderer.order.pdf');
+    }
+
+    /**
+     * @return PimcoreRepositoryInterface
+     */
+    private function getOrderShipmentRepository()
+    {
+        return $this->get('coreshop.repository.order_shipment');
     }
 
     /**

@@ -4,12 +4,17 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
+use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @todo: maybe we should move this one to the AdminBundle?
@@ -22,7 +27,7 @@ class OrderInvoiceController extends AdminController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
+            return $this->json(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $items = [];
@@ -62,7 +67,8 @@ class OrderInvoiceController extends AdminController
      * @param Request $request
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
-    public function createInvoiceAction(Request $request) {
+    public function createInvoiceAction(Request $request)
+    {
         $items = $request->get("items");
         $orderId = $request->get("id");
         $order = $this->getOrderRepository()->find($orderId);
@@ -84,24 +90,73 @@ class OrderInvoiceController extends AdminController
     }
 
     /**
+     * @param Request $request
+     * @return Response
+     */
+    public function renderAction(Request $request)
+    {
+        $invoiceId = $request->get('id');
+        $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
+
+        if ($invoice instanceof OrderInvoiceInterface) {
+            return new Response(
+                $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
+                200,
+                array(
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"'
+                )
+            );
+        }
+
+        throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));
+    }
+
+    /**
      * @return ProcessableInterface
      */
-    private function getProcessableHelper() {
+    private function getProcessableHelper()
+    {
         return $this->get('coreshop.order.invoice.processable');
     }
 
     /**
      * @return PimcoreRepositoryInterface
      */
-    private function getOrderRepository() {
+    private function getOrderRepository()
+    {
         return $this->get('coreshop.repository.order');
     }
 
-    private function getInvoiceFactory() {
+    /**
+     * @return OrderDocumentRendererInterface
+     */
+    private function getOrderDocumentRenderer()
+    {
+        return $this->get('coreshop.renderer.order.pdf');
+    }
+
+    /**
+     * @return PimcoreRepositoryInterface
+     */
+    private function getOrderInvoiceRepository()
+    {
+        return $this->get('coreshop.repository.order_invoice');
+    }
+
+    /**
+     * @return PimcoreFactoryInterface
+     */
+    private function getInvoiceFactory()
+    {
         return $this->get('coreshop.factory.order_invoice');
     }
 
-    private function getOrderToInvoiceTransformer() {
+    /**
+     * @return OrderDocumentTransformerInterface
+     */
+    private function getOrderToInvoiceTransformer()
+    {
         return $this->get('coreshop.order.transformer.order_to_invoice');
     }
 }
