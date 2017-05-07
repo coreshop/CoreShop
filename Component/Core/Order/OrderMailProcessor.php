@@ -4,7 +4,11 @@ namespace CoreShop\Component\Core\Order;
 
 use CoreShop\Bundle\CurrencyBundle\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderInvoiceInterface;
+use CoreShop\Component\Order\Model\OrderShipmentInterface;
+use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 
@@ -21,13 +25,32 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $invoiceRepository;
 
     /**
+     * @var OrderShipmentRepositoryInterface
+     */
+    private $shipmentRepository;
+
+    /**
+     * @var OrderDocumentRendererInterface
+     */
+    private $orderDocumentRenderer;
+
+    /**
      * @param MoneyFormatterInterface $priceFormatter
      * @param OrderInvoiceRepositoryInterface $invoiceRepository
+     * @param OrderShipmentRepositoryInterface $shipmentRepository
+     * @param OrderDocumentRendererInterface $orderDocumentRenderer
      */
-    public function __construct(MoneyFormatterInterface $priceFormatter, OrderInvoiceRepositoryInterface $invoiceRepository)
+    public function __construct(
+        MoneyFormatterInterface $priceFormatter,
+        OrderInvoiceRepositoryInterface $invoiceRepository,
+        OrderShipmentRepositoryInterface $shipmentRepository,
+        OrderDocumentRendererInterface $orderDocumentRenderer
+    )
     {
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
+        $this->shipmentRepository = $shipmentRepository;
+        $this->orderDocumentRenderer = $orderDocumentRenderer;
     }
 
     /**
@@ -64,39 +87,25 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             $invoices = $this->invoiceRepository->getDocuments($order);
 
             foreach ($invoices as $invoice) {
-                /*if ($invoice instanceof OrderInvoiceInterface) {
-                    $attachment = \Swift_Attachment::fromPath($asset->getData());
-                    $attachment->type = $asset->getMimetype();
-                    $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
-                    $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
-                    $attachment->filename = $asset->getFilename();
+                if ($invoice instanceof OrderInvoiceInterface) {
+                    $data = $this->orderDocumentRenderer->renderDocumentPdf($invoice);
 
-                    $mail->addAttachment($attachment);
-                }*/
+                    $mail->attach(\Swift_Attachment::newInstance($data, 'invoice.pdf', 'application/pdf'));
+                }
             }
         }
 
-        /*if ($sendShipments && (bool)Configuration::get('SYSTEM.SHIPMENT.CREATE')) {
-            $shipments = $order->getShipments();
+        if ($sendShipments) {  //TODO: Should shipment creation be configurable?
+            $shipments = $this->shipmentRepository->getDocuments($order);
 
             foreach ($shipments as $shipment) {
-                if ($shipment instanceof Order\Shipment) {
-                    $asset = $shipment->getAsset();
+                if ($shipment instanceof OrderShipmentInterface) {
+                    $data = $this->orderDocumentRenderer->renderDocumentPdf($shipment);
 
-                    if (!$asset instanceof Asset) {
-                        $asset = $shipment->generate();
-                    }
-
-                    $attachment = new \Zend_Mime_Part($asset->getData());
-                    $attachment->type = $asset->getMimetype();
-                    $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
-                    $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
-                    $attachment->filename = $asset->getFilename();
-
-                    $mail->addAttachment($attachment);
+                    $mail->attach(\Swift_Attachment::newInstance($data, 'shipment.pdf', 'application/pdf'));
                 }
             }
-        }*/
+        }
 
         //$this->addOrderNote($order, $emailDocument, $mail);
 

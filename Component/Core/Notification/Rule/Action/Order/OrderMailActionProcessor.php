@@ -7,6 +7,7 @@ use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
+use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use Pimcore\Model\Document;
 
 class OrderMailActionProcessor implements NotificationRuleProcessorInterface
