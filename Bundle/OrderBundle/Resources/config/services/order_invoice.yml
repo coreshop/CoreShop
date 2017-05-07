@@ -4,14 +4,14 @@ services:
     arguments: ['@coreshop.sequence.generator', 'invoice', '@coreshop.configuration.service']
 
   coreshop.order_invoice.transformer.cart_item_to_order_item:
-    class: CoreShop\Bundle\CoreBundle\Order\Transformer\OrderItemToInvoiceItemTransformer
+    class: CoreShop\Bundle\OrderBundle\Transformer\OrderItemToInvoiceItemTransformer
     arguments:
       - '@coreshop.core.object_service'
       - '%coreshop.folder.invoice_item%'
       - '@coreshop.transformer.event_dispatcher'
 
   coreshop.order.transformer.order_to_invoice:
-    class: CoreShop\Bundle\CoreBundle\Order\Transformer\OrderToInvoiceTransformer
+    class: CoreShop\Bundle\OrderBundle\Transformer\OrderToInvoiceTransformer
     arguments:
       - '@coreshop.order_invoice.transformer.cart_item_to_order_item'
       - '@coreshop.core.key_transformer'

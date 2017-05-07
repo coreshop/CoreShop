@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Order\Transformer;
+namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Context\LocaleContextInterface;

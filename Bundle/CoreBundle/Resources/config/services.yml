@@ -3,9 +3,6 @@ imports:
   - { resource: "services/storage.yml" }
   - { resource: "services/form.yml" }
   - { resource: "services/checkout.yml" }
-  - { resource: "services/order.yml" }
-  - { resource: "services/order_invoice.yml" }
-  - { resource: "services/order_shipment.yml" }
   - { resource: "services/listeners.yml" }
   - { resource: "services/product.yml" }
   - { resource: "services/shipping.yml" }
@@ -59,8 +56,3 @@ services:
 
   coreshop.renderer.pdf:
     class: CoreShop\Bundle\CoreBundle\Renderer\Pdf\WkHtmlToPdf
-
-  coreshop.transformer.event_dispatcher:
-    class: CoreShop\Bundle\CoreBundle\Order\Transformer\TransformerEventDispatcher
-    public: false
-    arguments: ['@event_dispatcher']

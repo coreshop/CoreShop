@@ -1,4 +1,7 @@
 imports:
+  - { resource: "services/order.yml" }
+  - { resource: "services/order_invoice.yml" }
+  - { resource: "services/order_shipment.yml" }
   - { resource: "services/cart-price-rules.yml" }
   - { resource: "services/workflow.yml" }
 
@@ -52,3 +55,8 @@ services:
   coreshop.order.shipment.processable:
     class: CoreShop\Component\Order\Processable\ProcessableOrderItems
     arguments: ['@coreshop.repository.order_shipment']
+
+  coreshop.transformer.event_dispatcher:
+    class: CoreShop\Bundle\OrderBundle\Transformer\TransformerEventDispatcher
+    public: false
+    arguments: ['@event_dispatcher']

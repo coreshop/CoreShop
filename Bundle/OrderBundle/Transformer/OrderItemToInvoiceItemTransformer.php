@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Order\Transformer;
+namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
