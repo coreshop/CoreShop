@@ -55,7 +55,6 @@ install:
 
 before_script:
   - .travis/setup-php.sh
-  - if [[ "$TRAVIS_SUDO" == "true" ]]; then .travis/setup-sudo.sh; fi
 
 script:
   - cd $TRAVIS_BUILD_DIR/vendor/coreshop/coreshop/tests
