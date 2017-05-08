@@ -22,10 +22,6 @@ class CarriersConditionChecker implements ConditionCheckerInterface
          */
         Assert::isInstanceOf($subject, CartInterface::class);
 
-        if (!$subject->getCustomer() instanceof CustomerInterface) {
-            return false;
-        }
-
         if (!$subject->getCarrier() instanceof CarrierInterface) {
             return false;
         }

@@ -4,6 +4,7 @@ namespace CoreShop\Test\Models;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
@@ -205,6 +206,25 @@ class CartPriceRule extends RuleTest
 
         $this->assertRuleCondition($this->cart, $condition);
     }
+
+    /**
+     * Test Price Rule Condition Carrier
+     */
+    public function testPriceRuleConditionCarriers()
+    {
+        $this->printTestName();
+        $this->assertConditionForm(CarriersConfigurationType::class, 'carriers');
+
+        $condition = $this->createConditionWithForm('carriers', [
+            'carriers' => [Data::$carrier1->getId()]
+        ]);
+
+        $cart = Data::createCartWithProducts();
+        $cart->setCarrier(Data::$carrier1);
+
+        $this->assertRuleCondition($cart, $condition);
+    }
+
 
     /**
      * Test Price Rule Condition Stores
