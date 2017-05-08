@@ -46,11 +46,9 @@ before_script:
   - php composer.phar install --ignore-platform-reqs
 
   # Install CoreShop
-  - php composer.phar require coreshop/core-shop:dev-symfony-the-fucking-right-way#$CI_COMMIT_REF  --ignore-platform-reqs
-
-  - export VENDOR_DIR=${$CI_PROJECT_DIR}/vendor/
   # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
   # this test is kinda stupid
+  - php composer.phar require coreshop/core-shop:dev-symfony-the-fucking-right-way#$CI_COMMIT_REF  --ignore-platform-reqs
 
 services:
   - mysql
@@ -63,14 +61,10 @@ variables:
 # We test PHP7.0 (the default) with MySQL
 test:mysql:
   script:
-    - cd $CI_PROJECT_DIR/vendor/coreshop/core-shop/tests
-    - chmod +x run-tests.sh
-    - ./run-tests.sh
+    - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/phpunit.xml --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
 
 # We test PHP7.1 with MySQL, but we allow it to fail
 test:php7.1:mysql:
   image: php:7.1
   script:
-    - cd $CI_PROJECT_DIR/vendor/coreshop/coreshop/tests
-    - chmod +x run-tests.sh
-    - ./run-tests.sh
+    - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/phpunit.xml --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
