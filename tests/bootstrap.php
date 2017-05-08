@@ -8,7 +8,9 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/function rrmdir($dir)
+*/
+
+function rrmdir($dir)
 {
     if (is_dir($dir)) {
         $objects = scandir($dir);
@@ -39,7 +41,11 @@ if (!defined('PIMCORE_APP_ROOT')) {
 
 define('PIMCORE_PRIVATE_VAR', CORESHOP_TESTS_PATH.'/tmp/var');
 
-require_once '../../../pimcore/config/constants.php';
+if (file_exists('../../../pimcore/config/constants.php'))
+    require_once '../../../pimcore/config/constants.php';
+elseif (file_exists('../../../../pimcore/config/constants.php'))
+    require_once '../../../../pimcore/config/constants.php';
+
 $loader = require_once PIMCORE_PATH.'/config/autoload.php';
 include_once 'app/TestAppKernel.php';
 

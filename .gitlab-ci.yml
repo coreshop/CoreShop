@@ -64,11 +64,12 @@ test:mysql:
   script:
     - cd $CI_PROJECT_DIR/vendor/coreshop/core-shop/tests
     - chmod +x run-tests.sh
-    - run-tests.sh
+    - ./run-tests.sh
 
 # We test PHP7.1 with MySQL, but we allow it to fail
 test:php7.1:mysql:
   image: php:7.1
   script:
     - cd $CI_PROJECT_DIR/vendor/coreshop/coreshop/tests
-    - run-tests.sh
+    - chmod +x run-tests.sh
+    - ./run-tests.sh
