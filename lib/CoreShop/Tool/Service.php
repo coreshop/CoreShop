@@ -35,7 +35,7 @@ class Service
      *
      * @var array
      */
-    private static $allowedVariationTypes = ['input', 'numeric', 'checkbox', 'select', 'slider', 'href', 'objects'];
+    private static $allowedVariationTypes = ['input', 'numeric', 'checkbox', 'select', 'slider', 'href', 'objects', 'quantityValue'];
 
     /**
      * @param Product $master
