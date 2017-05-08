@@ -2,12 +2,14 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
-class Soundex implements InterpreterInterface
+use CoreShop\Component\Index\Model\IndexColumnInterface;
+
+class SoundexInterpreter implements InterpreterInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, $config = null)
+    public function interpret($value, IndexColumnInterface $config = null)
     {
         if (is_null($value)) {
             return null;

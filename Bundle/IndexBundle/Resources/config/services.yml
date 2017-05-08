@@ -85,11 +85,47 @@ services:
     tags:
      - { name: coreshop.index.getter, type: brick, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\BrickGetterFormType}
 
+  coreshop.index.getter.classification_store:
+    class: CoreShop\Component\Index\Getter\ClassificationStoreGetter
+    tags:
+     - { name: coreshop.index.getter, type: classificationstore, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\ClassificationStoreGetterFormType}
+
+  coreshop.index.getter.field_collection:
+    class: CoreShop\Component\Index\Getter\FieldCollectionGetter
+    tags:
+     - { name: coreshop.index.getter, type: fieldcollection, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\FieldCollectionGetterFormType}
+
+  coreshop.index.getter.localized_field:
+    class: CoreShop\Component\Index\Getter\LocalizedFieldGetter
+    arguments: ['@pimcore.locale']
+    tags:
+     - { name: coreshop.index.getter, type: localizedfield, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
+
   # Index Interpreter
   coreshop.index.interpreter.soundex:
-    class: CoreShop\Component\Index\Interpreter\Soundex
+    class: CoreShop\Component\Index\Interpreter\SoundexInterpreter
     tags:
      - { name: coreshop.index.interpreter, type: soundex, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
+
+  coreshop.index.interpreter.object_id:
+    class: CoreShop\Component\Index\Interpreter\ObjectIdInterpreter
+    tags:
+     - { name: coreshop.index.interpreter, type: objectId, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
+
+  coreshop.index.interpreter.object_id_sum:
+    class: CoreShop\Component\Index\Interpreter\ObjectIdSumInterpreter
+    tags:
+     - { name: coreshop.index.interpreter, type: objectIdSum, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
+
+  coreshop.index.interpreter.object:
+    class: CoreShop\Component\Index\Interpreter\ObjectInterpreter
+    tags:
+     - { name: coreshop.index.interpreter, type: object, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
+
+  coreshop.index.interpreter.object_property:
+    class: CoreShop\Component\Index\Interpreter\ObjectPropertyInterpreter
+    tags:
+     - { name: coreshop.index.interpreter, type: objectProperty, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ObjectPropertyInterpreterFormType}
 
 
   # Index Column Types

@@ -2,13 +2,15 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexColumnInterface;
+
 interface InterpreterInterface
 {
     /**
      * @param $value
-     * @param null $config
+     * @param IndexColumnInterface $config
      *
      * @return mixed
      */
-    public function interpret($value, $config = null);
+    public function interpret($value, IndexColumnInterface $config = null);
 }

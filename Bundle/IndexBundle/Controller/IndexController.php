@@ -94,7 +94,7 @@ class IndexController extends ResourceController
      */
     public function getClassDefinitionForFieldSelectionAction(Request $request)
     {
-        $class = \Pimcore\Model\Object\ClassDefinition::getByName(intval($request->get('class')));
+        $class = \Pimcore\Model\Object\ClassDefinition::getByName($request->get('class'));
         $fields = $class->getFieldDefinitions();
 
         $result = [
