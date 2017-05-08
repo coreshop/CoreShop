@@ -89,8 +89,13 @@ services:
     tags:
       - { name: coreshop.cart_price_rule.condition, type: carriers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType }
 
-
   coreshop.rule.cart_price_rule.action.free_shipping:
     class: CoreShop\Bundle\CoreBundle\Cart\Rule\Action\FreeShippingActionProcessor
     tags:
       - { name: coreshop.cart_price_rule.action, type: freeShipping, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType }
+
+  coreshop.rule.cart_price_rule.action.gift_product:
+    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Action\GiftProductActionProcessor
+    arguments: ['@coreshop.repository.product', '@coreshop.cart.modifier']
+    tags:
+      - { name: coreshop.cart_price_rule.action, type: giftProduct, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType }

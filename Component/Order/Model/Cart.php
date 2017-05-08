@@ -316,9 +316,9 @@ class Cart extends AbstractPimcoreModel implements CartInterface
 
         if ($items instanceof Fieldcollection) {
             for ($i = 0; $i < count($items); ++$i) {
-                $arrayItem = $items[$i];
+                $arrayItem = $items->get($i);
 
-                if ($arrayItem->getId() === $priceRule->getId()) {
+                if ($arrayItem->getCartPriceRule()->getId() === $priceRule->getId()) {
                     $items->remove($i);
                     break;
                 }

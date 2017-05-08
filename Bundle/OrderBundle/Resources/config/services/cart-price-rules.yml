@@ -132,6 +132,11 @@ services:
       - '@coreshop.factory.cart_price_rule_item'
       - '@coreshop.registry.cart_price_rule.actions'
 
+  coreshop.cart_price_rule.un_processor:
+    class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessor
+    arguments:
+      - '@coreshop.registry.cart_price_rule.actions'
+
   coreshop.cart_price_rule.order.processor:
     class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessor
     arguments:

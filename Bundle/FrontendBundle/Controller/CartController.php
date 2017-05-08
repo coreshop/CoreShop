@@ -4,8 +4,13 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\CartModifierInterface;
+use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
+use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,7 +88,7 @@ class CartController extends FrontendController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function cartPriceRuleAction(Request $request) {
+    public function addPriceRuleAction(Request $request) {
         $code = $request->get('code');
         $cart = $this->getCartManager()->getCart();
 
@@ -114,8 +119,39 @@ class CartController extends FrontendController
         return $this->redirectToRoute('coreshop_shop_cart_summary');
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removePriceRuleAction(Request $request) {
+        $code = $request->get('code');
+        $cart = $this->getCartManager()->getCart();
+
+        $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
+
+        if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
+            return $this->redirectToRoute('coreshop_shop_cart_summary');
+        }
+
+        $priceRule = $voucherCode->getCartPriceRule();
+
+        $this->getCartPriceRuleUnProcessor()->unProcess($priceRule, $code, $cart);
+
+        return $this->redirectToRoute('coreshop_shop_cart_summary');
+    }
+
+    /**
+     * @return CartPriceRuleProcessorInterface
+     */
     protected function getCartPriceRuleProcessor() {
         return $this->get('coreshop.cart_price_rule.processor');
+    }
+
+    /**
+     * @return CartPriceRuleUnProcessorInterface
+     */
+    protected function getCartPriceRuleUnProcessor() {
+        return $this->get('coreshop.cart_price_rule.un_processor');
     }
 
     /**
