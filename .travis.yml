@@ -1,61 +1,62 @@
-language: php
+# This file is basically a copy of Pimcore's .travis.yml
+# Actually, very dangerous, cause it depends on Pimcore's travis configuration files
+# Which could be removed at any time from them
 
 notifications:
   email:
-    - dominik@pfaffenbauer.at
+    - travis-ci@coreshop.org
+
+sudo: false
+language: php
 
 php:
-  - 5.6
   - 7
-  - hhvm
+  - 7.1
+
+services:
+  - redis
+
+addons:
+  mariadb: '10.1'
+  hosts:
+    - pimcore-test.dev
 
 matrix:
-  allow_failures:
-    - php: hhvm
+  include:
+    - os: linux
+      sudo: required
+      php: 7
+    - os: linux
+      sudo: required
+      php: 7.1
+
+env:
+  global:
+    - PIMCORE_ENVIRONMENT=test
+    - CORESHOP_TEST=1
 
 before_install:
- - mkdir $TRAVIS_BUILD_DIR/plugin
- - mv !(plugin) plugin
- - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR/pimcore
- - cd $TRAVIS_BUILD_DIR/pimcore
-# - git checkout 4.0.0-RC1
- - cd $TRAVIS_BUILD_DIR
- - mkdir $TRAVIS_BUILD_DIR/pimcore/plugins
- - mv $TRAVIS_BUILD_DIR/plugin $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop
+ - rm -rf $TRAVIS_BUILD_DIR
+ - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
 
 install:
-  - composer self-update
-  - cd $TRAVIS_BUILD_DIR/pimcore
-  - composer install
-  - composer require "phpunit/phpunit:5.7.*" --dev --update-with-dependencies
-  - cd $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop
-  - composer install
+  # add config templates
+  - mkdir -p var/config
+  - cp .travis/system.template.php var/config/system.php
+  - cp app/config/parameters.example.yml app/config/parameters.yml
+
+  # install composer - HHVM isn't officially PHP 7 compatible - see https://github.com/composer/composer/issues/4976
+  - if [[ "$TRAVIS_PHP_VERSION" != *"hhvm"* ]]; then composer install; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == *"hhvm"* ]]; then composer install --ignore-platform-reqs; fi
+
+  # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
+  # this test is kinda stupid
+  - composer require coreshop/coreshop $TRAVIS_COMMIT
 
 before_script:
-  # install apache
-  - cd $TRAVIS_BUILD_DIR
-  - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - sudo a2enmod rewrite actions fastcgi alias
-  # customize php settings
-  - sudo chmod 0755 .travis/setup-fpm.sh .travis/setup-hhvm.sh
-  - if [[ "$TRAVIS_PHP_VERSION" != *"hhvm"* ]]; then .travis/setup-fpm.sh; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == *"hhvm"* ]]; then .travis/setup-hhvm.sh; fi
-  # configure apache virtual hosts - config was copied in the individual setup scripts above (FPM/HHVM)
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-  - sudo service apache2 restart
-  # make tests executable
-  - cd $TRAVIS_BUILD_DIR/pimcore/plugins/CoreShop/tests
-  - sudo chmod 0755 alltests.sh hhvm-all.sh
+  - .travis/setup-php.sh
+  - if [[ "$TRAVIS_SUDO" == "true" ]]; then .travis/setup-sudo.sh; fi
 
 script:
-  - if [[ "$TRAVIS_PHP_VERSION" != *"hhvm"* ]]; then ./alltests.sh; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == *"hhvm"* ]]; then ./hhvm-all.sh; fi
-
-after_script:
-  - cat $TRAVIS_BUILD_DIR/tests/tmp/var/log/debug.log
-  - cat $TRAVIS_BUILD_DIR/tests/tmp/var/log/php.log
-  - cat $TRAVIS_BUILD_DIR/apache-error.log
-  - cat $TRAVIS_BUILD_DIR/apache-access.log
-  - cat /tmp/hhvm.log
-
+  - cd $TRAVIS_BUILD_DIR/vendor/coreshop/coreshop/tests
+  - run-tests.sh
