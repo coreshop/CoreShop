@@ -2,6 +2,7 @@
   {
     "name": "User Register",
     "type": "user",
+    "active": true,
     "conditions": [
       {
         "type": "user.userType",
@@ -25,6 +26,7 @@
   {
     "name": "User Reset Password",
     "type": "user",
+    "active": true,
     "conditions": [
       {
         "type": "user.userType",
@@ -48,6 +50,7 @@
   {
     "name": "Order Shipped",
     "type": "order",
+    "active": true,
     "conditions": [
       {
         "type": "order.shipmentState",
@@ -71,6 +74,7 @@
   {
     "name": "Order Confirmation",
     "type": "order",
+    "active": true,
     "conditions": [
       {
         "type": "order.orderState",

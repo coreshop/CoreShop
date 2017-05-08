@@ -14,7 +14,9 @@ class NotificationRuleRepository extends EntityRepository implements Notificatio
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.type = :type')
+            ->andWhere('o.active = :active')
             ->setParameter('type', $type)
+            ->setParameter('active', true)
             ->getQuery()
             ->getResult()
         ;

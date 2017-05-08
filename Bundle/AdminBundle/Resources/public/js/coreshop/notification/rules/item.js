@@ -15,10 +15,10 @@ pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.item');
 
 pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.coreshop.rules.item, {
 
-    iconCls : 'coreshop_icon_notification_rule',
+    iconCls: 'coreshop_icon_notification_rule',
 
-    url : {
-        save : '/admin/CoreShop/notification_rules/save'
+    url: {
+        save: '/admin/CoreShop/notification_rules/save'
     },
 
     getPanel: function () {
@@ -30,7 +30,7 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
             closable: true,
             deferredRender: false,
             forceLayout: true,
-            iconCls : this.iconCls,
+            iconCls: this.iconCls,
             buttons: [{
                 text: t('save'),
                 iconCls: 'pimcore_icon_apply',
@@ -39,7 +39,7 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
             items: items
         });
 
-        if(this.data.type) {
+        if (this.data.type) {
             this.reloadTypes(this.data.type);
         }
 
@@ -55,9 +55,9 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
         }.bind(this));
 
         var typesStore = new Ext.data.ArrayStore({
-            data : types,
+            data: types,
             fields: ['type', 'typeName'],
-            idProperty : 'type'
+            idProperty: 'type'
         });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
@@ -65,7 +65,7 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
-            border:false,
+            border: false,
             items: [
                 {
                     xtype: 'textfield',
@@ -75,16 +75,22 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
                     value: data.name
                 },
                 {
-                    xtype : 'combo',
+                    xtype: 'checkbox',
+                    name: 'active',
+                    fieldLabel: t('active'),
+                    checked: data.active
+                },
+                {
+                    xtype: 'combo',
                     fieldLabel: t('coreshop_notification_rule_type'),
                     name: 'type',
                     displayField: 'type',
                     valueField: 'type',
                     store: typesStore,
-                    value : this.data.type,
+                    value: this.data.type,
                     width: 250,
-                    listeners : {
-                        change : function (combo, value) {
+                    listeners: {
+                        change: function (combo, value) {
                             this.reloadTypes(value);
                         }.bind(this)
                     }
@@ -95,18 +101,18 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
         return this.settingsForm;
     },
 
-    getItems : function () {
+    getItems: function () {
         return [
             this.getSettings()
         ];
     },
 
-    reloadTypes : function(type) {
-        if(this.actions) {
+    reloadTypes: function (type) {
+        if (this.actions) {
             this.actions.destroy();
         }
 
-        if(this.conditions) {
+        if (this.conditions) {
             this.conditions.destroy();
         }
 
@@ -115,7 +121,7 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
         this.panel.add(items);
     },
 
-    getItemsForType : function(type) {
+    getItemsForType: function (type) {
         var actionContainerClass = this.getActionContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
@@ -131,24 +137,22 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
         ];
 
         // add saved conditions
-        if (this.data.conditions)
-        {
+        if (this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
                 var conditionType = condition.type.replace(type + '.', '');
 
-                if(allowedConditions.indexOf(conditionType) >= 0) {
+                if (allowedConditions.indexOf(conditionType) >= 0) {
                     this.conditions.addCondition(conditionType, condition);
                 }
             }.bind(this));
         }
 
         // add saved actions
-        if (this.data.actions)
-        {
+        if (this.data.actions) {
             Ext.each(this.data.actions, function (action) {
                 var actionType = action.type.replace(type + '.', '');
 
-                if(allowedActions.indexOf(actionType) >= 0) {
+                if (allowedActions.indexOf(actionType) >= 0) {
                     this.actions.addAction(actionType, action);
                 }
             }.bind(this));
@@ -157,11 +161,11 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
         return items;
     },
 
-    getActionContainerClass : function () {
+    getActionContainerClass: function () {
         return pimcore.plugin.coreshop.notification.rules.action;
     },
 
-    getConditionContainerClass : function () {
+    getConditionContainerClass: function () {
         return pimcore.plugin.coreshop.notification.rules.condition;
     }
 });

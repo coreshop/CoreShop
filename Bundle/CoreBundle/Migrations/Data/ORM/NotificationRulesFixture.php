@@ -4,7 +4,6 @@ namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
 
 use CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 use Pimcore\Model\Document;
@@ -60,6 +59,12 @@ class NotificationRulesFixture extends AbstractFixture implements ContainerAware
 
                 foreach ($json as $rule) {
                     try {
+                        $existingRules = $this->container->get('coreshop.repository.notification_rule')->findBy(['name' => $rule['name']]);
+
+                        if (count($existingRules) > 0) {
+                            continue;
+                        }
+
                         foreach ($rule['actions'] as &$action) {
                             foreach ($action['configuration']['mails'] as &$mail) {
                                 $document = Document::getByPath('/' . $mail);
