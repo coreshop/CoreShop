@@ -7,9 +7,8 @@ services:
       - { name: kernel.event_listener, event: coreshop.index.post_save, method: onIndexSavePost }
 
   coreshop.listeners.index.object.post_update:
-        class: CoreShop\Bundle\IndexBundle\EventListener\IndexObjectListener
-        arguments:
-          - '@coreshop.repository.index'
-          - '@coreshop.registry.index.worker'
-        tags:
-            - { name: kernel.event_listener, event: pimcore.object.postUpdate, method: onPostUpdate }
+    class: CoreShop\Bundle\IndexBundle\EventListener\IndexObjectListener
+    arguments:
+      - '@coreshop.index.updater'
+    tags:
+      - { name: kernel.event_listener, event: pimcore.object.postUpdate, method: onPostUpdate }

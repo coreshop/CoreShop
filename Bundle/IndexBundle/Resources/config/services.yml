@@ -174,3 +174,10 @@ services:
     class: CoreShop\Component\Index\Filter\BooleanFilterConditionProcessor
     tags:
       - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionBooleanType}
+
+  # Index Updater Service
+  coreshop.index.updater:
+      class: CoreShop\Component\Index\Service\IndexUpdaterService
+      arguments:
+        - '@coreshop.repository.index'
+        - '@coreshop.registry.index.worker'
