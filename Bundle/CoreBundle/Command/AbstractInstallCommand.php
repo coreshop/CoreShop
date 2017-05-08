@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Command;
@@ -65,8 +64,8 @@ abstract class AbstractInstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array $headers
-     * @param array $rows
+     * @param array           $headers
+     * @param array           $rows
      * @param OutputInterface $output
      */
     protected function renderTable(array $headers, array $rows, OutputInterface $output)
@@ -82,7 +81,7 @@ abstract class AbstractInstallCommand extends ContainerAwareCommand
 
     /**
      * @param OutputInterface $output
-     * @param int $length
+     * @param int             $length
      *
      * @return ProgressBar
      */
@@ -99,9 +98,9 @@ abstract class AbstractInstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array $commands
+     * @param array           $commands
      * @param OutputInterface $output
-     * @param bool $displayProgress
+     * @param bool            $displayProgress
      */
     protected function runCommands(array $commands, OutputInterface $output, $displayProgress = true)
     {
@@ -134,8 +133,8 @@ abstract class AbstractInstallCommand extends ContainerAwareCommand
         }
     }
 
-        /**
-     * @param string $directory
+    /**
+     * @param string          $directory
      * @param OutputInterface $output
      */
     protected function ensureDirectoryExistsAndIsWritable($directory, OutputInterface $output)

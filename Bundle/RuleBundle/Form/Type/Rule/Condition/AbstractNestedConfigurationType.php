@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition;
@@ -28,9 +27,9 @@ abstract class AbstractNestedConfigurationType extends AbstractType
         $builder
             ->add('operator', ChoiceType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']])
+                    new NotBlank(['groups' => ['coreshop']]),
                 ],
-                'choices' => array('and' => 'and', 'or' => 'or'),
+                'choices' => ['and' => 'and', 'or' => 'or'],
             ])
         ;
     }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
@@ -38,9 +37,9 @@ class SecurityController extends FrontendController
     private $templatingEngine;
 
     /**
-     * @param AuthenticationUtils $authenticationUtils
+     * @param AuthenticationUtils  $authenticationUtils
      * @param FormFactoryInterface $formFactory
-     * @param EngineInterface $templatingEngine
+     * @param EngineInterface      $templatingEngine
      */
     public function __construct(
         AuthenticationUtils $authenticationUtils,
@@ -70,7 +69,7 @@ class SecurityController extends FrontendController
             'form' => $form->createView(),
             'last_username' => $lastUsername,
             'last_error' => $lastError,
-            'target' => $request->get('target', null)
+            'target' => $request->get('target', null),
         ]);
     }
 

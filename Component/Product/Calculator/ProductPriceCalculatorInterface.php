@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Calculator;
@@ -25,6 +24,7 @@ interface ProductPriceCalculatorInterface
     /**
      * @param $subject
      * @param $price
+     *
      * @return mixed
      */
     public function getDiscount($subject, $price);

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -43,12 +42,12 @@ interface CartPriceRuleInterface extends RuleInterface
     public function setActive($active);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getHighlight();
 
     /**
-     * @param boolean $highlight
+     * @param bool $highlight
      */
     public function setHighlight($highlight);
 

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -22,7 +21,7 @@ use Pimcore\Model\Object\Fieldcollection;
 class Order extends AbstractPimcoreModel implements OrderInterface
 {
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -32,7 +31,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -42,7 +41,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -52,7 +51,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -62,7 +61,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -72,7 +71,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -82,7 +81,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -92,7 +91,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -102,7 +101,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -112,7 +111,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -142,7 +141,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function getIsPayed()
     {
-        return ($this->getTotal() === $this->getTotalPayed());
+        return $this->getTotal() === $this->getTotalPayed();
     }
 
     /**
@@ -187,7 +186,6 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
 
     /**
      * {@inheritdoc}
@@ -317,7 +315,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function getShippingTax()
@@ -386,7 +384,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function getTaxes($applyDiscountToTaxValues = true)
     {
-        throw new \Exception("implement me");
+        throw new \Exception('implement me');
     }
 
     /**
@@ -394,7 +392,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function setTaxes($taxes)
     {
-        throw new \Exception("implement me");
+        throw new \Exception('implement me');
     }
 
     /**
@@ -509,7 +507,6 @@ class Order extends AbstractPimcoreModel implements OrderInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -603,11 +600,11 @@ class Order extends AbstractPimcoreModel implements OrderInterface
         return false;
     }
 
-
     /**
      * @return PaymentRepositoryInterface
      */
-    private function getPaymentRepository() {
+    private function getPaymentRepository()
+    {
         return \Pimcore::getContainer()->get('coreshop.repository.payment');
     }
 

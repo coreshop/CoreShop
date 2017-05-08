@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
@@ -18,14 +17,8 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 class PaymentStateChecker extends AbstractConditionChecker
 {
-    /**
-     *
-     */
     const PAYMENT_TYPE_PARTIAL = 1;
 
-    /**
-     *
-     */
     const PAYMENT_TYPE_FULL = 2;
 
     /**

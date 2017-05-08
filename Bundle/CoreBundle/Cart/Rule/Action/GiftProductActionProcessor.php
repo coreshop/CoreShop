@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Cart\Rule\Action;
@@ -24,16 +23,16 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     /**
      * @var ProductRepositoryInterface
      */
-    protected $productRepository;
+    private $productRepository;
 
     /**
      * @var CartModifierInterface
      */
-    protected $cartModifier;
+    private $cartModifier;
 
     /**
      * @param ProductRepositoryInterface $productRepository
-     * @param CartModifierInterface $cartModifier
+     * @param CartModifierInterface      $cartModifier
      */
     public function __construct(ProductRepositoryInterface $productRepository, CartModifierInterface $cartModifier)
     {

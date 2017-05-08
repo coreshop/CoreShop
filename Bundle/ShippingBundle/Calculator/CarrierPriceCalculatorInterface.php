@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
@@ -21,9 +20,10 @@ interface CarrierPriceCalculatorInterface
 {
     /**
      * @param CarrierInterface $carrier
-     * @param CartInterface $cart
+     * @param CartInterface    $cart
      * @param AddressInterface $address
-     * @param boolean $withTax
+     * @param bool             $withTax
+     *
      * @return mixed
      */
     public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, $withTax = true);

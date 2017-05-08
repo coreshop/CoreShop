@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test;
@@ -99,14 +98,16 @@ class Data
 
     /**
      * @param $serviceId
+     *
      * @return object
      */
-    private static function get($serviceId) {
+    private static function get($serviceId)
+    {
         return \Pimcore::getKernel()->getContainer()->get($serviceId);
     }
 
     /**
-     * Create Test Data
+     * Create Test Data.
      */
     public static function createData()
     {
@@ -123,38 +124,38 @@ class Data
         self::get('coreshop.context.country.cached')->setCountry(self::$store->getBaseCountry());
         self::get('coreshop.context.currency.cached')->setCurrency(self::$store->getBaseCurrency());
         self::get('coreshop.context.store.cached')->setStore(self::$store);
-        self::get('coreshop.context.customer.cached')->setCustomer(Data::$customer1);
+        self::get('coreshop.context.customer.cached')->setCustomer(self::$customer1);
     }
 
     /**
-     * Create Test Tax Rules
+     * Create Test Tax Rules.
      */
     public static function createTaxRule()
     {
         if (!self::$taxRuleGroup instanceof TaxRuleGroupInterface) {
-            $taxRuleGroupFactory = self::get("coreshop.factory.tax_rule_group");
-            $taxRuleFactory = self::get("coreshop.factory.tax_rule");
-            $taxRateFactory = self::get("coreshop.factory.tax_rate");
-            $entityManager = self::get("doctrine.orm.entity_manager");
+            $taxRuleGroupFactory = self::get('coreshop.factory.tax_rule_group');
+            $taxRuleFactory = self::get('coreshop.factory.tax_rule');
+            $taxRateFactory = self::get('coreshop.factory.tax_rate');
+            $entityManager = self::get('doctrine.orm.entity_manager');
 
             /**
-             * @var $taxRate TaxRateInterface
+             * @var TaxRateInterface
              */
             $taxRate = $taxRateFactory->createNew();
             $taxRate->setRate(20);
-            $taxRate->setName("20");
+            $taxRate->setName('20');
             $taxRate->setActive(true);
 
             /**
-             * @var $taxRuleGroup TaxRuleGroupInterface
+             * @var TaxRuleGroupInterface
              */
             $taxRuleGroup = $taxRuleGroupFactory->createNew();
-            $taxRuleGroup->setName("20");
+            $taxRuleGroup->setName('20');
             $taxRuleGroup->setActive(true);
             $taxRuleGroup->addStore(self::$store);
 
             /**
-             * @var $taxRule TaxRuleInterface
+             * @var TaxRuleInterface
              */
             $taxRule = $taxRuleFactory->createNew();
             $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -173,24 +174,24 @@ class Data
     }
 
     /**
-     * Create Test Carriers
+     * Create Test Carriers.
      */
     public static function createTestCarrierWeight()
     {
         if (!self::$carrier1 instanceof CarrierInterface) {
-            $carrierFactory = self::get("coreshop.factory.carrier");
-            $entityManager = self::get("doctrine.orm.entity_manager");
+            $carrierFactory = self::get('coreshop.factory.carrier');
+            $entityManager = self::get('doctrine.orm.entity_manager');
             $conditionFactory = self::get('coreshop.factory.rule_condition');
             $actionFactory = self::get('coreshop.factory.rule_action');
             $shippingRuleFactory = self::get('coreshop.factory.shipping_rule');
             $shippingRuleGroupFactory = self::get('coreshop.factory.shipping_rule_group');
 
             /**
-             * @var $carrier CarrierInterface
+             * @var CarrierInterface
              */
             $carrier = $carrierFactory->createNew();
-            $carrier->setName("Test-Carrier-Weight");
-            $carrier->setLabel("Test-Carrier-Weight");
+            $carrier->setName('Test-Carrier-Weight');
+            $carrier->setLabel('Test-Carrier-Weight');
             $carrier->setRangeBehaviour(CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
             $carrier->setTaxRule(self::$taxRuleGroup);
             $carrier->setIsFree(false);
@@ -198,11 +199,10 @@ class Data
 
             $entityManager->persist($carrier);
 
-
             /**
-             * @var $zoneCond ConditionInterface
-             * @var $weightCond ConditionInterface
-             * @var $priceAct ActionInterface
+             * @var ConditionInterface
+             * @var $weightCond        ConditionInterface
+             * @var $priceAct          ActionInterface
              */
             $zoneCond = $conditionFactory->createNew();
             $zoneCond->setType('zones');
@@ -217,16 +217,16 @@ class Data
             $priceAct->setConfiguration(['price' => 10]);
 
             /**
-             * @var $rule1 ShippingRuleInterface
+             * @var ShippingRuleInterface
              */
             $rule1 = $shippingRuleFactory->createNew();
-            $rule1->setName("carrier1-rule");
+            $rule1->setName('carrier1-rule');
             $rule1->addAction($priceAct);
             $rule1->addCondition($weightCond);
             $rule1->addCondition($zoneCond);
 
             /**
-             * @var $ruleGroup ShippingRuleGroupInterface
+             * @var ShippingRuleGroupInterface
              */
             $ruleGroup = $shippingRuleGroupFactory->createNew();
             $ruleGroup->setCarrier($carrier);
@@ -245,7 +245,7 @@ class Data
     }
 
     /**
-     * Create Test Products
+     * Create Test Products.
      */
     public static function createTestProduct()
     {
@@ -254,12 +254,12 @@ class Data
 
         if (!self::$category1 instanceof CategoryInterface) {
             /**
-             * @var $category1 CategoryInterface
+             * @var CategoryInterface
              */
             $category1 = $categoryFactory->createNew();
             $category1->setName('test');
-            $category1->setKey("test-category");
-            $category1->setParent(Service::createFolderByPath("/coreshop/categories"));
+            $category1->setKey('test-category');
+            $category1->setParent(Service::createFolderByPath('/coreshop/categories'));
             $category1->save();
 
             self::$category1 = $category1;
@@ -267,12 +267,12 @@ class Data
 
         if (!self::$category2 instanceof CategoryInterface) {
             /**
-             * @var $category2 CategoryInterface
+             * @var CategoryInterface
              */
             $category2 = $categoryFactory->createNew();
             $category2->setName('test2');
-            $category2->setKey("test-category2");
-            $category2->setParent(Service::createFolderByPath("/coreshop/categories"));
+            $category2->setKey('test-category2');
+            $category2->setParent(Service::createFolderByPath('/coreshop/categories'));
             $category2->save();
 
             self::$category2 = $category2;
@@ -280,10 +280,10 @@ class Data
 
         if (!self::$product1 instanceof ProductInterface) {
             /**
-             * @var $product1 ProductInterface
+             * @var ProductInterface
              */
             $product1 = $productFactory->createNew();
-            $product1->setName("test1");
+            $product1->setName('test1');
             $product1->setWholesalePrice(10);
             $product1->setBasePrice(15);
             $product1->setCategories([self::$category1]);
@@ -292,8 +292,8 @@ class Data
             $product1->setDepth(50);
             $product1->setWeight(50);
             $product1->setTaxRule(self::$taxRuleGroup);
-            $product1->setParent(Service::createFolderByPath("/coreshop/products"));
-            $product1->setKey(File::getValidFilename("test1"));
+            $product1->setParent(Service::createFolderByPath('/coreshop/products'));
+            $product1->setKey(File::getValidFilename('test1'));
             //$product1->setStore([Shop::getDefaultShop()->getId()]);
             $product1->save();
 
@@ -302,10 +302,10 @@ class Data
 
         if (!self::$product2 instanceof ProductInterface) {
             /**
-             * @var $product2 ProductInterface
+             * @var ProductInterface
              */
             $product2 = $productFactory->createNew();
-            $product2->setName("test2");
+            $product2->setName('test2');
             $product2->setWholesalePrice(100);
             $product2->setBasePrice(150);
             $product2->setCategories([self::$category2]);
@@ -314,8 +314,8 @@ class Data
             $product2->setDepth(500);
             $product2->setWeight(500);
             $product2->setTaxRule(self::$taxRuleGroup);
-            $product2->setParent(Service::createFolderByPath("/coreshop/products"));
-            $product2->setKey(File::getValidFilename("test2"));
+            $product2->setParent(Service::createFolderByPath('/coreshop/products'));
+            $product2->setKey(File::getValidFilename('test2'));
             //$product2->setShops([Shop::getDefaultShop()->getId()]);
             $product2->save();
 
@@ -323,11 +323,11 @@ class Data
         }
 
         if (!self::$product3 instanceof ProductInterface) {
-             /**
-             * @var $product3 ProductInterface
+            /**
+             * @var ProductInterface
              */
             $product3 = $productFactory->createNew();
-            $product3->setName("test3");
+            $product3->setName('test3');
             $product3->setWholesalePrice(50);
             $product3->setBasePrice(75);
             $product3->setHeight(100);
@@ -335,8 +335,8 @@ class Data
             $product3->setDepth(100);
             $product3->setWeight(100);
             $product3->setTaxRule(self::$taxRuleGroup);
-            $product3->setParent(Service::createFolderByPath("/coreshop/products"));
-            $product3->setKey(File::getValidFilename("test3"));
+            $product3->setParent(Service::createFolderByPath('/coreshop/products'));
+            $product3->setKey(File::getValidFilename('test3'));
             //$product3->setShops([Shop::getDefaultShop()->getId()]);
             $product3->save();
 
@@ -349,9 +349,9 @@ class Data
      */
     public static function createCart()
     {
-        $cart =  self::get('coreshop.factory.cart')->createNew();
+        $cart = self::get('coreshop.factory.cart')->createNew();
         $cart->setKey(uniqid());
-        $cart->setParent(Service::createFolderByPath("/"));
+        $cart->setParent(Service::createFolderByPath('/'));
 
         return $cart;
     }
@@ -371,7 +371,7 @@ class Data
     }
 
     /**
-     * Create Test Customer Groups
+     * Create Test Customer Groups.
      */
     public static function createCustomerGroups()
     {
@@ -379,13 +379,13 @@ class Data
 
         if (!self::$customerGroup1 instanceof CustomerGroupInterface) {
             /**
-             * @var $customerGroup1 CustomerGroupInterface
+             * @var CustomerGroupInterface
              */
             $customerGroup1 = $customerGroupFactory->createNew();
-            $customerGroup1->setName("Group1");
+            $customerGroup1->setName('Group1');
             $customerGroup1->setShops([self::$store->getId()]);
-            $customerGroup1->setKey("group1");
-            $customerGroup1->setParent(Service::createFolderByPath("/customer-groups"));
+            $customerGroup1->setKey('group1');
+            $customerGroup1->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup1->save();
 
             self::$customerGroup1 = $customerGroup1;
@@ -393,13 +393,13 @@ class Data
 
         if (!self::$customerGroup2 instanceof CustomerGroupInterface) {
             /**
-             * @var $customerGroup2 CustomerGroupInterface
+             * @var CustomerGroupInterface
              */
             $customerGroup2 = $customerGroupFactory->createNew();
-            $customerGroup2->setName("Group2");
+            $customerGroup2->setName('Group2');
             $customerGroup2->setShops([self::$store->getId()]);
-            $customerGroup2->setKey("group2");
-            $customerGroup2->setParent(Service::createFolderByPath("/customer-groups"));
+            $customerGroup2->setKey('group2');
+            $customerGroup2->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup2->save();
 
             self::$customerGroup2 = $customerGroup2;
@@ -407,7 +407,7 @@ class Data
     }
 
     /**
-     * Create Test Customer
+     * Create Test Customer.
      */
     public static function createCustomer()
     {
@@ -416,24 +416,24 @@ class Data
 
         if (!self::$customer1 instanceof CustomerInterface) {
             /**
-             * @var $customer CustomerInterface
+             * @var CustomerInterface
              */
             $customer = $customerFactory->createNew();
-            $customer->setKey("customer1");
-            $customer->setParent(Service::createFolderByPath("/users"));
-            $customer->setFirstname("Max");
-            $customer->setLastname("Mustermann");
+            $customer->setKey('customer1');
+            $customer->setParent(Service::createFolderByPath('/users'));
+            $customer->setFirstname('Max');
+            $customer->setLastname('Mustermann');
             //$customer->setGender("m"); TODO
-            $customer->setEmail("mus@coreshop.org");
+            $customer->setEmail('mus@coreshop.org');
             $customer->setCustomerGroups([self::$customerGroup1]);
             $customer->save();
 
             /**
-             * @var $address AddressInterface
+             * @var AddressInterface
              */
             $address = $addressFactory->createNew();
             $address->setCity('Wels');
-            $address->setCountry(Data::$store->getBaseCountry());
+            $address->setCountry(self::$store->getBaseCountry());
             $address->setStreet('Freiung 9-11/N3');
             $address->setPostcode('4600');
             $address->setFirstname('Dominik');

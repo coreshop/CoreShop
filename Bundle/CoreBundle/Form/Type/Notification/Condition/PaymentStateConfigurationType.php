@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
@@ -29,8 +28,8 @@ final class PaymentStateConfigurationType extends AbstractType
             ->add('paymentState', ChoiceType::class, [
                 'choices' => [
                     PaymentStateChecker::PAYMENT_TYPE_PARTIAL,
-                    PaymentStateChecker::PAYMENT_TYPE_FULL
-                ]
+                    PaymentStateChecker::PAYMENT_TYPE_FULL,
+                ],
             ])
         ;
     }

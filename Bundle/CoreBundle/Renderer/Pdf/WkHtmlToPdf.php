@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Renderer\Pdf;
@@ -50,11 +49,11 @@ final class WkHtmlToPdf implements PdfRendererInterface
      *
      * @return array including absolutePath and relativePath
      */
-    protected function createHtmlFile($string)
+    private function createHtmlFile($string)
     {
         $tmpHtmlFile = PIMCORE_TEMPORARY_DIRECTORY.'/'.uniqid().'.htm';
         file_put_contents($tmpHtmlFile, $string);
-        $httpSource = rtrim(Tool::getHostUrl(), '/') . '/' .str_replace($_SERVER['DOCUMENT_ROOT'], '', $tmpHtmlFile);
+        $httpSource = rtrim(Tool::getHostUrl(), '/').'/'.str_replace($_SERVER['DOCUMENT_ROOT'], '', $tmpHtmlFile);
 
         return ['absolutePath' => $httpSource, 'relativePath' => $tmpHtmlFile];
     }
@@ -69,7 +68,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
      *
      * @throws \Exception
      */
-    protected function convert($httpSource, $config = [])
+    private function convert($httpSource, $config = [])
     {
         $tmpPdfFile = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/'.uniqid().'.pdf';
         $options = ' ';
@@ -111,7 +110,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
     /**
      * @param string $file
      */
-    protected function unlinkFile($file)
+    private function unlinkFile($file)
     {
         @unlink($file);
     }
@@ -121,8 +120,8 @@ final class WkHtmlToPdf implements PdfRendererInterface
      *
      * @return bool|string
      */
-    protected function getWkhtmltodfBinary()
+    private function getWkhtmltodfBinary()
     {
-        return Console::getExecutable("wkhtmltopdf");
+        return Console::getExecutable('wkhtmltopdf');
     }
 }

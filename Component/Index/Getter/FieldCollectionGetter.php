@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Index\Getter;
@@ -27,14 +26,14 @@ class FieldCollectionGetter implements GetterInterface
         $fieldValues = [];
         $collectionField = $config->getGetterConfig()['collectionField'];
 
-        $collectionContainerGetter = 'get' . ucfirst($collectionField);
+        $collectionContainerGetter = 'get'.ucfirst($collectionField);
         $collectionContainer = $object->$collectionContainerGetter();
         $validItems = [];
-        $fieldGetter = 'get' . ucfirst($columnConfig['key']);
+        $fieldGetter = 'get'.ucfirst($columnConfig['key']);
 
         if ($collectionContainer instanceof \Pimcore\Model\Object\Fieldcollection) {
             foreach ($collectionContainer->getItems() as $item) {
-                $className = 'Pimcore\Model\Object\Fieldcollection\Data\\' . $columnConfig['className'];
+                $className = 'Pimcore\Model\Object\Fieldcollection\Data\\'.$columnConfig['className'];
                 if (is_a($item, $className)) {
                     $validItems[] = $item;
                 }

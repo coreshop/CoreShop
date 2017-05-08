@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Cart;
@@ -33,7 +32,7 @@ class CartModifier implements CartModifierInterface
 
     /**
      * @param CartManagerInterface $cartManager
-     * @param FactoryInterface $cartItemFactory
+     * @param FactoryInterface     $cartItemFactory
      */
     public function __construct(CartManagerInterface $cartManager, FactoryInterface $cartItemFactory)
     {
@@ -85,10 +84,9 @@ class CartModifier implements CartModifierInterface
 
             $item->setQuantity($newQuantity);
             $item->save();
-        }
-        else {
+        } else {
             /**
-             * @var $item CartItemInterface
+             * @var CartItemInterface
              */
             $item = $this->cartItemFactory->createNew();
             $item->setKey(uniqid());

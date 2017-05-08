@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
@@ -36,7 +35,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface
 
     /**
      * @param CustomerContextInterface $customerContext
-     * @param FormFactoryInterface $formFactory
+     * @param FormFactoryInterface     $formFactory
      */
     public function __construct(CustomerContextInterface $customerContext, FormFactoryInterface $formFactory)
     {
@@ -69,9 +68,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface
             $customer = $this->customerContext->getCustomer();
 
             return $customer instanceof CustomerInterface;
-        }
-        catch (CustomerNotFoundException $ex) {
-
+        } catch (CustomerNotFoundException $ex) {
         }
 
         return false;
@@ -83,7 +80,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface
     public function commitStep(CartInterface $cart, Request $request)
     {
         if (!$this->validate($cart)) {
-            throw new CheckoutException("no customer found", 'coreshop_checkout_customer_invalid');
+            throw new CheckoutException('no customer found', 'coreshop_checkout_customer_invalid');
         }
     }
 
@@ -93,7 +90,6 @@ class CustomerCheckoutStep implements CheckoutStepInterface
     public function prepareStep(CartInterface $cart)
     {
         return [
-
         ];
     }
 }

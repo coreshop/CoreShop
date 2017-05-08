@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Processor;
@@ -19,7 +18,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 
-class CartCarrierProcessor implements  CartCarrierProcessorInterface
+class CartCarrierProcessor implements CartCarrierProcessorInterface
 {
     /**
      * @var RepositoryInterface
@@ -32,14 +31,13 @@ class CartCarrierProcessor implements  CartCarrierProcessorInterface
     private $carrierShippingRuleChecker;
 
     /**
-     * @param RepositoryInterface $carrierRepository
+     * @param RepositoryInterface                 $carrierRepository
      * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
      */
     public function __construct(
         RepositoryInterface $carrierRepository,
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
-    )
-    {
+    ) {
         $this->carrierRepository = $carrierRepository;
         $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
     }

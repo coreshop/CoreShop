@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Rule\Action;
@@ -19,6 +18,7 @@ interface ProductPriceActionProcessorInterface
      * @param $subject
      * @param $price
      * @param array $configuration
+     *
      * @return mixed
      */
     public function getDiscount($subject, $price, array $configuration);

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 *//* PHPUnit
  *
  * Copyright (c) 2002-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
@@ -42,7 +41,7 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
-*/include_once __DIR__ . "/../../../vendor/autoload.php";
+*/include_once __DIR__.'/../../../vendor/autoload.php';
 
 if (extension_loaded('xdebug')) {
     xdebug_disable();
@@ -69,8 +68,6 @@ set_include_path(implode(PATH_SEPARATOR, $includePaths));
 
 define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
 
-
 //require realpath(dirname(__FILE__)) . "/lib/PHPUnit/Autoload.php";
-
 
 PHPUnit_TextUI_Command::main();

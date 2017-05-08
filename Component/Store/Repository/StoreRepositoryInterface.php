@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Store\Repository;
@@ -26,6 +25,7 @@ interface StoreRepositoryInterface extends RepositoryInterface
 
     /**
      * @param $siteId
+     *
      * @return StoreInterface
      */
     public function findOneBySite($siteId);

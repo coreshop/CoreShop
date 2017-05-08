@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Registry;
@@ -16,13 +15,13 @@ namespace CoreShop\Component\Registry;
 class PriorityMap implements \Iterator, \Countable
 {
     private $lastSequence = 0;
-    private $list = array();
+    private $list = [];
     const ORDER_ASC = 'asc';
     const ORDER_DESC = 'desc';
     private $order = self::ORDER_ASC;
 
     /**
-     * Get scalar key from mixed
+     * Get scalar key from mixed.
      */
     private function getScalarKey($key)
     {
@@ -32,12 +31,14 @@ class PriorityMap implements \Iterator, \Countable
             return $key;
         }
     }
+
     /**
-     * Add new item to map
+     * Add new item to map.
      *
-     * @param string $key name
-     * @param string $value value
+     * @param string $key      name
+     * @param string $value    value
      * @param string $priority priority
+     *
      * @return PriorityMap
      */
     public function set($key, $value, $priority = 0)
@@ -47,34 +48,38 @@ class PriorityMap implements \Iterator, \Countable
         $this->list[$key]->value = $value;
         $this->list[$key]->priority = (int) $priority;
         $this->list[$key]->sequence = $this->lastSequence++;
+
         return $this->list[$key];
     }
+
     /**
-     * Get item from map
+     * Get item from map.
      *
      * @param $key
-     * @return null
      */
     public function get($key)
     {
         $key = $this->getScalarKey($key);
+
         return isset($this->list[$key]) ? $this->list[$key]->value : null;
     }
 
     /**
-     * Check if item in map
+     * Check if item in map.
      *
      * @param $key
+     *
      * @return bool
      */
     public function has($key)
     {
         $key = $this->getScalarKey($key);
+
         return isset($this->list[$key]);
     }
 
     /**
-     * remove item in map
+     * remove item in map.
      *
      * @param $key
      */
@@ -83,12 +88,12 @@ class PriorityMap implements \Iterator, \Countable
         $key = $this->getScalarKey($key);
 
         if (isset($this->list[$key])) {
-            unset ($this->list[$key]);
+            unset($this->list[$key]);
         }
     }
 
     /**
-     * Get list of keys
+     * Get list of keys.
      *
      * @return array
      */
@@ -96,8 +101,9 @@ class PriorityMap implements \Iterator, \Countable
     {
         return array_keys($this->list);
     }
+
     /**
-     * Get count or map
+     * Get count or map.
      *
      * @return int
      */
@@ -105,74 +111,88 @@ class PriorityMap implements \Iterator, \Countable
     {
         return count($this->list);
     }
+
     /**
-     * Set ASC direction of sorting
+     * Set ASC direction of sorting.
      *
      * @return $this
      */
     public function setAscOrder()
     {
         $this->order = self::ORDER_ASC;
+
         return $this;
     }
+
     /**
-     * Set DESC direction of sorting
+     * Set DESC direction of sorting.
      *
      * @return $this
      */
     public function setDescOrder()
     {
         $this->order = self::ORDER_DESC;
+
         return $this;
     }
+
     /**
-     * ASC sort strategy
+     * ASC sort strategy.
      *
      * @param $declaration1
      * @param $declaration2
+     *
      * @return int
      */
     private function ascSortStrategy($declaration1, $declaration2)
     {
-        if($declaration1->priority === $declaration2->priority) {
+        if ($declaration1->priority === $declaration2->priority) {
             return $declaration1->sequence < $declaration2->sequence ? 1 : -1;
         }
+
         return $declaration1->priority > $declaration2->priority ? 1 : -1;
     }
+
     /**
-     * DESC sort strategy
+     * DESC sort strategy.
      *
      * @param $declaration1
      * @param $declaration2
+     *
      * @return int
      */
     private function descSortStrategy($declaration1, $declaration2)
     {
-        if($declaration1->priority === $declaration2->priority) {
+        if ($declaration1->priority === $declaration2->priority) {
             return $declaration1->sequence < $declaration2->sequence ? 1 : -1;
         }
+
         return $declaration1->priority < $declaration2->priority ? 1 : -1;
     }
+
     /**
-     * Reset iterator
+     * Reset iterator.
      */
     public function rewind()
     {
-        uasort($this->list, array($this, $this->order . 'SortStrategy'));
+        uasort($this->list, [$this, $this->order.'SortStrategy']);
         reset($this->list);
     }
+
     /**
-     * Get current item
+     * Get current item.
      *
      * @return mixed
      */
     public function current()
     {
         $item = current($this->list);
+
         return $item->value;
     }
+
     /**
-     * Get current key
+     * Get current key.
      *
      * @return mixed
      */
@@ -180,15 +200,17 @@ class PriorityMap implements \Iterator, \Countable
     {
         return key($this->list);
     }
+
     /**
-     * Mve iterator next
+     * Mve iterator next.
      */
     public function next()
     {
         next($this->list);
     }
+
     /**
-     * Check if current key is valid
+     * Check if current key is valid.
      *
      * @return bool
      */
@@ -196,8 +218,9 @@ class PriorityMap implements \Iterator, \Countable
     {
         return null !== $this->key();
     }
+
     /**
-     * Convert map to array
+     * Convert map to array.
      *
      * @return array
      */

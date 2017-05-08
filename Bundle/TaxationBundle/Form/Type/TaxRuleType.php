@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\TaxationBundle\Form\Type;
@@ -31,7 +30,7 @@ class TaxRuleType extends AbstractResourceType
                     'coreshop.form.tax_rule.behaviour.combine' => 1,
                     'coreshop.form.tax_rule.behaviour.one_after_another' => 2,
                 ],
-                'choice_translation_domain' => false
+                'choice_translation_domain' => false,
             ]);
     }
 

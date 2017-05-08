@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Index\Filter;
@@ -30,7 +29,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         $rawValues = $list->getGroupByValues($condition->getField(), true);
 
         $minValue = count($rawValues) > 0 ? $rawValues[0]['value'] : 0;
-        $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues)-1]['value'] : 0;
+        $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues) - 1]['value'] : 0;
 
         return [
             'type' => 'range',
@@ -42,7 +41,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             'values' => array_values($rawValues),
             'fieldName' => $condition->getField(),
             'stepCount' => $condition->getConfiguration()['stepCount'],
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit())
+            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
 

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
@@ -28,7 +27,8 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
     }
 
-    public function getVoucherCodesAction(Request $request) {
+    public function getVoucherCodesAction(Request $request)
+    {
         $id = $request->get('id');
         $cartPriceRule = $this->repository->find($id);
 
@@ -39,13 +39,14 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle(['total' => count($cartPriceRule->getVoucherCodes()), 'data' => $cartPriceRule->getVoucherCodes(), 'success' => true], ['group' => 'Detailed']);
     }
 
-    public function generateVoucherCodesAction(Request $request) {
-        $amount = $request->get("amount");
-        $length = $request->get("length");
-        $format = $request->get("format");
-        $prefix = $request->get("prefix", "");
-        $suffix = $request->get("suffix", "");
-        $hyphensOn = $request->get("hyphensOn", 0);
+    public function generateVoucherCodesAction(Request $request)
+    {
+        $amount = $request->get('amount');
+        $length = $request->get('length');
+        $format = $request->get('format');
+        $prefix = $request->get('prefix', '');
+        $suffix = $request->get('suffix', '');
+        $hyphensOn = $request->get('hyphensOn', 0);
         $id = $request->get('id');
         $priceRule = $this->repository->find($id);
 
@@ -63,30 +64,31 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle(['success' => false]);
     }
 
-    public function exportVoucherCodesAction(Request $request) {
+    public function exportVoucherCodesAction(Request $request)
+    {
         $id = $request->get('id');
         $priceRule = $this->repository->find($id);
 
         if ($priceRule instanceof CartPriceRuleInterface) {
-            $fileName = $priceRule->getName() . "_vouchercodes";
+            $fileName = $priceRule->getName().'_vouchercodes';
             $csvData = [];
 
-            $csvData[] = implode(",", [
-                "code",
-                "creationDate",
-                "used",
-                "uses"
+            $csvData[] = implode(',', [
+                'code',
+                'creationDate',
+                'used',
+                'uses',
             ]);
 
             foreach ($priceRule->getVoucherCodes() as $code) {
                 $data = [
-                    "code" => $code->getCode(),
-                    "creationDate" => $code->getCreationDate() instanceof \DateTime ? $code->getCreationDate()->getTimestamp() : '',
-                    "used" => $code->getUsed(),
-                    "uses" => $code->getUses()
+                    'code' => $code->getCode(),
+                    'creationDate' => $code->getCreationDate() instanceof \DateTime ? $code->getCreationDate()->getTimestamp() : '',
+                    'used' => $code->getUsed(),
+                    'uses' => $code->getUses(),
                 ];
 
-                $csvData[] = implode(";", $data);
+                $csvData[] = implode(';', $data);
             }
 
             $csv = implode(PHP_EOL, $csvData);
@@ -103,7 +105,8 @@ class CartPriceRuleController extends ResourceController
         exit;
     }
 
-    protected function getVoucherCodeGenerator() {
+    protected function getVoucherCodeGenerator()
+    {
         return $this->get('coreshop.generator.cart_price_rule_voucher_codes');
     }
 

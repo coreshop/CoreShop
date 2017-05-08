@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models\Product;
@@ -24,9 +23,10 @@ class Filter extends Base
     /**
      * @return IndexInterface
      */
-    private function createIndex() {
+    private function createIndex()
+    {
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface
          */
         $index = $this->getFactory('index')->createNew();
         $index->setName('mysql_test');
@@ -38,11 +38,13 @@ class Filter extends Base
 
     /**
      * @param $index
+     *
      * @return FilterInterface
      */
-    private function createFilter($index) {
+    private function createFilter($index)
+    {
         /**
-         * @var $filter FilterInterface
+         * @var FilterInterface
          */
         $filter = $this->getFactory('filter')->createNew();
         $filter->setName('testFilter');
@@ -51,15 +53,16 @@ class Filter extends Base
         return $filter;
     }
 
-    public function testFilterCreation() {
+    public function testFilterCreation()
+    {
         $this->printTestName();
 
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface
          */
         $index = $this->createIndex();
         /**
-         * @var $filter FilterInterface
+         * @var FilterInterface
          */
         $filter = $this->createFilter($index);
 
@@ -79,15 +82,16 @@ class Filter extends Base
         $this->assertNull($filter->getId());
     }
 
-    public function testFilterService() {
+    public function testFilterService()
+    {
         $this->printTestName();
 
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface
          */
         $index = $this->createIndex();
         /**
-         * @var $filter FilterInterface
+         * @var FilterInterface
          */
         $filter = $this->createFilter($index);
 
@@ -98,7 +102,7 @@ class Filter extends Base
         $parameter = new ParameterBag();
 
         /**
-         * @var $filteredList ListingInterface
+         * @var ListingInterface
          */
         $filteredList = $this->get('coreshop.factory.filter.list')->createList($filter, $parameter);
         $filteredList->setVariantMode(ListingInterface::VARIANT_MODE_HIDE);

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
@@ -91,17 +90,17 @@ class CartToOrderTransformer implements ProposalTransformerInterface
     private $eventDispatcher;
 
     /**
-     * @param ProposalItemTransformerInterface $cartItemToOrderItemTransformer
-     * @param ItemKeyTransformerInterface $keyTransformer
-     * @param NumberGeneratorInterface $numberGenerator
-     * @param string $orderFolderPath
-     * @param ObjectServiceInterface $objectService
-     * @param LocaleContextInterface $localeContext
-     * @param PimcoreFactoryInterface $orderItemFactory
-     * @param CurrencyContextInterface $currencyContext
-     * @param StoreContextInterface $storeContext
+     * @param ProposalItemTransformerInterface     $cartItemToOrderItemTransformer
+     * @param ItemKeyTransformerInterface          $keyTransformer
+     * @param NumberGeneratorInterface             $numberGenerator
+     * @param string                               $orderFolderPath
+     * @param ObjectServiceInterface               $objectService
+     * @param LocaleContextInterface               $localeContext
+     * @param PimcoreFactoryInterface              $orderItemFactory
+     * @param CurrencyContextInterface             $currencyContext
+     * @param StoreContextInterface                $storeContext
      * @param CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
-     * @param TransformerEventDispatcherInterface $eventDispatcher
+     * @param TransformerEventDispatcherInterface  $eventDispatcher
      */
     public function __construct(
         ProposalItemTransformerInterface $cartItemToOrderItemTransformer,
@@ -115,8 +114,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         StoreContextInterface $storeContext,
         CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor,
         TransformerEventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->cartItemToOrderItemTransformer = $cartItemToOrderItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
@@ -130,13 +128,12 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function transform(ProposalInterface $cart, ProposalInterface $order)
     {
-        /**
+        /*
          * @var $cart CartInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);
@@ -147,7 +144,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath, date('Y/m/d')));
 
         $orderNumber = $this->numberGenerator->generate($order);
-        /**
+        /*
          * @var $order OrderInterface
          */
         $order->setKey($this->keyTransformer->transform($orderNumber));
@@ -166,8 +163,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
             $order->setShipping($cart->getShipping(false), false);
             $order->setShippingTaxRate($cart->getShippingTaxRate());
             $order->setShippingTax($order->getShipping(true) - $order->getShipping(false));
-        }
-        else {
+        } else {
             $order->setShipping(0, true);
             $order->setShipping(0, false);
             $order->setShippingTaxRate(0);
@@ -197,13 +193,13 @@ class CartToOrderTransformer implements ProposalTransformerInterface
             }
         }
 
-        /**
+        /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
         $order->save();
 
         /**
-         * @var $cartItem CartItemInterface
+         * @var CartItemInterface
          */
         foreach ($cart->getItems() as $cartItem) {
             $orderItem = $this->orderItemFactory->createNew();

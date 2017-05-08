@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -19,11 +18,12 @@ use Pimcore\Model\Object\Service;
 
 class Category extends Base
 {
-    public function testCategoryCreation() {
+    public function testCategoryCreation()
+    {
         $this->printTestName();
 
         /**
-         * @var $category CategoryInterface
+         * @var CategoryInterface
          */
         $category = $this->getFactory('category')->createNew();
         $category->setName('test');

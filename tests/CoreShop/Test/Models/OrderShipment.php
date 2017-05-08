@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -25,7 +24,7 @@ class OrderShipment extends Base
         $this->printTestName();
 
         /**
-         * @var $shipment OrderShipmentInterface
+         * @var OrderShipmentInterface
          */
         $shipment = $this->getFactory('order_shipment')->createNew();
 
@@ -38,7 +37,7 @@ class OrderShipment extends Base
 
         $cart = Data::createCartWithProducts();
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
         $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
@@ -56,7 +55,7 @@ class OrderShipment extends Base
 
         $cart = Data::createCartWithProducts();
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
         $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
@@ -64,7 +63,7 @@ class OrderShipment extends Base
         $processableItems = $this->get('coreshop.order.shipment.processable')->getProcessableItems($order);
 
         /**
-         * @var $shipment OrderShipmentInterface
+         * @var OrderShipmentInterface
          */
         $shipment = $this->getFactory('order_shipment')->createNew();
         $shipment = $this->get('coreshop.order.transformer.order_to_shipment')->transform($order, $shipment, $processableItems);

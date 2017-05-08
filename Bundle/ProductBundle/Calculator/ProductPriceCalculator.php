@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ProductBundle\Calculator;
@@ -25,6 +24,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
 
     /**
      * ProductPriceCalculator constructor.
+     *
      * @param PrioritizedServiceRegistryInterface $priceCalculatorRegistry
      */
     public function __construct(PrioritizedServiceRegistryInterface $priceCalculatorRegistry)

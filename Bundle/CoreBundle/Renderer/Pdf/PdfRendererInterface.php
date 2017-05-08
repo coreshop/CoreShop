@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Renderer\Pdf;
@@ -19,7 +18,8 @@ interface PdfRendererInterface
      * @param $string
      * @param string $header
      * @param string $footer
-     * @param array $config
+     * @param array  $config
+     *
      * @return string
      */
     public function fromString($string, $header = '', $footer = '', $config = []);

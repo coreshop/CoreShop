@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Notification\Processor;
@@ -18,11 +17,12 @@ use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 interface RuleApplierInterface
 {
     /**
-     * Apply all actions from a rule
+     * Apply all actions from a rule.
      *
      * @param NotificationRuleInterface $rule
      * @param $subject
      * @param $params
+     *
      * @return mixed
      */
     public function applyRule(NotificationRuleInterface $rule, $subject, $params);

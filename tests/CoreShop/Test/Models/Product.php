@@ -8,19 +8,17 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
 
-use CoreShop\Model\Configuration;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
 class Product extends Base
 {
     /**
-     * Test Product Creation
+     * Test Product Creation.
      */
     public function testProductCreation()
     {
@@ -30,7 +28,7 @@ class Product extends Base
     }
 
     /**
-     * Test Product Price
+     * Test Product Price.
      */
     public function testProductPrice()
     {
@@ -40,7 +38,7 @@ class Product extends Base
     }
 
     /**
-     * Test Product Tax
+     * Test Product Tax.
      */
     public function testProductTax()
     {

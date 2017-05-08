@@ -8,19 +8,19 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Workflow;
 
 use CoreShop\Component\Order\Model\ProposalInterface;
 
-interface ProposalValidatorInterface 
+interface ProposalValidatorInterface
 {
     /**
      * @param ProposalInterface $proposal
      * @param $currentState
      * @param $newState
+     *
      * @return mixed
      */
     public function isValidForState(ProposalInterface $proposal, $currentState, $newState);

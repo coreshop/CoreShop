@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Index\Filter;
@@ -40,7 +39,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
                 }
 
                 foreach ($fieldRawValues as $fieldRawValue) {
-                    $dbVal = (int)$fieldRawValue['value'];
+                    $dbVal = (int) $fieldRawValue['value'];
 
                     if ($dbVal === 1) {
                         $rawValues[] = [
@@ -59,7 +58,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
             'currentValues' => $currentValues,
             'values' => $rawValues,
             'fieldName' => $condition->getField(),
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit())
+            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
 

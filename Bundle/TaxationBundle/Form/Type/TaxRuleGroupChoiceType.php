@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\TaxationBundle\Form\Type;
@@ -56,7 +55,7 @@ final class TaxRuleGroupChoiceType extends AbstractType
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
-                'choice_translation_domain' => false
+                'choice_translation_domain' => false,
             ])
         ;
     }

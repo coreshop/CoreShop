@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -25,7 +24,7 @@ class OrderInvoice extends Base
         $this->printTestName();
 
         /**
-         * @var $invoice OrderInvoiceInterface
+         * @var OrderInvoiceInterface
          */
         $invoice = $this->getFactory('order_invoice')->createNew();
 
@@ -38,7 +37,7 @@ class OrderInvoice extends Base
 
         $cart = Data::createCartWithProducts();
         /**
-         * @var $invoice OrderInterface
+         * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
         $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
@@ -56,7 +55,7 @@ class OrderInvoice extends Base
 
         $cart = Data::createCartWithProducts();
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
         $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
@@ -64,7 +63,7 @@ class OrderInvoice extends Base
         $processableItems = $this->get('coreshop.order.invoice.processable')->getProcessableItems($order);
 
         /**
-         * @var $invoice OrderInvoiceInterface
+         * @var OrderInvoiceInterface
          */
         $invoice = $this->getFactory('order_invoice')->createNew();
         $invoice = $this->get('coreshop.order.transformer.order_to_invoice')->transform($order, $invoice, $processableItems);

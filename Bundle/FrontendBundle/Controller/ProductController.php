@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
@@ -24,11 +23,12 @@ class ProductController extends PimcoreFrontendController
         $storeRepository = $this->get('coreshop.repository.store');
 
         return $this->render('CoreShopFrontendBundle:Product:_latest.html.twig', [
-            'products' => $this->repository->getLatestByShop($storeRepository->find(1))
+            'products' => $this->repository->getLatestByShop($storeRepository->find(1)),
         ]);
     }
 
-    public function detailAction(Request $request, $name, $productId) {
+    public function detailAction(Request $request, $name, $productId)
+    {
         $product = $this->repository->find($productId);
 
         if (!$product instanceof ProductInterface) {
@@ -36,7 +36,7 @@ class ProductController extends PimcoreFrontendController
         }
 
         return $this->render('CoreShopFrontendBundle:Product:detail.html.twig', [
-            'product' => $product
+            'product' => $product,
         ]);
     }
 }

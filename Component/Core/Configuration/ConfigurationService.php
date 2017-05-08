@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Configuration;
@@ -29,18 +28,17 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     protected $storeContext;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface           $entityManager
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param FactoryInterface $configurationFactory
-     * @param StoreContextInterface $storeContext
+     * @param FactoryInterface                 $configurationFactory
+     * @param StoreContextInterface            $storeContext
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ConfigurationRepositoryInterface $configurationRepository,
         FactoryInterface $configurationFactory,
         StoreContextInterface $storeContext
-    )
-    {
+    ) {
         parent::__construct($entityManager, $configurationRepository, $configurationFactory);
 
         $this->storeContext = $storeContext;
@@ -54,11 +52,11 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         if (null === $store) {
             $store = $this->getStore();
         }
-        
+
         $config = $this->configurationRepository->findForKeyAndStore($key, $store);
 
         if (is_null($config)) {
-            $config = $this->configurationRepository->findBy(["key" => $key, "store" => null]);
+            $config = $this->configurationRepository->findBy(['key' => $key, 'store' => null]);
 
             if (is_array($config) && count($config) > 0) {
                 $config = $config[0];
@@ -80,7 +78,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         if (null === $store) {
             $store = $this->getStore();
         }
-        
+
         $config = $this->getForStore($key, $store, true);
 
         if (!$config) {
@@ -103,7 +101,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         if (null === $store) {
             $store = $this->getStore();
         }
-        
+
         $config = $this->getForStore($key, $store, true);
 
         if ($config instanceof ConfigurationInterface) {
@@ -115,12 +113,14 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     /**
      * @return \CoreShop\Component\Store\Model\StoreInterface|null
      */
-    protected function getStore() {
+    protected function getStore()
+    {
         try {
             //TODO: Check for frontend calls, but how? Tool::isFrontend is not good at all :/
-            
+
             return $this->storeContext->getStore();
-        } catch(\Exception $ex) {}
+        } catch (\Exception $ex) {
+        }
 
         return null;
     }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ConfigurationBundle\Serialization;
@@ -21,8 +20,9 @@ class ObjectHandler
     /**
      * @param JsonSerializationVisitor $visitor
      * @param $value
-     * @param array $type
+     * @param array   $type
      * @param Context $context
+     *
      * @return mixed
      */
     public function serializeRelation(JsonSerializationVisitor $visitor, $value, array $type, Context $context)

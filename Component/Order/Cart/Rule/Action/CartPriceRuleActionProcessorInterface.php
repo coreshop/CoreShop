@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Cart\Rule\Action;
@@ -41,7 +40,7 @@ interface CartPriceRuleActionProcessorInterface
      * Calculate discount.
      *
      * @param CartInterface $cart
-     * @param boolean $withTax
+     * @param bool          $withTax
      * @param $configuration
      *
      * @return int

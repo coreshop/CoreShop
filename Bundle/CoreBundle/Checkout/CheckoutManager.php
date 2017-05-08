@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Checkout;
@@ -82,7 +81,8 @@ class CheckoutManager implements CheckoutManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getPreviousSteps($identifier) {
+    public function getPreviousSteps($identifier)
+    {
         $previousSteps = $this->serviceRegistry->getAllPreviousTo($identifier);
 
         return is_array($previousSteps) ? $previousSteps : [];

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Helper;
@@ -35,16 +34,17 @@ class VariantHelper
     /**
      * @param ProductInterface $master
      * @param ProductInterface $currentProduct
-     * @param string $type
-     * @param string $field
-     * @param string $language
+     * @param string           $type
+     * @param string           $field
+     * @param string           $language
+     *
      * @return array
      */
     public static function getProductVariations(ProductInterface $master, ProductInterface $currentProduct, $type = 'objectbricks', $field = 'variants', $language = 'en')
     {
         $baseData = [
-            "compare" => [],
-            "urls" => []
+            'compare' => [],
+            'urls' => [],
         ];
 
         switch ($type) {
@@ -57,8 +57,8 @@ class VariantHelper
                 break;
         }
 
-        $compareValues = $baseData["compare"];
-        $variantUrls = $baseData["urls"];
+        $compareValues = $baseData['compare'];
+        $variantUrls = $baseData['urls'];
 
         $projectId = $currentProduct->getId();
         $filtered = $compareValues;
@@ -83,7 +83,7 @@ class VariantHelper
 
         if (!empty($filtered)) {
             foreach ($filtered as $variantName => $variantValues) {
-                $currentVariantName = isset($variantValues[ $projectId ]) ? $variantValues[ $projectId ] : null;
+                $currentVariantName = isset($variantValues[$projectId]) ? $variantValues[$projectId] : null;
 
                 $variantSelections = [
                     'variantName' => preg_replace('/__(.*?)__/', '', $variantName),
@@ -96,7 +96,7 @@ class VariantHelper
                     foreach ($variantValues as $pid => $variantValue) {
                         $variantSelections['variantValues'][] = [
                             'productId' => $pid,
-                            'productName' => isset($variantUrls[ $pid ]) ?  $variantUrls[ $pid ] : null,
+                            'productName' => isset($variantUrls[$pid]) ? $variantUrls[$pid] : null,
                             'selected' => $currentVariantName === $variantValue,
                             'variantName' => $variantValue,
                         ];
@@ -104,7 +104,7 @@ class VariantHelper
                 }
 
                 if (!empty($variantSelections['variantValues'])) {
-                    $orderedData[ strtolower($variantName) ] = $variantSelections;
+                    $orderedData[strtolower($variantName)] = $variantSelections;
                 }
             }
         }
@@ -114,8 +114,9 @@ class VariantHelper
 
     /**
      * @param ProductInterface $master
-     * @param string $classificationStoreField
-     * @param string $language
+     * @param string           $classificationStoreField
+     * @param string           $language
+     *
      * @return array
      */
     public static function getVariantValuesFromClassificationStore(ProductInterface $master, $classificationStoreField = 'classificationStore', $language = 'en')
@@ -127,24 +128,24 @@ class VariantHelper
         if ($definition instanceof ClassDefinition\Data\Classificationstore) {
             $productVariants = self::getAllChildren($master);
             $variantsAndMaster = array_merge([$master], $productVariants);
-            $getter = "get" . ucfirst($classificationStoreField);
+            $getter = 'get'.ucfirst($classificationStoreField);
 
             $storeId = $definition->getStoreId();
 
             $groups = new Classificationstore\GroupConfig\Listing();
-            $groups->setCondition("storeId = ?", $storeId);
+            $groups->setCondition('storeId = ?', $storeId);
             $groups = $groups->load();
             $dimensionInfo = [];
 
             foreach ($groups as $groupConfig) {
                 $list = new Classificationstore\KeyGroupRelation\Listing();
-                $list->setCondition("groupId = ?", $groupConfig->getId());
+                $list->setCondition('groupId = ?', $groupConfig->getId());
                 $relations = $list->load();
 
                 foreach ($relations as $relation) {
                     $keyConfig = KeyConfig::getById($relation->getKeyId());
 
-                    $dimensionInfo[$groupConfig->getId() . $keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
+                    $dimensionInfo[$groupConfig->getId().$keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
                 }
             }
 
@@ -170,10 +171,10 @@ class VariantHelper
                             }
 
                             //Add a namespace, so fields from different blocks can have same name!
-                            $secureNameSpace = '__' . $keyData['groupId'].$keyData['keyId'].'__';
+                            $secureNameSpace = '__'.$keyData['groupId'].$keyData['keyId'].'__';
                             $variantName = $keyData['name'];
 
-                            $compareValues[$secureNameSpace . $variantName][$productId] = $value;
+                            $compareValues[$secureNameSpace.$variantName][$productId] = $value;
                             $variantUrls[$productVariant->getId()] = $productVariant->getName();
                         }
                     }
@@ -181,8 +182,8 @@ class VariantHelper
             }
 
             return [
-                "compare" => $compareValues,
-                "urls" => $variantUrls
+                'compare' => $compareValues,
+                'urls' => $variantUrls,
             ];
         }
 
@@ -190,11 +191,11 @@ class VariantHelper
     }
 
     /**
-     * get data for variants from a brick-field
+     * get data for variants from a brick-field.
      *
      * @param ProductInterface $master
-     * @param string $brickField
-     * @param string $language
+     * @param string           $brickField
+     * @param string           $language
      *
      * @return array
      *
@@ -265,8 +266,8 @@ class VariantHelper
                                 //Add a namespace, so fields from different blocks can have same name!
                                 $secureNameSpace = '__'.$getter->getType().'__';
 
-                                $compareValues[ $secureNameSpace.$variantName ][ $productId ] = $variantValue;
-                                $variantUrls[ $productVariant->getId() ] = $productVariant->getName();
+                                $compareValues[$secureNameSpace.$variantName][$productId] = $variantValue;
+                                $variantUrls[$productVariant->getId()] = $productVariant->getName();
                             }
                         //}
                     }
@@ -274,8 +275,8 @@ class VariantHelper
             }
 
             return [
-                "compare" => $compareValues,
-                "urls" => $variantUrls
+                'compare' => $compareValues,
+                'urls' => $variantUrls,
             ];
         }
 
@@ -283,7 +284,7 @@ class VariantHelper
     }
 
     /**
-     * Copy all fields $from to $to
+     * Copy all fields $from to $to.
      *
      * @param Concrete $from
      * @param Concrete $to
@@ -294,8 +295,8 @@ class VariantHelper
         $toFd = $to->getClass()->getFieldDefinitions();
 
         foreach ($toFd as $def) {
-            $fromGetter = "get" . ucfirst($def->getName());
-            $toSetter = "set" . ucfirst($def->getName());
+            $fromGetter = 'get'.ucfirst($def->getName());
+            $toSetter = 'set'.ucfirst($def->getName());
 
             if (method_exists($from, $fromGetter) && method_exists($to, $toSetter)) {
                 $to->$toSetter($from->$fromGetter());
@@ -315,8 +316,8 @@ class VariantHelper
         foreach ($tmpArray as $variantName => $variantValues) {
             foreach ($variantValues as $productId => $variantValue) {
                 if (!in_array($productId, $allowedProductIds)) {
-                    if (isset($filtered[ $variantName ])) {
-                        unset($filtered[ $variantName ][ $productId ]);
+                    if (isset($filtered[$variantName])) {
+                        unset($filtered[$variantName][$productId]);
                     }
                 }
             }
@@ -346,7 +347,8 @@ class VariantHelper
 
     /**
      * @param Classificationstore\GroupConfig $group
-     * @param KeyConfig $field
+     * @param KeyConfig                       $field
+     *
      * @return array
      */
     private static function getClassificationValidMethods(Classificationstore\GroupConfig $group, KeyConfig $field)
@@ -413,7 +415,7 @@ class VariantHelper
         $list = \Pimcore::getContainer()->get('coreshop.repository.product')->getList();
 
         $condition = 'o_path LIKE ?';
-        $conditionParams = [$object->getFullPath() . '/%'];
+        $conditionParams = [$object->getFullPath().'/%'];
 
         $storeParams = [];
 
@@ -421,7 +423,7 @@ class VariantHelper
             $storeParams[] = "shops LIKE '%,".$shop.",%'";
         }
 
-        $condition .= " AND (" . implode(" OR ", $storeParams) . ")";
+        $condition .= ' AND ('.implode(' OR ', $storeParams).')';
 
         $list->setCondition($condition, $conditionParams);
         $list->setOrderKey('o_key');

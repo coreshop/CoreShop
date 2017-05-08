@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
@@ -29,11 +28,9 @@ class TaxRuleRepository extends BaseTaxRuleRepository implements TaxRuleReposito
             ->andWhere('(o.state  = :state OR o.state IS NULL)')
             ->setParameter('taxRuleGroup', $taxRuleGroup->getId())
             ->setParameter('country', $country ? $country->getId() : 0)
-            ->setParameter('state',  $state ? $state->getId() : 0)
+            ->setParameter('state', $state ? $state->getId() : 0)
             ->getQuery()
             ->getResult()
         ;
     }
-
-
 }

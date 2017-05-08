@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
@@ -32,7 +31,7 @@ abstract class AbstractModelExtension extends Extension
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), $driver);
 
         foreach ($resources as $resourceName => $resourceConfig) {
-            $alias = $applicationName . '.' . $resourceName;
+            $alias = $applicationName.'.'.$resourceName;
             $resourceConfig = array_merge(['driver' => $driver], $resourceConfig);
 
             $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
@@ -44,7 +43,7 @@ abstract class AbstractModelExtension extends Extension
             DriverProvider::get($metadata)->load($container, $metadata);
 
             if ($metadata->hasParameter('translation')) {
-                $alias = $alias . '_translation';
+                $alias = $alias.'_translation';
                 $resourceConfig = array_merge(['driver' => $driver], $resourceConfig['translation']);
 
                 $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];

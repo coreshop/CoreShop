@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Context;
@@ -38,8 +37,9 @@ final class StoreBasedCountryResolver implements RequestResolverInterface
     {
         $store = $this->storeContext->getStore();
 
-        if ($store instanceof StoreInterface)
+        if ($store instanceof StoreInterface) {
             return $store->getBaseCountry();
+        }
 
         throw new CountryNotFoundException();
     }

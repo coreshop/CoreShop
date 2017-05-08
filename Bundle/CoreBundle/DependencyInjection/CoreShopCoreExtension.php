@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
@@ -38,7 +37,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         'coreshop_sequence',
         'coreshop_store',
         'coreshop_shipping',
-        'coreshop_taxation'
+        'coreshop_taxation',
     ];
 
     /**
@@ -52,8 +51,6 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         $this->registerResources('coreshop', $config['driver'], [], $container);
 
         $loader->load('services.yml');
-
-
     }
 
     /**

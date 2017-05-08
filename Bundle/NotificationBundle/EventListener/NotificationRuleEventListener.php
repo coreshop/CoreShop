@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\NotificationBundle\EventListener;
@@ -26,6 +25,7 @@ class NotificationRuleEventListener
 
     /**
      * NotificationRuleEventListener constructor.
+     *
      * @param NotificationRuleRepositoryInterface $repository
      */
     public function __construct(NotificationRuleRepositoryInterface $repository)

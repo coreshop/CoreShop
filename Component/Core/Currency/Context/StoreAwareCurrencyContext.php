@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Currency\Context;
@@ -38,16 +37,15 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
     private $currencyRepository;
 
     /**
-     * @param CurrencyContextInterface $currencyContext
-     * @param StoreContextInterface $storeContext
+     * @param CurrencyContextInterface    $currencyContext
+     * @param StoreContextInterface       $storeContext
      * @param CurrencyRepositoryInterface $currencyRepository
      */
     public function __construct(
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
         CurrencyRepositoryInterface $currencyRepository
-    )
-    {
+    ) {
         $this->currencyContext = $currencyContext;
         $this->storeContext = $storeContext;
         $this->currencyRepository = $currencyRepository;
@@ -76,7 +74,7 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
 
     /**
      * @param CurrencyInterface $currency
-     * @param StoreInterface $store
+     * @param StoreInterface    $store
      *
      * @return bool
      */
@@ -89,9 +87,11 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
 
     /**
      * @param StoreInterface $store
+     *
      * @return array
      */
-    private function getCurrenciesForStore(StoreInterface $store) {
+    private function getCurrenciesForStore(StoreInterface $store)
+    {
         return $this->currencyRepository->findActiveForStore($store);
     }
 }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
@@ -76,8 +75,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface
                 $cart->save();
 
                 return true;
-            }
-            else {
+            } else {
                 throw new CheckoutException('Payment Form is invalid', 'coreshop_checkout_payment_form_invalid');
             }
         }
@@ -91,17 +89,19 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     public function prepareStep(CartInterface $cart)
     {
         return [
-            'form' => $this->createForm($cart)->createView()
+            'form' => $this->createForm($cart)->createView(),
         ];
     }
 
     /**
      * @param CartInterface $cart
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createForm(CartInterface $cart) {
+    private function createForm(CartInterface $cart)
+    {
         $form = $this->formFactory->createNamed('', PaymentType::class, [
-            'paymentProvider' => $cart->getPaymentProvider()
+            'paymentProvider' => $cart->getPaymentProvider(),
         ]);
 
         return $form;

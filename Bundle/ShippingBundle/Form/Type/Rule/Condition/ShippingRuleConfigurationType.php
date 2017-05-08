@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
@@ -28,8 +27,8 @@ final class ShippingRuleConfigurationType extends AbstractType
         $builder
             ->add('shippingRule', TextType::class, [ //TODO: Should be ShippingRuleChoiceType, but would't save ID to database, instead it saves the whole object
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']])
-                ]
+                    new NotBlank(['groups' => ['coreshop']]),
+                ],
             ])
         ;
     }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
@@ -26,18 +25,20 @@ class CartController extends FrontendController
 {
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function widgetAction(Request $request)
     {
         return $this->render('CoreShopFrontendBundle:Cart:_widget.html.twig', [
-            'cart' => $this->getCart()
+            'cart' => $this->getCart(),
         ]);
     }
 
     /**
      * @param Request $request
      * @param $productId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addItemAction(Request $request, $productId)
@@ -55,6 +56,7 @@ class CartController extends FrontendController
     /**
      * @param Request $request
      * @param $cartItemId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeItemAction(Request $request, $cartItemId)
@@ -78,6 +80,7 @@ class CartController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function summaryAction(Request $request)
@@ -86,15 +89,17 @@ class CartController extends FrontendController
             'cart' => $this->getCart(),
             'editAllowed' => true,
             'checkoutSteps' => $this->get('coreshop.checkout_manager')->getSteps(),
-            'currentCheckoutStep' => 0
+            'currentCheckoutStep' => 0,
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addPriceRuleAction(Request $request) {
+    public function addPriceRuleAction(Request $request)
+    {
         $code = $request->get('code');
         $cart = $this->getCartManager()->getCart();
 
@@ -105,7 +110,7 @@ class CartController extends FrontendController
         /**
          * 1. Find PriceRule for Code
          * 2. Check Validity
-         * 3. Apply Price Rule to Cart
+         * 3. Apply Price Rule to Cart.
          */
         $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
@@ -117,8 +122,7 @@ class CartController extends FrontendController
 
         if ($this->getCartPriceRuleProcessor()->process($priceRule, $code, $this->getCartManager()->getCart())) {
             $this->addFlash('cart_price_rule_success', 'success');
-        }
-        else {
+        } else {
             $this->addFlash('cart_price_rule_error', 'error');
         }
 
@@ -127,9 +131,11 @@ class CartController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removePriceRuleAction(Request $request) {
+    public function removePriceRuleAction(Request $request)
+    {
         $code = $request->get('code');
         $cart = $this->getCartManager()->getCart();
 
@@ -149,42 +155,48 @@ class CartController extends FrontendController
     /**
      * @return CartPriceRuleProcessorInterface
      */
-    protected function getCartPriceRuleProcessor() {
+    protected function getCartPriceRuleProcessor()
+    {
         return $this->get('coreshop.cart_price_rule.processor');
     }
 
     /**
      * @return CartPriceRuleUnProcessorInterface
      */
-    protected function getCartPriceRuleUnProcessor() {
+    protected function getCartPriceRuleUnProcessor()
+    {
         return $this->get('coreshop.cart_price_rule.un_processor');
     }
 
     /**
      * @return CartModifierInterface
      */
-    protected function getCartModifier() {
+    protected function getCartModifier()
+    {
         return $this->get('coreshop.cart.modifier');
     }
 
     /**
      * @return CartPriceRuleVoucherRepositoryInterface
      */
-    protected function getCartPriceRuleVoucherRepository() {
+    protected function getCartPriceRuleVoucherRepository()
+    {
         return $this->get('coreshop.repository.cart_price_rule_voucher_code');
     }
 
     /**
      * @return \CoreShop\Component\Order\Model\CartInterface
      */
-    private function getCart() {
+    private function getCart()
+    {
         return $this->getCartManager()->getCart();
     }
 
     /**
      * @return \CoreShop\Bundle\OrderBundle\Manager\CartManager
      */
-    private function getCartManager() {
+    private function getCartManager()
+    {
         return $this->get('coreshop.cart.manager');
     }
 }

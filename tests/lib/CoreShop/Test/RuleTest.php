@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test;
@@ -60,30 +59,36 @@ abstract class RuleTest extends Base
     /**
      * @return RuleValidationProcessorInterface
      */
-    protected function getConditionValidator() {
+    protected function getConditionValidator()
+    {
         return $this->get($this->getConditionValidatorName());
     }
 
     /**
      * @return FormTypeRegistryInterface
      */
-    protected function getConditionFormRegistry() {
+    protected function getConditionFormRegistry()
+    {
         return $this->get($this->getConditionFormRegistryName());
     }
 
     /**
      * @return FormTypeRegistryInterface
      */
-    protected function getActionFormRegistry() {
+    protected function getActionFormRegistry()
+    {
         return $this->get($this->getActionFormRegistryName());
     }
 
     /**
      * @param $type
+     *
      * @return \Symfony\Component\Form\FormInterface
+     *
      * @throws \Exception
      */
-    protected function getConditionForm($type) {
+    protected function getConditionForm($type)
+    {
         if (!$this->getConditionFormRegistry()->has($type, 'default')) {
             throw new \Exception("Form not found for $type");
         }
@@ -93,10 +98,13 @@ abstract class RuleTest extends Base
 
     /**
      * @param $type
+     *
      * @return \Symfony\Component\Form\FormInterface
+     *
      * @throws \Exception
      */
-    protected function getActionForm($type) {
+    protected function getActionForm($type)
+    {
         if (!$this->getActionFormRegistry()->has($type, 'default')) {
             throw new \Exception("Form not found for $type");
         }
@@ -108,7 +116,8 @@ abstract class RuleTest extends Base
      * @param $class
      * @param $type
      */
-    protected function assertConditionForm($class, $type) {
+    protected function assertConditionForm($class, $type)
+    {
         $conditionForm = $this->getConditionForm($type);
 
         $this->assertInstanceOf(FormInterface::class, $conditionForm);
@@ -119,14 +128,16 @@ abstract class RuleTest extends Base
     /**
      * @param $type
      * @param $data
+     *
      * @return ConditionInterface
      */
-    protected function createConditionWithForm($type, $data) {
+    protected function createConditionWithForm($type, $data)
+    {
         $form = $this->getFormFactory()->createNamed('', $this->getConditionFormClass());
 
         $formData = [
             'type' => $type,
-            'configuration' => $data
+            'configuration' => $data,
         ];
 
         $form->submit($formData);
@@ -141,14 +152,14 @@ abstract class RuleTest extends Base
     /**
      * @param $subject
      * @param RuleInterface $rule
-     * @param bool $trueOrFalse
+     * @param bool          $trueOrFalse
      */
-    protected function assertPriceRuleCondition($subject, RuleInterface $rule, $trueOrFalse = true) {
+    protected function assertPriceRuleCondition($subject, RuleInterface $rule, $trueOrFalse = true)
+    {
         $result = $this->getConditionValidator()->isValid($subject, $rule);
         if ($trueOrFalse) {
             $this->assertTrue($result);
-        }
-        else {
+        } else {
             $this->assertFalse($result);
         }
     }
@@ -156,9 +167,10 @@ abstract class RuleTest extends Base
     /**
      * @param $subject
      * @param ConditionInterface $condition
-     * @param bool $trueOrFalse
+     * @param bool               $trueOrFalse
      */
-    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true) {
+    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true)
+    {
         $rule = $this->createRule();
         $rule->addCondition($condition);
 
@@ -169,7 +181,8 @@ abstract class RuleTest extends Base
      * @param $class
      * @param $type
      */
-    protected function assertActionForm($class, $type) {
+    protected function assertActionForm($class, $type)
+    {
         $conditionForm = $this->getActionForm($type);
 
         $this->assertInstanceOf(FormInterface::class, $conditionForm);
@@ -180,14 +193,16 @@ abstract class RuleTest extends Base
     /**
      * @param $type
      * @param $data
+     *
      * @return ActionInterface
      */
-    protected function createActionWithForm($type, $data = []) {
+    protected function createActionWithForm($type, $data = [])
+    {
         $form = $this->getFormFactory()->createNamed('', $this->getActionFormClass());
 
         $formData = [
             'type' => $type,
-            'configuration' => $data
+            'configuration' => $data,
         ];
 
         $form->submit($formData);

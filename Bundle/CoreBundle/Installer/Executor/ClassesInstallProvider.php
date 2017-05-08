@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Executor;
@@ -31,7 +30,7 @@ final class ClassesInstallProvider
     private $kernel;
 
     /**
-     * @param string $installResourcesDirectory
+     * @param string          $installResourcesDirectory
      * @param KernelInterface $kernel
      */
     public function __construct($installResourcesDirectory, KernelInterface $kernel)
@@ -41,9 +40,10 @@ final class ClassesInstallProvider
     }
 
     /**
-     * Installs all CoreShop needed Pimcore Classes
+     * Installs all CoreShop needed Pimcore Classes.
      */
-    public function installClasses(Output $output) {
+    public function installClasses(Output $output)
+    {
         $classes = [
             'CoreShopAddress',
             'CoreShopCategory',
@@ -61,7 +61,7 @@ final class ClassesInstallProvider
         ];
 
         $fieldCollections = [
-            'CoreShopProposalCartPriceRuleItem'
+            'CoreShopProposalCartPriceRuleItem',
         ];
 
         $progress = new ProgressBar($output);
@@ -71,7 +71,6 @@ final class ClassesInstallProvider
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
 
         $progress->start(count($classes) + count($fieldCollections));
-
 
         foreach ($fieldCollections as $fieldCollection) {
             $progress->setMessage(sprintf('Installing Fieldcollection %s', $fieldCollection));
@@ -94,9 +93,10 @@ final class ClassesInstallProvider
      * @param $jsonFile
      * @param $className
      * @param bool $updateClass
+     *
      * @return Object\ClassDefinition
      */
-    protected function createClass($jsonFile, $className, $updateClass = false)
+    private function createClass($jsonFile, $className, $updateClass = false)
     {
         $class = Object\ClassDefinition::getByName($className);
 
@@ -113,7 +113,7 @@ final class ClassesInstallProvider
             Object\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
 
             /**
-             * Fixes Object Brick Stuff
+             * Fixes Object Brick Stuff.
              */
             $list = new Object\Objectbrick\Definition\Listing();
             $list = $list->load();
@@ -140,9 +140,10 @@ final class ClassesInstallProvider
     /**
      * @param $name
      * @param null $jsonFile
+     *
      * @return mixed|null|Object\Fieldcollection\Definition
      */
-    protected function createFieldCollection($jsonFile, $name)
+    private function createFieldCollection($jsonFile, $name)
     {
         try {
             $fieldCollection = Object\Fieldcollection\Definition::getByKey($name);

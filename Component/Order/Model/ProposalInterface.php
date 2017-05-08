@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -20,12 +19,14 @@ interface ProposalInterface extends ResourceInterface
 {
     /**
      * @param ProductInterface $product
+     *
      * @return CartItemInterface|null
      */
     public function getItemForProduct(ProductInterface $product);
 
     /**
-     * @param boolean $withTax
+     * @param bool $withTax
+     *
      * @return float
      */
     public function getTotal($withTax = true);
@@ -37,6 +38,7 @@ interface ProposalInterface extends ResourceInterface
 
     /**
      * @param bool $withTax
+     *
      * @return float
      */
     public function getSubtotal($withTax = true);
@@ -48,6 +50,7 @@ interface ProposalInterface extends ResourceInterface
 
     /**
      * @param bool $withTax
+     *
      * @return float
      */
     public function getShipping($withTax = true);
@@ -59,18 +62,21 @@ interface ProposalInterface extends ResourceInterface
 
     /**
      * @param bool $withTax
+     *
      * @return float
      */
     public function getDiscount($withTax = true);
 
     /**
-     * @param boolean $applyDiscountToTaxValues
+     * @param bool $applyDiscountToTaxValues
+     *
      * @return mixed
      */
     public function getTaxes($applyDiscountToTaxValues = true);
 
     /**
      * @param bool $withTax
+     *
      * @return float
      */
     public function getPaymentFee($withTax = true);
@@ -106,7 +112,6 @@ interface ProposalInterface extends ResourceInterface
      * @return bool
      */
     public function hasItem($item);
-
 
     /**
      * @return mixed

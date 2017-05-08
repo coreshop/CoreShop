@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
@@ -50,7 +49,7 @@ class StoreFixture extends AbstractFixture implements ContainerAwareInterface, V
     {
         if (!$this->container->get('coreshop.repository.store')->findStandard()) {
             /**
-             * @var $store StoreInterface
+             * @var StoreInterface
              */
             $store = $this->container->get('coreshop.factory.store')->createNew();
             $store->setName('Standard');

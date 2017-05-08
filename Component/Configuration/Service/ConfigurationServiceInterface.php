@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Configuration\Service;
@@ -19,7 +18,8 @@ interface ConfigurationServiceInterface
 {
     /**
      * @param $key
-     * @param boolean $returnObject
+     * @param bool $returnObject
+     *
      * @return ConfigurationInterface
      */
     public function get($key, $returnObject = false);
@@ -27,12 +27,14 @@ interface ConfigurationServiceInterface
     /**
      * @param $key
      * @param $data
+     *
      * @return ConfigurationInterface
      */
     public function set($key, $data);
 
     /**
      * @param $key
+     *
      * @return ConfigurationInterface
      */
     public function remove($key);

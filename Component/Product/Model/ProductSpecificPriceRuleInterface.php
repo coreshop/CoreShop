@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Model;
@@ -29,7 +28,7 @@ interface ProductSpecificPriceRuleInterface extends RuleInterface
      */
     public function setInherit($inherit);
 
-     /**
+    /**
      * @return bool
      */
     public function getPriority();
@@ -47,7 +46,7 @@ interface ProductSpecificPriceRuleInterface extends RuleInterface
     public function getProduct();
 
     /**
-     * @param integer $id
+     * @param int $id
      */
     public function setProduct($id);
 }

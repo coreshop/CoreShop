@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Index\Filter;
@@ -35,7 +34,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
             'currentValue' => $currentFilter[$condition->getField()],
             'values' => array_values($rawValues),
             'fieldName' => $condition->getField(),
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit())
+            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
 

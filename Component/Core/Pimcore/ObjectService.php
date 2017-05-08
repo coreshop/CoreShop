@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Pimcore;
@@ -30,7 +29,7 @@ class ObjectService implements ObjectServiceInterface
 
     public function copyObject(PimcoreModelInterface $from, PimcoreModelInterface $to)
     {
-        /**
+        /*
          * @var $from Concrete
          * @var $to Concrete
          */
@@ -41,8 +40,8 @@ class ObjectService implements ObjectServiceInterface
         $toFd = $to->getClass()->getFieldDefinitions();
 
         foreach ($toFd as $def) {
-            $fromGetter = "get" . ucfirst($def->getName());
-            $toSetter = "set" . ucfirst($def->getName());
+            $fromGetter = 'get'.ucfirst($def->getName());
+            $toSetter = 'set'.ucfirst($def->getName());
 
             if (method_exists($from, $fromGetter) && method_exists($to, $toSetter)) {
                 $to->$toSetter($from->$fromGetter());

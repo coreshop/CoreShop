@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Customer\Model;
@@ -150,7 +149,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, Pimcor
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getSalt()
     {
@@ -163,7 +162,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, Pimcor
      * Trigger the hash calculation to remove the plain text password from the instance. This
      * is necessary to make sure no plain text passwords are serialized.
      *
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function eraseCredentials()
     {

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ProductBundle\Calculator;
@@ -25,7 +24,7 @@ class ProductSpecificPriceRuleCalculator extends AbstractPriceRuleCalculator
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        /**
+        /*
          * @var $subject ProductInterface
          */
         return $subject->getSpecificPriceRules();

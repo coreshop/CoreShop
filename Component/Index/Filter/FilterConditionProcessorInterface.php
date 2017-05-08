@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Index\Filter;
@@ -39,9 +38,10 @@ interface FilterConditionProcessorInterface
 
     /**
      * @param FilterConditionInterface $condition
-     * @param FilterInterface $filter
-     * @param ListingInterface $list
+     * @param FilterInterface          $filter
+     * @param ListingInterface         $list
      * @param $currentFilter
+     *
      * @return array
      */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter);

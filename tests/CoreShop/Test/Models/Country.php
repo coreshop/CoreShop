@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -22,14 +21,14 @@ use Pimcore\Model\Object\Service;
 class Country extends Base
 {
     /**
-     * Test Country Creation
+     * Test Country Creation.
      */
     public function testCountryCreation()
     {
         $this->printTestName();
 
         /**
-         * @var $country CountryInterface
+         * @var CountryInterface
          */
         $country = $this->getFactory('country')->createNew();
 
@@ -47,13 +46,14 @@ class Country extends Base
     }
 
     /**
-     * Test Address Format
+     * Test Address Format.
      */
-    public function testAddressFormat() {
+    public function testAddressFormat()
+    {
         $this->printTestName();
 
         /**
-         * @var $address AddressInterface
+         * @var AddressInterface
          */
         $address = $this->getFactory('address')->createNew();
         $address->setCity('Wels');
@@ -71,7 +71,8 @@ class Country extends Base
         $this->assertSame(" \n Dominik Pfaffenbauer\nFreiung 9-11/N3 \n \nAustria ", $addressFormatted);
     }
 
-    public function testCountryContext() {
+    public function testCountryContext()
+    {
         $this->printTestName();
 
         $this->assertEquals($this->get('coreshop.context.country')->getCountry()->getId(), Data::$store->getBaseCountry()->getId());

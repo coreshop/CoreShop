@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\IndexBundle\Command;
@@ -41,7 +40,7 @@ final class IndexCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $allProducts = $this->getContainer()->get('coreshop.repository.product')->getList();;
+        $allProducts = $this->getContainer()->get('coreshop.repository.product')->getList();
         $allProducts->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
         $allProducts = $allProducts->load();
 

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
@@ -72,7 +71,7 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
 
         foreach ($currencies as $iso => $c) {
             /**
-             * @var $currency CurrencyInterface
+             * @var CurrencyInterface
              */
             $currency = $this->container->get('coreshop.factory.currency')->createNew();
             $currency->setName($c['iso_4217_name']);

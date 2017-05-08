@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\StoreBundle\Controller;
@@ -20,6 +19,7 @@ class StoreController extends ResourceController
 {
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function listSitesAction(Request $request)
@@ -31,11 +31,11 @@ class StoreController extends ResourceController
         $sites = [];
         if (is_array($list->getSites())) {
             foreach ($list->getSites() as $site) {
-                if($site instanceof \Pimcore\Model\Site) {
+                if ($site instanceof \Pimcore\Model\Site) {
                     $sites[] = [
                         'id' => $site->getId(),
                         'rootId' => $site->getRootId(),
-                        'name' => $site->getMainDomain()
+                        'name' => $site->getMainDomain(),
                     ];
                 }
             }

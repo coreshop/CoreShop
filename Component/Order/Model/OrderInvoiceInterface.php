@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -22,7 +21,6 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
 
     /**
      * @param \DateTime $invoiceDate
-     *
      */
     public function setInvoiceDate($invoiceDate);
 
@@ -47,68 +45,71 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
     public function setPriceRuleItems($priceRules);
 
     /**
-     * @param boolean $withTax
-     * @return double
+     * @param bool $withTax
+     *
+     * @return float
      */
     public function getDiscount($withTax = true);
 
     /**
-     * @param double $discount
-     * @param boolean $withTax
+     * @param float $discount
+     * @param bool  $withTax
      */
     public function setDiscount($discount, $withTax = true);
 
     /**
-     * @return double
+     * @return float
      */
     public function getDiscountTax();
 
     /**
-     * @param double $discountTax
+     * @param float $discountTax
      */
     public function setDiscountTax($discountTax);
 
     /**
-     * @param boolean $withTax
-     * @return double
+     * @param bool $withTax
+     *
+     * @return float
      */
     public function getShipping($withTax = true);
 
     /**
-     * @param double $shipping
-     * @param boolean $withTax
+     * @param float $shipping
+     * @param bool  $withTax
      */
     public function setShipping($shipping, $withTax = true);
 
     /**
-     * @return double
+     * @return float
      */
     public function getShippingTaxRate();
 
     /**
-     * @param double $shippingTaxRate
+     * @param float $shippingTaxRate
      */
     public function setShippingTaxRate($shippingTaxRate);
 
     /**
-     * @return double
+     * @return float
      */
     public function getShippingTax();
 
     /**
-     * @param double $shippingTax
+     * @param float $shippingTax
      */
     public function setShippingTax($shippingTax);
 
     /**
-     * @param boolean $withTax
-     * @return double
+     * @param bool $withTax
+     *
+     * @return float
      */
     public function getPaymentFee($withTax = true);
 
     /**
-     * @param double $paymentFee
-     * @param boolean $withTax
+     * @param float $paymentFee
+     * @param bool  $withTax
      */
     public function setPaymentFee($paymentFee, $withTax = true);
 
@@ -118,7 +119,7 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
     public function getPaymentFeeTaxRate();
 
     /**
-     * @param double $paymentFeeTaxRate
+     * @param float $paymentFeeTaxRate
      */
     public function setPaymentFeeTaxRate($paymentFeeTaxRate);
 
@@ -128,63 +129,63 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
     public function getPaymentFeeTax();
 
     /**
-     * @param double $paymentFeeTax
+     * @param float $paymentFeeTax
      */
     public function setPaymentFeeTax($paymentFeeTax);
 
     /**
-     * @return double
+     * @return float
      */
     public function getTotalTax();
 
     /**
-     * @param double $totalTax
+     * @param float $totalTax
      */
     public function setTotalTax($totalTax);
 
     /**
-     * @param boolean $withTax
-     * @return double
+     * @param bool $withTax
+     *
+     * @return float
      */
     public function getTotal($withTax = true);
 
     /**
-     * @param boolean $withTax
-     * @param double $total
+     * @param bool  $withTax
+     * @param float $total
      */
     public function setTotal($total, $withTax = true);
 
     /**
-     * @return double
+     * @return float
      */
     public function getSubtotalTax();
 
     /**
-     * @param double $subtotalTax
+     * @param float $subtotalTax
      */
     public function setSubtotalTax($subtotalTax);
 
     /**
-     * @param boolean $withTax
-     * @return double
+     * @param bool $withTax
+     *
+     * @return float
      */
     public function getSubtotal($withTax = true);
 
     /**
-     * @param double $subtotal
-     * @param boolean $withTax
+     * @param float $subtotal
+     * @param bool  $withTax
      */
     public function setSubtotal($subtotal, $withTax = true);
 
     /**
      * @return mixed
-     *
      */
     public function getTaxes();
 
     /**
      * @param mixed $taxes
-     *
      */
     public function setTaxes($taxes);
 }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\PayumBundle\DependencyInjection;
@@ -47,7 +46,7 @@ final class CoreShopPayumExtension extends AbstractModelExtension implements Pre
         $configs = $container->getExtensionConfig('payum');
         foreach ($configs as $config) {
             foreach (array_keys($config['gateways']) as $gatewayKey) {
-                $gateways[$gatewayKey] = 'coreshop.payum_gateway.' . $gatewayKey;
+                $gateways[$gatewayKey] = 'coreshop.payum_gateway.'.$gatewayKey;
             }
         }
 

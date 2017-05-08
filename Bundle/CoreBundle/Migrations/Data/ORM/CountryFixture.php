@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
@@ -49,12 +48,12 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
     /**
      * {@inheritdoc}
      */
-    function getDependencies()
+    public function getDependencies()
     {
         return [
             'CoreShop\Bundle\CoreBundle\Migrations\Data\ORM\ZoneFixture',
             'CoreShop\Bundle\CoreBundle\Migrations\Data\ORM\CurrencyFixture',
-            'CoreShop\Bundle\CoreBundle\Migrations\Data\ORM\StoreFixture'
+            'CoreShop\Bundle\CoreBundle\Migrations\Data\ORM\StoreFixture',
         ];
     }
 
@@ -70,24 +69,24 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 '%Text(company);',
                 PHP_EOL,
                 '%Text(firstname);',
-                '%Text(lastname);'
+                '%Text(lastname);',
             ],
             'street' => [
                 '%Text(street);',
-                '%Text(nr);'
+                '%Text(nr);',
             ],
             'postalcode' => ' %Text(postcode); ',
             'city' => '%Text(city);',
             'country' => [
                 '%Object(country,{"method" : "getName"});',
-                '%Text(phone);'
-            ]
+                '%Text(phone);',
+            ],
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
 
         foreach ($countries as $country) {
             /**
-             * @var $newCountry CountryInterface
+             * @var CountryInterface
              */
             $newCountry = $this->container->get('coreshop.factory.country')->createNew();
 

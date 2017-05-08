@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -20,7 +19,7 @@ use CoreShop\Test\Data;
 class Store extends Base
 {
     /**
-     * Test Shop Creation
+     * Test Shop Creation.
      */
     public function testStandardStoreCreation()
     {
@@ -29,11 +28,12 @@ class Store extends Base
         $this->assertNotNull($this->getRepository('store')->findStandard());
     }
 
-    public function testStoreCreation() {
+    public function testStoreCreation()
+    {
         $this->printTestName();
 
         /**
-         * @var $store StoreInterface
+         * @var StoreInterface
          */
         $store = $this->getFactory('store')->createNew();
 
@@ -53,7 +53,8 @@ class Store extends Base
         $this->getEntityManager()->flush();
     }
 
-    public function testStoreContext() {
+    public function testStoreContext()
+    {
         $this->printTestName();
 
         $this->assertEquals($this->get('coreshop.context.store')->getStore()->getId(), Data::$store->getId());

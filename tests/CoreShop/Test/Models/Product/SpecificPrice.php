@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models\Product;
@@ -46,7 +45,7 @@ class SpecificPrice extends RuleTest
     protected $product;
 
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
@@ -106,16 +105,18 @@ class SpecificPrice extends RuleTest
     /**
      * @return ProductPriceCalculatorInterface
      */
-    protected function getPriceCalculator() {
+    protected function getPriceCalculator()
+    {
         return $this->get('coreshop.product.price_calculator.product_specific_price_rules');
     }
 
     /**
      * @return ProductSpecificPriceRuleInterface
      */
-    protected function createRule() {
+    protected function createRule()
+    {
         /**
-         * @var $priceRule ProductSpecificPriceRuleInterface
+         * @var ProductSpecificPriceRuleInterface
          */
         $priceRule = $this->getFactory('product_specific_price_rule')->createNew();
         $priceRule->setName('test-rule');
@@ -125,7 +126,7 @@ class SpecificPrice extends RuleTest
     }
 
     /**
-     * Test Price Rule Condition Customer
+     * Test Price Rule Condition Customer.
      */
     public function testPriceRuleConditionCustomer()
     {
@@ -133,14 +134,14 @@ class SpecificPrice extends RuleTest
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
         $condition = $this->createConditionWithForm('customers', [
-            'customers' => [Data::$customer1->getId()]
+            'customers' => [Data::$customer1->getId()],
         ]);
 
         $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
-     * Test Price Rule Condition Time Span
+     * Test Price Rule Condition Time Span.
      */
     public function testPriceRuleConditionTimeSpan()
     {
@@ -157,21 +158,21 @@ class SpecificPrice extends RuleTest
 
         $condition = $this->createConditionWithForm('timespan', [
             'dateFrom' => $yesterday->getTimestamp() * 1000,
-            'dateTo' => $tomorrow->getTimestamp() * 1000
+            'dateTo' => $tomorrow->getTimestamp() * 1000,
         ]);
 
         $this->assertRuleCondition($this->product, $condition);
 
         $condition = $this->createConditionWithForm('timespan', [
             'dateFrom' => $yesterday->getTimestamp() * 1000,
-            'dateTo' => $yesterday->getTimestamp() * 1000
+            'dateTo' => $yesterday->getTimestamp() * 1000,
         ]);
 
         $this->assertRuleCondition($this->product, $condition, false);
     }
 
     /**
-     * Test Price Rule Condition Country
+     * Test Price Rule Condition Country.
      */
     public function testPriceRuleConditionCountry()
     {
@@ -179,14 +180,14 @@ class SpecificPrice extends RuleTest
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
         $condition = $this->createConditionWithForm('countries', [
-            'countries' => [Data::$store->getBaseCountry()->getId()]
+            'countries' => [Data::$store->getBaseCountry()->getId()],
         ]);
 
         $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
-     * Test Price Rule Condition Zone
+     * Test Price Rule Condition Zone.
      */
     public function testPriceRuleConditionZone()
     {
@@ -194,14 +195,14 @@ class SpecificPrice extends RuleTest
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
         $condition = $this->createConditionWithForm('zones', [
-            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()]
+            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()],
         ]);
 
         $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
-     * Test Price Rule Condition Customer Group
+     * Test Price Rule Condition Customer Group.
      */
     public function testPriceRuleConditionCustomerGroup()
     {
@@ -209,14 +210,14 @@ class SpecificPrice extends RuleTest
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
         $condition = $this->createConditionWithForm('customerGroups', [
-            'customerGroups' => [Data::$customerGroup1->getId()]
+            'customerGroups' => [Data::$customerGroup1->getId()],
         ]);
 
         $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
-     * Test Price Rule Condition Stores
+     * Test Price Rule Condition Stores.
      */
     public function testPriceRuleConditionStores()
     {
@@ -224,14 +225,14 @@ class SpecificPrice extends RuleTest
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
         $condition = $this->createConditionWithForm('stores', [
-            'stores' => [Data::$store->getId()]
+            'stores' => [Data::$store->getId()],
         ]);
 
         $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
-     * Test Price Rule Condition Currencies
+     * Test Price Rule Condition Currencies.
      */
     public function testPriceRuleConditionCurrencies()
     {
@@ -239,14 +240,14 @@ class SpecificPrice extends RuleTest
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
         $condition = $this->createConditionWithForm('currencies', [
-            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+            'currencies' => [Data::$store->getBaseCurrency()->getId()],
         ]);
 
         $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
-     * Test Price Rule Condition Nested
+     * Test Price Rule Condition Nested.
      */
     public function testPriceRuleConditionNested()
     {
@@ -254,23 +255,23 @@ class SpecificPrice extends RuleTest
         $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
 
         $categoriesCondition = $this->createConditionWithForm('categories', [
-            'categories' => [Data::$category1->getId()]
+            'categories' => [Data::$category1->getId()],
         ]);
 
         $currencyCondition = $this->createConditionWithForm('currencies', [
-            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+            'currencies' => [Data::$store->getBaseCurrency()->getId()],
         ]);
 
         $condition = $this->createConditionWithForm('nested', [
             'nested' => [$categoriesCondition, $currencyCondition],
-            'operator' => 'AND'
+            'operator' => 'AND',
         ]);
 
         $this->assertRuleCondition($this->product, $condition);
     }
 
     /**
-     * Test Price Rule Action Discount Amount
+     * Test Price Rule Action Discount Amount.
      */
     public function testPriceRuleActionDiscountAmount()
     {
@@ -278,7 +279,7 @@ class SpecificPrice extends RuleTest
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $action = $this->createActionWithForm('discountAmount', [
-            'amount' => 5
+            'amount' => 5,
         ]);
 
         $rule = $this->createRule();
@@ -298,7 +299,7 @@ class SpecificPrice extends RuleTest
     }
 
     /**
-     * Test Price Rule Action Discount Percent
+     * Test Price Rule Action Discount Percent.
      */
     public function testPriceRuleActionDiscountPercent()
     {
@@ -306,7 +307,7 @@ class SpecificPrice extends RuleTest
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $action = $this->createActionWithForm('discountPercent', [
-            'percent' => 10
+            'percent' => 10,
         ]);
 
         $rule = $this->createRule();
@@ -326,7 +327,7 @@ class SpecificPrice extends RuleTest
     }
 
     /**
-     * Test Price Rule Action New Price
+     * Test Price Rule Action New Price.
      */
     public function testPriceRuleActionNewPrice()
     {
@@ -334,7 +335,7 @@ class SpecificPrice extends RuleTest
         $this->assertActionForm(PriceConfigurationType::class, 'price');
 
         $action = $this->createActionWithForm('price', [
-            'price' => 100
+            'price' => 100,
         ]);
 
         $rule = $this->createRule();

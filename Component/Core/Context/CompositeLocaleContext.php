@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Context;
@@ -32,7 +31,7 @@ final class CompositeLocaleContext implements LocaleContextInterface
 
     /**
      * @param LocaleContextInterface $localeContext
-     * @param int $priority
+     * @param int                    $priority
      */
     public function addContext(LocaleContextInterface $localeContext, $priority = 0)
     {

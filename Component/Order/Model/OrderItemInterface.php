@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -35,6 +34,7 @@ interface OrderItemInterface extends ProposalItemInterface, PimcoreModelInterfac
     /**
      * @param $itemPrice
      * @param bool $withTax
+     *
      * @return mixed
      */
     public function setItemPrice($itemPrice, $withTax = true);
@@ -42,24 +42,28 @@ interface OrderItemInterface extends ProposalItemInterface, PimcoreModelInterfac
     /**
      * @param $itemRetailPrice
      * @param bool $withTax
+     *
      * @return mixed
      */
     public function setItemRetailPrice($itemRetailPrice, $withTax = true);
 
     /**
      * @param $wholesalePrice
+     *
      * @return mixed
      */
     public function setItemWholesalePrice($wholesalePrice);
 
     /**
      * @param $itemTax
+     *
      * @return mixed
      */
     public function setItemTax($itemTax);
 
     /**
      * @param $taxes
+     *
      * @return mixed
      */
     public function setTaxes($taxes);
@@ -67,12 +71,14 @@ interface OrderItemInterface extends ProposalItemInterface, PimcoreModelInterfac
     /**
      * @param $total
      * @param bool $withTax
+     *
      * @return mixed
      */
     public function setTotal($total, $withTax = true);
 
     /**
      * @param $totalTax
+     *
      * @return mixed
      */
     public function setTotalTax($totalTax);

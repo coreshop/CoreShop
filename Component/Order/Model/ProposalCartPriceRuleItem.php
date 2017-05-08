@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -23,7 +22,7 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
      */
     public function getId()
     {
-        return $this->getObject()->getId() . '_cart_price_rule_' . $this->getIndex();
+        return $this->getObject()->getId().'_cart_price_rule_'.$this->getIndex();
     }
 
     /**

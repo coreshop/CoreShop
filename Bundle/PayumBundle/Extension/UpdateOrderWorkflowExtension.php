@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\PayumBundle\Extension;
@@ -38,7 +37,7 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
 
     /**
      * @param PimcoreRepositoryInterface $orderRepository
-     * @param WorkflowManagerInterface $orderWorkflowManager
+     * @param WorkflowManagerInterface   $orderWorkflowManager
      */
     public function __construct(PimcoreRepositoryInterface $orderRepository, WorkflowManagerInterface $orderWorkflowManager)
     {
@@ -67,11 +66,11 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
     {
         $previousStack = $context->getPrevious();
         $previousStackSize = count($previousStack);
-        
+
         if ($previousStackSize > 1) {
             return;
-        } 
-        
+        }
+
         if ($previousStackSize === 1) {
             $previousActionClassName = get_class($previousStack[0]->getAction());
             if (false === stripos($previousActionClassName, 'NotifyNullAction')) {
@@ -104,9 +103,9 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
 
     /**
      * @param PaymentInterface $payment
-     * @param string $nextState
+     * @param string           $nextState
      */
-    protected function updateOrderWorkflow(PaymentInterface $payment, $nextState)
+    private function updateOrderWorkflow(PaymentInterface $payment, $nextState)
     {
         $order = $this->orderRepository->find($payment->getOrderId());
 
@@ -120,14 +119,12 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
                 'newState' => WorkflowManagerInterface::ORDER_STATE_PENDING_PAYMENT,
                 'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PENDING_PAYMENT,
             ];
-        }
-        else if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
+        } elseif ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
             $params = [
                 'newState' => WorkflowManagerInterface::ORDER_STATE_PROCESSING,
                 'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PROCESSING,
             ];
-        }
-        else if($payment->getState() === PaymentInterface::STATE_FAILED) {
+        } elseif ($payment->getState() === PaymentInterface::STATE_FAILED) {
             $params = [
                 'newState' => WorkflowManagerInterface::ORDER_STATE_PAYMENT_REVIEW,
                 'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PAYMENT_REVIEW,

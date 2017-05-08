@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -24,14 +23,14 @@ use CoreShop\Test\Base;
 class Taxation extends Base
 {
     /**
-     * Test Tax Creation
+     * Test Tax Creation.
      */
     public function testTaxRateCreation()
     {
         $this->printTestName();
 
         /**
-         * @var $taxRate TaxRateInterface
+         * @var TaxRateInterface
          */
         $taxRate = $this->getFactory('tax_rate')->createNew();
         $taxRate->setRate(20);
@@ -49,27 +48,27 @@ class Taxation extends Base
     }
 
     /**
-     * Test TaxRule Creation
+     * Test TaxRule Creation.
      */
     public function testTaxRuleCreation()
     {
         $this->printTestName();
 
         /**
-         * @var $taxRuleGroup TaxRuleGroupInterface
+         * @var TaxRuleGroupInterface
          */
         $taxRuleGroup = $this->getFactory('tax_rule_group')->createNew();
         $taxRuleGroup->setName('test');
 
         /**
-         * @var $taxRate TaxRateInterface
+         * @var TaxRateInterface
          */
         $taxRate = $this->getFactory('tax_rate')->createNew();
         $taxRate->setRate(10);
-        $taxRate->setName("AT10", "de");
+        $taxRate->setName('AT10', 'de');
 
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface
          */
         $taxRule = $this->getFactory('tax_rule')->createNew();
         $taxRule->setBehavior(TaxCalculatorInterface::COMBINE_METHOD);
@@ -90,14 +89,14 @@ class Taxation extends Base
     }
 
     /**
-     * Test TaxRule Creation
+     * Test TaxRule Creation.
      */
     public function testTaxRuleGroupCreation()
     {
         $this->printTestName();
 
         /**
-         * @var $taxRuleGroup TaxRuleGroupInterface
+         * @var TaxRuleGroupInterface
          */
         $taxRuleGroup = $this->getFactory('tax_rule_group')->createNew();
         $taxRuleGroup->setName('test');
@@ -114,15 +113,15 @@ class Taxation extends Base
     }
 
     /**
-     * Test Tax Calculator
+     * Test Tax Calculator.
      */
     public function testTaxCalculator()
     {
         $this->printTestName();
 
         /**
-         * @var $tax10 TaxRateInterface
-         * @var $tax20 TaxRateInterface
+         * @var TaxRateInterface
+         * @var $tax20           TaxRateInterface
          */
         $tax10 = $this->getFactory('tax_rate')->createNew();
         $tax10->setRate(10);
@@ -131,7 +130,7 @@ class Taxation extends Base
         $tax20->setRate(20);
 
         /**
-         * @var $taxCalculator TaxCalculatorInterface
+         * @var TaxCalculatorInterface
          */
         $taxCalculator = new TaxRulesTaxCalculator([$tax10], TaxCalculatorInterface::DISABLE_METHOD);
 
@@ -149,7 +148,8 @@ class Taxation extends Base
         $this->assertEquals(15.84, round($taxCalculator->applyTaxes(12), 2));
     }
 
-    public function testTaxCalculatorFactoryService() {
+    public function testTaxCalculatorFactoryService()
+    {
         $this->assertInstanceOf(TaxCalculatorFactoryInterface::class, $this->get('coreshop.taxation.factory.tax_calculator'));
     }
 }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Repository;
@@ -23,8 +22,9 @@ interface TaxRuleRepositoryInterface extends BaseTaxRuleRepositoryInterface
 {
     /**
      * @param TaxRuleGroupInterface $taxRuleGroup
-     * @param CountryInterface $country
-     * @param StateInterface $state
+     * @param CountryInterface      $country
+     * @param StateInterface        $state
+     *
      * @return TaxRuleInterface[]
      */
     public function findForCountryAndState(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country = null, StateInterface $state = null);

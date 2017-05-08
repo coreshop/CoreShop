@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Renderer;
@@ -18,9 +17,10 @@ use CoreShop\Component\Order\Model\OrderDocumentInterface;
 interface OrderDocumentRendererInterface
 {
     /**
-     * Renders a Order Document as PDF
+     * Renders a Order Document as PDF.
      *
      * @param OrderDocumentInterface $orderDocument
+     *
      * @return string
      */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument);

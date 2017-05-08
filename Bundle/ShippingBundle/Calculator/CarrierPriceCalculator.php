@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
@@ -40,13 +39,12 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
 
     /**
      * @param PrioritizedServiceRegistryInterface $shippingCalculatorRegistry
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
+     * @param TaxCalculatorFactoryInterface       $taxCalculatorFactory
      */
     public function __construct(
         PrioritizedServiceRegistryInterface $shippingCalculatorRegistry,
         TaxCalculatorFactoryInterface $taxCalculatorFactory
-    )
-    {
+    ) {
         $this->shippingCalculatorRegistry = $shippingCalculatorRegistry;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
@@ -59,7 +57,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
         $netPrice = 0;
 
         /**
-         * @var $calculator CarrierPriceCalculatorInterface
+         * @var CarrierPriceCalculatorInterface
          */
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
             $price = $calculator->getPrice($carrier, $cart, $address, $withTax);
@@ -91,8 +89,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
 
             if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
                 $this->taxCalculator = $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
-            }
-            else {
+            } else {
                 $this->taxCalculator = null;
             }
         }

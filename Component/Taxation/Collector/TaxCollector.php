@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Taxation\Collector;
@@ -16,7 +15,8 @@ namespace CoreShop\Component\Taxation\Collector;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
-class TaxCollector implements TaxCollectorInterface {
+class TaxCollector implements TaxCollectorInterface
+{
     /**
      * @var EntityRepository
      */
@@ -33,7 +33,8 @@ class TaxCollector implements TaxCollectorInterface {
     /**
      * {@inheritdoc}
      */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, $usedTaxes = []) {
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, $usedTaxes = [])
+    {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             $taxesAmount = $taxCalculator->getTaxesAmount($price, true);
 
@@ -46,11 +47,12 @@ class TaxCollector implements TaxCollectorInterface {
 
         return $usedTaxes;
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function mergeTaxes($taxes1, $taxes2) {
+    public function mergeTaxes($taxes1, $taxes2)
+    {
         foreach ($taxes1 as $id => $tax) {
             $this->addTaxToArray($id, $tax['amount'], $taxes2);
         }
@@ -58,7 +60,8 @@ class TaxCollector implements TaxCollectorInterface {
         return $taxes2;
     }
 
-    private function addTaxToArray($taxId, $amount, &$usedTaxes) {
+    private function addTaxToArray($taxId, $amount, &$usedTaxes)
+    {
         $tax = $this->taxRateRepository->find($taxId);
 
         if ($amount > 0 && $tax) {

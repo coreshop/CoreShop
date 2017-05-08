@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
@@ -57,7 +56,7 @@ final class PimcoreDriver extends AbstractDriver
                 new Reference($metadata->getServiceId('factory')),
                 new Reference('coreshop.resource_controller.event_dispatcher'),
                 new Reference('coreshop.resource_controller.form_factory'),
-                new Reference('coreshop.context.shopper')
+                new Reference('coreshop.context.shopper'),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')])
         ;

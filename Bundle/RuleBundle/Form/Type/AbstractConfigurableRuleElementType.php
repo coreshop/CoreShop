@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
@@ -107,7 +106,6 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
         if (null !== $data && null !== $data->getType()) {
             return $data->getType();
         }
-
 
         return null;
     }

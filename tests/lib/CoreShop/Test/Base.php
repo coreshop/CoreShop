@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test;
@@ -23,7 +22,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 class Base extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Print Test Name
+     * Print Test Name.
      */
     public function printTestName()
     {
@@ -31,12 +30,12 @@ class Base extends \PHPUnit_Framework_TestCase
             throw new \Exception();
         } catch (\Exception $e) {
             $trace = $e->getTrace();
-            print("### running ...  " . $trace[1]["class"] . "::" . $trace[1]["function"] . " ... good luck!\n"); //get the class and function name when running phpunit from CoreShop/tests directory
+            echo '### running ...  '.$trace[1]['class'].'::'.$trace[1]['function']." ... good luck!\n"; //get the class and function name when running phpunit from CoreShop/tests directory
         }
     }
 
     /**
-     * Print TO-DO Test Name
+     * Print TO-DO Test Name.
      */
     public function printTodoTestName()
     {
@@ -44,12 +43,12 @@ class Base extends \PHPUnit_Framework_TestCase
             throw new \Exception();
         } catch (\Exception $e) {
             $trace = $e->getTrace();
-            print("### running ...  " . $trace[1]["class"] . "::" . $trace[1]["function"] . " ... good luck! TODO! \n"); //get the class and function name when running phpunit from CoreShop/tests directory
+            echo '### running ...  '.$trace[1]['class'].'::'.$trace[1]['function']." ... good luck! TODO! \n"; //get the class and function name when running phpunit from CoreShop/tests directory
         }
     }
 
     /**
-     * Setup Test
+     * Setup Test.
      */
     public function setUp()
     {
@@ -59,16 +58,19 @@ class Base extends \PHPUnit_Framework_TestCase
     /**
      * @return EntityManagerInterface
      */
-    protected function getEntityManager() {
+    protected function getEntityManager()
+    {
         return $this->get('doctrine.orm.entity_manager');
     }
 
     /**
      * @param $class
+     *
      * @return FactoryInterface
      */
-    protected function getFactory($class) {
-        $factory = $this->get('coreshop.factory.' . $class);
+    protected function getFactory($class)
+    {
+        $factory = $this->get('coreshop.factory.'.$class);
 
         if (!$factory instanceof FactoryInterface) {
             throw new \InvalidArgumentException(sprintf('%s factory class does not exist or is wrong configured', $class));
@@ -79,10 +81,12 @@ class Base extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $class
+     *
      * @return RepositoryInterface
      */
-    protected function getRepository($class) {
-        $repo = $this->get('coreshop.repository.' . $class);
+    protected function getRepository($class)
+    {
+        $repo = $this->get('coreshop.repository.'.$class);
 
         if (!$repo instanceof RepositoryInterface) {
             throw new \InvalidArgumentException(sprintf('%s repository class does not exist or is wrong configured', $class));
@@ -94,15 +98,18 @@ class Base extends \PHPUnit_Framework_TestCase
     /**
      * @return FormFactoryInterface
      */
-    protected function getFormFactory() {
+    protected function getFormFactory()
+    {
         return $this->get('form.factory');
     }
 
     /**
      * @param $alias
+     *
      * @return MetadataInterface
      */
-    protected function getMetadata($alias) {
+    protected function getMetadata($alias)
+    {
         return $this->get('coreshop.resource_registry')->get($alias);
     }
 
@@ -110,10 +117,12 @@ class Base extends \PHPUnit_Framework_TestCase
      * @param $resourceAlias
      * @param $expectedClass
      * @param $data
+     *
      * @return ResourceInterface
      */
-    protected function createResourceWithForm($resourceAlias, $expectedClass, $data) {
-        $metadata = $this->getMetadata('coreshop.' . $resourceAlias);
+    protected function createResourceWithForm($resourceAlias, $expectedClass, $data)
+    {
+        $metadata = $this->getMetadata('coreshop.'.$resourceAlias);
         $formType = $metadata->getClass('form');
 
         $form = $this->getFormFactory()->createNamed('', $formType);
@@ -129,9 +138,11 @@ class Base extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $id
+     *
      * @return mixed
      */
-    protected function get($id) {
+    protected function get($id)
+    {
         return \Pimcore::getKernel()->getContainer()->get($id);
     }
 }

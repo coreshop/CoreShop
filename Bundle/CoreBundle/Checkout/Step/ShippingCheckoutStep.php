@@ -8,12 +8,10 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType;
 use CoreShop\Bundle\CurrencyBundle\Formatter\MoneyFormatterInterface;
 use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
@@ -46,7 +44,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      * @var CarrierShippingRuleCheckerInterface
      */
     private $carrierShippingRuleChecker;
-    
+
     /**
      * @var FormFactoryInterface
      */
@@ -63,12 +61,12 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     private $moneyFormatter;
 
     /**
-     * @param CartCarrierProcessorInterface $cartCarrierProcessor
-     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     * @param CartCarrierProcessorInterface       $cartCarrierProcessor
+     * @param CarrierPriceCalculatorInterface     $carrierPriceCalculator
      * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
-     * @param FormFactoryInterface $formFactory
-     * @param CurrencyContextInterface $currencyContext
-     * @param MoneyFormatterInterface $moneyFormatter
+     * @param FormFactoryInterface                $formFactory
+     * @param CurrencyContextInterface            $currencyContext
+     * @param MoneyFormatterInterface             $moneyFormatter
      */
     public function __construct(
         CartCarrierProcessorInterface $cartCarrierProcessor,
@@ -77,8 +75,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
         FormFactoryInterface $formFactory,
         CurrencyContextInterface $currencyContext,
         MoneyFormatterInterface $moneyFormatter
-    )
-    {
+    ) {
         $this->cartCarrierProcessor = $cartCarrierProcessor;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
@@ -129,8 +126,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
                 $cart->save();
 
                 return true;
-            }
-            else {
+            } else {
                 throw new CheckoutException('Address Form is invalid', 'coreshop_checkout_shipping_form_invalid');
             }
         }
@@ -148,15 +144,17 @@ class ShippingCheckoutStep implements CheckoutStepInterface
 
         return [
             'carriers' => $carriers,
-            'form' => $this->createForm($carriers)->createView()
+            'form' => $this->createForm($carriers)->createView(),
         ];
     }
 
     /**
      * @param CartInterface $cart
+     *
      * @return array
      */
-    private function getCarriers(CartInterface $cart) {
+    private function getCarriers(CartInterface $cart)
+    {
         $carriers = $this->cartCarrierProcessor->getCarriersForCart($cart, $cart->getShippingAddress());
         $availableCarriers = [];
 
@@ -173,18 +171,20 @@ class ShippingCheckoutStep implements CheckoutStepInterface
 
     /**
      * @param $carriers
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createForm($carriers) {
+    private function createForm($carriers)
+    {
         $form = $this->formFactory->createNamed('', FormType::class);
 
         $form->add('carrier', ChoiceType::class, [
             'constraints' => [new Valid()],
             'choices' => $carriers,
             'expanded' => true,
-            'choice_label' => function($carrier) {
-                return $carrier->carrier->getLabel() . " " . $this->moneyFormatter->format($carrier->price, $this->currencyContext->getCurrency()->getIsoCode());
-            }
+            'choice_label' => function ($carrier) {
+                return $carrier->carrier->getLabel().' '.$this->moneyFormatter->format($carrier->price, $this->currencyContext->getCurrency()->getIsoCode());
+            },
         ]);
 
         return $form;

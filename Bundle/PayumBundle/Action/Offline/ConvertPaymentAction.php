@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\PayumBundle\Action\Offline;
@@ -20,7 +19,7 @@ use Payum\Core\Request\Convert;
 use Payum\Offline\Constants;
 
 /**
- * This class is needed, because Payum sets offline payments always to paid
+ * This class is needed, because Payum sets offline payments always to paid.
  */
 final class ConvertPaymentAction implements ActionInterface
 {

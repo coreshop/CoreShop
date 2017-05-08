@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models\Product;
@@ -23,9 +22,10 @@ class Index extends Base
     /**
      * @return IndexInterface
      */
-    private function createIndex() {
+    private function createIndex()
+    {
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface
          */
         $index = $this->getFactory('index')->createNew();
         $index->setName('mysql_test');
@@ -35,7 +35,8 @@ class Index extends Base
         return $index;
     }
 
-    public function testIndexCreation() {
+    public function testIndexCreation()
+    {
         $this->printTestName();
 
         $index = $this->createIndex();
@@ -51,7 +52,8 @@ class Index extends Base
         $this->assertNull($index->getId());
     }
 
-    public function testIndexWorkerMysql() {
+    public function testIndexWorkerMysql()
+    {
         $this->printTestName();
 
         $index = $this->createIndex();
@@ -62,13 +64,14 @@ class Index extends Base
         $workerServiceRegistry = $this->get('coreshop.registry.index.worker');
 
         /**
-         * @var $worker WorkerInterface
+         * @var WorkerInterface
          */
         $worker = $workerServiceRegistry->get($index->getWorker());
         $worker->createOrUpdateIndexStructures($index);
     }
 
-    public function testIndexListing() {
+    public function testIndexListing()
+    {
         $this->printTestName();
 
         $index = $this->createIndex();
@@ -79,7 +82,7 @@ class Index extends Base
         $workerServiceRegistry = $this->get('coreshop.registry.index.worker');
 
         /**
-         * @var $worker WorkerInterface
+         * @var WorkerInterface
          */
         $worker = $workerServiceRegistry->get($index->getWorker());
         $list = $worker->getList($index);

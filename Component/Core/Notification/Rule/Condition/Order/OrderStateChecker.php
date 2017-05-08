@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
@@ -18,19 +17,10 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 class OrderStateChecker extends AbstractConditionChecker
 {
-    /**
-     *
-     */
     const TRANSITION_TO = 1;
 
-    /**
-     *
-     */
     const TRANSITION_FROM = 2;
 
-    /**
-     *
-     */
     const TRANSITION_ALL = 3;
 
     /**
@@ -41,7 +31,7 @@ class OrderStateChecker extends AbstractConditionChecker
         if ($subject instanceof OrderInterface) {
             $paramsToExist = [
                 'fromState',
-                'toState'
+                'toState',
             ];
 
             foreach ($paramsToExist as $paramToExist) {

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Shipping\Rule\Condition;
@@ -24,7 +23,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
      */
     public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, array $configuration)
     {
-        $postcodes = explode(",", $configuration['postcodes']);
+        $postcodes = explode(',', $configuration['postcodes']);
 
         $deliveryAddress = $address;
 
@@ -42,6 +41,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
     /**
      * @param $postcode
      * @param $deliveryPostcode
+     *
      * @return bool
      */
     private function checkPostCode($postcode, $deliveryPostcode)
@@ -67,8 +67,8 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
                     if ($fromNumber < $toNumber) {
                         $postcodes = [];
 
-                        for ($i = $fromNumber; $i <= $toNumber; $i++) {
-                            $postcodes[] = $fromText . $i;
+                        for ($i = $fromNumber; $i <= $toNumber; ++$i) {
+                            $postcodes[] = $fromText.$i;
                         }
                     }
                 }

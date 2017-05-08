@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Order\Renderer;
@@ -39,9 +38,9 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     private $renderer;
 
     /**
-     * @param FragmentRendererInterface $fragmentRenderer
+     * @param FragmentRendererInterface     $fragmentRenderer
      * @param ConfigurationServiceInterface $configurationHelper
-     * @param PdfRendererInterface $renderer
+     * @param PdfRendererInterface          $renderer
      */
     public function __construct(FragmentRendererInterface $fragmentRenderer, ConfigurationServiceInterface $configurationHelper, PdfRendererInterface $renderer)
     {
@@ -56,12 +55,12 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
         $params = [
-            "id" => $orderDocument->getId(),
-            "order" => $orderDocument->getOrder(),
-            "document" => $orderDocument,
-            "language" => (string) $orderDocument->getOrder()->getOrderLanguage(),
-            "type" => $orderDocument::getDocumentType(),
-            $orderDocument::getDocumentType() => $orderDocument
+            'id' => $orderDocument->getId(),
+            'order' => $orderDocument->getOrder(),
+            'document' => $orderDocument,
+            'language' => (string) $orderDocument->getOrder()->getOrderLanguage(),
+            'type' => $orderDocument::getDocumentType(),
+            $orderDocument::getDocumentType() => $orderDocument,
         ];
 
         $request = new Request($params);

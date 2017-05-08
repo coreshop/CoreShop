@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -105,7 +104,8 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * @return TaxCalculatorInterface
      */
-    private function getItemTaxCalculator() {
+    private function getItemTaxCalculator()
+    {
         $product = $this->getProduct();
 
         if ($product instanceof ProductInterface) {
@@ -118,9 +118,10 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * @return CartInterface
      */
-    public function getCart() {
+    public function getCart()
+    {
         /**
-         * @var $cart CartInterface
+         * @var CartInterface
          */
         $cart = $this->getParent();
 

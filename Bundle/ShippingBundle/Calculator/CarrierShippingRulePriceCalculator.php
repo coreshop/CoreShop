@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
@@ -33,7 +32,7 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
     protected $shippingRuleProcessor;
 
     /**
-     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
+     * @param CarrierShippingRuleCheckerInterface  $carrierShippingRuleChecker
      * @param ShippingRuleActionProcessorInterface $shippingRuleProcessor
      */
     public function __construct(
@@ -51,7 +50,7 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
     {
         /**
          * First valid price rule wins. so, we loop through all ShippingRuleGroups
-         * get the first valid one, and process it for the price
+         * get the first valid one, and process it for the price.
          */
         $shippingRuleGroup = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $cart, $address);
 

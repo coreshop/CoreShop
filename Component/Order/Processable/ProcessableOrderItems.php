@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Processable;
@@ -46,16 +45,16 @@ class ProcessableOrderItems implements ProcessableInterface
                 if (array_key_exists($item->getId(), $processedItems)) {
                     if ($processedItems[$item->getId()]['quantity'] < $item->getQuantity()) {
                         $processAbleItems[$item->getId()] = [
-                            "quantity" => $item->getQuantity() - $processedItems[$item->getId()]['amount'],
-                            "item" => $item,
-                            "orderItemId" => $item->getId()
+                            'quantity' => $item->getQuantity() - $processedItems[$item->getId()]['amount'],
+                            'item' => $item,
+                            'orderItemId' => $item->getId(),
                         ];
                     }
                 } else {
                     $processAbleItems[$item->getId()] = [
-                        "quantity" => $item->getQuantity(),
-                        "item" => $item,
-                        "orderItemId" => $item->getId()
+                        'quantity' => $item->getQuantity(),
+                        'item' => $item,
+                        'orderItemId' => $item->getId(),
                     ];
                 }
             }
@@ -82,7 +81,7 @@ class ProcessableOrderItems implements ProcessableInterface
                     } else {
                         $processedItems[$orderItem->getId()] = [
                             'quantity' => $processedItem->getQuantity(),
-                            'orderItem' => $orderItem
+                            'orderItem' => $orderItem,
                         ];
                     }
                 }

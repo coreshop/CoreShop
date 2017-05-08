@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\PayumBundle\Action;
@@ -29,7 +28,7 @@ final class ResolveNextRouteAction implements ActionInterface
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
 
-        if ($payment->getState() === "complete") {
+        if ($payment->getState() === 'complete') {
             $request->setRouteName(
                 'coreshop_shop_order_thank_you'
             );
@@ -37,7 +36,7 @@ final class ResolveNextRouteAction implements ActionInterface
             return;
         }
 
-        /**
+        /*
          * We could return the Customer to the last checkout page as well?
          */
         $request->setRouteName('coreshop_shop_checkout_error');

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CurrencyBundle\Collector;
@@ -30,9 +29,9 @@ final class CurrencyCollector extends DataCollector
 
     /**
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyContextInterface $currencyContext
-     * @param StoreContextInterface $storeContext
-     * @param bool $currencyChangeSupport
+     * @param CurrencyContextInterface    $currencyContext
+     * @param StoreContextInterface       $storeContext
+     * @param bool                        $currencyChangeSupport
      */
     public function __construct(
         CurrencyRepositoryInterface $currencyRepository,
@@ -48,9 +47,7 @@ final class CurrencyCollector extends DataCollector
                 'currencies' => $currencyRepository->findActiveForStore($storeContext->getStore()),
                 'currency_change_support' => $currencyChangeSupport,
             ];
-        }
-        catch (\Exception $ex) {
-
+        } catch (\Exception $ex) {
         }
     }
 
@@ -86,7 +83,6 @@ final class CurrencyCollector extends DataCollector
         try {
             $this->data['currency'] = $this->currencyContext->getCurrency();
         } catch (\Exception $exception) {
-
         }
     }
 

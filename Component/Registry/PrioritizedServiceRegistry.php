@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Registry;
@@ -110,13 +109,14 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     /**
      * {@inheritdoc}
      */
-    public function getNextTo($identifier) {
+    public function getNextTo($identifier)
+    {
         $keys = $this->priortyMap->getKeys();
         $nextIndex = -1;
 
         foreach ($keys as $index => $key) {
             if ($key === $identifier) {
-                $nextIndex = $index+1;
+                $nextIndex = $index + 1;
                 break;
             }
         }
@@ -130,15 +130,17 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
 
     /**
      * @param $identifier
+     *
      * @return bool|int|string
      */
-    private function getPreviousIndex($identifier) {
+    private function getPreviousIndex($identifier)
+    {
         $keys = $this->priortyMap->getKeys();
         $prevIndex = -1;
 
         foreach ($keys as $index => $key) {
             if ($key == $identifier) {
-                $prevIndex = $index-1;
+                $prevIndex = $index - 1;
                 break;
             }
         }
@@ -149,7 +151,8 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     /**
      * {@inheritdoc}
      */
-    public function getPreviousTo($identifier) {
+    public function getPreviousTo($identifier)
+    {
         $keys = $this->priortyMap->getKeys();
         $prevIndex = $this->getPreviousIndex($identifier);
 
@@ -163,14 +166,15 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     /**
      * {@inheritdoc}
      */
-    public function getAllPreviousTo($identifier) {
+    public function getAllPreviousTo($identifier)
+    {
         $keys = $this->priortyMap->getKeys();
         $prevIndex = $this->getPreviousIndex($identifier);
 
         if ($prevIndex >= 0) {
             $previousElements = [];
 
-            for($i = $prevIndex; $i > 0; $i--) {
+            for ($i = $prevIndex; $i > 0; --$i) {
                 $previousElements[] = $this->get($keys[$i]);
             }
 
@@ -187,6 +191,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     {
         $keys = $this->priortyMap->getKeys();
 
-        return array_search($identifier,$keys);
+        return array_search($identifier, $keys);
     }
 }

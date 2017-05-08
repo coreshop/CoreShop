@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Model;
@@ -44,7 +43,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
      */
     public function getPrice($withTax = true)
     {
-        $variable = "price" . ($withTax ? "Gross" : "Net");
+        $variable = 'price'.($withTax ? 'Gross' : 'Net');
 
         /**
          * @var ProductPriceCalculatorInterface
@@ -143,8 +142,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
                 $address->setCountry($country);
 
                 $this->taxCalculator = $factory->getTaxCalculatorForAddress($taxRuleGroup, $address);
-            }
-            else {
+            } else {
                 $this->taxCalculator = null;
             }
         }
@@ -157,8 +155,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
      */
     public function getImage()
     {
-        if (count($this->getImages()) > 0)
-        {
+        if (count($this->getImages()) > 0) {
             return $this->getImages()[0];
         }
 
@@ -182,7 +179,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     }
 
     /**
-     * Return Topmost Master if Object is Variant
+     * Return Topmost Master if Object is Variant.
      *
      * @return PimcoreModelInterface
      */
@@ -200,7 +197,8 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private function getContainer() {
+    private function getContainer()
+    {
         return \Pimcore::getContainer();
     }
 

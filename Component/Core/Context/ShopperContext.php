@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Context;
@@ -46,10 +45,10 @@ class ShopperContext implements ShopperContextInterface
     private $customerContext;
 
     /**
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface    $storeContext
      * @param CurrencyContextInterface $currencyContext
-     * @param LocaleContextInterface $localeContext
-     * @param CountryContextInterface $countryContext
+     * @param LocaleContextInterface   $localeContext
+     * @param CountryContextInterface  $countryContext
      * @param CustomerContextInterface $customerContext
      */
     public function __construct(

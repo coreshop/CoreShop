@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */use Pimcore\Kernel;
 
 class TestAppKernel extends Kernel
@@ -20,7 +19,6 @@ class TestAppKernel extends Kernel
     {
         parent::__construct($environment, $debug);
     }
-
 
     /**
      * Returns an array of bundles to register.
@@ -57,7 +55,7 @@ class TestAppKernel extends Kernel
             new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
             new \FOS\RestBundle\FOSRestBundle(),
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new \Payum\Bundle\PayumBundle\PayumBundle()
+            new \Payum\Bundle\PayumBundle\PayumBundle(),
         ];
 
         $bundles = array_merge($bundles, parent::registerBundles());

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
@@ -40,16 +39,15 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
     private $eventDispatcher;
 
     /**
-     * @param ObjectServiceInterface $objectService
-     * @param string $pathForItems
+     * @param ObjectServiceInterface              $objectService
+     * @param string                              $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
@@ -60,7 +58,7 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
      */
     public function transform(ProposalInterface $order, ProposalItemInterface $cartItem, ProposalItemInterface $orderItem)
     {
-        /**
+        /*
          * @var $order OrderInterface
          * @var $cartItem CartItemInterface
          * @var $orderItem OrderItemInterface
@@ -71,7 +69,7 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
 
         $this->eventDispatcher->dispatchPreEvent('order_item', $cartItem, ['order' => $order, 'cart' => $cartItem->getCart(), 'order_item' => $orderItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($order->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($order->getFullPath().'/'.$this->pathForItems);
 
         $this->objectService->copyObject($cartItem, $orderItem);
 

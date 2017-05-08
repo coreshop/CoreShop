@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
@@ -38,7 +37,7 @@ class OrderInvoiceController extends AdminController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $items = [];
@@ -58,15 +57,15 @@ class OrderInvoiceController extends AdminController
             $orderItem = $item['item'];
             if ($orderItem instanceof OrderItemInterface) {
                 $itemsToReturn[] = [
-                    "orderItemId" => $orderItem->getId(),
-                    "price" => $orderItem->getItemPrice(),
-                    "maxToInvoice" => $item['quantity'],
-                    "quantity" => $orderItem->getQuantity(),
-                    "quantityInvoiced" => $orderItem->getQuantity() - $item['quantity'],
-                    "toInvoice" => $item['quantity'],
-                    "tax" => $orderItem->getTotalTax(),
-                    "total" => $orderItem->getTotal(),
-                    "name" => $orderItem->getProduct() instanceof ProductInterface ? $orderItem->getProduct()->getName() : ""
+                    'orderItemId' => $orderItem->getId(),
+                    'price' => $orderItem->getItemPrice(),
+                    'maxToInvoice' => $item['quantity'],
+                    'quantity' => $orderItem->getQuantity(),
+                    'quantityInvoiced' => $orderItem->getQuantity() - $item['quantity'],
+                    'toInvoice' => $item['quantity'],
+                    'tax' => $orderItem->getTotalTax(),
+                    'total' => $orderItem->getTotal(),
+                    'name' => $orderItem->getProduct() instanceof ProductInterface ? $orderItem->getProduct()->getName() : '',
                 ];
             }
         }
@@ -76,12 +75,13 @@ class OrderInvoiceController extends AdminController
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function createInvoiceAction(Request $request)
     {
-        $items = $request->get("items");
-        $orderId = $request->get("id");
+        $items = $request->get('items');
+        $orderId = $request->get('id');
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
@@ -94,7 +94,7 @@ class OrderInvoiceController extends AdminController
             $invoice = $this->getInvoiceFactory()->createNew();
             $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
 
-            return $this->json(["success" => true, "invoiceId" => $invoice->getId()]);
+            return $this->json(['success' => true, 'invoiceId' => $invoice->getId()]);
         } catch (\Exception $ex) {
             return $this->json(['success' => false, 'message' => $ex->getMessage()]);
         }
@@ -102,6 +102,7 @@ class OrderInvoiceController extends AdminController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function renderAction(Request $request)
@@ -113,10 +114,10 @@ class OrderInvoiceController extends AdminController
             return new Response(
                 $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
                 200,
-                array(
+                [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"'
-                )
+                    'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
+                ]
             );
         }
 

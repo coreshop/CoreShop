@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action;
@@ -32,7 +31,7 @@ final class DiscountPercentConfigurationType extends AbstractType
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
-                    new Range(['min' => 0, 'max' => 100])
+                    new Range(['min' => 0, 'max' => 100]),
                 ],
             ])
         ;

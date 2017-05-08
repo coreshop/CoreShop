@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -38,12 +37,12 @@ interface CartPriceRuleVoucherCodeInterface extends ResourceInterface
     public function setCreationDate($creationDate);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getUsed();
 
     /**
-     * @param boolean $used
+     * @param bool $used
      */
     public function setUsed($used);
 

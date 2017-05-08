@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Taxation;
@@ -17,10 +16,12 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
-interface TaxCalculatorFactoryInterface {
+interface TaxCalculatorFactoryInterface
+{
     /**
-     * @param AddressInterface $address
+     * @param AddressInterface      $address
      * @param TaxRuleGroupInterface $taxRuleGroup
+     *
      * @return TaxCalculatorInterface
      */
     public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address);

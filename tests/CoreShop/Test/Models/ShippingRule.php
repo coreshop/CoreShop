@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -57,7 +56,7 @@ class ShippingRule extends RuleTest
     protected $address;
 
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
@@ -72,9 +71,10 @@ class ShippingRule extends RuleTest
     /**
      * @return CarrierInterface
      */
-    private function createCarrier() {
+    private function createCarrier()
+    {
         /**
-         * @var $carrier CarrierInterface
+         * @var CarrierInterface
          */
         $carrier = $this->getFactory('carrier')->createNew();
         $carrier->setName('test');
@@ -138,16 +138,18 @@ class ShippingRule extends RuleTest
     /**
      * @return CarrierPriceCalculatorInterface
      */
-    protected function getPriceCalculator() {
+    protected function getPriceCalculator()
+    {
         return $this->get('coreshop.carrier.price_calculator.default');
     }
 
     /**
      * @return ShippingRuleInterface
      */
-    protected function createRule() {
+    protected function createRule()
+    {
         /**
-         * @var $shippingRule ShippingRuleInterface
+         * @var ShippingRuleInterface
          */
         $shippingRule = $this->getFactory('shipping_rule')->createNew();
         $shippingRule->setName('test-rule');
@@ -157,11 +159,13 @@ class ShippingRule extends RuleTest
 
     /**
      * @param ShippingRuleInterface $rule
+     *
      * @return ShippingRuleGroupInterface
      */
-    protected function createShippingRuleGroup(ShippingRuleInterface $rule) {
+    protected function createShippingRuleGroup(ShippingRuleInterface $rule)
+    {
         /**
-         * @var $shippingRuleGroup ShippingRuleGroupInterface
+         * @var ShippingRuleGroupInterface
          */
         $shippingRuleGroup = $this->getFactory('shipping_rule_group')->createNew();
         $shippingRuleGroup->setPriority(1);
@@ -171,7 +175,7 @@ class ShippingRule extends RuleTest
     }
 
     /**
-     * Test Price Rule Condition Customer
+     * Test Price Rule Condition Customer.
      */
     public function testShippingRuleConditionCustomer()
     {
@@ -179,7 +183,7 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
         $condition = $this->createConditionWithForm('customers', [
-            'customers' => [Data::$customer1->getId()]
+            'customers' => [Data::$customer1->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
@@ -188,9 +192,10 @@ class ShippingRule extends RuleTest
     /**
      * @param $subject
      * @param ConditionInterface $condition
-     * @param bool $trueOrFalse
+     * @param bool               $trueOrFalse
      */
-    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true) {
+    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true)
+    {
         $rule = $this->createRule();
         $rule->addCondition($condition);
 
@@ -205,7 +210,7 @@ class ShippingRule extends RuleTest
     }
 
     /**
-     * Test Price Rule Condition Country
+     * Test Price Rule Condition Country.
      */
     public function testShippingRuleConditionCountry()
     {
@@ -213,14 +218,14 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
         $condition = $this->createConditionWithForm('countries', [
-            'countries' => [Data::$store->getBaseCountry()->getId()]
+            'countries' => [Data::$store->getBaseCountry()->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Zone
+     * Test Price Rule Condition Zone.
      */
     public function testShippingRuleConditionZone()
     {
@@ -228,14 +233,14 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
         $condition = $this->createConditionWithForm('zones', [
-            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()]
+            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Customer Group
+     * Test Price Rule Condition Customer Group.
      */
     public function testShippingRuleConditionCustomerGroup()
     {
@@ -243,14 +248,14 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
         $condition = $this->createConditionWithForm('customerGroups', [
-            'customerGroups' => [Data::$customerGroup1->getId()]
+            'customerGroups' => [Data::$customerGroup1->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Products
+     * Test Price Rule Condition Products.
      */
     public function testShippingRuleConditionProducts()
     {
@@ -258,20 +263,20 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
         $condition = $this->createConditionWithForm('products', [
-            'products' => [Data::$product1->getId()]
+            'products' => [Data::$product1->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
 
         $condition = $this->createConditionWithForm('products', [
-            'products' => [Data::$product2->getId()]
+            'products' => [Data::$product2->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Categories
+     * Test Price Rule Condition Categories.
      */
     public function testShippingRuleConditionCategories()
     {
@@ -279,20 +284,20 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $condition = $this->createConditionWithForm('categories', [
-            'categories' => [Data::$category1->getId()]
+            'categories' => [Data::$category1->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
 
         $condition = $this->createConditionWithForm('categories', [
-            'categories' => [Data::$category2->getId()]
+            'categories' => [Data::$category2->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Stores
+     * Test Price Rule Condition Stores.
      */
     public function testShippingRuleConditionStores()
     {
@@ -300,14 +305,14 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
         $condition = $this->createConditionWithForm('stores', [
-            'stores' => [Data::$store->getId()]
+            'stores' => [Data::$store->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Currencies
+     * Test Price Rule Condition Currencies.
      */
     public function testShippingRuleConditionCurrencies()
     {
@@ -315,14 +320,14 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
         $condition = $this->createConditionWithForm('currencies', [
-            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+            'currencies' => [Data::$store->getBaseCurrency()->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Nested
+     * Test Price Rule Condition Nested.
      */
     public function testShippingRuleConditionNested()
     {
@@ -330,23 +335,23 @@ class ShippingRule extends RuleTest
         $this->assertConditionForm(NestedConfigurationType::class, 'nested');
 
         $categoriesCondition = $this->createConditionWithForm('categories', [
-            'categories' => [Data::$category1->getId()]
+            'categories' => [Data::$category1->getId()],
         ]);
 
         $currencyCondition = $this->createConditionWithForm('currencies', [
-            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+            'currencies' => [Data::$store->getBaseCurrency()->getId()],
         ]);
 
         $condition = $this->createConditionWithForm('nested', [
             'nested' => [$categoriesCondition, $currencyCondition],
-            'operator' => 'AND'
+            'operator' => 'AND',
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Action Discount Amount
+     * Test Price Rule Action Discount Amount.
      */
     public function testShippingRuleActionDiscountAmount()
     {
@@ -354,11 +359,11 @@ class ShippingRule extends RuleTest
         $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
 
         $action1 = $this->createActionWithForm('price', [
-            'price' => 100
+            'price' => 100,
         ]);
 
         $action2 = $this->createActionWithForm('discountAmount', [
-            'amount' => 5
+            'amount' => 5,
         ]);
 
         $rule = $this->createRule();
@@ -385,7 +390,7 @@ class ShippingRule extends RuleTest
     }
 
     /**
-     * Test Price Rule Action Discount Percent
+     * Test Price Rule Action Discount Percent.
      */
     public function testShippingRuleActionDiscountPercent()
     {
@@ -393,11 +398,11 @@ class ShippingRule extends RuleTest
         $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
 
         $action1 = $this->createActionWithForm('price', [
-            'price' => 100
+            'price' => 100,
         ]);
 
         $action2 = $this->createActionWithForm('discountPercent', [
-            'percent' => 10
+            'percent' => 10,
         ]);
 
         $rule = $this->createRule();
@@ -424,7 +429,7 @@ class ShippingRule extends RuleTest
     }
 
     /**
-     * Test Price Rule Action New Price
+     * Test Price Rule Action New Price.
      */
     public function testShippingRuleActionPrice()
     {
@@ -432,7 +437,7 @@ class ShippingRule extends RuleTest
         $this->assertActionForm(PriceActionConfigurationType::class, 'price');
 
         $action = $this->createActionWithForm('price', [
-            'price' => 100
+            'price' => 100,
         ]);
 
         $rule = $this->createRule();
@@ -457,8 +462,8 @@ class ShippingRule extends RuleTest
         $this->getEntityManager()->flush();
     }
 
-     /**
-     * Test Price Rule Action Addition Amount
+    /**
+     * Test Price Rule Action Addition Amount.
      */
     public function testShippingRuleActionAdditionAmount()
     {
@@ -466,11 +471,11 @@ class ShippingRule extends RuleTest
         $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
 
         $action1 = $this->createActionWithForm('price', [
-            'price' => 100
+            'price' => 100,
         ]);
 
         $action2 = $this->createActionWithForm('additionAmount', [
-            'amount' => 5
+            'amount' => 5,
         ]);
 
         $rule = $this->createRule();
@@ -497,7 +502,7 @@ class ShippingRule extends RuleTest
     }
 
     /**
-     * Test Price Rule Action Addition Percent
+     * Test Price Rule Action Addition Percent.
      */
     public function testShippingRuleActionAdditionPercent()
     {
@@ -505,11 +510,11 @@ class ShippingRule extends RuleTest
         $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
 
         $action1 = $this->createActionWithForm('price', [
-            'price' => 100
+            'price' => 100,
         ]);
 
         $action2 = $this->createActionWithForm('additionPercent', [
-            'percent' => 10
+            'percent' => 10,
         ]);
 
         $rule = $this->createRule();

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
@@ -18,14 +17,14 @@ interface TransformerEventDispatcherInterface
     /**
      * @param string $modelName
      * @param string $model
-     * @param array $params
+     * @param array  $params
      */
     public function dispatchPreEvent($modelName, $model, $params = []);
 
     /**
      * @param string $modelName
      * @param string $model
-     * @param array $params
+     * @param array  $params
      */
     public function dispatchPostEvent($modelName, $model, $params = []);
 }

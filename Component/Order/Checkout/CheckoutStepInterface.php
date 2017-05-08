@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Checkout;
@@ -16,42 +15,44 @@ namespace CoreShop\Component\Order\Checkout;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-interface CheckoutStepInterface {
-
+interface CheckoutStepInterface
+{
     /**
      * @return string
      */
     public function getIdentifier();
 
     /**
-     * Determines if this step should be forward if valid
+     * Determines if this step should be forward if valid.
      *
-     * @return boolean
+     * @return bool
      */
     public function doAutoForward();
 
     /**
-     * Check if Checkout Step is valid
+     * Check if Checkout Step is valid.
      *
      * @param CartInterface $cart
-     * @return boolean
+     *
+     * @return bool
      */
     public function validate(CartInterface $cart);
 
     /**
-     * Commit Step from Request (validate form or whatever)
+     * Commit Step from Request (validate form or whatever).
      *
      * @param CartInterface $cart
-     * @param Request $request
+     * @param Request       $request
      *
      * @throws CheckoutException
      */
     public function commitStep(CartInterface $cart, Request $request);
 
     /**
-     * Prepare Checkout Step
+     * Prepare Checkout Step.
      *
      * @param CartInterface $cart
+     *
      * @return array $params for the view
      */
     public function prepareStep(CartInterface $cart);

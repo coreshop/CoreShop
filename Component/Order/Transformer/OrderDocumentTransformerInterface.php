@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Transformer;
@@ -16,16 +15,16 @@ namespace CoreShop\Component\Order\Transformer;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 
-interface OrderDocumentTransformerInterface {
-
+interface OrderDocumentTransformerInterface
+{
     /**
-     * Transforms an order to an invoice
+     * Transforms an order to an invoice.
      *
-     * @param OrderInterface $order
+     * @param OrderInterface         $order
      * @param OrderDocumentInterface $document
      * @param $items
+     *
      * @return mixed
      */
     public function transform(OrderInterface $order, OrderDocumentInterface $document, $items);
-
 }

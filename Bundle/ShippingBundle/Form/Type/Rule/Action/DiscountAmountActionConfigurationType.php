@@ -8,12 +8,10 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
-use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,7 +27,7 @@ class DiscountAmountActionConfigurationType extends AbstractType
         $builder
             ->add('amount', NumberType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']])
+                    new NotBlank(['groups' => ['coreshop']]),
                 ],
             ])
         ;

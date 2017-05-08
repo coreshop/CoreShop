@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Checkout;
@@ -16,8 +15,8 @@ namespace CoreShop\Component\Order\Checkout;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-interface CheckoutManagerInterface {
-
+interface CheckoutManagerInterface
+{
     /**
      * @param CheckoutStepInterface $step
      * @param $priority
@@ -31,58 +30,67 @@ interface CheckoutManagerInterface {
 
     /**
      * @param $identifier
+     *
      * @return mixed
      */
     public function getStep($identifier);
 
     /**
      * @param $identifier
+     *
      * @return mixed
      */
     public function getNextStep($identifier);
 
     /**
      * @param $identifier
+     *
      * @return mixed
      */
     public function getPreviousStep($identifier);
 
     /**
      * @param $identifier
+     *
      * @return CheckoutStepInterface[]
      */
     public function getPreviousSteps($identifier);
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
+     * @param CartInterface         $cart
+     *
      * @return mixed
      */
     public function validateStep(CheckoutStepInterface $step, CartInterface $cart);
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
+     * @param CartInterface         $cart
+     *
      * @return mixed
      */
     public function prepareStep(CheckoutStepInterface $step, CartInterface $cart);
 
     /**
      * @param CartInterface $cart
+     *
      * @return mixed
      */
     public function getCurrentStep(CartInterface $cart);
 
     /**
      * @param $identifier
+     *
      * @return mixed
      */
     public function getCurrentStepIndex($identifier);
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
-     * @param Request $request
+     * @param CartInterface         $cart
+     * @param Request               $request
+     *
      * @return mixed
      */
     public function commitStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);

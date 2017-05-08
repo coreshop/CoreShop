@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
@@ -33,10 +32,10 @@ class CarrierType extends AbstractResourceType
             ->add('trackingUrl', TextType::class)
             ->add('isFree', CheckboxType::class)
             ->add('rangeBehaviour', ChoiceType::class, [
-                'choices'  => [
+                'choices' => [
                     'deactivate' => CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE,
-                    'largest' => CarrierInterface::RANGE_BEHAVIOUR_LARGEST
-                ]
+                    'largest' => CarrierInterface::RANGE_BEHAVIOUR_LARGEST,
+                ],
             ])
             ->add('shippingRules', ShippingRuleGroupCollectionType::class)
         ;

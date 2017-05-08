@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
@@ -58,38 +57,38 @@ class OrderController extends AdminController
                 'dataIndex' => 'store',
                 'renderAs' => 'store',
                 'filter' => [
-                    'type' => 'number'
-                ]
+                    'type' => 'number',
+                ],
             ],
             [
                 'text' => 'coreshop_orders_id',
                 'type' => 'string',
                 'dataIndex' => 'o_id',
                 'filter' => [
-                    'type' => 'number'
+                    'type' => 'number',
                 ],
                 'hideable' => false,
-                'draggable' => false
+                'draggable' => false,
             ],
             [
                 'text' => 'coreshop_orders_orderNumber',
                 'type' => 'string',
                 'dataIndex' => 'orderNumber',
                 'filter' => [
-                    'type' => 'string'
-                ]
+                    'type' => 'string',
+                ],
             ],
             [
                 'text' => 'name',
                 'type' => 'string',
                 'dataIndex' => 'customerName',
-                'flex' => 1
+                'flex' => 1,
             ],
             [
                 'text' => 'email',
                 'type' => 'string',
                 'dataIndex' => 'customerEmail',
-                'width' => 200
+                'width' => 200,
             ],
             [
                 'text' => 'coreshop_orders_total',
@@ -97,9 +96,9 @@ class OrderController extends AdminController
                 'dataIndex' => 'total',
                 'renderAs' => 'currency',
                 'filter' => [
-                    'type' => 'number'
+                    'type' => 'number',
                 ],
-                'align' => 'right'
+                'align' => 'right',
             ],
             [
                 'text' => 'coreshop_discount',
@@ -107,7 +106,7 @@ class OrderController extends AdminController
                 'dataIndex' => 'discount',
                 'renderAs' => 'currency',
                 'align' => 'right',
-                'hidden' => true
+                'hidden' => true,
             ],
             [
                 'text' => 'coreshop_subtotal',
@@ -115,7 +114,7 @@ class OrderController extends AdminController
                 'dataIndex' => 'subtotal',
                 'renderAs' => 'currency',
                 'align' => 'right',
-                'hidden' => true
+                'hidden' => true,
             ],
             [
                 'text' => 'coreshop_shipping',
@@ -123,7 +122,7 @@ class OrderController extends AdminController
                 'dataIndex' => 'shipping',
                 'renderAs' => 'currency',
                 'align' => 'right',
-                'hidden' => true
+                'hidden' => true,
             ],
             [
                 'text' => 'coreshop_paymentFee',
@@ -131,7 +130,7 @@ class OrderController extends AdminController
                 'dataIndex' => 'paymentFee',
                 'renderAs' => 'currency',
                 'align' => 'right',
-                'hidden' => true
+                'hidden' => true,
             ],
             [
                 'text' => 'coreshop_total_tax',
@@ -139,31 +138,31 @@ class OrderController extends AdminController
                 'dataIndex' => 'totalTax',
                 'renderAs' => 'currency',
                 'align' => 'right',
-                'hidden' => true
+                'hidden' => true,
             ],
             [
                 'text' => 'coreshop_currency',
                 'type' => 'string',
                 'dataIndex' => 'currencyName',
                 'align' => 'right',
-                'hidden' => true
+                'hidden' => true,
             ],
             [
                 'text' => 'coreshop_orders_orderState',
                 'type' => null,
                 'dataIndex' => 'orderState',
                 'renderAs' => 'orderState',
-                'width' => 200
+                'width' => 200,
             ],
             [
                 'text' => 'coreshop_orders_orderDate',
                 'type' => 'date',
                 'dataIndex' => 'orderDate',
                 'filter' => [
-                    'type' => 'date'
+                    'type' => 'date',
                 ],
-                'width' => 150
-            ]
+                'width' => 150,
+            ],
         ];
 
         $addressClassId = $this->getParameter('coreshop.model.address.pimcore_class_id');
@@ -172,10 +171,10 @@ class OrderController extends AdminController
         $addressFields = [];
 
         if ($addressClassDefinition instanceof \Pimcore\Model\Object\ClassDefinition) {
-            $invalidFields = array('extra');
+            $invalidFields = ['extra'];
 
-            foreach($addressClassDefinition->getFieldDefinitions() as $fieldDefinition) {
-                if(in_array($fieldDefinition->getName(), $invalidFields)) {
+            foreach ($addressClassDefinition->getFieldDefinitions() as $fieldDefinition) {
+                if (in_array($fieldDefinition->getName(), $invalidFields)) {
                     continue;
                 }
 
@@ -186,7 +185,7 @@ class OrderController extends AdminController
                     'type' => 'string',
                     'dataIndex' => $fieldDefinition->getName(),
                     'width' => 150,
-                    'hidden' => true
+                    'hidden' => true,
                 ];
             }
 
@@ -195,7 +194,7 @@ class OrderController extends AdminController
                 'type' => 'string',
                 'dataIndex' => 'All',
                 'width' => 150,
-                'hidden' => true
+                'hidden' => true,
             ];
         }
 
@@ -204,18 +203,18 @@ class OrderController extends AdminController
                 $name = $fieldElement['fieldName'];
                 $dataIndex = $fieldElement['dataIndex'];
 
-                $fieldElement['text'] = 'coreshop_address_'.$type.'|[' . $name . ']';
-                $fieldElement['dataIndex'] = 'address' . ucfirst($type) . ucfirst($dataIndex);
+                $fieldElement['text'] = 'coreshop_address_'.$type.'|['.$name.']';
+                $fieldElement['dataIndex'] = 'address'.ucfirst($type).ucfirst($dataIndex);
 
                 $defaultConfiguration[] = $fieldElement;
             }
         }
 
-
-        return $this->json(["success" => true, "columns" => $defaultConfiguration]);
+        return $this->json(['success' => true, 'columns' => $defaultConfiguration]);
     }
 
-    public function getOrders(Request $request) {
+    public function getOrders(Request $request)
+    {
         $list = $this->getOrderList();
         $list->setLimit($request->get('limit', 30));
         $list->setOffset($request->get('page', 1) - 1);
@@ -255,6 +254,7 @@ class OrderController extends AdminController
 
     /**
      * @param OrderInterface $order
+     *
      * @return array
      */
     protected function prepareOrder(OrderInterface $order)
@@ -277,8 +277,8 @@ class OrderController extends AdminController
             'currency' => $this->getCurrency($order->getCurrency() ? $order->getCurrency() : $this->get('coreshop.context.currency')->getCurrency()),
             'currencyName' => $order->getCurrency() instanceof CurrencyInterface ? $order->getCurrency()->getName() : '',
             'shop' => $order->getStore() instanceof StoreInterface ? $order->getStore()->getId() : null,
-            'customerName' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname() : '',
-            'customerEmail' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getEmail() : ''
+            'customerName' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname() : '',
+            'customerEmail' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getEmail() : '',
         ];
 
         $element = array_merge($element, $this->prepareAddress($order->getShippingAddress(), 'shipping'), $this->prepareAddress($order->getInvoiceAddress(), 'invocie'));
@@ -289,32 +289,34 @@ class OrderController extends AdminController
     /**
      * @param $address
      * @param $type
+     *
      * @return array
      */
-    protected function prepareAddress($address, $type) {
-        $prefix = "address" . ucfirst($type);
+    protected function prepareAddress($address, $type)
+    {
+        $prefix = 'address'.ucfirst($type);
         $values = [];
         $fullAddress = [];
         $classDefinition = ClassDefinition::getById($this->getParameter('coreshop.model.address.pimcore_class_id'));
 
-        foreach($classDefinition->getFieldDefinitions() as $fieldDefinition) {
-            $value = "";
+        foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
+            $value = '';
 
             if ($address instanceof AddressInterface && $address instanceof Concrete) {
                 $value = $address->getValueForFieldName($fieldDefinition->getName());
 
-                if($value instanceof ResourceInterface) {
+                if ($value instanceof ResourceInterface) {
                     $value = $value->getName();
                 }
 
                 $fullAddress[] = $value;
             }
 
-            $values[$prefix . ucfirst($fieldDefinition->getName())] = $value;
+            $values[$prefix.ucfirst($fieldDefinition->getName())] = $value;
         }
 
         if ($address instanceof AddressInterface && $address->getCountry() instanceof CountryInterface) {
-            $values[$prefix . "All"] = $this->getAddressFormatter()->formatAddress($address, false);
+            $values[$prefix.'All'] = $this->getAddressFormatter()->formatAddress($address, false);
         }
 
         return $values;
@@ -323,7 +325,7 @@ class OrderController extends AdminController
     public function detailAction(Request $request)
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find($orderId );
+        $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
             return  $this->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
@@ -357,24 +359,22 @@ class OrderController extends AdminController
             'billing' => $this->getDataForObject($order->getInvoiceAddress()),
         ];
 
-        if($order->getShippingAddress() instanceof AddressInterface && $order->getShippingAddress()->getCountry() instanceof CountryInterface) {
+        if ($order->getShippingAddress() instanceof AddressInterface && $order->getShippingAddress()->getCountry() instanceof CountryInterface) {
             $jsonOrder['address']['shipping']['formatted'] = $this->getAddressFormatter()->formatAddress($order->getShippingAddress());
-        }
-        else {
+        } else {
             $jsonOrder['address']['shipping']['formatted'] = '';
         }
 
-        if($order->getInvoiceAddress() instanceof AddressInterface && $order->getInvoiceAddress()->getCountry() instanceof CountryInterface) {
+        if ($order->getInvoiceAddress() instanceof AddressInterface && $order->getInvoiceAddress()->getCountry() instanceof CountryInterface) {
             $jsonOrder['address']['billing']['formatted'] = $this->getAddressFormatter()->formatAddress($order->getInvoiceAddress());
-        }
-        else {
+        } else {
             $jsonOrder['address']['billing']['formatted'] = '';
         }
 
         $jsonOrder['shippingPayment'] = [
             'carrier' => $order->getCarrier() instanceof CarrierInterface ? $order->getCarrier()->getName() : null,
             'weight' => $order->getTotalWeight(),
-            'cost' => $order->getShipping()
+            'cost' => $order->getShipping(),
         ];
 
         $jsonOrder['priceRule'] = false;
@@ -391,7 +391,7 @@ class OrderController extends AdminController
                             'id' => $rule->getId(),
                             'name' => $rule->getName(),
                             'code' => $ruleItem->getVoucherCode(),
-                            'discount' => $ruleItem->getDiscount()
+                            'discount' => $ruleItem->getDiscount(),
                         ];
                     }
                 }
@@ -421,15 +421,16 @@ class OrderController extends AdminController
             }
         }*/
 
-
-        return $this->json(["success" => true, "order" => $jsonOrder]);
+        return $this->json(['success' => true, 'order' => $jsonOrder]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
-    public function updatePaymentAction(Request $request) {
+    public function updatePaymentAction(Request $request)
+    {
         $payment = $this->getPaymentRepository()->find($request->get('id'));
 
         if (!$payment instanceof PaymentInterface) {
@@ -446,9 +447,11 @@ class OrderController extends AdminController
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
-    public function addPaymentAction(Request $request) {
+    public function addPaymentAction(Request $request)
+    {
         $orderId = $request->get('o_id');
         $order = $this->getOrderRepository()->find($orderId);
         $amount = doubleval($request->get('amount', 0));
@@ -470,7 +473,7 @@ class OrderController extends AdminController
                 return $this->json(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
                 /**
-                 * @var $payment PaymentInterface|PimcoreModelInterface
+                 * @var PaymentInterface|PimcoreModelInterface
                  */
                 $payment = $this->getPaymentFactory()->createNew();
                 $payment->setNumber($transactionId);
@@ -494,7 +497,8 @@ class OrderController extends AdminController
     /**
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
-    public function getPaymentProvidersAction() {
+    public function getPaymentProvidersAction()
+    {
         $providers = $this->getPaymentRepository()->findAll();
         $result = [];
 
@@ -512,6 +516,7 @@ class OrderController extends AdminController
 
     /**
      * @param OrderInterface $order
+     *
      * @return array
      */
     protected function getStatesHistory(OrderInterface $order)
@@ -538,7 +543,7 @@ class OrderController extends AdminController
                     'user' => $user ? $user->getName() : null,
                     'description' => $note->getDescription(),
                     'title' => $note->getTitle(),
-                    'data' => $note->getData()
+                    'data' => $note->getData(),
                 ];
             }
         }
@@ -548,6 +553,7 @@ class OrderController extends AdminController
 
     /**
      * @param OrderInterface $order
+     *
      * @return array
      */
     protected function getDetails(OrderInterface $order)
@@ -567,7 +573,7 @@ class OrderController extends AdminController
                     'price' => $detail->getItemPrice(true),
                     'amount' => $detail->getQuantity(),
                     'total' => $detail->getTotal(),
-                    'total_tax' => $detail->getTotalTax()
+                    'total_tax' => $detail->getTotalTax(),
                 ];
             }
         }
@@ -577,6 +583,7 @@ class OrderController extends AdminController
 
     /**
      * @param OrderInterface $order
+     *
      * @return array
      */
     protected function getSummary(OrderInterface $order)
@@ -586,26 +593,26 @@ class OrderController extends AdminController
         if ($order->getDiscount() > 0) {
             $summary[] = [
                 'key' => 'discount',
-                'value' => $order->getDiscount()
+                'value' => $order->getDiscount(),
             ];
         }
 
         if ($order->getShipping() > 0) {
             $summary[] = [
                 'key' => 'shipping',
-                'value' => $order->getShipping()
+                'value' => $order->getShipping(),
             ];
 
             $summary[] = [
                 'key' => 'shipping_tax',
-                'value' => $order->getShippingTax()
+                'value' => $order->getShippingTax(),
             ];
         }
 
         if ($order->getPaymentFee() > 0) {
             $summary[] = [
                 'key' => 'payment',
-                'value' => $order->getPaymentFee()
+                'value' => $order->getPaymentFee(),
             ];
         }
 
@@ -625,18 +632,19 @@ class OrderController extends AdminController
 
         $summary[] = [
             'key' => 'total_tax',
-            'value' => $order->getTotalTax()
+            'value' => $order->getTotalTax(),
         ];
         $summary[] = [
             'key' => 'total',
-            'value' => $order->getTotal()
+            'value' => $order->getTotal(),
         ];
 
         return $summary;
     }
 
-     /**
+    /**
      * @param OrderInterface $order
+     *
      * @return array
      */
     protected function getPayments(OrderInterface $order)
@@ -661,7 +669,7 @@ class OrderController extends AdminController
                 'transactionIdentifier' => $payment->getNumber(),
                 //'transactionNotes' => $noteList->load(),
                 'amount' => $payment->getTotalAmount(),
-                'state' => $payment->getState()
+                'state' => $payment->getState(),
             ];
         }
 
@@ -670,6 +678,7 @@ class OrderController extends AdminController
 
     /**
      * @param Object\Concrete $data
+     *
      * @return array
      */
     private function getDataForObject(Object\Concrete $data)
@@ -678,7 +687,7 @@ class OrderController extends AdminController
         Object\Service::loadAllObjectFields($data);
 
         foreach ($data->getClass()->getFieldDefinitions() as $key => $def) {
-            $getter = "get" . ucfirst($key);
+            $getter = 'get'.ucfirst($key);
             $fieldData = $data->$getter();
 
             if ($def instanceof Object\ClassDefinition\Data\Href) {
@@ -709,20 +718,22 @@ class OrderController extends AdminController
         return $objectData;
     }
 
-     /**
+    /**
      * @param CurrencyInterface $currency
+     *
      * @return array
      */
     protected function getCurrency(CurrencyInterface $currency)
     {
         return [
             'name' => $currency->getName(),
-            'symbol' => $currency->getSymbol()
+            'symbol' => $currency->getSymbol(),
         ];
     }
 
     /**
      * @param OrderInterface $order
+     *
      * @return array
      */
     protected function getInvoices($order)
@@ -739,6 +750,7 @@ class OrderController extends AdminController
 
     /**
      * @param OrderInterface $order
+     *
      * @return array
      */
     protected function getShipments($order)
@@ -756,84 +768,96 @@ class OrderController extends AdminController
     /**
      * @return ProcessableInterface
      */
-    private function getInvoiceProcessableHelper() {
+    private function getInvoiceProcessableHelper()
+    {
         return $this->get('coreshop.order.invoice.processable');
     }
 
     /**
      * @return ProcessableInterface
      */
-    private function getShipmentProcessableHelper() {
+    private function getShipmentProcessableHelper()
+    {
         return $this->get('coreshop.order.shipment.processable');
     }
 
     /**
      * @return PimcoreRepositoryInterface
      */
-    private function getOrderRepository() {
+    private function getOrderRepository()
+    {
         return $this->get('coreshop.repository.order');
     }
 
     /**
      * @return OrderInvoiceRepositoryInterface
      */
-    private function getOrderInvoiceRepository() {
+    private function getOrderInvoiceRepository()
+    {
         return $this->get('coreshop.repository.order_invoice');
     }
 
     /**
      * @return OrderShipmentRepositoryInterface
      */
-    private function getOrderShipmentRepository() {
+    private function getOrderShipmentRepository()
+    {
         return $this->get('coreshop.repository.order_shipment');
     }
 
     /**
      * @return \Pimcore\Model\Listing\AbstractListing
      */
-    private function getOrderList() {
+    private function getOrderList()
+    {
         return $this->getOrderRepository()->getList();
     }
 
     /**
      * @return AddressFormatterInterface
      */
-    private function getAddressFormatter() {
+    private function getAddressFormatter()
+    {
         return $this->get('coreshop.address.formatter');
     }
 
     /**
      * @return WorkflowManagerInterface
      */
-    private function getOrderStateManager() {
+    private function getOrderStateManager()
+    {
         return $this->get('coreshop.workflow.manager.order');
     }
 
     /**
      * @return RepositoryInterface
      */
-    private function getPaymentRepository() {
+    private function getPaymentRepository()
+    {
         return $this->get('coreshop.repository.payment');
     }
 
     /**
      * @return \Doctrine\ORM\EntityManager|object
      */
-    private function getEntityManager() {
+    private function getEntityManager()
+    {
         return $this->get('doctrine.orm.entity_manager');
     }
 
     /**
      * @return PaymentRepositoryInterface
      */
-    private function getPaymentProviderRepository() {
+    private function getPaymentProviderRepository()
+    {
         return $this->get('coreshop.repository.payment_provider');
     }
 
     /**
      * @return FactoryInterface
      */
-    private function getPaymentFactory() {
+    private function getPaymentFactory()
+    {
         return $this->get('coreshop.factory.payment');
     }
 }

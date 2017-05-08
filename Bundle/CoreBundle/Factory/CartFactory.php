@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Factory;
@@ -36,16 +35,15 @@ class CartFactory implements FactoryInterface
     private $currencyContext;
 
     /**
-     * @param string $className
+     * @param string                   $className
      * @param CurrencyContextInterface $currencyContext
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface    $storeContext
      */
     public function __construct(
         $className,
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext
-    )
-    {
+    ) {
         $this->className = $className;
         $this->currencyContext = $currencyContext;
         $this->storeContext = $storeContext;

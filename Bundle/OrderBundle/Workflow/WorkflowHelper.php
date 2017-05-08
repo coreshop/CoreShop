@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\OrderBundle\Workflow;
@@ -24,14 +23,13 @@ class WorkflowHelper
         $pimcoreManager = $event->getWorkflowManager();
 
         /**
-         * Find WorkflowManager for Type
+         * Find WorkflowManager for Type.
          *
-         * @var $serviceRegistry ServiceRegistry
+         * @var ServiceRegistry
          * @var $workflowManager WorkflowManagerInterface
          */
         $managerRegistry = self::get('coreshop.workflow.manager.registry');
         $workflowManager = $managerRegistry->get(get_class($pimcoreManager->getElement()));
-
 
         $data = $event->getArgument('data');
         $currentState = $pimcoreManager->getWorkflowStateForElement()->getState();
@@ -45,14 +43,13 @@ class WorkflowHelper
         $pimcoreManager = $event->getWorkflowManager();
 
         /**
-         * Find WorkflowManager for Type
+         * Find WorkflowManager for Type.
          *
-         * @var $serviceRegistry ServiceRegistry
+         * @var ServiceRegistry
          * @var $workflowManager WorkflowManagerInterface
          */
         $managerRegistry = self::get('coreshop.workflow.manager.registry');
         $workflowManager = $managerRegistry->get(get_class($pimcoreManager->getElement()));
-
 
         $data = $event->getArgument('data');
         $oldState = $data['oldState'];
@@ -66,14 +63,13 @@ class WorkflowHelper
         $pimcoreManager = $event->getWorkflowManager();
 
         /**
-         * Find WorkflowManager for Type
+         * Find WorkflowManager for Type.
          *
-         * @var $serviceRegistry ServiceRegistry
+         * @var ServiceRegistry
          * @var $workflowManager WorkflowManagerInterface
          */
         $managerRegistry = self::get('coreshop.workflow.manager.registry');
         $workflowManager = $managerRegistry->get(get_class($pimcoreManager->getElement()));
-
 
         $data = $event->getArgument('data');
         $oldState = $data['oldState'];
@@ -82,7 +78,8 @@ class WorkflowHelper
         $workflowManager->successWorkflowDispatch($event->getWorkflowManager()->getElement(), $newState, $oldState);
     }
 
-    private static function get($id) {
+    private static function get($id)
+    {
         return \Pimcore::getContainer()->get($id);
     }
 }

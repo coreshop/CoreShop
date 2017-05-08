@@ -8,15 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Store\Model\Store as BaseStore;
 
-class Store extends BaseStore implements StoreInterface {
-
+class Store extends BaseStore implements StoreInterface
+{
     /**
      * @var CurrencyInterface
      */
@@ -30,14 +29,16 @@ class Store extends BaseStore implements StoreInterface {
     /**
      * {@inheritdoc}
      */
-    public function getBaseCurrency() {
+    public function getBaseCurrency()
+    {
         return $this->baseCurrency;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setBaseCurrency(CurrencyInterface $baseCurrency) {
+    public function setBaseCurrency(CurrencyInterface $baseCurrency)
+    {
         $this->baseCurrency = $baseCurrency;
     }
 

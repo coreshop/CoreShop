@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Sequence\Generator;
@@ -36,8 +35,8 @@ class SequenceGenerator implements SequenceGeneratorInterface
 
     /**
      * @param SequenceRepositoryInterface $sequenceRepository
-     * @param SequenceFactoryInterface $sequenceFactory
-     * @param EntityManagerInterface $entityManager
+     * @param SequenceFactoryInterface    $sequenceFactory
+     * @param EntityManagerInterface      $entityManager
      */
     public function __construct(SequenceRepositoryInterface $sequenceRepository, SequenceFactoryInterface $sequenceFactory, EntityManagerInterface $entityManager)
     {
@@ -62,9 +61,11 @@ class SequenceGenerator implements SequenceGeneratorInterface
 
     /**
      * @param $type
+     *
      * @return \coreShop\Component\Sequence\Model\SequenceInterface
      */
-    private function getSequence($type) {
+    private function getSequence($type)
+    {
         $sequence = $this->sequenceRepository->findForType($type);
 
         if (null === $sequence) {

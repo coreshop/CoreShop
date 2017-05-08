@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -20,7 +19,7 @@ use CoreShop\Test\Data;
 class Cart extends Base
 {
     /**
-     * Test Cart Creation
+     * Test Cart Creation.
      */
     public function testCartCreation()
     {
@@ -32,7 +31,7 @@ class Cart extends Base
     }
 
     /**
-     * Test Cart Subtotal
+     * Test Cart Subtotal.
      */
     public function testCartSubtotal()
     {
@@ -45,12 +44,12 @@ class Cart extends Base
         $subTotalWT = $cart->getSubtotal(false);
 
         $this->assertEquals(288, $subtotal);
-        $this->assertEquals($subtotal-$subTotalWT, $tax);
-        $this->assertEquals($subtotal-$tax, $subTotalWT);
+        $this->assertEquals($subtotal - $subTotalWT, $tax);
+        $this->assertEquals($subtotal - $tax, $subTotalWT);
     }
 
     /**
-     * Test Cart Total
+     * Test Cart Total.
      */
     public function testCartTotal()
     {
@@ -64,8 +63,8 @@ class Cart extends Base
 
         $this->assertEquals(288, $cart->getSubtotal() + $cart->getShipping());
         $this->assertEquals(288, $total);
-        $this->assertEquals($total-$totalWT, $tax);
-        $this->assertEquals($total-$tax, $totalWT);
+        $this->assertEquals($total - $totalWT, $tax);
+        $this->assertEquals($total - $tax, $totalWT);
 
         $cart->setCustomer(Data::$customer1);
         $cart->setInvoiceAddress(Data::$customer1->getAddresses()[0]);
@@ -78,7 +77,7 @@ class Cart extends Base
     }
 
     /**
-     * Test Cart Add Item
+     * Test Cart Add Item.
      */
     public function testCartAddItem()
     {
@@ -87,7 +86,7 @@ class Cart extends Base
         $cart = Data::createCart();
 
         /**
-         * @var $modifier CartModifierInterface
+         * @var CartModifierInterface
          */
         $modifier = $this->get('coreshop.cart.modifier');
 

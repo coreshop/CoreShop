@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Shipping\Model;
@@ -16,14 +15,15 @@ namespace CoreShop\Component\Shipping\Model;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface CarrierInterface extends ResourceInterface {
+interface CarrierInterface extends ResourceInterface
+{
     /**
-     * Range Behaviour Deactivate
+     * Range Behaviour Deactivate.
      */
     const RANGE_BEHAVIOUR_DEACTIVATE = 'deactivate';
 
     /**
-     * Range Behaviour Largest
+     * Range Behaviour Largest.
      */
     const RANGE_BEHAVIOUR_LARGEST = 'largest';
 

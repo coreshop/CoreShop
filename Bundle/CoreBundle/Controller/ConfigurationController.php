@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
@@ -21,6 +20,7 @@ class ConfigurationController extends ResourceController
 {
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function saveAllAction(Request $request)
@@ -28,7 +28,7 @@ class ConfigurationController extends ResourceController
         $values = $this->decodeJson($request->get('values'));
         $values = array_htmlspecialchars($values);
 
-        $diff = call_user_func_array([$this, "array_diff_assoc_recursive"], $values);
+        $diff = call_user_func_array([$this, 'array_diff_assoc_recursive'], $values);
 
         foreach ($values as $store => $storeValues) {
             $store = $this->get('coreshop.repository.store')->find($store);
@@ -56,7 +56,8 @@ class ConfigurationController extends ResourceController
     /**
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getAllAction() {
+    public function getAllAction()
+    {
         $stores = $this->get('coreshop.repository.store')->findAll();
         $valueArray = [];
 
@@ -80,7 +81,8 @@ class ConfigurationController extends ResourceController
     /**
      * @return ConfigurationServiceInterface
      */
-    private function getConfigurationService() {
+    private function getConfigurationService()
+    {
         return $this->get('coreshop.configuration.service');
     }
 
@@ -90,22 +92,22 @@ class ConfigurationController extends ResourceController
     private function array_diff_assoc_recursive()
     {
         $args = func_get_args();
-        $diff =  [ ];
+        $diff = [];
         foreach (array_shift($args) as $key => $val) {
-            for ($i = 0, $j = 0, $tmp =  [ $val ], $count = count($args); $i < $count; $i++) {
+            for ($i = 0, $j = 0, $tmp = [$val], $count = count($args); $i < $count; ++$i) {
                 if (is_array($val)) {
                     if (!isset($args[$i][$key]) || !is_array($args[$i][$key]) || empty($args[$i][$key])) {
-                        $j++;
+                        ++$j;
                     } else {
                         $tmp[] = $args[$i][$key];
                     }
-                } elseif (! array_key_exists($key, $args[$i]) || $args[$i][$key] !== $val) {
-                    $j++;
+                } elseif (!array_key_exists($key, $args[$i]) || $args[$i][$key] !== $val) {
+                    ++$j;
                 }
             }
             if (is_array($val)) {
-                $tmp = call_user_func_array(array($this, __METHOD__), $tmp);
-                if (! empty($tmp)) {
+                $tmp = call_user_func_array([$this, __METHOD__], $tmp);
+                if (!empty($tmp)) {
                     $diff[$key] = $tmp;
                 } elseif ($j == $count) {
                     $diff[$key] = $val;

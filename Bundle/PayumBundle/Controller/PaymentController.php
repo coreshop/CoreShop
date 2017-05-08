@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
@@ -60,11 +59,12 @@ class PaymentController extends Controller
 
     /**
      * PaymentController constructor.
-     * @param FactoryInterface $paymentFactory
+     *
+     * @param FactoryInterface           $paymentFactory
      * @param PimcoreRepositoryInterface $orderRepository
-     * @param ObjectServiceInterface $pimcoreObjectService
-     * @param CurrencyContextInterface $currencyContext
-     * @param EntityManagerInterface $entityManager
+     * @param ObjectServiceInterface     $pimcoreObjectService
+     * @param CurrencyContextInterface   $currencyContext
+     * @param EntityManagerInterface     $entityManager
      */
     public function __construct(
         FactoryInterface $paymentFactory,
@@ -72,8 +72,7 @@ class PaymentController extends Controller
         ObjectServiceInterface $pimcoreObjectService,
         CurrencyContextInterface $currencyContext,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $this->paymentFactory = $paymentFactory;
         $this->orderRepository = $orderRepository;
         $this->pimcoreObjectService = $pimcoreObjectService;
@@ -81,9 +80,10 @@ class PaymentController extends Controller
         $this->entityManager = $entityManager;
     }
 
-    public function prepareCaptureAction(Request $request, $orderId) {
+    public function prepareCaptureAction(Request $request, $orderId)
+    {
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface
          */
         $order = $this->orderRepository->find($orderId);
 
@@ -91,9 +91,9 @@ class PaymentController extends Controller
             throw new NotFoundHttpException(sprintf('Order with id "%s" does not exist.', $orderId));
         }
         /**
-         * We now have our Order -> So lets do Payment -> Yeah :)
-        */        /**
-         * @var $payment PaymentInterface|PimcoreModelInterface
+         * We now have our Order -> So lets do Payment -> Yeah :).
+         */        /**
+         * @var PaymentInterface|PimcoreModelInterface
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber(uniqid('payment-'));
@@ -126,6 +126,7 @@ class PaymentController extends Controller
      * Here we return from the Payment Provider and process the result.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function afterCaptureAction(Request $request)
@@ -136,7 +137,8 @@ class PaymentController extends Controller
 
         try {
             $gateway->execute(new Sync($token));
-        } catch (RequestNotSupportedException $e) {}
+        } catch (RequestNotSupportedException $e) {
+        }
 
         $gateway->execute($status = new GetHumanStatus($token));
         $resolveNextRoute = new ResolveNextRoute($status->getFirstModel());
@@ -150,7 +152,7 @@ class PaymentController extends Controller
 
         //Start Workflow with $status->getStatus()
 
-        /**
+        /*
          * Further process the status here, kick-off the pimcore workflow for orders?
         */        return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }

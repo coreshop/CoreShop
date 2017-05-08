@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Repository;
@@ -21,8 +20,8 @@ interface ProductSpecificPriceRuleRepositoryInterface extends RepositoryInterfac
 {
     /**
      * @param ProductInterface $product
+     *
      * @return ProductSpecificPriceRule[]
      */
     public function findForProduct(ProductInterface $product);
-
 }

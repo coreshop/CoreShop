@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Index\Service;
@@ -33,7 +32,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     private $workerServiceRegistry;
 
     /**
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface      $indexRepository
      * @param ServiceRegistryInterface $workerServiceRegistry
      */
     public function __construct(RepositoryInterface $indexRepository, ServiceRegistryInterface $workerServiceRegistry)

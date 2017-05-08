@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
@@ -36,14 +35,13 @@ class AddressCheckoutStep implements CheckoutStepInterface
     private $tokenStorage;
 
     /**
-     * @param FormFactoryInterface $formFactory
+     * @param FormFactoryInterface  $formFactory
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         TokenStorageInterface $tokenStorage
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->tokenStorage = $tokenStorage;
     }
@@ -90,8 +88,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
                 $cart->save();
 
                 return true;
-            }
-            else {
+            } else {
                 throw new CheckoutException('Address Form is invalid', 'coreshop_checkout_address_form_invalid');
             }
         }
@@ -108,15 +105,17 @@ class AddressCheckoutStep implements CheckoutStepInterface
 
         return [
             'form' => $this->createForm($cart, $customer)->createView(),
-            'addresses' => $customer->getAddresses()
+            'addresses' => $customer->getAddresses(),
         ];
     }
 
     /**
      * @return CustomerInterface
+     *
      * @throws CheckoutException
      */
-    private function getCustomer() {
+    private function getCustomer()
+    {
         $customer = $this->tokenStorage->getToken()->getUser();
 
         if (!$customer instanceof CustomerInterface) {
@@ -127,20 +126,22 @@ class AddressCheckoutStep implements CheckoutStepInterface
     }
 
     /**
-     * @param CartInterface $cart
+     * @param CartInterface     $cart
      * @param CustomerInterface $customer
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createForm(CartInterface $cart, CustomerInterface $customer) {
+    private function createForm(CartInterface $cart, CustomerInterface $customer)
+    {
         $addresses = $customer->getAddresses();
 
         $values = [
             'shippingAddress' => $cart->getShippingAddress() instanceof AddressInterface ? $cart->getShippingAddress()->getId() : (count($addresses) > 0 ? $addresses[0]->getId() : null),
-            'invoiceAddress' => $cart->getInvoiceAddress() instanceof AddressInterface ? $cart->getInvoiceAddress()->getId() : (count($addresses) > 0 ? $addresses[0]->getId() : null)
+            'invoiceAddress' => $cart->getInvoiceAddress() instanceof AddressInterface ? $cart->getInvoiceAddress()->getId() : (count($addresses) > 0 ? $addresses[0]->getId() : null),
         ];
 
         $options = [
-            'customer' => $customer->getId()
+            'customer' => $customer->getId(),
         ];
 
         return $this->formFactory->createNamed('', AddressType::class, $values, $options);

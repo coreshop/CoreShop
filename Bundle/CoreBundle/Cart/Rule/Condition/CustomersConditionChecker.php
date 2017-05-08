@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Cart\Rule\Condition;
@@ -20,12 +19,12 @@ use Webmozart\Assert\Assert;
 
 class CustomersConditionChecker implements ConditionCheckerInterface
 {
-     /**
+    /**
      * {@inheritdoc}
      */
     public function isValid($subject, array $configuration)
     {
-        /**
+        /*
          * @var $subject CartInterface
          */
         Assert::isInstanceOf($subject, CartInterface::class);

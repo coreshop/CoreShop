@@ -8,47 +8,46 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
-*/function rrmdir($dir) {
-   if (is_dir($dir)) {
-     $objects = scandir($dir);
-     foreach ($objects as $object) {
-       if ($object != "." && $object != "..") {
-         if (is_dir($dir."/".$object))
-           rrmdir($dir."/".$object);
-         else
-           unlink($dir."/".$object);
-       }
-     }
-     rmdir($dir);
-   }
+*/function rrmdir($dir)
+{
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != '.' && $object != '..') {
+                if (is_dir($dir.'/'.$object)) {
+                    rrmdir($dir.'/'.$object);
+                } else {
+                    unlink($dir.'/'.$object);
+                }
+            }
+        }
+        rmdir($dir);
+    }
 }
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-if (!defined("CORESHOP_TESTS_PATH")) {
+if (!defined('CORESHOP_TESTS_PATH')) {
     define('CORESHOP_TESTS_PATH', realpath(dirname(__FILE__)));
 }
 
 if (!defined('PIMCORE_APP_ROOT')) {
-    define('PIMCORE_APP_ROOT', __DIR__ . '/app');
+    define('PIMCORE_APP_ROOT', __DIR__.'/app');
 }
 
-
-define('PIMCORE_PRIVATE_VAR', CORESHOP_TESTS_PATH . "/tmp/var");
+define('PIMCORE_PRIVATE_VAR', CORESHOP_TESTS_PATH.'/tmp/var');
 
 require_once '../../../pimcore/config/constants.php';
-$loader = require_once PIMCORE_PATH . '/config/autoload.php';
+$loader = require_once PIMCORE_PATH.'/config/autoload.php';
 include_once 'app/TestAppKernel.php';
 
-/**
+/*
  * @var $loader \Composer\Autoload\ClassLoader
  */
-$loader->add('CoreShop\Test', [__DIR__ . "/lib", __DIR__ . "/"]);
-$loader->addPsr4('Pimcore\\Model\\Object\\', PIMCORE_CLASS_DIRECTORY . '/Object', true);
+$loader->add('CoreShop\Test', [__DIR__.'/lib', __DIR__.'/']);
+$loader->addPsr4('Pimcore\\Model\\Object\\', PIMCORE_CLASS_DIRECTORY.'/Object', true);
 
 //Actually, only needed
 foreach (['CoreShopAddress',
@@ -63,7 +62,7 @@ foreach (['CoreShopAddress',
     'CoreShopOrderInvoiceItem',
     'CoreShopOrderShipment',
     'CoreShopOrderShipmentItem',
-    'CoreShopProduct'] as $class) {
+    'CoreShopProduct', ] as $class) {
     $loader->addClassMap([sprintf('Pimcore\Model\Object\%s', $class) => sprintf('%s/Object/%s.php', PIMCORE_CLASS_DIRECTORY, $class)]);
     $loader->addClassMap([sprintf('Pimcore\Model\Object\%s\Listing', $class) => sprintf('%s/Object/%s/Listing.php', PIMCORE_CLASS_DIRECTORY, $class)]);
 }
@@ -72,81 +71,79 @@ foreach (['CoreShopProposalCartPriceItem'] as $fc) {
     $loader->addClassMap([sprintf('Pimcore\Model\Object\Fieldcollection\Data\%s', $class) => sprintf('%s/Object/Fieldcollection/Data/%s.php', PIMCORE_CLASS_DIRECTORY, $class)]);
 }
 
-$phpLog = PIMCORE_LOG_DIRECTORY . '/php.log';
+$phpLog = PIMCORE_LOG_DIRECTORY.'/php.log';
 if (is_writable(PIMCORE_LOG_DIRECTORY)) {
     ini_set('error_log', $phpLog);
     ini_set('log_errors', '1');
 }
 
 // some general pimcore definition overwrites
-define('PIMCORE_ORIG_PRIVATE_VAR', PIMCORE_PROJECT_ROOT . '/var/config');
-define("PIMCORE_ADMIN", true);
-define("PIMCORE_DEBUG", true);
-define("PIMCORE_DEVMODE", true);
+define('PIMCORE_ORIG_PRIVATE_VAR', PIMCORE_PROJECT_ROOT.'/var/config');
+define('PIMCORE_ADMIN', true);
+define('PIMCORE_DEBUG', true);
+define('PIMCORE_DEVMODE', true);
 
 if (!file_exists(PIMCORE_PRIVATE_VAR)) {
     mkdir(PIMCORE_PRIVATE_VAR, 0777, true); //for first run
 }
 
-@mkdir(CORESHOP_TESTS_PATH . "/output", 0777, true);
+@mkdir(CORESHOP_TESTS_PATH.'/output', 0777, true);
 
 // empty temporary var directory
 rrmdir(PIMCORE_PRIVATE_VAR);
 mkdir(PIMCORE_PRIVATE_VAR, 0777, true);
-mkdir(PIMCORE_PRIVATE_VAR . "/cache", 0777, true);
-mkdir(PIMCORE_PRIVATE_VAR . "/cache/dev", 0777, true);
+mkdir(PIMCORE_PRIVATE_VAR.'/cache', 0777, true);
+mkdir(PIMCORE_PRIVATE_VAR.'/cache/dev', 0777, true);
 
 // get default configuration for the test
-$testConfig = include(CORESHOP_TESTS_PATH . '/config/testconfig.php');
+$testConfig = include CORESHOP_TESTS_PATH.'/config/testconfig.php';
 
 // get configuration from main project
-$systemConfigFile = realpath(PIMCORE_ORIG_PRIVATE_VAR . "/system.php");
+$systemConfigFile = realpath(PIMCORE_ORIG_PRIVATE_VAR.'/system.php');
 $systemConfig = null;
 
 if (is_file($systemConfigFile)) {
     $systemConfig = include $systemConfigFile;
 
     // this is to allow localhost tests
-    $testConfig["rest"]["host"] = "pimcore-local-unittest";
+    $testConfig['rest']['host'] = 'pimcore-local-unittest';
 }
 
 try {
     // use the default db configuration if there's no main project (eg. travis automated builds)
-    $dbConfig = $testConfig["database"];
-    if (is_array($systemConfig) && array_key_exists("database", $systemConfig)) {
+    $dbConfig = $testConfig['database'];
+    if (is_array($systemConfig) && array_key_exists('database', $systemConfig)) {
         // if there's a configuration for the main project, use that one and replace the database name
-        $dbConfig = $systemConfig["database"];
-        $dbConfig["params"]["dbname"] = $dbConfig["params"]["dbname"] . "___phpunit";
+        $dbConfig = $systemConfig['database'];
+        $dbConfig['params']['dbname'] = $dbConfig['params']['dbname'].'___phpunit';
 
         // remove write only config
-        if (isset($dbConfig["writeOnly"])) {
-            unset($dbConfig["writeOnly"]);
+        if (isset($dbConfig['writeOnly'])) {
+            unset($dbConfig['writeOnly']);
         }
     }
 
-    $db = new \PDO('mysql:host=' . $dbConfig["params"]["host"] . ';port=' . (int) $dbConfig["params"]["port"] . ';', $dbConfig["params"]["username"], $dbConfig["params"]["password"]);
-    $db->query("SET NAMES utf8");
+    $db = new \PDO('mysql:host='.$dbConfig['params']['host'].';port='.(int) $dbConfig['params']['port'].';', $dbConfig['params']['username'], $dbConfig['params']['password']);
+    $db->query('SET NAMES utf8');
 
-    $db->query("DROP database IF EXISTS " . $dbConfig["params"]["dbname"] . ";");
-    $db->query("CREATE DATABASE " . $dbConfig["params"]["dbname"] . " charset=utf8");
+    $db->query('DROP database IF EXISTS '.$dbConfig['params']['dbname'].';');
+    $db->query('CREATE DATABASE '.$dbConfig['params']['dbname'].' charset=utf8');
     $db = null;
 } catch (Exception $e) {
-    echo $e->getMessage() . "\n";
-    die("Couldn't establish connection to mysql" . "\n");
+    echo $e->getMessage()."\n";
+    die("Couldn't establish connection to mysql"."\n");
 }
-
 
 if (defined('HHVM_VERSION')) {
     // always use PDO in hhvm environment (mysqli is not supported)
-    $dbConfig["adapter"] = "Pdo_Mysql";
+    $dbConfig['adapter'] = 'Pdo_Mysql';
 }
-
 
 $setup = new \Pimcore\Model\Tool\Setup();
 $setup->config([
-    "database" => $dbConfig,
-    "webservice" => ["enabled" => 1],
-    "general" => ["validLanguages" => "en,de"]
+    'database' => $dbConfig,
+    'webservice' => ['enabled' => 1],
+    'general' => ['validLanguages' => 'en,de'],
 ]);
 
 $kernel = new TestAppKernel('dev', true);
@@ -165,8 +162,8 @@ if (is_array($systemConfig)) {
 echo "\n\nInstall Pimcore Database";
 $setup->database();
 $setup->contents([
-    "username" => "admin",
-    "password" => microtime()
+    'username' => 'admin',
+    'password' => microtime(),
 ]);
 
 echo "\nSetup done...\n";
@@ -177,7 +174,7 @@ echo "\nSetup done...\n";
 
 // add the tests, which still reside in the original development unit, not in pimcore_phpunit to the include path
 $includePaths = [
-    get_include_path()
+    get_include_path(),
 ];
 
 //install CoreShop
@@ -211,7 +208,7 @@ $install->install();
 
 \CoreShop\Test\Data::createData(); //TODO: will be done using Fixtures in future
 
-/**
+/*
  * bootstrap is done, phpunit_pimcore is up and running.
  * It has a database, admin user and a complete config.
  * We can start running our tests against the phpunit_pimcore instance

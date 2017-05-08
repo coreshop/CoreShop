@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -51,7 +50,7 @@ class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
         return $withTax ? $this->setItemPriceGross($itemPrice) : $this->setItemPriceNet($itemPrice);
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function getItemRetailPrice($withTax = true)
@@ -208,7 +207,7 @@ class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
      */
     public function getTaxes($applyDiscountToTaxValues = true)
     {
-        throw new \Exception("implement me");
+        throw new \Exception('implement me');
     }
 
     /**
@@ -216,7 +215,7 @@ class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
      */
     public function setTaxes($taxes)
     {
-        throw new \Exception("implement me");
+        throw new \Exception('implement me');
     }
 
     /**

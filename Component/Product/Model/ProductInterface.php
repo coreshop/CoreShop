@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Model;
@@ -99,6 +98,7 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param AddressInterface|null $address
+     *
      * @return TaxCalculatorInterface
      */
     public function getTaxCalculator(AddressInterface $address = null);
@@ -110,6 +110,7 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param CategoryInterface[] $categories
+     *
      * @return mixed
      */
     public function setCategories($categories);
@@ -160,12 +161,12 @@ interface ProductInterface extends PimcoreModelInterface
     public function setQuantity($quantity);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsAvailableWhenOutOfStock();
 
     /**
-     * @param boolean $isAvailableWhenOutOfStock
+     * @param bool $isAvailableWhenOutOfStock
      */
     public function setIsAvailableWhenOutOfStock($isAvailableWhenOutOfStock);
 
@@ -176,7 +177,7 @@ interface ProductInterface extends PimcoreModelInterface
      * @param $type
      * @param $field
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
 
@@ -194,6 +195,7 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param string $language
+     *
      * @return string
      */
     public function getShortDescription($language = null);
@@ -206,6 +208,7 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param string $language
+     *
      * @return string
      */
     public function getDescription($language = null);

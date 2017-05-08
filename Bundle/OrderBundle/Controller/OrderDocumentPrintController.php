@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
@@ -22,7 +21,7 @@ class OrderDocumentPrintController extends FrontendController
     {
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:invoice.html.twig', [
             'document' => $document,
-            'order' => $order
+            'order' => $order,
         ]);
     }
 
@@ -30,7 +29,7 @@ class OrderDocumentPrintController extends FrontendController
     {
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:shipment.html.twig', [
             'document' => $document,
-            'order' => $order
+            'order' => $order,
         ]);
     }
 
@@ -38,7 +37,7 @@ class OrderDocumentPrintController extends FrontendController
     {
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:header.html.twig', [
             'document' => $document,
-            'order' => $order
+            'order' => $order,
         ]);
     }
 
@@ -46,7 +45,7 @@ class OrderDocumentPrintController extends FrontendController
     {
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:footer.html.twig', [
             'document' => $document,
-            'order' => $order
+            'order' => $order,
         ]);
     }
 }

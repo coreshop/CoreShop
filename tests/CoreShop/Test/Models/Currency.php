@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -20,14 +19,14 @@ use CoreShop\Test\Data;
 class Currency extends Base
 {
     /**
-     * Test Currency Creation
+     * Test Currency Creation.
      */
     public function testCurrencyCreation()
     {
         $this->printTestName();
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface
          */
         $currency = $this->getFactory('currency')->createNew();
 
@@ -42,7 +41,8 @@ class Currency extends Base
         $this->assertNotNull($currency->getId());
     }
 
-    public function testCurrencyContext() {
+    public function testCurrencyContext()
+    {
         $this->printTestName();
 
         $this->assertEquals($this->get('coreshop.context.currency')->getCurrency()->getId(), Data::$store->getBaseCurrency()->getId());

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test;
@@ -16,13 +15,12 @@ namespace CoreShop\Test;
 use Pimcore\Model\Object\AbstractObject;
 
 /**
- * Class SuiteBase
- * @package CoreShop\Test
+ * Class SuiteBase.
  */
 class SuiteBase extends \PHPUnit_Framework_TestSuite
 {
     /**
-     * Setup
+     * Setup.
      */
     protected function setUp()
     {
@@ -30,7 +28,7 @@ class SuiteBase extends \PHPUnit_Framework_TestSuite
     }
 
     /**
-     * Tear Down
+     * Tear Down.
      */
     protected function tearDown()
     {

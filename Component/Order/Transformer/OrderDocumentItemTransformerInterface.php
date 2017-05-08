@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Transformer;
@@ -20,12 +19,12 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 interface OrderDocumentItemTransformerInterface
 {
     /**
-     * @param OrderDocumentInterface $orderDocument
-     * @param OrderItemInterface $orderItem
+     * @param OrderDocumentInterface     $orderDocument
+     * @param OrderItemInterface         $orderItem
      * @param OrderDocumentItemInterface $documentItem
      * @param $quantity
+     *
      * @return mixed
      */
     public function transform(OrderDocumentInterface $orderDocument, OrderItemInterface $orderItem, OrderDocumentItemInterface $documentItem, $quantity);
-
 }

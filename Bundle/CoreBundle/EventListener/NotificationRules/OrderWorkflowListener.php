@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
@@ -23,7 +22,7 @@ final class OrderWorkflowListener extends AbstractNotificationRuleListener
         if ($event->getProposal() instanceof OrderInterface) {
             $this->rulesProcessor->applyRules('invoice', $event->getProposal(), [
                 'fromState' => $event->getOldState(),
-                'toState' => $event->getNewState()
+                'toState' => $event->getNewState(),
             ]);
         }
     }

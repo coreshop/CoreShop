@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Checker;
@@ -17,11 +16,13 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 
-interface CarrierShippingRuleCheckerInterface {
+interface CarrierShippingRuleCheckerInterface
+{
     /**
      * @param CarrierInterface $carrier
-     * @param CartInterface $cart
+     * @param CartInterface    $cart
      * @param AddressInterface $address
+     *
      * @return mixed
      */
     public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address);

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
@@ -80,14 +79,14 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
     /**
      * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
-     * @param ItemKeyTransformerInterface $keyTransformer
-     * @param NumberGeneratorInterface $numberGenerator
-     * @param string $invoiceFolderPath
-     * @param ObjectServiceInterface $objectService
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     * @param PimcoreFactoryInterface $invoiceItemFactory
-     * @param OrderInvoiceRepositoryInterface $invoiceRepository
-     * @param TransformerEventDispatcherInterface $eventDispatcher
+     * @param ItemKeyTransformerInterface           $keyTransformer
+     * @param NumberGeneratorInterface              $numberGenerator
+     * @param string                                $invoiceFolderPath
+     * @param ObjectServiceInterface                $objectService
+     * @param PimcoreRepositoryInterface            $orderItemRepository
+     * @param PimcoreFactoryInterface               $invoiceItemFactory
+     * @param OrderInvoiceRepositoryInterface       $invoiceRepository
+     * @param TransformerEventDispatcherInterface   $eventDispatcher
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
@@ -99,8 +98,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         PimcoreFactoryInterface $invoiceItemFactory,
         OrderInvoiceRepositoryInterface $invoiceRepository,
         TransformerEventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
@@ -112,13 +110,12 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function transform(OrderInterface $order, OrderDocumentInterface $invoice, $itemsToTransform)
     {
-        /**
+        /*
          * @var $cart CartInterface
          */
         Assert::isInstanceOf($order, OrderInterface::class);
@@ -129,7 +126,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoiceFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->invoiceFolderPath));
 
         $invoiceNumber = $this->numberGenerator->generate($invoice);
-        /**
+        /*
          * @var $invoice OrderInvoiceInterface
          * @var $order OrderInterface
          */
@@ -140,13 +137,13 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoice->setInvoiceDate(Carbon::now());
         $invoice->setOrder($order);
 
-        /**
+        /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
         $invoice->save();
         $items = [];
 
-        /**
+        /*
          * @var $cartItem CartItemInterface
          */
         foreach ($itemsToTransform as $item) {
@@ -195,7 +192,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $subtotalTax = 0;
 
         /**
-         * @var $item OrderInvoiceItemInterface
+         * @var OrderInvoiceItemInterface
          */
         foreach ($invoice->getItems() as $item) {
             $subtotalWithTax += $item->getTotal();
@@ -215,7 +212,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     }
 
     /**
-     * Calculate Shipping Prices for invoices
+     * Calculate Shipping Prices for invoices.
      *
      * @param OrderInvoiceInterface $invoice
      */
@@ -247,7 +244,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     }
 
     /**
-     * Calculate Payment Fees for Invoice
+     * Calculate Payment Fees for Invoice.
      *
      * @param OrderInvoiceInterface $invoice
      */
@@ -278,7 +275,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     }
 
     /**
-     * Calculate Discount for Invoice
+     * Calculate Discount for Invoice.
      *
      * @param OrderInvoiceInterface $invoice
      */
@@ -303,7 +300,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     }
 
     /**
-     * Calculate Total for invoice
+     * Calculate Total for invoice.
      *
      * @param OrderInvoiceInterface $invoice
      */
@@ -334,7 +331,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     }
 
     /**
-     * @param string $field
+     * @param string         $field
      * @param OrderInterface $order
      *
      * @return float

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Application;
@@ -32,7 +31,6 @@ use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
 use Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle;
 use FOS\RestBundle\FOSRestBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
-use Liip\ThemeBundle\LiipThemeBundle;
 use Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle;
 use Payum\Bundle\PayumBundle\PayumBundle;
 
@@ -67,7 +65,7 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopResourceBundle(),
             new FOSRestBundle(),
             new DoctrineCacheBundle(),
-            new PayumBundle()
+            new PayumBundle(),
         ];
 
         return array_merge($bundles, parent::registerBundles());

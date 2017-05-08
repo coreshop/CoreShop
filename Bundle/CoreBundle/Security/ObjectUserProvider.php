@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle;
@@ -20,7 +19,8 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class ObjectUserProvider implements UserProviderInterface {
+class ObjectUserProvider implements UserProviderInterface
+{
     /**
      * The pimcore class name to be used. Needs to be a fully qualified class
      * name (e.g. Pimcore\Model\Object\User or your custom user class extending
@@ -46,7 +46,7 @@ class ObjectUserProvider implements UserProviderInterface {
     }
 
     /**
-     * Check if Class is of right type
+     * Check if Class is of right type.
      */
     protected function checkClass()
     {
@@ -61,7 +61,7 @@ class ObjectUserProvider implements UserProviderInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function loadUserByUsername($username)
     {
@@ -79,7 +79,7 @@ class ObjectUserProvider implements UserProviderInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function refreshUser(UserInterface $user)
     {
@@ -95,7 +95,7 @@ class ObjectUserProvider implements UserProviderInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function supportsClass($class)
     {

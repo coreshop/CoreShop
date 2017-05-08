@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
@@ -20,7 +19,7 @@ class LanguageController extends FrontendController
     public function widgetAction(Request $request)
     {
         return $this->render('CoreShopFrontendBundle:Language:_widget.html.twig', [
-            'languages' => ['de', 'en']//$this->get('pimcore.locale')->getLocaleList()
+            'languages' => ['de', 'en'], //$this->get('pimcore.locale')->getLocaleList()
         ]);
     }
 }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Pimcore;
@@ -26,10 +25,11 @@ interface ObjectServiceInterface
     public function createFolderByPath($path);
 
     /**
-     * Copy all fields from $from to $to
+     * Copy all fields from $from to $to.
      *
      * @param PimcoreModelInterface $from
      * @param PimcoreModelInterface $to
+     *
      * @return mixed
      */
     public function copyObject(PimcoreModelInterface $from, PimcoreModelInterface $to);

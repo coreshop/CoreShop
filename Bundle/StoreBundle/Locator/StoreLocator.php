@@ -8,12 +8,10 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\StoreBundle\Locator;
 
-use CoreShop\Bundle\ConfigurationBundle\Helper\ConfigurationHelperInterface;
 use CoreShop\Bundle\StoreBundle\Helper\PimcoreSiteHelperInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Store\Model\Store;
@@ -36,8 +34,8 @@ class StoreLocator implements StoreLocatorInterface
     private $repository;
 
     /**
-     * @param PimcoreSiteHelperInterface   $pimcoreSiteHelper
-     * @param RepositoryInterface          $repository
+     * @param PimcoreSiteHelperInterface $pimcoreSiteHelper
+     * @param RepositoryInterface        $repository
      */
     public function __construct(
         PimcoreSiteHelperInterface $pimcoreSiteHelper,

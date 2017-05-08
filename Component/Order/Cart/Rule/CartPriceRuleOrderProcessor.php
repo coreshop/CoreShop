@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Cart\Rule;
@@ -48,17 +47,16 @@ class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterfac
 
     /**
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-     * @param EntityManagerInterface $entityManager
-     * @param ServiceRegistryInterface $actionServiceRegistry
-     * @param FactoryInterface $cartPriceRuleItemFactory
+     * @param EntityManagerInterface                  $entityManager
+     * @param ServiceRegistryInterface                $actionServiceRegistry
+     * @param FactoryInterface                        $cartPriceRuleItemFactory
      */
     public function __construct(
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
         EntityManagerInterface $entityManager,
         ServiceRegistryInterface $actionServiceRegistry,
         FactoryInterface $cartPriceRuleItemFactory
-    )
-    {
+    ) {
         $this->voucherCodeRepository = $voucherCodeRepository;
         $this->entityManager = $entityManager;
         $this->actionServiceRegistry = $actionServiceRegistry;
@@ -92,7 +90,7 @@ class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterfac
             }
 
             /**
-             * @var $priceRuleItem ProposalCartPriceRuleItemInterface
+             * @var ProposalCartPriceRuleItemInterface
              */
             if ($priceRuleItem === null) {
                 $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();

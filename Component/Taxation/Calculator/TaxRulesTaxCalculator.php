@@ -8,14 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Taxation\Calculator;
 
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
-class TaxRulesTaxCalculator implements TaxCalculatorInterface {
+class TaxRulesTaxCalculator implements TaxCalculatorInterface
+{
     /**
      * @var TaxRateInterface[]
      */
@@ -28,7 +28,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface {
 
     /**
      * @param array $taxRates
-     * @param int $computation_method
+     * @param int   $computation_method
      */
     public function __construct(array $taxRates = [], $computation_method = self::COMBINE_METHOD)
     {

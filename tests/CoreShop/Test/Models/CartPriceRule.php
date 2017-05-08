@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -47,7 +46,7 @@ class CartPriceRule extends RuleTest
     protected $cart;
 
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
@@ -110,16 +109,18 @@ class CartPriceRule extends RuleTest
     /**
      * @return CartDiscountCalculatorInterface
      */
-    protected function getPriceCalculator() {
+    protected function getPriceCalculator()
+    {
         return $this->get('coreshop.cart.discount_calculator.price_rules');
     }
 
     /**
      * @return CartPriceRuleInterface
      */
-    protected function createRule() {
+    protected function createRule()
+    {
         /**
-         * @var $priceRule CartPriceRuleInterface
+         * @var CartPriceRuleInterface
          */
         $priceRule = $this->getFactory('cart_price_rule')->createNew();
         $priceRule->setName('test-rule');
@@ -128,7 +129,7 @@ class CartPriceRule extends RuleTest
     }
 
     /**
-     * Test Price Rule Condition Customer
+     * Test Price Rule Condition Customer.
      */
     public function testPriceRuleConditionCustomer()
     {
@@ -136,14 +137,14 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
         $condition = $this->createConditionWithForm('customers', [
-            'customers' => [Data::$customer1->getId()]
+            'customers' => [Data::$customer1->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Time Span
+     * Test Price Rule Condition Time Span.
      */
     public function testPriceRuleConditionTimeSpan()
     {
@@ -160,21 +161,21 @@ class CartPriceRule extends RuleTest
 
         $condition = $this->createConditionWithForm('timespan', [
             'dateFrom' => $yesterday->getTimestamp() * 1000,
-            'dateTo' => $tomorrow->getTimestamp() * 1000
+            'dateTo' => $tomorrow->getTimestamp() * 1000,
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
 
         $condition = $this->createConditionWithForm('timespan', [
             'dateFrom' => $yesterday->getTimestamp() * 1000,
-            'dateTo' => $yesterday->getTimestamp() * 1000
+            'dateTo' => $yesterday->getTimestamp() * 1000,
         ]);
 
         $this->assertRuleCondition($this->cart, $condition, false);
     }
 
     /**
-     * Test Price Rule Condition Country
+     * Test Price Rule Condition Country.
      */
     public function testPriceRuleConditionCountry()
     {
@@ -182,14 +183,14 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
         $condition = $this->createConditionWithForm('countries', [
-            'countries' => [Data::$store->getBaseCountry()->getId()]
+            'countries' => [Data::$store->getBaseCountry()->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Zone
+     * Test Price Rule Condition Zone.
      */
     public function testPriceRuleConditionZone()
     {
@@ -197,14 +198,14 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
         $condition = $this->createConditionWithForm('zones', [
-            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()]
+            'zones' => [Data::$store->getBaseCountry()->getZone()->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Customer Group
+     * Test Price Rule Condition Customer Group.
      */
     public function testPriceRuleConditionCustomerGroup()
     {
@@ -212,14 +213,14 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
         $condition = $this->createConditionWithForm('customerGroups', [
-            'customerGroups' => [Data::$customerGroup1->getId()]
+            'customerGroups' => [Data::$customerGroup1->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Carrier
+     * Test Price Rule Condition Carrier.
      */
     public function testPriceRuleConditionCarriers()
     {
@@ -227,7 +228,7 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(CarriersConfigurationType::class, 'carriers');
 
         $condition = $this->createConditionWithForm('carriers', [
-            'carriers' => [Data::$carrier1->getId()]
+            'carriers' => [Data::$carrier1->getId()],
         ]);
 
         $cart = Data::createCartWithProducts();
@@ -236,9 +237,8 @@ class CartPriceRule extends RuleTest
         $this->assertRuleCondition($cart, $condition);
     }
 
-
     /**
-     * Test Price Rule Condition Stores
+     * Test Price Rule Condition Stores.
      */
     public function testPriceRuleConditionStores()
     {
@@ -246,14 +246,14 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
         $condition = $this->createConditionWithForm('stores', [
-            'stores' => [Data::$store->getId()]
+            'stores' => [Data::$store->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Currencies
+     * Test Price Rule Condition Currencies.
      */
     public function testPriceRuleConditionCurrencies()
     {
@@ -261,14 +261,14 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
         $condition = $this->createConditionWithForm('currencies', [
-            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+            'currencies' => [Data::$store->getBaseCurrency()->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Condition Nested
+     * Test Price Rule Condition Nested.
      */
     public function testPriceRuleConditionNested()
     {
@@ -276,23 +276,23 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(NestedConfigurationType::class, 'nested');
 
         $categoriesCondition = $this->createConditionWithForm('categories', [
-            'categories' => [Data::$category1->getId()]
+            'categories' => [Data::$category1->getId()],
         ]);
 
         $currencyCondition = $this->createConditionWithForm('currencies', [
-            'currencies' => [Data::$store->getBaseCurrency()->getId()]
+            'currencies' => [Data::$store->getBaseCurrency()->getId()],
         ]);
 
         $condition = $this->createConditionWithForm('nested', [
             'nested' => [$categoriesCondition, $currencyCondition],
-            'operator' => 'AND'
+            'operator' => 'AND',
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
     }
 
     /**
-     * Test Price Rule Action Discount Amount
+     * Test Price Rule Action Discount Amount.
      */
     public function testPriceRuleActionDiscountAmount()
     {
@@ -300,7 +300,7 @@ class CartPriceRule extends RuleTest
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $action = $this->createActionWithForm('discountAmount', [
-            'amount' => 5
+            'amount' => 5,
         ]);
 
         $rule = $this->createRule();
@@ -311,7 +311,7 @@ class CartPriceRule extends RuleTest
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, "", $cart));
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, '', $cart));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
@@ -324,7 +324,7 @@ class CartPriceRule extends RuleTest
     }
 
     /**
-     * Test Price Rule Action Discount Percent
+     * Test Price Rule Action Discount Percent.
      */
     public function testPriceRuleActionDiscountPercent()
     {
@@ -332,7 +332,7 @@ class CartPriceRule extends RuleTest
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $action = $this->createActionWithForm('discountPercent', [
-            'percent' => 10
+            'percent' => 10,
         ]);
 
         $rule = $this->createRule();
@@ -343,7 +343,7 @@ class CartPriceRule extends RuleTest
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, "", $cart));
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, '', $cart));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
@@ -356,7 +356,7 @@ class CartPriceRule extends RuleTest
     }
 
     /**
-     * Test Price Rule Action Discount Percent
+     * Test Price Rule Action Discount Percent.
      */
     public function testPriceRuleActionFreeShipping()
     {
@@ -382,7 +382,7 @@ class CartPriceRule extends RuleTest
         $this->assertEquals(10, $shipping);
         $this->assertEquals(12, $shippingWt);
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, "", $cart));
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, '', $cart));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);

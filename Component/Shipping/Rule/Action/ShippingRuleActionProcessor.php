@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Shipping\Rule\Action;
@@ -33,7 +32,7 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
 
     /**
      * @param ShippingRuleActionProcessorInterface $shippingRuleProcessor
-     * @param RepositoryInterface $shippingRuleRepository
+     * @param RepositoryInterface                  $shippingRuleRepository
      */
     public function __construct(ShippingRuleActionProcessorInterface $shippingRuleProcessor, RepositoryInterface $shippingRuleRepository)
     {
@@ -65,7 +64,7 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
         if ($shippingRule instanceof ShippingRuleInterface) {
             return $this->shippingRuleProcessor->getModification($shippingRule, $carrier, $address, $price);
         }
-        
+
         return 0;
     }
 }

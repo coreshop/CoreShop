@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\NumberGenerator;
@@ -31,7 +30,7 @@ class SequenceNumberGenerator implements NumberGeneratorInterface
 
     /**
      * @param SequenceGeneratorInterface $sequenceNumberGenerator
-     * @param string $type
+     * @param string                     $type
      */
     public function __construct(SequenceGeneratorInterface $sequenceNumberGenerator, $type)
     {

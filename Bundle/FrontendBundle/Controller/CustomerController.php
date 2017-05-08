@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
@@ -21,14 +20,15 @@ class CustomerController extends FrontendController
     {
         return $this->render('CoreShopFrontendBundle:Customer:header.html.twig', [
             'catalogMode' => false,
-            'customer' => null
+            'customer' => null,
         ]);
     }
 
-    public function footerAction() {
+    public function footerAction()
+    {
         return $this->render('CoreShopFrontendBundle:Customer:_footer.html.twig', [
             'catalogMode' => false,
-            'customer' => null
+            'customer' => null,
         ]);
     }
 }

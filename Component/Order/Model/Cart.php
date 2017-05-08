@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -24,10 +23,11 @@ use Webmozart\Assert\Assert;
 
 class Cart extends AbstractPimcoreModel implements CartInterface
 {
-     /**
+    /**
      * {@inheritdoc}
      */
-    public function getItemForProduct(ProductInterface $product) {
+    public function getItemForProduct(ProductInterface $product)
+    {
         foreach ($this->getItems() as $item) {
             if ($item instanceof CartItemInterface) {
                 if ($item->getProduct() instanceof ProductInterface && $item->getProduct()->getId() === $product->getId()) {
@@ -77,7 +77,6 @@ class Cart extends AbstractPimcoreModel implements CartInterface
 
         return 0;
     }
-
 
     /**
      *  {@inheritdoc}
@@ -157,9 +156,10 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     }
 
     /**
-     * calculates the total without discount
+     * calculates the total without discount.
      *
      * @param bool $withTax
+     *
      * @return float
      */
     private function getTotalWithoutDiscount($withTax = true)
@@ -209,7 +209,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     public function addItem($item)
     {
         Assert::isInstanceOf($item, CartItemInterface::class);
-        
+
         $items = $this->getItems();
         $items[] = $item;
 
@@ -353,25 +353,26 @@ class Cart extends AbstractPimcoreModel implements CartInterface
 
         return false;
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getTotalWeight()
     {
         $weight = 0;
-        
+
         foreach ($this->getItems() as $item) {
             $weight += $item->getTotalWeight();
         }
-        
+
         return $weight;
     }
-    
+
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private function getContainer() {
+    private function getContainer()
+    {
         return \Pimcore::getContainer();
     }
 
@@ -391,7 +392,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function getPriceRuleItems()
@@ -511,7 +512,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function getPaymentFeeGross()

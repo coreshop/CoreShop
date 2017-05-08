@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Cart\Rule;
@@ -40,15 +39,14 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 
     /**
      * @param RuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param FactoryInterface $cartPriceRuleItemFactory
-     * @param ServiceRegistryInterface $actionServiceRegistry
+     * @param FactoryInterface                 $cartPriceRuleItemFactory
+     * @param ServiceRegistryInterface         $actionServiceRegistry
      */
     public function __construct(
         RuleValidationProcessorInterface $cartPriceRuleValidator,
         FactoryInterface $cartPriceRuleItemFactory,
         ServiceRegistryInterface $actionServiceRegistry
-    )
-    {
+    ) {
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
         $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
         $this->actionServiceRegistry = $actionServiceRegistry;
@@ -57,7 +55,8 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart) {
+    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart)
+    {
         $priceRuleItem = null;
 
         if ($cart->hasPriceRules()) {
@@ -74,7 +73,7 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
                 }
             }
         }
-        
+
         if ($this->cartPriceRuleValidator->isValid($cart, $cartPriceRule)) {
             $discountNet = 0;
             $discountGross = 0;
@@ -91,7 +90,7 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
             }
 
             /**
-             * @var $priceRuleItem ProposalCartPriceRuleItemInterface
+             * @var ProposalCartPriceRuleItemInterface
              */
             if ($priceRuleItem === null) {
                 $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
@@ -101,7 +100,7 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
             $priceRuleItem->setVoucherCode($usedCode);
             $priceRuleItem->setDiscount($discountNet, false);
             $priceRuleItem->setDiscount($discountGross, true);
-            
+
             $cart->addPriceRule($priceRuleItem);
 
             //TODO: Shouldn't this do the cart-manager?

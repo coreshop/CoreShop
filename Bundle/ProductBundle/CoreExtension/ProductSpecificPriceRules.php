@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
@@ -32,50 +31,57 @@ class ProductSpecificPriceRules extends Data
     public $fieldtype = 'coreShopProductSpecificPriceRules';
 
     /**
-     * @var integer
+     * @var int
      */
     public $height;
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private function getContainer() {
+    private function getContainer()
+    {
         return \Pimcore::getContainer();
     }
 
     /**
      * @return ProductSpecificPriceRuleRepositoryInterface
      */
-    private function getProductSpecificPriceRuleRepository() {
+    private function getProductSpecificPriceRuleRepository()
+    {
         return $this->getContainer()->get('coreshop.repository.product_specific_price_rule');
     }
 
     /**
      * @return \Symfony\Component\Form\FormFactoryInterface
      */
-    private function getFormFactory() {
+    private function getFormFactory()
+    {
         return $this->getContainer()->get('form.factory');
     }
 
     /**
      * @return \Doctrine\ORM\EntityManager
      */
-    private function getEntityManager() {
+    private function getEntityManager()
+    {
         return $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
      * @return \JMS\Serializer\SerializerInterface
      */
-    private function getSerializer() {
+    private function getSerializer()
+    {
         return $this->getContainer()->get('jms_serializer');
     }
 
     /**
      * @param $object
+     *
      * @return ProductSpecificPriceRuleInterface[]
      */
-    public function preGetData($object) {
+    public function preGetData($object)
+    {
         Assert::isInstanceOf($object, ProductInterface::class);
 
         return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
@@ -83,8 +89,9 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null $object
+     * @param null  $object
      * @param array $params
+     *
      * @return ProductSpecificPriceRuleInterface[]
      */
     public function getDataForEditmode($data, $object = null, $params = [])
@@ -108,8 +115,9 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null $object
+     * @param null  $object
      * @param array $params
+     *
      * @return ProductSpecificPriceRuleInterface[]
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
@@ -136,7 +144,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param Concrete $object
-     * @param array $params
+     * @param array    $params
      */
     public function save($object, $params = [])
     {
@@ -173,29 +181,34 @@ class ProductSpecificPriceRules extends Data
     /**
      * @param $object
      * @param array $params
+     *
      * @return ProductSpecificPriceRuleInterface[]
      */
     public function load($object, $params = [])
     {
         return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
     }
+
     /**
-     * Returns the data which should be stored in the query columns
+     * Returns the data which should be stored in the query columns.
      *
      * @param mixed $data
+     *
      * @return string
-    */
+     */
     public function getDataForQueryResource($data)
     {
-        return "not_supported";
+        return 'not_supported';
     }
 
     /**
      * @param mixed $data
-     * @param null $relatedObject
+     * @param null  $relatedObject
      * @param mixed $params
-     * @param null $idMapper
+     * @param null  $idMapper
+     *
      * @return ProductSpecificPriceRuleInterface[]
+     *
      * @throws \Exception
      */
     public function getFromWebserviceImport($data, $relatedObject = null, $params = [], $idMapper = null)
@@ -205,6 +218,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param \stdClass[]
+     *
      * @return array
      */
     protected function arrayCastRecursive($array)
@@ -215,13 +229,14 @@ class ProductSpecificPriceRules extends Data
                     $array[$key] = $this->arrayCastRecursive($value);
                 }
                 if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array)$value);
+                    $array[$key] = $this->arrayCastRecursive((array) $value);
                 }
             }
         }
         if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array)$array);
+            return $this->arrayCastRecursive((array) $array);
         }
+
         return $array;
     }
 }

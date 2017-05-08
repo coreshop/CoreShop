@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
@@ -38,12 +37,13 @@ class CheckoutController extends FrontendController
     /**
      * @param Request $request
      * @param $stepIdentifier
+     *
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function processAction(Request $request, $stepIdentifier)
     {
         /**
-         * @var $step CheckoutStepInterface
+         * @var CheckoutStepInterface
          */
         $step = $this->checkoutManager->getStep($stepIdentifier);
 
@@ -83,14 +83,15 @@ class CheckoutController extends FrontendController
             'checkoutSteps' => $this->checkoutManager->getSteps(),
             'currentStep' => $this->checkoutManager->getCurrentStepIndex($stepIdentifier),
             'step' => $step,
-            'identifier' => $stepIdentifier
+            'identifier' => $stepIdentifier,
         ]);
 
         return $this->render(sprintf('@CoreShopFrontend/Checkout/steps/%s.html.twig', $stepIdentifier), $dataForStep);
     }
 
-    public function doCheckoutAction(Request $request) {
-        /**
+    public function doCheckoutAction(Request $request)
+    {
+        /*
          * after the last step, we come here
          *
          * what are we doing here?
@@ -100,11 +101,11 @@ class CheckoutController extends FrontendController
          *  4. After Payment is done, we return to PayumBundle PaymentController and further process it
          *
          * therefore we need the CartToOrderTransformerInterface here
-        */        /**
+        */        /*
          * Before we do anything else, lets check if the checkout is still valid
          * Check all previous steps if they are valid, if not, redirect back
          */
-        /**
+        /*
          * @var $step CheckoutStepInterface
          */
         foreach ($this->checkoutManager->getSteps() as $stepIdentifier) {
@@ -116,18 +117,19 @@ class CheckoutController extends FrontendController
         }
 
         /**
-         * If everything is valid, we continue with Order-Creation
+         * If everything is valid, we continue with Order-Creation.
          */
         $order = $this->getOrderFactory()->createNew();
         $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
 
-        /**
+        /*
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/
         */        return $this->redirectToRoute('coreshop_shop_payment', ['orderId' => $order->getId()]);
     }
 
     /**
      * @param Request $request
+     *
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function thankYouAction(Request $request)
@@ -143,7 +145,7 @@ class CheckoutController extends FrontendController
         Assert::notNull($order);
 
         return $this->render('@CoreShopFrontend/Checkout/thank-you.html.twig', [
-            'order' => $order
+            'order' => $order,
         ]);
     }
 
@@ -166,14 +168,16 @@ class CheckoutController extends FrontendController
     /**
      * @return \CoreShop\Bundle\OrderBundle\Transformer\CartToOrderTransformer
      */
-    private function getCartToOrderTransformer() {
+    private function getCartToOrderTransformer()
+    {
         return $this->get('coreshop.order.transformer.cart_to_order');
     }
 
     /**
      * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
      */
-    private function getOrderFactory() {
+    private function getOrderFactory()
+    {
         return $this->get('coreshop.factory.order');
     }
 

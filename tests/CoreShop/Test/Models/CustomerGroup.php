@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -19,17 +18,18 @@ use Pimcore\Model\Object\Service;
 
 class CustomerGroup extends Base
 {
-    public function testCustomerGroupCreation() {
+    public function testCustomerGroupCreation()
+    {
         $this->printTestName();
 
         /**
-         * @var $customerGroup CustomerGroupInterface
+         * @var CustomerGroupInterface
          */
         $customerGroup = $this->getFactory('customer_group')->createNew();
 
         $customerGroup->setName('TestGroup');
         $customerGroup->setKey('test-group');
-        $customerGroup->setParent(Service::createFolderByPath("/"));
+        $customerGroup->setParent(Service::createFolderByPath('/'));
         $customerGroup->save();
 
         $this->assertNotNull($customerGroup->getId());

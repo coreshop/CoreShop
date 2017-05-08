@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Shipping\Rule\Condition;
@@ -22,9 +21,10 @@ interface ShippingConditionCheckerInterface extends ConditionCheckerInterface
 {
     /**
      * @param CarrierInterface $carrier
-     * @param CartInterface $cart
+     * @param CartInterface    $cart
      * @param AddressInterface $address
-     * @param array $configuration
+     * @param array            $configuration
+     *
      * @return mixed
      */
     public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, array $configuration);

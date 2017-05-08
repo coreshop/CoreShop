@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
@@ -23,13 +22,13 @@ use Okvpn\Bundle\MigrationBundle\Entity\DataMigration;
 class OkvpnEntityResolverListener implements EventSubscriber
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             Events::loadClassMetadata,
-        );
+        ];
     }
 
     /**
@@ -38,7 +37,7 @@ class OkvpnEntityResolverListener implements EventSubscriber
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
         /**
-         * @var $metadata ClassMetadataInfo
+         * @var ClassMetadataInfo
          */
         $metadata = $eventArgs->getClassMetadata();
         $table = $metadata->table;

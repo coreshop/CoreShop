@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\AddressBundle\Templating\Helper;
@@ -18,6 +17,7 @@ interface FormatAddressHelperInterface
     /**
      * @param $address
      * @param bool $asHtml
+     *
      * @return mixed
      */
     public function formatAddress($address, $asHtml = true);

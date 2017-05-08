@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
@@ -22,7 +21,7 @@ class OrderInvoiceRepository extends PimcoreRepository implements OrderInvoiceRe
     public function getDocuments(OrderInterface $order)
     {
         $list = $this->getList();
-        $list->setCondition("order__id = ?", [$order->getId()]);
+        $list->setCondition('order__id = ?', [$order->getId()]);
         $list->load();
 
         return $list->getObjects();

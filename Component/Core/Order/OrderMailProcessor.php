@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Order;
@@ -46,18 +45,17 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $orderDocumentRenderer;
 
     /**
-     * @param MoneyFormatterInterface $priceFormatter
-     * @param OrderInvoiceRepositoryInterface $invoiceRepository
+     * @param MoneyFormatterInterface          $priceFormatter
+     * @param OrderInvoiceRepositoryInterface  $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
-     * @param OrderDocumentRendererInterface $orderDocumentRenderer
+     * @param OrderDocumentRendererInterface   $orderDocumentRenderer
      */
     public function __construct(
         MoneyFormatterInterface $priceFormatter,
         OrderInvoiceRepositoryInterface $invoiceRepository,
         OrderShipmentRepositoryInterface $shipmentRepository,
         OrderDocumentRendererInterface $orderDocumentRenderer
-    )
-    {
+    ) {
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
         $this->shipmentRepository = $shipmentRepository;
@@ -83,7 +81,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         unset($emailParameters['____pimcore_cache_item__'], $emailParameters['__dataVersionTimestamp']);
 
         $recipient = [
-            [$order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()]
+            [$order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname()],
         ];
 
         $mail = new Mail();
@@ -126,9 +124,9 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     }
 
     /**
-     * @param Mail $mail
+     * @param Mail           $mail
      * @param Document\Email $emailDocument
-     * @param string|array $recipients
+     * @param string|array   $recipients
      */
     private function addRecipients($mail, $emailDocument, $recipients = '')
     {

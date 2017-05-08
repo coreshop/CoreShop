@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -19,14 +18,14 @@ use CoreShop\Test\Base;
 class Zone extends Base
 {
     /**
-     * Test Zone Creation
+     * Test Zone Creation.
      */
     public function testZoneCreation()
     {
         $this->printTestName();
 
         /**
-         * @var $zone ZoneInterface
+         * @var ZoneInterface
          */
         $zone = $this->getFactory('zone')->createNew();
         $zone->setName('test');

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Model;
@@ -61,7 +60,7 @@ class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
     public function setProduct($product)
     {
         $this->product = $product;
-        
+
         return $this;
     }
 

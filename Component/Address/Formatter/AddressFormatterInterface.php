@@ -8,19 +8,19 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Address\Formatter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 
-interface AddressFormatterInterface {
+interface AddressFormatterInterface
+{
     /**
      * @param AddressInterface $address
-     * @param boolean $asHtml
+     * @param bool             $asHtml
+     *
      * @return mixed
      */
     public function formatAddress(AddressInterface $address, $asHtml = true);
-
 }

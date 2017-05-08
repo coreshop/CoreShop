@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -51,7 +50,7 @@ class NotificationRule extends RuleTest
     protected $address;
 
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
@@ -112,7 +111,7 @@ class NotificationRule extends RuleTest
     protected function createRule()
     {
         /**
-         * @var $notificationRule NotificationRuleInterface
+         * @var NotificationRuleInterface
          */
         $notificationRule = $this->getFactory('notification_rule')->createNew();
         $notificationRule->setName('test-rule');
@@ -127,7 +126,7 @@ class NotificationRule extends RuleTest
     {
         $cart = Data::createCartWithProducts();
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
         $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
@@ -145,7 +144,7 @@ class NotificationRule extends RuleTest
         $processableItems = $this->get('coreshop.order.invoice.processable')->getProcessableItems($order);
 
         /**
-         * @var $invoice OrderInvoiceInterface
+         * @var OrderInvoiceInterface
          */
         $invoice = $this->getFactory('order_invoice')->createNew();
         $invoice = $this->get('coreshop.order.transformer.order_to_invoice')->transform($order, $invoice, $processableItems);
@@ -163,7 +162,7 @@ class NotificationRule extends RuleTest
         $processableItems = $this->get('coreshop.order.shipment.processable')->getProcessableItems($order);
 
         /**
-         * @var $shipment OrderShipmentInterface
+         * @var OrderShipmentInterface
          */
         $shipment = $this->getFactory('order_shipment')->createNew();
         $shipment = $this->get('coreshop.order.transformer.order_to_shipment')->transform($order, $shipment, $processableItems);
@@ -172,7 +171,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Invoice State
+     * Test Rule Condition Invoice State.
      */
     public function testNotificationRuleOrderInvoiceStatePartial()
     {
@@ -180,7 +179,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(InvoiceStateConfigurationType::class, 'order.invoiceState');
 
         $condition = $this->createConditionWithForm('order.invoiceState', [
-            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_PARTIAL
+            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_PARTIAL,
         ]);
 
         $invoice = $this->createOrderInvoice();
@@ -189,7 +188,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Invoice State
+     * Test Rule Condition Invoice State.
      */
     public function testNotificationRuleOrderInvoiceStateFull()
     {
@@ -197,7 +196,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(InvoiceStateConfigurationType::class, 'order.invoiceState');
 
         $condition = $this->createConditionWithForm('order.invoiceState', [
-            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_FULL
+            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_FULL,
         ]);
 
         $invoice = $this->createOrderInvoice();
@@ -206,7 +205,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Invoice State
+     * Test Rule Condition Invoice State.
      */
     public function testNotificationRuleOrderShipmentStatePartial()
     {
@@ -214,7 +213,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(ShipmentStateConfigurationType::class, 'order.shipmentState');
 
         $condition = $this->createConditionWithForm('order.shipmentState', [
-            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_PARTIAL
+            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_PARTIAL,
         ]);
 
         $shipment = $this->createOrderShipment();
@@ -223,7 +222,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Invoice State
+     * Test Rule Condition Invoice State.
      */
     public function testNotificationRuleOrderShipmentStateFull()
     {
@@ -231,7 +230,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(ShipmentStateConfigurationType::class, 'order.shipmentState');
 
         $condition = $this->createConditionWithForm('order.shipmentState', [
-            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_FULL
+            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_FULL,
         ]);
 
         $shipment = $this->createOrderShipment();
@@ -239,8 +238,8 @@ class NotificationRule extends RuleTest
         $this->assertRuleCondition(['subject' => $shipment->getOrder(), 'params' => []], $condition);
     }
 
-     /**
-     * Test Rule Condition Order
+    /**
+     * Test Rule Condition Order.
      */
     public function testNotificationRuleOrderOrderState()
     {
@@ -250,18 +249,18 @@ class NotificationRule extends RuleTest
         $condition = $this->createConditionWithForm('order.orderState', [
             'transitionType' => OrderStateChecker::TRANSITION_FROM,
             'states' => [
-                WorkflowManagerInterface::ORDER_STATUS_INITIALIZED
-            ]
+                WorkflowManagerInterface::ORDER_STATUS_INITIALIZED,
+            ],
         ]);
 
         $this->assertRuleCondition(['subject' => $this->createOrder(), 'params' => [
             'fromState' => WorkflowManagerInterface::ORDER_STATUS_INITIALIZED,
-            'toState' => WorkflowManagerInterface::ORDER_STATUS_PENDING_PAYMENT
+            'toState' => WorkflowManagerInterface::ORDER_STATUS_PENDING_PAYMENT,
         ]], $condition);
     }
 
     /**
-     * Test Rule Condition Carrier
+     * Test Rule Condition Carrier.
      */
     public function testNotificationRuleOrderCarrier()
     {
@@ -269,7 +268,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(CarriersConfigurationType::class, 'order.carriers');
 
         $condition = $this->createConditionWithForm('order.carriers', [
-            'carriers' => [Data::$carrier1]
+            'carriers' => [Data::$carrier1],
         ]);
 
         $order = $this->createOrder();
@@ -279,7 +278,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Payment
+     * Test Rule Condition Payment.
      */
     public function testNotificationRuleOrderPayment()
     {
@@ -287,7 +286,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(PaymentStateConfigurationType::class, 'order.paymentState');
 
         $condition = $this->createConditionWithForm('order.paymentState', [
-            'paymentState' => PaymentStateChecker::PAYMENT_TYPE_PARTIAL
+            'paymentState' => PaymentStateChecker::PAYMENT_TYPE_PARTIAL,
         ]);
 
         $order = $this->createOrder();
@@ -296,7 +295,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Invoice State
+     * Test Rule Condition Invoice State.
      */
     public function testNotificationRuleInvoiceInvoiceStatePartial()
     {
@@ -304,7 +303,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(InvoiceStateConfigurationType::class, 'invoice.invoiceState');
 
         $condition = $this->createConditionWithForm('invoice.invoiceState', [
-            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_PARTIAL
+            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_PARTIAL,
         ]);
 
         $invoice = $this->createOrderInvoice();
@@ -313,7 +312,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Invoice State
+     * Test Rule Condition Invoice State.
      */
     public function testNotificationRuleInvoiceInvoiceStateFull()
     {
@@ -321,7 +320,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(InvoiceStateConfigurationType::class, 'invoice.invoiceState');
 
         $condition = $this->createConditionWithForm('invoice.invoiceState', [
-            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_FULL
+            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_FULL,
         ]);
 
         $invoice = $this->createOrderInvoice();
@@ -329,8 +328,8 @@ class NotificationRule extends RuleTest
         $this->assertRuleCondition(['subject' => $invoice, 'params' => []], $condition);
     }
 
-     /**
-     * Test Rule Condition Invoice State
+    /**
+     * Test Rule Condition Invoice State.
      */
     public function testNotificationRuleShipmentShipmentStatePartial()
     {
@@ -338,7 +337,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(ShipmentStateConfigurationType::class, 'shipment.shipmentState');
 
         $condition = $this->createConditionWithForm('shipment.shipmentState', [
-            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_PARTIAL
+            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_PARTIAL,
         ]);
 
         $shipment = $this->createOrderShipment();
@@ -347,7 +346,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Invoice State
+     * Test Rule Condition Invoice State.
      */
     public function testNotificationRuleShipmentShipmentStateFull()
     {
@@ -355,7 +354,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(ShipmentStateConfigurationType::class, 'shipment.shipmentState');
 
         $condition = $this->createConditionWithForm('shipment.shipmentState', [
-            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_FULL
+            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_FULL,
         ]);
 
         $shipment = $this->createOrderShipment();
@@ -364,7 +363,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Payment
+     * Test Rule Condition Payment.
      */
     public function testNotificationRulePaymentPayment()
     {
@@ -372,13 +371,13 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(PaymentStateConfigurationType::class, 'payment.paymentState');
 
         $condition = $this->createConditionWithForm('payment.paymentState', [
-            'paymentState' => PaymentStateChecker::PAYMENT_TYPE_PARTIAL
+            'paymentState' => PaymentStateChecker::PAYMENT_TYPE_PARTIAL,
         ]);
 
         $order = $this->createOrder();
 
         /**
-         * @var $payment PaymentInterface
+         * @var PaymentInterface
          */
         $payment = $this->getFactory('payment')->createNew();
         $payment->setCurrency($order->getCurrency());
@@ -394,7 +393,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Payment
+     * Test Rule Condition Payment.
      */
     public function testNotificationRuleActionMail()
     {
@@ -403,7 +402,7 @@ class NotificationRule extends RuleTest
     }
 
     /**
-     * Test Rule Condition Payment
+     * Test Rule Condition Payment.
      */
     public function testNotificationRuleActionOrderMail()
     {

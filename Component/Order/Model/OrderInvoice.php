@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -47,7 +46,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      */
     public function getRenderedAsset()
     {
-        return $this->getProperty("rendered_asset");
+        return $this->getProperty('rendered_asset');
     }
 
     /**
@@ -123,7 +122,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -133,7 +132,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -143,7 +142,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -153,7 +152,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -163,7 +162,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -173,7 +172,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -183,7 +182,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -193,7 +192,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -203,7 +202,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -213,7 +212,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * Wrapper Method for Pimcore Object
+     * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
@@ -350,7 +349,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function getShippingTax()
@@ -435,7 +434,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      */
     public function getTaxes($applyDiscountToTaxValues = true)
     {
-        throw new \Exception("implement me");
+        throw new \Exception('implement me');
     }
 
     /**
@@ -443,7 +442,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      */
     public function setTaxes($taxes)
     {
-        throw new \Exception("implement me");
+        throw new \Exception('implement me');
     }
 
     /**

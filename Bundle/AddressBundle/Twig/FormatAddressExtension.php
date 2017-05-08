@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\AddressBundle\Twig;
@@ -36,7 +35,7 @@ final class FormatAddressExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('coreshop_format_address', [$this->helper, 'formatAddress'], array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter('coreshop_format_address', [$this->helper, 'formatAddress'], ['is_safe' => ['html']]),
         ];
     }
 }

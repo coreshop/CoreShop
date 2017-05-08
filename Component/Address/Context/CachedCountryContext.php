@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Address\Context;
@@ -37,7 +36,8 @@ final class CachedCountryContext implements CountryContextInterface
     /**
      * @param CountryInterface $country
      */
-    public function setCountry(CountryInterface $country) {
+    public function setCountry(CountryInterface $country)
+    {
         $this->country = $country;
     }
 }

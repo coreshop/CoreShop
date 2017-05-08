@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Model;
@@ -20,7 +19,6 @@ use CoreShop\Component\Taxation\Model\TaxRule as BaseTaxRule;
 
 class TaxRule extends BaseTaxRule implements TaxRuleInterface
 {
-
     /**
      * @var CountryInterface
      */
@@ -31,7 +29,7 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
      */
     protected $state;
 
-     /**
+    /**
      * @return string
      */
     public function __toString()

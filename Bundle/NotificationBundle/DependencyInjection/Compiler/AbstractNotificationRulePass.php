@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler;
@@ -26,7 +25,7 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
     /**
      * @return string
      */
-    protected abstract function getType();
+    abstract protected function getType();
 
     /**
      * {@inheritdoc}
@@ -49,7 +48,7 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
         foreach ($container->findTaggedServiceIds($this->getTagIdentifier()) as $id => $attributes) {
             foreach ($attributes as $tag) {
                 if (!isset($tag['type'], $tag['form-type'], $tag['notification-type'])) {
-                    throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `type`, `form-type` and `notification-type`` attributes.');
+                    throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type`, `form-type` and `notification-type`` attributes.');
                 }
 
                 $type = $tag['notification-type'];
@@ -57,7 +56,7 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
                 if (!array_key_exists($type, $registries)) {
                     $registries[$type] = new Definition(
                         ServiceRegistry::class,
-                        [ConditionCheckerInterface::class, 'notification-rule-' . $this->getType() . '-' . $type]
+                        [ConditionCheckerInterface::class, 'notification-rule-'.$this->getType().'-'.$type]
                     );
 
                     $formRegistries[$type] = new Definition(
@@ -66,8 +65,8 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
 
                     $types[] = $type;
 
-                    $container->setDefinition($this->getRegistryIdentifier() . '.' . $type, $registries[$type]);
-                    $container->setDefinition($this->getFormRegistryIdentifier() . '.' . $type, $formRegistries[$type]);
+                    $container->setDefinition($this->getRegistryIdentifier().'.'.$type, $registries[$type]);
+                    $container->setDefinition($this->getFormRegistryIdentifier().'.'.$type, $formRegistries[$type]);
                 }
 
                 $map[$tag['notification-type']][$tag['type']] = $tag['type'];
@@ -85,10 +84,10 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
         }
 
         foreach ($map as $type => $realMap) {
-            $container->setParameter($this->getIdentifier() . '.' . $type, $realMap);
+            $container->setParameter($this->getIdentifier().'.'.$type, $realMap);
         }
 
-        $container->setParameter($this->getIdentifier() . '.types', $types);
+        $container->setParameter($this->getIdentifier().'.types', $types);
         $container->setParameter($this->getIdentifier(), $registeredTypes);
     }
 }

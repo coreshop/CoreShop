@@ -8,25 +8,17 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Core\Notification\Rule\Condition\User;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Order\Model\OrderInterface;
 
 class UserTypeChecker extends AbstractConditionChecker
 {
-    /**
-     *
-     */
     const TYPE_REGISTER = 'register';
 
-    /**
-     *
-     */
     const TYPE_PASSWORD_RESET = 'password-reset';
 
     /**
@@ -36,7 +28,7 @@ class UserTypeChecker extends AbstractConditionChecker
     {
         if ($subject instanceof CustomerInterface) {
             $paramsToExist = [
-                'type'
+                'type',
             ];
 
             foreach ($paramsToExist as $paramToExist) {

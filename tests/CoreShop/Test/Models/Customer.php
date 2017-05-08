@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Test\Models;
@@ -17,19 +16,23 @@ use CoreShop\Test\Base;
 
 class Customer extends Base
 {
-    public function testCustomerCreation() {
+    public function testCustomerCreation()
+    {
         $this->printTodoTestName();
     }
 
-    public function testCustomerAddressCreation() {
+    public function testCustomerAddressCreation()
+    {
         $this->printTodoTestName();
     }
 
-    public function testCustomerRegistrationForm() {
+    public function testCustomerRegistrationForm()
+    {
         $this->printTodoTestName();
     }
 
-    public function testCustomerAddressForm() {
+    public function testCustomerAddressForm()
+    {
         $this->printTodoTestName();
         $this->printTodoTestName();
     }

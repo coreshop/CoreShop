@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -22,7 +21,6 @@ interface OrderShipmentInterface extends OrderDocumentInterface
 
     /**
      * @param \DateTime $shipmentDate
-     *
      */
     public function setShipmentDate($shipmentDate);
 
@@ -43,6 +41,7 @@ interface OrderShipmentInterface extends OrderDocumentInterface
 
     /**
      * @param $carrier
+     *
      * @return mixed
      */
     public function setCarrier($carrier);

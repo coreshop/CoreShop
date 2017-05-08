@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
@@ -29,28 +28,30 @@ class CategoryController extends PimcoreFrontendController
         $categoryList->setLimit(5);
 
         return $this->render('CoreShopFrontendBundle:Category:_menu.html.twig', [
-            'categories' => $categoryList->getObjects()
+            'categories' => $categoryList->getObjects(),
         ]);
     }
 
-    public function menuLeftAction(Request $request) {
+    public function menuLeftAction(Request $request)
+    {
         $categoryList = $this->repository->getList();
         $categoryList->setCondition("parentCategory__id is null AND stores LIKE '%,".$this->getStoreContext()->getStore()->getId().",%'");
 
         return $this->render('CoreShopFrontendBundle:Category:_menu-left.html.twig', [
-            'categories' => $categoryList->getObjects()
+            'categories' => $categoryList->getObjects(),
         ]);
     }
 
-    public function indexAction(Request $request, $name, $categoryId) {
+    public function indexAction(Request $request, $name, $categoryId)
+    {
         //TODO: add some of the old configurations
-        
+
         $page = $request->get('page', 0);
         $sort = $request->get('sort', 'NAMEA');
         $sortParsed = $this->parseSorting($sort);
         $type = $request->get('type', 'list');
         $perPage = $request->get('perPage', 20);
-        
+
         $category = $this->repository->find($categoryId);
 
         if (!$category instanceof CategoryInterface) {
@@ -61,7 +62,6 @@ class CategoryController extends PimcoreFrontendController
         $paginator = null;
 
         $viewParameters = [
-
         ];
 
         if ($category->getFilter() instanceof FilterInterface) {
@@ -82,12 +82,11 @@ class CategoryController extends PimcoreFrontendController
             $viewParameters['currentFilter'] = $currentFilter;
             $viewParameters['paginator'] = $paginator;
             $viewParameters['conditions'] = $preparedConditions;
-        }
-        else {
+        } else {
             //Classic Listing Mode
             $list = $this->get('coreshop.repository.product')->getList();
 
-            $condition = "enabled = 1";
+            $condition = 'enabled = 1';
             $condition .= " AND categories LIKE '%,".$category->getId().",%'";
             $condition .= " AND stores LIKE '%,".$this->shopperContext->getStore()->getId().",%'";
 
@@ -114,6 +113,7 @@ class CategoryController extends PimcoreFrontendController
 
     /**
      * @param $sortString
+     *
      * @return array
      */
     protected function parseSorting($sortString)
@@ -146,7 +146,8 @@ class CategoryController extends PimcoreFrontendController
     /**
      * @return StoreContextInterface
      */
-    public function getStoreContext() {
+    public function getStoreContext()
+    {
         return $this->get('coreshop.context.store');
     }
 }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
@@ -21,7 +20,7 @@ use Pimcore\Model\Document;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface//, DependentFixtureInterface
+class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface //, DependentFixtureInterface
 {
     /**
      * @var ContainerInterface
@@ -81,7 +80,7 @@ class NotificationRulesFixture extends AbstractFixture implements ContainerAware
 
                         foreach ($rule['actions'] as &$action) {
                             foreach ($action['configuration']['mails'] as &$mail) {
-                                $document = Document::getByPath('/' . $mail);
+                                $document = Document::getByPath('/'.$mail);
 
                                 if ($document instanceof Document\Email) {
                                     $mail = $document->getId();
@@ -99,9 +98,8 @@ class NotificationRulesFixture extends AbstractFixture implements ContainerAware
 
                         $this->container->get('doctrine.orm.entity_manager')->persist($notificationRule);
 
-                        $totalImported++;
+                        ++$totalImported;
                     } catch (\Exception $ex) {
-
                     }
                 }
             } catch (\Exception $ex) {

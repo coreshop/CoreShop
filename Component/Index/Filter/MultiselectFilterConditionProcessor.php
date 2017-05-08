@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Index\Filter;
@@ -25,7 +24,8 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
     /**
      * {@inheritdoc}
      */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter) {
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    {
         $rawValues = $list->getGroupByValues($condition->getField(), true);
 
         return [
@@ -34,7 +34,7 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
             'currentValues' => $currentFilter[$condition->getField()],
             'values' => array_values($rawValues),
             'fieldName' => $condition->getField(),
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit())
+            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
 

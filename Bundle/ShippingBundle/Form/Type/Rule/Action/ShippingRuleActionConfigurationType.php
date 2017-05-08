@@ -8,14 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -30,8 +28,8 @@ class ShippingRuleActionConfigurationType extends AbstractType
         $builder
             ->add('shippingRule', TextType::class, [ //TODO: Should be ShippingRuleChoiceType, but would't save ID to database, instead it saves the whole object
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']])
-                ]
+                    new NotBlank(['groups' => ['coreshop']]),
+                ],
             ])
         ;
     }

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -65,7 +64,8 @@ interface ProposalItemInterface extends ResourceInterface
     public function getItemTax();
 
     /**
-     * @param boolean $applyDiscountToTaxValues
+     * @param bool $applyDiscountToTaxValues
+     *
      * @return mixed
      */
     public function getTaxes($applyDiscountToTaxValues = true);
@@ -83,7 +83,7 @@ interface ProposalItemInterface extends ResourceInterface
     public function getTotalTax();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsGiftItem();
 

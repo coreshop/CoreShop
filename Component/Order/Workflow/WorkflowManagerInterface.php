@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Workflow;
@@ -47,6 +46,7 @@ interface WorkflowManagerInterface
      * @param ProposalInterface $proposal
      * @param $currentState
      * @param $newState
+     *
      * @return mixed
      */
     public function validateNewState(ProposalInterface $proposal, $currentState, $newState);
@@ -55,6 +55,7 @@ interface WorkflowManagerInterface
      * @param ProposalInterface $proposal
      * @param $newState
      * @param $currentState
+     *
      * @return mixed
      */
     public function beforeWorkflowDispatch(ProposalInterface $proposal, $newState, $currentState);
@@ -63,6 +64,7 @@ interface WorkflowManagerInterface
      * @param ProposalInterface $proposal
      * @param $newState
      * @param $oldState
+     *
      * @return mixed
      */
     public function successWorkflowDispatch(ProposalInterface $proposal, $newState, $oldState);
@@ -71,26 +73,30 @@ interface WorkflowManagerInterface
      * @param ProposalInterface $proposal
      * @param $newState
      * @param $oldState
+     *
      * @return mixed
      */
     public function failureWorkflowDispatch(ProposalInterface $proposal, $newState, $oldState);
 
     /**
      * @param ProposalInterface $proposal
+     *
      * @return mixed
      */
     public function getStateHistory(ProposalInterface $proposal);
 
     /**
      * @param ProposalInterface $proposal
+     *
      * @return mixed
      */
     public function getCurrentState(ProposalInterface $proposal);
 
     /**
      * @param ProposalInterface $proposal
-     * @param string $action
-     * @param array $params
+     * @param string            $action
+     * @param array             $params
+     *
      * @return mixed
      */
     public function changeState(ProposalInterface $proposal, $action, $params = []);

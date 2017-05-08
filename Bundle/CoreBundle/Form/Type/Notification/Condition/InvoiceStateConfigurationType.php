@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
@@ -30,8 +29,8 @@ final class InvoiceStateConfigurationType extends AbstractType
                 'choices' => [
                     InvoiceStateChecker::INVOICE_TYPE_PARTIAL,
                     InvoiceStateChecker::INVOICE_TYPE_FULL,
-                    InvoiceStateChecker::INVOICE_TYPE_ALL
-                ]
+                    InvoiceStateChecker::INVOICE_TYPE_ALL,
+                ],
             ])
         ;
     }

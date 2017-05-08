@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
@@ -21,6 +20,7 @@ class CurrencyController extends FrontendController
 {
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function widgetAction(Request $request)
@@ -28,19 +28,20 @@ class CurrencyController extends FrontendController
         $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get('coreshop.context.shopper')->getStore());
 
         return $this->render('CoreShopFrontendBundle:Currency:_widget.html.twig', [
-            'currencies' => $currencies
+            'currencies' => $currencies,
         ]);
     }
 
     /**
      * @param Request $request
      * @param $currencyCode
+     *
      * @return RedirectResponse
      */
     public function switchAction(Request $request, $currencyCode)
     {
         $currency = $this->getCurrencyRepository()->getByCode($currencyCode);
-        
+
         $store = $this->get('coreshop.context.store')->getStore();
         $this->get('coreshop.storage.currency')->set($store, $currency);
 
@@ -50,9 +51,10 @@ class CurrencyController extends FrontendController
     /**
      * @return CurrencyRepositoryInterface
      */
-    protected function getCurrencyRepository() {
+    protected function getCurrencyRepository()
+    {
         /**
-         * @var $repo CurrencyRepositoryInterface
+         * @var CurrencyRepositoryInterface
          */
         $repo = $this->get('coreshop.repository.currency');
 

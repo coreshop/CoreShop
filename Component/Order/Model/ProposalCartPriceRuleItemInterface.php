@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Order\Model;
@@ -39,13 +38,14 @@ interface ProposalCartPriceRuleItemInterface extends ResourceInterface
 
     /**
      * @param bool $withTax
+     *
      * @return float
      */
     public function getDiscount($withTax = true);
 
     /**
      * @param float $discount
-     * @param boolean $withTax
+     * @param bool  $withTax
      */
     public function setDiscount($discount, $withTax = true);
 }

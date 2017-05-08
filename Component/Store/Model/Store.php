@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Store\Model;
@@ -30,7 +29,7 @@ class Store extends AbstractResource implements StoreInterface
     /**
      * @var string
      */
-    protected $template = "standard";
+    protected $template = 'standard';
 
     /**
      * @var bool

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Component\Product\Repository;
@@ -17,13 +16,13 @@ use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
-interface ProductRepositoryInterface extends PimcoreRepositoryInterface {
-
+interface ProductRepositoryInterface extends PimcoreRepositoryInterface
+{
     /**
      * @param StoreInterface $store
-     * @param integer $count
+     * @param int            $count
+     *
      * @return ProductInterface[]
      */
     public function getLatestByShop(StoreInterface $store, $count = 8);
-
 }

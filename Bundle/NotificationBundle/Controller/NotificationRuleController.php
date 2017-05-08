@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\NotificationBundle\Controller;
@@ -29,23 +28,21 @@ class NotificationRuleController extends ResourceController
         $actionTypes = $this->getParameter('coreshop.notification_rule.actions.types');
         $conditionTypes = $this->getParameter('coreshop.notification_rule.conditions.types');
 
-        foreach ($actionTypes as $type)
-        {
+        foreach ($actionTypes as $type) {
             if (!in_array($type, $types)) {
                 $types[] = $type;
             }
         }
 
-        foreach ($conditionTypes as $type)
-        {
+        foreach ($conditionTypes as $type) {
             if (!in_array($type, $types)) {
                 $types[] = $type;
             }
         }
 
         foreach ($types as $type) {
-            $actionParameter = 'coreshop.notification_rule.actions.' . $type;
-            $conditionParameter = 'coreshop.notification_rule.conditions.' . $type;
+            $actionParameter = 'coreshop.notification_rule.actions.'.$type;
+            $conditionParameter = 'coreshop.notification_rule.conditions.'.$type;
 
             if ($this->container->hasParameter($actionParameter)) {
                 if (!array_key_exists($type, $actions)) {
@@ -68,15 +65,15 @@ class NotificationRuleController extends ResourceController
             'success' => true,
             'types' => $types,
             'actions' => $actions,
-            'conditions' => $conditions
+            'conditions' => $conditions,
         ]);
     }
 
     public function sortAction(Request $request)
     {
-        $rule = $request->get("rule");
-        $toRule = $request->get("toRule");
-        $position = $request->get("position");
+        $rule = $request->get('rule');
+        $toRule = $request->get('toRule');
+        $position = $request->get('position');
 
         $rule = $this->repository->find($rule);
         $toRule = $this->repository->find($toRule);
@@ -86,7 +83,7 @@ class NotificationRuleController extends ResourceController
         if ($direction === 'down') {
             //Update all records in between and move one direction up.
 
-            $fromSort = $rule->getSort()+1;
+            $fromSort = $rule->getSort() + 1;
             $toSort = $toRule->getSort();
 
             if ($position === 'before') {
@@ -100,7 +97,7 @@ class NotificationRuleController extends ResourceController
             $result = $this->repository->matching($criteria);
 
             foreach ($result as $newRule) {
-                if($newRule instanceof NotificationRuleInterface) {
+                if ($newRule instanceof NotificationRuleInterface) {
                     $newRule->setSort($newRule->getSort() - 1);
 
                     $this->entityManager->persist($newRule);
@@ -123,7 +120,7 @@ class NotificationRuleController extends ResourceController
             $result = $this->repository->matching($criteria);
 
             foreach ($result as $newRule) {
-                if($newRule instanceof NotificationRuleInterface) {
+                if ($newRule instanceof NotificationRuleInterface) {
                     $newRule->setSort($newRule->getSort() + 1);
 
                     $this->entityManager->persist($newRule);

@@ -8,7 +8,6 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
 */
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
@@ -33,6 +32,7 @@ class OrderShipmentController extends AdminController
 {
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function getShipAbleItemsAction(Request $request)
@@ -41,7 +41,7 @@ class OrderShipmentController extends AdminController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $itemsToReturn = [];
@@ -60,15 +60,15 @@ class OrderShipmentController extends AdminController
             $orderItem = $item['item'];
             if ($orderItem instanceof OrderItemInterface) {
                 $itemsToReturn[] = [
-                    "orderItemId" => $orderItem->getId(),
-                    "price" => $orderItem->getItemPrice(),
-                    "maxToShip" => $item['quantity'],
-                    "quantity" => $orderItem->getQuantity(),
-                    "quantityShipped" => $orderItem->getQuantity() - $item['quantity'],
-                    "toShip" => $item['quantity'],
-                    "tax" => $orderItem->getTotalTax(),
-                    "total" => $orderItem->getTotal(),
-                    "name" => $orderItem->getProduct() instanceof ProductInterface ? $orderItem->getProduct()->getName() : ""
+                    'orderItemId' => $orderItem->getId(),
+                    'price' => $orderItem->getItemPrice(),
+                    'maxToShip' => $item['quantity'],
+                    'quantity' => $orderItem->getQuantity(),
+                    'quantityShipped' => $orderItem->getQuantity() - $item['quantity'],
+                    'toShip' => $item['quantity'],
+                    'tax' => $orderItem->getTotalTax(),
+                    'total' => $orderItem->getTotal(),
+                    'name' => $orderItem->getProduct() instanceof ProductInterface ? $orderItem->getProduct()->getName() : '',
                 ];
             }
         }
@@ -78,15 +78,16 @@ class OrderShipmentController extends AdminController
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function createShipmentAction(Request $request)
     {
-        $items = $request->get("items");
-        $orderId = $request->get("id");
+        $items = $request->get('items');
+        $orderId = $request->get('id');
         $order = $this->getOrderRepository()->find($orderId);
-        $carrierId = $request->get("carrier");
-        $trackingCode = $request->get("trackingCode");
+        $carrierId = $request->get('carrier');
+        $trackingCode = $request->get('trackingCode');
         $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
 
         if (!$order instanceof OrderInterface) {
@@ -101,7 +102,7 @@ class OrderShipmentController extends AdminController
             $items = $this->decodeJson($items);
 
             /**
-             * @var $shipment OrderShipmentInterface
+             * @var OrderShipmentInterface
              */
             $shipment = $this->getShipmentFactory()->createNew();
             $shipment->setCarrier($carrier);
@@ -109,7 +110,7 @@ class OrderShipmentController extends AdminController
 
             $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
 
-            return $this->json(["success" => true, "shipmentId" => $shipment->getId()]);
+            return $this->json(['success' => true, 'shipmentId' => $shipment->getId()]);
         } catch (\Exception $ex) {
             return $this->json(['success' => false, 'message' => $ex->getMessage()]);
         }
@@ -117,6 +118,7 @@ class OrderShipmentController extends AdminController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function renderAction(Request $request)
@@ -128,10 +130,10 @@ class OrderShipmentController extends AdminController
             return new Response(
                 $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
                 200,
-                array(
+                [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"'
-                )
+                    'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
+                ]
             );
         }
 
