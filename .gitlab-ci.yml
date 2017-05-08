@@ -12,7 +12,8 @@ before_script:
   - curl -sS https://getcomposer.org/installer | php
 
   # Remove cloned stuff
-  - rm -rf $CI_PROJECT_DIR
+  - rm -rf $CI_PROJECT_DIR/
+  - mkdir -p $CI_PROJECT_DIR/
   - git clone https://github.com/pimcore/pimcore.git $CI_PROJECT_DIR
 
   # add config templates
