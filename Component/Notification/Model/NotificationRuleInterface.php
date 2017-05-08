@@ -27,4 +27,14 @@ interface NotificationRuleInterface extends RuleInterface
      * @param string $type
      */
     public function setType($type);
+
+    /**
+     * @return int
+     */
+    public function getSort();
+
+    /**
+     * @param int $sort
+     */
+     public function setSort($sort);
 }

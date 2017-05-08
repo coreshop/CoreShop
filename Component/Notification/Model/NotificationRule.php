@@ -19,6 +19,11 @@ class NotificationRule implements NotificationRuleInterface
     protected $type;
 
     /**
+     * @var integer
+     */
+    protected $sort;
+
+    /**
      * @var bool
      */
     protected $active = false;
@@ -65,5 +70,21 @@ class NotificationRule implements NotificationRuleInterface
         $this->type = $type;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSort($sort)
+    {
+        $this->sort = $sort;
     }
 }

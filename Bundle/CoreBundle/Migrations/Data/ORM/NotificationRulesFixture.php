@@ -51,11 +51,14 @@ class NotificationRulesFixture extends AbstractFixture implements ContainerAware
         $installResourcesDirectory = $this->container->getParameter('coreshop.installer.resources');
         $jsonFile = $this->container->get('kernel')->locateResource(sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules'));
 
+        $totalExistingRules = count($this->container->get('coreshop.repository.notification_rule')->findAll());
+
         if (file_exists($jsonFile)) {
             $json = file_get_contents($jsonFile);
 
             try {
                 $json = json_decode($json, true);
+                $totalImported = 0;
 
                 foreach ($json as $rule) {
                     try {
@@ -81,8 +84,11 @@ class NotificationRulesFixture extends AbstractFixture implements ContainerAware
                         $form->submit($rule);
 
                         $notificationRule = $form->getData();
+                        $notificationRule->setSort($totalExistingRules + $totalImported + 1);
 
                         $this->container->get('doctrine.orm.entity_manager')->persist($notificationRule);
+
+                        $totalImported++;
                     } catch (\Exception $ex) {
 
                     }

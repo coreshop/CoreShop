@@ -177,20 +177,24 @@ class ResourceController extends AdminController
         if (strlen($name) <= 0) {
             return $this->viewHandler->handle(['success' => false]);
         } else {
-            $dataModel = $this->factory->createNew();
+            $resource = $this->factory->createNew();
 
-            if ($dataModel instanceof ResourceInterface) {
-                $dataModel->setValue('name', $name);
+            if ($resource instanceof ResourceInterface) {
+                $resource->setValue('name', $name);
             }
 
             foreach ($request->request->all() as $key => $value) {
-                $dataModel->setValue($key, $value);
+                $resource->setValue($key, $value);
             }
 
-            $this->entityManager->persist($dataModel);
+            $this->eventDispatcher->dispatchPreEvent('create', $this->metadata, $resource, $request);
+
+            $this->entityManager->persist($resource);
             $this->entityManager->flush();
 
-            return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ['group' => 'Detailed']);
+            $this->eventDispatcher->dispatchPostEvent('create', $this->metadata, $resource, $request);
+
+            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
     }
 

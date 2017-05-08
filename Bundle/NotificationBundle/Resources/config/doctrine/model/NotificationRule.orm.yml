@@ -18,6 +18,9 @@ CoreShop\Component\Notification\Model\NotificationRule:
     active:
       column: active
       type: boolean
+    sort:
+      column: sort
+      type: integer
   manyToMany:
     conditions:
       targetEntity: CoreShop\Component\Rule\Model\ConditionInterface

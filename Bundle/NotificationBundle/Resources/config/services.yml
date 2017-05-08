@@ -1,5 +1,6 @@
 imports:
   - { resource: "services/form.yml" }
+  - { resource: "services/listeners.yml" }
 
 services:
   coreshop.notification_rule.applier:

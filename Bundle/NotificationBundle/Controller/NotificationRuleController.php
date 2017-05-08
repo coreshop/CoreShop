@@ -3,6 +3,8 @@
 namespace CoreShop\Bundle\NotificationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Notification\Model\NotificationRuleInterface;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\Request;
 
 class NotificationRuleController extends ResourceController
@@ -57,5 +59,73 @@ class NotificationRuleController extends ResourceController
             'actions' => $actions,
             'conditions' => $conditions
         ]);
+    }
+
+    public function sortAction(Request $request)
+    {
+        $rule = $request->get("rule");
+        $toRule = $request->get("toRule");
+        $position = $request->get("position");
+
+        $rule = $this->repository->find($rule);
+        $toRule = $this->repository->find($toRule);
+
+        $direction = $rule->getSort() < $toRule->getSort() ? 'down' : 'up';
+
+        if ($direction === 'down') {
+            //Update all records in between and move one direction up.
+
+            $fromSort = $rule->getSort()+1;
+            $toSort = $toRule->getSort();
+
+            if ($position === 'before') {
+                $toSort -= 1;
+            }
+
+            $criteria = new Criteria();
+            $criteria->where($criteria->expr()->gte('sort', $fromSort));
+            $criteria->where($criteria->expr()->lte('sort', $toSort));
+
+            $result = $this->repository->matching($criteria);
+
+            foreach ($result as $newRule) {
+                if($newRule instanceof NotificationRuleInterface) {
+                    $newRule->setSort($newRule->getSort() - 1);
+
+                    $this->entityManager->persist($newRule);
+                }
+            }
+
+            $rule->setSort($toSort);
+
+            $this->entityManager->persist($rule);
+        } else {
+            //Update all records in between and move one direction down.
+
+            $fromSort = $toRule->getSort();
+            $toSort = $rule->getSort();
+
+            $criteria = new Criteria();
+            $criteria->where($criteria->expr()->gte('sort', $fromSort));
+            $criteria->where($criteria->expr()->lte('sort', $toSort));
+
+            $result = $this->repository->matching($criteria);
+
+            foreach ($result as $newRule) {
+                if($newRule instanceof NotificationRuleInterface) {
+                    $newRule->setSort($newRule->getSort() + 1);
+
+                    $this->entityManager->persist($newRule);
+                }
+            }
+
+            $rule->setSort($fromSort);
+
+            $this->entityManager->persist($rule);
+        }
+
+        $this->entityManager->flush();
+
+        return $this->json(['success' => true]);
     }
 }
