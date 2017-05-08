@@ -1,0 +1,97 @@
+[
+  {
+    "name": "User Register",
+    "type": "user",
+    "conditions": [
+      {
+        "type": "user.userType",
+        "configuration": {
+          "userType": "register"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "user.mail",
+        "configuration": {
+          "mails": {
+            "de": "/de/shop/email/user-registered",
+            "en": "/en/shop/email/user-registered"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "User Reset Password",
+    "type": "user",
+    "conditions": [
+      {
+        "type": "user.userType",
+        "configuration": {
+          "userType": "password-reset"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "user.mail",
+        "configuration": {
+          "mails": {
+            "de": "/de/shop/email/user-reset-password",
+            "en": "/en/shop/email/user-reset-password"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "Order Shipped",
+    "type": "order",
+    "conditions": [
+      {
+        "type": "order.shipmentState",
+        "configuration": {
+          "shipmentState": 2
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "order.mail",
+        "configuration": {
+          "mails": {
+            "de": "/de/shop/email/order-shipped",
+            "en": "/en/shop/email/order-shipped"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "Order Confirmation",
+    "type": "order",
+    "conditions": [
+      {
+        "type": "order.orderState",
+        "configuration": {
+          "transitionType": 1,
+          "states": [
+            "new"
+          ]
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "order.mail",
+        "configuration": {
+          "mails": {
+            "de": "/de/shop/email/order-confirmation",
+            "en": "/en/shop/email/order-confirmation"
+          }
+        }
+      }
+    ]
+  }
+]

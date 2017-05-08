@@ -2,11 +2,10 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
+use CoreShop\Component\Core\Notification\Rule\Condition\User\UserTypeChecker;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
 
 final class UserTypeConfigurationType extends AbstractType
 {
@@ -16,7 +15,12 @@ final class UserTypeConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('userType', IntegerType::class) //TODO: Should be a choice with list of values
+            ->add('userType', ChoiceType::class, [
+                'choices' => [
+                    UserTypeChecker::TYPE_PASSWORD_RESET,
+                    UserTypeChecker::TYPE_REGISTER
+                ]
+            ])
         ;
     }
 
