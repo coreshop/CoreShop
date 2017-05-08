@@ -4,13 +4,10 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
-use Pimcore\Model\Object\ClassDefinition\Data\Fieldcollections;
 use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 

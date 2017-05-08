@@ -3,11 +3,11 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class SecurityController extends FrontendController
 {

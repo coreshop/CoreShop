@@ -2,12 +2,10 @@
 
 namespace CoreShop\Component\Core\Currency;
 
-use CoreShop\Component\Core\Model\Currency;
 use CoreShop\Component\Core\Model\CurrencyInterface;
-use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Resource\Storage\StorageInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 /**
  * @author Kamil Kokot <kamil.kokot@lakion.com>

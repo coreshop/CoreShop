@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\AdminBundle\Controller;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Core\Helper\StringHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 

@@ -9,9 +9,9 @@ use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use Pimcore\Bundle\AdminBundle\Security\User\User;
 use Pimcore\Model\Element\Note;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 final class WorkflowManager implements WorkflowManagerInterface

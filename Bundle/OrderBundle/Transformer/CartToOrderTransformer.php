@@ -20,8 +20,6 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Pimcore\Model\Object\Fieldcollection;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
 class CartToOrderTransformer implements ProposalTransformerInterface

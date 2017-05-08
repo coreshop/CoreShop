@@ -2,9 +2,7 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class Category extends AbstractPimcoreModel implements CategoryInterface

@@ -2,9 +2,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
 use CoreShop\Bundle\PayumBundle\Form\Type\GatewayConfigType;
+use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;

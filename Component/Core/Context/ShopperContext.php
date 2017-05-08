@@ -5,7 +5,6 @@ namespace CoreShop\Component\Core\Context;
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Customer\Context\RequestBased\CustomerContext;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 
 class ShopperContext implements ShopperContextInterface

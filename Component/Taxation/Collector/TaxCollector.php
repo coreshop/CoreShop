@@ -4,7 +4,6 @@ namespace CoreShop\Component\Taxation\Collector;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
-use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
 class TaxCollector implements TaxCollectorInterface {
     /**

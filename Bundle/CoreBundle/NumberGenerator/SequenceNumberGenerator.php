@@ -2,7 +2,6 @@
 
 namespace CoreShop\Bundle\CoreBundle\NumberGenerator;
 
-use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;

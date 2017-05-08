@@ -4,9 +4,7 @@ namespace CoreShop\Bundle\CoreBundle\Product\Rule\Condition;
 
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
 
 class CurrenciesConditionChecker implements ConditionCheckerInterface
 {

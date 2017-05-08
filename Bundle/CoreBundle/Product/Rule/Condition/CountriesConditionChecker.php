@@ -4,9 +4,7 @@ namespace CoreShop\Bundle\CoreBundle\Product\Rule\Condition;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
 
 class CountriesConditionChecker implements ConditionCheckerInterface
 {

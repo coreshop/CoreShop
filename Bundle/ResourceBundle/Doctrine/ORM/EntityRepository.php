@@ -2,9 +2,9 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
-use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 
 class EntityRepository extends BaseEntityRepository implements RepositoryInterface
 {

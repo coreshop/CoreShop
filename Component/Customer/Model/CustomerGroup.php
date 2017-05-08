@@ -3,7 +3,6 @@
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 

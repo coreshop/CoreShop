@@ -14,14 +14,14 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionCo
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
-use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;

@@ -2,9 +2,9 @@
 
 namespace CoreShop\Component\Store\Repository;
 
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\ORM\QueryBuilder;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface StoreRepositoryInterface extends RepositoryInterface
 {

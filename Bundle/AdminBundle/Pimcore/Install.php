@@ -4,7 +4,6 @@ namespace CoreShop\Bundle\AdminBundle\Pimcore;
 
 use Pimcore\Bundle\AdminBundle\Pimcore\InstallHelper;
 use Pimcore\Extension\Bundle\Installer\AbstractInstaller;
-use Pimcore\Model\Object\Service;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 

@@ -3,7 +3,6 @@
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 

@@ -2,7 +2,6 @@
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
-use CoreShop\Bundle\RuleBundle\Form\Type\Core\AbstractConfigurationCollectionType;
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleActionCollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

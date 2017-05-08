@@ -2,10 +2,8 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 
 interface ProposalInterface extends ResourceInterface
 {

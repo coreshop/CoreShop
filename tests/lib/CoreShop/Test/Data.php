@@ -20,8 +20,6 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\File;
 use Pimcore\Model\Object\Service;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @TODO: This should be created using fixtures!!

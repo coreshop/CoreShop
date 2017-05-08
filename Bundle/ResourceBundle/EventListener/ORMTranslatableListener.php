@@ -2,17 +2,17 @@
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Model\TranslatableInterface;
+use CoreShop\Component\Resource\Model\TranslationInterface;
+use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use CoreShop\Component\Resource\Metadata\MetadataInterface;
-use CoreShop\Component\Resource\Metadata\RegistryInterface;
-use CoreShop\Component\Resource\Model\TranslatableInterface;
-use CoreShop\Component\Resource\Model\TranslationInterface;
-use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ORMTranslatableListener implements EventSubscriber

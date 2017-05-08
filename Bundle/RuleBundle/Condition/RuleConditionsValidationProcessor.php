@@ -5,9 +5,7 @@ namespace CoreShop\Component\RuleBundle\Condition;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
-use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 
 class RuleConditionsValidationProcessor implements RuleConditionsValidationProcessorInterface
 {

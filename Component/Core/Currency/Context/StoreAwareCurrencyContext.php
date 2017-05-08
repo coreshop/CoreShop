@@ -2,13 +2,12 @@
 
 namespace CoreShop\Component\Core\Currency\Context;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
-use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class StoreAwareCurrencyContext implements CurrencyContextInterface
 {

@@ -3,7 +3,6 @@
 namespace CoreShop\Component\Notification\Rule\Action;
 
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
-use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 

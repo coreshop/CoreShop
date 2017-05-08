@@ -2,8 +2,8 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use Doctrine\Common\Collections\Collection;
 use CoreShop\Component\Currency\Model\Currency as BaseCurrency;
+use Doctrine\Common\Collections\Collection;
 
 class Currency extends BaseCurrency implements CurrencyInterface
 {

@@ -2,10 +2,10 @@
 
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Address\Model\CountryInterface as BaseCountryInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\Common\Collections\Collection;
-use CoreShop\Component\Address\Model\CountryInterface as BaseCountryInterface;
 
 interface CountryInterface extends BaseCountryInterface
 {

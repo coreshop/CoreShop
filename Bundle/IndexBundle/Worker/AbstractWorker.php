@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
+use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
@@ -11,7 +12,6 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Index\Condition\ConditionInterface;
 use Pimcore\Logger;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Concrete;

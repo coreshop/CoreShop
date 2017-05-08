@@ -2,9 +2,9 @@
 
 namespace CoreShop\Bundle\PayumBundle\Action\Offline;
 
-use Payum\Core\Action\ActionInterface;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use Payum\Core\Action\ActionInterface;
 
 final class ResolveNextRouteAction implements ActionInterface
 {

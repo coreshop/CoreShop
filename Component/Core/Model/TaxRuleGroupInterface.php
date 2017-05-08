@@ -3,8 +3,8 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Store\Model\StoreInterface;
-use Doctrine\Common\Collections\Collection;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface as BaseTaxRuleGroupInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface TaxRuleGroupInterface extends BaseTaxRuleGroupInterface
 {

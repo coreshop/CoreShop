@@ -3,7 +3,6 @@
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
 use CoreShop\Component\Resource\Helper\Tool;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;

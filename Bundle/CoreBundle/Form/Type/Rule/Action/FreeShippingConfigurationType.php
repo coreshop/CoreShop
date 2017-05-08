@@ -3,7 +3,6 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class FreeShippingConfigurationType extends AbstractType

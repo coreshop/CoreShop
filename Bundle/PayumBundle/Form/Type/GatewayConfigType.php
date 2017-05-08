@@ -2,9 +2,9 @@
 
 namespace CoreShop\Bundle\PayumBundle\Form\Type;
 
-use Payum\Core\Model\GatewayConfigInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Payum\Core\Model\GatewayConfigInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;

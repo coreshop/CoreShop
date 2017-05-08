@@ -2,14 +2,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\Order\Renderer;
 
-use CoreShop\Bundle\CoreBundle\Renderer\Pdf\PdfRendererInterface;
-use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use Pimcore\Model\Asset;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ControllerReference;
-use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {

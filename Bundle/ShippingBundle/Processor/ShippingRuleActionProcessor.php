@@ -2,11 +2,11 @@
 
 namespace CoreShop\Bundle\ShippingBundle\Processor;
 
-use CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
+use CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface;
 
 class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterface
 {

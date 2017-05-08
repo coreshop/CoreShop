@@ -2,11 +2,9 @@
 
 namespace CoreShop\Bundle\ProductBundle\Rule\Condition;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
 
 class CategoriesConditionChecker implements ConditionCheckerInterface

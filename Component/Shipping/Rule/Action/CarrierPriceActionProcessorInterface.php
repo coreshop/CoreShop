@@ -4,7 +4,6 @@ namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 
 interface CarrierPriceActionProcessorInterface
 {

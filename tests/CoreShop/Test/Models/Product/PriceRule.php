@@ -21,7 +21,6 @@ use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfiguration
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
-use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 use CoreShop\Test\Data;
 use CoreShop\Test\RuleTest;
 

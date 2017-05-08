@@ -2,7 +2,6 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 

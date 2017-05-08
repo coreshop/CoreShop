@@ -2,8 +2,6 @@
 
 namespace CoreShop\Component\Registry;
 
-use Zend\Stdlib\PriorityQueue;
-
 interface PrioritizedServiceRegistryInterface
 {
     /**

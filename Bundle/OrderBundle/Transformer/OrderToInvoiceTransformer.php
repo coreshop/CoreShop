@@ -3,11 +3,7 @@
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
-use CoreShop\Component\Core\Context\LocaleContextInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
-use CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
@@ -15,19 +11,13 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
-use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
-use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
-use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface

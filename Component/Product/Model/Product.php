@@ -4,15 +4,11 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Product\Helper\VariantHelper;
-use CoreShop\Component\Product\Model\CategoryInterface;
-use CoreShop\Component\Product\Model\ManufacturerInterface;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Helper\VariantHelper;
+use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class Product extends AbstractPimcoreModel implements ProductInterface

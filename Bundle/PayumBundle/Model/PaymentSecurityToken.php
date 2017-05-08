@@ -2,11 +2,11 @@
 
 namespace CoreShop\Bundle\PayumBundle\Model;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Payum\Core\Security\TokenInterface;
 use Payum\Core\Security\Util\Random;
 use Payum\Core\Storage\IdentityInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
 
 class PaymentSecurityToken implements
     ResourceInterface,

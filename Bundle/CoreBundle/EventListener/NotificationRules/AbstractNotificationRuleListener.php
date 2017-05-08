@@ -3,7 +3,6 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Notification\Processor\RulesProcessorInterface;
-use Symfony\Component\EventDispatcher\Event;
 
 abstract class AbstractNotificationRuleListener
 {

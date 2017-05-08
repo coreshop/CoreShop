@@ -2,10 +2,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Cart\Rule\Condition;
 
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use Webmozart\Assert\Assert;

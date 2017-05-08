@@ -2,8 +2,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
-use CoreShop\Component\Core\Repository\ConfigurationRepositoryInterface;
 use CoreShop\Bundle\ConfigurationBundle\Doctrine\ORM\ConfigurationRepository as BaseConfigurationRepository;
+use CoreShop\Component\Core\Repository\ConfigurationRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 class ConfigurationRepository extends BaseConfigurationRepository implements ConfigurationRepositoryInterface

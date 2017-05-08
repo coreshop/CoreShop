@@ -3,8 +3,8 @@
 namespace CoreShop\Component\Currency\Repository;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
-use Doctrine\ORM\QueryBuilder;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\ORM\QueryBuilder;
 
 interface CurrencyRepositoryInterface extends RepositoryInterface
 {

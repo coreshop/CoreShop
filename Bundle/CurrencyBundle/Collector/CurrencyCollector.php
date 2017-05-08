@@ -3,7 +3,6 @@ namespace CoreShop\Bundle\CurrencyBundle\Collector;
 
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
-use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\Request;

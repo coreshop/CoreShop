@@ -2,9 +2,6 @@
 
 namespace CoreShop\Component\Registry;
 
-use Webmozart\Assert\Assert;
-use Zend\Stdlib\PriorityQueue;
-
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
     /**

@@ -2,9 +2,9 @@
 
 namespace CoreShop\Component\Core\Repository;
 
+use CoreShop\Component\Configuration\Repository\ConfigurationRepositoryInterface as BaseConfigurationRepositoryInterface;
 use CoreShop\Component\Core\Model\ConfigurationInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use CoreShop\Component\Configuration\Repository\ConfigurationRepositoryInterface as BaseConfigurationRepositoryInterface;
 
 interface ConfigurationRepositoryInterface extends BaseConfigurationRepositoryInterface
 {

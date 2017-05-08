@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\IndexBundle;
 
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterConditionTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
@@ -9,7 +10,6 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreter
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
 
 final class CoreShopIndexBundle extends AbstractResourceBundle
 {

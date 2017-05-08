@@ -8,7 +8,6 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
-use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 use CoreShop\Test\RuleTest;
 

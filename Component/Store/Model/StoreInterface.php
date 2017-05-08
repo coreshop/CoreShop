@@ -15,7 +15,6 @@
 namespace CoreShop\Component\Store\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Doctrine\Common\Collections\Collection;
 
 interface StoreInterface extends ResourceInterface
 {

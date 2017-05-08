@@ -3,7 +3,6 @@
 namespace CoreShop\Bundle\AddressBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 
 class CountryRepository extends EntityRepository implements CountryRepositoryInterface

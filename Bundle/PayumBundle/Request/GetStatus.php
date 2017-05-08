@@ -2,8 +2,8 @@
 
 namespace CoreShop\Bundle\PayumBundle\Request;
 
-use Payum\Core\Request\BaseGetStatus;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use Payum\Core\Request\BaseGetStatus;
 
 class GetStatus extends BaseGetStatus
 {

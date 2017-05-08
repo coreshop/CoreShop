@@ -3,7 +3,6 @@
 namespace CoreShop\Component\Address\Context;
 
 use CoreShop\Component\Address\Model\CountryInterface;
-use Zend\Stdlib\PriorityQueue;
 
 final class CachedCountryContext implements CountryContextInterface
 {

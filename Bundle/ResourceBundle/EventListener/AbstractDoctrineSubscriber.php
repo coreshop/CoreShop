@@ -2,11 +2,11 @@
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\RuntimeReflectionService;
-use CoreShop\Component\Resource\Metadata\RegistryInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
 
 /**
  * @author Ben Davies <ben.davies@gmail.com>

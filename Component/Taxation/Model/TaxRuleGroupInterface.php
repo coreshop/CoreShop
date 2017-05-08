@@ -3,7 +3,6 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface TaxRuleGroupInterface extends ResourceInterface

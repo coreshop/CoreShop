@@ -2,12 +2,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
 
-use CoreShop\Component\Address\Model\ZoneInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
-use Rinvex\Country\Country;
-use Rinvex\Country\CountryLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

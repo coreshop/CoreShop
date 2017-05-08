@@ -2,11 +2,11 @@
 
 namespace CoreShop\Component\Core\Currency\Context;
 
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Core\Currency\CurrencyStorageInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
+use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 /**
  * @author Kamil Kokot <kamil.kokot@lakion.com>

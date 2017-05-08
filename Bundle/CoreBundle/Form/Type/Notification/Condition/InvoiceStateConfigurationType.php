@@ -5,10 +5,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 use CoreShop\Component\Core\Notification\Rule\Condition\Order\InvoiceStateChecker;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
 
 final class InvoiceStateConfigurationType extends AbstractType
 {

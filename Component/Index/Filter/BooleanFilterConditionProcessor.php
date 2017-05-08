@@ -3,7 +3,6 @@
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\Condition;
-use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;

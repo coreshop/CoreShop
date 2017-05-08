@@ -2,8 +2,6 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;

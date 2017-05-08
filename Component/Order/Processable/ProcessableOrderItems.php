@@ -2,7 +2,6 @@
 
 namespace CoreShop\Component\Order\Processable;
 
-use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
