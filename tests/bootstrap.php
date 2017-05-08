@@ -41,13 +41,11 @@ if (!defined('PIMCORE_APP_ROOT')) {
 
 define('PIMCORE_PRIVATE_VAR', CORESHOP_TESTS_PATH.'/tmp/var');
 
-if (file_exists('../../../pimcore/config/constants.php'))
-    require_once '../../../pimcore/config/constants.php';
-elseif (file_exists('../../../../pimcore/config/constants.php'))
-    require_once '../../../../pimcore/config/constants.php';
+if (file_exists('pimcore/config/constants.php'))
+    require_once 'pimcore/config/constants.php';
 
 $loader = require_once PIMCORE_PATH.'/config/autoload.php';
-include_once 'app/TestAppKernel.php';
+include_once CORESHOP_TESTS_PATH . '/app/TestAppKernel.php';
 
 /*
  * @var $loader \Composer\Autoload\ClassLoader

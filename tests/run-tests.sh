@@ -1,11 +1,3 @@
 #!/bin/bash
 
-set -e
-
-# switch interpreter
-if [[ "$TRAVIS_PHP_VERSION" == *"hhvm"* ]]; then CMD="hhvm"; else CMD="php"; fi
-
-CMD="$CMD phpunit.php -c config/phpunit.xml --bootstrap bootstrap.php  --log-json output/log.xml AllTests"
-
-echo $CMD
-eval $CMD
+$VENDOR_DIR/bin/phpunit -c $VENDOR_DIR/coreshop/core-shop/tests/config/phpunit.xml --bootstrap $VENDOR_DIR/coreshop/core-shop/tests/bootstrap.php $VENDOR_DIR/coreshop/core-shop/tests/AllTests
