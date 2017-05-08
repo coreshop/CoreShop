@@ -1,7 +1,5 @@
-/**
- * CoreShop
- *
- * LICENSE
+/*
+ * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
@@ -9,7 +7,8 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+ *
+*/
 
 pimcore.registerNS('pimcore.plugin.coreshop.indexes.fields');
 
@@ -196,9 +195,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     /*
     *       FIELD-TREE
     *
-    * */
-
-    getClassDefinitionTreePanel: function () {
+    **/    getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
             this.classDefinitionTreePanel = this.getClassTree('/admin/CoreShop/indices/get-class-definition-for-field-selection', this.class);

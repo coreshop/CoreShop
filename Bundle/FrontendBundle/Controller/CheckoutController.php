@@ -1,4 +1,15 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
+*/
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -89,9 +100,7 @@ class CheckoutController extends FrontendController
          *  4. After Payment is done, we return to PayumBundle PaymentController and further process it
          *
          * therefore we need the CartToOrderTransformerInterface here
-         */
-
-        /**
+        */        /**
          * Before we do anything else, lets check if the checkout is still valid
          * Check all previous steps if they are valid, if not, redirect back
          */
@@ -114,9 +123,7 @@ class CheckoutController extends FrontendController
 
         /**
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/
-         */
-
-        return $this->redirectToRoute('coreshop_shop_payment', ['orderId' => $order->getId()]);
+        */        return $this->redirectToRoute('coreshop_shop_payment', ['orderId' => $order->getId()]);
     }
 
     /**

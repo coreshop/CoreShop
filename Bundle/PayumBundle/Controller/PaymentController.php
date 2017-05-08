@@ -1,4 +1,15 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
+*/
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
@@ -81,9 +92,7 @@ class PaymentController extends Controller
         }
         /**
          * We now have our Order -> So lets do Payment -> Yeah :)
-         */
-
-        /**
+        */        /**
          * @var $payment PaymentInterface|PimcoreModelInterface
          */
         $payment = $this->paymentFactory->createNew();
@@ -143,9 +152,7 @@ class PaymentController extends Controller
 
         /**
          * Further process the status here, kick-off the pimcore workflow for orders?
-         */
-
-        return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
+        */        return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }
 
     /**

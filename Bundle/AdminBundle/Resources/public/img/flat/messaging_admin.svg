@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="iso-8859-1"?><!-- Generator: Adobe Illustrator 19.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve"  >
+<?xml version="1.0" encoding="iso-8859-1"?><!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<!-- Generator: Adobe Illustrator 19.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve"  >
 <polygon style="fill:#FF9800;" points="24,39 19,33 19,27 29,27 29,33 "/>
 <path style="fill:#FFA726;" d="M35,21c0,1.106-0.896,2-2,2c-1.106,0-2-0.894-2-2c0-1.105,0.894-2,2-2C34.104,19,35,19.895,35,21   M17,21c0-1.105-0.896-2-2-2c-1.106,0-2,0.895-2,2c0,1.106,0.894,2,2,2C16.104,23,17,22.106,17,21"/>
 <path style="fill:#FFB74D;" d="M33,15c0-7.635-18-4.971-18,0v7c0,4.971,4.028,9,9,9c4.971,0,9-4.029,9-9V15z"/>
