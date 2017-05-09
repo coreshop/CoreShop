@@ -1,8 +1,0 @@
-core_shop_product:
-  pimcore:
-    product:
-      classes:
-        pimcore_controller: CoreShop\Bundle\FrontendBundle\Controller\ProductController
-    category:
-      classes:
-        pimcore_controller: CoreShop\Bundle\FrontendBundle\Controller\CategoryController

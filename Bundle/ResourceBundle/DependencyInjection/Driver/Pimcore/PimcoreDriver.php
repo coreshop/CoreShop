@@ -37,7 +37,7 @@ final class PimcoreDriver extends AbstractDriver
     {
         parent::load($container, $metadata);
 
-        if ($metadata->hasClass('pimcore_controller')) {
+        if ($metadata->hasClass('admin_controller')) {
             $this->addPimcoreController($container, $metadata);
         }
     }
@@ -48,7 +48,7 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $definition = new Definition($metadata->getClass('pimcore_controller'));
+        $definition = new Definition($metadata->getClass('admin_controller'));
         $definition
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
@@ -61,7 +61,7 @@ final class PimcoreDriver extends AbstractDriver
             ->addMethodCall('setContainer', [new Reference('service_container')])
         ;
 
-        $container->setDefinition($metadata->getServiceId('pimcore_controller'), $definition);
+        $container->setDefinition($metadata->getServiceId('admin_controller'), $definition);
     }
 
     /**

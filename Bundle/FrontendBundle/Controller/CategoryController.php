@@ -12,19 +12,19 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Controller\PimcoreFrontendController;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Paginator\Paginator;
 
-class CategoryController extends PimcoreFrontendController
+class CategoryController extends FrontendController
 {
     public function menuAction(Request $request)
     {
-        $categoryList = $this->repository->getList();
+        $categoryList = $this->getRepository()->getList();
         $categoryList->setLimit(5);
 
         return $this->render('CoreShopFrontendBundle:Category:_menu.html.twig', [
@@ -34,7 +34,7 @@ class CategoryController extends PimcoreFrontendController
 
     public function menuLeftAction(Request $request)
     {
-        $categoryList = $this->repository->getList();
+        $categoryList = $this->getRepository()->getList();
         $categoryList->setCondition("parentCategory__id is null AND stores LIKE '%,".$this->getStoreContext()->getStore()->getId().",%'");
 
         return $this->render('CoreShopFrontendBundle:Category:_menu-left.html.twig', [
@@ -52,7 +52,7 @@ class CategoryController extends PimcoreFrontendController
         $type = $request->get('type', 'list');
         $perPage = $request->get('perPage', 20);
 
-        $category = $this->repository->find($categoryId);
+        $category = $this->getRepository()->find($categoryId);
 
         if (!$category instanceof CategoryInterface) {
             return $this->redirectToRoute('coreshop_shop_index');
@@ -149,5 +149,13 @@ class CategoryController extends PimcoreFrontendController
     public function getStoreContext()
     {
         return $this->get('coreshop.context.store');
+    }
+
+    /**
+     * @return PimcoreRepositoryInterface
+     */
+    public function getRepository()
+    {
+        return $this->get('coreshop.repository.category');
     }
 }

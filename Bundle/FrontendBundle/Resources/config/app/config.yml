@@ -1,2 +1,0 @@
-imports:
-  - { resource: '@CoreShopFrontendBundle/Resources/config/app/coreshop/coreshop_product.yml'}

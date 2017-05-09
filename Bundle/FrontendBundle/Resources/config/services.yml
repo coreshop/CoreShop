@@ -5,41 +5,44 @@ services:
   coreshop.frontend.controller.customer:
     class: CoreShop\Bundle\FrontendBundle\Controller\CustomerController
     calls:
-            - [setContainer, ['@service_container']]
+      - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.currency:
     class: CoreShop\Bundle\FrontendBundle\Controller\CurrencyController
     calls:
-            - [setContainer, ['@service_container']]
+      - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.language:
     class: CoreShop\Bundle\FrontendBundle\Controller\LanguageController
     calls:
-            - [setContainer, ['@service_container']]
+      - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.search:
     class: CoreShop\Bundle\FrontendBundle\Controller\SearchController
     calls:
-            - [setContainer, ['@service_container']]
+      - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.cart:
     class: CoreShop\Bundle\FrontendBundle\Controller\CartController
     calls:
-            - [setContainer, ['@service_container']]
+      - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.checkout:
     class: CoreShop\Bundle\FrontendBundle\Controller\CheckoutController
     arguments:
       - '@coreshop.checkout_manager'
     calls:
-            - [setContainer, ['@service_container']]
+      - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.category:
-    alias: coreshop.pimcore_controller.category
+    class: CoreShop\Bundle\FrontendBundle\Controller\CategoryController
+    calls:
+      - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.product:
-    alias: coreshop.pimcore_controller.product
-
+    class: CoreShop\Bundle\FrontendBundle\Controller\ProductController
+    calls:
+      - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.security:
     class: CoreShop\Bundle\FrontendBundle\Controller\SecurityController
