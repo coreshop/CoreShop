@@ -10,6 +10,9 @@ before_script:
   - apt-get update -yqq
   - apt-get install git zlib1g-dev libicu-dev g++ -yqq
 
+  # Copy PHP INI
+  - cp .gitlab-ci/php.ini /usr/local/etc/php/conf.d/coreshop.ini
+
   # Install mysql driver
   - docker-php-ext-install pdo_mysql
 
