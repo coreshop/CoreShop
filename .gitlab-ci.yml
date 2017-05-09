@@ -8,16 +8,28 @@ cache:
 before_script:
   # Install git, the php image doesn't have installed
   - apt-get update -yqq
-  - apt-get install git zlib1g-dev libicu-dev g++ -yqq
+  - apt-get install git zlib1g-dev libicu-dev g++ libmcrypt-dev libldap2-dev libxml2-dev bzip2 unzip memcached ntpdate libxrender1 libfontconfig1 -yqq
 
   # Copy PHP INI
-  - cp .gitlab-ci/php.ini /usr/local/etc/php/conf.d/coreshop.ini
+  - cp .gitlab-ci/php.ini /usr/local/etc/php/php.ini
 
   # Install PHP Extensions
   - docker-php-ext-install pdo_mysql
   - docker-php-ext-configure intl
   - docker-php-ext-install intl
   - docker-php-ext-install zip
+  - docker-php-ext-install mcrypt
+  - docker-php-ext-install -j$(nproc) gd
+  - docker-php-ext-install bcmath
+  - docker-php-ext-install curl
+  - docker-php-ext-install exif
+  - docker-php-ext-configure imap --with-kerberos --with-imap-ssl
+  - docker-php-ext-install imap
+  - docker-php-ext-configure ldap
+  - docker-php-ext-install ldap
+  - docker-php-ext-install xml
+  - docker-php-ext-install simplexml
+  - docker-php-ext-install mbstring
 
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
