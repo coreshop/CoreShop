@@ -60,3 +60,7 @@ coreshop_order_shipment_create:
 coreshop_order_shipment_render:
   path: /%coreshop.admin.route.base%/order-shipment/render
   defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:renderAction'}
+
+coreshop_helper_get_nice_path:
+  path: /%coreshop.admin.route.base%/helper/get-nice-path
+  defaults: { _controller: 'coreshop.admin_controller.helper:getNicePathAction'}

@@ -54,5 +54,10 @@ services:
       - '@coreshop.factory.configuration'
       - '@coreshop.context.store'
 
+  coreshop.admin_controller.helper:
+    class: CoreShop\Bundle\CoreBundle\Controller\HelperController
+    calls:
+      - [setContainer, ['@service_container']]
+
   coreshop.renderer.pdf:
     class: CoreShop\Bundle\CoreBundle\Renderer\Pdf\WkHtmlToPdf
