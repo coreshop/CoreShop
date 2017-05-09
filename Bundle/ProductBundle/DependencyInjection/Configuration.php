@@ -18,6 +18,7 @@ use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductSpecificPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
+use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository;
 use CoreShop\Bundle\ProductBundle\Repository\ProductRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Product\Model\CategoryInterface;
@@ -132,7 +133,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\Object\CoreShopCategory')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CategoryInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(CategoryRepository::class)->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->cannotBeEmpty()->end()
                                     ->end()

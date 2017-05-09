@@ -18,12 +18,11 @@ use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 
 class OrderShipmentRepository extends PimcoreRepository implements OrderShipmentRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getDocuments(OrderInterface $order)
     {
-        $list = $this->getList();
-        $list->setCondition('order__id = ?', [$order->getId()]);
-        $list->load();
-
-        return $list->getObjects();
+        return $this->findBy(['order_id' => $order->getId()]);
     }
 }

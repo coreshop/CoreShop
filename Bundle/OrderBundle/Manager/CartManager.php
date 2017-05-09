@@ -13,9 +13,12 @@
 namespace CoreShop\Bundle\OrderBundle\Manager;
 
 use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
@@ -23,52 +26,52 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class CartManager implements CartManagerInterface
+final class CartManager implements CartManagerInterface
 {
     const CART_ID_IDENTIFIER = 'cartId';
     const CART_OBJ_IDENTIFIER = 'cartObj';
 
     /**
-     * @var PimcoreRepositoryInterface
+     * @var CartRepositoryInterface
      */
-    private $cartRepository;
+    protected $cartRepository;
 
     /**
      * @var FactoryInterface
      */
-    private $cartFactory;
+    protected $cartFactory;
 
     /**
      * @var SessionInterface
      */
-    private $session;
+    protected $session;
 
     /**
      * @var NamespacedAttributeBag
      */
-    private $sessionBag;
+    protected $sessionBag;
 
     /**
      * @var ObjectServiceInterface
      */
-    private $objectService;
+    protected $objectService;
 
     /**
      * @var string
      */
-    private $cartFolderPath;
+    protected $cartFolderPath;
 
     /**
-     * @var TokenStorageInterface
+     * @var CustomerContextInterface
      */
-    private $tokenStorage;
+    protected $customerContext;
 
     /**
      * @param PimcoreRepositoryInterface $cartRepository
      * @param FactoryInterface           $cartFactory
      * @param SessionInterface           $session
      * @param ObjectServiceInterface     $objectService
-     * @param TokenStorageInterface      $tokenStorage
+     * @param CustomerContextInterface   $customerContext
      * @param string                     $cartFolderPath
      */
     public function __construct(
@@ -76,7 +79,7 @@ class CartManager implements CartManagerInterface
         FactoryInterface $cartFactory,
         SessionInterface $session,
         ObjectServiceInterface $objectService,
-        TokenStorageInterface $tokenStorage,
+        CustomerContextInterface $customerContext,
         $cartFolderPath)
     {
         $this->cartRepository = $cartRepository;
@@ -84,7 +87,7 @@ class CartManager implements CartManagerInterface
         $this->cartFactory = $cartFactory;
         $this->sessionBag = $session->getBag('cart');
         $this->objectService = $objectService;
-        $this->tokenStorage = $tokenStorage;
+        $this->customerContext = $customerContext;
         $this->cartFolderPath = $cartFolderPath;
     }
 
@@ -169,36 +172,18 @@ class CartManager implements CartManagerInterface
 
     /**
      * {@inheritdoc}
-     *
-     * todo: refactor, should be done by the repository
      */
     public function getStoredCarts($customer)
     {
-        $list = $this->cartRepository->getList();
-        $list->setCondition('customer__id = ? AND order__id is null', [$customer->getId()]);
-        $list->load();
-
-        return $list->getObjects();
+        return $this->cartRepository->findForCustomer($customer);
     }
 
     /**
      * {@inheritdoc}
-     *
-     * todo: refactor, should be done by the repository
      */
     public function getByName($customer, $name)
     {
-        $list = $this->cartRepository->getList();
-        $list->setCondition('user__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
-        $list->load();
-
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
-
-            return $objects[0];
-        }
-
-        return null;
+        return $this->cartRepository->findNamedForCustomer($customer, $name);
     }
 
     /**
@@ -222,10 +207,11 @@ class CartManager implements CartManagerInterface
 
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
 
-        if ($this->tokenStorage->getToken() instanceof TokenInterface) {
-            if ($this->tokenStorage->getToken()->getUser() instanceof CustomerInterface) {
-                $cart->setCustomer($this->tokenStorage->getToken()->getUser());
-            }
+        try {
+            $cart->setCustomer($this->customerContext->getCustomer());
+        }
+        catch (CustomerNotFoundException $ex) {
+
         }
 
         $cart->setParent($cartsFolder);

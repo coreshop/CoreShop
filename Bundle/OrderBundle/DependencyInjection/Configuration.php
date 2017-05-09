@@ -16,6 +16,7 @@ use CoreShop\Bundle\OrderBundle\Controller\CartController;
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
+use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderInvoiceRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderShipmentRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -122,6 +123,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(CartRepository::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

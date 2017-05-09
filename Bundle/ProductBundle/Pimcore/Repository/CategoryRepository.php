@@ -10,19 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
+namespace CoreShop\Bundle\ProductBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Repository\PimcoreRepository;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Component\Product\Repository\CategoryRepositoryInterface;
 
-class OrderInvoiceRepository extends PimcoreRepository implements OrderInvoiceRepositoryInterface
+class CategoryRepository extends PimcoreRepository implements CategoryRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(OrderInterface $order)
+    public function findFirstLevel()
     {
-        return $this->findBy(['order_id' => $order->getId()]);
+        //TODO
+        throw new \Exception("implement me");
     }
 }

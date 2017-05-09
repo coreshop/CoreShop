@@ -27,7 +27,7 @@ services:
       - '@coreshop.factory.cart'
       - '@session'
       - '@coreshop.core.object_service'
-      - '@security.token_storage'
+      - '@coreshop.context.customer'
       - '%coreshop.folder.cart%'
 
   #Cart Discount Calculator

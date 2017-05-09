@@ -1,0 +1,5 @@
+core_shop_product:
+  pimcore:
+    category:
+      classes:
+        repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\CategoryRepository

@@ -12,36 +12,48 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Paginator\Paginator;
 
 class CategoryController extends FrontendController
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function menuAction(Request $request)
     {
-        $categoryList = $this->getRepository()->getList();
-        $categoryList->setLimit(5);
+        $categories = $this->getRepository()->findBy([], null, 5, 0);
 
         return $this->render('CoreShopFrontendBundle:Category:_menu.html.twig', [
-            'categories' => $categoryList->getObjects(),
+            'categories' => $categories,
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function menuLeftAction(Request $request)
     {
-        $categoryList = $this->getRepository()->getList();
-        $categoryList->setCondition("parentCategory__id is null AND stores LIKE '%,".$this->getStoreContext()->getStore()->getId().",%'");
+        $categories = $this->getRepository()->findForStore($this->getStoreContext()->getStore());
 
         return $this->render('CoreShopFrontendBundle:Category:_menu-left.html.twig', [
-            'categories' => $categoryList->getObjects(),
+            'categories' => $categories
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param $name
+     * @param $categoryId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction(Request $request, $name, $categoryId)
     {
         //TODO: add some of the old configurations
@@ -88,7 +100,7 @@ class CategoryController extends FrontendController
 
             $condition = 'enabled = 1';
             $condition .= " AND categories LIKE '%,".$category->getId().",%'";
-            $condition .= " AND stores LIKE '%,".$this->shopperContext->getStore()->getId().",%'";
+            $condition .= " AND stores LIKE '%,".$this->getStoreContext()->getStore()->getId().",%'";
 
             $list->setCondition($condition);
             $list->setOrderKey($sortParsed['name']);
@@ -152,7 +164,7 @@ class CategoryController extends FrontendController
     }
 
     /**
-     * @return PimcoreRepositoryInterface
+     * @return CategoryRepositoryInterface
      */
     public function getRepository()
     {

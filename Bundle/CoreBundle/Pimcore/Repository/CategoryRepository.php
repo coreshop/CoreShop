@@ -10,19 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
+namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Repository\PimcoreRepository;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository as BaseCategoryRepository;
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
-class OrderInvoiceRepository extends PimcoreRepository implements OrderInvoiceRepositoryInterface
+class CategoryRepository extends BaseCategoryRepository implements CategoryRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(OrderInterface $order)
+    public function findForStore(StoreInterface $store)
     {
-        return $this->findBy(['order_id' => $order->getId()]);
+        return $this->findBy(["stores LIKE '%".$store->getId()."%'"]);
     }
 }
