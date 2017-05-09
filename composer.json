@@ -1,6 +1,6 @@
 {
   "name": "coreshop/core-shop",
-  "type": "pimcore-plugin",
+  "type": "pimcore-bundle",
   "license": "GPLv3",
   "description": "CoreShop - Pimcore eCommerce",
   "keywords": [
