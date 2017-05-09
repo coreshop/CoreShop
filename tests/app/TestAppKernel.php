@@ -28,7 +28,6 @@ class TestAppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = [
-            new \AppBundle\AppBundle(),
             new \JMS\SerializerBundle\JMSSerializerBundle(),
             new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
