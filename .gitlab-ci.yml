@@ -44,6 +44,10 @@ before_script:
   # Add Composer Private Repo
   - php composer.phar config repositories.coreshop vcs ssh://git@git.lineofcode.at:2020/CoreShop/CoreShop2.git
 
+  #######################################################################
+  ###### This is the part where it should be alike with Travis ##########
+  #######################################################################
+
   # add config templates (needed for composer install, otherwise symfony throws an exception)
   - mkdir -p var/config
   - cp .travis/system.template.php var/config/system.php
