@@ -12,7 +12,7 @@
     'database' => [
         'adapter' => 'Pdo_Mysql',
         'params' => [
-            'host' => '127.0.0.1',
+            'host' => 'mysql',
             'username' => 'root',
             'password' => 'root',
             'dbname' => 'coreshop_phpunit',
