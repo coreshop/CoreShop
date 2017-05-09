@@ -8,10 +8,14 @@ cache:
 before_script:
   # Install git, the php image doesn't have installed
   - apt-get update -yqq
-  - apt-get install git -yqq
+  - apt-get install git zlib1g-dev libicu-dev g++ -yqq
 
   # Install mysql driver
   - docker-php-ext-install pdo_mysql
+
+  # Install PHP Intl
+  - docker-php-ext-configure intl
+  - docker-php-ext-install intl
 
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
