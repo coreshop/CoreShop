@@ -98,7 +98,13 @@ final class ClassesInstallProvider
      */
     private function createClass($jsonFile, $className, $updateClass = false)
     {
-        $class = Object\ClassDefinition::getByName($className);
+        $tempClass = new Object\ClassDefinition();
+        $id = $tempClass->getDao()->getIdByName($className);
+        $class = null;
+
+        if ($id) {
+            $class = Object\ClassDefinition::getById($id);
+        }
 
         if (!$class || $updateClass) {
             $json = file_get_contents($jsonFile);
