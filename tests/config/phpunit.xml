@@ -17,6 +17,7 @@
          processIsolation="false">
     <php>
         <server name="KERNEL_DIR" value="tests/app"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="320" />
     </php>
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
