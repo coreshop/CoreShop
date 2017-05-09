@@ -71,8 +71,8 @@ foreach (['CoreShopAddress',
     $loader->addClassMap([sprintf('Pimcore\Model\Object\%s\Listing', $class) => sprintf('%s/Object/%s/Listing.php', PIMCORE_CLASS_DIRECTORY, $class)]);
 }
 
-foreach (['CoreShopProposalCartPriceItem'] as $fc) {
-    $loader->addClassMap([sprintf('Pimcore\Model\Object\Fieldcollection\Data\%s', $class) => sprintf('%s/Object/Fieldcollection/Data/%s.php', PIMCORE_CLASS_DIRECTORY, $class)]);
+foreach (['CoreShopProposalCartPriceRuleItem'] as $fc) {
+    $loader->addClassMap([sprintf('Pimcore\Model\Object\Fieldcollection\Data\%s', $fc) => sprintf('%s/Object/Fieldcollection/Data/%s.php', PIMCORE_CLASS_DIRECTORY, $fc)]);
 }
 
 $phpLog = PIMCORE_LOG_DIRECTORY.'/php.log';
