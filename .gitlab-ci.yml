@@ -13,12 +13,11 @@ before_script:
   # Copy PHP INI
   - cp .gitlab-ci/php.ini /usr/local/etc/php/conf.d/coreshop.ini
 
-  # Install mysql driver
+  # Install PHP Extensions
   - docker-php-ext-install pdo_mysql
-
-  # Install PHP Intl
   - docker-php-ext-configure intl
   - docker-php-ext-install intl
+  - docker-php-ext-install zip
 
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
