@@ -57,6 +57,7 @@ variables:
   # Configure mysql service (https://hub.docker.com/_/mysql/)
   MYSQL_DATABASE: coreshop_phpunit
   MYSQL_ROOT_PASSWORD: root
+  CORESHOP_MYSQL_HOST: mysql
 
 # We test PHP7.0 (the default) with MySQL
 test:mysql:

@@ -121,6 +121,9 @@ try {
         $dbConfig = $systemConfig['database'];
         $dbConfig['params']['dbname'] = $dbConfig['params']['dbname'].'___phpunit';
 
+        if (array_key_exists('CORESHOP_MYSQL_HOST', $_ENV))
+            $dbConfig['params']['host'] = $_ENV['CORESHOP_MYSQL_HOST'];
+
         // remove write only config
         if (isset($dbConfig['writeOnly'])) {
             unset($dbConfig['writeOnly']);
@@ -135,6 +138,7 @@ try {
     $db = null;
 } catch (Exception $e) {
     echo $e->getMessage()."\n";
+    print_r($dbConfig);
     die("Couldn't establish connection to mysql"."\n");
 }
 
