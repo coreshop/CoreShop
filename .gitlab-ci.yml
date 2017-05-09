@@ -44,11 +44,12 @@ before_script:
 
   # install composer
   - php composer.phar install --ignore-platform-reqs
+  - php composer.phar require symfony/symfony:dev-master --ignore-platform-reqs
 
   # Install CoreShop
   # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
   # this test is kinda stupid
-  - php composer.phar require coreshop/core-shop:dev-symfony-the-fucking-right-way#$CI_COMMIT_REF  --ignore-platform-reqs
+  - php composer.phar require coreshop/core-shop:dev-master#$CI_COMMIT_REF  --ignore-platform-reqs
 
 services:
   - mysql
@@ -58,6 +59,9 @@ variables:
   MYSQL_DATABASE: coreshop_phpunit
   MYSQL_ROOT_PASSWORD: root
   CORESHOP_MYSQL_HOST: mysql
+  CORESHOP_MYSQL_DB: coreshop_phpunit
+  CORESHOP_MYSQL_USER: root
+  CORESHOP_MYSQL_PWD: root
 
 # We test PHP7.0 (the default) with MySQL
 test:mysql:
