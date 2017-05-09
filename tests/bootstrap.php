@@ -125,8 +125,16 @@ try {
             $dbConfig['params']['host'] = $_ENV['CORESHOP_MYSQL_HOST'];
         }
 
-        if (array_key_exists('MYSQL_ROOT_PASSWORD', $_ENV)) {
-            $dbConfig['params']['password'] = $_ENV['MYSQL_ROOT_PASSWORD'];
+        if (array_key_exists('CORESHOP_MYSQL_DB', $_ENV)) {
+            $dbConfig['params']['dbname'] = $_ENV['CORESHOP_MYSQL_DB'];
+        }
+
+        if (array_key_exists('CORESHOP_MYSQL_USER', $_ENV)) {
+            $dbConfig['params']['username'] = $_ENV['CORESHOP_MYSQL_USER'];
+        }
+
+        if (array_key_exists('CORESHOP_MYSQL_PWD', $_ENV)) {
+            $dbConfig['params']['password'] = $_ENV['CORESHOP_MYSQL_PWD'];
         }
 
         // remove write only config
@@ -173,6 +181,9 @@ if (is_array($systemConfig)) {
     $db = \Pimcore\Db::get();
 }
 echo "\n\nInstall Pimcore Database";
+
+print_r($dbConfig);
+
 $setup->database();
 $setup->contents([
     'username' => 'admin',
