@@ -121,8 +121,13 @@ try {
         $dbConfig = $systemConfig['database'];
         $dbConfig['params']['dbname'] = $dbConfig['params']['dbname'].'___phpunit';
 
-        if (array_key_exists('CORESHOP_MYSQL_HOST', $_ENV))
+        if (array_key_exists('CORESHOP_MYSQL_HOST', $_ENV)) {
             $dbConfig['params']['host'] = $_ENV['CORESHOP_MYSQL_HOST'];
+        }
+
+        if (array_key_exists('MYSQL_ROOT_PASSWORD', $_ENV)) {
+            $dbConfig['params']['password'] = $_ENV['MYSQL_ROOT_PASSWORD'];
+        }
 
         // remove write only config
         if (isset($dbConfig['writeOnly'])) {
