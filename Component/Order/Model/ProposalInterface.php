@@ -12,17 +12,16 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface ProposalInterface extends ResourceInterface
 {
     /**
-     * @param ProductInterface $product
+     * @param PurchasableInterface $product
      *
      * @return CartItemInterface|null
      */
-    public function getItemForProduct(ProductInterface $product);
+    public function getItemForProduct(PurchasableInterface $product);
 
     /**
      * @param bool $withTax

@@ -34,7 +34,7 @@ class CategoriesConditionChecker implements ConditionCheckerInterface
         foreach ($subject->getItems() as $item) {
             $product = $item->getProduct();
 
-            if ($item instanceof ProductInterface) {
+            if ($product instanceof ProductInterface) {
                 foreach ($product->getCategories() as $category) {
                     if ($category instanceof ResourceInterface) {
                         if (in_array($category->getId(), $configuration['categories'])) {

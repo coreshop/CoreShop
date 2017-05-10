@@ -14,18 +14,18 @@ namespace CoreShop\Component\Order\Cart;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface CartModifierInterface
 {
     /**
      * @param CartInterface    $cart
-     * @param ProductInterface $product
+     * @param PurchasableInterface $product
      * @param int              $quantity
      *
      * @return mixed
      */
-    public function addCartItem(CartInterface $cart, ProductInterface $product, $quantity = 1);
+    public function addCartItem(CartInterface $cart, PurchasableInterface $product, $quantity = 1);
 
     /**
      * @param CartInterface     $cart
@@ -37,11 +37,11 @@ interface CartModifierInterface
 
     /**
      * @param CartInterface    $cart
-     * @param ProductInterface $product
+     * @param PurchasableInterface $product
      * @param int              $quantity
      * @param bool             $increaseAmount
      *
      * @return mixed
      */
-    public function updateCartItemQuantity(CartInterface $cart, ProductInterface $product, $quantity = 0, $increaseAmount = false);
+    public function updateCartItemQuantity(CartInterface $cart, PurchasableInterface $product, $quantity = 0, $increaseAmount = false);
 }

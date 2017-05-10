@@ -14,7 +14,6 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -26,11 +25,11 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getItemForProduct(ProductInterface $product)
+    public function getItemForProduct(PurchasableInterface $product)
     {
         foreach ($this->getItems() as $item) {
             if ($item instanceof CartItemInterface) {
-                if ($item->getProduct() instanceof ProductInterface && $item->getProduct()->getId() === $product->getId()) {
+                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
                     return $item;
                 }
             }

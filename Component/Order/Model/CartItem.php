@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -42,7 +41,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     {
         $product = $this->getProduct();
 
-        if ($product instanceof ProductInterface) {
+        if ($product instanceof PurchasableInterface) {
             return $product->getPrice($withTax);
         }
 
@@ -56,7 +55,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     {
         $product = $this->getProduct();
 
-        if ($product instanceof ProductInterface) {
+        if ($product instanceof PurchasableInterface) {
             return $product->getBasePrice($withTax);
         }
 
@@ -70,7 +69,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     {
         $product = $this->getProduct();
 
-        if ($product instanceof ProductInterface) {
+        if ($product instanceof PurchasableInterface) {
             return $product->getWholesalePrice();
         }
 
@@ -84,7 +83,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     {
         $product = $this->getProduct();
 
-        if ($product instanceof ProductInterface) {
+        if ($product instanceof PurchasableInterface) {
             $taxCalculator = $this->getItemTaxCalculator();
 
             return $taxCalculator->applyTaxes($this->getItemPrice());
@@ -108,7 +107,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     {
         $product = $this->getProduct();
 
-        if ($product instanceof ProductInterface) {
+        if ($product instanceof PurchasableInterface) {
             return $product->getTaxCalculator($this->getCart()->getShippingAddress()); //TODO: Taxation Address should be configurable
         }
 

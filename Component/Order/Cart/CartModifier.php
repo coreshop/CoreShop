@@ -15,7 +15,7 @@ namespace CoreShop\Component\Order\Cart;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class CartModifier implements CartModifierInterface
@@ -43,7 +43,7 @@ class CartModifier implements CartModifierInterface
     /**
      * {@inheritdoc}
      */
-    public function addCartItem(CartInterface $cart, ProductInterface $product, $quantity = 1)
+    public function addCartItem(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
         $this->cartManager->persistCart($cart);
 
@@ -61,7 +61,7 @@ class CartModifier implements CartModifierInterface
     /**
      * {@inheritdoc}
      */
-    public function updateCartItemQuantity(CartInterface $cart, ProductInterface $product, $quantity = 0, $increaseAmount = false)
+    public function updateCartItemQuantity(CartInterface $cart, PurchasableInterface $product, $quantity = 0, $increaseAmount = false)
     {
         $item = $cart->getItemForProduct($product);
 

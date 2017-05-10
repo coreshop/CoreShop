@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\Object\Fieldcollection;
@@ -619,11 +618,11 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getItemForProduct(ProductInterface $product)
+    public function getItemForProduct(PurchasableInterface $product)
     {
         foreach ($this->getItems() as $item) {
             if ($item instanceof OrderItemInterface) {
-                if ($item->getProduct() instanceof ProductInterface && $item->getProduct()->getId() === $product->getId()) {
+                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
                     return $item;
                 }
             }
