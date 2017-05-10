@@ -151,5 +151,5 @@ interface ProposalInterface extends ResourceInterface
     /**
      * @return float
      */
-    public function getTotalWeight();
+    public function getWeight();
 }

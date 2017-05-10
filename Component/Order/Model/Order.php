@@ -157,7 +157,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalWeight()
+    public function getWeight()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -165,7 +165,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function setTotalWeight($totalWeight)
+    public function setWeight($weight)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

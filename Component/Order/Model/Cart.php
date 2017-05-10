@@ -356,7 +356,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalWeight()
+    public function getWeight()
     {
         $weight = 0;
 
