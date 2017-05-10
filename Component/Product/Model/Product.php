@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Helper\VariantHelper;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
