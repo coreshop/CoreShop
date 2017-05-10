@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Address\Context\RequestBased;
 
-use CoreShop\Component\Core\Model\CountryInterface;
+use CoreShop\Component\Address\Model\CountryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface RequestResolverInterface
