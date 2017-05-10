@@ -12,12 +12,12 @@
 
 namespace CoreShop\Component\Customer\Context;
 
-use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 
 interface CustomerContextInterface
 {
     /**
-     * @return StoreInterface|bool
+     * @return CustomerInterface|bool
      */
     public function getCustomer();
 }
