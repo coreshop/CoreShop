@@ -58,7 +58,7 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
      */
     public function transform(ProposalInterface $order, ProposalItemInterface $cartItem, ProposalItemInterface $orderItem)
     {
-        /*
+        /**
          * @var $order OrderInterface
          * @var $cartItem CartItemInterface
          * @var $orderItem OrderItemInterface

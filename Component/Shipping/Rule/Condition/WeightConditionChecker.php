@@ -13,19 +13,19 @@
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class WeightConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration)
     {
         $minWeight = $configuration['minWeight'];
         $maxWeight = $configuration['maxWeight'];
-        $totalWeight = $cart->getTotalWeight();
+        $totalWeight = $cart->getWeight();
 
         if ($minWeight > 0) {
             if ($totalWeight <= $minWeight) {

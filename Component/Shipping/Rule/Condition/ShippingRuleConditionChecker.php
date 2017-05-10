@@ -13,10 +13,10 @@
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 
 class ShippingRuleConditionChecker extends AbstractConditionChecker
@@ -44,7 +44,7 @@ class ShippingRuleConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration)
     {
         $shippingRuleId = $configuration['shippingRule'];
         $shippingRule = $this->shippingRuleRepository->find($shippingRuleId);

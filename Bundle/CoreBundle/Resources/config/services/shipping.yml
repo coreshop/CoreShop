@@ -3,3 +3,13 @@ services:
     class: CoreShop\Bundle\CoreBundle\Shipping\Calculator\FreeShippingPriceRuleActionCalculator
     tags:
       - { name: coreshop.shipping.price_calculator, type: free-shipping-rule, priority: 255 }
+
+  coreshop.shipping_rule.condition.categories:
+    class: CoreShop\Component\Core\Shipping\Rule\Condition\CategoriesConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+
+  coreshop.shipping_rule.condition.products:
+    class: CoreShop\Component\Core\Shipping\Rule\Condition\ProductsConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }

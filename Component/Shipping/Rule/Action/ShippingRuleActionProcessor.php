@@ -14,7 +14,7 @@ namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 

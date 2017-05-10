@@ -10,13 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class CategoriesConfigurationType extends AbstractType
+final class ProductsConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -24,7 +24,7 @@ final class CategoriesConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('categories', CollectionType::class, [
+            ->add('products', CollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
@@ -36,6 +36,6 @@ final class CategoriesConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_shipping_rule_condition_categories';
+        return 'coreshop_rule_condition_products';
     }
 }

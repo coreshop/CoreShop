@@ -133,7 +133,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
      */
     public function transform(ProposalInterface $cart, ProposalInterface $order)
     {
-        /*
+        /**
          * @var $cart CartInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);
@@ -144,7 +144,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath, date('Y/m/d')));
 
         $orderNumber = $this->numberGenerator->generate($order);
-        /*
+        /**
          * @var $order OrderInterface
          */
         $order->setKey($this->keyTransformer->transform($orderNumber));
@@ -183,7 +183,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $order->setDiscount($cart->getDiscount(false), false);
         $order->setShippingAddress($cart->getShippingAddress());
         $order->setInvoiceAddress($cart->getInvoiceAddress());
-        $order->setTotalWeight($cart->getTotalWeight());
+        $order->setWeight($cart->getWeight());
 
         if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($cart->getPriceRuleItems() as $priceRule) {

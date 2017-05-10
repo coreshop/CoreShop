@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\CartInterface as BaseCartInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-interface CartInterface extends BaseCartInterface
+interface CartInterface extends BaseCartInterface, ShippableInterface
 {
     /**
      * @param CurrencyInterface $currency

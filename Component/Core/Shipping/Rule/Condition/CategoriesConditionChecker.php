@@ -10,20 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Shipping\Rule\Condition;
+namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
 
 class CategoriesConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration)
     {
         $cartItems = $cart->getItems();
 
