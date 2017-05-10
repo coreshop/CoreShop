@@ -8,34 +8,34 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use CoreShop\Bundle\AddressBundle\Form\Type\CountryType;
+use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
+use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
+use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class ProductsConfigurationType extends AbstractType
+final class CountryTypeExtension extends AbstractTypeExtension
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('products', CollectionType::class, [
-                'allow_add' => true,
-                'allow_delete' => true,
-            ])
-        ;
+        $builder->add('currency', CurrencyChoiceType::class);
+        $builder->add('stores', StoreChoiceType::class, [
+            'multiple' => true,
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getExtendedType()
     {
-        return 'coreshop_cart_price_rule_condition_products';
+        return CountryType::class;
     }
 }

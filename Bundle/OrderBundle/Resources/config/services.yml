@@ -26,7 +26,7 @@ services:
       - '@coreshop.repository.cart'
       - '@coreshop.factory.cart'
       - '@session'
-      - '@coreshop.core.object_service'
+      - '@coreshop.object_service'
       - '@coreshop.context.customer'
       - '%coreshop.folder.cart%'
 

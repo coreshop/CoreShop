@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\PayumBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
-use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;

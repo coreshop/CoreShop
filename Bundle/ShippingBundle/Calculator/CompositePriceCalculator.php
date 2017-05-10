@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class CompositePriceCalculator implements CarrierPriceCalculatorInterface
 {
@@ -34,7 +34,7 @@ class CompositePriceCalculator implements CarrierPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, $withTax = true)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true)
     {
         $price = false;
 
@@ -42,7 +42,7 @@ class CompositePriceCalculator implements CarrierPriceCalculatorInterface
          * First Price wins
          */
         foreach ($this->calculators as $calculator) {
-            $actionPrice = $calculator->getPrice($carrier, $cart, $address, $withTax);
+            $actionPrice = $calculator->getPrice($carrier, $shippable, $address, $withTax);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

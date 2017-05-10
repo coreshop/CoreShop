@@ -44,13 +44,13 @@ class ShippingRuleConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
         $shippingRuleId = $configuration['shippingRule'];
         $shippingRule = $this->shippingRuleRepository->find($shippingRuleId);
 
         if ($shippingRule instanceof ShippingRuleInterface) {
-            return $this->ruleValidationProcessor->isValid(['carrier' => $carrier, 'cart' => $cart, 'address' => $address], $shippingRule);
+            return $this->ruleValidationProcessor->isValid(['carrier' => $carrier, 'shippable' => $shippable, 'address' => $address], $shippingRule);
         }
 
         return false;

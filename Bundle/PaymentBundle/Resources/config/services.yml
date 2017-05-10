@@ -7,7 +7,7 @@ services:
     arguments:
       - '@coreshop.factory.payment'
       - '@coreshop.repository.order'
-      - '@coreshop.core.object_service'
+      - '@coreshop.object_service'
       - '@coreshop.context.currency'
       - '@doctrine.orm.entity_manager'
     calls:

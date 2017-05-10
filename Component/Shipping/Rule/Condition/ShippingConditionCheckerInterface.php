@@ -20,12 +20,12 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 interface ShippingConditionCheckerInterface extends ConditionCheckerInterface
 {
     /**
-     * @param CarrierInterface $carrier
-     * @param ShippableInterface    $cart
-     * @param AddressInterface $address
-     * @param array            $configuration
+     * @param CarrierInterface   $carrier
+     * @param ShippableInterface $shippable
+     * @param AddressInterface   $address
+     * @param array              $configuration
      *
      * @return mixed
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration);
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration);
 }

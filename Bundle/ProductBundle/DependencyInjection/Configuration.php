@@ -19,7 +19,7 @@ use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductSpecificPriceRuleRepositor
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository;
-use CoreShop\Bundle\ProductBundle\Repository\ProductRepository;
+use CoreShop\Bundle\ProductBundle\Pimcore\Repository\ProductRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;

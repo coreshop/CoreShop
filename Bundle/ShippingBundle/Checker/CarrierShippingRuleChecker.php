@@ -13,9 +13,9 @@
 namespace CoreShop\Bundle\ShippingBundle\Checker;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
 {
@@ -35,12 +35,12 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
     {
         $shippingRules = $carrier->getShippingRules();
 
         foreach ($shippingRules as $rule) {
-            if ($this->ruleValidationProcessor->isValid(['carrier' => $carrier, 'cart' => $cart, 'address' => $address], $rule->getShippingRule())) {
+            if ($this->ruleValidationProcessor->isValid(['carrier' => $carrier, 'shippable' => $shippable, 'address' => $address], $rule->getShippingRule())) {
                 return $rule;
             }
         }

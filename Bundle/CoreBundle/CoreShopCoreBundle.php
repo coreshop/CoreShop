@@ -38,7 +38,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new CompositeLocaleContextPass());
         $container->addCompilerPass(new TranslatableEntityLocalePass());
         $container->addCompilerPass(new RegisterCheckoutStepPass());
     }

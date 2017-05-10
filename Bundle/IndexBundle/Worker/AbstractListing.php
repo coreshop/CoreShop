@@ -17,7 +17,6 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Tool;
 
 /**
@@ -133,16 +132,6 @@ abstract class AbstractListing implements ListingInterface
      * {@inheritdoc}
      */
     abstract public function getCategory();
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function setStore(StoreInterface $shop);
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getStore();
 
     /**
      * {@inheritdoc}

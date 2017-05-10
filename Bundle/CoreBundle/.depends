@@ -1,0 +1,15 @@
+Component\Order
+Component\Notification
+Component\Address
+Component\Customer
+Component\Resource
+Component\Rule
+Component\Currency
+Component\Store
+Component\Product
+Component\Registry
+Component\Shipping
+Component\Payment
+Component\Configuration
+Component\Sequence
+Component\Taxation

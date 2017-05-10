@@ -373,7 +373,7 @@ class OrderController extends AdminController
 
         $jsonOrder['shippingPayment'] = [
             'carrier' => $order->getCarrier() instanceof CarrierInterface ? $order->getCarrier()->getName() : null,
-            'weight' => $order->getTotalWeight(),
+            'weight' => $order->getWeight(),
             'cost' => $order->getShipping(),
         ];
 

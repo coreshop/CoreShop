@@ -1,2 +1,6 @@
-ResourceBundle
-CartBundle
+Component\Resource
+Component\Rule
+Component\Address
+Component\Shipping
+Bundle\ResourceBundle
+Bundle\RuleBundle

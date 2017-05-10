@@ -13,18 +13,18 @@
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CarrierPriceCalculatorInterface
 {
     /**
-     * @param CarrierInterface $carrier
-     * @param CartInterface    $cart
-     * @param AddressInterface $address
-     * @param bool             $withTax
+     * @param CarrierInterface   $carrier
+     * @param ShippableInterface $shippable
+     * @param AddressInterface   $address
+     * @param bool               $withTax
      *
      * @return mixed
      */
-    public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, $withTax = true);
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true);
 }

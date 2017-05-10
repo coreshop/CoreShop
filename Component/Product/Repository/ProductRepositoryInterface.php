@@ -18,11 +18,5 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 interface ProductRepositoryInterface extends PimcoreRepositoryInterface
 {
-    /**
-     * @param StoreInterface $store
-     * @param int            $count
-     *
-     * @return ProductInterface[]
-     */
-    public function getLatestByShop(StoreInterface $store, $count = 8);
+
 }

@@ -9,28 +9,15 @@ imports:
   - { resource: "services/rules.yml" }
   - { resource: "services/installer.yml" }
   - { resource: "services/notification.yml" }
+  - { resource: "services/cart-price-rules.yml" }
+  - { resource: "services/profiler.yml" }
 
 parameters:
   coreshop.folder.objects: '/coreshop'
 
 services:
-  coreshop.core.object_service:
-    class: CoreShop\Component\Core\Pimcore\ObjectService
-
   coreshop.core.key_transformer:
     class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer
-
-  coreshop.context.locale.composite:
-    class: CoreShop\Component\Core\Context\CompositeLocaleContext
-    decorates: coreshop.context.locale
-    decoration_priority: 256
-    public: false
-
-  coreshop.context.locale.pimcore:
-    class: CoreShop\Component\Core\Context\PimcoreLocaleContext
-    arguments: ['@pimcore.locale']
-    tags:
-      - { name: coreshop.context.locale }
 
   coreshop.taxation.factory.tax_calculator:
     class: CoreShop\Bundle\CoreBundle\Taxation\TaxCalculatorFactory

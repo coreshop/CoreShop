@@ -12,9 +12,7 @@
 
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
-use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,14 +29,10 @@ final class CountryType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('isoCode', TextType::class)
             ->add('active', CheckboxType::class)
-            ->add('currency', CurrencyChoiceType::class)
             ->add('zone', ZoneChoiceType::class, [
                 'active' => null,
             ])
             ->add('addressFormat', TextareaType::class)
-            ->add('stores', StoreChoiceType::class, [
-                'multiple' => true,
-            ])
         ;
     }
 

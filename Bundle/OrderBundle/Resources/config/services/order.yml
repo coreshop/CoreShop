@@ -6,7 +6,7 @@ services:
   coreshop.order.transformer.cart_item_to_order_item:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartItemToOrderItemTransformer
     arguments:
-      - '@coreshop.core.object_service'
+      - '@coreshop.object_service'
       - '%coreshop.folder.order_item%'
       - '@coreshop.transformer.event_dispatcher'
 
@@ -17,7 +17,7 @@ services:
       - '@coreshop.core.key_transformer'
       - '@coreshop.order.number_generator.default'
       - '%coreshop.folder.order%'
-      - '@coreshop.core.object_service'
+      - '@coreshop.object_service'
       - '@coreshop.context.locale'
       - '@coreshop.factory.order_item'
       - '@coreshop.context.currency'

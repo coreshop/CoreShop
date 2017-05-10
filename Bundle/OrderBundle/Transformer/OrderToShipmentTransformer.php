@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
-use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
@@ -105,7 +105,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
      */
     public function transform(OrderInterface $order, OrderDocumentInterface $shipment, $itemsToTransform)
     {
-        /*
+        /**
          * @var $cart CartInterface
          */
         Assert::isInstanceOf($order, OrderInterface::class);
@@ -116,7 +116,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $shipmentFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->shipmentFolderPath));
 
         $shipmentNumber = $this->numberGenerator->generate($shipment);
-        /*
+        /**
          * @var $shipment OrderShipmentInterface
          * @var $order OrderInterface
          */
@@ -126,7 +126,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $shipment->setPublished(true);
         $shipment->setShipmentDate(Carbon::now());
         $shipment->setOrder($order);
-        $shipment->setWeight($order->getTotalWeight());
+        $shipment->setWeight($order->getWeight());
 
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore

@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
-use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;

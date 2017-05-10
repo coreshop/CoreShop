@@ -13,9 +13,9 @@
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
-use CoreShop\Component\Core\Context\LocaleContextInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;

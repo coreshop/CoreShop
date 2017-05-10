@@ -1,0 +1,6 @@
+Component\Order
+Component\Payment
+Component\Currency
+Component\Resource
+Bundle\ResourceBundle
+Payum\Bundle\PayumBundle

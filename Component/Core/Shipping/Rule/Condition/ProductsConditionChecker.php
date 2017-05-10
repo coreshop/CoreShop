@@ -23,9 +23,9 @@ class ProductsConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
-        $cartItems = $cart->getItems();
+        $cartItems = $shippable->getItems();
 
         foreach ($cartItems as $item) {
             if ($item->getProduct() instanceof ProductInterface) {

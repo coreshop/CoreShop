@@ -76,7 +76,7 @@ class Carrier extends RuleTest
      */
     protected function getPriceCalculator()
     {
-        return $this->get('coreshop.carrier.price_calculator.tagged');
+        return $this->get('coreshop.carrier.price_calculator.default');
     }
 
     /**

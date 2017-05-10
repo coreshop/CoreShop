@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
+namespace CoreShop\Bundle\LocaleBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
 

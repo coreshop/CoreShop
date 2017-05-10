@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Manager;
 
-use CoreShop\Component\Core\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;

@@ -81,21 +81,11 @@ services:
       - '@coreshop.cart_price_rule.conditions.validation.processor'
 
   # Cart Price Rule CONDITIONS
-  coreshop.cart_price_rule.condition.products:
-    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\ProductsConditionChecker
-    tags:
-      - { name: coreshop.cart_price_rule.condition, type: products, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
-
   coreshop.cart_price_rule.condition.nested:
     class: CoreShop\Component\Rule\Condition\NestedConditionChecker
     arguments: ['@coreshop.cart_price_rule.conditions.validation.processor']
     tags:
       - { name: coreshop.cart_price_rule.condition, type: nested, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType }
-
-  coreshop.cart_price_rule.condition.categories:
-    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\CategoriesConditionChecker
-    tags:
-      - { name: coreshop.cart_price_rule.condition, type: categories, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
 
   coreshop.cart_price_rule.condition.timespan:
     class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\TimeSpanConditionChecker

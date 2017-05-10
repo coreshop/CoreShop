@@ -21,11 +21,11 @@ class AmountConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
         $minAmount = $configuration['minAmount'];
         $maxAmount = $configuration['maxAmount'];
-        $totalAmount = $cart->getSubtotal(true);
+        $totalAmount = $shippable->getSubtotal(true);
 
         if ($minAmount > 0) {
             if ($totalAmount <= $minAmount) {

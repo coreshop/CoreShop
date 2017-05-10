@@ -31,6 +31,7 @@ class TestAppKernel extends Kernel
             new \JMS\SerializerBundle\JMSSerializerBundle(),
             new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
+            new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(),
             new \CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle(),
             new \CoreShop\Bundle\AdminBundle\CoreShopAdminBundle(),
             new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(),

@@ -122,9 +122,9 @@ services:
       - CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface
       - shipping-price-calculators
 
-  coreshop.carrier.price_calculator.tagged:
+  coreshop.carrier.price_calculator:
     class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculator
-    arguments: ['@coreshop.registry.shipping.price_calculators', '@coreshop.taxation.factory.tax_calculator']
+    arguments: ['@coreshop.registry.shipping.price_calculators']
 
   coreshop.carrier.price_calculator.shipping_rules:
     class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierShippingRulePriceCalculator
@@ -136,4 +136,4 @@ services:
 
   coreshop.carrier.price_calculator.default:
     class: CoreShop\Bundle\ShippingBundle\Calculator\CompositePriceCalculator
-    arguments: [['@coreshop.carrier.price_calculator.tagged']]
+    arguments: [['@coreshop.carrier.price_calculator']]

@@ -3,3 +3,6 @@ core_shop_product:
     category:
       classes:
         repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\CategoryRepository
+    product:
+      classes:
+        repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\ProductRepository

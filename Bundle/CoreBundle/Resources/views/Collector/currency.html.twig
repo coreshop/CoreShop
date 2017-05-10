@@ -4,7 +4,7 @@
     {% set status_color = collector.currency is null ? 'red' : '' %}
 
     {% set icon %}
-        {{ include('@CoreShopCurrency/Collector/Icon/currency.svg') }}
+        {{ include('@CoreShopCore/Collector/Icon/currency.svg') }}
         <span class="sf-toolbar-value">{{ collector.currency.name|default('Undefined') }}</span>
     {% endset %}
 

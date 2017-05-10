@@ -14,8 +14,8 @@ namespace CoreShop\Bundle\ShippingBundle\Processor;
 
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 
 class CartCarrierProcessor implements CartCarrierProcessorInterface
@@ -45,7 +45,7 @@ class CartCarrierProcessor implements CartCarrierProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function getCarriersForCart(CartInterface $cart, AddressInterface $address = null)
+    public function getCarriersForCart(ShippableInterface $shippable, AddressInterface $address = null)
     {
         $carriers = $this->carrierRepository->findAll(); //TODO: restrict to store, but needs to be moved to CoreBundle to make it work
         $availableCarriers = [];

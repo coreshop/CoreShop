@@ -13,17 +13,17 @@
 namespace CoreShop\Bundle\ShippingBundle\Checker;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CarrierShippingRuleCheckerInterface
 {
     /**
-     * @param CarrierInterface $carrier
-     * @param CartInterface    $cart
-     * @param AddressInterface $address
+     * @param CarrierInterface   $carrier
+     * @param ShippableInterface $shippable
+     * @param AddressInterface   $address
      *
      * @return mixed
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address);
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address);
 }

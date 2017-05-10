@@ -13,9 +13,10 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Product\Model\CategoryInterface;
+use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Paginator\Paginator;
@@ -79,6 +80,7 @@ class CategoryController extends FrontendController
         if ($category->getFilter() instanceof FilterInterface) {
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
             $filteredList->setVariantMode(ListingInterface::VARIANT_MODE_HIDE);
+            $filteredList->addCondition(Condition::like('stores', $this->getStoreContext()->getStore()->getId(), 'both'), 'stores');
             $filteredList->setCategory($category);
 
             $currentFilter = $this->get('coreshop.filter.processor')->processConditions($category->getFilter(), $filteredList, $request->query);

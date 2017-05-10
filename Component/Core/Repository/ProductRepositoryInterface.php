@@ -10,19 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\ProductBundle\Repository;
+namespace CoreShop\Component\Core\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Repository\PimcoreRepository;
-use CoreShop\Component\Product\Repository\ProductRepositoryInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Product\Repository\ProductRepositoryInterface  as BaseProductRepositoryInterface ;
 use CoreShop\Component\Store\Model\StoreInterface;
 
-class ProductRepository extends PimcoreRepository implements ProductRepositoryInterface
+interface ProductRepositoryInterface extends BaseProductRepositoryInterface
 {
     /**
-     * {@inheritdoc}
+     * @param StoreInterface $store
+     * @param int            $count
+     *
+     * @return ProductInterface[]
      */
-    public function getLatestByShop(StoreInterface $store, $count = 8)
-    {
-        return $this->findBy(['enabled=1'], 'o_creationDate DESC', $count);
-    }
+    public function getLatestByShop(StoreInterface $store, $count = 8);
 }

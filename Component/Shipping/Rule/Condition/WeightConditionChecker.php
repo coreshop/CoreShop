@@ -21,11 +21,11 @@ class WeightConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
         $minWeight = $configuration['minWeight'];
         $maxWeight = $configuration['maxWeight'];
-        $totalWeight = $cart->getWeight();
+        $totalWeight = $shippable->getWeight();
 
         if ($minWeight > 0) {
             if ($totalWeight <= $minWeight) {

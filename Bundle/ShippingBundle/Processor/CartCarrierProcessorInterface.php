@@ -13,15 +13,15 @@
 namespace CoreShop\Bundle\ShippingBundle\Processor;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CartCarrierProcessorInterface
 {
     /**
-     * @param CartInterface         $cart
+     * @param ShippableInterface    $shippable
      * @param AddressInterface|null $address
      *
      * @return mixed
      */
-    public function getCarriersForCart(CartInterface $cart, AddressInterface $address = null);
+    public function getCarriersForCart(ShippableInterface $shippable, AddressInterface $address = null);
 }

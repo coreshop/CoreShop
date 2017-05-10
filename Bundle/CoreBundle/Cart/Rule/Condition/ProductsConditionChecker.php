@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\OrderBundle\Cart\Rule\Condition;
+namespace CoreShop\Bundle\CoreBundle\Cart\Rule\Condition;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -24,6 +24,9 @@ class ProductsConditionChecker implements ConditionCheckerInterface
      */
     public function isValid($subject, array $configuration)
     {
+        /**
+         * @var $subject CartInterface
+         */
         Assert::isInstanceOf($subject, CartInterface::class);
 
         foreach ($subject->getItems() as $item) {

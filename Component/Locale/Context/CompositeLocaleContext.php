@@ -10,13 +10,10 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Core\Context;
+namespace CoreShop\Component\Locale\Context;
 
 use Zend\Stdlib\PriorityQueue;
 
-/**
- * @author Kamil Kokot <kamil.kokot@lakion.com>
- */
 final class CompositeLocaleContext implements LocaleContextInterface
 {
     /**

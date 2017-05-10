@@ -1,0 +1,5 @@
+Component\Resource
+Component\Rule
+Component\Notification
+Bundle\ResourceBundle
+Bundle\RuleBundle

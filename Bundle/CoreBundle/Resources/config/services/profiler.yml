@@ -1,0 +1,6 @@
+services:
+  coreshop.currency_collector:
+    class: CoreShop\Bundle\CoreBundle\Collector\CurrencyCollector
+    arguments: ['@coreshop.repository.currency', '@coreshop.context.currency', '@coreshop.context.store', false]
+    tags:
+      - { name: data_collector, template: 'CoreShopCoreBundle:Collector:currency.html.twig', id: coreshop.currency_collector}

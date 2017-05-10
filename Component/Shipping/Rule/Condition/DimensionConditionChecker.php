@@ -21,13 +21,13 @@ class DimensionConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $cart, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
         $height = $configuration['height'];
         $width = $configuration['width'];
         $depth = $configuration['depth'];
 
-        foreach ($cart->getItems() as $item) {
+        foreach ($shippable->getItems() as $item) {
             if ($height > 0) {
                 if ($item->getHeight() > $height) {
                     return false;

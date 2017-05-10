@@ -1,0 +1,12 @@
+services:
+  coreshop.context.locale.composite:
+    class: CoreShop\Component\Locale\Context\CompositeLocaleContext
+    decorates: coreshop.context.locale
+    decoration_priority: 256
+    public: false
+
+  coreshop.context.locale.pimcore:
+    class: CoreShop\Component\Locale\Context\PimcoreLocaleContext
+    arguments: ['@pimcore.locale']
+    tags:
+      - { name: coreshop.context.locale }

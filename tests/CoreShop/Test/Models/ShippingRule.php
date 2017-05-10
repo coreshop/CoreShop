@@ -206,7 +206,7 @@ class ShippingRule extends RuleTest
         $this->getEntityManager()->persist($group);
         $this->getEntityManager()->flush();
 
-        $this->assertPriceRuleCondition(['cart' => $this->cart, 'carrier' => $carrier, 'address' => $this->address], $rule, $trueOrFalse);
+        $this->assertPriceRuleCondition(['shippable' => $this->cart, 'carrier' => $carrier, 'address' => $this->address], $rule, $trueOrFalse);
     }
 
     /**

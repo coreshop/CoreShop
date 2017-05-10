@@ -19,7 +19,6 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Concrete;
 use Zend\Paginator\Adapter\AdapterInterface;
@@ -58,11 +57,6 @@ class Listing extends AbstractListing
      * @var PimcoreModelInterface
      */
     protected $category;
-
-    /**
-     * @var StoreInterface
-     */
-    protected $store;
 
     /**
      * @var Dao
@@ -287,23 +281,6 @@ class Listing extends AbstractListing
     /**
      * {@inheritdoc}
      */
-    public function setStore(StoreInterface $store)
-    {
-        $this->objects = null;
-        $this->store = $store;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStore()
-    {
-        return $this->store;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setVariantMode($variantMode)
     {
         $this->objects = null;
@@ -399,10 +376,6 @@ class Listing extends AbstractListing
 
         if ($this->getCategory()) {
             $preCondition .= " AND parentCategoryIds LIKE '%,".$this->getCategory()->getId().",%'";
-        }
-
-        if ($this->getStore()) {
-            $preCondition .= " AND stores LIKE '%,".$this->getStore()->getId().",%'";
         }
 
         $condition = $preCondition;

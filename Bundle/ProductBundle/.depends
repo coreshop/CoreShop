@@ -1,2 +1,6 @@
-ResourceBundle
-RuleBundle
+Component\Resource
+Component\Rule
+Component\Product
+Component\Registry
+Bundle\ResourceBundle
+Bundle\RuleBundle
