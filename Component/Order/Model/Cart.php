@@ -12,11 +12,8 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -44,37 +41,6 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     public function getTotalTax($withTax = true)
     {
         return $this->getTotal(true) - $this->getTotal(false);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * TODO: Do we actually need the container here?
-     * Can't we just save shipping via shipping step?
-     */
-    public function getShipping($withTax = true)
-    {
-        if ($this->getCarrier() instanceof CarrierInterface) {
-            return $this->getContainer()->get('coreshop.carrier.price_calculator.default')->getPrice($this->getCarrier(), $this, $this->getShippingAddress(), $withTax);
-        }
-
-        return 0;
-    }
-
-    /**
-     *  {@inheritdoc}
-     */
-    public function getShippingTaxRate()
-    {
-        if ($this->getCarrier() instanceof CarrierInterface && $this->getCarrier()->getTaxRule() instanceof TaxRuleGroupInterface) {
-            $taxCalculator = $this->getContainer()->get('coreshop.taxation.factory.tax_calculator')->getTaxCalculatorForAddress($this->getCarrier()->getTaxRule(), $this->getShippingAddress());
-
-            if ($taxCalculator instanceof TaxCalculatorInterface) {
-                return $taxCalculator->getTotalRate();
-            }
-        }
-
-        return 0;
     }
 
     /**
@@ -161,13 +127,12 @@ class Cart extends AbstractPimcoreModel implements CartInterface
      *
      * @return float
      */
-    private function getTotalWithoutDiscount($withTax = true)
+    protected function getTotalWithoutDiscount($withTax = true)
     {
         $subtotal = $this->getSubtotal($withTax);
-        $shipping = $this->getShipping($withTax);
         $payment = $this->getPaymentFee($withTax);
 
-        return $subtotal + $shipping + $payment;
+        return $subtotal + $payment;
     }
 
     /**
@@ -370,7 +335,7 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private function getContainer()
+    protected function getContainer()
     {
         return \Pimcore::getContainer();
     }

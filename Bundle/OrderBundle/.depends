@@ -1,7 +1,12 @@
-Bundle\ResourceBundle
-Bundle\ProductBundle
 Component\Currency
 Component\Customer
 Component\Locale
+Component\Order
+Component\Registry
+Component\Rule
+Component\Resource
+Component\Store
+Bundle\ResourceBundle
+Bundle\ProductBundle
 Bundle\ResourceBundle
 Bundle\RuleBundle

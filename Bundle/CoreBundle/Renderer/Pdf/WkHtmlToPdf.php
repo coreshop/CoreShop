@@ -18,6 +18,19 @@ use Pimcore\Tool\Console;
 final class WkHtmlToPdf implements PdfRendererInterface
 {
     /**
+     * @var string
+     */
+    private $kernelCacheDir;
+
+    /**
+     * @param string $kernelCacheDir
+     */
+    public function __construct($kernelCacheDir)
+    {
+        $this->kernelCacheDir = $kernelCacheDir;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function fromString($string, $header = '', $footer = '', $config = [])
@@ -30,14 +43,14 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $config['options'] = [];
         }
 
-        $config['options']['--header-html'] = $headerHtml['absolutePath'];
-        $config['options']['--footer-html'] = $footerHtml['absolutePath'];
+        $config['options']['--header-html'] = $headerHtml;
+        $config['options']['--footer-html'] = $footerHtml;
 
-        $pdfContent = $this->convert($bodyHtml['absolutePath'], $config);
+        $pdfContent = $this->convert($bodyHtml, $config);
 
-        $this->unlinkFile($bodyHtml['relativePath']);
-        $this->unlinkFile($headerHtml['relativePath']);
-        $this->unlinkFile($footerHtml['relativePath']);
+        $this->unlinkFile($bodyHtml);
+        $this->unlinkFile($headerHtml);
+        $this->unlinkFile($footerHtml);
 
         return $pdfContent;
     }
@@ -47,15 +60,14 @@ final class WkHtmlToPdf implements PdfRendererInterface
      *
      * @param $string
      *
-     * @return array including absolutePath and relativePath
+     * @return string
      */
     private function createHtmlFile($string)
     {
-        $tmpHtmlFile = PIMCORE_TEMPORARY_DIRECTORY.'/'.uniqid().'.htm';
+        $tmpHtmlFile = $this->kernelCacheDir.'/'.uniqid().'.htm';
         file_put_contents($tmpHtmlFile, $string);
-        $httpSource = rtrim(Tool::getHostUrl(), '/').'/'.str_replace($_SERVER['DOCUMENT_ROOT'], '', $tmpHtmlFile);
 
-        return ['absolutePath' => $httpSource, 'relativePath' => $tmpHtmlFile];
+        return $tmpHtmlFile;
     }
 
     /**
@@ -70,7 +82,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
      */
     private function convert($httpSource, $config = [])
     {
-        $tmpPdfFile = PIMCORE_SYSTEM_TEMP_DIRECTORY.'/'.uniqid().'.pdf';
+        $tmpPdfFile = $this->kernelCacheDir.'/'.uniqid().'.pdf';
         $options = ' ';
         $optionConfig = [];
 

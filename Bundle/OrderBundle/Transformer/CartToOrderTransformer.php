@@ -156,20 +156,6 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $order->setOrderDate(Carbon::now());
         $order->setCurrency($this->currencyContext->getCurrency());
         $order->setStore($this->storeContext->getStore());
-
-        if ($cart->getCarrier() instanceof CarrierInterface) {
-            $order->setCarrier($cart->getCarrier());
-            $order->setShipping($cart->getShipping(true), true);
-            $order->setShipping($cart->getShipping(false), false);
-            $order->setShippingTaxRate($cart->getShippingTaxRate());
-            $order->setShippingTax($order->getShipping(true) - $order->getShipping(false));
-        } else {
-            $order->setShipping(0, true);
-            $order->setShipping(0, false);
-            $order->setShippingTaxRate(0);
-            $order->setShippingTax(0);
-        }
-
         $order->setPaymentFee($cart->getPaymentFee(true), true);
         $order->setPaymentFee($cart->getPaymentFee(false), false);
         $order->setPaymentFeeTaxRate($cart->getPaymentFeeTaxRate());

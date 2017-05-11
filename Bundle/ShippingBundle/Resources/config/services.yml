@@ -22,13 +22,13 @@ services:
 
   # Shipping Rule Processor
   coreshop.shipping_rule.conditions.processor:
-    class: CoreShop\Component\RuleBundle\Condition\RuleConditionsValidationProcessor
+    class: CoreShop\Bundle\RuleBundle\Condition\RuleConditionsValidationProcessor
     shared: false
     arguments:
       - '@coreshop.registry.shipping_rule.conditions'
 
   coreshop.shipping_rule.processor:
-    class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
+    class: CoreShop\Bundle\RuleBundle\Condition\RuleValidationProcessor
     shared: false
     arguments:
       - '@coreshop.shipping_rule.conditions.processor'

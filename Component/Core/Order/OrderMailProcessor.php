@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Order;
 
-use CoreShop\Bundle\CurrencyBundle\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CurrencyBundle\Formatter;
 
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use Webmozart\Assert\Assert;
 
 final class MoneyFormatter implements MoneyFormatterInterface

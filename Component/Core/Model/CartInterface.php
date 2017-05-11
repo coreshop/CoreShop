@@ -36,4 +36,16 @@ interface CartInterface extends BaseCartInterface, ShippableInterface
      * @return StoreInterface
      */
     public function getStore();
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getShipping($withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getShippingTaxRate();
 }

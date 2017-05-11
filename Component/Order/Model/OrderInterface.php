@@ -202,4 +202,16 @@ interface OrderInterface extends ProposalInterface, PimcoreModelInterface
      * @param float $weight
      */
     public function setWeight($weight);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getShipping($withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getShippingTaxRate();
 }

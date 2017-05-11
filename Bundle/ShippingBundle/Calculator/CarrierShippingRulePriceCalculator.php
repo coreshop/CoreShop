@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
-use CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessorInterface;
+use CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;

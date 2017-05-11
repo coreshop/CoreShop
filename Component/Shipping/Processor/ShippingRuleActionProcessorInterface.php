@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\ShippingBundle\Processor;
+namespace CoreShop\Component\Shipping\Processor;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;

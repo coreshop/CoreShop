@@ -1,3 +1,8 @@
+Component\Resource
+Component\Registry
+Component\Rule
+Component\Store
+Component\Currency
 Component\Product
 Component\Taxation
 Component\Payment

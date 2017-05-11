@@ -40,7 +40,7 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
     public function getPriceRuleItems();
 
     /**
-     * @param mixed$priceRules
+     * @param mixed $priceRules
      */
     public function setPriceRuleItems($priceRules);
 

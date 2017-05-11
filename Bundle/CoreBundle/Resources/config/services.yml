@@ -11,6 +11,7 @@ imports:
   - { resource: "services/notification.yml" }
   - { resource: "services/cart-price-rules.yml" }
   - { resource: "services/profiler.yml" }
+  - { resource: "services/order.yml" }
 
 parameters:
   coreshop.folder.objects: '/coreshop'
@@ -48,3 +49,4 @@ services:
 
   coreshop.renderer.pdf:
     class: CoreShop\Bundle\CoreBundle\Renderer\Pdf\WkHtmlToPdf
+    arguments: ['%kernel.cache_dir%']

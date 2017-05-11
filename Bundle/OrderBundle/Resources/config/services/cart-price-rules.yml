@@ -70,13 +70,13 @@ services:
 
   # Price Rule Processor
   coreshop.cart_price_rule.conditions.validation.processor:
-    class: CoreShop\Component\RuleBundle\Condition\RuleConditionsValidationProcessor
+    class: CoreShop\Bundle\RuleBundle\Condition\RuleConditionsValidationProcessor
     shared: false
     arguments:
       - '@coreshop.registry.cart_price_rule.conditions'
 
   coreshop.cart_price_rule.rule_validation.processor:
-    class: CoreShop\Component\RuleBundle\Condition\RuleValidationProcessor
+    class: CoreShop\Bundle\RuleBundle\Condition\RuleValidationProcessor
     arguments:
       - '@coreshop.cart_price_rule.conditions.validation.processor'
 

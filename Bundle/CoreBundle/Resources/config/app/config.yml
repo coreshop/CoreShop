@@ -6,7 +6,6 @@ imports:
   - { resource: "@CoreShopTaxationBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopProductBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopIndexBundle/Resources/config/app/config.yml" }
-  - { resource: "@CoreShopFrontendBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopCustomerBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopShippingBundle/Resources/config/app/config.yml" }
   - { resource: "@CoreShopPaymentBundle/Resources/config/app/config.yml" }

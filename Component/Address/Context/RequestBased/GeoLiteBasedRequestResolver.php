@@ -25,6 +25,9 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     private $countryRepository;
 
+    /**
+     * @param CountryRepositoryInterface $countryRepository
+     */
     public function __construct(CountryRepositoryInterface $countryRepository)
     {
         $this->countryRepository = $countryRepository;
@@ -42,13 +45,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             try {
                 $reader = new Reader($geoDbFile);
 
-                if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-                    $ip = $_SERVER['HTTP_CLIENT_IP'];
-                } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-                } else {
-                    $ip = $_SERVER['REMOTE_ADDR'];
-                }
+                $ip = $request->getClientIp();
 
                 if (!$this->checkIfIpIsPrivate($ip)) {
                     $record = $reader->city($ip);

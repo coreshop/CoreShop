@@ -10,22 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\StoreBundle\Locator;
+namespace CoreShop\Component\Currency\Formatter;
 
-use CoreShop\Component\Store\Model\Store;
-use Pimcore\Model\Site;
-
-interface StoreLocatorInterface
+interface MoneyFormatterInterface
 {
     /**
-     * @return Store
+     * @param int    $amount
+     * @param string $currencyCode
+     * @param string $locale
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException
      */
-    public function getStore();
-
-    public function getStoreForSite(Site $site);
-
-    /**
-     * @return Store
-     */
-    public function getDefaultStore();
+    public function format($amount, $currencyCode, $locale = 'en');
 }

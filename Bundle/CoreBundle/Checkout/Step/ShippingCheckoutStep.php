@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Bundle\CurrencyBundle\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessorInterface;

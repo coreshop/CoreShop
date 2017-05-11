@@ -1,5 +1,6 @@
 Component\Resource
 Component\Rule
 Component\Notification
+Component\Registry
 Bundle\ResourceBundle
 Bundle\RuleBundle

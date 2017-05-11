@@ -1,0 +1,15 @@
+Component\Configuration
+Component\Store
+Component\Resource
+Component\Address
+Component\Order
+Component\Currency
+Component\Locale
+Component\Customer
+Component\Shipping
+Component\Product
+Component\Index
+Component\Payment
+Component\Taxation
+Component\Notification
+PayumBundle\Bundle\PayumBundle

@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\RuleBundle\Condition;
+namespace CoreShop\Bundle\RuleBundle\Condition;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;

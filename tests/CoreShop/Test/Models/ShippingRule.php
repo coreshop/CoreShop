@@ -31,7 +31,7 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;

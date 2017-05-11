@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\RuleBundle\Condition;
+namespace CoreShop\Bundle\RuleBundle\Condition;
 
 use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;

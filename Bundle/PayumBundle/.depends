@@ -3,4 +3,5 @@ Component\Payment
 Component\Currency
 Component\Resource
 Bundle\ResourceBundle
+Bundle\OrderBundle
 Payum\Bundle\PayumBundle

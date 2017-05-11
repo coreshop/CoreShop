@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CurrencyBundle\Templating\Helper;
 
-use CoreShop\Bundle\CurrencyBundle\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class FormatMoneyHelper extends Helper implements FormatMoneyHelperInterface

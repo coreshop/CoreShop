@@ -16,7 +16,6 @@ use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
-use CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
 use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
 use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
@@ -58,7 +57,6 @@ class Kernel extends \Pimcore\Kernel
             new CoreShopPaymentBundle(),
             new CoreShopSequenceBundle(),
 
-            new CoreShopFrontendBundle(),
             new CoreShopPayumBundle(),
 
             new CoreShopCoreBundle(),

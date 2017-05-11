@@ -52,18 +52,6 @@ interface ProposalInterface extends ResourceInterface
      *
      * @return float
      */
-    public function getShipping($withTax = true);
-
-    /**
-     * @return float
-     */
-    public function getShippingTaxRate();
-
-    /**
-     * @param bool $withTax
-     *
-     * @return float
-     */
     public function getDiscount($withTax = true);
 
     /**
