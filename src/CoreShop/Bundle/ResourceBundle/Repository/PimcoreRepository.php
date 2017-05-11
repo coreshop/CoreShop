@@ -135,7 +135,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
         ];
 
         if (is_array($criteria)) {
-            foreach ($criteria as $criterion) {
+            foreach ($criteria as $key => $criterion) {
                 $normalizedCriterion = [];
 
                 if (is_array($criterion)) {
@@ -143,15 +143,16 @@ class PimcoreRepository implements PimcoreRepositoryInterface
                         if (is_string($criterion['condition'])) {
                             $normalizedCriterion['condition'] = $criterion['condition'];
 
-                            if (array_key_exists('conditionVariables', $criterion)) {
-                                $normalizedCriterion['conditionVariables'] = $criterion['conditionVariables'];
+                            if (array_key_exists('variable', $criterion)) {
+                                $normalizedCriterion['variable'] = $criterion['variable'];
                             }
                         }
                     } else {
                         $normalizedCriterion['condition'] = $criterion;
                     }
                 } else {
-                    $normalizedCriterion['condition'] = $criterion;
+                    $normalizedCriterion['condition'] = $key . " = ?";
+                    $normalizedCriterion['variable'] = [$criterion];
                 }
 
                 if (count($normalizedCriterion) > 0) {
