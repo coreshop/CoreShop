@@ -14,6 +14,11 @@ services:
     tags:
       - { name: coreshop.shipping_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
 
+  coreshop.shipping_rule.condition.countries:
+    class: CoreShop\Component\Core\Shipping\Rule\Condition\CountriesConditionChecker
+    tags:
+      - { name: coreshop.shipping_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
+
   coreshop.carrier.price_calculator.taxed:
     class: CoreShop\Bundle\CoreBundle\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
     decorates: coreshop.carrier.price_calculator

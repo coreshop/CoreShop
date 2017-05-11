@@ -26,5 +26,3 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
       joinColumn:
         name: shippingRuleId
         referencedColumnName: id
-      cascade:
-        - all
