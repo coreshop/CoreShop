@@ -101,7 +101,7 @@ class CategoryController extends FrontendController
             $list = $this->get('coreshop.repository.product')->getList();
 
             $condition = 'enabled = 1';
-            $condition .= " AND categories LIKE '%,".$category->getId().",%'";
+            $condition .= " AND categories LIKE '%,object|".$category->getId().",%'";
             $condition .= " AND stores LIKE '%,".$this->getStoreContext()->getStore()->getId().",%'";
 
             $list->setCondition($condition);
