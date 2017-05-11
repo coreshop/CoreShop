@@ -129,7 +129,7 @@ abstract class AbstractWorker implements WorkerInterface
             $data['active'] = $object->getEnabled();
         }
 
-        if (method_exists($object, 'getShops')) {
+        if (method_exists($object, 'getShops')) {//TODO: nope
             $data['shops'] = $convertArrayToString ? ','.@implode(',', $object->getShops()).',' : $object->getShops();
         }
 
@@ -345,7 +345,7 @@ abstract class AbstractWorker implements WorkerInterface
             'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
             'parentCategoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
             'active' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
-            'shops' => IndexColumnInterface::FIELD_TYPE_STRING,
+            'shops' => IndexColumnInterface::FIELD_TYPE_STRING,//TODO: NOPE!
             'minPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
             'maxPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
         ];
