@@ -47,7 +47,7 @@ class CoreShopSpecificPrices extends Data
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if ($object instanceof Product) {
-            $prices = SpecificPrice::getSpecificPrices($object);
+            $prices = $this->load($object, $params);
 
             foreach ($prices as &$price) {
                 if ($price instanceof SpecificPrice) {
@@ -112,7 +112,7 @@ class CoreShopSpecificPrices extends Data
         if ($object && $object instanceof Product) {
             $getter = "get" . ucfirst($this->getName());
 
-            $all = $prices = SpecificPrice::getSpecificPrices($object);
+            $all = $this->load($object, $params);
 
             $founds = [];
             $prices = $object->$getter();
@@ -147,7 +147,7 @@ class CoreShopSpecificPrices extends Data
      */
     public function load($object, $params = [])
     {
-        return $this->getDataForEditmode(null, $object, $params);
+        return SpecificPrice::getSpecificPrices($object);
     }
 
     /**
