@@ -1,0 +1,6 @@
+services:
+  coreshop.country_collector:
+    class: CoreShop\Bundle\AddressBundle\Collector\CountryCollector
+    arguments: ['@coreshop.context.country', false]
+    tags:
+      - { name: data_collector, template: 'CoreShopAddressBundle:Collector:country.html.twig', id: coreshop.country_collector }
