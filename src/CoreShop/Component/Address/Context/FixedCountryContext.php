@@ -14,7 +14,7 @@ namespace CoreShop\Component\Address\Context;
 
 use CoreShop\Component\Address\Model\CountryInterface;
 
-final class CachedCountryContext implements CountryContextInterface
+final class FixedCountryContext implements CountryContextInterface
 {
     /**
      * @var CountryInterface

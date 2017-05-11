@@ -10,23 +10,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Store\Context;
+namespace CoreShop\Component\Store\Context\RequestBased;
 
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 final class CachedStoreContext implements StoreContextInterface
 {
     /**
-     * @var StoreInterface
+     * @var StoreContextInterface
      */
-    private $store = null;
+    private $requestBasedStoreContext;
 
     /**
-     * @param StoreInterface $store
+     * @var StoreInterface
      */
-    public function setStore($store)
+    private $cachedStore;
+
+    /**
+     * @param StoreContextInterface $requestBasedStoreContext
+     */
+    public function __construct(StoreContextInterface $requestBasedStoreContext)
     {
-        $this->store = $store;
+        $this->requestBasedStoreContext = $requestBasedStoreContext;
     }
 
     /**
@@ -34,10 +40,10 @@ final class CachedStoreContext implements StoreContextInterface
      */
     public function getStore()
     {
-        if ($this->store instanceof StoreInterface) {
-            return $this->store;
+        if (null === $this->cachedStore) {
+            $this->cachedStore = $this->requestBasedStoreContext->getStore();
         }
 
-        throw new StoreNotFoundException();
+        return $this->cachedStore;
     }
 }

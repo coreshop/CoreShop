@@ -18,8 +18,8 @@ services:
     tags:
         - { name: coreshop.context.customer }
 
-  coreshop.context.customer.cached:
-    class: CoreShop\Component\Customer\Context\CachedCustomerContext
+  coreshop.context.customer.fixed:
+    class: CoreShop\Component\Customer\Context\FixedCustomerContext
     tags:
         - { name: coreshop.context.customer }
 

@@ -14,7 +14,7 @@ namespace CoreShop\Component\Customer\Context;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
 
-final class CachedCustomerContext implements CustomerContextInterface
+final class FixedCustomerContext implements CustomerContextInterface
 {
     /**
      * @var CustomerInterface

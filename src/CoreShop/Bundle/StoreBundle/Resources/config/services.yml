@@ -12,12 +12,17 @@ services:
     public: false
     arguments: ['@coreshop.context.store.request_based.resolver', '@request_stack']
     tags:
-        - { name: coreshop.context.store }
+        - { name: coreshop.context.store, priority: 1 }
 
-  coreshop.context.store.cached:
-    class: CoreShop\Component\Store\Context\CachedStoreContext
+  coreshop.context.store.request_based.cached:
+    class: CoreShop\Component\Store\Context\RequestBased\CachedStoreContext
+    decorates: coreshop.context.store.request_based
+    arguments: ['@coreshop.context.store.request_based.cached.inner']
+
+  coreshop.context.store.fixed:
+    class: CoreShop\Component\Store\Context\FixedStoreContext
     tags:
-        - { name: coreshop.context.store }
+        - { name: coreshop.context.store, priority: 2 }
 
   coreshop.context.store.request_based.resolver.composite:
     class: CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver

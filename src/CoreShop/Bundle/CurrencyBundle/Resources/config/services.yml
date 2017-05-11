@@ -56,7 +56,7 @@ services:
     decoration_priority: 256
     public: false
 
-  coreshop.context.currency.cached:
-    class: CoreShop\Component\Currency\Context\CachedCurrencyContext
+  coreshop.context.currency.fixed:
+    class: CoreShop\Component\Currency\Context\FixedCurrencyContext
     tags:
       - { name: 'coreshop.context.currency' }

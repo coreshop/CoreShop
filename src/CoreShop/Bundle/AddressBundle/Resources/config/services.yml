@@ -13,8 +13,8 @@ services:
         - { name: coreshop.context.country }
     arguments: ['@coreshop.context.country.request_based.resolver', '@request_stack']
 
-  coreshop.context.country.cached:
-    class: CoreShop\Component\Address\Context\CachedCountryContext
+  coreshop.context.country.fixed:
+    class: CoreShop\Component\Address\Context\FixedCountryContext
     tags:
         - { name: coreshop.context.country }
 

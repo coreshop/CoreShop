@@ -14,7 +14,7 @@ namespace CoreShop\Component\Currency\Context;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 
-final class CachedCurrencyContext implements CurrencyContextInterface
+final class FixedCurrencyContext implements CurrencyContextInterface
 {
     /**
      * @var CurrencyInterface

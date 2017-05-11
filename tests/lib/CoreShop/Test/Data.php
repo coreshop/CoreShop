@@ -121,10 +121,10 @@ class Data
         self::createCustomer();
         //\CoreShop::getTools()->setUser(self::$customer1);
 
-        self::get('coreshop.context.country.cached')->setCountry(self::$store->getBaseCountry());
-        self::get('coreshop.context.currency.cached')->setCurrency(self::$store->getBaseCurrency());
-        self::get('coreshop.context.store.cached')->setStore(self::$store);
-        self::get('coreshop.context.customer.cached')->setCustomer(self::$customer1);
+        self::get('coreshop.context.country.fixed')->setCountry(self::$store->getBaseCountry());
+        self::get('coreshop.context.currency.fixed')->setCurrency(self::$store->getBaseCurrency());
+        self::get('coreshop.context.store.fixed')->setStore(self::$store);
+        self::get('coreshop.context.customer.fixed')->setCustomer(self::$customer1);
     }
 
     /**
