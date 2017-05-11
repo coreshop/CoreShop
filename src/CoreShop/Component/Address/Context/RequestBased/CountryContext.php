@@ -46,7 +46,7 @@ final class CountryContext implements CountryContextInterface
     public function getCountry()
     {
         try {
-            return $this->getStoreForRequest($this->getMasterRequest());
+            return $this->getCountryForRequest($this->getMasterRequest());
         } catch (\UnexpectedValueException $exception) {
             throw new CountryNotFoundException($exception);
         }
@@ -57,7 +57,7 @@ final class CountryContext implements CountryContextInterface
      *
      * @return CountryInterface
      */
-    private function getStoreForRequest(Request $request)
+    private function getCountryForRequest(Request $request)
     {
         $country = $this->requestResolver->findCountry($request);
 
