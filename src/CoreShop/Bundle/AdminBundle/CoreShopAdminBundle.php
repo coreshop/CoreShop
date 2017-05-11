@@ -185,7 +185,7 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/object/classes/data/coreShopStore.js',
             '/bundles/coreshopadmin/js/coreshop/object/classes/data/coreShopStoreMultiselect.js',
             '/bundles/coreshopadmin/js/coreshop/object/tags/coreShopStoreMultiselect.js',
-            '/bundles/coreshopadmin/js/coreshop/rules/conditions/shops.js',
+            '/bundles/coreshopadmin/js/coreshop/rules/conditions/stores.js',
             '/bundles/coreshopadmin/js/coreshop/rules/conditions/personas.js',
             '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/panel.js',
             '/bundles/coreshopadmin/js/coreshop/carriers/shippingrules/item.js',

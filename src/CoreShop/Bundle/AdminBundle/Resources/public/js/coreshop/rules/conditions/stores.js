@@ -10,18 +10,18 @@
  *
 */
 
-pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.shops');
+pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.stores');
 
-pimcore.plugin.coreshop.rules.conditions.shops = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
+pimcore.plugin.coreshop.rules.conditions.stores = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'shops',
+    type : 'stores',
 
     getForm : function () {
         var me = this;
         var store = pimcore.globalmanager.get('coreshop_stores');
 
         var shops = {
-            fieldLabel: t('coreshop_condition_shops'),
+            fieldLabel: t('coreshop_condition_stores'),
             typeAhead: true,
             listWidth: 100,
             width : 500,
@@ -31,7 +31,7 @@ pimcore.plugin.coreshop.rules.conditions.shops = Class.create(pimcore.plugin.cor
             forceSelection: true,
             multiselect : true,
             triggerAction: 'all',
-            name:'shops',
+            name:'stores',
             maxHeight : 400,
             delimiter : false,
             listeners: {
