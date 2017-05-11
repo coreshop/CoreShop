@@ -109,10 +109,10 @@ class CoreShopSpecificPrices extends Data
      */
     public function save($object, $params = [])
     {
-        if ($object) {
+        if ($object && $object instanceof Product) {
             $getter = "get" . ucfirst($this->getName());
 
-            $all = $this->load($object, $params);
+            $all = $prices = SpecificPrice::getSpecificPrices($object);
 
             $founds = [];
             $prices = $object->$getter();
