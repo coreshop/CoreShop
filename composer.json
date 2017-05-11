@@ -37,11 +37,8 @@
   },
   "autoload": {
     "psr-4": {
-      "": [
-        "/"
-      ],
-      "CoreShop\\Bundle\\": "Bundle",
-      "CoreShop\\Component\\": "Component"
+      "CoreShop\\Bundle\\": "src/CoreShop/Bundle",
+      "CoreShop\\Component\\": "src/CoreShop/Component"
     }
   }
 }

@@ -1,7 +1,7 @@
 coreshop_shop_index:
   path: "%coreshop.frontend.base.url%"
   defaults:
-    _controller: CoreShopFrontendBundle:Test:testIndex
+    _controller: CoreShopFrontendBundle:Index:index
 
 coreshop_shop_switch_currency:
   path: "%coreshop.frontend.base.url%/currency-switch/{currencyCode}"
