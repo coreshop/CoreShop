@@ -49,6 +49,12 @@ class CoreShopSpecificPrices extends Data
         if ($object instanceof Product) {
             $prices = SpecificPrice::getSpecificPrices($object);
 
+            foreach ($prices as &$price) {
+                if ($price instanceof SpecificPrice) {
+                    $price = $price->serialize();
+                }
+            }
+
             return $prices;
         }
 
@@ -143,12 +149,13 @@ class CoreShopSpecificPrices extends Data
     {
         return $this->getDataForEditmode(null, $object, $params);
     }
+
     /**
      * Returns the data which should be stored in the query columns
      *
      * @param mixed $data
      * @return string
-    */
+     */
     public function getDataForQueryResource($data)
     {
         return "not_supported";
