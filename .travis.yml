@@ -34,6 +34,9 @@ env:
   global:
     - PIMCORE_ENVIRONMENT=test
     - CORESHOP_TEST=1
+    - CORESHOP_MYSQL_HOST=127.0.0.1
+    - CORESHOP_MYSQL_DB=coreshop_phpunit
+    - CORESHOP_MYSQL_USER=root
 
 before_install:
  - mkdir $TRAVIS_BUILD_DIR/../lib
@@ -62,5 +65,4 @@ install:
   - composer require symfony/symfony dev-master
 
 script:
-  - cd $TRAVIS_BUILD_DIR/vendor/coreshop/coreshop/tests
-  - run-tests.sh
+  - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/phpunit.xml --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
