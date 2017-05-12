@@ -40,12 +40,8 @@ before_install:
  - mkdir $TRAVIS_BUILD_DIR/../lib/CoreShop
  - mv $TRAVIS_BUILD_DIR/{.[!.],}* $TRAVIS_BUILD_DIR/../lib/CoreShop
  - rm -rf $TRAVIS_BUILD_DIR/{.[!.],}*
- - ls -la $TRAVIS_BUILD_DIR
- - ls -la $TRAVIS_BUILD_DIR/../
- - ls -la $TRAVIS_BUILD_DIR/../lib
- - ls -la $TRAVIS_BUILD_DIR/../lib/CoreShop
  - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
- - phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gilab-ci/php.ini
+ - phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gitlab-ci/php.ini
 
 install:
   # add config templates
