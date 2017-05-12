@@ -15,7 +15,7 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
 ![CoreShop Interface](docs/img/screenshot.png)
 
 # Installation
- - Install with composer ```composer require coreshop/core-shop dev:master```
+ - Install with composer ```composer require coreshop/core-shop dev-master```
  - Add Following Bundles to AppKernel.php
     ```php
         new \JMS\SerializerBundle\JMSSerializerBundle(),
