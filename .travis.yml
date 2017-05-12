@@ -39,8 +39,7 @@ before_install:
  - mkdir $TRAVIS_BUILD_DIR/../lib
  - mkdir $TRAVIS_BUILD_DIR/../lib/CoreShop
  - mv $TRAVIS_BUILD_DIR/{.[!.],}* $TRAVIS_BUILD_DIR/../lib/CoreShop
- - rm -rf $TRAVIS_BUILD_DIR
- - mkdir -p $TRAVIS_BUILD_DIR/
+ - rm -rf $TRAVIS_BUILD_DIR/{.[!.],}*
  - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
  - phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gilab-ci/php.ini
 
@@ -53,6 +52,9 @@ install:
   # install composer - HHVM isn't officially PHP 7 compatible - see https://github.com/composer/composer/issues/4976
   - if [[ "$TRAVIS_PHP_VERSION" != *"hhvm"* ]]; then composer install; fi
   - if [[ "$TRAVIS_PHP_VERSION" == *"hhvm"* ]]; then composer install --ignore-platform-reqs; fi
+
+  # Add path to CoreShop
+  - php composer.phar config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
 
   # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
   # this test is kinda stupid
