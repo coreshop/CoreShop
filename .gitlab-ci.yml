@@ -17,18 +17,18 @@ before_script:
   # Install git, the php image doesn't have installed
   - apt-get update -yqq
   - apt-get install git -yqq
-  # - apt-get install zlib1g-dev libicu-dev g++ libmcrypt-dev libldap2-dev libxml2-dev bzip2 unzip memcached ntpdate libxrender1 libfontconfig1 libcairo2-dev libjpeg62-turbo-dev libpango1.0-dev libgif-dev build-essential curl libcurl3 libcurl3-dev -yqq
+  - apt-get install zlib1g-dev libicu-dev g++ libmcrypt-dev libldap2-dev libxml2-dev bzip2 unzip memcached ntpdate libxrender1 libfontconfig1 libcairo2-dev libjpeg62-turbo-dev libpango1.0-dev libgif-dev build-essential curl libcurl3 libcurl3-dev -yqq
 
   # Copy PHP INI
   - cp $CI_PROJECT_DIR/../lib/CoreShop/.gitlab-ci/php.ini /usr/local/etc/php/php.ini
 
   # Install PHP Extensions
   - docker-php-ext-install pdo_mysql
-  #- docker-php-ext-install zip mcrypt bcmath curl exif xml simplexml mbstring
-  #- docker-php-ext-configure intl
-  #- docker-php-ext-install intl
-  #- docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
-  #- docker-php-ext-install -j$(nproc) gd
+  - docker-php-ext-install zip mcrypt bcmath curl exif xml simplexml mbstring
+  - docker-php-ext-configure intl
+  - docker-php-ext-install intl
+  - docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+  - docker-php-ext-install -j$(nproc) gd
 
   # Clone Pimcore
   - git clone --depth 1 https://github.com/pimcore/pimcore.git $CI_PROJECT_DIR
@@ -56,7 +56,8 @@ before_script:
   - cp app/config/parameters.example.yml app/config/parameters.yml
 
   # install composer
-  - php composer.phar require coreshop/core-shop:dev-master#$CI_COMMIT_REF --ignore-platform-reqs -vvv
+  - php composer.phar require coreshop/core-shop:dev-master#$CI_COMMIT_REF --ignore-platform-reqs
+  - php composer.phar require symfony/symfony dev-master --ignore-platform-reqs
 services:
   - mysql
 
