@@ -40,6 +40,10 @@ before_install:
  - mkdir $TRAVIS_BUILD_DIR/../lib/CoreShop
  - mv $TRAVIS_BUILD_DIR/{.[!.],}* $TRAVIS_BUILD_DIR/../lib/CoreShop
  - rm -rf $TRAVIS_BUILD_DIR/{.[!.],}*
+ - ls -la $TRAVIS_BUILD_DIR
+ - ls -la $TRAVIS_BUILD_DIR/../
+ - ls -la $TRAVIS_BUILD_DIR/../lib
+ - ls -la $TRAVIS_BUILD_DIR/../lib/CoreShop
  - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
  - phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gilab-ci/php.ini
 
@@ -59,6 +63,7 @@ install:
   # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
   # this test is kinda stupid
   - composer require coreshop/coreshop dev-master#$TRAVIS_COMMIT
+  - composer require symfony/symfony dev-master
 
 script:
   - cd $TRAVIS_BUILD_DIR/vendor/coreshop/coreshop/tests
