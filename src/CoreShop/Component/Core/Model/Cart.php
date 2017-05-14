@@ -12,9 +12,9 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\Cart as BaseCart;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class Cart extends BaseCart implements CartInterface
 {
@@ -41,7 +41,7 @@ class Cart extends BaseCart implements CartInterface
         if ($this->getCarrier() instanceof CarrierInterface && $this->getCarrier()->getTaxRule() instanceof TaxRuleGroupInterface) {
             $taxCalculator = $this->getContainer()->get('coreshop.taxation.factory.tax_calculator')->getTaxCalculatorForAddress($this->getCarrier()->getTaxRule(), $this->getShippingAddress());
 
-            if ($taxCalculator instanceof TaxCalculatorFactoryInterface) {
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
                 return $taxCalculator->getTotalRate();
             }
         }

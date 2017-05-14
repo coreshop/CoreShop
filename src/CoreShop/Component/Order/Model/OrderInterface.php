@@ -17,6 +17,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Pimcore\Model\Object\Fieldcollection;
 
 interface OrderInterface extends ProposalInterface, PimcoreModelInterface
 {
@@ -64,6 +65,16 @@ interface OrderInterface extends ProposalInterface, PimcoreModelInterface
      * @param $totalTax
      */
     public function setTotalTax($totalTax);
+
+    /**
+     * @return Fieldcollection
+     */
+    public function getTaxes();
+
+    /**
+     * @param Fieldcollection $taxes
+     */
+    public function setTaxes($taxes);
 
     /**
      * @param $subtotal

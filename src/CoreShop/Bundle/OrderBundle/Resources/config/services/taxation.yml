@@ -1,0 +1,11 @@
+services:
+  coreshop.order.taxation.collector.cart:
+    class: CoreShop\Component\Order\Taxation\CartTaxCollector
+    arguments:
+      - '@coreshop.collector.taxes'
+      - '@coreshop.order.taxation.collector.cart_item'
+
+  coreshop.order.taxation.collector.cart_item:
+    class: CoreShop\Component\Order\Taxation\CartItemTaxCollector
+    arguments:
+      - '@coreshop.collector.taxes'

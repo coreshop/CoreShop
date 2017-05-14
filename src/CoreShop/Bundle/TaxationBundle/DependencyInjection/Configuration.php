@@ -20,7 +20,9 @@ use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateType;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType;
 use CoreShop\Component\Resource\Factory\Factory;
+use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use CoreShop\Component\Resource\Factory\TranslatableFactory;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use CoreShop\Component\Taxation\Model\TaxRate;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use CoreShop\Component\Taxation\Model\TaxRateTranslation;
@@ -130,6 +132,28 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(TaxRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('pimcore')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('tax_item')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\Object\Fieldcollection\Data\CoreShopTaxItem')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(TaxItemInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('is_pimcore_class')->defaultValue(true)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

@@ -4,4 +4,4 @@ imports:
 services:
   coreshop.collector.taxes:
     class: CoreShop\Component\Taxation\Collector\TaxCollector
-    arguments: ['@coreshop.repository.tax_rate']
+    arguments: ['@coreshop.repository.tax_rate', '@coreshop.factory.tax_item']

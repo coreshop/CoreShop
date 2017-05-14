@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\Object\Fieldcollection;
@@ -50,55 +51,6 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     {
         //TODO: Use PaymentProvider TaxRule (still not implemented) to determine TaxRate
         return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxes($applyDiscountToTaxValues = true)
-    {
-        $usedTaxes = [];
-        $taxCollector = \Pimcore::getContainer()->get('coreshop.collector.taxes');
-
-        foreach ($this->getItems() as $item) {
-            if ($item instanceof CartItemInterface) {
-                $usedTaxes = $taxCollector->mergeTaxes($item->getTaxes(), $usedTaxes);
-            }
-        }
-
-        /* TODO: collect taxes of this stuff as well if (!$this->getFreeShipping()) {
-            $shippingProvider = $this->getShippingProvider();
-
-            if ($shippingProvider instanceof Carrier) {
-                $shippingTax = $this->getShippingProvider()->getTaxCalculator();
-
-                if ($shippingTax instanceof TaxCalculator) {
-                    $taxesAmount = $shippingTax->getTaxesAmount($this->getShipping(false), true);
-
-                    if (is_array($taxesAmount)) {
-                        foreach ($taxesAmount as $id => $amount) {
-                            $addTax(Tax::getById($id), $amount);
-                        }
-                    }
-                }
-            }
-        }
-
-        $paymentProvider = $this->getPaymentProvider();
-
-        if ($paymentProvider instanceof PaymentPlugin) {
-            if ($paymentProvider->getPaymentTaxCalculator($this) instanceof TaxCalculator) {
-                $taxesAmount = $paymentProvider->getPaymentTaxCalculator($this)->getTaxesAmount($this->getPaymentFee(false), true);
-
-                if(is_array($taxesAmount)) {
-                    foreach ($taxesAmount as $id => $amount) {
-                        $addTax(Tax::getById($id), $amount);
-                    }
-                }
-            }
-        }*/
-
-        return $usedTaxes;
     }
 
     /**

@@ -24,6 +24,7 @@ services:
       - '@coreshop.context.store'
       - '@coreshop.cart_price_rule.order.processor'
       - '@coreshop.transformer.event_dispatcher'
+      - '@coreshop.order.taxation.collector.cart'
 
   coreshop.factory.cart:
     class: CoreShop\Bundle\CoreBundle\Factory\CartFactory

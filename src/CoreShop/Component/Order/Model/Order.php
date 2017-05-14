@@ -381,9 +381,9 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getTaxes($applyDiscountToTaxValues = true)
+    public function getTaxes()
     {
-        throw new \Exception('implement me');
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
@@ -391,7 +391,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
      */
     public function setTaxes($taxes)
     {
-        throw new \Exception('implement me');
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

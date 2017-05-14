@@ -1,7 +1,7 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
 
 {% block checkout %}
-    {% include '@CoreShopFrontend/Cart/_summary.html.twig' with {cart: cart, editAllowed: false} only %}
+    {{ render(controller('coreshop.frontend.controller.cart:widgetSummaryAction')) }}
 
     <div class="row">
         <div class="col-xs-12 col-sm-1 col-sm-push-9">

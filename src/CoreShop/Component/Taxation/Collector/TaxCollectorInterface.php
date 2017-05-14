@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Taxation\Collector;
 
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
 
 interface TaxCollectorInterface
 {
@@ -21,17 +22,17 @@ interface TaxCollectorInterface
      * @param $price
      * @param array $usedTaxes
      *
-     * @return mixed
+     * @return TaxItemInterface[]
      */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, $usedTaxes = []);
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []);
 
     /**
      * Merges to Tax arrays from TaxCollector into one.
      *
-     * @param $taxes1
-     * @param $taxes2
+     * @param TaxItemInterface[] $taxes1
+     * @param TaxItemInterface[] $taxes2
      *
-     * @return mixed
+     * @return TaxItemInterface[]
      */
-    public function mergeTaxes($taxes1, $taxes2);
+    public function mergeTaxes(array $taxes1, array $taxes2);
 }

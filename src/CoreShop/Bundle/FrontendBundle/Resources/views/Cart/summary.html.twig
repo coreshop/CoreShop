@@ -3,7 +3,7 @@
 {% block content %}
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' with {currentStep: 1, steps: checkoutSteps} only %}
 
-    {% include '@CoreShopFrontend/Cart/_summary.html.twig' with {cart: cart, editAllowed: true} only %}
+    {{ render(controller('coreshop.frontend.controller.cart:widgetSummaryAction')) }}
 
     <div class="row">
         <div class="col-xs-12 col-sm-2">

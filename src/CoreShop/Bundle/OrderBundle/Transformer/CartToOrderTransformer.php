@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Order\Taxation\ProposalTaxCollectorInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessorInterface;
@@ -90,6 +90,11 @@ class CartToOrderTransformer implements ProposalTransformerInterface
     private $eventDispatcher;
 
     /**
+     * @var ProposalTaxCollectorInterface
+     */
+    private $cartTaxCollector;
+
+    /**
      * @param ProposalItemTransformerInterface     $cartItemToOrderItemTransformer
      * @param ItemKeyTransformerInterface          $keyTransformer
      * @param NumberGeneratorInterface             $numberGenerator
@@ -101,6 +106,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
      * @param StoreContextInterface                $storeContext
      * @param CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
      * @param TransformerEventDispatcherInterface  $eventDispatcher
+     * @param ProposalTaxCollectorInterface        $cartTaxCollector
      */
     public function __construct(
         ProposalItemTransformerInterface $cartItemToOrderItemTransformer,
@@ -113,7 +119,8 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
         CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor,
-        TransformerEventDispatcherInterface $eventDispatcher
+        TransformerEventDispatcherInterface $eventDispatcher,
+        ProposalTaxCollectorInterface $cartTaxCollector
     ) {
         $this->cartItemToOrderItemTransformer = $cartItemToOrderItemTransformer;
         $this->keyTransformer = $keyTransformer;
@@ -126,6 +133,7 @@ class CartToOrderTransformer implements ProposalTransformerInterface
         $this->storeContext = $storeContext;
         $this->cartPriceRuleOrderProcessor = $cartPriceRuleOrderProcessor;
         $this->eventDispatcher = $eventDispatcher;
+        $this->cartTaxCollector = $cartTaxCollector;
     }
 
     /**
@@ -193,7 +201,10 @@ class CartToOrderTransformer implements ProposalTransformerInterface
             $order->addItem($this->cartItemToOrderItemTransformer->transform($order, $cartItem, $orderItem));
         }
 
-        //TODO: Collect taxes
+        $fc = new Fieldcollection();
+        $fc->setItems($this->cartTaxCollector->getTaxes($cart));
+
+        $order->setTaxes($fc);
 
         $this->eventDispatcher->dispatchPostEvent('order', $order, ['cart' => $cart]);
 

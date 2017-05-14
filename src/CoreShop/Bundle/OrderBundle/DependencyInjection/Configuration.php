@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
-use CoreShop\Bundle\OrderBundle\Controller\CartController;
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;

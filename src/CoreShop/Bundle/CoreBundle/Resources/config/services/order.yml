@@ -3,3 +3,11 @@ services:
     decorates: coreshop.order.transformer.cart_to_order
     class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartToOrderTransformer
     arguments: ['@coreshop.core.order.transformer.cart_to_order.inner']
+
+  coreshop.core.order.taxation.collector.cart:
+    decorates: coreshop.order.taxation.collector.cart
+    class: CoreShop\Component\Core\Order\Taxation\CartTaxCollector
+    arguments:
+      - '@coreshop.collector.taxes'
+      - '@coreshop.taxation.factory.tax_calculator'
+      - '@coreshop.core.order.taxation.collector.cart.inner'

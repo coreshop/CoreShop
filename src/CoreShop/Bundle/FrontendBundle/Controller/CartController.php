@@ -37,6 +37,18 @@ class CartController extends FrontendController
 
     /**
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function widgetSummaryAction(Request $request) {
+        return $this->render('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
+            'cart' => $this->getCart(),
+            'editAllowed' => true,
+            'cartTaxes' => $this->get('coreshop.order.taxation.collector.cart')->getTaxes($this->getCart())
+        ]);
+    }
+
+    /**
+     * @param Request $request
      * @param $productId
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -87,9 +99,8 @@ class CartController extends FrontendController
     {
         return $this->render('CoreShopFrontendBundle:Cart:summary.html.twig', [
             'cart' => $this->getCart(),
-            'editAllowed' => true,
             'checkoutSteps' => $this->get('coreshop.checkout_manager')->getSteps(),
-            'currentCheckoutStep' => 0,
+            'currentCheckoutStep' => 0
         ]);
     }
 

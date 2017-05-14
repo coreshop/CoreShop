@@ -12,28 +12,41 @@
 
 namespace CoreShop\Component\Taxation\Collector;
 
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
-use Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
 class TaxCollector implements TaxCollectorInterface
 {
     /**
-     * @var EntityRepository
+     * @var RepositoryInterface
      */
     private $taxRateRepository;
 
     /**
-     * @param EntityRepository $taxRateRepository
+     * @var FactoryInterface
      */
-    public function __construct(EntityRepository $taxRateRepository)
+    private $taxItemFactory;
+
+    /**
+     * @param RepositoryInterface $taxRateRepository
+     * @param FactoryInterface $taxItemFactory
+     */
+    public function __construct(
+        RepositoryInterface $taxRateRepository,
+        FactoryInterface $taxItemFactory
+    )
     {
         $this->taxRateRepository = $taxRateRepository;
+        $this->taxItemFactory = $taxItemFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, $usedTaxes = [])
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = [])
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             $taxesAmount = $taxCalculator->getTaxesAmount($price, true);
@@ -51,27 +64,40 @@ class TaxCollector implements TaxCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function mergeTaxes($taxes1, $taxes2)
+    public function mergeTaxes(array $taxes1, array $taxes2)
     {
         foreach ($taxes1 as $id => $tax) {
-            $this->addTaxToArray($id, $tax['amount'], $taxes2);
+            $this->addTaxToArray($id, $tax->getAmount(), $taxes2);
         }
 
         return $taxes2;
     }
 
+    /**
+     * @param $taxId
+     * @param $amount
+     * @param $usedTaxes
+     */
     private function addTaxToArray($taxId, $amount, &$usedTaxes)
     {
+        /**
+         * @var $tax TaxRateInterface
+         */
         $tax = $this->taxRateRepository->find($taxId);
 
         if ($amount > 0 && $tax) {
             if (!array_key_exists($tax->getId(), $usedTaxes)) {
-                $usedTaxes[$tax->getId()] = [
-                    'tax' => $tax,
-                    'amount' => $amount,
-                ];
+                /**
+                 * @var $item TaxItemInterface
+                 */
+                $item = $this->taxItemFactory->createNew();
+                $item->setName($tax->getName());
+                $item->setRate($tax->getRate());
+                $item->setAmount($amount);
+
+                $usedTaxes[$tax->getId()] = $item;
             } else {
-                $usedTaxes[$tax->getId()]['amount'] += $amount;
+                $usedTaxes[$tax->getId()]->setAmount($usedTaxes[$tax->getId()]->getAmount() + $amount);
             }
         }
     }

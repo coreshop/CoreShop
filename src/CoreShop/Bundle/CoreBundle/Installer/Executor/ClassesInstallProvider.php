@@ -62,6 +62,7 @@ final class ClassesInstallProvider
 
         $fieldCollections = [
             'CoreShopProposalCartPriceRuleItem',
+            'CoreShopTaxItem'
         ];
 
         $progress = new ProgressBar($output);

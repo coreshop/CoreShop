@@ -4,6 +4,7 @@ imports:
   - { resource: "services/order_shipment.yml" }
   - { resource: "services/cart-price-rules.yml" }
   - { resource: "services/workflow.yml" }
+  - { resource: "services/taxation.yml" }
 
 parameters:
   coreshop.folder.cart: /%coreshop.folder.objects%/cart
