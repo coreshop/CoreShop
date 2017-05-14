@@ -19,9 +19,9 @@ interface CartCarrierProcessorInterface
 {
     /**
      * @param ShippableInterface    $shippable
-     * @param AddressInterface|null $address
+     * @param AddressInterface      $address
      *
      * @return mixed
      */
-    public function getCarriersForCart(ShippableInterface $shippable, AddressInterface $address = null);
+    public function getCarriersForCart(ShippableInterface $shippable, AddressInterface $address);
 }

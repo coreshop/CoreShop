@@ -284,27 +284,6 @@ class VariantHelper
     }
 
     /**
-     * Copy all fields $from to $to.
-     *
-     * @param Concrete $from
-     * @param Concrete $to
-     */
-    public static function copyObject(Concrete $from, Concrete $to)
-    {
-        //load all in case of lazy loading fields
-        $toFd = $to->getClass()->getFieldDefinitions();
-
-        foreach ($toFd as $def) {
-            $fromGetter = 'get'.ucfirst($def->getName());
-            $toSetter = 'set'.ucfirst($def->getName());
-
-            if (method_exists($from, $fromGetter) && method_exists($to, $toSetter)) {
-                $to->$toSetter($from->$fromGetter());
-            }
-        }
-    }
-
-    /**
      * @param $tmpArray
      * @param $allowedProductIds
      * @param $filtered

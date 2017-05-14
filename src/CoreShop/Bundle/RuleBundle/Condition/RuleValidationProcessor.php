@@ -19,7 +19,7 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 class RuleValidationProcessor implements RuleValidationProcessorInterface
 {
     /**
-     * @var RuleConditionsValidationProcessor
+     * @var RuleConditionsValidationProcessorInterface
      */
     private $ruleConditionsValidationProcessor;
 

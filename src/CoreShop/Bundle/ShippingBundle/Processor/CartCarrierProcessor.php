@@ -45,7 +45,7 @@ class CartCarrierProcessor implements CartCarrierProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function getCarriersForCart(ShippableInterface $shippable, AddressInterface $address = null)
+    public function getCarriersForCart(ShippableInterface $shippable, AddressInterface $address)
     {
         $carriers = $this->carrierRepository->findAll(); //TODO: restrict to store, but needs to be moved to CoreBundle to make it work: NOTE: Really? Shipping Rule Stores?!
         $availableCarriers = [];
