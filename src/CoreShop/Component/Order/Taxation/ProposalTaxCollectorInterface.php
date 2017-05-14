@@ -3,14 +3,13 @@
 namespace CoreShop\Component\Order\Taxation;
 
 use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Order\Model\ProposalTaxItem;
-use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
 
 interface ProposalTaxCollectorInterface
 {
     /**
      * @param ProposalInterface $proposal
-     * @return ProposalTaxItem[]
+     * @return TaxItemInterface[]
      */
     public function getTaxes(ProposalInterface $proposal);
 }

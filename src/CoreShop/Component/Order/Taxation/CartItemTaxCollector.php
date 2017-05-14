@@ -4,8 +4,8 @@ namespace CoreShop\Component\Order\Taxation;
 
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
-use CoreShop\Component\Order\Model\ProposalTaxItem;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Webmozart\Assert\Assert;
 
 class CartItemTaxCollector implements ProposalItemTaxCollectorInterface
@@ -25,7 +25,7 @@ class CartItemTaxCollector implements ProposalItemTaxCollectorInterface
 
     /**
      * @param ProposalItemInterface $proposalItem
-     * @return ProposalTaxItem[]
+     * @return TaxItemInterface[]
      */
     public function getTaxes(ProposalItemInterface $proposalItem)
     {
