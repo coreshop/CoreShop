@@ -77,7 +77,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
             }
         }
 
-        if ($orderBy) {
+        if (null !== $orderBy) {
             $orderBy = $this->normalizeOrderBy($orderBy);
 
             if ($orderBy['key']) {

@@ -72,7 +72,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     public $columnType;
 
     /**
-     * @var string
+     * @var array
      */
     public $configuration;
 

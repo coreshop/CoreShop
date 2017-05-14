@@ -65,7 +65,6 @@ abstract class AbstractWorker implements WorkerInterface
         $hidePublishedMemory = AbstractObject::doHideUnpublished();
         AbstractObject::setHideUnpublished(false);
 
-        $categories = [];
         $categoryIds = [];
         $parentCategoryIds = [];
 
@@ -148,7 +147,6 @@ abstract class AbstractWorker implements WorkerInterface
         foreach ($columnConfig as $column) {
             if ($column instanceof IndexColumnInterface) {
                 try {
-                    $config = $column->getConfiguration();
                     $value = null;
                     $getter = $column->getGetter();
 

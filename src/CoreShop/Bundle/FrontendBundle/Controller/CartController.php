@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
@@ -204,7 +205,7 @@ class CartController extends FrontendController
     }
 
     /**
-     * @return \CoreShop\Bundle\OrderBundle\Manager\CartManager
+     * @return CartManagerInterface
      */
     private function getCartManager()
     {

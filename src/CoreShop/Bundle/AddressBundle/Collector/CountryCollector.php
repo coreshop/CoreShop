@@ -66,6 +66,7 @@ final class CountryCollector extends DataCollector
         try {
             $this->data['country'] = $this->countryContext->getCountry();
         } catch (CountryNotFoundException $exception) {
+            //If something went wrong, we don't have any country, which we can safely ignore
         }
     }
 

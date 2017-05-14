@@ -45,7 +45,7 @@ interface CarrierInterface extends BaseCarrierInterface
     public function hasStore(StoreInterface $store);
 
     /**
-     * @return TaxRuleInterface
+     * @return TaxRuleGroupInterface
      */
     public function getTaxRule();
 

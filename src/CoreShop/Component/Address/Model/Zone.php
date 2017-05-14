@@ -29,7 +29,7 @@ class Zone extends AbstractResource implements ZoneInterface
     protected $name;
 
     /**
-     * @var int
+     * @var boolean
      */
     protected $active = true;
 

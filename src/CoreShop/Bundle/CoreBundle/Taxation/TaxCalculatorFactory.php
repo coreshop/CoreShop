@@ -44,7 +44,7 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
         $taxRules = $this->taxRuleRepository->findForCountryAndState($taxRuleGroup, $address->getCountry(), $address->getState());
         $taxRates = [];
         $firstRow = true;
-        $behavior = false;
+        $behavior = TaxRulesTaxCalculator::COMBINE_METHOD;
 
         foreach ($taxRules as $taxRule) {
             $taxRate = $taxRule->getTaxRate();

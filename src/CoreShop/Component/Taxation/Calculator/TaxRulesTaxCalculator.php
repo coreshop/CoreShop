@@ -81,7 +81,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     public function getTaxesAmount($price, $asArray = false)
     {
         $taxes_amounts = [];
-        $taxAmount = 0;
+        $taxAmount = 0.0;
 
         foreach ($this->getTaxRates() as $tax) {
             if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {

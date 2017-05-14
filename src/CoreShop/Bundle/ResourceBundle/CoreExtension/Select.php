@@ -49,11 +49,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     abstract protected function getModel();
 
     /**
-     * @param $object
-     * @param $data
-     * @param array $params
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function preSetData($object, $data, $params = [])
     {
@@ -67,10 +63,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * @param $object
-     * @param array $params
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function preGetData($object, $params = [])
     {
@@ -89,13 +82,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * @see Object\ClassDefinition\Data::getDataForResource
-     *
-     * @param ResourceInterface                $data
-     * @param null|Model\Object\AbstractObject $object
-     * @param mixed                            $params
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
@@ -107,13 +94,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * @see Object\ClassDefinition\Data::getDataFromResource
-     *
-     * @param string                           $data
-     * @param null|Model\Object\AbstractObject $object
-     * @param mixed                            $params
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -125,15 +106,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data for query resource.
-     *
-     * @see Object\ClassDefinition\Data::getDataForQueryResource
-     *
-     * @param ResourceInterface                $data
-     * @param null|Model\Object\AbstractObject $object
-     * @param mixed                            $params
-     *
-     * @return int|null
+     * {@inheritdoc}
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
@@ -145,15 +118,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data for editmode.
-     *
-     * @see Object\ClassDefinition\Data::getDataForEditmode
-     *
-     * @param ResourceInterface                $data
-     * @param null|Model\Object\AbstractObject $object
-     * @param mixed                            $params
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -161,13 +126,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * @see Model\Object\ClassDefinition\Data::getDataFromEditmode
-     *
-     * @param int                              $data
-     * @param null|Model\Object\AbstractObject $object
-     * @param array                            $params
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
@@ -175,11 +134,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * is empty.
-     *
-     * @param Model\Object\Concrete $data
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isEmpty($data)
     {
@@ -187,12 +142,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * get data for search index.
-     *
-     * @param $object
-     * @param mixed $params
-     *
-     * @return int|string
+     * {@inheritdoc}
      */
     public function getDataForSearchIndex($object, $params = [])
     {
@@ -204,7 +154,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function isAllowEmpty()
     {
@@ -212,7 +162,7 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
     }
 
     /**
-     * @param bool $allowEmpty
+     * {@inheritdoc}
      */
     public function setAllowEmpty($allowEmpty)
     {

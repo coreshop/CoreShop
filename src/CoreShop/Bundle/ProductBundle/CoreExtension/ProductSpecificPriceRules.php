@@ -124,7 +124,7 @@ class ProductSpecificPriceRules extends Data
     {
         $prices = [];
 
-        if ($data) {
+        if ($data && $object instanceof Concrete) {
             foreach ($data as $dataRow) {
                 $form = $this->getFormFactory()->createNamed('', ProductSpecificPriceRuleType::class);
 

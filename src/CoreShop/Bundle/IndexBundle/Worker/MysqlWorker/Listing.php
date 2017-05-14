@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 
 use CoreShop\Bundle\IndexBundle\Worker\AbstractListing;
+use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing\Dao;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
@@ -99,7 +100,7 @@ class Listing extends AbstractListing
     protected $queryJoins = [];
 
     /**
-     * @var WorkerInterface
+     * @var MysqlWorker
      */
     protected $worker;
 

@@ -270,7 +270,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoicedPaymentFeesWT = $this->getProcessedValue('paymentFeeNet', $invoice->getOrder());
 
         if ($totalPaymentFee - $invoicedPaymentFees > 0) {
-            $paymentFeeTaxRate = $this->getOrder()->getPaymentFeeTaxRate();
+            $paymentFeeTaxRate = $invoice->getOrder()->getPaymentFeeTaxRate();
 
             $paymentFeeWithTax = $totalPaymentFee - $invoicedPaymentFees;
             $paymentFeeWithoutTax = $paymentFeeWithTax - $invoicedPaymentFeesWT;

@@ -27,7 +27,7 @@ interface CurrencyStorageInterface
     /**
      * @param StoreInterface $store
      *
-     * @return string
+     * @return CurrencyInterface
      *
      * @throws CurrencyNotFoundException
      */

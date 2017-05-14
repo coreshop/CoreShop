@@ -44,7 +44,7 @@ class Filter extends AbstractResource implements FilterInterface
     protected $orderKey = 'o_id';
 
     /**
-     * @var int
+     * @var IndexInterface
      */
     protected $index;
 

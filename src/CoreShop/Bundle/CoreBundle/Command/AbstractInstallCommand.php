@@ -104,6 +104,8 @@ abstract class AbstractInstallCommand extends ContainerAwareCommand
      */
     protected function runCommands(array $commands, OutputInterface $output, $displayProgress = true)
     {
+        $progress = null;
+
         if ($displayProgress) {
             $progress = $this->createProgressBar($output, count($commands));
         }
@@ -123,12 +125,12 @@ abstract class AbstractInstallCommand extends ContainerAwareCommand
             // See https://github.com/symfony/symfony/issues/11750.
             $this->get('doctrine')->getManager()->getConnection()->close();
 
-            if ($displayProgress) {
+            if ($displayProgress && $progress) {
                 $progress->advance();
             }
         }
 
-        if ($displayProgress) {
+        if ($displayProgress && $progress) {
             $progress->finish();
         }
     }

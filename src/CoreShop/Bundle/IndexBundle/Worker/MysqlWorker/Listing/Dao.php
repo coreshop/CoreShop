@@ -259,13 +259,15 @@ class Dao
      */
     public function buildSimilarityOrderBy($fields, $objectId)
     {
+        //TODO
+        /*
         try {
             $fieldString = '';
             $maxFieldString = '';
 
             foreach ($fields as $field) {
                 //TODO
-                /*if ($field instanceof AbstractSimilarity) {
+                if ($field instanceof AbstractSimilarity) {
                     if (!empty($fieldString)) {
                         $fieldString .= ',';
                         $maxFieldString .= ',';
@@ -274,7 +276,7 @@ class Dao
 
                     $fieldString .= $this->db->quoteIdentifier($field->getField());
                     $maxFieldString .= 'MAX('.$this->db->quoteIdentifier($field->getField()).') as '.$this->db->quoteIdentifier($field->getField());
-                }*/
+                }
             }
 
             $query = 'SELECT '.$fieldString.' FROM '.$this->model->getQueryTableName().' a WHERE a.o_id = ?;';
@@ -287,8 +289,6 @@ class Dao
                 $subStatement = [];
 
                 foreach ($fields as $field) {
-                    //TODO
-                    /*
                     if ($field instanceof AbstractSimilarity) {
                         if ($objectValues[$field->getField()]) {
                             $subStatement[] =
@@ -298,7 +298,7 @@ class Dao
                                 $objectValues[$field->getField()] / $maxObjectValues[$field->getField()] .
                                 ') * ' . $field->getWeight();
                         }
-                    }*/
+                    }
                 }
 
                 if (count($subStatement) > 0) {
@@ -310,7 +310,7 @@ class Dao
                 throw new \Exception('Field array for given object id is empty');
             }
         } catch (\Exception $e) {
-        }
+        }*/
 
         return '';
     }

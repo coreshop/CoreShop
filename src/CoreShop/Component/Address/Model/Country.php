@@ -32,7 +32,7 @@ class Country extends AbstractResource implements CountryInterface
     protected $name;
 
     /**
-     * @var int
+     * @var boolean
      */
     protected $active = true;
 

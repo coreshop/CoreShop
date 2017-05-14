@@ -31,7 +31,7 @@ class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
             $parent = $parent->getParent();
         } while ($parent != null);
 
-        return false;
+        throw new \InvalidArgumentException("Order could not be found!");
     }
 
     /**

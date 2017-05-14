@@ -62,7 +62,7 @@ interface CartManagerInterface
      * @param $customer
      * @param $name
      *
-     * @return CartInterface|null
+     * @return CartInterface[]
      */
     public function getByName($customer, $name);
 

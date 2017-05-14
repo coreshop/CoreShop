@@ -29,7 +29,7 @@ interface ProductSpecificPriceRuleInterface extends RuleInterface
     public function setInherit($inherit);
 
     /**
-     * @return bool
+     * @return int
      */
     public function getPriority();
 
