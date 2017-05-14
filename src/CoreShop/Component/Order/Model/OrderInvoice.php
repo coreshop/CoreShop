@@ -432,9 +432,9 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getTaxes($applyDiscountToTaxValues = true)
+    public function getTaxes()
     {
-        throw new \Exception('implement me');
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
@@ -442,7 +442,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      */
     public function setTaxes($taxes)
     {
-        throw new \Exception('implement me');
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

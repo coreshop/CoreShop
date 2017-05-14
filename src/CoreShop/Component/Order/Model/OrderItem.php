@@ -207,7 +207,7 @@ class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
      */
     public function getTaxes($applyDiscountToTaxValues = true)
     {
-        throw new \Exception('implement me');
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
@@ -215,7 +215,7 @@ class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
      */
     public function setTaxes($taxes)
     {
-        throw new \Exception('implement me');
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

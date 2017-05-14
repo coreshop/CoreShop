@@ -92,4 +92,9 @@ interface OrderItemInterface extends ProposalItemInterface, PimcoreModelInterfac
      * @param float $itemWeight
      */
     public function setItemWeight($itemWeight);
+
+    /**
+     * @return mixed
+     */
+    public function getTaxes();
 }

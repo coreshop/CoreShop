@@ -12,13 +12,17 @@
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
+use CoreShop\Component\Order\Model\OrderInvoiceInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
-use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
+use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -40,18 +44,34 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     private $eventDispatcher;
 
     /**
+     * @var FactoryInterface
+     */
+    private $taxRateFactory;
+
+    /**
+     * @var FactoryInterface
+     */
+    private $taxItemFactory;
+
+    /**
      * @param ObjectServiceInterface              $objectService
      * @param string                              $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
+     * @param FactoryInterface                    $taxRateFactory
+     * @param FactoryInterface                    $taxItemFactory
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
-        TransformerEventDispatcherInterface $eventDispatcher
+        TransformerEventDispatcherInterface $eventDispatcher,
+        FactoryInterface $taxRateFactory,
+        FactoryInterface $taxItemFactory
     ) {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
+        $this->taxRateFactory = $taxRateFactory;
+        $this->taxItemFactory = $taxItemFactory;
     }
 
     /**
@@ -59,7 +79,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
      */
     public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity)
     {
-        /*
+        /**
          * @var $invoice OrderInvoiceInterface
          * @var $orderItem OrderItemInterface
          * @var $invoiceItem OrderInvoiceItemInterface
@@ -96,21 +116,26 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $itemTaxes = new Fieldcollection();
         $totalTax = 0;
 
-        /*$orderTaxes = $orderItem->getTaxes();
+        $orderTaxes = $orderItem->getTaxes();
 
-        if (is_array($orderTaxes)) {
+        if ($orderTaxes instanceof Fieldcollection) {
             foreach ($orderTaxes as $tax) {
-                if ($tax instanceof Order\Tax) {
-                    $taxRate = Tax::create();
+                if ($tax instanceof TaxItemInterface) {
+                    /**
+                     * @var $taxRate TaxRateInterface
+                     */
+                    $taxRate = $this->taxRateFactory->createNew();
                     $taxRate->setRate($tax->getRate());
 
-                    $taxCalculator = new TaxCalculator([$taxRate]);
+                    $taxCalculator = new TaxRulesTaxCalculator([$taxRate]);
 
-                    $itemTax = Order\Tax::create([
-                        'name' => $tax->getName(),
-                        'rate' => $tax->getRate(),
-                        'amount' => $taxCalculator->getTaxesAmount($quantity)
-                    ]);
+                    /**
+                     * @var $itemTax TaxItemInterface
+                     */
+                    $itemTax = $this->taxItemFactory->createNew();
+                    $itemTax->setName($tax->getName());
+                    $itemTax->setRate($tax->getRate());
+                    $itemTax->setAmount($taxCalculator->getTaxesAmount($quantity));
 
                     $itemTaxes->add($itemTax);
 
@@ -120,6 +145,6 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         }
 
         $docItem->setTotalTax($totalTax);
-        $docItem->setTaxes($itemTaxes);*/
+        $docItem->setTaxes($itemTaxes);
     }
 }

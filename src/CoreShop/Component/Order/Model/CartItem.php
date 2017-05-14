@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -81,37 +81,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      */
     public function getItemTax()
     {
-        $product = $this->getProduct();
-
-        if ($product instanceof PurchasableInterface) {
-            $taxCalculator = $this->getItemTaxCalculator();
-
-            return $taxCalculator->applyTaxes($this->getItemPrice());
-        }
-
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxes($applyDiscountToTaxValues = true)
-    {
-        return \Pimcore::getContainer()->get('coreshop.collector.taxes')->collectTaxes($this->getItemTaxCalculator(), $this->getTotal(false));
-    }
-
-    /**
-     * @return TaxCalculatorInterface
-     */
-    private function getItemTaxCalculator()
-    {
-        $product = $this->getProduct();
-
-        if ($product instanceof PurchasableInterface) {
-            return $product->getTaxCalculator($this->getCart()->getShippingAddress()); //TODO: Taxation Address should be configurable
-        }
-
-        return null;
+        return $this->getItemPrice(true) - $this->getItemPrice(false);
     }
 
     /**

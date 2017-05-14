@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
+use CoreShop\Component\Order\Taxation\ProposalItemTaxCollectorInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -19,6 +20,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
+use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
@@ -39,17 +41,25 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
     private $eventDispatcher;
 
     /**
+     * @var ProposalItemTaxCollectorInterface
+     */
+    private $cartItemTaxCollector;
+
+    /**
      * @param ObjectServiceInterface              $objectService
      * @param string                              $pathForItems
+     * @param ProposalItemTaxCollectorInterface   $cartItemTaxCollector
      * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
+        ProposalItemTaxCollectorInterface $cartItemTaxCollector,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
+        $this->cartItemTaxCollector = $cartItemTaxCollector;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -77,6 +87,11 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
         $orderItem->setParent($itemFolder);
         $orderItem->setPublished(true);
 
+        $fc = new Fieldcollection();
+        $fc->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
+
+        $orderItem->setTaxes($fc);
+
         $orderItem->setProduct($cartItem->getProduct());
         $orderItem->setItemWholesalePrice($cartItem->getItemWholesalePrice());
         $orderItem->setItemRetailPrice($cartItem->getItemRetailPrice(true), true);
@@ -89,11 +104,9 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
         $orderItem->setItemTax($cartItem->getItemTax());
         $orderItem->setItemWeight($cartItem->getItemWeight());
         $orderItem->setTotalWeight($cartItem->getTotalWeight());
-
         $orderItem->save();
 
         $order->addItem($orderItem);
-        //TODO: Collect all Taxes
 
         $this->eventDispatcher->dispatchPostEvent('order_item', $cartItem, ['order' => $order, 'cart' => $cartItem->getCart(), 'order_item' => $orderItem]);
     }

@@ -8,6 +8,7 @@ services:
     arguments:
       - '@coreshop.object_service'
       - '%coreshop.folder.order_item%'
+      - '@coreshop.order.taxation.collector.cart_item'
       - '@coreshop.transformer.event_dispatcher'
 
   coreshop.order.transformer.cart_to_order:

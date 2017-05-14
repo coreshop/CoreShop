@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
@@ -28,6 +29,8 @@ use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
@@ -78,6 +81,11 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     protected $eventDispatcher;
 
     /**
+     * @var FactoryInterface
+     */
+    protected $taxItemFactory;
+
+    /**
      * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
      * @param ItemKeyTransformerInterface           $keyTransformer
      * @param NumberGeneratorInterface              $numberGenerator
@@ -87,6 +95,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * @param PimcoreFactoryInterface               $invoiceItemFactory
      * @param OrderInvoiceRepositoryInterface       $invoiceRepository
      * @param TransformerEventDispatcherInterface   $eventDispatcher
+     * @param FactoryInterface                      $taxItemFactory
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
@@ -97,7 +106,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $invoiceItemFactory,
         OrderInvoiceRepositoryInterface $invoiceRepository,
-        TransformerEventDispatcherInterface $eventDispatcher
+        TransformerEventDispatcherInterface $eventDispatcher,
+        FactoryInterface $taxItemFactory
     ) {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
         $this->keyTransformer = $keyTransformer;
@@ -108,6 +118,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->invoiceItemFactory = $invoiceItemFactory;
         $this->invoiceRepository = $invoiceRepository;
         $this->eventDispatcher = $eventDispatcher;
+        $this->taxItemFactory = $taxItemFactory;
     }
 
     /**
@@ -192,18 +203,18 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $subtotalTax = 0;
 
         /**
-         * @var OrderInvoiceItemInterface
+         * @var $item OrderInvoiceItemInterface
          */
         foreach ($invoice->getItems() as $item) {
             $subtotalWithTax += $item->getTotal();
             $subtotalWithoutTax += $item->getTotal(false);
             $subtotalTax += $item->getTotalTax();
 
-            /*foreach ($item->getTaxes() as $tax) {
-                if ($tax instanceof Tax) {
+            foreach ($item->getTaxes() as $tax) {
+                if ($tax instanceof TaxItemInterface) {
                     $this->addTax($invoice, $tax->getName(), $tax->getRate(), $tax->getAmount() * $discountPercentage);
                 }
-            }*/
+            }
         }
 
         $invoice->setSubtotal($subtotalWithTax);
@@ -356,7 +367,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      */
     private function addTax(OrderInvoiceInterface $invoice, $name, $rate, $amount)
     {
-        /*TODO: $taxes = $invoice->getTaxes();
+        $taxes = $invoice->getTaxes();
 
         if (!$taxes instanceof Fieldcollection) {
             $taxes = new Fieldcollection();
@@ -365,7 +376,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $found = false;
 
         foreach ($taxes as $tax) {
-            if ($tax instanceof Tax) {
+            if ($tax instanceof TaxItemInterface) {
                 if ($tax->getName() === $name) {
                     $tax->setAmount($tax->getAmount() + $amount);
                     $found = true;
@@ -375,14 +386,16 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }
 
         if (!$found) {
-            $tax = Tax::create([
-                "name" => $name,
-                "rate" => $rate,
-                "amount" => $amount
-            ]);
+            /**
+             * @var $taxItem TaxItemInterface
+             */
+            $taxItem = $this->taxItemFactory->createNew();
+            $taxItem->setName($name);
+            $taxItem->setRate($rate);
+            $taxItem->setAmount($amount);
 
-            $taxes->add($tax);
-            $this->setTaxes($taxes);
-        }*/
+            $taxes->add($taxItem);
+            $invoice->setTaxes($taxes);
+        }
     }
 }
