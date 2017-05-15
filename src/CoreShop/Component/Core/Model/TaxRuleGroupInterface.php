@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface as BaseTaxRuleGroupInterface;
 use Doctrine\Common\Collections\Collection;
 

@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use CoreShop\Component\Taxation\Model\TaxRule as BaseTaxRule;

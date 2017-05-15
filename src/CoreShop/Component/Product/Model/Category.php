@@ -46,7 +46,7 @@ class Category extends AbstractPimcoreModel implements CategoryInterface
      */
     public function hasChildCategories()
     {
-        return count($this->getChildren());
+        return count($this->getChildren()) > 0;
     }
 
     /**

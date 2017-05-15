@@ -13,8 +13,6 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\Country as BaseCountry;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

@@ -31,7 +31,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
         $fields = $condition->getField();
 
         if (is_array($fields)) {
-            foreach ($condition->getField() as $field) {
+            foreach ($fields as $field) {
                 $fieldRawValues = $list->getGroupByValues($field, true);
 
                 if (!is_array($fieldRawValues) || !isset($currentValues[$field])) {
