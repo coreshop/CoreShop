@@ -36,7 +36,7 @@ class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterfa
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(CartInterface $cart, $withTax = true, array $configuration)
+    public function getDiscount(CartInterface $cart, $withTax, array $configuration)
     {
         return 0;
     }

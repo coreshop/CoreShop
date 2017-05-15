@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Cart\Rule\Action;
 use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Repository\ProductRepositoryInterface;
 
@@ -47,7 +48,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     {
         $product = $this->productRepository->find($configuration['product']);
 
-        if ($product instanceof ProductInterface) {
+        if ($product instanceof PurchasableInterface) {
             $this->cartModifier->updateCartItemQuantity($cart, $product, 1, false);
 
             return true;
@@ -63,7 +64,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     {
         $product = $this->productRepository->find($configuration['product']);
 
-        if ($product instanceof ProductInterface) {
+        if ($product instanceof PurchasableInterface) {
             $this->cartModifier->updateCartItemQuantity($cart, $product, 0, false);
 
             return true;
@@ -75,7 +76,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(CartInterface $cart, $withTax = true, array $configuration)
+    public function getDiscount(CartInterface $cart, $withTax, array $configuration)
     {
         return 0;
     }

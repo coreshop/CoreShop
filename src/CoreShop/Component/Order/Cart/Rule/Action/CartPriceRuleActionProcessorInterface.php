@@ -40,10 +40,10 @@ interface CartPriceRuleActionProcessorInterface
      * Calculate discount.
      *
      * @param CartInterface $cart
-     * @param bool          $withTax
+     * @param bool $withTax
      * @param $configuration
      *
      * @return int
      */
-    public function getDiscount(CartInterface $cart, $withTax = true, array $configuration);
+    public function getDiscount(CartInterface $cart, $withTax, array $configuration);
 }
