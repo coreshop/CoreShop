@@ -569,7 +569,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     * @return PimcoreModelInterface|mixed
+     * @return PimcoreModelInterface|null
      */
     public function current()
     {
@@ -615,7 +615,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     * @return PimcoreModelInterface|mixed
+     * @return PimcoreModelInterface|null
      */
     public function next()
     {

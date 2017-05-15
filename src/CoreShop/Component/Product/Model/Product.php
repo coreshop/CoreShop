@@ -29,16 +29,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     private $taxCalculator;
 
     /**
-     * @var float
-     */
-    private $priceNet = null;
-
-    /**
-     * @var float
-     */
-    private $priceGross = null;
-
-    /**
      * {@inheritdoc}
      */
     public function getPrice($withTax = true)
