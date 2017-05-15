@@ -211,7 +211,7 @@ final class CartManager implements CartManagerInterface
             $cart->setCustomer($this->customerContext->getCustomer());
         }
         catch (CustomerNotFoundException $ex) {
-
+            //Could happen that there is no customer yet, so we catch and continue
         }
 
         $cart->setParent($cartsFolder);
