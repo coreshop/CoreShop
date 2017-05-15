@@ -18,7 +18,7 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
-class CustomerGroupsConditionChecker implements ConditionCheckerInterface
+final class CustomerGroupsConditionChecker implements ConditionCheckerInterface
 {
     /**
      * @var CustomerContextInterface
@@ -52,6 +52,7 @@ class CustomerGroupsConditionChecker implements ConditionCheckerInterface
                 }
             }
         } catch (CustomerNotFoundException $ex) {
+            //If some goes wrong, we just ignore it and return false
         }
 
         return false;

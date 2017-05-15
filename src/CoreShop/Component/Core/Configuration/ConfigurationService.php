@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ConfigurationRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Store\Context\StoreNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService extends BaseConfigurationService implements ConfigurationServiceInterface
@@ -119,7 +120,8 @@ class ConfigurationService extends BaseConfigurationService implements Configura
             //TODO: Check for frontend calls, but how? Tool::isFrontend is not good at all :/
 
             return $this->storeContext->getStore();
-        } catch (\Exception $ex) {
+        } catch (StoreNotFoundException $ex) {
+            //if we don't have a store, do nothing and return false
         }
 
         return null;

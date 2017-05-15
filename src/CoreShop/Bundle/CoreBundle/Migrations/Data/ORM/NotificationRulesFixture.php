@@ -20,7 +20,7 @@ use Pimcore\Model\Document;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface //, DependentFixtureInterface
+final class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface //, DependentFixtureInterface
 {
     /**
      * @var ContainerInterface
@@ -103,6 +103,7 @@ class NotificationRulesFixture extends AbstractFixture implements ContainerAware
                     }
                 }
             } catch (\Exception $ex) {
+                 //If some goes wrong, we just ignore it
                 return;
             }
         }

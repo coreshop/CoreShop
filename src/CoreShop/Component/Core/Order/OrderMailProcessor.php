@@ -132,27 +132,27 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     {
         $to = [];
         if (is_array($recipients)) {
-            foreach ($recipients as $_recipient) {
-                if (is_array($_recipient)) {
-                    $to[] = [$_recipient[0], $_recipient[1]];
+            foreach ($recipients as $recipient) {
+                if (is_array($recipient)) {
+                    $to[] = [$recipient[0], $recipient[1]];
                 } else {
-                    $multiRecipients = array_filter(explode(';', $_recipient));
-                    foreach ($multiRecipients as $_multiRecipient) {
-                        $to[] = [$_multiRecipient, ''];
+                    $multiRecipients = array_filter(explode(';', $recipient));
+                    foreach ($multiRecipients as $multiRecipient) {
+                        $to[] = [$multiRecipient, ''];
                     }
                 }
             }
         } else {
             $multiRecipients = array_filter(explode(';', $recipients));
-            foreach ($multiRecipients as $_multiRecipient) {
-                $to[] = [$_multiRecipient, ''];
+            foreach ($multiRecipients as $multiRecipient) {
+                $to[] = [$multiRecipient, ''];
             }
         }
 
         //now add recipients from emailDocument, if given.
         $storedRecipients = array_filter(explode(';', $emailDocument->getTo()));
-        foreach ($storedRecipients as $_multiRecipient) {
-            $to[] = [$_multiRecipient, ''];
+        foreach ($storedRecipients as $multiRecipient) {
+            $to[] = [$multiRecipient, ''];
         }
 
         foreach ($to as $recipient) {

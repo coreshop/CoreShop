@@ -138,6 +138,7 @@ class PaymentController extends Controller
         try {
             $gateway->execute(new Sync($token));
         } catch (RequestNotSupportedException $e) {
+            //Not sure if we should do someting here?
         }
 
         $gateway->execute($status = new GetHumanStatus($token));

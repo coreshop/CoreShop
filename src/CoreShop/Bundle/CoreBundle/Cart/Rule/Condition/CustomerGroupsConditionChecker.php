@@ -18,14 +18,14 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use Webmozart\Assert\Assert;
 
-class CustomerGroupsConditionChecker implements ConditionCheckerInterface
+final class CustomerGroupsConditionChecker implements ConditionCheckerInterface
 {
     /**
      * {@inheritdoc}
      */
     public function isValid($subject, array $configuration)
     {
-        /*
+        /**
          * @var $subject CartInterface
          */
         Assert::isInstanceOf($subject, CartInterface::class);

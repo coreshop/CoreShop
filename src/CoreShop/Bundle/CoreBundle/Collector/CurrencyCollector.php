@@ -48,6 +48,7 @@ final class CurrencyCollector extends DataCollector
                 'currency_change_support' => $currencyChangeSupport,
             ];
         } catch (\Exception $ex) {
+            //If some goes wrong, we just ignore it
         }
     }
 
@@ -83,6 +84,7 @@ final class CurrencyCollector extends DataCollector
         try {
             $this->data['currency'] = $this->currencyContext->getCurrency();
         } catch (\Exception $exception) {
+            //If some goes wrong, we just ignore it
         }
     }
 

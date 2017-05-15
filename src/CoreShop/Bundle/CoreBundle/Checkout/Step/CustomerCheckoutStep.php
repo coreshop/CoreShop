@@ -69,6 +69,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface
 
             return $customer instanceof CustomerInterface;
         } catch (CustomerNotFoundException $ex) {
+            //If we don't have a customer, we ignore the exception and return false
         }
 
         return false;

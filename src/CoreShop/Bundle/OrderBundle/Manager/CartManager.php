@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Manager;
 
@@ -68,11 +68,11 @@ final class CartManager implements CartManagerInterface
 
     /**
      * @param PimcoreRepositoryInterface $cartRepository
-     * @param FactoryInterface           $cartFactory
-     * @param SessionInterface           $session
-     * @param ObjectServiceInterface     $objectService
-     * @param CustomerContextInterface   $customerContext
-     * @param string                     $cartFolderPath
+     * @param FactoryInterface $cartFactory
+     * @param SessionInterface $session
+     * @param ObjectServiceInterface $objectService
+     * @param CustomerContextInterface $customerContext
+     * @param string $cartFolderPath
      */
     public function __construct(
         PimcoreRepositoryInterface $cartRepository,
@@ -80,7 +80,8 @@ final class CartManager implements CartManagerInterface
         SessionInterface $session,
         ObjectServiceInterface $objectService,
         CustomerContextInterface $customerContext,
-        $cartFolderPath)
+        $cartFolderPath
+    )
     {
         $this->cartRepository = $cartRepository;
         $this->session = $session;
@@ -209,8 +210,7 @@ final class CartManager implements CartManagerInterface
 
         try {
             $cart->setCustomer($this->customerContext->getCustomer());
-        }
-        catch (CustomerNotFoundException $ex) {
+        } catch (CustomerNotFoundException $ex) {
             //Could happen that there is no customer yet, so we catch and continue
         }
 

@@ -27,7 +27,7 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
     /**
      * @var string
      */
-    private $form_registry;
+    private $formRegistry;
 
     /**
      * @var string
@@ -41,14 +41,14 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
 
     /**
      * @param string $registry
-     * @param string $form_registry
+     * @param string $formRegistry
      * @param string $parameter
      * @param string $tag
      */
-    public function __construct($registry, $form_registry, $parameter, $tag)
+    public function __construct($registry, $formRegistry, $parameter, $tag)
     {
         $this->registry = $registry;
-        $this->form_registry = $form_registry;
+        $this->formRegistry = $formRegistry;
         $this->parameter = $parameter;
         $this->tag = $tag;
     }
@@ -58,12 +58,12 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has($this->registry) || !$container->has($this->form_registry)) {
+        if (!$container->has($this->registry) || !$container->has($this->formRegistry)) {
             return;
         }
 
         $registry = $container->getDefinition($this->registry);
-        $formRegistry = $container->getDefinition($this->form_registry);
+        $formRegistry = $container->getDefinition($this->formRegistry);
 
         $map = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {

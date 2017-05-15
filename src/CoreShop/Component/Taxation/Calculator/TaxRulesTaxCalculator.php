@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Taxation\Calculator;
 
@@ -24,16 +24,16 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     /**
      * @var int (COMBINE_METHOD | ONE_AFTER_ANOTHER_METHOD)
      */
-    public $computation_method;
+    public $computationMethod;
 
     /**
      * @param array $taxRates
-     * @param int   $computation_method
+     * @param int $computationMethod
      */
-    public function __construct(array $taxRates = [], $computation_method = self::COMBINE_METHOD)
+    public function __construct(array $taxRates = [], $computationMethod = self::COMBINE_METHOD)
     {
         $this->taxRates = $taxRates;
-        $this->computation_method = (int) $computation_method;
+        $this->computationMethod = (int)$computationMethod;
     }
 
     /**
@@ -72,7 +72,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
             }
         }
 
-        return (float) $taxes;
+        return (float)$taxes;
     }
 
     /**
@@ -80,23 +80,23 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
      */
     public function getTaxesAmount($price, $asArray = false)
     {
-        $taxes_amounts = [];
+        $taxesAmounts = [];
         $taxAmount = 0.0;
 
         foreach ($this->getTaxRates() as $tax) {
             if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
-                $taxes_amounts[$tax->getId()] = $price * (abs($tax->getRate()) / 100);
-                $price = $price + $taxes_amounts[$tax->getId()];
+                $taxesAmounts[$tax->getId()] = $price * (abs($tax->getRate()) / 100);
+                $price = $price + $taxesAmounts[$tax->getId()];
             } else {
-                $taxes_amounts[$tax->getId()] = ($price * (abs($tax->getRate()) / 100));
+                $taxesAmounts[$tax->getId()] = ($price * (abs($tax->getRate()) / 100));
             }
         }
 
         if ($asArray) {
-            return $taxes_amounts;
+            return $taxesAmounts;
         }
 
-        foreach ($taxes_amounts as $t) {
+        foreach ($taxesAmounts as $t) {
             $taxAmount += $t;
         }
 
@@ -116,6 +116,6 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
      */
     private function getComputationMethod()
     {
-        return $this->computation_method;
+        return $this->computationMethod;
     }
 }

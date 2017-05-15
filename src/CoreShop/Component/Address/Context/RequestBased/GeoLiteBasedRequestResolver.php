@@ -57,6 +57,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
                     }
                 }
             } catch (\Exception $e) {
+                //If something goes wrong, ignore the exception and throw a CountryNotFoundException
             }
         }
 
@@ -72,7 +73,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     private function checkIfIpIsPrivate($ip)
     {
-        $pri_addrs = [
+        $priAddrs = [
             '10.0.0.0|10.255.255.255', // single class A network
             '172.16.0.0|172.31.255.255', // 16 contiguous class B network
             '192.168.0.0|192.168.255.255', // 256 contiguous class C network
@@ -80,13 +81,13 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             '127.0.0.0|127.255.255.255', // localhost
         ];
 
-        $long_ip = ip2long($ip);
-        if ($long_ip != -1) {
-            foreach ($pri_addrs as $pri_addr) {
-                list($start, $end) = explode('|', $pri_addr);
+        $longIp = ip2long($ip);
+        if ($longIp != -1) {
+            foreach ($priAddrs as $priAddr) {
+                list($start, $end) = explode('|', $priAddr);
 
                 // IF IS PRIVATE
-                if ($long_ip >= ip2long($start) && $long_ip <= ip2long($end)) {
+                if ($longIp >= ip2long($start) && $longIp <= ip2long($end)) {
                     return true;
                 }
             }

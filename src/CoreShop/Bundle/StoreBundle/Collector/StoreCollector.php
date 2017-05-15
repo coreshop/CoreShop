@@ -78,6 +78,7 @@ final class StoreCollector extends DataCollector
         try {
             $this->data['store'] = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
+            //If some goes wrong, we just ignore it
         }
     }
 
