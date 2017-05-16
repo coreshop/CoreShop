@@ -15,6 +15,7 @@
 namespace CoreShop\Model\Messaging;
 
 use CoreShop\Model\AbstractModel;
+use CoreShop\Model\Messaging\Thread\State;
 
 /**
  * Class Contact
@@ -64,8 +65,10 @@ class Contact extends AbstractModel
         $threads = [];
 
         foreach ($list->load() as $thread) {
-            if (!$thread->getStatus()->getFinished()) {
-                $threads[] = $thread;
+            if ($thread instanceof Thread && $thread->getStatus() instanceof State) {
+                if (!$thread->getStatus()->getFinished()) {
+                    $threads[] = $thread;
+                }
             }
         }
 

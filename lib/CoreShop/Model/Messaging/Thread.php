@@ -137,12 +137,14 @@ class Thread extends AbstractModel
         $list = $list->load();
 
         if ($getAll) {
-            return $list;
+            return $list->getData();
         }
 
         foreach ($list as $thread) {
-            if (!$thread->getStatus()->getFinished()) {
-                return $thread;
+            if ($thread instanceof Thread && $thread->getStatus() instanceof State) {
+                if (!$thread->getStatus()->getFinished()) {
+                    return $thread;
+                }
             }
         }
 

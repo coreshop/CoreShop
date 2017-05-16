@@ -378,28 +378,33 @@ class CoreShop_Admin_OrderController extends Admin
         }
 
         $salesContact = \CoreShop\Model\Messaging\Contact::getById(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.CONTACT.SALES'));
-        $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), $order->getShop()->getId(), $orderId);
 
-        if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
-            $thread = CoreShop\Model\Messaging\Thread::create();
-            $thread->setLanguage($order->getLang());
-            $thread->setStatusId(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
-            $thread->setEmail($order->getCustomer()->getEmail());
-            $thread->setUser($order->getCustomer());
-            $thread->setContact($salesContact);
-            $thread->setShopId($order->getShop()->getId());
-            $thread->setToken(uniqid());
-            $thread->setOrder($order);
-            $thread->save();
+        if ($salesContact instanceof \CoreShop\Model\Messaging\Contact) {
+            $thread = \CoreShop\Model\Messaging\Thread::searchThread($order->getCustomer()->getEmail(), $salesContact->getId(), $order->getShop()->getId(), $orderId);
+
+            if (!$thread instanceof \CoreShop\Model\Messaging\Thread) {
+                $thread = CoreShop\Model\Messaging\Thread::create();
+                $thread->setLanguage($order->getLang());
+                $thread->setStatusId(\CoreShop\Model\Configuration::get('SYSTEM.MESSAGING.THREAD.STATE.NEW'));
+                $thread->setEmail($order->getCustomer()->getEmail());
+                $thread->setUser($order->getCustomer());
+                $thread->setContact($salesContact);
+                $thread->setShopId($order->getShop()->getId());
+                $thread->setToken(uniqid());
+                $thread->setOrder($order);
+                $thread->save();
+            }
+
+            if ($thread instanceof \CoreShop\Model\Messaging\Thread) {
+                $message = $thread->createMessage($messageText);
+
+                $message->sendNotification('customer-reply', $thread->getEmail());
+            }
+
+            $this->_helper->json(['success' => true]);
         }
 
-        if ($thread instanceof \CoreShop\Model\Messaging\Thread) {
-            $message = $thread->createMessage($messageText);
-
-            $message->sendNotification('customer-reply', $thread->getEmail());
-        }
-
-        $this->_helper->json(['success' => true]);
+        $this->_helper->json(['success' => false, 'message' => $this->view->translate("Could not find Sales Concat, please check your CoreShop Settings.")]);
     }
 
     public function changeOrderItemAction()
