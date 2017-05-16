@@ -30,10 +30,6 @@ class PaymentValidator implements ProposalValidatorInterface
          */
         Assert::isInstanceOf($proposal, OrderInterface::class);
 
-        if ($currentState === WorkflowManagerInterface::ORDER_STATUS_PAYMENT_REVIEW) {
-            return false;
-        }
-
-        return true;
+        return !($currentState === WorkflowManagerInterface::ORDER_STATUS_PAYMENT_REVIEW);
     }
 }
