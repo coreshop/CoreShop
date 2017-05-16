@@ -14,7 +14,7 @@ namespace CoreShop\Component\Core\Configuration;
 
 use CoreShop\Component\Configuration\Service\ConfigurationServiceInterface as BaseConfigurationServiceInterface;
 use CoreShop\Component\Core\Model\ConfigurationInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 interface ConfigurationServiceInterface extends BaseConfigurationServiceInterface
 {
