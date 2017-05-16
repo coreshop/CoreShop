@@ -12,14 +12,14 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class Cart extends AbstractPimcoreModel implements CartInterface
 {
+    use ProposalPriceRuleTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -180,99 +180,6 @@ class Cart extends AbstractPimcoreModel implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function hasPriceRules()
-    {
-        return $this->getPriceRuleItems() instanceof Fieldcollection && $this->getPriceRuleItems()->getCount() > 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriceRules()
-    {
-        $rules = [];
-
-        if ($this->getPriceRuleItems() instanceof Fieldcollection) {
-            foreach ($this->getPriceRuleItems() as $ruleItem) {
-                if ($ruleItem instanceof ProposalCartPriceRuleItem) {
-                    $rules[] = $ruleItem->getCartPriceRule();
-                }
-            }
-        }
-
-        return $rules;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPriceRules($priceRules)
-    {
-        if ($priceRules instanceof Fieldcollection) {
-            $this->setPriceRuleItems($priceRules);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addPriceRule($priceRule)
-    {
-        if (!$this->hasPriceRule($priceRule)) {
-            $items = $this->getPriceRuleItems();
-
-            if (!$items instanceof Fieldcollection) {
-                $items = new Fieldcollection();
-            }
-
-            $items->add($priceRule);
-
-            $this->setPriceRules($items);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removePriceRule($priceRule)
-    {
-        $items = $this->getPriceRuleItems();
-
-        if ($items instanceof Fieldcollection) {
-            for ($i = 0, $c = count($items); $i < $c; ++$i) {
-                $arrayItem = $items->get($i);
-
-                if ($arrayItem->getCartPriceRule()->getId() === $priceRule->getId()) {
-                    $items->remove($i);
-                    break;
-                }
-            }
-
-            $this->setPriceRules($items);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasPriceRule($priceRule)
-    {
-        $items = $this->getPriceRuleItems();
-
-        if ($items instanceof Fieldcollection) {
-            foreach ($items as $item) {
-                if ($item->getId() === $priceRule->getId()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getWeight()
     {
         $weight = 0;
@@ -304,22 +211,6 @@ class Cart extends AbstractPimcoreModel implements CartInterface
      * {@inheritdoc}
      */
     public function setPaymentProvider($paymentProvider)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriceRuleItems()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPriceRuleItems($priceRulesCollection)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

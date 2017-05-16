@@ -19,6 +19,8 @@ use Pimcore\Model\Object\Fieldcollection;
 
 class Order extends AbstractPimcoreModel implements OrderInterface
 {
+    use ProposalPriceRuleTrait;
+
     /**
      * Wrapper Method for Pimcore Object.
      *
@@ -488,115 +490,6 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     public function setCarrier($carrier)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriceRuleItems()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPriceRuleItems($priceRuleItems)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasPriceRules()
-    {
-        return is_array($this->getPriceRuleItems()) && count($this->getPriceRuleItems()) > 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriceRules()
-    {
-        $rules = [];
-
-        if ($this->getPriceRuleItems() instanceof Fieldcollection) {
-            foreach ($this->getPriceRuleItems() as $ruleItem) {
-                if ($ruleItem instanceof ProposalCartPriceRuleItem) {
-                    $rules[] = $ruleItem->getCartPriceRule();
-                }
-            }
-        }
-
-        return $rules;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPriceRules($priceRules)
-    {
-        if ($priceRules instanceof Fieldcollection) {
-            $this->setPriceRuleItems($priceRules);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addPriceRule($priceRule)
-    {
-        if (!$this->hasPriceRule($priceRule)) {
-            $items = $this->getPriceRuleItems();
-
-            if (!$items instanceof Fieldcollection) {
-                $items = new Fieldcollection();
-            }
-
-            $items->add($priceRule);
-
-            $this->setPriceRules($items);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removePriceRule($priceRule)
-    {
-        $items = $this->getPriceRuleItems();
-
-        if ($items instanceof Fieldcollection) {
-            for ($i = 0, $c = count($items); $i < $c; ++$i) {
-                $arrayItem = $items[$i];
-
-                if ($arrayItem->getId() === $priceRule->getId()) {
-                    $items->remove($i);
-                    break;
-                }
-            }
-
-            $this->setPriceRules($items);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasPriceRule($priceRule)
-    {
-        $items = $this->getPriceRuleItems();
-
-        if ($items instanceof Fieldcollection) {
-            foreach ($items as $item) {
-                if ($item->getId() === $priceRule->getId()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
