@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Rule\Model;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -46,7 +47,11 @@ trait RuleTrait
      */
     public function __toString()
     {
-        return sprintf('%s (%s)', $this->getName(), $this->getId());
+        if ($this instanceof ResourceInterface) {
+            return sprintf('%s (%s)', $this->getName(), $this->getId());
+        }
+        
+        return $this->getName();
     }
 
     /**
