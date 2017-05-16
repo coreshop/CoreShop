@@ -103,6 +103,6 @@ class ShopperContext implements ShopperContextInterface
      */
     public function getCustomer()
     {
-        return $this->customerContext->getCountry();
+        return $this->customerContext->getCustomer();
     }
 }
