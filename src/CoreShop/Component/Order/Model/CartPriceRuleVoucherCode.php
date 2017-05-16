@@ -131,7 +131,7 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
     /**
      * {@inheritdoc}
      */
-    public function setCartPriceRule($cartPriceRule)
+    public function setCartPriceRule($cartPriceRule = null)
     {
         $this->cartPriceRule = $cartPriceRule;
     }

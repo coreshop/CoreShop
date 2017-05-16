@@ -37,7 +37,7 @@ class PriorityMap implements \Iterator, \Countable
      *
      * @param string $key      name
      * @param string $value    value
-     * @param string $priority priority
+     * @param int $priority priority
      *
      * @return PriorityMap
      */
@@ -56,6 +56,8 @@ class PriorityMap implements \Iterator, \Countable
      * Get item from map.
      *
      * @param $key
+     *
+     * @return mixed
      */
     public function get($key)
     {
@@ -95,7 +97,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get list of keys.
      *
-     * @return array
+     * @return array<integer|string>
      */
     public function getKeys()
     {

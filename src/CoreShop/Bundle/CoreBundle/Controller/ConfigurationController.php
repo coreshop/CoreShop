@@ -22,7 +22,7 @@ class ConfigurationController extends ResourceController
     /**
      * @param Request $request
      *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function saveAllAction(Request $request)
     {
@@ -55,7 +55,7 @@ class ConfigurationController extends ResourceController
     }
 
     /**
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getAllAction()
     {

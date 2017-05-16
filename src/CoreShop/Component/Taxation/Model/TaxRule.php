@@ -86,7 +86,7 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup)
+    public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup = null)
     {
         $this->taxRuleGroup = $taxRuleGroup;
 

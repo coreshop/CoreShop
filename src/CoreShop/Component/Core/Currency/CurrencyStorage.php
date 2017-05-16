@@ -104,7 +104,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
     /**
      * @param StoreInterface $store
      *
-     * @return array
+     * @return CurrencyInterface[]
      */
     private function getCurrenciesForStore(StoreInterface $store)
     {

@@ -25,7 +25,7 @@ use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 interface ProductInterface extends PimcoreModelInterface
 {
     /**
-     * @param null $language
+     * @param string|null $language
      *
      * @return mixed
      */
@@ -33,7 +33,7 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param $name
-     * @param null $language
+     * @param string|null $language
      *
      * @return mixed
      */
@@ -194,7 +194,7 @@ interface ProductInterface extends PimcoreModelInterface
     public function getTaxAmount();
 
     /**
-     * @param string $language
+     * @param string|null $language
      *
      * @return string
      */
@@ -202,12 +202,12 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param string $shortDescription
-     * @param string $language
+     * @param string|null $language
      */
     public function setShortDescription($shortDescription, $language = null);
 
     /**
-     * @param string $language
+     * @param string|null $language
      *
      * @return string
      */
@@ -215,7 +215,7 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param string $description
-     * @param string $language
+     * @param string|null $language
      */
     public function setDescription($description, $language = null);
 

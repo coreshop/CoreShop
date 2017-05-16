@@ -16,14 +16,14 @@ interface TransformerEventDispatcherInterface
 {
     /**
      * @param string $modelName
-     * @param string $model
+     * @param mixed $model
      * @param array  $params
      */
     public function dispatchPreEvent($modelName, $model, $params = []);
 
     /**
      * @param string $modelName
-     * @param string $model
+     * @param mixed $model
      * @param array  $params
      */
     public function dispatchPostEvent($modelName, $model, $params = []);

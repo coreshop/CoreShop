@@ -18,7 +18,7 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 interface PurchasableInterface
 {
     /**
-     * @param string $language
+     * @param string|null $language
      * @return string
      */
     public function getName($language = null);

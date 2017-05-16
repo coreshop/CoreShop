@@ -62,7 +62,7 @@ interface CartPriceRuleVoucherCodeInterface extends ResourceInterface
     public function getCartPriceRule();
 
     /**
-     * @param CartPriceRuleInterface $cartPriceRule
+     * @param CartPriceRuleInterface|null $cartPriceRule
      */
-    public function setCartPriceRule($cartPriceRule);
+    public function setCartPriceRule($cartPriceRule = null);
 }

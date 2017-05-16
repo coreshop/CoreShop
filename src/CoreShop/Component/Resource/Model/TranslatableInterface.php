@@ -20,7 +20,7 @@ interface TranslatableInterface
     public function getTranslations();
 
     /**
-     * @param string $locale
+     * @param string|null $locale
      *
      * @return TranslationInterface
      */

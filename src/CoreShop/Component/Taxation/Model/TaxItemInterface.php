@@ -46,7 +46,7 @@ interface TaxItemInterface extends ResourceInterface
     public function getAmount();
 
     /**
-     * @param bool $amount
+     * @param float $amount
      *
      * @return static
      */

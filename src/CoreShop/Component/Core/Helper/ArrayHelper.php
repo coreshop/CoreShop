@@ -54,7 +54,7 @@ class ArrayHelper
      * @param AbstractObject $object
      * @param null           $fieldDefintions
      *
-     * @return array|bool
+     * @return array|false
      */
     public static function objectToArray(AbstractObject $object, $fieldDefintions = null)
     {
@@ -62,7 +62,7 @@ class ArrayHelper
         if (is_array($object)) {
             $collections = [];
             foreach ($object as $o) {
-                $collections[] = _objectToArray($o, $fieldDefintions);
+                $collections[] = static::objectToArray($o, $fieldDefintions);
             }
 
             return $collections;

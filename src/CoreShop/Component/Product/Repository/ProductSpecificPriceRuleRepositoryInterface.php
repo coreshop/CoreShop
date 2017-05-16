@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Product\Repository;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductSpecificPriceRule;
+use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface ProductSpecificPriceRuleRepositoryInterface extends RepositoryInterface
@@ -21,7 +21,7 @@ interface ProductSpecificPriceRuleRepositoryInterface extends RepositoryInterfac
     /**
      * @param ProductInterface $product
      *
-     * @return ProductSpecificPriceRule[]
+     * @return ProductSpecificPriceRuleInterface[]
      */
     public function findForProduct(ProductInterface $product);
 }

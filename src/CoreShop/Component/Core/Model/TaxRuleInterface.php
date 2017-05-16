@@ -23,9 +23,9 @@ interface TaxRuleInterface extends BaseTaxRuleInterface
     public function getCountry();
 
     /**
-     * @param CountryInterface $country
+     * @param CountryInterface|null $country
      */
-    public function setCountry($country = null);
+    public function setCountry(CountryInterface $country = null);
 
     /**
      * @return StateInterface
@@ -33,7 +33,7 @@ interface TaxRuleInterface extends BaseTaxRuleInterface
     public function getState();
 
     /**
-     * @param StateInterface $state
+     * @param StateInterface|null $state
      */
-    public function setState($state = null);
+    public function setState(StateInterface $state = null);
 }

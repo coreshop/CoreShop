@@ -304,7 +304,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function setIndex(IndexInterface $index)
+    public function setIndex(IndexInterface $index = null)
     {
         $this->index = $index;
     }

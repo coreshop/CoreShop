@@ -20,7 +20,7 @@ class StoreController extends ResourceController
     /**
      * @param Request $request
      *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function listSitesAction(Request $request)
     {

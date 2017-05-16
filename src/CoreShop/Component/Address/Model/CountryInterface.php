@@ -61,7 +61,7 @@ interface CountryInterface extends ResourceInterface
     public function getZone();
 
     /**
-     * @param ZoneInterface $zone
+     * @param ZoneInterface|null $zone
      *
      * @return static
      */

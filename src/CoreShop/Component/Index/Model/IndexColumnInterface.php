@@ -52,11 +52,11 @@ interface IndexColumnInterface extends ResourceInterface
     public function getIndex();
 
     /**
-     * @param IndexInterface $index
+     * @param IndexInterface|null $index
      *
      * @return static
      */
-    public function setIndex(IndexInterface $index);
+    public function setIndex(IndexInterface $index = null);
 
     /**
      * @return string

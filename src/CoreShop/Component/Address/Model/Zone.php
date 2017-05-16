@@ -80,7 +80,7 @@ class Zone extends AbstractResource implements ZoneInterface
     }
 
     /**
-     * @return int
+     * @return boolean
      */
     public function getActive()
     {
@@ -88,7 +88,7 @@ class Zone extends AbstractResource implements ZoneInterface
     }
 
     /**
-     * @param $active
+     * @param boolean $active
      *
      * @return static
      */

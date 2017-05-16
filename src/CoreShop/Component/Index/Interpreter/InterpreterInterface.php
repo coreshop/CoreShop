@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Interpreter;
 
@@ -18,7 +18,7 @@ interface InterpreterInterface
 {
     /**
      * @param $value
-     * @param IndexColumnInterface $config
+     * @param IndexColumnInterface|null $config
      *
      * @return mixed
      */

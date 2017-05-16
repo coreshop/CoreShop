@@ -18,7 +18,7 @@ use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 class CoreShopAdminBundle extends AbstractPimcoreBundle
 {
     /**
-     * @return array
+     * @return string[]
      */
     public function getCssPaths()
     {
@@ -28,7 +28,7 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getJsPaths()
     {

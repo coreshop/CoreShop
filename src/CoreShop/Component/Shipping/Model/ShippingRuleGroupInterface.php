@@ -22,9 +22,9 @@ interface ShippingRuleGroupInterface extends ResourceInterface
     public function getCarrier();
 
     /**
-     * @param CarrierInterface $carrier
+     * @param CarrierInterface|null $carrier
      */
-    public function setCarrier(CarrierInterface $carrier);
+    public function setCarrier(CarrierInterface $carrier = null);
 
     /**
      * @return int

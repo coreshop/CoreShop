@@ -57,7 +57,7 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setCarrier(CarrierInterface $carrier)
+    public function setCarrier(CarrierInterface $carrier = null)
     {
         $this->carrier = $carrier;
     }

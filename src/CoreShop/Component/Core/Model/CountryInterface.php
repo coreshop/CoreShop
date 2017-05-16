@@ -23,11 +23,11 @@ interface CountryInterface extends BaseCountryInterface
     public function getCurrency();
 
     /**
-     * @param CurrencyInterface $currency
+     * @param null|CurrencyInterface $currency
      *
      * @return static
      */
-    public function setCurrency($currency);
+    public function setCurrency(CurrencyInterface $currency = null);
 
     /**
      * @return Collection|StoreInterface[]

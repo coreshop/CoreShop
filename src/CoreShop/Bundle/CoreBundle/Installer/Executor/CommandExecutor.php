@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Executor;
 
@@ -37,9 +37,9 @@ final class CommandExecutor
     private $application;
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param Application     $application
+     * @param Application $application
      */
     public function __construct(InputInterface $input, OutputInterface $output, Application $application)
     {
@@ -49,9 +49,9 @@ final class CommandExecutor
     }
 
     /**
-     * @param string          $command
-     * @param array           $parameters
-     * @param OutputInterface $output
+     * @param string $command
+     * @param array $parameters
+     * @param OutputInterface|null $output
      *
      * @return $this
      *

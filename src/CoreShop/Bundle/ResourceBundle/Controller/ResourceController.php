@@ -199,7 +199,7 @@ class ResourceController extends AdminController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function deleteAction(Request $request)
     {

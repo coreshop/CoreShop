@@ -261,7 +261,7 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @param IndexColumnInterface $column
      *
-     * @return bool|InterpreterInterface
+     * @return InterpreterInterface|bool
      *
      * @throws \Exception
      */

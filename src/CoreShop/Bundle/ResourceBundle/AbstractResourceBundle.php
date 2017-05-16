@@ -92,7 +92,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
     /**
      * Return the entity namespace.
      *
-     * @return string
+     * @return string|null
      */
     protected function getModelNamespace()
     {

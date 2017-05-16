@@ -48,6 +48,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class OrderController extends AdminController
 {
+    /**
+     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     */
     public function getOrderGridConfigurationAction()
     {
         $defaultConfiguration = [

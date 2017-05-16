@@ -32,9 +32,9 @@ interface TaxRuleInterface extends ResourceInterface
     public function getTaxRuleGroup();
 
     /**
-     * @param TaxRuleGroupInterface $taxRuleGroup
+     * @param TaxRuleGroupInterface|null $taxRuleGroup
      */
-    public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup);
+    public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup = null);
 
     /**
      * @return TaxRateInterface

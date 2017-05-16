@@ -80,7 +80,7 @@ final class CustomerContext implements CustomerContextInterface
     }
 
     /**
-     * @param CustomerInterface $customer $store
+     * @param CustomerInterface|null $customer $store
      */
     private function assertCustomerWasFound(CustomerInterface $customer = null)
     {

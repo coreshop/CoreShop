@@ -88,7 +88,7 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
     /**
      * @param StoreInterface $store
      *
-     * @return array
+     * @return CurrencyInterface[]
      */
     private function getCurrenciesForStore(StoreInterface $store)
     {
