@@ -47,12 +47,13 @@ trait RuleTrait
      */
     public function __toString()
     {
-        if ($this instanceof ResourceInterface) {
-            return sprintf('%s (%s)', $this->getName(), $this->getId());
-        }
-        
-        return $this->getName();
+        return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
+
+    /**
+     * @return int
+     */
+    public abstract function getId();
 
     /**
      * @return string

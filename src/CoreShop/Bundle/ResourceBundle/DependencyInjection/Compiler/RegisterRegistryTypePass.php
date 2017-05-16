@@ -22,22 +22,22 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
     /**
      * @var string
      */
-    private $registry;
+    protected $registry;
 
     /**
      * @var string
      */
-    private $formRegistry;
+    protected $formRegistry;
 
     /**
      * @var string
      */
-    private $parameter;
+    protected $parameter;
 
     /**
      * @var string
      */
-    private $tag;
+    protected $tag;
 
     /**
      * @param string $registry

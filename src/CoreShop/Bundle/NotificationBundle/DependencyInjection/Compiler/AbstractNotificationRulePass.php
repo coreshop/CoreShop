@@ -12,27 +12,41 @@
 
 namespace CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler;
 
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry;
-use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RegisterActionConditionPass;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
+abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
 {
     /**
-     * @return string
+     * @var string
      */
-    abstract protected function getType();
+    protected $type;
+
+    /**
+     * @param string $registry
+     * @param string $formRegistry
+     * @param string $parameter
+     * @param string $tag
+     * @param $type
+     */
+    public function __construct($registry, $formRegistry, $parameter, $tag, $type)
+    {
+        parent::__construct($registry, $formRegistry, $parameter, $tag);
+
+        $this->type = $type;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has($this->getRegistryIdentifier()) || !$container->has($this->getFormRegistryIdentifier())) {
+        if (!$container->has($this->registry) || !$container->has($this->formRegistry)) {
             return;
         }
 
@@ -41,11 +55,11 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
         $types = [];
         $registeredTypes = [];
 
-        $registry = $container->getDefinition($this->getRegistryIdentifier());
-        $formRegistry = $container->getDefinition($this->getFormRegistryIdentifier());
+        $registry = $container->getDefinition($this->registry);
+        $formRegistry = $container->getDefinition($this->formRegistry);
 
         $map = [];
-        foreach ($container->findTaggedServiceIds($this->getTagIdentifier()) as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             foreach ($attributes as $tag) {
                 if (!isset($tag['type'], $tag['form-type'], $tag['notification-type'])) {
                     throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type`, `form-type` and `notification-type`` attributes.');
@@ -56,7 +70,7 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
                 if (!array_key_exists($type, $registries)) {
                     $registries[$type] = new Definition(
                         ServiceRegistry::class,
-                        [ConditionCheckerInterface::class, 'notification-rule-'.$this->getType().'-'.$type]
+                        [ConditionCheckerInterface::class, 'notification-rule-'.$this->type.'-'.$type]
                     );
 
                     $formRegistries[$type] = new Definition(
@@ -65,8 +79,8 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
 
                     $types[] = $type;
 
-                    $container->setDefinition($this->getRegistryIdentifier().'.'.$type, $registries[$type]);
-                    $container->setDefinition($this->getFormRegistryIdentifier().'.'.$type, $formRegistries[$type]);
+                    $container->setDefinition($this->registry.'.'.$type, $registries[$type]);
+                    $container->setDefinition($this->formRegistry.'.'.$type, $formRegistries[$type]);
                 }
 
                 $map[$tag['notification-type']][$tag['type']] = $tag['type'];
@@ -84,10 +98,10 @@ abstract class AbstractNotificationRulePass extends RegisterActionConditionPass
         }
 
         foreach ($map as $type => $realMap) {
-            $container->setParameter($this->getIdentifier().'.'.$type, $realMap);
+            $container->setParameter($this->parameter.'.'.$type, $realMap);
         }
 
-        $container->setParameter($this->getIdentifier().'.types', $types);
-        $container->setParameter($this->getIdentifier(), $registeredTypes);
+        $container->setParameter($this->parameter.'.types', $types);
+        $container->setParameter($this->parameter, $registeredTypes);
     }
 }
