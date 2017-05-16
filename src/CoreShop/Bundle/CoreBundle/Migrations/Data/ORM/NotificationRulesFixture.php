@@ -100,6 +100,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                         ++$totalImported;
                     } catch (\Exception $ex) {
+                        //If some goes wrong, we just ignore it
                     }
                 }
             } catch (\Exception $ex) {

@@ -41,6 +41,7 @@ class CustomersConditionChecker implements ConditionCheckerInterface
 
             return in_array($customer->getId(), $configuration['customers']);
         } catch (CustomerNotFoundException $ex) {
+            //If some goes wrong, we can ignore it, since it means that there is no Customer in the context
         }
 
         return false;
