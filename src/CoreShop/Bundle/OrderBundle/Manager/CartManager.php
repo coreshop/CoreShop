@@ -15,16 +15,12 @@ namespace CoreShop\Bundle\OrderBundle\Manager;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class CartManager implements CartManagerInterface
 {
@@ -67,7 +63,7 @@ final class CartManager implements CartManagerInterface
     protected $customerContext;
 
     /**
-     * @param PimcoreRepositoryInterface $cartRepository
+     * @param CartRepositoryInterface $cartRepository
      * @param FactoryInterface $cartFactory
      * @param SessionInterface $session
      * @param ObjectServiceInterface $objectService
@@ -75,7 +71,7 @@ final class CartManager implements CartManagerInterface
      * @param string $cartFolderPath
      */
     public function __construct(
-        PimcoreRepositoryInterface $cartRepository,
+        CartRepositoryInterface $cartRepository,
         FactoryInterface $cartFactory,
         SessionInterface $session,
         ObjectServiceInterface $objectService,
