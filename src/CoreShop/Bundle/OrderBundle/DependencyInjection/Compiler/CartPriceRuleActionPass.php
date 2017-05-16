@@ -12,27 +12,17 @@
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RegisterActionConditionPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
 
-final class CartPriceRuleActionPass extends RegisterActionConditionPass
+final class CartPriceRuleActionPass extends RegisterRegistryTypePass
 {
-    protected function getIdentifier()
+    public function __construct()
     {
-        return 'coreshop.cart_price_rule.actions';
-    }
-
-    protected function getTagIdentifier()
-    {
-        return 'coreshop.cart_price_rule.action';
-    }
-
-    protected function getRegistryIdentifier()
-    {
-        return 'coreshop.registry.cart_price_rule.actions';
-    }
-
-    protected function getFormRegistryIdentifier()
-    {
-        return 'coreshop.form_registry.cart_price_rule.actions';
+        parent::__construct(
+            'coreshop.registry.cart_price_rule.actions',
+            'coreshop.form_registry.cart_price_rule.actions',
+            'coreshop.cart_price_rule.actions',
+            'coreshop.cart_price_rule.action'
+        );
     }
 }

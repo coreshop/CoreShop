@@ -12,27 +12,17 @@
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RegisterActionConditionPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
 
-final class ShippingRuleConditionPass extends RegisterActionConditionPass
+final class ShippingRuleConditionPass extends RegisterRegistryTypePass
 {
-    protected function getIdentifier()
+    public function __construct()
     {
-        return 'coreshop.shipping_rule.conditions';
-    }
-
-    protected function getTagIdentifier()
-    {
-        return 'coreshop.shipping_rule.condition';
-    }
-
-    protected function getRegistryIdentifier()
-    {
-        return 'coreshop.registry.shipping_rule.conditions';
-    }
-
-    protected function getFormRegistryIdentifier()
-    {
-        return 'coreshop.form_registry.shipping_rule.conditions';
+        parent::__construct(
+            'coreshop.registry.shipping_rule.conditions',
+            'coreshop.form_registry.shipping_rule.conditions',
+            'coreshop.shipping_rule.conditions',
+            'coreshop.shipping_rule.condition'
+        );
     }
 }
