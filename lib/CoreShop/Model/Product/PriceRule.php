@@ -70,7 +70,8 @@ class PriceRule extends AbstractProductPriceRule
             Condition\Zones::class,
             Condition\Personas::class,
             Condition\Shops::class,
-            Condition\Currencies::class
+            Condition\Currencies::class,
+            Condition\CustomerGroups::class
         ]);
     }
 
