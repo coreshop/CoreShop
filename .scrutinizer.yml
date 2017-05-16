@@ -3,7 +3,7 @@ tools:
   php_mess_detector:
     config:
       code_size_rules: { cyclomatic_complexity: true, npath_complexity: true, excessive_method_length: true, excessive_class_length: true, excessive_parameter_list: true, excessive_public_count: true, too_many_fields: true, too_many_methods: true, excessive_class_complexity: true }
-      design_rules: { number_of_class_children: true, depth_of_inheritance: true, coupling_between_objects: true }
+      design_rules: { number_of_class_children: true, depth_of_inheritance: true }
       unused_code_rules: { unused_local_variable: true, unused_private_method: true, unused_formal_parameter: true }
       naming_rules: { short_variable: true, long_variable: true, short_method: true, boolean_method_name: true }
       controversial_rules: { camel_case_class_name: true, camel_case_property_name: true, camel_case_method_name: true, camel_case_parameter_name: true, camel_case_variable_name: true }
