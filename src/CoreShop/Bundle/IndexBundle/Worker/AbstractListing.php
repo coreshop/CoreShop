@@ -25,9 +25,9 @@ use Pimcore\Tool;
 abstract class AbstractListing implements ListingInterface
 {
     /**
-     * @var IndexInterface|null
+     * @var IndexInterface
      */
-    protected $index = null;
+    protected $index;
 
     /**
      * @var WorkerInterface
