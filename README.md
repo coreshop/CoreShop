@@ -35,7 +35,7 @@ composer require coreshop/core-shop
 or for the nightly dev version
 
 ```
-composer require coreshop/core-shop dev-master
+composer require coreshop/core-shop dev-coreshop1
 ```
 
 ## CoreShop Demo Data
