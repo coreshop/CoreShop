@@ -432,6 +432,8 @@ class CoreShop_Admin_OrderController extends Admin
         if ($jsonOrder['items'] === null) {
             $jsonOrder['items'] = [];
         }
+        
+        Object\AbstractObject::setGetInheritedValues(true);
 
         $jsonOrder['o_id'] = $order->getId();
         $jsonOrder['customer'] = $order->getCustomer() instanceof \CoreShop\Model\Base ? $this->getDataForObject($order->getCustomer()) : null;
