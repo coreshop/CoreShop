@@ -269,8 +269,8 @@ QUERY;
             }
 
             $this->database->query('DROP TABLE IF EXISTS `'.$this->getTablename($index).'`');
-            $this->database->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index, $index).'`');
-            $this->database->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index, $index).'`');
+            $this->database->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index).'`');
+            $this->database->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index).'`');
         } catch (\Exception $e) {
             Logger::error($e);
         }
