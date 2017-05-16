@@ -19,6 +19,13 @@ use CoreShop\Controller\Action\Admin;
  */
 class CoreShop_Admin_OrderShipmentController extends Admin
 {
+    public function init()
+    {
+        parent::init();
+
+        \Pimcore\Model\Object\AbstractObject::setGetInheritedValues(true);
+    }
+
     public function getShipAbleItemsAction()
     {
         $orderId = $this->getParam('id');

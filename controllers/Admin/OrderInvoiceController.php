@@ -20,6 +20,13 @@ use CoreShop\Controller\Action\Admin;
  */
 class CoreShop_Admin_OrderInvoiceController extends Admin
 {
+    public function init()
+    {
+        parent::init();
+
+        \Pimcore\Model\Object\AbstractObject::setGetInheritedValues(true);
+    }
+
     public function getInvoiceAbleItemsAction()
     {
         $orderId = $this->getParam('id');
