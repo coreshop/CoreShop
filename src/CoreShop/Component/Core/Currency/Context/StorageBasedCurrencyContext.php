@@ -18,9 +18,6 @@ use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
-/**
- * @author Kamil Kokot <kamil.kokot@lakion.com>
- */
 final class StorageBasedCurrencyContext implements CurrencyContextInterface
 {
     /**

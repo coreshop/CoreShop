@@ -17,9 +17,6 @@ use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Resource\Storage\StorageInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
-/**
- * @author Kamil Kokot <kamil.kokot@lakion.com>
- */
 final class CurrencyStorage implements CurrencyStorageInterface
 {
     /**
@@ -84,7 +81,11 @@ final class CurrencyStorage implements CurrencyStorageInterface
      */
     private function isBaseCurrency(CurrencyInterface $currency, StoreInterface $store)
     {
-        return $store->getBaseCurrency()->getId() === $currency->getId();
+        if ($store instanceof \CoreShop\Component\Core\Model\StoreInterface) {
+            return $store->getBaseCurrency()->getId() === $currency->getId();
+        }
+
+        return false;
     }
 
     /**
