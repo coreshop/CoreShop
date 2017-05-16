@@ -568,7 +568,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
         $items = $this->getPriceRuleItems();
 
         if ($items instanceof Fieldcollection) {
-            for ($i = 0; $i < count($items); ++$i) {
+            for ($i = 0, $c = count($items); $i < $c; ++$i) {
                 $arrayItem = $items[$i];
 
                 if ($arrayItem->getId() === $priceRule->getId()) {
@@ -689,7 +689,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     {
         $items = $this->getItems();
 
-        for ($i = 0; $i < count($items); ++$i) {
+        for ($i = 0, $c = count($items); $i < $c; ++$i) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {
@@ -708,7 +708,7 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     {
         $items = $this->getItems();
 
-        for ($i = 0; $i < count($items); ++$i) {
+        for ($i = 0, $c = count($items); $i < $c; ++$i) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {
