@@ -37,7 +37,7 @@ class State extends AbstractResource implements StateInterface
     protected $active = false;
 
     /**
-     * @var Country
+     * @var CountryInterface
      */
     protected $country;
 
