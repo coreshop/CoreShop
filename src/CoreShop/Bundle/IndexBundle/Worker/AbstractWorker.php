@@ -58,8 +58,8 @@ abstract class AbstractWorker implements WorkerInterface
      */
     protected function prepareData(IndexInterface $index, PimcoreModelInterface $object, $convertArrayToString = true)
     {
-        $a = \Pimcore::inAdmin();
-        $b = AbstractObject::doGetInheritedValues();
+        $inAdmin = \Pimcore::inAdmin();
+        $backupInheritedValues = AbstractObject::doGetInheritedValues();
         \Pimcore::unsetAdminMode();
         AbstractObject::setGetInheritedValues(true);
         $hidePublishedMemory = AbstractObject::doHideUnpublished();
@@ -244,11 +244,11 @@ abstract class AbstractWorker implements WorkerInterface
             }
         }
 
-        if ($a) {
+        if ($inAdmin) {
             \Pimcore::setAdminMode();
         }
 
-        AbstractObject::setGetInheritedValues($b);
+        AbstractObject::setGetInheritedValues($backupInheritedValues);
         AbstractObject::setHideUnpublished($hidePublishedMemory);
 
         return [

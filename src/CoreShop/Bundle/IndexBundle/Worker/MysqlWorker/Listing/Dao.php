@@ -21,7 +21,7 @@ class Dao
     /**
      * @var \Pimcore\Db\Connection
      */
-    private $db;
+    private $database;
 
     /**
      * @var MysqlWorker\Listing
@@ -41,7 +41,7 @@ class Dao
     public function __construct(MysqlWorker\Listing $model)
     {
         $this->model = $model;
-        $this->db = Db::get();
+        $this->database = Db::get();
     }
 
     /**
@@ -91,8 +91,8 @@ class Dao
                 .$condition.$orderBy.' '.$limit;
         }
 
-        $result = $this->db->fetchAll($query);
-        $this->lastRecordCount = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $result = $this->database->fetchAll($query);
+        $this->lastRecordCount = (int) $this->database->fetchOne('SELECT FOUND_ROWS()');
 
         return $result;
     }
@@ -117,24 +117,24 @@ class Dao
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualProductId) as `count` FROM "
                     .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
-                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->db->quoteIdentifier($fieldname);
+                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->database->quoteIdentifier($fieldname);
             } else {
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(*) as `count` FROM "
                     .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
-                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->db->quoteIdentifier($fieldname);
+                    .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->database->quoteIdentifier($fieldname);
             }
 
-            $result = $this->db->fetchAll($query);
+            $result = $this->database->fetchAll($query);
 
             return $result;
         } else {
-            $query = 'SELECT '.$this->db->quoteIdentifier($fieldname).' FROM '
+            $query = 'SELECT '.$this->database->quoteIdentifier($fieldname).' FROM '
                 .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
-                .$condition.' GROUP BY '.$this->db->quoteIdentifier($fieldname).' ORDER BY '.$this->db->quoteIdentifier($fieldname);
+                .$condition.' GROUP BY '.$this->database->quoteIdentifier($fieldname).' ORDER BY '.$this->database->quoteIdentifier($fieldname);
 
-            $result = $this->db->fetchCol($query);
+            $result = $this->database->fetchCol($query);
 
             return $result;
         }
@@ -173,7 +173,7 @@ class Dao
 
             $query .= ' AND src IN ('.$subquery.') GROUP BY dest';
 
-            $result = $this->db->fetchAssoc($query);
+            $result = $this->database->fetchAssoc($query);
 
             return $result;
         } else {
@@ -187,7 +187,7 @@ class Dao
 
             $query .= ' AND src IN ('.$subquery.') GROUP BY dest';
 
-            $result = $this->db->fetchCol($query);
+            $result = $this->database->fetchCol($query);
 
             return $result;
         }
@@ -232,7 +232,7 @@ class Dao
                 .$this->model->getJoins()
                 .$condition.$orderBy.' '.$limit;
         }
-        $result = $this->db->fetchOne($query);
+        $result = $this->database->fetchOne($query);
 
         return $result;
     }
@@ -246,7 +246,7 @@ class Dao
      */
     public function quote($value)
     {
-        return $this->db->quote($value);
+        return $this->database->quote($value);
     }
 
     /**
@@ -328,10 +328,10 @@ class Dao
         $columnNames = [];
 
         foreach ($fields as $c) {
-            $columnNames[] = $this->db->quoteIdentifier($c);
+            $columnNames[] = $this->database->quoteIdentifier($c);
         }
 
-        return 'MATCH ('.implode(',', $columnNames).') AGAINST ('.$this->db->quote($searchString).' IN BOOLEAN MODE)';
+        return 'MATCH ('.implode(',', $columnNames).') AGAINST ('.$this->database->quote($searchString).' IN BOOLEAN MODE)';
     }
 
     /**

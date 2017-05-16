@@ -54,15 +54,15 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
             $splitted = explode('-', $postcode); //We should now have 2 elements
 
             if (count($splitted) === 2) {
-                $from = $splitted[0];
-                $to = $splitted[1];
+                $fromPart = $splitted[0];
+                $toPart = $splitted[1];
 
-                $fromText = preg_replace('/[0-9]+/', '', $from);
-                $toText = preg_replace('/[0-9]+/', '', $to);
+                $fromText = preg_replace('/[0-9]+/', '', $fromPart);
+                $toText = preg_replace('/[0-9]+/', '', $toPart);
 
                 if ($fromText === $toText) {
-                    $fromNumber = preg_replace('/\D/', '', $from);
-                    $toNumber = preg_replace('/\D/', '', $to);
+                    $fromNumber = preg_replace('/\D/', '', $fromPart);
+                    $toNumber = preg_replace('/\D/', '', $toPart);
 
                     if ($fromNumber < $toNumber) {
                         $postcodes = [];

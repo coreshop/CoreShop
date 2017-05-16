@@ -130,32 +130,32 @@ class OrderMailProcessor implements OrderMailProcessorInterface
      */
     private function addRecipients($mail, $emailDocument, $recipients = '')
     {
-        $to = [];
+        $toRecipients = [];
         if (is_array($recipients)) {
             foreach ($recipients as $recipient) {
                 if (is_array($recipient)) {
-                    $to[] = [$recipient[0], $recipient[1]];
+                    $toRecipients[] = [$recipient[0], $recipient[1]];
                 } else {
                     $multiRecipients = array_filter(explode(';', $recipient));
                     foreach ($multiRecipients as $multiRecipient) {
-                        $to[] = [$multiRecipient, ''];
+                        $toRecipients[] = [$multiRecipient, ''];
                     }
                 }
             }
         } else {
             $multiRecipients = array_filter(explode(';', $recipients));
             foreach ($multiRecipients as $multiRecipient) {
-                $to[] = [$multiRecipient, ''];
+                $toRecipients[] = [$multiRecipient, ''];
             }
         }
 
         //now add recipients from emailDocument, if given.
         $storedRecipients = array_filter(explode(';', $emailDocument->getTo()));
         foreach ($storedRecipients as $multiRecipient) {
-            $to[] = [$multiRecipient, ''];
+            $toRecipients[] = [$multiRecipient, ''];
         }
 
-        foreach ($to as $recipient) {
+        foreach ($toRecipients as $recipient) {
             $mail->addTo($recipient[0], $recipient[1]);
         }
     }

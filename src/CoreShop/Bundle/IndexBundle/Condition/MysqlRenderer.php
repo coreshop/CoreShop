@@ -21,14 +21,14 @@ class MysqlRenderer extends AbstractRenderer
     /**
      * @var \Pimcore\Db\Connection
      */
-    protected $db;
+    protected $database;
 
     /**
      * Condition constructor.
      */
     public function __construct()
     {
-        $this->db = Db::get();
+        $this->database = Db::get();
     }
 
     /**
@@ -42,7 +42,7 @@ class MysqlRenderer extends AbstractRenderer
 
         if (is_array($condition->getValues())) {
             foreach ($condition->getValues() as $c => $value) {
-                $inValues[] = $this->db->quote($value);
+                $inValues[] = $this->database->quote($value);
             }
         }
 
@@ -78,7 +78,7 @@ class MysqlRenderer extends AbstractRenderer
                 break;
         }
 
-        return 'TRIM(`'.$condition->getFieldName().'`) LIKE '.$this->db->quote($patternValue);
+        return 'TRIM(`'.$condition->getFieldName().'`) LIKE '.$this->database->quote($patternValue);
     }
 
     /**
@@ -121,6 +121,6 @@ class MysqlRenderer extends AbstractRenderer
         $value = $values['value'];
         $operator = $values['operator'];
 
-        return 'TRIM(`'.$condition->getFieldName().'`) '.$operator.' '.$this->db->quote($value);
+        return 'TRIM(`'.$condition->getFieldName().'`) '.$operator.' '.$this->database->quote($value);
     }
 }

@@ -60,14 +60,14 @@ class Condition implements ConditionInterface
      * Range Condition (>=, <=).
      *
      * @param $fieldName
-     * @param $from
-     * @param $to
+     * @param $fromRange
+     * @param $toRange
      *
      * @return Condition
      */
-    public static function range($fieldName, $from, $to)
+    public static function range($fieldName, $fromRange, $toRange)
     {
-        return new self($fieldName, 'range', ['from' => $from, 'to' => $to]);
+        return new self($fieldName, 'range', ['from' => $fromRange, 'to' => $toRange]);
     }
 
     /**

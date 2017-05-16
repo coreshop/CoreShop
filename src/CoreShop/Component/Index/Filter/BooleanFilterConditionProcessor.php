@@ -103,11 +103,8 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
 
             $conditions = [];
 
-            $c = 0;
-
             foreach ($sqlFilter as $valName => $boolVal) {
                 $conditions[] = Condition::match($valName, (int) $boolVal);
-                ++$c;
             }
 
             if (count($conditions) > 0) {

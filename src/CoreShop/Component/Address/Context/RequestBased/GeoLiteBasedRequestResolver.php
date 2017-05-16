@@ -45,10 +45,10 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             try {
                 $reader = new Reader($geoDbFile);
 
-                $ip = $request->getClientIp();
+                $clientIp = $request->getClientIp();
 
-                if (!$this->checkIfIpIsPrivate($ip)) {
-                    $record = $reader->city($ip);
+                if (!$this->checkIfIpIsPrivate($clientIp)) {
+                    $record = $reader->city($clientIp);
 
                     $country = $this->countryRepository->findByCode($record->country->isoCode);
 
@@ -67,11 +67,11 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     /**
      * Check if ip is private.
      *
-     * @param $ip
+     * @param $clientIp
      *
      * @return bool
      */
-    private function checkIfIpIsPrivate($ip)
+    private function checkIfIpIsPrivate($clientIp)
     {
         $priAddrs = [
             '10.0.0.0|10.255.255.255', // single class A network
@@ -81,7 +81,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             '127.0.0.0|127.255.255.255', // localhost
         ];
 
-        $longIp = ip2long($ip);
+        $longIp = ip2long($clientIp);
         if ($longIp != -1) {
             foreach ($priAddrs as $priAddr) {
                 list($start, $end) = explode('|', $priAddr);

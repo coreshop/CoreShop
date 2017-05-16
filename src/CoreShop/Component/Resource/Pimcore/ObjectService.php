@@ -27,24 +27,27 @@ class ObjectService implements ObjectServiceInterface
         return Service::createFolderByPath($path);
     }
 
-    public function copyObject(PimcoreModelInterface $from, PimcoreModelInterface $to)
+    /**
+     * {@inheritdoc}
+     */
+    public function copyObject(PimcoreModelInterface $fromObject, PimcoreModelInterface $toObject)
     {
-        /*
-         * @var $from Concrete
-         * @var $to Concrete
+        /**
+         * @var $fromObject Concrete
+         * @var $toObject Concrete
          */
-        Assert::isInstanceOf($from, Concrete::class);
-        Assert::isInstanceOf($to, Concrete::class);
+        Assert::isInstanceOf($fromObject, Concrete::class);
+        Assert::isInstanceOf($toObject, Concrete::class);
 
         //load all in case of lazy loading fields
-        $toFd = $to->getClass()->getFieldDefinitions();
+        $toFd = $toObject->getClass()->getFieldDefinitions();
 
         foreach ($toFd as $def) {
             $fromGetter = 'get'.ucfirst($def->getName());
             $toSetter = 'set'.ucfirst($def->getName());
 
-            if (method_exists($from, $fromGetter) && method_exists($to, $toSetter)) {
-                $to->$toSetter($from->$fromGetter());
+            if (method_exists($fromObject, $fromGetter) && method_exists($toObject, $toSetter)) {
+                $toObject->$toSetter($fromObject->$fromGetter());
             }
         }
     }

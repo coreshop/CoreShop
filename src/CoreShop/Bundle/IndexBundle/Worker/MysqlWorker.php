@@ -28,7 +28,7 @@ class MysqlWorker extends AbstractWorker
      *
      * @var \Pimcore\Db\Connection
      */
-    protected $db;
+    protected $database;
 
     public function __construct(
         ServiceRegistryInterface $getterServiceRegistry,
@@ -36,7 +36,7 @@ class MysqlWorker extends AbstractWorker
     ) {
         parent::__construct($getterServiceRegistry, $interpreterServiceRegistry);
 
-        $this->db = \Pimcore\Db::get();
+        $this->database = \Pimcore\Db::get();
     }
 
     /**
@@ -122,7 +122,7 @@ class MysqlWorker extends AbstractWorker
      */
     protected function getTableColumns($table)
     {
-        $data = $this->db->fetchAll('SHOW COLUMNS FROM '.$table);
+        $data = $this->database->fetchAll('SHOW COLUMNS FROM '.$table);
 
         $columns = [];
 
@@ -165,7 +165,7 @@ class MysqlWorker extends AbstractWorker
      */
     protected function dropColumn($table, $column)
     {
-        $this->db->query('ALTER TABLE `'.$table.'` DROP COLUMN `'.$column.'`;');
+        $this->database->query('ALTER TABLE `'.$table.'` DROP COLUMN `'.$column.'`;');
     }
 
     /**
@@ -175,7 +175,7 @@ class MysqlWorker extends AbstractWorker
      */
     protected function addColumn($table, $column, $type)
     {
-        $this->db->query('ALTER TABLE `'.$table.'` ADD `'.$column.'` '.$type.';');
+        $this->database->query('ALTER TABLE `'.$table.'` ADD `'.$column.'` '.$type.';');
     }
 
     /**
@@ -185,7 +185,7 @@ class MysqlWorker extends AbstractWorker
      */
     protected function createTables(IndexInterface $index)
     {
-        $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename($index)."` (
+        $this->database->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename($index)."` (
           `o_id` int(11) NOT NULL default '0',
           `o_key` varchar(255) NOT NULL,
           `o_virtualProductId` int(11) NOT NULL,
@@ -201,7 +201,7 @@ class MysqlWorker extends AbstractWorker
           PRIMARY KEY  (`o_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-        $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getLocalizedTablename($index)."` (
+        $this->database->query('CREATE TABLE IF NOT EXISTS `'.$this->getLocalizedTablename($index)."` (
 		  `oo_id` int(11) NOT NULL default '0',
 		  `language` varchar(10) NOT NULL DEFAULT '',
 		  `name` varchar(255) NOT NULL,
@@ -210,7 +210,7 @@ class MysqlWorker extends AbstractWorker
           INDEX `language` (`language`)
 		) DEFAULT CHARSET=utf8;");
 
-        $this->db->query('CREATE TABLE IF NOT EXISTS `'.$this->getRelationTablename($index)."` (
+        $this->database->query('CREATE TABLE IF NOT EXISTS `'.$this->getRelationTablename($index)."` (
           `src` int(11) NOT NULL default '0',
           `src_virtualProductId` int(11) NOT NULL,
           `dest` int(11) NOT NULL,
@@ -249,7 +249,7 @@ LEFT JOIN {$localizedTable}
     )
 QUERY;
 
-                $this->db->query($viewQuery);
+                $this->database->query($viewQuery);
             } catch (\Exception $e) {
                 Logger::error($e);
             }
@@ -265,12 +265,12 @@ QUERY;
             $languages = Tool::getValidLanguages();
 
             foreach ($languages as $language) {
-                $this->db->query('DROP VIEW IF EXISTS `'.$this->getLocalizedViewName($index, $language).'`');
+                $this->database->query('DROP VIEW IF EXISTS `'.$this->getLocalizedViewName($index, $language).'`');
             }
 
-            $this->db->query('DROP TABLE IF EXISTS `'.$this->getTablename($index).'`');
-            $this->db->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index, $index).'`');
-            $this->db->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index, $index).'`');
+            $this->database->query('DROP TABLE IF EXISTS `'.$this->getTablename($index).'`');
+            $this->database->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index, $index).'`');
+            $this->database->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index, $index).'`');
         } catch (\Exception $e) {
             Logger::error($e);
         }
@@ -281,9 +281,9 @@ QUERY;
      */
     public function deleteFromIndex(IndexInterface $index, PimcoreModelInterface $object)
     {
-        $this->db->delete($this->getTablename($index), 'o_id = '.$this->db->quote($object->getId()));
-        $this->db->delete($this->getLocalizedTablename($index), 'o_id = '.$this->db->quote($object->getId()));
-        $this->db->delete($this->getRelationTablename($index), 'src = '.$this->db->quote($object->getId()));
+        $this->database->delete($this->getTablename($index), 'o_id = '.$this->database->quote($object->getId()));
+        $this->database->delete($this->getLocalizedTablename($index), 'o_id = '.$this->database->quote($object->getId()));
+        $this->database->delete($this->getRelationTablename($index), 'src = '.$this->database->quote($object->getId()));
     }
 
     /**
@@ -313,9 +313,9 @@ QUERY;
             }
 
             try {
-                $this->db->delete($this->getRelationTablename($index), ['src' => $this->db->quote($object->getId())]);
+                $this->database->delete($this->getRelationTablename($index), ['src' => $this->database->quote($object->getId())]);
                 foreach ($preparedData['relation'] as $rd) {
-                    $this->db->insert($this->getRelationTablename($index), $rd);
+                    $this->database->insert($this->getRelationTablename($index), $rd);
                 }
             } catch (\Exception $e) {
                 Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
@@ -342,16 +342,16 @@ QUERY;
         $insertStatement = [];
 
         foreach ($data as $key => $d) {
-            $dataKeys[$this->db->quoteIdentifier($key)] = '?';
+            $dataKeys[$this->database->quoteIdentifier($key)] = '?';
             $updateData[] = $d;
-            $insertStatement[] = $this->db->quoteIdentifier($key).' = ?';
+            $insertStatement[] = $this->database->quoteIdentifier($key).' = ?';
             $insertData[] = $d;
         }
 
         $insert = 'INSERT INTO '.$this->getTablename($index).' ('.implode(',', array_keys($dataKeys)).') VALUES ('.implode(',', $dataKeys).')'
             .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
 
-        $this->db->query($insert, array_merge($updateData, $insertData));
+        $this->database->query($insert, array_merge($updateData, $insertData));
     }
 
     /**
@@ -381,17 +381,17 @@ QUERY;
             ];
 
             foreach ($values as $key => $d) {
-                $dataKeys[$this->db->quoteIdentifier($key)] = '?';
+                $dataKeys[$this->database->quoteIdentifier($key)] = '?';
                 $updateData[] = $d;
 
-                $insertStatement[] = $this->db->quoteIdentifier($key).' = ?';
+                $insertStatement[] = $this->database->quoteIdentifier($key).' = ?';
                 $insertData[] = $d;
             }
 
             $insert = 'INSERT INTO '.$this->getLocalizedTablename($index).' ('.implode(',', array_keys($dataKeys)).') VALUES ('.implode(',', $dataKeys).')'
                 .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
 
-            $this->db->query($insert, array_merge($updateData, $insertData));
+            $this->database->query($insert, array_merge($updateData, $insertData));
         }
     }
 

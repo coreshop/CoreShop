@@ -27,10 +27,10 @@ interface ObjectServiceInterface
     /**
      * Copy all fields from $from to $to.
      *
-     * @param PimcoreModelInterface $from
-     * @param PimcoreModelInterface $to
+     * @param PimcoreModelInterface $fromObject
+     * @param PimcoreModelInterface $toObject
      *
      * @return mixed
      */
-    public function copyObject(PimcoreModelInterface $from, PimcoreModelInterface $to);
+    public function copyObject(PimcoreModelInterface $fromObject, PimcoreModelInterface $toObject);
 }

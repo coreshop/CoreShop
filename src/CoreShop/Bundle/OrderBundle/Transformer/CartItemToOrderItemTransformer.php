@@ -87,10 +87,10 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
         $orderItem->setParent($itemFolder);
         $orderItem->setPublished(true);
 
-        $fc = new Fieldcollection();
-        $fc->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
+        $fieldCollection = new Fieldcollection();
+        $fieldCollection->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
 
-        $orderItem->setTaxes($fc);
+        $orderItem->setTaxes($fieldCollection);
 
         $orderItem->setProduct($cartItem->getProduct());
         $orderItem->setItemWholesalePrice($cartItem->getItemWholesalePrice());

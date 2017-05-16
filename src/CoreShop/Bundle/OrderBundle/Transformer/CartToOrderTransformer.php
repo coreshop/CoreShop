@@ -201,10 +201,10 @@ class CartToOrderTransformer implements ProposalTransformerInterface
             $order->addItem($this->cartItemToOrderItemTransformer->transform($order, $cartItem, $orderItem));
         }
 
-        $fc = new Fieldcollection();
-        $fc->setItems($this->cartTaxCollector->getTaxes($cart));
+        $fieldCollection = new Fieldcollection();
+        $fieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
 
-        $order->setTaxes($fc);
+        $order->setTaxes($fieldCollection);
 
         $this->eventDispatcher->dispatchPostEvent('order', $order, ['cart' => $cart]);
 

@@ -313,15 +313,15 @@ class VariantHelper
      */
     private static function findProjectIDsInVariant($value, $array)
     {
-        $v = [];
+        $values = [];
 
         foreach ($array as $projectID => $variantName) {
             if ($variantName == $value) {
-                $v[] = $projectID;
+                $values[] = $projectID;
             }
         }
 
-        return $v;
+        return $values;
     }
 
     /**
