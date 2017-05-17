@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
@@ -18,6 +18,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -71,13 +72,13 @@ class ResourceController extends AdminController
     protected $resourceFormFactory;
 
     /**
-     * @param MetadataInterface            $metadata
-     * @param RepositoryInterface          $repository
-     * @param FactoryInterface             $factory
-     * @param ObjectManager                $manager
-     * @param ViewHandler                  $viewHandler
-     * @param EntityManagerInterface       $entityManager
-     * @param EventDispatcherInterface     $eventDispatcher
+     * @param MetadataInterface $metadata
+     * @param RepositoryInterface $repository
+     * @param FactoryInterface $factory
+     * @param ObjectManager $manager
+     * @param ViewHandler $viewHandler
+     * @param EntityManagerInterface $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ResourceFormFactoryInterface $resourceFormFactory
      */
     public function __construct(
@@ -89,7 +90,8 @@ class ResourceController extends AdminController
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
         ResourceFormFactoryInterface $resourceFormFactory
-    ) {
+    )
+    {
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
@@ -160,7 +162,21 @@ class ResourceController extends AdminController
             return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
 
-        return $this->viewHandler->handle(['success' => false, 'message' => $handledForm->getErrors()]);
+        $errors = [];
+
+        /**
+         * @var $e FormError
+         */
+        foreach ($handledForm->getErrors(true, true) as $e) {
+            $errorMessageTemplate = $e->getMessageTemplate();
+            foreach ($e->getMessageParameters() as $key => $value) {
+                $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
+            }
+
+            $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
+        }
+
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
 
     /**
