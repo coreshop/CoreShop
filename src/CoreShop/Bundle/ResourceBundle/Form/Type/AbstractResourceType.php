@@ -46,6 +46,7 @@ abstract class AbstractResourceType extends AbstractType
             'data_class' => $this->dataClass,
             'validation_groups' => $this->validationGroups,
             'allow_extra_fields' => true,
+            'csrf_protection' => false
         ]);
     }
 }
