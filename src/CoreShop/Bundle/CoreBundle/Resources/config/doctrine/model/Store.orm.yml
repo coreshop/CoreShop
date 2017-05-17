@@ -14,3 +14,4 @@ CoreShop\Component\Core\Model\Store:
         name: baseCountryId
         referencedColumnName: id
         nullable: true
+      fetch: EAGER
