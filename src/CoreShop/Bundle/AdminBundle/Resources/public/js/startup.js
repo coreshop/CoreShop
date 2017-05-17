@@ -305,12 +305,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                 iconCls: 'coreshop_icon_store',
                 handler: this.openStores
             });
-
-            coreShopMenuItems.push({
-                text: t('coreshop_update'),
-                iconCls: 'pimcore_icon_update',
-                handler: this.openUpdate
-            });
         }
 
         coreShopMenuItems.push({
@@ -539,16 +533,6 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         catch (e) {
             //console.log(e);
             pimcore.globalmanager.add('coreshop_settings', new pimcore.plugin.coreshop.settings());
-        }
-    },
-
-    openUpdate : function ()
-    {
-        try {
-            pimcore.globalmanager.get('coreshop_update').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_update', new pimcore.plugin.coreshop.update());
         }
     },
 

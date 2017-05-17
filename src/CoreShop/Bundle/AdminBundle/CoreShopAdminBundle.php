@@ -39,7 +39,6 @@ class CoreShopAdminBundle extends AbstractPimcoreBundle
             '/bundles/coreshopadmin/js/coreshop/helper.js',
             '/bundles/coreshopadmin/js/coreshop/global.js',
             '/bundles/coreshopadmin/js/coreshop/settings.js',
-            '/bundles/coreshopadmin/js/coreshop/update.js',
             '/bundles/coreshopadmin/js/coreshop/abstract/panel.js',
             '/bundles/coreshopadmin/js/coreshop/abstract/item.js',
             '/bundles/coreshopadmin/js/coreshop/currencies/panel.js',
