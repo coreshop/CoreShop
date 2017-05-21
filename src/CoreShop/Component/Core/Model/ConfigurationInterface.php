@@ -13,16 +13,17 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Configuration\Model\ConfigurationInterface as BaseConfigurationInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
-interface ConfigurationInterface extends BaseConfigurationInterface
+interface ConfigurationInterface extends BaseConfigurationInterface, StoreAwareInterface
 {
     /**
-     * @return StoreInterface
+     * @return \CoreShop\Component\Store\Model\StoreInterface
      */
     public function getStore();
 
     /**
-     * @param StoreInterface $store
+     * @param \CoreShop\Component\Store\Model\StoreInterface $store
      */
-    public function setStore(StoreInterface $store);
+    public function setStore(\CoreShop\Component\Store\Model\StoreInterface $store);
 }

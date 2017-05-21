@@ -8,20 +8,20 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Shipping\Model\Carrier as BaseCarrier;
+use CoreShop\Component\Store\Model\StoresAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class Carrier extends BaseCarrier implements CarrierInterface
 {
-    /**
-     * @var Collection|StoreInterface[]
-     */
-    private $stores;
+    use StoresAwareTrait {
+        __construct as storesAwareConstructor;
+    }
 
     /**
      * @var TaxRuleGroupInterface
@@ -31,52 +31,7 @@ class Carrier extends BaseCarrier implements CarrierInterface
     public function __construct()
     {
         parent::__construct();
-
-        $this->stores = new ArrayCollection();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStores()
-    {
-        return $this->stores;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStores()
-    {
-        return !$this->stores->isEmpty();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addStore(StoreInterface $store)
-    {
-        if (!$this->hasStore($store)) {
-            $this->stores->add($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeStore(StoreInterface $store)
-    {
-        if ($this->hasStore($store)) {
-            $this->stores->removeElement($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStore(StoreInterface $store)
-    {
-        return $this->stores->contains($store);
+        $this->storesAwareConstructor();
     }
 
     /**

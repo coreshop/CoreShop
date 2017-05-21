@@ -8,22 +8,22 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
 use CoreShop\Component\Store\Model\StoreInterface as BaseStoreInterface;
+use CoreShop\Component\Store\Model\StoresAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
 {
-    /**
-     * @var Collection
-     */
-    protected $stores;
+    use StoresAwareTrait {
+        __construct as storesAwareConstructor;
+    }
 
     /**
      * @var GatewayConfig
@@ -34,43 +34,7 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     {
         parent::__construct();
 
-        $this->stores = new ArrayCollection();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStores()
-    {
-        return $this->stores;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStore(BaseStoreInterface $store)
-    {
-        return $this->stores->contains($store);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addStore(BaseStoreInterface $store)
-    {
-        if (!$this->hasStore($store)) {
-            $this->stores->add($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeStore(BaseStoreInterface $store)
-    {
-        if ($this->hasStore($store)) {
-            $this->stores->removeElement($store);
-        }
+        $this->storesAwareConstructor();
     }
 
     /**

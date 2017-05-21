@@ -13,37 +13,11 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
+use CoreShop\Component\Store\Model\StoresAwareInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface CarrierInterface extends BaseCarrierInterface
+interface CarrierInterface extends BaseCarrierInterface, StoresAwareInterface
 {
-    /**
-     * @return Collection|StoreInterface[]
-     */
-    public function getStores();
-
-    /**
-     * @return bool
-     */
-    public function hasStores();
-
-    /**
-     * @param StoreInterface $store
-     */
-    public function addStore(StoreInterface $store);
-
-    /**
-     * @param StoreInterface $store
-     */
-    public function removeStore(StoreInterface $store);
-
-    /**
-     * @param StoreInterface $store
-     *
-     * @return bool
-     */
-    public function hasStore(StoreInterface $store);
-
     /**
      * @return TaxRuleGroupInterface
      */

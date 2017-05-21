@@ -8,16 +8,20 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\Country as BaseCountry;
+use CoreShop\Component\Store\Model\StoresAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class Country extends BaseCountry implements CountryInterface
 {
+    use StoresAwareTrait {
+        __construct as storesAwareConstructor;
+    }
     /**
      * @var CurrencyInterface
      */
@@ -30,7 +34,7 @@ class Country extends BaseCountry implements CountryInterface
 
     public function __construct()
     {
-        $this->stores = new ArrayCollection();
+        $this->storesAwareConstructor();
     }
 
     /**
@@ -49,49 +53,5 @@ class Country extends BaseCountry implements CountryInterface
         $this->currency = $currency;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStores()
-    {
-        return $this->stores;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStores()
-    {
-        return !$this->stores->isEmpty();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addStore(StoreInterface $store)
-    {
-        if (!$this->hasStore($store)) {
-            $this->stores->add($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeStore(StoreInterface $store)
-    {
-        if ($this->hasStore($store)) {
-            $this->stores->removeElement($store);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasStore(StoreInterface $store)
-    {
-        return $this->stores->contains($store);
     }
 }
