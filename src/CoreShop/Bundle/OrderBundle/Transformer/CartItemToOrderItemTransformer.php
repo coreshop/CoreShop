@@ -109,5 +109,7 @@ class CartItemToOrderItemTransformer implements ProposalItemTransformerInterface
         $order->addItem($orderItem);
 
         $this->eventDispatcher->dispatchPostEvent('order_item', $cartItem, ['order' => $order, 'cart' => $cartItem->getCart(), 'order_item' => $orderItem]);
+
+        return $orderItem;
     }
 }

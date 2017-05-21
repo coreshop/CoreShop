@@ -62,6 +62,18 @@ interface ProposalInterface extends ResourceInterface
     public function getPaymentFee($withTax = true);
 
     /**
+     * @return mixed
+     */
+    public function getPaymentProvider();
+
+    /**
+     * @param $paymentProvider
+     *
+     * @return mixed
+     */
+    public function setPaymentProvider($paymentProvider);
+
+    /**
      * @return float
      */
     public function getPaymentFeeTaxRate();

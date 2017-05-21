@@ -17,7 +17,7 @@ use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\Object\Fieldcollection;
 
-class Order extends AbstractPimcoreModel implements OrderInterface
+class Order extends AbstractProposal implements OrderInterface
 {
     use ProposalPriceRuleTrait;
 
@@ -303,14 +303,6 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getShippingGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setShippingGross($total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -399,54 +391,6 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getPaymentFeeNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeNet($paymentFeeNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeGross($paymentFeGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeTaxRate()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeTaxRate($taxRate)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOrderDate()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -477,22 +421,6 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getCarrier()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCarrier($carrier)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
      * @return PaymentRepositoryInterface
      */
     private function getPaymentRepository()
@@ -506,173 +434,5 @@ class Order extends AbstractPimcoreModel implements OrderInterface
     public function getPayments()
     {
         return $this->getPaymentRepository()->findForOrderId($this->getId());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemForProduct(PurchasableInterface $product)
-    {
-        foreach ($this->getItems() as $item) {
-            if ($item instanceof OrderItemInterface) {
-                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
-                    return $item;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCurrency($currency)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItems()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setItems($items)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasItems()
-    {
-        return is_array($this->getItems()) && count($this->getItems()) > 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addItem($item)
-    {
-        $items = $this->getItems();
-        $items[] = $item;
-
-        $this->setItems($items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeItem($item)
-    {
-        $items = $this->getItems();
-
-        for ($i = 0, $c = count($items); $i < $c; ++$i) {
-            $arrayItem = $items[$i];
-
-            if ($arrayItem->getId() === $item->getId()) {
-                unset($items[$i]);
-                break;
-            }
-        }
-
-        $this->setItems($items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasItem($item)
-    {
-        $items = $this->getItems();
-
-        for ($i = 0, $c = count($items); $i < $c; ++$i) {
-            $arrayItem = $items[$i];
-
-            if ($arrayItem->getId() === $item->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStore()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStore($store)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomer()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCustomer($customer)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShippingAddress()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingAddress($shippingAddress)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getInvoiceAddress()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setInvoiceAddress($invoiceAddress)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 }

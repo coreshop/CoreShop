@@ -40,18 +40,6 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Checko
     public function setCarrier($carrier);
 
     /**
-     * @return mixed
-     */
-    public function getPaymentProvider();
-
-    /**
-     * @param $paymentProvider
-     *
-     * @return mixed
-     */
-    public function setPaymentProvider($paymentProvider);
-
-    /**
      * @return array
      */
     public function getPriceRuleItems();
