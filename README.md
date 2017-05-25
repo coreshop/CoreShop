@@ -16,35 +16,9 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
 
 # Installation
  - Install with composer ```composer require coreshop/core-shop dev-master```
- - Add Following Bundles to AppKernel.php
+ - Add Following Call to AppKernel's registerBundlesToCollection function
     ```php
-        new \JMS\SerializerBundle\JMSSerializerBundle(),
-        new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
-
-        new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(),
-        new \CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle(),
-        new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(),
-        new \CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle(),
-        new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(),
-        new \CoreShop\Bundle\ProductBundle\CoreShopProductBundle(),
-        new \CoreShop\Bundle\AddressBundle\CoreShopAddressBundle(),
-        new \CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle(),
-        new \CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle(),
-        new \CoreShop\Bundle\StoreBundle\CoreShopStoreBundle(),
-        new \CoreShop\Bundle\IndexBundle\CoreShopIndexBundle(),
-        new \CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle(),
-        new \CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle(),
-        new \CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle(),
-        new \CoreShop\Bundle\NotificationBundle\CoreShopNotificationBundle(),
-
-        new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(),
-        new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(),
-
-        new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(),
-        new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-        new \FOS\RestBundle\FOSRestBundle(),
-        new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-        new \Payum\Bundle\PayumBundle\PayumBundle()
+        \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
     ```
  - Import ```"@CoreShopCoreBundle/Resources/config/app/config.yml"``` in your app/config/config.yml
  - Activate Admin Bundle in Pimcore Extension Manager
