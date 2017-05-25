@@ -14,10 +14,6 @@ CoreShop\Component\Address\Model\Country:
       expose: true
       type: boolean
       groups: [Detailed]
-    name:
-      expose: true
-      type: string
-      groups: [List, Detailed]
     zone:
       expose: true
       type: relation
@@ -26,7 +22,14 @@ CoreShop\Component\Address\Model\Country:
       expose: true
       type: string
       groups: [Detailed]
+    translations:
+      expose: true
+      type: array
+      groups: [Detailed]
   virtual_properties:
     getZoneName:
       serialized_name: zoneName
+      groups: [List, Detailed]
+    getName:
+      serialized_name: name
       groups: [List, Detailed]

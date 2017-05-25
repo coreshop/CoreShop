@@ -1,0 +1,13 @@
+CoreShop\Component\Address\Model\StateTranslation:
+  type: mappedSuperclass
+  table: coreshop_state_translation
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      type: string
+      column: name

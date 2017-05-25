@@ -1,0 +1,8 @@
+CoreShop\Component\Address\Model\CountryTranslation:
+  exclusion_policy: ALL
+  xml_root_name: country
+  properties:
+    name:
+      expose: true
+      type: string
+      groups: [Detailed]

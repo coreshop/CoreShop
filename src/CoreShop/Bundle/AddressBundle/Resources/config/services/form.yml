@@ -1,7 +1,9 @@
 parameters:
   coreshop.form.type.zone.validation_groups: [coreshop]
   coreshop.form.type.country.validation_groups: [coreshop]
+  coreshop.form.type.country_translation.validation_groups: [coreshop]
   coreshop.form.type.state.validation_groups: [coreshop]
+  coreshop.form.type.state_translation.validation_groups: [coreshop]
 
 services:
   coreshop.form.type.country_choice:
@@ -19,6 +21,14 @@ services:
     tags:
       -  { name: form.type }
 
+  coreshop.form.type.country_translation:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\CountryTranslationType
+    arguments:
+      - '%coreshop.model.country_translation.class%'
+      - '%coreshop.form.type.country_translation.validation_groups%'
+    tags:
+      -  { name: form.type }
+
   coreshop.form.type.state_choice:
     class: CoreShop\Bundle\AddressBundle\Form\Type\StateChoiceType
     arguments:
@@ -31,6 +41,14 @@ services:
     arguments:
       - '%coreshop.model.state.class%'
       - '%coreshop.form.type.state.validation_groups%'
+    tags:
+      -  { name: form.type }
+
+  coreshop.form.type.state_translation:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\StateTranslationType
+    arguments:
+      - '%coreshop.model.state_translation.class%'
+      - '%coreshop.form.type.state_translation.validation_groups%'
     tags:
       -  { name: form.type }
 

@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.states.panel');
 pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
@@ -17,30 +17,30 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
      * @var string
      */
     layoutId: 'coreshop_states_panel',
-    storeId : 'coreshop_states',
-    iconCls : 'coreshop_icon_state',
-    type : 'states',
+    storeId: 'coreshop_states',
+    iconCls: 'coreshop_icon_state',
+    type: 'states',
 
-    url : {
-        add : '/admin/CoreShop/states/add',
-        delete : '/admin/CoreShop/states/delete',
-        get : '/admin/CoreShop/states/get',
-        list : '/admin/CoreShop/states/list'
+    url: {
+        add: '/admin/CoreShop/states/add',
+        delete: '/admin/CoreShop/states/delete',
+        get: '/admin/CoreShop/states/get',
+        list: '/admin/CoreShop/states/list'
     },
 
     getNavigation: function () {
         if (!this.grid) {
             this.store = new Ext.data.Store({
-                restful:    false,
-                proxy:      new Ext.data.HttpProxy({
-                    url : this.url.list
+                restful: false,
+                proxy: new Ext.data.HttpProxy({
+                    url: this.url.list
                 }),
-                reader:     new Ext.data.JsonReader({}, [
-                    { name:'id' },
-                    { name:'name' },
-                    { name:'countryName' }
+                reader: new Ext.data.JsonReader({}, [
+                    {name: 'id'},
+                    {name: 'name'},
+                    {name: 'countryName'}
                 ]),
-                autoload:   true,
+                autoload: true,
                 groupField: 'countryName',
                 groupDir: 'ASC'
             });
@@ -52,16 +52,15 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
                     {
                         text: '',
                         dataIndex: 'name',
-                        flex : 1,
-                        renderer: function (value, metadata, record)
-                        {
+                        flex: 1,
+                        renderer: function (value, metadata, record) {
                             metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
 
                             return value;
                         }
                     }
                 ],
-                listeners : this.getTreeNodeListeners(),
+                listeners: this.getTreeNodeListeners(),
                 useArrows: true,
                 autoScroll: true,
                 animate: true,
@@ -75,8 +74,8 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
 
                     // You can customize the group's header.
                     groupHeaderTpl: '{name} ({children.length})',
-                    enableNoGroups:true,
-                    startCollapsed : true
+                    enableNoGroups: true,
+                    startCollapsed: true
                 }],
                 tbar: {
                     items: [
@@ -87,6 +86,15 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
                             handler: this.addItem.bind(this)
                         }
                     ]
+                },
+                bbar: {
+                    items: ['->', {
+                        iconCls: 'pimcore_icon_reload',
+                        scale: 'small',
+                        handler: function () {
+                            this.grid.getStore().load();
+                        }.bind(this)
+                    }]
                 },
                 hideHeaders: true
             });

@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface StateInterface extends ResourceInterface
+interface StateInterface extends ResourceInterface, TranslatableInterface
 {
     /**
      * @return string
@@ -27,14 +28,19 @@ interface StateInterface extends ResourceInterface
     public function setIsoCode($isoCode);
 
     /**
-     * @return string
+     * @param $language
+     *
+     * @return mixed
      */
-    public function getName();
+    public function getName($language = null);
 
     /**
      * @param $name
+     * @param $language
+     *
+     * @return mixed
      */
-    public function setName($name);
+    public function setName($name, $language = null);
 
     /**
      * @return int

@@ -13,9 +13,14 @@
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class State extends AbstractResource implements StateInterface
 {
+    use TranslatableTrait {
+        __construct as private initializeTranslationsCollection;
+    }
+
     /**
      * @var int
      */
@@ -40,6 +45,11 @@ class State extends AbstractResource implements StateInterface
      * @var CountryInterface
      */
     protected $country;
+
+    public function __construct()
+    {
+        $this->initializeTranslationsCollection();
+    }
 
     /**
      * @return string
@@ -78,17 +88,17 @@ class State extends AbstractResource implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName($language = null)
     {
-        return $this->name;
+        return $this->getTranslation($language)->getName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName($name, $language = null)
     {
-        $this->name = $name;
+        $this->getTranslation($language, false)->setName($name);
 
         return $this;
     }
@@ -133,5 +143,13 @@ class State extends AbstractResource implements StateInterface
     public function getCountryName()
     {
         return $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createTranslation()
+    {
+        return new StateTranslation();
     }
 }

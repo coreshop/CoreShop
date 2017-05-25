@@ -13,9 +13,14 @@
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class Country extends AbstractResource implements CountryInterface
 {
+    use TranslatableTrait {
+        __construct as private initializeTranslationsCollection;
+    }
+
     /**
      * @var int
      */
@@ -45,6 +50,11 @@ class Country extends AbstractResource implements CountryInterface
      * @var string
      */
     protected $addressFormat = '';
+
+    public function __construct()
+    {
+        $this->initializeTranslationsCollection();
+    }
 
     /**
      * @return string
@@ -83,17 +93,17 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName($language = null)
     {
-        return $this->name;
+        return $this->getTranslation($language)->getName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName($name, $language = null)
     {
-        $this->name = $name;
+        $this->getTranslation($language, false)->setName($name);
 
         return $this;
     }
@@ -158,5 +168,13 @@ class Country extends AbstractResource implements CountryInterface
     public function getZoneName()
     {
         return $this->getZone() instanceof ZoneInterface ? $this->getZone()->getName() : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createTranslation()
+    {
+        return new CountryTranslation();
     }
 }

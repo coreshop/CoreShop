@@ -13,7 +13,9 @@
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
 use CoreShop\Bundle\AddressBundle\Doctrine\ORM\CountryRepository;
+use CoreShop\Bundle\AddressBundle\Form\Type\CountryTranslationType;
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryType;
+use CoreShop\Bundle\AddressBundle\Form\Type\StateTranslationType;
 use CoreShop\Bundle\AddressBundle\Form\Type\StateType;
 use CoreShop\Bundle\AddressBundle\Form\Type\ZoneType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
@@ -21,12 +23,17 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\Country;
 use CoreShop\Component\Address\Model\CountryInterface;
+use CoreShop\Component\Address\Model\CountryTranslation;
+use CoreShop\Component\Address\Model\CountryTranslationInterface;
 use CoreShop\Component\Address\Model\State;
 use CoreShop\Component\Address\Model\StateInterface;
+use CoreShop\Component\Address\Model\StateTranslation;
+use CoreShop\Component\Address\Model\StateTranslationInterface;
 use CoreShop\Component\Address\Model\Zone;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
+use CoreShop\Component\Resource\Factory\TranslatableFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -71,10 +78,27 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(Country::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CountryInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CountryRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(CountryType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(CountryTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(CountryTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(CountryTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -107,10 +131,27 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(State::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(StateInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(StateType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(StateTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(StateTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(StateTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()

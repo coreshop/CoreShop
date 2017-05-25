@@ -11,9 +11,6 @@ CoreShop\Component\Address\Model\Country:
       id: true
       generator:
         strategy: AUTO
-    name:
-      type: string
-      column: name
     isoCode:
       type: string
       column: isoCode

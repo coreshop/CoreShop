@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +26,9 @@ final class StateType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('translations', ResourceTranslationsType::class, [
+                'entry_type' => StateTranslationType::class,
+            ])
             ->add('isoCode', TextType::class)
             ->add('active', CheckboxType::class)
             ->add('country', CountryChoiceType::class, [

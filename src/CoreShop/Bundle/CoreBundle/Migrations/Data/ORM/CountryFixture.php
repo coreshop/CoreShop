@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
 
@@ -17,10 +17,12 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
+use Pimcore\Tool;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Intl\Intl;
 
 class CountryFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
 {
@@ -34,7 +36,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
      */
     public function getVersion()
     {
-        return '2.0';
+        return '2.0.1';
     }
 
     /**
@@ -83,15 +85,34 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             ],
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
+        $languages = Tool::getValidLanguages();
+        $alpha3CodeMap = [];
+
+        foreach ($languages as $lang) {
+            if (strpos($lang, '_')) {
+                $lang = explode('_', $lang)[0];
+            }
+
+            $alpha3CodeMap[$lang] = Intl::getLanguageBundle()->getAlpha3Code($lang);
+        }
 
         foreach ($countries as $country) {
-            /**
-             * @var CountryInterface
-             */
-            $newCountry = $this->container->get('coreshop.factory.country')->createNew();
-
             if ($country instanceof Country) {
-                $newCountry->setName($country->getName());
+                /**
+                 * @var $newCountry CountryInterface
+                 */
+                $newCountry = $this->container->get('coreshop.repository.country')->findByCode($country->getIsoAlpha2());
+
+                if (null === $newCountry) {
+                    $newCountry = $this->container->get('coreshop.factory.country')->createNew();
+                }
+
+                foreach ($languages as $lang) {
+                    $translation = $country->getTranslation($alpha3CodeMap[$lang]);
+
+                    $newCountry->setName($translation['common'], $lang);
+                }
+
                 $newCountry->setIsoCode($country->getIsoAlpha2());
                 $newCountry->setActive($country->getIsoAlpha2() === 'AT');
                 $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
@@ -111,13 +132,37 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));
-                    $replaceFrom = '{{'.$replaceKey.'}}';
+                    $replaceFrom = '{{' . $replaceKey . '}}';
 
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }
 
                 $newCountry->setAddressFormat($addressFormat);
                 $manager->persist($newCountry);
+
+                if ($country->getIsoAlpha2() === 'AT') {
+                    //States
+                    $divisions = $country->getDivisions();
+
+                    if (is_array($divisions)) {
+                        foreach ($divisions as $isoCode => $division) {
+                            if (!$division['name'])
+                                continue;
+
+                            $state = $this->container->get('coreshop.factory.state')->createNew();
+
+                            foreach ($languages as $lang) {
+                                $state->setName($division['name'], $lang);
+                            }
+
+                            $state->setIsoCode($isoCode);
+                            $state->setCountry($newCountry);
+                            $state->setActive(true);
+
+                            $manager->persist($state);
+                        }
+                    }
+                }
             }
         }
 

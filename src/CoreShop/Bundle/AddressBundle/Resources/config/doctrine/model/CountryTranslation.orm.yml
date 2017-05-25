@@ -1,0 +1,13 @@
+CoreShop\Component\Address\Model\CountryTranslation:
+  type: mappedSuperclass
+  table: coreshop_country_translation
+  fields:
+    id:
+      type: integer
+      column: id
+      id: true
+      generator:
+        strategy: AUTO
+    name:
+      type: string
+      column: name
