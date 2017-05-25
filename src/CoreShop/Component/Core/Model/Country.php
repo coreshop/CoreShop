@@ -34,6 +34,8 @@ class Country extends BaseCountry implements CountryInterface
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->storesAwareConstructor();
     }
 
