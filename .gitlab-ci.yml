@@ -57,7 +57,7 @@ before_script:
 
   # install composer
   - php composer.phar require coreshop/core-shop:dev-master#$CI_COMMIT_REF --ignore-platform-reqs
-  - php composer.phar require symfony/symfony dev-master --ignore-platform-reqs
+
 services:
   - mysql
 
