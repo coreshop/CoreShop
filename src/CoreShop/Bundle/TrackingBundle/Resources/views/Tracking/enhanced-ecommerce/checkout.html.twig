@@ -1,0 +1,5 @@
+{% for(prItem in products) %}
+    ga('ec:addProduct', {{ prItem|json_encode }});
+{% endfor %}
+ga('ec:setAction', 'checkout', {{ actionData|json_encode() }});
+ga('send','event','Checkout','Step');

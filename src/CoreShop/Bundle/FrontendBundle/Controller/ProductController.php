@@ -36,6 +36,8 @@ class ProductController extends FrontendController
             return $this->redirectToRoute('coreshop_shop_index');
         }
 
+        $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
+
         return $this->render('CoreShopFrontendBundle:Product:detail.html.twig', [
             'product' => $product,
         ]);

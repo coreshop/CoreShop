@@ -122,6 +122,10 @@ class CategoryController extends FrontendController
         $viewParameters['perPageAllowed'] = [10, 20, 30, 40, 50];
         $viewParameters['sort'] = $sort;
 
+        foreach ($paginator as $product) {
+            $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
+        }
+
         return $this->render('CoreShopFrontendBundle:Category:index.html.twig', $viewParameters);
     }
 

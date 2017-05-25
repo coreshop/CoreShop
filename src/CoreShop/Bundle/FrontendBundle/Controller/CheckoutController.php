@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -76,6 +76,8 @@ class CheckoutController extends FrontendController
             }
         }
 
+        $this->get('coreshop.tracking.manager')->trackCheckoutStep($this->getCart(), $step);
+
         $dataForStep = $step->prepareStep($this->getCart());
 
         $dataForStep = array_merge(is_array($dataForStep) ? $dataForStep : [], [
@@ -116,6 +118,8 @@ class CheckoutController extends FrontendController
             }
         }
 
+        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($this->checkoutManager->getSteps()));
+
         /**
          * If everything is valid, we continue with Order-Creation.
          */
@@ -124,7 +128,8 @@ class CheckoutController extends FrontendController
 
         /*
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/
-        */        return $this->redirectToRoute('coreshop_shop_payment', ['orderId' => $order->getId()]);
+        */
+        return $this->redirectToRoute('coreshop_shop_payment', ['orderId' => $order->getId()]);
     }
 
     /**
@@ -143,6 +148,8 @@ class CheckoutController extends FrontendController
         $request->getSession()->remove('coreshop_order_id');
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
+
+        $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order);
 
         return $this->render('@CoreShopFrontend/Checkout/thank-you.html.twig', [
             'order' => $order,

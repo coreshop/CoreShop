@@ -1,0 +1,22 @@
+services:
+  coreshop.registry.tracking.tracker:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - CoreShop\Bundle\TrackingBundle\TrackerInterface
+      - 'tracker'
+
+  coreshop.tracking.item_builder:
+    class: CoreShop\Bundle\TrackingBundle\Builder\ItemBuilder
+
+  coreshop.tracking.tracker.google.enhanced_ecommerce:
+    class: CoreShop\Bundle\TrackingBundle\EnhancedEcommerce
+    arguments:
+      - '@templating.engine.delegating'
+      - '@coreshop.tracking.item_builder'
+    tags:
+      - { name: coreshop.tracking.tracker, type: google-enhanced-ecommerce }
+
+  coreshop.tracking.manager:
+    class: CoreShop\Bundle\TrackingBundle\Manager\TrackingManager
+    arguments:
+      - '@coreshop.registry.tracking.tracker'
