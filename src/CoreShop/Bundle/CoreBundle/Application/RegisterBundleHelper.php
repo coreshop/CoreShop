@@ -21,7 +21,6 @@ class RegisterBundleHelper
      */
     public static function registerBundles(BundleCollection $collection) {
         $collection->addBundles([
-            new \AppBundle\AppBundle(),
             new \JMS\SerializerBundle\JMSSerializerBundle(),
             new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
