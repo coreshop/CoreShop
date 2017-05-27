@@ -32,11 +32,6 @@ class State extends AbstractResource implements StateInterface
     protected $isoCode;
 
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var int
      */
     protected $active = false;
