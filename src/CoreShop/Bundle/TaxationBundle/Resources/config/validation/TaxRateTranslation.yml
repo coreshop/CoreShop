@@ -1,0 +1,4 @@
+CoreShop\Component\Taxation\Model\TaxRateTranslation:
+  properties:
+    name:
+      - NotBlank: { groups: [coreshop] }

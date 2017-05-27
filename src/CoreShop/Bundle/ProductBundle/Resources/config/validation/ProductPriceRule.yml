@@ -1,0 +1,8 @@
+CoreShop\Component\Product\Model\ProductPriceRule:
+  properties:
+    name:
+      - NotBlank: { groups: [coreshop] }
+    active:
+      - Type:
+          type: integer
+          groups: [coreshop]

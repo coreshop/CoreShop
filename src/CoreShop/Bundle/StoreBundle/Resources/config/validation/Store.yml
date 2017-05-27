@@ -1,0 +1,14 @@
+CoreShop\Component\Store\Model\Store:
+  properties:
+    name:
+      - NotBlank: { groups: [coreshop] }
+    template:
+      - NotBlank: { groups: [coreshop] }
+    isDefault:
+      - Type:
+          type: boolean
+          groups: [coreshop]
+    siteId:
+      - Type:
+          type: integer
+          groups: [coreshop]

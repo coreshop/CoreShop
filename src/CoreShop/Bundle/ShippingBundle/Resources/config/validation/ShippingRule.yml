@@ -1,0 +1,4 @@
+CoreShop\Component\Shipping\Model\ShippingRule:
+  properties:
+    name:
+      - NotBlank: { groups: [coreshop] }

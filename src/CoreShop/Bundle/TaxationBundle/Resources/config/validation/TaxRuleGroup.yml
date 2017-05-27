@@ -1,0 +1,4 @@
+CoreShop\Component\Taxation\Model\TaxRuleGroup:
+  properties:
+    name:
+      - NotBlank: { groups: [coreshop] }

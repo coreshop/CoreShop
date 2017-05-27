@@ -1,0 +1,11 @@
+CoreShop\Component\Taxation\Model\TaxRule:
+  properties:
+    taxRuleGroup:
+      - NotBlank: { groups: [coreshop] }
+    taxRate:
+      - NotBlank: { groups: [coreshop] }
+    behavior:
+      - NotBlank: { groups: [coreshop] }
+      - Type:
+          type: integer
+          groups: [coreshop]
